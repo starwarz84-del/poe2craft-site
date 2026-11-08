@@ -301,6 +301,9 @@ const LORD_OMEN = {kurgal:'Omen_of_the_Blackblooded', amanamu:'Omen_of_the_Liege
 const josa = (w,a,b) => { const c=(w||'').trim().slice(-1).charCodeAt(0); return c>=0xAC00 && c<=0xD7A3 ? ((c-0xAC00)%28 ? a : b) : (/[0-9)%]$/.test(w) ? a : b); };
 const impMaxQ = b => +(((b.imp?.[0]||[]).join('\n').match(/\+(\d+)% to Maximum Quality/i)||[])[1]||0);   // Breach Ring +20, Refined Breach Ring +25
 const sideKr = sd => sd==='p'?'접두':'접미', sideEn = sd => sd==='p'?'prefix':'suffix';
+// currency, omen and bone names in notes always come from the game data (official Korean / English names)
+const curName = (id, en) => { for(const k in S.craft||{}) for(const x of S.craft[k]) if(x.id===id) return en ? x.en : x.kr; return id.replace(/_/g,' '); };
+const nk = id => curName(id), ne = id => curName(id, true);
 function boneFor(cat){ return cat==='jewel' ? 'Preserved_Cranium' : ['jewellery'].includes(cat) ? 'Preserved_Collarbone' : ['weapon','weapon2'].includes(cat) || cat==='offhand' ? 'Preserved_Jawbone' : 'Preserved_Rib'; }
 const lk = r => (r.t?.[4]||r.m.l||'').split('\n')[0], le = r => (r.t?.[5]||r.m.l||'').split('\n')[0];
 function makeDraft(it, an){
@@ -341,7 +344,7 @@ function makeDraft(it, an){
   // armour/weapon quality above 20% comes from Vaal infusers
   if(it.cat!=='jewellery' && it.cat!=='jewel' && it.qual>20){ const w = ['weapon','weapon2'].includes(it.cat);
     push({phase:'base', do:'manual', cost:'vaal', target:{setQuality:it.qual}, label:{kr:w?'바알 대장장이의 주입기':'바알 방어구 장인의 주입기', en:w?"Vaal Blacksmith's Infuser":"Vaal Armourer's Infuser"},
-      note:note(`20%를 넘는 퀄리티 ${it.qual}%는 바알 주입기로. 첫 번째는 실패하지 않고 이후 한 번마다 실패 확률이 늘어남.`, `Quality above 20% (${it.qual}%) comes from Vaal infusers; the first cannot fail, each later one is riskier.`)}); }
+      note:note(`20%를 넘는 퀄리티 ${it.qual}%는 ${w?nk('Vaal_Blacksmiths_Infuser'):nk('Vaal_Armourers_Infuser')}로. 첫 번째는 실패하지 않고 이후 한 번마다 실패 확률이 늘어남.`, `Quality above 20% (${it.qual}%) comes from Vaal infusers; the first cannot fail, each later one is riskier.`)}); }
   // a rune or soul core that unlocks its own modifiers goes in before rolling them
   augNames.forEach(en=>{ const r=rows.find(x=>x.core && x.g.sub[1]===en); push({phase:'base', do:'manual', target:{rune:{kr:r.g.sub[0], en}}, label:{kr:`「${r.g.sub[0]}」 장착`, en:`Socket ${en}`},
     note:note(`룬 소켓에 증강물 「${r.g.sub[0]}」 장착 (빼낼 수 없음). 이후 카오스·엑잘로 이 증강물 전용 옵션이 붙음. 전용 옵션은 가중치가 공개되지 않음.`, `Socket ${en} (permanent); Chaos and exalts can then roll its own modifiers, whose weights are not public.`)}); });
@@ -387,7 +390,7 @@ function makeDraft(it, an){
   for(const {r,e} of magicEss) push({phase:'ess', do:'manual', label:{kr:'에센스 옵션',en:'Essence line'}, note:note(`${lk(r)} — ${e.kr}는 매직 아이템에만 쓸 수 있어요. 분열 베이스라면 이 줄은 먼저 만들어 둔 상태여야 해요.`, `${le(r)}: ${e.en} only works on a magic item, so this line has to exist before the fracture.`)});
   // 3. junk beyond what the essences will replace goes now, while that side holds nothing worth keeping
   for(const sd of ['p','s']) while(junk[sd] > resv[sd]){ const good = rows.some(r=>!r.m.fr && r.m.side===sd && nodes.some(n=>n.target?.gi===r.m.gi || (n.target?.anyOf||[]).some(x=>x.gi===r.m.gi)));
-    push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]], target:{removeJunk:sd}, note: good ? note(`${sideKr(sd)} 소멸의 징조 + 소멸의 오브로 잡옵 제거. 같은 쪽 좋은 옵션이 지워질 수 있어서 주의.`, `${sd==='p'?'Sinistral':'Dextral'} Annulment removes the junk; it can hit the good ${sideEn(sd)} too.`) : note(`${sideKr(sd)} 소멸의 징조 + 소멸의 오브로 잡옵 제거 (그쪽엔 분열 줄과 잡옵뿐이라 안전).`, `${sd==='p'?'Sinistral':'Dextral'} Annulment removes the junk (nothing else worth keeping on that side).`)}); junk[sd]--; cnt[sd]--; }
+    push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]], target:{removeJunk:sd}, note: good ? note(`${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 잡옵 제거. 같은 쪽 좋은 옵션이 지워질 수 있어서 주의.`, `${sd==='p'?'Sinistral':'Dextral'} Annulment removes the junk; it can hit the good ${sideEn(sd)} too.`) : note(`${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 잡옵 제거 (그쪽엔 분열 줄과 잡옵뿐이라 안전).`, `${sd==='p'?'Sinistral':'Dextral'} Annulment removes the junk (nothing else worth keeping on that side).`)}); junk[sd]--; cnt[sd]--; }
   // 4. jewellery quality above 20%: Essence of the Breach borrows a prefix, catalysts go first so later lines get the bonus
   let qDone=false;
   if(mqGi>=0 && (junk.p || room('p'))){
@@ -405,7 +408,7 @@ function makeDraft(it, an){
     if(!sd) break;
     const want = rnd.filter(r=>r.m.side===sd), oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
     push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(om.length?{omens:om}:{}), target:anyOf(want), fail:{goto:'self', via:{cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]]}},
-      note:note(`${sideKr(sd)}에 ${want.length>1?`원하는 줄 중 하나(${names(want, x=>lk(x))})`:`${lk(want[0])} (T${want[0].tierNo} 이상)`}. 실패하면 ${sideKr(sd)} 소멸로 지우고 다시.`, `A ${sideEn(sd)}: ${want.length>1?`any of ${names(want, x=>le(x))}`:`${le(want[0])} (tier ${want[0].tierNo}+)`}. On a miss, annul that ${sideEn(sd)} and retry.`)});
+      note:note(`${sideKr(sd)}에 ${want.length>1?`원하는 줄 중 하나(${names(want, x=>lk(x))})`:`${lk(want[0])} (T${want[0].tierNo} 이상)`}. 실패하면 ${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 지우고 다시.`, `A ${sideEn(sd)}: ${want.length>1?`any of ${names(want, x=>le(x))}`:`${le(want[0])} (tier ${want[0].tierNo}+)`}. On a miss, annul that ${sideEn(sd)} and retry.`)});
     rnd.splice(rnd.indexOf(want[0]),1); cnt[sd]++;
   }
   // 6. guaranteed lines last: throwaway line + Crystallisation + essence (a second crafted line needs Astrid's Creativity)
@@ -415,7 +418,7 @@ function makeDraft(it, an){
     if(crafted===1) push({phase:'ess', do:'manual', target:{rune:{kr:'아스트리드의 창의성', en:"Astrid's Creativity"}}, label:{kr:'아스트리드의 창의성 장착', en:"Socket Astrid's Creativity"}, note:note('제작 옵션(에센스)은 보통 1줄까지라, 두 번째를 붙이려고 아스트리드의 창의성 룬을 장착. 완성 후 다른 룬으로 교체.', "Crafted (essence) lines are capped at one; Astrid's Creativity allows a second. Swap it out at the end.")});
     if(!junk[sd]){ push({phase:'ess', do:'exalt', cur:'Exalted_Orb', ...(room(other(sd))?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${e.kr}${josa(e.kr,'이','가')} 바꿀 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${e.en} to replace.`)}); cnt[sd]++; }
     else junk[sd]--;
-    push({phase:'ess', do:'essence', cur:e.id, omens:[SIDE_OMEN.cryst[sd]], target:tm(r), note:note(`${sd==='p'?'좌측':'우측'} 결정화의 징조 + ${e.kr}${josa(e.kr,'으로','로')} 그 줄을 ${lk(r)}로 교체.`, `${sd==='p'?'Sinistral':'Dextral'} Crystallisation + ${e.en} swaps it for ${le(r)}.`)});
+    push({phase:'ess', do:'essence', cur:e.id, omens:[SIDE_OMEN.cryst[sd]], target:tm(r), note:note(`${nk(SIDE_OMEN.cryst[sd])} + ${e.kr}${josa(e.kr,'으로','로')} 그 줄을 ${lk(r)}로 교체.`, `${sd==='p'?'Sinistral':'Dextral'} Crystallisation + ${e.en} swaps it for ${le(r)}.`)});
     crafted++;
   }
   augLate.forEach(en=>{ const r=rows.find(x=>x.core && x.g.sub[1]===en);
@@ -425,12 +428,12 @@ function makeDraft(it, an){
   const bone = boneFor(it.cat);
   for(const r of desRows){ const sd=r.m.side; const om=[]; if(r.lord && LORD_OMEN[r.lord] && !['helmet','gloves','boots','body'].includes(it.cat)) om.push(LORD_OMEN[r.lord]); if(cnt[other(sd)] < cap[other(sd)]) om.push(SIDE_OMEN.necro[sd]);
     const b2 = (r.g.s==='n' || r.g.s==='x') && r.t[0]>=40 ? bone.replace('Preserved_','Ancient_').replace('Ancient_Cranium','Preserved_Cranium') : bone;
-    const d = push({phase:'des', do:'desecrate', cur:b2, ...(om.length?{omens:om}:{}), target:{unrev:sd}, note: b2!==bone ? note(`${sideKr(sd)}에 훼손. 고대 뼈는 레벨 40 미만 옵션이 안 나와서 높은 티어 확률이 올라감.`, `Desecrate a ${sideEn(sd)}. Ancient bones skip modifiers below level 40, which lifts high tiers.`) : note(`${sideKr(sd)}에 훼손.`, `Desecrate a ${sideEn(sd)}.`)}); cnt[sd]++;
+    const d = push({phase:'des', do:'desecrate', cur:b2, ...(om.length?{omens:om}:{}), target:{unrev:sd}, note: b2!==bone ? note(`${sideKr(sd)}에 훼손. ${nk(b2)}${josa(nk(b2),'은','는')} 레벨 40 미만 옵션이 안 나와서 높은 티어 확률이 올라감.`, `Desecrate a ${sideEn(sd)}. Ancient bones skip modifiers below level 40, which lifts high tiers.`) : note(`${sideKr(sd)}에 훼손.`, `Desecrate a ${sideEn(sd)}.`)}); cnt[sd]++;
     push({phase:'des', do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{reveal:{gi:r.m.gi}, side:sd, bone:b2, ...(r.lord?{lord:r.lord}:{})}, fail:{goto:d.id, via:{cur:'Orb_of_Annulment', omens:['Omen_of_Light']}},
-      note:note(`심연의 메아리의 징조로 공개해 ${lk(r)}. 안 나오면 빛의 징조 + 소멸로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)}; otherwise Light + Annulment and retry.`)}); }
+      note:note(`심연의 메아리의 징조로 공개해 ${lk(r)}. 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)}; otherwise Light + Annulment and retry.`)}); }
   for(const r of othRows) push({phase:'des', do:'manual', label:{kr:'별세계 옵션',en:'Otherworldly line'}, note:note(`${lk(r)} — 훼손에서 낮은 확률로 붙는 별세계 옵션이라 계산에서 빠져요.`, `${le(r)} is an otherworldly desecration outcome; not modelled.`)});
   if(mqGi>=0 && nodes.some(n=>n.target?.gi===mqGi))
-    push({phase:'q', do:'chaos', cur:'Greater_Chaos_Orb', omens:['Omen_of_Whittling'], target: R0 ? {removeGi:mqGi, ...tm(R0)} : {removeGi:mqGi, junk:'p'}, ...(R0?{fail:{goto:'self', via:{cur:'Greater_Chaos_Orb', omens:['Omen_of_Whittling']}}}:{}),
+    push({phase:'fin', do:'chaos', cur:'Greater_Chaos_Orb', omens:['Omen_of_Whittling'], target: R0 ? {removeGi:mqGi, ...tm(R0)} : {removeGi:mqGi, junk:'p'}, ...(R0?{fail:{goto:'self', via:{cur:'Greater_Chaos_Orb', omens:['Omen_of_Whittling']}}}:{}),
       note: R0 ? note(`퀄리티를 다 올렸으니 최대 퀄리티 줄은 필요 없음. 절사의 징조 + 상위 카오스 오브로 그 줄을 지우고 ${lk(R0)} (T${R0.tierNo} 이상).`, `Quality is done, so the maximum quality line goes: Whittling + Greater Chaos for ${le(R0)} (tier ${R0.tierNo}+).`)
         : note('절사의 징조 + 상위 카오스 오브로 최대 퀄리티 줄 제거.','Whittling + Greater Chaos removes the maximum quality line.')});
   if(!qDone && (it.qTag || (it.cat==='jewellery' && it.qual>20) || an.rows.some(r=>r.m.out))){ const tg = new Set(an.rows.filter(r=>r.m.out && r.g).flatMap(r=>r.g.tg)); const cat = craft.cats.find(c=>(it.cat==='jewel' ? /^Refined/.test(c.id) : !/^Refined/.test(c.id)) && (it.qTag ? c.tag===it.qTag : tg.has(c.tag)));
@@ -440,7 +443,14 @@ function makeDraft(it, an){
   const hi = x => x.replace(/\((\d+(?:\.\d+)?)—(\d+(?:\.\d+)?)\)/g,'$2');   // titles show the top of each range
   const key = rows.filter(r=>!r.m.fr && r.how==='n' && !r.unknown).sort((a,b)=>a.pOmen-b.pOmen).concat(rows.filter(r=>!r.m.fr && r.how!=='n' && r.how!=='x')).slice(0,2);
   const featK = (frs.length? [hi(lk(frs[0]))+' 분열'] : []).concat(key.map(r=>hi(lk(r)))).slice(0,2), featE = (frs.length? ['fractured '+hi(le(frs[0]))] : []).concat(key.map(r=>hi(le(r)))).slice(0,2);
-  const phases = [['base','베이스','Base'],['fr','분열 베이스 정리','Clean up the fractured base'],['magic','매직 → 희귀','Magic to rare'],['q','퀄리티','Quality'],['ex','엑잘','Exalts'],['ess','에센스','Essence'],['des','훼손','Desecration']].filter(p=>nodes.some(n=>n.phase===p[0])).map(([id,kr,en])=>({id,kr,en}));
+  // phases follow the steps in the order they happen: the Recipes tab groups steps by phase, so a phase that comes back later
+  // (e.g. a quality step at the very end) gets its own group there instead of being pulled up next to the earlier one
+  const PH = {base:['베이스','Base'], fr:['분열 베이스 정리','Clean up the fractured base'], magic:['매직 → 희귀','Magic to rare'], q:['퀄리티','Quality'], ex:['엑잘','Exalts'], ess:['에센스','Essence'], des:['훼손','Desecration'], fin:['마무리','Finish']};
+  const phases = []; for(const n of nodes){ const last = phases[phases.length-1];
+    if(last && last.base===n.phase){ n.phase = last.id; continue; }
+    const seen = phases.filter(x=>x.base===n.phase).length, id = seen ? `${n.phase}${seen+1}` : n.phase, [kr,en] = PH[n.phase] || [n.phase,n.phase];
+    phases.push({id, kr, en, base:n.phase}); n.phase = id; }
+  phases.forEach(x=>delete x.base);
   const day = new Date(); const ymd = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
   return { id:'draft-'+Date.now().toString(36), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}:{}), ...(sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd,
     author:{kr:'아이템 역산 초안', en:'Reverse-engineered draft'}, title:{kr:featK.join(' + ')||'역산 초안', en:featE.join(' + ')||'Draft'},
@@ -478,7 +488,7 @@ function verifyDraft(it, an, d){
     if(n.do==='augment'){ if(rar!=='magic' || mods.length!==1) add('err','확장의 오브는 옵션 1줄인 마법 아이템에만 쓸 수 있어요.','Augmentation needs a magic item with one modifier.',st); if(t.junk) mods.push({junk:true, side:t.junk}); else addLine(t, L('확장','Augment')); return; }
     if(n.do==='regal'){ if(rar!=='magic') add('err','제왕의 오브는 마법 아이템에만 쓸 수 있어요.','Regal needs a magic item.',st); rar='rare'; if(t.junk) mods.push({junk:true, side:t.junk}); else addLine(t, L('제왕','Regal')); return; }
     if(n.do==='exalt'){ if(rar!=='rare') add('err','엑잘티드 오브는 희귀 아이템에만 쓸 수 있어요.','Exalts need a rare item.',st);
-      if(omSide && count(omSide==='p'?'s':'p')>=cap[omSide==='p'?'s':'p']) add('warn','반대쪽이 이미 꽉 차서 면 징조가 필요 없어요.','The other side is full, so the side omen is wasted.',st);
+      if(omSide && count(omSide==='p'?'s':'p')>=cap[omSide==='p'?'s':'p']) add('warn','반대쪽이 이미 꽉 차서 좌측·우측 징조가 필요 없어요.','The other side is full, so the side omen is wasted.',st);
       if(om.includes('Omen_of_Catalysing_Exaltation') && !(isJew && quality>0)) add('warn','촉진하는 찬미의 징조는 퀄리티가 있는 장신구에서만 의미가 있어요.','Catalysing Exaltation only matters on jewellery with quality.',st);
       if(t.junk){ const sd=Array.isArray(t.junk)?t.junk[0]:t.junk; if(count(sd)>=maxA(sd)) add('err',`${sd==='p'?'접두':'접미'}가 꽉 차서 붙일 수 없어요.`,'That side is full.',st); mods.push({junk:true, side:sd}); }
       else addLine(t, L('엑잘','Exalt')); return; }
@@ -505,7 +515,7 @@ function verifyDraft(it, an, d){
       const bk = /Collarbone/.test(n.cur)?'jewellery':/Jawbone/.test(n.cur)?'weapon':/Rib/.test(n.cur)?'armour':'jewel';
       const ok = bk==='jewellery' ? isJew : bk==='weapon' ? ['weapon','weapon2','offhand'].includes(it.cat) : bk==='jewel' ? isJewel : !isJew && !isJewel && !['weapon','weapon2'].includes(it.cat);
       if(!ok) add('err','이 아이템 종류에 맞지 않는 뼈예요.','Wrong bone for this item class.',st);
-      if(om.some(o=>/Blackblooded|Liege|Sovereign/.test(o)) && !(isJew || ['weapon','weapon2'].includes(it.cat))) add('err','군주 징조는 무기·장신구 훼손에만 적용돼요.','Lord omens only work on weapons and jewellery.',st);
+      if(om.some(o=>/Blackblooded|Liege|Sovereign/.test(o)) && !(isJew || ['weapon','weapon2'].includes(it.cat))) add('err','검은 피의 징조·군왕의 징조·군주의 징조는 무기·장신구 훼손에만 적용돼요.','Lord omens only work on weapons and jewellery.',st);
       mods.push({junk:true, unrev:true, side:sd}); return; }
     if(n.do==='reveal'){ const k=mods.findIndex(m=>m.unrev && m.side===t.side); if(k<0){ add('err','공개할 훼손 옵션이 없어요.','No unrevealed modifier to reveal.',st); return; } mods.splice(k,1); addLine(t.reveal, L('공개','Reveal')); return; }
     if(n.do==='quality'){ const cat=S.craft.cats.find(c=>c.id===n.cur);
@@ -570,7 +580,7 @@ function render(){
       odds = r.g.s!=='n' && r.unknown!=='x' ? '' : `<div class="num"><small>${L('엑잘 확률','Exalt odds')}</small><b>—</b><i>${why}</i></div>`; }
     if(r.g.s==='n' && r.unknown!=='flat' && r.unknown!=='w1'){
       odds = `<div class="num"><small>${L('엑잘 1회 (면 무관)','Exalt, any side')}</small><b class="${rareCls(r.pAny)}">${pct(r.pAny)}</b><i>${tries(r.pAny)?L(`약 ${tries(r.pAny)}회에 1번`,`~1 in ${tries(r.pAny)}`):''}</i></div>
-        <div class="num"><small>${L('같은 면 징조 사용','With side omen')}</small><b class="${rareCls(r.pOmen)}">${pct(r.pOmen)}</b><i>${rareTxt(r.pOmen)}</i></div>
+        <div class="num"><small>${L('좌측·우측 징조 사용','With side omen')}</small><b class="${rareCls(r.pOmen)}">${pct(r.pOmen)}</b><i>${rareTxt(r.pOmen)}</i></div>
         <div class="num"><small>${L('완벽한 엑잘 + 징조','Perfect exalt + omen')}</small><b class="${rareCls(r.pPerfect)}">${pct(r.pPerfect)}</b><i>${L('Lv 50 미만 제외','drops < lvl 50')}</i></div>`;
     } else if(r.g.s!=='n' && !odds){
       odds = `<div class="num" style="grid-column:span 3;min-width:0"><small>${L('얻는 방법','How it is obtained')}</small><b style="font-family:var(--f-body);font-weight:500">${r.g.s==='e'?L(`${esc(r.g.sub[0])}로만 붙어요`,`Only from ${esc(r.g.sub[1])}`):r.how==='sc'?L(`룬 소켓에 「${esc(r.g.sub[0])}」 장착 후 굴림`,`Socket ${esc(r.g.sub[1])}, then roll`):r.g.s==='d'?L('훼손 뼈 → 심연의 우물 공개에서만','Only from a desecration reveal'):L('훼손 뼈의 별세계 결과','Otherworldly bone outcome')}</b></div>`;
