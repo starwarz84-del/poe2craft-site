@@ -314,6 +314,7 @@ function makeDraft(it, an){
   const tm = r => ({gi:r.m.gi, tmax:Math.max(1,r.tierNo)});
   const anyOf = list => list.length===1 ? tm(list[0]) : {anyOf:list.map(tm)};
   const push = n => { nodes.push({id:id(), ...n}); return nodes[nodes.length-1]; };
+  const made = [];   // wanted lines actually placed so far ({r, id}); an annulment can take these
   const note = (kr,en) => ({kr,en});
   const names = (list, f) => list.map(f).join(' · ');
   const rows = an.rows.filter(r=>!r.unrev);
@@ -326,6 +327,7 @@ function makeDraft(it, an){
   const augAll = [...new Set(rows.filter(r=>r.core).map(r=>r.g.sub[1]))];
   const augLate = augAll.filter(en=>rows.filter(r=>r.core && r.g.sub[1]===en).every(r=>r.how==='d'));   // only rolled by the final desecration
   const augNames = augAll.filter(en=>!augLate.includes(en));
+  const augPre = augNames.filter(en=>rows.some(r=>r.m.fr && r.core && r.g.sub[1]===en));   // already in the bought base
   // random lines (regular pool + augment-unlocked), hardest first; guaranteed lines (essences) are left for last
   let rnd = rows.filter(r=>(r.how==='n' || r.how==='sc') && !r.m.fr).sort((a,b)=>(a.unknown?1:a.pOmen)-(b.unknown?1:b.pOmen));
   const mqGi = it.cat==='jewellery' && it.qual>20+impMaxQ(it.b) ? it.D.groups.findIndex(g=>g.s==='e' && g.f.includes('LocalMaximumQuality')) : -1;
@@ -346,7 +348,10 @@ function makeDraft(it, an){
     push({phase:'base', do:'manual', cost:'vaal', target:{setQuality:it.qual}, label:{kr:w?'바알 대장장이의 주입기':'바알 방어구 장인의 주입기', en:w?"Vaal Blacksmith's Infuser":"Vaal Armourer's Infuser"},
       note:note(`20%를 넘는 퀄리티 ${it.qual}%는 ${w?nk('Vaal_Blacksmiths_Infuser'):nk('Vaal_Armourers_Infuser')}로. 첫 번째는 실패하지 않고 이후 한 번마다 실패 확률이 늘어남.`, `Quality above 20% (${it.qual}%) comes from Vaal infusers; the first cannot fail, each later one is riskier.`)}); }
   // a rune or soul core that unlocks its own modifiers goes in before rolling them
-  augNames.forEach(en=>{ const r=rows.find(x=>x.core && x.g.sub[1]===en); push({phase:'base', do:'manual', target:{rune:{kr:r.g.sub[0], en}}, label:{kr:`「${r.g.sub[0]}」 장착`, en:`Socket ${en}`},
+  if(augPre.length){ start.runes = augPre.map(en=>({kr:rows.find(x=>x.core && x.g.sub[1]===en).g.sub[0], en}));
+    const b0=nodes[0], k=start.runes.map(x=>`「${x.kr}」`).join(', '), e=start.runes.map(x=>x.en).join(', ');
+    b0.note = note(b0.note.kr+` 분열 줄이 ${k} 전용 옵션이라, 분열 전에 이미 끼워 둔 룬이 그대로 소켓에 있는 베이스(룬은 빼낼 수 없음).`, b0.note.en+` The fractured line is a ${e} modifier, so that rune was socketed before the fracture and is still in the base (runes cannot be removed).`); }
+  augNames.filter(en=>!augPre.includes(en)).forEach(en=>{ const r=rows.find(x=>x.core && x.g.sub[1]===en); push({phase:'base', do:'manual', target:{rune:{kr:r.g.sub[0], en}}, label:{kr:`「${r.g.sub[0]}」 장착`, en:`Socket ${en}`},
     note:note(`룬 소켓에 증강물 「${r.g.sub[0]}」 장착 (빼낼 수 없음). 이후 카오스·엑잘로 이 증강물 전용 옵션이 붙음. 전용 옵션은 가중치가 공개되지 않음.`, `Socket ${en} (permanent); Chaos and exalts can then roll its own modifiers, whose weights are not public.`)}); });
   const X = rareEss[0]?.r.m.side || null;
   // rune sockets: every augment that unlocks modifiers plus Astrid's Creativity for a second crafted line
@@ -366,24 +371,24 @@ function makeDraft(it, an){
         push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', target:{removeJunk:'any'}, note:note(`소멸의 오브로 잡옵 하나 제거 (분열 줄은 안 지워지고 나머지는 전부 잡옵이라 징조 없이 안전). 분열 줄 + 잡옵 1줄이 남을 때까지.`, `Orb of Annulment removes a junk line (the fractured line cannot go and the rest is junk, so no omen needed). Repeat until only the fractured line + one junk line remain.`)});
         junk[sd]--; cnt[sd]--; } }
     if(wantC.length){ const A=wantC[0], sd=A.m.side, rp = junk[sd] ? sd : other(sd);
-      push({phase:'fr', do:'chaos', cur:'Chaos_Orb', target:{...anyOf(wantC), ...(junk.p+junk.s>1?{replace:rp}:{})}, fail:{goto:'self'}, note:note(`분열 줄 + 잡옵 1줄 상태라 카오스 오브는 항상 그 잡옵을 바꿈. 잃을 게 없고, 뜨면 정리할 잡옵도 없음. ${wantC.length>1?`원하는 줄 중 하나(${names(wantC, x=>lk(x))})가`:`${lk(A)}${josa(lk(A),'이','가')}`} 뜰 때까지.`, `With only the fractured line + one junk line, Chaos always swaps that junk line: nothing to lose and nothing to clean up afterwards. Roll until ${wantC.length>1?`one of ${names(wantC, x=>le(x))}`:le(A)} lands.`)});
-      rnd.splice(rnd.indexOf(A),1); junk[rp]--; cnt[rp]--; cnt[sd]++; }
+      push({phase:'fr', do:'chaos', cur:'Chaos_Orb', target:{...anyOf(wantC), ...(junk.p+junk.s>1?{replace:rp}:{})}, fail:{goto:'self'}, note:note(`분열 줄 + 잡옵 1줄 상태라 카오스 오브는 항상 그 잡옵을 바꿈. 잃을 게 없고, 뜨면 정리할 잡옵도 없음. ${wantC.length>1?`원하는 줄 중 하나(${names(wantC, x=>lk(x))})가`:`${lk(A)}${josa(lk(A),'이','가')}`} 뜰 때까지.${wantC.length>1?` 다른 줄이 먼저 뜨면 뒤 단계의 엑잘 대상이 그만큼 바뀜(계산은 ${lk(A)}${josa(lk(A),'이','가')} 뜬 경우 기준).`:''}`, `With only the fractured line + one junk line, Chaos always swaps that junk line: nothing to lose and nothing to clean up afterwards. Roll until ${wantC.length>1?`one of ${names(wantC, x=>le(x))}`:le(A)} lands.`)});
+      made.push({r:A, id:nodes[nodes.length-1].id}); rnd.splice(rnd.indexOf(A),1); junk[rp]--; cnt[rp]--; cnt[sd]++; }
   }
   // 2b. normal base: magic stage with Perfect orbs
   if(rar==='normal'){
     const A = take(r=>!X || r.m.side!==X);
-    if(A){ push({phase:'magic', do:'transmute', cur:'Perfect_Orb_of_Transmutation', target:tm(A), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}}, note:note(`완벽한 진화의 오브로 ${lk(A)} (T${A.tierNo} 이상).`, `Perfect Transmutation for ${le(A)} (tier ${A.tierNo}+).`)}); cnt[A.m.side]++; }
+    if(A){ push({phase:'magic', do:'transmute', cur:'Perfect_Orb_of_Transmutation', target:tm(A), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}}, note:note(`완벽한 진화의 오브로 ${lk(A)} (T${A.tierNo} 이상).`, `Perfect Transmutation for ${le(A)} (tier ${A.tierNo}+).`)}); made.push({r:A, id:nodes[nodes.length-1].id}); cnt[A.m.side]++; }
     else { const sd = X ? other(X) : 'p'; push({phase:'magic', do:'transmute', cur:'Perfect_Orb_of_Transmutation', target:{junk:sd}, note:note('아무 옵션이나.','Any modifier.')}); cnt[sd]++; junk[sd]++; }
     rar='magic';
-    if(magicEss.length){ const {r,e}=magicEss.shift(); push({phase:'magic', do:'essence', cur:e.id, target:tm(r), note:note(`${e.kr}으로 희귀로 올리며 ${lk(r)} 확정.`, `${e.en} upgrades to rare with ${le(r)}.`)}); cnt[r.m.side]++; rar='rare'; }
+    if(magicEss.length){ const {r,e}=magicEss.shift(); push({phase:'magic', do:'essence', cur:e.id, target:tm(r), note:note(`${e.kr}으로 희귀로 올리며 ${lk(r)} 확정.`, `${e.en} upgrades to rare with ${le(r)}.`)}); made.push({r, id:nodes[nodes.length-1].id}); cnt[r.m.side]++; rar='rare'; }
     else {
       const fs = ['p','s'].find(sd=>cnt[sd]===0);
       if(fs){ if(X===fs){ push({phase:'magic', do:'augment', cur:'Perfect_Orb_of_Augmentation', target:{junk:fs}, note:note(`${sideKr(fs)}에 아무 옵션 (나중에 에센스로 교체).`, `Any ${sideEn(fs)} (an essence replaces it later).`)}); cnt[fs]++; junk[fs]++; }
-        else { const B = take(r=>r.m.side===fs); if(B){ push({phase:'magic', do:'augment', cur:'Perfect_Orb_of_Augmentation', target:tm(B), fail:{goto:'self', via:{cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[fs]]}}, note:note(`완벽한 확장의 오브로 ${lk(B)} (T${B.tierNo} 이상).`, `Perfect Augmentation for ${le(B)} (tier ${B.tierNo}+).`)}); cnt[fs]++; } } }
+        else { const B = take(r=>r.m.side===fs); if(B){ push({phase:'magic', do:'augment', cur:'Perfect_Orb_of_Augmentation', target:tm(B), fail:{goto:'self', via:{cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[fs]]}}, note:note(`완벽한 확장의 오브로 ${lk(B)} (T${B.tierNo} 이상).`, `Perfect Augmentation for ${le(B)} (tier ${B.tierNo}+).`)}); made.push({r:B, id:nodes[nodes.length-1].id}); cnt[fs]++; } } }
       const C = take(r=>cnt[r.m.side] < cap[r.m.side]-resv[r.m.side] && (!X || r.m.side!==X));
       rar='rare';
       if(C){ const sd=C.m.side, om = room(other(sd)) ? [SIDE_OMEN.regal[sd]] : [];
-        push({phase:'magic', do:'regal', cur:'Perfect_Regal_Orb', ...(om.length?{omens:om}:{}), target:tm(C), note:note(`완벽한 제왕의 오브로 희귀 전환 + ${lk(C)}.`, `Perfect Regal to rare with ${le(C)}.`)}); cnt[sd]++; }
+        push({phase:'magic', do:'regal', cur:'Perfect_Regal_Orb', ...(om.length?{omens:om}:{}), target:tm(C), note:note(`완벽한 제왕의 오브로 희귀 전환 + ${lk(C)}.`, `Perfect Regal to rare with ${le(C)}.`)}); made.push({r:C, id:nodes[nodes.length-1].id}); cnt[sd]++; }
       else { const sd = ['p','s'].find(x=>room(x)) || 'p'; push({phase:'magic', do:'regal', cur:'Perfect_Regal_Orb', target:{junk:sd}, note:note('희귀로 전환 (아무 옵션).','Regal to rare (any modifier).')}); cnt[sd]++; junk[sd]++; }
     }
   }
@@ -430,16 +435,16 @@ function makeDraft(it, an){
     const exOm = [...cOm, ...om], tries = cOm.length && free-want.length>=1 ? 2 : 1;
     const omTxt = exOm.map(nk).join(' + '), omEn = exOm.map(ne).join(' + ');
     // a wanted line already on this side can be the one an annulment takes: then go back to the step that made it
-    const madeOn = nodes.filter(n=>['chaos','exalt','essence','transmute','augment','regal'].includes(n.do) && rows.some(r=>!r.m.fr && r.m.side===sd && (n.target?.gi===r.m.gi || (n.target?.anyOf||[]).some(x=>x.gi===r.m.gi))));
-    const lost = madeOn.length ? madeOn[madeOn.length-1] : null;
+    const atRisk = [...made].reverse().find(x=>x.r.m.side===sd), lost = atRisk ? {id:atRisk.id} : null;
     const tgtK = want.length>1?`원하는 줄 중 하나(${names(want, x=>lk(x))})`:`${lk(want[0])} (T${want[0].tierNo} 이상)`, tgtE = want.length>1?`any of ${names(want, x=>le(x))}`:`${le(want[0])} (tier ${want[0].tierNo}+)`;
     if(tries===2){ push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', omens:exOm, target:{junk:sd},
         note:note(`1차 도전: ${omTxt} + 완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 여기서 뜨면 다음 단계는 아무 ${sideKr(sd)}여도 성공.`, `First try: ${omEn} + Perfect Exalted Orb for ${tgtE}. If it lands here, the next step can be any ${sideEn(sd)}.`)}); cnt[sd]++; }
-    const lostK = lost ? `${lk(rows.find(r=>!r.m.fr && r.m.side===sd && (lost.target?.gi===r.m.gi || (lost.target?.anyOf||[]).some(x=>x.gi===r.m.gi))))}` : '';
+    const lostK = atRisk ? lk(atRisk.r) : '';
     const ex = push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(exOm.length?{omens:exOm}:{}), target:anyOf(want), fail:{goto:'self', via:{cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]]}, ...(lost?{lost:lost.id}:{})},
       note: lost && cOm.length ? note(`${tries===2?'2차 도전: ':''}${omTxt?omTxt+' + ':''}완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 안 뜨면 갈림길: ① ${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 ${sideKr(sd)} 하나를 지우고 다시 도전. ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시 (계산은 ① 기준). ② 바로 아래 타협 경로.`,
           `${tries===2?'Second try: ':''}${omEn?omEn+' + ':''}Perfect Exalted Orb for ${tgtE}. On a miss you choose: (1) annul a ${sideEn(sd)} and try again; if it takes ${lostK? 'the wanted line':'a wanted line'}, go back to the step that made it (the math uses this). (2) The compromise below.`)
         : note(`${sideKr(sd)}에 ${tgtK}. 실패하면 ${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 지우고 다시.${lost?` ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시.`:''}`, `A ${sideEn(sd)}: ${tgtE}. On a miss, annul that ${sideEn(sd)} and retry${lost?'; if it takes the wanted line, go back to the step that made it':''}.`)});
+    made.push({r:want[0], id:ex.id});
     if(lost && cOm.length) push({phase:'ex', do:'note', fallbackFor:ex.id, label:{kr:'갈림길 ②: 타협',en:'Fork (2): settle'}, note:note(`안 뜬 줄은 그대로 두고 다음 단계로. 뒤의 훼손 공개에서 원하는 줄이 안 나와도 다시 하지 않고 마무리. 비싸게 팔기는 어렵지만 ${lostK}${josa(lostK,'을','를')} 잃을 위험 없이 적당한 옵션으로 타협.`, `Leave the miss and move on; if a later reveal misses too, finish anyway. It won't sell high, but it settles for decent mods without risking the line you already have.`)});
     rnd.splice(rnd.indexOf(want[0]),1); cnt[sd]++;
   }
@@ -500,7 +505,7 @@ function verifyDraft(it, an, d){
   const famsOf = mods => { const f=new Set(); mods.forEach(m=>{ if(m.gi!=null) grp(m.gi).f.forEach(x=>f.add(x)); }); return f; };
   const specs = t => t?.anyOf ? t.anyOf : t?.gi!=null ? [t] : [];
   let mods = (d.start.mods||[]).map(x=>x.junk ? {junk:true, side:x.junk} : {gi:x.gi, side:grp(x.gi).g, fr:!!x.fr});
-  let rar = d.start.rar||'normal', quality = 0, crafted = 0; const runes=[]; const sockets = d.sockets ?? (it.b.sock||0);
+  let rar = d.start.rar||'normal', quality = 0, crafted = 0; const runes=(d.start.runes||[]).map(x=>x.en); const sockets = d.sockets ?? (it.b.sock||0);
   const count = sd => mods.filter(m=>m.side===sd).length, maxA = sd => rar==='normal'?0 : rar==='magic'?1 : cap[sd];
   const isJew = it.cat==='jewellery', isJewel = it.cat==='jewel';
   if(d.start.rar==='rare' && mods.some(m=>m.fr) && mods.length<4) add('err','분열 베이스인데 시작 옵션이 4줄 미만이에요. 분열은 4줄 이상에서만 가능해요.','Fractured start has fewer than 4 modifiers; fracturing needs 4+.');

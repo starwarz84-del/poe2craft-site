@@ -80,7 +80,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 
 ## 엔진 요약 (site/recipes.html `analyse`)
 
-- 레시피: `cls, base(베이스 인덱스), ilvl, start{rar, mods[{gi,tmax,fr}|{junk:'p'|'s'}], quality}, cap, sockets, exceptional{sockets}, nodes[]`
+- 레시피: `cls, base(베이스 인덱스), ilvl, start{rar, mods[{gi,tmax,fr}|{junk:'p'|'s'}], quality, runes[{kr,en}]}, cap, sockets, exceptional{sockets}, nodes[]`
 - 노드: `do`(base·transmute·augment·regal·exalt·chaos·essence·desecrate·reveal·remove·quality·manual·divine·fracture·socket·note),
   `cur, omens, target, fail{goto, via}, after.keepOnly, expect, extra, knownP, unknownW, ts, note{kr,en}`
 - target: `gi | anyOf | all, tmax, replace, removeGi, junk, unrev, reveal{}, side, bone, lord, setQuality, quality, chance, slots, dropGi, imp, anoint, sanctify, vals, rune, runeSwap, removeJunk`
@@ -114,11 +114,12 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 
 초안 순서:
 1. 분열 줄이 있으면 "분열 + 잡옵 3줄" 베이스(분열은 4줄 이상에만 가능). 20% 초과 퀄리티(장신구 외)는 바알 주입기. 증강물 룬은 굴리기 전에 장착.
+   **분열 줄이 증강물 전용 옵션이면 그 룬은 처음부터 소켓에 있음**(사용자 확정 2026-11-08: 분열 전에 끼웠고 룬은 빼낼 수 없음) → `start.runes`, 장착 단계 없음. 예: 투사체 +2 분열 장갑 = 콜르의 사냥이 박힌 베이스.
 2. 분열 베이스: 먼저 소멸의 오브(징조 없음, `removeJunk:'any'`)로 분열 + 잡옵 1줄까지 줄이고, 카오스로 원하는 줄 중 하나(anyOf, 가중치 아는 줄 우선). 잡옵이 1줄이면 카오스 `replace`는 생략(남은 잡옵이 어느 면이든 바뀜).
 3. 에센스가 쓸 잡옵만 남기고 나머지 잡옵은 면 소멸로 제거(분열 베이스는 2번에서 이미 정리돼 보통 해당 없음). 필요한 버릴 줄은 나중에 면 징조 엑잘로 만듦(원본 방식).
 4. 장신구 퀄리티: 균열의 에센스(좌측 결정화) → 기폭제 상한까지 → 필요하면 주입기. 마지막에 절사 + 상위 카오스로 최대 퀄리티 줄 제거.
    기폭제는 엑잘 묶음마다 "목표 줄을 가장 많이 밀어 주는 속성"으로 고르고(같으면 지금 것 → 최종 것 우선), 촉진하는 찬미의 징조를 붙임. 최종 기폭제는 엑잘 뒤(정책 12).
-5. 남은 무작위 줄: 면 징조 엑잘로 그 면의 원하는 줄 중 아무거나(anyOf). 실패 시 면 소멸 — 같은 면의 좋은 줄이 지워질 수 있으면 `fail.lost`로 그 줄 만든 단계를 가리켜 위험 비용 계산. 장신구 촉진 엑잘은 2번 도전 + 타협 갈림길(정책 12).
+5. 남은 무작위 줄: 면 징조 엑잘로 그 면의 원하는 줄 중 아무거나(anyOf). 실패 시 면 소멸 — 같은 면의 좋은 줄이 지워질 수 있으면 `fail.lost`로 그 줄 만든 단계를 가리켜 위험 비용 계산("실제로 만든 줄"은 `made` 목록으로 추적, anyOf 단계는 계산 기준 줄 하나). 장신구 촉진 엑잘은 2번 도전 + 타협 갈림길(정책 12).
 6. 확정 줄(완벽한 에센스·합금)은 마지막: 버릴 줄 + 결정화 + 에센스. 두 번째 전엔 아스트리드의 창의성.
 7. 훼손: 일반·증강물 풀의 레벨 40+ 목표는 고대 뼈, 심연의 메아리, 실패 시 빛의 징조 + 소멸. 군주 징조는 무기·장신구만. 훼손으로만 나오는 증강물 줄은 에센스 뒤에 아스트리드와 교체해 장착.
 

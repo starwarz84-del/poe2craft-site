@@ -554,7 +554,7 @@ function analyse(r){
   const removeJunk = side => { const i = mods.findIndex(m=>m.junk && (!side || side==='any' || m.side===side)); if(i<0) return false; mods.splice(i,1); return true; };
   const out=[], byId={}; let block=null;
   let imp=baseImp(r), anoint=null, sanct=false, vals={};   // implicit lines, anointed notable, sanctified, values the recipe shows as rolled
-  let qual={v:r.start?.quality||r.exceptional?.quality||0, type:null}; const runes=[]; const sockets=r.sockets ?? ((baseOf(r).sock||0)+(r.exceptional?.sockets||0));   // quality and rune sockets ride along with the modifiers
+  let qual={v:r.start?.quality||r.exceptional?.quality||0, type:null}; const runes=[...(r.start?.runes||[])]; const sockets=r.sockets ?? ((baseOf(r).sock||0)+(r.exceptional?.sockets||0));   // quality and rune sockets ride along with the modifiers
   const blockKey = n => n.retryFor ? 'r:'+n.retryFor : n.branch?.when==='miss' ? 'm:'+n.branch.of : null;   // block = a retry block (runs only when its reveal missed) and the main state saved around it
   for(let ni=0; ni<r.nodes.length; ni++){ const n=r.nodes[ni];
     const t=n.target||{}, o={n, p:1, warn:null}; byId[n.id]=o; liq=false;
