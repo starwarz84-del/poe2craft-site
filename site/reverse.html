@@ -463,8 +463,8 @@ function makeDraft(it, an){
   for(const r of desRows){ const sd=r.m.side; const om=[]; if(r.lord && LORD_OMEN[r.lord] && !['helmet','gloves','boots','body'].includes(it.cat)) om.push(LORD_OMEN[r.lord]); if(cnt[other(sd)] < cap[other(sd)]) om.push(SIDE_OMEN.necro[sd]);
     const b2 = (r.g.s==='n' || r.g.s==='x') && r.t[0]>=40 ? bone.replace('Preserved_','Ancient_').replace('Ancient_Cranium','Preserved_Cranium') : bone;
     const d = push({phase:'des', do:'desecrate', cur:b2, ...(om.length?{omens:om}:{}), target:{unrev:sd}, note: b2!==bone ? note(`${sideKr(sd)}에 훼손. ${nk(b2)}${josa(nk(b2),'은','는')} 레벨 40 미만 옵션이 안 나와서 높은 티어 확률이 올라감.`, `Desecrate a ${sideEn(sd)}. Ancient bones skip modifiers below level 40, which lifts high tiers.`) : note(`${sideKr(sd)}에 훼손.`, `Desecrate a ${sideEn(sd)}.`)}); cnt[sd]++;
-    push({phase:'des', do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{reveal:{gi:r.m.gi}, side:sd, bone:b2, ...(r.lord?{lord:r.lord}:{})}, fail:{goto:d.id, via:{cur:'Orb_of_Annulment', omens:['Omen_of_Light']}},
-      note:note(`심연의 메아리의 징조로 공개해 ${lk(r)}. 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)}; otherwise Light + Annulment and retry.`)}); }
+    push({phase:'des', do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{reveal:tm(r), side:sd, bone:b2, ...(r.lord?{lord:r.lord}:{})}, fail:{goto:d.id, via:{cur:'Orb_of_Annulment', omens:['Omen_of_Light']}},
+      note:note(`심연의 메아리의 징조로 공개해 ${lk(r)} (T${r.tierNo} 이상). 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)} (tier ${r.tierNo}+); otherwise Light + Annulment and retry.`)}); }
   for(const r of othRows) push({phase:'des', do:'manual', label:{kr:'별세계 옵션',en:'Otherworldly line'}, note:note(`${lk(r)} — 훼손에서 낮은 확률로 붙는 별세계 옵션이라 계산에서 빠져요.`, `${le(r)} is an otherworldly desecration outcome; not modelled.`)});
   if(mqGi>=0 && nodes.some(n=>n.target?.gi===mqGi))
     push({phase:'fin', do:'chaos', cur:'Greater_Chaos_Orb', omens:['Omen_of_Whittling'], target: R0 ? {removeGi:mqGi, ...tm(R0)} : {removeGi:mqGi, junk:'p'}, ...(R0?{fail:{goto:'self', via:{cur:'Greater_Chaos_Orb', omens:['Omen_of_Whittling']}}}:{}),
