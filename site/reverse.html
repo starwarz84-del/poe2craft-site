@@ -444,7 +444,7 @@ function makeDraft(it, an){
     const qNote = c => note(`${c.kr}로 퀄리티 ${qc}% (기본 20%${iq?` + ${it.b.kr} 고정 옵션 ${iq}%`:''} + 균열의 에센스 최대 퀄리티 +20%). 이후 붙는 ${c.kr.replace(/ 기폭제$/,'')} 계열 옵션 값이 같이 올라감.`, `${c.en} to ${qc}% (20% base${iq?` + ${iq}% ${it.b.en} implicit`:''} + 20% from the Breach line); matching lines added later get the bonus too.`);
     // the exalts that follow can ride Omen of Catalysing Exaltation: if the final catalyst already matches their lines, apply it now;
     // otherwise a catalyst that matches them goes first and the final one comes after the exalts
-    const exTags = new Set(rnd.flatMap(r=>r.g.tg||[]));
+    const exTags = new Set(rnd.filter(r=>alts(r).length<=1).flatMap(r=>r.g.tg||[]));   // an any-element line is not pushed by one element's catalyst
     if(cat && !craft.cats.some(c=>!/^Refined/.test(c.id) && exTags.has(c.tag))){ push({phase:'q', do:'quality', cur:cat.id, target:{quality:qc}, note:qNote(cat)}); qType=cat.tag; }
     else if(cat){ qPend={cat, note:qNote(cat)}; qFinal=cat; }   // decided at the exalts below; the final catalyst goes on last if another one was used for them
     qDone = !!cat;
@@ -482,7 +482,7 @@ function makeDraft(it, an){
     let cOm = [];
     if(it.cat==='jewellery' && qCap>0){ const tg = new Set(want.flatMap(r=>r.g.tg||[]));
       // the catalyst that favours the most wanted lines here; on a tie keep the one on the item, then the final one
-      const cover = tag => want.filter(r=>(r.g.tg||[]).includes(tag)).length;
+      const cover = tag => want.filter(r=>alts(r).length<=1 && (r.g.tg||[]).includes(tag)).length;   // any element: one element's catalyst helps only a third of it, not worth a refill
       const cands = craft.cats.filter(c=>!/^Refined/.test(c.id) && cover(c.tag)>0), best = Math.max(0, ...cands.map(c=>cover(c.tag)));
       const finalCat = qFinal;
       const c2 = !best ? null : qType && cover(qType)===best ? null : (finalCat && cover(finalCat.tag)===best ? finalCat : cands.find(c=>cover(c.tag)===best));
@@ -510,16 +510,19 @@ function makeDraft(it, an){
     if(lost && cOm.length) push({phase:'ex', do:'note', fallbackFor:ex.id, label:{kr:'갈림길 ②: 타협',en:'Fork (2): settle'}, note:note(`안 뜬 줄은 그대로 두고 다음 단계로. 뒤의 훼손 공개에서 원하는 줄이 안 나와도 다시 하지 않고 마무리. 비싸게 팔기는 어렵지만 ${lostK}${josa(lostK,'을','를')} 잃을 위험 없이 적당한 옵션으로 타협.`, `Leave the miss and move on; if a later reveal misses too, finish anyway. It won't sell high, but it settles for decent mods without risking the line you already have.`)});
     rnd.splice(rnd.indexOf(want[0]),1); cnt[sd]++;
   } };
+  // the final catalyst: after the exalts it served, or before an essence that removes the maximum quality line (the cap drops with it)
+  function finishQ(){ if(qPend && qType!==qPend.cat.tag){ push({phase:'q', do:'quality', cur:qPend.cat.id, target:{quality:qCap}, note: qType ? note(`엑잘이 끝났으니 ${qPend.cat.kr}로 바꿔 퀄리티 ${qCap}%. 완성품의 퀄리티 종류.`, `Exalts done: switch to ${qPend.cat.en} at ${qCap}%, the finished item's quality type.`) : qPend.note}); qType=qPend.cat.tag; }
+    qPend=null; }
   let mqGone = false; const mqLive = () => mqGi>=0 && !mqGone && nodes.some(n=>n.target?.gi===mqGi);
   let crafted = 0; const essDone = new Set(), bone = boneFor(it.cat), desDone = new Set();
   const split = firstSd && !augLate.length && !j5?.B;
   exaltPass(split ? firstSd : null);
   if(split){ essPass(firstSd); desPass(firstSd); exaltPass(); }
-  if(qPend && qType!==qPend.cat.tag){ push({phase:'q', do:'quality', cur:qPend.cat.id, target:{quality:qCap}, note: qType ? note(`엑잘이 끝났으니 ${qPend.cat.kr}로 바꿔 퀄리티 ${qCap}%. 완성품의 퀄리티 종류.`, `Exalts done: switch to ${qPend.cat.en} at ${qCap}%, the finished item's quality type.`) : qPend.note}); qType=qPend.cat.tag; }
-  qPend=null;
+  finishQ();
   // 6. guaranteed lines last: throwaway line + Crystallisation + essence (a second crafted line needs Astrid's Creativity)
   function essPass(only){ for(const x of rareEss){ const {r,e}=x; if(essDone.has(x) || (only && r.m.side!==only)) continue; essDone.add(x);
     const sd=r.m.side; openSlot(sd);
+    if(qPend && mqLive() && it.D.groups[mqGi].g===other(sd) && cnt[sd] < cap[sd]) finishQ();   // quality first: the essence below takes the maximum quality line
     if(crafted===1) push({phase:'ess', do:'manual', target:{rune:{kr:'아스트리드의 창의성', en:"Astrid's Creativity"}}, label:{kr:'아스트리드의 창의성 장착', en:"Socket Astrid's Creativity"}, note:note('제작 옵션(에센스)은 보통 1줄까지라, 두 번째를 붙이려고 아스트리드의 창의성 룬을 장착. 완성 후 다른 룬으로 교체.', "Crafted (essence) lines are capped at one; Astrid's Creativity allows a second. Swap it out at the end.")});
     // the essence removes a random line on the crystallised side: aim it at a side whose removable lines are all throwaway
     // (junk, or the maximum quality line once quality is done), or a side holding only the fractured line, after adding a junk line there
