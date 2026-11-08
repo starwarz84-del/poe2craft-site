@@ -1,0 +1,2 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch(),p=await b.newPage();await p.goto('http://localhost:8779/recipes.html?debug=1&lang=kr');await p.waitForTimeout(2500);
+console.log(await p.evaluate(()=>__rec.recipes.map(r=>{try{const a=__rec.analyse(r);const bad=a.nodes.filter(o=>o.warn).map(o=>o.n.id+':'+o.warn);return r.id+' ok '+(bad.length?bad.join(' ; '):'')}catch(e){return r.id+' ERR '+e.message}}).join('\n')));await b.close()})();

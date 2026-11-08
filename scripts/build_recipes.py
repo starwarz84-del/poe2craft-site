@@ -60,7 +60,7 @@ R.append({
    'note':K('훼손 옵션은 분열되지 않아 3개 중 1개: 1/3 치확(이 레시피), 1/3 물피증(다른 레시피에서 사용), 1/3 실패. 기회비용은 2/3로 계산. 분열 뒤 잡옵은 절사의 징조로 정리, 8번의 접두 훼손은 그대로 남아 바로 공개로 넘어감.','Desecrated mods cannot fracture, so 1 of 3: crit (this recipe), % phys (another recipe) or a miss. Restart cost uses 2/3.')},
   {'id':'b4','phase':'build','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':[{'gi':eleatk,'tmax':1},{'gi':acc,'tmax':1}]},'side':'p','bone':'Preserved_Jawbone','retryBone':'Ancient_Jawbone'},'ts':'21:59',
    'fail':{'goto':'b2','via':LIGHT},
-   'note':K('8번에서 붙인 접두 훼손을 심연의 메아리의 징조로 두 번 보고 공원피 1티어 또는 정확도 1티어. 없으면 빛의 징조 + 소멸의 오브로 지우고 아래 재시도 구간(접미 추가 → 심연의 에센스 → 고대 턱뼈)을 거쳐 다시 공개.','Reveal the prefix desecrated in step 8, with Abyssal Echoes for a second look: T1 Attack Elemental or T1 Accuracy. Otherwise remove it with Light + Annulment and run the retry block below (suffix → Essence of the Abyss → Ancient Jawbone), then reveal again.')},
+   'note':K('시작 상태의 미공개 접두 훼손을 심연의 메아리의 징조로 두 번 보고 공원피 1티어 또는 정확도 1티어. 없으면 빛의 징조 + 소멸의 오브로 지우고 아래 재시도 구간(접미 추가 → 심연의 에센스 → 고대 턱뼈)을 거쳐 다시 공개.','Reveal the unrevealed prefix from the start, with Abyssal Echoes for a second look: T1 Attack Elemental or T1 Accuracy. Otherwise remove it with Light + Annulment and run the retry block below (suffix → Essence of the Abyss → Ancient Jawbone), then reveal again.')},
   {'id':'b2','phase':'build','retryFor':'b4','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Dextral_Exaltation'],'target':{'junk':'s'},
    'note':K('접미 한 자리 추가 (다음 단계에서 심연의 에센스가 지울 자리).','Adds one suffix (the slot the Essence of the Abyss removes next).')},
   {'id':'x1','phase':'build','retryFor':'b4','do':'essence','cur':'Essence_of_the_Abyss','omens':['Omen_of_Dextral_Crystallisation'],'target':{'mark':{'gi':mark_p,'alt':mark_s},'chance':0.5},'fail':{'goto':'x2'},
@@ -86,7 +86,7 @@ R.append({
   {'id':'e1','phase':'finish','do':'remove','cur':'Orb_of_Annulment','omens':['Omen_of_Light'],'target':{'removeDes':True},
    'note':K('빛의 징조 + 소멸의 오브로 훼손 옵션(공원피·정확도 자리)을 지움. 항상 성공.','Light + Annulment removes the desecrated modifier (the placeholder). Always works.')},
   {'id':'e2','phase':'finish','do':'reveal','cur':'Ancient_Jawbone','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':flat,'tmax':1},'side':'p','bone':'Ancient_Jawbone'},'fail':{'goto':'e1'},'ts':'31:27',
-   'note':K('고대 턱뼈 + 심연의 메아리의 징조로 물리 피해 추가 1티어. 강령술의 징조는 필요 없음(접미가 꽉 참). 실패하면 21번(제거)으로 돌아감.','Ancient Jawbone + Abyssal Echoes for T1 flat phys. No Necromancy omen needed (suffixes are full). On a miss go back to step 21 (removal).')},
+   'note':K('고대 턱뼈 + 심연의 메아리의 징조로 물리 피해 추가 1티어. 강령술의 징조는 필요 없음(접미가 꽉 참). 실패하면 {#e1}번(제거)으로 돌아감.','Ancient Jawbone + Abyssal Echoes for T1 flat phys. No Necromancy omen needed (suffixes are full). On a miss go back to step {#e1} (removal).')},
   {'id':'e3','phase':'finish','do':'note','note':K('미러 활 완성. 남은 룬 2자리는 취향껏.','Mirror bow done. Fill the other 2 sockets to taste.')},
  ],
 })
@@ -161,7 +161,7 @@ R.append({
   {'id':'a17','phase':'des','branch':MISS,'do':'desecrate','cur':'Preserved_Collarbone','omens':['Omen_of_the_Blackblooded'],'target':{'unrev':'s','fromMark':True},'ts':'18:21',
    'note':K('검은 피의 징조 + 보존된 빗장뼈로 접미(징표 자리) 훼손.','Blackblooded + Collarbone desecrates the suffix (the Mark slot).')},
   {'id':'a18','phase':'des','branch':MISS,'do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':allQ},'side':'s','lord':'kurgal','bone':'Preserved_Collarbone'},'fail':{'goto':'a14','via':LIGHT},'ts':'18:32',
-   'note':K('심연의 메아리의 징조로 공개. 안 나와도 다음 단계(접두 엑잘)를 먼저 던져 에너지 보호막을 본 뒤 14번(빛의 징조)부터 다시. 적은 비용으로 훼손 기회와 접두 기회를 한 번에 봄.','Reveal with Abyssal Echoes. On a miss, still throw the next prefix exalt for Energy Shield, then go back to step 14 (Light): one reveal and one prefix chance per loop.')},
+   'note':K('심연의 메아리의 징조로 공개. 안 나와도 다음 단계(접두 엑잘)를 먼저 던져 에너지 보호막을 본 뒤 {#a14}번(빛의 징조)부터 다시. 적은 비용으로 훼손 기회와 접두 기회를 한 번에 봄.','Reveal with Abyssal Echoes. On a miss, still throw the next prefix exalt for Energy Shield, then go back to step {#a14} (Light): one reveal and one prefix chance per loop.')},
   {'id':'a16','phase':'des','branch':MISS,'do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':[{'gi':esFlat,'tmax':1},{'gi':esPct,'tmax':1}]},'ts':'16:03',
    'note':K('완벽한 엑잘티드 오브로 접두 한 줄(에너지 보호막 1티어, 접미는 꽉 차서 징조 불필요). 영상은 여기서 멈춤. 공개도 성공했고 이것만 안 뜨면 갈림길.','Perfect Exalt one prefix (T1 Energy Shield; suffixes are full, no omen); the video stopped here. If the reveal landed and only this missed, choose a fork.')},
   {'id':'a16b','phase':'des','branch':MISS,'do':'chaos','cur':'Greater_Chaos_Orb','omens':['Omen_of_Sinistral_Erasure'],'target':{'anyOf':[{'gi':esFlat,'tmax':1},{'gi':esPct,'tmax':1}],'replace':'p'},'fallbackFor':'a16','fail':{'goto':'self'},
@@ -221,7 +221,7 @@ R.append({
   {'id':'c8','phase':'suffix','do':'chaos','cur':'Chaos_Orb','target':{'anyOf':[{'gi':rarS,'tmax':1},{'gi':allRes,'tmax':1}],'replace':'p'},'fail':{'goto':'self'},'ts':'3:10',
    'note':K('카오스 오브로 원하는 접미 하나(영상 완성품: 모든 원소 저항, 아이템 희귀도). 분열 줄 말고 지울 수 있는 줄이 최대 퀄리티뿐이라 첫 카오스 오브가 그 줄을 지움 — 제작 옵션인 최대 퀄리티가 없어져서 뒤에 재빠른 합금을 쓸 수 있음(퀄리티는 그대로). 영상 순서대로 희귀도를 카오스 오브 쪽에서 뽑는 걸로 계산.','Chaos for one wanted suffix (the finished ring has all resistances and item rarity). Following the video, rarity is counted on the Chaos side.')},
   {'id':'c9','phase':'suffix','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Dextral_Exaltation'],'target':{'anyOf':[{'gi':allRes,'tmax':1},{'gi':rarS,'tmax':1}]},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment','omens':['Omen_of_Dextral_Annulment']},'lost':'c8'},'ts':'3:17',
-   'note':K('완벽한 엑잘티드 오브 + 우측 찬미의 징조로 나머지 하나. 영상은 안 뜨면 지우고 다시 카오스 오브(6번째 성공). 계산은 우측 소멸의 징조 + 소멸의 오브로 지우되, 희귀도가 대신 지워지면 8번으로 돌아가 다시 뽑는 것까지 포함.','Perfect Exalt + Dextral Exaltation for the other one. The video removed misses and went back to Chaos (success on try 6); the math removes with Dextral Annulment and, when it takes the rarity instead, goes back to step 8 to roll it again.')},
+   'note':K('완벽한 엑잘티드 오브 + 우측 찬미의 징조로 나머지 하나. 영상은 안 뜨면 지우고 다시 카오스 오브(6번째 성공). 계산은 우측 소멸의 징조 + 소멸의 오브로 지우되, 희귀도가 대신 지워지면 {#c8}번으로 돌아가 다시 뽑는 것까지 포함.','Perfect Exalt + Dextral Exaltation for the other one. The video removed misses and went back to Chaos (success on try 6); the math removes with Dextral Annulment and, when it takes the rarity instead, goes back to step {#c8} to roll it again.')},
   {'id':'c10','phase':'suffix','do':'exalt','cur':'Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'junk':'p'},'ts':'3:24',
    'note':K('접두에 아무 잡옵 하나(일반 엑잘티드 오브).','Any junk prefix (a regular Exalted Orb).')},
   {'id':'c11','phase':'suffix','do':'essence','cur':'Swift_Alloy','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':swift},'ts':'3:32',
@@ -337,7 +337,7 @@ R.append({
   {'id':'p3b','phase':'prefix','retryFor':'p2','do':'remove','cur':'Preserved_Collarbone','withEach':LIGHT,'target':{'removeMark':True},'fallbackFor':'p3','ts':'7:47',
    'note':K('징표가 접두에 찍히면 빗장뼈로 훼손 → 빛의 징조 + 소멸의 오브로 지우고 다시 심연의 에센스. 징표가 접미로 내려올 때까지.','If the Mark lands on a prefix, desecrate it with a Collarbone, remove it with Light + Annulment, and use the Essence of the Abyss again until the Mark goes to a suffix.')},
   {'id':'p4','phase':'prefix','retryFor':'p2','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'junk':'p'},'fail':{'goto':'p2','label':'reveal'},'ts':'8:02',
-   'note':K('비운 접두 자리에 다시 완벽한 엑잘티드 오브. 다시 잡옵이면 10번(완벽한 강화의 에센스)부터 반복. 접미의 징표는 다음에 심연의 에센스를 써야 할 때 지움.','Perfect Exalt the freed prefix again; if it is junk, repeat from the Perfect Essence of Enhancement. Clear the suffix Mark only when the next Essence of the Abyss is needed.')},
+   'note':K('비운 접두 자리에 다시 완벽한 엑잘티드 오브. 다시 잡옵이면 {#p2}번(완벽한 강화의 에센스)부터 반복. 접미의 징표는 다음에 심연의 에센스를 써야 할 때 지움.','Perfect Exalt the freed prefix again; if it is junk, repeat from the Perfect Essence of Enhancement. Clear the suffix Mark only when the next Essence of the Abyss is needed.')},
   {'id':'d1','phase':'last','do':'desecrate','cur':'Ancient_Collarbone','omens':['Omen_of_Dextral_Necromancy'],'target':{'unrev':'s'},'ts':'15:22',
    'note':K('마지막 접미 자리는 고대 빗장뼈 훼손(보존된 빗장뼈는 1티어가 잘 안 나옴).','The last suffix slot: an Ancient Collarbone desecration (a Preserved one rarely gives T1).')},
   {'id':'d2','phase':'last','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':SUF5},'side':'s','bone':'Ancient_Collarbone'},'fail':{'goto':'d1','via':LIGHT},'ts':'15:43',
@@ -489,6 +489,58 @@ exec(open('/home/claude/poe2data/scripts/recipes_batch3.py').read())
 exec(open('/home/claude/poe2data/scripts/recipes_batch4.py').read())
 import glob as _glob
 for _f in sorted(_glob.glob('/home/claude/poe2data/scripts/recipes_v5_*.py')): exec(open(_f).read())   # one file per video recipe
+# A finished item with a fractured line starts from the bought fractured base (fracture + one junk line); the steps up to the
+# fracture and its clean-up become the starting state (사용자 확정 2026-11-09).
+def _fb(cut, mods, kr, en, quality=None, runes=None):
+    return {'cut':cut, 'mods':mods, 'note':K(kr,en), 'quality':quality, 'runes':runes}
+KOLR_=K('콜르의 사냥',"Kolr's Hunt")
+FRSTART = {
+ 'mirror-bow-video': _fb(('s2','f2'), [{'gi':17,'tmax':1,'fr':True},{'gi':7,'tmax':1},{'unrev':'p'}], '치명타 확률 분열 + 물리 피해 % 1티어 + 미공개 훼손 접두.', 'Fractured crit chance + T1 % physical + an unrevealed desecrated prefix.', 30),
+ 'absent-amulet-video': _fb(('a2','a4'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '정신력 분열 + 잡옵 1줄.', 'Fractured Spirit plus one junk line.'),
+ 'breach-ring-video': _fb(('c2','c4b'), [{'gi':15,'tmax':1,'fr':True},{'junk':'s'}], '공격 시 원소 피해 1티어 분열(화염·냉기·번개 아무거나) + 잡옵 1줄.', 'A fractured T1 elemental attack flat (any element) plus one junk line.'),
+ 'helmet-armour-sl': _fb(('h2','f4'), [{'gi':20,'tmax':1,'fr':True},{'junk':'p'}], '방어도의 원소 피해 적용 분열 + 잡옵 1줄.', 'Fractured armour applies to elemental damage plus one junk line.', 26),
+ 'gold-amulet-6line': _fb(('g2','g3'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '정신력 분열 + 잡옵 1줄.', 'Fractured Spirit plus one junk line.'),
+ 'grasping-mail-spell1': _fb(('m2','f1'), [{'gi':140,'fr':True},{'junk':'s'}], '룬 아버지 단계까지 올린 베이스(갑옷·기폭제 퀄리티 30%). 모든 주문 스킬 레벨 +1 분열 + 잡옵 1줄.', "A Runefather base (armour and catalyst quality 30%) with fractured +1 spell skills plus one junk line.", 30),
+ 'absent-amulet-spell6': _fb(('b1b','f1'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '시전 퀄리티 48%. 정신력 분열 + 잡옵 1줄.', '48% caster quality, fractured Spirit plus one junk line.', 48),
+ 'mazbro-caster-ring': _fb(('r1b','r4'), [{'gi':34,'tmax':1,'fr':True},{'junk':'p'}], '시전 속도 분열 + 잡옵 1줄.', 'Fractured cast speed plus one junk line.'),
+ 'mazbro-caster-amulet': _fb(('a2','a3'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '정신력 분열 + 잡옵 1줄.', 'Fractured Spirit plus one junk line.'),
+ 'mazbro-bis-chest': _fb(('c2','c6'), [{'gi':15,'tmax':1,'fr':True}], '정신력 분열(나머지 줄은 정리한 상태).', 'Fractured Spirit, everything else cleared.'),
+ 'mazbro-proj-gloves': _fb(('g2','g7'), [{'gi':81,'fr':True},{'junk':'p'}], '콜르의 사냥을 장착한 상태로 모든 투사체 스킬 레벨 +2 분열 + 잡옵 1줄.', "Kolr's Hunt socketed: fractured +2 projectile skills plus one junk line.", 30, [KOLR_]),
+ 'diztoh-iceshot-bow': _fb(('w2','w6'), [{'gi':7,'tmax':1,'fr':True},{'junk':'p'}], '물리 피해 % 1티어 분열 + 잡옵 1줄.', 'Fractured T1 % physical damage plus one junk line.'),
+ 'diztoh-crit-helmet': _fb(('h2','h6'), [{'gi':9,'tmax':1,'fr':True},{'junk':'s'}], '회피 및 에너지 보호막 % 분열 + 잡옵 1줄.', 'Fractured % evasion and energy shield plus one junk line.'),
+ 'diztoh-socket-gloves': _fb(('d2','d6'), [{'gi':82,'fr':True},{'gi':8,'tmax':2},{'gi':57,'crafted':True},{'unrev':'p'}], '콜르의 사냥을 장착한 상태로 모든 투사체 스킬 레벨 +2 분열 + 에너지 보호막 최대치 + 희귀도(상위 풍요의 에센스) + 미공개 훼손 접두.', "Kolr's Hunt socketed: fractured +2 projectile skills, flat energy shield, rarity (Greater Essence of Opulence) and an unrevealed desecrated prefix.", None, [KOLR_]),
+ 'mazbro-sceptre': _fb(('z2','z6'), [{'gi':10,'tmax':1,'fr':True},{'junk':'s'}], '동료 피해 1티어 분열 + 잡옵 1줄.', 'Fractured T1 ally damage plus one junk line.'),
+ 'mazbro-spell5-amulet': _fb(('z2','z6'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '정신력 +50 분열 + 잡옵 1줄.', 'Fractured +50 Spirit plus one junk line.'),
+ 'sl-flamewave-ring': _fb(('g2','g4'), [{'gi':7,'tmax':1,'fr':True},{'junk':'p'}], '모든 원소 저항 1티어 분열 + 잡옵 1줄.', 'Fractured T1 all elemental resistances plus one junk line.'),
+}
+for _r in R:
+    _c = FRSTART.get(_r['id'])
+    if not _c: continue
+    _ids = [n['id'] for n in _r['nodes']]; _a, _b = _ids.index(_c['cut'][0]), _ids.index(_c['cut'][1])
+    _gone = set(_ids[_a:_b+1]); _r['nodes'] = _r['nodes'][:_a] + _r['nodes'][_b+1:]
+    _st = {'rar':'rare', 'mods':_c['mods']}
+    if _c['quality']: _st['quality'] = _c['quality']
+    _runes = _c['runes'] or (_r.get('start') or {}).get('runes')
+    if _runes: _st['runes'] = _runes
+    _r['start'] = _st; _r.pop('quality', None)
+    _b0 = _r['nodes'][0]; _b0['note'] = _c['note']
+    for _n in _r['nodes']:
+        _f = _n.get('fail') or {}
+        if _f.get('goto') in _gone: _f['goto'] = 'restart'
+        if _f.get('lost') in _gone: _f.pop('lost')
+        if _n.get('fallbackFor') in _gone or (_n.get('branch') or {}).get('of') in _gone: raise Exception((_r['id'], _n['id']))
+    _used = {n.get('phase') for n in _r['nodes']}
+    if _r.get('phases'): _r['phases'] = [ph for ph in _r['phases'] if ph['id'] in _used]
+# "{#id}" in a step's text becomes that step's number, so cutting steps never leaves stale references
+import re as _re
+for _r in R:
+    _no = {n['id']:i+1 for i,n in enumerate(_r['nodes'])}
+    def _fix(v):
+        if isinstance(v, str): return _re.sub(r'\{#(\w+)\}', lambda m: str(_no[m.group(1)]), v)
+        if isinstance(v, dict): return {k:_fix(x) for k,x in v.items()}
+        if isinstance(v, list): return [_fix(x) for x in v]
+        return v
+    _r['nodes'] = _fix(_r['nodes'])
 # side omens that do nothing: the other side is already full, so the slam/desecration can only land on this side anyway
 REDUNDANT={('gold-amulet-6line','p4'),('gold-amulet-6line','d1'),('grasping-mail-spell1','p0'),('grasping-mail-spell1','p2'),('grasping-mail-spell1','p4'),
  ('absent-amulet-spell6','s4'),('absent-amulet-spell6','m2'),('mazbro-caster-ring','r12'),('mazbro-caster-amulet','a12'),('mazbro-bis-chest','c12'),('mazbro-bis-chest','c10'),('mazbro-bis-chest','c13'),

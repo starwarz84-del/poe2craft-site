@@ -516,7 +516,7 @@ function analyse(r){
   CUR_R=r;
   const D=C(r), b=baseOf(r), cap=r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)};   // a recipe can state the slots (jewels: 2/2)
   let rar='normal', mods=[];   // {gi, ti, side, junk, fr, unrev, des}
-  if(r.start){ rar=r.start.rar||'rare'; mods=(r.start.mods||[]).map(x=>x.junk ? {junk:true, side:x.junk} : {gi:x.gi, ti:0, side:grp(r,x.gi).g, tmax:x.tmax, ...(x.fr?{fr:true}:{})}); }   // a bought item
+  if(r.start){ rar=r.start.rar||'rare'; mods=(r.start.mods||[]).map(x=>x.junk ? {junk:true, side:x.junk} : x.unrev ? {unrev:true, junk:true, side:x.unrev} : {gi:x.gi, ti:0, side:grp(r,x.gi).g, tmax:x.tmax, ...(x.fr?{fr:true}:{}), ...(x.crafted?{ess:true}:{})}); }   // a bought item
   const clone = () => mods.map(m=>({...m}));
   const fams = () => { const f=new Set(); mods.forEach(m=>{ if(m.gi!=null) grp(r,m.gi).f.forEach(x=>f.add(x)); }); return f; };
   const count = s => mods.filter(m=>m.side===s).length;
