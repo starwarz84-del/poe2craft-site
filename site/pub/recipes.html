@@ -601,6 +601,11 @@ function analyse(r){
       }
     } else if(n.do==='desecrate'){
       if(t.unrev){ if(t.fromMark){ const i=mods.findIndex(m=>m.mark && m.side===t.unrev); if(i>=0) mods.splice(i,1); else o.warn=L('징표가 없다고 가정됨','No Mark on the item'); }
+        else if(count(t.unrev) >= cap[t.unrev]){   // a full side: the bone replaces a random removable line there (Necromancy only picks the side)
+          const cand = mods.filter(m=>!m.fr && m.side===t.unrev), jn = cand.filter(m=>m.junk).length;
+          if(!cand.length) o.warn=L('지울 수 있는 줄이 없음','Nothing to replace');
+          else { o.p = t.chance ?? (jn ? jn/cand.length : 1); if(!jn && t.chance==null) o.warn=L('꽉 찬 면이라 좋은 줄 하나가 지워짐','Full side: a wanted line will be replaced');
+            const k = t.dropGi!=null ? mods.findIndex(m=>m.gi===t.dropGi) : mods.findIndex(m=>m.junk && m.side===t.unrev); mods.splice(k>=0 ? k : mods.indexOf(cand[0]), 1); } }
         mods.push({unrev:true, junk:true, side:t.unrev}); }
     } else if(n.do==='reveal'){
       if(t.swapDes){ const i=mods.findIndex(m=>m.des); if(i>=0) mods.splice(i,1); }

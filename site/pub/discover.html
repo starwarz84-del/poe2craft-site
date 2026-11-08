@@ -720,7 +720,12 @@ function verifyDraft(it, an, d){
       const k = mods.findIndex(m=>m.junk && (!sd || m.side===sd)); if(k>=0) mods.splice(k,1);
       addLine(t, L('에센스','Essence')); return; }
     if(n.do==='desecrate'){ if(rar!=='rare') add('err','훼손은 희귀 아이템에만 쓸 수 있어요.','Desecration needs a rare item.',st);
-      const sd=t.unrev; if(count(sd)>=cap[sd]) add('err',`${sd==='p'?'접두':'접미'}가 꽉 차서 훼손할 수 없어요.`,'That side is full.',st);
+      const sd=t.unrev;
+      if(count(sd)>=cap[sd] && !t.fromMark){   // a full side: the bone replaces a random removable line there
+        const cand = mods.filter(m=>!m.fr && m.side===sd);
+        if(!cand.length) add('err',`${sd==='p'?'접두':'접미'}에 지울 수 있는 줄이 없어서 훼손할 수 없어요.`,'Nothing on that side can be replaced.',st);
+        else { if(cand.some(m=>!m.junk) && !t.chance) add('warn',`${sd==='p'?'접두':'접미'}가 꽉 차 있어서 훼손이 그쪽 줄 하나를 지우고 들어가요. 좋은 줄이 지워질 수 있어요.`,'That side is full: the desecration replaces one of its lines, possibly a wanted one.',st);
+          const k = t.dropGi!=null ? mods.findIndex(m=>m.gi===t.dropGi) : mods.findIndex(m=>m.junk && m.side===sd); mods.splice(k>=0 ? k : mods.indexOf(cand[0]), 1); } }
       const bk = /Collarbone/.test(n.cur)?'jewellery':/Jawbone/.test(n.cur)?'weapon':/Rib/.test(n.cur)?'armour':'jewel';
       const ok = bk==='jewellery' ? isJew : bk==='weapon' ? ['weapon','weapon2','offhand'].includes(it.cat) : bk==='jewel' ? isJewel : !isJew && !isJewel && !['weapon','weapon2'].includes(it.cat);
       if(!ok) add('err','이 아이템 종류에 맞지 않는 뼈예요.','Wrong bone for this item class.',st);
