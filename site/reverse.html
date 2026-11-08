@@ -336,17 +336,18 @@ function makeDraft(it, an){
   // slots reserved for later: essences replace a junk line on their side, desecrations need a free slot
   const resv = {p:0, s:0}; rareEss.forEach(({r})=>resv[r.m.side]++); if(mqGi>=0) resv.p++;
   const desNeed = {p:[...desRows,...othRows].filter(r=>r.m.side==='p').length, s:[...desRows,...othRows].filter(r=>r.m.side==='s').length};
-  // 1. base
-  const start = {rar:'normal', mods:[]}; const junk = {p:0, s:0};
+  // 1. base: quality work (armour/weapons; above 20% from Vaal infusers) is part of preparing the base, before any fracture
+  let baseQ = null;
+  if(it.cat!=='jewellery' && it.cat!=='jewel' && it.qual>0){ const w = ['weapon','weapon2'].includes(it.cat), vi = w?'Vaal_Blacksmiths_Infuser':'Vaal_Armourers_Infuser', sc = w?'Blacksmiths_Whetstone':'Armourers_Scrap';
+    baseQ = it.qual>20 ? {kr:`퀄리티 ${it.qual}% (20%까지 ${nk(sc)}, 넘는 부분은 ${nk(vi)} — 첫 번째는 실패하지 않고 이후 한 번마다 실패 확률이 늘어남)`, en:`quality ${it.qual}% (${ne(sc)} to 20%, then ${ne(vi)}; the first cannot fail, each later one is riskier)`}
+      : {kr:`퀄리티 ${it.qual}% (${nk(sc)})`, en:`quality ${it.qual}% (${ne(sc)})`}; }
+  const start = {rar:'normal', mods:[], ...(baseQ?{quality:it.qual}:{})}; const junk = {p:0, s:0};
   if(frs.length){ start.rar='rare'; start.mods = frs.map(r=>({...tm(r), fr:true})); frs.forEach(r=>cnt[r.m.side]++); rar='rare';
     const need = {p:rows.filter(r=>!r.m.fr && r.m.side==='p').length, s:rows.filter(r=>!r.m.fr && r.m.side==='s').length};
-    for(let n=Math.max(0,4-frs.length); n>0; n--){ const sd = ['p','s'].filter(x=>cnt[x]<cap[x]).sort((a,b)=>(need[b]-junk[b])-(need[a]-junk[a]))[0]; if(!sd) break; start.mods.push({junk:sd}); junk[sd]++; cnt[sd]++; } }
-  push({phase:'base', do:'base', cost:'base', note: frs.length ? note(`${frs.map(lk).join(', ')} 분열된 ${it.b.kr} (아이템 레벨 ${it.ilvl}+)에서 시작. 분열은 옵션 4줄 이상에만 쓰이므로 나머지 ${junk.p+junk.s}줄은 잡옵인 상태.`, `Start from a ${it.b.en} (item level ${it.ilvl}+) with ${frs.map(le).join(', ')} fractured; fracturing needs 4+ modifiers, so the other ${junk.p+junk.s} are junk.`)
-    : note(`${it.b.kr} 일반 베이스, 아이템 레벨 ${it.ilvl}+.`, `A normal ${it.b.en}, item level ${it.ilvl}+.`)});
-  // armour/weapon quality above 20% comes from Vaal infusers
-  if(it.cat!=='jewellery' && it.cat!=='jewel' && it.qual>20){ const w = ['weapon','weapon2'].includes(it.cat);
-    push({phase:'base', do:'manual', cost:'vaal', target:{setQuality:it.qual}, label:{kr:w?'바알 대장장이의 주입기':'바알 방어구 장인의 주입기', en:w?"Vaal Blacksmith's Infuser":"Vaal Armourer's Infuser"},
-      note:note(`20%를 넘는 퀄리티 ${it.qual}%는 ${w?nk('Vaal_Blacksmiths_Infuser'):nk('Vaal_Armourers_Infuser')}로. 첫 번째는 실패하지 않고 이후 한 번마다 실패 확률이 늘어남.`, `Quality above 20% (${it.qual}%) comes from Vaal infusers; the first cannot fail, each later one is riskier.`)}); }
+    // prepared base: fractured line + one junk line (the rest was annulled after the fracture)
+    for(let n=Math.max(0,2-frs.length); n>0; n--){ const sd = ['p','s'].filter(x=>cnt[x]<cap[x]).sort((a,b)=>(need[b]-junk[b])-(need[a]-junk[a]))[0]; if(!sd) break; start.mods.push({junk:sd}); junk[sd]++; cnt[sd]++; } }
+  push({phase:'base', do:'base', cost:'base', note: frs.length ? note(`${frs.map(lk).join(', ')} 분열된 ${it.b.kr} (아이템 레벨 ${it.ilvl}+). 베이스 준비${baseQ?` → ${baseQ.kr}`:''} → 분열 → 잡옵 정리까지 끝나, 분열 줄 + 잡옵 1줄인 상태에서 시작.`, `A ${it.b.en} (item level ${it.ilvl}+) with ${frs.map(le).join(', ')} fractured. Base prep${baseQ?` (${baseQ.en})`:''}, fracture and clean-up are done: the fractured line + one junk line.`)
+    : note(`${it.b.kr} 일반 베이스, 아이템 레벨 ${it.ilvl}+.${baseQ?` 베이스 준비: ${baseQ.kr}.`:''}`, `A normal ${it.b.en}, item level ${it.ilvl}+.${baseQ?` Base prep: ${baseQ.en}.`:''}`)});
   // a rune or soul core that unlocks its own modifiers goes in before rolling them
   if(augPre.length){ start.runes = augPre.map(en=>({kr:rows.find(x=>x.core && x.g.sub[1]===en).g.sub[0], en}));
     const b0=nodes[0], k=start.runes.map(x=>`「${x.kr}」`).join(', '), e=start.runes.map(x=>x.en).join(', ');
@@ -356,9 +357,14 @@ function makeDraft(it, an){
   const X = rareEss[0]?.r.m.side || null;
   // rune sockets: every augment that unlocks modifiers plus Astrid's Creativity for a second crafted line
   const serle = !!cap.serle, early = augNames.length + (serle?1:0), astrid = rareEss.length>1 ? 1 : 0;
-  const baseSock = it.b.sock||0, runeNeed = Math.max(early + astrid, early + augLate.length), sockets = Math.max(baseSock, it.sockets||0, runeNeed);
+  const baseSock = it.b.sock||0, runeNeed = Math.max(early + astrid, early + augLate.length);
+  const runeBase = !['jewellery','jewel','flask'].includes(it.cat);   // only weapons and armour have rune sockets
+  const excItem = runeBase && (it.exceptional || (it.sockets!=null && !it.corrupted && it.sockets > baseSock));   // the pasted item shows it
+  const sockets = !runeBase ? Math.max(baseSock, it.sockets||0, runeNeed) : it.sockets!=null ? (excItem || it.corrupted ? it.sockets : baseSock) : Math.max(baseSock, runeNeed), exc = !runeBase ? false : it.sockets!=null ? excItem : sockets > baseSock;
   if(serle) push({phase:'base', do:'manual', target:{rune:{kr:'세를의 승리', en:"Serle's Triumph"}}, label:{kr:'세를의 승리 장착', en:"Socket Serle's Triumph"}, note:note('접미 자리를 하나 늘려 주는 룬. 접미 4줄을 쓰려면 먼저 장착.', "Adds a fourth suffix slot; socket it first.")});
-  if(sockets > baseSock){ const krOf = en => rows.find(x=>x.core && x.g.sub[1]===en).g.sub[0]; const runesK = [...(serle?['세를의 승리']:[]), ...augNames.map(krOf), ...(astrid?['아스트리드의 창의성']:augLate.map(krOf))], runesE = [...(serle?["Serle's Triumph"]:[]), ...augNames, ...(astrid?["Astrid's Creativity"]:augLate)];
+  if(runeBase && it.sockets!=null && it.corrupted && it.sockets > baseSock){ const b0=nodes[0]; b0.note = note(b0.note.kr+` 룬 소켓 ${it.sockets}개는 타락으로 늘었을 수 있어 특출난 베이스로 보지 않음.`, b0.note.en+` The ${it.sockets} rune sockets may come from corruption, so this is not treated as an exceptional base.`); }
+  else if(exc && it.sockets!=null){ const b0=nodes[0]; b0.note = note(b0.note.kr+` 타락하지 않았는데 룬 소켓이 ${it.sockets}개(기본 ${baseSock}개)라 특출난 베이스.`, b0.note.en+` Not corrupted yet it has ${it.sockets} rune sockets (base ${baseSock}), so it is an exceptional base.`); }
+  else if(exc){ const krOf = en => rows.find(x=>x.core && x.g.sub[1]===en).g.sub[0]; const runesK = [...(serle?['세를의 승리']:[]), ...augNames.map(krOf), ...(astrid?['아스트리드의 창의성']:augLate.map(krOf))], runesE = [...(serle?["Serle's Triumph"]:[]), ...augNames, ...(astrid?["Astrid's Creativity"]:augLate)];
     const b0 = nodes[0]; b0.note = note(b0.note.kr+` 룬 ${runeNeed}개(${runesK.join(', ')})를 함께 끼워야 해서 룬 소켓 +${sockets-baseSock}인 특출난 베이스가 필요(일반 베이스는 ${baseSock}개).`, b0.note.en+` ${runeNeed} runes (${runesE.join(', ')}) sit together, so it must be an exceptional base with +${sockets-baseSock} rune socket(s) (a normal one has ${baseSock}).`); }
   // 2a. fractured base: Chaos is free while everything else is junk; take any wanted line
   if(frs.length && junk.p+junk.s>0 && rnd.length){
@@ -380,7 +386,7 @@ function makeDraft(it, an){
     if(A){ push({phase:'magic', do:'transmute', cur:'Perfect_Orb_of_Transmutation', target:tm(A), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}}, note:note(`완벽한 진화의 오브로 ${lk(A)} (T${A.tierNo} 이상).`, `Perfect Transmutation for ${le(A)} (tier ${A.tierNo}+).`)}); made.push({r:A, id:nodes[nodes.length-1].id}); cnt[A.m.side]++; }
     else { const sd = X ? other(X) : 'p'; push({phase:'magic', do:'transmute', cur:'Perfect_Orb_of_Transmutation', target:{junk:sd}, note:note('아무 옵션이나.','Any modifier.')}); cnt[sd]++; junk[sd]++; }
     rar='magic';
-    if(magicEss.length){ const {r,e}=magicEss.shift(); push({phase:'magic', do:'essence', cur:e.id, target:tm(r), note:note(`${e.kr}으로 희귀로 올리며 ${lk(r)} 확정.`, `${e.en} upgrades to rare with ${le(r)}.`)}); made.push({r, id:nodes[nodes.length-1].id}); cnt[r.m.side]++; rar='rare'; }
+    if(magicEss.length){ const {r,e}=magicEss.shift(); push({phase:'magic', do:'essence', cur:e.id, target:tm(r), note:note(`${e.kr}${josa(e.kr,'으로','로')} 희귀로 올리며 ${lk(r)} 확정.`, `${e.en} upgrades to rare with ${le(r)}.`)}); made.push({r, id:nodes[nodes.length-1].id}); cnt[r.m.side]++; rar='rare'; }
     else {
       const fs = ['p','s'].find(sd=>cnt[sd]===0);
       if(fs){ if(X===fs){ push({phase:'magic', do:'augment', cur:'Perfect_Orb_of_Augmentation', target:{junk:fs}, note:note(`${sideKr(fs)}에 아무 옵션 (나중에 에센스로 교체).`, `Any ${sideEn(fs)} (an essence replaces it later).`)}); cnt[fs]++; junk[fs]++; }
@@ -491,7 +497,7 @@ function makeDraft(it, an){
     phases.push({id, kr, en, base:n.phase}); n.phase = id; }
   phases.forEach(x=>delete x.base);
   const day = new Date(); const ymd = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
-  return { id:'draft-'+Date.now().toString(36), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}:{}), ...(sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd,
+  return { id:'draft-'+Date.now().toString(36), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd,
     author:{kr:'아이템 역산 초안', en:'Reverse-engineered draft'}, title:{kr:featK.join(' + ')||'역산 초안', en:featE.join(' + ')||'Draft'},
     buildTags:[], start, phases, nodes, src:{text:S.txt||''} };
 }
@@ -505,10 +511,10 @@ function verifyDraft(it, an, d){
   const famsOf = mods => { const f=new Set(); mods.forEach(m=>{ if(m.gi!=null) grp(m.gi).f.forEach(x=>f.add(x)); }); return f; };
   const specs = t => t?.anyOf ? t.anyOf : t?.gi!=null ? [t] : [];
   let mods = (d.start.mods||[]).map(x=>x.junk ? {junk:true, side:x.junk} : {gi:x.gi, side:grp(x.gi).g, fr:!!x.fr});
-  let rar = d.start.rar||'normal', quality = 0, crafted = 0; const runes=(d.start.runes||[]).map(x=>x.en); const sockets = d.sockets ?? (it.b.sock||0);
+  let rar = d.start.rar||'normal', quality = d.start.quality||0, crafted = 0; const runes=(d.start.runes||[]).map(x=>x.en); const sockets = d.sockets ?? (it.b.sock||0);
   const count = sd => mods.filter(m=>m.side===sd).length, maxA = sd => rar==='normal'?0 : rar==='magic'?1 : cap[sd];
   const isJew = it.cat==='jewellery', isJewel = it.cat==='jewel';
-  if(d.start.rar==='rare' && mods.some(m=>m.fr) && mods.length<4) add('err','분열 베이스인데 시작 옵션이 4줄 미만이에요. 분열은 4줄 이상에서만 가능해요.','Fractured start has fewer than 4 modifiers; fracturing needs 4+.');
+  if(d.start.rar==='rare' && mods.some(m=>m.fr) && mods.length<2) add('err','분열 베이스인데 분열 줄 + 잡옵 1줄보다 적어요. 분열은 4줄 이상에서 한 뒤 정리한 상태여야 해요.','A fractured start needs the fractured line plus one junk line (fractured at 4+, then cleaned).');
   d.nodes.forEach((n,i)=>{ const st=i+1, t=n.target||{}, om=n.omens||[];
     const sideOm = om.find(o=>/(Sinistral|Dextral)_(Exaltation|Coronation|Necromancy)/.test(o)); const omSide = sideOm ? (/Sinistral/.test(sideOm)?'p':'s') : null;
     const addLine = (spec, how) => { const list = specs(spec); if(!list.length) return null;
