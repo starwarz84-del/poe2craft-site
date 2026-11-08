@@ -797,7 +797,11 @@ const reports = r => (r.success||0) + social(r.id).success;
 // ---------- rendering ----------
 function cardHTML(r){
   const b=baseOf(r), a=analyse(r), old=isOld(r);
-  const ml = a.final.map(m=>`<div class="tt-mod ${m.fr?'fr':''} ${m.des?'desm':''} ${m.ess?'essm':''}"><span class="tier ${m.g.g}">${esc(m.tag)}</span>${esc(m.txt)}</div>`).join('');
+  // explicit-magnitude lines (Thrud's Might) raise matching lines, as on the detail card
+  const MT={fire:'fire',cold:'cold',lightning:'lightning',chaos:'chaos',physical:'physical','elemental damage':'elemental',mana:'mana',speed:'speed',critical:'critical'}, mg={};
+  a.final.forEach(m=>{ const k=(m.g.t[0][5]||'').match(/Explicit (.+?) Modifier magnitudes/i); const v=(m.txt.match(/(\d+)(?:—(\d+))?\)?%/)||[]); if(k && MT[k[1].toLowerCase()] && (v[2]||v[1])) mg[MT[k[1].toLowerCase()]]={v:+(v[2]||v[1]), gi:m.gi}; });
+  const boosted = m => { const t=Object.keys(mg).find(t=>m.g.tg.includes(t) && mg[t].gi!==m.gi && m.g.s!=='x'); return t ? qualBoost(m.txt, mg[t].v) : m.txt; };
+  const ml = a.final.map(m=>`<div class="tt-mod ${m.fr?'fr':''} ${m.des?'desm':''} ${m.ess?'essm':''}"><span class="tier ${m.g.g}">${esc(m.tag)}</span>${esc(boosted(m))}</div>`).join('');
   return `<h3 class="ctitle">${esc(featureOf(r))}</h3><div class="tt"><div class="tt-head"><div class="tt-name">${esc(KR()?b.kr:b.en)}</div></div><div class="tt-body">
       ${b.img?`<div class="tt-art"><img src="${b.img}" alt=""></div>`:''}
       <div class="tt-prop">${esc(clsName(r))}</div>${a.qual?.v?`<div class="tt-prop">${L('퀄리티','Quality')}: <b>+${a.qual.v}%</b></div>`:''}<div class="tt-prop">${L('아이템 레벨','Item Level')}: <b>${r.ilvl}</b></div>
@@ -1019,6 +1023,11 @@ function itemTipHTML(r, o, opt={}){
   const count = arr => { const c={}; arr.forEach(m=>{ const k=key(m); c[k]=(c[k]||0)+1; }); return c; };
   const pre=count(o.pre||[]), now=count(o.state);
   const seen={};
+  // Thrud's Might style lines: "increased Explicit Fire Modifier magnitudes" raise the other explicit lines of that type
+  const MAGTAG = {fire:'fire', cold:'cold', lightning:'lightning', chaos:'chaos', physical:'physical', 'elemental damage':'elemental', mana:'mana', speed:'speed', critical:'critical'};
+  const mag = {}; (o.state||[]).forEach(m=>{ if(m.gi==null || m.unrev || m.mark) return; const g=grp(r,m.gi), en=g.t[0][5]||'', k=en.match(/Explicit (.+?) Modifier magnitudes/i);
+    if(!k) return; const tag=MAGTAG[k[1].toLowerCase()]; const v=(tText(modLine(r,m.gi,m.tmax,m.max).g.t[0]).match(/(\d+)(?:—(\d+))?\)?%/)||[]); const top=+(v[2]||v[1]||0);
+    if(tag && top) mag[tag]={v:top, gi:m.gi}; });
   const line = (m, cls='') => {
     const sl=`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>`;
     if(m.unrev) return `<div class="tt-mod des-u ${cls}">${sl}${L('훼손 옵션 (미공개)','Desecrated (unrevealed)')}</div>`;
@@ -1028,6 +1037,7 @@ function itemTipHTML(r, o, opt={}){
     let txt=l.txt, sub='';
     if(shown){ txt=tx(shown); sub=L('영상 결과값','value in the video'); }
     else if(qv && qt && l.g.tg.includes(qt)){ txt=qualBoost(l.txt, qv); sub=L(`퀄리티 ${qv}% 반영 · 원래 ${l.txt}`,`with ${qv}% quality · base ${l.txt}`); }
+    else { const mg = Object.keys(mag).find(t=>l.g.tg.includes(t) && mag[t].gi!==m.gi && l.g.s!=='x'); if(mg){ txt=qualBoost(l.txt, mag[mg].v); sub=L(`속성 부여 규모 ${mag[mg].v}% 반영 · 원래 ${l.txt}`,`with ${mag[mg].v}% modifier magnitude · base ${l.txt}`); } }
     return `<div class="tt-mod ${m.fr?'fr':''} ${m.des?'desm':''} ${m.ess?'essm':''} ${cls}" ${sub?`title="${esc(sub)}"`:''}><span class="tier ${l.g.g}">${esc(l.tag)}</span>${esc(txt)}${sub&&!shown?'<i class="qb" aria-hidden="true">Q</i>':''}</div>`; };
   const side = sd => {
     const ms=o.state.filter(m=>m.side===sd);
