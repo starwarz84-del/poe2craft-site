@@ -436,7 +436,7 @@ function makeDraft(it, an){
   for(const sd of ['p','s']) while(junk[sd] > resv[sd]){ const good = rows.some(r=>!r.m.fr && r.m.side===sd && nodes.some(n=>n.target?.gi===r.m.gi || (n.target?.anyOf||[]).some(x=>x.gi===r.m.gi)));
     push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]], target:{removeJunk:sd}, note: good ? note(`${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 잡옵 제거. 같은 쪽 좋은 옵션이 지워질 수 있어서 주의.`, `${sd==='p'?'Sinistral':'Dextral'} Annulment removes the junk; it can hit the good ${sideEn(sd)} too.`) : note(`${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 잡옵 제거 (그쪽엔 분열 줄과 잡옵뿐이라 안전).`, `${sd==='p'?'Sinistral':'Dextral'} Annulment removes the junk (nothing else worth keeping on that side).`)}); junk[sd]--; cnt[sd]--; }
   // 4. jewellery quality above 20%: Essence of the Breach borrows a prefix, catalysts go first so later lines get the bonus
-  let qDone=false, qType=null, qPend=null, qCap=0, qFinal=null;   // quality type now on the item, the final catalyst still to apply, the catalyst cap
+  let qDone=false, qType=null, qPend=null, qCap=0, qFinal=null; let vaalQ=null;   // Vaal infusers go on top of the filled quality, so after the final catalyst   // quality type now on the item, the final catalyst still to apply, the catalyst cap
   if(mqGi>=0 && (junk.p || room('p'))){
     if(junk.p) junk.p--; else { push({phase:'q', do:'exalt', cur:'Exalted_Orb', ...(room('s')?{omens:[SIDE_OMEN.exalt.p]}:{}), target:{junk:'p'}, note:note('접두에 버릴 옵션 하나.','One throwaway prefix.')}); cnt.p++; }
     resv.p--;
@@ -454,7 +454,7 @@ function makeDraft(it, an){
     if(cat && !craft.cats.some(c=>!/^Refined/.test(c.id) && exTags.has(c.tag))){ push({phase:'q', do:'quality', cur:cat.id, target:{quality:qc}, note:qNote(cat)}); qType=cat.tag; }
     else if(cat){ qPend={cat, note:qNote(cat)}; qFinal=cat; }   // decided at the exalts below; the final catalyst goes on last if another one was used for them
     qDone = !!cat;
-    if(it.qual>capC) push({phase:'q', do:'manual', cost:'vaal', target:{setQuality:it.qual}, label:{kr:'바알 촉진시키는 주입기', en:'Vaal Catalysing Infuser'}, note:note(`퀄리티 ${it.qual}%까지(첫 번째만 안전).`, `Quality to ${it.qual}% (only the first is safe).`)});
+    if(it.qual>capC){ vaalQ = () => push({phase:'q', do:'manual', cost:'vaal', target:{setQuality:it.qual}, label:{kr:'바알 촉진시키는 주입기', en:'Vaal Catalysing Infuser'}, note:note(`퀄리티 ${it.qual}%까지(첫 번째만 안전).`, `Quality to ${it.qual}% (only the first is safe).`)}); if(!qPend){ vaalQ(); vaalQ=null; } }
   } else if(R0){ rnd.push(R0); R0=null; }
   // 5. remaining random lines: exalt for any wanted line on a side, side by side
   // Whittling finish: Chaos with Omen of Whittling swaps the lowest-level line. If every other removable line on that side is at
@@ -496,6 +496,7 @@ function makeDraft(it, an){
           : note(`${c2.kr}로 퀄리티 ${qCap}%. 다음 엑잘에서 ${names(want, x=>lk(x))}${josa(lk(want[want.length-1]),'이','가')} 나올 확률을 촉진하는 찬미의 징조로 올리려고 이 속성 퀄리티를 먼저 씀.`, `${c2.en} to ${qCap}% so Omen of Catalysing Exaltation favours ${names(want, x=>le(x))} on the next exalt.`)});
         qType=c2.tag; }
       if(qType && tg.has(qType)) cOm=['Omen_of_Catalysing_Exaltation']; }
+    const exC = it.cat==='jewel' ? 'Exalted_Orb' : 'Perfect_Exalted_Orb';   // jewel lines are all one tier: a plain Exalted Orb does the same job
     const exOm = [...cOm, ...om], tries = cOm.length && free-want.length>=1 ? 2 : 1;
     const omTxt = exOm.map(nk).join(' + '), omEn = exOm.map(ne).join(' + ');
     // a wanted line already on this side can be the one an annulment takes: then go back to the step that made it
@@ -509,11 +510,11 @@ function makeDraft(it, an){
     // Omen of Catalysing Exaltation uses up all the quality: every catalysed exalt needs the catalyst filled again first
     const qCat = cOm.length ? craft.cats.find(c=>!/^Refined/.test(c.id) && c.tag===qType) : null;
     const refill = () => push({phase:'ex', do:'quality', cur:qCat.id, target:{quality:qCap}, note:note(`촉진하는 찬미의 징조가 퀄리티를 다 써서 0%. ${qCat.kr}로 다시 ${qCap}%.`, `Catalysing Exaltation used up the quality; ${qCat.en} back to ${qCap}%.`)});
-    if(tries===2){ push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', omens:exOm, target:{junk:sd},
+    if(tries===2){ push({phase:'ex', do:'exalt', cur:exC, omens:exOm, target:{junk:sd},
         note:note(`1차 도전: ${omTxt} + 완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 여기서 뜨면 다음 단계는 아무 ${sideKr(sd)}여도 성공. 촉진하는 찬미의 징조를 쓰면 퀄리티가 0%가 됨.`, `First try: ${omEn} + Perfect Exalted Orb for ${tgtE}. If it lands here, the next step can be any ${sideEn(sd)}. Catalysing Exaltation uses up the quality.`)}); cnt[sd]++; refill(); }
     const qStep = cOm.length ? [...nodes].reverse().find(n=>n.do==='quality') : null;   // a retry starts again from the catalyst refill
     const lostK = atRisk ? lk(atRisk.r) : '';
-    const ex = push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(exOm.length?{omens:exOm}:{}), target: cOm.length ? (()=>{ const a = want.flatMap(r=>(r.g.tg||[]).includes(qType) ? [{gi:r.m.gi, tmax:Math.max(1,r.tierNo)}] : alts(r)); return a.length===1 ? a[0] : {anyOf:a}; })() : anyOf(want), fail:{goto: qStep ? qStep.id : 'self', via:annVia, ...(lost?{lost:lost.id}:{})},
+    const ex = push({phase:'ex', do:'exalt', cur:exC, ...(exOm.length?{omens:exOm}:{}), target: cOm.length ? (()=>{ const a = want.flatMap(r=>(r.g.tg||[]).includes(qType) ? [{gi:r.m.gi, tmax:Math.max(1,r.tierNo)}] : alts(r)); return a.length===1 ? a[0] : {anyOf:a}; })() : anyOf(want), fail:{goto: qStep ? qStep.id : 'self', via:annVia, ...(lost?{lost:lost.id}:{})},
       note: lost && cOm.length ? note(`${tries===2?'2차 도전: ':''}${omTxt?omTxt+' + ':''}완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 안 뜨면 갈림길: ① ${annK}로 ${sideKr(sd)} 하나를 지우고 ${qStep?'기폭제로 퀄리티를 다시 채운 뒤 ':''}다시 도전. ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시 (계산은 ① 기준). ② 바로 아래 타협 경로.`,
           `${tries===2?'Second try: ':''}${omEn?omEn+' + ':''}Perfect Exalted Orb for ${tgtE}. On a miss you choose: (1) annul a ${sideEn(sd)} and try again; if it takes ${lostK? 'the wanted line':'a wanted line'}, go back to the step that made it (the math uses this). (2) The compromise below.`)
         : note(`${sideKr(sd)}에 ${tgtK}. 실패하면 ${annK}로 지우고 ${qStep?'기폭제로 퀄리티를 다시 채운 뒤 ':''}다시.${lost?` ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시.`:''}`, `A ${sideEn(sd)}: ${tgtE}. On a miss, clear it with ${annE} and retry${lost?'; if it takes the wanted line, go back to the step that made it':''}.`)});
@@ -524,7 +525,7 @@ function makeDraft(it, an){
   } };
   // the final catalyst: after the exalts it served, or before an essence that removes the maximum quality line (the cap drops with it)
   function finishQ(){ if(qPend && qType!==qPend.cat.tag){ push({phase:'q', do:'quality', cur:qPend.cat.id, target:{quality:qCap}, note: qType ? note(`엑잘이 끝났으니 ${qPend.cat.kr}로 바꿔 퀄리티 ${qCap}%. 완성품의 퀄리티 종류.`, `Exalts done: switch to ${qPend.cat.en} at ${qCap}%, the finished item's quality type.`) : qPend.note}); qType=qPend.cat.tag; }
-    qPend=null; }
+    qPend=null; if(vaalQ){ vaalQ(); vaalQ=null; } }
   let mqGone = false; const mqLive = () => mqGi>=0 && !mqGone && nodes.some(n=>n.target?.gi===mqGi);
   // every essence line is crafted, the magic-stage ones included
   let crafted = essRows.length - rareEss.length; const essDone = new Set(), bone = boneFor(it.cat), desDone = new Set();
@@ -557,7 +558,7 @@ function makeDraft(it, an){
       // a full side: the essence line has nowhere else to go, so it always replaces a line on that side (no omen needed), any removable one
       if(cnt[sd] >= cap[sd]){ const remS = cnt[sd] - frs.filter(x=>x.m.side===sd).length, pS = remS ? junk[sd]/remS : 1, back = [...made].reverse().find(x=>x.r.m.side===sd);
         junk[sd]--;
-        push({phase:'ess', do:'essence', cur:e.id, knownP:true, target:{...tm(r), ...(pS<1?{chance:+pS.toFixed(3)}:{})}, ...(pS<1 && back ? {fail:{goto:back.id}} : {}),
+        push({phase:'ess', do:'essence', cur:e.id, knownP:true, target:{...tm(r), ...(pS<1?{chance:+pS.toFixed(3)}:{})}, ...(pS<1 ? {fail:{goto: back ? back.id : 'restart'}} : {}),   // a line from the bought base cannot be remade: start over
           note: pS<1 ? note(`${e.kr}. ${sideKr(sd)}가 꽉 차 있어서 결정화의 징조 없이도 ${sideKr(sd)} 중 하나가 지워짐 — 버릴 줄이 지워질 확률 ${Math.round(pS*100)}%${back?`, ${lk(back.r)}${josa(lk(back.r),'이','가')} 지워지면 그 줄을 만든 단계부터 다시`:''}.`, `${e.en}. The ${sideEn(sd)}es are full, so it replaces one of them with no omen: ${Math.round(pS*100)}% it takes the throwaway${back?'; if it takes a wanted line, redo from the step that made it':''}.`)
             : note(`${e.kr}. ${sideKr(sd)}가 꽉 차 있어서 결정화의 징조 없이도 ${sideKr(sd)}의 버릴 줄이 지워지고 ${lk(r)}${josa(lk(r),'으로','로')} 바뀜.`, `${e.en}. The ${sideEn(sd)}es are full, so it replaces the throwaway ${sideEn(sd)} with ${le(r)}, no omen needed.`)});
         crafted++; resv[sd]--; continue; }
