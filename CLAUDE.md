@@ -153,6 +153,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 - **POE2_HTC** (poe2htc.com, github Dboire9/POE2_HTC, AGPL-3.0): 목표 → 경로·기대 비용(MDP). 코드 복사 금지(AGPL), 방법론·검증용으로만.
   웹에서 "I have an item" → 아이템 붙여넣기 → 룬 체크 → Full plan to a target. 장갑 검증 결과: 카오스 → 소멸 → 완벽한 에센스(좌측 결정화) → 상위 엑잘 → 고대 뼈 + 메아리, 최소 1,894 카오스(계산 미완료 하한).
 - pyoe2-craftpath (MIT, Rust/Python): 상태 트리 경로 탐색, Craft of Exile 가중치.
+- **Maxroll 제작 가이드**(사용자 제공 2026-11-09, `private/maxroll-how-to-craft.txt`, 저장소 밖): 규칙만 우리 말로 `docs/game-rules.md` "Maxroll 가이드로 확인한 규칙"에 정리. 문장·표는 옮기지 않음. 일관된 제작 정책을 세울 때 참고.
 - 유튜브 자막·화면 수집: 내장 브라우저(사용자 컴퓨터)로 영상 재생, 음소거·광고 건너뛰기 후 timedtext(json3) 수집. pot 토큰이 영상마다 달라서 실제 재생이 필요.
 
 ## 남은 일
