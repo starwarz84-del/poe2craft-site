@@ -84,7 +84,8 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 - 노드: `do`(base·transmute·augment·regal·exalt·chaos·essence·desecrate·reveal·remove·quality·manual·divine·fracture·socket·note),
   `cur, omens, target, fail{goto, via}, after.keepOnly, expect, extra, knownP, unknownW, ts, note{kr,en}`
 - target: `gi | anyOf | all, tmax, replace, removeGi, junk, unrev, reveal{}, side, bone, lord, setQuality, quality, chance, slots, dropGi, imp, anoint, sanctify, vals, rune, runeSwap, removeJunk`
-- 확률은 가중치 데이터로 계산(AI가 정하지 않음). 가중치 모름: `가중치 미확인`(x그룹·평탄 가중치 클래스), `가중치 미정`(가중치 1짜리 단독 그룹, 예: 목걸이·반지 시전 속도), 촉진 찬미 + 퀄리티 대상은 `촉진 효과로 확률 상승 (수치 비공개)`.
+- **게임 규칙과 근거는 `docs/game-rules.md`**(데이터·설명·사용자·영상·교차·추정·미확인 표시). 규칙을 바꾸면 여기도 같이 고쳐요.
+- 확률은 가중치 데이터로 계산(AI가 정하지 않음). 훼손 공개: 일반 옵션은 원래 가중치, 훼손 전용 옵션은 공개 가중치가 없어 그룹당 1000 가정 → **"가중치 추정"** 표시(`o.pEst`, 사용자 확정 2026-11-08). 가중치 모름: `가중치 미확인`(x그룹·평탄 가중치 클래스), `가중치 미정`(가중치 1짜리 단독 그룹, 예: 목걸이·반지 시전 속도), 촉진 찬미 + 퀄리티 대상은 `촉진 효과로 확률 상승 (수치 비공개)`.
 - 그룹 `s`: n 일반 · d 훼손 전용 · e 에센스 전용 · x 증강물 전용(룬·영혼 핵, sub=이름) 또는 별세계(sub=Otherworldly) · c 타락 · u 희생
 
 ## 레시피 정책 (사용자 확정)
@@ -143,7 +144,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 - [x] 발굴 초안: 분열 베이스는 잡옵 1줄만 남기고 카오스, 화면 묶음 순서 = 단계 순서(마무리 묶음), 커런시 공식 이름 통일 (2026-11-08)
 - [x] 초안: 엑잘마다 기폭제 바꾸기 + 촉진하는 찬미 + 2번 도전 + 갈림길(소멸 재도전/타협) (2026-11-08, 원본 ragna-spell4-amulet도 갈림길 반영)
 - [x] "후회의 오브" = 소멸의 오브로 확인 (2026-11-08)
-- [ ] 초안: 실패 시 갈림길(소멸 vs 결정화)을 POE2_HTC식 "다음 최선 수"로 개선, 소멸 재시도 위험 비용 반영
+- [ ] 초안: 실패 시 갈림길(소멸 vs 결정화)을 POE2_HTC식 "다음 최선 수"(MDP)로 개선 — 서로 다른 화폐 비교에 시세가 필요해서 poe2scout 시세 연동(`S.prices`) 뒤에 진행. 소멸 재시도 위험 비용(`fail.lost`)은 반영됨
 - [ ] 브리치 반지 원본의 결정화 방향(접미 합금에 좌측 결정화) 의도 확인
 - [x] 원본 레시피 이름 "콜러의 사냥" → "콜르의 사냥"(영문 Kolr's Hunt) 정리 (2026-11-08)
 - [ ] 구매 시 잡옵이 붙은 레시피 7개 정리 여부(사용자 결정 대기)
