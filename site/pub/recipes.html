@@ -52,6 +52,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .card .grow{flex:1 1 auto}
 .foot{padding:10px 12px 11px;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line)}
 .foot h3{margin:0;font-size:14px;font-weight:600;line-height:1.35;text-wrap:balance}
+.ctitle{margin:0;padding:11px 12px 10px;font-size:15px;font-weight:700;line-height:1.35;color:var(--fg);text-wrap:balance;border-bottom:1px solid var(--line);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .meta{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:12px;color:var(--muted)}
 .meta .pt{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 5px}
 .meta .pt.old{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 50%,var(--line))}
@@ -781,12 +782,12 @@ const reports = r => (r.success||0) + social(r.id).success;
 function cardHTML(r){
   const b=baseOf(r), a=analyse(r), old=isOld(r);
   const ml = a.final.map(m=>`<div class="tt-mod ${m.fr?'fr':''} ${m.des?'desm':''} ${m.ess?'essm':''}"><span class="tier ${m.g.g}">${esc(m.tag)}</span>${esc(m.txt)}</div>`).join('');
-  return `<div class="tt"><div class="tt-head"><div class="tt-name">${esc(KR()?b.kr:b.en)}</div></div><div class="tt-body">
+  return `<h3 class="ctitle">${esc(featureOf(r))}</h3><div class="tt"><div class="tt-head"><div class="tt-name">${esc(KR()?b.kr:b.en)}</div></div><div class="tt-body">
       ${b.img?`<div class="tt-art"><img src="${b.img}" alt=""></div>`:''}
       <div class="tt-prop">${esc(clsName(r))}</div>${a.qual?.v?`<div class="tt-prop">${L('퀄리티','Quality')}: <b>+${a.qual.v}%</b></div>`:''}<div class="tt-prop">${L('아이템 레벨','Item Level')}: <b>${r.ilvl}</b></div>
       <div class="tt-sep"></div>${ml}</div></div>
     <div class="grow"></div>
-    <div class="foot"><h3>${titleHTML(r)}</h3>
+    <div class="foot">
       <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span>`:''}${sharedTag(r)}${diffTag(r)}${leagueBadge(r, old)}${budgetTag(r)}${excTag(r)}</div><div class="meta"><span>${esc(tx(r.author))}</span><span>♥ ${likes(r)}</span><span>✓ ${reports(r)}</span></div>
       <div class="cost">${divineChip(r)}</div>
     </div>`;
