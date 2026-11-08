@@ -634,6 +634,7 @@ function analyse(r){
         mods.push({gi:t.mark.gi, ti:0, side:ms, mark:true});
       } else if(rar==='rare'){ const rs=(n.omens||[]).some(x=>/Dextral_Crystal/.test(x))?'s':(n.omens||[]).some(x=>/Sinistral_Crystal/.test(x))?'p':null;
         const ri = t.removeGi!=null ? mods.findIndex(m=>m.gi===t.removeGi) : -1;   // e.g. the maximum quality line once quality is done
+        if(t.missDrop!=null && t.chance!=null){ const alt=clone(), j=alt.findIndex(m=>m.gi===t.missDrop); if(j>=0) alt.splice(j,1); if(t.gi!=null) alt.push({gi:t.gi, ti:t.ti||0, side:grp(r,t.gi).g, ess:true}); o.missState=alt; }   // the miss: a good line went instead of the junk
         if(ri>=0 && t.chance!=null){ const alt=clone(), j=alt.findIndex(m=>m.junk && (!rs || m.side===rs)); if(j>=0) alt.splice(j,1); if(t.gi!=null) alt.push({gi:t.gi, ti:t.ti||0, side:grp(r,t.gi).g, ess:true}); o.missState=alt; }   // the miss: the other line went
         if(ri>=0) mods.splice(ri,1); else if(!removeJunk(rs) && !removeJunk(null)) o.warn=L('지울 잡옵이 없다고 가정됨','No junk modifier to remove');
         if(t.gi!=null) mods.push({gi:t.gi, ti:t.ti||0, side:grp(r,t.gi).g, ess:true});

@@ -531,6 +531,7 @@ for _r in R:
         if _n.get('fallbackFor') in _gone or (_n.get('branch') or {}).get('of') in _gone: raise Exception((_r['id'], _n['id']))
     _used = {n.get('phase') for n in _r['nodes']}
     if _r.get('phases'): _r['phases'] = [ph for ph in _r['phases'] if ph['id'] in _used]
+exec(open('/home/claude/poe2data/scripts/notes_short.py').read())
 # "{#id}" in a step's text becomes that step's number, so cutting steps never leaves stale references
 import re as _re
 for _r in R:
@@ -541,7 +542,6 @@ for _r in R:
         if isinstance(v, list): return [_fix(x) for x in v]
         return v
     _r['nodes'] = _fix(_r['nodes'])
-exec(open('/home/claude/poe2data/scripts/notes_short.py').read())
 # side omens that do nothing: the other side is already full, so the slam/desecration can only land on this side anyway
 REDUNDANT={('gold-amulet-6line','p4'),('gold-amulet-6line','d1'),('grasping-mail-spell1','p0'),('grasping-mail-spell1','p2'),('grasping-mail-spell1','p4'),
  ('absent-amulet-spell6','s4'),('absent-amulet-spell6','m2'),('mazbro-caster-ring','r12'),('mazbro-caster-amulet','a12'),('mazbro-bis-chest','c12'),('mazbro-bis-chest','c10'),('mazbro-bis-chest','c13'),
