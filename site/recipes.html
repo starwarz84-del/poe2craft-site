@@ -46,6 +46,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .card .grow{flex:1 1 auto}
 .foot{padding:10px 12px 11px;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line)}
 .foot h3{margin:0;font-size:14px;font-weight:600;line-height:1.35;text-wrap:balance}
+[data-cid]{cursor:help}
+.ctip{position:fixed;z-index:9999;max-width:320px;padding:9px 11px;background:#0e0f12;border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.5);font-size:12.5px;line-height:1.5;color:var(--fg);pointer-events:none;display:none}
+.ctip b{display:block;color:var(--rare);font-size:13px;margin-bottom:3px}
+.ctip .ci-row{display:flex;gap:8px;align-items:flex-start}.ctip img{width:34px;height:34px;flex:none}
 .ctitle{margin:0;padding:11px 12px 10px;font-size:15px;font-weight:700;line-height:1.35;color:var(--fg);text-wrap:balance;border-bottom:1px solid var(--line);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .meta{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:12px;color:var(--muted)}
 .meta .pt{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 5px}
@@ -711,7 +715,19 @@ const tagsOf = r => { const s=new Set(); analyse(r).final.forEach(m=>m.g.tg.forE
 
 const fmt = v => !isFinite(v) ? '∞' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v>=1 ? v.toFixed(1) : v.toFixed(2);
 const pct = p => p>=0.995 ? '100%' : p>=0.1 ? (p*100).toFixed(0)+'%' : p>=0.01 ? (p*100).toFixed(1)+'%' : (p*100).toFixed(3)+'%';
-const icon = (id, r) => { CUR_R=r||CUR_R; const c=cur(id); return c.icon ? `<img src="${c.icon}" alt="" title="${esc(nm(c))}">` : (id.startsWith('rune:')?`<span class="rn" title="${esc(nm(c))}">◆</span>`:''); };
+const icon = (id, r) => { CUR_R=r||CUR_R; const c=cur(id); return c.icon ? `<img src="${c.icon}" alt="" data-cid="${esc(id)}">` : (id.startsWith('rune:')?`<span class="rn" data-cid="${esc(id)}">◆</span>`:''); };
+// hovering a currency icon or name shows what that currency does (game text from crafting.json)
+(()=>{ const tip=document.createElement('div'); tip.className='ctip'; document.body.appendChild(tip); let on=null;
+  const place = e => { const w=tip.offsetWidth, h=tip.offsetHeight; let x=e.clientX+14, y=e.clientY+16;
+    if(x+w>innerWidth-8) x=Math.max(8,e.clientX-w-14); if(y+h>innerHeight-8) y=Math.max(8,e.clientY-h-16); tip.style.left=x+'px'; tip.style.top=y+'px'; };
+  document.addEventListener('mouseover', e=>{ const t=e.target.closest?.('[data-cid]'); if(t===on) return; on=t;
+    if(!t){ tip.style.display='none'; return; }
+    const c=cur(t.dataset.cid), fx=KR()?(c.fx||''):(c.fxen||c.fx||'');
+    tip.innerHTML=`<div class="ci-row">${c.icon?`<img src="${c.icon}" alt="">`:''}<div><b>${esc(nm(c))}</b>${fx?`<div>${esc(fx)}</div>`:''}</div></div>`;
+    tip.style.display='block'; place(e); });
+  document.addEventListener('mousemove', e=>{ if(on) place(e); });
+  document.addEventListener('scroll', ()=>{ on=null; tip.style.display='none'; }, true);
+})();
 const ORDER = id => /Transmut/.test(id)?1: /Augment/.test(id)?2: /Regal/.test(id)?3: /Chaos/.test(id)?4: /Exalted/.test(id)?5: /Annul/.test(id)?6: /bone|Jawbone|Rib|Cranium/.test(id)?7: /Fractur/.test(id)?8: /Divine/.test(id)?9: /^Omen/.test(id)?10: 11;
 const sortKeys = ks => [...ks].sort((a,b)=>ORDER(a)-ORDER(b) || a.localeCompare(b));
 const costChips = (r, max=6) => { const a=analyse(r); CUR_R=r; return sortKeys(a.keys).filter(k=>a.tot[k]>=0.05 && !/^Omen/.test(k)).slice(0,max).map(k=>`<span class="ci">${icon(k,r)}${fmt(a.tot[k])}</span>`).join('') + (a.bases>1.05?`<span class="ci dim" title="${esc(L('사용한 베이스 수','Bases used'))}">${L('베이스','base')} ×${fmt(a.bases)}</span>`:'') + Object.entries(a.manual).map(([u,v])=>`<span class="ci" title="${esc(L('직접 입력한 비용','Entered cost'))}">+${icon(u,r)}${fmt(v)}</span>`).join(''); };
@@ -803,12 +819,12 @@ function stateHTML(r, o){
 function nodeHTML(r, o, i, idx){
   const n=o.n, t=n.target||{}; CUR_R=r;
   const c=n.cur?cur(n.cur):null, uc=userCost(r);
-  const om=(n.omens||[]).map(x=>`${icon(x,r)}<span>+ ${esc(nm(cur(x)))}</span>`).join('');
+  const om=(n.omens||[]).map(x=>`${icon(x,r)}<span data-cid="${esc(x)}">+ ${esc(nm(cur(x)))}</span>`).join('');
   const pre=n.pre?`${icon(n.pre.cur,r)}<span>${esc(nm(cur(n.pre.cur)))}${(n.pre.omens||[]).map(x=>` + ${esc(nm(cur(x)))}`).join('')}</span><span class="arr">→</span>`:'';
   // per-try extra (e.g. Sinistral Annulment omen + Annulment before each Perfect Exalt), omens first as players say it
   const we = n.withEach ? `${(n.withEach.omens||[]).map(x=>`${icon(x,r)}<span>${esc(nm(cur(x)))} +</span>`).join('')}${icon(n.withEach.cur,r)}<span>${esc(nm(cur(n.withEach.cur)))}</span><span class="arr">→</span>` : '';
-  let head = c ? (n.do==='remove' && we ? `${pre}${c.icon?`<img src="${c.icon}" alt="">`:icon(n.cur,r)}<b>${esc(nm(c))}</b>${om}<span class="arr">→</span>${we.replace(/<span class="arr">→<\/span>$/,'')}` : `${pre}${we}${c.icon?`<img src="${c.icon}" alt="">`:icon(n.cur,r)}<b>${esc(nm(c))}</b>${om}`) : n.do==='base' ? `<b>${L('베이스 선정','Choose the base')}</b>` : n.do==='reveal' ? `<b>${L('영혼의 우물에서 공개','Reveal at the Well of Souls')}</b>${om}` : `<b>${esc(tx(n.label)||'')}</b>`;
-  if(n.do==='reveal' && c) head = `${pre}${c.icon?`<img src="${c.icon}" alt="">`:''}<b>${esc(nm(c))}</b>${om}`;
+  let head = c ? (n.do==='remove' && we ? `${pre}${c.icon?`<img src="${c.icon}" alt="" data-cid="${esc(n.cur)}">`:icon(n.cur,r)}<b data-cid="${esc(n.cur)}">${esc(nm(c))}</b>${om}<span class="arr">→</span>${we.replace(/<span class="arr">→<\/span>$/,'')}` : `${pre}${we}${c.icon?`<img src="${c.icon}" alt="" data-cid="${esc(n.cur)}">`:icon(n.cur,r)}<b data-cid="${esc(n.cur)}">${esc(nm(c))}</b>${om}`) : n.do==='base' ? `<b>${L('베이스 선정','Choose the base')}</b>` : n.do==='reveal' ? `<b>${L('영혼의 우물에서 공개','Reveal at the Well of Souls')}</b>${om}` : `<b>${esc(tx(n.label)||'')}</b>`;
+  if(n.do==='reveal' && c) head = `${pre}${c.icon?`<img src="${c.icon}" alt="" data-cid="${esc(n.cur)}">`:''}<b data-cid="${esc(n.cur)}">${esc(nm(c))}</b>${om}`;
   let tgt='';
   if(n.do==='base'){ const b=baseOf(r); tgt=`<span class="mod">${esc(KR()?b.kr:b.en)}</span>${r.exceptional?` · <b class="excw">${L('특출난','Exceptional')}</b> (${esc(excText(r))})`:''} · ${L('아이템 레벨','ilvl')} ${r.ilvl}${(r.start?.quality||r.quality)?` · ${L('퀄리티','quality')} ${r.start?.quality||r.quality}%${r.start?.quality?L(' 이상','+'):''}`:''}${r.sockets?` · ${L('소켓','sockets')} ${r.sockets}`:''}`; }
   else if(n.do==='fracture') tgt=`${L('분열 목표','Fracture onto')}: ${specText(r,t)}${n.alsoUseful?` · ${L('다른 레시피용','usable elsewhere')}: ${specText(r,{anyOf:n.alsoUseful})}`:''}`;
