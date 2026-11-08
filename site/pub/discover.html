@@ -409,8 +409,9 @@ function makeDraft(it, an){
       for(const sd of ['s','p']) while(junk[sd] > (sd===keepSd?1:0)){
         push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', target:{removeJunk:'any'}, note:note(`소멸의 오브로 잡옵 하나 제거 (분열 줄은 안 지워지고 나머지는 전부 잡옵이라 징조 없이 안전). 분열 줄 + 잡옵 1줄이 남을 때까지.`, `Orb of Annulment removes a junk line (the fractured line cannot go and the rest is junk, so no omen needed). Repeat until only the fractured line + one junk line remain.`)});
         junk[sd]--; cnt[sd]--; } }
+    let hardOf=false; if(wantC.length>1){ const hard = [...wantC].filter(r=>r.pAny!=null).sort((a,b)=>a.pAny-b.pAny)[0]; if(hard){ wantC.length=0; wantC.push(hard); hardOf=true; } }   // the rarest line first: it is the hardest to get later
     if(wantC.length){ const A=wantC[0], sd=A.m.side, rp = junk[sd] ? sd : other(sd);
-      push({phase:'fr', do:'chaos', cur:'Chaos_Orb', target:{...anyOf(wantC), ...(junk.p+junk.s>1?{replace:rp}:{})}, fail:{goto:'self'}, note:note(`분열 줄 + 잡옵 1줄 상태라 카오스 오브는 항상 그 잡옵을 바꿈. 잃을 게 없고, 뜨면 정리할 잡옵도 없음. ${wantC.length>1?`원하는 줄 중 하나(${names(wantC, x=>lkA(x))})가`:`${lkA(A)}${josa(lkA(A),'이','가')}`} 뜰 때까지.${wantC.length>1?` 다른 줄이 먼저 뜨면 뒤 단계의 엑잘 대상이 그만큼 바뀜(계산은 ${lk(A)}${josa(lk(A),'이','가')} 뜬 경우 기준).`:''}`, `With only the fractured line + one junk line, Chaos always swaps that junk line: nothing to lose and nothing to clean up afterwards. Roll until ${wantC.length>1?`one of ${names(wantC, x=>le(x))}`:le(A)} lands.`)});
+      push({phase:'fr', do:'chaos', cur:'Chaos_Orb', target:{...anyOf(wantC), ...(junk.p+junk.s>1?{replace:rp}:{})}, fail:{goto:'self'}, note:note(`분열 줄 + 잡옵 1줄 상태라 카오스 오브는 항상 그 잡옵을 바꿈. 잃을 게 없고, 뜨면 정리할 잡옵도 없음. ${wantC.length>1?`원하는 줄 중 하나(${names(wantC, x=>lkA(x))})가`:`${lkA(A)}${josa(lkA(A),'이','가')}`} 뜰 때까지.${hardOf ? ' 원하는 줄 중 가중치가 가장 낮아 뒤에서 엑잘로 뽑기 어려운 줄이라 여기서 먼저 확보.' : ''}${wantC.length>1?` 다른 줄이 먼저 뜨면 뒤 단계의 엑잘 대상이 그만큼 바뀜(계산은 ${lk(A)}${josa(lk(A),'이','가')} 뜬 경우 기준).`:''}`, `With only the fractured line + one junk line, Chaos always swaps that junk line: nothing to lose and nothing to clean up afterwards. Roll until ${wantC.length>1?`one of ${names(wantC, x=>le(x))}`:le(A)} lands.`)});
       made.push({r:A, id:nodes[nodes.length-1].id}); rnd.splice(rnd.indexOf(A),1); junk[rp]--; cnt[rp]--; cnt[sd]++; }
   }
   // 2b. normal base: magic stage with Perfect orbs
@@ -450,7 +451,7 @@ function makeDraft(it, an){
     const qNote = c => note(`${c.kr}로 퀄리티 ${qc}% (기본 20%${iq?` + ${it.b.kr} 고정 옵션 ${iq}%`:''} + 균열의 에센스 최대 퀄리티 +20%). 이후 붙는 ${c.kr.replace(/ 기폭제$/,'')} 계열 옵션 값이 같이 올라감.`, `${c.en} to ${qc}% (20% base${iq?` + ${iq}% ${it.b.en} implicit`:''} + 20% from the Breach line); matching lines added later get the bonus too.`);
     // the exalts that follow can ride Omen of Catalysing Exaltation: if the final catalyst already matches their lines, apply it now;
     // otherwise a catalyst that matches them goes first and the final one comes after the exalts
-    const exTags = new Set(rnd.filter(r=>alts(r).length<=1).flatMap(r=>r.g.tg||[]));   // an any-element line is not pushed by one element's catalyst
+    const exTags = new Set(rnd.flatMap(r=>r.g.tg||[]));
     if(cat && !craft.cats.some(c=>!/^Refined/.test(c.id) && exTags.has(c.tag))){ push({phase:'q', do:'quality', cur:cat.id, target:{quality:qc}, note:qNote(cat)}); qType=cat.tag; }
     else if(cat){ qPend={cat, note:qNote(cat)}; qFinal=cat; }   // decided at the exalts below; the final catalyst goes on last if another one was used for them
     qDone = !!cat;
@@ -488,7 +489,7 @@ function makeDraft(it, an){
     let cOm = [];
     if(it.cat==='jewellery' && qCap>0){ const tg = new Set(want.flatMap(r=>r.g.tg||[]));
       // the catalyst that favours the most wanted lines here; on a tie keep the one on the item, then the final one
-      const cover = tag => want.filter(r=>alts(r).length<=1 && (r.g.tg||[]).includes(tag)).length;   // any element: one element's catalyst helps only a third of it, not worth a refill
+      const cover = tag => want.filter(r=>(r.g.tg||[]).includes(tag)).length;
       const cands = craft.cats.filter(c=>!/^Refined/.test(c.id) && cover(c.tag)>0), best = Math.max(0, ...cands.map(c=>cover(c.tag)));
       const finalCat = qFinal;
       const c2 = !best ? null : qType && cover(qType)===best ? null : (finalCat && cover(finalCat.tag)===best ? finalCat : cands.find(c=>cover(c.tag)===best));
@@ -500,7 +501,8 @@ function makeDraft(it, an){
     const omTxt = exOm.map(nk).join(' + '), omEn = exOm.map(ne).join(' + ');
     // a wanted line already on this side can be the one an annulment takes: then go back to the step that made it
     const atRisk = [...made].reverse().find(x=>x.r.m.side===sd), lost = atRisk ? {id:atRisk.id} : null;
-    const tgtK = want.length>1?`원하는 줄 중 하나(${names(want, x=>lkA(x))})`:`${lkA(want[0])} (T${want[0].tierNo} 이상)`, tgtE = want.length>1?`any of ${names(want, x=>leA(x))}`:`${leA(want[0])} (tier ${want[0].tierNo}+)`;
+    const one = r => cOm.length && (r.g.tg||[]).includes(qType), lkW = r => one(r) ? lk(r) : lkA(r), leW = r => one(r) ? le(r) : leA(r);   // a catalysed element is aimed at alone
+    const tgtK = want.length>1?`원하는 줄 중 하나(${names(want, x=>lkW(x))})`:`${lkW(want[0])} (T${want[0].tierNo} 이상)`, tgtE = want.length>1?`any of ${names(want, x=>leW(x))}`:`${leW(want[0])} (tier ${want[0].tierNo}+)`;
     // the omen-free clean-up: the other side holds only its fractured line (or nothing), so a plain annulment can only take a line from this side
     const plain = cnt[oth] - frs.filter(x=>x.m.side===oth).length === 0;
     const annVia = plain ? {cur:'Orb_of_Annulment'} : {cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]]};
@@ -508,7 +510,7 @@ function makeDraft(it, an){
     if(tries===2){ push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', omens:exOm, target:{junk:sd},
         note:note(`1차 도전: ${omTxt} + 완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 여기서 뜨면 다음 단계는 아무 ${sideKr(sd)}여도 성공.`, `First try: ${omEn} + Perfect Exalted Orb for ${tgtE}. If it lands here, the next step can be any ${sideEn(sd)}.`)}); cnt[sd]++; }
     const lostK = atRisk ? lk(atRisk.r) : '';
-    const ex = push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(exOm.length?{omens:exOm}:{}), target:anyOf(want), fail:{goto:'self', via:annVia, ...(lost?{lost:lost.id}:{})},
+    const ex = push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(exOm.length?{omens:exOm}:{}), target: cOm.length ? (()=>{ const a = want.flatMap(r=>(r.g.tg||[]).includes(qType) ? [{gi:r.m.gi, tmax:Math.max(1,r.tierNo)}] : alts(r)); return a.length===1 ? a[0] : {anyOf:a}; })() : anyOf(want), fail:{goto:'self', via:annVia, ...(lost?{lost:lost.id}:{})},
       note: lost && cOm.length ? note(`${tries===2?'2차 도전: ':''}${omTxt?omTxt+' + ':''}완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 안 뜨면 갈림길: ① ${annK}로 ${sideKr(sd)} 하나를 지우고 다시 도전. ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시 (계산은 ① 기준). ② 바로 아래 타협 경로.`,
           `${tries===2?'Second try: ':''}${omEn?omEn+' + ':''}Perfect Exalted Orb for ${tgtE}. On a miss you choose: (1) annul a ${sideEn(sd)} and try again; if it takes ${lostK? 'the wanted line':'a wanted line'}, go back to the step that made it (the math uses this). (2) The compromise below.`)
         : note(`${sideKr(sd)}에 ${tgtK}. 실패하면 ${annK}로 지우고 다시.${lost?` ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시.`:''}`, `A ${sideEn(sd)}: ${tgtE}. On a miss, clear it with ${annE} and retry${lost?'; if it takes the wanted line, go back to the step that made it':''}.`)});
