@@ -238,8 +238,8 @@ function analyse(it){
     const tiersHere = g.t.map((x,ti)=>({ti, l:x[0], w:x[1]})).filter(x=>x.l<=it.ilvl && x.w>0);
     const row = {m, g, t, tierNo:m.ti+1, tierCnt:g.t.length, avail:tiersHere.length, src:g.s};
     // the source the item text and the modifier's pool point to
-    if(m.fr) row.how = 'fr'; else if(m.desTag || g.s==='d') row.how='d'; else if(g.s==='e') row.how='e'; else if(g.s==='x') row.how = /Otherworldly/.test(g.sub[1]) ? 'x' : 'sc'; else row.how='n';
-    row.core = g.s==='x' && !/Otherworldly/.test(g.sub[1]) ? g.sub : null;
+    if(m.fr) row.how = 'fr'; else if(m.desTag || g.s==='d') row.how='d'; else if(g.s==='e') row.how='e'; else if(g.s==='x') row.how = /Otherworldly/.test(g.sub[1]) ? 'x' : /Liquid Emotions/.test(g.sub[1]) ? 'lq' : 'sc'; else row.how='n';
+    row.core = g.s==='x' && !/Otherworldly|Liquid Emotions/.test(g.sub[1]) ? g.sub : null;   // runes and soul cores only: liquids are used on the item, never socketed
     row.lord = Object.keys(LORDS).find(k=>g.tg.includes(k+'_mod')) || null;
     if(g.s!=='n'){ row.unknown = g.s==='x' ? 'x' : null; return row; }
     if(flat){ row.unknown='flat'; return row; }
@@ -329,7 +329,8 @@ function makeDraft(it, an){
   const magicEss = essRows.filter(x=>x.e.mode==='magic'), rareEss = essRows.filter(x=>x.e.mode!=='magic');
   const desRows = rows.filter(r=>r.how==='d' && !r.m.fr);
   const othRows = rows.filter(r=>r.how==='x' && !r.m.fr);
-  const augRows = rows.filter(r=>r.how==='sc' && !r.m.fr);   // lines a socketed rune or soul core unlocks
+  const augRows = rows.filter(r=>r.how==='sc' && !r.m.fr);
+  const liqRows = rows.filter(r=>r.how==='lq' && !r.m.fr).map(r=>({r, l:craft.liquids.find(x=>x.en===r.t[3]) || craft.liquids.find(x=>x.en===r.g.t[0][3])})).filter(x=>x.l);   // lines a socketed rune or soul core unlocks
   const augAll = [...new Set(rows.filter(r=>r.core).map(r=>r.g.sub[1]))];
   const augLate = augAll.filter(en=>rows.filter(r=>r.core && r.g.sub[1]===en).every(r=>r.how==='d'));   // only rolled by the final desecration
   const augNames = augAll.filter(en=>!augLate.includes(en));
@@ -340,7 +341,7 @@ function makeDraft(it, an){
   let R0 = null; if(mqGi>=0){ const ps = rnd.filter(r=>r.m.side==='p' && r.how==='n' && !r.unknown); R0 = ps.length ? ps[ps.length-1] : null; if(R0) rnd.splice(rnd.indexOf(R0),1); }
   const take = pred => { const i=rnd.findIndex(pred); return i<0 ? null : rnd.splice(i,1)[0]; };
   // slots reserved for later: essences replace a junk line on their side, desecrations need a free slot
-  const resv = {p:0, s:0}; rareEss.forEach(({r})=>resv[r.m.side]++); if(mqGi>=0) resv.p++;
+  const resv = {p:0, s:0}; rareEss.forEach(({r})=>resv[r.m.side]++); liqRows.forEach(({r})=>resv[r.m.side]++); if(mqGi>=0) resv.p++;
   const desNeed = {p:[...desRows,...othRows].filter(r=>r.m.side==='p').length, s:[...desRows,...othRows].filter(r=>r.m.side==='s').length};
   // 1. base: quality work (armour/weapons; above 20% from Vaal infusers) is part of preparing the base, before any fracture
   let baseQ = null;
@@ -482,6 +483,17 @@ function makeDraft(it, an){
     const d = push({phase:'des', do:'desecrate', cur:b2, ...(om.length?{omens:om}:{}), target:{unrev:sd}, note: b2!==bone ? note(`${sideKr(sd)}에 훼손. ${nk(b2)}${josa(nk(b2),'은','는')} 레벨 40 미만 옵션이 안 나와서 높은 티어 확률이 올라감.`, `Desecrate a ${sideEn(sd)}. Ancient bones skip modifiers below level 40, which lifts high tiers.`) : note(`${sideKr(sd)}에 훼손.`, `Desecrate a ${sideEn(sd)}.`)}); cnt[sd]++;
     push({phase:'des', do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{reveal:tm(r), side:sd, bone:b2, ...(r.lord?{lord:r.lord}:{})}, fail:{goto:d.id, via:{cur:'Orb_of_Annulment', omens:['Omen_of_Light']}},
       note:note(`심연의 메아리의 징조로 공개해 ${lk(r)} (T${r.tierNo} 이상). 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)} (tier ${r.tierNo}+); otherwise Light + Annulment and retry.`)}); }
+  // liquids on jewels: used straight on the item; each removes a random modifier and adds its guaranteed line
+  for(const {r, l} of liqRows){ const sd=r.m.side, oth=other(sd);
+    if(!junk[sd]){ push({phase:'liq', do:'exalt', cur:'Exalted_Orb', ...(room(oth)?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${l.kr}${josa(l.kr,'이','가')} 지울 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${l.en} to remove.`)}); cnt[sd]++; junk[sd]++; }
+    // the liquid takes a random removable line; with the other side full it can only land on this side
+    const remSd = cnt[sd] - frs.filter(x=>x.m.side===sd).length, remOth = cnt[oth] - frs.filter(x=>x.m.side===oth).length;
+    const pool = remSd + (cnt[oth] >= cap[oth] ? 0 : remOth), p = pool>0 ? Math.min(1, junk[sd]/pool) : 1;
+    const back = [...made].reverse().find(x=>x.r.m.side===sd || cnt[oth] < cap[oth]);
+    push({phase:'liq', do:'essence', cur:l.id, knownP:true, target:{...tm(r), chance:+p.toFixed(3)}, ...(p<1 && back ? {fail:{goto:back.id}} : {}),
+      note:note(`${l.kr}${josa(l.kr,'을','를')} 보석에 직접 사용(룬 소켓 아님): 무작위로 한 줄을 지우고 ${lk(r)} 확정. 잡옵이 지워지면 성공(${Math.round(p*100)}%)${p<1 && back?`, 좋은 줄이 지워지면 ${lk(back.r)}${josa(lk(back.r),'을','를')} 만든 단계부터 다시`:''}.`,
+        `Use ${l.en} on the jewel itself (not a socket): it removes a random line and adds ${le(r)}. Success when it takes the junk (${Math.round(p*100)}%)${p<1 && back?'; if it takes a wanted line, redo from the step that made it':''}.`)});
+    junk[sd]--; made.push({r, id:nodes[nodes.length-1].id}); }
   for(const r of othRows) push({phase:'des', do:'manual', label:{kr:'별세계 옵션',en:'Otherworldly line'}, note:note(`${lk(r)} — 훼손에서 낮은 확률로 붙는 별세계 옵션이라 계산에서 빠져요.`, `${le(r)} is an otherworldly desecration outcome; not modelled.`)});
   if(mqGi>=0 && nodes.some(n=>n.target?.gi===mqGi))
     push({phase:'fin', do:'chaos', cur:'Greater_Chaos_Orb', omens:['Omen_of_Whittling'], target: R0 ? {removeGi:mqGi, ...tm(R0)} : {removeGi:mqGi, junk:'p'}, ...(R0?{fail:{goto:'self', via:{cur:'Greater_Chaos_Orb', omens:['Omen_of_Whittling']}}}:{}),
@@ -496,7 +508,7 @@ function makeDraft(it, an){
   const featK = (frs.length? [hi(lk(frs[0]))+' 분열'] : []).concat(key.map(r=>hi(lk(r)))).slice(0,2), featE = (frs.length? ['fractured '+hi(le(frs[0]))] : []).concat(key.map(r=>hi(le(r)))).slice(0,2);
   // phases follow the steps in the order they happen: the Recipes tab groups steps by phase, so a phase that comes back later
   // (e.g. a quality step at the very end) gets its own group there instead of being pulled up next to the earlier one
-  const PH = {base:['베이스','Base'], fr:['분열 베이스 정리','Clean up the fractured base'], magic:['매직 → 희귀','Magic to rare'], q:['퀄리티','Quality'], ex:['엑잘','Exalts'], ess:['에센스','Essence'], des:['훼손','Desecration'], fin:['마무리','Finish']};
+  const PH = {base:['베이스','Base'], fr:['분열 베이스 정리','Clean up the fractured base'], magic:['매직 → 희귀','Magic to rare'], q:['퀄리티','Quality'], ex:['엑잘','Exalts'], ess:['에센스','Essence'], des:['훼손','Desecration'], liq:['액체','Liquid'], fin:['마무리','Finish']};
   const phases = []; for(const n of nodes){ const last = phases[phases.length-1];
     if(last && last.base===n.phase){ n.phase = last.id; continue; }
     const seen = phases.filter(x=>x.base===n.phase).length, id = seen ? `${n.phase}${seen+1}` : n.phase, [kr,en] = PH[n.phase] || [n.phase,n.phase];
@@ -551,8 +563,8 @@ function verifyDraft(it, an, d){
     if(n.do==='remove'){ const sd=t.removeJunk, any = sd==='any'; const k=mods.findIndex(m=>m.junk && (any || m.side===sd)); if(k<0) add('err','지울 잡옵이 없어요.','No junk to remove.',st); else mods.splice(k,1);
       if(any && mods.some(m=>!m.fr && !m.junk)){ add('warn','징조 없는 소멸이 좋은 옵션을 지울 수 있어요.','Annulment without an omen can hit a good line.',st); return; }
       if(!any && mods.some(m=>m.side===sd && !m.fr && !m.junk)) add('warn',`소멸이 같은 쪽의 좋은 옵션을 지울 수 있어요 (${sd==='p'?'접두':'접미'}).`,'Annulment can hit a good line on that side.',st); return; }
-    if(n.do==='essence'){ const e=S.byId?.[n.cur] || S.craft.essences.find(x=>x.id===n.cur); const magicE = e && e.mode==='magic';
-      if(!magicE && n.cur!=='Essence_of_the_Breach' && n.cur!=='Essence_of_the_Abyss'){ crafted++; if(crafted>1 && !runes.includes("Astrid's Creativity")) add('err','제작 옵션(에센스) 두 번째인데 아스트리드의 창의성이 없어요.',"Second crafted line without Astrid's Creativity.",st); }
+    if(n.do==='essence'){ const e=S.byId?.[n.cur] || S.craft.essences.find(x=>x.id===n.cur) || (S.craft.liquids||[]).find(x=>x.id===n.cur); const magicE = e && e.mode==='magic';
+      if(!magicE && e?.act!=='liquid' && n.cur!=='Essence_of_the_Breach' && n.cur!=='Essence_of_the_Abyss'){ crafted++; if(crafted>1 && !runes.includes("Astrid's Creativity")) add('err','제작 옵션(에센스) 두 번째인데 아스트리드의 창의성이 없어요.',"Second crafted line without Astrid's Creativity.",st); }
       if(magicE){ if(rar!=='magic') add('err',`${e.kr}는 마법 아이템에만 쓸 수 있어요.`,`${e.en} needs a magic item.`,st); rar='rare'; addLine(t, L('에센스','Essence')); return; }
       if(rar!=='rare') add('err','완벽한 에센스·합금은 희귀 아이템에만 쓸 수 있어요.','Perfect essences and alloys need a rare item.',st);
       const cr = om.find(o=>/Crystallisation/.test(o)); const sd = cr ? (/Sinistral/.test(cr)?'p':'s') : null;
