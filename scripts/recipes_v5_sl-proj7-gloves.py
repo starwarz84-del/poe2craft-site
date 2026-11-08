@@ -19,8 +19,8 @@ R.append({
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'pre','kr':'접두 3줄','en':'Three prefixes'},{'id':'suf','kr':'접미','en':'Suffixes'},{'id':'fin','kr':'훼손 마무리','en':'Desecration finish'}],
  'nodes':[
   {'id':'v1','phase':'base','do':'base','cost':'base','ts':'1:41',
-   'note':K('특출난 사이렌비늘 장갑(퀄리티 25% 이상). 콜르의 사냥을 장착한 상태로 모든 투사체 스킬 레벨 +2가 분열된 베이스 + 잡옵 1줄.',
-            'Exceptional Sirenscale Gloves (25%+ quality) with Kolr\'s Hunt socketed: fractured +2 projectile skills plus one junk line.')},
+   'note':K('퀄리티 25% 이상. 콜르의 사냥을 장착한 상태로 모든 투사체 스킬 레벨 +2가 분열된 베이스 + 잡옵 1줄.',
+            '25%+ quality, Kolr\'s Hunt socketed: fractured +2 projectile skills plus one junk line.')},
   {'id':'v1b','phase':'base','do':'manual','target':{'rune':SERLE},'label':K('세를의 승리 장착',"Socket Serle's Triumph"),
    'note':K('접미 4줄을 위해 세를의 승리 장착(분열 뒤에 끼움).',"Socket Serle's Triumph for a fourth suffix (after the fracture).")},
   {'id':'v2','phase':'pre','do':'chaos','cur':'Chaos_Orb','target':{'anyOf':[{'gi':sg_pspd,'tmax':1},{'gi':sg_pdmg,'tmax':1}]},'fail':{'goto':'self'},'ts':'3:02',
