@@ -568,7 +568,8 @@ function analyse(r){
   for(let ni=0; ni<r.nodes.length; ni++){ const n=r.nodes[ni];
     const t=n.target||{}, o={n, p:1, warn:null}; byId[n.id]=o; liq=false;
     if(blockKey(n) && !block){ const pr=byId[n.retryFor || n.branch.of]; block={main:mods, pr, key:blockKey(n)};
-      mods = n.retryFor ? pr.pre.filter(m=>!(m.unrev && m.side===pr.n.target.side)).map(m=>({...m}))   // retry: Light + Annulment already took the miss off
+      mods = !n.retryFor && pr.n.do!=='reveal' && pr.missState ? pr.missState.map(m=>({...m}))   // e.g. an essence that took the other line
+        : n.retryFor ? pr.pre.filter(m=>!(m.unrev && m.side===pr.n.target.side)).map(m=>({...m}))   // retry: Light + Annulment already took the miss off
         : pr.pre.map(m=>m.unrev && m.side===pr.n.target.side ? {junk:true, des:true, side:m.side} : {...m}); }   // miss branch: the revealed junk is still there   // Light + Annulment took the miss off
     const sides = sideOfOmens(n.omens);
     const cid = n.target?.bone || n.cur; const ci = S.byId[cid];
@@ -634,6 +635,7 @@ function analyse(r){
         mods.push({gi:t.mark.gi, ti:0, side:ms, mark:true});
       } else if(rar==='rare'){ const rs=(n.omens||[]).some(x=>/Dextral_Crystal/.test(x))?'s':(n.omens||[]).some(x=>/Sinistral_Crystal/.test(x))?'p':null;
         const ri = t.removeGi!=null ? mods.findIndex(m=>m.gi===t.removeGi) : -1;   // e.g. the maximum quality line once quality is done
+        if(ri>=0 && t.chance!=null){ const alt=clone(), j=alt.findIndex(m=>m.junk && (!rs || m.side===rs)); if(j>=0) alt.splice(j,1); if(t.gi!=null) alt.push({gi:t.gi, ti:t.ti||0, side:grp(r,t.gi).g, ess:true}); o.missState=alt; }   // the miss: the other line went
         if(ri>=0) mods.splice(ri,1); else if(!removeJunk(rs) && !removeJunk(null)) o.warn=L('지울 잡옵이 없다고 가정됨','No junk modifier to remove');
         if(t.gi!=null) mods.push({gi:t.gi, ti:t.ti||0, side:grp(r,t.gi).g, ess:true});
         if(t.chance!=null) o.p=t.chance;   // e.g. a Crystallisation that clears the unwanted one of two lines

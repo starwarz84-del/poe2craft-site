@@ -480,6 +480,7 @@ R.append({
 })
 exec(open('/home/claude/poe2data/scripts/recipes_batch2.py').read())
 exec(open('/home/claude/poe2data/scripts/recipes_batch3.py').read())
+exec(open('/home/claude/poe2data/scripts/recipes_batch4.py').read())
 # side omens that do nothing: the other side is already full, so the slam/desecration can only land on this side anyway
 REDUNDANT={('gold-amulet-6line','p4'),('gold-amulet-6line','d1'),('grasping-mail-spell1','p0'),('grasping-mail-spell1','p2'),('grasping-mail-spell1','p4'),
  ('absent-amulet-spell6','s4'),('absent-amulet-spell6','m2'),('mazbro-caster-ring','r12'),('mazbro-caster-amulet','a12'),('mazbro-bis-chest','c12'),('mazbro-bis-chest','c10'),('mazbro-bis-chest','c13'),
