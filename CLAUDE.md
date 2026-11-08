@@ -36,6 +36,8 @@ scripts/        데이터·레시피 빌드 (python)
   build_recipes.py      레시피 정의 → site/data/recipes.json (recipes_batch2.py, recipes_batch3.py 를 exec)
   build_tips.py         제작 꿀팁 → site/data/tips.json
   build_site_data.py 등 원천 데이터(raw/) → site/data/{index,crafting}.json, site/data/c/*.json(클래스별)
+  apply_coe_weights.py  raw/coe_weights_patch.json → c/*.json 가중치 채우기 (**build_site_data.py를 다시 돌렸으면 반드시 뒤에 실행**)
+tools/coe/      compare.py(Craft of Exile poec_data.json ↔ 우리 데이터 대조), make_patch.py(모르는 가중치만 패치로). CoE 원본 파일은 저장소에 안 넣음
 i18n/build.py   site/*.html → site/pub/*.html (영문 번역 런타임 주입, 문서 head 추가)
 site/data/      index.json(클래스·베이스 목록), crafting.json(화폐·징조·에센스·기폭제), c/<클래스>.json(옵션 그룹·가중치·룬),
                 recipes.json, tips.json, samples.json(등록 레시피 완성템 텍스트 = 발굴 탭 테스트용)
@@ -85,6 +87,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
   `cur, omens, target, fail{goto, via}, after.keepOnly, expect, extra, knownP, unknownW, ts, note{kr,en}`
 - target: `gi | anyOf | all, tmax, replace, removeGi, junk, unrev, reveal{}, side, bone, lord, setQuality, quality, chance, slots, dropGi, imp, anoint, sanctify, vals, rune, runeSwap, removeJunk`
 - **게임 규칙과 근거는 `docs/game-rules.md`**(데이터·설명·사용자·영상·교차·추정·미확인 표시). 규칙을 바꾸면 여기도 같이 고쳐요.
+- **Craft of Exile 가중치**(2026-11-08): 2,703개 옵션 대조 → 2,307개 완전 일치. poedb 가중치가 1(모름)인 티어에 같은 레벨 CoE 값이 있으면만 채움(358티어·222그룹, 예: 목걸이 시전 속도 800). 채운 그룹은 `wsrc:'coe'`·`wcoe`, 화면에 "가중치: Craft of Exile" 표시(`o.wCoe`). 둘 다 값이 있는데 다른 12개는 poedb 유지.
 - 확률은 가중치 데이터로 계산(AI가 정하지 않음). 훼손 공개: 일반 옵션은 원래 가중치, 훼손 전용 옵션은 공개 가중치가 없어 그룹당 1000 가정 → **"가중치 추정"** 표시(`o.pEst`, 사용자 확정 2026-11-08). 가중치 모름: `가중치 미확인`(x그룹·평탄 가중치 클래스), `가중치 미정`(가중치 1짜리 단독 그룹, 예: 목걸이·반지 시전 속도), 촉진 찬미 + 퀄리티 대상은 `촉진 효과로 확률 상승 (수치 비공개)`.
 - 그룹 `s`: n 일반 · d 훼손 전용 · e 에센스 전용 · x 증강물 전용(룬·영혼 핵, sub=이름) 또는 별세계(sub=Otherworldly) · c 타락 · u 희생
 
@@ -148,5 +151,6 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 - [ ] 브리치 반지 원본의 결정화 방향(접미 합금에 좌측 결정화) 의도 확인
 - [x] 원본 레시피 이름 "콜러의 사냥" → "콜르의 사냥"(영문 Kolr's Hunt) 정리 (2026-11-08)
 - [ ] 구매 시 잡옵이 붙은 레시피 7개 정리 여부(사용자 결정 대기)
-- [ ] craftofexile에서 모르는 가중치 채우기, 완성 카드 기능을 에뮬레이터·빌더에도 적용
+- [x] craftofexile에서 모르는 가중치 채우기 (2026-11-08, 358티어)
+- [ ] 완성 카드 기능을 에뮬레이터·빌더에도 적용
 - [ ] 도메인 구매 후 호스팅
