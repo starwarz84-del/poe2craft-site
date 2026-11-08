@@ -45,3 +45,29 @@ R.append({
    'note':K('심연의 메아리의 징조로 공개해 공격 시 원소 피해. 안 나오면 빛의 징조 + 소멸의 오브로 지우고 빈자리에 다시 훼손.','Reveal with Abyssal Echoes for an elemental attack flat; otherwise Light + Annulment and desecrate the free slot again.')},
  ],
 })
+
+# ---- 라그나게임채널 "라장간 #1 아샷활 초간단 제작 가이드" (youtu.be/m0eHw6nq24Q) ----
+c='Bows'
+def textB(t, sec, side=None):
+    hits=[gi for gi,gr in enumerate(cd(c)['groups']) if gr['s']==sec and (side is None or gr['g']==side) and t in gr['t'][0][5]]
+    if not hits: raise Exception(t)
+    return hits[0]
+bw_pct=textB('% increased Physical Damage','n','p'); bw_flatE=textB('Physical Damage','e','p')
+bw_as=[gi for gi,gr in enumerate(cd(c)['groups']) if gr['s']=='d' and 'CompanionAttackSpeed' in gr.get('f',[])][0]
+R.append({
+ 'id':'ragna-ashot-bow','cls':c,'base':base(c,'Warmonger Bow'),'ilvl':82,'difficulty':1,'budget':'low',
+ 'buildTags':[K('활 공격','Bow attacks'),K('물리','Physical'),K('공격 속도','Attack speed')],'patch':'0.5','created':'2026-11-09','author':RG,
+ 'source':{'url':'https://www.youtube.com/watch?v=m0eHw6nq24Q','title':'【POE 2】라장간 #1 아샷활 초간단 제작 가이드 (엔드게임에서 제작 꼭 하세요)','channel':'라그나게임채널'},
+ 'title':K('물리 % 1티어 + 마모 플랫 + 아마나무 공격 속도','T1 % physical + Abrasion flat + Amanamu attack speed'),
+ 'start':{'rar':'magic','mods':[{'gi':bw_pct,'tmax':1},{'junk':'s'}]},
+ 'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'suf','kr':'접미 (훼손)','en':'Suffixes (desecration)'}],
+ 'nodes':[
+  {'id':'w1','phase':'base','do':'base','cost':'base','ts':'0:40','note':K('물리 피해 % 증가 1티어가 붙은 매직 전쟁광 활(아이템 레벨 82). 자본에 맞춰 거래소에서 사거나 진화·확장으로 직접 띄움. 영상은 초반엔 깡딜이 높은 절멸자 활(공격 속도 1.1)을 추천, 전쟁광 활(1.2)은 사거리 감소 디버프가 없어 하이엔드용.','A magic Warmonger Bow with T1 % physical damage (item level 82); buy it to your budget or roll it with transmute/augment. The video recommends the Obliterator Bow (higher base damage, 1.1 attack speed) early; the Warmonger (1.2) avoids the range penalty for high end.')},
+  {'id':'w2','phase':'pre','do':'essence','cur':'Greater_Essence_of_Abrasion','target':{'gi':bw_flatE},'ts':'2:07','note':K('상위 마모의 에센스로 희귀가 되며 공격 시 물리 피해 추가 확정. 이 줄은 제작 속성이라 이후 심연의 에센스 같은 제작 속성은 못 씀.','Greater Essence of Abrasion makes it rare with a guaranteed flat physical line. That line counts as crafted, so another crafted line (e.g. Essence of the Abyss) cannot be added later.')},
+  {'id':'w3','phase':'pre','do':'exalt','cur':'Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'junk':'p'},'ts':'2:31','note':K('좌측 찬미의 징조 + 엑잘티드 오브로 접두 마지막 자리. 원소 플랫이면 좋고 정확도는 아쉬움. 물리 % + 정확도 하이브리드가 뜨면 대박(영상).','Sinistral Exaltation + Exalted Orb for the last prefix: an elemental flat is good, accuracy is a letdown, the % physical + accuracy hybrid is the jackpot (as in the video).')},
+  {'id':'w4','phase':'suf','do':'desecrate','cur':'Preserved_Jawbone','omens':['Omen_of_the_Liege'],'target':{'unrev':'s'},'ts':'3:42','note':K('보존된 턱뼈 + 군왕의 징조로 아마나무 훼손. 접두가 꽉 차 있어서 우측 강령술의 징조 없이도 접미에 들어감. 아마나무 접미에 공격 속도가 있음.','Preserved Jawbone + Omen of the Liege for an Amanamu desecration; with the prefixes full it lands on a suffix without Necromancy. Amanamu suffixes include attack speed.')},
+  {'id':'w5','phase':'suf','do':'exalt','cur':'Exalted_Orb','target':{'junk':'s'},'ts':'4:18','note':K('공개 전에 엑잘티드 오브로 남은 접미 하나. 투사체 스킬 레벨·치명타·추가 화살·흡혈이면 좋음(영상은 생명력 흡수).','Exalt the last suffix before revealing: projectile levels, crit, extra arrows or leech are good (life leech in the video).')},
+  {'id':'w6','phase':'suf','do':'reveal','target':{'reveal':{'gi':bw_as},'side':'s','lord':'amanamu','bone':'Preserved_Jawbone'},'fail':{'goto':'w4','via':LIGHT},'ts':'5:05','note':K('심연의 우물에서 공개해 공격 속도 + 반려수 공격 속도(영상 14%). 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시 훼손.','Reveal at the Well of Souls for attack speed + companion attack speed (14% in the video); otherwise Light + Annulment and desecrate again.')},
+  {'id':'w7','phase':'suf','do':'note','ts':'5:43','note':K('주의: 마모의 에센스 줄이 제작 속성이라 심연의 에센스 + 우측 결정화의 징조는 먹지 않음(우측 결정화의 징조를 살 필요 없음). 안 좋게 나온 활은 팔고 다시.','Note: the Abrasion line is crafted, so Essence of the Abyss with Dextral Crystallisation does not work (no need to buy the omen). Sell the misses and try again.')},
+ ],
+})
