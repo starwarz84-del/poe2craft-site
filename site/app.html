@@ -1,0 +1,94 @@
+<title>POE2 Crafting</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* Layout: a thin bar (name · tool tabs · language) over a full-height tool. Emulator is the default view. */
+:root{
+  --bg:#13151a; --bar:#181a20; --line:#2e333e; --fg:#e8e3d8; --muted:#959ba6; --accent:#c8a85a;
+  --f-body:"IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:14px;display:flex;flex-direction:column}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bar)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;flex:none;background:var(--bar);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:4px 20px;flex-wrap:wrap;
+  padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));min-height:48px}
+.name{font-weight:600;font-size:15px;letter-spacing:.01em;color:var(--fg);text-decoration:none;white-space:nowrap}
+.name span{color:var(--accent)}
+nav{display:flex;align-self:stretch;gap:4px}
+nav a{display:flex;align-items:center;padding:0 12px;text-decoration:none;color:var(--muted);font-weight:500;border-bottom:2px solid transparent;white-space:nowrap}
+nav a:hover{color:var(--fg)}
+nav a[aria-current="page"]{color:var(--fg);border-bottom-color:var(--accent)}
+.lang{margin-left:auto;display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.lang button{background:transparent;border:0;color:var(--muted);font:inherit;font-size:12.5px;padding:5px 10px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:#262a33;color:var(--fg)}
+main{flex:1 1 auto;min-height:0;position:relative}
+main iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg)}
+@media (max-width:480px){.bar{gap:0 12px}nav a{padding:0 8px}}
+</style>
+
+<header class="bar">
+  <a class="name" href="#emulator">POE2 <span>Crafting</span></a>
+  <nav aria-label="Tools">
+    <a href="#emulator" data-view="emulator" data-en="Emulator" data-kr="에뮬레이터">Emulator</a>
+    <a href="#builder" data-view="builder" data-en="Item Builder" data-kr="옵션 빌더">Item Builder</a>
+    <a href="#recipes" data-view="recipes" data-en="Recipes" data-kr="레시피">Recipes</a>
+    <a href="#discover" data-view="discover" data-en="Discover" data-kr="발굴">Discover</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" id="l-en" aria-pressed="true">EN</button>
+    <button type="button" id="l-kr" aria-pressed="false">한국어</button>
+  </div>
+</header>
+<main id="main"></main>
+
+<script>
+(() => {
+  const SRC = {emulator:'emulator.html', builder:'builder.html', recipes:'recipes.html', discover:'discover.html'};
+  const frames = {};
+  let lang = 'en';
+  try{ lang = localStorage.getItem('poe2lang') || 'en'; }catch(e){}
+  const links = [...document.querySelectorAll('nav a')];
+  function setLang(l){
+    lang = l; document.documentElement.lang = l==='en'?'en':'ko';
+    try{ localStorage.setItem('poe2lang', l); }catch(e){}
+    document.getElementById('l-en').setAttribute('aria-pressed', l==='en');
+    document.getElementById('l-kr').setAttribute('aria-pressed', l==='kr');
+    links.forEach(a=>a.textContent = a.dataset[l]);
+    Object.values(frames).forEach(f=>{ try{ f.contentWindow.postMessage({type:'poe2-lang', lang:l}, '*'); }catch(e){} });
+  }
+  function show(){
+    let v = location.hash.slice(1), rid = null;
+    if(v.startsWith('r-')){ rid = v.slice(2); v = 'recipes'; }   // #r-<id> = a shared recipe
+    if(!SRC[v]) v = 'emulator';
+    links.forEach(a=>{ if(a.dataset.view===v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+    // each tool loads once and stays alive, so work in progress survives switching tabs
+    if(!frames[v]){ const f=document.createElement('iframe'); f.src=`${SRC[v]}?lang=${lang}${rid?'#r-'+rid:''}`; f.title=links.find(a=>a.dataset.view===v).textContent;
+      f.addEventListener('load', ()=>{ try{ f.contentWindow.postMessage({type:'poe2-lang', lang}, '*'); }catch(e){} }); frames[v]=f; document.getElementById('main').appendChild(f); }
+    else if(rid){ try{ frames[v].contentWindow.postMessage({type:'poe2-open', id:rid}, '*'); }catch(e){} }
+    Object.entries(frames).forEach(([k,f])=>f.hidden = k!==v);
+  }
+  // tools inside frames ask the shell to save files (the page's downloads capability)
+  let dl=null; const dlReady = (async()=>{ try{ if(window.claude && claude.use) dl = await claude.use('downloads'); }catch(e){ dl=null; } })();
+  window.addEventListener('message', async e=>{ const d=e.data||{}; if(d.type!=='poe2-download' || !Object.values(frames).some(f=>f.contentWindow===e.source)) return;
+    await dlReady; let out={type:'poe2-download-result', id:d.id};
+    if(!dl) out.code='unavailable';
+    else { try{ const r=await dl.save({filename:d.filename, data:d.blob}); out.status=r.status; }catch(err){ out.code=err&&err.code||'unavailable'; } }
+    try{ e.source.postMessage(out, '*'); }catch(_){} });
+  // a tool can update the address (e.g. an opened recipe) without reloading anything
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-route' && /^[A-Za-z0-9-]+$/.test(d.hash||'') && frames.recipes && e.source===frames.recipes.contentWindow){
+    if(location.hash.slice(1)!==d.hash){ try{ history.replaceState(null,'','#'+d.hash); }catch(_){ } } } });
+  // a draft made on Discover opens in Recipes
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-draft' || !frames.discover || e.source!==frames.discover.contentWindow) return;
+    const had = !!frames.recipes; location.hash = 'recipes'; show();
+    const send = ()=>{ try{ frames.recipes.contentWindow.postMessage({type:'poe2-draft', recipe:d.recipe}, '*'); }catch(_){} };
+    if(had) send(); else frames.recipes.addEventListener('load', send, {once:true}); });
+  document.getElementById('l-en').addEventListener('click', ()=>setLang('en'));
+  document.getElementById('l-kr').addEventListener('click', ()=>setLang('kr'));
+  window.addEventListener('hashchange', show);
+  setLang(lang); show();
+})();
+</script>

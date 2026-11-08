@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1300,height:1000}});
+p.on('pageerror',e=>console.log('E',e.message));
+await p.goto('http://localhost:8779/app.html?lang=kr#discover'); await p.waitForTimeout(1500);
+const fr=()=>p.frames().find(f=>f.url().includes(process.argv[3]||'discover'));
+const d=p.frames().find(f=>f!==p.mainFrame() && f.url().includes('discover.html'));
+await d.click(`[data-sample="${process.argv[2]||0}"]`); await d.waitForTimeout(1200);
+await d.click('#mk'); await p.waitForTimeout(3000);
+const r=p.frames().find(f=>f.url().includes('recipes.html'));
+const out=await r.evaluate(()=>{const R=__rec; const x=R.recipes[0]; const a=R.analyse? null:null; return {id:x.id,title:x.title, open:R.open, nodes:x.nodes.map(n=>n.do+':'+(n.cur||'')+':'+JSON.stringify(n.target||{})+(n.omens?' '+n.omens.join(','):''))}});
+console.log(JSON.stringify(out,null,1));
+const txt=await r.evaluate(()=>[...document.querySelectorAll('.node, .st')].map(e=>e.innerText.replace(/\s+/g,' ').slice(0,180)).join('\n'));
+console.log(txt);
+await p.screenshot({path:'dr.png'}); await b.close();})();
