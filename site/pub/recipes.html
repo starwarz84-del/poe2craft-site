@@ -896,7 +896,13 @@ function nextOnSuccess(r, n){
   return null;
 }
 // which side a random add lands on: an omen fixes it; otherwise it is random unless only one side has room
-const runeName = id => typeof id==='object' ? tx(id) : nm(cur(id));   // a socketed rune: an id from our data, or a named one from the recipe
+const runeName = id => typeof id==='object' ? tx(id) : nm(cur(id));
+// a socketed rune's own modifier lines on this item class (both lines of the class entry), for the item card
+const runeRec = (r, id) => { const en = typeof id==='object' ? (id.en||'') : String(id).replace(/^rune:/,''), kr = typeof id==='object' ? (id.kr||'') : '';
+  for(const x of C(r).runes||[]) for(const t of x.t) if(t[1]===en || (kr && t[0]===kr)) return t; return null; };
+const runeLines = (r, id) => { const t=runeRec(r,id); if(!t) return [];
+  const kr=[t[2],t[4]].filter(Boolean).join('\n').split('\n'), en=[t[3],t[5]].filter(Boolean).join('\n').split('\n');
+  return en.map((e,i)=>({en:e.trim(), kr:(kr[i]||e).trim()})).filter(x=>x.en && !/^local /i.test(x.en) && !/^local /i.test(x.kr)); };   // a socketed rune: an id from our data, or a named one from the recipe
 function sideLbl(n, o, sd){
   const kr=sd==='p'?'접두':'접미', en=sd==='p'?'prefix':'suffix';
   if(n.target?.fromMark || (n.omens||[]).some(x=>/(Sinistral|Dextral)_(Exaltation|Necromancy)/.test(x))) return {kr, en};   // an omen or a Mark fixes the side
@@ -989,6 +995,7 @@ function basePropsHTML(r, o){
   const calc = end => {
     const lines=[];
     o.state.forEach(m=>{ if(m.gi==null || m.unrev || m.mark) return; const t=enModText(r,m,o); (typeof t==='string'?t:t[end]).split('\n').forEach(x=>lines.push(x.trim())); });
+    (o.runes||[]).forEach(id=>runeLines(r,id).forEach(x=>lines.push(x.en)));   // rune lines count for local stats (e.g. % physical damage on a weapon)
     (o.imp||[]).forEach(x=>(x.en||'').replace(/\((\d+(?:\.\d+)?)—(\d+(?:\.\d+)?)\)/g, end==='lo'?'$1':'$2').split('\n').forEach(y=>lines.push(y.trim())));
     const st={ele:[0,0], flat:[0,0], incPhys:0, incAS:0, crit:0, fd:{Armour:0,'Evasion Rating':0,'Energy Shield':0}, id:{Armour:0,'Evasion Rating':0,'Energy Shield':0}}; let m;
     for(const l of lines){
@@ -1056,12 +1063,12 @@ function itemTipHTML(r, o, opt={}){
   const cnt=`<div class="tt-cnt"><span class="p">P ${np}/${o.cap.p}</span><span class="s">S ${ns}/${o.cap.s}</span>${o.sockets?`<span class="r">Rune ${o.runes.length}/${o.sockets}</span>`:''}</div>`;
   const QT = {attack:['공격','attack'], caster:['시전','caster'], life:['생명력','life'], mana:['마나','mana'], defences:['방어','defences'], physical:['물리','physical'], fire:['화염','fire'], cold:['냉기','cold'], lightning:['번개','lightning'], chaos:['카오스','chaos'], speed:['속도','speed'], attribute:['능력치','attribute'], minion:['소환수','minion']};
   const q = (o.qual?.v || opt.showQual) ? `<div class="tt-prop">${L('퀄리티','Quality')}${o.qual.type&&QT[o.qual.type]?` (${L(QT[o.qual.type][0]+' 속성 부여',QT[o.qual.type][1]+' modifiers')})`:''}: <b>+${o.qual?.v||0}%</b></div>` : '';
-  const ru = o.sockets ? `<div class="tt-sep"></div>${o.runes.map(id=>`<div class="tt-mod rune"><span class="tier r">Rune</span>${esc(runeName(id))}</div>`).join('')}${'<div class="tt-mod slot0"><span class="tier r">Rune</span></div>'.repeat(Math.max(0,o.sockets-o.runes.length))}` : '';
+  const ru = o.sockets ? `<div class="tt-sep"></div>${o.runes.map(id=>{ const ls=runeLines(r,id); return ls.length ? ls.map(x=>`<div class="tt-mod rune" title="${esc(runeName(id))}"><span class="tier r">Rune</span>${esc(tx(x))}</div>`).join('') : `<div class="tt-mod rune"><span class="tier r">Rune</span>${esc(runeName(id))}</div>`; }).join('')}${'<div class="tt-mod slot0"><span class="tier r">Rune</span></div>'.repeat(Math.max(0,o.sockets-o.runes.length))}` : '';
   const ench = (o.anoint||(o.imp||[]).length) ? `<div class="tt-ench"><div class="tt-sep"></div>${o.anoint?`<div class="tt-mod ench"><span class="tier e">${L('성유','Anoint')}</span>${esc(L('할당 ','Allocates ')+tx(o.anoint))}</div>`:''}${(o.imp||[]).map(x=>`<div class="tt-mod imp">${esc(tx(x))}</div>`).join('')}</div>` : '';
   const va = o.vaal ? `<div class="tt-sep"></div><div class="tt-mod vaal"><span class="tier v">Vaal</span>${esc(tx(o.vaal))}</div>` : '';
   return `<div class="tt"><div class="tt-head"><div class="tt-name">${esc(KR()?b.kr:b.en)}</div>${r.exceptional?`<div class="tt-exc" title="${esc(excText(r))}">${L('특출난','Exceptional')} · ${esc(excText(r))}</div>`:''}</div><div class="tt-body">
     ${b.img?`<div class="tt-art"><img src="${b.img}" alt=""></div>`:''}<div class="tt-props"><div class="tt-prop">${esc(clsName(r))}</div>${basePropsHTML(r,o)}${q}<div class="tt-prop">${L('아이템 레벨','Item Level')}: <b>${r.ilvl}</b></div></div>
-    ${cnt}${ench}<div class="tt-sep"></div>${side('p')}<div class="tt-gap"></div>${side('s')}${ru}${va}${o.sanct?`<div class="tt-sep"></div><div class="tt-sanct">${L('축성','Sanctified')}</div>`:''}</div></div>`;
+    ${ru}${va}${cnt}${ench}<div class="tt-sep"></div>${side('p')}<div class="tt-gap"></div>${side('s')}${o.sanct?`<div class="tt-sep"></div><div class="tt-sanct">${L('축성','Sanctified')}</div>`:''}</div></div>`;
 }
 function detailHTML(r){
   const a=analyse(r), so=social(r.id), old=isOld(r); CUR_R=r;
