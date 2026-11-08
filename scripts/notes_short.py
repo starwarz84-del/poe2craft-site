@@ -88,6 +88,8 @@ BRANCH = {
  ('breach-ring-video','c13'): ('너무 안 뜨면 2티어로 타협.','If it drags on, settle for T2.'),
  ('ragna-spell4-amulet','g6'): ('시전 속도 → 완성. 아니면 갈림길: ① 우측 소멸의 징조 + 소멸의 오브 후 기폭제 다시 채우고 재도전 ② 타협(아래).','Cast speed → done. Otherwise: ① Dextral Annulment + Annulment, refill quality, retry ② settle (below).'),
  ('mazbro-proj-gloves','g10'): ('실패: 우측 결정화의 징조 + 군왕의 합금·발작의 에센스로 잡옵을 바꿔 두 번 더, 다 실패하면 소멸의 오브.','Miss: Dextral Crystallisation + alloy/essence to swap the junk twice more, then annul.'),
+ ('mazbro-sceptre','z13'): ('한 번만 봄: 성공 → 마지막 접미, 실패 → 그대로 두고 마지막 접미 먼저, 훼손은 마지막에 다시.','One look: hit → last suffix; miss → leave it, do the last suffix first, redo the desecration last.'),
+ ('mazbro-sceptre','z14'): ('빗나가서 지운 줄이 장착 증강 효과면 합금 단계부터.','If the annul takes the augment-effect line, redo the alloy step.'),
  ('diztoh-iceshot-bow','w12'): ('실패: 우측 결정화의 징조 + 완벽한 가속의 에센스 → 심연의 에센스(징표) → 다시 훼손.','Miss: Dextral Crystallisation + Perfect Essence of Haste, Essence of the Abyss (Mark), desecrate again.'),
  ('diztoh-iceshot-bow','w15'): ('공격 속도·치명타 피해·초과 화살 → 대박.','Attack speed, crit damage or extra arrows → jackpot.'),
  ('diztoh-vile-robe','v6'): ('실패: 우측 결정화의 징조 + 완벽한 추구의 에센스 → 우측 결정화의 징조 + 심연의 에센스(징표) → 다시 공개.','Miss: Dextral Crystallisation + Perfect Essence, then Dextral Crystallisation + Essence of the Abyss (Mark), reveal again.'),
