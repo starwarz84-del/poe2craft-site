@@ -622,7 +622,8 @@ function analyse(r){
         o.missState=[...clone(), {gi:t.mark.alt ?? t.mark.gi, ti:0, side:other, mark:true}];   // the Mark on the other side
         mods.push({gi:t.mark.gi, ti:0, side:ms, mark:true});
       } else if(rar==='rare'){ const rs=(n.omens||[]).some(x=>/Dextral_Crystal/.test(x))?'s':(n.omens||[]).some(x=>/Sinistral_Crystal/.test(x))?'p':null;
-        if(!removeJunk(rs) && !removeJunk(null)) o.warn=L('지울 잡옵이 없다고 가정됨','No junk modifier to remove');
+        const ri = t.removeGi!=null ? mods.findIndex(m=>m.gi===t.removeGi) : -1;   // e.g. the maximum quality line once quality is done
+        if(ri>=0) mods.splice(ri,1); else if(!removeJunk(rs) && !removeJunk(null)) o.warn=L('지울 잡옵이 없다고 가정됨','No junk modifier to remove');
         if(t.gi!=null) mods.push({gi:t.gi, ti:t.ti||0, side:grp(r,t.gi).g, ess:true});
         if(t.chance!=null) o.p=t.chance;   // e.g. a Crystallisation that clears the unwanted one of two lines
       } else { rar='rare'; if(t.gi!=null) mods.push({gi:t.gi, ti:t.ti||0, side:grp(r,t.gi).g, ess:true}); } }

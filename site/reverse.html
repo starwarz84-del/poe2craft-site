@@ -507,6 +507,7 @@ function makeDraft(it, an){
     if(lost && cOm.length) push({phase:'ex', do:'note', fallbackFor:ex.id, label:{kr:'갈림길 ②: 타협',en:'Fork (2): settle'}, note:note(`안 뜬 줄은 그대로 두고 다음 단계로. 뒤의 훼손 공개에서 원하는 줄이 안 나와도 다시 하지 않고 마무리. 비싸게 팔기는 어렵지만 ${lostK}${josa(lostK,'을','를')} 잃을 위험 없이 적당한 옵션으로 타협.`, `Leave the miss and move on; if a later reveal misses too, finish anyway. It won't sell high, but it settles for decent mods without risking the line you already have.`)});
     rnd.splice(rnd.indexOf(want[0]),1); cnt[sd]++;
   } };
+  let mqGone = false; const mqLive = () => mqGi>=0 && !mqGone && nodes.some(n=>n.target?.gi===mqGi);
   let crafted = 0; const essDone = new Set(), bone = boneFor(it.cat), desDone = new Set();
   const split = firstSd && !augLate.length && !j5?.B;
   exaltPass(split ? firstSd : null);
@@ -517,12 +518,26 @@ function makeDraft(it, an){
   function essPass(only){ for(const x of rareEss){ const {r,e}=x; if(essDone.has(x) || (only && r.m.side!==only)) continue; essDone.add(x);
     const sd=r.m.side; openSlot(sd);
     if(crafted===1) push({phase:'ess', do:'manual', target:{rune:{kr:'아스트리드의 창의성', en:"Astrid's Creativity"}}, label:{kr:'아스트리드의 창의성 장착', en:"Socket Astrid's Creativity"}, note:note('제작 옵션(에센스)은 보통 1줄까지라, 두 번째를 붙이려고 아스트리드의 창의성 룬을 장착. 완성 후 다른 룬으로 교체.', "Crafted (essence) lines are capped at one; Astrid's Creativity allows a second. Swap it out at the end.")});
-    if(!junk[sd]){ push({phase:'ess', do:'exalt', cur:'Exalted_Orb', ...(room(other(sd))?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${e.kr}${josa(e.kr,'이','가')} 바꿀 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${e.en} to replace.`)}); cnt[sd]++; }
-    else junk[sd]--;
-    push({phase:'ess', do:'essence', cur:e.id, omens:[SIDE_OMEN.cryst[sd]], target:tm(r), note:note(`${nk(SIDE_OMEN.cryst[sd])} + ${e.kr}${josa(e.kr,'으로','로')} 그 줄을 ${lk(r)}로 교체.`, `${sd==='p'?'Sinistral':'Dextral'} Crystallisation + ${e.en} swaps it for ${le(r)}.`)});
+    // the essence removes a random line on the crystallised side: aim it at a side whose removable lines are all throwaway
+    // (junk, or the maximum quality line once quality is done), or a side holding only the fractured line, after adding a junk line there
+    const oth = other(sd), remO = cnt[oth] - frs.filter(x=>x.m.side===oth).length, mqHere = mqLive() && it.D.groups[mqGi].g===oth && !qPend;
+    let cs = sd, why;
+    if(cnt[sd] < cap[sd] && remO>0 && junk[oth] + (mqHere?1:0) === remO){ cs = oth;
+      if(mqHere && !junk[oth]){ mqGone = true; resv[oth]--; if(R0){ rnd.push(R0); R0=null; } why = note(`${sideKr(oth)}엔 분열 줄과 최대 퀄리티(퀄리티 작업이 끝나 필요 없음)뿐이라 그 줄이 지워지고, ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음. 이미 만든 ${sideKr(sd)}는 안 건드림.`, `The only removable ${sideEn(oth)} is the maximum quality line (no longer needed), so it goes and ${le(r)} lands on the ${sideEn(sd)}; the ${sideEn(sd)}es already made stay.`); }
+      else { junk[oth]--; cnt[oth]--; why = note(`${sideKr(oth)}의 잡옵이 지워지고 ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음. 이미 만든 ${sideKr(sd)}는 안 건드림.`, `The ${sideEn(oth)} junk goes and ${le(r)} lands on the ${sideEn(sd)}; the ${sideEn(sd)}es already made stay.`); }
+      cnt[sd]++; }
+    else if(cnt[sd] < cap[sd] && remO===0 && cnt[oth] < cap[oth]){ cs = oth;
+      push({phase:'ess', do:'exalt', cur:'Exalted_Orb', ...(room(sd)?{omens:[SIDE_OMEN.exalt[oth]]}:{}), target:{junk:oth}, note:note(`${sideKr(oth)}에 버릴 옵션 하나. 에센스는 무작위로 한 줄을 지우니, 이미 만든 ${sideKr(sd)} 대신 이 줄이 지워지게 반대쪽에 만듦.`, `A throwaway ${sideEn(oth)}: the essence removes a random line, so it goes here instead of a ${sideEn(sd)} already made.`)});
+      cnt[sd]++; why = note(`${sideKr(oth)}엔 분열 줄과 방금 만든 버릴 옵션뿐이라 그 줄이 지워지고, ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음.`, `The throwaway ${sideEn(oth)} is the only removable one there, so it goes and ${le(r)} lands on the ${sideEn(sd)}.`); }
+    else { if(!junk[sd]){ push({phase:'ess', do:'exalt', cur:'Exalted_Orb', ...(room(other(sd))?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${e.kr}${josa(e.kr,'이','가')} 바꿀 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${e.en} to replace.`)}); cnt[sd]++; }
+      else junk[sd]--; }
+    push({phase:'ess', do:'essence', cur:e.id, omens:[SIDE_OMEN.cryst[cs]], target: cs===sd ? tm(r) : {...tm(r), ...(mqGone && cs===it.D.groups[mqGi]?.g && !junk[cs] ? {removeGi:mqGi} : {})},
+      note: cs===sd ? note(`${nk(SIDE_OMEN.cryst[sd])} + ${e.kr}${josa(e.kr,'으로','로')} 그 줄을 ${lk(r)}로 교체.`, `${sd==='p'?'Sinistral':'Dextral'} Crystallisation + ${e.en} swaps it for ${le(r)}.`)
+        : note(`${nk(SIDE_OMEN.cryst[cs])} + ${e.kr}. ${why.kr}`, `${ne(SIDE_OMEN.cryst[cs])} + ${e.en}. ${why.en}`)});
     crafted++;
   } }
   essPass();
+  if(rnd.length) exaltPass();   // a line put back when an essence took the maximum quality line
   augLate.forEach(en=>{ const r=rows.find(x=>x.core && x.g.sub[1]===en);
     if(crafted>1){ push({phase:'des', do:'manual', target:{runeSwap:[{kr:'아스트리드의 창의성', en:"Astrid's Creativity"}, {kr:r.g.sub[0], en}]}, label:{kr:`룬 교체 → 「${r.g.sub[0]}」`, en:`Swap in ${en}`}, note:note(`제작이 끝났으니 아스트리드의 창의성을 「${r.g.sub[0]}」로 교체. 이 룬이 있어야 훼손 공개에서 전용 옵션이 나옴.`, `Crafting is done, so swap Astrid's Creativity for ${en}; the reveal needs it for its own modifiers.`)}); crafted=-1; }
     else push({phase:'des', do:'manual', target:{rune:{kr:r.g.sub[0], en}}, label:{kr:`「${r.g.sub[0]}」 장착`, en:`Socket ${en}`}, note:note(`훼손 공개에서 전용 옵션이 나오도록 「${r.g.sub[0]}」 장착.`, `Socket ${en} so the reveal can roll its modifiers.`)}); });
@@ -548,7 +563,7 @@ function makeDraft(it, an){
         `Use ${l.en} on the jewel itself (not a socket): it removes a random line and adds ${le(r)}. Success when it takes the junk (${Math.round(p*100)}%)${p<1 && back?'; if it takes a wanted line, redo from the step that made it':''}.`)});
     junk[sd]--; made.push({r, id:nodes[nodes.length-1].id}); }
   for(const r of othRows) push({phase:'des', do:'manual', label:{kr:'별세계 옵션',en:'Otherworldly line'}, note:note(`${lk(r)} — 훼손에서 낮은 확률로 붙는 별세계 옵션이라 계산에서 빠져요.`, `${le(r)} is an otherworldly desecration outcome; not modelled.`)});
-  if(mqGi>=0 && nodes.some(n=>n.target?.gi===mqGi)){
+  if(mqLive()){
     const Ls = sd => cnt[sd] < cap[sd];
     const cur = !R0 || lvlOf(R0)>=50 || R0.tierNo===1 ? 'Perfect_Chaos_Orb' : 'Greater_Chaos_Orb';   // Perfect Chaos rolls level 50+, a family's top tier always
     // repeating Whittling is safe only if a wrong line can never sit below the good ones (it would be the next one replaced)
@@ -665,6 +680,8 @@ function verifyDraft(it, an, d){
       if(magicE){ if(rar!=='magic') add('err',`${e.kr}는 마법 아이템에만 쓸 수 있어요.`,`${e.en} needs a magic item.`,st); rar='rare'; addLine(t, L('에센스','Essence')); return; }
       if(rar!=='rare') add('err','완벽한 에센스·합금은 희귀 아이템에만 쓸 수 있어요.','Perfect essences and alloys need a rare item.',st);
       const cr = om.find(o=>/Crystallisation/.test(o)); const sd = cr ? (/Sinistral/.test(cr)?'p':'s') : null;
+      if(t.removeGi!=null){ const k=mods.findIndex(m=>m.gi===t.removeGi); if(k<0) add('err',`지울 ${nameOf(t.removeGi)} 줄이 없어요.`,'The line to remove is not there.',st); else if(sd && mods[k].side!==sd) add('err','결정화 면과 지울 줄의 면이 달라요.','The crystallised side does not hold the line to remove.',st);
+        else { const others = mods.filter(m=>!m.fr && m.side===mods[k].side && m!==mods[k]); if(others.length) add('warn','결정화 쪽에 다른 옵션도 있어서 그 줄이 지워질 수 있어요.','Other lines on the crystallised side could go instead.',st); mods.splice(k,1); addLine(t, L('에센스','Essence')); return; } }
       const cand = mods.filter(m=>!m.fr && (!sd || m.side===sd));
       if(!cand.length) add('err','에센스가 지울 옵션이 없어요.','Nothing for the essence to remove.',st);
       else if(cand.some(m=>!m.junk)) add(cand.every(m=>!m.junk)?'err':'warn', cand.every(m=>!m.junk) ? '결정화 쪽에 잡옵이 없어서 좋은 옵션이 지워져요.' : '결정화 쪽에 좋은 옵션도 있어서 그 줄이 지워질 수 있어요.', cand.every(m=>!m.junk) ? 'No junk on the crystallised side; a good line is removed.' : 'A good line shares the crystallised side and may be removed.', st);
