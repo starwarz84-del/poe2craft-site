@@ -704,8 +704,8 @@ function verifyDraft(it, an, d){
 function renderStatic(){
   document.documentElement.lang = KR()?'ko':'en';
   $('#h1').textContent = L('레시피 발굴 — 아이템 분석','Recipe discovery — item analysis');
-  $('#lead').textContent = L('게임에서 아이템 위에 마우스를 올리고 Ctrl+C(가능하면 Ctrl+Alt+C 상세 복사)로 복사해 붙여 넣으세요. 각 옵션이 어디서 왔는지(일반·분열·훼손·에센스), 몇 티어인지, 그리고 그 줄을 다시 뽑을 확률을 가중치 데이터로 계산해요.',
-    'Hover the item in game, press Ctrl+C (Ctrl+Alt+C for the advanced copy) and paste it here. Each modifier is matched to its source (regular, fractured, desecrated, essence), its tier, and the odds of rolling it again, from weight data.');
+  $('#lead').textContent = L('게임에서 아이템 위에 마우스를 올리고 Ctrl+C(가능하면 Ctrl+Alt+C 상세 복사)로 복사해 붙여 넣으세요. 각 옵션이 어디서 왔는지(일반·분열·훼손·에센스)와 티어를 읽고, 제작 순서(레시피 초안)를 만들어요.',
+    'Hover the item in game, press Ctrl+C (Ctrl+Alt+C for the advanced copy) and paste it here. Each modifier is matched to its source (regular, fractured, desecrated, essence) and tier, then turned into a crafting order (recipe draft).');
   $('#txt').placeholder = L('아이템 텍스트를 여기에 붙여 넣기','Paste item text here');
   $('#go').textContent = L('분석','Analyse'); $('#clr').textContent = L('지우기','Clear');
   $('#hint').textContent = L('붙여 넣으면 바로 분석해요','Analyses as soon as you paste');
@@ -733,27 +733,13 @@ function render(){
       r.lord ? `<span class="tag d">${L(LORDS[r.lord][0]+' 전용', LORDS[r.lord][1]+' only')}</span>` : '',
       m.out ? `<span class="tag q">${L('범위 초과','Above range')}</span>` : '', m.q ? `<span class="tag q">${L('퀄리티 적용','Quality applied')}</span>` : '',
       `<span class="tag">${esc(r.t[KR()?2:3])}</span>`].join('');
-    const tierB = r.g.s==='n' ? `<b class="${r.tierNo<=1?'r2':''}">T${r.tierNo}</b><i>${L(`${r.tierCnt}단계 중 · 요구 Lv ${r.t[0]}`,`of ${r.tierCnt} · lvl ${r.t[0]}`)}</i>` : `<b>—</b><i>${L(`요구 Lv ${r.t[0]}`,`lvl ${r.t[0]}`)}</i>`;
-    const rollB = m.roll!=null ? `<b>${Math.round(m.roll*100)}%</b><div class="bar"><span style="width:${Math.max(3,m.roll*100)}%"></span></div>` : m.out ? `<b>${L('범위 밖','out')}</b><i>${L('퀄리티·축성','quality/sanctify')}</i>` : `<b>${L('고정값','fixed')}</b>`;
-    let odds;
-    if(r.unknown){ const why = r.unknown==='w1' ? L('가중치 미정','weight not set') : r.unknown==='x' ? L('가중치 미확인','weights unknown') : r.unknown==='flat' ? L('가중치 미확인','weights unknown') : '';
-      odds = r.g.s!=='n' && r.unknown!=='x' ? '' : `<div class="num"><small>${L('엑잘 확률','Exalt odds')}</small><b>—</b><i>${why}</i></div>`; }
-    if(r.g.s==='n' && r.unknown!=='flat' && r.unknown!=='w1'){
-      odds = `<div class="num"><small>${L('엑잘 1회 (면 무관)','Exalt, any side')}</small><b class="${rareCls(r.pAny)}">${pct(r.pAny)}</b><i>${tries(r.pAny)?L(`약 ${tries(r.pAny)}회에 1번`,`~1 in ${tries(r.pAny)}`):''}</i></div>
-        <div class="num"><small>${L('좌측·우측 징조 사용','With side omen')}</small><b class="${rareCls(r.pOmen)}">${pct(r.pOmen)}</b><i>${rareTxt(r.pOmen)}</i></div>
-        <div class="num"><small>${L('완벽한 엑잘 + 징조','Perfect exalt + omen')}</small><b class="${rareCls(r.pPerfect)}">${pct(r.pPerfect)}</b><i>${L('Lv 50 미만 제외','drops < lvl 50')}</i></div>`;
-    } else if(r.g.s!=='n' && !odds){
-      odds = `<div class="num" style="grid-column:span 3;min-width:0"><small>${L('얻는 방법','How it is obtained')}</small><b style="font-family:var(--f-body);font-weight:500">${r.g.s==='e'?L(`${esc(r.g.sub[0])}로만 붙어요`,`Only from ${esc(r.g.sub[1])}`):r.how==='sc'?L(`룬 소켓에 「${esc(r.g.sub[0])}」 장착 후 굴림`,`Socket ${esc(r.g.sub[1])}, then roll`):r.g.s==='d'?L('훼손 뼈 → 심연의 우물 공개에서만','Only from a desecration reveal'):L('훼손 뼈의 별세계 결과','Otherworldly bone outcome')}</b></div>`;
-    }
-    if(r.g.s==='n' && r.t[0]>it.ilvl) odds = `<div class="num" style="grid-column:span 3;min-width:0"><small>${L('엑잘 확률','Exalt odds')}</small><b class="r3">0%</b><i>${L(`이 티어는 아이템 레벨 ${r.t[0]} 이상에서만 붙어요`,`this tier needs item level ${r.t[0]}+`)}</i></div>`;
-    const wNote = r.g.s==='n' && r.wGroup && !r.unknown ? `<div class="note">${L(`가중치 ${r.wTier.toLocaleString()} (이 티어) · 옵션 전체 ${r.wGroup.toLocaleString()} · 같은 면에서 이 옵션 비중 ${pct(r.groupShare)} · 이 옵션 중 T${r.tierNo} 이상 ${pct(r.tierShare)}`,`Weight ${r.wTier.toLocaleString()} (this tier) · ${r.wGroup.toLocaleString()} for the modifier · ${pct(r.groupShare)} of its side · T${r.tierNo}+ is ${pct(r.tierShare)} of its rolls`)}${m.fr?L(' · 지금은 분열이라 다시 뽑을 필요 없음',' · fractured, so it never needs rolling again'):''}</div>` : '';
-    return `<div class="mod ${side} ${m.fr?'fr':''}"><div class="mt"><div class="ml">${esc(m.l)}</div><div class="tags">${tags}</div></div>
-      <div class="nums"><div class="num"><small>${L('티어','Tier')}</small>${tierB}</div><div class="num"><small>${L('값 굴림','Roll')}</small>${rollB}</div>${odds||''}</div>${wNote}</div>`;
+    const tierT = r.g.s==='n' ? L(`T${r.tierNo} · Lv ${r.t[0]}`,`T${r.tierNo} · lvl ${r.t[0]}`) : L(`Lv ${r.t[0]}`,`lvl ${r.t[0]}`);
+    return `<div class="mod ${side} ${m.fr?'fr':''}"><div class="mt"><div class="ml">${esc(m.l)}</div><div class="tags">${tags}<span class="tag">${tierT}</span></div></div></div>`;
   }).join('');
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
   const otherHTML = it.other.length ? `<div class="other">${it.other.map(o=>`<div class="${o.k==='?'?'bad':''}"><span class="k">${kName[o.k]}</span>${esc(o.l)}</div>`).join('')}</div>` : '';
   const canDraft = it.rarity!=='normal' && an.rows.some(r=>!r.unrev);
-  $('#mods').innerHTML = (canDraft ? `<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고 레시피 탭에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 줄부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis and opens it in Recipes: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '') + `<div class="mods-h"><h3>${L('옵션별 분석','MODIFIER BY MODIFIER')}</h3><span class="legend">${L('확률 = 지금 아이템에서 이 줄만 빠졌다고 보고, 다음 엑잘 한 번에 이 옵션이 이 티어 이상으로 붙을 확률','Odds = with this line removed, the chance one exalt adds this modifier at this tier or better')}</span></div>${rowsHTML}${otherHTML}`;
+  $('#mods').innerHTML = (canDraft ? `<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고 레시피 탭에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 줄부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis and opens it in Recipes: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '') + `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3></div>${rowsHTML}${otherHTML}`;
 }
 
 async function run(){
