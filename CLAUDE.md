@@ -20,7 +20,12 @@ Path of Exile 2 아이템 제작 사이트. 탭 4개짜리 한 화면이에요.
 | 레시피 | `site/recipes.html` | `pub/recipes.html` | 유튜브 영상 기반 제작 레시피, 단계별 확률(가중치 계산) |
 | 발굴 | `site/reverse.html` | `pub/discover.html` | 아이템 텍스트 → 옵션 분석 → 레시피 초안 → 검산 → 레시피 탭에 올리기 |
 
-- 껍데기: `site/app.html` (탭 = iframe, `SRC` 맵, 언어 전환, 다운로드 중계, 발굴 → 레시피 초안 전달 `poe2-draft` 메시지)
+- 껍데기: `site/app.html` (탭 = iframe, `SRC` 맵, 언어 전환, 다운로드 중계, 발굴 → 레시피 초안 전달 `poe2-draft` 메시지, 공유 레시피 저장소 중계)
+- **공유 레시피(아티팩트 db)**: 문서 `shared/<사용자 id>` = `{recipes:{<s-id>:{recipe, at}}}`. 규칙: 모두 읽기, 각자 자기 문서만 쓰기, 소유자는 전체 정리 가능.
+  껍데기가 db를 구독해 레시피 탭에 `poe2-shared`로 넘기고, 레시피 탭은 `poe2-share`/`poe2-unshare`로 등록·취소를 요청해요.
+  레시피 탭: 초안 상세의 "공유 레시피로 등록"(id `draft-x` → `s-x`), 내 공유 레시피는 "공유 취소". 남의 새 레시피는 탭 배지 + 오른쪽 아래 알림 + NEW 표시(본 시점은 localStorage `poe2seen`).
+  공유 데이터는 남이 쓴 것이라 레시피 탭 `cleanShared`가 `<>"`` 제거·필드 검사·엔진 시험 계산 후에만 표시해요.
+  링크로 보는 사람(보기 권한)은 읽기만 가능해서 등록 버튼이 안 보여요. 테스트: `tools/test/share.js`(가짜 db).
 - **게시 주소(Claude 아티팩트)**: https://claude.ai/artifact/Me2XFis1VHa9dchhbv66x1
 - 도메인: 사용자가 `poe2` + `.com`으로 정함(후보 poe2craft.com 등). 구매·호스팅은 아직.
 
@@ -58,7 +63,7 @@ cd /home/claude/poe2data/scripts && python3 build_recipes.py && python3 build_ti
 
 ```
 cd /home/claude/poe2data && bash tools/test/serve.sh start
-cd tools/test && node audit.js && node ver.js && node eng.js
+cd tools/test && node audit.js && node ver.js && node eng.js && node share.js
 node build_samples.js      # 레시피를 바꿨으면 samples.json 재생성
 cd /home/claude/poe2data && bash tools/test/serve.sh stop
 ```
@@ -67,9 +72,9 @@ cd /home/claude/poe2data && bash tools/test/serve.sh stop
 - `ver.js` 발굴 초안 17개 검산(오류 0이어야 함) · `eng.js` 초안을 레시피 엔진으로 계산(경고·확률)
 - `cmp2.js` 초안 vs 원본 단계 비교 → cmp2.txt · `one.js <레시피id>` 초안 하나 자세히
 
-게시: Artifact 도구 publish, `file_path=/home/claude/poe2data/site/app.html`, `root=/home/claude/poe2data/site`, `url=`위 주소,
+게시: Artifact 도구 publish, `file_path=/home/claude/poe2craft-site/site/app.html`, `root=/home/claude/poe2craft-site/site`(**링크 경로 poe2data는 게시가 거부돼요**), `url=`위 주소,
 `files`에 바뀐 것만: `{"recipes.html":"pub/recipes.html","discover.html":"pub/discover.html","emulator.html":"pub/emulator.html","builder.html":"pub/builder.html","data/recipes.json":"data/recipes.json","data/tips.json":"data/tips.json","data/samples.json":"data/samples.json"}`.
-capabilities는 생략(기존 `{downloads:true}` 유지). 새 세션에서 처음 게시하기 전엔 Artifact `read`로 해당 파일을 먼저 읽어야 해요.
+capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 다시 적을 땐 셋 다 적어야 해요). 새 세션에서 처음 게시하기 전엔 Artifact `read`로 해당 파일을 먼저 읽어야 해요.
 
 ## 엔진 요약 (site/recipes.html `analyse`)
 
@@ -119,12 +124,12 @@ capabilities는 생략(기존 `{downloads:true}` 유지). 새 세션에서 처�
 
 ## 남은 일
 
-- [ ] 3단계: 생성 레시피를 공유 저장소(아티팩트 db)에 등록 + 레시피 탭 "새 레시피" 알림
+- [x] 3단계: 생성 레시피를 공유 저장소(아티팩트 db)에 등록 + 레시피 탭 "새 레시피" 알림 (2026-11-08)
 - [ ] 2단계: 유튜브 링크 → 레시피 (나중에 텔레그램 봇 형태로)
 - [ ] 초안: 엑잘마다 기폭제 바꾸기 + 촉진하는 찬미(카스터 목걸이 원본 방식)
 - [ ] 초안: 실패 시 갈림길(소멸 vs 결정화)을 POE2_HTC식 "다음 최선 수"로 개선, 소멸 재시도 위험 비용 반영
 - [ ] 브리치 반지 원본의 결정화 방향(접미 합금에 좌측 결정화) 의도 확인
-- [ ] 원본 레시피 이름 "콜러의 사냥" → "콜르의 사냥" 정리
+- [x] 원본 레시피 이름 "콜러의 사냥" → "콜르의 사냥"(영문 Kolr's Hunt) 정리 (2026-11-08)
 - [ ] 구매 시 잡옵이 붙은 레시피 7개 정리 여부(사용자 결정 대기)
 - [ ] craftofexile에서 모르는 가중치 채우기, 완성 카드 기능을 에뮬레이터·빌더에도 적용
 - [ ] 도메인 구매 후 호스팅

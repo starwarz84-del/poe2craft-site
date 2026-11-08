@@ -31,6 +31,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .btn.on{border-color:var(--rare);color:var(--rare)}
 /* toolbar */
 .tag.draftb{color:var(--ink);background:var(--ok);border-color:var(--ok)}
+.tag.shb{color:var(--accent);border-color:var(--accent)}
+.tag.newb{color:var(--ink);background:var(--accent);border-color:var(--accent);font-weight:600}
 .bar{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:10px}
 .bar input[type=search]{flex:1 1 220px;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 10px}
 .bar select{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 8px}
@@ -770,7 +772,7 @@ function cardHTML(r){
       <div class="tt-sep"></div>${ml}</div></div>
     <div class="grow"></div>
     <div class="foot"><h3>${titleHTML(r)}</h3>
-      <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span>`:''}${diffTag(r)}${leagueBadge(r, old)}${budgetTag(r)}${excTag(r)}</div><div class="meta"><span>${esc(tx(r.author))}</span><span>♥ ${likes(r)}</span><span>✓ ${reports(r)}</span></div>
+      <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span>`:''}${sharedTag(r)}${diffTag(r)}${leagueBadge(r, old)}${budgetTag(r)}${excTag(r)}</div><div class="meta"><span>${esc(tx(r.author))}</span><span>♥ ${likes(r)}</span><span>✓ ${reports(r)}</span></div>
       <div class="cost">${divineChip(r)}</div>
     </div>`;
 }
@@ -1026,7 +1028,7 @@ function detailHTML(r){
   return `<div class="dhead" data-dhead><div class="dtop">
       <button type="button" class="btn back" data-act="back" aria-label="${esc(L('목록으로','Back to list'))}">←</button>
       <div class="dtitle"><h1>${titleHTML(r)}</h1>
-        <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${leagueBadge(r, old)}${budgetTag(r)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
+        <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan?`<button type="button" class="btn" data-share="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>`:''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${leagueBadge(r, old)}${budgetTag(r)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
       <div class="acts"><button type="button" class="btn" data-act="link">${L('링크 복사','Copy link')}</button><button type="button" class="btn" data-act="pdf">${L('PDF 다운로드','Download PDF')}</button>
         <button type="button" class="btn" disabled title="${esc(L('준비 중','Coming soon'))}">${L('에뮬레이터에서 따라하기','Follow in emulator')}</button>
         <button type="button" class="btn" disabled title="${esc(L('준비 중','Coming soon'))}">${L('시뮬레이션 진행','Run simulation')}</button></div></div>
@@ -1372,8 +1374,69 @@ window.addEventListener('message', e=>{ const d=e.data||{};
   if(d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); }
   if(d.type==='poe2-open' && d.id && S.recipes.some(r=>r.id===d.id) && S.open!==d.id) setOpen(d.id);
   if(d.type==='poe2-open' && d.id==='' && S.open) setOpen(null);
-  if(d.type==='poe2-draft' && d.recipe && d.recipe.id && d.recipe.cls){ if(S.booted) addDraft(d.recipe, true); else S.pendingDraft=d.recipe; } });
+  if(d.type==='poe2-draft' && d.recipe && d.recipe.id && d.recipe.cls){ if(S.booted) addDraft(d.recipe, true); else S.pendingDraft=d.recipe; }
+  if(e.source===parent && d.type==='poe2-shared' && Array.isArray(d.items)){ if(S.booted) applyShared(d); else S.pendingShared=d; }
+  if(e.source===parent && d.type==='poe2-share-result') shareResult(d); });
 document.addEventListener('click', e=>{ const b=e.target.closest('[data-deldraft]'); if(b){ e.stopPropagation(); removeDraft(b.dataset.deldraft); } }, true);
+document.addEventListener('click', e=>{ const b=e.target.closest('[data-share],[data-unshare]'); if(!b) return; e.stopPropagation();
+  if(b.dataset.share) shareDraft(b.dataset.share, b); else unshare(b.dataset.unshare, b); }, true);
+
+// ---------- shared recipes ----------
+// The shell keeps the shared store (other people's registered recipes); this tab only shows them.
+// Shared data comes from other people, so it is cleaned before it reaches the renderer.
+const sharedTag = r => r.shared ? `${r.isNew?`<span class="tag newb">NEW</span>`:''}<span class="tag shb">${r.mine?L('내 공유 레시피','My shared recipe'):L('공유 레시피','Shared')}</span>` : '';
+function scrub(v, d=0){
+  if(d>24) return null;
+  if(typeof v==='string') return v.replace(/[<>"`]/g,'').slice(0,4000);
+  if(typeof v==='number') return Number.isFinite(v)?v:0;
+  if(typeof v==='boolean' || v==null) return v;
+  if(Array.isArray(v)) return v.slice(0,500).map(x=>scrub(x,d+1));
+  if(typeof v==='object'){ const o={}; for(const k of Object.keys(v).slice(0,300)){ if(/^(__proto__|constructor|prototype)$/.test(k)) continue; o[k]=scrub(v[k],d+1); } return o; }
+  return null;
+}
+const knownCls = id => S.index.groups.some(g=>g.classes.some(c=>c.id===id));
+async function cleanShared(x){
+  const r=scrub(x.recipe);
+  if(!r || !/^s-[a-z0-9]+$/.test(r.id||'') || !knownCls(r.cls) || !Array.isArray(r.nodes) || !Array.isArray(r.phases)) return null;
+  for(const k of ['base','ilvl','sockets','cap']) if(k in r && typeof r[k]!=='number') r[k]=parseInt(r[k])||0;
+  r.patch = String(r.patch||'').replace(/[^0-9a-z.]/gi,'').slice(0,12);
+  if(r.source && !/^https:\/\//.test(r.source.url||'')) delete r.source;
+  delete r.draft;
+  Object.assign(r, {likes:0, success:0, shared:true, mine:!!x.mine, isNew:!!x.isNew, sharedAt:x.at});
+  try{ await loadCls(r.cls); analyse(r); cardHTML(r); }catch(e){ return null; }
+  return r;
+}
+async function applyShared(d){
+  S.shareCan = !!d.can;
+  const list=[]; for(const x of d.items){ const r=await cleanShared(x); if(r && !list.some(y=>y.id===r.id)) list.push(r); }
+  const keep = S.recipes.filter(r=>!r.shared);
+  const drafts = keep.filter(r=>r.draft), rest = keep.filter(r=>!r.draft);
+  S.recipes = drafts.concat(list, rest);
+  if(S.open && S.recipes.some(r=>r.id===S.open)) render();
+  else if(S.open && /^s-/.test(S.open) && d.loaded) setOpen(null);
+  else render();
+  if(S.pendingOpen && list.some(r=>r.id===S.pendingOpen)){ const id=S.pendingOpen; S.pendingOpen=null; setOpen(id); }
+  const h=location.hash.match(/^#r-(s-[a-z0-9]+)$/); if(h && !S.open && list.some(r=>r.id===h[1])) setOpen(h[1]);
+}
+function shareDraft(id, btn){
+  const r=S.recipes.find(x=>x.id===id && x.draft); if(!r) return;
+  const out={...r, id:'s-'+id.replace(/^draft-/,'')}; for(const k of ['draft','_an','likes','success','shared','mine','isNew','sharedAt']) delete out[k];
+  out.created = new Date().toISOString().slice(0,10);
+  btn.disabled=true; S.sharing={from:id, to:out.id};
+  try{ parent.postMessage({type:'poe2-share', recipe:JSON.parse(JSON.stringify(out))}, '*'); }catch(e){ btn.disabled=false; }
+}
+function unshare(id, btn){
+  if(!confirm(L('공유를 취소하면 다른 사람 목록에서도 사라져요. 계속할까요?','Unsharing removes it for everyone. Continue?'))) return;
+  btn.disabled=true; try{ parent.postMessage({type:'poe2-unshare', id}, '*'); }catch(e){ btn.disabled=false; }
+}
+function shareResult(d){
+  const why = c => c==='quota_exceeded' ? L('저장 공간이 가득 찼어요.','Storage is full.') : c==='too_big' ? L('레시피가 너무 커요.','The recipe is too large.')
+    : c==='unavailable' ? L('지금은 공유 저장소에 연결할 수 없어요.','The shared store is not reachable right now.') : L('권한이 없거나 저장하지 못했어요.','You cannot save here, or saving failed.');
+  if(d.op==='poe2-share'){
+    if(d.ok && S.sharing){ const {from,to}=S.sharing; S.sharing=null; S.pendingOpen=to; removeDraft(from); toast(L('공유 레시피로 등록했어요','Recipe shared')); }
+    else { S.sharing=null; render(); toast(why(d.code)); }
+  } else { if(d.ok){ toast(L('공유를 취소했어요','Unshared')); } else { render(); toast(why(d.code)); } }
+}
 // drafts made on the Discover tab: kept in this browser, shown first with a draft badge
 async function addDraft(r, open){
   if(!/^draft-[a-z0-9]+$/.test(r.id) || !Array.isArray(r.nodes)) return;
@@ -1398,6 +1461,8 @@ async function boot(){
   const h=location.hash.match(/^#r-(.+)$/); if(h && S.recipes.some(r=>r.id===h[1])) S.open=h[1];
   S.booted=true; render();
   if(S.pendingDraft){ const d=S.pendingDraft; S.pendingDraft=null; addDraft(d, true); }
+  if(S.pendingShared){ const d=S.pendingShared; S.pendingShared=null; applyShared(d); }
+  try{ if(parent!==window) parent.postMessage({type:'poe2-share-ready'}, '*'); }catch(_){}
 }
 boot();
 if(location.search.includes('debug')) window.__rec = Object.assign(S, {renderBoard:()=>renderBoard()});
