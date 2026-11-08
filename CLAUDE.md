@@ -36,7 +36,7 @@ scripts/        데이터·레시피 빌드 (python)
   build_recipes.py      레시피 정의 → site/data/recipes.json (recipes_batch2.py, recipes_batch3.py 를 exec)
   build_tips.py         제작 꿀팁 → site/data/tips.json
   build_site_data.py 등 원천 데이터(raw/) → site/data/{index,crafting}.json, site/data/c/*.json(클래스별)
-  apply_coe_weights.py  raw/coe_weights_patch.json → c/*.json 가중치 채우기 (**build_site_data.py를 다시 돌렸으면 반드시 뒤에 실행**)
+  apply_coe_weights.py  raw/coe_weights_patch.json → c/*.json 가중치 채우기 (**build_site_data.py를 다시 돌렸으면 반드시 뒤에, build_recipes.py 앞에 실행** — 탐욕스러운 사슬옷 클래스가 반지 풀을 복사해 감)
 tools/coe/      compare.py(Craft of Exile poec_data.json ↔ 우리 데이터 대조), make_patch.py(모르는 가중치만 패치로). CoE 원본 파일은 저장소에 안 넣음
 i18n/build.py   site/*.html → site/pub/*.html (영문 번역 런타임 주입, 문서 head 추가)
 site/data/      index.json(클래스·베이스 목록), crafting.json(화폐·징조·에센스·기폭제), c/<클래스>.json(옵션 그룹·가중치·룬),
