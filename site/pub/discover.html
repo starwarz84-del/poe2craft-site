@@ -386,7 +386,7 @@ function makeDraft(it, an){
     note:note(`룬 소켓에 증강물 「${r.g.sub[0]}」 장착 (빼낼 수 없음). 이후 카오스·엑잘로 이 증강물 전용 옵션이 붙음. 전용 옵션은 가중치가 공개되지 않음.`, `Socket ${en} (permanent); Chaos and exalts can then roll its own modifiers, whose weights are not public.`)}); });
   const X = rareEss[0]?.r.m.side || null;
   // rune sockets: every augment that unlocks modifiers plus Astrid's Creativity for a second crafted line
-  const serle = !!cap.serle, early = augNames.length + (serle?1:0), astrid = rareEss.length>1 ? 1 : 0;
+  const serle = !!cap.serle, early = augNames.length + (serle?1:0), astrid = essRows.length>1 && rareEss.length ? 1 : 0;
   const baseSock = it.b.sock||0, runeNeed = Math.max(early + astrid, early + augLate.length);
   const runeBase = !['jewellery','jewel','flask'].includes(it.cat);   // only weapons and armour have rune sockets
   const excItem = runeBase && (it.exceptional || (it.sockets!=null && !it.corrupted && it.sockets > baseSock));   // the pasted item shows it
@@ -527,7 +527,8 @@ function makeDraft(it, an){
   function finishQ(){ if(qPend && qType!==qPend.cat.tag){ push({phase:'q', do:'quality', cur:qPend.cat.id, target:{quality:qCap}, note: qType ? note(`엑잘이 끝났으니 ${qPend.cat.kr}로 바꿔 퀄리티 ${qCap}%. 완성품의 퀄리티 종류.`, `Exalts done: switch to ${qPend.cat.en} at ${qCap}%, the finished item's quality type.`) : qPend.note}); qType=qPend.cat.tag; }
     qPend=null; }
   let mqGone = false; const mqLive = () => mqGi>=0 && !mqGone && nodes.some(n=>n.target?.gi===mqGi);
-  let crafted = 0; const essDone = new Set(), bone = boneFor(it.cat), desDone = new Set();
+  // every essence line is crafted, the magic-stage ones included
+  let crafted = essRows.length - rareEss.length; const essDone = new Set(), bone = boneFor(it.cat), desDone = new Set();
   const split = firstSd && !augLate.length && !j5?.B;
   exaltPass(split ? firstSd : null);
   if(split){ essPass(firstSd); desPass(firstSd); exaltPass(); }
@@ -703,7 +704,7 @@ function verifyDraft(it, an, d){
       if(any && mods.some(m=>!m.fr && !m.junk)){ add('warn','징조 없는 소멸이 좋은 옵션을 지울 수 있어요.','Annulment without an omen can hit a good line.',st); return; }
       if(!any && mods.some(m=>m.side===sd && !m.fr && !m.junk)) add('warn',`소멸이 같은 쪽의 좋은 옵션을 지울 수 있어요 (${sd==='p'?'접두':'접미'}).`,'Annulment can hit a good line on that side.',st); return; }
     if(n.do==='essence'){ const e=S.byId?.[n.cur] || S.craft.essences.find(x=>x.id===n.cur) || (S.craft.liquids||[]).find(x=>x.id===n.cur); const magicE = e && e.mode==='magic';
-      if(!magicE && e?.act!=='liquid' && n.cur!=='Essence_of_the_Breach' && n.cur!=='Essence_of_the_Abyss'){ crafted++; if(crafted>1 && !runes.includes("Astrid's Creativity")) add('err','제작 옵션(에센스) 두 번째인데 아스트리드의 창의성이 없어요.',"Second crafted line without Astrid's Creativity.",st); }
+      if(e?.act!=='liquid' && n.cur!=='Essence_of_the_Breach' && n.cur!=='Essence_of_the_Abyss'){ crafted++; if(crafted>1 && !runes.includes("Astrid's Creativity")) add('err','제작 옵션(에센스) 두 번째인데 아스트리드의 창의성이 없어요.',"Second crafted line without Astrid's Creativity.",st); }
       if(magicE){ if(rar!=='magic') add('err',`${e.kr}는 마법 아이템에만 쓸 수 있어요.`,`${e.en} needs a magic item.`,st); rar='rare'; addLine(t, L('에센스','Essence')); return; }
       if(rar!=='rare') add('err','완벽한 에센스·합금은 희귀 아이템에만 쓸 수 있어요.','Perfect essences and alloys need a rare item.',st);
       const cr = om.find(o=>/Crystallisation/.test(o)); let sd = cr ? (/Sinistral/.test(cr)?'p':'s') : null;
