@@ -93,6 +93,7 @@ BRANCH = {
  ('diztoh-socket-gloves','d8'): ('훼손 줄이 지워지면 → 아래 성공 경로, 에너지 보호막이 지워지면 → 빈 접두 2자리를 엑잘로 채우고 남은 훼손은 마지막에 공개.','Desecration removed → success path; energy shield removed → exalt the two free prefixes, reveal the old desecration last.'),
  ('diztoh-socket-gloves','dm3'): ('남아 있던 훼손을 공개. 안 나오면 빛의 징조 + 소멸의 오브 → 고대 갈비뼈 → 다시 공개.','Reveal the old desecration; on a miss, Light + Annulment, Ancient Rib, reveal again.'),
  ('diztoh-socket-gloves','d11'): ('실패: 좌측 소멸의 징조 + 소멸의 오브 → 다시. 에너지 보호막이 지워지면 그 자리도 엑잘로(에너지 보호막 최대치 포함), 공개한 훼손이 지워지면 {#d9}번부터.','Miss: Sinistral Annulment + Annulment, retry. If energy shield goes, exalt that slot too (flat ES counts); if the revealed desecration goes, back to step {#d9}.'),
+ ('sl-flamewave-staff','s3'): ('합금이 화염 속성 부여 규모를 지우면(1/2): 합금 줄은 남으니 절사 단계만 다시.','If the alloy takes the fire magnitude line (1/2): the alloy line stays, so only redo the Whittling step.'),
  ('diztoh-iceshot-bow','w12'): ('실패: 우측 결정화의 징조 + 완벽한 가속의 에센스 → 심연의 에센스(징표) → 다시 훼손.','Miss: Dextral Crystallisation + Perfect Essence of Haste, Essence of the Abyss (Mark), desecrate again.'),
  ('diztoh-iceshot-bow','w15'): ('공격 속도·치명타 피해·초과 화살 → 대박.','Attack speed, crit damage or extra arrows → jackpot.'),
  ('diztoh-vile-robe','v6'): ('실패: 우측 결정화의 징조 + 완벽한 추구의 에센스 → 우측 결정화의 징조 + 심연의 에센스(징표) → 다시 공개.','Miss: Dextral Crystallisation + Perfect Essence, then Dextral Crystallisation + Essence of the Abyss (Mark), reveal again.'),

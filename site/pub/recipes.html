@@ -710,7 +710,7 @@ function analyse(r){
     for(const k in (n.extra||{})) add(k, n.extra[k]);   // fixed extra use, e.g. Hinekora's Locks for previews
     if(n.withEach){ add(n.withEach.cur, tries); (n.withEach.omens||[]).forEach(om=>add(om, tries)); }
     for(const k in u) u[k]*=passes[i];
-    if(n.fail?.via){ const f=n.fail.via, k=(o.R!=null ? o.R : self ? tries-1 : Math.max(0, own[i]-1)) * passes[i]/own[i]; add(f.cur,k); (f.omens||[]).forEach(om=>add(om,k)); }
+    if(n.fail?.via){ const f=n.fail.via, k=(o.R!=null ? o.R : self ? tries-1 : Math.max(0, own[i]-1)) * passes[i]/own[i]; add(f.cur,k); (f.omens||[]).forEach(om=>add(om,k)); (f.also||[]).forEach(x=>{ add(x.cur,k); (x.omens||[]).forEach(om=>add(om,k)); }); }   // also: more currency per retry, e.g. essence → Abyss → bone
     for(const k in u) tot[k]=(tot[k]||0)+u[k];
     if(n.cost){ const c=uc[n.cost]; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+ (+c.v)*passes[i]; } }
     o.use=u; o.passes=passes[i]; o.useTries=tries; });
@@ -863,7 +863,8 @@ function nodeHTML(r, o, i, idx){
   if(t.lord && tgt){ const LN={kurgal:['쿠르갈','Kurgal'],amanamu:['아마나무','Amanamu'],ulaman:['울라만','Ulaman']}[t.lord]||[t.lord,t.lord]; tgt += ` <small>(${L(LN[0]+' 옵션 1개 확정','one '+LN[1]+' option guaranteed')})</small>`; }
   const showP = o.p<0.995 && !t.reroll;
   const ts = n.ts && r.source?.url ? `<a class="ts" href="${esc(r.source.url)}&t=${n.ts.split(':').reduce((s,x)=>s*60+(+x),0)}s" target="_blank" rel="noopener">▶ ${esc(n.ts)}</a>` : '';
-  const via = n.fail?.via ? `${icon(n.fail.via.cur,r)}${esc(nm(cur(n.fail.via.cur)))}${(n.fail.via.omens||[]).map(x=>` + ${icon(x,r)}${esc(nm(cur(x)))}`).join('')}` : '';
+  const viaOne = v => `${icon(v.cur,r)}${esc(nm(cur(v.cur)))}${(v.omens||[]).map(x=>` + ${icon(x,r)}${esc(nm(cur(x)))}`).join('')}`;
+  const via = n.fail?.via ? [n.fail.via, ...(n.fail.via.also||[])].map(viaOne).join(' → ') : '';
   const fail = routeHTML(r, o, i, via);
   const use = sortKeys(Object.keys(o.use)).filter(k=>o.use[k]>=0.01).map(k=>`<span class="ci">${icon(k,r)}${fmt(o.use[k])}</span>`).join('');
   const costIn = n.cost ? (()=>{ const v=uc[n.cost]||{}; const units=['Divine_Orb','Exalted_Orb','Chaos_Orb'];
