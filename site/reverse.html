@@ -372,6 +372,11 @@ function makeDraft(it, an){
     for(let n=Math.max(0,2-frs.length); n>0; n--){ const sd = ['p','s'].filter(x=>cnt[x]<cap[x]).sort((a,b)=>(need[b]-junk[b])-(need[a]-junk[a]))[0]; if(!sd) break; start.mods.push({junk:sd}); junk[sd]++; cnt[sd]++; } }
   push({phase:'base', do:'base', cost:'base', note: frs.length ? note(`${frs.map(lk).join(', ')} 분열된 ${it.b.kr} (아이템 레벨 ${it.ilvl}+). 베이스 준비${baseQ?` → ${baseQ.kr}`:''} → 분열 → 잡옵 정리까지 끝나, 분열 줄 + 잡옵 1줄인 상태에서 시작.`, `A ${it.b.en} (item level ${it.ilvl}+) with ${frs.map(le).join(', ')} fractured. Base prep${baseQ?` (${baseQ.en})`:''}, fracture and clean-up are done: the fractured line + one junk line.`)
     : note(`${it.b.kr} 일반 베이스, 아이템 레벨 ${it.ilvl}+.${baseQ?` 베이스 준비: ${baseQ.kr}.`:''}`, `A normal ${it.b.en}, item level ${it.ilvl}+.${baseQ?` Base prep: ${baseQ.en}.`:''}`)});
+  // a fractured base can't take a magic-stage essence any more: its line was made before the fracture and is part of the bought base
+  if(frs.length && magicEss.length){ const ks=[], es=[];
+    magicEss.forEach(({r,e})=>{ start.mods.push({...tm(r), crafted:true}); cnt[r.m.side]++; ks.push(`${lk(r)}(${e.kr})`); es.push(`${le(r)} (${e.en})`); });
+    magicEss.length=0; const b0=nodes[0];
+    b0.note = note(b0.note.kr+` 에센스 줄 ${ks.join(', ')}${josa(ks.at(-1),'은','는')} 매직 단계에서 분열 전에 붙여 둔 상태(제작 옵션).`, b0.note.en+` The essence line ${es.join(', ')} was added at the magic stage, before the fracture (crafted).`); }
   // a rune or soul core that unlocks its own modifiers goes in before rolling them
   if(augPre.length){ start.runes = augPre.map(en=>({kr:rows.find(x=>x.core && x.g.sub[1]===en).g.sub[0], en}));
     const b0=nodes[0], k=start.runes.map(x=>`「${x.kr}」`).join(', '), e=start.runes.map(x=>x.en).join(', ');
@@ -662,7 +667,7 @@ function verifyDraft(it, an, d){
   const nameOf = gi => (grp(gi)?.t[0][KR()?4:5]||'').split('\n')[0];
   const famsOf = mods => { const f=new Set(); mods.forEach(m=>{ if(m.gi!=null) grp(m.gi).f.forEach(x=>f.add(x)); }); return f; };
   const specs = t => t?.anyOf ? t.anyOf : t?.gi!=null ? [t] : [];
-  let mods = (d.start.mods||[]).map(x=>x.junk ? {junk:true, side:x.junk} : {gi:x.gi, side:grp(x.gi).g, fr:!!x.fr});
+  let mods = (d.start.mods||[]).map(x=>x.junk ? {junk:true, side:x.junk} : {gi:x.gi, side:grp(x.gi).g, fr:!!x.fr, crafted:!!x.crafted});
   let rar = d.start.rar||'normal', quality = d.start.quality||0, crafted = 0; const runes=(d.start.runes||[]).map(x=>x.en); const sockets = d.sockets ?? (it.b.sock||0);
   const count = sd => mods.filter(m=>m.side===sd).length, maxA = sd => rar==='normal'?0 : rar==='magic'?1 : cap[sd];
   const isJew = it.cat==='jewellery', isJewel = it.cat==='jewel';

@@ -34,7 +34,8 @@ Path of Exile 2 아이템 제작 사이트. 탭 4개짜리 한 화면이에요.
 
 ```
 scripts/        데이터·레시피 빌드 (python)
-  build_recipes.py      레시피 정의 → site/data/recipes.json (recipes_batch2.py, recipes_batch3.py 를 exec)
+  build_recipes.py      레시피 정의 → site/data/recipes.json (recipes_batch2~4.py, recipes_v5_*.py(영상 하나당 파일 하나)를 exec)
+  try_recipe.py         새 레시피 파일 하나만 시험 실행(사이트 데이터는 안 바뀜): python3 try_recipe.py recipes_v5_xxx.py
   build_tips.py         제작 꿀팁 → site/data/tips.json
   build_site_data.py 등 원천 데이터(raw/) → site/data/{index,crafting}.json, site/data/c/*.json(클래스별)
   apply_coe_weights.py  raw/coe_weights_patch.json → c/*.json 가중치 채우기 (**build_site_data.py를 다시 돌렸으면 반드시 뒤에, build_recipes.py 앞에 실행** — 탐욕스러운 사슬옷 클래스가 반지 풀을 복사해 감)
@@ -156,6 +157,8 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 
 - [x] 3단계: 생성 레시피를 공유 저장소(아티팩트 db)에 등록 + 레시피 탭 "새 레시피" 알림 (2026-11-08)
 - [ ] 2단계: 유튜브 링크 → 레시피 (나중에 텔레그램 봇 형태로)
+- [x] 0.5.5 영상 10개 추가(2026-11-09, recipes_v5_*): SL 화염파 지팡이·검은 화염파 반지·5줄 주얼·7줄 장갑, MazBro 셉터·+5 목걸이, Diztoh 희귀도 반지·정신력 로브·5줄 에메랄드·소켓 효과 장갑. 영상마다 하위 작업이 자막+화면으로 작성 → 사용자 검토 필요(아래 "새 레시피 확인할 점")
+- [ ] 새 레시피 확인할 점: 알두르의 배신(접두 카오스 변환) 미반영, 공허/한기 유동체·완벽한 유동체·여우 우상 이름이 게임 데이터에 없음, MazBro 셉터는 영상 순서를 정리한 요약판, SL 반지 슬라이드 8번(좌측 말소) 대신 우측 말소 사용, MazBro 셉터 영상에서 합금이 공개된 훼손 줄을 지운 사례(규칙과 충돌 가능)
 - [x] 발굴 초안: 분열 베이스는 잡옵 1줄만 남기고 카오스, 화면 묶음 순서 = 단계 순서(마무리 묶음), 커런시 공식 이름 통일 (2026-11-08)
 - [x] 초안: 엑잘마다 기폭제 바꾸기 + 촉진하는 찬미 + 2번 도전 + 갈림길(소멸 재도전/타협) (2026-11-08, 원본 ragna-spell4-amulet도 갈림길 반영)
 - [x] "후회의 오브" = 소멸의 오브로 확인 (2026-11-08)
