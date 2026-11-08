@@ -362,8 +362,14 @@ function makeDraft(it, an){
   if(frs.length && junk.p+junk.s>0 && rnd.length){
     const wantC = rnd.filter(r=>cnt[r.m.side]-junk[r.m.side] < cap[r.m.side]-resv[r.m.side]-desNeed[r.m.side]);
     if(wantC.some(r=>!r.unknown)) for(let i=wantC.length-1;i>=0;i--) if(wantC[i].unknown) wantC.splice(i,1);   // keep odds computable when we can
+    // first cut the base down to the fractured line + one junk line: plain Annulment can only hit junk here (the fractured line stays),
+    // and Chaos then always swaps that one junk line, so once the wanted line lands there is nothing left to clean up next to it
+    if(wantC.length){ const keepSd = junk.p ? 'p' : 's';
+      for(const sd of ['s','p']) while(junk[sd] > (sd===keepSd?1:0)){
+        push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', target:{removeJunk:'any'}, note:note(`소멸의 오브로 잡옵 하나 제거 (분열 줄은 안 지워지고 나머지는 전부 잡옵이라 징조 없이 안전). 분열 줄 + 잡옵 1줄이 남을 때까지.`, `Orb of Annulment removes a junk line (the fractured line cannot go and the rest is junk, so no omen needed). Repeat until only the fractured line + one junk line remain.`)});
+        junk[sd]--; cnt[sd]--; } }
     if(wantC.length){ const A=wantC[0], sd=A.m.side, rp = junk[sd] ? sd : other(sd);
-      push({phase:'fr', do:'chaos', cur:'Chaos_Orb', target:{...anyOf(wantC), replace:rp}, fail:{goto:'self'}, note:note(`분열 줄 말고는 전부 잡옵이라 카오스 오브를 돌려도 잃을 게 없음. ${wantC.length>1?`원하는 줄 중 하나(${names(wantC, x=>lk(x))})가`:`${lk(A)}${josa(lk(A),'이','가')}`} 뜰 때까지.`, `Everything but the fractured line is junk, so Chaos costs nothing here: roll until ${wantC.length>1?`one of ${names(wantC, x=>le(x))}`:le(A)} lands.`)});
+      push({phase:'fr', do:'chaos', cur:'Chaos_Orb', target:{...anyOf(wantC), ...(junk.p+junk.s>1?{replace:rp}:{})}, fail:{goto:'self'}, note:note(`분열 줄 + 잡옵 1줄 상태라 카오스 오브는 항상 그 잡옵을 바꿈. 잃을 게 없고, 뜨면 정리할 잡옵도 없음. ${wantC.length>1?`원하는 줄 중 하나(${names(wantC, x=>lk(x))})가`:`${lk(A)}${josa(lk(A),'이','가')}`} 뜰 때까지.`, `With only the fractured line + one junk line, Chaos always swaps that junk line: nothing to lose and nothing to clean up afterwards. Roll until ${wantC.length>1?`one of ${names(wantC, x=>le(x))}`:le(A)} lands.`)});
       rnd.splice(rnd.indexOf(A),1); junk[rp]--; cnt[rp]--; cnt[sd]++; }
   }
   // 2b. normal base: magic stage with Perfect orbs
@@ -487,8 +493,9 @@ function verifyDraft(it, an, d){
       else { const k = mods.findIndex(m=>m.junk && (!t.replace || m.side===t.replace)); if(k<0){ const good = mods.filter(m=>!m.fr && !m.junk).length; add(good?'err':'warn', good ? '카오스 오브가 지울 잡옵이 없어서 좋은 옵션이 지워질 수 있어요.' : '카오스 오브가 지울 옵션이 없어요.', good ? 'No junk for Chaos to remove; a good line may go.' : 'Nothing for Chaos to remove.', st); } else mods.splice(k,1);
         if(!om.includes('Omen_of_Whittling') && mods.some(m=>!m.fr && !m.junk) ) add('warn','이미 좋은 옵션이 있는 상태에서 카오스 오브를 쓰면 그 줄이 지워질 수 있어요.','Chaos can remove a good line already on the item.',st); }
       if(t.junk) mods.push({junk:true, side:t.junk}); else addLine(t, L('카오스','Chaos')); return; }
-    if(n.do==='remove'){ const sd=t.removeJunk; const k=mods.findIndex(m=>m.junk && m.side===sd); if(k<0) add('err','지울 잡옵이 없어요.','No junk to remove.',st); else mods.splice(k,1);
-      if(mods.some(m=>m.side===sd && !m.fr && !m.junk)) add('warn',`소멸이 같은 쪽의 좋은 옵션을 지울 수 있어요 (${sd==='p'?'접두':'접미'}).`,'Annulment can hit a good line on that side.',st); return; }
+    if(n.do==='remove'){ const sd=t.removeJunk, any = sd==='any'; const k=mods.findIndex(m=>m.junk && (any || m.side===sd)); if(k<0) add('err','지울 잡옵이 없어요.','No junk to remove.',st); else mods.splice(k,1);
+      if(any && mods.some(m=>!m.fr && !m.junk)){ add('warn','징조 없는 소멸이 좋은 옵션을 지울 수 있어요.','Annulment without an omen can hit a good line.',st); return; }
+      if(!any && mods.some(m=>m.side===sd && !m.fr && !m.junk)) add('warn',`소멸이 같은 쪽의 좋은 옵션을 지울 수 있어요 (${sd==='p'?'접두':'접미'}).`,'Annulment can hit a good line on that side.',st); return; }
     if(n.do==='essence'){ const e=S.byId?.[n.cur] || S.craft.essences.find(x=>x.id===n.cur); const magicE = e && e.mode==='magic';
       if(!magicE && n.cur!=='Essence_of_the_Breach' && n.cur!=='Essence_of_the_Abyss'){ crafted++; if(crafted>1 && !runes.includes("Astrid's Creativity")) add('err','제작 옵션(에센스) 두 번째인데 아스트리드의 창의성이 없어요.',"Second crafted line without Astrid's Creativity.",st); }
       if(magicE){ if(rar!=='magic') add('err',`${e.kr}는 마법 아이템에만 쓸 수 있어요.`,`${e.en} needs a magic item.`,st); rar='rare'; addLine(t, L('에센스','Essence')); return; }

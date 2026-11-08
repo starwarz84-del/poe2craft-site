@@ -555,7 +555,7 @@ function analyse(r){
       if(got) ok++; }
     return ok/N;
   }
-  const removeJunk = side => { const i = mods.findIndex(m=>m.junk && (!side || m.side===side)); if(i<0) return false; mods.splice(i,1); return true; };
+  const removeJunk = side => { const i = mods.findIndex(m=>m.junk && (!side || side==='any' || m.side===side)); if(i<0) return false; mods.splice(i,1); return true; };
   const out=[], byId={}; let block=null;
   let imp=baseImp(r), anoint=null, sanct=false, vals={};   // implicit lines, anointed notable, sanctified, values the recipe shows as rolled
   let qual={v:r.start?.quality||r.exceptional?.quality||0, type:null}; const runes=[]; const sockets=r.sockets ?? ((baseOf(r).sock||0)+(r.exceptional?.sockets||0));   // quality and rune sockets ride along with the modifiers
@@ -815,7 +815,7 @@ function nodeHTML(r, o, i, idx){
   else if(t.mark){ const l=modLine(r,t.mark.gi); const ms=grp(r,t.mark.gi).g; tgt=`${L('목표','Target')}: <span class="mod">${esc(l.txt)}</span> ${ms==='p'?L('접두에','on a prefix'):L('접미에','on a suffix')} <small>(${L('접두·접미 반반','50/50 prefix or suffix')})</small>`; }
   else if(t.roll){ const l=modLine(r,t.roll.gi,1); tgt=`${L('최댓값까지','To the max roll')}: <span class="mod">${esc(l.txt)}</span>`; }
   if(t.removeDes) tgt=L('훼손 옵션 제거','Removes the desecrated modifier');
-  if(t.removeJunk) tgt=L(`${t.removeJunk==='p'?'접두':'접미'} 잡옵 제거`,`Removes the junk ${t.removeJunk==='p'?'prefix':'suffix'}`);
+  if(t.removeJunk) tgt = t.removeJunk==='any' ? L('잡옵 제거','Removes a junk modifier') : L(`${t.removeJunk==='p'?'접두':'접미'} 잡옵 제거`,`Removes the junk ${t.removeJunk==='p'?'prefix':'suffix'}`);
   if(t.removeMark) tgt=L('징표를 훼손한 뒤 제거','Desecrate the Mark, then remove it');
   if(t.quality) tgt=L(`퀄리티 ${t.quality}%까지 (평균 ${fmt(o.fixedTries)}개, 레어는 1개당 +1${r.ilvl>=82?' · 20% 확률로 +2':''})`,`Quality to ${t.quality}% (avg ${fmt(o.fixedTries)}; +1 each on a rare${r.ilvl>=82?', 20% chance of +2':''})`);
   if(t.removeGi!=null && t.junk) tgt=L(`${esc(modLine(r,t.removeGi).txt)} 제거 (접두엔 아무 옵션)`,`Removes ${esc(modLine(r,t.removeGi).txt)} (any prefix lands)`);
