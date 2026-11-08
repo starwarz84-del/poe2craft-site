@@ -536,14 +536,19 @@ function makeDraft(it, an){
   // 6. guaranteed lines last: throwaway line + Crystallisation + essence (a second crafted line needs Astrid's Creativity)
   function essPass(only){ for(const x of rareEss){ const {r,e}=x; if(essDone.has(x) || (only && r.m.side!==only)) continue; essDone.add(x);
     const sd=r.m.side; openSlot(sd);
-    if(qPend && mqLive() && it.D.groups[mqGi].g===other(sd) && cnt[sd] < cap[sd]) finishQ();   // quality first: the essence below takes the maximum quality line
+    // essences and alloys add their line before removing one, so none goes on while the crafted maximum quality line is there:
+    // finish the quality, then take that line off first (it is the only removable line on its side, or the lowest level for Whittling)
+    if(mqLive()){ finishQ(); const ms = it.D.groups[mqGi].g, remM = cnt[ms] - frs.filter(x=>x.m.side===ms).length;   // the maximum quality line itself is counted here
+      if(remM<=1) push({phase:'ess', do:'remove', cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[ms]], target:{dropGi:mqGi}, note:note(`${nk(SIDE_OMEN.annul[ms])} + 소멸의 오브로 최대 퀄리티 줄 제거(${sideKr(ms)}엔 그 줄과 분열 줄뿐이라 확실히 지워짐). 에센스·합금은 줄을 붙인 뒤 지우는 방식이라 제작 옵션인 최대 퀄리티가 남아 있으면 쓸 수 없음. 퀄리티는 그대로 남음.`, `${ne(SIDE_OMEN.annul[ms])} + Orb of Annulment removes the maximum quality line (the only removable ${sideEn(ms)}). Essences and alloys add before they remove, so they cannot go on while that crafted line is there. The quality stays.`)}), cnt[ms]--;
+      else { push({phase:'ess', do:'chaos', cur:'Chaos_Orb', omens:['Omen_of_Whittling'], target:{removeGi:mqGi, junk:ms}, note:note(`절사의 징조 + 카오스 오브로 최대 퀄리티 줄(레벨이 가장 낮음)을 다른 줄로 바꿈. 에센스·합금은 줄을 붙인 뒤 지우는 방식이라 제작 옵션인 최대 퀄리티가 남아 있으면 쓸 수 없음. 퀄리티는 그대로 남음.`, `Whittling + Chaos swaps the maximum quality line (the lowest level) for another. Essences and alloys add before they remove, so they cannot go on while that crafted line is there. The quality stays.`)}); junk[ms]++; }
+      mqGone = true; if(R0){ rnd.push(R0); R0=null; } }
     if(crafted===1) push({phase:'ess', do:'manual', target:{rune:{kr:'아스트리드의 창의성', en:"Astrid's Creativity"}}, label:{kr:'아스트리드의 창의성 장착', en:"Socket Astrid's Creativity"}, note:note('제작 옵션(에센스)은 보통 1줄까지라, 두 번째를 붙이려고 아스트리드의 창의성 룬을 장착. 완성 후 다른 룬으로 교체.', "Crafted (essence) lines are capped at one; Astrid's Creativity allows a second. Swap it out at the end.")});
     // the essence removes a random line on the crystallised side: aim it at a side whose removable lines are all throwaway
     // (junk, or the maximum quality line once quality is done), or a side holding only the fractured line, after adding a junk line there
     const oth = other(sd), remO = cnt[oth] - frs.filter(x=>x.m.side===oth).length, mqHere = mqLive() && it.D.groups[mqGi].g===oth && !qPend;
     let cs = sd, why;
     if(cnt[sd] < cap[sd] && remO>0 && junk[oth] + (mqHere?1:0) === remO){ cs = oth;
-      if(mqHere && !junk[oth]){ mqGone = true; resv[oth]--; if(R0){ rnd.push(R0); R0=null; } why = note(`${sideKr(oth)}엔 분열 줄과 최대 퀄리티(퀄리티 작업이 끝나 필요 없음)뿐이라 그 줄이 지워지고, ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음. 이미 만든 ${sideKr(sd)}는 안 건드림.`, `The only removable ${sideEn(oth)} is the maximum quality line (no longer needed), so it goes and ${le(r)} lands on the ${sideEn(sd)}; the ${sideEn(sd)}es already made stay.`); }
+      if(mqHere && !junk[oth]){ mqGone = true; cnt[oth]--; if(R0){ rnd.push(R0); R0=null; } why = note(`${sideKr(oth)}엔 분열 줄과 최대 퀄리티(퀄리티 작업이 끝나 필요 없음)뿐이라 그 줄이 지워지고, ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음. 이미 만든 ${sideKr(sd)}는 안 건드림.`, `The only removable ${sideEn(oth)} is the maximum quality line (no longer needed), so it goes and ${le(r)} lands on the ${sideEn(sd)}; the ${sideEn(sd)}es already made stay.`); }
       else { junk[oth]--; cnt[oth]--; why = note(`${sideKr(oth)}의 잡옵이 지워지고 ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음. 이미 만든 ${sideKr(sd)}는 안 건드림.`, `The ${sideEn(oth)} junk goes and ${le(r)} lands on the ${sideEn(sd)}; the ${sideEn(sd)}es already made stay.`); }
       cnt[sd]++; }
     else if(cnt[sd] < cap[sd] && remO===0 && cnt[oth] < cap[oth]){ cs = oth;
@@ -556,12 +561,12 @@ function makeDraft(it, an){
         push({phase:'ess', do:'essence', cur:e.id, knownP:true, target:{...tm(r), ...(pS<1?{chance:+pS.toFixed(3)}:{})}, ...(pS<1 && back ? {fail:{goto:back.id}} : {}),
           note: pS<1 ? note(`${e.kr}. ${sideKr(sd)}가 꽉 차 있어서 결정화의 징조 없이도 ${sideKr(sd)} 중 하나가 지워짐 — 버릴 줄이 지워질 확률 ${Math.round(pS*100)}%${back?`, ${lk(back.r)}${josa(lk(back.r),'이','가')} 지워지면 그 줄을 만든 단계부터 다시`:''}.`, `${e.en}. The ${sideEn(sd)}es are full, so it replaces one of them with no omen: ${Math.round(pS*100)}% it takes the throwaway${back?'; if it takes a wanted line, redo from the step that made it':''}.`)
             : note(`${e.kr}. ${sideKr(sd)}가 꽉 차 있어서 결정화의 징조 없이도 ${sideKr(sd)}의 버릴 줄이 지워지고 ${lk(r)}${josa(lk(r),'으로','로')} 바뀜.`, `${e.en}. The ${sideEn(sd)}es are full, so it replaces the throwaway ${sideEn(sd)} with ${le(r)}, no omen needed.`)});
-        crafted++; continue; }
+        crafted++; resv[sd]--; continue; }
       junk[sd]--; }
-    push({phase:'ess', do:'essence', cur:e.id, omens:[SIDE_OMEN.cryst[cs]], target: cs===sd ? tm(r) : {...tm(r), ...(mqGone && cs===it.D.groups[mqGi]?.g && !junk[cs] ? {removeGi:mqGi} : {})},
+    push({phase:'ess', do:'essence', cur:e.id, omens:[SIDE_OMEN.cryst[cs]], target: tm(r),
       note: cs===sd ? note(`${nk(SIDE_OMEN.cryst[sd])} + ${e.kr}${josa(e.kr,'으로','로')} 그 줄을 ${lk(r)}로 교체.`, `${sd==='p'?'Sinistral':'Dextral'} Crystallisation + ${e.en} swaps it for ${le(r)}.`)
         : note(`${nk(SIDE_OMEN.cryst[cs])} + ${e.kr}. ${why.kr}`, `${ne(SIDE_OMEN.cryst[cs])} + ${e.en}. ${why.en}`)});
-    crafted++;
+    crafted++; resv[sd]--;   // its slot is no longer reserved
   } }
   essPass();
   if(rnd.length) exaltPass();   // a line put back when an essence took the maximum quality line
@@ -573,7 +578,7 @@ function makeDraft(it, an){
     const b2 = (r.g.s==='n' || r.g.s==='x') && r.t[0]>=40 ? bone.replace('Preserved_','Ancient_').replace('Ancient_Cranium','Preserved_Cranium') : bone;
     const d = push({phase:'des', do:'desecrate', cur:b2, ...(om.length?{omens:om}:{}), target:{unrev:sd}, note: b2!==bone ? note(`${sideKr(sd)}에 훼손. ${nk(b2)}${josa(nk(b2),'은','는')} 레벨 40 미만 옵션이 안 나와서 높은 티어 확률이 올라감.`, `Desecrate a ${sideEn(sd)}. Ancient bones skip modifiers below level 40, which lifts high tiers.`) : note(`${sideKr(sd)}에 훼손.`, `Desecrate a ${sideEn(sd)}.`)}); cnt[sd]++;
     push({phase:'des', do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{reveal:tm(r), side:sd, bone:b2, ...(r.lord?{lord:r.lord}:{})}, fail:{goto:d.id, via:{cur:'Orb_of_Annulment', omens:['Omen_of_Light']}},
-      note:note(`심연의 메아리의 징조로 공개해 ${lk(r)} (T${r.tierNo} 이상). 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)} (tier ${r.tierNo}+); otherwise Light + Annulment and retry.`)}); } }
+      note:note(`심연의 메아리의 징조로 공개해 ${lk(r)} (T${r.tierNo} 이상). 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)} (tier ${r.tierNo}+); otherwise Light + Annulment and retry.`)}); desNeed[sd]--; } }
   desPass();
   if(j5?.done){ const {A,B}=j5;
     push({phase:'j5', do:'remove', cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[A]], target:{dropGi:j5.gi}, note:note(`${nk(SIDE_OMEN.annul[A])} + 소멸의 오브로 "${sideKr(B)} 속성 부여 +1개 허용" 줄 제거. ${sideKr(A)}엔 그 줄과 잡옵뿐이라 1/2, 잡옵이 지워지면 한 번 더. ${sideKr(B)} 3줄은 그대로 남음.`, `${ne(SIDE_OMEN.annul[A])} + Orb of Annulment removes the "+1 ${sideEn(B)} allowed" line (1/2: the ${sideEn(A)} side holds only it and a junk line; if the junk goes, once more). The 3 ${sideEn(B)}es stay.`)});
@@ -622,9 +627,11 @@ function makeDraft(it, an){
     else { const OK={of:rv.id, when:'ok'}, MS={of:rv.id, when:'miss'}, LIGHT={cur:'Orb_of_Annulment', omens:['Omen_of_Light']}, lord=(dz.omens||[]).filter(o=>!/Necromancy/.test(o));
       rv.fail = {goto:null}; rv.note = note(`심연의 메아리의 징조로 공개해 ${lk(desRows.at(-1))} (T${desRows.at(-1).tierNo} 이상). 안 나와도 빛의 징조는 바로 쓰지 않고 접두부터(아래 "안 나왔을 때").`, `Reveal with Abyssal Echoes for ${le(desRows.at(-1))}. On a miss, do not use Omen of Light yet: the prefix comes first (see "on a miss" below).`);
       finish(OK);
-      const m2 = push({phase:'fin', branch:MS, do:'remove', cur:'Orb_of_Annulment', omens:['Omen_of_Light'], target:{removeDes:true}, note:note('빛의 징조 + 소멸의 오브로 훼손 줄 제거.','Light + Annulment removes the desecrated line.')}); rv.fail.goto = m2.id;
-      push({phase:'fin', branch:MS, do:'essence', cur:'Essence_of_the_Abyss', omens:[SIDE_OMEN.cryst.p], target:{mark:{gi:mk('s'), alt:mk('p')}, chance:0.5, removeGi:mqGi}, fail:{goto:'self', via:{cur:dz.cur}},
-        note:note(`${nk(SIDE_OMEN.cryst.p)} + 심연의 에센스로 접두(처음엔 최대 퀄리티, 다음부턴 엉뚱한 접두 — 접두엔 그 줄과 분열 줄뿐이라 절사의 징조 불필요)를 지우고 심연 군주의 징표(접두·접미 반반). 징표가 접두에 붙으면 ${nk(dz.cur)}${josa(nk(dz.cur),'으로','로')} 훼손한 뒤 다시 이 단계(그 접두가 지워짐). 접미에 붙을 때까지. 앞 바퀴 엑잘에서 ${lk(R0)}${josa(lk(R0),'이','가')} 이미 떴으면 이 단계는 건너뛰고 바로 훼손.`, `${ne(SIDE_OMEN.cryst.p)} + Essence of the Abyss removes the wrong prefix and adds the Mark (50/50 side). On a prefix, desecrate it with ${ne(dz.cur)} and repeat this step (it removes that prefix) until the Mark is a suffix.`)});
+      const m1 = push({phase:'fin', branch:MS, do:'chaos', cur, omens:['Omen_of_Whittling'], target:{removeGi:mqGi, junk:'p'},
+        note:note(`절사의 징조 + ${nk(cur)}로 최대 퀄리티 줄(레벨이 가장 낮음)을 지움. 심연의 에센스도 제작 옵션이라 최대 퀄리티가 남아 있으면 못 씀. 이때 ${lk(R0)}${josa(lk(R0),'이','가')} 뜨면 이득 — 그 경우 심연의 에센스 단계는 건너뛰고 바로 훼손.`, `Whittling + ${ne(cur)} removes the maximum quality line: Essence of the Abyss is crafted too and cannot go on while it is there. If ${le(R0)} lands, skip the Essence of the Abyss step and desecrate right away.`)});
+      const m2 = push({phase:'fin', branch:MS, do:'remove', cur:'Orb_of_Annulment', omens:['Omen_of_Light'], target:{removeDes:true}, note:note('빛의 징조 + 소멸의 오브로 훼손 줄 제거.','Light + Annulment removes the desecrated line.')}); rv.fail.goto = m1.id;
+      push({phase:'fin', branch:MS, do:'essence', cur:'Essence_of_the_Abyss', omens:[SIDE_OMEN.cryst.p], target:{mark:{gi:mk('s'), alt:mk('p')}, chance:0.5}, fail:{goto:'self', via:{cur:dz.cur}},
+        note:note(`${nk(SIDE_OMEN.cryst.p)} + 심연의 에센스로 엉뚱한 접두를 지우고 심연 군주의 징표(접두·접미 반반). 징표가 접두에 붙으면 ${nk(dz.cur)}${josa(nk(dz.cur),'으로','로')} 훼손한 뒤 다시 이 단계(그 접두가 지워짐). 접미에 붙을 때까지. 앞 바퀴 엑잘에서 ${lk(R0)}${josa(lk(R0),'이','가')} 이미 떴으면 이 단계는 건너뛰고 바로 훼손.`, `${ne(SIDE_OMEN.cryst.p)} + Essence of the Abyss removes the wrong prefix and adds the Mark (50/50 side). On a prefix, desecrate it with ${ne(dz.cur)} and repeat this step (it removes that prefix) until the Mark is a suffix.`)});
       push({phase:'fin', branch:MS, do:'desecrate', cur:dz.cur, ...(lord.length?{omens:lord}:{}), target:{unrev:'s', fromMark:true}, note:note(`${[...lord.map(nk), nk(dz.cur)].join(' + ')}로 접미의 징표 자리 훼손.`, `${[...lord.map(ne), ne(dz.cur)].join(' + ')} desecrates the suffix Mark.`)});
       push({phase:'fin', branch:MS, do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{...rv.target}, fail:{goto:m2.id, via:LIGHT},
         note:note(`심연의 메아리의 징조로 공개. 안 나와도 다음 단계(접두 엑잘)를 먼저 던져 ${lk(R0)}${josa(lk(R0),'을','를')} 본 뒤 빛의 징조 단계부터 다시. 적은 비용으로 훼손 기회와 접두 기회를 한 번에 봄.`, `Reveal with Abyssal Echoes. On a miss, still throw the next prefix exalt for ${le(R0)}, then go back to the Light step: one reveal and one prefix chance per loop.`)});
@@ -704,8 +711,10 @@ function verifyDraft(it, an, d){
       if(any && mods.some(m=>!m.fr && !m.junk)){ add('warn','징조 없는 소멸이 좋은 옵션을 지울 수 있어요.','Annulment without an omen can hit a good line.',st); return; }
       if(!any && mods.some(m=>m.side===sd && !m.fr && !m.junk)) add('warn',`소멸이 같은 쪽의 좋은 옵션을 지울 수 있어요 (${sd==='p'?'접두':'접미'}).`,'Annulment can hit a good line on that side.',st); return; }
     if(n.do==='essence'){ const e=S.byId?.[n.cur] || S.craft.essences.find(x=>x.id===n.cur) || (S.craft.liquids||[]).find(x=>x.id===n.cur); const magicE = e && e.mode==='magic';
-      if(e?.act!=='liquid' && n.cur!=='Essence_of_the_Breach' && n.cur!=='Essence_of_the_Abyss'){ crafted++; if(crafted>1 && !runes.includes("Astrid's Creativity")) add('err','제작 옵션(에센스) 두 번째인데 아스트리드의 창의성이 없어요.',"Second crafted line without Astrid's Creativity.",st); }
-      if(magicE){ if(rar!=='magic') add('err',`${e.kr}는 마법 아이템에만 쓸 수 있어요.`,`${e.en} needs a magic item.`,st); rar='rare'; addLine(t, L('에센스','Essence')); return; }
+      if(e?.act!=='liquid'){ const cr0 = mods.filter(m=>m.crafted), lim = runes.includes("Astrid's Creativity") ? 2 : 1;   // the line is added first, then one is removed
+        if(cr0.length >= lim) add('err',`이미 제작 옵션(${nameOf(cr0[0].gi)})이 있어서 ${e?.kr||'에센스'}를 쓸 수 없어요. 에센스·합금은 붙인 뒤 지우는 방식이라 그 줄을 먼저 지우거나 아스트리드의 창의성이 필요해요.`,`A crafted line (${nameOf(cr0[0].gi)}) is already there: remove it first or socket Astrid's Creativity.`,st); }
+      const mark = () => { const m=mods[mods.length-1]; if(m && e?.act!=='liquid') m.crafted=true; };
+      if(magicE){ if(rar!=='magic') add('err',`${e.kr}는 마법 아이템에만 쓸 수 있어요.`,`${e.en} needs a magic item.`,st); rar='rare'; addLine(t, L('에센스','Essence')); mark(); return; }
       if(rar!=='rare') add('err','완벽한 에센스·합금은 희귀 아이템에만 쓸 수 있어요.','Perfect essences and alloys need a rare item.',st);
       const cr = om.find(o=>/Crystallisation/.test(o)); let sd = cr ? (/Sinistral/.test(cr)?'p':'s') : null;
       const tSide = t.gi!=null ? grp(t.gi).g : null;
@@ -714,12 +723,12 @@ function verifyDraft(it, an, d){
         else if(sd) add('warn',`${tSide==='p'?'접두':'접미'}가 꽉 차 있어서 결정화의 징조가 필요 없어요.`,'The target side is full, so the Crystallisation omen is not needed.',st);
         sd = tSide; }
       if(t.removeGi!=null){ const k=mods.findIndex(m=>m.gi===t.removeGi); if(k<0) add('err',`지울 ${nameOf(t.removeGi)} 줄이 없어요.`,'The line to remove is not there.',st); else if(sd && mods[k].side!==sd) add('err','결정화 면과 지울 줄의 면이 달라요.','The crystallised side does not hold the line to remove.',st);
-        else { const others = mods.filter(m=>!m.fr && m.side===mods[k].side && m!==mods[k]); if(others.length) add('warn','결정화 쪽에 다른 옵션도 있어서 그 줄이 지워질 수 있어요.','Other lines on the crystallised side could go instead.',st); mods.splice(k,1); addLine(t, L('에센스','Essence')); return; } }
+        else { const others = mods.filter(m=>!m.fr && m.side===mods[k].side && m!==mods[k]); if(others.length) add('warn','결정화 쪽에 다른 옵션도 있어서 그 줄이 지워질 수 있어요.','Other lines on the crystallised side could go instead.',st); mods.splice(k,1); addLine(t, L('에센스','Essence')); mark(); return; } }
       const cand = mods.filter(m=>!m.fr && (!sd || m.side===sd));
       if(!cand.length) add('err','에센스가 지울 옵션이 없어요.','Nothing for the essence to remove.',st);
       else if(cand.some(m=>!m.junk)) add(cand.every(m=>!m.junk)?'err':'warn', cand.every(m=>!m.junk) ? '결정화 쪽에 잡옵이 없어서 좋은 옵션이 지워져요.' : '결정화 쪽에 좋은 옵션도 있어서 그 줄이 지워질 수 있어요.', cand.every(m=>!m.junk) ? 'No junk on the crystallised side; a good line is removed.' : 'A good line shares the crystallised side and may be removed.', st);
       const k = mods.findIndex(m=>m.junk && (!sd || m.side===sd)); if(k>=0) mods.splice(k,1);
-      addLine(t, L('에센스','Essence')); return; }
+      addLine(t, L('에센스','Essence')); mark(); return; }
     if(n.do==='desecrate'){ if(rar!=='rare') add('err','훼손은 희귀 아이템에만 쓸 수 있어요.','Desecration needs a rare item.',st);
       const sd=t.unrev;
       if(count(sd)>=cap[sd] && !t.fromMark){   // a full side: the bone replaces a random removable line there
