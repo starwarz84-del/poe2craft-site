@@ -313,8 +313,15 @@ function makeDraft(it, an){
   const id = () => 'd'+(++k);
   const room = sd => cnt[sd] < (rar==='magic'?1:cap[sd]);
   const other = sd => sd==='p'?'s':'p';
-  const tm = r => ({gi:r.m.gi, tmax:Math.max(1,r.tierNo)});
-  const anyOf = list => list.length===1 ? tm(list[0]) : {anyOf:list.map(tm)};
+  // policy 6: a single elemental resistance counts as any element (it can be swapped later); the pasted element goes first
+  const ELEM = ['FireResistance','ColdResistance','LightningResistance'];
+  const alts = r => { const t = Math.max(1, r.tierNo), f = r.g.f||[];
+    if(r.g.s==='n' && f.length===1 && ELEM.includes(f[0])){ const gs = it.D.groups.map((g,gi)=>({g,gi})).filter(x=>x.gi!==r.m.gi && x.g.s==='n' && x.g.g===r.g.g && x.g.f.length===1 && ELEM.includes(x.g.f[0]));
+      if(gs.length) return [{gi:r.m.gi, tmax:t}, ...gs.map(x=>({gi:x.gi, tmax:t}))]; }
+    return [{gi:r.m.gi, tmax:t}]; };
+  const tm = r => { const a = alts(r); return a.length>1 ? {anyOf:a} : a[0]; };
+  const anyOf = list => { const a = list.flatMap(alts); return a.length===1 ? a[0] : {anyOf:a}; };
+  const lkA = r => lk(r) + (alts(r).length>1 ? ' (원소 무관)' : ''), leA = r => le(r) + (alts(r).length>1 ? ' (any element)' : '');
   const push = n => { nodes.push({id:id(), ...n}); return nodes[nodes.length-1]; };
   const made = [];   // wanted lines actually placed so far ({r, id}); an annulment can take these
   const note = (kr,en) => ({kr,en});
@@ -382,10 +389,13 @@ function makeDraft(it, an){
   else if(exc && it.sockets!=null){ const b0=nodes[0]; b0.note = note(b0.note.kr+` 타락하지 않았는데 룬 소켓이 ${it.sockets}개(기본 ${baseSock}개)라 특출난 베이스.`, b0.note.en+` Not corrupted yet it has ${it.sockets} rune sockets (base ${baseSock}), so it is an exceptional base.`); }
   else if(exc){ const krOf = en => rows.find(x=>x.core && x.g.sub[1]===en).g.sub[0]; const runesK = [...(serle?['세를의 승리']:[]), ...augNames.map(krOf), ...(astrid?['아스트리드의 창의성']:augLate.map(krOf))], runesE = [...(serle?["Serle's Triumph"]:[]), ...augNames, ...(astrid?["Astrid's Creativity"]:augLate)];
     const b0 = nodes[0]; b0.note = note(b0.note.kr+` 룬 ${runeNeed}개(${runesK.join(', ')})를 함께 끼워야 해서 룬 소켓 +${sockets-baseSock}인 특출난 베이스가 필요(일반 베이스는 ${baseSock}개).`, b0.note.en+` ${runeNeed} runes (${runesE.join(', ')}) sit together, so it must be an exceptional base with +${sockets-baseSock} rune socket(s) (a normal one has ${baseSock}).`); }
+  const firstSd = frs.length ? other(frs[0].m.side) : null;   // fractured: finish the other side first (cheap omens only), then the fractured side
   // 2a. fractured base: Chaos is free while everything else is junk; take any wanted line
   if(frs.length && junk.p+junk.s>0 && rnd.length){
     const wantC = rnd.filter(r=>cnt[r.m.side]-junk[r.m.side] < cap[r.m.side]-resv[r.m.side]-desNeed[r.m.side]);
     if(wantC.some(r=>!r.unknown)) for(let i=wantC.length-1;i>=0;i--) if(wantC[i].unknown) wantC.splice(i,1);   // keep odds computable when we can
+    // work the side opposite the fracture first: while the fractured side holds nothing removable, a failed exalt is cleared with a plain Orb of Annulment
+    if(firstSd && wantC.some(r=>r.m.side===firstSd)) for(let i=wantC.length-1;i>=0;i--) if(wantC[i].m.side!==firstSd) wantC.splice(i,1);
     // first cut the base down to the fractured line + one junk line: plain Annulment can only hit junk here (the fractured line stays),
     // and Chaos then always swaps that one junk line, so once the wanted line lands there is nothing left to clean up next to it
     if(wantC.length){ const keepSd = junk.p ? 'p' : 's';
@@ -393,7 +403,7 @@ function makeDraft(it, an){
         push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', target:{removeJunk:'any'}, note:note(`소멸의 오브로 잡옵 하나 제거 (분열 줄은 안 지워지고 나머지는 전부 잡옵이라 징조 없이 안전). 분열 줄 + 잡옵 1줄이 남을 때까지.`, `Orb of Annulment removes a junk line (the fractured line cannot go and the rest is junk, so no omen needed). Repeat until only the fractured line + one junk line remain.`)});
         junk[sd]--; cnt[sd]--; } }
     if(wantC.length){ const A=wantC[0], sd=A.m.side, rp = junk[sd] ? sd : other(sd);
-      push({phase:'fr', do:'chaos', cur:'Chaos_Orb', target:{...anyOf(wantC), ...(junk.p+junk.s>1?{replace:rp}:{})}, fail:{goto:'self'}, note:note(`분열 줄 + 잡옵 1줄 상태라 카오스 오브는 항상 그 잡옵을 바꿈. 잃을 게 없고, 뜨면 정리할 잡옵도 없음. ${wantC.length>1?`원하는 줄 중 하나(${names(wantC, x=>lk(x))})가`:`${lk(A)}${josa(lk(A),'이','가')}`} 뜰 때까지.${wantC.length>1?` 다른 줄이 먼저 뜨면 뒤 단계의 엑잘 대상이 그만큼 바뀜(계산은 ${lk(A)}${josa(lk(A),'이','가')} 뜬 경우 기준).`:''}`, `With only the fractured line + one junk line, Chaos always swaps that junk line: nothing to lose and nothing to clean up afterwards. Roll until ${wantC.length>1?`one of ${names(wantC, x=>le(x))}`:le(A)} lands.`)});
+      push({phase:'fr', do:'chaos', cur:'Chaos_Orb', target:{...anyOf(wantC), ...(junk.p+junk.s>1?{replace:rp}:{})}, fail:{goto:'self'}, note:note(`분열 줄 + 잡옵 1줄 상태라 카오스 오브는 항상 그 잡옵을 바꿈. 잃을 게 없고, 뜨면 정리할 잡옵도 없음. ${wantC.length>1?`원하는 줄 중 하나(${names(wantC, x=>lkA(x))})가`:`${lkA(A)}${josa(lkA(A),'이','가')}`} 뜰 때까지.${wantC.length>1?` 다른 줄이 먼저 뜨면 뒤 단계의 엑잘 대상이 그만큼 바뀜(계산은 ${lk(A)}${josa(lk(A),'이','가')} 뜬 경우 기준).`:''}`, `With only the fractured line + one junk line, Chaos always swaps that junk line: nothing to lose and nothing to clean up afterwards. Roll until ${wantC.length>1?`one of ${names(wantC, x=>le(x))}`:le(A)} lands.`)});
       made.push({r:A, id:nodes[nodes.length-1].id}); rnd.splice(rnd.indexOf(A),1); junk[rp]--; cnt[rp]--; cnt[sd]++; }
   }
   // 2b. normal base: magic stage with Perfect orbs
@@ -437,8 +447,8 @@ function makeDraft(it, an){
     if(it.qual>capC) push({phase:'q', do:'manual', cost:'vaal', target:{setQuality:it.qual}, label:{kr:'바알 촉진시키는 주입기', en:'Vaal Catalysing Infuser'}, note:note(`${capC}%를 넘는 ${it.qual}%는 바알 촉진시키는 주입기로. 첫 번째는 타락하지 않고, 이후 한 번마다 타락 확률이 늘어남(영상들 기준 46% 근처부터 커짐). 옵션이 적을 때 미리 올려 두는 게 안전.`, `Above ${capC}% (${it.qual}%) comes from Vaal Catalysing Infusers: the first cannot corrupt, each later one is riskier (around 46% it climbs fast). Do it while the item has little to lose.`)});
   } else if(R0){ rnd.push(R0); R0=null; }
   // 5. remaining random lines: exalt for any wanted line on a side, side by side
-  const exaltPass = () => { for(let guard=0; rnd.length && guard<12; guard++){
-    const sd = ['p','s'].map(x=>({x, free:cap[x]-cnt[x]-resv[x]+junk[x]-desNeed[x], n:rnd.filter(r=>r.m.side===x).length})).filter(o=>o.free>0 && o.n>0).sort((a,b)=>b.n-a.n)[0]?.x;
+  const exaltPass = only => { for(let guard=0; rnd.length && guard<12; guard++){
+    const sd = ['p','s'].map(x=>({x, free:cap[x]-cnt[x]-resv[x]+junk[x]-desNeed[x], n:rnd.filter(r=>r.m.side===x).length})).filter(o=>o.free>0 && o.n>0 && (!only || o.x===only)).sort((a,b)=>b.n-a.n)[0]?.x;
     if(!sd) break;
     openSlot(sd);
     const want = rnd.filter(r=>r.m.side===sd), oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
@@ -459,41 +469,48 @@ function makeDraft(it, an){
     const omTxt = exOm.map(nk).join(' + '), omEn = exOm.map(ne).join(' + ');
     // a wanted line already on this side can be the one an annulment takes: then go back to the step that made it
     const atRisk = [...made].reverse().find(x=>x.r.m.side===sd), lost = atRisk ? {id:atRisk.id} : null;
-    const tgtK = want.length>1?`원하는 줄 중 하나(${names(want, x=>lk(x))})`:`${lk(want[0])} (T${want[0].tierNo} 이상)`, tgtE = want.length>1?`any of ${names(want, x=>le(x))}`:`${le(want[0])} (tier ${want[0].tierNo}+)`;
+    const tgtK = want.length>1?`원하는 줄 중 하나(${names(want, x=>lkA(x))})`:`${lkA(want[0])} (T${want[0].tierNo} 이상)`, tgtE = want.length>1?`any of ${names(want, x=>leA(x))}`:`${leA(want[0])} (tier ${want[0].tierNo}+)`;
+    // the omen-free clean-up: the other side holds only its fractured line (or nothing), so a plain annulment can only take a line from this side
+    const plain = cnt[oth] - frs.filter(x=>x.m.side===oth).length === 0;
+    const annVia = plain ? {cur:'Orb_of_Annulment'} : {cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]]};
+    const annK = plain ? `소멸의 오브(${sideKr(oth)}엔 ${frs.some(x=>x.m.side===oth)?'분열 줄뿐이라':'아무것도 없어서'} 징조 없이 ${sideKr(sd)}만 지워짐)` : `${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브`, annE = plain ? `a plain Orb of Annulment (the ${sideEn(oth)} side holds nothing removable)` : `${ne(SIDE_OMEN.annul[sd])} + Orb of Annulment`;
     if(tries===2){ push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', omens:exOm, target:{junk:sd},
         note:note(`1차 도전: ${omTxt} + 완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 여기서 뜨면 다음 단계는 아무 ${sideKr(sd)}여도 성공.`, `First try: ${omEn} + Perfect Exalted Orb for ${tgtE}. If it lands here, the next step can be any ${sideEn(sd)}.`)}); cnt[sd]++; }
     const lostK = atRisk ? lk(atRisk.r) : '';
-    const ex = push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(exOm.length?{omens:exOm}:{}), target:anyOf(want), fail:{goto:'self', via:{cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]]}, ...(lost?{lost:lost.id}:{})},
-      note: lost && cOm.length ? note(`${tries===2?'2차 도전: ':''}${omTxt?omTxt+' + ':''}완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 안 뜨면 갈림길: ① ${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 ${sideKr(sd)} 하나를 지우고 다시 도전. ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시 (계산은 ① 기준). ② 바로 아래 타협 경로.`,
+    const ex = push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(exOm.length?{omens:exOm}:{}), target:anyOf(want), fail:{goto:'self', via:annVia, ...(lost?{lost:lost.id}:{})},
+      note: lost && cOm.length ? note(`${tries===2?'2차 도전: ':''}${omTxt?omTxt+' + ':''}완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 안 뜨면 갈림길: ① ${annK}로 ${sideKr(sd)} 하나를 지우고 다시 도전. ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시 (계산은 ① 기준). ② 바로 아래 타협 경로.`,
           `${tries===2?'Second try: ':''}${omEn?omEn+' + ':''}Perfect Exalted Orb for ${tgtE}. On a miss you choose: (1) annul a ${sideEn(sd)} and try again; if it takes ${lostK? 'the wanted line':'a wanted line'}, go back to the step that made it (the math uses this). (2) The compromise below.`)
-        : note(`${sideKr(sd)}에 ${tgtK}. 실패하면 ${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 지우고 다시.${lost?` ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시.`:''}`, `A ${sideEn(sd)}: ${tgtE}. On a miss, annul that ${sideEn(sd)} and retry${lost?'; if it takes the wanted line, go back to the step that made it':''}.`)});
+        : note(`${sideKr(sd)}에 ${tgtK}. 실패하면 ${annK}로 지우고 다시.${lost?` ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시.`:''}`, `A ${sideEn(sd)}: ${tgtE}. On a miss, clear it with ${annE} and retry${lost?'; if it takes the wanted line, go back to the step that made it':''}.`)});
     made.push({r:want[0], id:ex.id});
     if(lost && cOm.length) push({phase:'ex', do:'note', fallbackFor:ex.id, label:{kr:'갈림길 ②: 타협',en:'Fork (2): settle'}, note:note(`안 뜬 줄은 그대로 두고 다음 단계로. 뒤의 훼손 공개에서 원하는 줄이 안 나와도 다시 하지 않고 마무리. 비싸게 팔기는 어렵지만 ${lostK}${josa(lostK,'을','를')} 잃을 위험 없이 적당한 옵션으로 타협.`, `Leave the miss and move on; if a later reveal misses too, finish anyway. It won't sell high, but it settles for decent mods without risking the line you already have.`)});
     rnd.splice(rnd.indexOf(want[0]),1); cnt[sd]++;
   } };
-  exaltPass();
+  let crafted = 0; const essDone = new Set(), bone = boneFor(it.cat), desDone = new Set();
+  const split = firstSd && !augLate.length && !j5?.B;
+  exaltPass(split ? firstSd : null);
+  if(split){ essPass(firstSd); desPass(firstSd); exaltPass(); }
   if(qPend && qType!==qPend.cat.tag){ push({phase:'q', do:'quality', cur:qPend.cat.id, target:{quality:qCap}, note: qType ? note(`엑잘이 끝났으니 ${qPend.cat.kr}로 바꿔 퀄리티 ${qCap}%. 완성품의 퀄리티 종류.`, `Exalts done: switch to ${qPend.cat.en} at ${qCap}%, the finished item's quality type.`) : qPend.note}); qType=qPend.cat.tag; }
   qPend=null;
   // 6. guaranteed lines last: throwaway line + Crystallisation + essence (a second crafted line needs Astrid's Creativity)
-  let crafted = 0;
-  for(const {r,e} of rareEss){
+  function essPass(only){ for(const x of rareEss){ const {r,e}=x; if(essDone.has(x) || (only && r.m.side!==only)) continue; essDone.add(x);
     const sd=r.m.side; openSlot(sd);
     if(crafted===1) push({phase:'ess', do:'manual', target:{rune:{kr:'아스트리드의 창의성', en:"Astrid's Creativity"}}, label:{kr:'아스트리드의 창의성 장착', en:"Socket Astrid's Creativity"}, note:note('제작 옵션(에센스)은 보통 1줄까지라, 두 번째를 붙이려고 아스트리드의 창의성 룬을 장착. 완성 후 다른 룬으로 교체.', "Crafted (essence) lines are capped at one; Astrid's Creativity allows a second. Swap it out at the end.")});
     if(!junk[sd]){ push({phase:'ess', do:'exalt', cur:'Exalted_Orb', ...(room(other(sd))?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${e.kr}${josa(e.kr,'이','가')} 바꿀 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${e.en} to replace.`)}); cnt[sd]++; }
     else junk[sd]--;
     push({phase:'ess', do:'essence', cur:e.id, omens:[SIDE_OMEN.cryst[sd]], target:tm(r), note:note(`${nk(SIDE_OMEN.cryst[sd])} + ${e.kr}${josa(e.kr,'으로','로')} 그 줄을 ${lk(r)}로 교체.`, `${sd==='p'?'Sinistral':'Dextral'} Crystallisation + ${e.en} swaps it for ${le(r)}.`)});
     crafted++;
-  }
+  } }
+  essPass();
   augLate.forEach(en=>{ const r=rows.find(x=>x.core && x.g.sub[1]===en);
     if(crafted>1){ push({phase:'des', do:'manual', target:{runeSwap:[{kr:'아스트리드의 창의성', en:"Astrid's Creativity"}, {kr:r.g.sub[0], en}]}, label:{kr:`룬 교체 → 「${r.g.sub[0]}」`, en:`Swap in ${en}`}, note:note(`제작이 끝났으니 아스트리드의 창의성을 「${r.g.sub[0]}」로 교체. 이 룬이 있어야 훼손 공개에서 전용 옵션이 나옴.`, `Crafting is done, so swap Astrid's Creativity for ${en}; the reveal needs it for its own modifiers.`)}); crafted=-1; }
     else push({phase:'des', do:'manual', target:{rune:{kr:r.g.sub[0], en}}, label:{kr:`「${r.g.sub[0]}」 장착`, en:`Socket ${en}`}, note:note(`훼손 공개에서 전용 옵션이 나오도록 「${r.g.sub[0]}」 장착.`, `Socket ${en} so the reveal can roll its modifiers.`)}); });
   // 7. desecrated lines
-  const bone = boneFor(it.cat);
-  for(const r of desRows){ const sd=r.m.side; openSlot(sd); const om=[]; if(r.lord && LORD_OMEN[r.lord] && !['helmet','gloves','boots','body'].includes(it.cat)) om.push(LORD_OMEN[r.lord]); if(cnt[other(sd)] < cap[other(sd)]) om.push(SIDE_OMEN.necro[sd]);
+  function desPass(only){ for(const r of desRows){ if(desDone.has(r) || (only && r.m.side!==only)) continue; desDone.add(r); const sd=r.m.side; openSlot(sd); const om=[]; if(r.lord && LORD_OMEN[r.lord] && !['helmet','gloves','boots','body'].includes(it.cat)) om.push(LORD_OMEN[r.lord]); if(cnt[other(sd)] < cap[other(sd)]) om.push(SIDE_OMEN.necro[sd]);
     const b2 = (r.g.s==='n' || r.g.s==='x') && r.t[0]>=40 ? bone.replace('Preserved_','Ancient_').replace('Ancient_Cranium','Preserved_Cranium') : bone;
     const d = push({phase:'des', do:'desecrate', cur:b2, ...(om.length?{omens:om}:{}), target:{unrev:sd}, note: b2!==bone ? note(`${sideKr(sd)}에 훼손. ${nk(b2)}${josa(nk(b2),'은','는')} 레벨 40 미만 옵션이 안 나와서 높은 티어 확률이 올라감.`, `Desecrate a ${sideEn(sd)}. Ancient bones skip modifiers below level 40, which lifts high tiers.`) : note(`${sideKr(sd)}에 훼손.`, `Desecrate a ${sideEn(sd)}.`)}); cnt[sd]++;
     push({phase:'des', do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{reveal:tm(r), side:sd, bone:b2, ...(r.lord?{lord:r.lord}:{})}, fail:{goto:d.id, via:{cur:'Orb_of_Annulment', omens:['Omen_of_Light']}},
-      note:note(`심연의 메아리의 징조로 공개해 ${lk(r)} (T${r.tierNo} 이상). 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)} (tier ${r.tierNo}+); otherwise Light + Annulment and retry.`)}); }
+      note:note(`심연의 메아리의 징조로 공개해 ${lk(r)} (T${r.tierNo} 이상). 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)} (tier ${r.tierNo}+); otherwise Light + Annulment and retry.`)}); } }
+  desPass();
   if(j5?.done){ const {A,B}=j5;
     push({phase:'j5', do:'remove', cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[A]], target:{dropGi:j5.gi}, note:note(`${nk(SIDE_OMEN.annul[A])} + 소멸의 오브로 "${sideKr(B)} 속성 부여 +1개 허용" 줄 제거. ${sideKr(A)}엔 그 줄과 잡옵뿐이라 1/2, 잡옵이 지워지면 한 번 더. ${sideKr(B)} 3줄은 그대로 남음.`, `${ne(SIDE_OMEN.annul[A])} + Orb of Annulment removes the "+1 ${sideEn(B)} allowed" line (1/2: the ${sideEn(A)} side holds only it and a junk line; if the junk goes, once more). The 3 ${sideEn(B)}es stay.`)});
     cnt[A]--; rnd.push(...j5.held); j5.held=[]; exaltPass(); }
