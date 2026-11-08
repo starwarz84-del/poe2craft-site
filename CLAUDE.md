@@ -53,6 +53,8 @@ private/        (저장소에 안 올림) Forge of Exiles 스크랩 — 게시 �
 
 Playwright는 세션에 이미 설치돼 있어요(`require('playwright')`, 재설치 금지).
 
+**게시된 사이트는 샌드박스 iframe**이라 `confirm()`·`alert()`·`prompt()`가 막혀요(누르면 바로 취소). 확인이 필요하면 레시피 탭의 `armed(btn, label)`처럼 "한 번 더 누르기"로 만들어요.
+
 ## 빌드 · 테스트 · 게시
 
 ```

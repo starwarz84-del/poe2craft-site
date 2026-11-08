@@ -52,7 +52,8 @@ const fake = () => {
   ok(!(await fr().evaluate(()=>window.__x)) && !(await fr().locator('img[src=x]').count()), 'HTML 주입 차단');
   // unshare my own
   await fr().evaluate(()=>window.__rec.open); await p.evaluate(()=>{ location.hash='r-s-test1'; }); await p.waitForTimeout(800);
-  fr().page().once('dialog', d=>d.accept());
+  await fr().locator('[data-unshare]').click(); await p.waitForTimeout(200);
+  ok(!(await p.evaluate(()=>window.__fake.store['shared/me1'].recipes['s-test1']===undefined)), '한 번 누르면 아직 안 지움');
   await fr().locator('[data-unshare]').click(); await p.waitForTimeout(1200);
   ok(!(await p.evaluate(()=>window.__fake.store['shared/me1'].recipes['s-test1'])), '공유 취소 → 저장소에서 삭제');
   ok(!errs.length, '페이지 오류 없음 '+errs.join(' | '));

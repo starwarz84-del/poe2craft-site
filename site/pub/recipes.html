@@ -32,6 +32,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* toolbar */
 .tag.draftb{color:var(--ink);background:var(--ok);border-color:var(--ok)}
 .tag.shb{color:var(--accent);border-color:var(--accent)}
+.btn.arm{color:var(--ink);background:var(--bad,#c0504d);border-color:var(--bad,#c0504d)}
 .tag.newb{color:var(--ink);background:var(--accent);border-color:var(--accent);font-weight:600}
 .bar{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:10px}
 .bar input[type=search]{flex:1 1 220px;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 10px}
@@ -1420,6 +1421,10 @@ async function applyShared(d){
   if(S.pendingOpen && list.some(r=>r.id===S.pendingOpen)){ const id=S.pendingOpen; S.pendingOpen=null; setOpen(id); }
   const h=location.hash.match(/^#r-(s-[a-z0-9]+)$/); if(h && !S.open && list.some(r=>r.id===h[1])) setOpen(h[1]);
 }
+// press once to arm, press again within 4 s to do it (window.confirm is blocked in the artifact sandbox)
+function armed(btn, label){ if(btn.dataset.armed==='1'){ delete btn.dataset.armed; clearTimeout(btn._armT); return true; }
+  btn.dataset.armed='1'; btn.dataset.orig=btn.textContent; btn.textContent=label; btn.classList.add('arm');
+  btn._armT=setTimeout(()=>{ delete btn.dataset.armed; btn.textContent=btn.dataset.orig; btn.classList.remove('arm'); }, 4000); return false; }
 function shareDraft(id, btn){
   const r=S.recipes.find(x=>x.id===id && x.draft); if(!r) return;
   const out={...r, id:'s-'+id.replace(/^draft-/,'')}; for(const k of ['draft','_an','likes','success','shared','mine','isNew','sharedAt']) delete out[k];
@@ -1428,7 +1433,7 @@ function shareDraft(id, btn){
   try{ parent.postMessage({type:'poe2-share', recipe:JSON.parse(JSON.stringify(out))}, '*'); }catch(e){ btn.disabled=false; }
 }
 function unshare(id, btn){
-  if(!confirm(L('공유를 취소하면 다른 사람 목록에서도 사라져요. 계속할까요?','Unsharing removes it for everyone. Continue?'))) return;
+  if(!armed(btn, L('한 번 더 누르면 공유 취소 (모두에게서 사라져요)','Press again to unshare (removed for everyone)'))) return;
   btn.disabled=true; try{ parent.postMessage({type:'poe2-unshare', id}, '*'); }catch(e){ btn.disabled=false; }
 }
 function shareResult(d){
@@ -1450,7 +1455,7 @@ async function addDraft(r, open){
 }
 // all drafts at once: they live only in this browser, so this cannot touch anyone else's list or the shared recipes
 document.addEventListener('click', e=>{ if(!e.target.closest('#clrdrafts')) return; const n=S.recipes.filter(r=>r.draft).length; if(!n) return;
-  if(!confirm(L(`이 브라우저에 저장된 역산 초안 ${n}개를 모두 지울까요? 되돌릴 수 없어요.`,`Delete all ${n} drafts saved in this browser? This cannot be undone.`))) return;
+  if(!armed(e.target.closest('#clrdrafts'), L(`한 번 더 누르면 초안 ${n}개 삭제`,`Press again to delete ${n} drafts`))) return;
   store.set('drafts', []); const open=S.open && S.recipes.some(r=>r.draft && r.id===S.open); S.recipes=S.recipes.filter(r=>!r.draft); if(open) setOpen(null); render();
   toast(L('역산 초안을 모두 지웠어요','All drafts deleted')); });
 function removeDraft(id){ store.set('drafts', store.get('drafts',[]).filter(x=>x.id!==id)); S.recipes=S.recipes.filter(x=>x.id!==id); if(S.open===id) setOpen(null); render(); }
