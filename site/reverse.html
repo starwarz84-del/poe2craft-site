@@ -434,7 +434,10 @@ function makeDraft(it, an){
   if(mqGi>=0 && (junk.p || room('p'))){
     if(junk.p) junk.p--; else { push({phase:'q', do:'exalt', cur:'Exalted_Orb', ...(room('s')?{omens:[SIDE_OMEN.exalt.p]}:{}), target:{junk:'p'}, note:note('접두에 버릴 옵션 하나.','One throwaway prefix.')}); cnt.p++; }
     resv.p--;
-    push({phase:'q', do:'essence', cur:'Essence_of_the_Breach', omens:[SIDE_OMEN.cryst.p], target:{gi:mqGi}, note:note('좌측 결정화의 징조 + 균열의 에센스로 그 접두를 최대 퀄리티 +20%로 바꿈.','Sinistral Crystallisation + Essence of the Breach turns it into +20% maximum quality.')});
+    // a full prefix side forces the removal onto the prefixes; so does a suffix side with nothing removable
+    const qOm = cnt.p < cap.p && cnt.s - frs.filter(x=>x.m.side==='s').length > 0;
+    push({phase:'q', do:'essence', cur:'Essence_of_the_Breach', ...(qOm?{omens:[SIDE_OMEN.cryst.p]}:{}), target:{gi:mqGi}, note: qOm ? note('좌측 결정화의 징조 + 균열의 에센스로 그 접두를 최대 퀄리티 +20%로 바꿈.','Sinistral Crystallisation + Essence of the Breach turns it into +20% maximum quality.')
+      : note(`균열의 에센스로 그 접두를 최대 퀄리티 +20%로 바꿈. ${cnt.p >= cap.p ? '접두가 꽉 차 있어서' : '접미엔 지울 줄이 없어서'} 결정화의 징조 없이도 그 접두가 지워짐.`, `Essence of the Breach turns it into +20% maximum quality; ${cnt.p >= cap.p ? 'the prefixes are full' : 'no suffix can be removed'}, so no omen is needed.`)});
     const cat = it.qTag && craft.cats.find(c=>!/^Refined/.test(c.id) && c.tag===it.qTag);
     const iq = impMaxQ(it.b), capC = 20 + iq + 20, qc = Math.min(it.qual, capC);   // catalysts: 20% base + implicit (Breach Ring) + 20% from the Breach line
     qCap = qc;
@@ -529,8 +532,15 @@ function makeDraft(it, an){
     else if(cnt[sd] < cap[sd] && remO===0 && cnt[oth] < cap[oth]){ cs = oth;
       push({phase:'ess', do:'exalt', cur:'Exalted_Orb', ...(room(sd)?{omens:[SIDE_OMEN.exalt[oth]]}:{}), target:{junk:oth}, note:note(`${sideKr(oth)}에 버릴 옵션 하나. 에센스는 무작위로 한 줄을 지우니, 이미 만든 ${sideKr(sd)} 대신 이 줄이 지워지게 반대쪽에 만듦.`, `A throwaway ${sideEn(oth)}: the essence removes a random line, so it goes here instead of a ${sideEn(sd)} already made.`)});
       cnt[sd]++; why = note(`${sideKr(oth)}엔 분열 줄과 방금 만든 버릴 옵션뿐이라 그 줄이 지워지고, ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음.`, `The throwaway ${sideEn(oth)} is the only removable one there, so it goes and ${le(r)} lands on the ${sideEn(sd)}.`); }
-    else { if(!junk[sd]){ push({phase:'ess', do:'exalt', cur:'Exalted_Orb', ...(room(other(sd))?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${e.kr}${josa(e.kr,'이','가')} 바꿀 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${e.en} to replace.`)}); cnt[sd]++; }
-      else junk[sd]--; }
+    else { if(!junk[sd]){ push({phase:'ess', do:'exalt', cur:'Exalted_Orb', ...(room(other(sd))?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${e.kr}${josa(e.kr,'이','가')} 바꿀 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${e.en} to replace.`)}); cnt[sd]++; junk[sd]++; }
+      // a full side: the essence line has nowhere else to go, so it always replaces a line on that side (no omen needed), any removable one
+      if(cnt[sd] >= cap[sd]){ const remS = cnt[sd] - frs.filter(x=>x.m.side===sd).length, pS = remS ? junk[sd]/remS : 1, back = [...made].reverse().find(x=>x.r.m.side===sd);
+        junk[sd]--;
+        push({phase:'ess', do:'essence', cur:e.id, knownP:true, target:{...tm(r), ...(pS<1?{chance:+pS.toFixed(3)}:{})}, ...(pS<1 && back ? {fail:{goto:back.id}} : {}),
+          note: pS<1 ? note(`${e.kr}. ${sideKr(sd)}가 꽉 차 있어서 결정화의 징조 없이도 ${sideKr(sd)} 중 하나가 지워짐 — 버릴 줄이 지워질 확률 ${Math.round(pS*100)}%${back?`, ${lk(back.r)}${josa(lk(back.r),'이','가')} 지워지면 그 줄을 만든 단계부터 다시`:''}.`, `${e.en}. The ${sideEn(sd)}es are full, so it replaces one of them with no omen: ${Math.round(pS*100)}% it takes the throwaway${back?'; if it takes a wanted line, redo from the step that made it':''}.`)
+            : note(`${e.kr}. ${sideKr(sd)}가 꽉 차 있어서 결정화의 징조 없이도 ${sideKr(sd)}의 버릴 줄이 지워지고 ${lk(r)}${josa(lk(r),'으로','로')} 바뀜.`, `${e.en}. The ${sideEn(sd)}es are full, so it replaces the throwaway ${sideEn(sd)} with ${le(r)}, no omen needed.`)});
+        crafted++; continue; }
+      junk[sd]--; }
     push({phase:'ess', do:'essence', cur:e.id, omens:[SIDE_OMEN.cryst[cs]], target: cs===sd ? tm(r) : {...tm(r), ...(mqGone && cs===it.D.groups[mqGi]?.g && !junk[cs] ? {removeGi:mqGi} : {})},
       note: cs===sd ? note(`${nk(SIDE_OMEN.cryst[sd])} + ${e.kr}${josa(e.kr,'으로','로')} 그 줄을 ${lk(r)}로 교체.`, `${sd==='p'?'Sinistral':'Dextral'} Crystallisation + ${e.en} swaps it for ${le(r)}.`)
         : note(`${nk(SIDE_OMEN.cryst[cs])} + ${e.kr}. ${why.kr}`, `${ne(SIDE_OMEN.cryst[cs])} + ${e.en}. ${why.en}`)});
@@ -679,7 +689,12 @@ function verifyDraft(it, an, d){
       if(!magicE && e?.act!=='liquid' && n.cur!=='Essence_of_the_Breach' && n.cur!=='Essence_of_the_Abyss'){ crafted++; if(crafted>1 && !runes.includes("Astrid's Creativity")) add('err','제작 옵션(에센스) 두 번째인데 아스트리드의 창의성이 없어요.',"Second crafted line without Astrid's Creativity.",st); }
       if(magicE){ if(rar!=='magic') add('err',`${e.kr}는 마법 아이템에만 쓸 수 있어요.`,`${e.en} needs a magic item.`,st); rar='rare'; addLine(t, L('에센스','Essence')); return; }
       if(rar!=='rare') add('err','완벽한 에센스·합금은 희귀 아이템에만 쓸 수 있어요.','Perfect essences and alloys need a rare item.',st);
-      const cr = om.find(o=>/Crystallisation/.test(o)); const sd = cr ? (/Sinistral/.test(cr)?'p':'s') : null;
+      const cr = om.find(o=>/Crystallisation/.test(o)); let sd = cr ? (/Sinistral/.test(cr)?'p':'s') : null;
+      const tSide = t.gi!=null ? grp(t.gi).g : null;
+      if(tSide && count(tSide) >= cap[tSide]){   // the new line has nowhere else to go: it replaces one on its own side
+        if(sd && sd!==tSide) add('err',`${tSide==='p'?'접두':'접미'}가 꽉 차 있어서 반대쪽 결정화의 징조가 소용없어요. ${tSide==='p'?'접두':'접미'} 중 하나가 지워져요.`,'The target side is full, so an opposite Crystallisation does nothing: a line on the target side goes.',st);
+        else if(sd) add('warn',`${tSide==='p'?'접두':'접미'}가 꽉 차 있어서 결정화의 징조가 필요 없어요.`,'The target side is full, so the Crystallisation omen is not needed.',st);
+        sd = tSide; }
       if(t.removeGi!=null){ const k=mods.findIndex(m=>m.gi===t.removeGi); if(k<0) add('err',`지울 ${nameOf(t.removeGi)} 줄이 없어요.`,'The line to remove is not there.',st); else if(sd && mods[k].side!==sd) add('err','결정화 면과 지울 줄의 면이 달라요.','The crystallised side does not hold the line to remove.',st);
         else { const others = mods.filter(m=>!m.fr && m.side===mods[k].side && m!==mods[k]); if(others.length) add('warn','결정화 쪽에 다른 옵션도 있어서 그 줄이 지워질 수 있어요.','Other lines on the crystallised side could go instead.',st); mods.splice(k,1); addLine(t, L('에센스','Essence')); return; } }
       const cand = mods.filter(m=>!m.fr && (!sd || m.side===sd));
