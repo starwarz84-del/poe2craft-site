@@ -112,7 +112,13 @@ for _r in R:
 TIPREF = {('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-iceshot-bow','w10'):['desecrate-reroll-no-light'],
  ('sl-flamewave-ring','s2'):['erasure-chaos-cheaper','min-level-lock-tier'], ('mazbro-sceptre','z13'):['reveal-miss-exalt-first'], ('diztoh-socket-gloves','d11'):['reveal-miss-exalt-first'],
  ('absent-amulet-video','a18'):['reveal-miss-exalt-first'], ('ragna-ashot-bow','w5'):['min-level-lock-tier'], ('breach-ring-phys','b6'):['single-res-catalyst'], ('mazbro-sceptre','z11'):['augment-effect-alloy'], ('mazbro-spell5-amulet','z17'):['sanctify-checklist'],
- ('helmet-armour-sl','s1'):['liquid-resist-swap'], ('sl-flamewave-ring','s1'):['liquid-resist-swap'], ('mazbro-caster-amulet','a4'):['chaos-side-swap','sell-offtarget'], ('gold-amulet-6line','k1'):['sell-offtarget']}
+ ('helmet-armour-sl','s1'):['liquid-resist-swap'], ('sl-flamewave-ring','s1'):['liquid-resist-swap'], ('mazbro-caster-amulet','a4'):['chaos-side-swap','sell-offtarget'], ('gold-amulet-6line','k1'):['sell-offtarget'],
+ ('sane-resist-belt','b3'):['liege-omen-resist-jewellery'], ('lilbotq-armour-shield','l1'):['fracture-safety-line'], ('sihan-highend-boots','h1'):['fracture-percent-line'],
+ ('sihan-highend-boots','s1'):['low-weight-first'], ('sihan-highend-boots','s4'):['liquid-resist-swap'], ('sihan-highend-boots','m1'):['cheap-junk-removal'],
+ ('saveq-focus','q1'):['low-ilvl-base'], ('saveq-focus','q4'):['unrevealed-filler'], ('icesly-budget-wand','i6'):['unrevealed-filler'], ('icesly-budget-wand','i8'):['side-omen-save'],
+ ('barricade-quarterstaff','q1'):['low-ilvl-base'], ('barricade-quarterstaff','p4'):['whittle-stuck'], ('belton-plus8-wand','b1'):['fracture-sellable-lines','low-ilvl-base'], ('belton-plus8-wand','b2'):['block-high-weight'],
+ ('farmer-budget-armour','f8'):['greater-exalt-omen-price'], ('farmer-starter-staff','w5'):['greater-exalt-omen-price'], ('farmer-budget-armour','f1'):['cheap-resist-essence'],
+ ('seek-cyclone-boots','k2'):['augment-rune-before-chaos'], ('farmer-starter-staff','w3'):['putrefaction-gamble']}
 for _r in R:
     for _n in _r['nodes']:
         _k=(_r['id'],_n['id'])

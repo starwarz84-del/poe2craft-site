@@ -15,7 +15,7 @@ const out=await p.evaluate(()=>{const R=__rec;
     L.push(`Item Level: ${r.ilvl||82}`,'--------');
     const imp=(b.imp?.[0]||[]); if(imp.length){ imp.forEach(x=>L.push('{ Implicit Modifier }', mid(x)+' (implicit)')); L.push('--------'); }
     let n=0;
-    for(const m of a.final){ if(m.gi==null) continue; const g=D.groups[m.gi]; const tierTop=+(String(m.tag||'').match(/\d+/)||[1])[0]; const ti=Math.min(g.t.length-1, Math.max(0,tierTop-1)); const t=g.t[ti];
+    for(const m of a.final){ if(m.gi==null) continue; const g=D.groups[m.gi]; const okT=Math.max(0,g.t.findIndex(x=>x[0]<=(r.ilvl||82))); const tn=(String(m.tag||'').match(/\d+/)||[])[0]; const ti=Math.min(g.t.length-1, Math.max(okT, tn?+tn-1:okT)); const t=g.t[ti];
       const side=g.g==='p'?'Prefix':'Suffix'; const kind=m.fr?'Fractured ':m.des?'Desecrated ':'';
       L.push(`{ ${kind}${side} Modifier "${t[3]}"${g.s==='n'?` (Tier: ${ti+1})`:''} }`);
       const k = a.qual?.type && g.tg.includes(a.qual.type) ? 1+a.qual.v/100 : 1; t[5].split('\n').forEach(x=>L.push(mid(x,k)+(m.fr?' (fractured)':m.des?' (desecrated)':''))); n++; }

@@ -633,7 +633,8 @@ function analyse(r){
         o.p = t.chance ?? 0.5; const ms=grp(r,t.mark.gi).g, other=ms==='p'?'s':'p';
         o.missState=[...clone(), {gi:t.mark.alt ?? t.mark.gi, ti:0, side:other, mark:true}];   // the Mark on the other side
         mods.push({gi:t.mark.gi, ti:0, side:ms, mark:true});
-      } else if(rar==='rare'){ const rs=(n.omens||[]).some(x=>/Dextral_Crystal/.test(x))?'s':(n.omens||[]).some(x=>/Sinistral_Crystal/.test(x))?'p':null;
+      } else if(rar==='rare'){ let rs=(n.omens||[]).some(x=>/Dextral_Crystal/.test(x))?'s':(n.omens||[]).some(x=>/Sinistral_Crystal/.test(x))?'p':null;
+        if(t.gi!=null){ const ts=grp(r,t.gi).g; if(count(ts)>=cap[ts]) rs=ts; }   // a full target side: the essence line can only replace a line on that side
         const ri = t.removeGi!=null ? mods.findIndex(m=>m.gi===t.removeGi) : -1;   // e.g. the maximum quality line once quality is done
         if(t.missDrop!=null && t.chance!=null){ const alt=clone(), j=alt.findIndex(m=>m.gi===t.missDrop); if(j>=0) alt.splice(j,1); if(t.gi!=null) alt.push({gi:t.gi, ti:t.ti||0, side:grp(r,t.gi).g, ess:true}); o.missState=alt; }   // the miss: a good line went instead of the junk
         if(ri>=0 && t.chance!=null){ const alt=clone(), j=alt.findIndex(m=>m.junk && (!rs || m.side===rs)); if(j>=0) alt.splice(j,1); if(t.gi!=null) alt.push({gi:t.gi, ti:t.ti||0, side:grp(r,t.gi).g, ess:true}); o.missState=alt; }   // the miss: the other line went
