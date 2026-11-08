@@ -1198,9 +1198,12 @@ function list(){
     if(S.tags.size){ const t=tagsOf(r); for(const x of S.tags) if(!t.has(x)) return false; }
     if(q){ const hay=[r.title.kr,r.title.en,tx(r.author),baseOf(r).kr,baseOf(r).en,clsName(r),...analyse(r).final.map(m=>m.txt)].join(' ').toLowerCase(); if(!hay.includes(q)) return false; }
     return true; });
-  const by = { popular:(x,y)=>likes(y)-likes(x), new:(x,y)=>y.created.localeCompare(x.created), cheap:(x,y)=>totalUses(x)-totalUses(y),
+  // newest: the shared time when there is one, else the date; recipes added later on the same date count as newer
+  const order = new Map(S.recipes.map((r,i)=>[r,i]));
+  const stamp = r => r.at || r.sharedAt || (r.draft && r.madeAt) || (Date.parse(r.created||'2000-01-01') + (order.get(r)||0));
+  const by = { popular:(x,y)=>likes(y)-likes(x), new:(x,y)=>stamp(y)-stamp(x), cheap:(x,y)=>totalUses(x)-totalUses(y),
     rate:(x,y)=>successRate(y)-successRate(x), reports:(x,y)=>reports(y)-reports(x) }[S.sort];
-  return a.sort((x,y)=>by(x,y) || y.created.localeCompare(x.created));
+  return a.sort((x,y)=>by(x,y) || stamp(y)-stamp(x));
 }
 
 let cards=[], panel=null;
