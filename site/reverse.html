@@ -571,6 +571,11 @@ function verifyDraft(it, an, d){
       if(t.junk){ const sd=Array.isArray(t.junk)?t.junk[0]:t.junk; if(count(sd)>=maxA(sd)) add('err',`${sd==='p'?'접두':'접미'}가 꽉 차서 붙일 수 없어요.`,'That side is full.',st); mods.push({junk:true, side:sd}); }
       else addLine(t, L('엑잘','Exalt')); return; }
     if(n.do==='chaos'){ if(rar!=='rare') add('err','카오스 오브는 희귀 아이템에만 쓸 수 있어요.','Chaos needs a rare item.',st);
+      // Omen of Whittling: Chaos removes the line with the lowest required item level (not the lowest tier)
+      if(om.includes('Omen_of_Whittling') && t.removeGi!=null){ const lvl = gi => { const r=an.rows.find(x=>x.m.gi===gi); return r ? r.t[0] : (grp(gi)?.t.at(-1)?.[0] ?? 0); };
+        const tl = lvl(t.removeGi), lower = mods.filter(m=>!m.fr && m.gi!=null && m.gi!==t.removeGi && lvl(m.gi) < tl);
+        if(lower.length) add('err',`절사의 징조는 요구 레벨이 가장 낮은 줄을 바꿔요. ${nameOf(lower[0].gi)}(레벨 ${lvl(lower[0].gi)})이 ${nameOf(t.removeGi)}(레벨 ${tl})보다 낮아서 그 줄이 지워져요.`,`Whittling takes the lowest required level: ${nameOf(lower[0].gi)} (level ${lvl(lower[0].gi)}) is below the target (level ${tl}).`,st);
+        else if(mods.some(m=>m.junk && !m.fr)) add('warn','절사의 징조는 요구 레벨이 가장 낮은 줄을 바꿔요. 잡옵의 레벨이 더 낮으면 잡옵이 바뀌니 확인하세요.','Whittling takes the lowest required level; a junk line with a lower level would be taken instead.',st); }
       if(t.removeGi!=null){ const k=mods.findIndex(m=>m.gi===t.removeGi); if(k<0) add('err',`지울 ${nameOf(t.removeGi)} 줄이 없어요.`,'The line to remove is not there.',st); else mods.splice(k,1); }
       else { const k = mods.findIndex(m=>m.junk && (!t.replace || m.side===t.replace)); if(k<0){ const good = mods.filter(m=>!m.fr && !m.junk).length; add(good?'err':'warn', good ? '카오스 오브가 지울 잡옵이 없어서 좋은 옵션이 지워질 수 있어요.' : '카오스 오브가 지울 옵션이 없어요.', good ? 'No junk for Chaos to remove; a good line may go.' : 'Nothing for Chaos to remove.', st); } else mods.splice(k,1);
         if(!om.includes('Omen_of_Whittling') && mods.some(m=>!m.fr && !m.junk) ) add('warn','이미 좋은 옵션이 있는 상태에서 카오스 오브를 쓰면 그 줄이 지워질 수 있어요.','Chaos can remove a good line already on the item.',st); }
