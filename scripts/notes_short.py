@@ -114,3 +114,35 @@ for _r in R:
         _k=(_r['id'],_n['id'])
         if _k in TIPREF: _n['tips']=TIPREF[_k]
         elif 'Astrid' in str((_n.get('target') or {}).get('rune','')) or "Astrid's" in str(_n.get('label','')): _n['tips']=['astrid-creativity']
+
+# Automatic tip links (사용자 확정 2026-11-09: tips live in tips.json, a step shows only "제작 꿀팁 #n" with the text on hover).
+# A tip is linked to a step only in recipes the tip lists, by what the step uses.
+_TJ = json.load(open('/home/claude/poe2data/site/data/tips.json'))['tips']
+def _uses(n, *ids):
+    s = json.dumps({k:n.get(k) for k in ('cur','omens','fail','withEach','target','label','cost')}, ensure_ascii=False)
+    return any(i in s for i in ids)
+AUTO = [
+ ('whittling-lowest', lambda n,i: _uses(n,'Omen_of_Whittling')),
+ ('whittle-side-first', lambda n,i: _uses(n,'Omen_of_Whittling')),
+ ('catalyst-steer', lambda n,i: _uses(n,'Omen_of_Catalysing_Exaltation')),
+ ('abyss-vs-whittle', lambda n,i: _uses(n,'Essence_of_the_Abyss')),
+ ('light-annul-count', lambda n,i: n['do']=='reveal' and _uses(n,'Omen_of_Light')),
+ ('after-fracture-chaos', lambda n,i: n['do']=='chaos' and i<=2),
+ ('vaal-infuser-quality', lambda n,i: n.get('cost')=='vaal' or _uses(n,'주입기')),
+ ('vaal-quality-first', lambda n,i: n.get('cost')=='vaal' or _uses(n,'주입기')),
+ ('vaal-infuser-46', lambda n,i: n.get('cost')=='vaal' or _uses(n,'주입기')),
+ ('infuser-first-safe', lambda n,i: n.get('cost')=='vaal' or _uses(n,'주입기')),
+ ('divine-before-sanctify', lambda n,i: _uses(n,'sanctify','축성')),
+ ('zarokh-anoint', lambda n,i: _uses(n,'anoint','성유')),
+ ('hinekora-preview', lambda n,i: _uses(n,'Hinekoras_Lock','히네코라')),
+ ('hinekora-before-big', lambda n,i: _uses(n,'Hinekoras_Lock','히네코라')),
+ ('hinekora-after-changes', lambda n,i: _uses(n,'Hinekoras_Lock','히네코라')),
+ ('desecrate-free-side', lambda n,i: n['do']=='desecrate'),
+ ('block-high-weight', lambda n,i: n['do']=='reveal'),
+]
+for _r in R:
+    for _i, _n in enumerate(_r['nodes']):
+        for _tid, _f in AUTO:
+            _t = next((t for t in _TJ if t['id']==_tid), None)
+            if _t and _r['id'] in _t.get('recipes',[]) and _f(_n,_i) and _tid not in _n.get('tips',[]):
+                _n.setdefault('tips',[]).append(_tid)
