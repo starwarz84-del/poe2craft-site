@@ -169,6 +169,11 @@ T+=[
   'title':K('카오스 오브 중 반대쪽에 1티어가 뜨면 버리지 말기','A T1 on the wrong side during chaos spam is worth keeping'),
   'body':K('접미 하나를 노리며 카오스 오브를 돌리다 치명타·치명타 피해·마나 % 같은 1티어가 뜨면, 반대쪽에 엑잘티드 오브를 하나 붙이고 심연의 에센스로 그 새 줄을 바꾼 뒤 접미 엑잘티드 오브로 원래 목표를 노리는 게 이득. 잡옵을 다시 굴릴 땐 소멸의 오브보다 상위 카오스 오브가 쌈.','If a T1 like crit, crit damage or % mana shows up while chaos-spamming for a suffix, slam the other side, swap that new line with an Essence of the Abyss, then suffix-exalt for the original target. Greater Chaos is a cheaper way to reroll the junk than an Annul.'),
   'source':{**MZA,'ts':'5:07'},'recipes':['mazbro-caster-amulet']},
+ {'id':'desecrate-reroll-no-light','tags':[K('훼손','Desecrate'),K('에센스','Essence'),K('룬','Rune')],'patch':'0.5.5',
+  'title':K('빛의 징조 없이 훼손 다시 굴리기 (아스트리드의 창의성 + 에센스 2개)','Reroll a desecration without Omen of Light (Astrid\'s Creativity + two essences)'),
+  'body':K('훼손 공개가 빗나갔고 그 면에 지울 수 있는 줄이 훼손 줄뿐이면: ① 면 결정화의 징조 + 완벽한 에센스로 훼손 줄을 지움(에센스 줄이 붙음) → ② 면 결정화의 징조 + 심연의 에센스로 그 에센스 줄을 심연 군주의 징표로 바꿈 → ③ 뼈로 징표를 훼손 → 다시 공개. ②에서 에센스 줄과 징표가 잠깐 같이 있어 제작 옵션이 2줄이 되므로 아스트리드의 창의성 룬을 미리 끼워 둠(끝나면 다른 룬으로 교체).',
+           'When a reveal misses and the desecrated line is the only removable one on that side: (1) side Crystallisation + a Perfect Essence removes it (an essence line lands), (2) side Crystallisation + Essence of the Abyss turns that line into the Abyssal Mark, (3) desecrate the Mark with a bone and reveal again. In (2) the essence line and the Mark briefly coexist as two crafted mods, so socket Astrid\'s Creativity first and swap it out at the end.'),
+  'source':{'url':'https://www.youtube.com/watch?v=n97yEuKSWyM','title':'I Crafted an Excpetional Spirit Vile Robe for my Gemling Spark Build | POE 2 0.5.5','channel':'Diztoh','ts':'8:38'},'recipes':['diztoh-vile-robe','diztoh-iceshot-bow']},
 ]
 json.dump({'v':1,'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
 print(len(T),'tips')
