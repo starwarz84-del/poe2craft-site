@@ -297,6 +297,7 @@ function rareTxt(p){ return p==null ? '' : p>=0.2 ? L('흔함','common') : p>=0.
 
 
 /* ---------- recipe draft (rule-based; the recipes engine computes the odds) ---------- */
+const ERASE = {p:'Omen_of_Sinistral_Erasure', s:'Omen_of_Dextral_Erasure'};
 const SIDE_OMEN = {exalt:{p:'Omen_of_Sinistral_Exaltation', s:'Omen_of_Dextral_Exaltation'}, annul:{p:'Omen_of_Sinistral_Annulment', s:'Omen_of_Dextral_Annulment'},
   regal:{p:'Omen_of_Sinistral_Coronation', s:'Omen_of_Dextral_Coronation'}, cryst:{p:'Omen_of_Sinistral_Crystallisation', s:'Omen_of_Dextral_Crystallisation'}, necro:{p:'Omen_of_Sinistral_Necromancy', s:'Omen_of_Dextral_Necromancy'}};
 const LORD_OMEN = {kurgal:'Omen_of_the_Blackblooded', amanamu:'Omen_of_the_Liege', ulaman:'Omen_of_the_Sovereign'};
@@ -447,11 +448,32 @@ function makeDraft(it, an){
     if(it.qual>capC) push({phase:'q', do:'manual', cost:'vaal', target:{setQuality:it.qual}, label:{kr:'바알 촉진시키는 주입기', en:'Vaal Catalysing Infuser'}, note:note(`${capC}%를 넘는 ${it.qual}%는 바알 촉진시키는 주입기로. 첫 번째는 타락하지 않고, 이후 한 번마다 타락 확률이 늘어남(영상들 기준 46% 근처부터 커짐). 옵션이 적을 때 미리 올려 두는 게 안전.`, `Above ${capC}% (${it.qual}%) comes from Vaal Catalysing Infusers: the first cannot corrupt, each later one is riskier (around 46% it climbs fast). Do it while the item has little to lose.`)});
   } else if(R0){ rnd.push(R0); R0=null; }
   // 5. remaining random lines: exalt for any wanted line on a side, side by side
+  // Whittling finish: Chaos with Omen of Whittling swaps the lowest-level line. If every other removable line on that side is at
+  // (or above) the highest level anything can roll there, the last wanted line can be chased with a filler + Whittling + Erasure + Perfect Chaos
+  // as often as needed without ever touching the good lines (e.g. a level-82 T1 resistance)
+  const allFam = new Set(rows.flatMap(r=>r.g.f||[]));
+  const maxRoll = sd => { let m=0; it.D.groups.forEach(g=>{ if(g.s!=='n' || g.g!==sd || (g.f||[]).some(f=>allFam.has(f))) return; g.t.forEach(t=>{ if(t[0]<=it.ilvl && t[1]>0 && t[0]>m) m=t[0]; }); }); return m; };
+  const lvlOf = r => r.t[0];
+  const whittleTarget = (sd, want) => { if(want.length<1) return null; const low = [...want].sort((a,b)=>lvlOf(a)-lvlOf(b))[0];
+    if(lvlOf(low) < 50 && low.tierNo!==1) return null;   // Perfect Chaos rolls level 50+, but a family's top tier is always in the pool
+    const keep = [...made.filter(x=>x.r.m.side===sd).map(x=>x.r), ...want.filter(r=>r!==low)], top = maxRoll(sd);
+    if(!keep.length || keep.some(r=>lvlOf(r) < top || lvlOf(r) <= lvlOf(low))) return null;
+    return low; };
   const exaltPass = only => { for(let guard=0; rnd.length && guard<12; guard++){
     const sd = ['p','s'].map(x=>({x, free:cap[x]-cnt[x]-resv[x]+junk[x]-desNeed[x], n:rnd.filter(r=>r.m.side===x).length})).filter(o=>o.free>0 && o.n>0 && (!only || o.x===only)).sort((a,b)=>b.n-a.n)[0]?.x;
     if(!sd) break;
     openSlot(sd);
-    const want = rnd.filter(r=>r.m.side===sd), oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
+    let want = rnd.filter(r=>r.m.side===sd); const oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
+    const wl = it.cat==='jewellery' && qCap>0 ? null : whittleTarget(sd, want);
+    if(wl && want.length===1 && !made.filter(x=>x.r.m.side===sd).length) {}   // nothing to protect: plain exalt below
+    else if(wl && want.length===1){   // the last line: filler, then Whittling + Erasure + Perfect Chaos until it lands
+      const keepR = made.filter(x=>x.r.m.side===sd).map(x=>x.r), eOm = cnt[oth] - frs.filter(x=>x.m.side===oth).length > 0 ? [ERASE[sd]] : [];
+      push({phase:'ex', do:'exalt', cur:'Exalted_Orb', ...(om.length?{omens:om}:{}), target:{junk:sd}, note:note(`${sideKr(sd)}에 버릴 옵션 하나(다음 단계에서 바뀔 자리).`, `A throwaway ${sideEn(sd)} (the slot the next step rerolls).`)}); cnt[sd]++; junk[sd]++;
+      const ex = push({phase:'ex', do:'chaos', cur:'Perfect_Chaos_Orb', omens:['Omen_of_Whittling', ...eOm], target:{...tm(wl), replace:sd}, fail:{goto:'self'},
+        note:note(`${['Omen_of_Whittling',...eOm].map(nk).join(' + ')} + 완벽한 카오스 오브로 ${lkA(wl)} (T${wl.tierNo} 이상). 절사의 징조는 요구 레벨이 가장 낮은 줄만 바꿔서 ${names(keepR, x=>lk(x))}(레벨 ${Math.min(...keepR.map(lvlOf))})${josa('레벨','은','는')} 안 지워짐${eOm.length?`, ${nk(eOm[0])}로 ${sideKr(oth)}도 보호`:''}. 뜰 때까지 반복.`,
+          `${['Omen_of_Whittling',...eOm].map(ne).join(' + ')} + Perfect Chaos Orb for ${leA(wl)} (tier ${wl.tierNo}+). Whittling swaps only the lowest-level line, so ${names(keepR, x=>le(x))} (level ${Math.min(...keepR.map(lvlOf))}) stays${eOm.length?`, and ${ne(eOm[0])} keeps the ${sideEn(oth)}es safe`:''}. Repeat until it lands.`)});
+      junk[sd]--; made.push({r:wl, id:ex.id}); rnd.splice(rnd.indexOf(wl),1); continue; }
+    else if(wl) want = want.filter(r=>r!==wl).sort((a,b)=>lvlOf(b)-lvlOf(a)).slice(0,1);   // higher-level lines go on first, one at a time
     const free = cap[sd]-cnt[sd]-resv[sd]+junk[sd]-desNeed[sd];
     // jewellery with catalyst quality: put a catalyst matching these lines on first and add Omen of Catalysing Exaltation
     let cOm = [];
