@@ -392,14 +392,21 @@ function makeDraft(it, an){
   for(const sd of ['p','s']) while(junk[sd] > resv[sd]){ const good = rows.some(r=>!r.m.fr && r.m.side===sd && nodes.some(n=>n.target?.gi===r.m.gi || (n.target?.anyOf||[]).some(x=>x.gi===r.m.gi)));
     push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]], target:{removeJunk:sd}, note: good ? note(`${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 잡옵 제거. 같은 쪽 좋은 옵션이 지워질 수 있어서 주의.`, `${sd==='p'?'Sinistral':'Dextral'} Annulment removes the junk; it can hit the good ${sideEn(sd)} too.`) : note(`${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 잡옵 제거 (그쪽엔 분열 줄과 잡옵뿐이라 안전).`, `${sd==='p'?'Sinistral':'Dextral'} Annulment removes the junk (nothing else worth keeping on that side).`)}); junk[sd]--; cnt[sd]--; }
   // 4. jewellery quality above 20%: Essence of the Breach borrows a prefix, catalysts go first so later lines get the bonus
-  let qDone=false;
+  let qDone=false, qType=null, qPend=null, qCap=0, qFinal=null;   // quality type now on the item, the final catalyst still to apply, the catalyst cap
   if(mqGi>=0 && (junk.p || room('p'))){
     if(junk.p) junk.p--; else { push({phase:'q', do:'exalt', cur:'Exalted_Orb', ...(room('s')?{omens:[SIDE_OMEN.exalt.p]}:{}), target:{junk:'p'}, note:note('접두에 버릴 옵션 하나.','One throwaway prefix.')}); cnt.p++; }
     resv.p--;
     push({phase:'q', do:'essence', cur:'Essence_of_the_Breach', omens:[SIDE_OMEN.cryst.p], target:{gi:mqGi}, note:note('좌측 결정화의 징조 + 균열의 에센스로 그 접두를 최대 퀄리티 +20%로 바꿈.','Sinistral Crystallisation + Essence of the Breach turns it into +20% maximum quality.')});
     const cat = it.qTag && craft.cats.find(c=>!/^Refined/.test(c.id) && c.tag===it.qTag);
     const iq = impMaxQ(it.b), capC = 20 + iq + 20, qc = Math.min(it.qual, capC);   // catalysts: 20% base + implicit (Breach Ring) + 20% from the Breach line
-    if(cat){ push({phase:'q', do:'quality', cur:cat.id, target:{quality:qc}, note:note(`${cat.kr}로 퀄리티 ${qc}% (기본 20%${iq?` + ${it.b.kr} 고정 옵션 ${iq}%`:''} + 균열의 에센스 최대 퀄리티 +20%). 이후 붙는 ${cat.kr.replace(/ 기폭제$/,'')} 계열 옵션 값이 같이 올라감.`, `${cat.en} to ${qc}% (20% base${iq?` + ${iq}% ${it.b.en} implicit`:''} + 20% from the Breach line); matching lines added later get the bonus too.`)}); qDone=true; }
+    qCap = qc;
+    const qNote = c => note(`${c.kr}로 퀄리티 ${qc}% (기본 20%${iq?` + ${it.b.kr} 고정 옵션 ${iq}%`:''} + 균열의 에센스 최대 퀄리티 +20%). 이후 붙는 ${c.kr.replace(/ 기폭제$/,'')} 계열 옵션 값이 같이 올라감.`, `${c.en} to ${qc}% (20% base${iq?` + ${iq}% ${it.b.en} implicit`:''} + 20% from the Breach line); matching lines added later get the bonus too.`);
+    // the exalts that follow can ride Omen of Catalysing Exaltation: if the final catalyst already matches their lines, apply it now;
+    // otherwise a catalyst that matches them goes first and the final one comes after the exalts
+    const exTags = new Set(rnd.flatMap(r=>r.g.tg||[]));
+    if(cat && !craft.cats.some(c=>!/^Refined/.test(c.id) && exTags.has(c.tag))){ push({phase:'q', do:'quality', cur:cat.id, target:{quality:qc}, note:qNote(cat)}); qType=cat.tag; }
+    else if(cat){ qPend={cat, note:qNote(cat)}; qFinal=cat; }   // decided at the exalts below; the final catalyst goes on last if another one was used for them
+    qDone = !!cat;
     if(it.qual>capC) push({phase:'q', do:'manual', cost:'vaal', target:{setQuality:it.qual}, label:{kr:'바알 촉진시키는 주입기', en:'Vaal Catalysing Infuser'}, note:note(`${capC}%를 넘는 ${it.qual}%는 바알 촉진시키는 주입기로. 첫 번째는 타락하지 않고, 이후 한 번마다 타락 확률이 늘어남(영상들 기준 46% 근처부터 커짐). 옵션이 적을 때 미리 올려 두는 게 안전.`, `Above ${capC}% (${it.qual}%) comes from Vaal Catalysing Infusers: the first cannot corrupt, each later one is riskier (around 46% it climbs fast). Do it while the item has little to lose.`)});
   } else if(R0){ rnd.push(R0); R0=null; }
   // 5. remaining random lines: exalt for any wanted line on a side, side by side
@@ -407,10 +414,37 @@ function makeDraft(it, an){
     const sd = ['p','s'].map(x=>({x, free:cap[x]-cnt[x]-resv[x]+junk[x]-desNeed[x], n:rnd.filter(r=>r.m.side===x).length})).filter(o=>o.free>0 && o.n>0).sort((a,b)=>b.n-a.n)[0]?.x;
     if(!sd) break;
     const want = rnd.filter(r=>r.m.side===sd), oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
-    push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(om.length?{omens:om}:{}), target:anyOf(want), fail:{goto:'self', via:{cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]]}},
-      note:note(`${sideKr(sd)}에 ${want.length>1?`원하는 줄 중 하나(${names(want, x=>lk(x))})`:`${lk(want[0])} (T${want[0].tierNo} 이상)`}. 실패하면 ${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 지우고 다시.`, `A ${sideEn(sd)}: ${want.length>1?`any of ${names(want, x=>le(x))}`:`${le(want[0])} (tier ${want[0].tierNo}+)`}. On a miss, annul that ${sideEn(sd)} and retry.`)});
+    const free = cap[sd]-cnt[sd]-resv[sd]+junk[sd]-desNeed[sd];
+    // jewellery with catalyst quality: put a catalyst matching these lines on first and add Omen of Catalysing Exaltation
+    let cOm = [];
+    if(it.cat==='jewellery' && qCap>0){ const tg = new Set(want.flatMap(r=>r.g.tg||[]));
+      // the catalyst that favours the most wanted lines here; on a tie keep the one on the item, then the final one
+      const cover = tag => want.filter(r=>(r.g.tg||[]).includes(tag)).length;
+      const cands = craft.cats.filter(c=>!/^Refined/.test(c.id) && cover(c.tag)>0), best = Math.max(0, ...cands.map(c=>cover(c.tag)));
+      const finalCat = qFinal;
+      const c2 = !best ? null : qType && cover(qType)===best ? null : (finalCat && cover(finalCat.tag)===best ? finalCat : cands.find(c=>cover(c.tag)===best));
+      if(c2){ push({phase:'ex', do:'quality', cur:c2.id, target:{quality:qCap}, note: c2===qFinal ? qPend.note
+          : note(`${c2.kr}로 퀄리티 ${qCap}%. 다음 엑잘에서 ${names(want, x=>lk(x))}${josa(lk(want[want.length-1]),'이','가')} 나올 확률을 촉진하는 찬미의 징조로 올리려고 이 속성 퀄리티를 먼저 씀.`, `${c2.en} to ${qCap}% so Omen of Catalysing Exaltation favours ${names(want, x=>le(x))} on the next exalt.`)});
+        qType=c2.tag; }
+      if(qType && tg.has(qType)) cOm=['Omen_of_Catalysing_Exaltation']; }
+    const exOm = [...cOm, ...om], tries = cOm.length && free-want.length>=1 ? 2 : 1;
+    const omTxt = exOm.map(nk).join(' + '), omEn = exOm.map(ne).join(' + ');
+    // a wanted line already on this side can be the one an annulment takes: then go back to the step that made it
+    const madeOn = nodes.filter(n=>['chaos','exalt','essence','transmute','augment','regal'].includes(n.do) && rows.some(r=>!r.m.fr && r.m.side===sd && (n.target?.gi===r.m.gi || (n.target?.anyOf||[]).some(x=>x.gi===r.m.gi))));
+    const lost = madeOn.length ? madeOn[madeOn.length-1] : null;
+    const tgtK = want.length>1?`원하는 줄 중 하나(${names(want, x=>lk(x))})`:`${lk(want[0])} (T${want[0].tierNo} 이상)`, tgtE = want.length>1?`any of ${names(want, x=>le(x))}`:`${le(want[0])} (tier ${want[0].tierNo}+)`;
+    if(tries===2){ push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', omens:exOm, target:{junk:sd},
+        note:note(`1차 도전: ${omTxt} + 완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 여기서 뜨면 다음 단계는 아무 ${sideKr(sd)}여도 성공.`, `First try: ${omEn} + Perfect Exalted Orb for ${tgtE}. If it lands here, the next step can be any ${sideEn(sd)}.`)}); cnt[sd]++; }
+    const lostK = lost ? `${lk(rows.find(r=>!r.m.fr && r.m.side===sd && (lost.target?.gi===r.m.gi || (lost.target?.anyOf||[]).some(x=>x.gi===r.m.gi))))}` : '';
+    const ex = push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(exOm.length?{omens:exOm}:{}), target:anyOf(want), fail:{goto:'self', via:{cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]]}, ...(lost?{lost:lost.id}:{})},
+      note: lost && cOm.length ? note(`${tries===2?'2차 도전: ':''}${omTxt?omTxt+' + ':''}완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 안 뜨면 갈림길: ① ${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 ${sideKr(sd)} 하나를 지우고 다시 도전. ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시 (계산은 ① 기준). ② 바로 아래 타협 경로.`,
+          `${tries===2?'Second try: ':''}${omEn?omEn+' + ':''}Perfect Exalted Orb for ${tgtE}. On a miss you choose: (1) annul a ${sideEn(sd)} and try again; if it takes ${lostK? 'the wanted line':'a wanted line'}, go back to the step that made it (the math uses this). (2) The compromise below.`)
+        : note(`${sideKr(sd)}에 ${tgtK}. 실패하면 ${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 지우고 다시.${lost?` ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시.`:''}`, `A ${sideEn(sd)}: ${tgtE}. On a miss, annul that ${sideEn(sd)} and retry${lost?'; if it takes the wanted line, go back to the step that made it':''}.`)});
+    if(lost && cOm.length) push({phase:'ex', do:'note', fallbackFor:ex.id, label:{kr:'갈림길 ②: 타협',en:'Fork (2): settle'}, note:note(`안 뜬 줄은 그대로 두고 다음 단계로. 뒤의 훼손 공개에서 원하는 줄이 안 나와도 다시 하지 않고 마무리. 비싸게 팔기는 어렵지만 ${lostK}${josa(lostK,'을','를')} 잃을 위험 없이 적당한 옵션으로 타협.`, `Leave the miss and move on; if a later reveal misses too, finish anyway. It won't sell high, but it settles for decent mods without risking the line you already have.`)});
     rnd.splice(rnd.indexOf(want[0]),1); cnt[sd]++;
   }
+  if(qPend && qType!==qPend.cat.tag){ push({phase:'q', do:'quality', cur:qPend.cat.id, target:{quality:qCap}, note: qType ? note(`엑잘이 끝났으니 ${qPend.cat.kr}로 바꿔 퀄리티 ${qCap}%. 완성품의 퀄리티 종류.`, `Exalts done: switch to ${qPend.cat.en} at ${qCap}%, the finished item's quality type.`) : qPend.note}); qType=qPend.cat.tag; }
+  qPend=null;
   // 6. guaranteed lines last: throwaway line + Crystallisation + essence (a second crafted line needs Astrid's Creativity)
   let crafted = 0;
   for(const {r,e} of rareEss){

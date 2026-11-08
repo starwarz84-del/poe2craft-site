@@ -875,7 +875,7 @@ function routeHTML(r, o, i, via){
   if(g==='self') out.push(chip('no', L('실패','Miss'), L('이 단계 반복','repeat this step'), via?` <small>(${L('지우기','remove with')}: ${via})</small>`:''));
   else if(g==='restart') out.push(chip('no', L('실패','Miss'), L('버리고 1번부터','discard, back to step 1'), o.pEff!=null && o.pEff!==o.p?` <small>(${L('기회비용','cost basis')} ${pct(o.pEff)})</small>`:''));
   else if(g && n.fail.label!=='reveal') out.push(chip('no', L('실패','Miss'), L(`${stepNo(r,g)}번`,`step ${stepNo(r,g)}`), via?` <small>(${L('먼저','first')}: ${via})</small>`:''));
-  if(g==='self' && o.lose>0) out.push(chip('no', L(`원하는 옵션이 지워지면 (${pct(o.lose)})`,`Wanted mod removed (${pct(o.lose)})`), L(`${stepNo(r,n.fail.lost)}번으로`,`step ${stepNo(r,n.fail.lost)}`), ` <small>(${L('평균','avg')} ${fmt(o.lostRedo)}${L('회','×')})</small>`));
+  if(g==='self' && o.lose>0) out.push(chip('no', L(`원하는 옵션이 지워지면 (${pct(o.lose)})`,`Wanted mod removed (${pct(o.lose)})`), L(`${stepNo(r,n.fail.lost)}번으로`,`step ${stepNo(r,n.fail.lost)}`), o.pUnknown ? '' : ` <small>(${L('평균','avg')} ${fmt(o.lostRedo)}${L('회','×')})</small>`));
   return out.length ? `<div class="routes">${out.join('')}</div>` : '';
 }
 function flowHTML(r){
