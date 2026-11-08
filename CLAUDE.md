@@ -40,7 +40,13 @@ raw/, out/      원천 수집 데이터(poe2db, RePoE)
 private/        (저장소에 안 올림) Forge of Exiles 스크랩 — 게시 금지 테스트 데이터
 ```
 
-**경로 주의**: 스크립트들이 `/home/claude/poe2data` 절대경로를 써요. 저장소는 반드시 그 위치에 클론해요.
+**경로 주의**: 스크립트들이 `/home/claude/poe2data` 절대경로를 써요. 새 세션에서 저장소가 다른 곳(예: `/home/claude/poe2craft-site`)에 클론됐다면 먼저 링크를 만들어요.
+
+```
+[ -e /home/claude/poe2data ] || ln -s /home/claude/poe2craft-site /home/claude/poe2data
+```
+
+Playwright는 세션에 이미 설치돼 있어요(`require('playwright')`, 재설치 금지).
 
 ## 빌드 · 테스트 · 게시
 
