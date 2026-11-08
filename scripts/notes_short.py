@@ -108,12 +108,14 @@ for _r in R:
         if _k in BRANCH: _n['br'] = K(*BRANCH[_k])
 
 # Tip numbers under a step (hover shows the tip): step → tip ids from tips.json (사용자 요청 2026-11-09)
-TIPREF = {('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-iceshot-bow','w10'):['desecrate-reroll-no-light']}
+TIPREF = {('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-iceshot-bow','w10'):['desecrate-reroll-no-light'],
+ ('sl-flamewave-ring','s2'):['erasure-chaos-cheaper','min-level-lock-tier'], ('mazbro-sceptre','z13'):['reveal-miss-exalt-first'], ('diztoh-socket-gloves','d11'):['reveal-miss-exalt-first'],
+ ('absent-amulet-video','a18'):['reveal-miss-exalt-first'], ('ragna-ashot-bow','w5'):['min-level-lock-tier'], ('breach-ring-phys','b6'):['single-res-catalyst'], ('mazbro-sceptre','z11'):['augment-effect-alloy'], ('mazbro-spell5-amulet','z17'):['sanctify-checklist'],
+ ('helmet-armour-sl','s1'):['liquid-resist-swap'], ('sl-flamewave-ring','s1'):['liquid-resist-swap'], ('mazbro-caster-amulet','a4'):['chaos-side-swap','sell-offtarget'], ('gold-amulet-6line','k1'):['sell-offtarget']}
 for _r in R:
     for _n in _r['nodes']:
         _k=(_r['id'],_n['id'])
         if _k in TIPREF: _n['tips']=TIPREF[_k]
-        elif 'Astrid' in str((_n.get('target') or {}).get('rune','')) or "Astrid's" in str(_n.get('label','')): _n['tips']=['astrid-creativity']
 
 # Automatic tip links (사용자 확정 2026-11-09: tips live in tips.json, a step shows only "제작 꿀팁 #n" with the text on hover).
 # A tip is linked to a step only in recipes the tip lists, by what the step uses.
@@ -121,28 +123,38 @@ _TJ = json.load(open('/home/claude/poe2data/site/data/tips.json'))['tips']
 def _uses(n, *ids):
     s = json.dumps({k:n.get(k) for k in ('cur','omens','fail','withEach','target','label','cost')}, ensure_ascii=False)
     return any(i in s for i in ids)
+def _note(n): return (n.get('note') or {}).get('kr','')
+def _kw(n, *ws): return any(w in _note(n) for w in ws)
+# (tip, rule, only in the tip's own recipes?)
 AUTO = [
- ('whittling-lowest', lambda n,i: _uses(n,'Omen_of_Whittling')),
- ('whittle-side-first', lambda n,i: _uses(n,'Omen_of_Whittling')),
- ('catalyst-steer', lambda n,i: _uses(n,'Omen_of_Catalysing_Exaltation')),
- ('abyss-vs-whittle', lambda n,i: _uses(n,'Essence_of_the_Abyss')),
- ('light-annul-count', lambda n,i: n['do']=='reveal' and _uses(n,'Omen_of_Light')),
- ('after-fracture-chaos', lambda n,i: n['do']=='chaos' and i<=2),
- ('vaal-infuser-quality', lambda n,i: n.get('cost')=='vaal' or _uses(n,'주입기')),
- ('vaal-quality-first', lambda n,i: n.get('cost')=='vaal' or _uses(n,'주입기')),
- ('vaal-infuser-46', lambda n,i: n.get('cost')=='vaal' or _uses(n,'주입기')),
- ('infuser-first-safe', lambda n,i: n.get('cost')=='vaal' or _uses(n,'주입기')),
- ('divine-before-sanctify', lambda n,i: _uses(n,'sanctify','축성')),
- ('zarokh-anoint', lambda n,i: _uses(n,'anoint','성유')),
- ('hinekora-preview', lambda n,i: _uses(n,'Hinekoras_Lock','히네코라')),
- ('hinekora-before-big', lambda n,i: _uses(n,'Hinekoras_Lock','히네코라')),
- ('hinekora-after-changes', lambda n,i: _uses(n,'Hinekoras_Lock','히네코라')),
- ('desecrate-free-side', lambda n,i: n['do']=='desecrate'),
- ('block-high-weight', lambda n,i: n['do']=='reveal'),
+ ('whittle-side-first', lambda n,i: _uses(n,'Omen_of_Whittling'), True),
+ ('catalyst-steer', lambda n,i: _uses(n,'Omen_of_Catalysing_Exaltation'), True),
+ ('light-annul-count', lambda n,i: n['do']=='reveal' and _uses(n,'Omen_of_Light'), True),
+ ('after-fracture-chaos', lambda n,i: n['do']=='chaos' and i<=2, True),
+ ('low-weight-first', lambda n,i: n['do']=='chaos' and i<=2, True),
+ ('block-high-weight', lambda n,i: n['do']=='reveal', True),
+ ('divine-before-sanctify', lambda n,i: _uses(n,'sanctify','축성'), True),
+ ('zarokh-anoint', lambda n,i: _uses(n,'anoint','성유'), True),
+ ('hinekora-before-big', lambda n,i: _uses(n,'Hinekoras_Lock','히네코라') or _kw(n,'히네코라'), False),
+ ('hinekora-after-changes', lambda n,i: _uses(n,'Hinekoras_Lock') or _kw(n,'히네코라'), True),
+ ('vaal-infuser-plan', lambda n,i: n.get('cost')=='vaal' or _uses(n,'주입기') or _kw(n,'주입기'), True),
+ ('side-omen-save', lambda n,i: _kw(n,'징조 없이','징조 불필요','징조 없는 소멸','강령술의 징조는 필요 없음','징조는 필요 없음'), False),
+ ('erasure-chaos-cheaper', lambda n,i: _uses(n,'Erasure') and _uses(n,'Greater_Chaos_Orb') and n['do']=='chaos', False),
+ ('cheap-junk-removal', lambda n,i: _kw(n,'싼 순서','더 쌈') and _kw(n,'심연의 에센스'), False),
+ ('abyss-before-crafted', lambda n,i: _kw(n,'심연의 에센스') and _kw(n,'못 씀','못 써','먹지 않음','안 먹','쓸 수 없음'), False),
+ ('maxq-chaos-slot', lambda n,i: n['do']=='chaos' and _kw(n,'최대 퀄리티') and _kw(n,'그대로','유지','남음'), False),
+ ('mark-wrong-side', lambda n,i: _kw(n,'징표') and _kw(n,'뼈') and _kw(n,'다시') and n['do'] in ('essence','remove'), False),
+ ('jewel-five-mods', lambda n,i: _kw(n,'경멸','흉포함','상한보다 많은'), False),
+ ('cheap-catalyst', lambda n,i: n['do']=='quality' and _kw(n,'싼','쌈'), False),
+ ('augment-effect-alloy', lambda n,i: n['do']=='essence' and _kw(n,'증강 효과'), False),
+ ('spell-quality-34', lambda n,i: n['do']=='quality' and _kw(n,'+4'), False),
+ ('sanctify-checklist', lambda n,i: _uses(n,'Omen_of_Sanctification') or _kw(n,'축성의 징조','축성할지'), False),
+ ('desecrate-reroll-no-light', lambda n,i: _kw(n,'빛 없이'), False),
+ ('single-res-catalyst', lambda n,i: _kw(n,'원소 무관 3종'), False),
 ]
 for _r in R:
     for _i, _n in enumerate(_r['nodes']):
-        for _tid, _f in AUTO:
+        for _tid, _f, _own in AUTO:
             _t = next((t for t in _TJ if t['id']==_tid), None)
-            if _t and _r['id'] in _t.get('recipes',[]) and _f(_n,_i) and _tid not in _n.get('tips',[]):
+            if _t and (not _own or _r['id'] in _t.get('recipes',[])) and _f(_n,_i) and _tid not in _n.get('tips',[]):
                 _n.setdefault('tips',[]).append(_tid)
