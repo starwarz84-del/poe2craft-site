@@ -376,8 +376,8 @@ function makeDraft(it, an){
     const need = {p:rows.filter(r=>!r.m.fr && r.m.side==='p').length, s:rows.filter(r=>!r.m.fr && r.m.side==='s').length};
     // prepared base: fractured line + one junk line (the rest was annulled after the fracture)
     for(let n=Math.max(0,2-frs.length); n>0; n--){ const sd = ['p','s'].filter(x=>cnt[x]<cap[x]).sort((a,b)=>(need[b]-junk[b])-(need[a]-junk[a]))[0]; if(!sd) break; start.mods.push({junk:sd}); junk[sd]++; cnt[sd]++; } }
-  push({phase:'base', do:'base', cost:'base', note: frs.length ? note(`${frs.map(lk).join(', ')} 분열된 ${it.b.kr} (아이템 레벨 ${it.ilvl}+). 베이스 준비${baseQ?` → ${baseQ.kr}`:''} → 분열 → 잡옵 정리까지 끝나, 분열 줄 + 잡옵 1줄인 상태에서 시작.`, `A ${it.b.en} (item level ${it.ilvl}+) with ${frs.map(le).join(', ')} fractured. Base prep${baseQ?` (${baseQ.en})`:''}, fracture and clean-up are done: the fractured line + one junk line.`)
-    : note(`${it.b.kr} 일반 베이스, 아이템 레벨 ${it.ilvl}+.${baseQ?` 베이스 준비: ${baseQ.kr}.`:''}`, `A normal ${it.b.en}, item level ${it.ilvl}+.${baseQ?` Base prep: ${baseQ.en}.`:''}`)});
+  push({phase:'base', do:'base', cost:'base', note: frs.length ? note(`${frs.map(lk).join(', ')} 분열 + 잡옵 1줄.`, `${frs.map(le).join(', ')} fractured plus one junk line.`)
+    : note(`노멀 베이스.${baseQ?` ${baseQ.kr}.`:''}`, `A normal base.${baseQ?` ${baseQ.en}.`:''}`)});
   // a fractured base can't take a magic-stage essence any more: its line was made before the fracture and is part of the bought base
   if(frs.length && magicEss.length){ const ks=[], es=[];
     magicEss.forEach(({r,e})=>{ start.mods.push({...tm(r), crafted:true}); cnt[r.m.side]++; ks.push(`${lk(r)}(${e.kr})`); es.push(`${le(r)} (${e.en})`); });
@@ -437,7 +437,7 @@ function makeDraft(it, an){
       else { const sd = ['p','s'].find(x=>room(x)) || 'p'; push({phase:'magic', do:'regal', cur:'Perfect_Regal_Orb', target:{junk:sd}, note:note('희귀로 전환 (아무 옵션).','Regal to rare (any modifier).')}); cnt[sd]++; junk[sd]++; }
     }
   }
-  for(const {r,e} of magicEss) push({phase:'ess', do:'manual', label:{kr:'에센스 옵션',en:'Essence line'}, note:note(`${lk(r)} — ${e.kr}는 매직 아이템에만 쓸 수 있어요. 분열 베이스라면 이 줄은 먼저 만들어 둔 상태여야 해요.`, `${le(r)}: ${e.en} only works on a magic item, so this line has to exist before the fracture.`)});
+  for(const {r,e} of magicEss) push({phase:'ess', do:'manual', label:{kr:'에센스 옵션',en:'Essence line'}, note:note(`${lk(r)}: ${e.kr}(매직 단계).`, `${le(r)}: ${e.en} (magic stage).`)});
   // 3. junk beyond what the essences will replace goes now, while that side holds nothing worth keeping
   for(const sd of ['p','s']) while(junk[sd] > resv[sd]){ const good = rows.some(r=>!r.m.fr && r.m.side===sd && nodes.some(n=>n.target?.gi===r.m.gi || (n.target?.anyOf||[]).some(x=>x.gi===r.m.gi)));
     push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]], target:{removeJunk:sd}, note: good ? note(`${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 잡옵 제거. 같은 쪽 좋은 옵션이 지워질 수 있어서 주의.`, `${sd==='p'?'Sinistral':'Dextral'} Annulment removes the junk; it can hit the good ${sideEn(sd)} too.`) : note(`${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브로 잡옵 제거 (그쪽엔 분열 줄과 잡옵뿐이라 안전).`, `${sd==='p'?'Sinistral':'Dextral'} Annulment removes the junk (nothing else worth keeping on that side).`)}); junk[sd]--; cnt[sd]--; }
@@ -460,7 +460,7 @@ function makeDraft(it, an){
     if(cat && !craft.cats.some(c=>!/^Refined/.test(c.id) && exTags.has(c.tag))){ push({phase:'q', do:'quality', cur:cat.id, target:{quality:qc}, note:qNote(cat)}); qType=cat.tag; }
     else if(cat){ qPend={cat, note:qNote(cat)}; qFinal=cat; }   // decided at the exalts below; the final catalyst goes on last if another one was used for them
     qDone = !!cat;
-    if(it.qual>capC) push({phase:'q', do:'manual', cost:'vaal', target:{setQuality:it.qual}, label:{kr:'바알 촉진시키는 주입기', en:'Vaal Catalysing Infuser'}, note:note(`${capC}%를 넘는 ${it.qual}%는 바알 촉진시키는 주입기로. 첫 번째는 타락하지 않고, 이후 한 번마다 타락 확률이 늘어남(영상들 기준 46% 근처부터 커짐). 옵션이 적을 때 미리 올려 두는 게 안전.`, `Above ${capC}% (${it.qual}%) comes from Vaal Catalysing Infusers: the first cannot corrupt, each later one is riskier (around 46% it climbs fast). Do it while the item has little to lose.`)});
+    if(it.qual>capC) push({phase:'q', do:'manual', cost:'vaal', target:{setQuality:it.qual}, label:{kr:'바알 촉진시키는 주입기', en:'Vaal Catalysing Infuser'}, note:note(`퀄리티 ${it.qual}%까지(첫 번째만 안전).`, `Quality to ${it.qual}% (only the first is safe).`)});
   } else if(R0){ rnd.push(R0); R0=null; }
   // 5. remaining random lines: exalt for any wanted line on a side, side by side
   // Whittling finish: Chaos with Omen of Whittling swaps the lowest-level line. If every other removable line on that side is at
@@ -525,7 +525,7 @@ function makeDraft(it, an){
         : note(`${sideKr(sd)}에 ${tgtK}. 실패하면 ${annK}로 지우고 ${qStep?'기폭제로 퀄리티를 다시 채운 뒤 ':''}다시.${lost?` ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시.`:''}`, `A ${sideEn(sd)}: ${tgtE}. On a miss, clear it with ${annE} and retry${lost?'; if it takes the wanted line, go back to the step that made it':''}.`)});
     made.push({r:want[0], id:ex.id});
     if(cOm.length){ qType=null; if(qFinal) qPend={cat:qFinal, note:note(`촉진하는 찬미의 징조가 퀄리티를 다 써서 0%. ${qFinal.kr}로 다시 ${qCap}%. 완성품의 퀄리티 종류.`, `Catalysing Exaltation used up the quality; ${qFinal.en} back to ${qCap}%, the finished item's quality type.`)}; }
-    if(lost && cOm.length) push({phase:'ex', do:'note', fallbackFor:ex.id, label:{kr:'갈림길 ②: 타협',en:'Fork (2): settle'}, note:note(`안 뜬 줄은 그대로 두고 다음 단계로. 뒤의 훼손 공개에서 원하는 줄이 안 나와도 다시 하지 않고 마무리. 비싸게 팔기는 어렵지만 ${lostK}${josa(lostK,'을','를')} 잃을 위험 없이 적당한 옵션으로 타협.`, `Leave the miss and move on; if a later reveal misses too, finish anyway. It won't sell high, but it settles for decent mods without risking the line you already have.`)});
+    if(lost && cOm.length) push({phase:'ex', do:'note', fallbackFor:ex.id, label:{kr:'갈림길 ②: 타협',en:'Fork (2): settle'}, note:note(`그대로 두고 다음 단계로. 뒤의 공개가 빗나가도 다시 하지 않고 마무리.`, `Leave it and move on; finish even if a later reveal misses.`)});
     rnd.splice(rnd.indexOf(want[0]),1); cnt[sd]++;
   } };
   // the final catalyst: after the exalts it served, or before an essence that removes the maximum quality line (the cap drops with it)
@@ -599,7 +599,7 @@ function makeDraft(it, an){
       note:note(`${l.kr}${josa(l.kr,'을','를')} 보석에 직접 사용(룬 소켓 아님): 무작위로 한 줄을 지우고 ${lk(r)} 확정. 잡옵이 지워지면 성공(${Math.round(p*100)}%)${p<1 && back?`, 좋은 줄이 지워지면 ${lk(back.r)}${josa(lk(back.r),'을','를')} 만든 단계부터 다시`:''}.`,
         `Use ${l.en} on the jewel itself (not a socket): it removes a random line and adds ${le(r)}. Success when it takes the junk (${Math.round(p*100)}%)${p<1 && back?'; if it takes a wanted line, redo from the step that made it':''}.`)});
     junk[sd]--; made.push({r, id:nodes[nodes.length-1].id}); }
-  for(const r of othRows) push({phase:'des', do:'manual', label:{kr:'별세계 옵션',en:'Otherworldly line'}, note:note(`${lk(r)} — 훼손에서 낮은 확률로 붙는 별세계 옵션이라 계산에서 빠져요.`, `${le(r)} is an otherworldly desecration outcome; not modelled.`)});
+  for(const r of othRows) push({phase:'des', do:'manual', label:{kr:'별세계 옵션',en:'Otherworldly line'}, note:note(`${lk(r)}: 별세계 옵션(확률 계산 안 함).`, `${le(r)}: otherworldly (not modelled).`)});
   finishQ();   // catalysed exalts leave the quality at 0: refill before the maximum quality line goes
   if(mqLive()){
     const Ls = sd => cnt[sd] < cap[sd];
@@ -616,8 +616,8 @@ function makeDraft(it, an){
         note:note(`${nk(ERASE.p)} + ${nk(gc)}로 접두를 계속 돌려 ${lk(R0)} (T${R0.tierNo} 이상) 찾기. ${nk(ERASE.p)}${josa(nk(ERASE.p),'은','는')} 접두만 바꾸고, 접두엔 엉뚱한 줄과 분열 줄뿐이라 좋은 줄이 안 지워짐.`,
           `${ne(ERASE.p)} + ${ne(gc)} keeps rerolling the prefix for ${le(R0)} (tier ${R0.tierNo}+); Erasure only touches prefixes and the wrong line is the only removable one.`)});
       push({phase:'fin', ...B, do:'note', fallbackFor:w.id, label:{kr:'갈림길 ②: 타협', en:'Fork (2): settle'},
-        note:note(`${nk(SIDE_OMEN.cryst.p)} + ${perf?perf.t[0][2]:'완벽한 에센스(접두 옵션)'}${josa(perf?perf.t[0][2]:'에센스','으로','로')} 엉뚱한 접두를 바꿔 가성비 마무리(접두엔 그 줄과 분열 줄뿐이라 항상 그 줄이 바뀜).`,
-          `${ne(SIDE_OMEN.cryst.p)} + ${perf?perf.t[0][3]:'a Perfect Essence (prefix)'} swaps the wrong prefix for a cheap finish (it is the only removable prefix).`)}); };
+        note:note(`가성비 마무리: ${nk(SIDE_OMEN.cryst.p)} + ${perf?perf.t[0][2]:'완벽한 에센스(접두 옵션)'}.`,
+          `Budget finish: ${ne(SIDE_OMEN.cryst.p)} + ${perf?perf.t[0][3]:'a Perfect Essence (prefix)'}.`)}); };
     const finish = br => {
       const w = push({phase:'fin', ...(br?{branch:br}:{}), do:'chaos', cur, omens:['Omen_of_Whittling'], target: R0 ? {removeGi:mqGi, ...tm(R0)} : {removeGi:mqGi, junk:'p'}, ...(safe?{fail:{goto:'self', via:{cur, omens:['Omen_of_Whittling']}}}:{}),
         note: R0 ? note(`퀄리티를 다 올렸으니 최대 퀄리티 줄은 필요 없음. 절사의 징조 + ${nk(cur)}로 그 줄(레벨이 가장 낮음)을 지우고 ${lk(R0)} (T${R0.tierNo} 이상).${safe?' 다른 좋은 줄이 모두 나올 수 있는 최고 레벨 이상이라 뜰 때까지 반복해도 안전.':' 안 뜨면 갈림길.'}`, `Quality is done, so the maximum quality line (the lowest level) goes: Whittling + ${ne(cur)} for ${le(R0)} (tier ${R0.tierNo}+).${safe?' Safe to repeat: every other good line is at the highest level that can roll.':' On a miss, choose a fork.'}`)
@@ -647,7 +647,7 @@ function makeDraft(it, an){
   if(!qDone && (it.qTag || (it.cat==='jewellery' && it.qual>20) || an.rows.some(r=>r.m.out))){ const tg = new Set(an.rows.filter(r=>r.m.out && r.g).flatMap(r=>r.g.tg)); const cat = craft.cats.find(c=>(it.cat==='jewel' ? /^Refined/.test(c.id) : !/^Refined/.test(c.id)) && (it.qTag ? c.tag===it.qTag : tg.has(c.tag)));
     const q0 = Math.min(it.qual||20, 20 + impMaxQ(it.b)); if(cat) push({phase:'q', do:'quality', cur:cat.id, target:{quality:q0}, note:note(`${cat.kr}로 퀄리티 ${q0}%.`, `${cat.en} to ${q0}% quality.`)}); }
   if(crafted>1 && !augLate.length) push({phase:'q', do:'manual', target:{runeSwap:[{kr:'아스트리드의 창의성', en:"Astrid's Creativity"}, {kr:'원하는 룬', en:'a rune of your choice'}]}, label:{kr:'룬 교체', en:'Swap the rune'}, note:note('아스트리드의 창의성은 제작용이라 원하는 룬으로 교체.', "Astrid's Creativity was only for crafting; swap in the rune you want.")});
-  if(it.sanctified) push({phase:'q', do:'manual', label:{kr:'디바인 → 축성',en:'Divine, then sanctify'}, note:note('값을 디바인으로 다듬은 뒤 축성.','Divine the values, then sanctify.')});
+  if(it.sanctified) push({phase:'q', do:'manual', label:{kr:'디바인 → 축성',en:'Divine, then sanctify'}, note:note('신성한 오브 → 축성.','Divine, then sanctify.')});
   const hi = x => x.replace(/\((\d+(?:\.\d+)?)—(\d+(?:\.\d+)?)\)/g,'$2');   // titles show the top of each range
   const key = rows.filter(r=>!r.m.fr && r.how==='n' && !r.unknown).sort((a,b)=>a.pOmen-b.pOmen).concat(rows.filter(r=>!r.m.fr && r.how!=='n' && r.how!=='x')).slice(0,2);
   const featK = (frs.length? [hi(lk(frs[0]))+' 분열'] : []).concat(key.map(r=>hi(lk(r)))).slice(0,2), featE = (frs.length? ['fractured '+hi(le(frs[0]))] : []).concat(key.map(r=>hi(le(r)))).slice(0,2);
