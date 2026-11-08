@@ -106,3 +106,11 @@ for _r in R:
     for _n in _r['nodes']:
         _k = (_r['id'], _n['id'])
         if _k in BRANCH: _n['br'] = K(*BRANCH[_k])
+
+# Tip numbers under a step (hover shows the tip): step → tip ids from tips.json (사용자 요청 2026-11-09)
+TIPREF = {('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-iceshot-bow','w10'):['desecrate-reroll-no-light']}
+for _r in R:
+    for _n in _r['nodes']:
+        _k=(_r['id'],_n['id'])
+        if _k in TIPREF: _n['tips']=TIPREF[_k]
+        elif 'Astrid' in str((_n.get('target') or {}).get('rune','')) or "Astrid's" in str(_n.get('label','')): _n['tips']=['astrid-creativity']
