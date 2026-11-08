@@ -6,6 +6,7 @@
 
 - 사용자(Atom1q84)는 개발자가 아니에요. **항상 한국어로** 답해요.
 - 복사해서 쓸 내용은 코드 블록에 넣고, 블록 안 줄 앞에 공백을 두지 않아요.
+- **화면은 최대한 간결하게**(사용자 확정 2026-11-08): 제작 자체가 복잡하니 꼭 필요한 정보만 보여요. 데이터 출처 같은 부가 정보는 화면에 넣지 않고 `docs/game-rules.md`에만 적어요.
 - 유튜브 영상을 분석할 때는 소리를 꺼요.
 - 사용자가 고친 정책은 아래 "레시피 정책"에 바로 반영해서 다음 세션도 따르게 해요.
 
@@ -87,7 +88,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
   `cur, omens, target, fail{goto, via}, after.keepOnly, expect, extra, knownP, unknownW, ts, note{kr,en}`
 - target: `gi | anyOf | all, tmax, replace, removeGi, junk, unrev, reveal{}, side, bone, lord, setQuality, quality, chance, slots, dropGi, imp, anoint, sanctify, vals, rune, runeSwap, removeJunk`
 - **게임 규칙과 근거는 `docs/game-rules.md`**(데이터·설명·사용자·영상·교차·추정·미확인 표시). 규칙을 바꾸면 여기도 같이 고쳐요.
-- **Craft of Exile 가중치**(2026-11-08): 2,703개 옵션 대조 → 2,307개 완전 일치. poedb 가중치가 1(모름)인 티어에 같은 레벨 CoE 값이 있으면만 채움(358티어·222그룹, 예: 목걸이 시전 속도 800). 채운 그룹은 `wsrc:'coe'`·`wcoe`, 화면에 "가중치: Craft of Exile" 표시(`o.wCoe`). 둘 다 값이 있는데 다른 12개는 poedb 유지.
+- **Craft of Exile 가중치**(2026-11-08): 2,703개 옵션 대조 → 2,307개 완전 일치. poedb 가중치가 1(모름)인 티어에 같은 레벨 CoE 값이 있으면만 채움(358티어·222그룹, 예: 목걸이 시전 속도 800). 채운 그룹은 `wsrc:'coe'`·`wcoe`(데이터에만 기록, 화면엔 출처 표시 안 함). 둘 다 값이 있는데 다른 12개는 poedb 유지.
 - 확률은 가중치 데이터로 계산(AI가 정하지 않음). 훼손 공개: 일반 옵션은 원래 가중치, 훼손 전용 옵션은 공개 가중치가 없어 그룹당 1000 가정 → **"가중치 추정"** 표시(`o.pEst`, 사용자 확정 2026-11-08). 가중치 모름: `가중치 미확인`(x그룹·평탄 가중치 클래스), `가중치 미정`(가중치 1짜리 단독 그룹, 예: 목걸이·반지 시전 속도), 촉진 찬미 + 퀄리티 대상은 `촉진 효과로 확률 상승 (수치 비공개)`.
 - 그룹 `s`: n 일반 · d 훼손 전용 · e 에센스 전용 · x 증강물 전용(룬·영혼 핵, sub=이름) 또는 별세계(sub=Otherworldly) · c 타락 · u 희생
 
