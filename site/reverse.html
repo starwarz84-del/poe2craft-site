@@ -557,10 +557,11 @@ function makeDraft(it, an){
     const perf = it.D.groups.find((g,k)=>g.s==='e' && g.g==='p' && k!==mqGi && /^완벽한/.test(g.t[0]?.[2]||'') && !/Maximum Quality/.test(g.t[0]?.[5]||''));
     const forks = (w, br) => {
       const B = br ? {branch:br} : {}, exOm = Ls('s') ? [SIDE_OMEN.exalt.p] : [];
-      push({phase:'fin', ...B, do:'exalt', cur:'Perfect_Exalted_Orb', ...(exOm.length?{omens:exOm}:{}), withEach:{cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul.p]}, target:{...tm(R0), replace:'p'}, fallbackFor:w.id, fail:{goto:'self'},
-        label:{kr:'갈림길 ①: 다시 노리기', en:'Fork (1): try again'},
-        note:note(`${nk(SIDE_OMEN.annul.p)} + 소멸의 오브로 엉뚱한 접두를 지우고(접두엔 그 줄과 분열 줄뿐) ${[...exOm.map(nk),'완벽한 엑잘티드 오브'].join(' + ')}로 ${lk(R0)} (T${R0.tierNo} 이상). 뜰 때까지 반복. 절사의 징조를 다시 쓰면 엉뚱한 줄보다 레벨 낮은 좋은 줄(${names(good.filter(r=>lvlOf(r)<top), x=>lk(x))})이 지워질 수 있어서 이 방법.`,
-          `${ne(SIDE_OMEN.annul.p)} + Orb of Annulment clears the wrong prefix (only it and the fractured line are prefixes), then ${[...exOm.map(ne),'Perfect Exalted Orb'].join(' + ')} for ${le(R0)} (tier ${R0.tierNo}+). Repeat until it lands. Whittling again could take a good line that sits below the wrong one.`)});
+      const gc = lvlOf(R0)>=35 || R0.tierNo===1 ? 'Greater_Chaos_Orb' : 'Chaos_Orb';
+      push({phase:'fin', ...B, do:'chaos', cur:gc, omens:[ERASE.p], target:{...tm(R0), replace:'p'}, fallbackFor:w.id, fail:{goto:'self'},
+        label:{kr:'갈림길 ①: 계속 돌리기', en:'Fork (1): keep rolling'},
+        note:note(`${nk(ERASE.p)} + ${nk(gc)}로 접두를 계속 돌려 ${lk(R0)} (T${R0.tierNo} 이상) 찾기. ${nk(ERASE.p)}${josa(nk(ERASE.p),'은','는')} 접두만 바꾸고, 접두엔 엉뚱한 줄과 분열 줄뿐이라 좋은 줄이 안 지워짐.`,
+          `${ne(ERASE.p)} + ${ne(gc)} keeps rerolling the prefix for ${le(R0)} (tier ${R0.tierNo}+); Erasure only touches prefixes and the wrong line is the only removable one.`)});
       push({phase:'fin', ...B, do:'note', fallbackFor:w.id, label:{kr:'갈림길 ②: 타협', en:'Fork (2): settle'},
         note:note(`${nk(SIDE_OMEN.cryst.p)} + ${perf?perf.t[0][2]:'완벽한 에센스(접두 옵션)'}${josa(perf?perf.t[0][2]:'에센스','으로','로')} 엉뚱한 접두를 바꿔 가성비 마무리(접두엔 그 줄과 분열 줄뿐이라 항상 그 줄이 바뀜).`,
           `${ne(SIDE_OMEN.cryst.p)} + ${perf?perf.t[0][3]:'a Perfect Essence (prefix)'} swaps the wrong prefix for a cheap finish (it is the only removable prefix).`)}); };
@@ -578,12 +579,9 @@ function makeDraft(it, an){
     else { const OK={of:rv.id, when:'ok'}, MS={of:rv.id, when:'miss'}, LIGHT={cur:'Orb_of_Annulment', omens:['Omen_of_Light']}, lord=(dz.omens||[]).filter(o=>!/Necromancy/.test(o));
       rv.fail = {goto:null}; rv.note = note(`심연의 메아리의 징조로 공개해 ${lk(desRows.at(-1))} (T${desRows.at(-1).tierNo} 이상). 안 나와도 빛의 징조는 바로 쓰지 않고 접두부터(아래 "안 나왔을 때").`, `Reveal with Abyssal Echoes for ${le(desRows.at(-1))}. On a miss, do not use Omen of Light yet: the prefix comes first (see "on a miss" below).`);
       finish(OK);
-      const m1 = push({phase:'fin', branch:MS, do:'chaos', cur, omens:['Omen_of_Whittling'], target:{removeGi:mqGi, junk:'p'},
-        note:note(`절사의 징조 + ${nk(cur)}로 최대 퀄리티 줄을 지움. 이때 ${lk(R0)}${josa(lk(R0),'이','가')} 뜨면 이득 — 그 경우 심연의 에센스 단계는 건너뛰고 바로 훼손.`, `Whittling + ${ne(cur)} removes the maximum quality line; if ${le(R0)} lands, skip the Essence of the Abyss step and desecrate right away.`)});
-      rv.fail.goto = m1.id;
-      const m2 = push({phase:'fin', branch:MS, do:'remove', cur:'Orb_of_Annulment', omens:['Omen_of_Light'], target:{removeDes:true}, note:note('빛의 징조 + 소멸의 오브로 훼손 줄 제거.','Light + Annulment removes the desecrated line.')});
-      push({phase:'fin', branch:MS, do:'essence', cur:'Essence_of_the_Abyss', omens:[SIDE_OMEN.cryst.p], target:{mark:{gi:mk('s'), alt:mk('p')}, chance:0.5}, fail:{goto:'self', via:{cur:dz.cur}},
-        note:note(`${nk(SIDE_OMEN.cryst.p)} + 심연의 에센스로 엉뚱한 접두를 지우고 심연 군주의 징표(접두·접미 반반). 징표가 접두에 붙으면 ${nk(dz.cur)}${josa(nk(dz.cur),'으로','로')} 훼손한 뒤 다시 이 단계(그 접두가 지워짐). 접미에 붙을 때까지.`, `${ne(SIDE_OMEN.cryst.p)} + Essence of the Abyss removes the wrong prefix and adds the Mark (50/50 side). On a prefix, desecrate it with ${ne(dz.cur)} and repeat this step (it removes that prefix) until the Mark is a suffix.`)});
+      const m2 = push({phase:'fin', branch:MS, do:'remove', cur:'Orb_of_Annulment', omens:['Omen_of_Light'], target:{removeDes:true}, note:note('빛의 징조 + 소멸의 오브로 훼손 줄 제거.','Light + Annulment removes the desecrated line.')}); rv.fail.goto = m2.id;
+      push({phase:'fin', branch:MS, do:'essence', cur:'Essence_of_the_Abyss', omens:[SIDE_OMEN.cryst.p], target:{mark:{gi:mk('s'), alt:mk('p')}, chance:0.5, removeGi:mqGi}, fail:{goto:'self', via:{cur:dz.cur}},
+        note:note(`${nk(SIDE_OMEN.cryst.p)} + 심연의 에센스로 접두(처음엔 최대 퀄리티, 다음부턴 엉뚱한 접두 — 접두엔 그 줄과 분열 줄뿐이라 절사의 징조 불필요)를 지우고 심연 군주의 징표(접두·접미 반반). 징표가 접두에 붙으면 ${nk(dz.cur)}${josa(nk(dz.cur),'으로','로')} 훼손한 뒤 다시 이 단계(그 접두가 지워짐). 접미에 붙을 때까지. 앞 바퀴 엑잘에서 ${lk(R0)}${josa(lk(R0),'이','가')} 이미 떴으면 이 단계는 건너뛰고 바로 훼손.`, `${ne(SIDE_OMEN.cryst.p)} + Essence of the Abyss removes the wrong prefix and adds the Mark (50/50 side). On a prefix, desecrate it with ${ne(dz.cur)} and repeat this step (it removes that prefix) until the Mark is a suffix.`)});
       push({phase:'fin', branch:MS, do:'desecrate', cur:dz.cur, ...(lord.length?{omens:lord}:{}), target:{unrev:'s', fromMark:true}, note:note(`${[...lord.map(nk), nk(dz.cur)].join(' + ')}로 접미의 징표 자리 훼손.`, `${[...lord.map(ne), ne(dz.cur)].join(' + ')} desecrates the suffix Mark.`)});
       push({phase:'fin', branch:MS, do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{...rv.target}, fail:{goto:m2.id, via:LIGHT},
         note:note(`심연의 메아리의 징조로 공개. 안 나와도 다음 단계(접두 엑잘)를 먼저 던져 ${lk(R0)}${josa(lk(R0),'을','를')} 본 뒤 빛의 징조 단계부터 다시. 적은 비용으로 훼손 기회와 접두 기회를 한 번에 봄.`, `Reveal with Abyssal Echoes. On a miss, still throw the next prefix exalt for ${le(R0)}, then go back to the Light step: one reveal and one prefix chance per loop.`)});
