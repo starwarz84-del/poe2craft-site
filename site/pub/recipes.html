@@ -816,7 +816,7 @@ function nodeHTML(r, o, i, idx){
   let head = c ? (n.do==='remove' && we ? `${pre}${c.icon?`<img src="${c.icon}" alt="">`:icon(n.cur,r)}<b>${esc(nm(c))}</b>${om}<span class="arr">→</span>${we.replace(/<span class="arr">→<\/span>$/,'')}` : `${pre}${we}${c.icon?`<img src="${c.icon}" alt="">`:icon(n.cur,r)}<b>${esc(nm(c))}</b>${om}`) : n.do==='base' ? `<b>${L('베이스 선정','Choose the base')}</b>` : n.do==='reveal' ? `<b>${L('영혼의 우물에서 공개','Reveal at the Well of Souls')}</b>${om}` : `<b>${esc(tx(n.label)||'')}</b>`;
   if(n.do==='reveal' && c) head = `${pre}${c.icon?`<img src="${c.icon}" alt="">`:''}<b>${esc(nm(c))}</b>${om}`;
   let tgt='';
-  if(n.do==='base'){ const b=baseOf(r); tgt=`<span class="mod">${esc(KR()?b.kr:b.en)}</span>${r.exceptional?` · <b class="excw">${L('특출난','Exceptional')}</b> (${esc(excText(r))})`:''} · ${L('아이템 레벨','ilvl')} ${r.ilvl}${r.sockets?` · ${L('소켓','sockets')} ${r.sockets}`:''}`; }
+  if(n.do==='base'){ const b=baseOf(r); tgt=`<span class="mod">${esc(KR()?b.kr:b.en)}</span>${r.exceptional?` · <b class="excw">${L('특출난','Exceptional')}</b> (${esc(excText(r))})`:''} · ${L('아이템 레벨','ilvl')} ${r.ilvl}${(r.start?.quality||r.quality)?` · ${L('퀄리티','quality')} ${r.start?.quality||r.quality}%${r.start?.quality?L(' 이상','+'):''}`:''}${r.sockets?` · ${L('소켓','sockets')} ${r.sockets}`:''}`; }
   else if(n.do==='fracture') tgt=`${L('분열 목표','Fracture onto')}: ${specText(r,t)}${n.alsoUseful?` · ${L('다른 레시피용','usable elsewhere')}: ${specText(r,{anyOf:n.alsoUseful})}`:''}`;
   else if(t.all) tgt=`${L('목표 모두','All of')}: `+t.all.map(s=>specText(r,s)).join(' <b>+</b> ');
   else if(t.gi!=null || t.anyOf) tgt=`${L('목표','Target')}: ${specText(r,t)}`;
