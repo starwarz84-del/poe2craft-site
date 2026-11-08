@@ -487,7 +487,7 @@ function makeDraft(it, an){
     const free = cap[sd]-cnt[sd]-resv[sd]+junk[sd]-desNeed[sd];
     // jewellery with catalyst quality: put a catalyst matching these lines on first and add Omen of Catalysing Exaltation
     let cOm = [];
-    if(it.cat==='jewellery' && qCap>0){ const tg = new Set(want.flatMap(r=>r.g.tg||[]));
+    if(it.cat==='jewellery' && qCap>0 && !mqGone){ const tg = new Set(want.flatMap(r=>r.g.tg||[]));   // no maximum quality line left: a refill could not reach the item's quality again
       // the catalyst that favours the most wanted lines here; on a tie keep the one on the item, then the final one
       const cover = tag => want.filter(r=>(r.g.tg||[]).includes(tag)).length;
       const cands = craft.cats.filter(c=>!/^Refined/.test(c.id) && cover(c.tag)>0), best = Math.max(0, ...cands.map(c=>cover(c.tag)));
@@ -507,14 +507,19 @@ function makeDraft(it, an){
     const plain = cnt[oth] - frs.filter(x=>x.m.side===oth).length === 0;
     const annVia = plain ? {cur:'Orb_of_Annulment'} : {cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]]};
     const annK = plain ? `소멸의 오브(${sideKr(oth)}엔 ${frs.some(x=>x.m.side===oth)?'분열 줄뿐이라':'아무것도 없어서'} 징조 없이 ${sideKr(sd)}만 지워짐)` : `${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브`, annE = plain ? `a plain Orb of Annulment (the ${sideEn(oth)} side holds nothing removable)` : `${ne(SIDE_OMEN.annul[sd])} + Orb of Annulment`;
+    // Omen of Catalysing Exaltation uses up all the quality: every catalysed exalt needs the catalyst filled again first
+    const qCat = cOm.length ? craft.cats.find(c=>!/^Refined/.test(c.id) && c.tag===qType) : null;
+    const refill = () => push({phase:'ex', do:'quality', cur:qCat.id, target:{quality:qCap}, note:note(`촉진하는 찬미의 징조가 퀄리티를 다 써서 0%. ${qCat.kr}로 다시 ${qCap}%.`, `Catalysing Exaltation used up the quality; ${qCat.en} back to ${qCap}%.`)});
     if(tries===2){ push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', omens:exOm, target:{junk:sd},
-        note:note(`1차 도전: ${omTxt} + 완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 여기서 뜨면 다음 단계는 아무 ${sideKr(sd)}여도 성공.`, `First try: ${omEn} + Perfect Exalted Orb for ${tgtE}. If it lands here, the next step can be any ${sideEn(sd)}.`)}); cnt[sd]++; }
+        note:note(`1차 도전: ${omTxt} + 완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 여기서 뜨면 다음 단계는 아무 ${sideKr(sd)}여도 성공. 촉진하는 찬미의 징조를 쓰면 퀄리티가 0%가 됨.`, `First try: ${omEn} + Perfect Exalted Orb for ${tgtE}. If it lands here, the next step can be any ${sideEn(sd)}. Catalysing Exaltation uses up the quality.`)}); cnt[sd]++; refill(); }
+    const qStep = cOm.length ? [...nodes].reverse().find(n=>n.do==='quality') : null;   // a retry starts again from the catalyst refill
     const lostK = atRisk ? lk(atRisk.r) : '';
-    const ex = push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(exOm.length?{omens:exOm}:{}), target: cOm.length ? (()=>{ const a = want.flatMap(r=>(r.g.tg||[]).includes(qType) ? [{gi:r.m.gi, tmax:Math.max(1,r.tierNo)}] : alts(r)); return a.length===1 ? a[0] : {anyOf:a}; })() : anyOf(want), fail:{goto:'self', via:annVia, ...(lost?{lost:lost.id}:{})},
-      note: lost && cOm.length ? note(`${tries===2?'2차 도전: ':''}${omTxt?omTxt+' + ':''}완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 안 뜨면 갈림길: ① ${annK}로 ${sideKr(sd)} 하나를 지우고 다시 도전. ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시 (계산은 ① 기준). ② 바로 아래 타협 경로.`,
+    const ex = push({phase:'ex', do:'exalt', cur:'Perfect_Exalted_Orb', ...(exOm.length?{omens:exOm}:{}), target: cOm.length ? (()=>{ const a = want.flatMap(r=>(r.g.tg||[]).includes(qType) ? [{gi:r.m.gi, tmax:Math.max(1,r.tierNo)}] : alts(r)); return a.length===1 ? a[0] : {anyOf:a}; })() : anyOf(want), fail:{goto: qStep ? qStep.id : 'self', via:annVia, ...(lost?{lost:lost.id}:{})},
+      note: lost && cOm.length ? note(`${tries===2?'2차 도전: ':''}${omTxt?omTxt+' + ':''}완벽한 엑잘티드 오브로 ${sideKr(sd)}에 ${tgtK}. 안 뜨면 갈림길: ① ${annK}로 ${sideKr(sd)} 하나를 지우고 ${qStep?'기폭제로 퀄리티를 다시 채운 뒤 ':''}다시 도전. ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시 (계산은 ① 기준). ② 바로 아래 타협 경로.`,
           `${tries===2?'Second try: ':''}${omEn?omEn+' + ':''}Perfect Exalted Orb for ${tgtE}. On a miss you choose: (1) annul a ${sideEn(sd)} and try again; if it takes ${lostK? 'the wanted line':'a wanted line'}, go back to the step that made it (the math uses this). (2) The compromise below.`)
-        : note(`${sideKr(sd)}에 ${tgtK}. 실패하면 ${annK}로 지우고 다시.${lost?` ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시.`:''}`, `A ${sideEn(sd)}: ${tgtE}. On a miss, clear it with ${annE} and retry${lost?'; if it takes the wanted line, go back to the step that made it':''}.`)});
+        : note(`${sideKr(sd)}에 ${tgtK}. 실패하면 ${annK}로 지우고 ${qStep?'기폭제로 퀄리티를 다시 채운 뒤 ':''}다시.${lost?` ${lostK}${josa(lostK,'이','가')} 지워지면 그 줄을 만든 단계부터 다시.`:''}`, `A ${sideEn(sd)}: ${tgtE}. On a miss, clear it with ${annE} and retry${lost?'; if it takes the wanted line, go back to the step that made it':''}.`)});
     made.push({r:want[0], id:ex.id});
+    if(cOm.length){ qType=null; if(qFinal) qPend={cat:qFinal, note:note(`촉진하는 찬미의 징조가 퀄리티를 다 써서 0%. ${qFinal.kr}로 다시 ${qCap}%. 완성품의 퀄리티 종류.`, `Catalysing Exaltation used up the quality; ${qFinal.en} back to ${qCap}%, the finished item's quality type.`)}; }
     if(lost && cOm.length) push({phase:'ex', do:'note', fallbackFor:ex.id, label:{kr:'갈림길 ②: 타협',en:'Fork (2): settle'}, note:note(`안 뜬 줄은 그대로 두고 다음 단계로. 뒤의 훼손 공개에서 원하는 줄이 안 나와도 다시 하지 않고 마무리. 비싸게 팔기는 어렵지만 ${lostK}${josa(lostK,'을','를')} 잃을 위험 없이 적당한 옵션으로 타협.`, `Leave the miss and move on; if a later reveal misses too, finish anyway. It won't sell high, but it settles for decent mods without risking the line you already have.`)});
     rnd.splice(rnd.indexOf(want[0]),1); cnt[sd]++;
   } };
@@ -584,6 +589,7 @@ function makeDraft(it, an){
         `Use ${l.en} on the jewel itself (not a socket): it removes a random line and adds ${le(r)}. Success when it takes the junk (${Math.round(p*100)}%)${p<1 && back?'; if it takes a wanted line, redo from the step that made it':''}.`)});
     junk[sd]--; made.push({r, id:nodes[nodes.length-1].id}); }
   for(const r of othRows) push({phase:'des', do:'manual', label:{kr:'별세계 옵션',en:'Otherworldly line'}, note:note(`${lk(r)} — 훼손에서 낮은 확률로 붙는 별세계 옵션이라 계산에서 빠져요.`, `${le(r)} is an otherworldly desecration outcome; not modelled.`)});
+  finishQ();   // catalysed exalts leave the quality at 0: refill before the maximum quality line goes
   if(mqLive()){
     const Ls = sd => cnt[sd] < cap[sd];
     const cur = !R0 || lvlOf(R0)>=50 || R0.tierNo===1 ? 'Perfect_Chaos_Orb' : 'Greater_Chaos_Orb';   // Perfect Chaos rolls level 50+, a family's top tier always

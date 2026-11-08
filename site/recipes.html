@@ -652,6 +652,7 @@ function analyse(r){
     // Catalysing Exaltation raises the odds of the quality type's mods by an amount the game does not publish
     const catBoost = (n.omens||[]).includes('Omen_of_Catalysing_Exaltation') && qual.type && specList(t).some(x=>x.gi!=null && grp(r,x.gi).tg.includes(qual.type));
     if(catBoost && !n.knownP && o.p<0.995){ o.pUnknown=true; o.pWhy=L('촉진 효과로 확률 상승 (수치 비공개)','raised by Catalysing (not published)'); o.p = n.expect ? 1/n.expect : 1; o.warn=null; }
+    if((n.omens||[]).includes('Omen_of_Catalysing_Exaltation')){ if(!qual.v) o.warn=L('퀄리티가 0%라 촉진하는 찬미의 징조가 효과 없음','No quality left: Catalysing Exaltation does nothing'); qual={...qual, v:0}; }   // the omen uses up all the quality
     const su=specUnknown(r,t);
     if((n.unknownW || su) && !n.knownP && o.p<0.995 && !['note','base','manual','quality','fracture','socket'].includes(n.do)){ o.pUnknown=true; if(su==='w1') o.pWhy=L('가중치 미정','weight not set'); o.p = n.expect ? 1/n.expect : 1; o.warn=null; }
     o.tries = o.p>0 ? 1/o.p : Infinity;

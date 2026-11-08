@@ -151,7 +151,7 @@ T+=[
   'source':{**MZC,'ts':'12:23'},'recipes':['mazbro-bis-chest']},
  {'id':'catalyst-steer','tags':[K('퀄리티','Quality'),K('징조','Omens')],'patch':'0.5.5',
   'title':K('기폭제 종류를 바꿔 촉진하는 찬미의 징조의 방향을 정함','Switch catalyst type to steer Catalysing Exaltation'),
-  'body':K('촉진하는 찬미의 징조는 지금 붙은 퀄리티 종류의 옵션 쪽으로 엑잘티드 오브를 밀어 줌. 접미에 시전 속도를 노릴 땐 속도 퀄리티, 접두 마나를 노릴 땐 마나 퀄리티로 단계마다 바꾸고, 끝에는 원하는 최종 퀄리티(예: 주문)로 맞춤.','Omen of Catalysing Exaltation pushes the slam toward mods of the current quality type. Use speed quality when chasing cast speed, mana quality for mana prefixes, then finish with the quality you want to keep (e.g. caster).'),
+  'body':K('촉진하는 찬미의 징조는 지금 붙은 퀄리티 종류의 옵션 쪽으로 엑잘티드 오브를 밀어 줌. 접미에 시전 속도를 노릴 땐 속도 퀄리티, 접두 마나를 노릴 땐 마나 퀄리티로 단계마다 바꾸고, 끝에는 원하는 최종 퀄리티(예: 주문)로 맞춤. 촉진하는 찬미의 징조를 쓰면 퀄리티가 0%가 되니 엑잘마다 기폭제를 다시 채움(그래서 종류를 바꿔도 추가 비용이 없음).','Omen of Catalysing Exaltation pushes the slam toward mods of the current quality type. Use speed quality when chasing cast speed, mana quality for mana prefixes, then finish with the quality you want to keep (e.g. caster). The omen uses up all the quality, so refill before every catalysed slam (switching type costs nothing extra).'),
   'source':{**MZA,'ts':'13:16'},'recipes':['mazbro-caster-amulet']},
  {'id':'infuser-first-safe','tags':[K('퀄리티','Quality'),K('타락','Corruption')],'patch':'0.5',
   'title':K('첫 번째 바알 주입기는 타락하지 않음','The first Vaal infuser cannot corrupt'),
