@@ -109,7 +109,7 @@ for _r in R:
         if _k in BRANCH: _n['br'] = K(*BRANCH[_k])
 
 # Tip numbers under a step (hover shows the tip): step → tip ids from tips.json (사용자 요청 2026-11-09)
-TIPREF = {('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-iceshot-bow','w10'):['desecrate-reroll-no-light'],
+TIPREF = {('xeno-phys-crossbow','x4'):['block-prefix-with-desecration'], ('xeno-phys-crossbow','x7'):['block-prefix-with-desecration'], ('xeno-phys-crossbow','x8'):['block-prefix-with-desecration'],('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-iceshot-bow','w10'):['desecrate-reroll-no-light'],
  ('sl-flamewave-ring','s2'):['erasure-chaos-cheaper','min-level-lock-tier'], ('mazbro-sceptre','z13'):['reveal-miss-exalt-first'], ('diztoh-socket-gloves','d11'):['reveal-miss-exalt-first'],
  ('absent-amulet-video','a18'):['reveal-miss-exalt-first'], ('ragna-ashot-bow','w5'):['min-level-lock-tier'], ('breach-ring-phys','b6'):['single-res-catalyst'], ('mazbro-sceptre','z11'):['augment-effect-alloy'], ('mazbro-spell5-amulet','z17'):['sanctify-checklist'],
  ('helmet-armour-sl','s1'):['liquid-resist-swap'], ('sl-flamewave-ring','s1'):['liquid-resist-swap'], ('mazbro-caster-amulet','a4'):['chaos-side-swap','sell-offtarget'], ('gold-amulet-6line','k1'):['sell-offtarget'],

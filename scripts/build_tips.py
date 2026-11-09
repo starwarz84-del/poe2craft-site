@@ -330,6 +330,10 @@ T+=[
   'title':K('훼손을 높은 레벨 줄로 공개해 절사 대상을 정하기','Reveal a high-level line to steer whittling'),
   'body':K('절사의 징조는 요구 레벨이 가장 낮은 줄을 바꿈. 훼손을 버릴 줄보다 레벨이 높은 줄(예: 민첩 66)로 공개해 두면, 면 말소의 징조 없이 절사의 징조 + 카오스 오브로 그 버릴 줄만 돌릴 수 있음. 다른 좋은 줄이 그보다 레벨이 낮지 않은지 꼭 확인.','Whittling changes the lowest-level line. Reveal the desecration as a line above your junk line (e.g. Dexterity, 66) and you can reroll just that junk line with Whittling + Chaos, no side Erasure omen needed — but check no good line sits lower.'),
   'source':{'url':'https://www.youtube.com/watch?v=2PUEwoePtRs','title':'[패스오브엑자일2] 1미러에 팔린 본능적인 화살통 제작 풀 영상','channel':'노블이-NoblE','ts':'10:30'},'recipes':['noble-visceral-quiver']},
+ {'id':'block-prefix-with-desecration','tags':[K('훼손','Desecration'),K('면 막기','Side block')],'patch':'0.5',
+  'title':K('레벨 높은 훼손 줄로 접두를 막고 접미 작업, 끝나면 지우고 다시 공개','Block the prefixes with a high-level desecrated line, work the suffixes, then swap it'),
+  'body':K('접두가 꽉 차면 엑잘티드 오브·카오스 오브가 접미로만 가서 면 징조가 필요 없음. 그래서 쓸모는 적어도 레벨 높은(예: 81) 훼손 줄(공격 스킬의 원소 피해 등)로 접두 마지막 칸을 막아 둠 — 레벨이 높아야 접미 절사 때 안 지워짐. 접미가 끝나면 빛의 징조 + 소멸의 오브로 그 줄을 지우고 뼈 + 심연의 메아리의 징조로 다시 공개해 진짜 목표 접두(물리 피해 추가)를 노림.','A full prefix side sends every exalt and chaos to the suffixes, so no side omens are needed. Fill the last prefix with a high-level (e.g. 81) desecrated line such as elemental damage with attacks — high enough that suffix whittling never takes it. When the suffixes are done, remove it with Omen of Light + Annulment and re-desecrate and reveal (bone + Abyssal Echoes) for the real target prefix (flat physical).'),
+  'source':{'url':'https://www.youtube.com/watch?v=1TP4aGqxU7Q','title':'[EN] PoE2 0.5 | Crafting Multi-Mirror Physical Damage Crossbow | Step-by-Step','channel':'XenoARPG','ts':'4:47'},'recipes':['xeno-phys-crossbow']},
 ]
 json.dump({'v':1,'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
 print(len(T),'tips')
