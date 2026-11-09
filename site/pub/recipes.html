@@ -474,6 +474,12 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcn.k-exit{border:1.5px dashed var(--warn);border-radius:8px;background:var(--panel);padding:9px 12px;display:flex;flex-direction:column;gap:3px;justify-content:center}
 .fcn.k-exit.v-ok{border-color:var(--ok)}.fcn.k-exit.v-fail{border-style:solid}
 .fcn.k-exit b{font-size:13.5px}.fcn.k-exit span{color:var(--muted);font-size:12.5px}
+.fcfins{margin:14px 0 4px}.fcfinrow{display:flex;flex-wrap:wrap;gap:14px}
+.fcfin{flex:1 1 280px;max-width:360px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel)}
+.fcfin.on{border-color:var(--rare)}
+.fcfh{margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;align-items:baseline;font-size:13.5px}
+.fcfh span{color:var(--muted);font-size:12.5px}.fcfh span b{color:var(--rare)}
+.fcfins{padding:0 16px 16px;margin:0}
 .fc1 .rw{font-style:normal;color:var(--muted);margin-right:6px}
 .fcgf{position:absolute;bottom:-1px;transform:translate(-50%,50%);z-index:3;box-shadow:0 0 0 4px var(--bg);background:var(--bg);padding:4px 12px;border:1px solid var(--line);border-radius:999px;font-size:12.5px;color:var(--muted);white-space:nowrap}
 .fcgf b{color:var(--rare);font-weight:600}
@@ -1263,10 +1269,11 @@ function itemTipHTML(r, o, opt={}){
   const line = (m, cls='') => {
     const sl=`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>`;
     if(m.unrev) return `<div class="tt-mod des-u ${cls}">${sl}${L('훼손 옵션 (미공개)','Desecrated (unrevealed)')}</div>`;
-    if(m.gi==null) return `<div class="tt-mod junk ${cls}">${sl}${m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
+    if(m.gi==null) return `<div class="tt-mod junk ${cls}">${sl}${m.label?esc(tx(m.label)):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
     if(m.mark) return `<div class="tt-mod markm ${cls}"><span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>${esc(KR()?grp(r,m.gi).t[0][4]:grp(r,m.gi).t[0][5])}</div>`;
     const l=modLine(r,m.gi,m.tmax,m.max), qv=o.qual?.v, qt=o.qual?.type, shown=(o.vals||{})[m.gi];
     let txt=l.txt, sub='';
+    if(m.hybrid) txt=txt.replace(/생명력 최대치 \+\([^)]*\)|생명력 최대치 \+\d+/,'생명력/마나 최대치').replace(/\+\([^)]*\) to maximum Life|\+\d+ to maximum Life/,'maximum Life / Mana');
     if(shown){ txt=tx(shown); sub=L('영상 결과값','value in the video'); }
     else if(qv && qt && l.g.tg.includes(qt)){ txt=qualBoost(l.txt, qv); sub=L(`퀄리티 ${qv}% 반영 · 원래 ${l.txt}`,`with ${qv}% quality · base ${l.txt}`); }
     else { const mg = Object.keys(mag).find(t=>l.g.tg.includes(t) && mag[t].gi!==m.gi && l.g.s!=='x'); if(mg){ txt=qualBoost(l.txt, mag[mg].v); sub=L(`속성 부여 규모 ${mag[mg].v}% 반영 · 원래 ${l.txt}`,`with ${mag[mg].v}% modifier magnitude · base ${l.txt}`); } }
@@ -1359,7 +1366,7 @@ function fcModel(g){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
     (n.edges||[]).filter(e=>!e.hide).forEach(e=>add(n.id, e.to, e.label, {res:e.res}));
     if(n.options) for(const [v,to] of Object.entries(n.options)) add(n.id, to, n.edgeLabels?.[v] || g.params?.[n.param]?.values?.[v], {opt:[n.param, v], ...(n.optStyle?.[v]||{})});
-    if(n.skipTo && !n.skipNote) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
+    if(n.skipTo && !n.skipNote && !n.skipHide) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
   const dec={}, multi={}; g.nodes.forEach(n=>{ if(n.kind!=='act' && n.kind!=='cleanup') return; if(new Set(E.filter(e=>e.a===n.id && !e.skip).map(e=>e.b)).size>=3) multi[n.id]=true; });   // simple two-way outcomes are just two coloured lines
   const loopOf={}, loopHead={}; (g.loops||[]).forEach((Lp,i)=>{ Lp.no=i+1; Lp.nodes.forEach(id=>{ if(!loopOf[id]) loopOf[id]=Lp; }); loopHead[Lp.nodes[0]]=Lp; });
   return {byId, E, dec, multi, loopOf, loopHead}; }
@@ -1381,19 +1388,22 @@ function fcSize(n, M, g, params){ const W = n.pos[0]===0 ? FX.W : FX.WB; if(n.ki
   if(n.kind==='exit') return [FX.WB, 78];
   const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
   return [W, 40 + (want.length?Math.max(1,lines)*20+6:0) + 40 + (n.curRows?(n.curRows.length-1)*22:0) + (n.skipNote?18:0) - (n.kind==='side'?4:0)]; }
-function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[...new Set(g.nodes.map(n=>n.pos[0]))].sort((a,b)=>a-b);
+function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[...new Set(g.nodes.map(n=>n.pos[0]).filter(Number.isInteger))].sort((a,b)=>a-b);
   const size={}; g.nodes.forEach(n=>size[n.id]=fcSize(n, M, g, params));
   const colW={}; colIds.forEach(c=>colW[c]=Math.max(...g.nodes.filter(n=>n.pos[0]===c).map(n=>Math.max(size[n.id][0], M.dec[n.id]?FX.DW:0))));
-  const colX={}; let x=FX.PAD+(items && S.fcItems!==false?FX.LANE+FX.LANEGAP:0); colIds.forEach(c=>{ colX[c]=x; x+=colW[c]+FX.GAPX; }); const Wt=x-FX.GAPX+FX.PAD+40;
+  const colX={}; let x=FX.PAD+(items && S.fcItems!==false?FX.LANE+FX.LANEGAP:0); const between=c=>g.nodes.filter(n=>!Number.isInteger(n.pos[0]) && n.pos[0]>c && n.pos[0]<c+1);
+  colIds.forEach(c=>{ colX[c]=x; const bw=Math.max(0,...between(c).map(n=>size[n.id][0])); x+=colW[c]+Math.max(FX.GAPX, bw+120); });
+  const xOf=(c,w)=>{ if(Number.isInteger(c)) return colX[c]+(colW[c]-w)/2; const a=Math.floor(c), b=colIds.find(k=>k>c), l=colX[a]+colW[a], r=b!=null?colX[b]:l+FX.GAPX; return (l+r)/2-w/2; }; const Wt=x-FX.GAPX+FX.PAD+40;
   const rows=[...new Set(g.nodes.map(n=>n.pos[1]))].sort((a,b)=>a-b), box={}, dia={}, rowSpan=[], grp={};
   let y=FX.PAD, prevG=null, prevLoop;
   rows.forEach(r=>{ const R=g.nodes.filter(n=>n.pos[1]===r).sort((a,b)=>a.pos[0]-b.pos[0]), m=R[0], gid=m.group;
+    y+=Math.max(0,...R.map(n=>n.gapBefore||0));
     const lp=M.loopOf[m.id]||null; if(prevLoop!==undefined && lp!==prevLoop && (lp||prevLoop) && gid===prevG) y+=34; prevLoop=lp;
     if(gid!==prevG){ if(prevG) grp[prevG].y1=y-FX.ROWGAP+16; y+= prevG ? FX.GROUPGAP : 30; grp[gid]={y0:y-40}; prevG=gid; }
     const hm=size[m.id][1], anchor = M.dec[m.id] ? hm+FX.DGAP+FX.DH/2 : hm/2, rel={};
     R.forEach(n=>{ const h=size[n.id][1], top = n===m ? 0 : anchor-h/2; rel[n.id]={top, bot: top+h+(M.dec[n.id]?FX.DGAP+FX.DH:0)}; });
     const t0=Math.min(...R.map(n=>rel[n.id].top)), t1=Math.max(...R.map(n=>rel[n.id].bot));
-    R.forEach(n=>{ const [w,h]=size[n.id], c=n.pos[0], bx={id:n.id, x:colX[c]+(colW[c]-w)/2, y:y+rel[n.id].top-t0, w, h, row:r, col:c};
+    R.forEach(n=>{ const [w,h]=size[n.id], c=n.pos[0], bx={id:n.id, x:xOf(c,w), y:y+rel[n.id].top-t0, w, h, row:r, col:c};
       box[n.id]=bx; if(M.dec[n.id]) dia[n.id]={id:n.id+'?', x:bx.x+w/2-FX.DW/2, y:bx.y+h+FX.DGAP, w:FX.DW, h:FX.DH, dia:true, row:r, col:c}; });
     rowSpan.push([y, y+t1-t0]); y+=t1-t0+FX.ROWGAP; });
   if(prevG) grp[prevG].y1=y-FX.ROWGAP+16;
@@ -1412,7 +1422,7 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
     for(let i=1;i<o.length-1;){ const a=o[i-1], b=o[i], c=o[i+1]; if((a[0]===b[0]&&b[0]===c[0]) || (a[1]===b[1]&&b[1]===c[1])){ const back=(b[0]-a[0])*(c[0]-b[0])+(b[1]-a[1])*(c[1]-b[1])<0; if(back) return null; o.splice(i,1); } else i++; } return o; };
   const order=[...edges].sort((p,q)=>p.d0-q.d0);
   const joinY = T => { const cx=T.x+T.w/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<140 ? Math.round((above+T.y)/2) : T.y-22; };
-  order.forEach(e=>{ const S=e.src, T=e.dst, sp = ['bottom','right'], tp=['top','left'], jy=joinY(T);
+  order.forEach(e=>{ const S=e.src, T=e.dst, sp = ['bottom','right'], tp=['top','left'], jy = S.y > T.y ? T.y-28 : joinY(T);
     let best=null;
     for(const s of sp) for(const t of tp){ const P0=port(S,s), P1=port(T,t), A=[P0[0]+P0[2]*FX.STUB, P0[1]+P0[3]*FX.STUB], B=[P1[0]-(t==='top'?0:(t==='left'?FX.STUB:-FX.STUB)), P1[1]-(t==='top'?FX.STUB:0)];
       const mids=[[A,B],[A,[B[0],A[1]],B],[A,[A[0],B[1]],B]]; cxs.forEach(cx=>mids.push([A,[cx,A[1]],[cx,B[1]],B])); [...cys, jy].forEach(cy=>mids.push([A,[A[0],cy],[B[0],cy],B]));
@@ -1456,6 +1466,13 @@ function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||'')
   const row=(l,cls)=>{ const x=text(l); return `<li class="m-${l.m||'n'} ${cls}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
   const gone=(prev||[]).filter(l=>!now.has(key(l)) && !lines.some(x=>x.s===l.s && x.kr===l.kr));
   return lines.map(l=>row(l, had.has(key(l))?'':'new')).join('') + gone.map(l=>row(l,'gone')).join(''); }
+// finished items (best / settle / budget) in the recipe's item-card format
+function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return ''; const fi=g.finalItem||{};
+  const cards=g.finals.map(F=>{ const state=F.lines.map(l=>{ if(l.random) return {gi:null, side:l.side, label:{kr:'랜덤 옵션',en:'Random modifier'}}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
+      return {gi:T.gi, side:T.s, tmax:l.tmax||null, fr:!!l.fr, des:!!l.des, hybrid:!!l.hybrid}; }).filter(Boolean);
+    const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
+    return `<div class="fcfin ${on?'on':''}"><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, cap:{p:3,s:3}, qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}</div>`; }).join('');
+  return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
 function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), res=s.res, M=fcModel(g), Lay=fcLayout(g, M, s.params);
   const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : '0%';
   const st = id => res.nodes[id], ecount = (a,b) => res.edges?.[a+'>'+b]||0;
@@ -1548,7 +1565,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     <details class="simopts" ${S.simOpts?'open':''}><summary class="simnote">${L('세부 조건','Detailed options')}</summary><div class="simtop">${toggles}</div></details>
     <div class="simsum"><span>${L('완성 1개당','Per finished item')} ${v0(res.mean)}</span><span>${L('중앙값','Median')} ${fmtDiv(res.median)} · ${L('운 나쁠 때(90%)','Unlucky (90%)')} ${fmtDiv(res.p90)} div</span><span>${L('베이스','Bases')} ${fmt(res.bases)}${L('개','')}</span>${eng!=null?`<small>${L('단계별 기대값 계산','Step-by-step estimate')} ${fmtDiv(eng)} div</small>`:''}</div>
     ${legend}
-    <div class="fc"><div class="fcin" style="width:${Lay.Wt}px;height:${Lay.Ht}px">${regions}<svg class="fcsvg" width="${Lay.Wt}" height="${Lay.Ht}" aria-hidden="true"><defs><pattern id="fchatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="9" class="fchl"/></pattern><pattern id="fchatch1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="9" class="fchl1"/></pattern></defs>${loopsSvg.join('')}${sideLines}</svg>${lane}${loopTags.join('')}<svg class="fcsvg" width="${Lay.Wt}" height="${Lay.Ht}" aria-hidden="true"><defs>${['fwd','ok','fail','off','side'].map(k2=>`<marker id="fcm-${k2}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto"><path class="mk-${k2}" d="M0,0L8,4L0,8z"/></marker>`).join('')}</defs>${svgE}</svg>${diamonds}${nodes}${labels}</div></div>
+    <div class="fc"><div class="fcin" style="width:${Lay.Wt}px;height:${Lay.Ht}px">${regions}<svg class="fcsvg" width="${Lay.Wt}" height="${Lay.Ht}" aria-hidden="true"><defs><pattern id="fchatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="9" class="fchl"/></pattern><pattern id="fchatch1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="9" class="fchl1"/></pattern></defs>${loopsSvg.join('')}${sideLines}</svg>${lane}${loopTags.join('')}<svg class="fcsvg" width="${Lay.Wt}" height="${Lay.Ht}" aria-hidden="true"><defs>${['fwd','ok','fail','off','side'].map(k2=>`<marker id="fcm-${k2}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto"><path class="mk-${k2}" d="M0,0L8,4L0,8z"/></marker>`).join('')}</defs>${svgE}</svg>${diamonds}${nodes}${labels}</div>${fcFinalsHTML(r, d, {...s.params, ...sel})}</div>
     <details class="simdet"><summary class="simnote">${L('단계별 표 (완성 1개당 평균)','Per-step table (average per finished item)')}</summary>
       <table class="simtab"><thead><tr><th>${L('단계','Step')}</th><th class="num">${L('도달','Reached')}</th><th>${L('사용','Used')}</th><th class="num">div</th></tr></thead><tbody>${rows}</tbody></table></details>
     <p class="simnote">${L(`시뮬레이션 ${d.runs.toLocaleString()}회 · 모든 수치는 완성 1개당 평균 · 도달 = 완성품 중 그 단계를 거친 비율 · 접미 분열은 같은 비용으로 가정`,`${d.runs.toLocaleString()} simulated items · all numbers are averages per finished item · reached = share of items that went through the step · suffix fracture assumed to cost the same`)}</p>
