@@ -119,7 +119,7 @@ function make(graph, D, craft, params){
       if(n.kind==='act'){
         if(n.skipIf && cond(n.skipIf)){ tally.skip(id); tally.edge(id, n.skipTo); id=n.skipTo; continue; }
         const use=act(n); tally.use(id, use);
-        const e=pickEdge(n); if(!e) throw new Error(n.id+': no edge matched'); tally.edge(id, e.to); id=e.to; continue; }
+        const e=pickEdge(n); if(!e) throw new Error(n.id+': no edge matched'); if(n.curIf && tally.byCur){ const ck=[...n.curIf.map(c=>c.cur), n.cur].find(k=>use[k]); if(ck) tally.byCur(id, ck, e.res==='ok'); } tally.edge(id, e.to); id=e.to; continue; }
       throw new Error('unknown kind '+n.kind);
     }
   };
@@ -131,11 +131,11 @@ function simulate(graph, D, craft, prices, params, N=20000, seed=1){
   const ex = id => id==='Exalted_Orb' ? 1 : prices.p[id]!=null ? +prices.p[id] : null, missing=new Set();
   const div = use => { let v=0; for(const k in use){ const e=ex(k); if(e==null) missing.add(k); else v+=use[k]*e; } return v/prices.divine; };
   const baseDiv = div(graph.basePrice||{});
-  const tot={}, nodeUse={}, visits={}, skips={}, reach={}, edges={}, costs=[]; let bases=0, ok=0, okReq=0;
+  const tot={}, nodeUse={}, visits={}, skips={}, byCur={}, reach={}, edges={}, costs=[]; let bases=0, ok=0, okReq=0;
   for(let r=0;r<N;r++){ const seen=new Set(), runUse={}; let runBases=0;
     const tally={ visit:id=>{ visits[id]=(visits[id]||0)+1; seen.add(id); },
       use:(id,u)=>{ const x=nodeUse[id]=nodeUse[id]||{}; for(const k in u){ x[k]=(x[k]||0)+u[k]; runUse[k]=(runUse[k]||0)+u[k]; } },
-      base:()=>{ runBases++; }, skip:id=>{ skips[id]=(skips[id]||0)+1; }, edge:(a,b)=>{ const k=a+'>'+b; edges[k]=(edges[k]||0)+1; },
+      base:()=>{ runBases++; }, skip:id=>{ skips[id]=(skips[id]||0)+1; }, byCur:(id,k,ok)=>{ const b=(byCur[id]=byCur[id]||{})[k]=byCur[id]?.[k]||{t:0,ok:0}; b.t++; if(ok) b.ok++; }, edge:(a,b)=>{ const k=a+'>'+b; edges[k]=(edges[k]||0)+1; },
       done:(it, cond)=>{ ok++; if(!graph.require || cond(graph.require)) okReq++; } };
     run(rnd, {tally});
     seen.forEach(id=>reach[id]=(reach[id]||0)+1);
@@ -144,7 +144,7 @@ function simulate(graph, D, craft, prices, params, N=20000, seed=1){
   costs.sort((a,b)=>a-b);
   const q = f => costs[Math.min(costs.length-1, Math.floor(f*costs.length))];
   const avg = o => { const x={}; for(const k in o) x[k]=o[k]/N; return x; };
-  const nodes={}; for(const id in visits){ const u=avg(nodeUse[id]||{}); nodes[id]={reach:reach[id]/N, visits:visits[id]/N, use:u, skips:(skips[id]||0)/N, div:div(u) + (graph.nodes.find(n=>n.id===id)?.kind==='base' ? visits[id]/N*baseDiv : 0)}; }
+  const nodes={}; for(const id in visits){ const u=avg(nodeUse[id]||{}); nodes[id]={reach:reach[id]/N, visits:visits[id]/N, use:u, skips:(skips[id]||0)/N, byCur:byCur[id], div:div(u) + (graph.nodes.find(n=>n.id===id)?.kind==='base' ? visits[id]/N*baseDiv : 0)}; }
   const e2={}; for(const k in edges) e2[k]=edges[k]/N;
   return {N, seed, mean:costs.reduce((s,x)=>s+x,0)/N, median:q(0.5), p90:q(0.9), p10:q(0.1), bases:bases/N, baseDiv, use:avg(tot), useDiv:div(avg(tot)), nodes, edges:e2, reqOk:okReq/Math.max(1,ok), missing:[...missing]};
 }

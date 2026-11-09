@@ -36,20 +36,6 @@
      "en": "Flat T1–2"
     }
    }
-  },
-  "bMiss": {
-   "kr": "B 빗나감 정리",
-   "en": "B miss clean-up",
-   "values": {
-    "plain": {
-     "kr": "소멸의 오브",
-     "en": "Annulment"
-    },
-    "sinistral": {
-     "kr": "좌측 소멸의 징조 + 소멸의 오브",
-     "en": "Sinistral Annulment + Annulment"
-    }
-   }
   }
  },
  "strategies": [
@@ -57,42 +43,29 @@
    "id": "settle-1",
    "params": {
     "cMiss": "settle",
-    "bTier": 1,
-    "bMiss": "plain"
+    "bTier": 1
    }
   },
   {
    "id": "erase-1",
    "params": {
     "cMiss": "erase",
-    "bTier": 1,
-    "bMiss": "plain"
+    "bTier": 1
    }
   },
   {
    "id": "settle-2",
    "params": {
     "cMiss": "settle",
-    "bTier": 2,
-    "bMiss": "plain"
+    "bTier": 2
    }
   },
   {
    "id": "erase-2",
    "params": {
     "cMiss": "erase",
-    "bTier": 2,
-    "bMiss": "plain"
+    "bTier": 2
    }
-  },
-  {
-   "id": "settle-1-sinannul",
-   "params": {
-    "cMiss": "settle",
-    "bTier": 1,
-    "bMiss": "sinistral"
-   },
-   "hidden": true
   }
  ],
  "tags": {
@@ -674,7 +647,8 @@
      "label": {
       "kr": "접두 분열",
       "en": "prefix fractured"
-     }
+     },
+     "p": 0.3333333333333333
     },
     {
      "if": {
@@ -686,7 +660,8 @@
      "label": {
       "kr": "접미 분열",
       "en": "suffix fractured"
-     }
+     },
+     "p": 0.3333333333333333
     },
     {
      "to": "xj",
@@ -694,7 +669,8 @@
      "label": {
       "kr": "잡옵 분열",
       "en": "junk fractured"
-     }
+     },
+     "p": 0.3333333333333333
     }
    ],
    "item": [
@@ -834,8 +810,8 @@
    ],
    "next": "c1",
    "label": {
-    "kr": "본 작업 시작 아이템",
-    "en": "Main craft starting item"
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
    },
    "item": [
     {
@@ -978,54 +954,13 @@
    "edges": [
     {
      "if": {
-      "ref": "pDone"
-     },
-     "to": "d1",
-     "label": {
-      "kr": "희귀도 + 필수 = 접두 완성",
-      "en": "rarity + wanted: prefixes done"
-     },
-     "res": "ok"
-    },
-    {
-     "if": {
       "added": "flat"
      },
      "to": "p2",
-     "label": {
-      "kr": "성공",
-      "en": "hit"
-     },
      "res": "ok"
     },
     {
-     "if": {
-      "added": "rarP"
-     },
-     "to": "p1",
-     "label": {
-      "kr": "접두 희귀도 → 두고 한 번 더",
-      "en": "prefix rarity: keep, slam again"
-     },
-     "res": "ok"
-    },
-    {
-     "if": {
-      "has": "rarP"
-     },
-     "to": "bx2",
-     "label": {
-      "kr": "희귀도 뒤 빗나감",
-      "en": "miss after rarity"
-     },
-     "res": "fail"
-    },
-    {
-     "to": "bm",
-     "label": {
-      "kr": "빗나감",
-      "en": "miss"
-     },
+     "to": "bx",
      "res": "fail"
     }
    ],
@@ -1069,65 +1004,16 @@
     "kr": "접두 두번째 옵션",
     "en": "Second prefix option"
    },
-   "showText": [
+   "curRows": [
     {
-     "kr": "치명타 확률 T2 → 상위 엑잘티드 오브 + 좌측 찬미의 징조",
-     "en": "Crit chance T2 → Greater Exalted Orb + Omen of Sinistral Exaltation"
+     "cur": "Greater_Exalted_Orb",
+     "kr": "치명타 확률 T2",
+     "en": "Crit chance T2"
     },
     {
-     "kr": "치명타 확률 T1 → 완벽한 엑잘티드 오브 + 좌측 찬미의 징조",
-     "en": "Crit chance T1 → Perfect Exalted Orb + Omen of Sinistral Exaltation"
-    }
-   ]
-  },
-  {
-   "id": "bm",
-   "kind": "choice",
-   "group": "main",
-   "pos": [
-    1,
-    10
-   ],
-   "param": "bMiss",
-   "options": {
-    "plain": "bx",
-    "sinistral": "bxs"
-   },
-   "label": {
-    "kr": "정리 방법",
-    "en": "Clean-up"
-   },
-   "edgeLabels": {
-    "plain": {
-     "kr": "소멸의 오브",
-     "en": "Annulment"
-    },
-    "sinistral": {
-     "kr": "좌측 소멸의 징조",
-     "en": "Sinistral Annulment"
-    }
-   }
-  },
-  {
-   "id": "bxs",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    11
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Sinistral_Annulment"
-   ],
-   "label": {
-    "kr": "접두 잡옵 제거",
-    "en": "Remove the prefix junk"
-   },
-   "edges": [
-    {
-     "to": "p1"
+     "cur": "Perfect_Exalted_Orb",
+     "kr": "치명타 확률 T1",
+     "en": "Crit chance T1"
     }
    ]
   },
@@ -1136,7 +1022,7 @@
    "kind": "cleanup",
    "group": "main",
    "pos": [
-    2,
+    1,
     10
    ],
    "keep": [
@@ -1144,26 +1030,26 @@
    ],
    "maxJunk": 0,
    "label": {
-    "kr": "소멸의 오브",
-    "en": "Annulment"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
    },
    "edges": [
     {
      "lost": "crit",
-     "to": "ca",
+     "to": "c1",
+     "res": "fail",
      "label": {
-      "kr": "치명타 지워짐 → A",
-      "en": "crit gone → A"
-     },
-     "res": "fail"
+      "kr": "치명타 확률 지워짐 → 7",
+      "en": "crit gone → 7"
+     }
     },
     {
      "to": "p1",
+     "res": "ok",
      "label": {
-      "kr": "잡옵 지워짐 → B",
-      "en": "junk gone → B"
-     },
-     "res": "ok"
+      "kr": "잡옵 지워짐 → 8",
+      "en": "junk gone → 8"
+     }
     }
    ],
    "ask": {
@@ -1214,56 +1100,6 @@
      "label": {
       "kr": "→ B",
       "en": "→ B"
-     },
-     "res": "ok"
-    }
-   ],
-   "ask": {
-    "kr": "뭐가 지워짐?",
-    "en": "What was removed?"
-   }
-  },
-  {
-   "id": "bx2",
-   "kind": "cleanup",
-   "group": "main",
-   "pos": [
-    2,
-    11
-   ],
-   "keep": [
-    "crit",
-    "rarP"
-   ],
-   "maxJunk": 0,
-   "label": {
-    "kr": "소멸의 오브(희귀도 유지)",
-    "en": "Annulment (keep rarity)"
-   },
-   "edges": [
-    {
-     "lost": "crit",
-     "to": "ca",
-     "label": {
-      "kr": "치명타 지워짐",
-      "en": "crit gone"
-     },
-     "res": "fail"
-    },
-    {
-     "lost": "rarP",
-     "to": "bx",
-     "label": {
-      "kr": "희귀도 지워짐 → 한 번 더",
-      "en": "rarity gone → once more"
-     },
-     "res": "fail"
-    },
-    {
-     "to": "p1",
-     "label": {
-      "kr": "잡옵 지워짐",
-      "en": "junk gone"
      },
      "res": "ok"
     }
@@ -1951,10 +1787,7 @@
    "id": "L3",
    "nodes": [
     "p1",
-    "bm",
-    "bx",
-    "bxs",
-    "bx2"
+    "bx"
    ],
    "kr": "B 접두 최대치",
    "en": "B flat prefix"

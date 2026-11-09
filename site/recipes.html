@@ -468,6 +468,9 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcn.k-exit{border:1.5px dashed var(--warn);border-radius:8px;background:var(--panel);padding:9px 12px;display:flex;flex-direction:column;gap:3px;justify-content:center}
 .fcn.k-exit.v-ok{border-color:var(--ok)}.fcn.k-exit.v-fail{border-style:solid}
 .fcn.k-exit b{font-size:13.5px}.fcn.k-exit span{color:var(--muted);font-size:12.5px}
+.fc1 .rw{font-style:normal;color:var(--muted);margin-right:6px}
+.fcgf{position:absolute;bottom:-1px;left:14px;transform:translateY(50%);background:var(--bg);padding:4px 12px;border:1px solid var(--line);border-radius:999px;font-size:12.5px;color:var(--muted);white-space:nowrap}
+.fcgf b{color:var(--rare);font-weight:600}
 .fc1 .pr .dot{margin:0 6px;color:var(--faint)}
 .fc2{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:center;color:var(--fg);font-size:12px}
 .fc2 .lb{color:var(--muted)}.fc2 .cu{white-space:nowrap}
@@ -1370,7 +1373,7 @@ function fcSize(n, M, g, params){ const W = n.pos[0]===0 ? FX.W : FX.WB; if(n.ki
   if(n.kind==='assume') return [222, 84];
   if(n.kind==='exit') return [FX.WB, 78];
   const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
-  return [W, 40 + (want.length?Math.max(1,lines)*20+6:0) + 40 + (n.skipNote?18:0) - (n.kind==='side'?4:0)]; }
+  return [W, 40 + (want.length?Math.max(1,lines)*20+6:0) + 40 + (n.curRows?(n.curRows.length-1)*22:0) + (n.skipNote?18:0) - (n.kind==='side'?4:0)]; }
 function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[...new Set(g.nodes.map(n=>n.pos[0]))].sort((a,b)=>a-b);
   const size={}; g.nodes.forEach(n=>size[n.id]=fcSize(n, M, g, params));
   const colW={}; colIds.forEach(c=>colW[c]=Math.max(...g.nodes.filter(n=>n.pos[0]===c).map(n=>Math.max(size[n.id][0], M.dec[n.id]?FX.DW:0))));
@@ -1387,7 +1390,7 @@ function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[..
       box[n.id]=bx; if(M.dec[n.id]) dia[n.id]={id:n.id+'?', x:bx.x+w/2-FX.DW/2, y:bx.y+h+FX.DGAP, w:FX.DW, h:FX.DH, dia:true, row:r, col:c}; });
     rowSpan.push([y, y+t1-t0]); y+=t1-t0+FX.ROWGAP; });
   if(prevG) grp[prevG].y1=y-FX.ROWGAP+16;
-  return {box, dia, colX, colW, colIds, rowSpan, grp, Wt, Ht:y-FX.ROWGAP+FX.PAD+10, items: items && S.fcItems!==false}; }
+  return {box, dia, colX, colW, colIds, rowSpan, grp, Wt, Ht:y-FX.ROWGAP+FX.PAD+30, items: items && S.fcItems!==false}; }
 // candidate orthogonal routes between two ports; the cheapest one that misses every box wins
 function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Object.values(Lay.dia)], placed=[];
   const port=(b,s)=>{ const cx=b.x+b.w/2, cy=b.y+b.h/2; return {top:[cx,b.y,0,-1], bottom:[cx,b.y+b.h,0,1], left:[b.x,cy,-1,0], right:[b.x+b.w,cy,1,0]}[s]; };
@@ -1433,14 +1436,14 @@ function fcLabels(list, rects){ // list: [{pts, w, ...}] → x,y per label: near
       const need=horiz?w/2+10:H/2+8; if(len<need*2-4 && pts.length>2) continue;
       const offs=[need, len/2, len-need, need+30, need+60].filter(o=>o>=Math.min(need,len/2) && o<=Math.max(len-need,len/2));
       for(const o of offs){ const x=horiz?a[0]+dir*o:a[0], y=horiz?a[1]:a[1]+dir*o, R=[x-w/2,y-H/2,x+w/2,y+H/2];
-        let sc=Math.abs(i-(pts.length>3?1:0))*40 + o*0.3;
+        let sc=-len*0.6 + Math.abs(o-len/2)*0.8;
         placed.forEach(q=>sc+=ov(R,q)*50); rects.forEach(r=>sc+=ov(R,[r.x,r.y,r.x+r.w,r.y+r.h])*8);
         if(!best || sc<best.sc) best={sc,x,y,R}; } }
     if(!best){ const a=pts[0]; best={x:a[0],y:a[1],R:[a[0]-w/2,a[1]-H/2,a[0]+w/2,a[1]+H/2]}; }
     placed.push(best.R); L0.x=best.x; L0.y=best.y; }); }
 const fcUse = (u, n=3) => Object.entries(u||{}).filter(([,v])=>v>=0.005).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k,v])=>`<span class="ci" title="${esc(nm(cur(k)))}">${icon(k)}${fmt(v)}</span>`).join('');
 function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
-  const side=s=>s==='p'?'P':s==='s'?'S':'P/S', mk={f:L('분열','Fractured'),u:L('미공개','Unrevealed'),d:L('훼손','Desecrated')};
+  const side=s=>s==='p'?'P':s==='s'?'S':'P/S', mk={u:L('미공개','Unrevealed'),d:L('훼손','Desecrated')};
   const text=l=>{ if(!l.tags) return {t:esc(tx(l)).replace(/ ?1티어$/,' T1'), tier:''}; const v=l.tags.map(t=>fcTagText(g,t,params)).filter(Boolean);
     return {t: v.map(x=>esc(x.txt)).join(` <u>${L('또는','or')}</u> `), tier: v[0]?.tier||''}; };
   const row=(l,cls)=>{ const x=text(l); return `<li class="m-${l.m||'n'} ${cls}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
@@ -1451,14 +1454,18 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const st = id => res.nodes[id], ecount = (a,b) => res.edges?.[a+'>'+b]||0;
   const isMain = id => M.byId[id].pos[0]===0;
   // step numbers: tasks in reading order
-  const no={}, cnt={}; g.nodes.filter(n=>n.kind==='act'||n.kind==='cleanup').sort((a,b)=>a.pos[1]-b.pos[1]||a.pos[0]-b.pos[0]).forEach(n=>{ const c=Math.min(2,n.pos[0]), i=cnt[c]=(cnt[c]||0)+1; no[n.id] = c===0 ? i : String.fromCharCode((c===1?64:96)+i); });
+  const no={}, cnt={}, steps=g.nodes.filter(n=>n.kind==='act'||n.kind==='cleanup').sort((a,b)=>a.pos[1]-b.pos[1]||a.pos[0]-b.pos[0]); let mainNo=0;
+  steps.filter(n=>n.pos[0]===0).forEach(n=>no[n.id]=++mainNo);
+  const parentOf=(n,col)=>steps.filter(x=>x.pos[0]===col && x.pos[1]<=n.pos[1]).sort((a,b)=>b.pos[1]-a.pos[1]||b.pos[0]-a.pos[0])[0];
+  steps.filter(n=>n.pos[0]===1).forEach(n=>{ const P=parentOf(n,0), k=P?no[P.id]:'0', i=cnt[k]=(cnt[k]||0)+1; no[n.id]=`${k}.${String.fromCharCode(64+i)}`; });
+  steps.filter(n=>n.pos[0]>=2).forEach(n=>{ const P0=parentOf(n,0), P=parentOf(n,1); const k = P && (!P0 || P.pos[1]>=P0.pos[1]) ? no[P.id] : (P0?no[P0.id]:'0'), i=cnt[k]=(cnt[k]||0)+1; no[n.id] = k.includes?.('.') ? `${k}.${String.fromCharCode(96+i)}` : `${k}.${String.fromCharCode(64+i)}`; });
   // edges with endpoints
   const edges=M.E.map(e=>{ const A=M.byId[e.a], B=M.byId[e.b]; if(!A||!B) return null;
     const src = M.dec[e.a] && !e.skip ? Lay.dia[e.a] : Lay.box[e.a], dst=Lay.box[e.b];
     const out=M.E.filter(x=>x.a===e.a && !x.skip).reduce((t,x)=>t+ecount(x.a,x.b),0), f=ecount(e.a,e.b);
     const on = e.opt ? String(s.params[e.opt[0]])===e.opt[1] && (st(e.a)?.visits||0)>0 : e.skip ? (st(e.a)?.skips||0)>0 : f>0;
     const kind = e.res==='fail' || B.kind==='base' ? 'fail' : e.res==='ok' ? 'ok' : 'fwd';
-    return {...e, dash:(A.edges||[]).find(x=>x.to===e.b)?.dash, src, dst, on, kind, share: M.multi[e.a] && !e.skip && out ? f/out : null, d0:Math.abs(src.x-dst.x)+Math.abs(src.y-dst.y) + (kind==='fwd'?0:5000)}; }).filter(Boolean);
+    return {...e, dash:(A.edges||[]).find(x=>x.to===e.b)?.dash, src, dst, on, kind, share: (A.edges||[]).find(x=>x.to===e.b)?.p ?? (M.multi[e.a] && !e.skip && out ? f/out : null), d0:Math.abs(src.x-dst.x)+Math.abs(src.y-dst.y) + (kind==='fwd'?0:5000)}; }).filter(Boolean);
   fcRoute(Lay, M, edges);
   // where a line runs into another one the corner stays square; success lines are drawn last so they sit on top
   const onSeg=(p,a,b)=>(a[0]===b[0] && Math.abs(p[0]-a[0])<0.5 && p[1]>=Math.min(a[1],b[1])-0.5 && p[1]<=Math.max(a[1],b[1])+0.5) || (a[1]===b[1] && Math.abs(p[1]-a[1])<0.5 && p[0]>=Math.min(a[0],b[0])-0.5 && p[0]<=Math.max(a[0],b[0])+0.5);
@@ -1472,7 +1479,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const regions=(g.groups||[]).map((gr,i)=>{ const R=Lay.grp[gr.id]; if(!R) return ''; const ns=g.nodes.filter(n=>n.group===gr.id);
     const dv=ns.reduce((t,n)=>t+(st(n.id)?.div||0),0), bases=ns.filter(n=>n.kind==='base').reduce((t,n)=>t+(st(n.id)?.visits||0),0);
     const x0=Lay.items?FX.PAD-8:Lay.colX[Lay.colIds[0]]-26;
-    return `<div class="fcg" style="left:${x0}px;top:${R.y0}px;width:${Lay.Wt-x0-FX.PAD}px;height:${R.y1-R.y0}px"><span class="fcgh"><b>${i+1}</b>${esc(tx(gr))}<small>${L('평균','avg')} ${fmtDiv(dv)} div${bases?` · ${L('베이스','bases')} ${fmt(bases)}${L('개','')}`:''}</small></span></div>`; }).join('');
+    return `<div class="fcg" style="left:${x0}px;top:${R.y0}px;width:${Lay.Wt-x0-FX.PAD}px;height:${R.y1-R.y0}px"><span class="fcgh"><b>${i+1}</b>${esc(tx(gr))}</span><span class="fcgf">${esc(tx(gr))} ${L('평균','avg')} <b>${fmtDiv(dv)} div</b>${bases?` · ${L('필요 베이스','bases needed')} <b>${fmt(bases)}${L('개','')}</b>`:''}</span></div>`; }).join('');
   // item lane
   let lane='', prev=null, yLast=0;
   if(Lay.items) g.nodes.filter(n=>n.item && n.kind!=='mark' && isMain(n.id)).sort((a,b)=>a.pos[1]-b.pos[1]).forEach(n=>{ const same=prev && JSON.stringify(prev)===JSON.stringify(n.item); if(same) return;
@@ -1515,7 +1522,8 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
       <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b>${esc(tx(n.goal||n.label))}</b></div>
       ${want.length?`<div class="fcw">${want.map(h=>`<p>${h}</p>`).join('')}</div>`:''}
       ${n.skipNote?`<div class="fcsk">↷ ${esc(tx(n.skipNote))}</div>`:''}
-      <div class="fcf"><div class="fc1"><span class="cn">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(per)}</b>${L('개','')}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div></div></div>`; }).join('');
+      <div class="fcf">${n.curRows && t?.byCur ? n.curRows.map(rw=>{ const b=t.byCur[rw.cur], p2=b&&b.t?b.ok/b.t:null, ids=[rw.cur, ...(n.omens||[])];
+          return `<div class="fc1"><span class="cn"><i class="rw">${esc(tx(rw))} →</i>${ids.map(id=>icon(id)).join('')}${esc(ids.map(id=>nm(cur(id))).join(' + '))}</span><span class="pr">${p2!=null?`${L('확률','Chance')} <b>${pct1(p2)}</b><span class="dot">·</span>${L('평균','avg')} <b>${fmt(1/p2)}</b>${L('개','')}`:L('해당 없음','n/a')}</span></div>`; }).join('') : `<div class="fc1"><span class="cn">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(per)}</b>${L('개','')}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div>`}</div></div>`; }).join('');
   const diamonds=Object.values(Lay.dia).map(D=>{ const n=M.byId[D.id.slice(0,-1)]; return `<div class="fcn k-dec ${st(n.id)?'':'off'}" style="left:${D.x}px;top:${D.y}px;width:${D.w}px;height:${D.h}px"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,2 98,50 50,98 2,50"/></svg><span>${esc(tx(n.ask)||L('결과','Result'))}</span></div>`; }).join('');
   // top bar: versions, then detailed toggles
   const vers=(g.versions||[]).map(v=>{ const on=Object.entries(v.params).every(([k2,x])=>String(sel[k2]??s.params[k2])===String(x)) && keys.every(k2=>v.params[k2]!=null);
