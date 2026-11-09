@@ -1465,7 +1465,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const legend=`<span class="fclg"><i class="s-start"></i>${L('시작','Start')}<i class="s-task"></i>${L('작업','Step')}<i class="s-dec"></i>${L('결과 판단','Outcome')}<i class="s-choice"></i>${L('분기(선택)','Branch')}<i class="s-end"></i>${L('마감','End')}<i class="s-note"></i>${L('별첨','Note')}<i class="s-loop"></i>${L('되돌아감','Back')}<i class="s-restart"></i>${L('베이스부터','New base')}</span>`;
   return `<section class="simbox${S.simFull?' full':''}" data-simbox>
     <div class="simtop">${vers?`<span class="simgrp">${L('버전','Version')}${vers}</span>`:''}<button type="button" class="btn simfs" data-act="simfull" aria-pressed="${!!S.simFull}">${S.simFull?L('✕ 닫기','✕ Close'):L('전체화면','Full screen')}</button></div>
-    <details class="simopts"><summary class="simnote">${L('세부 조건','Detailed options')}</summary><div class="simtop">${toggles}</div></details>
+    <details class="simopts" ${S.simOpts?'open':''}><summary class="simnote">${L('세부 조건','Detailed options')}</summary><div class="simtop">${toggles}</div></details>
     <div class="simsum"><span>${L('완성 1개당','Per finished item')} ${v0(res.mean)}</span><span>${L('중앙값','Median')} ${fmtDiv(res.median)} · ${L('운 나쁠 때(90%)','Unlucky (90%)')} ${fmtDiv(res.p90)} div</span><span>${L('베이스','Bases')} ${fmt(res.bases)}${L('개','')}</span>${eng!=null?`<small>${L('단계별 기대값 계산','Step-by-step estimate')} ${fmtDiv(eng)} div</small>`:''}</div>
     ${legend}
     <div class="fc"><div class="fcin" style="width:${Lay.Wt}px;height:${Lay.Ht}px">${regions}${lane}<svg class="fcsvg" width="${Lay.Wt}" height="${Lay.Ht}" aria-hidden="true"><defs>${['fwd','loop','restart','off'].map(k2=>`<marker id="fcm-${k2}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto"><path class="mk-${k2}" d="M0,0L8,4L0,8z"/></marker>`).join('')}</defs>${svgE}</svg>${diamonds}${nodes}${labels}</div></div>
@@ -1761,6 +1761,7 @@ $('#detail').addEventListener('click', e=>{
   if(a.dataset.act==='like'){ so.liked=!so.liked; setSocial(r.id,so); keepY(renderDetail); }
   if(a.dataset.act==='success'){ so.success++; setSocial(r.id,so); keepY(renderDetail); toast(L('성공 보고를 남겼어요','Success reported')); }
 });
+$('#detail').addEventListener('toggle', e=>{ if(e.target.matches?.('.simopts')) S.simOpts=e.target.open; }, true);
 $('#detail').addEventListener('change', e=>{ const el=e.target.closest('[data-cost],[data-unit]'); if(!el) return; const r=S.recipes.find(x=>x.id===S.open); if(!r) return;
   const k=el.dataset.cost||el.dataset.unit, c=userCost(r); c[k]=c[k]||{}; if(el.dataset.cost!=null) c[k].v=el.value; else c[k].u=el.value; store.set('cost:'+r.id, c); delete r._an; delete r._prep; keepY(renderDetail); });
 $('#detail').addEventListener('submit', e=>{ e.preventDefault(); const f=e.target; const m=f.m.value.trim(); if(!m) return; const r=S.recipes.find(x=>x.id===S.open); const so=social(r.id);

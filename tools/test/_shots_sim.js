@@ -4,7 +4,7 @@ const {chromium}=require('playwright');
   const errs=[]; p.on('pageerror',e=>errs.push(e.message)); p.on('console',m=>{ if(m.type()==='error') errs.push(m.text()); });
   for(const lang of ['kr','en']){
     await p.goto(`http://localhost:8779/recipes.html?lang=${lang}#r-${id}`); await p.waitForFunction(()=>window.__rec && __rec.booted);
-    await p.click('[data-act="sim"]'); await p.waitForSelector('[data-simbox] .fcn'); await p.waitForTimeout(300);
+    await p.click('[data-act="sim"]'); await p.waitForSelector('[data-simbox] .fcn'); await p.click('.simopts summary'); await p.waitForTimeout(300);
     const box=await p.$('[data-simbox]'); await box.screenshot({path:`shots/sim-${id}-${lang}.png`});
     if(lang==='kr'){ await p.$eval('[data-simbox] .fc', e=>e.style.maxHeight='none'); await (await p.$('[data-simbox]')).screenshot({path:`shots/sim-${id}-full.png`}); await p.$eval('[data-simbox] .fc', e=>e.style.maxHeight=''); }
     if(lang==='kr'){ await p.click('[data-simk="cMiss"][data-simv="erase"]'); await p.waitForTimeout(200); await (await p.$('[data-simbox]')).screenshot({path:`shots/sim-${id}-erase.png`});
