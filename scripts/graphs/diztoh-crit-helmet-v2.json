@@ -340,14 +340,16 @@
      "label": {
       "kr": "성공",
       "en": "hit"
-     }
+     },
+     "res": "ok"
     },
     {
      "to": "h2x",
      "label": {
       "kr": "빗나감",
       "en": "miss"
-     }
+     },
+     "res": "fail"
     }
    ],
    "item": [
@@ -361,7 +363,16 @@
    "ask": {
     "kr": "원하는 줄?",
     "en": "Wanted line?"
-   }
+   },
+   "goal": {
+    "kr": "접두어 / 접미어 각 1줄",
+    "en": "One prefix / one suffix"
+   },
+   "show": [
+    "pct",
+    "critT1",
+    "rarS1"
+   ]
   },
   {
    "id": "h2x",
@@ -406,14 +417,16 @@
      "label": {
       "kr": "성공",
       "en": "hit"
-     }
+     },
+     "res": "ok"
     },
     {
      "to": "h3x",
      "label": {
       "kr": "빗나감",
       "en": "miss"
-     }
+     },
+     "res": "fail"
     }
    ],
    "item": [
@@ -433,7 +446,12 @@
    "ask": {
     "kr": "둘 다 맞음?",
     "en": "Both lines?"
-   }
+   },
+   "show": [
+    "pct",
+    "critT1",
+    "rarS1"
+   ]
   },
   {
    "id": "h3x",
@@ -458,14 +476,16 @@
      "label": {
       "kr": "필수 줄 지워짐",
       "en": "wanted gone"
-     }
+     },
+     "res": "fail"
     },
     {
      "to": "h3",
      "label": {
       "kr": "잡옵 지워짐",
       "en": "junk gone"
-     }
+     },
+     "res": "ok"
     }
    ],
    "ask": {
@@ -531,6 +551,12 @@
      "en": "Junk",
      "m": "j"
     }
+   ],
+   "showText": [
+    {
+     "kr": "아무 옵션 1줄",
+     "en": "Any one modifier"
+    }
    ]
   },
   {
@@ -580,6 +606,12 @@
      "en": "Desecrated (unrevealed)",
      "m": "u"
     }
+   ],
+   "showText": [
+    {
+     "kr": "접미: 훼손 1줄 (미공개)",
+     "en": "Suffix: one desecrated line (unrevealed)"
+    }
    ]
   },
   {
@@ -626,6 +658,12 @@
      "en": "Desecrated (unrevealed)",
      "m": "u"
     }
+   ],
+   "showText": [
+    {
+     "kr": "모든 줄 수치 다시 굴림",
+     "en": "Reroll all values"
+    }
    ]
   },
   {
@@ -651,7 +689,8 @@
      "label": {
       "kr": "접두 분열 1/3",
       "en": "prefix 1/3"
-     }
+     },
+     "res": "ok"
     },
     {
      "if": {
@@ -661,14 +700,16 @@
      "label": {
       "kr": "접미 분열 1/3",
       "en": "suffix 1/3"
-     }
+     },
+     "res": "ok"
     },
     {
      "to": "h1",
      "label": {
       "kr": "잡옵 분열 → 베이스부터",
       "en": "junk → new base"
-     }
+     },
+     "res": "fail"
     }
    ],
    "item": [
@@ -700,7 +741,13 @@
    "ask": {
     "kr": "어느 줄이 분열?",
     "en": "Which line fractured?"
-   }
+   },
+   "showText": [
+    {
+     "kr": "4줄 중 무작위 1줄 분열 → 접두 % 줄이면 성공",
+     "en": "One of 4 lines fractures — the prefix % line wins"
+    }
+   ]
   },
   {
    "id": "rv",
@@ -800,14 +847,16 @@
      "label": {
       "kr": "성공",
       "en": "hit"
-     }
+     },
+     "res": "ok"
     },
     {
      "to": "c1",
      "label": {
       "kr": "반복",
       "en": "repeat"
-     }
+     },
+     "res": "fail"
     }
    ],
    "item": [
@@ -831,7 +880,10 @@
    "skipNote": {
     "kr": "치명타 확률이 이미 있으면 건너뜀",
     "en": "Skipped if crit chance is already there"
-   }
+   },
+   "show": [
+    "crit"
+   ]
   },
   {
    "id": "ca",
@@ -887,7 +939,8 @@
      "label": {
       "kr": "희귀도 + 필수 = 접두 완성",
       "en": "rarity + wanted: prefixes done"
-     }
+     },
+     "res": "ok"
     },
     {
      "if": {
@@ -897,7 +950,8 @@
      "label": {
       "kr": "성공",
       "en": "hit"
-     }
+     },
+     "res": "ok"
     },
     {
      "if": {
@@ -907,7 +961,8 @@
      "label": {
       "kr": "접두 희귀도 → 두고 한 번 더",
       "en": "prefix rarity: keep, slam again"
-     }
+     },
+     "res": "ok"
     },
     {
      "if": {
@@ -917,14 +972,16 @@
      "label": {
       "kr": "희귀도 뒤 빗나감",
       "en": "miss after rarity"
-     }
+     },
+     "res": "fail"
     },
     {
      "to": "bm",
      "label": {
       "kr": "빗나감",
       "en": "miss"
-     }
+     },
+     "res": "fail"
     }
    ],
    "item": [
@@ -950,7 +1007,10 @@
    "ask": {
     "kr": "결과",
     "en": "Result"
-   }
+   },
+   "show": [
+    "flat"
+   ]
   },
   {
    "id": "bm",
@@ -1026,14 +1086,16 @@
      "label": {
       "kr": "치명타 지워짐 → A",
       "en": "crit gone → A"
-     }
+     },
+     "res": "fail"
     },
     {
      "to": "p1",
      "label": {
       "kr": "잡옵 지워짐 → B",
       "en": "junk gone → B"
-     }
+     },
+     "res": "ok"
     }
    ],
    "ask": {
@@ -1066,22 +1128,26 @@
      "label": {
       "kr": "치명타 지워짐",
       "en": "crit gone"
-     }
+     },
+     "res": "fail"
     },
     {
      "lost": "hyb",
-     "to": "bx"
+     "to": "bx",
+     "res": "fail"
     },
     {
      "lost": "rarP",
-     "to": "bx"
+     "to": "bx",
+     "res": "fail"
     },
     {
      "to": "p1",
      "label": {
       "kr": "→ B",
       "en": "→ B"
-     }
+     },
+     "res": "ok"
     }
    ],
    "ask": {
@@ -1113,7 +1179,8 @@
      "label": {
       "kr": "치명타 지워짐",
       "en": "crit gone"
-     }
+     },
+     "res": "fail"
     },
     {
      "lost": "rarP",
@@ -1121,14 +1188,16 @@
      "label": {
       "kr": "희귀도 지워짐 → 한 번 더",
       "en": "rarity gone → once more"
-     }
+     },
+     "res": "fail"
     },
     {
      "to": "p1",
      "label": {
       "kr": "잡옵 지워짐",
       "en": "junk gone"
-     }
+     },
+     "res": "ok"
     }
    ],
    "ask": {
@@ -1162,14 +1231,16 @@
      "label": {
       "kr": "성공",
       "en": "hit"
-     }
+     },
+     "res": "ok"
     },
     {
      "to": "pc",
      "label": {
       "kr": "실패",
       "en": "miss"
-     }
+     },
+     "res": "fail"
     }
    ],
    "item": [
@@ -1201,7 +1272,11 @@
    "ask": {
     "kr": "접두 완성?",
     "en": "Prefixes done?"
-   }
+   },
+   "show": [
+    "hybL",
+    "hybM"
+   ]
   },
   {
    "id": "pc",
@@ -1258,7 +1333,8 @@
      "label": {
       "kr": "잡옵 → 필수",
       "en": "junk → wanted"
-     }
+     },
+     "res": "ok"
     },
     {
      "if": {
@@ -1268,7 +1344,8 @@
      "label": {
       "kr": "치명타 지워짐",
       "en": "crit gone"
-     }
+     },
+     "res": "fail"
     },
     {
      "if": {
@@ -1278,7 +1355,8 @@
      "label": {
       "kr": "최대치 줄 지워짐 → 소멸 후 B",
       "en": "flat gone → annul, B"
-     }
+     },
+     "res": "fail"
     },
     {
      "if": {
@@ -1290,20 +1368,27 @@
      "label": {
       "kr": "새 줄이 접미로 → C",
       "en": "new line on suffix → C"
-     }
+     },
+     "res": "fail"
     },
     {
      "to": "p3",
      "label": {
       "kr": "잡옵 → 잡옵",
       "en": "junk → junk"
-     }
+     },
+     "res": "fail"
     }
    ],
    "ask": {
     "kr": "결과",
     "en": "Result"
-   }
+   },
+   "show": [
+    "flat",
+    "hybL",
+    "hybM"
+   ]
   },
   {
    "id": "d1",
@@ -1363,7 +1448,13 @@
    "skipLabel": {
     "kr": "접미 꽉 참",
     "en": "suffixes full"
-   }
+   },
+   "showText": [
+    {
+     "kr": "접미: 훼손 1줄 (미공개)",
+     "en": "Suffix: one desecrated line (unrevealed)"
+    }
+   ]
   },
   {
    "id": "d1f",
@@ -1391,10 +1482,12 @@
      "label": {
       "kr": "치명타 지워짐",
       "en": "crit gone"
-     }
+     },
+     "res": "fail"
     },
     {
-     "to": "d2"
+     "to": "d2",
+     "res": "ok"
     }
    ],
    "ask": {
@@ -1428,14 +1521,16 @@
      "label": {
       "kr": "성공",
       "en": "hit"
-     }
+     },
+     "res": "ok"
     },
     {
      "to": "dx",
      "label": {
       "kr": "빗나감",
       "en": "miss"
-     }
+     },
+     "res": "fail"
     }
    ],
    "item": [
@@ -1473,7 +1568,10 @@
    "ask": {
     "kr": "치명타 피해?",
     "en": "Crit damage?"
-   }
+   },
+   "show": [
+    "cdmg"
+   ]
   },
   {
    "id": "dx",
@@ -1562,7 +1660,13 @@
    "skipNote": {
     "kr": "접미가 꽉 차 있으면 건너뜀",
     "en": "Skipped if suffixes are full"
-   }
+   },
+   "showText": [
+    {
+     "kr": "접미: 아무 줄 (나오는 대로)",
+     "en": "Suffix: any line"
+    }
+   ]
   },
   {
    "id": "f2",
@@ -1638,7 +1742,13 @@
    "ask": {
     "kr": "접두 상태",
     "en": "Prefixes"
-   }
+   },
+   "showText": [
+    {
+     "kr": "모든 줄 수치 다시 굴림",
+     "en": "Reroll all values"
+    }
+   ]
   },
   {
    "id": "ok",

@@ -9,11 +9,15 @@ const craft=JSON.parse(fs.readFileSync(`${ROOT}/site/data/crafting.json`,'utf8')
 const prices=JSON.parse(fs.readFileSync(`${ROOT}/site/data/prices.json`,'utf8'));
 const r4 = x => typeof x==='number' ? +x.toPrecision(5) : x;
 const round = o => JSON.parse(JSON.stringify(o, (k,v)=>r4(v)));
+// tag → modifier text per tier (the flowchart shows what each step is after)
+const tagView={}; for(const [k,t] of Object.entries(graph.tags||{})){ if(t.anyOf){ tagView[k]={anyOf:t.anyOf}; continue; }
+  const g=D.groups.find(g=>g.f.join('+')===t.fam && (!t.sec || g.s===t.sec) && (!t.side || g.g===t.side)); if(!g) continue;
+  tagView[k]={s:g.g, sec:g.s, tmax:t.tmax, tiers:g.t.slice(0,5).map(x=>[x[4],x[5]])}; }
 const out={id:graph.id, recipe:graph.recipe, runs:N, generated:new Date().toISOString().slice(0,10), prices:prices.fetched||null,
-  graph:{params:graph.params, groups:graph.groups, start:graph.start, loops:graph.loops, versions:graph.versions,
+  graph:{tags:tagView, basePrice:graph.basePrice, params:graph.params, groups:graph.groups, start:graph.start, loops:graph.loops, versions:graph.versions,
     nodes:graph.nodes.map(n=>({id:n.id, kind:n.kind, act:n.act, cur:n.cur, curIf:n.curIf?.map(c=>c.cur), omens:n.omens, trim:!!n.trim, group:n.group, pos:n.pos, label:n.label,
-      param:n.param, options:n.options, item:n.item, ask:n.ask, skipNote:n.skipNote, skipLabel:n.skipLabel, variant:n.variant, note:n.note, edgeLabels:n.edgeLabels, next:n.next, skipTo:n.skipTo,
-      edges:(n.edges||[]).map(e=>({to:e.to, label:e.label, lost:e.lost}))}))},
+      param:n.param, options:n.options, item:n.item, ask:n.ask, goal:n.goal, show:n.show, showText:n.showText, skipNote:n.skipNote, skipLabel:n.skipLabel, variant:n.variant, note:n.note, edgeLabels:n.edgeLabels, next:n.next, skipTo:n.skipTo,
+      edges:(n.edges||[]).map(e=>({to:e.to, label:e.label, lost:e.lost, res:e.res}))}))},
   strategies:[]};
 for(const s of graph.strategies){ const t=Date.now(); const res=SIM.simulate(graph, D, craft, prices, s.params, N, 7);
   out.strategies.push({id:s.id, params:s.params, hidden:!!s.hidden, res:round(res)});
