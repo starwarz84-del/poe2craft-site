@@ -12,7 +12,7 @@ const r4 = x => typeof x==='number' ? +x.toPrecision(5) : x;
 const round = o => JSON.parse(JSON.stringify(o, (k,v)=>r4(v)));
 // tag → modifier text per tier (the flowchart shows what each step is after)
 const tagView={}; for(const [k,t] of Object.entries(graph.tags||{})){ if(t.anyOf){ tagView[k]={anyOf:t.anyOf}; continue; }
-  const g=D.groups.find(g=>g.f.join('+')===t.fam && (!t.sec || g.s===t.sec) && (!t.side || g.g===t.side)); if(!g) continue;
+  const g=t.gi!=null ? D.groups[t.gi] : D.groups.find(g=>g.f.join('+')===t.fam && (!t.sec || g.s===t.sec) && (!t.side || g.g===t.side)); if(!g) continue;
   tagView[k]={s:g.g, sec:g.s, tmax:t.tmax, gi:D.groups.indexOf(g), tiers:g.t.slice(0,5).map(x=>[x[4],x[5]])}; }
 const out={id:graph.id, recipe:graph.recipe, runs:N, generated:new Date().toISOString().slice(0,10), prices:prices.fetched||null,
   graph:{tags:tagView, finals:graph.finals, finalItem:graph.finalItem, basePrice:graph.basePrice, params:graph.params, groups:graph.groups, start:graph.start, loops:graph.loops, versions:graph.versions,

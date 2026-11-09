@@ -123,9 +123,14 @@ TIPREF = {('tankjung-kitava-shield','t7'):['whittle-safe-top-level'],('xeno-phys
  ('diztoh-as-spear','a7'):['thrud-last'], ('diztoh-as-spear','a3'):['side-omen-save'], ('lilbotq-emerald','l1'):['cheap-jewel-liquid-gamble'], ('lilbotq-emerald','l5'):['plus-one-erasure'], ('lilbotq-emerald','l7'):['jewel-five-mods'],
  ('noble-timelost-sapphire','n1'):['spell-tag-fracture'], ('noble-timelost-sapphire','n4'):['jewel-five-mods'], ('noble-timelost-sapphire','n5'):['chaos-instead-of-annul'], ('noble-timelost-sapphire','n6'):['plus-one-erasure'],
  ('zenm-timelost-sapphire','z1'):['timelost-profit-batch'], ('diztoh-talisman','t3'):['liege-omen-resist-jewellery'], ('lilbotq-budget-boots','b1'):['cheap-resist-essence'], ('lilbotq-boots','h2'):['augment-rune-before-chaos']}
+# grade recipes (policy 25) keep the tips of the recipe they rewrite: same step ids, any tier
+_OLD = {'diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helmet-armour-sl','sihan-highend-boots-v2':'sihan-highend-boots',
+        'diztoh-rarity-ring-v2':'diztoh-rarity-ring','saveq-absent-amulet-v2':'saveq-absent-amulet'}
+_old = lambda r: _OLD.get(r.get('tierGroup') or r['id'], r['id'])
 for _r in R:
     for _n in _r['nodes']:
         _k=(_r['id'],_n['id'])
+        if _k not in TIPREF: _k=(_old(_r),_n['id'])
         if _k in TIPREF: _n['tips']=TIPREF[_k]
 
 # Automatic tip links (사용자 확정 2026-11-09: tips live in tips.json, a step shows only "제작 꿀팁 #n" with the text on hover).
@@ -167,5 +172,5 @@ for _r in R:
     for _i, _n in enumerate(_r['nodes']):
         for _tid, _f, _own in AUTO:
             _t = next((t for t in _TJ if t['id']==_tid), None)
-            if _t and (not _own or _r['id'] in _t.get('recipes',[])) and _f(_n,_i) and _tid not in _n.get('tips',[]):
+            if _t and (not _own or _r['id'] in _t.get('recipes',[]) or _old(_r) in _t.get('recipes',[])) and _f(_n,_i) and _tid not in _n.get('tips',[]):
                 _n.setdefault('tips',[]).append(_tid)

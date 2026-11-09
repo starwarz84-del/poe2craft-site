@@ -502,6 +502,9 @@ FRSTART = {
  'sihan-highend-boots-v2': _fb(('h2','f4'), [{'gi':8,'tmax':1,'fr':True},{'junk':'s'}], '방어도 % 증가 분열 + 잡옵 1줄.', 'Fractured % increased armour plus one junk line.', 26),
  'sihan-highend-boots-v2-bal': _fb(('h2','f4'), [{'gi':8,'tmax':1,'fr':True},{'junk':'s'}], '방어도 % 증가 분열 + 잡옵 1줄.', 'Fractured % increased armour plus one junk line.', 26),
  'sihan-highend-boots-v2-ess': _fb(('h2','f4'), [{'gi':8,'tmax':1,'fr':True},{'junk':'s'}], '방어도 % 증가 분열 + 잡옵 1줄.', 'Fractured % increased armour plus one junk line.', 26),
+ 'saveq-absent-amulet-v2': _fb(('c1','f4'), [{'gi':25,'tmax':1,'fr':True},{'junk':'p'}], '치명타 피해 보너스 1티어 분열 + 잡옵 1줄.', 'Fractured T1 critical damage bonus plus one junk line.'),
+ 'saveq-absent-amulet-v2-bal': _fb(('c1','f4'), [{'gi':25,'tmax':1,'fr':True},{'junk':'p'}], '치명타 피해 보너스 1티어 분열 + 잡옵 1줄.', 'Fractured T1 critical damage bonus plus one junk line.'),
+ 'saveq-absent-amulet-v2-ess': _fb(('c1','f4'), [{'gi':25,'tmax':1,'fr':True},{'junk':'p'}], '치명타 피해 보너스 1티어 분열 + 잡옵 1줄.', 'Fractured T1 critical damage bonus plus one junk line.'),
  'helmet-armour-sl-v2': _fb(('h2','f4'), [{'gi':20,'tmax':1,'fr':True},{'junk':'p'}], '방어도의 원소 피해 적용 분열 + 잡옵 1줄.', 'Fractured armour applies to elemental damage plus one junk line.', 26),
  'helmet-armour-sl-v2-bal': _fb(('h2','f4'), [{'gi':20,'tmax':1,'fr':True},{'junk':'p'}], '방어도의 원소 피해 적용 분열 + 잡옵 1줄.', 'Fractured armour applies to elemental damage plus one junk line.', 26),
  'helmet-armour-sl-v2-ess': _fb(('h2','f4'), [{'gi':20,'tmax':1,'fr':True},{'junk':'p'}], '방어도의 원소 피해 적용 분열 + 잡옵 1줄.', 'Fractured armour applies to elemental damage plus one junk line.', 26),
@@ -574,7 +577,7 @@ for _r in R:
 exec(open('/home/claude/poe2data/scripts/difficulty.py').read())   # 난이도 재산정 표(시도량 기준)
 for _r in R:
     if _r['id'] in DIFFSET: _r['difficulty']=DIFFSET[_r['id']]
-REPLACES={'diztoh-budget-crossbow':'diztoh-grenade-crossbow','diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helmet-armour-sl','sihan-highend-boots-v2':'sihan-highend-boots'}
+REPLACES={'diztoh-budget-crossbow':'diztoh-grenade-crossbow','diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helmet-armour-sl','sihan-highend-boots-v2':'sihan-highend-boots','diztoh-rarity-ring-v2':'diztoh-rarity-ring','saveq-absent-amulet-v2':'saveq-absent-amulet'}
 _ids={x['id'] for x in R}
 R[:]=[x for x in R if not any(o==x['id'] and n in _ids for n,o in REPLACES.items())]
 # policy 22: base price (Divine Orbs) from scripts/base_prices.py; None = not known yet

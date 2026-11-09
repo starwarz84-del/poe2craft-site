@@ -1,0 +1,1165 @@
+{
+ "id": "saveq-absent-amulet-v2",
+ "recipe": "saveq-absent-amulet-v2",
+ "cls": "Amulets",
+ "base": "Absent Amulet",
+ "ilvl": 79,
+ "basePrice": {
+  "Divine_Orb": 36
+ },
+ "note": "SaVeQ 부재 목걸이(영상 방식) — 아이템 레벨 79 부재 목걸이(접두 2·접미 2)를 1줄 레어로 → 카오스로 치명타 피해 보너스 1티어 → 신성 → 엑잘 + 훼손 → 분열(1/3, 다른 줄이면 베이스 되팔기) → 소멸 정리 → 카오스 근접/투사체 +3 → 좌측 찬미 엑잘 → 좌측 결정화 + 균열의 에센스 → 강탈자 기폭제 40% → 절사 + 카오스 → 좌측 결정화 + 완벽한 강화의 에센스 → 고대 빗장뼈 + 메아리 공개(정신력). 분열 준비의 엑잘 2줄(상위 찬미의 징조)은 자막에 없어 가정.",
+ "params": {
+  "spT": {
+   "kr": "정신력 목표",
+   "en": "Spirit target",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "0": {
+     "kr": "나오는 대로",
+     "en": "Whatever comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "spT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "spT": 2
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "spT": 0
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "spT": 0
+   },
+   "desc": {
+    "kr": "마지막 훼손 공개는 한 번, 나오는 대로",
+    "en": "One reveal, keep whatever comes"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "spT": 2
+   },
+   "desc": {
+    "kr": "정신력 1~2티어",
+    "en": "Spirit T1–2"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "spT": 1
+   },
+   "desc": {
+    "kr": "정신력 1티어 (영상)",
+    "en": "Spirit T1 (as the video)"
+   }
+  }
+ ],
+ "tags": {
+  "crit": {
+   "gi": 25,
+   "tmax": 1
+  },
+  "melee": {
+   "gi": 19,
+   "tmax": 1
+  },
+  "proj": {
+   "gi": 20,
+   "tmax": 1
+  },
+  "SK": {
+   "anyOf": [
+    "melee",
+    "proj"
+   ]
+  },
+  "maxQ": {
+   "gi": 81
+  },
+  "def": {
+   "gi": 74
+  },
+  "spirit": {
+   "gi": 28,
+   "tmax": "$spT"
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "crit"
+   },
+   {
+    "has": "SK"
+   },
+   {
+    "has": "def"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "v8",
+    "v9",
+    "v9x"
+   ],
+   "kr": "접두 두번째 옵션(훼손)",
+   "en": "Second prefix (desecrated)"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "def",
+     "tmax": 1
+    },
+    {
+     "tag": "spirit",
+     "tmax": 1
+    },
+    {
+     "tag": "crit",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "melee",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "def",
+     "tmax": 1
+    },
+    {
+     "tag": "spirit",
+     "tmax": 2
+    },
+    {
+     "tag": "crit",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "melee",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "def",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "crit",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "melee",
+     "tmax": 1
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 40,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "c1",
+   "start": {
+    "rar": "rare",
+    "random": 1
+   },
+   "label": {
+    "kr": "아이템 레벨 79 부재 목걸이 (옵션 1줄 레어)",
+    "en": "Item level 79 Absent Amulet (rare, one line)"
+   },
+   "item": [
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "goal": {
+    "kr": "치명타 피해 보너스 1티어",
+    "en": "T1 critical damage bonus"
+   },
+   "show": [
+    "crit"
+   ],
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "crit"
+     },
+     "to": "e1",
+     "res": "ok"
+    },
+    {
+     "to": "c1",
+     "res": "fail",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cd",
+   "kind": "side",
+   "group": "prep",
+   "pos": [
+    1,
+    1.5
+   ],
+   "attach": [
+    "c1",
+    "e1"
+   ],
+   "cur": "Divine_Orb",
+   "goal": {
+    "kr": "치명타 피해 보너스 수치 올리기 (39%)",
+    "en": "Raise the crit roll (39%)"
+   },
+   "label": {
+    "kr": "신성",
+    "en": "Divine"
+   }
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "goal": {
+    "kr": "옵션 2줄 채우기",
+    "en": "Fill two lines"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 2줄",
+     "en": "Two random lines"
+    }
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "f1"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "f1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Collarbone",
+   "goal": {
+    "kr": "분열 확률을 높이기 위해 훼손",
+    "en": "Desecrate to raise the fracture odds"
+   },
+   "showText": [
+    {
+     "kr": "훼손 옵션 1줄 (미공개)",
+     "en": "One desecrated modifier (unrevealed)"
+    }
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "f2"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated modifier (unrevealed)",
+     "m": "u"
+    }
+   ]
+  },
+  {
+   "id": "f2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "pAll": true,
+   "goal": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "showText": [
+    {
+     "kr": "치명타 피해 보너스가 분열되면 성공",
+     "en": "Success when the crit line fractures"
+    }
+   ],
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "edges": [
+    {
+     "if": {
+      "fractured": "crit"
+     },
+     "to": "f4",
+     "res": "ok",
+     "label": {
+      "kr": "치명타 피해 보너스 분열",
+      "en": "Crit fractured"
+     }
+    },
+    {
+     "to": "xs",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "다른 줄 분열",
+      "en": "Another line fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "f",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated modifier (unrevealed)",
+     "m": "u"
+    }
+   ]
+  },
+  {
+   "id": "xs",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    4
+   ],
+   "simTo": "h1",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 줄 분열 — 베이스 되팔기",
+    "en": "Another line fractured — sell the base"
+   },
+   "note": {
+    "kr": "잘못 분열된 목걸이는 되팔거나 카오스용 베이스로, 새 베이스로 처음부터",
+    "en": "Sell it or keep it for chaos spam; start again on a new base"
+   }
+  },
+  {
+   "id": "f4",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 잡옵 1줄만 남기기",
+    "en": "Keep only the fracture + one junk line"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "f",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    5.5
+   ],
+   "next": "v2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "f",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "v2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix option"
+   },
+   "show": [
+    "melee",
+    "proj"
+   ],
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "skipIf": {
+    "has": "SK"
+   },
+   "skipTo": "v3",
+   "skipHide": true,
+   "edges": [
+    {
+     "if": {
+      "added": "SK"
+     },
+     "to": "v3",
+     "res": "ok"
+    },
+    {
+     "to": "v2",
+     "res": "fail",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "f",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 또는 투사체 스킬 +3",
+     "en": "+3 melee or projectile skills",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "v3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "goal": {
+    "kr": "접두 잡옵 1줄",
+    "en": "One junk prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 (다음 단계에서 지울 줄)",
+     "en": "Random (removed next)"
+    }
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "v4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "f",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 또는 투사체 스킬 +3",
+     "en": "+3 melee or projectile skills",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "v4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "essence",
+   "ess": "maxQ",
+   "cur": "Essence_of_the_Breach",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
+   "goal": {
+    "kr": "접두 잡옵 → 최대 퀄리티",
+    "en": "Junk prefix → maximum quality"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)"
+    }
+   ],
+   "label": {
+    "kr": "균열",
+    "en": "Breach"
+   },
+   "edges": [
+    {
+     "to": "v5"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)",
+     "m": "n",
+     "tags": [
+      "maxQ"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "f",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 또는 투사체 스킬 +3",
+     "en": "+3 melee or projectile skills",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "v5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "quality",
+   "cur": "Reaver_Catalyst",
+   "count": 40,
+   "goal": {
+    "kr": "공격 퀄리티 40%",
+    "en": "Attack quality 40%"
+   },
+   "showText": [
+    {
+     "kr": "강탈자 기폭제 40개 (투사체면 갑각 기폭제)",
+     "en": "40 Reaver Catalysts (Carapace for projectile)"
+    }
+   ],
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "edges": [
+    {
+     "to": "v6"
+    }
+   ]
+  },
+  {
+   "id": "v6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "omens": [
+    "Omen_of_Whittling"
+   ],
+   "goal": {
+    "kr": "최대 퀄리티 줄 지우기",
+    "en": "Remove the maximum quality line"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 (다음 단계에서 지울 줄)",
+     "en": "Random (removed next)"
+    }
+   ],
+   "label": {
+    "kr": "절사",
+    "en": "Whittling"
+   },
+   "edges": [
+    {
+     "to": "v7"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "f",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 또는 투사체 스킬 +3",
+     "en": "+3 melee or projectile skills",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "v7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11
+   ],
+   "act": "essence",
+   "ess": "def",
+   "cur": "Perfect_Essence_of_Enhancement",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
+   "goal": {
+    "kr": "접두 잡옵 → 전역 방어 %",
+    "en": "Junk prefix → global defences %"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "전역 방어 % (제작 옵션)",
+     "en": "Global defences % (crafted)"
+    }
+   ],
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "v8"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "전역 방어 % (제작 옵션)",
+     "en": "Global defences % (crafted)",
+     "m": "n",
+     "tags": [
+      "def"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "f",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 또는 투사체 스킬 +3",
+     "en": "+3 melee or projectile skills",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "v8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    12
+   ],
+   "act": "desecrate",
+   "cur": "Ancient_Collarbone",
+   "goal": {
+    "kr": "접두 두번째 옵션(훼손)",
+    "en": "Second prefix option (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "v9"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "전역 방어 % (제작 옵션)",
+     "en": "Global defences % (crafted)",
+     "m": "n",
+     "tags": [
+      "def"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated modifier (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "f",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 또는 투사체 스킬 +3",
+     "en": "+3 melee or projectile skills",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "v9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    13
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "spirit",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "show": [
+    "spirit"
+   ],
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "param": {
+       "spT": 0
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "added": "spirit"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "v9x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "전역 방어 % (제작 옵션)",
+     "en": "Global defences % (crafted)",
+     "m": "n",
+     "tags": [
+      "def"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력",
+     "en": "Spirit",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1티어",
+     "en": "Crit damage bonus T1",
+     "m": "f",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 또는 투사체 스킬 +3",
+     "en": "+3 melee or projectile skills",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "v9x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    13
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "v8",
+     "port": "bottom"
+    }
+   ]
+  },
+  {
+   "id": "vs",
+   "kind": "side",
+   "group": "main",
+   "pos": [
+    1,
+    13.5
+   ],
+   "attach": [
+    "v9",
+    "ok"
+   ],
+   "cur": "Divine_Orb",
+   "goal": {
+    "kr": "수치 올리기 · 축성 (선택)",
+    "en": "Divine and sanctify (optional)"
+   },
+   "label": {
+    "kr": "신성",
+    "en": "Divine"
+   }
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    14
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

@@ -1496,10 +1496,10 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
   const cards=g.finals.map(F=>{ const state=F.lines.map(l=>{ if(l.random) return {gi:null, side:l.side, label:{kr:'랜덤 옵션',en:'Random modifier'}}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
       return {gi:T.gi, side:T.s, tmax:l.tmax||null, fr:!!l.fr, des:!!l.des, hybrid:!!l.hybrid}; }).filter(Boolean);
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
-    return `<div class="fcfin ${on?'on':''}"><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:{p:3,s:3}, qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}</div>`; }).join('');
+    return `<div class="fcfin ${on?'on':''}"><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
 function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=fcPrune(d.graph, res), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
-  const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : '0%';
+  const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : p>0 ? (p*100).toFixed(2)+'%' : '0%';
   const st = id => res.nodes[id], ecount = (a,b) => res.edges?.[a+'>'+b]||0;
   // every path stays readable whatever version is picked: a step this version skips borrows its per-step numbers from a version that uses it
   const stAny = id => res.nodes[id] || d.strategies.find(x=>x.res.nodes[id])?.res.nodes[id], eAny = (a,b) => ecount(a,b) || (d.strategies.some(x=>x.res.edges?.[a+'>'+b]) ? 1e-9 : 0);
@@ -1554,7 +1554,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=
     loopTags.push(`<div class="fclpt c${li}" style="right:${Lay.Wt-R[2]+16}px;top:${R[3]}px"><b>↺ ${esc(tx(Lp))}</b><span>${L('총 사용 (완성 1개당)','Total used (per finished item)')}</span>${Object.entries(use).filter(([,v])=>v>=0.005).sort((a2,b2)=>b2[1]-a2[1]).map(([k2,v])=>`<span class="cu" title="${esc(nm(cur(k2)))}">${icon(k2)}${fmt(v)}${L('개','')}</span>`).join('')}</div>`); });
   // nodes
   const nodes=g.nodes.map(n=>{ const b=Lay.box[n.id], t=stAny(n.id), Lp=M.loopOf[n.id], pos=`left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px`;
-    if(n.kind==='base'){ const bp=Object.entries(g.basePrice||{}); return `<div class="fcn k-start ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${L('베이스 가격','Base price')} ${bp.length?`${L('미정 · 약','TBD · about')} ${bp.map(([k2,v])=>`<span class="ci">${icon(k2)}${esc(nm(cur(k2)))} ${v}${L('개','')}</span>`).join(' ')}`:L('미정','TBD')}</span></div>`; }
+    if(n.kind==='base'){ const bp=Object.entries(g.basePrice||{}); return `<div class="fcn k-start ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${L('베이스 가격','Base price')} ${bp.length?`${L('약','about')} ${bp.map(([k2,v])=>`<span class="ci">${icon(k2)}${esc(nm(cur(k2)))} ${v}${L('개','')}</span>`).join(' ')}`:L('미정','TBD')}</span></div>`; }
     if(n.kind==='done') return `<div class="fcn k-end v-${n.variant||'best'} ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b></div>`;
     if(n.kind==='choice') return `<div class="fcn k-choice ${t?'':'off'}" style="${pos}"><svg viewBox="0 0 220 54" preserveAspectRatio="none"><polygon points="16,1 204,1 219,27 204,53 16,53 1,27"/></svg><span><small>${L('분기','Branch')}</small><b>${esc(tx(n.label))}</b></span></div>`;
     if(n.kind==='mark') return `<div class="fcn k-start k-mark" style="${pos}"><b>${esc(tx(n.label))}</b><ul class="fcmk">${fcItem(g, n.item||[], n.item||[], s.params)}</ul></div>`;

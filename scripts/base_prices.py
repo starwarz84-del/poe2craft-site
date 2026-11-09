@@ -34,7 +34,8 @@ BASEPRICE = {
   'diztoh-endgame-quarterstaff': None,
   'diztoh-es-helmet': None,
   'diztoh-onehand-mace': 3,   # 영상: 퀄리티 20% 노멀 베이스 3디바인
-  'diztoh-rarity-ring': 1,   # 영상: 매직 황금 반지 1디바인 안팎
+  'diztoh-rarity-ring': 1,
+  'diztoh-rarity-ring-v2': 1, 'diztoh-rarity-ring-v2-bal': 1, 'diztoh-rarity-ring-v2-ess': 1,   # 영상: 매직 황금 반지 1디바인 안팎
   'diztoh-socket-gloves': None,
   'diztoh-talisman': None,
   'diztoh-vile-robe': None,
@@ -52,6 +53,7 @@ BASEPRICE = {
   'noble-visceral-quiver': None,
   'sane-resist-belt': None,
   'saveq-absent-amulet': None,
+  'saveq-absent-amulet-v2': None, 'saveq-absent-amulet-v2-bal': None, 'saveq-absent-amulet-v2-ess': None,
   'saveq-alloy-focus': None,
   'saveq-focus': None,
   'seek-cyclone-boots': None,

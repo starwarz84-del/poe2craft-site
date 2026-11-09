@@ -19,7 +19,7 @@ function make(graph, D, craft, params){
   // tags: named modifier specs, resolved to group indexes once
   const tags={};
   const resolve = (name, t) => { if(t.anyOf) return {anyOf:t.anyOf.map(x=>typeof x==='string' ? x : resolve(null,x))};
-    const gi=G.findIndex(g=>g.f.join('+')===t.fam && (!t.sec || g.s===t.sec) && (!t.side || g.g===t.side));
+    const gi=t.gi!=null ? t.gi : G.findIndex(g=>g.f.join('+')===t.fam && (!t.sec || g.s===t.sec) && (!t.side || g.g===t.side));
     if(gi<0) throw new Error('tag '+(name||'')+': no group '+t.fam); return {gi, tmax:P(t.tmax)}; };
   for(const k in graph.tags) tags[k]=resolve(k, graph.tags[k]);
   const match = (m, tag) => { if(!m || m.unrev) return false; const t = typeof tag==='string' ? tags[tag] : tag; if(!t) throw new Error('unknown tag '+tag);
@@ -75,7 +75,7 @@ function make(graph, D, craft, params){
     function act(n){ const a=n.act, oms=[...(n.omens||[])]; let cur=n.cur;
       for(const c of (n.curIf||[])) if(cond(c.if)){ cur=c.cur; break; }
       if(n.trim) oms.push(...trimOmens(n));
-      const use={}; const u=id=>{ use[id]=(use[id]||0)+1; }; if(cur) u(cur); oms.forEach(u);
+      const use={}; const u=id=>{ use[id]=(use[id]||0)+1; }; if(cur) use[cur]=n.count||1; oms.forEach(u);
       const mn = minOf(cur);
       if(a==='transmute'){ it.rar='magic'; add(null, mn); }
       else if(a==='augment') add(null, mn);
@@ -103,7 +103,7 @@ function make(graph, D, craft, params){
         let os=draw(); if(!os.some(want) && oms.includes('Omen_of_Abyssal_Echoes')) os=draw();
         const o=os.find(want)||os[0]; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true}; it.mods.push(nm); last.added.push(nm); } }
       else if(a==='fracture'){ const c=it.mods.filter(m=>!m.unrev && !m.fr); const m=c[Math.floor(rnd()*c.length)]; if(m){ m.fr=true; last.fr=m; } }
-      else if(a==='divine'){ /* values only */ }
+      else if(a==='divine' || a==='quality'){ /* values / catalyst quality only */ }
       else throw new Error('unknown act '+a);
       return use; }
 
@@ -115,7 +115,7 @@ function make(graph, D, craft, params){
       if(n.kind==='done'){ tally.done(it, cond); return it; }
       if(n.kind==='mark'){ tally.edge(id, n.next); id=n.next; continue; }   // a milestone on the chart (starting item of the main craft)
       if(n.kind==='exit'){ if(n.swapFracture){ it.mods.forEach(m=>{ if(m.fr) delete m.fr; }); const m=it.mods.find(x=>match(x,n.swapFracture)); if(m) m.fr=true; } tally.edge(id, n.simTo); id=n.simTo; continue; }   // this item is set aside (sold / thrown away): the cost goes on from simTo
-      if(n.kind==='base'){ it={rar:'normal', mods:[]}; tally.base(id); tally.edge(id, n.next); id=n.next; continue; }
+      if(n.kind==='base'){ it={rar:'normal', mods:[]}; if(n.start){ it.rar=n.start.rar||'normal'; (n.start.mods||[]).forEach(tg=>{ const t=tags[tg]; it.mods.push({gi:t.gi, ti:Math.max(0,(t.tmax||1)-1), side:G[t.gi].g}); }); for(let i=0;i<(n.start.random||0);i++) add(null,0); } tally.base(id); tally.edge(id, n.next); id=n.next; continue; }
       if(n.kind==='choice'){ const v=params[n.param], to=n.options[v]; if(!to) throw new Error(n.id+': no option '+v); tally.edge(id, to); id=to; continue; }
       if(n.kind==='assume'){ if(n.swapFracture){ it.mods.forEach(m=>{ if(m.fr) delete m.fr; }); const m=it.mods.find(x=>match(x,n.swapFracture)); if(m) m.fr=true; } tally.edge(id, n.next); id=n.next; continue; }
       if(n.kind==='cleanup'){   // plain Annulment until at most maxJunk lines outside `keep` are left; a kept line going ends it
