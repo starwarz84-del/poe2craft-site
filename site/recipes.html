@@ -386,6 +386,11 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .simbox .simsum b{color:var(--rare);font-weight:600}
 .simbox .simsum small,.simbox .simnote{color:var(--faint);font-size:11.5px}
 .fc{overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg);max-height:72vh}
+.simbox .simtop .simfs{margin-left:auto}
+.simbox.full{position:fixed;inset:0;z-index:1000;margin:0;border-radius:0;border:0;display:flex;flex-direction:column;overflow:hidden;padding:10px 12px}
+.simbox.full .fc{flex:1;max-height:none;min-height:0}
+.simbox.full .simdet,.simbox.full>.simnote{display:none}
+body.simfull{overflow:hidden}
 .fcin{position:relative}
 .fcin svg{position:absolute;left:0;top:0;overflow:visible}
 .fcg{position:absolute;border:1px dashed var(--line);border-radius:10px}
@@ -1298,8 +1303,8 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const rows=g.nodes.filter(n=>res.nodes[n.id] && (n.kind==='act'||n.kind==='cleanup'||n.kind==='base')).map(n=>{ const st=res.nodes[n.id];
     const use=Object.entries(st.use).filter(([,v])=>v>=0.005).map(([k,v])=>`<span class="ci">${icon(k)}${fmt(v)}</span>`).join('');
     return `<tr><td>${esc(tx(n.label))}</td><td class="num">${pct1(st.reach)}</td><td>${n.kind==='base'?`<span class="ci">${L('베이스','base')} ×${fmt(st.visits)}</span>`:use}</td><td class="num">${st.div>=0.05?fmtDiv(st.div):'·'}</td></tr>`; }).join('');
-  return `<section class="simbox" data-simbox>
-    <div class="simtop">${toggles}</div>
+  return `<section class="simbox${S.simFull?' full':''}" data-simbox>
+    <div class="simtop">${toggles}<button type="button" class="btn simfs" data-act="simfull" aria-pressed="${!!S.simFull}">${S.simFull?L('✕ 닫기','✕ Close'):L('전체화면','Full screen')}</button></div>
     <div class="simsum"><span>${L('완성 1개당','Per finished item')} ${v0(res.mean)}</span><span>${L('중앙값','Median')} ${fmtDiv(res.median)} · ${L('운 나쁠 때(90%)','Unlucky (90%)')} ${fmtDiv(res.p90)} div</span><span>${L('베이스','Bases')} ${fmt(res.bases)}${L('개','')}</span>${eng!=null?`<small>${L('단계별 기대값 계산','Step-by-step estimate')} ${fmtDiv(eng)} div</small>`:''}</div>
     <div class="fc"><div class="fcin" style="width:${Wt}px;height:${Ht}px">${groups}<svg width="${Wt}" height="${Ht}" aria-hidden="true"><defs>
       <marker id="fcar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L8,4L0,8z" fill="var(--muted)"/></marker>
@@ -1518,6 +1523,7 @@ function renderTips(){
 // ---------- routing / sharing ----------
 function setOpen(id){
   if(!S.open) S.listY=scrollY;
+  if(S.simFull){ S.simFull=false; document.body.classList.remove('simfull'); }
   S.open=id||null; render();
   try{ parent.postMessage({type:'poe2-route', hash: S.open?('r-'+S.open):'recipes'}, '*'); }catch(e){}
   if(S.open) scrollTo(0,0); else requestAnimationFrame(()=>scrollTo(0,S.listY||0));
@@ -1588,7 +1594,8 @@ $('#detail').addEventListener('click', e=>{
   if(a.dataset.act==='link') copy(shareURL(r.id), L('링크를 복사했어요','Link copied'));
   if(a.dataset.act==='copy') copy(recipeText(r), L('레시피를 복사했어요','Recipe copied'));
   if(a.dataset.act==='pdf'){ makePDF(r, a); return; }
-  if(a.dataset.act==='sim'){ S.simOpen=!S.simOpen; keepY(renderDetail); if(S.simOpen) document.querySelector('#detail [data-simbox]')?.scrollIntoView({block:'nearest'}); return; }
+  if(a.dataset.act==='simfull'){ setSimFull(!S.simFull); return; }
+  if(a.dataset.act==='sim'){ if(S.simOpen) setSimFull(false, true); S.simOpen=!S.simOpen; keepY(renderDetail); if(S.simOpen) document.querySelector('#detail [data-simbox]')?.scrollIntoView({block:'nearest'}); return; }
   if(a.dataset.act==='reset-done'){ store.set('done:'+r.id,[]); keepY(renderDetail); }
   if(a.dataset.act==='like'){ so.liked=!so.liked; setSocial(r.id,so); keepY(renderDetail); }
   if(a.dataset.act==='success'){ so.success++; setSocial(r.id,so); keepY(renderDetail); toast(L('성공 보고를 남겼어요','Success reported')); }
@@ -1601,7 +1608,10 @@ let sy=false; window.addEventListener('scroll', ()=>{ if(!S.open || sy) return; 
 // ← / → move between steps
 // ↑↓ (and ←→) step through the crafting steps; quick presses build on the step just jumped to
 let kbNav={i:-1,t:0};
-document.addEventListener('keydown', e=>{ if(!S.open || e.target.closest?.('input,textarea,select')) return;
+// flowchart full screen: a fixed overlay (the Fullscreen API is blocked in the sandboxed iframe); Esc closes
+function setSimFull(on, quiet){ S.simFull=!!on; document.body.classList.toggle('simfull', S.simFull); if(!quiet) keepY(renderDetail); }
+document.addEventListener('keydown', e=>{ if(S.simFull && e.key==='Escape'){ e.preventDefault(); setSimFull(false); } }, true);
+document.addEventListener('keydown', e=>{ if(!S.open || S.simFull || e.target.closest?.('input,textarea,select')) return;
   const dir = {ArrowDown:1, ArrowRight:1, ArrowUp:-1, ArrowLeft:-1}[e.key]; if(!dir || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
   const r=S.recipes.find(x=>x.id===S.open); if(!r) return;
   const pi = pinned() ? r.nodes.findIndex(n=>n.id===pin.id) : -1;
