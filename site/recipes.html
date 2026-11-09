@@ -1353,7 +1353,7 @@ function fcModel(g){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
     (n.edges||[]).filter(e=>!e.hide).forEach(e=>add(n.id, e.to, e.label, {res:e.res}));
     if(n.options) for(const [v,to] of Object.entries(n.options)) add(n.id, to, n.edgeLabels?.[v] || g.params?.[n.param]?.values?.[v], {opt:[n.param, v], ...(n.optStyle?.[v]||{})});
-    if(n.skipTo && !n.skipNote) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
+    if(n.skipTo && !n.skipNote && !n.skipHide) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
   const dec={}, multi={}; g.nodes.forEach(n=>{ if(n.kind!=='act' && n.kind!=='cleanup') return; if(new Set(E.filter(e=>e.a===n.id && !e.skip).map(e=>e.b)).size>=3) multi[n.id]=true; });   // simple two-way outcomes are just two coloured lines
   const loopOf={}, loopHead={}; (g.loops||[]).forEach((Lp,i)=>{ Lp.no=i+1; Lp.nodes.forEach(id=>{ if(!loopOf[id]) loopOf[id]=Lp; }); loopHead[Lp.nodes[0]]=Lp; });
   return {byId, E, dec, multi, loopOf, loopHead}; }
@@ -1375,19 +1375,22 @@ function fcSize(n, M, g, params){ const W = n.pos[0]===0 ? FX.W : FX.WB; if(n.ki
   if(n.kind==='exit') return [FX.WB, 78];
   const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
   return [W, 40 + (want.length?Math.max(1,lines)*20+6:0) + 40 + (n.curRows?(n.curRows.length-1)*22:0) + (n.skipNote?18:0) - (n.kind==='side'?4:0)]; }
-function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[...new Set(g.nodes.map(n=>n.pos[0]))].sort((a,b)=>a-b);
+function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[...new Set(g.nodes.map(n=>n.pos[0]).filter(Number.isInteger))].sort((a,b)=>a-b);
   const size={}; g.nodes.forEach(n=>size[n.id]=fcSize(n, M, g, params));
   const colW={}; colIds.forEach(c=>colW[c]=Math.max(...g.nodes.filter(n=>n.pos[0]===c).map(n=>Math.max(size[n.id][0], M.dec[n.id]?FX.DW:0))));
-  const colX={}; let x=FX.PAD+(items && S.fcItems!==false?FX.LANE+FX.LANEGAP:0); colIds.forEach(c=>{ colX[c]=x; x+=colW[c]+FX.GAPX; }); const Wt=x-FX.GAPX+FX.PAD+40;
+  const colX={}; let x=FX.PAD+(items && S.fcItems!==false?FX.LANE+FX.LANEGAP:0); const between=c=>g.nodes.filter(n=>!Number.isInteger(n.pos[0]) && n.pos[0]>c && n.pos[0]<c+1);
+  colIds.forEach(c=>{ colX[c]=x; const bw=Math.max(0,...between(c).map(n=>size[n.id][0])); x+=colW[c]+Math.max(FX.GAPX, bw+120); });
+  const xOf=(c,w)=>{ if(Number.isInteger(c)) return colX[c]+(colW[c]-w)/2; const a=Math.floor(c), b=colIds.find(k=>k>c), l=colX[a]+colW[a], r=b!=null?colX[b]:l+FX.GAPX; return (l+r)/2-w/2; }; const Wt=x-FX.GAPX+FX.PAD+40;
   const rows=[...new Set(g.nodes.map(n=>n.pos[1]))].sort((a,b)=>a-b), box={}, dia={}, rowSpan=[], grp={};
   let y=FX.PAD, prevG=null, prevLoop;
   rows.forEach(r=>{ const R=g.nodes.filter(n=>n.pos[1]===r).sort((a,b)=>a.pos[0]-b.pos[0]), m=R[0], gid=m.group;
+    y+=Math.max(0,...R.map(n=>n.gapBefore||0));
     const lp=M.loopOf[m.id]||null; if(prevLoop!==undefined && lp!==prevLoop && (lp||prevLoop) && gid===prevG) y+=34; prevLoop=lp;
     if(gid!==prevG){ if(prevG) grp[prevG].y1=y-FX.ROWGAP+16; y+= prevG ? FX.GROUPGAP : 30; grp[gid]={y0:y-40}; prevG=gid; }
     const hm=size[m.id][1], anchor = M.dec[m.id] ? hm+FX.DGAP+FX.DH/2 : hm/2, rel={};
     R.forEach(n=>{ const h=size[n.id][1], top = n===m ? 0 : anchor-h/2; rel[n.id]={top, bot: top+h+(M.dec[n.id]?FX.DGAP+FX.DH:0)}; });
     const t0=Math.min(...R.map(n=>rel[n.id].top)), t1=Math.max(...R.map(n=>rel[n.id].bot));
-    R.forEach(n=>{ const [w,h]=size[n.id], c=n.pos[0], bx={id:n.id, x:colX[c]+(colW[c]-w)/2, y:y+rel[n.id].top-t0, w, h, row:r, col:c};
+    R.forEach(n=>{ const [w,h]=size[n.id], c=n.pos[0], bx={id:n.id, x:xOf(c,w), y:y+rel[n.id].top-t0, w, h, row:r, col:c};
       box[n.id]=bx; if(M.dec[n.id]) dia[n.id]={id:n.id+'?', x:bx.x+w/2-FX.DW/2, y:bx.y+h+FX.DGAP, w:FX.DW, h:FX.DH, dia:true, row:r, col:c}; });
     rowSpan.push([y, y+t1-t0]); y+=t1-t0+FX.ROWGAP; });
   if(prevG) grp[prevG].y1=y-FX.ROWGAP+16;
@@ -1406,7 +1409,7 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
     for(let i=1;i<o.length-1;){ const a=o[i-1], b=o[i], c=o[i+1]; if((a[0]===b[0]&&b[0]===c[0]) || (a[1]===b[1]&&b[1]===c[1])){ const back=(b[0]-a[0])*(c[0]-b[0])+(b[1]-a[1])*(c[1]-b[1])<0; if(back) return null; o.splice(i,1); } else i++; } return o; };
   const order=[...edges].sort((p,q)=>p.d0-q.d0);
   const joinY = T => { const cx=T.x+T.w/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<140 ? Math.round((above+T.y)/2) : T.y-22; };
-  order.forEach(e=>{ const S=e.src, T=e.dst, sp = ['bottom','right'], tp=['top','left'], jy=joinY(T);
+  order.forEach(e=>{ const S=e.src, T=e.dst, sp = ['bottom','right'], tp=['top','left'], jy = S.y > T.y ? T.y-28 : joinY(T);
     let best=null;
     for(const s of sp) for(const t of tp){ const P0=port(S,s), P1=port(T,t), A=[P0[0]+P0[2]*FX.STUB, P0[1]+P0[3]*FX.STUB], B=[P1[0]-(t==='top'?0:(t==='left'?FX.STUB:-FX.STUB)), P1[1]-(t==='top'?FX.STUB:0)];
       const mids=[[A,B],[A,[B[0],A[1]],B],[A,[A[0],B[1]],B]]; cxs.forEach(cx=>mids.push([A,[cx,A[1]],[cx,B[1]],B])); [...cys, jy].forEach(cy=>mids.push([A,[A[0],cy],[B[0],cy],B]));

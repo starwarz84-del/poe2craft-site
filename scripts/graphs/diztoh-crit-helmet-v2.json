@@ -1154,15 +1154,20 @@
    "goal": {
     "kr": "접두 세번째 옵션",
     "en": "Third prefix option"
-   }
+   },
+   "skipIf": {
+    "ref": "pDone"
+   },
+   "skipTo": "d1",
+   "skipHide": true
   },
   {
    "id": "pc",
    "kind": "choice",
    "group": "main",
    "pos": [
-    1,
-    12
+    0.5,
+    12.5
    ],
    "param": "cMiss",
    "options": {
@@ -1199,8 +1204,8 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    2,
-    12
+    1,
+    12.5
    ],
    "act": "chaos",
    "cur": "Greater_Chaos_Orb",
@@ -1213,17 +1218,6 @@
     "en": "Whittling / Sinistral Erasure + Chaos"
    },
    "edges": [
-    {
-     "if": {
-      "ref": "pDone"
-     },
-     "to": "d1",
-     "res": "ok",
-     "label": {
-      "kr": "원하는 옵션 → 10",
-      "en": "wanted → 10"
-     }
-    },
     {
      "if": {
       "removed": "crit"
@@ -1248,9 +1242,16 @@
     },
     {
      "if": {
-      "not": {
-       "full": "p"
-      }
+      "any": [
+       {
+        "not": {
+         "full": "p"
+        }
+       },
+       {
+        "ref": "pDone"
+       }
+      ]
      },
      "to": "p2",
      "res": "ok",
@@ -1395,9 +1396,7 @@
     "kr": "접미 두번째 옵션(훼손)",
     "en": "Second suffix option (desecrated)"
    },
-   "omens": [
-    "Omen_of_Dextral_Necromancy"
-   ]
+   "gapBefore": 44
   },
   {
    "id": "d2",
@@ -1516,6 +1515,16 @@
    },
    "edges": [
     {
+     "if": {
+      "not": {
+       "full": "p"
+      }
+     },
+     "to": "p2",
+     "res": "fail",
+     "hide": true
+    },
+    {
      "to": "d1"
     }
    ],
@@ -1538,98 +1547,9 @@
    ],
    "act": "exalt",
    "cur": "Perfect_Exalted_Orb",
-   "skipIf": {
-    "full": "s"
-   },
-   "skipTo": "f2",
    "label": {
     "kr": "E 마지막 접미(나오는 대로)",
     "en": "E last suffix (as it comes)"
-   },
-   "edges": [
-    {
-     "to": "f2"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
-     "m": "f",
-     "tags": [
-      "pct"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "회피·에너지 보호막 최대치 1티어",
-     "en": "Flat eva/ES T1",
-     "m": "n",
-     "tags": [
-      "flat"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "회피·에너지 보호막 % + 생명력/마나 1~3티어",
-     "en": "Eva/ES % + life/mana T1–3",
-     "m": "n",
-     "tags": [
-      "hybL",
-      "hybM"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 확률 1~2티어",
-     "en": "Crit chance T1–2",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 피해 보너스",
-     "en": "Crit damage bonus",
-     "m": "d",
-     "tags": [
-      "cdmg"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "랜덤 옵션",
-     "en": "Random modifier",
-     "m": "j"
-    }
-   ],
-   "skipNote": {
-    "kr": "접미가 꽉 차 있으면 건너뜀",
-    "en": "Skipped if suffixes are full"
-   },
-   "showText": [
-    {
-     "s": "s",
-     "kr": "랜덤 옵션",
-     "en": "Random modifier"
-    }
-   ]
-  },
-  {
-   "id": "f2",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    16
-   ],
-   "act": "divine",
-   "cur": "Divine_Orb",
-   "label": {
-    "kr": "F 수치 조정",
-    "en": "F divine"
    },
    "edges": [
     {
@@ -1704,16 +1624,17 @@
      "m": "j"
     }
    ],
-   "ask": {
-    "kr": "접두 상태",
-    "en": "Prefixes"
-   },
    "showText": [
     {
-     "kr": "모든 줄 수치 다시 굴림",
-     "en": "Reroll all values"
+     "s": "s",
+     "kr": "랜덤 옵션",
+     "en": "Random modifier"
     }
-   ]
+   ],
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix option"
+   }
   },
   {
    "id": "ok",
@@ -1721,7 +1642,7 @@
    "group": "main",
    "pos": [
     0,
-    17
+    16
    ],
    "label": {
     "kr": "완성 (Best)",
@@ -1735,7 +1656,7 @@
    "group": "main",
    "pos": [
     1,
-    17
+    16
    ],
    "variant": "settle",
    "label": {
