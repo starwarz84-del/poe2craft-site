@@ -25,7 +25,7 @@ HC_ANN={'cur':'Orb_of_Annulment','side':'any'}        # a plain annul: any non-f
 HC_LIGHT={'cur':'Orb_of_Annulment','omens':['Omen_of_Light']}
 # 사용자 확정 2026-11-09 23:35: one recipe per grade, written from the flowchart (scripts/graphs/diztoh-crit-helmet-v2.json):
 # high-end first, then balance and essential as the compromises. The recipe tab shows them as tabs (+ the flowchart tab).
-#   high-end  = crit T1, flat T1, hybrid T1 (9 misses → 9.A rework), rarity T1 as the last suffix (estimated finish, see f1b)
+#   high-end  = crit T1, flat T1, hybrid T1 (9 misses → 9.A rework), last suffix random (rarity T1 there would mean starting over on a miss)
 #   balance   = crit T1–2, flat T1, hybrid T1–3 (9 misses → settle), last suffix random
 #   essential = crit T1–2, flat T1–2, third prefix random, last suffix random
 HC_WHITTLE=['Omen_of_Whittling']
@@ -60,13 +60,7 @@ def crit_helmet(tier):
   {'id':'d1','phase':'des','do':'desecrate','cur':'Ancient_Rib','target':{'unrev':'s'},'ts':'9:46'},
   {'id':'d2','phase':'des','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':hc_cdmg},'side':'s','bone':'Ancient_Rib'},'fail':{'goto':'d1','via':HC_LIGHT},'ts':'10:31'},
     ]
-    if hi:
-        nodes+=[
-  {'id':'f1','phase':'fin','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'gi':hc_rarS,'tmax':1},'ts':'11:15'},
-  {'id':'f1b','phase':'fin','do':'chaos','cur':'Greater_Chaos_Orb','omens':['Omen_of_Whittling'],'fallbackFor':'f1','target':{'gi':hc_rarS,'tmax':1,'replace':'s','whittle':0.7},
-   'fail':{'goto':'self','lost':'c1'},'ts':'11:15'}]
-    else:
-        nodes.append({'id':'f1','phase':'fin','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'junk':'s'},'ts':'11:15'})
+    nodes.append({'id':'f1','phase':'fin','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'junk':'s'},'ts':'11:15'})   # 사용자 확정 2026-11-09 23:43: 하이엔드도 마지막 접미는 랜덤
     nodes.append({'id':'f3','phase':'fin','do':'note','ts':'12:00','note':K('완성. 룬 소켓 2개는 비워 둠(취향껏).','Done. Both rune sockets are left empty (your choice).')})
     R.append({
  'id':rid,'tierGroup':'diztoh-crit-helmet-v2','tier':tier,'cls':c,'base':base(c,'Grinning Mask'),'ilvl':82,'sockets':2,'exceptional':{'sockets':1},'difficulty':4,'budget':'high',
