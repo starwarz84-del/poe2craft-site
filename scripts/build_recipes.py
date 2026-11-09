@@ -552,5 +552,9 @@ for _r in R:
         if (_r['id'],_n['id']) in REDUNDANT and _n.get('omens'):
             _n['omens']=[o for o in _n['omens'] if not _re.search(r'(Sinistral|Dextral)_(Exaltation|Necromancy)',o)]
             if not _n['omens']: del _n['omens']
+# A v5 file that rewrites an older recipe of the same video replaces it (REPLACES = {new id: old id}).
+REPLACES={'diztoh-budget-crossbow':'diztoh-grenade-crossbow'}
+_ids={x['id'] for x in R}
+R[:]=[x for x in R if not any(o==x['id'] and n in _ids for n,o in REPLACES.items())]
 json.dump({'v':2,'recipes':R},open(D+'recipes.json','w'),ensure_ascii=False)
 print(len(R),'recipes')
