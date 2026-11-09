@@ -322,6 +322,14 @@ T+=[
   'title':K('절사가 못 지우는 높은 잡옵은 먼저 면 말소로 낮은 줄로 바꾸기','A high-level junk line whittling can\'t catch: erase it into a lower one first'),
   'body':K('버릴 줄이 좋은 줄보다 요구 레벨이 높으면(예: 볼트 2개 장전, 82) 절사의 징조가 좋은 줄을 지움. 먼저 그 면 말소의 징조 + 카오스 오브로 레벨 낮은 줄(예: 민첩, 66)로 바꾼 뒤 절사의 징조 + 완벽한 카오스 오브를 씀.','If the junk line needs a higher level than your good lines (e.g. load two bolts, 82), whittling removes a good line instead. First reroll it with a side Erasure omen + Chaos into a lower line (e.g. Dexterity, 66), then whittle with a Perfect Chaos Orb.'),
   'source':{'url':'https://www.youtube.com/watch?v=1TP4aGqxU7Q','title':'[EN] PoE2 0.5 | Crafting Multi-Mirror Physical Damage Crossbow | Step-by-Step','channel':'XenoARPG','ts':'9:50'},'recipes':['xeno-phys-crossbow']},
+ {'id':'clean-magic-before-fracture','tags':[K('분열','Fracture'),K('비용','Cost')],'patch':'0.5.5',
+  'title':K('분열 전에 원치 않는 줄을 지워 두기','Clear unwanted lines before fracturing'),
+  'body':K('매직 단계에서 원하는 줄과 함께 원치 않는 줄이 붙었으면 분열 준비 전에 소멸의 오브로 그 줄을 지움. 분열이 빗나가도 깨끗한 "원하는 줄 매직 베이스"로 남아 다시 쓰거나 팔기 좋음. 시세로는 그 매직 베이스를 사는 쪽이 쌀 때가 많음.','If an unwanted line rolls alongside the wanted one at the magic stage, annul it before preparing the fracture. If the fracture misses you still have a clean magic base with the wanted line to reuse or sell — buying that base is often cheaper anyway.'),
+  'source':{'url':'https://www.youtube.com/watch?v=2PUEwoePtRs','title':'[패스오브엑자일2] 1미러에 팔린 본능적인 화살통 제작 풀 영상','channel':'노블이-NoblE','ts':'1:00'},'recipes':['noble-visceral-quiver']},
+ {'id':'reveal-high-to-steer-whittle','tags':[K('절사','Whittling'),K('훼손','Desecration')],'patch':'0.5.5',
+  'title':K('훼손을 높은 레벨 줄로 공개해 절사 대상을 정하기','Reveal a high-level line to steer whittling'),
+  'body':K('절사의 징조는 요구 레벨이 가장 낮은 줄을 바꿈. 훼손을 버릴 줄보다 레벨이 높은 줄(예: 민첩 66)로 공개해 두면, 면 말소의 징조 없이 절사의 징조 + 카오스 오브로 그 버릴 줄만 돌릴 수 있음. 다른 좋은 줄이 그보다 레벨이 낮지 않은지 꼭 확인.','Whittling changes the lowest-level line. Reveal the desecration as a line above your junk line (e.g. Dexterity, 66) and you can reroll just that junk line with Whittling + Chaos, no side Erasure omen needed — but check no good line sits lower.'),
+  'source':{'url':'https://www.youtube.com/watch?v=2PUEwoePtRs','title':'[패스오브엑자일2] 1미러에 팔린 본능적인 화살통 제작 풀 영상','channel':'노블이-NoblE','ts':'10:30'},'recipes':['noble-visceral-quiver']},
 ]
 json.dump({'v':1,'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
 print(len(T),'tips')
