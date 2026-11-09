@@ -21,9 +21,9 @@
      "kr": "1~2티어",
      "en": "T1–2"
     },
-    "5": {
-     "kr": "아무 티어",
-     "en": "Any tier"
+    "0": {
+     "kr": "나오는 대로",
+     "en": "Whatever comes"
     }
    }
   }
@@ -44,7 +44,7 @@
   {
    "id": "ess",
    "params": {
-    "spT": 5
+    "spT": 0
    }
   }
  ],
@@ -54,11 +54,11 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "spT": 5
+    "spT": 0
    },
    "desc": {
-    "kr": "정신력 아무 티어 (보존된 빗장뼈)",
-    "en": "Spirit any tier (Preserved Collarbone)"
+    "kr": "마지막 훼손 공개는 한 번, 나오는 대로",
+    "en": "One reveal, keep whatever comes"
    }
   },
   {
@@ -221,8 +221,8 @@
      "tmax": 1
     },
     {
-     "tag": "spirit",
-     "tmax": 5
+     "side": "p",
+     "random": true
     },
     {
      "tag": "crit",
@@ -1040,16 +1040,6 @@
      "en": "+3 melee or projectile skills",
      "m": "n"
     }
-   ],
-   "over": [
-    {
-     "param": {
-      "spT": 5
-     },
-     "set": {
-      "cur": "Preserved_Collarbone"
-     }
-    }
    ]
   },
   {
@@ -1077,6 +1067,15 @@
     "en": "Reveal"
    },
    "edges": [
+    {
+     "if": {
+      "param": {
+       "spT": 0
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
     {
      "if": {
       "added": "spirit"
@@ -1122,6 +1121,20 @@
      "kr": "근접 또는 투사체 스킬 +3",
      "en": "+3 melee or projectile skills",
      "m": "n"
+    }
+   ],
+   "showIf": [
+    {
+     "param": {
+      "spT": 0
+     },
+     "showText": [
+      {
+       "s": "p",
+       "kr": "나온 옵션 그대로 (한 번만 공개)",
+       "en": "Keep whatever comes (one reveal)"
+      }
+     ]
     }
    ]
   },
