@@ -869,7 +869,7 @@ function nodeHTML(r, o, i, idx){
   const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : o.pUnknown ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산해요. 일반 옵션은 원래 가중치 그대로예요.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
   const dn = doneSet(r).has(n.id);
   return `<li class="node ${n.optional?'opt':''} ${dn?'done':''}" data-node="${esc(n.id)}"><div class="nbody"><span class="n"><button type="button" class="tick" data-done="${esc(n.id)}" aria-pressed="${dn}" title="${esc(L('완료 표시','Mark done'))}">${dn?'✓':idx}</button></span><div class="what">${head}${n.optional?`<span class="optl">${L('선택','optional')}</span>`:''}${ts}</div>${pr}
-    ${tgt?`<div class="tgt">${tgt}</div>`:''}${fail}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${(n.tips||[]).map(id=>{ const k=S.tips.findIndex(t=>t.id===id); return k<0?'':`<div class="tipref" data-tipid="${esc(id)}" tabindex="0">💡 ${L('제작 꿀팁','Tip')} #${k+1}</div>`; }).join('')}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 한 줄뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산했어요.','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}</div>`:''}</div>
+    ${tgt?`<div class="tgt">${tgt}</div>`:''}${fail}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${(n.tips||[]).filter(id=>!_tipSeen || (!_tipSeen.has(id) && _tipSeen.add(id))).map(id=>{ const k=S.tips.findIndex(t=>t.id===id); return k<0?'':`<div class="tipref" data-tipid="${esc(id)}" tabindex="0">💡 ${L('제작 꿀팁','Tip')} #${k+1}</div>`; }).join('')}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 한 줄뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산했어요.','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}</div>`:''}</div>
 </li>`;
 }
 // ---------- flow layout: success / miss routes as chips, side paths as indented boxes (no free-floating arrows) ----------
@@ -921,6 +921,7 @@ function routeHTML(r, o, i, via){
   if(g==='self' && o.lose>0) out.push(chip('no', L(`원하는 옵션이 지워지면 (${pct(o.lose)})`,`Wanted mod removed (${pct(o.lose)})`), L(`${stepNo(r,n.fail.lost)}번으로`,`step ${stepNo(r,n.fail.lost)}`), o.pUnknown ? '' : ` <small>(${L('평균','avg')} ${fmt(o.lostRedo)}${L('회','×')})</small>`));
   return out.length ? `<div class="routes">${out.join('')}</div>` : '';
 }
+let _tipSeen=null;   // tips already shown in the current phase (a tip shows once per phase)
 function flowHTML(r){
   const a=analyse(r), byId=Object.fromEntries(a.nodes.map(o=>[o.n.id,o]));
   const item = o => nodeHTML(r, o, a.nodes.indexOf(o), a.nodes.indexOf(o)+1);
@@ -956,7 +957,8 @@ function flowHTML(r){
     return html;
   }
   return `<div class="flow" data-flow>${r.phases.map(ph=>{ const items=a.nodes.filter(o=>o.n.phase===ph.id); if(!items.length) return '';
-      return `<section class="phase"><h4>${esc(tx(ph))}</h4><div class="steps">${run(items)}</div></section>`; }).join('')}</div>`;
+      _tipSeen=new Set(); const body=run(items); _tipSeen=null;
+      return `<section class="phase"><h4>${esc(tx(ph))}</h4><div class="steps">${body}</div></section>`; }).join('')}</div>`;
 }
 function drawWires(){}
 const doneSet = r => new Set(store.get('done:'+r.id, []));
