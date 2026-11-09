@@ -1358,7 +1358,7 @@ const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?
 function fcModel(g){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const E=[], seen=new Set(), add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(seen.has(k)) return; seen.add(k); E.push({a,b,label,...x}); };
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
-    (n.edges||[]).filter(e=>!e.hide).forEach(e=>add(n.id, e.to, e.label, {res:e.res}));
+    (n.edges||[]).filter(e=>!e.hide).forEach(e=>add(n.id, e.to, e.label, {res:e.res, port:e.port}));
     if(n.options) for(const [v,to] of Object.entries(n.options)) add(n.id, to, n.edgeLabels?.[v] || g.params?.[n.param]?.values?.[v], {opt:[n.param, v], ...(n.optStyle?.[v]||{})});
     if(n.skipTo && !n.skipNote && !n.skipHide) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
   const dec={}, multi={}; g.nodes.forEach(n=>{ if(n.kind!=='act' && n.kind!=='cleanup') return; if(new Set(E.filter(e=>e.a===n.id && !e.skip).map(e=>e.b)).size>=3) multi[n.id]=true; });   // simple two-way outcomes are just two coloured lines
@@ -1378,7 +1378,7 @@ function fcWant(g, n, params){ const out=[];
   (n.showText||[]).forEach(t=>out.push(t.s ? `<b class="sd">${t.s==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${esc(tx(t))}` : esc(tx(t))));
   return out; }
 function fcSize(n, M, g, params){ let W = n.pos[0]===0 ? FX.W : FX.WB;
-  if(n.curRows && n.pos[0]>0) W=Math.max(FX.WB*1.5, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcLen(tx(rw)+' → '+ids.map(id=>nm(cur(id))).join(' + '))+ids.length*18+230; })); if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
+  if(n.curRows && n.pos[0]>0) W=Math.max(FX.WB, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcLen(tx(rw)+' → '+ids.map(id=>nm(cur(id))).join(' + '))+ids.length*18+205; })); if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
   if(n.kind==='assume') return [222, 84];
   if(n.kind==='exit') return [FX.WB, 78];
   const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
@@ -1418,7 +1418,12 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
     for(let i=1;i<o.length-1;){ const a=o[i-1], b=o[i], c=o[i+1]; if((a[0]===b[0]&&b[0]===c[0]) || (a[1]===b[1]&&b[1]===c[1])){ const back=(b[0]-a[0])*(c[0]-b[0])+(b[1]-a[1])*(c[1]-b[1])<0; if(back) return null; o.splice(i,1); } else i++; } return o; };
   const order=[...edges].sort((p,q)=>p.d0-q.d0);
   const joinY = T => { const cx=T.x+T.w/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<600 ? Math.round(Math.max(above+(T.y-above)*0.38, T.y-90)) : T.y-26; };
-  order.forEach(e=>{ const S=e.src, T=e.dst, sp = ['bottom','right'], tp=['top','left'], jy = S.y > T.y ? T.y-22 : joinY(T);
+  const gapAbove = T => { const cx=T.x+T.w/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<600 ? T.y-above : 44; };
+  const style = e => (e.kind)+(e.dash||e.skip?'-d':''), slots={};
+  edges.forEach(e=>{ const T=e.dst, k=T.id; (slots[k]=slots[k]||[]); const st2=style(e), up=e.src.y<T.y; if(!slots[k].some(x=>x.st===st2 && x.up===up)) slots[k].push({st:st2, up}); });
+  Object.values(slots).forEach(L2=>L2.sort((a,b)=>(b.up-a.up)));
+  const joinFor = e => { const T=e.dst, L2=slots[T.id], i=L2.findIndex(x=>x.st===style(e) && x.up===(e.src.y<T.y)), gap=Math.min(gapAbove(T), 160); return Math.round(T.y - gap + gap*(i+1)/(L2.length+1)); };
+  order.forEach(e=>{ const S=e.src, T=e.dst, sp = e.port ? [e.port] : ['bottom','right'], tp=['top','left'], jy = joinFor(e);
     let best=null;
     for(const s of sp) for(const t of tp){ const P0=port(S,s), P1=port(T,t), A=[P0[0]+P0[2]*FX.STUB, P0[1]+P0[3]*FX.STUB], B=[P1[0]-(t==='top'?0:(t==='left'?FX.STUB:-FX.STUB)), P1[1]-(t==='top'?FX.STUB:0)];
       const mids=[[A,B],[A,[B[0],A[1]],B],[A,[A[0],B[1]],B]]; cxs.forEach(cx=>mids.push([A,[cx,A[1]],[cx,B[1]],B])); [...cys, jy].forEach(cy=>mids.push([A,[A[0],cy],[B[0],cy],B]));
@@ -1492,7 +1497,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   // where a line runs into another one the corner stays square; success lines are drawn last so they sit on top
   const onSeg=(p,a,b)=>(a[0]===b[0] && Math.abs(p[0]-a[0])<0.5 && p[1]>=Math.min(a[1],b[1])-0.5 && p[1]<=Math.max(a[1],b[1])+0.5) || (a[1]===b[1] && Math.abs(p[1]-a[1])<0.5 && p[0]>=Math.min(a[0],b[0])-0.5 && p[0]<=Math.max(a[0],b[0])+0.5);
   edges.forEach(e=>{ e.sharp=new Set(); for(let i=1;i<e.pts.length-1;i++) if(edges.some(f=>f!==e && f.pts.some((q,j)=>j<f.pts.length-1 && onSeg(e.pts[i], q, f.pts[j+1])))) e.sharp.add(i); });
-  const zo=e=>!e.on?0:e.kind==='fwd'?1:e.kind==='fail'?2:3;
+  const zo=e=>!e.on?0:(e.dash||e.skip)?1:e.kind==='fwd'?2:e.kind==='fail'?3:4;
   const svgE=[...edges].sort((a,b)=>zo(a)-zo(b)).map(e=>`<path class="fce k-${e.kind}${e.on?'':' off'}${e.skip||e.dash?' skip':''}" d="${fcD(e.pts, e.sharp)}" marker-end="url(#fcm-${e.on?e.kind:'off'})"/>`).join('');
   const lab=edges.filter(e=>e.label && (e.on || e.opt) && (M.multi[e.a] || M.byId[e.a].kind==='choice' || e.skip)).sort((a,b)=>(b.on-a.on)||(a.d0-b.d0)).map(e=>{ const t=tx(e.label)+(e.share!=null && e.share<0.995 && e.on ? ` · ${pct1(e.share)}` : ''); return {e, t, pts:e.pts, w:fcLen(t)+18}; });
   fcLabels(lab, [...Object.values(Lay.box), ...Object.values(Lay.dia)]);
@@ -1501,7 +1506,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const regions=(g.groups||[]).map((gr,i)=>{ const R=Lay.grp[gr.id]; if(!R) return ''; const ns=g.nodes.filter(n=>n.group===gr.id);
     const dv=ns.reduce((t,n)=>t+(st(n.id)?.div||0),0), bases=ns.filter(n=>n.kind==='base').reduce((t,n)=>t+(st(n.id)?.visits||0),0);
     const x0=Lay.items?FX.PAD-8:Lay.colX[Lay.colIds[0]]-26;
-    return `<div class="fcg" style="left:${x0}px;top:${R.y0}px;width:${Lay.Wt-x0-FX.PAD}px;height:${R.y1-R.y0}px"><span class="fcgh"><b>${i+1}</b>${esc(tx(gr))}</span>${i>0?'':`<span class="fcgf" style="left:${Lay.colX[Lay.colIds[0]]+Lay.colW[Lay.colIds[0]]/2-x0}px">${esc(tx(gr))} ${L('평균','avg')} <b>${fmtDiv(dv)} div</b>${bases?` · ${L('필요 베이스','bases needed')} <b>${fmt(bases)}${L('개','')}</b>`:''}</span>`}</div>`; }).join('');
+    return `<div class="fcg" style="left:${x0}px;top:${R.y0}px;width:${Lay.Wt-x0-FX.PAD}px;height:${R.y1-R.y0}px"><span class="fcgh"><b>${i+1}</b>${esc(tx(gr))}</span>${i>0?'':`<span class="fcgf" style="left:${Lay.colX[Lay.colIds[0]]+Lay.colW[Lay.colIds[0]]/2-x0}px">${esc(tx(gr))} ${L('평균','avg')} <b>${fmtDiv(dv)} div</b></span>`}</div>`; }).join('');
   // item lane
   let lane='', prev=null, yLast=0;
   if(Lay.items) g.nodes.filter(n=>n.item && n.kind!=='mark' && isMain(n.id)).sort((a,b)=>a.pos[1]-b.pos[1]).forEach(n=>{ const same=prev && JSON.stringify(prev)===JSON.stringify(n.item); if(same) return;
@@ -1516,7 +1521,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     return `<path class="fce k-fwd skip side" d="M${x0},${y} L${b.x},${y}" marker-end="url(#fcm-side)"/>`; }).join('');
   // loops: one shaded area per loop (rows joined), its total use per finished item on a tag
   const loopsSvg=[], loopTags=[];
-  (g.loops||[]).forEach(Lp=>{ const mem=Lp.nodes.filter(id=>Lay.box[id] && stAny(id)); if(mem.filter(id=>/act|cleanup/.test(M.byId[id].kind)).length<2) return; const P=18;
+  (g.loops||[]).forEach(Lp=>{ const mem=Lp.nodes.filter(id=>Lay.box[id] && stAny(id)); if(mem.filter(id=>/act|cleanup/.test(M.byId[id].kind)).length<2 || Lp.nodes.some(id=>M.byId[id]?.kind==='choice')) return; const P=18;
     let R=[1e9,1e9,-1e9,-1e9]; mem.forEach(id=>[Lay.box[id], Lay.dia[id]].filter(Boolean).forEach(r=>{ R=[Math.min(R[0],r.x-P), Math.min(R[1],r.y-P), Math.max(R[2],r.x+r.w+P), Math.max(R[3],r.y+r.h+P)]; }));
     const ids=new Set(Lp.nodes); edges.filter(e=>ids.has(e.a) && ids.has(e.b) && e.pts).forEach(e=>e.pts.forEach(([px,py])=>{ R=[Math.min(R[0],px-14), Math.min(R[1],py-14), Math.max(R[2],px+14), Math.max(R[3],py+14)]; }));
     const li=(g.loops||[]).indexOf(Lp)%2;
