@@ -1471,7 +1471,7 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
   const cards=g.finals.map(F=>{ const state=F.lines.map(l=>{ if(l.random) return {gi:null, side:l.side, label:{kr:'랜덤 옵션',en:'Random modifier'}}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
       return {gi:T.gi, side:T.s, tmax:l.tmax||null, fr:!!l.fr, des:!!l.des, hybrid:!!l.hybrid}; }).filter(Boolean);
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
-    return `<div class="fcfin ${on?'on':''}"><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, cap:{p:3,s:3}, qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}</div>`; }).join('');
+    return `<div class="fcfin ${on?'on':''}"><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:{p:3,s:3}, qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
 function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), res=s.res, M=fcModel(g), Lay=fcLayout(g, M, s.params);
   const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : '0%';
