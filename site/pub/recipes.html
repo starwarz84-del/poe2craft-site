@@ -1360,6 +1360,7 @@ function nodeCur(n){ const ids=[...(n.curIf||[]), n.cur, ...(n.omens||[])].filte
   return {html: uniq.map(id=>icon(id)).join('') + esc(txt), title: txt}; }
 // flowchart layout: top → down, main path in the first column, branches to the right, orthogonal edges with rounded corners
 const FX={W:540, WB:330, GAPX:118, LANE:330, LANEGAP:40, ROWGAP:44, GROUPGAP:110, PAD:22, DW:150, DH:66, DGAP:18, CW:200, CH:104, STUB:14, R:9};
+let _fcCtx; const fcText = (t, px) => { try{ _fcCtx=_fcCtx||document.createElement('canvas').getContext('2d'); _fcCtx.font=`${px}px ${getComputedStyle(document.body).getPropertyValue('--f-body')||'sans-serif'}`; return Math.ceil(_fcCtx.measureText(t).width); }catch(e){ return fcLen(t)*px/12; } };
 const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?12:7),0);
 function fcModel(g){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const E=[], seen=new Set(), add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(seen.has(k)) return; seen.add(k); E.push({a,b,label,...x}); };
@@ -1384,7 +1385,7 @@ function fcWant(g, n, params){ const out=[];
   (n.showText||[]).forEach(t=>out.push(t.s ? `<b class="sd">${t.s==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${esc(tx(t))}` : esc(tx(t))));
   return out; }
 function fcSize(n, M, g, params){ let W = n.pos[0]===0 ? FX.W : FX.WB;
-  if(n.curRows && n.pos[0]>0) W=Math.max(FX.WB, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcLen(tx(rw)+' → '+ids.map(id=>nm(cur(id))).join(' + '))+ids.length*18+205; })); if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
+  if(n.curRows && n.pos[0]>0) W=Math.max(FX.WB, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcText(tx(rw)+' → ', 12.5)+6+ids.length*18+fcText(ids.map(id=>nm(cur(id))).join(' + '), 12.5)+fcText('확률 25% · 평균 4.0개', 12.5)+24+28; })); if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
   if(n.kind==='assume') return [222, 84];
   if(n.kind==='exit') return [FX.WB, 78];
   const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
@@ -1426,9 +1427,11 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
   const joinY = T => { const cx=T.x+T.w/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<600 ? Math.round(Math.max(above+(T.y-above)*0.38, T.y-90)) : T.y-26; };
   const gapAbove = T => { const cx=T.x+T.w/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<600 ? T.y-above : 44; };
   const style = e => (e.kind)+(e.dash||e.skip?'-d':''), slots={};
-  edges.forEach(e=>{ const T=e.dst, k=T.id; (slots[k]=slots[k]||[]); const st2=style(e), up=e.src.y<T.y; if(!slots[k].some(x=>x.st===st2 && x.up===up)) slots[k].push({st:st2, up}); });
-  Object.values(slots).forEach(L2=>L2.sort((a,b)=>(b.up-a.up)));
-  const joinFor = e => { const T=e.dst, L2=slots[T.id], i=L2.findIndex(x=>x.st===style(e) && x.up===(e.src.y<T.y)), gap=Math.min(gapAbove(T), 160); return Math.round(T.y - gap + gap*(i+1)/(L2.length+1)); };
+  const straight = e => e.src.y+e.src.h <= e.dst.y && Math.abs((e.src.x+e.src.w/2)-(e.dst.x+e.dst.w/2))<1;
+  edges.forEach(e=>{ if(straight(e)) return; const k=e.dst.id, st2=style(e), up=e.src.y<e.dst.y; const L2=slots[k]=slots[k]||[]; const x=L2.find(x=>x.st===st2); if(x) x.up=x.up||up; else L2.push({st:st2, up}); });
+  const rank = st => /^ok/.test(st)?0:/^fwd/.test(st)?1:2;
+  Object.values(slots).forEach(L2=>L2.sort((a,b)=>(b.up-a.up)||(rank(a.st)-rank(b.st))));
+  const joinFor = e => { const T=e.dst, L2=slots[T.id]||[], i=Math.max(0,L2.findIndex(x=>x.st===style(e))), gap=Math.min(gapAbove(T), 160); return Math.round(T.y - gap + gap*(i+1)/(Math.max(1,L2.length)+1)); };
   order.forEach(e=>{ const S=e.src, T=e.dst, sp = e.port ? [e.port] : ['bottom','right'], tp=['top','left'], jy = joinFor(e);
     let best=null;
     for(const s of sp) for(const t of tp){ const P0=port(S,s), P1=port(T,t), A=[P0[0]+P0[2]*FX.STUB, P0[1]+P0[3]*FX.STUB], B=[P1[0]-(t==='top'?0:(t==='left'?FX.STUB:-FX.STUB)), P1[1]-(t==='top'?FX.STUB:0)];
@@ -1443,8 +1446,8 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
           ov+=overlap(a,b,T.id); }
         let cross=0; for(let i=0;i<k-1;i++){ const a=pts[i], b=pts[i+1]; for(const [c,d] of placed){ const v1=a[0]===b[0], v2=c[0]===d[0]; if(v1===v2) continue;
             const [V0,V1,H0,H1] = v1 ? [a,b,c,d] : [c,d,a,b]; if(V0[0]>Math.min(H0[0],H1[0])+1 && V0[0]<Math.max(H0[0],H1[0])-1 && H0[1]>Math.min(V0[1],V1[1])+1 && H0[1]<Math.max(V0[1],V1[1])-1) cross++; } }
-        const up = T.y < S.y + S.h/2, lastH = k>=3 && pts[k-2][0]===pts[k-1][0] && pts[k-3][1]===pts[k-2][1] ? pts[k-2][1] : null, offJoin = t==='top' && lastH!=null && Math.abs(lastH-jy)>1 && pts[k-3][0]!==pts[k-1][0] ? 140 : 0;
-        const sc=coll*5000 + len + (k-2)*28 + ov + cross*60 + offJoin + (t==='top'?0:24) + (S.dia && s==='bottom' && T.col!==S.col ? 400 : 0) + (up && s==='bottom' ? 260 : 0);
+        const up = T.y < S.y + S.h/2, lastH = k>=3 && pts[k-2][0]===pts[k-1][0] && pts[k-3][1]===pts[k-2][1] ? pts[k-2][1] : null, offJoin = t==='top' && lastH!=null && Math.abs(lastH-jy)>1 && pts[k-3][0]!==pts[k-1][0] ? 3000 : 0;
+        const sc=coll*5000 + len + (k-2)*28 + ov + cross*60 + offJoin + (t==='left' && S.x > T.x+T.w ? 2000 : 0) + (t==='top'?0:24) + (S.dia && s==='bottom' && T.col!==S.col ? 400 : 0) + (up && s==='bottom' ? 260 : 0);
         if(!best || sc<best.sc) best={sc, pts}; } }
     e.pts=best.pts; for(let i=0;i<best.pts.length-1;i++) placed.push([best.pts[i],best.pts[i+1],T.id]); }); }
 function fcD(pts, sharp){ let d=`M${pts[0][0]},${pts[0][1]}`;
