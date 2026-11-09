@@ -5,7 +5,7 @@
  "base": "Tasalian Greaves",
  "ilvl": 82,
  "basePrice": {},
- "note": "시한 하이엔드 장화 흐름을 정책 24 양식으로 그린 1차 초안 — 사용자 검토 전. 분열 전 준비(매직·에센스·훼손·분열)는 영상에 없어 투구와 같은 방식으로 가정. 접두 엑잘 실패는 영상의 심연의 에센스 대신 좌측 소멸의 징조 + 소멸의 오브로 단순화.",
+ "note": "시한 하이엔드 장화 2차 초안(2026-11-10 사용자 피드백 반영): 레어 전환 = 완벽한 제왕의 오브(잡옵이 붙어도 분열 진행, 잡옵이 분열되면 새 베이스), 접미 = 저항 먼저 → 우측 찬미 엑잘 + 소멸의 오브(절사의 징조 방식은 시뮬 결과 약 3배 비싸서 제외), 접두 엑잘 실패 = 좌측 결정화의 징조 + 심연의 에센스로 징표 → 징표 훼손 → 공개.",
  "params": {
   "resT": {
    "kr": "저항 목표",
@@ -44,8 +44,8 @@
    "en": "Third suffix",
    "values": {
     "res": {
-     "kr": "저항",
-     "en": "Resist"
+     "kr": "모두 유효",
+     "en": "All wanted"
     },
     "none": {
      "kr": "랜덤",
@@ -135,16 +135,6 @@
    "fam": "ArmourAppliesToElementalDamage",
    "tmax": 1
   },
-  "lifeE": {
-   "fam": "IncreasedLife",
-   "sec": "e"
-  },
-  "magicGood": {
-   "anyOf": [
-    "armP",
-    "armEle"
-   ]
-  },
   "str": {
    "fam": "Strength",
    "sec": "n",
@@ -206,9 +196,75 @@
   },
   "sKeep": {
    "anyOf": [
-    "armEle",
-    "str"
+    "RES",
+    "str",
+    "armEle"
    ]
+  },
+  "armP1": {
+   "fam": "DefencesPercent",
+   "sec": "n",
+   "side": "p",
+   "tmax": 1
+  },
+  "lifeT1": {
+   "fam": "IncreasedLife",
+   "sec": "n",
+   "tmax": 1
+  },
+  "msT1": {
+   "fam": "MovementVelocity",
+   "sec": "n",
+   "tmax": 1
+  },
+  "strT1": {
+   "fam": "Strength",
+   "sec": "n",
+   "tmax": 1
+  },
+  "fire1": {
+   "fam": "FireResistance",
+   "sec": "n",
+   "tmax": 1
+  },
+  "cold1": {
+   "fam": "ColdResistance",
+   "sec": "n",
+   "tmax": 1
+  },
+  "light1": {
+   "fam": "LightningResistance",
+   "sec": "n",
+   "tmax": 1
+  },
+  "magicGood": {
+   "anyOf": [
+    "armP",
+    "armEle"
+   ]
+  },
+  "GOOD": {
+   "anyOf": [
+    "armP1",
+    "armEle",
+    "lifeT1",
+    "msT1",
+    "strT1",
+    "fire1",
+    "cold1",
+    "light1"
+   ]
+  },
+  "X": {
+   "anyOf": [
+    "str",
+    "armEle"
+   ]
+  },
+  "mark": {
+   "fam": "EssenceAbyss",
+   "sec": "e",
+   "side": "p"
   }
  },
  "conds": {
@@ -221,15 +277,44 @@
      "has": "armEle"
     }
    ]
+  },
+  "ready": {
+   "all": [
+    {
+     "has": "armP"
+    },
+    {
+     "count": {
+      "tag": "GOOD",
+      "min": 3
+     }
+    },
+    {
+     "allMods": "GOOD"
+    }
+   ]
+  },
+  "sufDone": {
+   "all": [
+    {
+     "has": "RES"
+    },
+    {
+     "has": "str"
+    },
+    {
+     "has": "armEle"
+    }
+   ]
   }
  },
  "require": {
   "all": [
    {
-    "has": "armEle"
+    "has": "RES"
    },
    {
-    "has": "str"
+    "has": "X"
    },
    {
     "has": "PRE"
@@ -279,24 +364,12 @@
   {
    "id": "L2",
    "nodes": [
-    "s1",
     "s2",
     "s2x",
-    "s3",
-    "s3x",
-    "s3y"
+    "s2y"
    ],
-   "kr": "접미 3줄",
-   "en": "Three suffixes"
-  },
-  {
-   "id": "L3",
-   "nodes": [
-    "p1",
-    "p1x"
-   ],
-   "kr": "접두 두번째 옵션",
-   "en": "Second prefix"
+   "kr": "접미 2·3번째",
+   "en": "Suffix 2–3"
   },
   {
    "id": "L4",
@@ -394,10 +467,6 @@
     },
     {
      "tag": "armEle",
-     "tmax": 1
-    },
-    {
-     "tag": "str",
      "tmax": 1
     },
     {
@@ -652,27 +721,26 @@
     0,
     3
    ],
-   "act": "essence",
-   "ess": "lifeE",
-   "cur": "Greater_Essence_of_the_Body",
+   "act": "regal",
+   "cur": "Perfect_Regal_Orb",
    "goal": {
-    "kr": "레어로 업그레이드 + 접두 생명력",
-    "en": "Upgrade to rare + life prefix"
+    "kr": "레어로 업그레이드 + 유효 옵션 1줄",
+    "en": "Upgrade to rare + one wanted line"
    },
    "showText": [
     {
-     "s": "p",
-     "kr": "최대 생명력 (제작 옵션)",
-     "en": "Maximum life (crafted)"
+     "kr": "유효 옵션 1티어가 붙으면 좋음 (잡옵이어도 분열 진행)",
+     "en": "A wanted T1 line is best (fracture anyway on junk)"
     }
    ],
    "label": {
-    "kr": "에센스",
-    "en": "Essence"
+    "kr": "제왕",
+    "en": "Regal"
    },
    "edges": [
     {
-     "to": "f1"
+     "to": "f1",
+     "res": "ok"
     }
    ],
    "item": [
@@ -686,15 +754,6 @@
      ]
     },
     {
-     "s": "p",
-     "kr": "최대 생명력 (제작 옵션)",
-     "en": "Maximum life (crafted)",
-     "m": "n",
-     "tags": [
-      "lifeE"
-     ]
-    },
-    {
      "s": "s",
      "kr": "방어도의 원소 피해 적용 1티어",
      "en": "Armour to elemental T1",
@@ -702,6 +761,12 @@
      "tags": [
       "armEle"
      ]
+    },
+    {
+     "s": "x",
+     "kr": "유효 옵션 1티어 또는 잡옵",
+     "en": "A wanted T1 line or junk",
+     "m": "n"
     }
    ]
   },
@@ -767,15 +832,6 @@
      ]
     },
     {
-     "s": "p",
-     "kr": "최대 생명력 (제작 옵션)",
-     "en": "Maximum life (crafted)",
-     "m": "n",
-     "tags": [
-      "lifeE"
-     ]
-    },
-    {
      "s": "s",
      "kr": "방어도의 원소 피해 적용 1티어",
      "en": "Armour to elemental T1",
@@ -783,6 +839,12 @@
      "tags": [
       "armEle"
      ]
+    },
+    {
+     "s": "x",
+     "kr": "유효 옵션 1티어 (생명력·이동 속도·힘·저항 등)",
+     "en": "A wanted T1 line (life, speed, strength, resist…)",
+     "m": "n"
     },
     {
      "s": "s",
@@ -809,8 +871,8 @@
    },
    "showText": [
     {
-     "kr": "3개의 옵션 모두 유효 옵션 → 어느 줄이 분열돼도 성공",
-     "en": "All three modifiers are wanted — any fracture works"
+     "kr": "방어도 % 증가가 분열되면 성공",
+     "en": "Success when armour % fractures"
     }
    ],
    "label": {
@@ -824,20 +886,30 @@
      },
      "to": "f4",
      "res": "ok",
-     "p": 0.3333333333333333,
      "label": {
       "kr": "방어도 % 분열",
       "en": "Armour % fractured"
      }
     },
     {
+     "if": {
+      "fractured": "GOOD"
+     },
      "to": "xs",
      "res": "ok",
      "dash": true,
-     "p": 0.6666666666666666,
      "label": {
       "kr": "다른 유효 옵션 분열",
       "en": "Another wanted line fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "잡옵 분열",
+      "en": "Junk fractured"
      }
     }
    ],
@@ -852,15 +924,6 @@
      ]
     },
     {
-     "s": "p",
-     "kr": "최대 생명력 (제작 옵션)",
-     "en": "Maximum life (crafted)",
-     "m": "n",
-     "tags": [
-      "lifeE"
-     ]
-    },
-    {
      "s": "s",
      "kr": "방어도의 원소 피해 적용 1티어",
      "en": "Armour to elemental T1",
@@ -868,6 +931,12 @@
      "tags": [
       "armEle"
      ]
+    },
+    {
+     "s": "x",
+     "kr": "유효 옵션 1티어 (생명력·이동 속도·힘·저항 등)",
+     "en": "A wanted T1 line (life, speed, strength, resist…)",
+     "m": "n"
     },
     {
      "s": "s",
@@ -883,7 +952,7 @@
    "group": "prep",
    "pos": [
     1,
-    5
+    4.6
    ],
    "simTo": "f4",
    "swapFracture": "armP",
@@ -893,8 +962,27 @@
     "en": "Another wanted line fractured"
    },
    "note": {
-    "kr": "생명력 또는 방어도의 원소 적용이 분열되면 같은 흐름을 그 줄 기준으로 진행 (비용은 같다고 가정)",
-    "en": "Life or armour-to-elemental fractured: same flow around that line (assumed to cost the same)"
+    "kr": "다른 유효 옵션이 분열되면 같은 흐름을 그 줄 기준으로 진행 (비용은 같다고 가정)",
+    "en": "Another wanted line fractured: same flow around that line (assumed to cost the same)"
+   }
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    5.4
+   ],
+   "simTo": "h1",
+   "variant": "fail",
+   "label": {
+    "kr": "잡옵 분열 — 새 베이스",
+    "en": "Junk fractured — new base"
+   },
+   "note": {
+    "kr": "제왕의 오브로 붙은 줄이 잡옵이고 그 줄이 분열되면 새 베이스로 처음부터",
+    "en": "If the regal line was junk and it fractures, start again on a new base"
    }
   },
   {
@@ -984,20 +1072,27 @@
    "act": "chaos",
    "cur": "Chaos_Orb",
    "goal": {
-    "kr": "접미 첫번째 옵션",
-    "en": "First suffix option"
+    "kr": "접미 첫번째 옵션 (저항 먼저)",
+    "en": "First suffix option (resist first)"
    },
    "show": [
-    "armEle"
+    "fire",
+    "cold",
+    "light"
    ],
    "label": {
-    "kr": "접미 1",
-    "en": "Suffix 1"
+    "kr": "저항",
+    "en": "Resist"
    },
+   "skipIf": {
+    "has": "RES"
+   },
+   "skipTo": "s2",
+   "skipHide": true,
    "edges": [
     {
      "if": {
-      "added": "armEle"
+      "added": "RES"
      },
      "to": "s2",
      "res": "ok"
@@ -1020,19 +1115,11 @@
     },
     {
      "s": "s",
-     "kr": "방어도의 원소 피해 적용 1티어",
-     "en": "Armour to elemental T1",
-     "m": "n",
-     "tags": [
-      "armEle"
-     ]
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
     }
-   ],
-   "skipIf": {
-    "has": "armEle"
-   },
-   "skipTo": "s2",
-   "skipHide": true
+   ]
   },
   {
    "id": "s2",
@@ -1048,23 +1135,75 @@
     "Omen_of_Dextral_Exaltation"
    ],
    "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix option"
+    "kr": "접미 두번째·세번째 옵션",
+    "en": "Second and third suffix options"
    },
    "show": [
-    "str"
+    "fire",
+    "cold",
+    "light",
+    "str",
+    "armEle"
    ],
    "label": {
-    "kr": "접미 2",
-    "en": "Suffix 2"
+    "kr": "접미 2·3",
+    "en": "Suffix 2–3"
    },
    "edges": [
     {
      "if": {
-      "added": "str"
+      "all": [
+       {
+        "param": {
+         "last": "none"
+        }
+       },
+       {
+        "full": "s"
+       },
+       {
+        "has": "RES"
+       },
+       {
+        "has": "X"
+       }
+      ]
      },
-     "to": "s3",
+     "to": "p1",
      "res": "ok"
+    },
+    {
+     "if": {
+      "ref": "sufDone"
+     },
+     "to": "p1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "count": {
+         "tag": "sKeep",
+         "min": 3
+        }
+       }
+      ]
+     },
+     "to": "s2y",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "added": "sKeep"
+     },
+     "to": "s2",
+     "res": "ok",
+     "hide": true
     },
     {
      "to": "s2x",
@@ -1083,12 +1222,9 @@
     },
     {
      "s": "s",
-     "kr": "방어도의 원소 피해 적용 1티어",
-     "en": "Armour to elemental T1",
-     "m": "n",
-     "tags": [
-      "armEle"
-     ]
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
     },
     {
      "s": "s",
@@ -1097,6 +1233,15 @@
      "m": "n",
      "tags": [
       "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
      ]
     }
    ]
@@ -1110,7 +1255,7 @@
     9
    ],
    "keep": [
-    "armEle"
+    "sKeep"
    ],
    "maxJunk": 0,
    "label": {
@@ -1122,18 +1267,15 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접미 지우기 (첫번째 접미는 유지)",
-    "en": "Remove the missed suffix (keep the first)"
+    "kr": "빗나간 접미 지우기 (유효 옵션은 유지)",
+    "en": "Remove the missed suffix (keep the wanted ones)"
    },
    "edges": [
     {
-     "lost": "armEle",
-     "to": "s1",
+     "lost": "sKeep",
+     "to": "s2x",
      "res": "fail",
-     "label": {
-      "kr": "유효옵 제거 → 7",
-      "en": "wanted line removed → 7"
-     }
+     "hide": true
     },
     {
      "to": "s2",
@@ -1142,140 +1284,16 @@
    ]
   },
   {
-   "id": "s3",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    10
-   ],
-   "act": "exalt",
-   "cur": "Perfect_Exalted_Orb",
-   "omens": [
-    "Omen_of_Dextral_Exaltation"
-   ],
-   "goal": {
-    "kr": "접미 세번째 옵션",
-    "en": "Third suffix option"
-   },
-   "show": [
-    "fire",
-    "cold",
-    "light"
-   ],
-   "label": {
-    "kr": "접미 3",
-    "en": "Suffix 3"
-   },
-   "edges": [
-    {
-     "if": {
-      "param": {
-       "last": "none"
-      }
-     },
-     "to": "p1",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "added": "RES"
-     },
-     "to": "p1",
-     "res": "ok"
-    },
-    {
-     "to": "s3x",
-     "res": "fail"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "방어도 % 증가 1티어",
-     "en": "Armour % T1",
-     "m": "f",
-     "tags": [
-      "armP"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "방어도의 원소 피해 적용 1티어",
-     "en": "Armour to elemental T1",
-     "m": "n",
-     "tags": [
-      "armEle"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "힘 1티어",
-     "en": "Strength T1",
-     "m": "n",
-     "tags": [
-      "str"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "화염·냉기·번개 저항 중 하나",
-     "en": "Fire / cold / lightning resist",
-     "m": "n"
-    }
-   ]
-  },
-  {
-   "id": "s3x",
-   "kind": "cleanup",
-   "group": "main",
-   "pos": [
-    1,
-    10
-   ],
-   "keep": [
-    "armEle",
-    "str"
-   ],
-   "maxJunk": 0,
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "빗나간 접미 지우기 (앞의 접미 2줄은 유지)",
-    "en": "Remove the missed suffix (keep the first two)"
-   },
-   "edges": [
-    {
-     "lost": "armEle",
-     "to": "s3y",
-     "res": "fail"
-    },
-    {
-     "lost": "str",
-     "to": "s2x",
-     "res": "fail"
-    },
-    {
-     "to": "s3",
-     "res": "ok"
-    }
-   ]
-  },
-  {
-   "id": "s3y",
+   "id": "s2y",
    "kind": "cleanup",
    "group": "main",
    "pos": [
     2,
-    10
+    9
    ],
-   "keep": [],
+   "keep": [
+    "X"
+   ],
    "maxJunk": 1,
    "label": {
     "kr": "소멸의 오브 사용",
@@ -1286,12 +1304,18 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "잡옵 1줄만 남기기 (접미 첫번째부터 다시)",
-    "en": "Keep one junk line (redo from the first suffix)"
+    "kr": "겹친 저항 지우기",
+    "en": "Remove the extra resist"
    },
    "edges": [
     {
-     "to": "s1"
+     "lost": "X",
+     "to": "s2x",
+     "res": "fail"
+    },
+    {
+     "to": "s2",
+     "res": "ok"
     }
    ]
   },
@@ -1320,13 +1344,31 @@
    "edges": [
     {
      "if": {
+      "all": [
+       {
+        "full": "p"
+       },
+       {
+        "sideAll": {
+         "side": "p",
+         "tag": "PRE"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
       "added": "PRE"
      },
      "to": "p2",
      "res": "ok"
     },
     {
-     "to": "p1x",
+     "to": "q1",
      "res": "fail"
     }
    ],
@@ -1348,12 +1390,9 @@
     },
     {
      "s": "s",
-     "kr": "방어도의 원소 피해 적용 1티어",
-     "en": "Armour to elemental T1",
-     "m": "n",
-     "tags": [
-      "armEle"
-     ]
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
     },
     {
      "s": "s",
@@ -1366,24 +1405,144 @@
     },
     {
      "s": "s",
-     "kr": "화염·냉기·번개 저항 중 하나",
-     "en": "Fire / cold / lightning resist",
-     "m": "n"
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
     }
-   ]
+   ],
+   "skipIf": {
+    "not": {
+     "sideAll": {
+      "side": "p",
+      "tag": "PRE"
+     }
+    }
+   },
+   "skipTo": "q1",
+   "skipHide": true
   },
   {
-   "id": "p1x",
+   "id": "q1",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
     11
    ],
+   "act": "essence",
+   "ess": "mark",
+   "mark": true,
+   "cur": "Essence_of_the_Abyss",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
+   "goal": {
+    "kr": "빗나간 접두를 징표로 바꾸기",
+    "en": "Turn the missed prefix into the Mark"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "심연 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
+    }
+   ],
+   "label": {
+    "kr": "심연",
+    "en": "Abyss"
+   },
+   "edges": [
+    {
+     "to": "q2"
+    }
+   ]
+  },
+  {
+   "id": "q2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    12
+   ],
+   "act": "desecrate",
+   "fromMark": true,
+   "cur": "Ancient_Rib",
+   "goal": {
+    "kr": "징표 훼손",
+    "en": "Desecrate the Mark"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "q3"
+    }
+   ]
+  },
+  {
+   "id": "q3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    13
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "PRED",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "show": [
+    "msD",
+    "lifeD"
+   ],
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "PRED"
+     },
+     "to": "q4",
+     "res": "ok"
+    },
+    {
+     "to": "q3x",
+     "res": "fail"
+    }
+   ]
+  },
+  {
+   "id": "q3x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    13
+   ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
    "omens": [
-    "Omen_of_Sinistral_Annulment"
+    "Omen_of_Light"
    ],
    "label": {
     "kr": "소멸의 오브 사용",
@@ -1394,12 +1553,79 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접두 지우기",
-    "en": "Remove the missed prefix"
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
    },
    "edges": [
     {
      "to": "p1"
+    }
+   ]
+  },
+  {
+   "id": "q4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    14
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix option"
+   },
+   "show": [
+    "ms",
+    "life"
+   ],
+   "label": {
+    "kr": "접두 3",
+    "en": "Prefix 3"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "PRE"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "q4x",
+     "res": "fail"
+    }
+   ]
+  },
+  {
+   "id": "q4x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    14
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "q1"
     }
    ]
   },
@@ -1409,7 +1635,7 @@
    "group": "main",
    "pos": [
     0,
-    12
+    15
    ],
    "act": "desecrate",
    "cur": "Ancient_Rib",
@@ -1457,12 +1683,9 @@
     },
     {
      "s": "s",
-     "kr": "방어도의 원소 피해 적용 1티어",
-     "en": "Armour to elemental T1",
-     "m": "n",
-     "tags": [
-      "armEle"
-     ]
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
     },
     {
      "s": "s",
@@ -1475,9 +1698,12 @@
     },
     {
      "s": "s",
-     "kr": "화염·냉기·번개 저항 중 하나",
-     "en": "Fire / cold / lightning resist",
-     "m": "n"
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
     }
    ]
   },
@@ -1487,7 +1713,7 @@
    "group": "main",
    "pos": [
     0,
-    13
+    16
    ],
    "act": "reveal",
    "omens": [
@@ -1543,12 +1769,9 @@
     },
     {
      "s": "s",
-     "kr": "방어도의 원소 피해 적용 1티어",
-     "en": "Armour to elemental T1",
-     "m": "n",
-     "tags": [
-      "armEle"
-     ]
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
     },
     {
      "s": "s",
@@ -1561,9 +1784,12 @@
     },
     {
      "s": "s",
-     "kr": "화염·냉기·번개 저항 중 하나",
-     "en": "Fire / cold / lightning resist",
-     "m": "n"
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
     }
    ]
   },
@@ -1573,7 +1799,7 @@
    "group": "main",
    "pos": [
     1,
-    13
+    16
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1604,7 +1830,7 @@
    "group": "main",
    "pos": [
     0,
-    14
+    17
    ],
    "label": {
     "kr": "완성",

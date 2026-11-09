@@ -99,3 +99,10 @@
 ## 1차 시험 결과 (치명타 투구, 20,000회)
 
 `tools/sim/run.js` 출력과 `site/data/sim/diztoh-crit-helmet-v2.json` 참고. 요약은 CLAUDE.md "남은 일".
+
+## 2026-11-10 추가 (시한 장화 2차)
+
+- 조건: `count:{tag,min}`(그 태그 줄 수), `allMods:tag`(미공개 말고 모든 줄이 그 태그), `sideLt:{side,n}`(그 면 줄 수 < n).
+- `act:'essence'` + `omens`에 결정화의 징조: 레어면 그 면 줄 하나를 먼저 지우고 에센스 줄을 붙임. `mark:true`면 그 줄이 심연 군주의 징표.
+- `act:'desecrate'` + `fromMark:true`: 징표를 미공개 훼손 줄로 바꿈(뼈 최소 레벨 적용).
+- 간선 `hide:true` + `res:'ok'`도 그 단계 성공 확률 계산에 들어감(화면엔 안 그림).

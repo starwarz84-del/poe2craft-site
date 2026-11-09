@@ -56,6 +56,9 @@ function make(graph, D, craft, params){
       if(c.removed) return last.removed.some(m=>match(m,c.removed));
       if(c.fractured) return !!last.fr && match(last.fr, c.fractured);
       if(c.full) return count(c.full)>=maxA(c.full);
+      if(c.sideLt) return count(c.sideLt.side) < c.sideLt.n;
+      if(c.count) return it.mods.filter(m=>match(m,c.count.tag)).length>=c.count.min;
+      if(c.allMods) return it.mods.every(m=>m.unrev || match(m,c.allMods));
       if(c.sideAll){ const xs=it.mods.filter(m=>m.side===c.sideAll.side && !m.fr); return xs.every(m=>match(m,c.sideAll.tag)); }
       if(c.param) return Object.entries(c.param).every(([k,v])=>params[k]===v);
       throw new Error('bad condition '+JSON.stringify(c)); }
@@ -82,9 +85,12 @@ function make(graph, D, craft, params){
         if(oms.includes('Omen_of_Whittling')){ const c=it.mods.filter(m=>!m.fr && !m.unrev && (!er || m.side===er)); if(c.length){ const lo=Math.min(...c.map(lvl)), xs=c.filter(m=>lvl(m)===lo); take(xs[Math.floor(rnd()*xs.length)]); } }
         else takeRandom(er ? (m=>m.side===er) : null);
         add(null, mn); }
-      else if(a==='essence'){ it.rar='rare'; const t=tags[n.ess]; const m={gi:t.gi, ti:0, side:G[t.gi].g, ess:true}; it.mods.push(m); last.added.push(m); }   // magic → rare + the essence line (top tier)
+      else if(a==='essence'){ const t=tags[n.ess], sd=G[t.gi].g, cr=sideOm(oms,/Sinistral_Crystallisation/,/Dextral_Crystallisation/);   // magic → rare + the essence line (top tier); on a rare one line goes first (Crystallisation picks its side)
+        if(it.rar==='rare') takeRandom(cr ? (m=>m.side===cr) : null); it.rar='rare';
+        const m={gi:t.gi, ti:0, side:sd, ess:true, mark:!!n.mark}; it.mods.push(m); last.added.push(m); }
       else if(a==='annul'){ const sd=sideOm(oms,/Sinistral_Annulment/,/Dextral_Annulment/);
         takeRandom(oms.includes('Omen_of_Light') ? (m=>m.unrev||m.des||G[m.gi]?.s==='d') : sd ? (m=>m.side===sd) : null); }
+      else if(a==='desecrate' && n.fromMark){ const mk=it.mods.find(m=>m.mark); if(mk){ take(mk); const m={unrev:true, side:mk.side, bone:cur, min:mn, marked:true}; it.mods.push(m); last.added.push(m); } }   // a bone on the Abyssal Lord's Mark: the mark becomes the unrevealed desecrated line
       else if(a==='desecrate'){ const sd=sideOm(oms,/Sinistral_Necromancy/,/Dextral_Necromancy/), ss=sd?[sd]:['p','s'];
         let free=ss.filter(s=>count(s)<maxA(s)), s;
         if(free.length) s=free[Math.floor(rnd()*free.length)];
