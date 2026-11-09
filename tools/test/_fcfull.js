@@ -5,7 +5,7 @@ const {chromium}=require('playwright');
   await p.goto(`http://localhost:8779/recipes.html?lang=${lang}#r-${id}`); await p.waitForFunction(()=>window.__rec && __rec.booted);
   await p.click('[data-act="sim"]'); await p.waitForSelector('[data-simbox] .fcn');
   await p.click(`[data-simver="${ver}"]`); await p.click('[data-act="simfull"]'); await p.waitForTimeout(300);
-  const h=await p.$eval('.fcin', e=>e.offsetHeight), w=await p.$eval('.fcin', e=>e.offsetWidth);
+  const h=await p.$eval('.simbox .fc', e=>e.scrollHeight), w=await p.$eval('.fcin', e=>e.offsetWidth);
   await p.setViewportSize({width:Math.max(1200,w+40), height:h+200}); await p.waitForTimeout(300);
   await p.screenshot({path:`shots/fc-${id}-${ver}-${lang}.png`});
   console.log('canvas', w, h, 'errors', errs); await b.close(); })();
