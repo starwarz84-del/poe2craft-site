@@ -4,7 +4,7 @@
 #   high-end  = resist T1, desecrated prefix T1
 #   balance   = resist T1–2, desecrated prefix T1–2
 #   essential = third suffix as it comes, desecrated prefix T1–3
-# 2차 (2026-11-10 user feedback): rare by Perfect Regal (policy 26), suffixes resist first then Dextral exalt + Annulment,
+# 2차 (2026-11-10 user feedback): rare by Perfect Regal (policy 26), suffixes as the video (armour-to-elemental by Chaos, then strength, then resist by Dextral exalt + Annulment),
 # a missed prefix exalt becomes the Abyssal Lord's Mark (Sinistral Crystallisation + Essence of the Abyss) → desecrate the Mark → reveal.
 # The fracture prep is not in the video (it starts from a fractured base).
 c='Boots_str'; VSB='https://www.youtube.com/watch?v=dlrD21AcCUE'
@@ -31,13 +31,13 @@ def sh_boots(tier):
   {'id':'f1','phase':'fracture','do':'desecrate','cur':'Preserved_Rib','target':{'unrev':'s'}},
   {'id':'f2','phase':'fracture','do':'fracture','cur':'Fracturing_Orb','target':{'anyOf':[{'gi':sb_armP},{'gi':sb_ele}]+GOOD}},
   {'id':'f4','phase':'fracture','do':'remove','cur':'Orb_of_Annulment','expect':2,'after':{'keepOnly':[sb_armP,'junk1']}},
-  {'id':'s1','phase':'suffix','do':'chaos','cur':'Chaos_Orb','target':{'anyOf':RES},'fail':{'goto':'self'},'label':K('저항 먼저','Resist first')},
-  {'id':'s2','phase':'suffix','do':'exalt',**DEX,'target':{'anyOf':X},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s1'}},
+  {'id':'s1','phase':'suffix','do':'chaos','cur':'Chaos_Orb','target':{'gi':sb_ele,'tmax':1},'fail':{'goto':'self'},'ts':'9:59'},
+  {'id':'s2','phase':'suffix','do':'exalt',**DEX,'target':{'gi':sb_str,'tmax':1},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s1'},'ts':'11:57'},
     ]
     if ess:
-        nodes.append({'id':'s3','phase':'suffix','do':'exalt',**DEX,'target':{'junk':'s'},'label':K('접미 세번째 옵션 (나오는 대로)','Third suffix (whatever comes)')})
+        nodes.append({'id':'s3','phase':'suffix','do':'exalt',**DEX,'target':{'junk':'s'},'label':K('접미 세번째 옵션 (나오는 대로)','Third suffix (whatever comes)'),'ts':'10:17'})
     else:
-        nodes.append({'id':'s3','phase':'suffix','do':'exalt',**DEX,'target':{'anyOf':X},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s2'}})
+        nodes.append({'id':'s3','phase':'suffix','do':'exalt',**DEX,'target':{'anyOf':RES},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s2'},'ts':'10:17'})
     nodes+=[
   {'id':'p1','phase':'prefix','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':PRE},'br':K('성공 → 훼손 / 실패 → 심연의 에센스로 징표','Hit → desecrate; miss → the Abyssal Mark')},
   {'id':'p2','phase':'prefix','branch':{'of':'p1','when':'ok'},'do':'desecrate','cur':'Ancient_Rib','target':{'unrev':'p'}},

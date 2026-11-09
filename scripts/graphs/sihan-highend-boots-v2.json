@@ -5,7 +5,7 @@
  "base": "Tasalian Greaves",
  "ilvl": 82,
  "basePrice": {},
- "note": "시한 하이엔드 장화 2차 초안(2026-11-10 사용자 피드백 반영): 레어 전환 = 완벽한 제왕의 오브(잡옵이 붙어도 분열 진행, 잡옵이 분열되면 새 베이스), 접미 = 저항 먼저 → 우측 찬미 엑잘 + 소멸의 오브(절사의 징조 방식은 시뮬 결과 약 3배 비싸서 제외), 접두 엑잘 실패 = 좌측 결정화의 징조 + 심연의 에센스로 징표 → 징표 훼손 → 공개.",
+ "note": "시한 하이엔드 장화 2차 초안(2026-11-10 사용자 피드백 반영): 레어 전환 = 완벽한 제왕의 오브(잡옵이 붙어도 분열 진행, 잡옵이 분열되면 새 베이스), 접미 = 영상 순서(방어도 원소 적용 카오스 → 힘 → 저항, 우측 찬미 엑잘 + 소멸의 오브), 접두 엑잘 실패 = 좌측 결정화의 징조 + 심연의 에센스로 징표 → 징표 훼손 → 공개.",
  "params": {
   "resT": {
    "kr": "저항 목표",
@@ -311,10 +311,10 @@
  "require": {
   "all": [
    {
-    "has": "RES"
+    "has": "armEle"
    },
    {
-    "has": "X"
+    "has": "str"
    },
    {
     "has": "PRE"
@@ -364,12 +364,15 @@
   {
    "id": "L2",
    "nodes": [
+    "s1",
     "s2",
     "s2x",
-    "s2y"
+    "s3",
+    "s3x",
+    "s3y"
    ],
-   "kr": "접미 2·3번째",
-   "en": "Suffix 2–3"
+   "kr": "접미 3줄",
+   "en": "Three suffixes"
   },
   {
    "id": "L4",
@@ -467,6 +470,10 @@
     },
     {
      "tag": "armEle",
+     "tmax": 1
+    },
+    {
+     "tag": "str",
      "tmax": 1
     },
     {
@@ -1072,27 +1079,25 @@
    "act": "chaos",
    "cur": "Chaos_Orb",
    "goal": {
-    "kr": "접미 첫번째 옵션 (저항 먼저)",
-    "en": "First suffix option (resist first)"
+    "kr": "접미 첫번째 옵션",
+    "en": "First suffix option"
    },
    "show": [
-    "fire",
-    "cold",
-    "light"
+    "armEle"
    ],
    "label": {
-    "kr": "저항",
-    "en": "Resist"
+    "kr": "접미 1",
+    "en": "Suffix 1"
    },
    "skipIf": {
-    "has": "RES"
+    "has": "armEle"
    },
    "skipTo": "s2",
    "skipHide": true,
    "edges": [
     {
      "if": {
-      "added": "RES"
+      "added": "armEle"
      },
      "to": "s2",
      "res": "ok"
@@ -1115,9 +1120,12 @@
     },
     {
      "s": "s",
-     "kr": "화염·냉기·번개 저항 중 하나",
-     "en": "Fire / cold / lightning resist",
-     "m": "n"
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
     }
    ]
   },
@@ -1135,75 +1143,23 @@
     "Omen_of_Dextral_Exaltation"
    ],
    "goal": {
-    "kr": "접미 두번째·세번째 옵션",
-    "en": "Second and third suffix options"
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix option"
    },
    "show": [
-    "fire",
-    "cold",
-    "light",
-    "str",
-    "armEle"
+    "str"
    ],
    "label": {
-    "kr": "접미 2·3",
-    "en": "Suffix 2–3"
+    "kr": "접미 2",
+    "en": "Suffix 2"
    },
    "edges": [
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "last": "none"
-        }
-       },
-       {
-        "full": "s"
-       },
-       {
-        "has": "RES"
-       },
-       {
-        "has": "X"
-       }
-      ]
+      "added": "str"
      },
-     "to": "p1",
+     "to": "s3",
      "res": "ok"
-    },
-    {
-     "if": {
-      "ref": "sufDone"
-     },
-     "to": "p1",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "full": "s"
-       },
-       {
-        "count": {
-         "tag": "sKeep",
-         "min": 3
-        }
-       }
-      ]
-     },
-     "to": "s2y",
-     "res": "fail",
-     "hide": true
-    },
-    {
-     "if": {
-      "added": "sKeep"
-     },
-     "to": "s2",
-     "res": "ok",
-     "hide": true
     },
     {
      "to": "s2x",
@@ -1222,9 +1178,12 @@
     },
     {
      "s": "s",
-     "kr": "화염·냉기·번개 저항 중 하나",
-     "en": "Fire / cold / lightning resist",
-     "m": "n"
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
     },
     {
      "s": "s",
@@ -1233,15 +1192,6 @@
      "m": "n",
      "tags": [
       "str"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "방어도의 원소 피해 적용 1티어",
-     "en": "Armour to elemental T1",
-     "m": "n",
-     "tags": [
-      "armEle"
      ]
     }
    ]
@@ -1255,7 +1205,7 @@
     9
    ],
    "keep": [
-    "sKeep"
+    "armEle"
    ],
    "maxJunk": 0,
    "label": {
@@ -1267,15 +1217,14 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접미 지우기 (유효 옵션은 유지)",
-    "en": "Remove the missed suffix (keep the wanted ones)"
+    "kr": "빗나간 접미 지우기 (첫번째 접미는 유지)",
+    "en": "Remove the missed suffix (keep the first)"
    },
    "edges": [
     {
-     "lost": "sKeep",
-     "to": "s2x",
-     "res": "fail",
-     "hide": true
+     "lost": "armEle",
+     "to": "s1",
+     "res": "fail"
     },
     {
      "to": "s2",
@@ -1284,16 +1233,140 @@
    ]
   },
   {
-   "id": "s2y",
+   "id": "s3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix option"
+   },
+   "show": [
+    "fire",
+    "cold",
+    "light"
+   ],
+   "label": {
+    "kr": "접미 3",
+    "en": "Suffix 3"
+   },
+   "edges": [
+    {
+     "if": {
+      "param": {
+       "last": "none"
+      }
+     },
+     "to": "p1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "added": "RES"
+     },
+     "to": "p1",
+     "res": "ok"
+    },
+    {
+     "to": "s3x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "힘 1티어",
+     "en": "Strength T1",
+     "m": "n",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "s3x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    10
+   ],
+   "keep": [
+    "armEle",
+    "str"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접미 지우기 (앞의 접미 2줄은 유지)",
+    "en": "Remove the missed suffix (keep the first two)"
+   },
+   "edges": [
+    {
+     "lost": "armEle",
+     "to": "s3y",
+     "res": "fail"
+    },
+    {
+     "lost": "str",
+     "to": "s2x",
+     "res": "fail"
+    },
+    {
+     "to": "s3",
+     "res": "ok"
+    }
+   ]
+  },
+  {
+   "id": "s3y",
    "kind": "cleanup",
    "group": "main",
    "pos": [
     2,
-    9
+    10
    ],
-   "keep": [
-    "X"
-   ],
+   "keep": [],
    "maxJunk": 1,
    "label": {
     "kr": "소멸의 오브 사용",
@@ -1304,18 +1377,12 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "겹친 저항 지우기",
-    "en": "Remove the extra resist"
+    "kr": "잡옵 1줄만 남기기 (접미 첫번째부터 다시)",
+    "en": "Keep one junk line (redo from the first suffix)"
    },
    "edges": [
     {
-     "lost": "X",
-     "to": "s2x",
-     "res": "fail"
-    },
-    {
-     "to": "s2",
-     "res": "ok"
+     "to": "s1"
     }
    ]
   },
