@@ -280,6 +280,11 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .dhead .dtop{margin-bottom:6px;align-items:center}
 .dhead .dtitle h1{font-size:19px}
 .dhead .prog{position:static;border:0;margin:0;padding:4px 0 10px}
+.rtabs{display:flex;gap:2px;margin:4px 0 2px;border-bottom:1px solid var(--line);overflow-x:auto}
+.rtab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font:inherit;font-size:13.5px;padding:7px 14px 8px;cursor:pointer;white-space:nowrap}
+.rtab small{margin-left:2px;font-size:12.5px}
+.rtab:hover{color:var(--fg)}.rtab.on{color:var(--fg);border-bottom-color:var(--rare);font-weight:600}
+.fcpane .simbox{margin-top:0}
 .dnav,.ditem{top:calc(var(--dh,120px) + 10px);max-height:calc(100vh - var(--dh,120px) - 20px)}
 .node{scroll-margin-top:calc(var(--dh,120px) + 12px)}
 .lg{display:inline-flex;align-items:center;font-size:11.5px;border:1px solid color-mix(in srgb,var(--rare) 45%,var(--line));color:var(--rare);border-radius:999px;padding:0 8px;position:relative;cursor:default}
@@ -1296,6 +1301,13 @@ function itemTipHTML(r, o, opt={}){
     ${b.img?`<div class="tt-art"><img src="${b.img}" alt=""></div>`:''}<div class="tt-props"><div class="tt-prop">${esc(clsName(r))}</div>${basePropsHTML(r,o)}${q}<div class="tt-prop">${L('아이템 레벨','Item Level')}: <b>${r.ilvl}</b></div></div>
     ${ru}${va}${cnt}${ench}<div class="tt-sep"></div>${side('p')}<div class="tt-gap"></div>${side('s')}${o.sanct?`<div class="tt-sep"></div><div class="tt-sanct">${L('축성','Sanctified')}</div>`:''}</div></div>`;
 }
+// grade tabs (사용자 확정 2026-11-09 23:35): 레시피(하이엔드) / 레시피(밸런스) / 레시피(에센셜) / 플로우 차트 — header and progress bar shared
+const TIER_ORDER=['high','bal','ess'];
+function tierSibs(r){ if(!r.tierGroup) return []; return S.recipes.filter(x=>x.tierGroup===r.tierGroup).sort((a,b)=>TIER_ORDER.indexOf(a.tier)-TIER_ORDER.indexOf(b.tier)); }
+function tierLead(r){ return tierSibs(r).find(x=>x.tier==='high') || r; }
+function tabsHTML(r){ const sibs=tierSibs(r); if(!sibs.length) return ''; const lead=tierLead(r), fc=S.fcTab && lead.sim;
+  const name={high:L('하이엔드','High-end'), bal:L('밸런스','Balance'), ess:L('에센셜','Essential')};
+  return `<div class="rtabs" role="tablist">${sibs.map(x=>`<button type="button" role="tab" class="rtab ${!fc&&x.id===r.id?'on':''}" data-rtab="${esc(x.id)}" aria-selected="${!fc&&x.id===r.id}">${L('레시피','Recipe')}<small>(${name[x.tier]||esc(tx(x.tierLabel))})</small></button>`).join('')}${lead.sim?`<button type="button" role="tab" class="rtab ${fc?'on':''}" data-rtab="fc" aria-selected="${!!fc}">${L('플로우 차트','Flowchart')}</button>`:''}</div>`; }
 function detailHTML(r){
   const a=analyse(r), so=social(r.id), old=isOld(r); CUR_R=r;
   const rows = sortKeys(a.keys).map(k=>`<tr><td>${icon(k,r)}${esc(nm(cur(k)))}</td><td class="num">${fmt(a.tot[k])}</td></tr>`).join('');
@@ -1312,8 +1324,8 @@ function detailHTML(r){
         <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan?`<button type="button" class="btn" data-share="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>`:''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${budgetTag(r)}${leagueBadge(r, old)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
       <div class="acts"><button type="button" class="btn" data-act="link">${L('링크 복사','Copy link')}</button><button type="button" class="btn" data-act="pdf">${L('PDF 다운로드','Download PDF')}</button>
         <button type="button" class="btn" disabled title="${esc(L('준비 중','Coming soon'))}">${L('에뮬레이터에서 따라하기','Follow in emulator')}</button>
-        ${r.sim?`<button type="button" class="btn ${S.simOpen?'on':''}" data-act="sim" aria-pressed="${S.simOpen}">${L('플로우차트','Flowchart')}</button>`:`<button type="button" class="btn" disabled title="${esc(L('준비 중','Coming soon'))}">${L('시뮬레이션 진행','Run simulation')}</button>`}</div></div>
-    <div class="prog"><div class="segs">${segs}</div><span class="plabel" data-plabel></span></div></div>
+        ${r.tierGroup?'':r.sim?`<button type="button" class="btn ${S.simOpen?'on':''}" data-act="sim" aria-pressed="${S.simOpen}">${L('플로우차트','Flowchart')}</button>`:`<button type="button" class="btn" disabled title="${esc(L('준비 중','Coming soon'))}">${L('시뮬레이션 진행','Run simulation')}</button>`}</div></div>
+    ${tabsHTML(r)}<div class="prog"><div class="segs">${segs}</div><span class="plabel" data-plabel></span></div></div>
     <div class="dgrid">
       <nav class="dnav" aria-label="${esc(L('단계','Steps'))}">${nav}
         <div class="navx"><button type="button" class="btn sm" data-act="reset-done">${L('완료 표시 지우기','Clear ticks')}</button></div></nav>
@@ -1350,7 +1362,7 @@ function detailHTML(r){
 // data/sim/<id>.json is made at build time (tools/sim/run.js: real rolls, 20,000 finished items per strategy); the page only draws it
 S.simData={}; S.simOpen=false; S.fcItems=store.get('fcItems', true); S.simSel=store.get('simSel',{});
 function loadSim(r){ if(S.simData[r.id]) return;
-  S.simData[r.id]='loading'; fetch(`data/sim/${r.id}.json`).then(x=>x.ok?x.json():null).catch(()=>null).then(d=>{ S.simData[r.id]=d||'none'; if(S.open===r.id) keepY(renderDetail); }); }
+  S.simData[r.id]='loading'; fetch(`data/sim/${r.id}.json`).then(x=>x.ok?x.json():null).catch(()=>null).then(d=>{ S.simData[r.id]=d||'none'; const o=S.recipes.find(x=>x.id===S.open); if(o && (o.id===r.id || tierLead(o)===r)) keepY(renderDetail); }); }
 function simStrategy(d){ const vis=d.strategies.filter(s=>!s.hidden), keys=Object.keys(vis[0].params).filter(k=>new Set(vis.map(s=>String(s.params[k]))).size>1);
   const sel={}; keys.forEach(k=>{ const v=S.simSel[k]; sel[k] = v!=null && vis.some(s=>String(s.params[k])===String(v)) ? String(v) : String(vis[0].params[k]); });
   const s=vis.find(s=>keys.every(k=>String(s.params[k])===sel[k])) || vis[0]; return {s, keys, sel}; }
@@ -1581,13 +1593,15 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
       <table class="simtab"><thead><tr><th>${L('단계','Step')}</th><th class="num">${L('도달','Reached')}</th><th>${L('사용','Used')}</th><th class="num">div</th></tr></thead><tbody>${rows}</tbody></table></details>
     <p class="simnote">${L(`시뮬레이션 ${d.runs.toLocaleString()}회 · 모든 수치는 완성 1개당 평균 · 도달 = 완성품 중 그 단계를 거친 비율 · 접미 분열은 같은 비용으로 가정`,`${d.runs.toLocaleString()} simulated items · all numbers are averages per finished item · reached = share of items that went through the step · suffix fracture assumed to cost the same`)}</p>
   </section>`; }
-function simHTML(r){ if(!r.sim || !S.simOpen) return ''; const d=S.simData[r.id];
+function simHTML(r, force){ if(!r.sim || !(S.simOpen||force)) return ''; const d=S.simData[r.id];
   if(!d || d==='loading'){ loadSim(r); return `<section class="simbox"><p class="simnote">${L('불러오는 중…','Loading…')}</p></section>`; }
   if(d==='none') return `<section class="simbox"><p class="simnote">${L('시뮬레이션 데이터가 없어요.','No simulation data.')}</p></section>`;
   return flowchartHTML(r, d); }
 function renderDetail(){
   const r=S.recipes.find(x=>x.id===S.open); if(!r) return;
-  $('#detail').innerHTML=detailHTML(r); S.stepIdx=-1; setHeadH(); pairRows($('#detail')); document.fonts?.ready.then(()=>pairRows($('#detail'))); syncStep(true);
+  let html=detailHTML(r); const lead=tierLead(r);
+  if(S.fcTab && r.tierGroup && lead.sim){ const i=html.indexOf('<div class="dgrid">'); html=html.slice(0,i)+`<div class="fcpane">${simHTML(lead, true)}</div>`; }
+  $('#detail').innerHTML=html; S.stepIdx=-1; setHeadH(); pairRows($('#detail')); document.fonts?.ready.then(()=>pairRows($('#detail'))); syncStep(true);
 }
 // which step is "current": the last node whose top has passed 45% of the space under the header
 function syncStep(force){
@@ -1697,6 +1711,7 @@ const pinned = () => pin && pin.r===S.open && (glide || Math.abs(scrollY-pin.y)<
 function list(){
   const q=S.q.trim().toLowerCase();
   let a = S.recipes.filter(r=>{
+    if(r.tierGroup && r.tier!=='high') return false;
     if(S.cat && catOf(r)?.id!==S.cat) return false;
     if(S.curOnly && isOld(r)) return false;
     if(S.tags.size){ const t=tagsOf(r); for(const x of S.tags) if(!t.has(x)) return false; }
@@ -1792,6 +1807,7 @@ function renderTips(){
 function setOpen(id){
   if(!S.open) S.listY=scrollY;
   if(S.simFull){ S.simFull=false; document.body.classList.remove('simfull'); }
+  if(!id || !S.recipes.find(x=>x.id===id)?.tierGroup) S.fcTab=false;
   S.open=id||null; render();
   try{ parent.postMessage({type:'poe2-route', hash: S.open?('r-'+S.open):'recipes'}, '*'); }catch(e){}
   if(S.open) scrollTo(0,0); else requestAnimationFrame(()=>scrollTo(0,S.listY||0));
@@ -1856,6 +1872,7 @@ $('#detail').addEventListener('click', e=>{
   const ph=e.target.closest('[data-phase]'); if(ph){ const id=ph.dataset.phase; S.navClosed.has(id)?S.navClosed.delete(id):S.navClosed.add(id); ph.closest('.nvp').classList.toggle('closed'); ph.setAttribute('aria-expanded', !S.navClosed.has(id)); return; }
   const sg=e.target.closest('[data-seg]'); if(sg){ const n=r.nodes.find(x=>x.phase===sg.dataset.seg); n && goNode(n.id); return; }
   const tk=e.target.closest('[data-done]'); if(tk){ const d=doneSet(r), id=tk.dataset.done; d.has(id)?d.delete(id):d.add(id); store.set('done:'+r.id,[...d]); keepY(renderDetail); return; }
+  const rt=e.target.closest('[data-rtab]'); if(rt){ const v=rt.dataset.rtab; if(v==='fc'){ S.fcTab=true; renderDetail(); scrollTo(0,0); } else { S.fcTab=false; if(v!==r.id) setOpen(v); else renderDetail(); scrollTo(0,0); } return; }
   const sv=e.target.closest('[data-simver]'); if(sv){ const d=S.simData[r.id], v=d?.graph?.versions?.find(x=>x.id===sv.dataset.simver); if(v){ S.simSel={...S.simSel, ...Object.fromEntries(Object.entries(v.params).map(([k,x])=>[k,String(x)]))}; store.set('simSel', S.simSel); keepY(renderDetail); } return; }
   const sk=e.target.closest('[data-simk]'); if(sk){ S.simSel={...S.simSel, [sk.dataset.simk]:sk.dataset.simv}; store.set('simSel', S.simSel); keepY(renderDetail); return; }
   const a=e.target.closest('[data-act]'); if(!a) return; const so=social(r.id);

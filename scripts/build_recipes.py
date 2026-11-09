@@ -508,6 +508,8 @@ FRSTART = {
  'mazbro-proj-gloves': _fb(('g2','g7'), [{'gi':81,'fr':True},{'junk':'p'}], '콜르의 사냥을 장착한 상태로 모든 투사체 스킬 레벨 +2 분열 + 잡옵 1줄.', "Kolr's Hunt socketed: fractured +2 projectile skills plus one junk line.", 30, [KOLR_]),
  'diztoh-iceshot-bow': _fb(('w2','w6'), [{'gi':7,'tmax':1,'fr':True},{'junk':'p'}], '물리 피해 % 1티어 분열 + 잡옵 1줄.', 'Fractured T1 % physical damage plus one junk line.'),
  'diztoh-crit-helmet-v2': _fb(('h2','h7'), [{'gi':9,'tmax':1,'fr':True},{'junk':'s'}], '퀄리티 20%. 회피 및 에너지 보호막 % 1티어 분열 + 잡옵 1줄.', 'Quality 20%. Fractured T1 % evasion and energy shield plus one junk line.', 20),
+ 'diztoh-crit-helmet-v2-bal': _fb(('h2','h7'), [{'gi':9,'tmax':1,'fr':True},{'junk':'s'}], '퀄리티 20%. 회피 및 에너지 보호막 % 1티어 분열 + 잡옵 1줄.', 'Quality 20%. Fractured T1 % evasion and energy shield plus one junk line.', 20),
+ 'diztoh-crit-helmet-v2-ess': _fb(('h2','h7'), [{'gi':9,'tmax':1,'fr':True},{'junk':'s'}], '퀄리티 20%. 회피 및 에너지 보호막 % 1티어 분열 + 잡옵 1줄.', 'Quality 20%. Fractured T1 % evasion and energy shield plus one junk line.', 20),
  'diztoh-socket-gloves': _fb(('d2','d6'), [{'gi':82,'fr':True},{'gi':8,'tmax':2},{'gi':57,'crafted':True},{'unrev':'p'}], '콜르의 사냥을 장착한 상태로 모든 투사체 스킬 레벨 +2 분열 + 에너지 보호막 최대치 + 희귀도(상위 풍요의 에센스) + 미공개 훼손 접두.', "Kolr's Hunt socketed: fractured +2 projectile skills, flat energy shield, rarity (Greater Essence of Opulence) and an unrevealed desecrated prefix.", None, [KOLR_]),
  'mazbro-sceptre': _fb(('z2','z6'), [{'gi':10,'tmax':1,'fr':True},{'junk':'s'}], '동료 피해 1티어 분열 + 잡옵 1줄.', 'Fractured T1 ally damage plus one junk line.'),
  'mazbro-spell5-amulet': _fb(('z2','z6'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '정신력 +50 분열 + 잡옵 1줄.', 'Fractured +50 Spirit plus one junk line.'),

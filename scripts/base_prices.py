@@ -18,6 +18,8 @@ BASEPRICE = {
   'diztoh-iceshot-bow': None,
   'diztoh-budget-mace': None,
   'diztoh-crit-helmet-v2': 0.9,   # 사용자 흐름: 특출난 웃는 가면 약 8 카오스 오브(카오스 40.4 ex × 8 ÷ 363 ≈ 0.9 div)
+  'diztoh-crit-helmet-v2-bal': 0.9,
+  'diztoh-crit-helmet-v2-ess': 0.9,
   'diztoh-5mod-sapphire': None,
   'ragna-spell4-amulet': None,
   'breach-ring-phys': None,
