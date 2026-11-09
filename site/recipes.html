@@ -437,14 +437,16 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcn.k-task{border:1px solid var(--line);border-radius:6px;background:var(--panel-2);padding:7px 9px;display:flex;flex-direction:column;gap:3px;overflow:hidden}
 .fcn.k-task.k-clean{background:var(--panel)}
 .fcn.k-task.inloop{box-shadow:inset 3px 0 0 #b9a2ff}
-.fch{display:flex;gap:6px;align-items:flex-start;min-height:30px}
+.fch{display:flex;gap:6px;align-items:flex-start}
 .fch em{font-style:normal;flex:none;display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 3px;border-radius:4px;background:var(--line);color:var(--fg);font-size:10.5px;font-family:var(--f-mono)}
 .fch b{flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .fch .sep{color:var(--faint)}
 .fcw{display:grid;gap:2px;color:#a9a9ff;font-size:11.5px;line-height:1.38}
 .fcw p{margin:0}.fcw b{color:var(--muted);font-weight:500}.fcw i{font-style:normal;color:var(--rare);font-family:var(--f-mono);font-size:10.5px}.fcw u{text-decoration:none;color:var(--muted)}
 .fc1 .pr{margin-left:8px;color:var(--muted)}.fc1 .pr b{color:var(--rare)}
-.fc1{margin-top:auto;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+.fc1{margin-top:auto;color:var(--fg);white-space:nowrap;font-size:11px;display:flex;align-items:center;min-width:0}
+.fc1 .cn{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.fc1 .pr{flex:none}
 .fc1 small{margin-right:5px;padding:0 4px;border:1px solid var(--line);border-radius:3px}
 .fc1 img{width:14px;height:14px;vertical-align:-3px;margin-right:1px}
 .fcsk{color:var(--faint);font-size:10.5px}
@@ -1345,7 +1347,7 @@ function fcWant(g, n, params){ const out=[];
 function fcSize(n, M, g, params){ if(n.kind==='base') return [FX.W, 62]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [FX.CW, FX.CH];
   if(n.kind==='assume') return [222, 84];
   const want=fcWant(g, n, params), per=FX.W-22, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
-  return [FX.W, 34 + Math.max(1,lines)*16 + 24 + (n.skipNote?15:0)]; }
+  return [FX.W, 64 + Math.max(1,lines)*17 + (n.skipNote?16:0)]; }
 function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[...new Set(g.nodes.map(n=>n.pos[0]))].sort((a,b)=>a-b);
   const size={}; g.nodes.forEach(n=>size[n.id]=fcSize(n, M, g, params));
   const colW={}; colIds.forEach(c=>colW[c]=Math.max(...g.nodes.filter(n=>n.pos[0]===c).map(n=>Math.max(size[n.id][0], M.dec[n.id]?FX.DW:0))));
@@ -1446,7 +1448,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     yLast=top+30+Math.max(1,lines)*18; prev=n.item; });
   // nodes
   const nodes=g.nodes.map(n=>{ const b=Lay.box[n.id], t=st(n.id), Lp=M.loopOf[n.id], pos=`left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px`;
-    if(n.kind==='base'){ const bp=Object.entries(g.basePrice||{}); return `<div class="fcn k-start ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${L('베이스 가격','Base price')} ${bp.length?`${L('미정 · 약','TBD · about')} ${bp.map(([k2,v])=>`<span class="ci">${icon(k2)}${esc(nm(cur(k2)))} ${fmt(v)}${L('개','')}</span>`).join(' ')}`:L('미정','TBD')}</span></div>`; }
+    if(n.kind==='base'){ const bp=Object.entries(g.basePrice||{}); return `<div class="fcn k-start ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${L('베이스 가격','Base price')} ${bp.length?`${L('미정 · 약','TBD · about')} ${bp.map(([k2,v])=>`<span class="ci">${icon(k2)}${esc(nm(cur(k2)))} ${v}${L('개','')}</span>`).join(' ')}`:L('미정','TBD')}</span></div>`; }
     if(n.kind==='done') return `<div class="fcn k-end v-${n.variant||'best'} ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${t?L(`완성품의 ${pct1(t.reach)}`,`${pct1(t.reach)} of items`):L('이 버전에선 안 옴','not in this version')}</span></div>`;
     if(n.kind==='choice') return `<div class="fcn k-choice ${t?'':'off'}" style="${pos}"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,1 99,50 50,99 1,50"/></svg><span><small>${L('분기','Branch')}</small><b>${esc(tx(n.label))}</b></span></div>`;
     if(n.kind==='assume') return `<div class="fcn k-note ${t?'':'off'}" style="${pos}"><small>${L('별첨','Note')}</small><b>${esc(tx(n.label))}</b>${n.note?`<span>${esc(tx(n.note))}</span>`:''}</div>`;
@@ -1462,7 +1464,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     return `<div class="fcn k-task ${n.kind==='cleanup'?'k-clean':''} ${t?'':'off'}" style="${pos}" title="${esc(tip)}">
       <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b>${esc(tx(n.goal||n.label))}</b></div>
       ${want.length?`<div class="fcw">${want.map(h=>`<p>${h}</p>`).join('')}</div>`:''}
-      <div class="fc1">${c.html}${t?`<span class="pr">${pS>=0.995?L('확정','certain'):`${L('확률','chance')} <b>${pct1(pS)}</b>`}</span>`:`<span class="pr">${L('이 버전에선 안 거침','not used')}</span>`}</div>
+      <div class="fc1"><span class="cn">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','certain'):`${L('확률','chance')} <b>${pct1(pS)}</b>`}</span>`:`<span class="pr">${L('이 버전에선 안 거침','not used')}</span>`}</div>
       ${n.skipNote?`<div class="fcsk">↷ ${esc(tx(n.skipNote))}</div>`:''}</div>`; }).join('');
   const diamonds=Object.values(Lay.dia).map(D=>{ const n=M.byId[D.id.slice(0,-1)]; return `<div class="fcn k-dec ${st(n.id)?'':'off'}" style="left:${D.x}px;top:${D.y}px;width:${D.w}px;height:${D.h}px"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,2 98,50 50,98 2,50"/></svg><span>${esc(tx(n.ask)||L('결과','Result'))}</span></div>`; }).join('');
   // top bar: versions, then detailed toggles
