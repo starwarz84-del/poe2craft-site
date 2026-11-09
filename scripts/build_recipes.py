@@ -517,7 +517,14 @@ for _r in R:
     _c = FRSTART.get(_r['id'])
     if not _c: continue
     _ids = [n['id'] for n in _r['nodes']]; _a, _b = _ids.index(_c['cut'][0]), _ids.index(_c['cut'][1])
-    _gone = set(_ids[_a:_b+1]); _r['nodes'] = _r['nodes'][:_a] + _r['nodes'][_b+1:]
+    _gone = set(_ids[_a:_b+1])
+    # keep the cut steps as the folded "base preparation" (shown under the base step, not counted in the totals)
+    import copy as _copy
+    _pn = _copy.deepcopy(_r['nodes'][:_b+1]); _pu = {n.get('phase') for n in _pn}
+    _r['prep'] = {'start': _copy.deepcopy(_r.get('start') or {'rar':'normal','mods':[]}), 'nodes': _pn,
+                  'phases': [ph for ph in _copy.deepcopy(_r.get('phases') or []) if ph['id'] in _pu]}
+    if _r.get('quality'): _r['prep']['quality'] = _r['quality']
+    _r['nodes'] = _r['nodes'][:_a] + _r['nodes'][_b+1:]
     _st = {'rar':'rare', 'mods':_c['mods']}
     if _c['quality']: _st['quality'] = _c['quality']
     _runes = _c['runes'] or (_r.get('start') or {}).get('runes')
@@ -542,6 +549,9 @@ for _r in R:
         if isinstance(v, list): return [_fix(x) for x in v]
         return v
     _r['nodes'] = _fix(_r['nodes'])
+    if _r.get('prep'):
+        _no = {n['id']:i+1 for i,n in enumerate(_r['prep']['nodes'])}
+        _r['prep']['nodes'] = _fix(_r['prep']['nodes'])
 # side omens that do nothing: the other side is already full, so the slam/desecration can only land on this side anyway
 REDUNDANT={('gold-amulet-6line','p4'),('gold-amulet-6line','d1'),('grasping-mail-spell1','p0'),('grasping-mail-spell1','p2'),('grasping-mail-spell1','p4'),
  ('absent-amulet-spell6','s4'),('absent-amulet-spell6','m2'),('mazbro-caster-ring','r12'),('mazbro-caster-amulet','a12'),('mazbro-bis-chest','c12'),('mazbro-bis-chest','c10'),('mazbro-bis-chest','c13'),

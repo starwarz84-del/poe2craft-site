@@ -535,13 +535,15 @@ function makeDraft(it, an){
   } else if(R0){ rnd.push(R0); R0=null; }
   // 5. remaining random lines: exalt for any wanted line on a side, side by side
   // Whittling finish: Chaos with Omen of Whittling swaps the lowest-level line. If every other removable line on that side is at
-  // (or above) the highest level anything can roll there, the last wanted line can be chased with a filler + Whittling + Erasure + Perfect Chaos
+  // (or above) the highest level anything can roll there, the last wanted line can be chased with a filler + Whittling + Erasure + Greater Chaos
   // as often as needed without ever touching the good lines (e.g. a level-82 T1 resistance)
   const allFam = new Set(rows.flatMap(r=>r.g.f||[]));
   const maxRoll = sd => { let m=0; it.D.groups.forEach(g=>{ if(g.s!=='n' || g.g!==sd || (g.f||[]).some(f=>allFam.has(f))) return; g.t.forEach(t=>{ if(t[0]<=it.ilvl && t[1]>0 && t[0]>m) m=t[0]; }); }); return m; };
   const lvlOf = r => r.t[0];
+  // policy 19: Whittling / Erasure + Chaos loops use Greater Chaos (level 35+, a family's top tier always); lower targets fall back to Chaos
+  const loopChaos = list => it.cat==='jewel' ? 'Chaos_Orb' : list.every(r=>lvlOf(r)>=35 || r.tierNo===1) ? 'Greater_Chaos_Orb' : 'Chaos_Orb';
   const whittleTarget = (sd, want) => { if(want.length<1) return null; const low = [...want].sort((a,b)=>lvlOf(a)-lvlOf(b))[0];
-    if(lvlOf(low) < 50 && low.tierNo!==1) return null;   // Perfect Chaos rolls level 50+, but a family's top tier is always in the pool
+    if(lvlOf(low) < 35 && low.tierNo!==1) return null;   // policy 19: Greater Chaos (level 35+, a family's top tier always in the pool)
     const keep = [...made.filter(x=>x.r.m.side===sd).map(x=>x.r), ...want.filter(r=>r!==low)], top = maxRoll(sd);
     if(!keep.length || keep.some(r=>lvlOf(r) < top || lvlOf(r) <= lvlOf(low))) return null;
     return low; };
@@ -557,7 +559,7 @@ function makeDraft(it, an){
       // One exalt at the lines (no retry), then Whittling + Chaos swaps that filler until one lands; the higher-level lines go first, the lowest last
       const list = want.length>1 ? want.filter(r=>r!==wl) : [wl], top = maxRoll(sd), frO = frs.filter(x=>x.m.side===oth).length;
       const safeO = made.filter(x=>x.r.m.side===oth && lvlOf(x.r) >= top).length, eOm = cnt[oth] - frO - safeO > 0 ? [ERASE[sd]] : [];
-      const cc = it.cat==='jewel' ? 'Chaos_Orb' : list.every(r=>lvlOf(r)>=50 || r.tierNo===1) ? 'Perfect_Chaos_Orb' : list.every(r=>lvlOf(r)>=35) ? 'Greater_Chaos_Orb' : 'Chaos_Orb';
+      const cc = loopChaos(list);
       const exC0 = it.cat==='jewel' ? 'Exalted_Orb' : 'Perfect_Exalted_Orb', tK = list.length>1 ? `원하는 줄 중 하나(${names(list, x=>lkA(x))})` : `${lkA(list[0])} (T${list[0].tierNo} 이상)`, tE = list.length>1 ? `any of ${names(list, x=>leA(x))}` : `${leA(list[0])} (tier ${list[0].tierNo}+)`;
       const ex = push({phase:'ex', do:'exalt', cur:exC0, ...(om.length?{omens:om}:{}), target:anyOf(list), br:note(`실패: ${['Omen_of_Whittling',...eOm].map(nk).join(' + ')} + ${nk(cc)}`, `Miss: ${['Omen_of_Whittling',...eOm].map(ne).join(' + ')} + ${ne(cc)}`),
         note:note(`${sideKr(sd)}에 ${tK}.`, `A ${sideEn(sd)}: ${tE}.`)}); cnt[sd]++;
@@ -568,7 +570,7 @@ function makeDraft(it, an){
     if(!keepR.length && cnt[oth] >= cap[oth] && !(it.cat==='jewellery' && qCap>0 && !mqGone)){
       // nothing worth keeping on this side and the other side is full: one exalt, then on a miss Erasure + Chaos rerolls just that line
       // (the new line can only land here), cheaper than annulment omen + annulment + another exalt each time
-      const top = maxRoll(sd), cc = it.cat==='jewel' ? 'Chaos_Orb' : want.every(r=>lvlOf(r)>=50 || r.tierNo===1) ? 'Perfect_Chaos_Orb' : want.every(r=>lvlOf(r)>=35) ? 'Greater_Chaos_Orb' : 'Chaos_Orb';
+      const top = maxRoll(sd), cc = loopChaos(want);
       const exC0 = it.cat==='jewel' ? 'Exalted_Orb' : 'Perfect_Exalted_Orb', tK = want.length>1 ? `원하는 줄 중 하나(${names(want, x=>lkA(x))})` : `${lkA(want[0])} (T${want[0].tierNo} 이상)`, tE = want.length>1 ? `any of ${names(want, x=>leA(x))}` : `${leA(want[0])} (tier ${want[0].tierNo}+)`;
       const ex = push({phase:'ex', do:'exalt', cur:exC0, target:anyOf(want), br:note(`실패: ${nk(ERASE[sd])} + ${nk(cc)}`, `Miss: ${ne(ERASE[sd])} + ${ne(cc)}`), note:note(`${sideKr(sd)}에 ${tK}.`, `A ${sideEn(sd)}: ${tE}.`)}); cnt[sd]++;
       push({phase:'ex', do:'chaos', cur:cc, omens:[ERASE[sd]], fallbackFor:ex.id, target:{...anyOf(want), replace:sd}, fail:{goto:'self'},
@@ -636,16 +638,30 @@ function makeDraft(it, an){
         push({phase:'ex', do:'note', fallbackFor:ex.id, label:{kr:'둘 다 빗나가면', en:'If both miss'}, note:note('그대로 마무리하거나 추가 과정으로.','Finish as is, or go on to the extra step.')});
         made.push({r:W[0], id:ex.id}); cnt[gs]+=2; rnd.splice(rnd.indexOf(W[0]),1);
         const rest = W.slice(1); rest.forEach(r=>rnd.splice(rnd.indexOf(r),1));
-        // which line Whittling takes: the lowest required level among the good lines vs. the junk the exalt left (Perfect: level 50+, a family's top tier always)
+        // which line Whittling takes: the lowest required level among the good lines vs. the junk the exalt left (Perfect Exalted: level 50+, a family's top tier always)
         const lv = x => x.lvl ?? lvlOf(x.r), goods = made.filter(x=>!x.r.m.fr), m = Math.min(...goods.map(lv)), tie = goods.filter(x=>lv(x)===m);
         const F = new Set([...rows.flatMap(r=>r.g?.f||[])]); let Wt=0, Hit=0;
         it.D.groups.forEach(g=>{ if(g.s!=='n' || g.g!==gs || g.f.some(f=>F.has(f))) return; const top=g.t.findIndex(t=>t[0]<=it.ilvl && t[1]>0);
           g.t.forEach((t,ti)=>{ if(t[0]>it.ilvl || !(t[1]>0) || (t[0]<50 && ti!==top)) return; Wt+=t[1]; Hit += t[0]<m ? t[1] : t[0]===m ? t[1]/(tie.length+1) : 0; }); });
         const q = Wt ? Hit/Wt : 0;
-        if(q>0 && rest.length){ const cc = rest.every(r=>lvlOf(r)>=50 || r.tierNo===1) ? 'Perfect_Chaos_Orb' : 'Greater_Chaos_Orb', lost = q<0.999 ? tie[tie.length-1] : null;
-          optFrom = push({phase:'opt', optional:true, do:'chaos', cur:cc, omens:['Omen_of_Whittling'], target:{...anyOf(rest), replace:gs, whittle:+q.toFixed(3)}, fail:{goto:'self', ...(lost?{lost:lost.id}:{})},
-            note:note(`절사의 징조는 요구 레벨이 가장 낮은 줄을 바꿈: 잡옵이 바뀔 확률 ${Math.round(q*100)}%${tie.length>1?` (레벨 ${m} 동률 ${tie.length}줄: ${names(tie, x=>lk(x.r))})`:` (가장 낮은 좋은 줄 ${lk(tie[0].r)}, 레벨 ${m})`}. 좋은 줄이 바뀌면 그 줄을 만든 단계부터.`,
-              `Whittling swaps the lowest required level: ${Math.round(q*100)}% it is the junk${tie.length>1?` (${tie.length} good lines tie at level ${m})`:''}. If a good line goes, redo the step that made it.`)}).id;
+        if(q>0 && rest.length){ const cc = loopChaos(rest), lost = q<0.999 ? tie[tie.length-1] : null;
+          // an essence line that Whittling takes cannot be made again by its step on a rare (a magic-stage essence needs a magic item):
+          // it comes back with a Crystallisation omen + the rare-stage (Perfect) essence of that line; without one in the data, a new base
+          const lostN = lost && nodes.find(x=>x.id===lost.id), lostE = lostN?.do==='essence' ? craft.essences.find(x=>x.id===lostN.cur) : null;
+          let rec = null, lostTo = lost?.id;
+          if(lostE){ const sdL = lost.r.m.side, fam = lost.r.g.f.join('+');
+            const pg = it.D.groups.findIndex(g=>g.s==='e' && g.g===sdL && g.f.join('+')===fam && g.t.some(t=>t[0]<=it.ilvl && craft.essences.find(x=>x.en===t[3])?.mode==='rare'));
+            if(pg>=0){ const ti = it.D.groups[pg].t.findIndex(t=>t[0]<=it.ilvl && craft.essences.find(x=>x.en===t[3])?.mode==='rare'), e = craft.essences.find(x=>x.en===it.D.groups[pg].t[ti][3]);
+              const remL = cnt[sdL] - frs.filter(x=>x.m.side===sdL).length; rec = {gi:pg, ti, e, sd:sdL, p: remL>0 ? 1/remL : 1}; }
+            else if(lostE.mode==='magic') lostTo = nodes[0].id; }
+          optFrom = push({phase:'opt', optional:true, do:'chaos', cur:cc, omens:['Omen_of_Whittling'], target:{...anyOf(rest), replace:gs, whittle:+q.toFixed(3)}, fail:{goto:'self', ...(lost?{lost:lostTo}:{})},
+            note:note(`절사의 징조는 요구 레벨이 가장 낮은 줄을 바꿈: 잡옵이 바뀔 확률 ${Math.round(q*100)}%${tie.length>1?` (레벨 ${m} 동률 ${tie.length}줄: ${names(tie, x=>lk(x.r))})`:` (가장 낮은 좋은 줄 ${lk(tie[0].r)}, 레벨 ${m})`}. ${lostE && !rec && lostTo!==lost.id ? '에센스 줄이 바뀌면 희귀 상태에선 다시 못 붙여서 새 베이스부터.' : '좋은 줄이 바뀌면 그 줄을 만든 단계부터.'}`,
+              `Whittling swaps the lowest required level: ${Math.round(q*100)}% it is the junk${tie.length>1?` (${tie.length} good lines tie at level ${m})`:''}. ${lostE && !rec && lostTo!==lost.id ? 'If it takes the essence line, that cannot go back on a rare: start a new base.' : 'If a good line goes, redo the step that made it.'}`)}).id;
+          if(rec){ const rid = push({phase:'opt', optional:true, onLost:optFrom, do:'essence', cur:rec.e.id, omens:[SIDE_OMEN.cryst[rec.sd]], knownP:true, target:{gi:rec.gi, tmax:rec.ti+1, ...(rec.p<1?{chance:+rec.p.toFixed(3)}:{})},
+              label:{kr:`${lk(lost.r)} 복구`, en:`Restore ${le(lost.r)}`}, ...(rec.p<1?{br:note('실패: 지워진 줄을 만든 단계부터','Miss: redo the step that made the removed line')}:{}),
+              note:note(`${lk(lost.r)}${josa(lk(lost.r),'이','가')} 바뀌면 ${nk(SIDE_OMEN.cryst[rec.sd])} + ${rec.e.kr}${josa(rec.e.kr,'으로','로')} 다시 확정(${sideKr(rec.sd)}가 꽉 차서 그 면의 줄 하나가 지워짐, 새로 붙은 줄이 지워질 확률 ${Math.round(rec.p*100)}%).`,
+                `If ${le(lost.r)} goes, ${ne(SIDE_OMEN.cryst[rec.sd])} + ${rec.e.en} puts it back (the ${sideEn(rec.sd)} side is full, so one of its lines goes: ${Math.round(rec.p*100)}% it is the new one).`)}).id;
+            nodes.find(x=>x.id===optFrom).fail.lost = rid; }
           made.push({r:rest[0], id:optFrom}); }
         else rest.forEach(r=>rnd.push(r)); } } }
   const split = firstSd && !augLate.length && !j5?.B;
@@ -733,7 +749,7 @@ function makeDraft(it, an){
   finishQ();   // catalysed exalts leave the quality at 0: refill before the maximum quality line goes
   if(mqLive()){
     const Ls = sd => cnt[sd] < cap[sd];
-    const cur = !R0 || lvlOf(R0)>=50 || R0.tierNo===1 ? 'Perfect_Chaos_Orb' : 'Greater_Chaos_Orb';   // Perfect Chaos rolls level 50+, a family's top tier always
+    const cur = R0 ? loopChaos([R0]) : 'Greater_Chaos_Orb';   // policy 19: Greater Chaos (level 35+, a family's top tier always)
     // repeating Whittling is safe only if a wrong line can never sit below the good ones (it would be the next one replaced)
     const good = rows.filter(r=>!r.m.fr && r!==R0 && r.g?.s!=='e' && r.how!=='lq'), top = Math.max(maxRoll('p'), Ls('s') ? maxRoll('s') : 0);
     const safe = R0 && good.length && good.every(r=>lvlOf(r) >= top);
@@ -798,10 +814,18 @@ function makeDraft(it, an){
     const seen = phases.filter(x=>x.base===n.phase).length, id = seen ? `${n.phase}${seen+1}` : n.phase, [kr,en] = PH[n.phase] || [n.phase,n.phase];
     phases.push({id, kr, en, base:n.phase}); n.phase = id; }
   phases.forEach(x=>delete x.base);
+  // the fracture done before the bought state (policy 2): a short summary for the folded "base preparation" on the Recipes tab
+  // (three lines + one desecrated, so the Fracturing Orb lands on the wanted line 1 in 3; quality work first). Not part of the totals
+  let prep = null;
+  if(frs.length===1){ const F=frs[0], sd=F.m.side, oth=other(sd);
+    prep = {start:{rar:'rare', mods:[{...tm(F)}, {junk:oth}, {junk:sd}, {unrev:oth}], ...(start.quality?{quality:start.quality}:{}), ...(start.runes?{runes:start.runes}:{})}, phases:[{id:'prep', kr:'분열 준비', en:'Fracture prep'}],
+      nodes:[{id:'q0', phase:'prep', do:'base', note:note(`${lk(F)} + 잡옵 2줄 + 미공개 훼손 1줄 희귀.`, `A rare with ${le(F)} + two junk lines + one unrevealed desecrated line.`)},
+        ...(baseQ ? [{id:'q1', phase:'prep', do:'manual', label:{kr:`퀄리티 ${it.qual}%`, en:`Quality ${it.qual}%`}, note:note(baseQ.kr, baseQ.en)}] : []),
+        {id:'q2', phase:'prep', do:'fracture', cur:'Fracturing_Orb', target:tm(F), fail:{goto:'restart'}, note:note(`훼손 줄은 분열되지 않아 나머지 3줄 중 ${lk(F)}${josa(lk(F),'이','가')} 분열될 확률 1/3.`, `The desecrated line cannot fracture: ${le(F)} is 1 in 3.`)}]}; }
   const day = new Date(); const ymd = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
   return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff,
     author:{kr:'아이템 역산 초안', en:'Reverse-engineered draft'}, title:{kr:featK.join(' + ')||'역산 초안', en:featE.join(' + ')||'Draft'},
-    buildTags:[], start, phases, nodes, src:{text:S.txt||''} };
+    buildTags:[], start, phases, nodes, ...(prep?{prep}:{}), src:{text:S.txt||''} };
 }
 
 
@@ -825,7 +849,7 @@ function verifyDraft(it, an, d){
       const g=grp(pick.gi); if(omSide && g.g!==omSide) add('err',`${how}: ${omSide==='p'?'접두':'접미'} 징조인데 목표는 ${g.g==='p'?'접두':'접미'}예요.`,`${how}: side omen and target side disagree.`,st);
       const tier = g.t[Math.max(0,(pick.tmax||1)-1)]; if(g.s==='n' && tier && tier[0]>it.ilvl && !g.t.some((x,xi)=>xi<(pick.tmax||1) && x[0]<=it.ilvl)) add('err',`${nameOf(pick.gi)} T${pick.tmax}는 아이템 레벨 ${it.ilvl}에서 나올 수 없어요.`,`${nameOf(pick.gi)} tier ${pick.tmax} needs a higher item level.`,st);
       mods.push({gi:pick.gi, side:g.g}); return pick; };
-    if(n.do==='base' || n.fallbackFor || n.branch?.when==='miss') return;   // the checked path: main line, success branches
+    if(n.do==='base' || n.fallbackFor || n.onLost || n.branch?.when==='miss') return;   // the checked path: main line, success branches
     if(t.slots) for(const k in t.slots) cap[k]+=t.slots[k];   // e.g. Potent Liquid Contempt allows one more line on a side
     if(n.do==='manual'){
       if(t.setQuality){ if(n.cost==='vaal' && isJew && quality && t.setQuality>quality+10) add('warn',`주입기로는 기폭제 상한에서 최대 10%까지 더 올라가요 (${quality}% → ${t.setQuality}%).`,`Infusers add at most 10% over the catalyst cap (${quality}% → ${t.setQuality}%).`,st); quality=t.setQuality; }
@@ -902,7 +926,7 @@ function verifyDraft(it, an, d){
   if(miss.length) add('err',`완성 상태에 빠진 줄: ${miss.map(nameOf).join(', ')}`,`Missing from the finished item: ${miss.map(nameOf).join(', ')}`);
   if(extra.length) add('warn',`붙여 넣은 아이템에 없는 줄이 남아요: ${extra.map(nameOf).join(', ')}`,`Lines not on the pasted item: ${extra.map(nameOf).join(', ')}`);
   // every step with odds below 100% says what happens on a miss: fail (goto/via/lost), a fallback step, or a branch
-  d.nodes.forEach((n,i)=>{ if(n.do==='base' || n.fallbackFor || n.branch?.when==='miss') return; const t=n.target||{};
+  d.nodes.forEach((n,i)=>{ if(n.do==='base' || n.fallbackFor || n.onLost || n.branch?.when==='miss') return; const t=n.target||{};
     const odds = ['transmute','augment','regal','exalt','chaos','reveal','desecrate'].includes(n.do) ? (t.gi!=null || t.anyOf || t.all || t.reveal) && !(n.do==='chaos' && t.removeGi!=null && t.junk)
       : n.do==='essence' ? t.chance!=null && t.chance<1 : false;
     if(!odds || n.fail || d.nodes.some(x=>x.fallbackFor===n.id || x.branch?.of===n.id)) return;
