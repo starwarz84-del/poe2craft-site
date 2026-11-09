@@ -563,6 +563,9 @@ for _r in R:
             _n['omens']=[o for o in _n['omens'] if not _re.search(r'(Sinistral|Dextral)_(Exaltation|Necromancy)',o)]
             if not _n['omens']: del _n['omens']
 # A v5 file that rewrites an older recipe of the same video replaces it (REPLACES = {new id: old id}).
+exec(open('/home/claude/poe2data/scripts/difficulty.py').read())   # 난이도 재산정 표(시도량 기준)
+for _r in R:
+    if _r['id'] in DIFFSET: _r['difficulty']=DIFFSET[_r['id']]
 REPLACES={'diztoh-budget-crossbow':'diztoh-grenade-crossbow'}
 _ids={x['id'] for x in R}
 R[:]=[x for x in R if not any(o==x['id'] and n in _ids for n,o in REPLACES.items())]
