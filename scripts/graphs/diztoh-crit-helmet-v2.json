@@ -799,7 +799,7 @@
    },
    "edges": [
     {
-     "to": "c1"
+     "to": "ms"
     }
    ],
    "item": [
@@ -823,6 +823,37 @@
     "kr": "소멸의 오브 2개로 잡옵 정리: 분열 + 잡옵 1줄",
     "en": "Two Annulments: keep the fracture + one junk"
    }
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    8.5
+   ],
+   "next": "c1",
+   "label": {
+    "kr": "본 작업 시작 아이템",
+    "en": "Main craft starting item"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "회피·에너지 보호막 % 증가 1티어",
+     "en": "Eva/ES % T1",
+     "m": "f",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
   },
   {
    "id": "c1",
@@ -893,7 +924,11 @@
    },
    "show": [
     "crit"
-   ]
+   ],
+   "goal": {
+    "kr": "접미 첫번째 옵션",
+    "en": "First suffix option"
+   }
   },
   {
    "id": "ca",
@@ -1029,6 +1064,20 @@
    },
    "show": [
     "flat"
+   ],
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix option"
+   },
+   "showText": [
+    {
+     "kr": "치명타 확률 T2 → 상위 엑잘티드 오브 + 좌측 찬미의 징조",
+     "en": "Crit chance T2 → Greater Exalted Orb + Omen of Sinistral Exaltation"
+    },
+    {
+     "kr": "치명타 확률 T1 → 완벽한 엑잘티드 오브 + 좌측 찬미의 징조",
+     "en": "Crit chance T1 → Perfect Exalted Orb + Omen of Sinistral Exaltation"
+    }
    ]
   },
   {
@@ -1064,8 +1113,8 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    3,
-    10
+    1,
+    11
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1127,8 +1176,8 @@
    "kind": "cleanup",
    "group": "main",
    "pos": [
-    3,
-    11
+    2,
+    13
    ],
    "keep": [
     "crit",
@@ -1905,8 +1954,7 @@
     "bm",
     "bx",
     "bxs",
-    "bx2",
-    "bx3"
+    "bx2"
    ],
    "kr": "B 접두 최대치",
    "en": "B flat prefix"
@@ -1914,7 +1962,8 @@
   {
    "id": "L4",
    "nodes": [
-    "p3"
+    "p3",
+    "bx3"
    ],
    "kr": "C 말소 반복",
    "en": "C erasure loop"
