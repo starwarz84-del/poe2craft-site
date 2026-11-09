@@ -588,10 +588,11 @@ function makeDraft(it, an){
     const d = push({phase:'des', do:'desecrate', cur:b2, ...(om.length?{omens:om}:{}), target:{unrev:sd}, note: b2!==bone ? note(`${sideKr(sd)}에 훼손. ${nk(b2)}${josa(nk(b2),'은','는')} 레벨 40 미만 옵션이 안 나와서 높은 티어 확률이 올라감.`, `Desecrate a ${sideEn(sd)}. Ancient bones skip modifiers below level 40, which lifts high tiers.`) : note(`${sideKr(sd)}에 훼손.`, `Desecrate a ${sideEn(sd)}.`)}); cnt[sd]++;
     push({phase:'des', do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{reveal:tm(r), side:sd, bone:b2, ...(r.lord?{lord:r.lord}:{})}, fail:{goto:d.id, via:{cur:'Orb_of_Annulment', omens:['Omen_of_Light']}},
       note:note(`심연의 메아리의 징조로 공개해 ${lk(r)} (T${r.tierNo} 이상). 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)} (tier ${r.tierNo}+); otherwise Light + Annulment and retry.`)}); desNeed[sd]--; } }
-  desPass();
-  if(j5?.done){ const {A,B}=j5;
+  const doJ5 = () => { if(!j5?.done) return; const {A,B}=j5;
     push({phase:'j5', do:'remove', cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[A]], target:{dropGi:j5.gi}, note:note(`${nk(SIDE_OMEN.annul[A])} + 소멸의 오브로 "${sideKr(B)} 속성 부여 +1개 허용" 줄 제거. ${sideKr(A)}엔 그 줄과 잡옵뿐이라 1/2, 잡옵이 지워지면 한 번 더. ${sideKr(B)} 3줄은 그대로 남음.`, `${ne(SIDE_OMEN.annul[A])} + Orb of Annulment removes the "+1 ${sideEn(B)} allowed" line (1/2: the ${sideEn(A)} side holds only it and a junk line; if the junk goes, once more). The 3 ${sideEn(B)}es stay.`)});
-    cnt[A]--; rnd.push(...j5.held); j5.held=[]; exaltPass(); }
+    cnt[A]--; rnd.push(...j5.held); j5.held=[]; exaltPass(); } };
+  // the "+1 allowed" line goes first only when a desecration lands on its side: a bone on a full side replaces a line at random
+  if(j5?.done && desRows.some(r=>!desDone.has(r) && r.m.side===j5.A)){ doJ5(); desPass(); } else { desPass(); doJ5(); }
   // liquids on jewels: used straight on the item; each removes a random modifier and adds its guaranteed line
   for(const {r, l} of liqRows){ const sd=r.m.side, oth=other(sd); openSlot(sd);
     if(!junk[sd]){ push({phase:'liq', do:'exalt', cur:'Exalted_Orb', ...(room(oth)?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${l.kr}${josa(l.kr,'이','가')} 지울 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${l.en} to remove.`)}); cnt[sd]++; junk[sd]++; }

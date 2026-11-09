@@ -118,7 +118,12 @@ TIPREF = {('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-ices
  ('saveq-focus','q1'):['low-ilvl-base'], ('saveq-focus','q4'):['unrevealed-filler'], ('icesly-budget-wand','i6'):['unrevealed-filler'], ('icesly-budget-wand','i8'):['side-omen-save'],
  ('barricade-quarterstaff','q1'):['low-ilvl-base'], ('barricade-quarterstaff','p4'):['whittle-stuck'], ('belton-plus8-wand','b1'):['fracture-sellable-lines','low-ilvl-base'], ('belton-plus8-wand','b2'):['block-high-weight'],
  ('farmer-budget-armour','f8'):['greater-exalt-omen-price'], ('farmer-starter-staff','w5'):['greater-exalt-omen-price'], ('farmer-budget-armour','f1'):['cheap-resist-essence'],
- ('seek-cyclone-boots','k2'):['augment-rune-before-chaos'], ('farmer-starter-staff','w3'):['putrefaction-gamble']}
+ ('seek-cyclone-boots','k2'):['augment-rune-before-chaos'], ('farmer-starter-staff','w3'):['putrefaction-gamble'],
+ ('sihan-highend-helmet','p2'):['helmet-prefix-desecration'], ('sihan-highend-helmet','m1'):['cheap-junk-removal'], ('diztoh-es-helmet','e2'):['side-omen-save'],
+ ('saveq-absent-amulet','v5'):['attack-quality-plus1'], ('saveq-absent-amulet','v2'):['base-flipping'], ('diztoh-onehand-mace','m10'):['kurgal-speed-offset'], ('diztoh-onehand-mace','m5'):['thrud-last'],
+ ('diztoh-as-spear','a7'):['thrud-last'], ('diztoh-as-spear','a3'):['side-omen-save'], ('lilbotq-emerald','l1'):['cheap-jewel-liquid-gamble'], ('lilbotq-emerald','l5'):['plus-one-erasure'], ('lilbotq-emerald','l7'):['jewel-five-mods'],
+ ('noble-timelost-sapphire','n1'):['spell-tag-fracture'], ('noble-timelost-sapphire','n4'):['jewel-five-mods'], ('noble-timelost-sapphire','n5'):['chaos-instead-of-annul'], ('noble-timelost-sapphire','n6'):['plus-one-erasure'],
+ ('zenm-timelost-sapphire','z1'):['timelost-profit-batch'], ('diztoh-talisman','t3'):['liege-omen-resist-jewellery'], ('lilbotq-budget-boots','b1'):['cheap-resist-essence'], ('lilbotq-boots','h2'):['augment-rune-before-chaos']}
 for _r in R:
     for _n in _r['nodes']:
         _k=(_r['id'],_n['id'])
