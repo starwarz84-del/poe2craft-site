@@ -120,7 +120,7 @@ function make(graph, D, craft, params){
       if(n.kind==='assume'){ if(n.swapFracture){ it.mods.forEach(m=>{ if(m.fr) delete m.fr; }); const m=it.mods.find(x=>match(x,n.swapFracture)); if(m) m.fr=true; } tally.edge(id, n.next); id=n.next; continue; }
       if(n.kind==='cleanup'){   // plain Annulment until at most maxJunk lines outside `keep` are left; a kept line going ends it
         const cs=n.side, cu=cs ? {Orb_of_Annulment:1, [cs==='p'?'Omen_of_Sinistral_Annulment':'Omen_of_Dextral_Annulment']:1} : {Orb_of_Annulment:1};   // side: a side Annulment omen each time
-        let lost=null; while(true){ const junk=it.mods.filter(m=>!m.fr && !m.unrev && (!cs || m.side===cs) && !(n.keep||[]).some(k=>match(m,k))); if(junk.length<=(n.maxJunk||0)) break;
+        let lost=null; while(true){ const junk=it.mods.filter(m=>!m.fr && (!cs || !m.unrev && m.side===cs) && !(n.keep||[]).some(k=>match(m,k))); if(junk.length<=(n.maxJunk||0)) break;
           last={added:[], removed:[], fr:null}; takeRandom(cs ? (m=>m.side===cs) : null); tally.use(id, cu);
           const r=last.removed[0]; lost=(n.keep||[]).find(k=>match(r,k)); if(lost) break; }
         const e=(n.edges||[]).find(e=>lost ? e.lost===lost : !e.lost); if(!e) throw new Error(n.id+': no edge for '+(lost||'done')); tally.edge(id, e.to); id=e.to; continue; }

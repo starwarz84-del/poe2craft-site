@@ -42,6 +42,11 @@ for f in sorted(glob.glob(D+'c/*.json')):
         elif sp=='mod': out['slots'].append(item)
         elif sp=='breach': out['breach'].append(item)
         elif any(ASIF.search(x) for x in kr): out['asif'].append(item)
+# user-confirmed facts per base (shown on the card) — only what the user or data confirmed
+NOTE={'Absent_Amulet':{'kr':'매직 상태 없음: 진화·확장의 오브가 안 먹고, 노멀에서 제왕의 오브로 바로 레어(랜덤 1줄)','en':'No magic stage: Transmutation and Augmentation do not work; a Regal Orb turns it straight from normal to rare (one random line)'}}
+for k in ('skill','slots','breach','asif'):
+    for it in out[k]:
+        if it['id'] in NOTE: it['note']=NOTE[it['id']]
 flux=next((x for x in craft['extra'] if x['id']=='Perfect_Flux'), None)
 out['flux']={'id':'Perfect_Flux','kr':flux['kr'],'en':flux['en'],'fx':flux.get('fx'),'fxen':flux.get('fxen'),'icon':flux.get('icon')} if flux else None
 # helper classes (e.g. Grasping_Mail_ring = body armour that rolls ring modifiers) repeat a base: keep one card, merge recipes

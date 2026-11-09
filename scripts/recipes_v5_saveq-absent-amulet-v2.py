@@ -22,11 +22,12 @@ def sv_amulet(tier):
  'buildTags':[K('영원한 격노','Eternal Rage'),K('근접','Melee'),K('정신력','Spirit')],'patch':'0.5.5','created':'2026-11-09','author':K('SaVeQ 영상 기반','Based on SaVeQ'),
  'source':{'url':'https://www.youtube.com/watch?v=S4sflKbsA8A','title':'I made over 2 mirrors with that Craft poe2 0.5.5','channel':'SaVeQ'},
  'title':K('치명타 피해 보너스 분열 + 근접 스킬 +4(공격 퀄리티) + 정신력','fractured crit damage bonus + melee skills +4 (attack quality) + Spirit'),
- 'start':{'rar':'rare','mods':[{'junk':'s'}]},
+ 'start':{'rar':'normal','mods':[]},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'fracture','kr':'분열 준비','en':'Fracture prep'},{'id':'suf','kr':'접미 두번째 옵션','en':'Second suffix'},
            {'id':'quality','kr':'퀄리티 작업','en':'Quality'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[
   {'id':'v1','phase':'base','do':'base','cost':'base','ts':'6:11'},
+  {'id':'r0','phase':'fracture','do':'regal','cur':'Regal_Orb','target':{'junk':'any'},'knownP':1,'ts':'6:11'},
   {'id':'c1','phase':'fracture','do':'chaos','cur':'Chaos_Orb','target':{'gi':s2_crit,'tmax':1},'fail':{'goto':'self'},'ts':'7:28'},
   {'id':'cd','phase':'fracture','do':'divine','cur':'Divine_Orb','optional':True,'ts':'9:00'},
   {'id':'e1','phase':'fracture','do':'exalt','cur':'Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],'target':{'junk':'p'},'ts':'9:08'},
