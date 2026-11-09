@@ -682,7 +682,7 @@ function analyse(r){
     if(t.removeDes){ const i=mods.findIndex(m=>m.des); if(i>=0) mods.splice(i,1); }
     if(t.removeJunk){ if(!removeJunk(t.removeJunk)) o.warn=L('지울 잡옵이 없다고 가정됨','No junk modifier to remove'); }
     if(t.removeMark){ const i=mods.findIndex(m=>m.mark); if(i>=0) mods.splice(i,1); }
-    if(n.fail?.lost && n.fail.via){ const side=sideOfOmens(n.fail.via.omens) || sides; const live=o.pre.filter(m=>(!side||m.side===side) && !m.fr && !m.unrev && !m.des);
+    if(n.fail?.lost && n.fail.via){ const side=n.fail.via.side==='any' ? null : (sideOfOmens(n.fail.via.omens) || sides); /* side:'any' = a plain annul, either side */ const live=o.pre.filter(m=>(!side||m.side===side) && !m.fr && !m.unrev && !m.des);
       const wanted=live.filter(m=>m.gi!=null).length; o.lose = wanted/(live.length+1); }
     // a target no tier of which can roll at this item level: say which level it needs
     if(o.p===0){ const sp=specList(n.do==='reveal' ? t.reveal : t).filter(x=>x && x.gi!=null);

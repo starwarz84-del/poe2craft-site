@@ -35,7 +35,6 @@ SHORT = {
  ('diztoh-grenade-crossbow','x1'): ('노멀 공성 석궁.','A normal Siege Crossbow.'),
  ('diztoh-grenade-crossbow','x5'): None,
  ('diztoh-grenade-crossbow','x11'): ('퀄리티 20%, 완벽한 철 룬. 완성.','Quality 20%, Perfect Iron Rune. Done.'),
- ('diztoh-crit-helmet','h13'): ('신성한 오브로 수치 정리. 완성.','Divine the values. Done.'),
  ('diztoh-5mod-sapphire','j7'): ('좌측 소멸의 징조 + 소멸의 오브: "+1 접미 허용" 제거(1/2).','Sinistral Annulment + Annulment: remove "+1 suffix allowed" (1/2).'),
  ('diztoh-5mod-sapphire','j12'): ('완성.','Done.'),
  ('ragna-spell4-amulet','g1'): ('정신력 +50 분열 + 모든 주문 스킬 +3 태양의 목걸이.','Solar Amulet with fractured +50 Spirit and +3 all spell skills.'),
