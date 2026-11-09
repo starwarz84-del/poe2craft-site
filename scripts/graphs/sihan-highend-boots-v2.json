@@ -1194,7 +1194,12 @@
       "str"
      ]
     }
-   ]
+   ],
+   "skipIf": {
+    "has": "str"
+   },
+   "skipTo": "s3",
+   "skipHide": true
   },
   {
    "id": "s2x",
@@ -1228,7 +1233,8 @@
     },
     {
      "to": "s2",
-     "res": "ok"
+     "res": "ok",
+     "port": "bottom"
     }
    ]
   },
@@ -1344,17 +1350,18 @@
    "edges": [
     {
      "lost": "armEle",
-     "to": "s3y",
+     "to": "s1",
      "res": "fail"
     },
     {
      "lost": "str",
-     "to": "s2x",
+     "to": "s3y",
      "res": "fail"
     },
     {
      "to": "s3",
-     "res": "ok"
+     "res": "ok",
+     "port": "bottom"
     }
    ]
   },
@@ -1366,8 +1373,10 @@
     2,
     10
    ],
-   "keep": [],
-   "maxJunk": 1,
+   "keep": [
+    "armEle"
+   ],
+   "maxJunk": 0,
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -1377,12 +1386,18 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "잡옵 1줄만 남기기 (접미 첫번째부터 다시)",
-    "en": "Keep one junk line (redo from the first suffix)"
+    "kr": "빗나간 접미 지우기 (방어도의 원소 적용 유지)",
+    "en": "Remove the missed suffix (keep armour to elemental)"
    },
    "edges": [
     {
-     "to": "s1"
+     "lost": "armEle",
+     "to": "s1",
+     "res": "fail"
+    },
+    {
+     "to": "s2",
+     "res": "ok"
     }
    ]
   },
@@ -1625,7 +1640,9 @@
    },
    "edges": [
     {
-     "to": "p1"
+     "to": "p1",
+     "port": "right",
+     "lane": "R13"
     }
    ]
   },
@@ -1657,7 +1674,8 @@
       "added": "PRE"
      },
      "to": "ok",
-     "res": "ok"
+     "res": "ok",
+     "port": "right"
     },
     {
      "to": "q4x",
@@ -1692,7 +1710,9 @@
    },
    "edges": [
     {
-     "to": "q1"
+     "to": "q1",
+     "port": "right",
+     "lane": "R13"
     }
    ]
   },

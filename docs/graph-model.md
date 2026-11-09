@@ -106,3 +106,4 @@
 - `act:'essence'` + `omens`에 결정화의 징조: 레어면 그 면 줄 하나를 먼저 지우고 에센스 줄을 붙임. `mark:true`면 그 줄이 심연 군주의 징표.
 - `act:'desecrate'` + `fromMark:true`: 징표를 미공개 훼손 줄로 바꿈(뼈 최소 레벨 적용).
 - 간선 `hide:true` + `res:'ok'`도 그 단계 성공 확률 계산에 들어감(화면엔 안 그림).
+- 간선 `port`(bottom/right)·`enter`(top/left)·`lane`(같은 lane 이름끼리는 겹침 허용). 메인 열(pos[0]=0) 상자는 위로만 들어감(`enter` 없을 때).
