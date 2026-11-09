@@ -19,7 +19,8 @@ hc_crit=textH('increased Critical Hit Chance','n','s')
 hc_rarS=textH('increased Rarity of Items found','n','s')
 hc_cdmg=textH('Critical Damage Bonus','d','s')
 HC_MAGIC=[{'gi':hc_pct,'tmax':1},{'gi':hc_crit,'tmax':1},{'gi':hc_rarS,'tmax':1}]
-HC_PRE=[{'gi':hc_flat,'tmax':2},{'gi':hc_life,'tmax':1},{'gi':hc_mana,'tmax':1}]
+HC_P1=[{'gi':hc_flat,'tmax':1}]                                   # 사용자 확정 2026-11-09 17:36: 접두 1번째 = 회피·ES 최대치 1티어
+HC_P2=[{'gi':hc_life,'tmax':3},{'gi':hc_mana,'tmax':3}]            # 접두 2번째 = %+생명력/마나 복합 1~3티어(타협)
 HC_ANN={'cur':'Orb_of_Annulment','side':'any'}        # a plain annul: any non-fractured line on either side
 HC_LIGHT={'cur':'Orb_of_Annulment','omens':['Omen_of_Light']}
 R.append({
@@ -46,16 +47,16 @@ R.append({
    'br':K('필수 줄 분열 → 소멸의 오브 2개로 분열 줄 + 잡옵 1줄 / 잡옵 분열 → 베이스 구입부터','Wanted line fractured → two Annulments to the fracture + one junk / junk fractured → buy a new base')},
   # --- main path: fractured % evasion/ES + one junk line ---
   {'id':'c1','phase':'crit','do':'chaos','cur':'Chaos_Orb','target':{'gi':hc_crit,'tmax':2},'fail':{'goto':'self'},'ts':'3:02'},
-  {'id':'p1','phase':'pre','do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'anyOf':HC_PRE},
+  {'id':'p1','phase':'pre','do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':HC_P1[0],
    'fail':{'goto':'self','via':HC_ANN,'lost':'c1'},'ts':'3:46',
    'br':K('치명타 확률 1티어면 완벽한 엑잘티드 오브. 접두 아이템 희귀도 1~2티어 → 두고 한 번 더. 실패: 소멸의 오브(치명타 확률이 지워지면 {#c1}번부터)',
           'T1 crit chance: use a Perfect Exalt. T1–2 prefix rarity → keep it and slam once more. Miss: Annulment (crit chance gone: back to step {#c1})')},
-  {'id':'p2','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'anyOf':HC_PRE},'ts':'9:02',
+  {'id':'p2','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'anyOf':HC_P2},'ts':'9:02',
    'br':K('필수 → 훼손 / 실패 → 아래 카오스','Wanted → desecration / miss → the chaos below')},
-  {'id':'p3','phase':'pre','do':'chaos','cur':'Chaos_Orb','omens':['Omen_of_Sinistral_Erasure'],'fallbackFor':'p2','target':{'anyOf':HC_PRE[1:],'replace':'p','whittle':0.5},
+  {'id':'p3','phase':'pre','do':'chaos','cur':'Chaos_Orb','omens':['Omen_of_Sinistral_Erasure'],'fallbackFor':'p2','target':{'anyOf':HC_P2,'replace':'p','whittle':0.5},
    'fail':{'goto':'self','lost':'p1'},'ts':'9:02',
-   'br':K('레벨로 고름: 잡옵이 가장 낮으면 절사의 징조, 반대쪽이 더 낮으면 절사 + 좌측 말소의 징조, 필수 줄이 더 낮으면 좌측 말소의 징조(1/2). 필수 줄이 지워지면 소멸의 오브 → {#p1}번부터',
-          'Pick by level: junk lowest → Whittling; the other side lower → Whittling + Sinistral Erasure; the wanted line lower → Sinistral Erasure (1/2). Wanted line gone → Annulment, back to step {#p1}')},
+   'br':K('회피·ES 최대치 1티어(레벨 54)가 잡옵보다 낮은 경우가 대부분이라 좌측 말소의 징조(1/2). 잡옵이 더 낮으면 절사의 징조. 최대치 줄이 지워지면 소멸의 오브 → {#p1}번부터',
+          'T1 flat evasion/ES (level 54) is usually lower than the junk, so Sinistral Erasure (1/2); if the junk is lower, Whittling. Flat line gone → Annulment, back to step {#p1}')},
   {'id':'d1','phase':'des','do':'desecrate','cur':'Ancient_Rib','target':{'unrev':'s'},'ts':'9:46'},
   {'id':'d2','phase':'des','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':hc_cdmg},'side':'s','bone':'Ancient_Rib'},'fail':{'goto':'d1','via':HC_LIGHT},'ts':'10:31'},
   {'id':'f1','phase':'fin','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'junk':'s'},'ts':'11:15',
