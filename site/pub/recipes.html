@@ -1391,10 +1391,11 @@ function fcSize(n, M, g, params){ let W = n.pos[0]===0 ? FX.W : FX.WB;
   return [W, 40 + (want.length?Math.max(1,lines)*20+6:0) + 40 + (n.curRows?(n.curRows.length-1)*22:0) + (n.skipNote?18:0) - (n.kind==='side'?4:0)]; }
 function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[...new Set(g.nodes.map(n=>n.pos[0]).filter(Number.isInteger))].sort((a,b)=>a-b);
   const size={}; g.nodes.forEach(n=>size[n.id]=fcSize(n, M, g, params));
-  const colW={}; colIds.forEach(c=>colW[c]=Math.max(...g.nodes.filter(n=>n.pos[0]===c).map(n=>Math.max(size[n.id][0], M.dec[n.id]?FX.DW:0))));
+  // columns keep their standard width; a wider box (e.g. one with per-row currencies) runs into the free space on its right
+  const colW={}; colIds.forEach(c=>colW[c]=Math.max(...g.nodes.filter(n=>n.pos[0]===c).map(n=>Math.min(Math.max(size[n.id][0], M.dec[n.id]?FX.DW:0), c===0?FX.W:FX.WB))));
   const colX={}; let x=FX.PAD+(items && S.fcItems!==false?FX.LANE+FX.LANEGAP:0); const between=c=>g.nodes.filter(n=>!Number.isInteger(n.pos[0]) && n.pos[0]>c && n.pos[0]<c+1);
   colIds.forEach(c=>{ colX[c]=x; const bw=Math.max(0,...between(c).map(n=>size[n.id][0])); x+=colW[c]+Math.max(FX.GAPX, bw ? bw*0.25+90 : 0); });
-  const xOf=(c,w)=>{ if(Number.isInteger(c)) return colX[c]+(colW[c]-w)/2; const a=Math.floor(c); return colX[a]+colW[a]-w*0.75; }; const Wt=x-FX.GAPX+FX.PAD+40;
+  const xOf=(c,w)=>{ if(Number.isInteger(c)) return w>colW[c] ? colX[c] : colX[c]+(colW[c]-w)/2; const a=Math.floor(c); return colX[a]+colW[a]-w*0.75; }; const Wt=x-FX.GAPX+FX.PAD+40;
   const rows=[...new Set(g.nodes.map(n=>n.pos[1]))].sort((a,b)=>a-b), box={}, dia={}, rowSpan=[], grp={};
   let y=FX.PAD, prevG=null, prevLoop;
   rows.forEach(r=>{ const R=g.nodes.filter(n=>n.pos[1]===r).sort((a,b)=>a.pos[0]-b.pos[0]), m=R[0], gid=m.group;
@@ -1408,7 +1409,7 @@ function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[..
       box[n.id]=bx; if(M.dec[n.id]) dia[n.id]={id:n.id+'?', x:bx.x+w/2-FX.DW/2, y:bx.y+h+FX.DGAP, w:FX.DW, h:FX.DH, dia:true, row:r, col:c}; });
     rowSpan.push([y, y+t1-t0]); y+=t1-t0+FX.ROWGAP; });
   if(prevG) grp[prevG].y1=y-FX.ROWGAP+16;
-  return {box, dia, colX, colW, colIds, rowSpan, grp, Wt, Ht:y-FX.ROWGAP+FX.PAD+30, items: items && S.fcItems!==false}; }
+  return {box, dia, colX, colW, colIds, rowSpan, grp, Wt: Math.max(Wt, ...Object.values(box).map(b=>b.x+b.w+FX.PAD+40)), Ht:y-FX.ROWGAP+FX.PAD+30, items: items && S.fcItems!==false}; }
 // candidate orthogonal routes between two ports; the cheapest one that misses every box wins
 function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Object.values(Lay.dia)], placed=[];
   const port=(b,s)=>{ const cx=b.x+b.w/2, cy=b.y+b.h/2; return {top:[cx,b.y,0,-1], bottom:[cx,b.y+b.h,0,1], left:[b.x,cy,-1,0], right:[b.x+b.w,cy,1,0]}[s]; };
