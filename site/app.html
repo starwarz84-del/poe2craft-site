@@ -40,6 +40,7 @@ nav a .nb{margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius
     <a href="#builder" data-view="builder" data-en="Item Builder" data-kr="옵션 빌더">Item Builder</a>
     <a href="#recipes" data-view="recipes" data-en="Recipes" data-kr="레시피">Recipes</a>
     <a href="#discover" data-view="discover" data-en="Discover" data-kr="발굴">Discover</a>
+    <a href="#bases" data-view="bases" data-en="Special Bases" data-kr="특수 베이스">Special Bases</a>
   </nav>
   <div class="lang" role="group" aria-label="Language">
     <button type="button" id="l-en" aria-pressed="true">EN</button>
@@ -50,7 +51,7 @@ nav a .nb{margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius
 
 <script>
 (() => {
-  const SRC = {emulator:'emulator.html', builder:'builder.html', recipes:'recipes.html', discover:'discover.html'};
+  const SRC = {emulator:'emulator.html', builder:'builder.html', recipes:'recipes.html', discover:'discover.html', bases:'bases.html'};
   const frames = {};
   let lang = 'en';
   try{ lang = localStorage.getItem('poe2lang') || 'en'; }catch(e){}
@@ -85,6 +86,8 @@ nav a .nb{margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius
   // a tool can update the address (e.g. an opened recipe) without reloading anything
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-route' && /^[A-Za-z0-9-]+$/.test(d.hash||'') && frames.recipes && e.source===frames.recipes.contentWindow){
     if(location.hash.slice(1)!==d.hash){ try{ history.replaceState(null,'','#'+d.hash); }catch(_){ } } } });
+  // Special Bases links a recipe → open it in Recipes
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-goto' || !frames.bases || e.source!==frames.bases.contentWindow || !/^[A-Za-z0-9-]+$/.test(d.id||'')) return; location.hash='r-'+d.id; });
   // a draft made on Discover opens in Recipes
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-draft' || !frames.discover || e.source!==frames.discover.contentWindow) return;
     const had = !!frames.recipes; location.hash = 'recipes'; show();

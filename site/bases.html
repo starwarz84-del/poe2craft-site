@@ -1,0 +1,117 @@
+<title>POE2 Special Bases</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* Special bases guide: sections of base cards (granted-skill amulets, slot-shifting jewellery, breach rings, bases that act as another slot) + rune bases by class. Data only (site/data/special.json). */
+:root{
+  --bg:#13151a; --panel:#1b1e25; --panel-2:#22262f; --line:#2e333e; --fg:#e8e3d8; --muted:#959ba6; --faint:#6b717c;
+  --rare:#ead77f; --ok:#8fcf9a; --focus:#f2e6c4; --ink:#14161a; --pre:#e88a7a; --suf:#7fa6ff; --magic:#8fa8ff;
+  --f-display:"Gowun Batang", "Apple SD Gothic Neo", serif;
+  --f-body:"IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--fg);margin:0}
+body{font-family:var(--f-body);font-size:14px;line-height:1.5}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.wrap{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:14px 48px;max-width:1360px;margin:0 auto}
+.bar{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:14px}
+.bar input{flex:1 1 240px;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 10px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{background:transparent;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px;cursor:pointer;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--ink);border-color:var(--fg)}
+section{margin:22px 0 8px}
+h2{font-family:var(--f-display);font-size:19px;font-weight:700;margin:0 0 2px;color:var(--rare)}
+h2 small{font-family:var(--f-body);font-size:12px;color:var(--faint);font-weight:400;margin-left:6px}
+.sub{font-size:12.5px;color:var(--muted);margin:0 0 10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.sub img{width:20px;height:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;grid-template-columns:56px 1fr;gap:4px 12px;align-content:start}
+.card img.b{width:56px;height:56px;object-fit:contain;grid-row:span 3}
+.card .nm{font-weight:600;font-size:15px}
+.card .meta{font-size:12px;color:var(--faint);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ps{font-size:11.5px;border:1px solid var(--line);border-radius:5px;padding:0 6px;color:var(--muted)}
+.ps b{font-weight:600}.ps .p{color:var(--pre)}.ps .s{color:var(--suf)}
+.ps.up{border-color:var(--ok)}
+.imp{grid-column:1/-1;list-style:none;margin:6px 0 0;padding:8px 0 0;border-top:1px solid var(--line);font-size:13px;color:var(--magic)}
+.imp li{white-space:pre-line}
+.sk{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.sk span{font-size:12px;border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:1px 8px}
+.sk span i{font-style:normal;color:var(--rare);margin-right:4px}
+.rec{grid-column:1/-1;margin-top:8px;display:flex;flex-wrap:wrap;gap:4px 8px;font-size:12.5px}
+.rec a{color:var(--rare);text-decoration:none;border-bottom:1px dotted var(--rare)}
+.rec a:hover{color:var(--focus)}
+.rec em{font-style:normal;color:var(--faint)}
+.rune .chips{margin-bottom:10px}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--faint);font-weight:500;background:var(--panel-2);white-space:nowrap}
+td.lv{color:var(--faint);white-space:nowrap;width:1%}
+td .k{font-size:11px;color:var(--faint);display:block}
+td.im{color:var(--magic);white-space:pre-line}
+tr:last-child td{border-bottom:0}
+.empty{color:var(--faint);font-size:13px;padding:10px 0}
+@media (max-width:560px){ .grid{grid-template-columns:1fr} th.cl,td.cl{display:none} }
+</style>
+<div class="wrap" id="app"><p class="empty">…</p></div>
+<script>
+(() => {
+const S = {lang:(()=>{try{const q=new URLSearchParams(location.search).get('lang');if(q)return q;return localStorage.getItem('poe2lang')}catch(e){return null}})()||'en', q:'', rcls:null, data:null};
+const L = (kr,en) => S.lang==='kr' ? kr : en, tx = o => o ? (S.lang==='kr' ? (o.kr||o.en) : (o.en||o.kr)) : '';
+const esc = s => String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const SEC = [
+  {id:'skill', kr:'스킬 부여 목걸이', en:'Granted-skill amulets', sub:['고정 옵션의 부여 스킬이 핵심. 스킬은 아래 중 하나가 붙어요.','The granted skill on the implicit is what matters. One of the skills below rolls.']},
+  {id:'slots', kr:'접두·접미 개수가 바뀌는 장신구', en:'Jewellery with shifted affix slots', sub:['접두 P · 접미 S 최대 개수','Max prefixes P · suffixes S']},
+  {id:'breach', kr:'최대 퀄리티가 높은 반지', en:'Rings with higher maximum quality', sub:['기폭제 퀄리티 상한이 그만큼 올라가요.','Catalyst quality can go that much higher.']},
+  {id:'asif', kr:'다른 부위처럼 쓰는 베이스', en:'Bases that act as another slot', sub:null},
+];
+const match = it => { if(!S.q) return true; const h=[it.kr,it.en,...(it.imp||[]).flatMap(x=>[x.kr,x.en]),...(it.skills||[]).flatMap(x=>[x.kr,x.en]),it.clsName&&it.clsName.kr,it.clsName&&it.clsName.en].join(' ').toLowerCase(); return S.q.split(/\s+/).every(w=>h.includes(w)); };
+function recLinks(rs){ if(!rs || !rs.length) return ''; return `<div class="rec"><em>${L('레시피','Recipes')}</em>${rs.map(r=>`<a href="#" data-rid="${esc(r.id)}">${esc(tx(r.title))}</a>`).join('')}</div>`; }
+function ps(it){ const up = it.p!==3 || it.s!==3; return `<span class="ps ${up?'up':''}"><b class="p">P ${it.p}</b> · <b class="s">S ${it.s}</b></span>`; }
+function card(it, sec){
+  const imp = (it.imp||[]).filter(x=>!(sec==='skill' && /최대 개수/.test(x.kr)));   // slot changes already shown as P/S
+  return `<article class="card">${it.img?`<img class="b" src="${it.img}" alt="">`:'<span></span>'}
+    <div class="nm">${esc(tx(it))}</div>
+    <div class="meta"><span>${esc(tx(it.clsName))}</span><span>${L('드롭 레벨','Drop level')} ${esc(it.lv)}</span>${ps(it)}</div>
+    ${it.skills?`<div class="sk">${it.skills.map(s=>`<span><i>${L('레벨','Lv')} ${s.lv}</i>${esc(tx(s))}</span>`).join('')}</div>`:''}
+    ${imp.length && sec!=='slots'?`<ul class="imp">${imp.map(x=>`<li>${esc(tx(x))}</li>`).join('')}</ul>`:''}
+    ${recLinks(it.recipes)}</article>`;
+}
+function render(){
+  const d=S.data; if(!d) return;
+  document.documentElement.lang = S.lang==='en'?'en':'ko';
+  let h=`<div class="bar"><input type="search" id="q" placeholder="${L('베이스·옵션·스킬 검색','Search bases, modifiers, skills')}" value="${esc(S.q)}" aria-label="${L('검색','Search')}"></div>`;
+  for(const sec of SEC){
+    const items=d[sec.id].filter(match); if(!items.length) continue;
+    let sub = sec.sub ? esc(L(sec.sub[0], sec.sub[1])) : '';
+    if(sec.id==='skill' && d.flux) sub += ` <img src="${d.flux.icon}" alt=""> <b>${esc(tx(d.flux))}</b> — ${esc(L(d.flux.fx, d.flux.fxen||d.flux.fx))}`;
+    h+=`<section><h2>${esc(L(sec.kr,sec.en))}<small>${items.length}</small></h2>${sub?`<p class="sub">${sub}</p>`:''}<div class="grid">${items.map(it=>card(it, sec.id)).join('')}</div></section>`;
+  }
+  // rune bases: one class at a time
+  const groups=d.rune.map(g=>({...g, items:g.items.filter(it=>match({...it, clsName:g.clsName}))})).filter(g=>g.items.length);
+  if(groups.length){
+    if(!groups.some(g=>g.cls===S.rcls)) S.rcls=groups[0].cls;
+    const g=groups.find(x=>x.cls===S.rcls), n=groups.reduce((t,x)=>t+x.items.length,0);
+    h+=`<section class="rune"><h2>${L('룬벼림 · 룬숙련 베이스','Runeforged and Runemastered bases')}<small>${n}</small></h2>
+      <div class="chips" role="group" aria-label="${L('부위','Class')}">${groups.map(x=>`<button type="button" class="chip" data-rc="${esc(x.cls)}" aria-pressed="${x.cls===S.rcls}">${esc(tx(x.clsName))} ${x.items.length}</button>`).join('')}</div>
+      <table><thead><tr><th>${L('베이스','Base')}</th><th>${L('레벨','Level')}</th><th>${L('고정 옵션','Implicit')}</th></tr></thead><tbody>
+      ${g.items.map(it=>`<tr><td>${esc(tx(it))}${it.recipes.length?recLinks(it.recipes):''}</td><td class="lv">${esc(it.lv)}</td><td class="im">${esc(it.imp.map(tx).join('\n'))}</td></tr>`).join('')}
+      </tbody></table></section>`;
+  }
+  if(!/<section/.test(h)) h+=`<p class="empty">${L('검색 결과가 없어요.','No matches.')}</p>`;
+  const app=document.getElementById('app'), hadFocus=document.activeElement && document.activeElement.id==='q', pos=hadFocus?document.activeElement.selectionStart:null;
+  app.innerHTML=h;
+  if(hadFocus){ const q=document.getElementById('q'); q.focus(); try{ q.setSelectionRange(pos,pos); }catch(_){} }
+}
+document.addEventListener('input', e=>{ if(e.target.id==='q'){ S.q=e.target.value.trim().toLowerCase(); render(); } });
+document.addEventListener('click', e=>{
+  const a=e.target.closest('[data-rid]'); if(a){ e.preventDefault(); try{ parent.postMessage({type:'poe2-goto', id:a.dataset.rid}, '*'); }catch(_){} return; }
+  const c=e.target.closest('[data-rc]'); if(c){ S.rcls=c.dataset.rc; render(); }
+});
+window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
+fetch('data/special.json').then(r=>r.json()).then(d=>{ S.data=d; render(); window.__bases={booted:true}; })
+  .catch(()=>{ document.getElementById('app').innerHTML=`<p class="empty">${L('데이터를 불러오지 못했어요.','Could not load the data.')}</p>`; });
+})();
+</script>

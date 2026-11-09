@@ -50,4 +50,5 @@ for f,out in [('emulator.html','pub/emulator.html'),('index.html','pub/builder.h
 # recipes page is already bilingual; only needs the document head
 open(SITE+'pub/recipes.html','w').write(head+open(SITE+'recipes.html').read())
 open(SITE+'pub/discover.html','w').write(head+open(SITE+'reverse.html').read())
+open(SITE+'pub/bases.html','w').write(head+open(SITE+'bases.html').read())
 print('built')
