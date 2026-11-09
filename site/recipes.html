@@ -403,12 +403,14 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcgh b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--rare);color:var(--ink);font-size:11.5px}
 .fcgh small{font-weight:400;color:var(--muted);font-size:11.5px}
 /* item lane */
-.fcit{position:absolute;border:1px solid var(--line);border-radius:8px;background:#0d0d10;padding:6px 8px 7px;font-size:11px;line-height:1.35}
-.fcit p{margin:0 0 4px;color:var(--faint);font-size:10.5px}
-.fcit ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
-.fcit li{color:#a9a9ff;padding-left:4px;border-left:2px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fcit li i{font-style:normal;font-size:9.5px;color:var(--faint);margin-right:5px}
-.fcit li small{color:var(--faint);font-size:9.5px}
+.fcit{position:absolute;border:1px solid var(--line);border-radius:8px;background:#0d0d10;padding:8px 10px;font:12.5px/1.4 var(--f-body)}
+.fcit ul{list-style:none;margin:0;padding:0;display:grid;gap:3px}
+.fcit li{display:flex;gap:8px;align-items:baseline;color:#a9a9ff;padding:1px 0 1px 5px;border-left:2px solid transparent;min-width:0}
+.fcit li i{flex:none;font-style:normal;font-weight:600;font-size:11.5px;width:26px;color:var(--muted)}
+.fcit li i.sd-p{color:var(--pre)}.fcit li i.sd-s{color:var(--suf)}
+.fcit li span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fcit li em{font-style:normal;color:var(--rare);font-weight:600;font-size:11.5px}
+.fcit li small{color:var(--faint);font-size:11px}.fcit li u{text-decoration:none;color:var(--muted)}
 .fcit li.m-f{color:#c9b27a}.fcit li.m-d,.fcit li.m-u{color:#9be86a}.fcit li.m-j{color:#8d877b}
 .fcit li.new{border-left-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
 .fcit li.gone{text-decoration:line-through;opacity:.5}
@@ -420,48 +422,49 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fce.skip{stroke-dasharray:2 4}
 .fce.off{stroke:var(--line);stroke-width:1.1;stroke-dasharray:3 4;opacity:.55}
 .mk-fwd{fill:var(--muted)}.mk-ok{fill:var(--ok)}.mk-fail{fill:var(--warn)}.mk-off{fill:var(--line)}
-.fcl{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font-size:10.5px;line-height:1;padding:3px 6px;border-radius:999px;background:var(--bg);border:1px solid var(--muted);color:var(--fg);pointer-events:none;z-index:2}
+.fcl{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font-size:11.5px;font-weight:500;line-height:1;padding:4px 8px;border-radius:999px;background:var(--bg);border:1px solid var(--muted);color:var(--fg);pointer-events:none;z-index:2}
 .fcl.k-ok{border-color:var(--ok);color:var(--ok)}.fcl.k-fail{border-color:var(--warn);color:var(--warn)}.fcl.off{border-color:var(--line);color:var(--faint);border-style:dashed}
 /* nodes */
-.fcn{position:absolute;box-sizing:border-box;font-size:11.5px;line-height:1.3;z-index:1}
+.fcin{font-family:var(--f-body);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-variant-numeric:tabular-nums}
+.fcn{position:absolute;box-sizing:border-box;font-size:12.5px;line-height:1.4;z-index:1}
 .fcn.off{opacity:.38}
 .fcn b{font-weight:600;color:var(--fg)}
-.fcn small{color:var(--faint);font-size:10px;letter-spacing:.03em}
-.fcn .ci{white-space:nowrap;margin-right:5px;font-size:11px}.fcn .ci img{width:14px;height:14px;vertical-align:-3px;margin-right:1px}
+.fcn small{color:var(--faint);font-size:11px}
+.fcn .ci{white-space:nowrap;margin-right:5px;font:inherit}.fcn .ci img{width:16px;height:16px;vertical-align:-3px;margin-right:2px}
 .fcn.k-start,.fcn.k-end{border-radius:999px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:4px 18px;border:1.5px solid var(--muted);background:var(--panel-2)}
 .fcn.k-start{border-color:var(--fg)}
 .fcn.k-end.v-best{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--panel))}
 .fcn.k-end.v-settle{border-color:var(--rare);background:color-mix(in srgb,var(--rare) 12%,var(--panel))}
-.fcn .fcs{color:var(--muted);font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.fcn .fcs{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .fcn .fcs b{color:var(--rare)}
-.fcn.k-task{border:1px solid var(--line);border-radius:6px;background:var(--panel-2);padding:7px 9px;display:flex;flex-direction:column;gap:3px;overflow:hidden}
+.fcn.k-task{border:1px solid var(--line);border-radius:8px;background:var(--panel-2);display:flex;flex-direction:column;overflow:hidden}
 .fcn.k-task.k-clean{background:var(--panel)}
-.fcn.k-task.inloop{box-shadow:inset 3px 0 0 #b9a2ff}
-.fch{display:flex;gap:6px;align-items:flex-start}
-.fch em{font-style:normal;flex:none;display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 3px;border-radius:4px;background:var(--line);color:var(--fg);font-size:10.5px;font-family:var(--f-mono)}
-.fch b{flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fch{display:flex;gap:8px;align-items:center;padding:9px 12px 4px}
+.fch em{font-style:normal;flex:none;display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 4px;border-radius:5px;background:var(--line);color:var(--fg);font-size:12px;font-weight:600}
 .fch .sep{color:var(--faint)}
-.fcw{display:grid;gap:2px;color:#a9a9ff;font-size:11.5px;line-height:1.38}
-.fcw p{margin:0}.fcw b{color:var(--muted);font-weight:500}.fcw i{font-style:normal;color:var(--rare);font-family:var(--f-mono);font-size:10.5px}.fcw u{text-decoration:none;color:var(--muted)}
-.fc1 .pr{margin-left:8px;color:var(--muted)}.fc1 .pr b{color:var(--rare)}
-.fc1{margin-top:auto;color:var(--fg);white-space:nowrap;font-size:11px;display:flex;align-items:center;min-width:0}
-.fc1 .cn{overflow:hidden;text-overflow:ellipsis;min-width:0}
-.fc1 .pr{flex:none}
-.fc1 small{margin-right:5px;padding:0 4px;border:1px solid var(--line);border-radius:3px}
-.fc1 img{width:14px;height:14px;vertical-align:-3px;margin-right:1px}
-.fcsk{color:var(--faint);font-size:10.5px}
+.fch b{flex:1;font-size:14px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fcw{display:grid;gap:3px;color:#a9a9ff;font-size:13px;line-height:1.5;padding:2px 12px 8px}
+.fcw p{margin:0}.fcw b{color:var(--muted);font-weight:500}.fcw i{font-style:normal;color:var(--rare);font-weight:600;font-size:12px}.fcw u{text-decoration:none;color:var(--muted)}
+.fcf{margin-top:auto;border-top:1px solid var(--line);background:color-mix(in srgb,var(--bg) 35%,transparent);padding:7px 12px 8px;display:grid;gap:4px}
+.fc1{color:var(--fg);white-space:nowrap;font-size:12.5px;display:flex;align-items:center;gap:6px;min-width:0}
+.fc1 .cn{overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+.fc1 img,.fc2 img{width:16px;height:16px;vertical-align:-3px;margin-right:2px}
+.fc1 .pr{flex:none;color:var(--muted)}.fc1 .pr b{color:var(--rare);font-weight:600}
+.fc2{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:center;color:var(--fg);font-size:12px}
+.fc2 .lb{color:var(--muted)}.fc2 .cu{white-space:nowrap}
+.fcsk{color:var(--faint);font-size:12px;padding:0 12px 6px}
 .fclp{margin-top:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-top:1px dashed #b9a2ff66;padding-top:4px;color:#d5c8ff;font-size:10.5px;line-height:1.35}
 .fclp b{color:#b9a2ff}.fclp>span{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fcn.k-dec,.fcn.k-choice{display:grid;place-items:center;text-align:center}
 .fcn.k-dec svg,.fcn.k-choice svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .fcn.k-dec polygon{fill:var(--panel);stroke:var(--muted);stroke-width:1.2;vector-effect:non-scaling-stroke}
-.fcn.k-dec span{position:relative;font-size:10.5px;color:var(--fg);max-width:70%;line-height:1.2}
+.fcn.k-dec span{position:relative;font-size:12px;color:var(--fg);max-width:72%;line-height:1.25}
 .fcn.k-choice polygon{fill:color-mix(in srgb,var(--rare) 16%,var(--panel));stroke:var(--rare);stroke-width:2;vector-effect:non-scaling-stroke}
 .fcn.k-choice span{position:relative;max-width:66%;display:flex;flex-direction:column;gap:1px;line-height:1.2}
 .fcn.k-choice small{color:var(--rare);font-weight:600}
 .fcn.k-note{border:1px dashed var(--muted);border-radius:4px;background:var(--panel);padding:6px 20px 6px 9px;display:flex;flex-direction:column;gap:2px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
 .fcn.k-note::after{content:"";position:absolute;right:0;top:0;width:14px;height:14px;background:linear-gradient(225deg,var(--bg) 50%,var(--line) 50%)}
-.fcn.k-note span{color:var(--muted);font-size:10.5px}
+.fcn.k-note span{color:var(--muted);font-size:12px}
 .simbox .simtop .simfs{margin-left:auto}
 .simbox.full{position:fixed;inset:0;z-index:1000;margin:0;border-radius:0;border:0;display:flex;flex-direction:column;overflow:hidden;padding:10px 12px}
 .simbox.full .fc{flex:1;max-height:none;min-height:0}
@@ -1310,7 +1313,7 @@ function detailHTML(r){
 }
 // ---------- flowchart + whole-process simulation (docs/graph-model.md) ----------
 // data/sim/<id>.json is made at build time (tools/sim/run.js: real rolls, 20,000 finished items per strategy); the page only draws it
-S.simData={}; S.simOpen=false; S.simSel=store.get('simSel',{});
+S.simData={}; S.simOpen=false; S.fcItems=store.get('fcItems', true); S.simSel=store.get('simSel',{});
 function loadSim(r){ if(S.simData[r.id]) return;
   S.simData[r.id]='loading'; fetch(`data/sim/${r.id}.json`).then(x=>x.ok?x.json():null).catch(()=>null).then(d=>{ S.simData[r.id]=d||'none'; if(S.open===r.id) keepY(renderDetail); }); }
 function simStrategy(d){ const vis=d.strategies.filter(s=>!s.hidden), keys=Object.keys(vis[0].params).filter(k=>new Set(vis.map(s=>String(s.params[k]))).size>1);
@@ -1321,8 +1324,8 @@ function nodeCur(n){ const ids=[...(n.curIf||[]), n.cur, ...(n.omens||[])].filte
   const uniq=[...new Set(ids)], txt=uniq.map(id=>nm(cur(id))).join(' + ') + (n.trim ? ' + '+L('절사/좌측 말소의 징조','Whittling / Sinistral Erasure') : '');
   return {html: uniq.map(id=>icon(id)).join('') + esc(txt), title: txt}; }
 // flowchart layout: top → down, main path in the first column, branches to the right, orthogonal edges with rounded corners
-const FX={W:286, GAPX:118, LANE:206, LANEGAP:40, ROWGAP:44, GROUPGAP:58, PAD:22, DW:132, DH:60, DGAP:18, CW:184, CH:96, STUB:14, R:9};
-const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?11:6.3),0);
+const FX={W:540, WB:330, GAPX:118, LANE:330, LANEGAP:40, ROWGAP:44, GROUPGAP:58, PAD:22, DW:150, DH:66, DGAP:18, CW:200, CH:104, STUB:14, R:9};
+const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?12:7),0);
 function fcModel(g){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const E=[], seen=new Set(), add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(seen.has(k)) return; seen.add(k); E.push({a,b,label,...x}); };
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
@@ -1344,14 +1347,14 @@ function fcWant(g, n, params){ const out=[];
     for(const sd of ['p','s']) if(bySide[sd]) out.push(`<b>${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${bySide[sd].map(v=>`${esc(v.txt)}${v.tier?` <i>- ${v.tier}</i>`:''}${v.sec==='d'?` <i>${L('(훼손)','(desecrated)')}</i>`:''}`).join(` <u>${L('또는','or')}</u> `)}`); }
   (n.showText||[]).forEach(t=>out.push(esc(tx(t))));
   return out; }
-function fcSize(n, M, g, params){ if(n.kind==='base') return [FX.W, 62]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [FX.CW, FX.CH];
+function fcSize(n, M, g, params){ const W = n.pos[0]===0 ? FX.W : FX.WB; if(n.kind==='base') return [W, 66]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [FX.CW, FX.CH];
   if(n.kind==='assume') return [222, 84];
-  const want=fcWant(g, n, params), per=FX.W-22, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
-  return [FX.W, 64 + Math.max(1,lines)*17 + (n.skipNote?16:0)]; }
+  const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
+  return [W, 40 + (want.length?Math.max(1,lines)*20+6:0) + 62 + (n.skipNote?18:0)]; }
 function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[...new Set(g.nodes.map(n=>n.pos[0]))].sort((a,b)=>a-b);
   const size={}; g.nodes.forEach(n=>size[n.id]=fcSize(n, M, g, params));
   const colW={}; colIds.forEach(c=>colW[c]=Math.max(...g.nodes.filter(n=>n.pos[0]===c).map(n=>Math.max(size[n.id][0], M.dec[n.id]?FX.DW:0))));
-  const colX={}; let x=FX.PAD+(items?FX.LANE+FX.LANEGAP:0); colIds.forEach(c=>{ colX[c]=x; x+=colW[c]+FX.GAPX; }); const Wt=x-FX.GAPX+FX.PAD+40;
+  const colX={}; let x=FX.PAD+(items && S.fcItems!==false?FX.LANE+FX.LANEGAP:0); colIds.forEach(c=>{ colX[c]=x; x+=colW[c]+FX.GAPX; }); const Wt=x-FX.GAPX+FX.PAD+40;
   const rows=[...new Set(g.nodes.map(n=>n.pos[1]))].sort((a,b)=>a-b), box={}, dia={}, rowSpan=[], grp={};
   let y=FX.PAD, prevG=null;
   rows.forEach(r=>{ const R=g.nodes.filter(n=>n.pos[1]===r).sort((a,b)=>a.pos[0]-b.pos[0]), m=R[0], gid=m.group;
@@ -1363,7 +1366,7 @@ function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[..
       box[n.id]=bx; if(M.dec[n.id]) dia[n.id]={id:n.id+'?', x:bx.x+w/2-FX.DW/2, y:bx.y+h+FX.DGAP, w:FX.DW, h:FX.DH, dia:true, row:r, col:c}; });
     rowSpan.push([y, y+t1-t0]); y+=t1-t0+FX.ROWGAP; });
   if(prevG) grp[prevG].y1=y-FX.ROWGAP+16;
-  return {box, dia, colX, colW, colIds, rowSpan, grp, Wt, Ht:y-FX.ROWGAP+FX.PAD+10, items}; }
+  return {box, dia, colX, colW, colIds, rowSpan, grp, Wt, Ht:y-FX.ROWGAP+FX.PAD+10, items: items && S.fcItems!==false}; }
 // candidate orthogonal routes between two ports; the cheapest one that misses every box wins
 function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Object.values(Lay.dia)], placed=[];
   const port=(b,s)=>{ const cx=b.x+b.w/2, cy=b.y+b.h/2; return {top:[cx,b.y,0,-1], bottom:[cx,b.y+b.h,0,1], left:[b.x,cy,-1,0], right:[b.x+b.w,cy,1,0]}[s]; };
@@ -1389,7 +1392,10 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
         let coll=0, len=0, ov=0; for(let i=0;i<k-1;i++){ const a=pts[i], b=pts[i+1]; len+=Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1]);
           if(i>0 && i<k-2) coll+=hit(a,b); else { const inner=i===0 ? [a[0]+(b[0]-a[0])*0.99, a[1]+(b[1]-a[1])*0.99] : null; if(i===0 && k===2) coll+=Math.max(0,hit([a[0]+d0[0]*5,a[1]+d0[1]*5],[b[0]-dl[0]*5,b[1]-dl[1]*5])-0); }
           ov+=overlap(a,b); }
-        const sc=coll*5000 + len + (k-2)*28 + ov + (t==='top'?0:24) + (S.dia && s==='bottom' && T.col!==S.col ? 400 : 0);
+        let cross=0; for(let i=0;i<k-1;i++){ const a=pts[i], b=pts[i+1]; for(const [c,d] of placed){ const v1=a[0]===b[0], v2=c[0]===d[0]; if(v1===v2) continue;
+            const [V0,V1,H0,H1] = v1 ? [a,b,c,d] : [c,d,a,b]; if(V0[0]>Math.min(H0[0],H1[0])+1 && V0[0]<Math.max(H0[0],H1[0])-1 && H0[1]>Math.min(V0[1],V1[1])+1 && H0[1]<Math.max(V0[1],V1[1])-1) cross++; } }
+        const up = T.y < S.y + S.h/2;
+        const sc=coll*5000 + len + (k-2)*28 + ov + cross*60 + (t==='top'?0:24) + (S.dia && s==='bottom' && T.col!==S.col ? 400 : 0) + (up && s==='bottom' ? 260 : 0);
         if(!best || sc<best.sc) best={sc, pts}; } }
     e.pts=best.pts; for(let i=0;i<best.pts.length-1;i++) placed.push([best.pts[i],best.pts[i+1]]); }); }
 function fcD(pts){ let d=`M${pts[0][0]},${pts[0][1]}`;
@@ -1399,7 +1405,7 @@ function fcD(pts){ let d=`M${pts[0][0]},${pts[0][1]}`;
     d+=` L${p[0]-u[0]*r},${p[1]-u[1]*r} Q${p[0]},${p[1]} ${p[0]+v[0]*r},${p[1]+v[1]*r}`; }
   return d; }
 function fcLabels(list, rects){ // list: [{pts, w, ...}] → x,y per label: near the source, clear of boxes and other labels
-  const placed=[], H=18, ov=(a,b)=>Math.max(0,Math.min(a[2],b[2])-Math.max(a[0],b[0]))*Math.max(0,Math.min(a[3],b[3])-Math.max(a[1],b[1]));
+  const placed=[], H=21, ov=(a,b)=>Math.max(0,Math.min(a[2],b[2])-Math.max(a[0],b[0]))*Math.max(0,Math.min(a[3],b[3])-Math.max(a[1],b[1]));
   list.forEach(L0=>{ const pts=L0.pts, w=L0.w; let best=null;
     for(let i=0;i<pts.length-1;i++){ const a=pts[i], b=pts[i+1], horiz=a[1]===b[1], len=Math.abs(b[0]-a[0])+Math.abs(b[1]-a[1]), dir=horiz?Math.sign(b[0]-a[0]):Math.sign(b[1]-a[1]);
       const need=horiz?w/2+10:H/2+8; if(len<need*2-4 && pts.length>2) continue;
@@ -1411,9 +1417,11 @@ function fcLabels(list, rects){ // list: [{pts, w, ...}] → x,y per label: near
     if(!best){ const a=pts[0]; best={x:a[0],y:a[1],R:[a[0]-w/2,a[1]-H/2,a[0]+w/2,a[1]+H/2]}; }
     placed.push(best.R); L0.x=best.x; L0.y=best.y; }); }
 const fcUse = (u, n=3) => Object.entries(u||{}).filter(([,v])=>v>=0.005).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k,v])=>`<span class="ci" title="${esc(nm(cur(k)))}">${icon(k)}${fmt(v)}</span>`).join('');
-function fcItem(lines, prev){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
-  const side=s=>s==='p'?L('접두','P'):s==='s'?L('접미','S'):L('아무 면','P/S'), mk={f:L('분열','frac.'),u:L('미공개','unrev.'),d:L('훼손','desec.')};
-  const row=(l,cls)=>`<li class="m-${l.m||'n'} ${cls}"><i>${side(l.s)}</i>${esc(tx(l))}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</li>`;
+function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
+  const side=s=>s==='p'?'P':s==='s'?'S':'P/S', mk={f:L('분열','Fractured'),u:L('미공개','Unrevealed'),d:L('훼손','Desecrated')};
+  const text=l=>{ if(!l.tags) return {t:esc(tx(l)).replace(/ ?1티어$/,' T1'), tier:''}; const v=l.tags.map(t=>fcTagText(g,t,params)).filter(Boolean);
+    return {t: v.map(x=>esc(x.txt)).join(` <u>${L('또는','or')}</u> `), tier: v[0]?.tier||''}; };
+  const row=(l,cls)=>{ const x=text(l); return `<li class="m-${l.m||'n'} ${cls}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
   const gone=(prev||[]).filter(l=>!now.has(key(l)) && !lines.some(x=>x.s===l.s && x.kr===l.kr));
   return lines.map(l=>row(l, had.has(key(l))?'':'new')).join('') + gone.map(l=>row(l,'gone')).join(''); }
 function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), res=s.res, M=fcModel(g), Lay=fcLayout(g, M, s.params);
@@ -1431,7 +1439,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     return {...e, src, dst, on, kind, share: M.dec[e.a] && !e.skip && out ? f/out : null, d0:Math.abs(src.x-dst.x)+Math.abs(src.y-dst.y) + (kind==='fwd'?0:5000)}; }).filter(Boolean);
   fcRoute(Lay, M, edges);
   const svgE=edges.map(e=>`<path class="fce k-${e.kind}${e.on?'':' off'}${e.skip?' skip':''}" d="${fcD(e.pts)}" marker-end="url(#fcm-${e.on?e.kind:'off'})"/>`).join('');
-  const lab=edges.filter(e=>e.label && (e.on || e.opt)).sort((a,b)=>(b.on-a.on)||(a.d0-b.d0)).map(e=>{ const t=tx(e.label)+(e.share!=null && e.share<0.995 && e.on ? ` · ${pct1(e.share)}` : ''); return {e, t, pts:e.pts, w:fcLen(t)+14}; });
+  const lab=edges.filter(e=>e.label && (e.on || e.opt)).sort((a,b)=>(b.on-a.on)||(a.d0-b.d0)).map(e=>{ const t=tx(e.label)+(e.share!=null && e.share<0.995 && e.on ? ` · ${pct1(e.share)}` : ''); return {e, t, pts:e.pts, w:fcLen(t)+18}; });
   fcLabels(lab, [...Object.values(Lay.box), ...Object.values(Lay.dia)]);
   const labels=lab.map(({e,t,x,y})=>`<span class="fcl k-${e.kind}${e.on?'':' off'}" style="left:${x.toFixed(0)}px;top:${y.toFixed(0)}px">${esc(t)}</span>`).join('');
   // regions
@@ -1442,10 +1450,11 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   // item lane
   let lane='', prev=null, yLast=0;
   if(Lay.items) g.nodes.filter(n=>n.item && isMain(n.id)).sort((a,b)=>a.pos[1]-b.pos[1]).forEach(n=>{ const same=prev && JSON.stringify(prev)===JSON.stringify(n.item); if(same) return;
-    const b=Lay.box[n.id], top=Math.max(b.y, yLast+8), lines=n.item.length + (prev||[]).filter(l=>!n.item.some(x=>x.s===l.s&&x.kr===l.kr)).length;
-    lane+=`<div class="fcit" style="left:${FX.PAD}px;top:${top}px;width:${FX.LANE}px"><p>${no[n.id]?`${no[n.id]}. `:''}${L('이 단계 뒤 아이템','Item after this step')}</p><ul>${n.item.length||lines?fcItem(n.item, prev):`<li class="m-n"><i>·</i>${L('옵션 없음 (노멀)','No modifiers (normal)')}</li>`}</ul></div>`
-      + `<svg class="fcitl" style="left:${FX.PAD+FX.LANE}px;top:${top+12}px" width="${b.x-FX.PAD-FX.LANE}" height="2"><line x1="0" y1="1" x2="${b.x-FX.PAD-FX.LANE}" y2="1"/></svg>`;
-    yLast=top+30+Math.max(1,lines)*18; prev=n.item; });
+    const b=Lay.box[n.id], rows=Math.max(1, n.item.length + (prev||[]).filter(l=>!n.item.some(x=>x.s===l.s&&x.kr===l.kr)).length), h=16+rows*21;
+    const top=Math.max(b.y+b.h/2-h/2, yLast+10), cy=top+h/2;
+    lane+=`<div class="fcit" style="left:${FX.PAD}px;top:${top}px;width:${FX.LANE}px"><ul>${n.item.length||rows>1||prev?fcItem(g, n.item, prev, s.params):`<li class="m-n"><i>·</i><span>${L('옵션 없음 (노멀)','No modifiers (normal)')}</span></li>`}</ul></div>`
+      + `<svg class="fcitl" style="left:${FX.PAD+FX.LANE}px;top:${cy-1}px" width="${b.x-FX.PAD-FX.LANE}" height="2"><line x1="0" y1="1" x2="${b.x-FX.PAD-FX.LANE}" y2="1"/></svg>`;
+    yLast=top+h; prev=n.item; });
   // nodes
   const nodes=g.nodes.map(n=>{ const b=Lay.box[n.id], t=st(n.id), Lp=M.loopOf[n.id], pos=`left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px`;
     if(n.kind==='base'){ const bp=Object.entries(g.basePrice||{}); return `<div class="fcn k-start ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${L('베이스 가격','Base price')} ${bp.length?`${L('미정 · 약','TBD · about')} ${bp.map(([k2,v])=>`<span class="ci">${icon(k2)}${esc(nm(cur(k2)))} ${v}${L('개','')}</span>`).join(' ')}`:L('미정','TBD')}</span></div>`; }
@@ -1464,8 +1473,9 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     return `<div class="fcn k-task ${n.kind==='cleanup'?'k-clean':''} ${t?'':'off'}" style="${pos}" title="${esc(tip)}">
       <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b>${esc(tx(n.goal||n.label))}</b></div>
       ${want.length?`<div class="fcw">${want.map(h=>`<p>${h}</p>`).join('')}</div>`:''}
-      <div class="fc1"><span class="cn">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','certain'):`${L('확률','chance')} <b>${pct1(pS)}</b>`}</span>`:`<span class="pr">${L('이 버전에선 안 거침','not used')}</span>`}</div>
-      ${n.skipNote?`<div class="fcsk">↷ ${esc(tx(n.skipNote))}</div>`:''}</div>`; }).join('');
+      ${n.skipNote?`<div class="fcsk">↷ ${esc(tx(n.skipNote))}</div>`:''}
+      <div class="fcf"><div class="fc1"><span class="cn">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div>
+      ${t?`<div class="fc2"><span class="lb">${L('총 사용','Total used')}</span>${Object.entries(t.use||{}).filter(([,v])=>v>=0.005).sort((a,b)=>b[1]-a[1]).map(([k2,v])=>`<span class="cu" title="${esc(nm(cur(k2)))}">${icon(k2)}${fmt(v)}${L('개','')}</span>`).join('')}</div>`:''}</div></div>`; }).join('');
   const diamonds=Object.values(Lay.dia).map(D=>{ const n=M.byId[D.id.slice(0,-1)]; return `<div class="fcn k-dec ${st(n.id)?'':'off'}" style="left:${D.x}px;top:${D.y}px;width:${D.w}px;height:${D.h}px"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,2 98,50 50,98 2,50"/></svg><span>${esc(tx(n.ask)||L('결과','Result'))}</span></div>`; }).join('');
   // top bar: versions, then detailed toggles
   const vers=(g.versions||[]).map(v=>{ const on=Object.entries(v.params).every(([k2,x])=>String(sel[k2]??s.params[k2])===String(x)) && keys.every(k2=>v.params[k2]!=null);
@@ -1477,7 +1487,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     return `<tr><td>${esc(tx(n.label))}</td><td class="num">${pct1(t.reach)}</td><td>${n.kind==='base'?`<span class="ci">${L('베이스','base')} ×${fmt(t.visits)}</span>`:fcUse(t.use,9)}</td><td class="num">${t.div>=0.05?fmtDiv(t.div):'·'}</td></tr>`; }).join('');
   const legend=`<span class="fclg"><i class="s-start"></i>${L('베이스','Base')}<i class="s-task"></i>${L('작업','Step')}<i class="s-dec"></i>${L('결과 판단','Outcome')}<i class="s-choice"></i>${L('분기(선택)','Branch')}<i class="s-end"></i>${L('마감','End')}<i class="s-note"></i>${L('별첨','Note')}<i class="s-ok"></i>${L('성공','Success')}<i class="s-fail"></i>${L('실패','Fail')}</span>`;
   return `<section class="simbox${S.simFull?' full':''}" data-simbox>
-    <div class="simtop">${vers?`<span class="simgrp">${L('버전','Version')}${vers}</span>`:''}<button type="button" class="btn simfs" data-act="simfull" aria-pressed="${!!S.simFull}">${S.simFull?L('✕ 닫기','✕ Close'):L('전체화면','Full screen')}</button></div>
+    <div class="simtop">${vers?`<span class="simgrp">${L('버전','Version')}${vers}</span>`:''}<button type="button" class="chip" data-act="fcitems" aria-pressed="${S.fcItems!==false}">${L('아이템 옵션','Item modifiers')}</button><button type="button" class="btn simfs" data-act="simfull" aria-pressed="${!!S.simFull}">${S.simFull?L('✕ 닫기','✕ Close'):L('전체화면','Full screen')}</button></div>
     <details class="simopts" ${S.simOpts?'open':''}><summary class="simnote">${L('세부 조건','Detailed options')}</summary><div class="simtop">${toggles}</div></details>
     <div class="simsum"><span>${L('완성 1개당','Per finished item')} ${v0(res.mean)}</span><span>${L('중앙값','Median')} ${fmtDiv(res.median)} · ${L('운 나쁠 때(90%)','Unlucky (90%)')} ${fmtDiv(res.p90)} div</span><span>${L('베이스','Bases')} ${fmt(res.bases)}${L('개','')}</span>${eng!=null?`<small>${L('단계별 기대값 계산','Step-by-step estimate')} ${fmtDiv(eng)} div</small>`:''}</div>
     ${legend}
@@ -1768,6 +1778,7 @@ $('#detail').addEventListener('click', e=>{
   if(a.dataset.act==='link') copy(shareURL(r.id), L('링크를 복사했어요','Link copied'));
   if(a.dataset.act==='copy') copy(recipeText(r), L('레시피를 복사했어요','Recipe copied'));
   if(a.dataset.act==='pdf'){ makePDF(r, a); return; }
+  if(a.dataset.act==='fcitems'){ S.fcItems = S.fcItems===false; store.set('fcItems', S.fcItems); keepY(renderDetail); return; }
   if(a.dataset.act==='simfull'){ setSimFull(!S.simFull); return; }
   if(a.dataset.act==='sim'){ if(S.simOpen) setSimFull(false, true); S.simOpen=!S.simOpen; keepY(renderDetail); if(S.simOpen) document.querySelector('#detail [data-simbox]')?.scrollIntoView({block:'nearest'}); return; }
   if(a.dataset.act==='reset-done'){ store.set('done:'+r.id,[]); keepY(renderDetail); }
