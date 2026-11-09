@@ -21,9 +21,9 @@
      "kr": "1~2티어",
      "en": "T1–2"
     },
-    "0": {
-     "kr": "나오는 대로",
-     "en": "Whatever comes"
+    "5": {
+     "kr": "아무 티어",
+     "en": "Any tier"
     }
    }
   }
@@ -44,7 +44,7 @@
   {
    "id": "ess",
    "params": {
-    "spT": 0
+    "spT": 5
    }
   }
  ],
@@ -54,11 +54,11 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "spT": 0
+    "spT": 5
    },
    "desc": {
-    "kr": "마지막 훼손 공개는 한 번, 나오는 대로",
-    "en": "One reveal, keep whatever comes"
+    "kr": "정신력 아무 티어 (보존된 빗장뼈)",
+    "en": "Spirit any tier (Preserved Collarbone)"
    }
   },
   {
@@ -221,8 +221,8 @@
      "tmax": 1
     },
     {
-     "side": "p",
-     "random": true
+     "tag": "spirit",
+     "tmax": 5
     },
     {
      "tag": "crit",
@@ -1040,6 +1040,16 @@
      "en": "+3 melee or projectile skills",
      "m": "n"
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "spT": 5
+     },
+     "set": {
+      "cur": "Preserved_Collarbone"
+     }
+    }
    ]
   },
   {
@@ -1067,15 +1077,6 @@
     "en": "Reveal"
    },
    "edges": [
-    {
-     "if": {
-      "param": {
-       "spT": 0
-      }
-     },
-     "to": "ok",
-     "res": "ok"
-    },
     {
      "if": {
       "added": "spirit"

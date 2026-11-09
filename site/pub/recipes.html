@@ -1376,7 +1376,7 @@ let _fcCtx; const fcText = (t, px) => { try{ _fcCtx=_fcCtx||document.createEleme
 const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?12:7),0);
 // a work step this version never reaches (0 visits in its simulation) is left out of its flowchart
 function fcPrune(g, res){ if(!res?.nodes) return g; const gone=new Set(g.nodes.filter(n=>(n.kind==='act'||n.kind==='cleanup') && !res.nodes[n.id]).map(n=>n.id)); if(!gone.size) return g;
-  return {...g, nodes: g.nodes.filter(n=>!gone.has(n.id)).map(n=>({...n, edges:(n.edges||[]).filter(e=>!gone.has(e.to))})), loops:(g.loops||[]).map(L=>({...L, nodes:L.nodes.filter(id=>!gone.has(id))})).filter(L=>L.nodes.length>=2)}; }
+  return {...g, nodes: g.nodes.filter(n=>!gone.has(n.id)).map(n=>({...n, edges:(n.edges||[]).filter(e=>!gone.has(e.to))})), loops:(g.loops||[]).map(L=>({...L, nodes:L.nodes.filter(id=>!gone.has(id))})).filter(L=>L.nodes.length>=2 && L.nodes.some((id,i)=>(g.nodes.find(n=>n.id===id)?.edges||[]).some(e=>{ const j=L.nodes.indexOf(e.to); return j>=0 && j<=i; })))}; }   // keep a loop only while a step this version takes still goes back into it
 function fcModel(g, params={}){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const E=[], seen=new Set(), add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(seen.has(k)) return; seen.add(k); E.push({a,b,label,...x}); };
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
@@ -1392,7 +1392,7 @@ function fcTagText(g, tag, params){ if(typeof tag==='string' && tag[0]==='$') re
   if(tm>1 && T.tiers[tm-1]){ const lo=[...tx({kr:T.tiers[tm-1][0], en:T.tiers[tm-1][1]}).matchAll(/\((\d+)—(\d+)\)/g)]; let i=0;
     const merged=t1.replace(/\((\d+)—(\d+)\)/g, (m,a,b)=>{ const q=lo[i++]; return q?`(${q[1]}—${b})`:m; }); if(i===lo.length) txt=merged; }
   return {s:T.s, txt:txt.replace(/\n/g,' · '), tier: tm ? (tm>1?`T1~T${tm}`:'T1') : '', sec:T.sec}; }
-function fcWant(g, n, params){ const out=[];
+function fcWant(g, n, params){ const out=[]; const ov=(n.showIf||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); if(ov) n={...n, show:ov.show, showText:ov.showText};   // per-version wording
   if(n.show){ const flat=n.show.map(t=>typeof t==='string'&&t[0]==='$'?params[t.slice(1)]:t).flatMap(t=>g.tags?.[t]?.anyOf || [t]), bySide={};
     flat.forEach(t=>{ const v=fcTagText(g,t,params); if(!v) return; (bySide[v.s]=bySide[v.s]||[]).push(v); });
     for(const sd of ['p','s']) if(bySide[sd]){ const vs=bySide[sd]; vs.forEach((v,i)=>out.push(`${i?'<span class="ind"></span>':`<b class="sd">${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : `}${esc(v.txt)}${v.tier?` <i>- ${v.tier}</i>`:''}${i<vs.length-1?` <u>${L('또는','or')}</u>`:''}`)); } }
@@ -1504,7 +1504,8 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
     return `<div class="fcfin ${on?'on':''}"><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
-function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=fcPrune(d.graph, res), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
+function fcOver(g, params){ return {...g, nodes:g.nodes.map(n=>{ const o=(n.over||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); return o ? {...n, ...o.set} : n; })}; }   // per-version node fields (same rule as sim.js)
+function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=fcPrune(fcOver(d.graph, s.params), res), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
   const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : p>0 ? (p*100).toFixed(2)+'%' : '0%';
   const st = id => res.nodes[id], ecount = (a,b) => res.edges?.[a+'>'+b]||0;
   // every path stays readable whatever version is picked: a step this version skips borrows its per-step numbers from a version that uses it

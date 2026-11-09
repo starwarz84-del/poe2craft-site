@@ -24,7 +24,7 @@ function make(graph, D, craft, params){
   for(const k in graph.tags) tags[k]=resolve(k, graph.tags[k]);
   const match = (m, tag) => { if(!m || m.unrev) return false; const t = typeof tag==='string' ? tags[tag] : tag; if(!t) throw new Error('unknown tag '+tag);
     if(t.anyOf) return t.anyOf.some(x=>match(m,x)); return m.gi===t.gi && (!t.tmax || m.ti < t.tmax); };
-  const nodes={}; graph.nodes.forEach(n=>nodes[n.id]=n);
+  const nodes={}; graph.nodes.forEach(n=>{ const o=(n.over||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); nodes[n.id]=o ? {...n, ...o.set} : n; });   // over: per-version node fields
 
   return function run(rnd, hooks){
     let it={rar:'normal', mods:[]}, last={added:[], removed:[], fr:null};

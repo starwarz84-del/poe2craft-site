@@ -8,7 +8,7 @@ const craft=JSON.parse(fs.readFileSync(`${ROOT}/site/data/crafting.json`,'utf8')
 const st=graph.strategies.find(s=>s.id===sid), run=SIM.make(graph, D, craft, st.params);
 let item=null; const noop=()=>{}; let seed=1; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
 try{ run(rnd, {tally:{visit:noop, use:noop, edge:noop, base:noop, done:noop}, enter:(nid,it)=>{ if(nid===at && !item){ item=JSON.parse(JSON.stringify(it)); throw 'got'; } }}); }catch(e){ if(e!=='got') throw e; }
-const G=D.groups, node=graph.nodes.find(n=>n.id===at), bone=craft.bones.find(b=>b.id===node.cur), minL=bone.min||0, ilvl=graph.ilvl;
+const G=D.groups, node=graph.nodes.find(n=>n.id===at), bone=craft.bones.find(b=>b.id===(process.env.BONE||node.cur)), minL=bone.min||0, ilvl=graph.ilvl;
 const side=(graph.nodes.find(n=>n.id===at).showText||[{}])[0].s || 'p';
 const F=new Set(); item.mods.forEach(m=>{ if(!m.unrev) G[m.gi].f.forEach(x=>F.add(x)); });
 console.log('item at', at, item.mods.map(m=>`${m.side}:${G[m.gi]?.f.join('+')}${m.fr?'(fr)':''}`).join(', '), '| side', side, '| bone min', minL);
