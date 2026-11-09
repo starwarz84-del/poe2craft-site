@@ -456,9 +456,9 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fc1 .cn{overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
 .fc1 img,.fc2 img{width:16px;height:16px;vertical-align:-3px;margin-right:2px}
 .fc1 .pr{flex:none;color:var(--muted)}.fc1 .pr b{color:var(--rare);font-weight:600}
-.fclpz{fill:url(#fchatch);stroke:#b9a2ff;stroke-opacity:.45;stroke-width:1.2}
+.fclpz{fill:#b9a2ff;fill-opacity:.06;stroke:#b9a2ff;stroke-opacity:.3;stroke-width:1}
 .fchl{stroke:#b9a2ff;stroke-opacity:.13;stroke-width:3}.fchl1{stroke:#7fd4c8;stroke-opacity:.12;stroke-width:3}
-.fclpz.c1{fill:url(#fchatch1);stroke:#7fd4c8}
+.fclpz.c1{fill:#7fd4c8;stroke:#7fd4c8}
 .fclpt.c1{border-color:#7fd4c866}.fclpt.c1 b{color:#a8e6dd}
 .fcn.k-mark{border-color:var(--rare);align-items:stretch;text-align:left;border-radius:18px;padding:10px 22px;gap:6px}
 .fcn.k-mark>b{text-align:center}
@@ -1383,7 +1383,8 @@ function fcWant(g, n, params){ const out=[];
   if(n.target) out.push(`<b class="sd">${L('목표','Goal')}</b> : ${esc(tx(n.target))}`);
   (n.showText||[]).forEach(t=>out.push(t.s ? `<b class="sd">${t.s==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${esc(tx(t))}` : esc(tx(t))));
   return out; }
-function fcSize(n, M, g, params){ const W = n.pos[0]===0 ? FX.W : FX.WB; if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [280, 54];
+function fcSize(n, M, g, params){ let W = n.pos[0]===0 ? FX.W : FX.WB;
+  if(n.curRows && n.pos[0]>0) W=Math.max(FX.WB*1.5, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcLen(tx(rw)+' → '+ids.map(id=>nm(cur(id))).join(' + '))+ids.length*18+230; })); if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
   if(n.kind==='assume') return [222, 84];
   if(n.kind==='exit') return [FX.WB, 78];
   const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
@@ -1392,12 +1393,12 @@ function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[..
   const size={}; g.nodes.forEach(n=>size[n.id]=fcSize(n, M, g, params));
   const colW={}; colIds.forEach(c=>colW[c]=Math.max(...g.nodes.filter(n=>n.pos[0]===c).map(n=>Math.max(size[n.id][0], M.dec[n.id]?FX.DW:0))));
   const colX={}; let x=FX.PAD+(items && S.fcItems!==false?FX.LANE+FX.LANEGAP:0); const between=c=>g.nodes.filter(n=>!Number.isInteger(n.pos[0]) && n.pos[0]>c && n.pos[0]<c+1);
-  colIds.forEach(c=>{ colX[c]=x; const bw=Math.max(0,...between(c).map(n=>size[n.id][0])); x+=colW[c]+Math.max(FX.GAPX, bw ? bw/2+FX.STUB+70 : 0); });
-  const xOf=(c,w)=>{ if(Number.isInteger(c)) return colX[c]+(colW[c]-w)/2; const a=Math.floor(c); return colX[a]+colW[a]-w/2; }; const Wt=x-FX.GAPX+FX.PAD+40;
+  colIds.forEach(c=>{ colX[c]=x; const bw=Math.max(0,...between(c).map(n=>size[n.id][0])); x+=colW[c]+Math.max(FX.GAPX, bw ? bw*0.25+90 : 0); });
+  const xOf=(c,w)=>{ if(Number.isInteger(c)) return colX[c]+(colW[c]-w)/2; const a=Math.floor(c); return colX[a]+colW[a]-w*0.75; }; const Wt=x-FX.GAPX+FX.PAD+40;
   const rows=[...new Set(g.nodes.map(n=>n.pos[1]))].sort((a,b)=>a-b), box={}, dia={}, rowSpan=[], grp={};
   let y=FX.PAD, prevG=null, prevLoop;
   rows.forEach(r=>{ const R=g.nodes.filter(n=>n.pos[1]===r).sort((a,b)=>a.pos[0]-b.pos[0]), m=R[0], gid=m.group;
-    y+=Math.max(0,...R.map(n=>n.gapBefore||0));
+    y+=Math.max(0,...R.map(n=>n.gapBefore||0)); if(M.E.filter(e=>e.b===m.id && e.a!==m.id).length>=2) y+=40;
     const lp=M.loopOf[m.id]||null; if(prevLoop!==undefined && lp!==prevLoop && (lp||prevLoop) && gid===prevG) y+=34; prevLoop=lp;
     if(gid!==prevG){ if(prevG) grp[prevG].y1=y-FX.ROWGAP+16; y+= prevG ? FX.GROUPGAP : 30; grp[gid]={y0:y-40}; prevG=gid; }
     const hm=size[m.id][1], anchor = M.dec[m.id] ? hm+FX.DGAP+FX.DH/2 : hm/2, rel={};
@@ -1421,8 +1422,8 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
   const clean=pts=>{ const o=[]; for(const p of pts){ const q=o[o.length-1]; if(q && Math.abs(q[0]-p[0])<0.5 && Math.abs(q[1]-p[1])<0.5) continue; o.push(p); }
     for(let i=1;i<o.length-1;){ const a=o[i-1], b=o[i], c=o[i+1]; if((a[0]===b[0]&&b[0]===c[0]) || (a[1]===b[1]&&b[1]===c[1])){ const back=(b[0]-a[0])*(c[0]-b[0])+(b[1]-a[1])*(c[1]-b[1])<0; if(back) return null; o.splice(i,1); } else i++; } return o; };
   const order=[...edges].sort((p,q)=>p.d0-q.d0);
-  const joinY = T => { const cx=T.x+T.w/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<140 ? Math.round((above+T.y)/2) : T.y-22; };
-  order.forEach(e=>{ const S=e.src, T=e.dst, sp = ['bottom','right'], tp=['top','left'], jy = S.y > T.y ? T.y-28 : joinY(T);
+  const joinY = T => { const cx=T.x+T.w/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<600 ? Math.round(Math.max(above+(T.y-above)*0.38, T.y-90)) : T.y-26; };
+  order.forEach(e=>{ const S=e.src, T=e.dst, sp = ['bottom','right'], tp=['top','left'], jy = S.y > T.y ? T.y-22 : joinY(T);
     let best=null;
     for(const s of sp) for(const t of tp){ const P0=port(S,s), P1=port(T,t), A=[P0[0]+P0[2]*FX.STUB, P0[1]+P0[3]*FX.STUB], B=[P1[0]-(t==='top'?0:(t==='left'?FX.STUB:-FX.STUB)), P1[1]-(t==='top'?FX.STUB:0)];
       const mids=[[A,B],[A,[B[0],A[1]],B],[A,[A[0],B[1]],B]]; cxs.forEach(cx=>mids.push([A,[cx,A[1]],[cx,B[1]],B])); [...cys, jy].forEach(cy=>mids.push([A,[A[0],cy],[B[0],cy],B]));
@@ -1505,7 +1506,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const regions=(g.groups||[]).map((gr,i)=>{ const R=Lay.grp[gr.id]; if(!R) return ''; const ns=g.nodes.filter(n=>n.group===gr.id);
     const dv=ns.reduce((t,n)=>t+(st(n.id)?.div||0),0), bases=ns.filter(n=>n.kind==='base').reduce((t,n)=>t+(st(n.id)?.visits||0),0);
     const x0=Lay.items?FX.PAD-8:Lay.colX[Lay.colIds[0]]-26;
-    return `<div class="fcg" style="left:${x0}px;top:${R.y0}px;width:${Lay.Wt-x0-FX.PAD}px;height:${R.y1-R.y0}px"><span class="fcgh"><b>${i+1}</b>${esc(tx(gr))}</span><span class="fcgf" style="left:${Lay.colX[Lay.colIds[0]]+Lay.colW[Lay.colIds[0]]/2-x0}px">${esc(tx(gr))} ${L('평균','avg')} <b>${fmtDiv(dv)} div</b>${bases?` · ${L('필요 베이스','bases needed')} <b>${fmt(bases)}${L('개','')}</b>`:''}</span></div>`; }).join('');
+    return `<div class="fcg" style="left:${x0}px;top:${R.y0}px;width:${Lay.Wt-x0-FX.PAD}px;height:${R.y1-R.y0}px"><span class="fcgh"><b>${i+1}</b>${esc(tx(gr))}</span>${i>0?'':`<span class="fcgf" style="left:${Lay.colX[Lay.colIds[0]]+Lay.colW[Lay.colIds[0]]/2-x0}px">${esc(tx(gr))} ${L('평균','avg')} <b>${fmtDiv(dv)} div</b>${bases?` · ${L('필요 베이스','bases needed')} <b>${fmt(bases)}${L('개','')}</b>`:''}</span>`}</div>`; }).join('');
   // item lane
   let lane='', prev=null, yLast=0;
   if(Lay.items) g.nodes.filter(n=>n.item && n.kind!=='mark' && isMain(n.id)).sort((a,b)=>a.pos[1]-b.pos[1]).forEach(n=>{ const same=prev && JSON.stringify(prev)===JSON.stringify(n.item); if(same) return;
@@ -1522,6 +1523,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const loopsSvg=[], loopTags=[];
   (g.loops||[]).forEach(Lp=>{ const mem=Lp.nodes.filter(id=>Lay.box[id] && stAny(id)); if(mem.filter(id=>/act|cleanup/.test(M.byId[id].kind)).length<2) return; const P=18;
     let R=[1e9,1e9,-1e9,-1e9]; mem.forEach(id=>[Lay.box[id], Lay.dia[id]].filter(Boolean).forEach(r=>{ R=[Math.min(R[0],r.x-P), Math.min(R[1],r.y-P), Math.max(R[2],r.x+r.w+P), Math.max(R[3],r.y+r.h+P)]; }));
+    const ids=new Set(Lp.nodes); edges.filter(e=>ids.has(e.a) && ids.has(e.b) && e.pts).forEach(e=>e.pts.forEach(([px,py])=>{ R=[Math.min(R[0],px-14), Math.min(R[1],py-14), Math.max(R[2],px+14), Math.max(R[3],py+14)]; }));
     const li=(g.loops||[]).indexOf(Lp)%2;
     loopsSvg.push(`<rect class="fclpz c${li}" x="${R[0]}" y="${R[1]}" width="${R[2]-R[0]}" height="${R[3]-R[1]}" rx="16"/>`);
     const use={}; mem.forEach(id=>{ for(const k2 in st(id)?.use||{}) use[k2]=(use[k2]||0)+st(id).use[k2]; });
@@ -1530,7 +1532,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const nodes=g.nodes.map(n=>{ const b=Lay.box[n.id], t=stAny(n.id), Lp=M.loopOf[n.id], pos=`left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px`;
     if(n.kind==='base'){ const bp=Object.entries(g.basePrice||{}); return `<div class="fcn k-start ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${L('베이스 가격','Base price')} ${bp.length?`${L('미정 · 약','TBD · about')} ${bp.map(([k2,v])=>`<span class="ci">${icon(k2)}${esc(nm(cur(k2)))} ${v}${L('개','')}</span>`).join(' ')}`:L('미정','TBD')}</span></div>`; }
     if(n.kind==='done') return `<div class="fcn k-end v-${n.variant||'best'} ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b></div>`;
-    if(n.kind==='choice') return `<div class="fcn k-choice ${t?'':'off'}" style="${pos}"><svg viewBox="0 0 280 54" preserveAspectRatio="none"><polygon points="18,1 262,1 279,27 262,53 18,53 1,27"/></svg><span><small>${L('분기','Branch')}</small><b>${esc(tx(n.label))}</b></span></div>`;
+    if(n.kind==='choice') return `<div class="fcn k-choice ${t?'':'off'}" style="${pos}"><svg viewBox="0 0 220 54" preserveAspectRatio="none"><polygon points="16,1 204,1 219,27 204,53 16,53 1,27"/></svg><span><small>${L('분기','Branch')}</small><b>${esc(tx(n.label))}</b></span></div>`;
     if(n.kind==='mark') return `<div class="fcn k-start k-mark" style="${pos}"><b>${esc(tx(n.label))}</b><ul class="fcmk">${fcItem(g, n.item||[], n.item||[], s.params)}</ul></div>`;
     if(n.kind==='exit') return `<div class="fcn k-exit v-${n.variant||'fail'} ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b>${n.note?`<span>${esc(tx(n.note))}</span>`:''}</div>`;
     if(n.kind==='side'){ const c=nodeCur(n); return `<div class="fcn k-task k-side" style="${pos}"><div class="fch"><b>${esc(tx(n.goal||n.label))}</b></div><div class="fcf"><div class="fc1"><span class="cn">${c.html}</span></div></div></div>`; }
@@ -1549,7 +1551,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
       ${want.length?`<div class="fcw">${want.map(h=>`<p>${h}</p>`).join('')}</div>`:''}
       ${n.skipNote?`<div class="fcsk">↷ ${esc(tx(n.skipNote))}</div>`:''}
       <div class="fcf">${n.curRows && t?.byCur ? n.curRows.map(rw=>{ const b=t.byCur[rw.key||rw.cur], p2=b&&b.t?b.ok/b.t:null, ids=rw.ids || [rw.cur, ...(n.omens||[])];
-          return `<div class="fc1" title="${esc(ids.map(id=>nm(cur(id))).join(' + '))}"><span class="cn"><i class="rw">${esc(tx(rw))} →</i>${ids.map(id=>icon(id)).join('')}${n.pos[0]===0?esc(ids.map(id=>nm(cur(id))).join(' + ')):''}</span><span class="pr">${p2!=null?`${L('확률','Chance')} <b>${pct1(p2)}</b><span class="dot">·</span>${L('평균','avg')} <b>${fmt(1/p2)}</b>${L('개','')}`:L('해당 없음','n/a')}</span></div>`; }).join('') : `<div class="fc1"><span class="cn">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(per)}</b>${L('개','')}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div>`}</div></div>`; }).join('');
+          return `<div class="fc1" title="${esc(ids.map(id=>nm(cur(id))).join(' + '))}"><span class="cn"><i class="rw">${esc(tx(rw))} →</i>${ids.map(id=>icon(id)).join('')}${esc(ids.map(id=>nm(cur(id))).join(' + '))}</span><span class="pr">${p2!=null?`${L('확률','Chance')} <b>${pct1(p2)}</b><span class="dot">·</span>${L('평균','avg')} <b>${fmt(1/p2)}</b>${L('개','')}`:L('해당 없음','n/a')}</span></div>`; }).join('') : `<div class="fc1"><span class="cn">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(per)}</b>${L('개','')}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div>`}</div></div>`; }).join('');
   const diamonds=Object.values(Lay.dia).map(D=>{ const n=M.byId[D.id.slice(0,-1)]; return `<div class="fcn k-dec ${st(n.id)?'':'off'}" style="left:${D.x}px;top:${D.y}px;width:${D.w}px;height:${D.h}px"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,2 98,50 50,98 2,50"/></svg><span>${esc(tx(n.ask)||L('결과','Result'))}</span></div>`; }).join('');
   // top bar: versions, then detailed toggles
   const vers=(g.versions||[]).map(v=>{ const on=Object.entries(v.params).every(([k2,x])=>String(sel[k2]??s.params[k2])===String(x)) && keys.every(k2=>v.params[k2]!=null);
