@@ -16,7 +16,7 @@ const tagView={}; for(const [k,t] of Object.entries(graph.tags||{})){ if(t.anyOf
 const out={id:graph.id, recipe:graph.recipe, runs:N, generated:new Date().toISOString().slice(0,10), prices:prices.fetched||null,
   graph:{tags:tagView, basePrice:graph.basePrice, params:graph.params, groups:graph.groups, start:graph.start, loops:graph.loops, versions:graph.versions,
     nodes:graph.nodes.map(n=>({id:n.id, kind:n.kind, act:n.act, cur:n.cur, curIf:n.curIf?.map(c=>c.cur), omens:n.omens, trim:!!n.trim, group:n.group, pos:n.pos, label:n.label,
-      param:n.param, options:n.options, item:n.item, curRows:n.curRows, target:n.target, ask:n.ask, goal:n.goal, show:n.show, showText:n.showText, skipNote:n.skipNote, skipLabel:n.skipLabel, variant:n.variant, note:n.note, attach:n.attach, edgeLabels:n.edgeLabels, next:n.next, skipTo:n.skipTo,
+      param:n.param, options:n.options, optStyle:n.optStyle, item:n.item, curRows:n.curRows, target:n.target, ask:n.ask, goal:n.goal, show:n.show, showText:n.showText, skipNote:n.skipNote, skipLabel:n.skipLabel, variant:n.variant, note:n.note, attach:n.attach, edgeLabels:n.edgeLabels, next:n.next, skipTo:n.skipTo,
       edges:(n.edges||[]).map(e=>({to:e.to, label:e.label, lost:e.lost, res:e.res, dash:e.dash, p:e.p, hide:e.hide}))}))},
   strategies:[]};
 for(const s of graph.strategies){ const t=Date.now(); const res=SIM.simulate(graph, D, craft, prices, s.params, N, 7);

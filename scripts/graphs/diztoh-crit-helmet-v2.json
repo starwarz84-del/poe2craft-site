@@ -345,8 +345,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 옵션 지우기 → 1번 다시",
-    "en": "Remove the missed modifier → step 1 again"
+    "kr": "빗나간 옵션 지우기",
+    "en": "Remove the missed modifier"
    }
   },
   {
@@ -463,8 +463,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 옵션 지우기 (원하는 옵션은 유지) → 2번 다시",
-    "en": "Remove the missed modifier (keep the wanted one) → step 2 again"
+    "kr": "빗나간 옵션 지우기 (원하는 옵션은 유지)",
+    "en": "Remove the missed modifier (keep the wanted one)"
    }
   },
   {
@@ -491,8 +491,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "남은 옵션 지우기 → 1번부터",
-    "en": "Remove the remaining modifier → from step 1"
+    "kr": "남은 옵션 지우기",
+    "en": "Remove the remaining modifier"
    }
   },
   {
@@ -1070,68 +1070,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "잡옵 지우기 (치명타 확률은 유지) → 8번 다시",
-    "en": "Remove the junk (keep crit chance) → step 8 again"
-   }
-  },
-  {
-   "id": "bx3",
-   "kind": "cleanup",
-   "group": "main",
-   "pos": [
-    2,
-    13
-   ],
-   "keep": [
-    "crit",
-    "hyb",
-    "rarP"
-   ],
-   "maxJunk": 0,
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "edges": [
-    {
-     "lost": "crit",
-     "to": "c1",
-     "label": {
-      "kr": "치명타 지워짐",
-      "en": "crit gone"
-     },
-     "res": "fail"
-    },
-    {
-     "lost": "hyb",
-     "to": "bx",
-     "res": "fail"
-    },
-    {
-     "lost": "rarP",
-     "to": "bx",
-     "res": "fail"
-    },
-    {
-     "to": "p1",
-     "label": {
-      "kr": "→ B",
-      "en": "→ B"
-     },
-     "res": "ok"
-    }
-   ],
-   "ask": {
-    "kr": "뭐가 지워짐?",
-    "en": "What was removed?"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "잡옵 지우기 (복합 줄은 유지)",
-    "en": "Remove the junk (keep the hybrid line)"
+    "kr": "잡옵 지우기 (치명타 확률은 유지)",
+    "en": "Remove the junk (keep crit chance)"
    }
   },
   {
@@ -1157,18 +1097,10 @@
       "ref": "pDone"
      },
      "to": "d1",
-     "label": {
-      "kr": "성공",
-      "en": "hit"
-     },
      "res": "ok"
     },
     {
      "to": "pc",
-     "label": {
-      "kr": "실패",
-      "en": "miss"
-     },
      "res": "fail"
     }
    ],
@@ -1218,15 +1150,19 @@
    "show": [
     "hybL",
     "hybM"
-   ]
+   ],
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix option"
+   }
   },
   {
    "id": "pc",
    "kind": "choice",
    "group": "main",
    "pos": [
-    1,
-    12
+    0,
+    12.5
    ],
    "param": "cMiss",
    "options": {
@@ -1234,17 +1170,27 @@
     "erase": "p3"
    },
    "label": {
-    "kr": "타협 / 추가 과정",
-    "en": "Settle / extra"
+    "kr": "9번 실패 시",
+    "en": "If step 9 misses"
    },
    "edgeLabels": {
     "settle": {
-     "kr": "타협: 그대로 D",
-     "en": "settle: on to D"
+     "kr": "옵션 타협",
+     "en": "Settle the option"
     },
     "erase": {
-     "kr": "선택: 말소 반복",
-     "en": "optional: erasure loop"
+     "kr": "다시 작업",
+     "en": "Rework"
+    }
+   },
+   "optStyle": {
+    "settle": {
+     "res": "ok",
+     "dash": true
+    },
+    "erase": {
+     "res": "fail",
+     "dash": true
     }
    }
   },
@@ -1253,11 +1199,11 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    2,
-    12
+    1,
+    12.5
    ],
    "act": "chaos",
-   "cur": "Chaos_Orb",
+   "cur": "Greater_Chaos_Orb",
    "trim": {
     "side": "p",
     "keep": "pGood"
@@ -1272,33 +1218,33 @@
       "ref": "pDone"
      },
      "to": "d1",
+     "res": "ok",
      "label": {
-      "kr": "잡옵 → 필수",
-      "en": "junk → wanted"
-     },
-     "res": "ok"
+      "kr": "원하는 옵션 → 10",
+      "en": "wanted → 10"
+     }
     },
     {
      "if": {
       "removed": "crit"
      },
      "to": "c1",
+     "res": "fail",
      "label": {
-      "kr": "치명타 지워짐",
-      "en": "crit gone"
-     },
-     "res": "fail"
+      "kr": "치명타 확률 지워짐 → 7",
+      "en": "crit gone → 7"
+     }
     },
     {
      "if": {
       "removed": "flat"
      },
-     "to": "bx3",
+     "to": "p1",
+     "res": "fail",
      "label": {
-      "kr": "최대치 줄 지워짐 → 소멸 후 B",
-      "en": "flat gone → annul, B"
-     },
-     "res": "fail"
+      "kr": "최대치 지워짐 → 8",
+      "en": "flat gone → 8"
+     }
     },
     {
      "if": {
@@ -1307,19 +1253,16 @@
       }
      },
      "to": "p2",
+     "res": "ok",
      "label": {
-      "kr": "새 줄이 접미로 → C",
-      "en": "new line on suffix → C"
-     },
-     "res": "fail"
+      "kr": "잡옵 제거 → 9",
+      "en": "junk removed → 9"
+     }
     },
     {
      "to": "p3",
-     "label": {
-      "kr": "잡옵 → 잡옵",
-      "en": "junk → junk"
-     },
-     "res": "fail"
+     "res": "fail",
+     "hide": true
     }
    ],
    "ask": {
@@ -1330,6 +1273,44 @@
     "flat",
     "hybL",
     "hybM"
+   ],
+   "goal": {
+    "kr": "접두어 잡옵 제거",
+    "en": "Remove the prefix junk"
+   },
+   "target": {
+    "kr": "접두에 9번에서 붙은 잡옵을 제거",
+    "en": "Remove the junk prefix added at step 9"
+   },
+   "curRows": [
+    {
+     "key": "Omen_of_Whittling",
+     "ids": [
+      "Greater_Chaos_Orb",
+      "Omen_of_Whittling"
+     ],
+     "kr": "잡옵이 가장 낮은 레벨",
+     "en": "Junk is the lowest level"
+    },
+    {
+     "key": "Omen_of_Sinistral_Erasure+Omen_of_Whittling",
+     "ids": [
+      "Greater_Chaos_Orb",
+      "Omen_of_Whittling",
+      "Omen_of_Sinistral_Erasure"
+     ],
+     "kr": "접미에 더 낮은 줄",
+     "en": "A lower line on the suffix side"
+    },
+    {
+     "key": "Omen_of_Sinistral_Erasure",
+     "ids": [
+      "Greater_Chaos_Orb",
+      "Omen_of_Sinistral_Erasure"
+     ],
+     "kr": "접두 필수 줄이 더 낮음 (1/2)",
+     "en": "A wanted prefix is lower (1/2)"
+    }
    ]
   },
   {
@@ -1571,8 +1552,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 줄 지우기 → 훼손 다시",
-    "en": "Remove the desecrated line → desecrate again"
+    "kr": "훼손 줄 지우기",
+    "en": "Remove the desecrated line"
    }
   },
   {
@@ -1820,11 +1801,12 @@
   {
    "id": "L4",
    "nodes": [
-    "p3",
-    "bx3"
+    "p2",
+    "pc",
+    "p3"
    ],
-   "kr": "C 말소 반복",
-   "en": "C erasure loop"
+   "kr": "C 접두 세번째 옵션",
+   "en": "C third prefix"
   },
   {
    "id": "L5",

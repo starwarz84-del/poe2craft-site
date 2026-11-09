@@ -119,7 +119,7 @@ function make(graph, D, craft, params){
       if(n.kind==='act'){
         if(n.skipIf && cond(n.skipIf)){ tally.skip(id); tally.edge(id, n.skipTo); id=n.skipTo; continue; }
         const use=act(n); tally.use(id, use);
-        const e=pickEdge(n); if(!e) throw new Error(n.id+': no edge matched'); if(n.curIf && tally.byCur){ const ck=[...n.curIf.map(c=>c.cur), n.cur].find(k=>use[k]); if(ck) tally.byCur(id, ck, e.res==='ok'); } tally.edge(id, e.to); id=e.to; continue; }
+        const e=pickEdge(n); if(!e) throw new Error(n.id+': no edge matched'); if((n.curIf||n.trim) && tally.byCur){ const ck = n.trim ? Object.keys(use).filter(k=>/Whittling|Erasure/.test(k)).sort().join('+') : [...n.curIf.map(c=>c.cur), n.cur].find(k=>use[k]); if(ck) tally.byCur(id, ck, e.res==='ok'); } tally.edge(id, e.to); id=e.to; continue; }
       throw new Error('unknown kind '+n.kind);
     }
   };
