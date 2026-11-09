@@ -82,6 +82,7 @@ function make(graph, D, craft, params){
         if(oms.includes('Omen_of_Whittling')){ const c=it.mods.filter(m=>!m.fr && !m.unrev && (!er || m.side===er)); if(c.length){ const lo=Math.min(...c.map(lvl)), xs=c.filter(m=>lvl(m)===lo); take(xs[Math.floor(rnd()*xs.length)]); } }
         else takeRandom(er ? (m=>m.side===er) : null);
         add(null, mn); }
+      else if(a==='essence'){ it.rar='rare'; const t=tags[n.ess]; const m={gi:t.gi, ti:0, side:G[t.gi].g, ess:true}; it.mods.push(m); last.added.push(m); }   // magic → rare + the essence line (top tier)
       else if(a==='annul'){ const sd=sideOm(oms,/Sinistral_Annulment/,/Dextral_Annulment/);
         takeRandom(oms.includes('Omen_of_Light') ? (m=>m.unrev||m.des||G[m.gi]?.s==='d') : sd ? (m=>m.side===sd) : null); }
       else if(a==='desecrate'){ const sd=sideOm(oms,/Sinistral_Necromancy/,/Dextral_Necromancy/), ss=sd?[sd]:['p','s'];
@@ -107,7 +108,7 @@ function make(graph, D, craft, params){
       last={added:[], removed:[], fr:null}; tally.visit(id); if(hooks.enter) hooks.enter(id, it);
       if(n.kind==='done'){ tally.done(it, cond); return it; }
       if(n.kind==='mark'){ tally.edge(id, n.next); id=n.next; continue; }   // a milestone on the chart (starting item of the main craft)
-      if(n.kind==='exit'){ tally.edge(id, n.simTo); id=n.simTo; continue; }   // this item is set aside (sold / thrown away): the cost goes on from simTo
+      if(n.kind==='exit'){ if(n.swapFracture){ it.mods.forEach(m=>{ if(m.fr) delete m.fr; }); const m=it.mods.find(x=>match(x,n.swapFracture)); if(m) m.fr=true; } tally.edge(id, n.simTo); id=n.simTo; continue; }   // this item is set aside (sold / thrown away): the cost goes on from simTo
       if(n.kind==='base'){ it={rar:'normal', mods:[]}; tally.base(id); tally.edge(id, n.next); id=n.next; continue; }
       if(n.kind==='choice'){ const v=params[n.param], to=n.options[v]; if(!to) throw new Error(n.id+': no option '+v); tally.edge(id, to); id=to; continue; }
       if(n.kind==='assume'){ if(n.swapFracture){ it.mods.forEach(m=>{ if(m.fr) delete m.fr; }); const m=it.mods.find(x=>match(x,n.swapFracture)); if(m) m.fr=true; } tally.edge(id, n.next); id=n.next; continue; }

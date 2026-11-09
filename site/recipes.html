@@ -1368,10 +1368,13 @@ function nodeCur(n){ const ids=[...(n.curIf||[]), n.cur, ...(n.omens||[])].filte
 const FX={W:540, WB:330, GAPX:118, LANE:330, LANEGAP:40, ROWGAP:44, GROUPGAP:110, PAD:22, DW:150, DH:66, DGAP:18, CW:200, CH:104, STUB:14, R:9};
 let _fcCtx; const fcText = (t, px) => { try{ _fcCtx=_fcCtx||document.createElement('canvas').getContext('2d'); _fcCtx.font=`${px}px ${getComputedStyle(document.body).getPropertyValue('--f-body')||'sans-serif'}`; return Math.ceil(_fcCtx.measureText(t).width); }catch(e){ return fcLen(t)*px/12; } };
 const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?12:7),0);
-function fcModel(g){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
+// a work step this version never reaches (0 visits in its simulation) is left out of its flowchart
+function fcPrune(g, res){ if(!res?.nodes) return g; const gone=new Set(g.nodes.filter(n=>(n.kind==='act'||n.kind==='cleanup') && !res.nodes[n.id]).map(n=>n.id)); if(!gone.size) return g;
+  return {...g, nodes: g.nodes.filter(n=>!gone.has(n.id)).map(n=>({...n, edges:(n.edges||[]).filter(e=>!gone.has(e.to))})), loops:(g.loops||[]).map(L=>({...L, nodes:L.nodes.filter(id=>!gone.has(id))})).filter(L=>L.nodes.length>=2)}; }
+function fcModel(g, params={}){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const E=[], seen=new Set(), add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(seen.has(k)) return; seen.add(k); E.push({a,b,label,...x}); };
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
-    (n.edges||[]).filter(e=>!e.hide).forEach(e=>add(n.id, e.to, e.label, {res:e.res, port:e.port}));
+    (n.edges||[]).filter(e=>!e.hide && !(e.when && Object.entries(e.when).some(([k,v])=>String(params[k])!==String(v)))).forEach(e=>add(n.id, e.to, e.label, {res:e.res, port:e.port}));
     if(n.options) for(const [v,to] of Object.entries(n.options)) add(n.id, to, n.edgeLabels?.[v] || g.params?.[n.param]?.values?.[v], {opt:[n.param, v], ...(n.optStyle?.[v]||{})});
     if(n.skipTo && !n.skipNote && !n.skipHide) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
   const dec={}, multi={}; g.nodes.forEach(n=>{ if(n.kind!=='act' && n.kind!=='cleanup') return; if(new Set(E.filter(e=>e.a===n.id && !e.skip).map(e=>e.b)).size>=3) multi[n.id]=true; });   // simple two-way outcomes are just two coloured lines
@@ -1391,7 +1394,7 @@ function fcWant(g, n, params){ const out=[];
   (n.showText||[]).forEach(t=>out.push(t.s ? `<b class="sd">${t.s==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${esc(tx(t))}` : esc(tx(t))));
   return out; }
 function fcSize(n, M, g, params){ let W = n.pos[0]===0 ? FX.W : FX.WB;
-  if(n.curRows && n.pos[0]>0) W=Math.max(FX.WB, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcText(tx(rw)+' → ', 12.5)+6+ids.length*18+fcText(ids.map(id=>nm(cur(id))).join(' + '), 12.5)+fcText('확률 25% · 평균 4.0개', 12.5)+24+28; })); if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
+  if(n.curRows) W=Math.max(W, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcText(tx(rw)+' → ', 12.5)+6+ids.length*18+fcText(ids.map(id=>nm(cur(id))).join(' + '), 12.5)+fcText('확률 25% · 평균 4.0개', 12.5)+24+28; })); if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
   if(n.kind==='assume') return [222, 84];
   if(n.kind==='exit') return [FX.WB, 78];
   const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
@@ -1412,14 +1415,14 @@ function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[..
     const hm=size[m.id][1], anchor = M.dec[m.id] ? hm+FX.DGAP+FX.DH/2 : hm/2, rel={};
     R.forEach(n=>{ const h=size[n.id][1], top = n===m ? 0 : anchor-h/2; rel[n.id]={top, bot: top+h+(M.dec[n.id]?FX.DGAP+FX.DH:0)}; });
     const t0=Math.min(...R.map(n=>rel[n.id].top)), t1=Math.max(...R.map(n=>rel[n.id].bot));
-    R.forEach(n=>{ const [w,h]=size[n.id], c=n.pos[0], bx={id:n.id, x:xOf(c,w), y:y+rel[n.id].top-t0, w, h, row:r, col:c};
+    R.forEach(n=>{ const [w,h]=size[n.id], c=n.pos[0], bx={id:n.id, x:xOf(c,w), y:y+rel[n.id].top-t0, w, h, row:r, col:c, aw: Number.isInteger(c) && w>colW[c] ? colW[c] : 0};
       box[n.id]=bx; if(M.dec[n.id]) dia[n.id]={id:n.id+'?', x:bx.x+w/2-FX.DW/2, y:bx.y+h+FX.DGAP, w:FX.DW, h:FX.DH, dia:true, row:r, col:c}; });
     rowSpan.push([y, y+t1-t0]); y+=t1-t0+FX.ROWGAP; });
   if(prevG) grp[prevG].y1=y-FX.ROWGAP+16;
   return {box, dia, colX, colW, colIds, rowSpan, grp, Wt: Math.max(Wt, ...Object.values(box).map(b=>b.x+b.w+FX.PAD+40)), Ht:y-FX.ROWGAP+FX.PAD+30, items: items && S.fcItems!==false}; }
 // candidate orthogonal routes between two ports; the cheapest one that misses every box wins
 function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Object.values(Lay.dia)], placed=[];
-  const port=(b,s)=>{ const cx=b.x+b.w/2, cy=b.y+b.h/2; return {top:[cx,b.y,0,-1], bottom:[cx,b.y+b.h,0,1], left:[b.x,cy,-1,0], right:[b.x+b.w,cy,1,0]}[s]; };
+  const port=(b,s)=>{ const cx=b.x+(b.aw||b.w)/2, cy=b.y+b.h/2; return {top:[cx,b.y,0,-1], bottom:[cx,b.y+b.h,0,1], left:[b.x,cy,-1,0], right:[b.x+b.w,cy,1,0]}[s]; };
   const cxs=[]; Lay.colIds.forEach((c,i)=>{ const r=Lay.colX[c]+Lay.colW[c], nx=i<Lay.colIds.length-1 ? Lay.colX[Lay.colIds[i+1]] : r+FX.GAPX, mid=(r+nx)/2; [-30,-18,-6,6,18,30].forEach(o=>cxs.push(mid+o)); });
   const l0=Lay.colX[Lay.colIds[0]]; [14,24,34].forEach(o=>cxs.push(l0-o));
   const cys=[]; Lay.rowSpan.forEach((s,i)=>{ const nx=Lay.rowSpan[i+1]; const mid = nx ? (s[1]+nx[0])/2 : s[1]+20; [-10,0,10].forEach(o=>cys.push(mid+o)); });
@@ -1430,10 +1433,10 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
   const clean=pts=>{ const o=[]; for(const p of pts){ const q=o[o.length-1]; if(q && Math.abs(q[0]-p[0])<0.5 && Math.abs(q[1]-p[1])<0.5) continue; o.push(p); }
     for(let i=1;i<o.length-1;){ const a=o[i-1], b=o[i], c=o[i+1]; if((a[0]===b[0]&&b[0]===c[0]) || (a[1]===b[1]&&b[1]===c[1])){ const back=(b[0]-a[0])*(c[0]-b[0])+(b[1]-a[1])*(c[1]-b[1])<0; if(back) return null; o.splice(i,1); } else i++; } return o; };
   const order=[...edges].sort((p,q)=>p.d0-q.d0);
-  const joinY = T => { const cx=T.x+T.w/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<600 ? Math.round(Math.max(above+(T.y-above)*0.38, T.y-90)) : T.y-26; };
-  const gapAbove = T => { const cx=T.x+T.w/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<600 ? T.y-above : 44; };
+  const joinY = T => { const cx=T.x+(T.aw||T.w)/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<600 ? Math.round(Math.max(above+(T.y-above)*0.38, T.y-90)) : T.y-26; };
+  const gapAbove = T => { const cx=T.x+(T.aw||T.w)/2, above=rects.filter(r=>r!==T && r.y+r.h<=T.y+0.5 && r.x<cx && r.x+r.w>cx).reduce((m,r)=>Math.max(m,r.y+r.h),-1e9); return above>-1e9 && T.y-above<600 ? T.y-above : 44; };
   const style = e => (e.kind)+(e.dash||e.skip?'-d':''), slots={};
-  const straight = e => e.src.y+e.src.h <= e.dst.y && Math.abs((e.src.x+e.src.w/2)-(e.dst.x+e.dst.w/2))<1;
+  const straight = e => e.src.y+e.src.h <= e.dst.y && Math.abs((e.src.x+(e.src.aw||e.src.w)/2)-(e.dst.x+(e.dst.aw||e.dst.w)/2))<1;
   edges.forEach(e=>{ if(straight(e)) return; const k=e.dst.id, st2=style(e), up=e.src.y<e.dst.y; const L2=slots[k]=slots[k]||[]; const x=L2.find(x=>x.st===st2); if(x) x.up=x.up||up; else L2.push({st:st2, up}); });
   const rank = st => /^ok/.test(st)?0:/^fwd/.test(st)?1:2;
   Object.values(slots).forEach(L2=>L2.sort((a,b)=>(b.up-a.up)||(rank(a.st)-rank(b.st))));
@@ -1489,7 +1492,7 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
     return `<div class="fcfin ${on?'on':''}"><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:{p:3,s:3}, qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
-function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), res=s.res, M=fcModel(g), Lay=fcLayout(g, M, s.params);
+function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=fcPrune(d.graph, res), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
   const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : '0%';
   const st = id => res.nodes[id], ecount = (a,b) => res.edges?.[a+'>'+b]||0;
   // every path stays readable whatever version is picked: a step this version skips borrows its per-step numbers from a version that uses it
@@ -1553,7 +1556,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     if(n.kind==='side'){ const c=nodeCur(n); return `<div class="fcn k-task k-side" style="${pos}"><div class="fch"><b>${esc(tx(n.goal||n.label))}</b></div><div class="fcf"><div class="fc1"><span class="cn">${c.html}</span></div></div></div>`; }
     if(n.kind==='assume') return `<div class="fcn k-note ${t?'':'off'}" style="${pos}"><small>${L('별첨','Note')}</small><b>${esc(tx(n.label))}</b>${n.note?`<span>${esc(tx(n.note))}</span>`:''}</div>`;
     const c=nodeCur(n), tries=t ? (n.kind==='cleanup' ? t.visits : t.visits-(t.skips||0)) : 0;
-    const outs=M.E.filter(e=>e.a===n.id && !e.skip), okE=outs.filter(e=>e.res==='ok' && !(n.edges||[]).find(x=>x.to===e.b)?.dash), hasRes=outs.some(e=>e.res);
+    const outs=M.E.filter(e=>e.a===n.id && !e.skip), okE=outs.filter(e=>e.res==='ok' && (n.pAll || !(n.edges||[]).find(x=>x.to===e.b)?.dash)), hasRes=outs.some(e=>e.res);
     const pS = !t || !tries ? null : hasRes ? Math.min(1, okE.reduce((s2,e)=>s2+((res.nodes[n.id]?res:d.strategies.find(x=>x.res.nodes[n.id])?.res)?.edges?.[e.a+'>'+e.b]||0),0)/tries) : 1;
     // the totals stay available on hover; the box itself shows only the goal, the currency and the chance
     const LH=M.loopHead[n.id]; let tip=tx(n.label)+' — '+c.title;
