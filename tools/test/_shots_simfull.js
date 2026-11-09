@@ -7,7 +7,7 @@ const {chromium}=require('playwright');
   await p.click('[data-act="simfull"]'); await p.waitForSelector('.simbox.full'); await p.waitForTimeout(200);
   console.log('full rect', await p.$eval('.simbox.full', e=>JSON.stringify(e.getBoundingClientRect())), 'fc h', await p.$eval('.simbox.full .fc', e=>e.clientHeight));
   await p.screenshot({path:`shots/sim-${id}-fs.png`});
-  await p.click('[data-simk="cMiss"][data-simv="erase"]'); await p.waitForTimeout(200); console.log('still full after toggle:', !!await p.$('.simbox.full'));
+  await p.click('[data-simver="best"]'); await p.waitForTimeout(200); console.log('still full after toggle:', !!await p.$('.simbox.full'));
   await p.keyboard.press('Escape'); await p.waitForTimeout(200); console.log('after Esc full:', !!await p.$('.simbox.full'), 'body lock:', await p.evaluate(()=>document.body.classList.contains('simfull')));
   await p.setViewportSize({width:390,height:844}); await p.click('[data-act="simfull"]'); await p.waitForTimeout(200); await p.screenshot({path:`shots/sim-${id}-fs-mobile.png`});
   await p.click('[data-act="simfull"]'); console.log('closed by button:', !(await p.$('.simbox.full')));

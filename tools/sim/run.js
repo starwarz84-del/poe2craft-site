@@ -10,9 +10,9 @@ const prices=JSON.parse(fs.readFileSync(`${ROOT}/site/data/prices.json`,'utf8'))
 const r4 = x => typeof x==='number' ? +x.toPrecision(5) : x;
 const round = o => JSON.parse(JSON.stringify(o, (k,v)=>r4(v)));
 const out={id:graph.id, recipe:graph.recipe, runs:N, generated:new Date().toISOString().slice(0,10), prices:prices.fetched||null,
-  graph:{params:graph.params, groups:graph.groups, start:graph.start,
+  graph:{params:graph.params, groups:graph.groups, start:graph.start, loops:graph.loops, versions:graph.versions,
     nodes:graph.nodes.map(n=>({id:n.id, kind:n.kind, act:n.act, cur:n.cur, curIf:n.curIf?.map(c=>c.cur), omens:n.omens, trim:!!n.trim, group:n.group, pos:n.pos, label:n.label,
-      param:n.param, options:n.options, edgeLabels:n.edgeLabels, next:n.next, skipTo:n.skipTo,
+      param:n.param, options:n.options, item:n.item, ask:n.ask, skipNote:n.skipNote, skipLabel:n.skipLabel, variant:n.variant, note:n.note, edgeLabels:n.edgeLabels, next:n.next, skipTo:n.skipTo,
       edges:(n.edges||[]).map(e=>({to:e.to, label:e.label, lost:e.lost}))}))},
   strategies:[]};
 for(const s of graph.strategies){ const t=Date.now(); const res=SIM.simulate(graph, D, craft, prices, s.params, N, 7);
