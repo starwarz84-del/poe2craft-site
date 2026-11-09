@@ -1366,9 +1366,9 @@ function fcTagText(g, tag, params){ const T=g.tags?.[tag]; if(!T || !T.tiers) re
 function fcWant(g, n, params){ const out=[];
   if(n.show){ const flat=n.show.flatMap(t=>g.tags?.[t]?.anyOf || [t]), bySide={};
     flat.forEach(t=>{ const v=fcTagText(g,t,params); if(!v) return; (bySide[v.s]=bySide[v.s]||[]).push(v); });
-    for(const sd of ['p','s']) if(bySide[sd]){ const vs=bySide[sd]; vs.forEach((v,i)=>out.push(`${i?'<span class="ind"></span>':`<b class="sd">${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : `}${esc(v.txt)}${v.tier?` <i>- ${v.tier}</i>`:''}${v.sec==='d'?` <i>${L('(훼손)','(desecrated)')}</i>`:''}${i<vs.length-1?` <u>${L('또는','or')}</u>`:''}`)); } }
+    for(const sd of ['p','s']) if(bySide[sd]){ const vs=bySide[sd]; vs.forEach((v,i)=>out.push(`${i?'<span class="ind"></span>':`<b class="sd">${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : `}${esc(v.txt)}${v.tier?` <i>- ${v.tier}</i>`:''}${i<vs.length-1?` <u>${L('또는','or')}</u>`:''}`)); } }
   if(n.target) out.push(`<b class="sd">${L('목표','Goal')}</b> : ${esc(tx(n.target))}`);
-  (n.showText||[]).forEach(t=>out.push(esc(tx(t))));
+  (n.showText||[]).forEach(t=>out.push(t.s ? `<b class="sd">${t.s==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${esc(tx(t))}` : esc(tx(t))));
   return out; }
 function fcSize(n, M, g, params){ const W = n.pos[0]===0 ? FX.W : FX.WB; if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [280, 54];
   if(n.kind==='assume') return [222, 84];
@@ -1444,7 +1444,7 @@ function fcLabels(list, rects){ // list: [{pts, w, ...}] → x,y per label: near
     placed.push(best.R); L0.x=best.x; L0.y=best.y; }); }
 const fcUse = (u, n=3) => Object.entries(u||{}).filter(([,v])=>v>=0.005).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k,v])=>`<span class="ci" title="${esc(nm(cur(k)))}">${icon(k)}${fmt(v)}</span>`).join('');
 function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
-  const side=s=>s==='p'?'P':s==='s'?'S':'P/S', mk={u:L('미공개','Unrevealed'),d:L('훼손','Desecrated')};
+  const side=s=>s==='p'?'P':s==='s'?'S':'P/S', mk={};
   const text=l=>{ if(!l.tags) return {t:esc(tx(l)).replace(/ ?1티어$/,' T1'), tier:''}; const v=l.tags.map(t=>fcTagText(g,t,params)).filter(Boolean);
     return {t: v.map(x=>esc(x.txt)).join(` <u>${L('또는','or')}</u> `), tier: v[0]?.tier||''}; };
   const row=(l,cls)=>{ const x=text(l); return `<li class="m-${l.m||'n'} ${cls}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
@@ -1453,6 +1453,8 @@ function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||'')
 function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), res=s.res, M=fcModel(g), Lay=fcLayout(g, M, s.params);
   const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : '0%';
   const st = id => res.nodes[id], ecount = (a,b) => res.edges?.[a+'>'+b]||0;
+  // every path stays readable whatever version is picked: a step this version skips borrows its per-step numbers from a version that uses it
+  const stAny = id => res.nodes[id] || d.strategies.find(x=>x.res.nodes[id])?.res.nodes[id], eAny = (a,b) => ecount(a,b) || (d.strategies.some(x=>x.res.edges?.[a+'>'+b]) ? 1e-9 : 0);
   const isMain = id => M.byId[id].pos[0]===0;
   // step numbers: tasks in reading order
   const no={}, cnt={}, steps=g.nodes.filter(n=>n.kind==='act'||n.kind==='cleanup').sort((a,b)=>a.pos[1]-b.pos[1]||a.pos[0]-b.pos[0]); let mainNo=0;
@@ -1464,7 +1466,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const edges=M.E.map(e=>{ const A=M.byId[e.a], B=M.byId[e.b]; if(!A||!B) return null;
     const src = M.dec[e.a] && !e.skip ? Lay.dia[e.a] : Lay.box[e.a], dst=Lay.box[e.b];
     const out=M.E.filter(x=>x.a===e.a && !x.skip).reduce((t,x)=>t+ecount(x.a,x.b),0), f=ecount(e.a,e.b);
-    const on = e.opt ? String(s.params[e.opt[0]])===e.opt[1] && (st(e.a)?.visits||0)>0 : e.skip ? (st(e.a)?.skips||0)>0 : f>0;
+    const on = e.opt ? !!stAny(e.a) : e.skip ? (stAny(e.a)?.skips||0)>0 : eAny(e.a,e.b)>0;
     const kind = e.res==='fail' || B.kind==='base' ? 'fail' : e.res==='ok' ? 'ok' : 'fwd';
     return {...e, dash: e.dash ?? (A.edges||[]).find(x=>x.to===e.b)?.dash, src, dst, on, kind, share: (A.edges||[]).find(x=>x.to===e.b)?.p ?? (M.multi[e.a] && !e.skip && out ? f/out : null), d0:Math.abs(src.x-dst.x)+Math.abs(src.y-dst.y) + (kind==='fwd'?0:5000)}; }).filter(Boolean);
   fcRoute(Lay, M, edges);
@@ -1495,14 +1497,14 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     return `<path class="fce k-fwd skip side" d="M${x0},${y} L${b.x},${y}" marker-end="url(#fcm-side)"/>`; }).join('');
   // loops: one shaded area per loop (rows joined), its total use per finished item on a tag
   const loopsSvg=[], loopTags=[];
-  (g.loops||[]).forEach(Lp=>{ const mem=Lp.nodes.filter(id=>Lay.box[id] && st(id)); if(mem.filter(id=>/act|cleanup/.test(M.byId[id].kind)).length<2) return; const P=18;
+  (g.loops||[]).forEach(Lp=>{ const mem=Lp.nodes.filter(id=>Lay.box[id] && stAny(id)); if(mem.filter(id=>/act|cleanup/.test(M.byId[id].kind)).length<2) return; const P=18;
     let R=[1e9,1e9,-1e9,-1e9]; mem.forEach(id=>[Lay.box[id], Lay.dia[id]].filter(Boolean).forEach(r=>{ R=[Math.min(R[0],r.x-P), Math.min(R[1],r.y-P), Math.max(R[2],r.x+r.w+P), Math.max(R[3],r.y+r.h+P)]; }));
     const li=(g.loops||[]).indexOf(Lp)%2;
     loopsSvg.push(`<rect class="fclpz c${li}" x="${R[0]}" y="${R[1]}" width="${R[2]-R[0]}" height="${R[3]-R[1]}" rx="16"/>`);
-    const use={}; mem.forEach(id=>{ for(const k2 in st(id).use) use[k2]=(use[k2]||0)+st(id).use[k2]; });
+    const use={}; mem.forEach(id=>{ for(const k2 in st(id)?.use||{}) use[k2]=(use[k2]||0)+st(id).use[k2]; });
     loopTags.push(`<div class="fclpt c${li}" style="right:${Lay.Wt-R[2]+16}px;top:${R[3]}px"><b>↺ ${esc(tx(Lp))}</b><span>${L('총 사용 (완성 1개당)','Total used (per finished item)')}</span>${Object.entries(use).filter(([,v])=>v>=0.005).sort((a2,b2)=>b2[1]-a2[1]).map(([k2,v])=>`<span class="cu" title="${esc(nm(cur(k2)))}">${icon(k2)}${fmt(v)}${L('개','')}</span>`).join('')}</div>`); });
   // nodes
-  const nodes=g.nodes.map(n=>{ const b=Lay.box[n.id], t=st(n.id), Lp=M.loopOf[n.id], pos=`left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px`;
+  const nodes=g.nodes.map(n=>{ const b=Lay.box[n.id], t=stAny(n.id), Lp=M.loopOf[n.id], pos=`left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px`;
     if(n.kind==='base'){ const bp=Object.entries(g.basePrice||{}); return `<div class="fcn k-start ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${L('베이스 가격','Base price')} ${bp.length?`${L('미정 · 약','TBD · about')} ${bp.map(([k2,v])=>`<span class="ci">${icon(k2)}${esc(nm(cur(k2)))} ${v}${L('개','')}</span>`).join(' ')}`:L('미정','TBD')}</span></div>`; }
     if(n.kind==='done') return `<div class="fcn k-end v-${n.variant||'best'} ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${t?L(`완성품의 ${pct1(t.reach)}`,`${pct1(t.reach)} of items`):L('이 버전에선 안 옴','not in this version')}</span></div>`;
     if(n.kind==='choice') return `<div class="fcn k-choice ${t?'':'off'}" style="${pos}"><svg viewBox="0 0 280 54" preserveAspectRatio="none"><polygon points="18,1 262,1 279,27 262,53 18,53 1,27"/></svg><span><small>${L('분기','Branch')}</small><b>${esc(tx(n.label))}</b></span></div>`;
@@ -1512,7 +1514,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     if(n.kind==='assume') return `<div class="fcn k-note ${t?'':'off'}" style="${pos}"><small>${L('별첨','Note')}</small><b>${esc(tx(n.label))}</b>${n.note?`<span>${esc(tx(n.note))}</span>`:''}</div>`;
     const c=nodeCur(n), tries=t ? (n.kind==='cleanup' ? t.visits : t.visits-(t.skips||0)) : 0;
     const outs=M.E.filter(e=>e.a===n.id && !e.skip), okE=outs.filter(e=>e.res==='ok' && !(n.edges||[]).find(x=>x.to===e.b)?.dash), hasRes=outs.some(e=>e.res);
-    const pS = !t || !tries ? null : hasRes ? Math.min(1, okE.reduce((s2,e)=>s2+ecount(e.a,e.b),0)/tries) : 1;
+    const pS = !t || !tries ? null : hasRes ? Math.min(1, okE.reduce((s2,e)=>s2+((res.nodes[n.id]?res:d.strategies.find(x=>x.res.nodes[n.id])?.res)?.edges?.[e.a+'>'+e.b]||0),0)/tries) : 1;
     // the totals stay available on hover; the box itself shows only the goal, the currency and the chance
     const LH=M.loopHead[n.id]; let tip=tx(n.label)+' — '+c.title;
     if(t) tip+=`\n${L('평균','avg')} ${fmt(n.kind==='cleanup'?(t.use?.Orb_of_Annulment||0):tries)}${L('회','×')} · ${L('도달','reached')} ${pct1(t.reach)} · ≈ ${fmtDiv(t.div)} div`;
