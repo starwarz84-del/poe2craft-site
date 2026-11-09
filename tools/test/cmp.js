@@ -3,7 +3,7 @@ const {chromium}=require('playwright'); const fs=require('fs');
 p.on('pageerror',e=>console.log('E',e.message));
 await p.goto('http://localhost:8779/discover.html?lang=kr'); await p.waitForFunction(()=>window.__rev && __rev.recSamples);
 const rec=JSON.parse(fs.readFileSync('/home/claude/poe2data/site/data/recipes.json')).recipes;
-const res=await p.evaluate(async()=>{ const S=__rev; if(!S.index)[S.index,S.craft]=await Promise.all([fetch('data/index.json').then(r=>r.json()),fetch('data/crafting.json').then(r=>r.json())]); S.priority=await fetch('data/priority.json').then(r=>r.json());
+const res=await p.evaluate(async()=>{ const S=__rev; if(!S.index)[S.index,S.craft]=await Promise.all([fetch('data/index.json').then(r=>r.json()),fetch('data/crafting.json').then(r=>r.json())]); S.priority=await fetch('data/priority.json').then(r=>r.json()); await S.ready;
   const out=[]; for(const x of S.recSamples){ const it=await S.parse(x.text); if(it.err){ out.push({id:x.id, err:it.err}); continue; }
     const an=S.analyse(it); const d=S.makeDraft(it,an);
     out.push({id:x.id, n:x.n, got:it.mods.length, unk:it.other.filter(o=>o.k==='?').map(o=>o.l), how:an.rows.map(r=>(r.m.side||'')+':'+r.how+(r.tierNo?'T'+r.tierNo:'')).join(' '),

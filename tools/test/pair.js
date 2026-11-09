@@ -2,7 +2,7 @@
 const {chromium}=require('playwright'); const id=process.argv[2];
 (async()=>{const b=await chromium.launch();const p=await b.newPage();
 await p.goto('http://localhost:8779/discover.html?lang=kr'); await p.waitForFunction(()=>window.__rev && __rev.recSamples);
-const d=await p.evaluate(async(id)=>{ const S=__rev; [S.index,S.craft]=await Promise.all([fetch('data/index.json').then(r=>r.json()),fetch('data/crafting.json').then(r=>r.json())]); S.priority=await fetch('data/priority.json').then(r=>r.json());
+const d=await p.evaluate(async(id)=>{ const S=__rev; [S.index,S.craft]=await Promise.all([fetch('data/index.json').then(r=>r.json()),fetch('data/crafting.json').then(r=>r.json())]); S.priority=await fetch('data/priority.json').then(r=>r.json()); await S.ready;
   const x=S.recSamples.find(s=>s.id===id); const it=await S.parse(x.text); const d=S.makeDraft(it,S.analyse(it)); d.id='draft-x'; return d; }, id);
 await p.goto('http://localhost:8779/recipes.html?lang=kr'); await p.waitForFunction(()=>window.__rec&&__rec.booted);
 const out=await p.evaluate(async([id,d])=>{ const R=__rec; d.likes=0; d.success=0; R.recipes.unshift(d); await new Promise(r=>setTimeout(r,300));

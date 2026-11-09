@@ -89,6 +89,8 @@ h1{margin:0 0 4px;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .draft > div{flex:1 1 320px;min-width:0}
 .draft p{margin:2px 0 0;font-size:12.5px;color:var(--muted);max-width:90ch}
 #mkmsg{font-size:13px}
+.mp{display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-size:12px;color:var(--muted)}.mp input{width:84px;padding:3px 6px;font:inherit;background:transparent;color:inherit;border:1px solid currentColor;border-radius:4px;opacity:.85}
+.costl{margin:4px 0 0;font-size:12px;color:var(--muted)}.costl.over{color:#e0a060}
 #mkmsg .ok{color:var(--ok)}
 .check{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
 .ch-h{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}.ch-h span{color:var(--muted);font-size:12.5px}
@@ -107,6 +109,7 @@ h1{margin:0 0 4px;font-family:var(--f-display);font-size:22px;text-wrap:balance}
         <button type="button" class="btn primary" id="go"></button>
         <button type="button" class="btn" id="clr"></button>
         <span class="hint" id="hint"></span>
+        <label class="mp"><span id="mpl"></span> <input id="mp" type="number" min="0" step="any" inputmode="decimal" placeholder="div"></label>
       </div>
       <div class="samples" id="samples"></div>
       <div id="msg"></div>
@@ -330,7 +333,66 @@ function estDiff(it, an){
   if(good.length >= 5) sc += 0.5;
   return Math.max(0, Math.min(5, Math.round(sc - 0.75)));
 }
-function makeDraft(it, an){
+// prices (site/data/prices.json, Exalted Orbs) and the difficulty limits (site/data/budget.json, policy 21)
+S.ready = Promise.all([fetch('data/prices.json').then(r=>r.ok?r.json():null).catch(()=>null), fetch('data/budget.json').then(r=>r.ok?r.json():null).catch(()=>null)]).then(([p,b])=>{ S.prices=p; S.budget=b; });
+const EXP_OM = () => S.budget?.expensive || ['Omen_of_Whittling','Omen_of_Sinistral_Erasure','Omen_of_Dextral_Erasure','Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment','Omen_of_Light','Hinekoras_Lock'];
+const exP = id => !S.prices ? null : id==='Exalted_Orb' ? 1 : (S.prices.p[id] ?? null);
+const minLv = id => { for(const k in S.craft||{}) for(const x of S.craft[k]) if(x.id===id) return +(x.min||0); return 0; };
+const specOf = t => !t ? [] : t.anyOf ? t.anyOf : t.gi!=null ? [t] : [];
+// rough per-try chance of a draft step, the Recipes tab's model (weights, minimum level, a family's top tier always in): used only to price repeats
+function estChance(it, an, n){
+  const D=it.D, t=n.target||{}, list = specOf(n.do==='reveal' ? t.reveal : t); if(!list.length) return null;
+  const want = new Set(list.map(x=>x.gi)), F = new Set(); an.rows.forEach(r=>{ if(r.g && !want.has(r.m.gi)) (r.g.f||[]).forEach(f=>F.add(f)); });
+  const hit = (gi,ti) => list.some(x=>x.gi===gi && (!x.tmax || ti < x.tmax));
+  if(n.do==='reveal'){ const minL = minLv(t.bone), G=[];
+    D.groups.forEach((g,gi)=>{ if(!['n','d'].includes(g.s) || g.g!==t.side || (g.f||[]).some(f=>F.has(f))) return;
+      const top=g.t.findIndex(x=>x[0]<=it.ilvl && (g.s==='d'||x[1]>0)), ts=g.t.map((x,ti)=>({ti, w:g.s==='d'?1:x[1], l:x[0]})).filter(x=>x.l<=it.ilvl && (x.l>=minL || x.ti===top) && x.w>0);
+      if(!ts.length) return; const tw=ts.reduce((a,x)=>a+x.w,0); G.push({w: g.s==='d'?1000:tw, h: ts.filter(x=>hit(gi,x.ti)).reduce((a,x)=>a+x.w,0)/tw}); });
+    let seed=7, ok=0; const rnd=()=>{ seed=(seed*1664525+1013904223)>>>0; return seed/4294967296; }, N=4000;
+    for(let k=0;k<N;k++){ let pool=G.slice(), got=false; for(let j=0;j<3 && pool.length;j++){ let x=rnd()*pool.reduce((a,g)=>a+g.w,0), pk=pool[pool.length-1]; for(const g of pool){ x-=g.w; if(x<=0){ pk=g; break; } } if(pk.h && rnd()<pk.h) got=true; pool=pool.filter(g=>g!==pk); } if(got) ok++; }
+    const q=ok/N; return (n.omens||[]).includes('Omen_of_Abyssal_Echoes') ? 1-(1-q)*(1-q) : q; }
+  const sd = (n.omens||[]).some(o=>/Sinistral/.test(o)) ? ['p'] : (n.omens||[]).some(o=>/Dextral/.test(o)) ? ['s'] : n.target?.replace && n.target.replace!=='any' ? [n.target.replace] : ['p','s'];
+  const minL = minLv(n.cur); let W=0, T=0;
+  D.groups.forEach((g,gi)=>{ if(g.s!=='n' || !sd.includes(g.g) || (g.f||[]).some(f=>F.has(f))) return; const top=g.t.findIndex(x=>x[0]<=it.ilvl && x[1]>0);
+    g.t.forEach((x,ti)=>{ if(x[0]<=it.ilvl && (x[0]>=minL || ti===top) && x[1]>0){ W+=x[1]; if(hit(gi,ti)) T+=x[1]; } }); });
+  let p = W ? T/W : null; if(p!=null && n.do==='exalt' && (n.omens||[]).includes('Omen_of_Greater_Exaltation')) p=1-(1-p)*(1-p); return p; }
+// policy 21: a repeat whose expected cost (Divine Orbs) or expensive-omen uses go over the limit becomes a "settle" fork.
+// Limit = the market price entered with the item, else the difficulty row of budget.json; the omen limit always comes from the difficulty row.
+// A main step keeps its old retry in n.compromise (the Recipes tab prices it into "with the extra steps" only); a fallback loop becomes optional
+function budgetPass(it, an, nodes, diff, market){
+  const lv = S.budget?.levels?.[diff], limD = market>0 ? market : (lv?.div ?? null), limO = lv?.omens ?? null;
+  if(!S.prices || (limD==null && limO==null)) return 0;
+  const exp = new Set(EXP_OM()), dv = S.prices.divine||363;
+  const costOf = list => list.reduce((a,x)=>{ if(!x?.cur && !x?.omens) return a; [x.cur, ...(x.omens||[])].filter(Boolean).forEach(id=>{ a.ex += exP(id) ?? 0; if(exp.has(id)) a.om++; }); return a; }, {ex:0, om:0});
+  const over = (k, c) => (limD!=null && k*c.ex/dv > limD) || (limO!=null && k*c.om > limO + 1e-9);
+  const settle = (of, kr, en) => { if(nodes.some(x=>x.fallbackFor===of.id && x.do==='note')) return; const i = nodes.indexOf(of); let j=i+1; while(nodes[j] && (nodes[j].fallbackFor===of.id || nodes[j].retryFor===of.id)) j++;
+    nodes.splice(j, 0, {id:of.id+'c', phase:of.phase, do:'note', fallbackFor:of.id, compromise:true, label:{kr:'타협: 그대로 진행', en:'Settle: keep going'}, note:{kr, en}}); };
+  let n0 = 0;
+  for(const n of [...nodes]){ if(n.branch || n.optional || n.compromise || n.onLost || n.do==='note') continue; const f=n.fail;
+    if(!n.fallbackFor && f?.via && [f.via.cur, ...(f.via.omens||[]), ...(f.via.also||[]).flatMap(x=>[x.cur, ...(x.omens||[])])].some(id=>exp.has(id))){
+      const p = estChance(it, an, n); if(!(p>0 && p<1)) continue;
+      const i = nodes.indexOf(n), j = f.goto && f.goto!=='self' && f.goto!=='restart' ? nodes.findIndex(x=>x.id===f.goto) : i;
+      const span = (j>=0 && j<=i ? nodes.slice(j, i+1) : [n]).filter(x=>!x.fallbackFor && !x.onLost && !x.optional);
+      const c = costOf([f.via, ...(f.via.also||[]), ...span]);
+      if(!over(1/p-1, c)) continue;
+      n.compromise = {fail:f}; delete n.fail; n0++;
+      if(n.note) n.note = {kr:n.note.kr.replace(/\s*(안 나오면|실패하면|안 뜨면)[^]*$/,''), en:n.note.en.replace(/[;.]\s*(otherwise|on a miss)[^]*$/i,'.')};
+      n.br = {kr:'실패: 타협(그대로 진행)', en:'Miss: settle and keep going'};
+      settle(n, n.do==='reveal' ? '괜찮은 줄이면 그대로 두고 진행. 다시 하지 않음.' : '빗나간 줄은 그대로 두고 진행. 다시 하지 않음.', n.do==='reveal' ? 'Keep a decent line and move on; no retry.' : 'Keep the missed line and move on; no retry.');
+      continue; }
+    if(n.fallbackFor && f?.goto==='self' && (n.omens||[]).some(id=>exp.has(id))){
+      const p = estChance(it, an, n); if(!(p>0 && p<1)) continue;
+      if(!over(1/p, costOf([n]))) continue;
+      n.optional = true; n0++; const pr = nodes.find(x=>x.id===n.fallbackFor);
+      if(pr){ pr.br = {kr:'실패: 타협(그대로 진행) / 계속 돌리기(선택)', en:'Miss: settle, or keep rolling (optional)'}; settle(pr, '빗나간 줄은 그대로 두고 진행.', 'Keep the missed line and move on.'); } } }
+  return n0; }
+// rough expected cost of a draft (Divine Orbs) for the line above the check: each step's currencies × its expected tries; optional steps left out
+function draftCost(it, an, d){ if(!S.prices) return null; const dv=S.prices.divine||363; let ex=0;
+  for(const n of d.nodes){ if(n.optional || n.onLost || n.do==='note' || n.branch?.when==='miss') continue; const f=n.fail, p = f?.goto==='self' || (f?.via && f.goto) ? estChance(it, an, n) : null, k = p>0 && p<1 ? 1/p : 1;
+    [n.cur, ...(n.omens||[])].filter(Boolean).forEach(id=>{ ex += (exP(id)??0) * (f?.goto==='self' ? k : 1); });
+    if(f?.via && k>1) [f.via.cur, ...(f.via.omens||[])].forEach(id=>{ ex += (exP(id)??0)*(k-1); }); }
+  return ex/dv; }
+function makeDraft(it, an, opt){
   if(an.putrid) return null;   // an Omen of Putrefaction item: no recipe
   const craft=S.craft, nodes=[], cap={...an.cap}, cnt={p:0,s:0}; let rar='normal', k=0;
   const diff = estDiff(it, an), craftFirst = diff <= 3;
@@ -348,6 +410,16 @@ function makeDraft(it, an){
   const lkA = r => lk(r) + (alts(r).length>1 ? ' (원소 무관)' : ''), leA = r => le(r) + (alts(r).length>1 ? ' (any element)' : '');
   const push = n => { nodes.push({id:id(), ...n}); return nodes[nodes.length-1]; };
   const made = [];   // wanted lines actually placed so far ({r, id}); an annulment can take these
+  // with prices: of orbs that do the same job, the one with the lowest expected cost per hit ((orb + omens + clean-up per miss) / chance);
+  // the policy's default comes first and keeps a tie. No prices: the default
+  // loop: retried until it lands, viaEx = clean-up per miss. once: one try, viaEx = the expected cost of the fallback that takes over on a miss
+  const cheapest = (curs, n, viaEx=0, once=false) => { if(!S.prices || S.noCheap) return curs[0]; let best=curs[0], bv=Infinity;
+    for(const c of curs){ const pr=exP(c), p=estChance(it, an, {...n, cur:c}); if(pr==null || !(p>0)) continue;
+      const om = (n.omens||[]).reduce((a,o)=>a+(exP(o)??0),0), v = once ? pr + om + (1-p)*viaEx : (pr + om + (p<1 ? viaEx*(1-p) : 0)) / p; if(v < bv*0.999){ bv=v; best=c; } }
+    return best; };
+  // expected cost (ex) of a chaos fallback loop: (orb + omens) / chance
+  const loopEx = (cc, om, t) => { const p=estChance(it, an, {do:'chaos', cur:cc, omens:om, target:t}); return p>0 ? ((exP(cc)??0) + om.reduce((a,o)=>a+(exP(o)??0),0))/p : Infinity; };
+  const EXS = ['Perfect_Exalted_Orb','Greater_Exalted_Orb','Exalted_Orb'];
   const note = (kr,en) => ({kr,en});
   const names = (list, f) => list.map(f).join(' · ');
   const rows = an.rows.filter(r=>!r.unrev);
@@ -465,7 +537,8 @@ function makeDraft(it, an){
     const orbFor = (k, r) => { const [pf, gr] = k==='regal' ? [50,35] : [70,55], nm = {transmute:['Perfect_Orb_of_Transmutation','Greater_Orb_of_Transmutation','Orb_of_Transmutation'], augment:['Perfect_Orb_of_Augmentation','Greater_Orb_of_Augmentation','Orb_of_Augmentation'], regal:['Perfect_Regal_Orb','Greater_Regal_Orb','Regal_Orb']}[k];
       return !r ? nm[2] : r.t[0]>=pf || isTop(r) ? nm[0] : r.t[0]>=gr ? nm[1] : nm[2]; };
     const ANN = {cur:'Orb_of_Annulment'};
-    const roll = (k, r, extra) => { const cur = orbFor(k, r), lost = [...made].reverse()[0];
+    const roll = (k, r, extra) => { const o0 = orbFor(k, r), fam = {transmute:['Perfect_Orb_of_Transmutation','Greater_Orb_of_Transmutation','Orb_of_Transmutation'], augment:['Perfect_Orb_of_Augmentation','Greater_Orb_of_Augmentation','Orb_of_Augmentation'], regal:['Perfect_Regal_Orb','Greater_Regal_Orb','Regal_Orb']}[k];
+      const cur = r && !made.length ? cheapest([o0, ...fam.filter(x=>x!==o0)], {do:k, target:tm(r), ...(extra||{})}, exP('Orb_of_Annulment')??0) : o0, lost = [...made].reverse()[0];
       const n = push({phase:'magic', do:k, cur, ...(extra||{}), target: tm(r), fail:{goto:'self', via:ANN, ...(lost?{lost:lost.id}:{})},
         note: note(`${nk(cur)}${josa(nk(cur),'으로','로')} ${lkA(r)}. 실패하면 ${nk('Orb_of_Annulment')}로 지우고 다시${lost?`(${lk(lost.r)}${josa(lk(lost.r),'이','가')} 지워지면 그 줄을 만든 단계부터)`:''}.`, `${ne(cur)} for ${leA(r)}; on a miss, a plain ${ne('Orb_of_Annulment')} and again${lost?' (if it takes the earlier line, redo that step)':''}.`)});
       made.push({r, id:n.id}); cnt[r.m.side]++; return n; };
@@ -535,7 +608,8 @@ function makeDraft(it, an){
   const maxRoll = sd => { let m=0; it.D.groups.forEach(g=>{ if(g.s!=='n' || g.g!==sd || (g.f||[]).some(f=>allFam.has(f))) return; g.t.forEach(t=>{ if(t[0]<=it.ilvl && t[1]>0 && t[0]>m) m=t[0]; }); }); return m; };
   const lvlOf = r => r.t[0];
   // policy 19: Whittling / Erasure + Chaos loops use Greater Chaos (level 35+, a family's top tier always); lower targets fall back to Chaos
-  const loopChaos = list => it.cat==='jewel' ? 'Chaos_Orb' : list.every(r=>lvlOf(r)>=35 || r.tierNo===1) ? 'Greater_Chaos_Orb' : 'Chaos_Orb';
+  const loopChaos0 = list => it.cat==='jewel' ? 'Chaos_Orb' : list.every(r=>lvlOf(r)>=35 || r.tierNo===1) ? 'Greater_Chaos_Orb' : 'Chaos_Orb';
+  const loopChaos = (list, sd, om) => { const c0 = loopChaos0(list); return it.cat==='jewel' || !sd ? c0 : cheapest([c0, c0==='Chaos_Orb'?'Greater_Chaos_Orb':'Chaos_Orb'], {do:'chaos', omens:om||[], target:{...anyOf(list), replace:sd}}); };
   const whittleTarget = (sd, want) => { if(want.length<1) return null; const low = [...want].sort((a,b)=>lvlOf(a)-lvlOf(b))[0];
     if(lvlOf(low) < 35 && low.tierNo!==1) return null;   // policy 19: Greater Chaos (level 35+, a family's top tier always in the pool)
     const keep = [...made.filter(x=>x.r.m.side===sd).map(x=>x.r), ...want.filter(r=>r!==low)], top = maxRoll(sd);
@@ -553,8 +627,8 @@ function makeDraft(it, an){
       // One exalt at the lines (no retry), then Whittling + Chaos swaps that filler until one lands; the higher-level lines go first, the lowest last
       const list = want.length>1 ? want.filter(r=>r!==wl) : [wl], top = maxRoll(sd), frO = frs.filter(x=>x.m.side===oth).length;
       const safeO = made.filter(x=>x.r.m.side===oth && lvlOf(x.r) >= top).length, eOm = cnt[oth] - frO - safeO > 0 ? [ERASE[sd]] : [];
-      const cc = loopChaos(list);
-      const exC0 = it.cat==='jewel' ? 'Exalted_Orb' : 'Perfect_Exalted_Orb', tK = list.length>1 ? `원하는 줄 중 하나(${names(list, x=>lkA(x))})` : `${lkA(list[0])} (T${list[0].tierNo} 이상)`, tE = list.length>1 ? `any of ${names(list, x=>leA(x))}` : `${leA(list[0])} (tier ${list[0].tierNo}+)`;
+      const cc = loopChaos(list, sd, ['Omen_of_Whittling', ...eOm]);
+      const exC0 = it.cat==='jewel' ? 'Exalted_Orb' : cheapest(EXS, {do:'exalt', omens:om, target:anyOf(list)}, loopEx(cc, ['Omen_of_Whittling', ...eOm], {...anyOf(list), replace:sd}), true), tK = list.length>1 ? `원하는 줄 중 하나(${names(list, x=>lkA(x))})` : `${lkA(list[0])} (T${list[0].tierNo} 이상)`, tE = list.length>1 ? `any of ${names(list, x=>leA(x))}` : `${leA(list[0])} (tier ${list[0].tierNo}+)`;
       const ex = push({phase:'ex', do:'exalt', cur:exC0, ...(om.length?{omens:om}:{}), target:anyOf(list), br:note(`실패: ${['Omen_of_Whittling',...eOm].map(nk).join(' + ')} + ${nk(cc)}`, `Miss: ${['Omen_of_Whittling',...eOm].map(ne).join(' + ')} + ${ne(cc)}`),
         note:note(`${sideKr(sd)}에 ${tK}.`, `A ${sideEn(sd)}: ${tE}.`)}); cnt[sd]++;
       push({phase:'ex', do:'chaos', cur:cc, omens:['Omen_of_Whittling', ...eOm], fallbackFor:ex.id, target:{...anyOf(list), replace:sd}, fail:{goto:'self'},
@@ -564,8 +638,8 @@ function makeDraft(it, an){
     if(!keepR.length && cnt[oth] >= cap[oth] && !(it.cat==='jewellery' && qCap>0 && !mqGone)){
       // nothing worth keeping on this side and the other side is full: one exalt, then on a miss Erasure + Chaos rerolls just that line
       // (the new line can only land here), cheaper than annulment omen + annulment + another exalt each time
-      const top = maxRoll(sd), cc = loopChaos(want);
-      const exC0 = it.cat==='jewel' ? 'Exalted_Orb' : 'Perfect_Exalted_Orb', tK = want.length>1 ? `원하는 줄 중 하나(${names(want, x=>lkA(x))})` : `${lkA(want[0])} (T${want[0].tierNo} 이상)`, tE = want.length>1 ? `any of ${names(want, x=>leA(x))}` : `${leA(want[0])} (tier ${want[0].tierNo}+)`;
+      const top = maxRoll(sd), cc = loopChaos(want, sd, [ERASE[sd]]);
+      const exC0 = it.cat==='jewel' ? 'Exalted_Orb' : cheapest(EXS, {do:'exalt', target:anyOf(want)}, loopEx(cc, [ERASE[sd]], {...anyOf(want), replace:sd}), true), tK = want.length>1 ? `원하는 줄 중 하나(${names(want, x=>lkA(x))})` : `${lkA(want[0])} (T${want[0].tierNo} 이상)`, tE = want.length>1 ? `any of ${names(want, x=>leA(x))}` : `${leA(want[0])} (tier ${want[0].tierNo}+)`;
       const ex = push({phase:'ex', do:'exalt', cur:exC0, target:anyOf(want), br:note(`실패: ${nk(ERASE[sd])} + ${nk(cc)}`, `Miss: ${ne(ERASE[sd])} + ${ne(cc)}`), note:note(`${sideKr(sd)}에 ${tK}.`, `A ${sideEn(sd)}: ${tE}.`)}); cnt[sd]++;
       push({phase:'ex', do:'chaos', cur:cc, omens:[ERASE[sd]], fallbackFor:ex.id, target:{...anyOf(want), replace:sd}, fail:{goto:'self'},
         note:note(`${nk(ERASE[sd])} + ${nk(cc)}로 빗나간 ${sideKr(sd)}를 ${tK}${josa('나','이','가')} 뜰 때까지 (${sideKr(oth)}는 꽉 차서 새 줄도 ${sideKr(sd)}에 붙음).`, `${ne(ERASE[sd])} + ${ne(cc)} rerolls the missed ${sideEn(sd)} until ${tE} lands (the ${sideEn(oth)}es are full, so the new line lands here too).`)});
@@ -583,7 +657,7 @@ function makeDraft(it, an){
           : note(`${c2.kr}로 퀄리티 ${qCap}%. 다음 엑잘에서 ${names(want, x=>lk(x))}${josa(lk(want[want.length-1]),'이','가')} 나올 확률을 촉진하는 찬미의 징조로 올리려고 이 속성 퀄리티를 먼저 씀.`, `${c2.en} to ${qCap}% so Omen of Catalysing Exaltation favours ${names(want, x=>le(x))} on the next exalt.`)});
         qType=c2.tag; }
       if(qType && tg.has(qType)) cOm=['Omen_of_Catalysing_Exaltation']; }
-    const exC = it.cat==='jewel' ? 'Exalted_Orb' : 'Perfect_Exalted_Orb';   // jewel lines are all one tier: a plain Exalted Orb does the same job
+    const exC = it.cat==='jewel' ? 'Exalted_Orb' : cOm.length || made.some(x=>x.r.m.side===sd) ? 'Perfect_Exalted_Orb' : cheapest(EXS, {do:'exalt', omens:om, target:anyOf(want)}, (exP('Orb_of_Annulment')??0) + (cnt[oth] - frs.filter(x=>x.m.side===oth).length === 0 ? 0 : (exP(SIDE_OMEN.annul[sd])??0)));   // jewel lines are all one tier: a plain Exalted Orb does the same job; with prices the cheapest per hit
     const exOm = [...cOm, ...om], tries = cOm.length && free-want.length>=1 && an.cnt[sd] >= an.cap[sd] ? 2 : 1;   // a draft ends at the pasted item: a first-try junk line on a side it leaves open would stay
     const omTxt = exOm.map(nk).join(' + '), omEn = exOm.map(ne).join(' + ');
     // a wanted line already on this side can be the one an annulment takes: then go back to the step that made it
@@ -816,8 +890,9 @@ function makeDraft(it, an){
       nodes:[{id:'q0', phase:'prep', do:'base', note:note(`${lk(F)} + 잡옵 2줄 + 미공개 훼손 1줄 희귀.`, `A rare with ${le(F)} + two junk lines + one unrevealed desecrated line.`)},
         ...(baseQ ? [{id:'q1', phase:'prep', do:'manual', label:{kr:`퀄리티 ${it.qual}%`, en:`Quality ${it.qual}%`}, note:note(baseQ.kr, baseQ.en)}] : []),
         {id:'q2', phase:'prep', do:'fracture', cur:'Fracturing_Orb', target:tm(F), fail:{goto:'restart'}, note:note(`훼손 줄은 분열되지 않아 나머지 3줄 중 ${lk(F)}${josa(lk(F),'이','가')} 분열될 확률 1/3.`, `The desecrated line cannot fracture: ${le(F)} is 1 in 3.`)}]}; }
+  const market = +(opt?.market ?? S.market ?? 0) || 0, nComp = budgetPass(it, an, nodes, diff, market);
   const day = new Date(); const ymd = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
-  return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff,
+  return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff, ...(market>0?{marketPrice:market}:{}), ...(nComp?{compromises:nComp}:{}),
     author:{kr:'아이템 역산 초안', en:'Reverse-engineered draft'}, title:{kr:featK.join(' + ')||'역산 초안', en:featE.join(' + ')||'Draft'},
     buildTags:[], start, phases, nodes, ...(prep?{prep}:{}), src:{text:S.txt||''} };
 }
@@ -946,6 +1021,7 @@ function renderStatic(){
   $('#txt').placeholder = L('아이템 텍스트를 여기에 붙여 넣기','Paste item text here');
   $('#go').textContent = L('분석','Analyse'); $('#clr').textContent = L('지우기','Clear');
   $('#hint').textContent = L('붙여 넣으면 바로 분석해요','Analyses as soon as you paste');
+  $('#mpl').textContent = L('이 아이템 시세(디바인, 선택)','Market price (div, optional)');
   $('#samples').innerHTML = `<span class="hint" style="align-self:center">${L('예시','Samples')}:</span>` + SAMPLES.map((s,i)=>`<button type="button" class="chip" data-sample="${i}">${esc(s.n[KR()?0:1])}</button>`).join('')
     + (S.recSamples?.length ? `<select id="recs" aria-label="${L('등록된 레시피의 완성템','Finished item of a registered recipe')}"><option value="">${L('등록된 레시피 완성템 불러오기…','Load a registered recipe\'s finished item…')}</option>${S.recSamples.map((x,i)=>`<option value="${i}"${S.recIdx===i?' selected':''}>${esc(KR()?x.base.kr:x.base.en)} | ${esc(KR()?x.title.kr:x.title.en)}</option>`).join('')}</select>` : '');
 }
@@ -980,6 +1056,7 @@ function render(){
 }
 
 async function run(){
+  await S.ready;
   const txt = $('#txt').value; if(!txt.trim()){ S.last=null; render(); return; }
   if(!S.index) [S.index, S.craft] = await Promise.all([fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json())]);
   if(!S.priority) S.priority = await fetch('data/priority.json').then(r=>r.json()).catch(()=>null);
@@ -1032,7 +1109,7 @@ Item Level: 82
 
 $('#go').addEventListener('click', run);
 $('#mods').addEventListener('click', e=>{
-  if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const r = makeDraft(S.last.it, S.last.an); S.draft = r; S.check = verifyDraft(S.last.it, S.last.an, r); showCheck(); return; }
+  if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const mp=+($('#mp')?.value||0); const r = makeDraft(S.last.it, S.last.an, {market: mp>0?mp:0}); S.draft = r; S.check = verifyDraft(S.last.it, S.last.an, r); showCheck(); return; }
   if(e.target.closest('#send') && S.draft){ const r=S.draft;
     try{ const k='poe2r:drafts', a=JSON.parse(localStorage.getItem(k)||'[]').filter(x=>x.id!==r.id); a.unshift(r); localStorage.setItem(k, JSON.stringify(a.slice(0,12))); }catch(_){}
     const inShell = window.parent && window.parent!==window;
@@ -1042,7 +1119,9 @@ $('#mods').addEventListener('click', e=>{
 function showCheck(){
   const c=S.check||[], nE=c.filter(x=>x.lv==='err').length, nW=c.filter(x=>x.lv==='warn').length;
   const ic = {err:'✗', warn:'!', ok:'✓'};
-  $('#mkmsg').innerHTML = `<div class="check"><div class="ch-h"><b>${L('검산','Verification')}</b><span>${L(`초안 ${S.draft.nodes.length}단계를 처음부터 다시 따라가며 확인했어요`,`Replayed the ${S.draft.nodes.length}-step draft from the start`)} · <span class="bad">${L('오류','errors')} ${nE}</span> · <span class="wn">${L('주의','warnings')} ${nW}</span></span></div>
+  const dc = S.last?.it ? draftCost(S.last.it, S.last.an, S.draft) : null, mp = S.draft.marketPrice, fd = v => v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
+  const costL = dc==null ? '' : `<p class="costl ${mp && dc>mp ? 'over' : ''}">${L('예상 비용','Est. cost')} ${L('약','≈')} ${fd(dc)} div${mp?` / ${L('시세','market')} ${fd(mp)} div${dc>mp?` — ${L('시세보다 비쌈, 구입 권장','dearer than buying it')}`:''}`:''}${S.draft.compromises?` · ${L(`타협 갈림길 ${S.draft.compromises}곳`,`${S.draft.compromises} settle fork(s)`)}`:''}</p>`;
+  $('#mkmsg').innerHTML = `${costL}<div class="check"><div class="ch-h"><b>${L('검산','Verification')}</b><span>${L(`초안 ${S.draft.nodes.length}단계를 처음부터 다시 따라가며 확인했어요`,`Replayed the ${S.draft.nodes.length}-step draft from the start`)} · <span class="bad">${L('오류','errors')} ${nE}</span> · <span class="wn">${L('주의','warnings')} ${nW}</span></span></div>
     <ul>${c.map(x=>`<li class="${x.lv}"><span class="ic">${ic[x.lv]}</span>${esc(KR()?x.kr:x.en)}</li>`).join('')}</ul>
     <div class="row"><button type="button" class="btn ${nE?'':'primary'}" id="send">${nE ? L('오류가 있어도 레시피 탭에 올리기','Add to Recipes anyway') : L('레시피 탭에 올리기','Add to Recipes')}</button></div></div>`;
 }
@@ -1052,6 +1131,6 @@ $('#samples').addEventListener('change', e=>{ if(e.target.id!=='recs' || e.targe
 fetch('data/samples.json').then(r=>r.ok?r.json():{samples:[]}).then(d=>{ S.recSamples=d.samples||[]; renderStatic(); }).catch(()=>{});
 $('#samples').addEventListener('click', e=>{ const b=e.target.closest('[data-sample]'); if(!b) return; $('#txt').value=SAMPLES[+b.dataset.sample].t; run(); });
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
-window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff});
+window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff, estChance, draftCost});
 render();
 </script>

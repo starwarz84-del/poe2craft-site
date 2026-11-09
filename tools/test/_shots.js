@@ -11,7 +11,7 @@ console.log('phase heads:', await p.$$eval('#detail .phase h4', es=>es.map(e=>e.
 // 2. sandsworn draft
 const txt=fs.readFileSync('items/sandsworn-rune.txt','utf8');
 await p.goto('http://localhost:8779/discover.html?lang=kr'); await p.waitForFunction(()=>window.__rev);
-const d=await p.evaluate(async(txt)=>{ const S=__rev; if(!S.index)[S.index,S.craft]=await Promise.all([fetch('data/index.json').then(r=>r.json()),fetch('data/crafting.json').then(r=>r.json())]); S.priority=await fetch('data/priority.json').then(r=>r.json());
+const d=await p.evaluate(async(txt)=>{ const S=__rev; if(!S.index)[S.index,S.craft]=await Promise.all([fetch('data/index.json').then(r=>r.json()),fetch('data/crafting.json').then(r=>r.json())]); S.priority=await fetch('data/priority.json').then(r=>r.json()); await S.ready;
   const it=await S.parse(txt); return S.makeDraft(it,S.analyse(it)); }, txt);
 await p.goto('http://localhost:8779/recipes.html?lang=kr'); await p.waitForFunction(()=>window.__rec&&__rec.booted);
 await p.evaluate(d=>window.postMessage({type:'poe2-draft', recipe:d},'*'), d); await p.waitForSelector('#detail .flow'); await p.waitForTimeout(300);
