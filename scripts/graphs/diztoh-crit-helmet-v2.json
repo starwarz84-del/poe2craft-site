@@ -7,7 +7,7 @@
  "basePrice": {
   "Chaos_Orb": 8
  },
- "note": "사용자 확정 흐름(2026-11-09). 접미 분열 갈래는 1차 시험에선 '반대 흐름' 노드로만 두고 같은 비용으로 가정(reverse=assume) 또는 베이스부터(reverse=restart).",
+ "note": "사용자 확정 흐름(2026-11-09). 접미 분열·잡옵 분열은 이 아이템으로는 끝(접미 = 가성비 작업/판매, 잡옵 = 버림) — 비용 계산은 둘 다 새 베이스부터(판매 수익은 빼지 않음).",
  "params": {
   "cMiss": {
    "kr": "C 실패 시",
@@ -50,20 +50,6 @@
      "en": "Sinistral Annulment + Annulment"
     }
    }
-  },
-  "reverse": {
-   "kr": "접미 분열",
-   "en": "Suffix fractured",
-   "values": {
-    "assume": {
-     "kr": "같은 비용 가정",
-     "en": "Assume same cost"
-    },
-    "restart": {
-     "kr": "베이스부터",
-     "en": "New base"
-    }
-   }
   }
  },
  "strategies": [
@@ -72,7 +58,6 @@
    "params": {
     "cMiss": "settle",
     "bTier": 1,
-    "reverse": "assume",
     "bMiss": "plain"
    }
   },
@@ -81,7 +66,6 @@
    "params": {
     "cMiss": "erase",
     "bTier": 1,
-    "reverse": "assume",
     "bMiss": "plain"
    }
   },
@@ -90,7 +74,6 @@
    "params": {
     "cMiss": "settle",
     "bTier": 2,
-    "reverse": "assume",
     "bMiss": "plain"
    }
   },
@@ -99,26 +82,14 @@
    "params": {
     "cMiss": "erase",
     "bTier": 2,
-    "reverse": "assume",
     "bMiss": "plain"
    }
-  },
-  {
-   "id": "settle-1-restart",
-   "params": {
-    "cMiss": "settle",
-    "bTier": 1,
-    "reverse": "restart",
-    "bMiss": "plain"
-   },
-   "hidden": true
   },
   {
    "id": "settle-1-sinannul",
    "params": {
     "cMiss": "settle",
     "bTier": 1,
-    "reverse": "assume",
     "bMiss": "sinistral"
    },
    "hidden": true
@@ -283,8 +254,8 @@
  "groups": [
   {
    "id": "prep",
-   "kr": "베이스 작업 (분열 포함)",
-   "en": "Base work (incl. fracture)",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
    "cols": [
     0,
     2
@@ -368,8 +339,8 @@
     "en": "Wanted line?"
    },
    "goal": {
-    "kr": "접두어 / 접미어 각 1줄",
-    "en": "One prefix / one suffix"
+    "kr": "접두어 / 접미어 각 옵션 1줄",
+    "en": "One prefix / one suffix option"
    },
    "show": [
     "pct",
@@ -461,7 +432,11 @@
     "pct",
     "critT1",
     "rarS1"
-   ]
+   ],
+   "goal": {
+    "kr": "접두어 / 접미어 중 남은 옵션",
+    "en": "The remaining prefix / suffix option"
+   }
   },
   {
    "id": "h3x",
@@ -574,7 +549,11 @@
      "kr": "아무 옵션 1줄",
      "en": "Any one modifier"
     }
-   ]
+   ],
+   "goal": {
+    "kr": "분열하기 위해 레어로 업그레이드",
+    "en": "Upgrade to rare for the fracture"
+   }
   },
   {
    "id": "h5",
@@ -592,65 +571,6 @@
    "label": {
     "kr": "접미 훼손(4줄)",
     "en": "Suffix desecration (4 lines)"
-   },
-   "edges": [
-    {
-     "to": "h6"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
-     "m": "n",
-     "tags": [
-      "pct"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 확률 또는 희귀도 1티어",
-     "en": "Crit chance or rarity T1",
-     "m": "n",
-     "tags": [
-      "critT1",
-      "rarS1"
-     ]
-    },
-    {
-     "s": "x",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "훼손 (미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "u"
-    }
-   ],
-   "showText": [
-    {
-     "kr": "접미: 훼손 1줄 (미공개)",
-     "en": "Suffix: one desecrated line (unrevealed)"
-    }
-   ]
-  },
-  {
-   "id": "h6",
-   "kind": "act",
-   "group": "prep",
-   "pos": [
-    0,
-    5
-   ],
-   "act": "divine",
-   "cur": "Divine_Orb",
-   "label": {
-    "kr": "수치 올리기",
-    "en": "Divine the rolls"
    },
    "edges": [
     {
@@ -692,10 +612,43 @@
    ],
    "showText": [
     {
+     "kr": "접미: 훼손 1줄 (미공개)",
+     "en": "Suffix: one desecrated line (unrevealed)"
+    }
+   ],
+   "goal": {
+    "kr": "분열 확률을 높이기 위해 훼손(접미)",
+    "en": "Desecrate (suffix) to raise the fracture odds"
+   }
+  },
+  {
+   "id": "h6",
+   "kind": "side",
+   "group": "prep",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "divine",
+   "cur": "Divine_Orb",
+   "label": {
+    "kr": "수치 올리기",
+    "en": "Divine the rolls"
+   },
+   "showText": [
+    {
      "kr": "모든 줄 수치 다시 굴림",
      "en": "Reroll all values"
     }
-   ]
+   ],
+   "attach": [
+    "h5",
+    "h7"
+   ],
+   "goal": {
+    "kr": "유효 옵션 수치 올리기 (선택)",
+    "en": "Raise the wanted rolls (optional)"
+   }
   },
   {
    "id": "h7",
@@ -717,30 +670,31 @@
       "fractured": "pct"
      },
      "to": "h8",
+     "res": "ok",
      "label": {
-      "kr": "접두 분열 1/3",
-      "en": "prefix 1/3"
-     },
-     "res": "ok"
+      "kr": "접두 분열",
+      "en": "prefix fractured"
+     }
     },
     {
      "if": {
       "fractured": "sGood"
      },
-     "to": "rv",
+     "to": "xs",
+     "res": "ok",
+     "dash": true,
      "label": {
-      "kr": "접미 분열 1/3",
-      "en": "suffix 1/3"
-     },
-     "res": "ok"
+      "kr": "접미 분열",
+      "en": "suffix fractured"
+     }
     },
     {
-     "to": "h1",
+     "to": "xj",
+     "res": "fail",
      "label": {
-      "kr": "잡옵 분열 → 베이스부터",
-      "en": "junk → new base"
-     },
-     "res": "fail"
+      "kr": "잡옵 분열",
+      "en": "junk fractured"
+     }
     }
    ],
    "item": [
@@ -782,52 +736,57 @@
    },
    "showText": [
     {
-     "kr": "4줄 중 무작위 1줄 분열 → 접두 % 줄이면 성공",
-     "en": "One of 4 lines fractures — the prefix % line wins"
+     "kr": "3개의 옵션들 중 하나의 옵션 분열 → 유효 옵션이 분열되면 성공",
+     "en": "One of the 3 modifiers fractures — a wanted one means success"
     }
-   ]
+   ],
+   "goal": {
+    "kr": "분열",
+    "en": "Fracture"
+   }
   },
   {
-   "id": "rv",
-   "kind": "choice",
+   "id": "xs",
+   "kind": "exit",
    "group": "prep",
    "pos": [
     1,
     6
    ],
-   "param": "reverse",
-   "options": {
-    "assume": "rva",
-    "restart": "h1"
-   },
+   "simTo": "h1",
+   "variant": "ok",
    "label": {
-    "kr": "반대 흐름(접미 분열)",
-    "en": "Reverse flow (suffix fractured)"
+    "kr": "접미 분열",
+    "en": "Suffix fractured"
+   },
+   "note": {
+    "kr": "가성비 아이템 작업 또는 분열된 상태로 판매",
+    "en": "Craft a budget item or sell it fractured"
    }
   },
   {
-   "id": "rva",
-   "kind": "assume",
+   "id": "xj",
+   "kind": "exit",
    "group": "prep",
    "pos": [
-    2,
-    6
+    1,
+    7
    ],
-   "swapFracture": "pct",
-   "next": "h8",
+   "simTo": "h1",
+   "variant": "fail",
    "label": {
-    "kr": "같은 비용으로 가정",
-    "en": "Assumed same cost"
+    "kr": "잡옵 분열",
+    "en": "Junk fractured"
    },
    "note": {
-    "kr": "접미 분열이면 같은 흐름을 접두·접미 바꿔 진행 — 비용은 같다고 가정",
-    "en": "Suffix fracture: same flow with sides swapped — assumed to cost the same"
+    "kr": "새로운 베이스 아이템 구입 후 처음부터",
+    "en": "Buy a new base and start over"
    }
   },
   {
    "id": "h8",
    "kind": "cleanup",
-   "group": "main",
+   "group": "prep",
    "pos": [
     0,
     8
@@ -859,7 +818,11 @@
      "en": "Junk",
      "m": "j"
     }
-   ]
+   ],
+   "goal": {
+    "kr": "소멸의 오브 2개로 잡옵 정리: 분열 + 잡옵 1줄",
+    "en": "Two Annulments: keep the fracture + one junk"
+   }
   },
   {
    "id": "c1",
@@ -1165,7 +1128,7 @@
    "group": "main",
    "pos": [
     3,
-    12
+    11
    ],
    "keep": [
     "crit",

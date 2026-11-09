@@ -106,6 +106,7 @@ function make(graph, D, craft, params){
       const n=nodes[id]; if(!n) throw new Error('no node '+id);
       last={added:[], removed:[], fr:null}; tally.visit(id); if(hooks.enter) hooks.enter(id, it);
       if(n.kind==='done'){ tally.done(it, cond); return it; }
+      if(n.kind==='exit'){ tally.edge(id, n.simTo); id=n.simTo; continue; }   // this item is set aside (sold / thrown away): the cost goes on from simTo
       if(n.kind==='base'){ it={rar:'normal', mods:[]}; tally.base(id); tally.edge(id, n.next); id=n.next; continue; }
       if(n.kind==='choice'){ const v=params[n.param], to=n.options[v]; if(!to) throw new Error(n.id+': no option '+v); tally.edge(id, to); id=to; continue; }
       if(n.kind==='assume'){ if(n.swapFracture){ it.mods.forEach(m=>{ if(m.fr) delete m.fr; }); const m=it.mods.find(x=>match(x,n.swapFracture)); if(m) m.fr=true; } tally.edge(id, n.next); id=n.next; continue; }
