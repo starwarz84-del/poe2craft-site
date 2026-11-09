@@ -35,7 +35,7 @@ BASEPRICE = {
   'diztoh-es-helmet': None,
   'diztoh-onehand-mace': 3,   # 영상: 퀄리티 20% 노멀 베이스 3디바인
   'diztoh-rarity-ring': 1,
-  'diztoh-rarity-ring-v2': 1, 'diztoh-rarity-ring-v2-bal': 1, 'diztoh-rarity-ring-v2-ess': 1,   # 영상: 매직 황금 반지 1디바인 안팎
+  'diztoh-rarity-ring-v2': None, 'diztoh-rarity-ring-v2-bal': 1, 'diztoh-rarity-ring-v2-ess': 1,   # 영상: 매직 황금 반지 1디바인 안팎(하이엔드 1티어·1티어 매직은 시세 모름)
   'diztoh-socket-gloves': None,
   'diztoh-talisman': None,
   'diztoh-vile-robe': None,

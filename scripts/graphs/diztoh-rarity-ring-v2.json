@@ -13,9 +13,9 @@
    "kr": "모든 원소 저항 목표",
    "en": "All-res target",
    "values": {
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
     },
     "3": {
      "kr": "1~3티어",
@@ -26,25 +26,76 @@
      "en": "Any tier"
     }
    }
+  },
+  "rw": {
+   "kr": "훼손 공개 목표",
+   "en": "Reveal target",
+   "values": {
+    "allres": {
+     "kr": "모든 원소 저항만",
+     "en": "All res only"
+    },
+    "rwant": {
+     "kr": "모든 원소 저항 또는 카오스 듀얼 저항",
+     "en": "All res or a chaos dual res"
+    }
+   }
+  },
+  "rpT": {
+   "kr": "접두 희귀도",
+   "en": "Prefix rarity",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "crT": {
+   "kr": "냉기 저항",
+   "en": "Cold res",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
   }
  },
  "strategies": [
   {
    "id": "high",
    "params": {
-    "arT": 2
+    "arT": 1,
+    "rw": "allres",
+    "rpT": 1,
+    "crT": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "arT": 3
+    "arT": 3,
+    "rw": "rwant",
+    "rpT": 3,
+    "crT": 2
    }
   },
   {
    "id": "ess",
    "params": {
-    "arT": 5
+    "arT": 5,
+    "rw": "rwant",
+    "rpT": 3,
+    "crT": 2
    }
   }
  ],
@@ -54,11 +105,14 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "arT": 5
+    "arT": 5,
+    "rw": "rwant",
+    "rpT": 3,
+    "crT": 2
    },
    "desc": {
-    "kr": "모든 원소 저항 아무 티어 (영상)",
-    "en": "All res any tier (as the video)"
+    "kr": "모든 원소 저항 아무 티어 또는 카오스 듀얼 저항 (영상)",
+    "en": "All res any tier or a chaos dual res (as the video)"
    }
   },
   {
@@ -66,11 +120,14 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "arT": 3
+    "arT": 3,
+    "rw": "rwant",
+    "rpT": 3,
+    "crT": 2
    },
    "desc": {
-    "kr": "모든 원소 저항 1~3티어",
-    "en": "All res T1–3"
+    "kr": "모든 원소 저항 1~3티어 또는 카오스 듀얼 저항",
+    "en": "All res T1–3 or a chaos dual res"
    }
   },
   {
@@ -78,22 +135,25 @@
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "arT": 2
+    "arT": 1,
+    "rw": "allres",
+    "rpT": 1,
+    "crT": 1
    },
    "desc": {
-    "kr": "모든 원소 저항 1~2티어",
-    "en": "All res T1–2"
+    "kr": "모든 옵션 1티어 (희귀도·냉기 저항 1티어 매직 구입, 모든 원소 저항 1티어)",
+    "en": "All lines T1 (buy T1 rarity + T1 cold res, all res T1)"
    }
   }
  ],
  "tags": {
   "rarP": {
    "gi": 28,
-   "tmax": 3
+   "tmax": "$rpT"
   },
   "cres": {
    "gi": 5,
-   "tmax": 2
+   "tmax": "$crT"
   },
   "rarE": {
    "gi": 66
@@ -110,12 +170,36 @@
   },
   "patk": {
    "gi": 13
+  },
+  "dual": {
+   "anyOf": [
+    {
+     "gi": 44
+    },
+    {
+     "gi": 49
+    },
+    {
+     "gi": 52
+    }
+   ],
+   "side": "s",
+   "label": {
+    "kr": "화염·냉기·번개 중 하나 및 카오스 저항 +(13—17)%",
+    "en": "+(13—17)% to Fire, Cold or Lightning and Chaos Resistances"
+   }
+  },
+  "rwant": {
+   "anyOf": [
+    "allres",
+    "dual"
+   ]
   }
  },
  "require": {
   "all": [
    {
-    "has": "allres"
+    "has": "$rw"
    },
    {
     "full": "p"
@@ -166,7 +250,7 @@
    "lines": [
     {
      "tag": "rarP",
-     "tmax": 3
+     "tmax": 1
     },
     {
      "side": "p",
@@ -178,11 +262,11 @@
     },
     {
      "tag": "cres",
-     "tmax": 2
+     "tmax": 1
     },
     {
      "tag": "allres",
-     "tmax": 2
+     "tmax": 1
     },
     {
      "tag": "rarE",
@@ -213,7 +297,11 @@
     },
     {
      "tag": "allres",
-     "tmax": 3
+     "tmax": 3,
+     "alt": {
+      "kr": "또는 카오스 듀얼 저항",
+      "en": "or a chaos dual res"
+     }
     },
     {
      "tag": "rarE",
@@ -244,7 +332,11 @@
     },
     {
      "tag": "allres",
-     "tmax": 5
+     "tmax": 5,
+     "alt": {
+      "kr": "또는 카오스 듀얼 저항",
+      "en": "or a chaos dual res"
+     }
     },
     {
      "tag": "rarE",
@@ -484,13 +576,13 @@
    "omens": [
     "Omen_of_Abyssal_Echoes"
    ],
-   "want": "allres",
+   "want": "$rw",
    "goal": {
     "kr": "훼손 옵션 확인",
     "en": "Reveal the desecrated modifier"
    },
    "show": [
-    "allres"
+    "$rw"
    ],
    "label": {
     "kr": "공개",
@@ -500,6 +592,22 @@
     {
      "if": {
       "added": "allres"
+     },
+     "to": "g5",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "rw": "rwant"
+        }
+       },
+       {
+        "added": "dual"
+       }
+      ]
      },
      "to": "g5",
      "res": "ok"
@@ -539,11 +647,11 @@
     },
     {
      "s": "s",
-     "kr": "모든 원소 저항",
-     "en": "All elemental resistances",
+     "kr": "모든 원소 저항 또는 카오스 듀얼 저항",
+     "en": "All res or a chaos dual res",
      "m": "n",
      "tags": [
-      "allres"
+      "$rw"
      ]
     }
    ]
@@ -576,7 +684,7 @@
    "edges": [
     {
      "to": "g3",
-     "port": "bottom"
+     "port": "right"
     }
    ]
   },
@@ -687,11 +795,11 @@
     },
     {
      "s": "s",
-     "kr": "모든 원소 저항",
-     "en": "All elemental resistances",
+     "kr": "모든 원소 저항 또는 카오스 듀얼 저항",
+     "en": "All res or a chaos dual res",
      "m": "n",
      "tags": [
-      "allres"
+      "$rw"
      ]
     }
    ]

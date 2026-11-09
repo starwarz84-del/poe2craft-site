@@ -51,8 +51,8 @@ function make(graph, D, craft, params){
     function cond(c){ if(!c) return true;
       if(c.ref) return cond(graph.conds[c.ref]);
       if(c.all) return c.all.every(cond); if(c.any) return c.any.some(cond); if(c.not) return !cond(c.not);
-      if(c.has) return it.mods.some(m=>match(m,c.has));
-      if(c.added) return last.added.some(m=>match(m,c.added));
+      if(c.has) return it.mods.some(m=>match(m,P(c.has)));
+      if(c.added) return last.added.some(m=>match(m,P(c.added)));
       if(c.removed) return last.removed.some(m=>match(m,c.removed));
       if(c.fractured) return !!last.fr && match(last.fr, c.fractured);
       if(c.full) return count(c.full)>=maxA(c.full);
@@ -99,7 +99,7 @@ function make(graph, D, craft, params){
       else if(a==='reveal'){ const m=it.mods.find(x=>x.unrev); if(m){ it.mods.splice(it.mods.indexOf(m),1);
         const gs0=pool([m.side], m.min, ['n','d']);   // reveal: 3 groups without repeats, desecrated-only groups weigh 1000 (recipes.html revealChance, emulator revealOptions)
         const draw = () => { let gs=gs0.map(g=>({g, w:g.d?1000:g.w})), out=[]; for(let k=0;k<3 && gs.length;k++){ const x=pickW(rnd, gs); gs=gs.filter(y=>y!==x); out.push(pickW(rnd, x.g.ts)); } return out; };
-        const want = o => n.want && match({gi:o.gi, ti:o.ti}, n.want);
+        const wt=P(n.want), want = o => wt && match({gi:o.gi, ti:o.ti}, wt);
         let os=draw(); if(!os.some(want) && oms.includes('Omen_of_Abyssal_Echoes')) os=draw();
         const o=os.find(want)||os[0]; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true}; it.mods.push(nm); last.added.push(nm); } }
       else if(a==='fracture'){ const c=it.mods.filter(m=>!m.unrev && !m.fr); const m=c[Math.floor(rnd()*c.length)]; if(m){ m.fr=true; last.fr=m; } }
@@ -119,8 +119,9 @@ function make(graph, D, craft, params){
       if(n.kind==='choice'){ const v=params[n.param], to=n.options[v]; if(!to) throw new Error(n.id+': no option '+v); tally.edge(id, to); id=to; continue; }
       if(n.kind==='assume'){ if(n.swapFracture){ it.mods.forEach(m=>{ if(m.fr) delete m.fr; }); const m=it.mods.find(x=>match(x,n.swapFracture)); if(m) m.fr=true; } tally.edge(id, n.next); id=n.next; continue; }
       if(n.kind==='cleanup'){   // plain Annulment until at most maxJunk lines outside `keep` are left; a kept line going ends it
-        let lost=null; while(true){ const junk=it.mods.filter(m=>!m.fr && !(n.keep||[]).some(k=>match(m,k))); if(junk.length<=(n.maxJunk||0)) break;
-          last={added:[], removed:[], fr:null}; takeRandom(null); tally.use(id, {Orb_of_Annulment:1});
+        const cs=n.side, cu=cs ? {Orb_of_Annulment:1, [cs==='p'?'Omen_of_Sinistral_Annulment':'Omen_of_Dextral_Annulment']:1} : {Orb_of_Annulment:1};   // side: a side Annulment omen each time
+        let lost=null; while(true){ const junk=it.mods.filter(m=>!m.fr && !m.unrev && (!cs || m.side===cs) && !(n.keep||[]).some(k=>match(m,k))); if(junk.length<=(n.maxJunk||0)) break;
+          last={added:[], removed:[], fr:null}; takeRandom(cs ? (m=>m.side===cs) : null); tally.use(id, cu);
           const r=last.removed[0]; lost=(n.keep||[]).find(k=>match(r,k)); if(lost) break; }
         const e=(n.edges||[]).find(e=>lost ? e.lost===lost : !e.lost); if(!e) throw new Error(n.id+': no edge for '+(lost||'done')); tally.edge(id, e.to); id=e.to; continue; }
       if(n.kind==='act'){
