@@ -169,8 +169,8 @@ R.append({
    'note':K('좌측 말소의 징조 + 상위 카오스 오브로 접두를 계속 돌려 에너지 보호막 1티어 찾기. 좌측 말소의 징조는 접두만 바꾸고, 접두엔 엉뚱한 줄과 분열 줄뿐이라 좋은 줄이 안 지워짐.','Sinistral Erasure + Greater Chaos keeps rerolling the prefix for T1 Energy Shield; Erasure only touches prefixes, and the only removable prefix is the wrong one.')},
   {'id':'a16c','phase':'des','branch':MISS,'do':'note','fallbackFor':'a16','label':K('갈림길 ②: 타협','Fork (2): settle'),
    'note':K('좌측 결정화의 징조 + 완벽한 강화의 에센스로 엉뚱한 접두를 바꿔 가성비 마무리.','Sinistral Crystallisation + Perfect Essence of Enhancement swaps the wrong prefix for a cheap finish.')},
-  {'id':'a19','phase':'finish','do':'note','ts':'19:13',
-   'note':K('완벽한 유동체로 부여 스킬 20레벨, 완벽한 보석세공사의 오브로 5홈. 축성은 선택(퀄리티 34 이상 5레벨, 성공 시 6레벨).','Perfect liquid to raise the granted skill to 20, Perfect Jeweller\'s Orb for 5 sockets. Sanctifying is optional.')},
+  {'id':'a19','phase':'finish','do':'note','ts':'19:13','extra':{'Perfect_Flux':1,'Perfect_Jewellers_Orb':1},
+   'note':K('완벽한 유동체로 부여 스킬 20레벨, 완벽한 쥬얼러 오브로 5홈. 축성은 선택(퀄리티 34 이상 5레벨, 성공 시 6레벨).','Perfect Flux to raise the granted skill to 20, Perfect Jeweller\'s Orb for 5 sockets. Sanctifying is optional.')},
  ],
 })
 
@@ -461,7 +461,7 @@ R.append({
    'note':K('접두에 아무 옵션 하나.','Any prefix.')},
   {'id':'q2','phase':'q50','do':'essence','cur':'Essence_of_the_Breach','target':{'gi':amaxQ},'ts':'21:35',
    'note':K('균열의 에센스로 최대 퀄리티를 다시 붙여 50%까지 올릴 여유를 만듦(접두가 꽉 차 있어서 결정화의 징조 없이도 접두가 지워짐).','Essence of the Breach (prefixes full, no omen) brings Maximum Quality back so quality can reach 50%.')},
-  {'id':'e1','phase':'q50','do':'manual','label':K('완벽한 유동체로 대마법사 20레벨','Perfect liquid: Archmage to level 20'),'ts':'22:32',
+  {'id':'e1','phase':'q50','do':'manual','label':K('완벽한 유동체로 대마법사 20레벨','Perfect Flux: Archmage to level 20'),'ts':'22:32','extra':{'Perfect_Flux':1},
    'target':{'imp':[K('스킬 부여: 레벨 20 대마법사','Grants Skill: Level 20 Archmage'),K('접두어 속성 부여의 최대 개수 -1개\n접미어 속성 부여의 최대 개수 -1개','-1 Prefix Modifier allowed\n-1 Suffix Modifier allowed')]},
    'note':K('완벽한 유동체로 부여 스킬(대마법사)을 20레벨로. 영상은 히네코라의 머리카락 단계 전에 미리 해 둠(아이템이 바뀌면 예측이 사라지니까).','A perfect liquid raises the granted skill (Archmage) to level 20. The video does it before the Hinekora steps, since any change wipes the preview.')},
   {'id':'q3','phase':'q50','do':'manual','cost':'vaal','target':{'setQuality':50},'extra':{'Hinekoras_Lock':1},'label':K('히네코라의 머리카락 + 바알 촉진시키는 주입기로 50%','Hinekora + Vaal Catalysing Infuser to 50%'),'ts':'25:30',
@@ -566,5 +566,10 @@ for _r in R:
 REPLACES={'diztoh-budget-crossbow':'diztoh-grenade-crossbow'}
 _ids={x['id'] for x in R}
 R[:]=[x for x in R if not any(o==x['id'] and n in _ids for n,o in REPLACES.items())]
+# policy 22: base price (Divine Orbs) from scripts/base_prices.py; None = not known yet
+exec(open('/home/claude/poe2data/scripts/base_prices.py').read())
+for _r in R:
+    if BASEPRICE.get(_r['id']): _r['basePrice'] = BASEPRICE[_r['id']]
+print('base price missing:', sum(1 for _r in R if not _r.get('basePrice')), 'of', len(R))
 json.dump({'v':2,'recipes':R},open(D+'recipes.json','w'),ensure_ascii=False)
 print(len(R),'recipes')

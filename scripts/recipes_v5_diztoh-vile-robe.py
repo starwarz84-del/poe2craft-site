@@ -32,7 +32,7 @@ R.append({
   {'id':'v8','phase':'suf','do':'chaos','cur':'Greater_Chaos_Orb','omens':['Omen_of_Whittling'],'target':{'anyOf':[{'gi':vr_fire,'tmax':3},{'gi':vr_cold,'tmax':3},{'gi':vr_light,'tmax':3}],'replace':'s'},'fail':{'goto':'self'},'ts':'12:49',
    'note':K('절사의 징조 + 상위 카오스 오브로 레벨이 가장 낮은 줄(영상은 중독 지속시간 3티어)을 저항으로 바꿈. 정신력 점유 효율(레벨 65)보다 낮은 줄이 남아 있는지 먼저 확인. 우측 소멸의 징조 + 소멸의 오브는 정신력 점유 효율이 지워질 수 있어 쓰지 않음. 영상은 냉기 저항 3티어.',
             'Whittling + Greater Chaos replaces the lowest-level line (T3 poison duration in the video) with a resistance. First check that a line below the reservation efficiency (level 65) is there. Dextral Annulment was skipped since it could hit the reservation line. T3 cold resistance in the video.')},
-  {'id':'v9','phase':'fin','do':'note','target':{'runeSwap':[K('아스트리드의 창의성',"Astrid's Creativity"),K('여우 우상','Fox idol')]},'ts':'15:39',
-   'note':K('신성한 오브로 정신력 점유 효율 12%를 노림. 룬은 상위 철 룬 2개 + 아스트리드의 창의성 자리에 여우 우상. 저항은 파지직거리는 플럭스로 번개 저항으로 바꿀 수 있음. 영상 시세 약 360디바인. 완성.',
-            "Divine for 12% reservation efficiency. Runes: two Greater Iron Runes, and a Fox idol replaces Astrid's Creativity. A Crackling Flux can turn the resistance into lightning. About 360 divines in the video. Done.")},
+  {'id':'v9','phase':'fin','do':'note','target':{'runeSwap':[K('아스트리드의 창의성',"Astrid's Creativity"),K('여우 우상','Fox Idol')]},'ts':'15:39',
+   'note':K('신성한 오브로 정신력 점유 효율 12%를 노림. 룬은 상위 철 룬 2개 + 아스트리드의 창의성 자리에 여우 우상. 저항은 치직대는 유동체로 번개 저항으로 바꿀 수 있음. 영상 시세 약 360디바인. 완성.',
+            "Divine for 12% reservation efficiency. Runes: two Greater Iron Runes, and a Fox Idol replaces Astrid's Creativity. A Crackling Flux can turn the resistance into lightning. About 360 divines in the video. Done.")},
  ]})

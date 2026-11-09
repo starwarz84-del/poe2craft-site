@@ -24,7 +24,7 @@ R.append({
   {'id':'s2','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Dextral_Exaltation'],'target':{'gi':sh_str,'tmax':2},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s1'},'ts':'11:57'},
   {'id':'s3','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Dextral_Exaltation'],'target':{'anyOf':SH_RES},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s2'},'ts':'10:17'},
   {'id':'s4','phase':'suf','do':'manual','optional':True,'label':K('공허 유동체로 카오스 저항 (선택)','Void liquid to chaos resistance (optional)'),'ts':'10:35',
-   'note':K('화염·냉기·번개 저항이 뜨면 공허 유동체로 카오스 저항으로 바꿈.','A fire, cold or lightning resistance becomes chaos resistance with a void liquid.')},
+   'note':K('화염·냉기·번개 저항이 뜨면 공허 유동체로 카오스 저항으로 바꿈.','A fire, cold or lightning resistance becomes chaos resistance with Void Flux.')},
   {'id':'p1','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':SH_PRE},'ts':'13:18','br':K('성공 → 훼손, 실패 → 심연의 에센스로 지우기','Hit → desecrate; miss → clear it with Essence of the Abyss')},
   {'id':'p2','phase':'pre','branch':{'of':'p1','when':'ok'},'do':'desecrate','cur':'Ancient_Rib','target':{'unrev':'p'}},
   {'id':'p3','phase':'pre','branch':{'of':'p1','when':'ok'},'do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':SH_PRE},'side':'p','bone':'Ancient_Rib'},'fail':{'goto':'p2','via':SH_LIGHT}},

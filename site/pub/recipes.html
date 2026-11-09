@@ -68,6 +68,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .ci.dim{color:var(--faint)}
 .ci.dv{color:var(--muted)}.ci.dv b{color:var(--fg);font-weight:600}.nopr{margin-left:4px;font-size:10px;color:var(--faint);cursor:help}
 .budw{margin:6px 0 0;font-size:12px;color:var(--muted)}.budw.over{color:#e0a060}
+.tag.pt-high{color:#f0a35e}.tag.pt-top{color:var(--warn)}.tag.pt-mirror{color:var(--accent);font-weight:600}
 .calc{font-size:11.5px;color:var(--faint)}
 /* tooltip (game style, compact) */
 .tt{--tt-bg:#0d0d10;--tt-edge:#6b5a33;--tt-gold:#c8a85a;--tt-label:#8a8a8a;--tt-val:#ece8df;--tt-mod:#8888ff;--tt-name:#ffff77;--tt-head:#2a2416;background:var(--tt-bg);text-align:center;color:var(--tt-val)}
@@ -470,7 +471,14 @@ function difficulty(r){
   return [0,1,2,3,3,4][sc];
 }
 const diffTag = r => { const d=difficulty(r); return `<span class="tag diff d${d}" title="${esc(L('난이도','Difficulty'))} ${d+1}/6">${esc(L(...DIFF[d]))}</span>`; };
-const budgetTag = r => r.budget && BUDGET[r.budget] ? `<span class="tag bud">${esc(L(...BUDGET[r.budget]))}</span>` : '';
+// policy 22: price tier from the expected cost (base price included), separate from the difficulty. r.priceTier (tier id) wins when set
+const TIERS = () => S.budget?.tiers || [{id:'low',kr:'저가',en:'Budget',max:5},{id:'mid',kr:'중가',en:'Mid',max:50},{id:'high',kr:'고가',en:'High',max:500},{id:'top',kr:'최고가',en:'Top',max:'mirror'},{id:'mirror',kr:'미러',en:'Mirror',max:null}];
+const tierMax = t => t.max==='mirror' ? mirrorDiv() : t.max;
+const mirrorDiv = () => S.prices ? (S.prices.p.Mirror_of_Kalandra||0)/S.prices.divine : 5300;
+function priceTier(r){ const ts=TIERS(); if(r.priceTier){ const t=ts.find(x=>x.id===r.priceTier); if(t) return t; }
+  const c=recipeCost(r); if(!c) return null; return ts.find(t=>tierMax(t)==null || c.v < tierMax(t)) || ts[ts.length-1]; }
+const budgetTag = r => { const t=priceTier(r); if(t) return `<span class="tag bud pt-${t.id}" title="${esc(L('가격 등급','Price tier'))}">${esc(L(t.kr,t.en))}</span>`;
+  return r.budget && BUDGET[r.budget] ? `<span class="tag bud">${esc(L(...BUDGET[r.budget]))}</span>` : ''; };
 const buildTags = r => (r.buildTags||[]).map(t=>`<span class="tag bld">${esc(tx(t))}</span>`).join('');
 // exceptional base: an extra rune socket or base quality above 20%
 const excText = r => { const e=r.exceptional; if(!e) return ''; return [e.sockets?L(`룬 소켓 +${e.sockets}`,`+${e.sockets} rune socket`):'', e.quality?L(`기본 퀄리티 ${e.quality}%`,`${e.quality}% base quality`):''].filter(Boolean).join(' · '); };
@@ -740,7 +748,8 @@ function analyse(r){
     for(const q in ux) totAll[q]=(totAll[q]||0)+ux[q];
     const u1={...u}; for(const k in u) u[k]*=passes[i];   // u1: one pass
     for(const k in u){ if(!n.optional) tot[k]=(tot[k]||0)+u[k]; totAll[k]=(totAll[k]||0)+u[k]+(o.extraOpt?u1[k]*o.extraOpt:0); }
-    if(n.cost){ const c=uc[n.cost]; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+ (+c.v)*passes[i]; } }
+    if(n.cost){ const c=uc[n.cost]; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+ (+c.v)*passes[i]; }
+      else if(n.cost==='base' && +r.basePrice>0 && !(c && c.v!=null && c.v!=='')) manual.Divine_Orb=(manual.Divine_Orb||0)+ (+r.basePrice)*passes[i]; }   // policy 22: the recipe's base price unless the viewer typed one
     o.use=u; o.passes=passes[i]; o.useTries=tries; });
   const final = mods.filter(m=>m.gi!=null).map(m=>({...modLine(r,m.gi,m.tmax,m.max), fr:m.fr, des:m.des, ess:m.ess}))
     .sort((a,c)=>(a.g.g==='p'?0:1)-(c.g.g==='p'?0:1));
@@ -801,14 +810,15 @@ const divineChip = r => { const c=recipeCost(r), d=cur('Divine_Orb');
   return !c ? '' : `<span class="ci">${d.icon?`<img src="${d.icon}" alt="">`:''}${L('약','≈')} ${fmtDiv(c.v)} div${noPrice(c.miss)}</span>`; };
 // policy 21: the difficulty's cost limit and expensive-omen limit (site/data/budget.json); a draft's market price (entered on the Discover tab) wins
 const EXPENSIVE = () => S.budget?.expensive || ['Omen_of_Whittling','Omen_of_Sinistral_Erasure','Omen_of_Dextral_Erasure','Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment','Omen_of_Light','Hinekoras_Lock'];
-function budgetLine(r){ const c=recipeCost(r); if(!c) return ''; const a=analyse(r), lv=S.budget?.levels?.[difficulty(r)];
+function budgetLine(r){ const c=recipeCost(r); if(!c) return ''; const a=analyse(r), lv0=S.budget?.levels?.[difficulty(r)], pt=priceTier(r);
+  const lv = !lv0 || pt?.id==='mirror' ? null : {kr:lv0.kr, en:lv0.en, omens:lv0.omens, div: r.priceTier && pt ? tierMax(pt) : null, tier:pt};
   const om = EXPENSIVE().reduce((s,k)=>s+(a.tot[k]||0),0);
   if(r.marketPrice>0){ const over = c.v > r.marketPrice;
     return `<p class="budw ${over?'over':''}">${L('예상 비용','Est. cost')} ${v0(c.v)} / ${L('시세','market')} <b>${fmtDiv(+r.marketPrice)}</b> div${over?` — ${L('시세보다 비쌈, 구입 권장','dearer than buying it')}`:''}</p>`; }
   if(!lv) return '';
   const overC = lv.div!=null && c.v > lv.div, overO = lv.omens!=null && om > lv.omens + 0.05;
   if(!overC && !overO) return '';
-  const parts = [overC ? L(`한도 ${lv.div} div보다 비쌈 (${v0(c.v)})`,`over the ${lv.div} div limit (${v0(c.v)})`) : '', overO ? L(`비싼 징조 평균 ${fmt(om)}회 (한도 ${lv.omens}회)`,`expensive omens ${fmt(om)}× (limit ${lv.omens})`) : ''].filter(Boolean);
+  const parts = [overC ? L(`${lv.tier.kr} 한도 ${fmtDiv(lv.div)} div보다 비쌈 (${v0(c.v)})`,`over the ${lv.tier.en} limit of ${fmtDiv(lv.div)} div (${v0(c.v)})`) : '', overO ? L(`비싼 징조 평균 ${fmt(om)}회 (한도 ${lv.omens}회)`,`expensive omens ${fmt(om)}× (limit ${lv.omens})`) : ''].filter(Boolean);
   return `<p class="budw over">⚠ ${esc(L(lv.kr, lv.en))}: ${parts.join(' · ')}</p>`; }
 // summary of the steps that send you back to a new base (e.g. the fracture)
 // key numbers for the overview: each as a figure with a short label
@@ -870,7 +880,7 @@ function cardHTML(r){
       <div class="tt-sep"></div>${ml}</div></div>
     <div class="grow"></div>
     <div class="foot">
-      <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span>`:''}${sharedTag(r)}${diffTag(r)}${leagueBadge(r, old)}${budgetTag(r)}${excTag(r)}</div><div class="meta"><span>${esc(tx(r.author))}</span><span>♥ ${likes(r)}</span><span>✓ ${reports(r)}</span></div>
+      <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span>`:''}${sharedTag(r)}${diffTag(r)}${budgetTag(r)}${leagueBadge(r, old)}${excTag(r)}</div><div class="meta"><span>${esc(tx(r.author))}</span><span>♥ ${likes(r)}</span><span>✓ ${reports(r)}</span></div>
       <div class="cost">${divineChip(r)}</div>
     </div>`;
 }
@@ -925,7 +935,7 @@ function nodeHTML(r, o, i, idx){
   const fail = routeHTML(r, o, i, via);
   const use = sortKeys(Object.keys(o.use)).filter(k=>o.use[k]>=0.01).map(k=>`<span class="ci">${icon(k,r)}${fmt(o.use[k])}</span>`).join('');
   const costIn = n.cost ? (()=>{ const v=uc[n.cost]||{}; const units=['Divine_Orb','Exalted_Orb','Chaos_Orb'];
-    return `<div class="costin"><label>${L(n.cost==='base'?'베이스 가격':'들어간 비용','Cost')} <input type="number" min="0" step="any" inputmode="decimal" data-cost="${esc(n.cost)}" value="${v.v??''}" placeholder="0"></label>
+    return `<div class="costin"><label>${L(n.cost==='base'?'베이스 가격':'들어간 비용','Cost')} <input type="number" min="0" step="any" inputmode="decimal" data-cost="${esc(n.cost)}" value="${v.v??''}" placeholder="${n.cost==='base' && +r.basePrice>0 ? +r.basePrice : 0}"></label>
       <select data-unit="${esc(n.cost)}" aria-label="${esc(L('단위','Unit'))}">${units.map(u=>`<option value="${u}" ${(v.u||'Divine_Orb')===u?'selected':''}>${esc(nm(cur(u)))}</option>`).join('')}</select>
       ${o.passes>1.01?`<small>× ${fmt(o.passes)} ${L('(분열 실패로 다시 하는 횟수 포함)','(includes redoing after fracture misses)')}</small>`:''}</div>`; })() : '';
   const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : n.compromise && !o.pUnknown && o.p<0.995 ? `<div class="pr">${L('타협 가능','Can settle')}<small>${L('1회 시도','1 attempt')} · ${pct(o.p)}</small>${o.settleK?`<small>${L('다시 하면 평균','retry avg')} ${fmt(o.settleK)}${L('회','×')}${(()=>{ const d=divOf(o.settleUse); return d && d.v>=0.005 ? ` · ${L('약','≈')} ${fmtDiv(d.v)} div` : ''; })()}</small>`:''}</div>` : o.pUnknown ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산해요. 일반 옵션은 원래 가중치 그대로예요.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
@@ -1173,7 +1183,7 @@ function detailHTML(r){
   return `<div class="dhead" data-dhead><div class="dtop">
       <button type="button" class="btn back" data-act="back" aria-label="${esc(L('목록으로','Back to list'))}">←</button>
       <div class="dtitle"><h1>${titleHTML(r)}</h1>
-        <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan?`<button type="button" class="btn" data-share="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>`:''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${leagueBadge(r, old)}${budgetTag(r)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
+        <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan?`<button type="button" class="btn" data-share="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>`:''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${budgetTag(r)}${leagueBadge(r, old)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
       <div class="acts"><button type="button" class="btn" data-act="link">${L('링크 복사','Copy link')}</button><button type="button" class="btn" data-act="pdf">${L('PDF 다운로드','Download PDF')}</button>
         <button type="button" class="btn" disabled title="${esc(L('준비 중','Coming soon'))}">${L('에뮬레이터에서 따라하기','Follow in emulator')}</button>
         <button type="button" class="btn" disabled title="${esc(L('준비 중','Coming soon'))}">${L('시뮬레이션 진행','Run simulation')}</button></div></div>
@@ -1549,6 +1559,8 @@ async function cleanShared(x){
   if(!r || !/^s-[a-z0-9]+$/.test(r.id||'') || !knownCls(r.cls) || !Array.isArray(r.nodes) || !Array.isArray(r.phases)) return null;
   for(const k of ['base','ilvl','sockets','cap']) if(k in r && typeof r[k]!=='number') r[k]=parseInt(r[k])||0;
   if('marketPrice' in r){ r.marketPrice=+r.marketPrice; if(!(r.marketPrice>0) || !isFinite(r.marketPrice)) delete r.marketPrice; }
+  if('basePrice' in r){ r.basePrice=+r.basePrice; if(!(r.basePrice>0) || !isFinite(r.basePrice)) delete r.basePrice; }
+  if('priceTier' in r && !['low','mid','high','top','mirror'].includes(r.priceTier)) delete r.priceTier;
   r.patch = String(r.patch||'').replace(/[^0-9a-z.]/gi,'').slice(0,12);
   if(r.source && !/^https:\/\//.test(r.source.url||'')) delete r.source;
   delete r.draft; delete r._an; delete r._prep;

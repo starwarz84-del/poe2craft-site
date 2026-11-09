@@ -362,11 +362,17 @@ function estChance(it, an, n){
   D.groups.forEach((g,gi)=>{ if(g.s!=='n' || !sd.includes(g.g) || (g.f||[]).some(f=>F.has(f))) return; const top=g.t.findIndex(x=>x[0]<=it.ilvl && x[1]>0);
     g.t.forEach((x,ti)=>{ if(x[0]<=it.ilvl && (x[0]>=minL || ti===top) && x[1]>0){ W+=x[1]; if(hit(gi,ti)) T+=x[1]; } }); });
   let p = W ? T/W : null; if(p!=null && n.do==='exalt' && (n.omens||[]).includes('Omen_of_Greater_Exaltation')) p=1-(1-p)*(1-p); return p; }
-// policy 21: a repeat whose expected cost (Divine Orbs) or expensive-omen uses go over the limit becomes a "settle" fork.
-// Limit = the market price entered with the item, else the difficulty row of budget.json; the omen limit always comes from the difficulty row.
+// policy 21/22: a repeat whose expected cost (Divine Orbs) or expensive-omen uses go over the limit becomes a "settle" fork.
+// Cost limit = the market price entered with the item, else the ceiling of the draft's price tier (budget.json tiers, from the market price
+// or the draft's one-pass cost); the omen limit comes from the difficulty row. The mirror tier has no limit at all.
+const TIERS = () => S.budget?.tiers || [{id:'low',max:5},{id:'mid',max:50},{id:'high',max:500},{id:'top',max:'mirror'},{id:'mirror',max:null}];
+const mirrorDiv = () => S.prices ? (S.prices.p.Mirror_of_Kalandra||0)/(S.prices.divine||363) : 5300;
+const tierMax = t => t.max==='mirror' ? mirrorDiv() : t.max;
+const tierOf = v => { const ts=TIERS(); return ts.find(t=>tierMax(t)==null || v < tierMax(t)) || ts[ts.length-1]; };
 // A main step keeps its old retry in n.compromise (the Recipes tab prices it into "with the extra steps" only); a fallback loop becomes optional
-function budgetPass(it, an, nodes, diff, market){
-  const lv = S.budget?.levels?.[diff], limD = market>0 ? market : (lv?.div ?? null), limO = lv?.omens ?? null;
+function budgetPass(it, an, nodes, diff, market, tier){
+  if(tier?.id==='mirror') return 0;
+  const lv = S.budget?.levels?.[diff], limD = market>0 ? market : (tier ? tierMax(tier) : null), limO = lv?.omens ?? null;
   if(!S.prices || (limD==null && limO==null)) return 0;
   const exp = new Set(EXP_OM()), dv = S.prices.divine||363;
   const costOf = list => list.reduce((a,x)=>{ if(!x?.cur && !x?.omens) return a; [x.cur, ...(x.omens||[])].filter(Boolean).forEach(id=>{ a.ex += exP(id) ?? 0; if(exp.has(id)) a.om++; }); return a; }, {ex:0, om:0});
@@ -392,9 +398,20 @@ function budgetPass(it, an, nodes, diff, market){
       n.optional = true; n0++; const pr = nodes.find(x=>x.id===n.fallbackFor);
       if(pr){ pr.br = {kr:'실패: 타협(그대로 진행) / 계속 돌리기(선택)', en:'Miss: settle, or keep rolling (optional)'}; settle(pr, '빗나간 줄은 그대로 두고 진행.', 'Keep the missed line and move on.'); } } }
   return n0; }
+// policy 22: difficulty from how much trying the draft takes (proposed thresholds, docs/game-rules.md): the largest single-step average uses
+// (1/p of a repeat) and the expected expensive-omen uses, each mapped to 0-5; a fractured start is at least Hard. Never below the item guess.
+const TRY_U = [5, 30, 150, 1000, 3000], TRY_O = [0.5, 3, 15, 60, 300];
+function tryDiff(it, an, nodes, start){ const exp=new Set(EXP_OM()); let maxU=1, om=0;
+  for(const n of nodes){ if(n.optional || n.onLost || n.do==='note' || n.branch?.when==='miss' || n.fallbackFor) continue; const f=n.fail;
+    const p = f?.goto==='self' || f?.via ? estChance(it, an, n) : null, k = p>0 && p<1 ? 1/p : 1; maxU=Math.max(maxU, k);
+    om += (n.omens||[]).filter(id=>exp.has(id)).length * k + (f?.via ? [...(f.via.omens||[])].filter(id=>exp.has(id)).length * (k-1) : 0); }
+  const lv = (v,T) => T.filter(t=>v>=t).length, fr = (start?.mods||[]).some(m=>m.fr) ? 3 : 0;
+  return {d: Math.max(lv(maxU, TRY_U), lv(om, TRY_O), fr), maxU, om}; }
 // rough expected cost of a draft (Divine Orbs) for the line above the check: each step's currencies × its expected tries; optional steps left out
-function draftCost(it, an, d){ if(!S.prices) return null; const dv=S.prices.divine||363; let ex=0;
-  for(const n of d.nodes){ if(n.optional || n.onLost || n.do==='note' || n.branch?.when==='miss') continue; const f=n.fail, p = f?.goto==='self' || (f?.via && f.goto) ? estChance(it, an, n) : null, k = p>0 && p<1 ? 1/p : 1;
+function draftCost(it, an, d, once){ if(!S.prices) return null; const dv=S.prices.divine||363, exp=new Set(EXP_OM()); let ex=0;
+  for(const n of d.nodes){ if(n.optional || n.onLost || n.do==='note' || n.branch?.when==='miss') continue; const f=n.fail;
+    const expRep = once && [...(n.omens||[]), f?.via?.cur, ...(f?.via?.omens||[])].some(id=>exp.has(id));
+    const p = !expRep && (f?.goto==='self' || (f?.via && f.goto)) ? estChance(it, an, n) : null, k = p>0 && p<1 ? 1/p : 1;
     [n.cur, ...(n.omens||[])].filter(Boolean).forEach(id=>{ ex += (exP(id)??0) * (f?.goto==='self' ? k : 1); });
     if(f?.via && k>1) [f.via.cur, ...(f.via.omens||[])].forEach(id=>{ ex += (exP(id)??0)*(k-1); }); }
   return ex/dv; }
@@ -896,9 +913,10 @@ function makeDraft(it, an, opt){
       nodes:[{id:'q0', phase:'prep', do:'base', note:note(`${lk(F)} + 잡옵 2줄 + 미공개 훼손 1줄 희귀.`, `A rare with ${le(F)} + two junk lines + one unrevealed desecrated line.`)},
         ...(baseQ ? [{id:'q1', phase:'prep', do:'manual', label:{kr:`퀄리티 ${it.qual}%`, en:`Quality ${it.qual}%`}, note:note(baseQ.kr, baseQ.en)}] : []),
         {id:'q2', phase:'prep', do:'fracture', cur:'Fracturing_Orb', target:tm(F), fail:{goto:'restart'}, note:note(`훼손 줄은 분열되지 않아 나머지 3줄 중 ${lk(F)}${josa(lk(F),'이','가')} 분열될 확률 1/3.`, `The desecrated line cannot fracture: ${le(F)} is 1 in 3.`)}]}; }
-  const market = +(opt?.market ?? S.market ?? 0) || 0, nComp = budgetPass(it, an, nodes, diff, market);
+  const td = tryDiff(it, an, nodes, start), diff2 = Math.max(diff, td.d);
+  const market = +(opt?.market ?? S.market ?? 0) || 0, tier = S.prices ? tierOf(market>0 ? market : draftCost(it, an, {nodes}, true)) : null, nComp = budgetPass(it, an, nodes, diff2, market, tier);
   const day = new Date(); const ymd = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
-  return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff, ...(market>0?{marketPrice:market}:{}), ...(nComp?{compromises:nComp}:{}),
+  return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff2, ...(tier?{priceTier:tier.id}:{}), ...(market>0?{marketPrice:market}:{}), ...(nComp?{compromises:nComp}:{}),
     author:{kr:'아이템 역산 초안', en:'Reverse-engineered draft'}, title:{kr:featK.join(' + ')||'역산 초안', en:featE.join(' + ')||'Draft'},
     buildTags:[], start, phases, nodes, ...(prep?{prep}:{}), src:{text:S.txt||''} };
 }
@@ -1137,6 +1155,6 @@ $('#samples').addEventListener('change', e=>{ if(e.target.id!=='recs' || e.targe
 fetch('data/samples.json').then(r=>r.ok?r.json():{samples:[]}).then(d=>{ S.recSamples=d.samples||[]; renderStatic(); }).catch(()=>{});
 $('#samples').addEventListener('click', e=>{ const b=e.target.closest('[data-sample]'); if(!b) return; $('#txt').value=SAMPLES[+b.dataset.sample].t; run(); });
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
-window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff, estChance, draftCost});
+window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost});
 render();
 </script>
