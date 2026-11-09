@@ -332,14 +332,22 @@
    "keep": [],
    "maxJunk": 0,
    "label": {
-    "kr": "소멸의 오브",
-    "en": "Annulment"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
    },
    "edges": [
     {
      "to": "h2"
     }
-   ]
+   ],
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 옵션 지우기 → 1번 다시",
+    "en": "Remove the missed modifier → step 1 again"
+   }
   },
   {
    "id": "h3",
@@ -424,8 +432,8 @@
    ],
    "maxJunk": 0,
    "label": {
-    "kr": "소멸의 오브",
-    "en": "Annulment"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
    },
    "edges": [
     {
@@ -449,6 +457,14 @@
    "ask": {
     "kr": "뭐가 지워짐?",
     "en": "What was removed?"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 옵션 지우기 (원하는 옵션은 유지) → 2번 다시",
+    "en": "Remove the missed modifier (keep the wanted one) → step 2 again"
    }
   },
   {
@@ -462,14 +478,22 @@
    "keep": [],
    "maxJunk": 0,
    "label": {
-    "kr": "소멸의 오브 한 번 더",
-    "en": "One more Annulment"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
    },
    "edges": [
     {
      "to": "h2"
     }
-   ]
+   ],
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "남은 옵션 지우기 → 1번부터",
+    "en": "Remove the remaining modifier → from step 1"
+   }
   },
   {
    "id": "h4",
@@ -770,8 +794,8 @@
    "keep": [],
    "maxJunk": 1,
    "label": {
-    "kr": "소멸의 오브 2개: 분열 + 잡옵 1줄",
-    "en": "Two Annulments: fracture + one junk"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
    },
    "edges": [
     {
@@ -796,8 +820,12 @@
     }
    ],
    "goal": {
-    "kr": "소멸의 오브 2개로 잡옵 정리: 분열 + 잡옵 1줄",
-    "en": "Two Annulments: keep the fracture + one junk"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 잡옵 1줄만 남기기",
+    "en": "Keep only the fracture + one junk line"
    }
   },
   {
@@ -867,7 +895,8 @@
       "kr": "반복",
       "en": "repeat"
      },
-     "res": "fail"
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
@@ -905,26 +934,6 @@
     "kr": "접미 첫번째 옵션",
     "en": "First suffix option"
    }
-  },
-  {
-   "id": "ca",
-   "kind": "cleanup",
-   "group": "main",
-   "pos": [
-    1,
-    9
-   ],
-   "keep": [],
-   "maxJunk": 1,
-   "label": {
-    "kr": "소멸의 오브(1줄만 남김)",
-    "en": "Annul down to one line"
-   },
-   "edges": [
-    {
-     "to": "c1"
-    }
-   ]
   },
   {
    "id": "p1",
@@ -1055,6 +1064,14 @@
    "ask": {
     "kr": "뭐가 지워짐?",
     "en": "What was removed?"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "잡옵 지우기 (치명타 확률은 유지) → 8번 다시",
+    "en": "Remove the junk (keep crit chance) → step 8 again"
    }
   },
   {
@@ -1072,13 +1089,13 @@
    ],
    "maxJunk": 0,
    "label": {
-    "kr": "소멸의 오브(복합 줄 유지)",
-    "en": "Annulment (keep the hybrid)"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
    },
    "edges": [
     {
      "lost": "crit",
-     "to": "ca",
+     "to": "c1",
      "label": {
       "kr": "치명타 지워짐",
       "en": "crit gone"
@@ -1107,6 +1124,14 @@
    "ask": {
     "kr": "뭐가 지워짐?",
     "en": "What was removed?"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "잡옵 지우기 (복합 줄은 유지)",
+    "en": "Remove the junk (keep the hybrid line)"
    }
   },
   {
@@ -1257,7 +1282,7 @@
      "if": {
       "removed": "crit"
      },
-     "to": "ca",
+     "to": "c1",
      "label": {
       "kr": "치명타 지워짐",
       "en": "crit gone"
@@ -1408,7 +1433,7 @@
      "if": {
       "removed": "crit"
      },
-     "to": "ca",
+     "to": "c1",
      "label": {
       "kr": "치명타 지워짐",
       "en": "crit gone"
@@ -1533,14 +1558,22 @@
     "Omen_of_Light"
    ],
    "label": {
-    "kr": "훼손 줄 제거",
-    "en": "Remove the desecrated line"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
    },
    "edges": [
     {
      "to": "d1"
     }
-   ]
+   ],
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 줄 지우기 → 훼손 다시",
+    "en": "Remove the desecrated line → desecrate again"
+   }
   },
   {
    "id": "f1",
@@ -1778,19 +1811,11 @@
    "id": "L2",
    "nodes": [
     "c1",
-    "ca"
-   ],
-   "kr": "A 치명타 카오스",
-   "en": "A crit chaos"
-  },
-  {
-   "id": "L3",
-   "nodes": [
     "p1",
     "bx"
    ],
-   "kr": "B 접두 최대치",
-   "en": "B flat prefix"
+   "kr": "A·B 접미 치명타 + 접두 최대치",
+   "en": "A·B crit suffix + flat prefix"
   },
   {
    "id": "L4",

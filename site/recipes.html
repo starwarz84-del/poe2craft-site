@@ -469,7 +469,7 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcn.k-exit.v-ok{border-color:var(--ok)}.fcn.k-exit.v-fail{border-style:solid}
 .fcn.k-exit b{font-size:13.5px}.fcn.k-exit span{color:var(--muted);font-size:12.5px}
 .fc1 .rw{font-style:normal;color:var(--muted);margin-right:6px}
-.fcgf{position:absolute;bottom:-1px;left:14px;transform:translateY(50%);background:var(--bg);padding:4px 12px;border:1px solid var(--line);border-radius:999px;font-size:12.5px;color:var(--muted);white-space:nowrap}
+.fcgf{position:absolute;bottom:-1px;transform:translate(-50%,50%);z-index:3;box-shadow:0 0 0 4px var(--bg);background:var(--bg);padding:4px 12px;border:1px solid var(--line);border-radius:999px;font-size:12.5px;color:var(--muted);white-space:nowrap}
 .fcgf b{color:var(--rare);font-weight:600}
 .fc1 .pr .dot{margin:0 6px;color:var(--faint)}
 .fc2{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:center;color:var(--fg);font-size:12px}
@@ -1351,7 +1351,7 @@ const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?
 function fcModel(g){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const E=[], seen=new Set(), add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(seen.has(k)) return; seen.add(k); E.push({a,b,label,...x}); };
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
-    (n.edges||[]).forEach(e=>add(n.id, e.to, e.label, {res:e.res}));
+    (n.edges||[]).filter(e=>!e.hide).forEach(e=>add(n.id, e.to, e.label, {res:e.res}));
     if(n.options) for(const [v,to] of Object.entries(n.options)) add(n.id, to, n.edgeLabels?.[v] || g.params?.[n.param]?.values?.[v], {opt:[n.param, v]});
     if(n.skipTo && !n.skipNote) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
   const dec={}, multi={}; g.nodes.forEach(n=>{ if(n.kind!=='act' && n.kind!=='cleanup') return; if(new Set(E.filter(e=>e.a===n.id && !e.skip).map(e=>e.b)).size>=3) multi[n.id]=true; });   // simple two-way outcomes are just two coloured lines
@@ -1367,6 +1367,7 @@ function fcWant(g, n, params){ const out=[];
   if(n.show){ const flat=n.show.flatMap(t=>g.tags?.[t]?.anyOf || [t]), bySide={};
     flat.forEach(t=>{ const v=fcTagText(g,t,params); if(!v) return; (bySide[v.s]=bySide[v.s]||[]).push(v); });
     for(const sd of ['p','s']) if(bySide[sd]) out.push(`<b>${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${bySide[sd].map(v=>`${esc(v.txt)}${v.tier?` <i>- ${v.tier}</i>`:''}${v.sec==='d'?` <i>${L('(훼손)','(desecrated)')}</i>`:''}`).join(` <u>${L('또는','or')}</u> `)}`); }
+  if(n.target) out.push(`<b>${L('목표','Goal')}</b> : ${esc(tx(n.target))}`);
   (n.showText||[]).forEach(t=>out.push(esc(tx(t))));
   return out; }
 function fcSize(n, M, g, params){ const W = n.pos[0]===0 ? FX.W : FX.WB; if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [FX.CW, FX.CH];
@@ -1479,7 +1480,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const regions=(g.groups||[]).map((gr,i)=>{ const R=Lay.grp[gr.id]; if(!R) return ''; const ns=g.nodes.filter(n=>n.group===gr.id);
     const dv=ns.reduce((t,n)=>t+(st(n.id)?.div||0),0), bases=ns.filter(n=>n.kind==='base').reduce((t,n)=>t+(st(n.id)?.visits||0),0);
     const x0=Lay.items?FX.PAD-8:Lay.colX[Lay.colIds[0]]-26;
-    return `<div class="fcg" style="left:${x0}px;top:${R.y0}px;width:${Lay.Wt-x0-FX.PAD}px;height:${R.y1-R.y0}px"><span class="fcgh"><b>${i+1}</b>${esc(tx(gr))}</span><span class="fcgf">${esc(tx(gr))} ${L('평균','avg')} <b>${fmtDiv(dv)} div</b>${bases?` · ${L('필요 베이스','bases needed')} <b>${fmt(bases)}${L('개','')}</b>`:''}</span></div>`; }).join('');
+    return `<div class="fcg" style="left:${x0}px;top:${R.y0}px;width:${Lay.Wt-x0-FX.PAD}px;height:${R.y1-R.y0}px"><span class="fcgh"><b>${i+1}</b>${esc(tx(gr))}</span><span class="fcgf" style="left:${Lay.colX[Lay.colIds[0]]+Lay.colW[Lay.colIds[0]]/2-x0}px">${esc(tx(gr))} ${L('평균','avg')} <b>${fmtDiv(dv)} div</b>${bases?` · ${L('필요 베이스','bases needed')} <b>${fmt(bases)}${L('개','')}</b>`:''}</span></div>`; }).join('');
   // item lane
   let lane='', prev=null, yLast=0;
   if(Lay.items) g.nodes.filter(n=>n.item && n.kind!=='mark' && isMain(n.id)).sort((a,b)=>a.pos[1]-b.pos[1]).forEach(n=>{ const same=prev && JSON.stringify(prev)===JSON.stringify(n.item); if(same) return;
