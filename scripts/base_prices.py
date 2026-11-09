@@ -57,6 +57,7 @@ BASEPRICE = {
   'seek-cyclone-boots': None,
   'sihan-chayula-sceptre': None,
   'sihan-highend-boots': None,
+  'sihan-highend-boots-v2': None, 'sihan-highend-boots-v2-bal': None, 'sihan-highend-boots-v2-ess': None,
   'sihan-highend-helmet': None,
   'sl-5mod-jewel': None,
   'sl-flamewave-ring': None,

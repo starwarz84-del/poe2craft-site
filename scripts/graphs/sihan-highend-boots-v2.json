@@ -1,0 +1,1615 @@
+{
+ "id": "sihan-highend-boots-v2",
+ "recipe": "sihan-highend-boots-v2",
+ "cls": "Boots_str",
+ "base": "Tasalian Greaves",
+ "ilvl": 82,
+ "basePrice": {},
+ "note": "시한 하이엔드 장화 흐름을 정책 24 양식으로 그린 1차 초안 — 사용자 검토 전. 분열 전 준비(매직·에센스·훼손·분열)는 영상에 없어 투구와 같은 방식으로 가정. 접두 엑잘 실패는 영상의 심연의 에센스 대신 좌측 소멸의 징조 + 소멸의 오브로 단순화.",
+ "params": {
+  "resT": {
+   "kr": "저항 목표",
+   "en": "Resist target",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "desT": {
+   "kr": "훼손 접두 목표",
+   "en": "Desecrated prefix target",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "last": {
+   "kr": "접미 세번째",
+   "en": "Third suffix",
+   "values": {
+    "res": {
+     "kr": "저항",
+     "en": "Resist"
+    },
+    "none": {
+     "kr": "랜덤",
+     "en": "Random"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "resT": 1,
+    "desT": 1,
+    "last": "res"
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "resT": 2,
+    "desT": 2,
+    "last": "res"
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "resT": 2,
+    "desT": 3,
+    "last": "none"
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "resT": 2,
+    "desT": 3,
+    "last": "none"
+   },
+   "desc": {
+    "kr": "훼손 접두 1~3티어 · 접미 세번째 랜덤",
+    "en": "Desecrated prefix T1–3, third suffix random"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "resT": 2,
+    "desT": 2,
+    "last": "res"
+   },
+   "desc": {
+    "kr": "저항 1~2티어 · 훼손 접두 1~2티어",
+    "en": "Resist T1–2, desecrated prefix T1–2"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "resT": 1,
+    "desT": 1,
+    "last": "res"
+   },
+   "desc": {
+    "kr": "모두 1티어",
+    "en": "All T1"
+   }
+  }
+ ],
+ "tags": {
+  "armP": {
+   "fam": "DefencesPercent",
+   "sec": "n",
+   "side": "p",
+   "tmax": 1
+  },
+  "armEle": {
+   "fam": "ArmourAppliesToElementalDamage",
+   "tmax": 1
+  },
+  "lifeE": {
+   "fam": "IncreasedLife",
+   "sec": "e"
+  },
+  "magicGood": {
+   "anyOf": [
+    "armP",
+    "armEle"
+   ]
+  },
+  "str": {
+   "fam": "Strength",
+   "sec": "n",
+   "tmax": 1
+  },
+  "fire": {
+   "fam": "FireResistance",
+   "sec": "n",
+   "tmax": "$resT"
+  },
+  "cold": {
+   "fam": "ColdResistance",
+   "sec": "n",
+   "tmax": "$resT"
+  },
+  "light": {
+   "fam": "LightningResistance",
+   "sec": "n",
+   "tmax": "$resT"
+  },
+  "RES": {
+   "anyOf": [
+    "fire",
+    "cold",
+    "light"
+   ]
+  },
+  "ms": {
+   "fam": "MovementVelocity",
+   "sec": "n",
+   "tmax": 1
+  },
+  "life": {
+   "fam": "IncreasedLife",
+   "sec": "n",
+   "tmax": 1
+  },
+  "PRE": {
+   "anyOf": [
+    "ms",
+    "life"
+   ]
+  },
+  "msD": {
+   "fam": "MovementVelocity",
+   "sec": "n",
+   "tmax": "$desT"
+  },
+  "lifeD": {
+   "fam": "IncreasedLife",
+   "sec": "n",
+   "tmax": "$desT"
+  },
+  "PRED": {
+   "anyOf": [
+    "msD",
+    "lifeD"
+   ]
+  },
+  "sKeep": {
+   "anyOf": [
+    "armEle",
+    "str"
+   ]
+  }
+ },
+ "conds": {
+  "magicDone": {
+   "all": [
+    {
+     "has": "armP"
+    },
+    {
+     "has": "armEle"
+    }
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "armEle"
+   },
+   {
+    "has": "str"
+   },
+   {
+    "has": "PRE"
+   },
+   {
+    "has": "PRED"
+   },
+   {
+    "full": "p"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    2
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    2
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "m1",
+    "m1x",
+    "m2",
+    "m2x",
+    "m2y"
+   ],
+   "kr": "매직 옵션 맞추기",
+   "en": "Magic lines"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "s1",
+    "s2",
+    "s2x",
+    "s3",
+    "s3x",
+    "s3y"
+   ],
+   "kr": "접미 3줄",
+   "en": "Three suffixes"
+  },
+  {
+   "id": "L3",
+   "nodes": [
+    "p1",
+    "p1x"
+   ],
+   "kr": "접두 두번째 옵션",
+   "en": "Second prefix"
+  },
+  {
+   "id": "L4",
+   "nodes": [
+    "p2",
+    "p3",
+    "p3x"
+   ],
+   "kr": "접두 세번째 옵션(훼손)",
+   "en": "Third prefix (desecrated)"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "armP",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "ms",
+     "tmax": 1
+    },
+    {
+     "tag": "life",
+     "tmax": 1
+    },
+    {
+     "tag": "armEle",
+     "tmax": 1
+    },
+    {
+     "tag": "str",
+     "tmax": 1
+    },
+    {
+     "tag": "fire",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "armP",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "ms",
+     "tmax": 1
+    },
+    {
+     "tag": "life",
+     "tmax": 2
+    },
+    {
+     "tag": "armEle",
+     "tmax": 1
+    },
+    {
+     "tag": "str",
+     "tmax": 1
+    },
+    {
+     "tag": "fire",
+     "tmax": 2
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "armP",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "ms",
+     "tmax": 1
+    },
+    {
+     "tag": "life",
+     "tmax": 3
+    },
+    {
+     "tag": "armEle",
+     "tmax": 1
+    },
+    {
+     "tag": "str",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "m1",
+   "label": {
+    "kr": "특출난 타살리오의 각반 구입",
+    "en": "Buy exceptional Tasalian Greaves"
+   },
+   "item": []
+  },
+  {
+   "id": "hq",
+   "kind": "side",
+   "group": "prep",
+   "pos": [
+    1,
+    0.5
+   ],
+   "attach": [
+    "h1",
+    "m1"
+   ],
+   "cur": "Vaal_Armourers_Infuser",
+   "goal": {
+    "kr": "퀄리티 25% 이상 (선택)",
+    "en": "Quality 25%+ (optional)"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   }
+  },
+  {
+   "id": "m1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "transmute",
+   "cur": "Perfect_Orb_of_Transmutation",
+   "goal": {
+    "kr": "접두어 / 접미어 각 옵션 1줄",
+    "en": "One prefix / one suffix option"
+   },
+   "show": [
+    "armP",
+    "armEle"
+   ],
+   "label": {
+    "kr": "매직 첫 줄",
+    "en": "First magic line"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "magicGood"
+     },
+     "to": "m2",
+     "res": "ok"
+    },
+    {
+     "to": "m1x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "n",
+     "tags": [
+      "armP"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m1x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    1,
+    1
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 옵션 지우기",
+    "en": "Remove the missed modifier"
+   },
+   "edges": [
+    {
+     "to": "m1"
+    }
+   ]
+  },
+  {
+   "id": "m2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "goal": {
+    "kr": "접두어 / 접미어 중 남은 옵션",
+    "en": "The remaining prefix / suffix option"
+   },
+   "show": [
+    "armP",
+    "armEle"
+   ],
+   "label": {
+    "kr": "매직 둘째 줄",
+    "en": "Second magic line"
+   },
+   "edges": [
+    {
+     "if": {
+      "ref": "magicDone"
+     },
+     "to": "r1",
+     "res": "ok"
+    },
+    {
+     "to": "m2x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "n",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m2x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    1,
+    2
+   ],
+   "keep": [
+    "magicGood"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 옵션 지우기 (원하는 옵션은 유지)",
+    "en": "Remove the missed modifier (keep the wanted one)"
+   },
+   "edges": [
+    {
+     "lost": "magicGood",
+     "to": "m2y",
+     "res": "fail"
+    },
+    {
+     "to": "m2",
+     "res": "ok"
+    }
+   ]
+  },
+  {
+   "id": "m2y",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    2,
+    2
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "남은 옵션 지우기",
+    "en": "Remove the remaining modifier"
+   },
+   "edges": [
+    {
+     "to": "m1"
+    }
+   ]
+  },
+  {
+   "id": "r1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "ess": "lifeE",
+   "cur": "Greater_Essence_of_the_Body",
+   "goal": {
+    "kr": "레어로 업그레이드 + 접두 생명력",
+    "en": "Upgrade to rare + life prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 생명력 (제작 옵션)",
+     "en": "Maximum life (crafted)"
+    }
+   ],
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "f1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "n",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 생명력 (제작 옵션)",
+     "en": "Maximum life (crafted)",
+     "m": "n",
+     "tags": [
+      "lifeE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rd",
+   "kind": "side",
+   "group": "prep",
+   "pos": [
+    1,
+    3.5
+   ],
+   "attach": [
+    "r1",
+    "f1"
+   ],
+   "cur": "Divine_Orb",
+   "goal": {
+    "kr": "유효 옵션 수치 올리기 (선택)",
+    "en": "Raise the wanted rolls (optional)"
+   },
+   "label": {
+    "kr": "신성",
+    "en": "Divine"
+   }
+  },
+  {
+   "id": "f1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Rib",
+   "goal": {
+    "kr": "분열 확률을 높이기 위해 훼손",
+    "en": "Desecrate to raise the fracture odds"
+   },
+   "showText": [
+    {
+     "kr": "훼손 옵션 1줄 (미공개)",
+     "en": "One desecrated modifier (unrevealed)"
+    }
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "f2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "n",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 생명력 (제작 옵션)",
+     "en": "Maximum life (crafted)",
+     "m": "n",
+     "tags": [
+      "lifeE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated modifier (unrevealed)",
+     "m": "u"
+    }
+   ]
+  },
+  {
+   "id": "f2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "pAll": true,
+   "goal": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "showText": [
+    {
+     "kr": "3개의 옵션 모두 유효 옵션 → 어느 줄이 분열돼도 성공",
+     "en": "All three modifiers are wanted — any fracture works"
+    }
+   ],
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "edges": [
+    {
+     "if": {
+      "fractured": "armP"
+     },
+     "to": "f4",
+     "res": "ok",
+     "p": 0.3333333333333333,
+     "label": {
+      "kr": "방어도 % 분열",
+      "en": "Armour % fractured"
+     }
+    },
+    {
+     "to": "xs",
+     "res": "ok",
+     "dash": true,
+     "p": 0.6666666666666666,
+     "label": {
+      "kr": "다른 유효 옵션 분열",
+      "en": "Another wanted line fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 생명력 (제작 옵션)",
+     "en": "Maximum life (crafted)",
+     "m": "n",
+     "tags": [
+      "lifeE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated modifier (unrevealed)",
+     "m": "u"
+    }
+   ]
+  },
+  {
+   "id": "xs",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    5
+   ],
+   "simTo": "f4",
+   "swapFracture": "armP",
+   "variant": "ok",
+   "label": {
+    "kr": "다른 유효 옵션 분열",
+    "en": "Another wanted line fractured"
+   },
+   "note": {
+    "kr": "생명력 또는 방어도의 원소 적용이 분열되면 같은 흐름을 그 줄 기준으로 진행 (비용은 같다고 가정)",
+    "en": "Life or armour-to-elemental fractured: same flow around that line (assumed to cost the same)"
+   }
+  },
+  {
+   "id": "f4",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    7
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 잡옵 1줄만 남기기",
+    "en": "Keep only the fracture + one junk line"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    7.5
+   ],
+   "next": "s1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "s1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "goal": {
+    "kr": "접미 첫번째 옵션",
+    "en": "First suffix option"
+   },
+   "show": [
+    "armEle"
+   ],
+   "label": {
+    "kr": "접미 1",
+    "en": "Suffix 1"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "armEle"
+     },
+     "to": "s2",
+     "res": "ok"
+    },
+    {
+     "to": "s1",
+     "res": "fail",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    }
+   ],
+   "skipIf": {
+    "has": "armEle"
+   },
+   "skipTo": "s2",
+   "skipHide": true
+  },
+  {
+   "id": "s2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix option"
+   },
+   "show": [
+    "str"
+   ],
+   "label": {
+    "kr": "접미 2",
+    "en": "Suffix 2"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "str"
+     },
+     "to": "s3",
+     "res": "ok"
+    },
+    {
+     "to": "s2x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "힘 1티어",
+     "en": "Strength T1",
+     "m": "n",
+     "tags": [
+      "str"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s2x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    9
+   ],
+   "keep": [
+    "armEle"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접미 지우기 (첫번째 접미는 유지)",
+    "en": "Remove the missed suffix (keep the first)"
+   },
+   "edges": [
+    {
+     "lost": "armEle",
+     "to": "s1",
+     "res": "fail",
+     "label": {
+      "kr": "유효옵 제거 → 7",
+      "en": "wanted line removed → 7"
+     }
+    },
+    {
+     "to": "s2",
+     "res": "ok"
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix option"
+   },
+   "show": [
+    "fire",
+    "cold",
+    "light"
+   ],
+   "label": {
+    "kr": "접미 3",
+    "en": "Suffix 3"
+   },
+   "edges": [
+    {
+     "if": {
+      "param": {
+       "last": "none"
+      }
+     },
+     "to": "p1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "added": "RES"
+     },
+     "to": "p1",
+     "res": "ok"
+    },
+    {
+     "to": "s3x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "힘 1티어",
+     "en": "Strength T1",
+     "m": "n",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "s3x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    10
+   ],
+   "keep": [
+    "armEle",
+    "str"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접미 지우기 (앞의 접미 2줄은 유지)",
+    "en": "Remove the missed suffix (keep the first two)"
+   },
+   "edges": [
+    {
+     "lost": "armEle",
+     "to": "s3y",
+     "res": "fail"
+    },
+    {
+     "lost": "str",
+     "to": "s2x",
+     "res": "fail"
+    },
+    {
+     "to": "s3",
+     "res": "ok"
+    }
+   ]
+  },
+  {
+   "id": "s3y",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    2,
+    10
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "잡옵 1줄만 남기기 (접미 첫번째부터 다시)",
+    "en": "Keep one junk line (redo from the first suffix)"
+   },
+   "edges": [
+    {
+     "to": "s1"
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix option"
+   },
+   "show": [
+    "ms",
+    "life"
+   ],
+   "label": {
+    "kr": "접두 2",
+    "en": "Prefix 2"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "PRE"
+     },
+     "to": "p2",
+     "res": "ok"
+    },
+    {
+     "to": "p1x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도·최대 생명력 중 하나",
+     "en": "Movement speed / maximum life",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "힘 1티어",
+     "en": "Strength T1",
+     "m": "n",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "p1x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    11
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Sinistral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 지우기",
+    "en": "Remove the missed prefix"
+   },
+   "edges": [
+    {
+     "to": "p1"
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    12
+   ],
+   "act": "desecrate",
+   "cur": "Ancient_Rib",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix option (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "p3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도·최대 생명력 중 하나",
+     "en": "Movement speed / maximum life",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated modifier (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "힘 1티어",
+     "en": "Strength T1",
+     "m": "n",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    13
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "PRED",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "show": [
+    "msD",
+    "lifeD"
+   ],
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "PRED"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "p3x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도·최대 생명력 중 하나",
+     "en": "Movement speed / maximum life",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "남은 하나 (이동 속도·최대 생명력)",
+     "en": "The other one (movement speed / life)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "힘 1티어",
+     "en": "Strength T1",
+     "m": "n",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "p3x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    13
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "p2"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    14
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

@@ -66,7 +66,7 @@ def crit_helmet(tier):
  'id':rid,'tierGroup':'diztoh-crit-helmet-v2','tier':tier,'cls':c,'base':base(c,'Grinning Mask'),'ilvl':82,'sockets':2,'exceptional':{'sockets':1},'difficulty':4,'budget':'high',
  'buildTags':[K('치명타','Crit'),K('회피','Evasion'),K('에너지 보호막','Energy Shield'),K('몽크','Monk')],'patch':'0.5','created':'2026-11-09','author':DZ5,
  'source':{'url':'https://www.youtube.com/watch?v=QuW8BOSpPpo','title':'How to Craft an Endgame Crit Helmet | Step-by-Step Guide | PoE 2 0.5','channel':'Diztoh'},
- 'title':K('웃는 가면 | 회피·에너지 보호막 + 치명타 확률·치명타 피해 보너스','Grinning Mask | evasion/ES + crit chance and crit damage bonus'),
+ 'title':K('회피·에너지 보호막 + 치명타 확률·치명타 피해 보너스','evasion/ES + crit chance and crit damage bonus'),
  'tierLabel':T,
  'start':{'rar':'normal','mods':[],'quality':20},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'mag','kr':'매직 만들기','en':'Make it magic'},{'id':'fr','kr':'분열','en':'Fracture'},

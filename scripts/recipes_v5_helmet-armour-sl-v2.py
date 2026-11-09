@@ -40,7 +40,7 @@ def sl_helmet(tier):
  'buildTags':[K('방어도','Armour'),K('생명력','Life'),K('원소 저항','Elemental res')],'patch':'0.5.5','created':'2026-11-08',
  'author':K('SL 게임연구소 영상 기반','Based on SL 게임연구소'),
  'source':{'url':V4SL,'title':'[POE2 0.5.5] #2 종결급 투구 제작 가이드 | 화염파용','channel':'SL 게임연구소!'},
- 'title':K('제국의 대헬름 | 방어도·생명력 + 원소 저항 (화염파용)','Imperial Greathelm | armour/life + elemental resistance (Fireball)'),
+ 'title':K('방어도·생명력 + 원소 저항 (화염파용)','armour/life + elemental resistance (Fireball)'),
  'start':{'rar':'normal','mods':[],'quality':20},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'magic','kr':'매직 만들기','en':'Make it magic'},{'id':'rare','kr':'레어 전환','en':'To rare'},
            {'id':'fracture','kr':'분열','en':'Fracture'},{'id':'prefix','kr':'접두 첫번째~세번째 옵션','en':'Prefix options 1–3'},{'id':'suffix','kr':'접미 두번째·세번째 옵션','en':'Suffix options 2–3'}],
