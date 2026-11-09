@@ -605,6 +605,9 @@ function analyse(r){
         if(t.removeGi!=null) dropGi();
         else if(!removeJunk(t.replace||sides) && !removeJunk(null)) o.warn=L('지울 잡옵이 없다고 가정됨','No junk modifier to remove');
         o.p=addChance(t, null, rar, minOf(n.cur)); o.missState=[...clone(), {junk:true, side:grp(r,specList(t)[0].gi).g}]; pushSpec(t, rar);
+        // Omen of Whittling: the swapped line is the lowest required level, the junk only with this chance (ties split evenly);
+        // otherwise a good line goes (fail.lost: back to the step that made it)
+        if(t.whittle!=null){ const p0=o.p; o.p=t.whittle*p0; o.pWhittle=t.whittle; if(n.fail?.lost && o.p<1) o.lose=(1-t.whittle)/(1-o.p); }
       }
     } else if(n.do==='desecrate'){
       if(t.unrev){ if(t.fromMark){ const i=mods.findIndex(m=>m.mark && m.side===t.unrev); if(i>=0) mods.splice(i,1); else o.warn=L('징표가 없다고 가정됨','No Mark on the item'); }
