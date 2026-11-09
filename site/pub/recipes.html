@@ -450,7 +450,7 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fch .sep{color:var(--faint)}
 .fch b{flex:1;font-size:14px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fcw{display:grid;gap:3px;color:#a9a9ff;font-size:13px;line-height:1.5;padding:2px 12px 8px}
-.fcw p{margin:0}.fcw b{color:var(--muted);font-weight:500}.fcw i{font-style:normal;color:var(--rare);font-weight:600;font-size:12px}.fcw u{text-decoration:none;color:var(--muted)}
+.fcw p{margin:0;padding-left:2.6em;text-indent:-2.6em}.fcw .ind{display:inline-block;width:2.6em;text-indent:0}.fcw b.sd{display:inline-block;min-width:1.9em;text-indent:0}.fcw b{color:var(--muted);font-weight:500}.fcw i{font-style:normal;color:var(--rare);font-weight:600;font-size:12px}.fcw u{text-decoration:none;color:var(--muted)}
 .fcf{margin-top:auto;border-top:1px solid var(--line);background:color-mix(in srgb,var(--bg) 35%,transparent);padding:7px 12px 8px;display:grid;gap:4px}
 .fc1{color:var(--fg);white-space:nowrap;font-size:12.5px;display:flex;align-items:center;gap:6px;min-width:0}
 .fc1 .cn{overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
@@ -488,7 +488,7 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcn.k-dec polygon{fill:var(--panel);stroke:var(--muted);stroke-width:1.2;vector-effect:non-scaling-stroke}
 .fcn.k-dec span{position:relative;font-size:12px;color:var(--fg);max-width:72%;line-height:1.25}
 .fcn.k-choice polygon{fill:color-mix(in srgb,var(--rare) 16%,var(--panel));stroke:var(--rare);stroke-width:2;vector-effect:non-scaling-stroke}
-.fcn.k-choice span{position:relative;max-width:66%;display:flex;flex-direction:column;gap:1px;line-height:1.2}
+.fcn.k-choice span{position:relative;display:flex;gap:8px;align-items:baseline;line-height:1.2}
 .fcn.k-choice small{color:var(--rare);font-weight:600}
 .fcn.k-note{border:1px dashed var(--muted);border-radius:4px;background:var(--panel);padding:6px 20px 6px 9px;display:flex;flex-direction:column;gap:2px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
 .fcn.k-note::after{content:"";position:absolute;right:0;top:0;width:14px;height:14px;background:linear-gradient(225deg,var(--bg) 50%,var(--line) 50%)}
@@ -1358,7 +1358,7 @@ function fcModel(g){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const E=[], seen=new Set(), add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(seen.has(k)) return; seen.add(k); E.push({a,b,label,...x}); };
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
     (n.edges||[]).filter(e=>!e.hide).forEach(e=>add(n.id, e.to, e.label, {res:e.res}));
-    if(n.options) for(const [v,to] of Object.entries(n.options)) add(n.id, to, n.edgeLabels?.[v] || g.params?.[n.param]?.values?.[v], {opt:[n.param, v]});
+    if(n.options) for(const [v,to] of Object.entries(n.options)) add(n.id, to, n.edgeLabels?.[v] || g.params?.[n.param]?.values?.[v], {opt:[n.param, v], ...(n.optStyle?.[v]||{})});
     if(n.skipTo && !n.skipNote) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
   const dec={}, multi={}; g.nodes.forEach(n=>{ if(n.kind!=='act' && n.kind!=='cleanup') return; if(new Set(E.filter(e=>e.a===n.id && !e.skip).map(e=>e.b)).size>=3) multi[n.id]=true; });   // simple two-way outcomes are just two coloured lines
   const loopOf={}, loopHead={}; (g.loops||[]).forEach((Lp,i)=>{ Lp.no=i+1; Lp.nodes.forEach(id=>{ if(!loopOf[id]) loopOf[id]=Lp; }); loopHead[Lp.nodes[0]]=Lp; });
@@ -1372,11 +1372,11 @@ function fcTagText(g, tag, params){ const T=g.tags?.[tag]; if(!T || !T.tiers) re
 function fcWant(g, n, params){ const out=[];
   if(n.show){ const flat=n.show.flatMap(t=>g.tags?.[t]?.anyOf || [t]), bySide={};
     flat.forEach(t=>{ const v=fcTagText(g,t,params); if(!v) return; (bySide[v.s]=bySide[v.s]||[]).push(v); });
-    for(const sd of ['p','s']) if(bySide[sd]) out.push(`<b>${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${bySide[sd].map(v=>`${esc(v.txt)}${v.tier?` <i>- ${v.tier}</i>`:''}${v.sec==='d'?` <i>${L('(훼손)','(desecrated)')}</i>`:''}`).join(` <u>${L('또는','or')}</u> `)}`); }
-  if(n.target) out.push(`<b>${L('목표','Goal')}</b> : ${esc(tx(n.target))}`);
+    for(const sd of ['p','s']) if(bySide[sd]){ const vs=bySide[sd]; vs.forEach((v,i)=>out.push(`${i?'<span class="ind"></span>':`<b class="sd">${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : `}${esc(v.txt)}${v.tier?` <i>- ${v.tier}</i>`:''}${v.sec==='d'?` <i>${L('(훼손)','(desecrated)')}</i>`:''}${i<vs.length-1?` <u>${L('또는','or')}</u>`:''}`)); } }
+  if(n.target) out.push(`<b class="sd">${L('목표','Goal')}</b> : ${esc(tx(n.target))}`);
   (n.showText||[]).forEach(t=>out.push(esc(tx(t))));
   return out; }
-function fcSize(n, M, g, params){ const W = n.pos[0]===0 ? FX.W : FX.WB; if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [FX.CW, FX.CH];
+function fcSize(n, M, g, params){ const W = n.pos[0]===0 ? FX.W : FX.WB; if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [280, 54];
   if(n.kind==='assume') return [222, 84];
   if(n.kind==='exit') return [FX.WB, 78];
   const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
@@ -1472,7 +1472,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     const out=M.E.filter(x=>x.a===e.a && !x.skip).reduce((t,x)=>t+ecount(x.a,x.b),0), f=ecount(e.a,e.b);
     const on = e.opt ? String(s.params[e.opt[0]])===e.opt[1] && (st(e.a)?.visits||0)>0 : e.skip ? (st(e.a)?.skips||0)>0 : f>0;
     const kind = e.res==='fail' || B.kind==='base' ? 'fail' : e.res==='ok' ? 'ok' : 'fwd';
-    return {...e, dash:(A.edges||[]).find(x=>x.to===e.b)?.dash, src, dst, on, kind, share: (A.edges||[]).find(x=>x.to===e.b)?.p ?? (M.multi[e.a] && !e.skip && out ? f/out : null), d0:Math.abs(src.x-dst.x)+Math.abs(src.y-dst.y) + (kind==='fwd'?0:5000)}; }).filter(Boolean);
+    return {...e, dash: e.dash ?? (A.edges||[]).find(x=>x.to===e.b)?.dash, src, dst, on, kind, share: (A.edges||[]).find(x=>x.to===e.b)?.p ?? (M.multi[e.a] && !e.skip && out ? f/out : null), d0:Math.abs(src.x-dst.x)+Math.abs(src.y-dst.y) + (kind==='fwd'?0:5000)}; }).filter(Boolean);
   fcRoute(Lay, M, edges);
   // where a line runs into another one the corner stays square; success lines are drawn last so they sit on top
   const onSeg=(p,a,b)=>(a[0]===b[0] && Math.abs(p[0]-a[0])<0.5 && p[1]>=Math.min(a[1],b[1])-0.5 && p[1]<=Math.max(a[1],b[1])+0.5) || (a[1]===b[1] && Math.abs(p[1]-a[1])<0.5 && p[0]>=Math.min(a[0],b[0])-0.5 && p[0]<=Math.max(a[0],b[0])+0.5);
@@ -1501,7 +1501,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
     return `<path class="fce k-fwd skip side" d="M${x0},${y} L${b.x},${y}" marker-end="url(#fcm-side)"/>`; }).join('');
   // loops: one shaded area per loop (rows joined), its total use per finished item on a tag
   const loopsSvg=[], loopTags=[];
-  (g.loops||[]).forEach(Lp=>{ const mem=Lp.nodes.filter(id=>Lay.box[id] && st(id)); if(!mem.length) return; const P=18;
+  (g.loops||[]).forEach(Lp=>{ const mem=Lp.nodes.filter(id=>Lay.box[id] && st(id)); if(mem.filter(id=>/act|cleanup/.test(M.byId[id].kind)).length<2) return; const P=18;
     let R=[1e9,1e9,-1e9,-1e9]; mem.forEach(id=>[Lay.box[id], Lay.dia[id]].filter(Boolean).forEach(r=>{ R=[Math.min(R[0],r.x-P), Math.min(R[1],r.y-P), Math.max(R[2],r.x+r.w+P), Math.max(R[3],r.y+r.h+P)]; }));
     const li=(g.loops||[]).indexOf(Lp)%2;
     loopsSvg.push(`<rect class="fclpz c${li}" x="${R[0]}" y="${R[1]}" width="${R[2]-R[0]}" height="${R[3]-R[1]}" rx="16"/>`);
@@ -1511,7 +1511,7 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
   const nodes=g.nodes.map(n=>{ const b=Lay.box[n.id], t=st(n.id), Lp=M.loopOf[n.id], pos=`left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px`;
     if(n.kind==='base'){ const bp=Object.entries(g.basePrice||{}); return `<div class="fcn k-start ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${L('베이스 가격','Base price')} ${bp.length?`${L('미정 · 약','TBD · about')} ${bp.map(([k2,v])=>`<span class="ci">${icon(k2)}${esc(nm(cur(k2)))} ${v}${L('개','')}</span>`).join(' ')}`:L('미정','TBD')}</span></div>`; }
     if(n.kind==='done') return `<div class="fcn k-end v-${n.variant||'best'} ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b><span class="fcs">${t?L(`완성품의 ${pct1(t.reach)}`,`${pct1(t.reach)} of items`):L('이 버전에선 안 옴','not in this version')}</span></div>`;
-    if(n.kind==='choice') return `<div class="fcn k-choice ${t?'':'off'}" style="${pos}"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,1 99,50 50,99 1,50"/></svg><span><small>${L('분기','Branch')}</small><b>${esc(tx(n.label))}</b></span></div>`;
+    if(n.kind==='choice') return `<div class="fcn k-choice ${t?'':'off'}" style="${pos}"><svg viewBox="0 0 280 54" preserveAspectRatio="none"><polygon points="18,1 262,1 279,27 262,53 18,53 1,27"/></svg><span><small>${L('분기','Branch')}</small><b>${esc(tx(n.label))}</b></span></div>`;
     if(n.kind==='mark') return `<div class="fcn k-start k-mark" style="${pos}"><b>${esc(tx(n.label))}</b><ul class="fcmk">${fcItem(g, n.item||[], n.item||[], s.params)}</ul></div>`;
     if(n.kind==='exit') return `<div class="fcn k-exit v-${n.variant||'fail'} ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b>${n.note?`<span>${esc(tx(n.note))}</span>`:''}</div>`;
     if(n.kind==='side'){ const c=nodeCur(n); return `<div class="fcn k-task k-side" style="${pos}"><div class="fch"><b>${esc(tx(n.goal||n.label))}</b></div><div class="fcf"><div class="fc1"><span class="cn">${c.html}</span></div></div></div>`; }
@@ -1529,8 +1529,8 @@ function flowchartHTML(r, d){ const g=d.graph, {s, keys, sel}=simStrategy(d), re
       <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b>${esc(tx(n.goal||n.label))}</b></div>
       ${want.length?`<div class="fcw">${want.map(h=>`<p>${h}</p>`).join('')}</div>`:''}
       ${n.skipNote?`<div class="fcsk">↷ ${esc(tx(n.skipNote))}</div>`:''}
-      <div class="fcf">${n.curRows && t?.byCur ? n.curRows.map(rw=>{ const b=t.byCur[rw.cur], p2=b&&b.t?b.ok/b.t:null, ids=[rw.cur, ...(n.omens||[])];
-          return `<div class="fc1"><span class="cn"><i class="rw">${esc(tx(rw))} →</i>${ids.map(id=>icon(id)).join('')}${esc(ids.map(id=>nm(cur(id))).join(' + '))}</span><span class="pr">${p2!=null?`${L('확률','Chance')} <b>${pct1(p2)}</b><span class="dot">·</span>${L('평균','avg')} <b>${fmt(1/p2)}</b>${L('개','')}`:L('해당 없음','n/a')}</span></div>`; }).join('') : `<div class="fc1"><span class="cn">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(per)}</b>${L('개','')}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div>`}</div></div>`; }).join('');
+      <div class="fcf">${n.curRows && t?.byCur ? n.curRows.map(rw=>{ const b=t.byCur[rw.key||rw.cur], p2=b&&b.t?b.ok/b.t:null, ids=rw.ids || [rw.cur, ...(n.omens||[])];
+          return `<div class="fc1" title="${esc(ids.map(id=>nm(cur(id))).join(' + '))}"><span class="cn"><i class="rw">${esc(tx(rw))} →</i>${ids.map(id=>icon(id)).join('')}${n.pos[0]===0?esc(ids.map(id=>nm(cur(id))).join(' + ')):''}</span><span class="pr">${p2!=null?`${L('확률','Chance')} <b>${pct1(p2)}</b><span class="dot">·</span>${L('평균','avg')} <b>${fmt(1/p2)}</b>${L('개','')}`:L('해당 없음','n/a')}</span></div>`; }).join('') : `<div class="fc1"><span class="cn">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(per)}</b>${L('개','')}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div>`}</div></div>`; }).join('');
   const diamonds=Object.values(Lay.dia).map(D=>{ const n=M.byId[D.id.slice(0,-1)]; return `<div class="fcn k-dec ${st(n.id)?'':'off'}" style="left:${D.x}px;top:${D.y}px;width:${D.w}px;height:${D.h}px"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,2 98,50 50,98 2,50"/></svg><span>${esc(tx(n.ask)||L('결과','Result'))}</span></div>`; }).join('');
   // top bar: versions, then detailed toggles
   const vers=(g.versions||[]).map(v=>{ const on=Object.entries(v.params).every(([k2,x])=>String(sel[k2]??s.params[k2])===String(x)) && keys.every(k2=>v.params[k2]!=null);
