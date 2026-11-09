@@ -27,6 +27,7 @@ Path of Exile 2 아이템 제작 사이트. 탭 4개짜리 한 화면이에요.
   레시피 탭: 초안 상세의 "공유 레시피로 등록"(id `draft-x` → `s-x`), 내 공유 레시피는 "공유 취소". 남의 새 레시피는 탭 배지 + 오른쪽 아래 알림 + NEW 표시(본 시점은 localStorage `poe2seen`).
   공유 데이터는 남이 쓴 것이라 레시피 탭 `cleanShared`가 `<>"`` 제거·필드 검사·엔진 시험 계산 후에만 표시해요.
   링크로 보는 사람(보기 권한)은 읽기만 가능해서 등록 버튼이 안 보여요. 테스트: `tools/test/share.js`(가짜 db).
+- **플로우차트 + 전체 공정 시뮬레이션**(1차 시험 2026-11-09, `docs/graph-model.md`): 그래프 레시피 `scripts/graphs/<id>.json`(노드 = 행동, 간선 = 결과 조건 → 다음 노드, 정책 노드 `choice` = 타협/추가 과정 같은 전략 옵션) → `site/sim.js`(node·브라우저 공용, 아이템 상태를 가중치로 실제로 굴림, 에뮬레이터 규칙) → `node tools/sim/run.js <id> [20000]` → `site/data/sim/<id>.json`(전략별 완성 1개당 평균·중앙값·90%·베이스 수·노드별 도달·간선 통과). `build_recipes.py`가 sim 파일이 있는 레시피에 `sim:1` → 레시피 탭 상세 "플로우차트" 버튼(전략 토글 + 노드 그림 + 접힌 단계별 표). 엔진 비교값: `node tools/sim/engine.js <id> > tools/sim/engine/<id>.json`(테스트 서버 필요, run.js 전에). 지금은 `diztoh-crit-helmet-v2` 하나.
 - **게시 주소(Claude 아티팩트)**: https://claude.ai/artifact/Me2XFis1VHa9dchhbv66x1
 - 도메인: 사용자가 `poe2` + `.com`으로 정함(후보 poe2craft.com 등). 구매·호스팅은 아직.
 
@@ -39,6 +40,9 @@ scripts/        데이터·레시피 빌드 (python)
   build_tips.py         제작 꿀팁 → site/data/tips.json
   build_site_data.py 등 원천 데이터(raw/) → site/data/{index,crafting}.json, site/data/c/*.json(클래스별)
   apply_coe_weights.py  raw/coe_weights_patch.json → c/*.json 가중치 채우기 (**build_site_data.py를 다시 돌렸으면 반드시 뒤에, build_recipes.py 앞에 실행** — 탐욕스러운 사슬옷 클래스가 반지 풀을 복사해 감)
+scripts/graphs/ 그래프 레시피(플로우차트) 정의 JSON — docs/graph-model.md
+tools/sim/      run.js(그래프 시뮬레이션 → site/data/sim/<id>.json), engine.js(같은 레시피의 엔진 기대값 → tools/sim/engine/<id>.json)
+site/sim.js     그래프 시뮬레이터(공용)
 tools/coe/      compare.py(Craft of Exile poec_data.json ↔ 우리 데이터 대조), make_patch.py(모르는 가중치만 패치로). CoE 원본 파일은 저장소에 안 넣음
 i18n/build.py   site/*.html → site/pub/*.html (영문 번역 런타임 주입, 문서 head 추가)
 site/data/      index.json(클래스·베이스 목록), crafting.json(화폐·징조·에센스·기폭제), c/<클래스>.json(옵션 그룹·가중치·룬),
@@ -71,6 +75,7 @@ cd /home/claude/poe2data/scripts && python3 build_prices.py && python3 build_tip
 cd /home/claude/poe2data && bash tools/test/serve.sh start
 cd tools/test && node audit.js && node ver.js && node eng.js && node share.js
 node build_samples.js      # 레시피를 바꿨으면 samples.json 재생성
+node _shots_sim.js         # 플로우차트 화면 스크린샷 → shots/sim-<id>-*.png (kr·en·full·erase·mobile)
 cd /home/claude/poe2data && bash tools/test/serve.sh stop
 ```
 
@@ -80,7 +85,7 @@ cd /home/claude/poe2data && bash tools/test/serve.sh stop
 - `cmp2.js` 초안 vs 원본 단계 비교 → cmp2.txt · `one.js <레시피id>` 초안 하나 자세히 · `pair.js <레시피id>` 원본·초안 단계별 확률 나란히
 
 게시: Artifact 도구 publish, `file_path=/home/claude/poe2craft-site/site/app.html`, `root=/home/claude/poe2craft-site/site`(**링크 경로 poe2data는 게시가 거부돼요**), `url=`위 주소,
-`files`에 바뀐 것만: `{"recipes.html":"pub/recipes.html","discover.html":"pub/discover.html","emulator.html":"pub/emulator.html","builder.html":"pub/builder.html","data/recipes.json":"data/recipes.json","data/tips.json":"data/tips.json","data/samples.json":"data/samples.json","data/prices.json":"data/prices.json","data/budget.json":"data/budget.json","data/crafting.json":"data/crafting.json"}`.
+`files`에 바뀐 것만(그래프 시뮬레이션 데이터는 `"data/sim/<id>.json":"data/sim/<id>.json"` 추가, 지금 `diztoh-crit-helmet-v2`): `{"recipes.html":"pub/recipes.html","discover.html":"pub/discover.html","emulator.html":"pub/emulator.html","builder.html":"pub/builder.html","data/recipes.json":"data/recipes.json","data/tips.json":"data/tips.json","data/samples.json":"data/samples.json","data/prices.json":"data/prices.json","data/budget.json":"data/budget.json","data/crafting.json":"data/crafting.json"}`.
 capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 다시 적을 땐 셋 다 적어야 해요). 새 세션에서 처음 게시하기 전엔 Artifact `read`로 해당 파일을 먼저 읽어야 해요.
 
 ## 엔진 요약 (site/recipes.html `analyse`)
@@ -202,6 +207,9 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 - [x] 3단계: 생성 레시피를 공유 저장소(아티팩트 db)에 등록 + 레시피 탭 "새 레시피" 알림 (2026-11-08)
 - [ ] **우선순위(사용자 확정 2026-11-09 14:44)**: 발굴(역산)은 장기 과제. 당장은 **영상·웹페이지(예: poe2way 가이드)의 제작 데이터를 레시피로 저장해 유저가 찾아볼 수 있게** 하는 것까지. 분기형 그래프는 보기 + 시뮬레이션 위주(편집기·발굴 그래프 생성은 뒤로).
 - [ ] **분기형 레시피(그래프) + 전체 공정 시뮬레이션 — 목표 2026-12 초**(사용자 확정 2026-11-09, 참고: Craft of Exile "Simulate entire crafting processes" — 단계 노드 + 결과별 화살표(성공/실패/결과 종류마다 다음 단계), 성공 1회당 커런시·베이스 소모, 단계별 도달 수). 순서: ① 데이터 모델(노드 = 행동, 간선 = 결과 조건 → 다음 노드, 기존 fail/branch/fallbackFor/retryFor를 간선으로 변환) ② 엔진: 상태 기반 몬테카를로 시뮬레이션(가중치 데이터로 실제 굴림, 수만 회) + 기존 기대값 계산과 대조 ③ 레시피 탭 그래프 보기(단계 표 + 노드 그림, 노드마다 도달 수·성공 1회당 소모) ④ 편집기(노드·간선 추가/수정, 에뮬레이터에서 따라하기 연결) ⑤ 기존 레시피 61개 변환·검증 ⑥ 발굴 초안을 그래프로 생성 + 시세(poe2scout) 연동 뒤 경로 비용 비교(MDP)
+  - **1차 시험 완료(2026-11-09, 치명타 투구 `diztoh-crit-helmet-v2`)**: 모델 `docs/graph-model.md`, 그래프 `scripts/graphs/diztoh-crit-helmet-v2.json`, 시뮬레이터 `site/sim.js`, 결과 `site/data/sim/…json`, 레시피 탭 "플로우차트". 20,000회, 완성 1개당(준비·베이스 포함, div): 타협 평균 240(중앙 209, 90% 432, 베이스 1.5개) · 말소 반복 309(259/578) · B 최대치 1~2티어 + 타협 207(183/363) · 1~2티어 + 말소 272(233/496) · 접미 분열을 베이스부터로 291(베이스 3.0개) · B 빗나감에 좌측 소멸의 징조 388. 엔진 기대값: 타협 322, 선택 포함 890 — 엔진이 A(카오스 1,690 vs 시뮬 985)를 크게 셈(B 실패 소멸로 치명타를 잃을 때 A 전체를 tries × lose로 다시 곱함)과 말소 반복(엔진 +568 vs 시뮬 +69: 시뮬은 최대치 줄이 지워지면 B로 돌아가고, 새 줄이 접미로 가면 C 다시).
+  - 1차에서 정한 해석(사용자 확인 필요): ① 희귀도 두고 3번째 접두가 필수(최대치/복합)면 C를 건너뛰고 D(접두 꽉 참) ② B에서 복합 줄이 떠도 빗나감 처리(사용자 흐름대로) ③ 말소의 징조 + 카오스는 지우는 면만 정하고 새 줄은 아무 면(접미로 가면 C 다시, 접미가 꽉 차면 D에 우측 강령술의 징조) ④ 접미 분열 = 같은 비용 가정 ⑤ 절사 + 좌측 말소 같이 쓰기(에뮬레이터는 아직 절사만 적용).
+  - 2차: 기존 61개 자동 변환(규칙은 graph-model.md 표), 노드 자동 배치, 엔진 되돌아가기 곱셈 재검토, 브라우저에서 직접 돌리기(조건 바꿔 보기), 에뮬레이터 따라하기 연결.
 - [ ] 2단계: 유튜브 링크 → 레시피 (나중에 텔레그램 봇 형태로)
 - [x] 0.5.5 영상 10개 추가(2026-11-09, recipes_v5_*): SL 화염파 지팡이·검은 화염파 반지·5줄 주얼·7줄 장갑, MazBro 셉터·+5 목걸이, Diztoh 희귀도 반지·정신력 로브·5줄 에메랄드·소켓 효과 장갑. 영상마다 하위 작업이 자막+화면으로 작성 → 사용자 검토 필요(아래 "새 레시피 확인할 점")
 - [x] 0.5.5 영상 10개 추가 2차(2026-11-09, 없던 종류): 시한 하이엔드 장화, 시크 돌개바람 장화, TheSaneExile 저항 벨트, LilBotQ 방어도 방패, Icesly 가성비 완드, Belton +8 완드, SaVeQ 포커스, Barricade 육척봉, XTheFarmerX 가성비 갑옷·지팡이. 꿀팁 #40~#49 추가

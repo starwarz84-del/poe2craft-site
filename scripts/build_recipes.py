@@ -1,6 +1,6 @@
 # Builds site/data/recipes.json (format v2: a recipe is a flow of nodes; each node can loop on itself or jump back on failure).
 # Group indices are looked up by modifier text so the file survives data refreshes.
-import json
+import json, os
 D='/home/claude/poe2data/site/data/'
 cache={}
 def cd(cls):
@@ -574,5 +574,8 @@ exec(open('/home/claude/poe2data/scripts/base_prices.py').read())
 for _r in R:
     if BASEPRICE.get(_r['id']): _r['basePrice'] = BASEPRICE[_r['id']]
 print('base price missing:', sum(1 for _r in R if not _r.get('basePrice')), 'of', len(R))
+# flowchart + simulation (tools/sim/run.js → site/data/sim/<id>.json): the recipe tab shows its button only when the file exists
+for _r in R:
+    if os.path.exists(f"{D}sim/{_r['id']}.json"): _r['sim'] = 1
 json.dump({'v':2,'recipes':R},open(D+'recipes.json','w'),ensure_ascii=False)
 print(len(R),'recipes')
