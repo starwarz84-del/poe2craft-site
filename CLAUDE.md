@@ -12,7 +12,7 @@
 
 ## 무엇을 만드는가
 
-Path of Exile 2 아이템 제작 사이트. 탭 4개짜리 한 화면이에요.
+Path of Exile 2 아이템 제작 사이트. 탭 5개짜리 한 화면이에요.
 
 | 탭 | 원본 파일 | 게시 파일 | 하는 일 |
 |---|---|---|---|
@@ -20,6 +20,7 @@ Path of Exile 2 아이템 제작 사이트. 탭 4개짜리 한 화면이에요.
 | 옵션 빌더 | `site/index.html` | `pub/builder.html` | 원하는 옵션 조합 만들기 |
 | 레시피 | `site/recipes.html` | `pub/recipes.html` | 유튜브 영상 기반 제작 레시피, 단계별 확률(가중치 계산) |
 | 발굴 | `site/reverse.html` | `pub/discover.html` | 아이템 텍스트 → 옵션 분석 → 레시피 초안 → 검산 → 레시피 탭에 올리기 |
+| 특수 베이스 | `site/bases.html` | `pub/bases.html` | 특수 베이스 안내(사용자 확정 2026-11-10: 따로 안내 페이지, 모든 특수 베이스). 데이터 `scripts/build_special.py` → `site/data/special.json`(게임 데이터만: 스킬 부여 목걸이·면 개수 바뀌는 장신구·균열 반지·다른 부위처럼 쓰는 베이스·룬벼림/룬숙련 691개, 그 베이스를 쓰는 레시피 링크 → 껍데기 `poe2-goto`). 레시피를 추가하면 build_special.py 다시 실행. 스크린샷 `tools/test/_shots_bases.js` |
 
 - 껍데기: `site/app.html` (탭 = iframe, `SRC` 맵, 언어 전환, 다운로드 중계, 발굴 → 레시피 초안 전달 `poe2-draft` 메시지, 공유 레시피 저장소 중계)
 - **공유 레시피(아티팩트 db)**: 문서 `shared/<사용자 id>` = `{recipes:{<s-id>:{recipe, at}}}`. 규칙: 모두 읽기, 각자 자기 문서만 쓰기, 소유자는 전체 정리 가능.
@@ -66,7 +67,7 @@ Playwright는 세션에 이미 설치돼 있어요(`require('playwright')`, 재�
 ## 빌드 · 테스트 · 게시
 
 ```
-cd /home/claude/poe2data/scripts && python3 build_prices.py && python3 build_tips.py && python3 build_recipes.py && python3 ../i18n/build.py
+cd /home/claude/poe2data/scripts && python3 build_prices.py && python3 build_tips.py && python3 build_recipes.py && python3 build_special.py && python3 ../i18n/build.py
 ```
 
 테스트 (테스트 서버 → 스크립트 → 서버 종료):
@@ -85,7 +86,7 @@ cd /home/claude/poe2data && bash tools/test/serve.sh stop
 - `cmp2.js` 초안 vs 원본 단계 비교 → cmp2.txt · `one.js <레시피id>` 초안 하나 자세히 · `pair.js <레시피id>` 원본·초안 단계별 확률 나란히
 
 게시: Artifact 도구 publish, `file_path=/home/claude/poe2craft-site/site/app.html`, `root=/home/claude/poe2craft-site/site`(**링크 경로 poe2data는 게시가 거부돼요**), `url=`위 주소,
-`files`에 바뀐 것만(그래프 시뮬레이션 데이터는 `"data/sim/<id>.json":"data/sim/<id>.json"` 추가, 지금 `diztoh-crit-helmet-v2`, `helmet-armour-sl-v2`, `sihan-highend-boots-v2`, `diztoh-rarity-ring-v2`, `saveq-absent-amulet-v2`): `{"recipes.html":"pub/recipes.html","discover.html":"pub/discover.html","emulator.html":"pub/emulator.html","builder.html":"pub/builder.html","data/recipes.json":"data/recipes.json","data/tips.json":"data/tips.json","data/samples.json":"data/samples.json","data/prices.json":"data/prices.json","data/budget.json":"data/budget.json","data/crafting.json":"data/crafting.json"}`.
+`files`에 바뀐 것만(그래프 시뮬레이션 데이터는 `"data/sim/<id>.json":"data/sim/<id>.json"` 추가, 특수 베이스 탭은 `"bases.html":"pub/bases.html","data/special.json":"data/special.json"`, 지금 `diztoh-crit-helmet-v2`, `helmet-armour-sl-v2`, `sihan-highend-boots-v2`, `diztoh-rarity-ring-v2`, `saveq-absent-amulet-v2`): `{"recipes.html":"pub/recipes.html","discover.html":"pub/discover.html","emulator.html":"pub/emulator.html","builder.html":"pub/builder.html","data/recipes.json":"data/recipes.json","data/tips.json":"data/tips.json","data/samples.json":"data/samples.json","data/prices.json":"data/prices.json","data/budget.json":"data/budget.json","data/crafting.json":"data/crafting.json"}`.
 capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 다시 적을 땐 셋 다 적어야 해요). 새 세션에서 처음 게시하기 전엔 Artifact `read`로 해당 파일을 먼저 읽어야 해요.
 
 ## 엔진 요약 (site/recipes.html `analyse`)
@@ -225,7 +226,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
   - **1차 시험 완료(2026-11-09, 치명타 투구 `diztoh-crit-helmet-v2`)**: 모델 `docs/graph-model.md`, 그래프 `scripts/graphs/diztoh-crit-helmet-v2.json`, 시뮬레이터 `site/sim.js`, 결과 `site/data/sim/…json`, 레시피 탭 "플로우차트". 20,000회, 완성 1개당(준비·베이스 포함, div): 타협 평균 240(중앙 209, 90% 432, 베이스 1.5개) · 말소 반복 309(259/578) · B 최대치 1~2티어 + 타협 207(183/363) · 1~2티어 + 말소 272(233/496) · 접미 분열을 베이스부터로 291(베이스 3.0개) · B 빗나감에 좌측 소멸의 징조 388. 엔진 기대값: 타협 322, 선택 포함 890 — 엔진이 A(카오스 1,690 vs 시뮬 985)를 크게 셈(B 실패 소멸로 치명타를 잃을 때 A 전체를 tries × lose로 다시 곱함)과 말소 반복(엔진 +568 vs 시뮬 +69: 시뮬은 최대치 줄이 지워지면 B로 돌아가고, 새 줄이 접미로 가면 C 다시).
   - 1차에서 정한 해석(사용자 확인 필요): ① 희귀도 두고 3번째 접두가 필수(최대치/복합)면 C를 건너뛰고 D(접두 꽉 참) ② B에서 복합 줄이 떠도 빗나감 처리(사용자 흐름대로) ③ 말소의 징조 + 카오스는 지우는 면만 정하고 새 줄은 아무 면(접미로 가면 C 다시, 접미가 꽉 차면 D에 우측 강령술의 징조) ④ 접미 분열 = 같은 비용 가정 ⑤ 절사 + 좌측 말소 같이 쓰기(에뮬레이터는 아직 절사만 적용).
   - 2차: 기존 61개 자동 변환(규칙은 graph-model.md 표), 노드 자동 배치, 엔진 되돌아가기 곱셈 재검토, 브라우저에서 직접 돌리기(조건 바꿔 보기), 에뮬레이터 따라하기 연결.
-- [ ] **특수 목걸이 따로 정리**(사용자 2026-11-10): 부재 목걸이는 일반 옵션보다 **고정 옵션(스킬 부여: 레벨 n 스킬)이 더 중요** → 이런 특수 베이스는 따로 정리. 데이터상 특수(`sp:'mod'`): 스킬 부여 목걸이 = 한탄(레벨 11, 전령·기원 등)·전조(레벨 11, 늑대 무리·점멸 등)·부재(레벨 12, 7종 + 접두·접미 −1), 면 개수 바꾸는 목걸이·반지 = 황혼·석양·음영·어둑한·뒤틀린·왜곡된. 고정 스킬 레벨은 완벽한 유동체로 올림(영상: 부여 스킬 20레벨). 부재 목걸이는 영상들이 레어로 시작(반지깎는노인: "매직 상태로 제작 불가", 공식 확인 못 함), SaVeQ 베이스 36 div가 노멀 값인지 1줄 레어 값인지 확인 필요. 정리 방식은 사용자와 정하는 중.
+- [x] **특수 목걸이 따로 정리**(사용자 2026-11-10, 특수 베이스 탭으로 완료 — 아래는 남은 확인 사항): 부재 목걸이는 일반 옵션보다 **고정 옵션(스킬 부여: 레벨 n 스킬)이 더 중요** → 이런 특수 베이스는 따로 정리. 데이터상 특수(`sp:'mod'`): 스킬 부여 목걸이 = 한탄(레벨 11, 전령·기원 등)·전조(레벨 11, 늑대 무리·점멸 등)·부재(레벨 12, 7종 + 접두·접미 −1), 면 개수 바꾸는 목걸이·반지 = 황혼·석양·음영·어둑한·뒤틀린·왜곡된. 고정 스킬 레벨은 완벽한 유동체로 올림(영상: 부여 스킬 20레벨). 부재 목걸이는 영상들이 레어로 시작(반지깎는노인: "매직 상태로 제작 불가", 공식 확인 못 함), SaVeQ 베이스 36 div가 노멀 값인지 1줄 레어 값인지 확인 필요. 정리 방식 = 베이스 안내 페이지 따로, 범위 = 모든 특수 베이스(사용자 확정 2026-11-10). 보통 무기의 스킬 부여(지팡이·완드·창·방패 등)는 일반 베이스라 제외. 남은 것: 부여 스킬 종류를 바꾸는 방법·부재 목걸이 매직 불가 여부 확인 뒤에만 화면에 추가.
 - [ ] 2단계: 유튜브 링크 → 레시피 (나중에 텔레그램 봇 형태로)
 - [x] 0.5.5 영상 10개 추가(2026-11-09, recipes_v5_*): SL 화염파 지팡이·검은 화염파 반지·5줄 주얼·7줄 장갑, MazBro 셉터·+5 목걸이, Diztoh 희귀도 반지·정신력 로브·5줄 에메랄드·소켓 효과 장갑. 영상마다 하위 작업이 자막+화면으로 작성 → 사용자 검토 필요(아래 "새 레시피 확인할 점")
 - [x] 0.5.5 영상 10개 추가 2차(2026-11-09, 없던 종류): 시한 하이엔드 장화, 시크 돌개바람 장화, TheSaneExile 저항 벨트, LilBotQ 방어도 방패, Icesly 가성비 완드, Belton +8 완드, SaVeQ 포커스, Barricade 육척봉, XTheFarmerX 가성비 갑옷·지팡이. 꿀팁 #40~#49 추가
