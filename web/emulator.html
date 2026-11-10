@@ -263,6 +263,7 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .sock .sn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#c9d6ff}
 .runebar{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 6px;align-items:center}
 .runebar input{flex:1 1 140px;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:4px 8px;font:inherit;font-size:12.5px}
+.rsec{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:8px 0 1px;padding:0 0 4px;border-bottom:1px solid rgba(200,170,110,.22);font-size:13px}.rsec:first-child{margin-top:0}.rsec b{color:var(--gold,#e2c27a)}.rsec i{font-style:normal;opacity:.6}.rsec span{flex-basis:100%;font-size:12px;opacity:.7}
 .runes{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:5px}   /* full height — page scrolls, not a 220px box (사용자 2026-11-11) */
 .rbtn{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:5px 8px;cursor:pointer;font-size:11.5px;color:var(--muted)}
 .rbtn b{color:#c9d6ff;font-weight:600;font-size:12px}
@@ -1086,7 +1087,11 @@ function renderShelves(){
     + omenRow(['corruption']);
   $('#shelves').innerHTML = `<div class="ctabs" role="group" aria-label="${L('제작 재료 분류','Categories')}">${TABS.map(([k,t,n])=>`<button type="button" class="ctab ${n?'':'dim'}" data-ctab="${k}" aria-pressed="${T===k}">${tabIcon[k]?`<img src="${tabIcon[k]}" alt="">`:'<span class="ph"></span>'}<span>${t}</span>${n?`<span class="n">${n}</span>`:''}</button>`).join('')}</div>` + body;
 }
-const RCAT = f => /SoulCore|Thesis|Gaze/.test(f) ? 'core' : /Idol/.test(f) ? 'idol' : /Rune|Alloy/.test(f) ? 'rune' : 'etc';
+const RCAT = f => /ofAldur$/.test(f) ? 'aldur' : /^Legacyof|^AldursLegacy$/.test(f) ? 'legacy' : /SoulCore|Thesis|Gaze/.test(f) ? 'core' : /Idol/.test(f) ? 'idol' : /Rune|Alloy/.test(f) ? 'rune' : 'etc';
+// rune shelf sections (사용자 2026-11-11: 알두르 룬·유산 룬이 '룬' 분류에 안 보이고 섞여 있음 → 따로 묶음)
+const RCATS = () => [['rune',L('룬','Runes')],['aldur',L('알두르 룬','Aldur runes')],['legacy',L('유산','Legacies')],['core',L('영혼핵','Soul cores')],['idol',L('우상','Idols')],['etc',L('기타','Other')]];
+const RCAT_NOTE = { aldur:()=>L('무기의 원소 옵션을 한 원소로 바꾸는 룬 — 희귀 무기 빈 소켓에만(타락·축성 불가)','Converts the weapon\'s elemental modifiers to one element — rare weapons only'),
+  legacy:()=>L('칼구르·에조미어 고유 아이템에 알두르의 유산을 끼워 그 아이템을 파괴하고 얻는 룬 — 부위마다 정해져 있고 캐릭터당 1개만','Made by socketing Aldur\'s Legacy into a Kalguuran/Ezomyte unique (destroys it) — fixed per slot, one per character') };
 function runeShelf(){
   const it=S.item, n=it.sockets, fx=runeFx();
   if(!maxSockets()) return `<div class="shelf"><h3><span>${L('룬 소켓','RUNES')}</span></h3><span class="empty">${L('소켓이 없는 아이템이에요','No sockets')}</span></div>`;
@@ -1096,15 +1101,21 @@ function runeShelf(){
     return `<div class="sock ${i===S.sockSel?'sel':''} ${lk?'locked':''}" data-sock="${i}" role="button" tabindex="0" title="${lk?L('소켓 귀속 — 교체할 수 없어요','Socket-bound — cannot be replaced'):t?L('다른 룬을 고르면 덮어 끼워요','Pick another rune to overwrite'):''}"><span class="dot ${t?'on':''}"></span><span class="sn">${t?esc(KR()?t[0]:t[1]):L('빈 소켓','Empty')}</span>${lk?'<span class="lk">🔒</span>':''}</div>`; }).join('')
     : `<span class="empty">${L('소켓이 없어요 — 장인의 오브로 소켓을 추가하세요','No sockets yet — use an Artificer\'s Orb')}</span>`;
   const q=(S.runeQ||'').trim().toLowerCase(), cat=S.runeCat||'all';
-  const list = runesList().map((f,ri)=>({f,ri})).filter(({f})=>cat==='all'||RCAT(f.f)===cat).flatMap(({f,ri})=>f.t.map((t,ti)=>({t,ri,ti})))
+  const list = runesList().map((f,ri)=>({f,ri,c:RCAT(f.f)})).filter(({c})=>cat==='all'||c===cat).flatMap(({f,ri,c})=>f.t.map((t,ti)=>({t,ri,ti,c})))
     .filter(({t})=>!q || (t[0]+t[1]+t[2]+t[3]).toLowerCase().includes(q));
+  const rcHave = new Set(runesList().map(f=>RCAT(f.f)));
   const fxs = [fx.p?L(`접두 ${fx.p>0?'+':''}${fx.p}`,`prefix ${fx.p}`):'', fx.s?L(`접미 ${fx.s>0?'+':''}${fx.s}`,`suffix ${fx.s}`):'', fx.craft?L(`제작 속성 +${fx.craft}`,`crafted +${fx.craft}`):'', ...[...fx.names].filter(nm=>S.data.groups.some(g=>g.s==='x'&&g.sub[1]===nm)).map(nm=>L('특수 옵션 해금','unlocks special'))].filter(Boolean);
-  const runesHTML = list.map(({t,ri,ti})=>`<button type="button" class="rbtn ${runeLocked(t)?'sp':''} ${runeUniqueOnly(t)||(runeAldur(t)&&(S.item.corrupted||S.item.sanctified||S.item.rarity!=='rare'))?'off':''}" data-rune="${ri}:${ti}"><b>${esc(KR()?t[0]:t[1])}${runeLocked(t)?`<em>${L('소켓 귀속 · 교체 불가','socket-bound')}</em>`:''}${runeAncient(t)?`<em class="bd">${L('고대 · 1개 제한','ancient')}</em>`:''}${runeOnePer(t)&&!runeAncient(t)?`<em class="bd">${L('1개 제한','limit 1')}</em>`:''}${runeLegacy(t)?`<em class="bd">${L('유산 1개 제한','1 Legacy')}</em>`:''}${t[1]==='Masterwork Rune'?`<em class="uo">${L('등급 룬 업그레이드','upgrades a tiered rune')}</em>`:''}${runeAldur(t)?`<em class="uo">${L('희귀 무기 · 타락·축성 불가','rare weapon · not corrupted/sanctified')}</em>`:''}${runeUniqueOnly(t)?`<em class="uo">${L('고유 전용','unique only')}</em>`:''}</b><span>${esc(runeTxt(t,' / '))}</span></button>`).join('') || `<span class="empty">${L('결과 없음','None')}</span>`;
+  const rbtnHTML = ({t,ri,ti})=>`<button type="button" class="rbtn ${runeLocked(t)?'sp':''} ${runeUniqueOnly(t)||(runeAldur(t)&&(S.item.corrupted||S.item.sanctified||S.item.rarity!=='rare'))?'off':''}" data-rune="${ri}:${ti}"><b>${esc(KR()?t[0]:t[1])}${runeLocked(t)?`<em>${L('소켓 귀속 · 교체 불가','socket-bound')}</em>`:''}${runeAncient(t)?`<em class="bd">${L('고대 · 1개 제한','ancient')}</em>`:''}${runeOnePer(t)&&!runeAncient(t)&&!runeLegacy(t)?`<em class="bd">${L('1개 제한','limit 1')}</em>`:''}${runeLegacy(t)?`<em class="bd">${L('유산 1개 제한','1 Legacy')}</em>`:''}${t[1]==='Masterwork Rune'?`<em class="uo">${L('등급 룬 업그레이드','upgrades a tiered rune')}</em>`:''}${runeAldur(t)?`<em class="uo">${L('희귀 무기 · 타락·축성 불가','rare weapon · not corrupted/sanctified')}</em>`:''}${runeUniqueOnly(t)?`<em class="uo">${L('고유 전용','unique only')}</em>`:''}</b><span>${esc(runeTxt(t,' / '))}</span></button>`;
+  const rsec = (k,nm,n)=>`<div class="rsec"><b>${nm}</b> <i>${n}</i>${RCAT_NOTE[k]?`<span>${RCAT_NOTE[k]()}</span>`:''}</div>`;
+  const runesHTML = (cat==='all'
+      ? RCATS().map(([k,nm])=>{ const xs=list.filter(x=>x.c===k); return xs.length ? rsec(k,nm,xs.length)+xs.map(rbtnHTML).join('') : ''; }).join('')
+      : (RCAT_NOTE[cat]&&list.length ? rsec(cat, RCATS().find(x=>x[0]===cat)[1], list.length) : '') + list.map(rbtnHTML).join('')
+    ) || `<span class="empty">${L('결과 없음','None')}</span>`;
   if(S.runeListOnly && document.querySelector('#shelves .runes') && document.getElementById('rq')){ S.runeListOnly=false; document.querySelector('#shelves .runes').innerHTML=runesHTML; return null; }
   return `<div class="shelf"><h3><span>${L('룬 소켓','RUNES')} · ${n}/${maxSockets()}${n>maxSockets()?L(' (타락 +1)',' (+1)'):''}</span><span>${fxs.join(' · ')}</span></h3>
     <div class="socks">${socks}</div>
     ${n?`<div class="sockhint">${L('모든 증강물은 타락·축성된 아이템에도 끼우거나 덮어 끼울 수 있어요(덮어 끼우면 이전 것은 파괴). <b>소켓 귀속</b>(워프 룬·알두르 룬·아치리 영혼핵·까마귀 손길 파편)은 한 번 끼우면 교체할 수 없어요. <b>고대 증강물</b>(응시·논문)은 동시에 1개만 끼울 수 있고 타락·축성 아이템에도 쓸 수 있어요. 단 <b>알두르 룬</b>은 옵션을 바꾸는 룬이라 타락·축성 아이템엔 못 끼우고, 희귀 무기의 빈 소켓에만 끼울 수 있어요(옵션 변환 효과는 아직 계산 안 함).','All augments can be socketed into corrupted or sanctified items. Socket-bound augments are permanent; only one Ancient augment at a time.')}</div>`:''}
-    ${n?`<div class="runebar"><div class="seg" role="group" aria-label="룬 종류">${[['all',L('전체','All')],['rune',L('룬','Runes')],['core',L('영혼핵','Soul cores')],['idol',L('우상','Idols')],['etc',L('기타','Other')]].map(([k,t])=>`<button type="button" data-rcat="${k}" aria-pressed="${cat===k}">${t}</button>`).join('')}</div>
+    ${n?`<div class="runebar"><div class="seg" role="group" aria-label="룬 종류">${[['all',L('전체','All')],...RCATS().filter(([k])=>rcHave.has(k))].map(([k,t])=>`<button type="button" data-rcat="${k}" aria-pressed="${cat===k}">${t}</button>`).join('')}</div>
       <input type="search" id="rq" placeholder="${L('룬 검색','Search runes')}" value="${esc(S.runeQ||'')}"></div>
     <div class="runes">${runesHTML}</div>`:''}</div>`;
 }
