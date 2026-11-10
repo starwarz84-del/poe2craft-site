@@ -99,8 +99,22 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 - 사용자가 도메인 poe2craft.xyz 구입. 화면 구성은 poe2filter.com(거래소 trade2 스타일)을 참고: 배너(워드마크 + 붉은 명판) → 아이콘 탭 바(활성 탭 갈색 #5a3806) → 테두리 패널 하나에 도구. GGG 그림·로고·trade2.css는 가져오지 않고 색·배치만 따라 했어요.
 - 원본: `site/shell.html`(껍데기, 아티팩트의 app.html 대응) · `site/theme.css`(도구 페이지 색·글꼴 토큰만 덮어씀, `:root:root`) · `site/about.html`(안내 탭: 확률을 믿을 수 있는 이유 6개 + 사용 방법 + GGG·카카오 무관 문구) · `site/favicon.svg`
 - 호스팅 = Cloudflare Workers(사용자의 lightview·roasterroute와 같은 방식), 저장소 루트 `wrangler.jsonc`가 `web/`를 정적 파일로 서빙. 배포 폴더 만들기: 위 빌드 뒤에 `python3 scripts/build_web.py` → `web/`(index.html·도구 페이지·data·lib·CNAME·_headers·robots·sitemap). `web/`도 커밋해요(호스팅이 그대로 서빙).
-- 아티팩트 밖에서는 다운로드 = 일반 브라우저 다운로드로 대체, **공유 레시피 저장소는 아직 없음**(code 'unavailable') → 서버 저장소(예: Cloudflare Workers + D1) 붙이기가 다음 일.
+- 아티팩트 밖에서는 다운로드 = 일반 브라우저 다운로드로 대체, **공유 레시피 저장소는 아직 없음**(code 'unavailable') → POE 계정 로그인 + 서버 저장소(예: Cloudflare Workers + D1)는 로드맵 1-⑤에서.
 - app.html(아티팩트판)은 그대로 두고 같이 유지해요.
+
+## 로드맵 (사용자 확정 2026-11-10 22:09 — 이 순서대로 진행)
+
+- **테스트 기간**: 사이트는 구글 검색에 올리지 않음(`scripts/build_web.py` `INDEX = False` → robots.txt 전체 차단 + `X-Robots-Tag`·meta noindex, sitemap 없음). 공개할 때 True로 바꿈.
+- **로그인 = POE 계정(pathofexile.com OAuth)**(사용자 확정): 공유 레시피·직접 작성 레시피 올리기에 씀. GGG 개발자 앱 신청이 필요해 시간이 걸림 — 아래 1-⑤ 때 같이 진행.
+
+1. **크래프팅 기능 고도화**(지금 레시피 탭)
+   ① 크래프팅 화면 레이아웃 정리 ② 플로우차트 고도화 — 어려움 이상 아이템의 95%를 플로우차트로 ③ 플로우차트에서 완성품 카드를 고르면 그 아이템의 크래프팅 순서(단계) 화면으로 이동 ④ 아이템 등급(하이엔드·밸런스·에센셜) ⑤ 유저가 직접 크래프팅 레시피를 작성하는 기능
+2. **리버스 크래프팅 고도화**(지금 발굴 탭) — 화면에 "완성도 약 60%, 데이터가 쌓일수록 정교해지는 중"이라고 안내
+   ① 입력: 유튜브 영상·커뮤니티 제작글 → 리버스 엔지니어링(1~5분) → 크래프트 리스트에 올릴지 결정 → 결과의 아쉬운 점 작성 요청
+   ② 입력: 경매장에서 원하는 옵션으로 만든 결과물(아이템 정보) → 같은 흐름
+   ③ 옵션 빌더를 리버스 크래프팅 메뉴로 옮김: 아이템 선택 → 원하는 옵션 빌드 → 그 아이템을 리버스 엔지니어링(같은 흐름)
+3. **에뮬레이터 고도화** — 더 쉽고 편하게, 계속 손봄
+4. **데이터** — POE2 DB·Craft of Exile 2 등 POE2 제작 데이터를 깔끔하게 정리
 
 ## 엔진 요약 (site/recipes.html `analyse`)
 
