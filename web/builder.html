@@ -47,6 +47,8 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .grid{display:grid;grid-template-columns:290px minmax(300px,370px) minmax(0,1fr);gap:16px;align-items:start}
 @media (max-width:1150px){.grid{grid-template-columns:260px minmax(0,1fr)}.pool{grid-column:1 / -1}}
 @media (max-width:760px){.grid{grid-template-columns:minmax(0,1fr)}}
+/* the item card follows the page while the modifier list on the right scrolls the whole page (사용자 2026-11-11) */
+@media (min-width:1151px){.card{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;scrollbar-width:thin}}
 .col{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-width:0}
 .col h2{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--muted);margin:0;padding:12px 14px 8px}
 /* picker */
