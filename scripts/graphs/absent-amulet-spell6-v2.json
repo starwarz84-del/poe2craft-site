@@ -1,0 +1,1608 @@
+{
+ "id": "absent-amulet-spell6-v2",
+ "recipe": "absent-amulet-spell6-v2",
+ "cls": "Amulets",
+ "base": "Absent Amulet",
+ "ilvl": 82,
+ "note": "반지깎는노인 주문 +6 부재 목걸이(Yi1u0LhJztI) — 정신력 +50 분열 + 잡옵(시전 퀄리티 48%) → 카오스 오브(모든 주문 스킬 +3) → 좌측 찬미 + 엑잘(접두 잡옵) → 균열의 에센스 → 히네코라의 머리카락 + 바알 촉진시키는 주입기로 50% → 좌측 강령술 + 보존된 빗장뼈(최대 퀄리티 자리) → 빛의 징조로 지우고 우측 강령술 + 보존된 빗장뼈(접미) → 좌측 찬미 + 상위 엑잘(마나 최대치, 빗나가면 좌측 소멸의 징조) → 시전 속도 공개(빛의 징조로 다시). 성유·유동체·신성한 오브·축성은 레시피 하이엔드에만.",
+ "params": {
+  "pT": {
+   "kr": "목표 티어",
+   "en": "Target tier",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "pT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "pT": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "pT": 2
+   },
+   "desc": {
+    "kr": "마나 최대치·시전 속도 1~2티어",
+    "en": "T1–2 maximum Mana and cast speed"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "pT": 1
+   },
+   "desc": {
+    "kr": "영상: 마나 최대치·시전 속도 1티어",
+    "en": "Video: T1 maximum Mana and cast speed"
+   }
+  }
+ ],
+ "tags": {
+  "spirit": {
+   "gi": 28,
+   "tmax": 1
+  },
+  "spell": {
+   "gi": 17,
+   "tmax": 1
+  },
+  "mq": {
+   "gi": 81
+  },
+  "mana": {
+   "gi": 11,
+   "tmax": "$pT"
+  },
+  "cs": {
+   "gi": 32,
+   "tmax": "$pT"
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "spell"
+   },
+   {
+    "has": "mana"
+   },
+   {
+    "has": "cs"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "m1b",
+    "c1",
+    "c1x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "spirit",
+     "fr": true
+    },
+    {
+     "tag": "mana",
+     "tmax": 1
+    },
+    {
+     "tag": "spell"
+    },
+    {
+     "tag": "cs",
+     "tmax": 1,
+     "des": true
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "spirit",
+     "fr": true
+    },
+    {
+     "tag": "mana",
+     "tmax": 2
+    },
+    {
+     "tag": "spell"
+    },
+    {
+     "tag": "cs",
+     "tmax": 2,
+     "des": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 50,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "spirit",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ],
+    "quality": 48
+   },
+   "label": {
+    "kr": "정신력 +50 분열 + 잡옵 1개 (시전 퀄리티 48%)",
+    "en": "Fractured +50 Spirit + one junk line (48% caster quality)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "k1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "k1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 첫번째 옵션",
+    "en": "First suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "spell"
+     },
+     "to": "q1",
+     "res": "ok"
+    },
+    {
+     "to": "k1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "spell"
+   ]
+  },
+  {
+   "id": "q1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 잡옵",
+    "en": "A junk prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "q2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "q2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "잡옵을 지우고 최대 퀄리티 +20%",
+    "en": "The junk goes for +20% Maximum Quality"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "q3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Breach",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% to Maximum Quality (crafted)"
+    }
+   ],
+   "ess": "mq"
+  },
+  {
+   "id": "q3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "quality",
+   "goal": {
+    "kr": "퀄리티 50%",
+    "en": "Quality to 50%"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "edges": [
+    {
+     "to": "m1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Vaal_Catalysing_Infuser",
+   "showText": [
+    {
+     "kr": "히네코라의 머리카락으로 미리 보고 50%",
+     "en": "Preview with Hinekora’s Lock, then 50%"
+    }
+   ],
+   "count": 2
+  },
+  {
+   "id": "m1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 두번째 옵션(훼손)",
+    "en": "Second prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "spell"
+      }
+     },
+     "to": "k1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "m1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "m1x"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "mana"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m2",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "mana"
+      }
+     },
+     "to": "m2x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "cs"
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "c1x",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Preserved_Collarbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ]
+  },
+  {
+   "id": "m1x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접두 훼손 옵션 제거",
+    "en": "Remove the prefix desecration"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "spell"
+      }
+     },
+     "to": "k1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "m1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "m1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m1b"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "mana"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m2",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "mana"
+      }
+     },
+     "to": "m2x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "cs"
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "c1x",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "m1b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 두번째 옵션(훼손)",
+    "en": "Second suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "spell"
+      }
+     },
+     "to": "k1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "m1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "m1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "mana"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m2"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "mana"
+      }
+     },
+     "to": "m2x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "cs"
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "c1x",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Collarbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ]
+  },
+  {
+   "id": "m2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "spell"
+      }
+     },
+     "to": "k1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "m1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "m1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "mana"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m2",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "mana"
+      }
+     },
+     "to": "m2x",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "c1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "cs"
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "c1x",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(180—189)",
+     "en": "+(180—189) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mana"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Greater_Exalted_Orb",
+   "show": [
+    "mana"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "m2x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Sinistral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접두 잡옵 지우기",
+    "en": "Remove the junk prefix"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "spell"
+      }
+     },
+     "to": "k1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "m1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "m1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "mana"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m2",
+     "res": "ok",
+     "port": "right"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "mana"
+      }
+     },
+     "to": "m2x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "cs"
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "c1x",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "spell"
+      }
+     },
+     "to": "k1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "m1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "m1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "mana"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m2",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "mana"
+      }
+     },
+     "to": "m2x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "cs"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "c1x",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(180—189)",
+     "en": "+(180—189) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mana"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (25—28)% 증가",
+     "en": "(25—28)% increased Cast Speed",
+     "m": "d",
+     "tags": [
+      "cs"
+     ]
+    }
+   ],
+   "want": "cs",
+   "show": [
+    "cs"
+   ]
+  },
+  {
+   "id": "c1x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    9
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "spell"
+      }
+     },
+     "to": "k1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "m1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "m1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "mana"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "m2",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "mana"
+      }
+     },
+     "to": "m2x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "m1b",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "cs"
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "c1x",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}
