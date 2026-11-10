@@ -208,6 +208,10 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
     prevHash = d.hash; } });
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-goto' || !Object.values(frames).some(f=>f.contentWindow===e.source) || !/^[A-Za-z0-9-]+$/.test(d.id||'')) return;
     location.hash = SRC[d.id] ? d.id : 'r-'+d.id; });
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-reverse' || !frames.builder || e.source!==frames.builder.contentWindow || typeof d.text!=='string') return;   // 속성부여 → 리버스 크래프팅
+    const had = !!frames.discover; location.hash = 'discover'; show();
+    const send = ()=>{ try{ frames.discover.contentWindow.postMessage({type:'poe2-reverse-in', text:d.text.slice(0,8000)}, '*'); }catch(_){} };
+    if(had) send(); else frames.discover.addEventListener('load', send, {once:true}); });
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-draft' || !frames.discover || e.source!==frames.discover.contentWindow) return;
     const had = !!frames.recipes; location.hash = 'recipes'; show();
     const send = ()=>{ try{ frames.recipes.contentWindow.postMessage({type:'poe2-draft', recipe:d.recipe}, '*'); }catch(_){} };

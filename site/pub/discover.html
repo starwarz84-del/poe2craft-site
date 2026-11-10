@@ -25,11 +25,37 @@ body{font-family:var(--f-body);font-size:14px;line-height:1.5}
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .wrap{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:16px 48px;max-width:1320px;margin:0 auto}
-h1{margin:0 0 4px;font-family:var(--f-display);font-size:22px;text-wrap:balance}
+h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
+.rhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 4px}
+.beta{font-size:12px;color:var(--rare);border:1px solid color-mix(in srgb,var(--rare) 45%,var(--line));border-radius:999px;padding:3px 10px;white-space:nowrap}
+.rsteps{list-style:none;margin:0 0 14px;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;counter-reset:rs}
+.rsteps li{counter-increment:rs;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--panel);font-size:12.5px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;line-height:1.4}
+.rsteps li::before{content:counter(rs);flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;font-weight:700;background:var(--panel-2);color:var(--muted);border:1px solid var(--line)}
+.rsteps li b{display:block;color:var(--fg);font-weight:600}
+.rsteps li.on{border-color:var(--rare)}.rsteps li.on::before{background:var(--rare);color:var(--ink);border-color:var(--rare)}
+.rsteps li.done::before{content:'✓';background:var(--ok);color:var(--ink);border-color:var(--ok)}
+@media (max-width:760px){.rsteps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.itabs{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 10px;border-bottom:1px solid var(--line)}
+.itabs button{border:0;border-bottom:2px solid transparent;background:none;color:var(--muted);font:inherit;font-size:13.5px;padding:8px 14px;cursor:pointer;margin-bottom:-1px}
+.itabs button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--rare);font-weight:600}
+.itabs button small{margin-left:6px;font-size:11px;color:var(--faint)}
+.ipane{display:flex;flex-direction:column;gap:8px}
+.ihelp{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}
+.ufield{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.ufield input{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:8px 10px;color:var(--fg);font:inherit;font-size:13px}
+.uq{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;font-size:12.5px;display:flex;flex-direction:column;gap:6px}
+.uq .empty{color:var(--faint)}
+.bsteps{margin:0;padding-left:20px;font-size:13px;line-height:1.7;color:var(--fg)}
+.bfrom{font-size:12.5px;color:var(--ok)}
+.fb{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.fb h3{margin:0;font-size:15px}
+.fb textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:9px 10px;color:var(--fg);font:inherit;font-size:13px;resize:vertical}
+.fb .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .lead{margin:0 0 14px;color:var(--muted);font-size:13px;max-width:70ch}
 .btn{background:var(--panel-2);border:1px solid var(--line);border-radius:7px;padding:6px 12px;cursor:pointer;font-size:13px}
 .btn:hover{border-color:var(--muted)}
 .btn.primary{background:var(--rare);color:var(--ink);border-color:var(--rare);font-weight:600}
+.btn:disabled{opacity:.45;cursor:default}
 .top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:16px;align-items:start}
 @media (max-width:860px){.top{grid-template-columns:minmax(0,1fr)}}
 .paste{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
@@ -106,10 +132,27 @@ h1{margin:0 0 4px;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 </style>
 
 <div class="wrap">
-  <h1 id="h1"></h1>
+  <div class="rhead"><h1 id="h1"></h1><span class="beta" id="beta"></span></div>
   <p class="lead" id="lead"></p>
+  <ol class="rsteps" id="rsteps"></ol>
+  <div class="itabs" role="tablist" id="itabs"></div>
   <div class="top">
     <div class="paste">
+      <section class="ipane" data-ipane="url" hidden>
+        <p class="ihelp" id="u-help"></p>
+        <label class="ufield"><span id="u-l"></span><input type="url" id="u-url" placeholder="https://www.youtube.com/watch?v=…  /  https://…" autocomplete="off"></label>
+        <label class="ufield"><span id="u-nl"></span><input type="text" id="u-note" autocomplete="off"></label>
+        <div class="row"><button type="button" class="btn primary" id="u-go" disabled></button><span class="hint" id="u-hint"></span></div>
+        <div class="uq"><b id="u-qh"></b><div class="empty" id="u-qe"></div></div>
+      </section>
+      <section class="ipane" data-ipane="build" hidden>
+        <p class="ihelp" id="b-help"></p>
+        <ol class="bsteps" id="b-steps"></ol>
+        <div class="row"><button type="button" class="btn primary" id="b-go"></button></div>
+        <div class="bfrom" id="b-from" hidden></div>
+      </section>
+      <section class="ipane" data-ipane="item">
+      <p class="ihelp" id="i-help"></p>
       <textarea id="txt" spellcheck="false" aria-label="item text"></textarea>
       <div class="row">
         <button type="button" class="btn primary" id="go"></button>
@@ -119,14 +162,21 @@ h1{margin:0 0 4px;font-family:var(--f-display);font-size:22px;text-wrap:balance}
       </div>
       <div class="samples" id="samples"></div>
       <div id="msg"></div>
+      </section>
     </div>
     <div class="sum" id="sum"></div>
   </div>
   <div class="mods" id="mods"></div>
+  <section class="fb" id="fb" hidden>
+    <h3 id="fb-h"></h3>
+    <p class="ihelp" id="fb-help"></p>
+    <textarea id="fb-txt" rows="4"></textarea>
+    <div class="row"><button type="button" class="btn primary" id="fb-go"></button><span class="hint" id="fb-msg"></span></div>
+  </section>
 </div>
 
 <script>
-const S = { lang:'en', index:null, cache:{}, last:null, txt:'' };
+const S = { lang:'en', index:null, cache:{}, last:null, txt:'', itab:'item' };
 try{ const u=new URLSearchParams(location.search).get('lang'); S.lang = u || localStorage.getItem('poe2lang') || 'en'; }catch(e){}
 if(S.lang!=='kr') S.lang='en';
 const KR = () => S.lang==='kr', L = (kr,en) => KR()?kr:en;
@@ -1039,9 +1089,27 @@ function verifyDraft(it, an, d){
 /* ---------- render ---------- */
 function renderStatic(){
   document.documentElement.lang = KR()?'ko':'en';
-  $('#h1').textContent = L('레시피 발굴 — 아이템 분석','Recipe discovery — item analysis');
-  $('#lead').textContent = L('게임에서 아이템 위에 마우스를 올리고 Ctrl+C(가능하면 Ctrl+Alt+C 상세 복사)로 복사해 붙여 넣으세요. 각 옵션이 어디서 왔는지(일반·분열·훼손·에센스)와 티어를 읽고, 제작 순서(레시피 초안)를 만들어요.',
-    'Hover the item in game, press Ctrl+C (Ctrl+Alt+C for the advanced copy) and paste it here. Each modifier is matched to its source (regular, fractured, desecrated, essence) and tier, then turned into a crafting order (recipe draft).');
+  $('#h1').textContent = L('리버스 크래프팅','Reverse crafting');
+  $('#beta').textContent = L('완성도 약 60% · 데이터가 쌓일수록 정교해지는 중','About 60% complete · gets sharper as data grows');
+  const ST=[[L('입력','Input'),L('영상·글 주소, 경매장 아이템, 또는 옵션 조합','Video/post link, a trade item, or a modifier set')],[L('리버스 엔지니어링','Reverse engineering'),L('옵션 출처·티어 분석 → 제작 순서 초안 → 검산','Sources & tiers → draft order → verification')],[L('크래프팅 목록에 올리기','Add to Crafting'),L('결과를 보고 올릴지 정해요','Decide whether to publish it')],[L('아쉬운 점 남기기','Leave feedback'),L('틀린 단계·더 나은 방법을 알려 주세요','Tell us what was off')]];
+  const stage = S.sent ? 3 : S.draft ? 2 : S.last && !S.last.err ? 1 : 0;
+  $('#rsteps').innerHTML = ST.map(([t,d],i)=>`<li class="${i<stage?'done':i===stage?'on':''}"><span><b>${esc(t)}</b>${esc(d)}</span></li>`).join('');
+  const TABS=[['url',L('영상·제작글 주소','Video / post link'),L('준비 중','soon')],['item',L('경매장 아이템','Trade item'),''],['build',L('옵션으로 만들기','From modifiers'),'']];
+  $('#itabs').innerHTML = TABS.map(([k,t,b])=>`<button type="button" role="tab" data-itab="${k}" aria-selected="${S.itab===k}">${esc(t)}${b?`<small>${esc(b)}</small>`:''}</button>`).join('');
+  document.querySelectorAll('[data-ipane]').forEach(p=>p.hidden = p.dataset.ipane!==S.itab);
+  $('#u-help').textContent = L('유튜브 영상이나 커뮤니티 제작글 주소를 넣으면 자막·글을 읽어 레시피로 만들어요(1~5분). 완성되면 크래프팅 목록에 올릴지 고르고, 제작자는 영상·글 작성자로 표시돼요. 회원 전용 · 하루 3회.','Paste a YouTube video or a community crafting post. Its captions or text are turned into a recipe (1–5 min). You then decide whether to publish it; the video or post author is credited. Members only · 3 per day.');
+  $('#u-l').textContent = L('영상·글 주소','Video or post link'); $('#u-nl').textContent = L('메모 (선택) — 어떤 아이템인지, 몇 분부터인지','Note (optional) — which item, from what minute');
+  $('#u-go').textContent = L('분석 요청','Request analysis'); $('#u-hint').textContent = L('로그인·서버가 준비되면 열려요 (먼저 텔레그램 봇으로 운영)','Opens once login and the server are ready (Telegram bot first)');
+  $('#u-qh').textContent = L('내 요청','My requests'); $('#u-qe').textContent = L('로그인하면 요청한 주소와 진행 상태가 여기에 나와요.','After logging in, your requests and their status appear here.');
+  $('#b-help').textContent = L('속성부여에서 베이스와 원하는 옵션을 고른 뒤 이 화면으로 보내면, 그 조합을 만드는 순서를 찾아요.','Pick a base and the modifiers you want in the Modifiers tab, send them here, and we work out how to make that item.');
+  $('#b-steps').innerHTML = [L('속성부여 탭에서 베이스 고르기','Pick a base in the Modifiers tab'),L('접두·접미 옵션과 티어 고르기','Choose prefixes, suffixes and tiers'),L('"리버스 크래프팅으로 보내기" 누르기','Press "Send to reverse crafting"')].map(x=>`<li>${esc(x)}</li>`).join('');
+  $('#b-go').textContent = L('속성부여에서 옵션 고르기 →','Choose modifiers in the Modifiers tab →');
+  $('#fb-h').textContent = L('결과에서 아쉬운 점','What was off in this result?');
+  $('#fb-help').textContent = L('틀린 단계, 영상과 다른 순서, 더 싼 방법 등을 적어 주세요. 다음 분석에 반영해요.','Wrong steps, a different order from the video, a cheaper way — anything helps.');
+  $('#fb-txt').placeholder = L('예: 3번 단계는 절사의 징조보다 좌측 말소의 징조가 싸요','e.g. step 3 is cheaper with a Sinistral Erasure than a Whittling omen');
+  $('#fb-go').textContent = L('보내기','Send');
+  $('#lead').textContent = L('완성된 아이템에서 거꾸로 제작 순서를 찾아요. 영상·제작글, 경매장 아이템, 원하는 옵션 조합 중 하나로 시작하세요.','Work backwards from a finished item to its crafting order. Start from a video or post, a trade item, or the modifier set you want.');
+  $('#i-help').textContent = L('게임에서 아이템 위에 마우스를 올리고 Ctrl+C(가능하면 Ctrl+Alt+C 상세 복사)로 복사해 붙여 넣으세요. 각 옵션이 어디서 왔는지(일반·분열·훼손·에센스)와 티어를 읽고, 제작 순서(레시피 초안)를 만들어요.','Hover the item in game, press Ctrl+C (Ctrl+Alt+C for the advanced copy) and paste it here. Each modifier is matched to its source (regular, fractured, desecrated, essence) and tier, then turned into a crafting order (recipe draft).');
   $('#txt').placeholder = L('아이템 텍스트를 여기에 붙여 넣기','Paste item text here');
   $('#go').textContent = L('분석','Analyse'); $('#clr').textContent = L('지우기','Clear');
   $('#hint').textContent = L('붙여 넣으면 바로 분석해요','Analyses as soon as you paste');
@@ -1080,7 +1148,7 @@ function render(){
 }
 
 async function run(){
-  await S.ready;
+  await S.ready; S.draft=null; S.sent=false; $('#fb').hidden=true;
   const txt = $('#txt').value; if(!txt.trim()){ S.last=null; render(); return; }
   if(!S.index) [S.index, S.craft] = await Promise.all([fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json())]);
   if(!S.priority) S.priority = await fetch('data/priority.json').then(r=>r.json()).catch(()=>null);
@@ -1132,12 +1200,18 @@ Item Level: 82
 ];
 
 $('#go').addEventListener('click', run);
+$('#itabs').addEventListener('click', e=>{ const b=e.target.closest('[data-itab]'); if(!b) return; S.itab=b.dataset.itab; renderStatic(); });
+$('#b-go').addEventListener('click', ()=>{ try{ if(parent!==window){ parent.location.hash='builder'; return; } }catch(_){} location.href='builder.html'; });
+// feedback: kept on this device until the server exists (사용자 2026-11-11 기획 — 결과의 아쉬운 점 작성 요청)
+$('#fb-go').addEventListener('click', ()=>{ const t=$('#fb-txt').value.trim(); if(!t) return; try{ const k='poe2r:feedback', a=JSON.parse(localStorage.getItem(k)||'[]'); a.unshift({at:Date.now(), text:t.slice(0,2000), draft:S.draft?.id||null, item:($('#txt').value||'').slice(0,4000)}); localStorage.setItem(k, JSON.stringify(a.slice(0,50))); }catch(_){}
+  $('#fb-txt').value=''; $('#fb-msg').textContent=L('고마워요! 이 기기에 저장했어요 (서버가 열리면 함께 전송돼요).','Thanks! Saved on this device; it will be sent once the server is live.'); });
 $('#mods').addEventListener('click', e=>{
   if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const mp=+($('#mp')?.value||0); const r = makeDraft(S.last.it, S.last.an, {market: mp>0?mp:0}); S.draft = r; S.check = verifyDraft(S.last.it, S.last.an, r); showCheck(); return; }
   if(e.target.closest('#send') && S.draft){ const r=S.draft;
     try{ const k='poe2r:drafts', a=JSON.parse(localStorage.getItem(k)||'[]').filter(x=>x.id!==r.id); a.unshift(r); localStorage.setItem(k, JSON.stringify(a.slice(0,12))); }catch(_){}
     const inShell = window.parent && window.parent!==window;
     if(inShell){ try{ window.parent.postMessage({type:'poe2-draft', recipe:r}, '*'); }catch(_){} }
+    S.sent=true; $('#fb').hidden=false; renderStatic();
     $('#mkmsg').innerHTML = `<span class="ok">${inShell ? L(`초안 ${r.nodes.length}단계를 레시피 탭에 올렸어요.`,`Draft with ${r.nodes.length} steps added to Recipes.`) : L(`초안 ${r.nodes.length}단계를 저장했어요. 레시피 탭에서 확인하세요.`,`Draft with ${r.nodes.length} steps saved. Open the Recipes tab to see it.`)}</span>`; }
 });
 function showCheck(){
@@ -1154,6 +1228,7 @@ $('#txt').addEventListener('paste', ()=>{ S.recIdx=null; setTimeout(run, 0); });
 $('#samples').addEventListener('change', e=>{ if(e.target.id!=='recs' || e.target.value==='') return; const x=S.recSamples[+e.target.value]; S.recIdx=+e.target.value; S.fromRecipe=x.id; $('#txt').value=x.text; run(); });
 fetch('data/samples.json').then(r=>r.ok?r.json():{samples:[]}).then(d=>{ S.recSamples=d.samples||[]; renderStatic(); }).catch(()=>{});
 $('#samples').addEventListener('click', e=>{ const b=e.target.closest('[data-sample]'); if(!b) return; $('#txt').value=SAMPLES[+b.dataset.sample].t; run(); });
+window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-reverse-in' && typeof d.text==='string'){ S.itab='build'; $('#txt').value=d.text; $('#b-from').hidden=false; $('#b-from').textContent=L('속성부여에서 받은 옵션 조합을 분석했어요 — 오른쪽 요약과 아래 초안을 확인하세요.','Analysed the modifier set from the Modifiers tab — see the summary and draft below.'); run(); } });
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
 window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost});
 render();
