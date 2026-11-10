@@ -1006,7 +1006,7 @@ function cardHTML(r){
   a.final.forEach(m=>{ const k=(m.g.t[0][5]||'').match(/Explicit (.+?) Modifier magnitudes/i); const v=(m.txt.match(/(\d+)(?:—(\d+))?\)?%/)||[]); if(k && MT[k[1].toLowerCase()] && (v[2]||v[1])) mg[MT[k[1].toLowerCase()]]={v:+(v[2]||v[1]), gi:m.gi}; });
   const boosted = m => { const t=Object.keys(mg).find(t=>m.g.tg.includes(t) && mg[t].gi!==m.gi && m.g.s!=='x'); return t ? qualBoost(m.txt, mg[t].v) : m.txt; };
   const ml = a.final.map(m=>`<div class="tt-mod ${m.fr?'fr':''} ${m.des?'desm':''} ${m.ess?'essm':''}"><span class="tier ${m.g.g}">${esc(m.tag)}</span>${esc(boosted(m))}</div>`).join('');
-  return `<h3 class="ctitle">${esc(featureOf(r))}</h3><div class="tt"><div class="tt-head"><div class="tt-name">${esc(KR()?b.kr:b.en)}</div></div><div class="tt-body">
+  return `<div class="tt"><div class="tt-head"><div class="tt-name">${esc(KR()?b.kr:b.en)}</div></div><div class="tt-body">
       ${b.img?`<div class="tt-art"><img src="${b.img}" alt=""></div>`:''}
       <div class="tt-prop">${esc(clsName(r))}</div>${a.qual?.v?`<div class="tt-prop">${L('퀄리티','Quality')}: <b>+${a.qual.v}%</b></div>`:''}<div class="tt-prop">${L('아이템 레벨','Item Level')}: <b>${r.ilvl}</b></div>
       <div class="tt-sep"></div>${ml}</div></div>
@@ -1322,7 +1322,7 @@ function detailHTML(r){
     return `<button type="button" class="seg" data-seg="${esc(ph.id)}" style="flex-grow:${items.length}" title="${esc(tx(ph))}"><span class="fill"></span></button>`; }).join('');
   return `<div class="dhead" data-dhead><div class="dtop">
       <button type="button" class="btn back" data-act="back" aria-label="${esc(L('목록으로','Back to list'))}">←</button>
-      <div class="dtitle"><h1>${titleHTML(r)}</h1>
+      <div class="dtitle"><h1><span class="tbase">${esc(baseName(r))}</span></h1>
         <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan?`<button type="button" class="btn" data-share="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>`:''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${budgetTag(r)}${leagueBadge(r, old)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
       <div class="acts"><button type="button" class="btn" data-act="link">${L('링크 복사','Copy link')}</button><button type="button" class="btn" data-act="pdf">${L('PDF 다운로드','Download PDF')}</button>
         <button type="button" class="btn" disabled title="${esc(L('준비 중','Coming soon'))}">${L('에뮬레이터에서 따라하기','Follow in emulator')}</button>
@@ -1900,7 +1900,7 @@ async function analyze(){
   const hits = S.recipes.filter(r=>r.cls===cls).map(r=>{ const tg=analyse(r).final.map(m=>m.g);   // match by modifier family so essence and normal life count as the same
     const ov=tg.filter(g=>found.some(f=>f.g.f.some(x=>g.f.includes(x)))).length; return {r, ov, n:tg.length}; }).sort((a,b)=>b.ov-a.ov);
   $('#d-res').innerHTML = `<div class="ml"><b>${esc(bname)}</b> · ${L('인식한 옵션','Recognised modifiers')} ${found.length}</div><div class="ml">${found.map(f=>`<span class="ok">✓ ${esc(f.txt)}</span>`).join('')||'—'}</div>`
-    + (hits.length ? hits.map(h=>`<button type="button" class="hit" data-go="${h.r.id}"><span>${esc(h.r.title[S.lang]||h.r.title.en)}</span><span class="ml">${L(`겹치는 목표 ${h.ov}/${h.n}`,`${h.ov}/${h.n} targets match`)}</span></button>`).join('')
+    + (hits.length ? hits.map(h=>`<button type="button" class="hit" data-go="${h.r.id}"><span>${esc(baseName(h.r))} · ${esc(tx(h.r.author))}</span><span class="ml">${L(`겹치는 목표 ${h.ov}/${h.n}`,`${h.ov}/${h.n} targets match`)}</span></button>`).join('')
        : `<div class="ml">${L('이 종류의 레시피가 아직 없어요. 레시피를 요청할 수 있어요.','No recipes for this item type yet. You can request one.')}</div>`);
   $('#d-req').disabled = !found.length;
 }
