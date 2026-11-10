@@ -1,0 +1,2390 @@
+{
+ "id": "absent-amulet-video-v2",
+ "recipe": "absent-amulet-video-v2",
+ "cls": "Amulets",
+ "base": "Absent Amulet",
+ "ilvl": 82,
+ "note": "SL 부재 목걸이(jr6-YLMJsC8) — 정신력 50 분열 + 잡옵 → 카오스 오브(주문 +3) → 좌측 찬미 + 엑잘 → 좌측 결정화 + 균열의 에센스 → 쇳소리 기폭제 40% → 검은 피 + 보존된 빗장뼈 → 공개 → 절사 + 완벽한 카오스 오브 → (좋은 접두면) 빛의 징조 + 검은 피 빗장뼈 반복 / (둘 다 아니면) 빛의 징조 → 좌측 결정화 + 심연의 에센스(징표) → 접두 엑잘 → 징표 훼손 → 공개. 하이엔드 = 영상(접두 1티어, 공개 뒤 잡옵 접두는 절사 돌리기), 밸런스 = 접두 1~2티어, 공개 뒤 잡옵 접두는 완벽한 강화의 에센스.",
+ "params": {
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  },
+  "pT": {
+   "kr": "접두 두번째 옵션",
+   "en": "Second prefix",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "v": 1,
+    "pT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "v": 2,
+    "pT": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "v": 2,
+    "pT": 2
+   },
+   "desc": {
+    "kr": "접두 1~2티어, 모든 스킬의 퀄리티가 먼저 뜨면 완벽한 강화의 에센스로 마무리",
+    "en": "T1–2 prefix; with skill quality first, finish with Perfect Essence of Enhancement"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "v": 1,
+    "pT": 1
+   },
+   "desc": {
+    "kr": "영상: 접두 1티어, 모든 스킬의 퀄리티가 먼저 뜨면 접두는 절사 돌리기",
+    "en": "Video: T1 prefix; with skill quality first, Whittling for the prefix"
+   }
+  }
+ ],
+ "tags": {
+  "spirit": {
+   "gi": 28,
+   "tmax": 1
+  },
+  "spell": {
+   "gi": 17,
+   "tmax": 1
+  },
+  "mq": {
+   "gi": 81
+  },
+  "enh": {
+   "gi": 74
+  },
+  "markP": {
+   "gi": 79
+  },
+  "markS": {
+   "gi": 80
+  },
+  "kq": {
+   "gi": 46
+  },
+  "esf": {
+   "gi": 13,
+   "tmax": "$pT"
+  },
+  "esp": {
+   "gi": 16,
+   "tmax": "$pT"
+  },
+  "sd": {
+   "gi": 31,
+   "tmax": "$pT"
+  },
+  "lf": {
+   "gi": 9,
+   "tmax": "$pT"
+  },
+  "gp": {
+   "anyOf": [
+    "esf",
+    "esp",
+    "sd",
+    "lf"
+   ]
+  },
+  "keepT": {
+   "anyOf": [
+    "spell",
+    "kq"
+   ]
+  },
+  "mark": {
+   "anyOf": [
+    "markP",
+    "markS"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "spell"
+   },
+   {
+    "has": "kq"
+   },
+   {
+    "any": [
+     {
+      "has": "gp"
+     },
+     {
+      "has": "enh"
+     }
+    ]
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "spirit",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "esp",
+     "tmax": 1
+    },
+    {
+     "tag": "spell",
+     "tmax": 1
+    },
+    {
+     "tag": "kq",
+     "des": true
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "spirit",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "esp",
+     "tmax": 2
+    },
+    {
+     "tag": "spell",
+     "tmax": 1
+    },
+    {
+     "tag": "kq",
+     "des": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 40,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "spirit",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "정신력 +50 분열 + 잡옵 1개 (부재 목걸이)",
+    "en": "Fractured +50 Spirit + one junk line (Absent Amulet)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "k1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "k1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 첫번째 옵션",
+    "en": "First suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "spell"
+     },
+     "to": "q1",
+     "res": "ok"
+    },
+    {
+     "to": "k1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "spell"
+   ]
+  },
+  {
+   "id": "q1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 잡옵",
+    "en": "A junk prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "q2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "q2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "잡옵을 지우고 최대 퀄리티",
+    "en": "The junk goes for max quality"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "q3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Breach",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% to Maximum Quality (crafted)"
+    }
+   ],
+   "ess": "mq",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "q3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "quality",
+   "goal": {
+    "kr": "시전 퀄리티 40%",
+    "en": "Caster quality 40%"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "edges": [
+    {
+     "to": "d1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Sibilant_Catalyst",
+   "showText": [
+    {
+     "kr": "쇳소리 기폭제 40개",
+     "en": "40 Sibilant Catalysts"
+    }
+   ],
+   "count": 40
+  },
+  {
+   "id": "d1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 두번째 옵션(훼손)",
+    "en": "Second suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "dR"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Collarbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_the_Blackblooded"
+   ]
+  },
+  {
+   "id": "dR",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "kq"
+     },
+     "to": "w1",
+     "res": "ok"
+    },
+    {
+     "to": "w1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 스킬의 퀄리티 +(3—5)%",
+     "en": "+(3—5)% to Quality of all Skills",
+     "m": "d",
+     "tags": [
+      "kq"
+     ]
+    }
+   ],
+   "want": "kq",
+   "show": [
+    "kq"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "w1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "최대 퀄리티를 지우고 접두 두번째 옵션",
+    "en": "Max quality out, second prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "pL",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "dR2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "kq"
+        }
+       }
+      ]
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "has": "gp"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "param": {
+         "v": 1
+        }
+       }
+      ]
+     },
+     "to": "tP",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "has": "kq"
+     },
+     "to": "eE",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "gp"
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "gp"
+     },
+     "to": "dS",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markP"
+     },
+     "to": "pB",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "pY",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     },
+     "to": "pX",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markS"
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "to": "pA",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 (45—50)% 증가",
+     "en": "(45—50)% increased maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 스킬의 퀄리티 +(3—5)%",
+     "en": "+(3—5)% to Quality of all Skills",
+     "m": "d",
+     "tags": [
+      "kq"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "esf",
+    "esp",
+    "sd",
+    "lf"
+   ],
+   "omens": [
+    "Omen_of_Whittling"
+   ]
+  },
+  {
+   "id": "pA",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "잡옵을 지우고 심연의 군주의 징표",
+    "en": "The junk goes for the Mark of the Abyssal Lord"
+   },
+   "label": {
+    "kr": "심연",
+    "en": "Abyss"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "dR2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "kq"
+        }
+       }
+      ]
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "has": "gp"
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "param": {
+         "v": 1
+        }
+       }
+      ]
+     },
+     "to": "tP",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "kq"
+     },
+     "to": "eE",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "gp"
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "gp"
+     },
+     "to": "dS",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markP"
+     },
+     "to": "pB",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "pY",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     },
+     "to": "pX",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markS"
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "to": "pA",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "markS"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Abyss",
+   "showText": [
+    {
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
+    }
+   ],
+   "ess": "markS",
+   "alt": "markP",
+   "mark": true,
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "pB",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 징표 훼손",
+    "en": "Desecrate the prefix Mark"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "pL"
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "dR2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "kq"
+        }
+       }
+      ]
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "has": "gp"
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "param": {
+         "v": 1
+        }
+       }
+      ]
+     },
+     "to": "tP",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "kq"
+     },
+     "to": "eE",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "gp"
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "gp"
+     },
+     "to": "dS",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markP"
+     },
+     "to": "pB",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "pY",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     },
+     "to": "pX",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markS"
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "to": "pA",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Preserved_Collarbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "fromMark": true
+  },
+  {
+   "id": "pL",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    8
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "dR2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "kq"
+        }
+       }
+      ]
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "has": "gp"
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "param": {
+         "v": 1
+        }
+       }
+      ]
+     },
+     "to": "tP",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "kq"
+     },
+     "to": "eE",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "gp"
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "gp"
+     },
+     "to": "dS"
+    },
+    {
+     "if": {
+      "has": "markP"
+     },
+     "to": "pB",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "pY",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     },
+     "to": "pX",
+     "port": "bottom"
+    },
+    {
+     "if": {
+      "has": "markS"
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "to": "pA"
+    }
+   ]
+  },
+  {
+   "id": "pX",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "dR2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "kq"
+        }
+       }
+      ]
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "has": "gp"
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "param": {
+         "v": 1
+        }
+       }
+      ]
+     },
+     "to": "tP",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "kq"
+     },
+     "to": "eE",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "gp"
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "gp"
+     },
+     "to": "dS",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "markP"
+     },
+     "to": "pB",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "pY",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     },
+     "to": "pX",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markS"
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "to": "pA",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 (45—50)% 증가",
+     "en": "(45—50)% increased maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "esf",
+    "esp",
+    "sd",
+    "lf"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "pY",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    9
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "dR2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "kq"
+        }
+       }
+      ]
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "has": "gp"
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "param": {
+         "v": 1
+        }
+       }
+      ]
+     },
+     "to": "tP",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "kq"
+     },
+     "to": "eE",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "gp"
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "dM"
+    },
+    {
+     "if": {
+      "has": "gp"
+     },
+     "to": "dS",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markP"
+     },
+     "to": "pB",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "pY",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     },
+     "to": "pX",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markS"
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "to": "pA",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 (45—50)% 증가",
+     "en": "(45—50)% increased maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "markS"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "esf",
+    "esp",
+    "sd",
+    "lf"
+   ]
+  },
+  {
+   "id": "dS",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 두번째 옵션(훼손)",
+    "en": "Second suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "dR2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 (45—50)% 증가",
+     "en": "(45—50)% increased maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Collarbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_the_Blackblooded"
+   ]
+  },
+  {
+   "id": "dM",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    10
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 징표 훼손",
+    "en": "Desecrate the suffix Mark"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "dR2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 (45—50)% 증가",
+     "en": "(45—50)% increased maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Collarbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_the_Blackblooded"
+   ],
+   "fromMark": true
+  },
+  {
+   "id": "dR2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "mq"
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "pL",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "dR2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "kq"
+        }
+       }
+      ]
+     },
+     "to": "pL",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "has": "gp"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "kq"
+       },
+       {
+        "param": {
+         "v": 1
+        }
+       }
+      ]
+     },
+     "to": "tP",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "has": "kq"
+     },
+     "to": "eE",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "gp"
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "gp"
+     },
+     "to": "dS",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markP"
+     },
+     "to": "pB",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       },
+       {
+        "has": "markS"
+       }
+      ]
+     },
+     "to": "pY",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     },
+     "to": "pX",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "markS"
+     },
+     "to": "dM",
+     "hide": true
+    },
+    {
+     "to": "pA",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 (45—50)% 증가",
+     "en": "(45—50)% increased maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 스킬의 퀄리티 +(3—5)%",
+     "en": "+(3—5)% to Quality of all Skills",
+     "m": "d",
+     "tags": [
+      "kq"
+     ]
+    }
+   ],
+   "want": "kq",
+   "show": [
+    "kq"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "tP",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    12
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "gp"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "tP",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 (45—50)% 증가",
+     "en": "(45—50)% increased maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 스킬의 퀄리티 +(3—5)%",
+     "en": "+(3—5)% to Quality of all Skills",
+     "m": "d",
+     "tags": [
+      "kq"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "esf",
+    "esp",
+    "sd",
+    "lf"
+   ],
+   "trim": {
+    "side": "p",
+    "keep": "keepT"
+   }
+  },
+  {
+   "id": "eE",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    12
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "잡옵을 지우고 제작 옵션",
+    "en": "The junk goes for the crafted modifier"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "일반 방어도, 회피, 에너지 보호막 (20—30)% 증가 (완벽한 강화의 에센스)",
+     "en": "(20—30)% increased Global Defences (Perfect Essence of Enhancement)",
+     "m": "c",
+     "tags": [
+      "enh"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 스킬의 퀄리티 +(3—5)%",
+     "en": "+(3—5)% to Quality of all Skills",
+     "m": "d",
+     "tags": [
+      "kq"
+     ]
+    }
+   ],
+   "cur": "Perfect_Essence_of_Enhancement",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "일반 방어도, 회피, 에너지 보호막 (20—30)% 증가 (제작 옵션)",
+     "en": "(20—30)% increased Global Defences (crafted)"
+    }
+   ],
+   "ess": "enh",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    13
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

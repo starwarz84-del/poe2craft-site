@@ -16,7 +16,7 @@ const tagView={}; for(const [k,t] of Object.entries(graph.tags||{})){ if(t.anyOf
   tagView[k]={s:g.g, sec:g.s, tmax:t.tmax, gi:D.groups.indexOf(g), tiers:g.t.slice(0,5).map(x=>[x[4],x[5]])}; }
 const out={id:graph.id, recipe:graph.recipe, runs:N, generated:new Date().toISOString().slice(0,10), prices:prices.fetched||null,
   graph:{tags:tagView, finals:graph.finals, finalItem:graph.finalItem, basePrice:graph.basePrice, params:graph.params, groups:graph.groups, start:graph.start, loops:graph.loops, versions:graph.versions,
-    nodes:graph.nodes.map(n=>({id:n.id, kind:n.kind, act:n.act, cur:n.cur, curIf:n.curIf?.map(c=>c.cur), omens:n.omens, trim:!!n.trim, group:n.group, pos:n.pos, label:n.label,
+    nodes:graph.nodes.map(n=>({id:n.id, kind:n.kind, act:n.act, cur:n.cur, curIf:n.curIf?.map(c=>c.cur), omens:n.omens, trim:n.trim?{side:n.trim.side}:undefined, group:n.group, pos:n.pos, label:n.label,
       param:n.param, options:n.options, optStyle:n.optStyle, item:n.item, curRows:n.curRows, target:n.target, pAll:n.pAll, ask:n.ask, goal:n.goal, show:n.show, showText:n.showText, rune:n.rune, showIf:n.showIf, over:n.over, once:n.once, skipNote:n.skipNote, skipLabel:n.skipLabel, skipHide:n.skipHide, gapBefore:n.gapBefore, variant:n.variant, note:n.note, attach:n.attach, edgeLabels:n.edgeLabels, next:n.next, skipTo:n.skipTo,
       edges:(n.edges||[]).map(e=>({to:e.to, label:e.label, lost:e.lost, res:e.res, dash:e.dash, p:e.p, hide:e.hide, port:e.port, enter:e.enter, lane:e.lane, turn:e.turn, when:pOnly(e.if)}))}))},
   strategies:[]};
