@@ -22,6 +22,12 @@ for _t in ('bal','ess'): _grade('ragna-ashot-bow','ragna-ashot-bow-v2',_t,_bow)
 # 2. TheSaneExile 저항 벨트 — Balance = video (T1 life + T1–2 lightning res), Essential = both T1–3
 def _belt(r, t):
     r['start']['mods'][0]['tmax'] = 1 if t=='bal' else 3; r['start']['mods'][1]['tmax'] = 2 if t=='bal' else 3
+    # 사용자 확정 2026-11-10: finish the two empty prefixes with Greater Exaltation + Greater Exalted Orb (keep whatever comes)
+    _node(r,'b4')['br']=K('울라만 저항 → 접두 마무리, 실패: 빛의 징조 + 소멸의 오브로 지우고 다시 훼손','Ulaman resist → finish the prefixes; miss: Light + Annulment and desecrate again')
+    r['nodes']=[n for n in r['nodes'] if n['id']!='b5']+[
+      {'id':'b5','phase':'pre','do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],'target':{'junk':['p','p']},
+       'note':K('접두 2자리 랜덤 옵션 — 결과 그대로.','The two empty prefixes: random lines, keep whatever comes.')},
+      {'id':'b6','phase':'fin','do':'note','note':K('완성.','Done.')}]
 for _t in ('bal','ess'): _grade('sane-resist-belt','sane-resist-belt-v2',_t,_belt)
 
 # 3. Diztoh 가성비 양손 둔기 — Balance = video (Perfect Transmutation for T1–2 hybrid), Essential = buy a T1–4 hybrid magic base (정책 18) + Greater Exalt
@@ -39,8 +45,12 @@ for _t in ('bal','ess'): _grade('diztoh-budget-mace','diztoh-budget-mace-v2',_t,
 
 # 4. LilBotQ 가성비 장화 — Balance = video, Essential = T1–2 movement speed + T1–3 cold res bought, lightning res T1–4
 def _boots(r, t):
+    lt=2
     if t=='ess':
-        r['start']['mods'][0]['tmax']=2; r['start']['mods'][1]['tmax']=3; _node(r,'b5')['target']['reveal']['tmax']=4
+        r['start']['mods'][0]['tmax']=2; r['start']['mods'][1]['tmax']=3; lt=4
+    # 사용자 확정 2026-11-10: the reveal also stops on a chaos dual resist (3 kinds) or T1–3 chaos res — far likelier, cheaper
+    b5=_node(r,'b5'); b5['target']['reveal']={'anyOf':[{'gi':3,'tmax':lt},{'gi':23},{'gi':24},{'gi':33},{'gi':4,'tmax':3}]}
+    b5['br']=K('번개 저항·카오스 듀얼 저항·카오스 저항(1~3티어) 중 하나 → 완성, 실패: 빛의 징조 + 소멸의 오브로 다시 훼손','Lightning res, a chaos dual res or T1–3 chaos res → done; miss: Light + Annulment and desecrate again')
 for _t in ('bal','ess'): _grade('lilbotq-budget-boots','lilbotq-budget-boots-v2',_t,_boots)
 
 # 5. Icesly 가성비 완드 — Balance = video tiers, Essential = T1–2 +5 lightning, looser prefix targets

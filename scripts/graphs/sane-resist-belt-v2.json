@@ -4,7 +4,7 @@
  "cls": "Belts",
  "base": "Fine Belt",
  "ilvl": 81,
- "note": "TheSaneExile 저항 벨트(영상 방식) — 생명력 + 번개 저항 매직 구입 → 상위 폐허의 에센스(카오스 저항) → 우측 강령술 + 군주의 징조(울라만) + 보존된 빗장뼈 → 공개(번개 및 카오스 저항, 심연의 메아리), 실패 시 빛의 징조 + 소멸의 오브. 접두 2자리는 비워 둠. 밸런스 = 영상(생명력 1티어·번개 저항 1~2티어), 에센셜 = 둘 다 1~3티어 베이스.",
+ "note": "TheSaneExile 저항 벨트(영상 방식) — 생명력 + 번개 저항 매직 구입 → 상위 폐허의 에센스(카오스 저항) → 우측 강령술 + 군주의 징조(울라만) + 보존된 빗장뼈 → 공개(번개 및 카오스 저항, 심연의 메아리), 실패 시 빛의 징조 + 소멸의 오브 → 상위 찬미의 징조 + 상위 엑잘로 접두 2자리 랜덤 마무리(사용자 확정 2026-11-10). 밸런스 = 영상(생명력 1티어·번개 저항 1~2티어), 에센셜 = 둘 다 1~3티어 베이스.",
  "params": {
   "lT": {
    "kr": "생명력",
@@ -101,6 +101,9 @@
     "has": "ul"
    },
    {
+    "full": "p"
+   },
+   {
     "full": "s"
    }
   ]
@@ -149,6 +152,14 @@
      "tmax": 1
     },
     {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
      "tag": "lres",
      "tmax": 2
     },
@@ -170,6 +181,14 @@
     {
      "tag": "life",
      "tmax": 3
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true
     },
     {
      "tag": "lres",
@@ -428,7 +447,7 @@
      "if": {
       "added": "ul"
      },
-     "to": "ok",
+     "to": "b5",
      "res": "ok"
     },
     {
@@ -515,12 +534,90 @@
    ]
   },
   {
+   "id": "b5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째·세번째 옵션",
+    "en": "Second and third prefix options"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "생명력 최대치",
+     "en": "Max life",
+     "m": "n",
+     "tags": [
+      "life"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항",
+     "en": "Lightning res",
+     "m": "n",
+     "tags": [
+      "lres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "카오스 저항 (제작 옵션)",
+     "en": "Chaos res (crafted)",
+     "m": "n",
+     "tags": [
+      "cres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 및 카오스 저항 (울라만)",
+     "en": "Lightning and chaos res (Ulaman)",
+     "m": "n",
+     "tags": [
+      "ul"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 2줄",
+     "en": "Two random lines",
+     "m": "j"
+    }
+   ],
+   "cur": "Greater_Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 2줄 — 결과 그대로",
+     "en": "Two random lines — keep whatever comes"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ]
+  },
+  {
    "id": "ok",
    "kind": "done",
    "group": "main",
    "pos": [
     0,
-    4
+    5
    ],
    "label": {
     "kr": "완성",

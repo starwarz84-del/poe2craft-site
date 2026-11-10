@@ -4,7 +4,7 @@
  "cls": "Boots_int",
  "base": "Sandsworn Sandals",
  "ilvl": 82,
- "note": "LilBotQ 가성비 장화(영상 방식) — 이동 속도 + 냉기 저항 매직 구입 → 상위 절연의 에센스(화염 저항) → 우측 강령술 + 보존된 갈비뼈 → 상위 찬미 + 상위 엑잘(접두 2줄 결과 그대로) → 공개(번개 저항, 심연의 메아리), 실패 시 빛의 징조 + 소멸의 오브로 다시 훼손(접두는 그대로). 밸런스 = 영상(이동 속도·냉기 저항 1티어, 번개 저항 1~2티어), 에센셜 = 이동 속도 1~2티어·냉기 1~3티어·번개 1~4티어.",
+ "note": "LilBotQ 가성비 장화(영상 방식) — 이동 속도 + 냉기 저항 매직 구입 → 상위 절연의 에센스(화염 저항) → 우측 강령술 + 보존된 갈비뼈 → 상위 찬미 + 상위 엑잘(접두 2줄 결과 그대로) → 공개(번개 저항 또는 카오스 듀얼 저항 3종·카오스 저항 1~3티어도 성공 — 사용자 확정 2026-11-10, 심연의 메아리), 실패 시 빛의 징조 + 소멸의 오브로 다시 훼손(접두는 그대로). 밸런스 = 영상(이동 속도·냉기 저항 1티어, 번개 저항 1~2티어), 에센셜 = 이동 속도 1~2티어·냉기 1~3티어·번개 1~4티어.",
  "params": {
   "mT": {
    "kr": "이동 속도",
@@ -112,12 +112,34 @@
   "lres": {
    "gi": 3,
    "tmax": "$rT"
+  },
+  "goodS": {
+   "anyOf": [
+    "lres",
+    {
+     "gi": 23
+    },
+    {
+     "gi": 24
+    },
+    {
+     "gi": 33
+    },
+    {
+     "gi": 4,
+     "tmax": 3
+    }
+   ],
+   "label": {
+    "kr": "번개 저항 / 카오스 듀얼 저항 / 카오스 저항",
+    "en": "Lightning res / chaos dual res / chaos res"
+   }
   }
  },
  "require": {
   "all": [
    {
-    "has": "lres"
+    "has": "goodS"
    },
    {
     "full": "p"
@@ -187,8 +209,11 @@
      "tmax": 1
     },
     {
-     "tag": "lres",
-     "tmax": 2
+     "side": "s",
+     "label": {
+      "kr": "번개 저항 / 카오스 듀얼 저항 / 카오스 저항",
+      "en": "Lightning / chaos dual / chaos res"
+     }
     }
    ]
   },
@@ -218,8 +243,11 @@
      "tmax": 1
     },
     {
-     "tag": "lres",
-     "tmax": 4
+     "side": "s",
+     "label": {
+      "kr": "번개 저항 / 카오스 듀얼 저항 / 카오스 저항",
+      "en": "Lightning / chaos dual / chaos res"
+     }
     }
    ]
   }
@@ -544,7 +572,7 @@
    "edges": [
     {
      "if": {
-      "added": "lres"
+      "added": "goodS"
      },
      "to": "ok",
      "res": "ok"
@@ -590,20 +618,45 @@
     },
     {
      "s": "s",
-     "kr": "번개 저항",
-     "en": "Lightning res",
+     "kr": "번개 저항 / 카오스 듀얼 저항 / 카오스 저항",
+     "en": "Lightning / chaos dual / chaos res",
      "m": "n",
      "tags": [
-      "lres"
+      "goodS"
      ]
     }
    ],
-   "want": "lres",
-   "show": [
-    "lres"
-   ],
+   "want": "goodS",
    "omens": [
     "Omen_of_Abyssal_Echoes"
+   ],
+   "showIf": [
+    {
+     "param": {
+      "rT": 2
+     },
+     "show": [],
+     "showText": [
+      {
+       "s": "s",
+       "kr": "번개 저항 (T1~T2) / 카오스 듀얼 저항 3종 / 카오스 저항 (T1~T3)",
+       "en": "Lightning res (T1–T2) / any chaos dual res / chaos res (T1–T3)"
+      }
+     ]
+    },
+    {
+     "param": {
+      "rT": 4
+     },
+     "show": [],
+     "showText": [
+      {
+       "s": "s",
+       "kr": "번개 저항 (T1~T4) / 카오스 듀얼 저항 3종 / 카오스 저항 (T1~T3)",
+       "en": "Lightning res (T1–T4) / any chaos dual res / chaos res (T1–T3)"
+      }
+     ]
+    }
    ]
   },
   {

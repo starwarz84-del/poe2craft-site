@@ -65,20 +65,22 @@ tags={'life':{'gi':5,'tmax':'$lT'},'lres':{'gi':3,'tmax':'$rT'},'cres':{'gi':40}
 I0=[it('p','생명력 최대치','Max life',['life']),it('s','번개 저항','Lightning res',['lres'])]
 I1=I0+[it('s','카오스 저항 (제작 옵션)','Chaos res (crafted)',['cres'])]
 I2=I1+[UN('s')]; I3=I1+[it('s','번개 및 카오스 저항 (울라만)','Lightning and chaos res (Ulaman)',['ul'])]
+I4=I3+[it('p','랜덤 2줄','Two random lines',None,'j')]
 nodes=[base('b2',{'rar':'magic','mods':['life','lres']},K('생명력 + 번개 저항 매직 허리띠 구입','Buy a magic belt with life + lightning res'),I0),
  act('b2','prep',[0,1],'essence','Greater_Essence_of_Ruin',K('레어로 업그레이드 + 접미 카오스 저항','Upgrade to rare + chaos res suffix'),[st('s','카오스 저항 (제작 옵션)','Chaos res (crafted)')],K('에센스','Essence'),[{'to':'ms'}],I1,ess='cres'),
  mark([0,1.5],'b3',I1),
  act('b3','main',[0,2],'desecrate','Preserved_Collarbone',K('접미 세번째 옵션(훼손)','Third suffix option (desecrated)'),[st('s','울라만 훼손 옵션(미공개)','Ulaman desecration (unrevealed)')],K('훼손','Desecrate'),[{'to':'b4'}],I2,omens=['Omen_of_Dextral_Necromancy','Omen_of_the_Sovereign']),
- act('b4','main',[0,3],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'ul'},'to':'ok','res':'ok'},{'to':'b4x','res':'fail'}],I3,want='ul',show=['ul'],omens=['Omen_of_Abyssal_Echoes']),
+ act('b4','main',[0,3],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'ul'},'to':'b5','res':'ok'},{'to':'b4x','res':'fail'}],I3,want='ul',show=['ul'],omens=['Omen_of_Abyssal_Echoes']),
  annul('b4x',[1,3],[{'to':'b3','port':'right'}]),
- done([0,4])]
+ act('b5','main',[0,4],'exalt','Greater_Exalted_Orb',K('접두 두번째·세번째 옵션','Second and third prefix options'),[st('p','랜덤 2줄 — 결과 그대로','Two random lines — keep whatever comes')],K('엑잘','Exalt'),[{'to':'ok'}],I4,omens=['Omen_of_Greater_Exaltation']),
+ done([0,5])]
 graph('sane-resist-belt-v2','Belts','Fine Belt',81,
-  'TheSaneExile 저항 벨트(영상 방식) — 생명력 + 번개 저항 매직 구입 → 상위 폐허의 에센스(카오스 저항) → 우측 강령술 + 군주의 징조(울라만) + 보존된 빗장뼈 → 공개(번개 및 카오스 저항, 심연의 메아리), 실패 시 빛의 징조 + 소멸의 오브. 접두 2자리는 비워 둠. 밸런스 = 영상(생명력 1티어·번개 저항 1~2티어), 에센셜 = 둘 다 1~3티어 베이스.',
+  'TheSaneExile 저항 벨트(영상 방식) — 생명력 + 번개 저항 매직 구입 → 상위 폐허의 에센스(카오스 저항) → 우측 강령술 + 군주의 징조(울라만) + 보존된 빗장뼈 → 공개(번개 및 카오스 저항, 심연의 메아리), 실패 시 빛의 징조 + 소멸의 오브 → 상위 찬미의 징조 + 상위 엑잘로 접두 2자리 랜덤 마무리(사용자 확정 2026-11-10). 밸런스 = 영상(생명력 1티어·번개 저항 1~2티어), 에센셜 = 둘 다 1~3티어 베이스.',
   {'lT':{'kr':'생명력','en':'Life','values':TV({'1':('1티어','T1'),'3':('1~3티어','T1–3')})},'rT':{'kr':'번개 저항','en':'Lightning res','values':TV({'2':('1~2티어','T1–2'),'3':('1~3티어','T1–3')})}},P,
   {'bal':K('생명력 1티어 + 번개 저항 1~2티어 매직 구입 (영상)','Buy T1 life + T1–2 lightning res (as the video)'),'ess':K('생명력·번개 저항 1~3티어 매직 구입','Buy T1–3 life and lightning res')},
   tags,nodes,LIGHT_LOOP(['b3','b4','b4x'],'접미 세번째 옵션(훼손)','Third suffix (desecrated)'),
-  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'life','tmax':a},{'tag':'lres','tmax':b},{'tag':'cres','tmax':1},{'tag':'ul','tmax':1}]} for v,kr,en,a,b in (('bal','밸런스 옵션','Balance',1,2),('ess','에센셜 옵션','Essential',3,3))],
-  {'quality':20,'sockets':0},{'all':[{'has':'ul'},{'full':'s'}]})
+  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'life','tmax':a},{'side':'p','random':True},{'side':'p','random':True},{'tag':'lres','tmax':b},{'tag':'cres','tmax':1},{'tag':'ul','tmax':1}]} for v,kr,en,a,b in (('bal','밸런스 옵션','Balance',1,2),('ess','에센셜 옵션','Essential',3,3))],
+  {'quality':20,'sockets':0},{'all':[{'has':'ul'},{'full':'p'},{'full':'s'}]})
 
 # ---------- 3. Diztoh 가성비 양손 둔기 ----------
 P={'bal':{'hT':2},'ess':{'hT':4}}
@@ -112,26 +114,27 @@ graph('diztoh-budget-mace-v2','Two_Hand_Maces','Massive Greathammer',82,
 
 # ---------- 4. LilBotQ 가성비 장화 ----------
 P={'bal':{'mT':1,'cT':1,'rT':2},'ess':{'mT':2,'cT':3,'rT':4}}
-tags={'ms':{'gi':12,'tmax':'$mT'},'cold':{'gi':2,'tmax':'$cT'},'fireE':{'gi':41},'lres':{'gi':3,'tmax':'$rT'}}
+tags={'ms':{'gi':12,'tmax':'$mT'},'cold':{'gi':2,'tmax':'$cT'},'fireE':{'gi':41},'lres':{'gi':3,'tmax':'$rT'},
+      'goodS':{'anyOf':['lres',{'gi':23},{'gi':24},{'gi':33},{'gi':4,'tmax':3}],'label':K('번개 저항 / 카오스 듀얼 저항 / 카오스 저항','Lightning res / chaos dual res / chaos res')}}
 I0=[it('p','이동 속도','Movement speed',['ms']),it('s','냉기 저항','Cold res',['cold'])]
 I1=I0+[it('s','화염 저항 (제작 옵션)','Fire res (crafted)',['fireE'])]
 I2=I1+[UN('s')]; I3=I2+[it('p','랜덤 2줄','Two random lines',None,'j')]
-I4=[x for x in I3 if x['kr']!='훼손 옵션(미공개)']+[it('s','번개 저항','Lightning res',['lres'])]
+I4=[x for x in I3 if x['kr']!='훼손 옵션(미공개)']+[it('s','번개 저항 / 카오스 듀얼 저항 / 카오스 저항','Lightning / chaos dual / chaos res',['goodS'])]
 nodes=[base('b2',{'rar':'magic','mods':['ms','cold']},K('이동 속도 + 냉기 저항 매직 모래맹세 샌들 구입','Buy magic Sandsworn Sandals with movement speed + cold res'),I0),
  act('b2','prep',[0,1],'essence','Greater_Essence_of_Insulation',K('레어로 업그레이드 + 접미 화염 저항','Upgrade to rare + fire res suffix'),[st('s','화염 저항 (제작 옵션)','Fire res (crafted)')],K('에센스','Essence'),[{'to':'ms'}],I1,ess='fireE'),
  mark([0,1.5],'b3',I1),
  act('b3','main',[0,2],'desecrate','Preserved_Rib',K('접미 세번째 옵션(훼손)','Third suffix option (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'if':{'full':'p'},'to':'b5'},{'to':'b4'}],I2,omens=['Omen_of_Dextral_Necromancy']),
  act('b4','main',[0,3],'exalt','Greater_Exalted_Orb',K('접두 두번째·세번째 옵션','Second and third prefix options'),[st('p','랜덤 2줄 (에너지 보호막 %·생명력이면 좋음) — 결과 그대로','Two random lines (% energy shield or life is good) — keep whatever comes')],K('엑잘','Exalt'),[{'to':'b5'}],I3,omens=['Omen_of_Greater_Exaltation']),
- act('b5','main',[0,4],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'lres'},'to':'ok','res':'ok'},{'to':'b5x','res':'fail'}],I4,want='lres',show=['lres'],omens=['Omen_of_Abyssal_Echoes']),
+ act('b5','main',[0,4],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'goodS'},'to':'ok','res':'ok'},{'to':'b5x','res':'fail'}],I4,want='goodS',omens=['Omen_of_Abyssal_Echoes'],showIf=[{'param':{'rT':t},'show':[],'showText':[st('s',f'번개 저항 (T1~T{t}) / 카오스 듀얼 저항 3종 / 카오스 저항 (T1~T3)',f'Lightning res (T1–T{t}) / any chaos dual res / chaos res (T1–T3)')]} for t in (2,4)]),
  annul('b5x',[1,4],[{'to':'b3','port':'right'}]),
  done([0,5])]
 graph('lilbotq-budget-boots-v2','Boots_int','Sandsworn Sandals',82,
-  'LilBotQ 가성비 장화(영상 방식) — 이동 속도 + 냉기 저항 매직 구입 → 상위 절연의 에센스(화염 저항) → 우측 강령술 + 보존된 갈비뼈 → 상위 찬미 + 상위 엑잘(접두 2줄 결과 그대로) → 공개(번개 저항, 심연의 메아리), 실패 시 빛의 징조 + 소멸의 오브로 다시 훼손(접두는 그대로). 밸런스 = 영상(이동 속도·냉기 저항 1티어, 번개 저항 1~2티어), 에센셜 = 이동 속도 1~2티어·냉기 1~3티어·번개 1~4티어.',
+  'LilBotQ 가성비 장화(영상 방식) — 이동 속도 + 냉기 저항 매직 구입 → 상위 절연의 에센스(화염 저항) → 우측 강령술 + 보존된 갈비뼈 → 상위 찬미 + 상위 엑잘(접두 2줄 결과 그대로) → 공개(번개 저항 또는 카오스 듀얼 저항 3종·카오스 저항 1~3티어도 성공 — 사용자 확정 2026-11-10, 심연의 메아리), 실패 시 빛의 징조 + 소멸의 오브로 다시 훼손(접두는 그대로). 밸런스 = 영상(이동 속도·냉기 저항 1티어, 번개 저항 1~2티어), 에센셜 = 이동 속도 1~2티어·냉기 1~3티어·번개 1~4티어.',
   {'mT':{'kr':'이동 속도','en':'Movement speed','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'cT':{'kr':'냉기 저항','en':'Cold res','values':TV({'1':('1티어','T1'),'3':('1~3티어','T1–3')})},'rT':{'kr':'번개 저항','en':'Lightning res','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})}},P,
   {'bal':K('이동 속도·냉기 저항 1티어 구입, 번개 저항 1~2티어 (영상)','Buy T1 movement speed + cold res, lightning res T1–2 (as the video)'),'ess':K('이동 속도 1~2티어·냉기 저항 1~3티어 구입, 번개 저항 1~4티어','Buy T1–2 movement speed + T1–3 cold res, lightning res T1–4')},
   tags,nodes,LIGHT_LOOP(['b3','b5','b5x'],'접미 세번째 옵션(훼손)','Third suffix (desecrated)'),
-  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'ms','tmax':a},{'side':'p','random':True},{'side':'p','random':True},{'tag':'cold','tmax':b},{'tag':'fireE','tmax':1},{'tag':'lres','tmax':c}]} for v,kr,en,a,b,c in (('bal','밸런스 옵션','Balance',1,1,2),('ess','에센셜 옵션','Essential',2,3,4))],
-  {'quality':20,'sockets':1},{'all':[{'has':'lres'},{'full':'p'},{'full':'s'}]})
+  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'ms','tmax':a},{'side':'p','random':True},{'side':'p','random':True},{'tag':'cold','tmax':b},{'tag':'fireE','tmax':1},{'side':'s','label':K('번개 저항 / 카오스 듀얼 저항 / 카오스 저항','Lightning / chaos dual / chaos res')}]} for v,kr,en,a,b,c in (('bal','밸런스 옵션','Balance',1,1,2),('ess','에센셜 옵션','Essential',2,3,4))],
+  {'quality':20,'sockets':1},{'all':[{'has':'goodS'},{'full':'p'},{'full':'s'}]})
 
 # ---------- 5. Icesly 가성비 완드 ----------
 P={'bal':{'lT':1,'xT':2,'yT':3},'ess':{'lT':2,'xT':4,'yT':5}}

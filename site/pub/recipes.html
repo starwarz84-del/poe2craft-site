@@ -1506,7 +1506,7 @@ function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||'')
   return lines.map(l=>row(l, had.has(key(l))?'':'new')).join('') + gone.map(l=>row(l,'gone')).join(''); }
 // finished items (best / settle / budget) in the recipe's item-card format
 function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return ''; const fi=g.finalItem||{};
-  const cards=g.finals.map(F=>{ const state=F.lines.map(l=>{ if(l.random) return {gi:null, side:l.side, label:{kr:'랜덤 옵션',en:'Random modifier'}}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
+  const cards=g.finals.map(F=>{ const state=F.lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side, label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
       return {gi:T.gi, side:T.s, tmax:l.tmax||null, fr:!!l.fr, des:!!l.des, hybrid:!!l.hybrid}; }).filter(Boolean);
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
     return `<div class="fcfin ${on?'on':''}"><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}</div>`; }).join('');
