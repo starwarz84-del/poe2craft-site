@@ -178,15 +178,6 @@
    "en": "Reveal"
   },
   {
-   "id": "L2",
-   "nodes": [
-    "c4",
-    "c4b"
-   ],
-   "kr": "경멸 옵션 제거",
-   "en": "Contempt line"
-  },
-  {
    "id": "L3",
    "nodes": [
     "c6",
@@ -569,9 +560,6 @@
      "res": "ok"
     },
     {
-     "if": {
-      "has": "critAny"
-     },
      "to": "c1x",
      "res": "fail"
     },
@@ -636,9 +624,7 @@
     1,
     3
    ],
-   "keep": [
-    "critAny"
-   ],
+   "keep": [],
    "maxJunk": 0,
    "label": {
     "kr": "소멸의 오브 사용",
@@ -649,21 +635,15 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "+1 접두 허용 제거 (우측 소멸의 징조)",
-    "en": "Remove +1 prefix allowed (Dextral Annulment)"
+    "kr": "소멸의 오브로 모두 지우고 접미부터 다시 (영상)",
+    "en": "Annul everything and chaos for the suffix again (video)"
    },
    "edges": [
     {
-     "lost": "critAny",
      "to": "j1",
      "port": "right"
-    },
-    {
-     "to": "j2",
-     "port": "right"
     }
-   ],
-   "side": "s"
+   ]
   },
   {
    "id": "c2",
@@ -906,7 +886,7 @@
      "if": {
       "has": "contS"
      },
-     "to": "c4b",
+     "to": "c4e",
      "res": "fail"
     },
     {
@@ -955,25 +935,25 @@
    ]
   },
   {
-   "id": "c4b",
+   "id": "c4e",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
     6
    ],
-   "act": "exalt",
+   "act": "chaos",
    "goal": {
-    "kr": "지워진 접두 다시 채우기",
-    "en": "Refill the prefix"
+    "kr": "남은 +1 접미 허용 옵션 바꾸기",
+    "en": "Reroll the remaining +1 suffix line"
    },
    "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
+    "kr": "카오스",
+    "en": "Chaos"
    },
    "edges": [
     {
-     "to": "c4",
+     "to": "c5",
      "port": "right"
     }
    ],
@@ -1013,21 +993,21 @@
     },
     {
      "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
-     "tags": [
-      "contS"
-     ]
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ],
-   "cur": "Exalted_Orb",
+   "cur": "Chaos_Orb",
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
+     "kr": "랜덤 옵션 1개 (접두가 그 옵션뿐이라 확정)",
+     "en": "One random line (it is the only prefix, so it is sure)"
     }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Erasure"
    ]
   },
   {

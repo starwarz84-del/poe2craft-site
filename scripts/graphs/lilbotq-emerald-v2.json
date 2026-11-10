@@ -44,8 +44,8 @@
     "v": 2
    },
    "desc": {
-    "kr": "공개 결과 그대로, 경멸 옵션은 두고 액체 흉포함 한 번",
-    "en": "Keep the reveal, leave the contempt line, Ferocity once"
+    "kr": "영상의 가성비 방법: 좋은 옵션 3개 주얼 + 농축된 액체 두려움 (4옵션)",
+    "en": "The video’s budget route: a three-good-line jewel + Concentrated Liquid Fear (four lines)"
    }
   },
   {
@@ -101,18 +101,38 @@
   },
   "fer": {
    "gi": 117
+  },
+  "critX": {
+   "gi": 113
+  },
+  "pg": {
+   "gi": 6
   }
  },
  "require": {
-  "all": [
+  "any": [
    {
-    "has": "critD"
+    "all": [
+     {
+      "has": "critD"
+     },
+     {
+      "has": "ms"
+     },
+     {
+      "has": "fer"
+     }
+    ]
    },
    {
-    "has": "ms"
-   },
-   {
-    "has": "fer"
+    "all": [
+     {
+      "has": "as"
+     },
+     {
+      "has": "critX"
+     }
+    ]
    }
   ]
  },
@@ -147,15 +167,6 @@
    ],
    "kr": "훼손 공개",
    "en": "Reveal"
-  },
-  {
-   "id": "L2",
-   "nodes": [
-    "c4",
-    "c4b"
-   ],
-   "kr": "경멸 옵션 제거",
-   "en": "Contempt line"
   },
   {
    "id": "L3",
@@ -206,25 +217,24 @@
     {
      "side": "p",
      "label": {
-      "kr": "+1 접미 허용 또는 랜덤",
-      "en": "+1 suffix allowed or random"
+      "kr": "좋은 접두",
+      "en": "Good prefix"
      }
     },
     {
-     "tag": "fer",
+     "side": "p",
+     "label": {
+      "kr": "좋은 접두",
+      "en": "Good prefix"
+     }
+    },
+    {
+     "tag": "as",
      "tmax": 1
     },
     {
-     "tag": "critD",
+     "tag": "critX",
      "tmax": 1
-    },
-    {
-     "tag": "ms",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
     }
    ]
   }
@@ -291,6 +301,65 @@
      "en": "Junk",
      "m": "j"
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "start": {
+       "rar": "rare",
+       "mods": [
+        "as",
+        {
+         "junk": "s"
+        },
+        "pg",
+        {
+         "junk": "p"
+        }
+       ]
+      },
+      "next": "b1",
+      "label": {
+       "kr": "좋은 접두 2개 + 공격 속도 + 잡옵 접미 희귀 에메랄드 구입 (약 1 카오스)",
+       "en": "Buy a cheap rare Emerald: two good prefixes + attack speed + a junk suffix (about 1 Chaos)"
+      },
+      "item": [
+       {
+        "s": "p",
+        "kr": "좋은 접두",
+        "en": "Good prefix",
+        "m": "n",
+        "tags": [
+         "pg"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "좋은 접두",
+        "en": "Good prefix",
+        "m": "n"
+       },
+       {
+        "s": "s",
+        "kr": "공격 속도",
+        "en": "Attack speed",
+        "m": "n",
+        "tags": [
+         "as"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       }
+      ]
+     }
+    }
    ]
   },
   {
@@ -338,6 +407,90 @@
      "m": "j"
     }
    ]
+  },
+  {
+   "id": "b1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1.5
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "농축된 액체 두려움 (접미 2개 중 하나가 지워짐)",
+    "en": "Concentrated Liquid Fear (one of the two suffixes goes)"
+   },
+   "label": {
+    "kr": "액체",
+    "en": "Liquid"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "as"
+       },
+       {
+        "has": "critX"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "h1",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "좋은 접두",
+     "en": "Good prefix",
+     "m": "n",
+     "tags": [
+      "pg"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "좋은 접두",
+     "en": "Good prefix",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스 (제작)",
+     "en": "Attack crit damage bonus (crafted)",
+     "m": "n",
+     "tags": [
+      "critX"
+     ]
+    }
+   ],
+   "cur": "Concentrated_Liquid_Fear",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스 (제작 옵션)",
+     "en": "Attack crit damage bonus (crafted)"
+    }
+   ],
+   "ess": "critX",
+   "liquid": true
   },
   {
    "id": "c1",
@@ -487,6 +640,9 @@
      "kr": "훼손 옵션(미공개)",
      "en": "Desecrated modifier (unrevealed)"
     }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
    ]
   },
   {
@@ -657,7 +813,7 @@
      "if": {
       "has": "contS"
      },
-     "to": "c4b",
+     "to": "c4e",
      "res": "fail"
     },
     {
@@ -706,25 +862,25 @@
    ]
   },
   {
-   "id": "c4b",
+   "id": "c4e",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
     6
    ],
-   "act": "exalt",
+   "act": "chaos",
    "goal": {
-    "kr": "지워진 접두 다시 채우기",
-    "en": "Refill the prefix"
+    "kr": "남은 +1 접미 허용 옵션 바꾸기",
+    "en": "Reroll the remaining +1 suffix line"
    },
    "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
+    "kr": "카오스",
+    "en": "Chaos"
    },
    "edges": [
     {
-     "to": "c4",
+     "to": "c5",
      "port": "right"
     }
    ],
@@ -764,21 +920,21 @@
     },
     {
      "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
-     "tags": [
-      "contS"
-     ]
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ],
-   "cur": "Exalted_Orb",
+   "cur": "Chaos_Orb",
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
+     "kr": "랜덤 옵션 1개 (접두가 그 옵션뿐이라 확정)",
+     "en": "One random line (it is the only prefix, so it is sure)"
     }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Erasure"
    ]
   },
   {

@@ -159,15 +159,6 @@
    "en": "Reveal"
   },
   {
-   "id": "L2",
-   "nodes": [
-    "c4",
-    "c4b"
-   ],
-   "kr": "경멸 옵션 제거",
-   "en": "Contempt line"
-  },
-  {
    "id": "L3",
    "nodes": [
     "c6",
@@ -583,16 +574,15 @@
   },
   {
    "id": "c1x",
-   "kind": "cleanup",
+   "kind": "act",
    "group": "main",
    "pos": [
     1,
     3
    ],
-   "keep": [
-    "critD"
-   ],
-   "maxJunk": 0,
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -602,21 +592,30 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "+1 접두 허용 제거 (우측 소멸의 징조)",
-    "en": "Remove +1 prefix allowed (Dextral Annulment)"
+    "kr": "+1 접두 허용 옵션 지우기 (접두는 잡옵뿐 — 공격 치명타 피해가 지워지면 새 베이스)",
+    "en": "Remove +1 prefix allowed (prefixes are junk — losing crit damage means a new base)"
    },
    "edges": [
     {
-     "lost": "critD",
+     "if": {
+      "not": {
+       "has": "critD"
+      }
+     },
      "to": "h1",
      "port": "right"
+    },
+    {
+     "if": {
+      "has": "contP"
+     },
+     "to": "c1x"
     },
     {
      "to": "e2",
      "port": "right"
     }
-   ],
-   "side": "s"
+   ]
   },
   {
    "id": "c2",
@@ -858,7 +857,7 @@
      "if": {
       "has": "contS"
      },
-     "to": "c4b",
+     "to": "c4e",
      "res": "fail"
     },
     {
@@ -907,25 +906,25 @@
    ]
   },
   {
-   "id": "c4b",
+   "id": "c4e",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
     6
    ],
-   "act": "exalt",
+   "act": "chaos",
    "goal": {
-    "kr": "지워진 접두 다시 채우기",
-    "en": "Refill the prefix"
+    "kr": "남은 +1 접미 허용 옵션 바꾸기",
+    "en": "Reroll the remaining +1 suffix line"
    },
    "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
+    "kr": "카오스",
+    "en": "Chaos"
    },
    "edges": [
     {
-     "to": "c4",
+     "to": "c5",
      "port": "right"
     }
    ],
@@ -965,21 +964,21 @@
     },
     {
      "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
-     "tags": [
-      "contS"
-     ]
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ],
-   "cur": "Exalted_Orb",
+   "cur": "Chaos_Orb",
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
+     "kr": "랜덤 옵션 1개 (접두가 그 옵션뿐이라 확정)",
+     "en": "One random line (it is the only prefix, so it is sure)"
     }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Erasure"
    ]
   },
   {

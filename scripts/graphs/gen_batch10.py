@@ -30,8 +30,8 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'ail','fr':True},{'junk':'p'}]},K(
  act('s3','main',[0,2],'exalt','Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'pre','min':2}},'to':'s4','res':'ok'},{'to':'s3x','res':'fail'}],I2,show=[f'p{g}' for g in PRE],omens=['Omen_of_Sinistral_Exaltation']),
  cleanup('s3x',[1,2],['pre'],[{'lost':'pre','to':'s2','port':'right'},{'to':'s3','port':'bottom'}],K('빗나간 접두 지우기','Remove the missed prefix')),
  act('s4','main',[0,3],'exalt','Exalted_Orb',K('접미 두번째 옵션','Second suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'s5'}],I3),
- LIQ('s5',[0,4],'Potent_Liquid_Contempt','contP',K('위력적인 액체 경멸 (50%로 +1 접두 허용)','Potent Liquid Contempt (50%: +1 prefix allowed)'),[st('s','+1 접두 허용 (아니면 +1 접미 허용 → 접두가 지워짐)','+1 prefix allowed (else +1 suffix allowed takes a prefix)')],
-     [{'if':{'has':'contP'},'to':'s6','res':'ok'},{'to':'s5x','res':'fail'}],I4,alt='contS'),
+ LIQ('s5',[0,4],'Potent_Liquid_Contempt','contP',K('위력적인 액체 경멸 (+1 접두 허용, 접미 잡옵이 지워지면 성공 1/3)','Potent Liquid Contempt (+1 prefix allowed; the junk suffix must go, 1/3)'),[st('s','+1 접두 허용 (좋은 접두가 지워지면 분열 + 1개로 되돌림)','+1 prefix allowed (a good prefix gone: back to the fracture + one line)')],
+     [{'if':{'count':{'tag':'pre','min':2}},'to':'s6','res':'ok'},{'to':'s5x','res':'fail'}],I4,anyRemove=True),   # SL 영상: 분열 빼고 세 옵션 중 하나가 지워짐 — 접미 잡옵이 지워져야 성공 (1/3)
  cleanup('s5x',[1,4],[],[{'to':'s2','port':'right'}],K('분열 + 옵션 1개로 되돌리기','Back to the fracture + one line'),maxJunk=1),
  act('s6','main',[0,5],'desecrate','Preserved_Cranium',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'s7'}],I5),
  REVEAL('s7',[0,6],'pre',[f'p{g}' for g in PRE],'s8','s7x',I6),

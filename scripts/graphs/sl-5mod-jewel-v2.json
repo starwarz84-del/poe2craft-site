@@ -552,8 +552,8 @@
    ],
    "act": "essence",
    "goal": {
-    "kr": "위력적인 액체 경멸 (50%로 +1 접두 허용)",
-    "en": "Potent Liquid Contempt (50%: +1 prefix allowed)"
+    "kr": "위력적인 액체 경멸 (+1 접두 허용, 접미 잡옵이 지워지면 성공 1/3)",
+    "en": "Potent Liquid Contempt (+1 prefix allowed; the junk suffix must go, 1/3)"
    },
    "label": {
     "kr": "액체",
@@ -562,7 +562,10 @@
    "edges": [
     {
      "if": {
-      "has": "contP"
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
      },
      "to": "s6",
      "res": "ok"
@@ -614,13 +617,13 @@
    "showText": [
     {
      "s": "s",
-     "kr": "+1 접두 허용 (아니면 +1 접미 허용 → 접두가 지워짐)",
-     "en": "+1 prefix allowed (else +1 suffix allowed takes a prefix)"
+     "kr": "+1 접두 허용 (좋은 접두가 지워지면 분열 + 1개로 되돌림)",
+     "en": "+1 prefix allowed (a good prefix gone: back to the fracture + one line)"
     }
    ],
    "ess": "contP",
    "liquid": true,
-   "alt": "contS"
+   "anyRemove": true
   },
   {
    "id": "s5x",

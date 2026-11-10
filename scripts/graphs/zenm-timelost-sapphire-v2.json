@@ -4,15 +4,15 @@
  "cls": "Time-Lost_Sapphire",
  "base": "Time-Lost Sapphire",
  "ilvl": 41,
- "note": "Zen_M 오래된 사파이어(원본 레시피 기록) — 옵션 1개 매직 → 제왕의 오브 → 소멸의 오브로 옵션 1개만 → 카오스 오브(치명타 계열 핵심 패시브) → 우측 강령술 + 보존된 두개골 → 공개(밸런스 = 빛의 징조로 다시) → 엑잘 2번 → 고대 위력적인 액체 우울. 오래된",
+ "note": "Zen_M 오래된 사파이어(원본 레시피 기록) — 옵션 1개 매직 → 제왕의 오브 → 소멸의 오브로 옵션 1개만 → 카오스 오브(치명타 계열 핵심 패시브) → 우측 강령술 + 보존된 두개골 → 공개(밸런스 = 빗나가면 징조 없는 소멸의 오브 — 1/2로 좋은 접미가 지워지면 카오스 오브부터, 영상) → 엑잘 2번 → 고대 위력적인 액체 우울. 오래된",
  "params": {
   "v": {
    "kr": "진행",
    "en": "Route",
    "values": {
     "1": {
-     "kr": "영상 (빛의 징조로 다시)",
-     "en": "Video (Light retry)"
+     "kr": "영상 (소멸의 오브로 다시)",
+     "en": "Video (Annulment retry)"
     },
     "2": {
      "kr": "공개 결과 그대로",
@@ -56,8 +56,8 @@
     "v": 1
    },
    "desc": {
-    "kr": "영상: 공개가 빗나가면 빛의 징조로 다시",
-    "en": "Video: Light on a missed reveal"
+    "kr": "영상: 공개가 빗나가면 징조 없는 소멸의 오브(1/2)",
+    "en": "Video: a plain Annulment on a missed reveal (1/2)"
    }
   }
  ],
@@ -511,9 +511,7 @@
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
+   "omens": [],
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -523,12 +521,19 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "징조 없는 소멸의 오브 (1/2로 훼손 옵션, 좋은 접미가 지워지면 카오스 오브부터)",
+    "en": "Plain Orb of Annulment (1/2 the desecrated line; the good suffix gone: Chaos again)"
    },
    "edges": [
     {
+     "if": {
+      "has": "note"
+     },
      "to": "z4",
+     "port": "right"
+    },
+    {
+     "to": "z3",
      "port": "right"
     }
    ]
