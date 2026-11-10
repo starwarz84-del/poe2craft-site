@@ -105,7 +105,8 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .base .lv{position:absolute;top:3px;right:4px;font-family:var(--f-mono);font-size:9.5px;color:var(--faint)}
 /* item column */
 .itemcol{padding:14px;display:flex;flex-direction:column;gap:12px;align-items:stretch}
-@media (min-width:821px){.itemcol{position:sticky;top:var(--itop,12px)}}   /* follows the page (사용자 2026-11-11) */
+/* item column follows the page and always fits the window; the odds/history pane takes the leftover height and scrolls inside (사용자 2026-11-11) */
+@media (min-width:821px){.itemcol{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;scrollbar-width:thin}.itemcol>.info{flex:1 1 auto;min-height:260px;display:flex;flex-direction:column}.itemcol>.info>.pane{flex:1 1 auto;min-height:0;max-height:none}}
 .ctrlrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}
 .ctrlrow input[type=number]{width:60px;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:3px 6px;font-family:var(--f-mono)}
 .btn{background:var(--panel-2);border:1px solid var(--line);border-radius:7px;padding:6px 12px;cursor:pointer;font-size:13px}
@@ -901,9 +902,6 @@ function renderOmenbar(){
   const on=[...S.omens].map(id=>S.craft.omens.find(o=>o.omen===id)).filter(Boolean);
   $('#omenbar').innerHTML = on.length ? `<span>${L('켜진 징조','Active omens')}</span>` + on.map(o=>`<button type="button" class="ochip" data-off="${o.omen}" title="${L('끄기','Turn off')}"><img src="${o.icon}" alt="">${esc(KR()?o.kr:o.en)}</button>`).join('') : '';
 }
-// item column follows the page: short → sticks to the top; taller than the window → scrolls until its bottom shows, then sticks
-(()=>{ const col=document.querySelector('.itemcol'); const fit=()=>{ const h=col.offsetHeight, vh=innerHeight; col.style.setProperty('--itop', (h+24<=vh ? 12 : vh-h-12)+'px'); };
-  new ResizeObserver(fit).observe(col); addEventListener('resize', fit); })();
 const DOCK = matchMedia('(min-width:1280px)');   // wide: the base list stays open on the left
 function openDrawer(on){ if(DOCK.matches) on=true; $('#drawer').classList.toggle('open', on); $('#drawer-bg').hidden=!on; $('#base-open').setAttribute('aria-expanded', on); if(on){ renderPicker(); setTimeout(()=>{ const sel=$('#bases .base[aria-pressed="true"]'); sel&&sel.scrollIntoView({block:'nearest'}); },30); } }
 function render(){ renderItem(); renderReveal(); renderShelves(); renderPane(); renderLast(); renderBasebar(); renderOmenbar();
