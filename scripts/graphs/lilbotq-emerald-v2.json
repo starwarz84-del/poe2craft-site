@@ -27,27 +27,9 @@
    "params": {
     "v": 1
    }
-  },
-  {
-   "id": "ess",
-   "params": {
-    "v": 2
-   }
   }
  ],
  "versions": [
-  {
-   "id": "ess",
-   "kr": "에센셜",
-   "en": "Essential",
-   "params": {
-    "v": 2
-   },
-   "desc": {
-    "kr": "영상의 가성비 방법: 좋은 옵션 3개 주얼 + 농축된 액체 두려움 (4옵션)",
-    "en": "The video’s budget route: a three-good-line jewel + Concentrated Liquid Fear (four lines)"
-   }
-  },
   {
    "id": "bal",
    "kr": "밸런스",
@@ -101,38 +83,18 @@
   },
   "fer": {
    "gi": 117
-  },
-  "critX": {
-   "gi": 113
-  },
-  "pg": {
-   "gi": 6
   }
  },
  "require": {
-  "any": [
+  "all": [
    {
-    "all": [
-     {
-      "has": "critD"
-     },
-     {
-      "has": "ms"
-     },
-     {
-      "has": "fer"
-     }
-    ]
+    "has": "critD"
    },
    {
-    "all": [
-     {
-      "has": "as"
-     },
-     {
-      "has": "critX"
-     }
-    ]
+    "has": "ms"
+   },
+   {
+    "has": "fer"
    }
   ]
  },
@@ -208,35 +170,6 @@
      }
     }
    ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "side": "p",
-     "label": {
-      "kr": "좋은 접두",
-      "en": "Good prefix"
-     }
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "좋은 접두",
-      "en": "Good prefix"
-     }
-    },
-    {
-     "tag": "as",
-     "tmax": 1
-    },
-    {
-     "tag": "critX",
-     "tmax": 1
-    }
-   ]
   }
  ],
  "finalItem": {
@@ -301,65 +234,6 @@
      "en": "Junk",
      "m": "j"
     }
-   ],
-   "over": [
-    {
-     "param": {
-      "v": 2
-     },
-     "set": {
-      "start": {
-       "rar": "rare",
-       "mods": [
-        "as",
-        {
-         "junk": "s"
-        },
-        "pg",
-        {
-         "junk": "p"
-        }
-       ]
-      },
-      "next": "b1",
-      "label": {
-       "kr": "좋은 접두 2개 + 공격 속도 + 잡옵 접미 희귀 에메랄드 구입 (약 1 카오스)",
-       "en": "Buy a cheap rare Emerald: two good prefixes + attack speed + a junk suffix (about 1 Chaos)"
-      },
-      "item": [
-       {
-        "s": "p",
-        "kr": "좋은 접두",
-        "en": "Good prefix",
-        "m": "n",
-        "tags": [
-         "pg"
-        ]
-       },
-       {
-        "s": "p",
-        "kr": "좋은 접두",
-        "en": "Good prefix",
-        "m": "n"
-       },
-       {
-        "s": "s",
-        "kr": "공격 속도",
-        "en": "Attack speed",
-        "m": "n",
-        "tags": [
-         "as"
-        ]
-       },
-       {
-        "s": "s",
-        "kr": "잡옵",
-        "en": "Junk",
-        "m": "j"
-       }
-      ]
-     }
-    }
    ]
   },
   {
@@ -407,90 +281,6 @@
      "m": "j"
     }
    ]
-  },
-  {
-   "id": "b1",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    1.5
-   ],
-   "act": "essence",
-   "goal": {
-    "kr": "농축된 액체 두려움 (접미 2개 중 하나가 지워짐)",
-    "en": "Concentrated Liquid Fear (one of the two suffixes goes)"
-   },
-   "label": {
-    "kr": "액체",
-    "en": "Liquid"
-   },
-   "edges": [
-    {
-     "if": {
-      "all": [
-       {
-        "has": "as"
-       },
-       {
-        "has": "critX"
-       }
-      ]
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "to": "h1",
-     "res": "fail",
-     "port": "right"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "좋은 접두",
-     "en": "Good prefix",
-     "m": "n",
-     "tags": [
-      "pg"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "좋은 접두",
-     "en": "Good prefix",
-     "m": "n"
-    },
-    {
-     "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
-     "m": "n",
-     "tags": [
-      "as"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스 (제작)",
-     "en": "Attack crit damage bonus (crafted)",
-     "m": "n",
-     "tags": [
-      "critX"
-     ]
-    }
-   ],
-   "cur": "Concentrated_Liquid_Fear",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스 (제작 옵션)",
-     "en": "Attack crit damage bonus (crafted)"
-    }
-   ],
-   "ess": "critX",
-   "liquid": true
   },
   {
    "id": "c1",

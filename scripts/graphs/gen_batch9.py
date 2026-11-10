@@ -51,19 +51,12 @@ tg={'critD':{'gi':5},'ms':{'gi':45},'critA':{'gi':4},'as':{'gi':7},'rev':{'anyOf
 I0=[it('s','공격 치명타 피해 보너스','Attack crit damage bonus',['critD']),it('s','이동 속도','Movement speed',['ms']),J('p'),J('p')]
 P,tags,nodes,loops=jewel5('lilbotq-emerald-v2','Emerald','Emerald',82,'',{'rar':'rare','mods':['critD','ms',{'junk':'p'},{'junk':'p'}]},K('공격 치명타 피해 + 이동 속도 접미, 접두 옵션 2개 희귀 에메랄드 구입','Buy a rare Emerald: attack crit damage + movement speed, two prefixes'),I0,
    [],None,'rev',['critA','as'],'atk',['atk'],tg,[('critD','공격 치명타 피해 보너스','Attack crit damage bonus'),('ms','이동 속도','Movement speed')],None,(119,120),117,necro=True)
-# Essential = the video's budget route (Hcb_HcWDUOA 3:35~): a cheap jewel with three good lines (two prefixes + one suffix) and one junk suffix,
-# then Concentrated Liquid Fear (crafted attack crit damage, a suffix: one of the two suffixes goes, 50/50). A miss = buy another cheap jewel.
-tags.update({'critX':{'gi':113},'pg':{'gi':6}})
-nodes[0]['over']=[{'param':{'v':2},'set':{'start':{'rar':'rare','mods':['as',{'junk':'s'},'pg',{'junk':'p'}]},'next':'b1',
-    'label':K('좋은 접두 2개 + 공격 속도 + 잡옵 접미 희귀 에메랄드 구입 (약 1 카오스)','Buy a cheap rare Emerald: two good prefixes + attack speed + a junk suffix (about 1 Chaos)'),
-    'item':[it('p','좋은 접두','Good prefix',['pg']),it('p','좋은 접두','Good prefix'),it('s','공격 속도','Attack speed',['as']),J('s')]}}]
-nodes.insert(2, LIQ('b1',[0,1.5],'Concentrated_Liquid_Fear','critX',K('농축된 액체 두려움 (접미 2개 중 하나가 지워짐)','Concentrated Liquid Fear (one of the two suffixes goes)'),[st('s','공격 치명타 피해 보너스 (제작 옵션)','Attack crit damage bonus (crafted)')],
-    [{'if':{'all':[{'has':'as'},{'has':'critX'}]},'to':'ok','res':'ok'},{'to':'h1','res':'fail','port':'right'}],[it('p','좋은 접두','Good prefix',['pg']),it('p','좋은 접두','Good prefix'),it('s','공격 속도','Attack speed',['as']),it('s','공격 치명타 피해 보너스 (제작)','Attack crit damage bonus (crafted)',['critX'])]))
+# 사용자 확정 2026-11-10: 에센셜 없음 — 영상의 가성비 방법은 비싼 베이스를 사서 하는 도박이라 밸런스만.
 graph9('lilbotq-emerald-v2','Emerald','Emerald',82,
   'LilBotQ 에메랄드(원본 레시피 기록) — 공격 치명타 피해 + 이동 속도 접미 + 접두 옵션 2개 구입 → 위력적인 액체 경멸(+1 접미 허용 50%, 아니면 새 주얼) → 보존된 두개골 → 공개(공격 치명타 확률·공격 속도) → 좌측 소멸의 징조로 경멸 옵션 제거 → 엑잘 → 카오스 오브(공격 피해 접두) → 위력적인 액체 흉포함.',
-  {'v':{'kr':'진행','en':'Route','values':TV({'1':('영상','Video'),'2':('결과 그대로','As it comes')})}},P,{'bal':KEEP_E['bal'],'ess':K('영상의 가성비 방법: 좋은 옵션 3개 주얼 + 농축된 액체 두려움 (4옵션)','The video’s budget route: a three-good-line jewel + Concentrated Liquid Fear (four lines)')},tags,nodes,loops,
-  FIN(('bal','ess'),lambda v:[{'tag':'atk','tmax':1},{'tag':'fer','tmax':1},{'tag':'critD','tmax':1},{'tag':'ms','tmax':1},{'side':'s','label':K('공격 치명타 확률·공격 속도','Attack crit chance or attack speed')}] if v=='bal' else [{'side':'p','label':K('좋은 접두','Good prefix')},{'side':'p','label':K('좋은 접두','Good prefix')},{'tag':'as','tmax':1},{'tag':'critX','tmax':1}]),
-  {'quality':0,'sockets':0},{'any':[{'all':[{'has':'critD'},{'has':'ms'},{'has':'fer'}]},{'all':[{'has':'as'},{'has':'critX'}]}]},('bal','ess'))
+  {'v':{'kr':'진행','en':'Route','values':TV({'1':('영상','Video'),'2':('결과 그대로','As it comes')})}},P,KEEP_E,tags,nodes,loops,
+  FIN(('bal',),lambda v:[{'tag':'atk','tmax':1},{'tag':'fer','tmax':1},{'tag':'critD','tmax':1},{'tag':'ms','tmax':1},{'side':'s','label':K('공격 치명타 확률·공격 속도','Attack crit chance or attack speed')}]),
+  {'quality':0,'sockets':0},{'all':[{'has':'critD'},{'has':'ms'},{'has':'fer'}]},('bal',))
 
 # ---------- 2. Diztoh 5옵션 에메랄드 (s70CV_nvjXg) ----------
 tg={'critD':{'gi':5},'qas':{'gi':55},'as':{'gi':7},'asAny':{'anyOf':['qas','as'],'label':K('공격 속도 (육척봉 포함)','Attack speed (or with quarterstaves)')},'atk':{'gi':6},'qd':{'gi':53},'pre':{'anyOf':['atk','qd'],'label':K('공격 피해·육척봉 피해','Attack or quarterstaff damage')}}
