@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PoE 2 Craft - Path of Exile 2 Crafting Simulator &amp; Recipes</title>
+<meta name="description" content="Path of Exile 2 crafting emulator, option builder and step-by-step crafting recipes with probabilities calculated from game data. English and Korean.">
+<meta property="og:title" content="PoE 2 Craft - Path of Exile 2 Crafting Simulator & Recipes">
+<meta property="og:description" content="Try currency on any base, build target items, and follow crafting recipes with real probabilities.">
+<meta property="og:url" content="https://poe2craft.xyz">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PoE 2 Craft">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* Shell for poe2craft.xyz — trade-site layout: banner with wordmark, icon tab bar, one framed tool panel below.
+   Each tool is its own page in an iframe and stays loaded while you switch tabs. */
+:root{
+  --bg:#0e1115; --text:#a38d6d; --hi:#e9cf9f; --white:#e2e2e2; --edge:#2c2317; --tab:rgba(10,10,10,.9); --tab-on:#5a3806;
+  --f-title:"Cinzel", "Gowun Batang", serif;
+  --f-body:"IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Verdana, sans-serif;
+  --banner:104px; --tabs:34px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;color:var(--text);font-family:var(--f-body);font-size:13px;overflow:hidden;
+  background:
+    radial-gradient(ellipse 60% 420px at 50% 0, rgba(98,52,150,.32), transparent 70%),
+    radial-gradient(ellipse 90% 70% at 50% 120%, rgba(60,36,10,.35), transparent 70%),
+    var(--bg);}
+:focus-visible{outline:2px solid var(--hi);outline-offset:2px}
+a{color:var(--hi)}
+
+.wrapper{max-width:1360px;height:100%;margin:0 auto;display:flex;flex-direction:column;padding:0 12px}
+
+/* banner */
+.logo{position:relative;flex:none;height:var(--banner);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.logo::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 22% 70% at 50% 62%, rgba(160,110,255,.30), transparent 70%),
+    linear-gradient(90deg, transparent, rgba(233,207,159,.08) 30%, rgba(233,207,159,.08) 70%, transparent) bottom/100% 1px no-repeat;}
+.mark{position:relative;display:flex;flex-direction:column;align-items:center;text-decoration:none;line-height:1}
+.mark .w{font-family:var(--f-title);font-weight:700;font-size:38px;letter-spacing:.06em;
+  background:linear-gradient(180deg,#fff,#8f7859);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.9))}
+.mark .w b{font-weight:700;background:linear-gradient(180deg,#ffe7b8,#b8862f);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mark .p{margin-top:7px;padding:4px 18px 3px;font-family:var(--f-title);font-size:12.5px;letter-spacing:.22em;color:#f0dcc0;text-transform:uppercase;
+  background:linear-gradient(180deg,#5c1d14,#3a100b);border:1px solid #8a5a2c;box-shadow:inset 0 0 0 1px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.7)}
+:lang(ko) .mark .p{letter-spacing:.12em;font-family:"Gowun Batang",serif;font-size:12px}
+.corner{position:absolute;top:10px;font-size:12.5px;display:flex;gap:6px;align-items:center}
+.corner.l{left:4px}.corner.r{right:4px}
+.lang button{background:none;border:0;padding:2px 3px;font:inherit;color:var(--text);cursor:pointer}
+.lang button[aria-pressed="true"]{color:var(--hi)}
+.lang button:hover{color:var(--white)}
+.lang span{opacity:.5}
+.ver{color:#6f604a}
+
+/* tab bar */
+.tabs{flex:none;display:flex;margin:0;padding:0;list-style:none;height:var(--tabs);border-bottom:1px solid var(--edge);gap:1px}
+.tabs li{background:var(--tab)}
+.tabs .sp{flex:1;background:var(--tab)}
+.tabs a{height:100%;display:flex;align-items:center;gap:7px;padding:0 13px;color:var(--text);text-decoration:none;font-size:13px;white-space:nowrap;
+  border:1px solid transparent;border-bottom:0}
+.tabs a:hover{color:var(--white);background:rgba(90,56,6,.35)}
+.tabs a[aria-current="page"]{background:var(--tab-on);color:#fff3dc;border-color:#7a5418}
+.tabs svg{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tabs .ic-only span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.nb{min-width:17px;height:17px;padding:0 5px;border-radius:9px;background:#c8a85a;color:#120d06;font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center}
+
+/* tool panel */
+main{flex:1 1 auto;min-height:0;position:relative;border:1px solid var(--edge);border-top:0;background:linear-gradient(#0e0b06 50%,#000)}
+main iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent}
+
+.toast{position:fixed;right:16px;bottom:16px;z-index:20;max-width:min(360px,calc(100vw - 32px));background:#15110b;border:1px solid #3a2d1b;border-left:3px solid #c8a85a;padding:10px 14px;color:var(--white);font:inherit;text-align:left;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.6)}
+.toast small{display:block;color:var(--text);font-size:12px;margin-bottom:2px}
+
+@media (max-height:760px){ :root{--banner:60px} .mark .w{font-size:26px} .mark .p{display:none} .corner{top:50%;transform:translateY(-50%)} }
+@media (max-width:860px){ .tabs a{padding:0 9px} .tabs a.lbl span{display:none} .corner.l{display:none} .wrapper{padding:0} }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="logo">
+    <div class="corner l"><span class="ver" data-kr="POE2 크래프팅 시뮬레이터 · 레시피" data-en="PoE 2 crafting simulator · recipes">PoE 2 crafting simulator · recipes</span></div>
+    <a class="mark" href="#emulator" aria-label="PoE 2 Craft">
+      <span class="w">PoE 2 <b>Craft</b></span>
+      <span class="p" data-kr="크래프팅" data-en="Crafting">Crafting</span>
+    </a>
+    <div class="corner r lang" role="group" aria-label="Language">
+      <button type="button" id="l-en" aria-pressed="true">English</button><span>·</span><button type="button" id="l-kr" aria-pressed="false">한국어</button>
+    </div>
+  </div>
+
+  <ul class="tabs" role="list">
+    <li><a class="lbl" href="#emulator" data-view="emulator"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h12l-2 4H7z"/><path d="M15 9h3a3 3 0 0 1 3 3"/><path d="M9 13v4M7 21h6l-1-4H8z"/></svg><span data-en="Emulator" data-kr="에뮬레이터">Emulator</span></a></li>
+    <li><a class="lbl" href="#builder" data-view="builder"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span data-en="Item Builder" data-kr="옵션 빌더">Item Builder</span></a></li>
+    <li><a class="lbl" href="#recipes" data-view="recipes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h7M8 11h7"/></svg><span data-en="Recipes" data-kr="레시피">Recipes</span></a></li>
+    <li><a class="lbl" href="#discover" data-view="discover"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg><span data-en="Discover" data-kr="발굴">Discover</span></a></li>
+    <li><a class="lbl" href="#bases" data-view="bases"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18M9 3l3 6 3-6M12 9v12"/></svg><span data-en="Special Bases" data-kr="특수 베이스">Special Bases</span></a></li>
+    <li class="sp" aria-hidden="true"></li>
+    <li><a class="ic-only" href="#about" data-view="about" title="About"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14M12 17.5h0"/></svg><span data-en="About" data-kr="안내">About</span></a></li>
+  </ul>
+
+  <main id="main"></main>
+</div>
+
+<script>
+(() => {
+  const SRC = {emulator:'emulator.html', builder:'builder.html', recipes:'recipes.html', discover:'discover.html', bases:'bases.html', about:'about.html'};
+  const frames = {};
+  let lang = 'en';
+  try{ lang = localStorage.getItem('poe2lang') || ((navigator.language||'').startsWith('ko') ? 'kr' : 'en'); }catch(e){}
+  const links = [...document.querySelectorAll('.tabs a')];
+  function setLang(l){
+    lang = l; document.documentElement.lang = l==='en'?'en':'ko';
+    try{ localStorage.setItem('poe2lang', l); }catch(e){}
+    document.getElementById('l-en').setAttribute('aria-pressed', l==='en');
+    document.getElementById('l-kr').setAttribute('aria-pressed', l==='kr');
+    document.querySelectorAll('[data-kr]').forEach(el=>el.textContent = el.dataset[l]);
+    links.forEach(a=>{ const s=a.querySelector('span'); if(s) a.title = s.textContent; });
+    badge();
+    Object.values(frames).forEach(f=>{ try{ f.contentWindow.postMessage({type:'poe2-lang', lang:l}, '*'); }catch(e){} });
+  }
+  function show(){
+    let v = location.hash.slice(1), rid = null;
+    if(v.startsWith('r-')){ rid = v.slice(2); v = 'recipes'; }   // #r-<id> = one recipe
+    if(!SRC[v]) v = 'emulator';
+    links.forEach(a=>{ if(a.dataset.view===v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+    if(!frames[v]){ const f=document.createElement('iframe'); f.src=`${SRC[v]}?lang=${lang}${rid?'#r-'+rid:''}`; f.title=v;
+      f.addEventListener('load', ()=>{ try{ f.contentWindow.postMessage({type:'poe2-lang', lang}, '*'); }catch(e){} }); frames[v]=f; document.getElementById('main').appendChild(f); }
+    else if(rid){ try{ frames[v].contentWindow.postMessage({type:'poe2-open', id:rid}, '*'); }catch(e){} }
+    Object.entries(frames).forEach(([k,f])=>f.hidden = k!==v);
+    if(v==='recipes') markSeen(); else badge();
+  }
+
+  // ---------- downloads: tools ask the shell to save a file ----------
+  // On claude.ai the page's downloads capability saves it; on our own domain a normal browser download does.
+  let dl=null; const dlReady = (async()=>{ try{ if(window.claude && claude.use) dl = await claude.use('downloads'); }catch(e){ dl=null; } })();
+  function browserSave(name, blob){
+    const url = URL.createObjectURL(blob instanceof Blob ? blob : new Blob([blob]));
+    const a = document.createElement('a'); a.href=url; a.download=name||'download'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 30000);
+  }
+  window.addEventListener('message', async e=>{ const d=e.data||{}; if(d.type!=='poe2-download' || !Object.values(frames).some(f=>f.contentWindow===e.source)) return;
+    await dlReady; let out={type:'poe2-download-result', id:d.id};
+    if(dl){ try{ const r=await dl.save({filename:d.filename, data:d.blob}); out.status=r.status; }catch(err){ out.code=err&&err.code||'unavailable'; } }
+    else { try{ browserSave(d.filename, d.blob); out.status='saved'; }catch(err){ out.code='unavailable'; } }
+    try{ e.source.postMessage(out, '*'); }catch(_){} });
+
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-route' && /^[A-Za-z0-9-]+$/.test(d.hash||'') && frames.recipes && e.source===frames.recipes.contentWindow){
+    if(location.hash.slice(1)!==d.hash){ try{ history.replaceState(null,'','#'+d.hash); }catch(_){ } } } });
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-goto' || !Object.values(frames).some(f=>f.contentWindow===e.source) || !/^[A-Za-z0-9-]+$/.test(d.id||'')) return;
+    location.hash = SRC[d.id] ? d.id : 'r-'+d.id; });
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-draft' || !frames.discover || e.source!==frames.discover.contentWindow) return;
+    const had = !!frames.recipes; location.hash = 'recipes'; show();
+    const send = ()=>{ try{ frames.recipes.contentWindow.postMessage({type:'poe2-draft', recipe:d.recipe}, '*'); }catch(_){} };
+    if(had) send(); else frames.recipes.addEventListener('load', send, {once:true}); });
+
+  // ---------- shared recipes ----------
+  // Works where a shared store exists (claude.ai artifact db today). On our own domain this stays "unavailable"
+  // until a server store is added — Recipes then keeps drafts in the browser only.
+  const SH = {db:null, uid:null, can:false, items:[], loaded:false, seen:0, newSince:null, first:true};
+  try{ SH.seen = +localStorage.getItem('poe2seen') || 0; }catch(e){}
+  function newCount(){ return SH.items.filter(x=>!x.mine && x.at > SH.seen).length; }
+  function badge(){
+    const a = links.find(x=>x.dataset.view==='recipes'); if(!a) return;
+    let b = a.querySelector('.nb'); const n = newCount();
+    if(!n || frames.recipes && !frames.recipes.hidden){ if(b) b.remove(); return; }
+    if(!b){ b=document.createElement('span'); b.className='nb'; a.appendChild(b); }
+    b.textContent = n; b.title = lang==='kr' ? `새 레시피 ${n}개` : `${n} new recipe${n>1?'s':''}`;
+  }
+  function pushShared(){
+    if(!frames.recipes) return;
+    const since = SH.newSince ?? SH.seen;
+    const items = SH.items.map(x=>({recipe:x.recipe, at:x.at, mine:x.mine, isNew:!x.mine && x.at>since}));
+    try{ frames.recipes.contentWindow.postMessage({type:'poe2-shared', items, can:SH.can, loaded:SH.loaded}, '*'); }catch(_){}
+  }
+  function markSeen(){
+    if(SH.newSince==null) SH.newSince = SH.seen;
+    const top = Math.max(SH.seen, ...SH.items.map(x=>x.at));
+    if(top>SH.seen){ SH.seen=top; try{ localStorage.setItem('poe2seen', String(top)); }catch(_){} }
+    badge();
+  }
+  let toastT;
+  function toast(item){
+    document.querySelector('.toast')?.remove(); clearTimeout(toastT);
+    const t=document.createElement('button'); t.type='button'; t.className='toast';
+    const s=document.createElement('small'); s.textContent = lang==='kr'?'새 레시피가 등록됐어요':'New recipe shared';
+    const r=item.recipe, name=(r.title && (r.title[lang]||r.title.en||r.title.kr)) || r.id;
+    t.append(s, document.createTextNode(name));
+    t.addEventListener('click', ()=>{ t.remove(); location.hash='r-'+r.id; });
+    document.body.appendChild(t); toastT=setTimeout(()=>t.remove(), 9000);
+  }
+  (async()=>{
+    if(!(window.claude && claude.use)){ SH.loaded=true; return; }
+    let user=null;
+    try{ [SH.db, user] = await Promise.all([claude.use('db'), claude.use('user')]); }catch(e){ SH.db=null; }
+    if(!SH.db){ SH.loaded=true; pushShared(); return; }
+    try{ SH.uid = user ? await user.id() : null; }catch(e){}
+    try{ const w = user ? await user.can('data.write') : null; SH.can = !!SH.uid && w!==false; }catch(e){ SH.can=!!SH.uid; }
+    pushShared();
+    SH.db.collection('shared').onSnapshot(snap=>{
+      const items=[];
+      for(const d of snap.docs){ const recs=(d.data()||{}).recipes; if(!recs || typeof recs!=='object') continue;
+        for(const k in recs){ const x=recs[k]; if(x && x.recipe && typeof x.recipe==='object' && typeof x.at==='number') items.push({recipe:x.recipe, at:x.at, mine:d.id===SH.uid}); } }
+      items.sort((a,b)=>b.at-a.at);
+      const before = new Set(SH.items.map(x=>x.recipe.id));
+      const fresh = SH.first ? [] : items.filter(x=>!x.mine && !before.has(x.recipe.id));
+      SH.items=items; if(!snap.metadata.fromCache){ SH.loaded=true; SH.first=false; }
+      if(frames.recipes && !frames.recipes.hidden) markSeen(); else badge();
+      pushShared();
+      if(fresh.length && !(frames.recipes && !frames.recipes.hidden)) toast(fresh[0]);
+    }, ()=>{ SH.loaded=true; pushShared(); });
+  })();
+  async function writeShared(fn){
+    const ref = SH.db.doc('shared/'+SH.uid), cur = await ref.get();
+    const recs = Object.assign({}, cur.exists ? (cur.data().recipes||{}) : {});
+    fn(recs); await ref.set({recipes:recs});
+  }
+  window.addEventListener('message', async e=>{ const d=e.data||{};
+    if(!frames.recipes || e.source!==frames.recipes.contentWindow) return;
+    if(d.type==='poe2-share-ready'){ pushShared(); return; }
+    if(d.type!=='poe2-share' && d.type!=='poe2-unshare') return;
+    const out={type:'poe2-share-result', op:d.type, id:d.recipe?.id||d.id};
+    if(!SH.db || !SH.can){ out.code='unavailable'; }
+    else try{
+      if(d.type==='poe2-share'){
+        const r=d.recipe; if(!r || !/^s-[a-z0-9]+$/.test(r.id||'')) throw {code:'invalid_argument'};
+        const s=JSON.stringify(r); if(s.length>120000) throw {code:'too_big'};
+        await writeShared(recs=>{ recs[r.id]={recipe:JSON.parse(s), at:Date.now()}; });
+      } else {
+        if(!/^s-[a-z0-9]+$/.test(d.id||'')) throw {code:'invalid_argument'};
+        await writeShared(recs=>{ delete recs[d.id]; });
+      }
+      out.ok=true;
+    }catch(err){ out.code = err&&err.code || 'unavailable'; }
+    try{ e.source.postMessage(out, '*'); }catch(_){} });
+
+  document.getElementById('l-en').addEventListener('click', ()=>setLang('en'));
+  document.getElementById('l-kr').addEventListener('click', ()=>setLang('kr'));
+  window.addEventListener('hashchange', show);
+  setLang(lang); show();
+})();
+</script>
+</body>
+</html>

@@ -90,6 +90,14 @@ cd /home/claude/poe2data && bash tools/test/serve.sh stop
 `files`에 바뀐 것만(그래프 시뮬레이션 데이터는 `"data/sim/<id>.json":"data/sim/<id>.json"` 추가, 특수 베이스 탭은 `"bases.html":"pub/bases.html","data/special.json":"data/special.json"`, 지금 `diztoh-crit-helmet-v2`, `helmet-armour-sl-v2`, `sihan-highend-boots-v2`, `diztoh-rarity-ring-v2`, `saveq-absent-amulet-v2`, `farmer-budget-armour-v2`, `farmer-starter-staff-v2`, `ragna-ashot-bow-v2`, `sane-resist-belt-v2`, `diztoh-budget-mace-v2`, `lilbotq-budget-boots-v2`, `icesly-budget-wand-v2`, `diztoh-es-helmet-v2`, `belton-plus8-wand-v2`, `lilbotq-armour-shield-v2`, `diztoh-vile-robe-v2`, `diztoh-talisman-v2`, `sihan-chayula-sceptre-v2`, `diztoh-budget-crossbow-v2`, `diztoh-onehand-mace-v2`, `saveq-alloy-focus-v2`, `tankjung-kitava-shield-v2`, `ragna-spell4-amulet-v2`, `noble-visceral-quiver-v2`, `sihan-highend-helmet-v2`, `barricade-quarterstaff-v2`, `diztoh-endgame-quarterstaff-v2`, `lilbotq-emerald-v2`, `zenm-timelost-sapphire-v2`, `diztoh-5mod-emerald-v2`, `diztoh-5mod-sapphire-v2`, `sl-5mod-jewel-v2`, `vodnarg-timelost-emerald-v2`, `lilbotq-boots-v2`, `mazbro-caster-ring-v2`, `diztoh-as-spear-v2`, `diztoh-socket-gloves-v2`, `seek-cyclone-boots-v2`, `mastert-timelost-emerald-v2`, `chiba-timelost-emerald-v2`, `noble-timelost-sapphire-v2`, `mazbro-proj-gloves-v2`, `sl-flamewave-staff-v2`, `mazbro-caster-amulet-v2`, `mazbro-spell5-amulet-v2`, `gold-amulet-6line-v2`): `{"recipes.html":"pub/recipes.html","discover.html":"pub/discover.html","emulator.html":"pub/emulator.html","builder.html":"pub/builder.html","data/recipes.json":"data/recipes.json","data/tips.json":"data/tips.json","data/samples.json":"data/samples.json","data/prices.json":"data/prices.json","data/budget.json":"data/budget.json","data/crafting.json":"data/crafting.json"}`.
 capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 다시 적을 땐 셋 다 적어야 해요). 새 세션에서 처음 게시하기 전엔 Artifact `read`로 해당 파일을 먼저 읽어야 해요.
 
+## 자체 도메인 poe2craft.xyz (2026-11-10)
+
+- 사용자가 도메인 poe2craft.xyz 구입. 화면 구성은 poe2filter.com(거래소 trade2 스타일)을 참고: 배너(워드마크 + 붉은 명판) → 아이콘 탭 바(활성 탭 갈색 #5a3806) → 테두리 패널 하나에 도구. GGG 그림·로고·trade2.css는 가져오지 않고 색·배치만 따라 했어요.
+- 원본: `site/shell.html`(껍데기, 아티팩트의 app.html 대응) · `site/theme.css`(도구 페이지 색·글꼴 토큰만 덮어씀, `:root:root`) · `site/about.html`(안내 탭: 확률을 믿을 수 있는 이유 6개 + 사용 방법 + GGG·카카오 무관 문구) · `site/favicon.svg`
+- 배포 폴더 만들기: 위 빌드 뒤에 `python3 scripts/build_web.py` → `web/`(index.html·도구 페이지·data·lib·CNAME·_headers·robots·sitemap). `web/`도 커밋해요(호스팅이 그대로 서빙).
+- 아티팩트 밖에서는 다운로드 = 일반 브라우저 다운로드로 대체, **공유 레시피 저장소는 아직 없음**(code 'unavailable') → 서버 저장소(예: Cloudflare Workers + D1) 붙이기가 다음 일.
+- app.html(아티팩트판)은 그대로 두고 같이 유지해요.
+
 ## 엔진 요약 (site/recipes.html `analyse`)
 
 - 레시피: `cls, base(베이스 인덱스), ilvl, start{rar, mods[{gi,tmax,fr}|{junk:'p'|'s'}], quality, runes[{kr,en}]}, cap, sockets, exceptional{sockets}, nodes[]`
