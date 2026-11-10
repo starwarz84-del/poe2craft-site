@@ -89,6 +89,7 @@ node _shots_sim.js         # 플로우차트 화면 스크린샷 → shots/sim-<
 cd /home/claude/poe2data && bash tools/test/serve.sh stop
 ```
 
+- **배포 전 검수**(2026-11-11): `cd web && python3 -m http.server 8790 &` → `node tools/test/_web.js`(배포 폴더 그대로 탭 6개·레시피·플로우차트·영문·모바일, 오류·404·가로 스크롤 → shots/web-*.png), 배포 뒤엔 내장 브라우저로 poe2craft.xyz의 `/data/recipes.json`을 받아 최신 커밋 내용인지 확인(사이트는 robots 차단이라 WebFetch는 안 됨)
 - `audit.js` 레시피 정책 점검 · `omen.js` 불필요한 면 징조 · `unk.js` 가중치 모름 표시
 - `ver.js` 발굴 초안 17개 검산(오류 0이어야 함) · `eng.js` 초안을 레시피 엔진으로 계산(경고·확률)
 - `_cost.js` 레시피·초안 비용(div, 확정/추가 포함, 비싼 징조, 타협 수) · `_cheap.js` 시세로 바뀐 초안 오브 선택 · `_shots_price.js` 시세 화면 스크린샷 → shots/price-*.png
