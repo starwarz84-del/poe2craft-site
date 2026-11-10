@@ -43,7 +43,13 @@ button,input,select,textarea{font:inherit;color:inherit}
 .chip{background:transparent;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px;cursor:pointer;color:var(--muted)}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--ink);border-color:var(--fg)}
 .count{font-size:12px;color:var(--faint)}
-.demo-note{font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:6px 10px;margin-bottom:12px}
+.demo-note{font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:6px 10px;width:fit-content;max-width:100%}
+.noterow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;margin-bottom:12px}
+.sortseg{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--panel);margin-left:auto}
+.sortseg button{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;padding:5px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.sortseg button:hover{color:var(--fg)}
+.sortseg button[aria-pressed="true"]{background:var(--panel-2,rgba(255,255,255,.06));color:var(--fg)}
+.sortseg .ar{color:var(--rare);margin-left:3px}
 /* masonry */
 .board{position:relative;min-height:200px}
 .card{position:absolute;transition:top .18s ease,border-color .12s;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer}
@@ -526,7 +532,7 @@ body.simfull{overflow:hidden}
   <div class="bar">
     <input type="search" id="q" aria-label="Search recipes">
     <select id="fcat" aria-label="Category"></select>
-    <select id="sort" aria-label="Sort"></select>
+    <select id="fsub" aria-label="Subcategory"></select>
     <label><input type="checkbox" id="fpatch"> <span id="l-patch"></span></label>
     <span class="sp"></span>
     <span class="count" id="count"></span>
@@ -534,7 +540,7 @@ body.simfull{overflow:hidden}
     <button type="button" class="btn" id="clrdrafts" hidden></button>
   </div>
   <div class="chips" id="tags"></div>
-  <div class="demo-note" id="demo"></div>
+  <div class="noterow"><div class="demo-note" id="demo"></div><div class="sortseg" id="sort" role="group" aria-label="Sort"></div></div>
   <div class="board" id="board"></div>
   </div>
   <div id="tipsView" hidden></div>
@@ -554,7 +560,7 @@ body.simfull{overflow:hidden}
 'use strict';
 // ---------- state / i18n ----------
 const store0 = (k,d) => { try{ const v=localStorage.getItem('poe2r:'+k); return v?JSON.parse(v):d; }catch(e){ return d; } };
-const S = { tips:[], view:store0('view','recipes'), navClosed:new Set(), stepIdx:-1, lang:'en', recipes:[], cls:{}, craft:null, byId:{}, index:null, open:null, sim:{}, tags:new Set(), q:'', cat:'', sort:'popular', curOnly:false };
+const S = { tips:[], view:store0('view','recipes'), navClosed:new Set(), stepIdx:-1, lang:'en', recipes:[], cls:{}, craft:null, byId:{}, index:null, open:null, sim:{}, tags:new Set(), q:'', cat:'', sort:'views', sortDir:-1, sub:'', curOnly:false };
 try{ const u=new URLSearchParams(location.search).get('lang'); S.lang = u || localStorage.getItem('poe2lang') || 'en'; }catch(e){}
 if(S.lang!=='kr') S.lang='en';
 const KR = () => S.lang==='kr', L = (kr,en) => KR()?kr:en;
@@ -564,7 +570,7 @@ const store = { get(k,d){ try{ const v=localStorage.getItem('poe2r:'+k); return 
 function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(), 1800); }
 
 const TAGS = [['life',['생명력','Life']],['mana',['마나','Mana']],['resistance',['저항','Resistance']],['defences',['방어','Defences']],['damage',['피해','Damage']],['physical',['물리','Physical']],['elemental',['원소','Elemental']],['fire',['화염','Fire']],['cold',['냉기','Cold']],['lightning',['번개','Lightning']],['chaos',['카오스','Chaos']],['attack',['공격','Attack']],['caster',['주문','Caster']],['minion',['소환수','Minion']],['speed',['속도','Speed']],['critical',['치명타','Critical']],['attribute',['능력치','Attribute']],['ailment',['상태 이상','Ailment']],['gem',['젬','Gem']],['drop',['희귀도','Rarity']]];
-const SORTS = [['popular',['인기순','Popular']],['new',['최신순','Newest']],['cheap',['적은 소모순','Fewest currency']],['rate',['성공률순','Success rate']],['reports',['성공 보고순','Most success reports']]];
+const SORTS = [['views',['조회수','Views']],['new',['등록일시','Added']],['price',['가격','Price']]];   // 정렬 (사용자 2026-11-11), 같은 버튼을 다시 누르면 방향 바뀜
 const DO = { transmute:['진화','Transmute'], augment:['확장','Augment'], regal:['제왕','Regal'], exalt:['엑잘','Exalt'], essence:['에센스','Essence'], fracture:['분열','Fracture'] };
 
 // ---------- data ----------
@@ -1772,6 +1778,7 @@ function list(){
   let a = S.recipes.filter(r=>{
     if(r.tierGroup && tierLead(r)!==r) return false;
     if(S.cat && catOf(r)?.id!==S.cat) return false;
+    if(S.sub && r.cls!==S.sub) return false;
     if(S.curOnly && isOld(r)) return false;
     if(S.tags.size){ const t=tagsOf(r); for(const x of S.tags) if(!t.has(x)) return false; }
     if(q){ const hay=[r.title.kr,r.title.en,tx(r.author),baseOf(r).kr,baseOf(r).en,clsName(r),...analyse(r).final.map(m=>m.txt)].join(' ').toLowerCase(); if(!hay.includes(q)) return false; }
@@ -1779,9 +1786,9 @@ function list(){
   // newest: the shared time when there is one, else the date; recipes added later on the same date count as newer
   const order = new Map(S.recipes.map((r,i)=>[r,i]));
   const stamp = r => r.at || r.sharedAt || (r.draft && r.madeAt) || (Date.parse(r.created||'2000-01-01') + (order.get(r)||0));
-  const by = { popular:(x,y)=>likes(y)-likes(x), new:(x,y)=>stamp(y)-stamp(x), cheap:(x,y)=>totalUses(x)-totalUses(y),
-    rate:(x,y)=>successRate(y)-successRate(x), reports:(x,y)=>reports(y)-reports(x) }[S.sort];
-  return a.sort((x,y)=>by(x,y) || stamp(y)-stamp(x));
+  const views = r => (r.views||0) + likes(r), price = r => { try{ return recipeCost(r)?.v ?? Infinity; }catch(e){ return Infinity; } };
+  const key = { views, new:stamp, price }[S.sort] || views, d = S.sortDir || -1;
+  return a.sort((x,y)=>{ const kx=key(x), ky=key(y); return (kx===ky ? 0 : kx===Infinity ? 1 : ky===Infinity ? -1 : (kx-ky)*d) || stamp(y)-stamp(x); });
 }
 
 let cards=[], panel=null;
@@ -1835,7 +1842,11 @@ function renderBar(){
   $('#q').placeholder=L('레시피, 베이스, 옵션 검색','Search recipes, bases, modifiers');
   const cats=[...new Set(S.recipes.map(r=>catOf(r)?.id))];
   $('#fcat').innerHTML=`<option value="">${L('모든 종류','All categories')}</option>`+S.index.groups.filter(g=>cats.includes(g.id)).map(g=>`<option value="${g.id}" ${S.cat===g.id?'selected':''}>${esc(KR()?g.kr:catEn(g))}</option>`).join('');
-  $('#sort').innerHTML=SORTS.map(([k,[kr,en]])=>`<option value="${k}" ${S.sort===k?'selected':''}>${esc(L(kr,en))}</option>`).join('');
+  const grp=S.index.groups.find(g=>g.id===S.cat), subs=grp ? grp.classes.filter(c=>S.recipes.some(r=>r.cls===c.id)) : [];
+  if(S.sub && !subs.some(c=>c.id===S.sub)) S.sub='';
+  $('#fsub').innerHTML=`<option value="">${L('모든 세부 종류','All types')}</option>`+subs.map(c=>`<option value="${c.id}" ${S.sub===c.id?'selected':''}>${esc(KR()?c.kr:c.en)}</option>`).join('');
+  $('#fsub').disabled=!subs.length;
+  $('#sort').innerHTML=SORTS.map(([k,[kr,en]])=>`<button type="button" data-sort="${k}" aria-pressed="${S.sort===k}">${esc(L(kr,en))}${S.sort===k?`<span class="ar">${S.sortDir>0?'↑':'↓'}</span>`:''}</button>`).join('');
   $('#l-patch').textContent=L(`현재 패치(${S.index.patch})만`,`Current patch (${S.index.patch}) only`);
   $('#analyze').textContent=L('아이템으로 레시피 찾기·요청','Find or request a recipe');
   { const n=S.recipes.filter(r=>r.draft).length, b=$('#clrdrafts'); b.hidden=!n; b.textContent=L(`역산 초안 모두 지우기 (${n})`,`Delete all drafts (${n})`); }
@@ -1971,8 +1982,10 @@ document.addEventListener('keydown', e=>{ if(!S.open || S.simFull || e.target.cl
   const i=Math.max(0,Math.min(r.nodes.length-1, from+dir)); kbNav={i,t:Date.now()};
   e.preventDefault(); goNode(r.nodes[i].id); });
 $('#q').addEventListener('input', e=>{ S.q=e.target.value; renderBoard(); });
-$('#fcat').addEventListener('change', e=>{ S.cat=e.target.value; renderBoard(); });
-$('#sort').addEventListener('change', e=>{ S.sort=e.target.value; renderBoard(); });
+$('#fcat').addEventListener('change', e=>{ S.cat=e.target.value; S.sub=''; renderBar(); renderBoard(); });
+$('#fsub').addEventListener('change', e=>{ S.sub=e.target.value; renderBoard(); });
+$('#sort').addEventListener('click', e=>{ const b=e.target.closest('[data-sort]'); if(!b) return; const k=b.dataset.sort;
+  if(S.sort===k) S.sortDir=-S.sortDir; else { S.sort=k; S.sortDir = k==='price' ? 1 : -1; } renderBar(); renderBoard(); });
 $('#fpatch').addEventListener('change', e=>{ S.curOnly=e.target.checked; renderBoard(); });
 $('#vtabs').addEventListener('click', e=>{ const b=e.target.closest('[data-view]'); if(!b) return; S.view=b.dataset.view; store.set('view', S.view); render(); });
 $('#tipsView').addEventListener('click', e=>{ const a=e.target.closest('[data-open]'); if(a){ e.preventDefault(); setOpen(a.dataset.open); } });

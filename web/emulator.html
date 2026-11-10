@@ -65,9 +65,10 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .bnums{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
 .bnums label{white-space:nowrap}
 .bnums .bn{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-.bnums{column-gap:12px}
+.bnums{column-gap:12px;flex-wrap:nowrap;width:100%}
+.bnums .bn:last-child select{max-width:110px}
 .bnums select{background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:4px 6px;font-size:12px}
-.bnums input{width:52px;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:4px 6px;font-family:var(--f-mono);font-size:12.5px}
+.bnums input{width:48px;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:4px 6px;font-family:var(--f-mono);font-size:12.5px}
 .toolbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
 .tbtn{background:transparent;border:1px solid var(--line);border-radius:6px;padding:5px 11px;font-size:12.5px;color:var(--muted);cursor:pointer}
 .tbtn:hover:not(:disabled){color:var(--fg);border-color:var(--muted)}
@@ -104,6 +105,7 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .base .lv{position:absolute;top:3px;right:4px;font-family:var(--f-mono);font-size:9.5px;color:var(--faint)}
 /* item column */
 .itemcol{padding:14px;display:flex;flex-direction:column;gap:12px;align-items:stretch}
+@media (min-width:821px){.itemcol{position:sticky;top:var(--itop,12px)}}   /* follows the page (사용자 2026-11-11) */
 .ctrlrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}
 .ctrlrow input[type=number]{width:60px;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:3px 6px;font-family:var(--f-mono)}
 .btn{background:var(--panel-2);border:1px solid var(--line);border-radius:7px;padding:6px 12px;cursor:pointer;font-size:13px}
@@ -343,7 +345,7 @@ footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 /* wide screens (사용자 확정 2026-11-11): base list docked on the left, item in the middle, currency right next to the item (narrower, so every orb is a short drag away) */
 @media (min-width:1280px){
-  .grid{grid-template-columns:280px minmax(340px,430px) minmax(0,640px);justify-content:start}
+  .grid{grid-template-columns:280px minmax(340px,430px) minmax(0,1fr)}
   .picker.drawer{position:sticky;top:12px;z-index:auto;transform:none;transition:none;width:auto;max-height:min(880px,calc(100vh - 24px));border-radius:8px;box-shadow:none;padding-left:0;display:flex;flex-direction:column;overflow:hidden}
   .picker.drawer .bases-wrap{flex:1;min-height:0;overflow:auto}
   .drawer-bg,#drawer-close,.basechip .bchg{display:none!important}
@@ -899,11 +901,14 @@ function renderOmenbar(){
   const on=[...S.omens].map(id=>S.craft.omens.find(o=>o.omen===id)).filter(Boolean);
   $('#omenbar').innerHTML = on.length ? `<span>${L('켜진 징조','Active omens')}</span>` + on.map(o=>`<button type="button" class="ochip" data-off="${o.omen}" title="${L('끄기','Turn off')}"><img src="${o.icon}" alt="">${esc(KR()?o.kr:o.en)}</button>`).join('') : '';
 }
+// item column follows the page: short → sticks to the top; taller than the window → scrolls until its bottom shows, then sticks
+(()=>{ const col=document.querySelector('.itemcol'); const fit=()=>{ const h=col.offsetHeight, vh=innerHeight; col.style.setProperty('--itop', (h+24<=vh ? 12 : vh-h-12)+'px'); };
+  new ResizeObserver(fit).observe(col); addEventListener('resize', fit); })();
 const DOCK = matchMedia('(min-width:1280px)');   // wide: the base list stays open on the left
 function openDrawer(on){ if(DOCK.matches) on=true; $('#drawer').classList.toggle('open', on); $('#drawer-bg').hidden=!on; $('#base-open').setAttribute('aria-expanded', on); if(on){ renderPicker(); setTimeout(()=>{ const sel=$('#bases .base[aria-pressed="true"]'); sel&&sel.scrollIntoView({block:'nearest'}); },30); } }
 function render(){ renderItem(); renderReveal(); renderShelves(); renderPane(); renderLast(); renderBasebar(); renderOmenbar();
   $('#ilvl').min = base().dl||1; $('#ilvl').max = 86; $('#ilvl').value = S.item.ilvl; $('#ilvl').title = L(`모든 옵션 티어가 나오는 레벨: ${maxModLvl()} · 낮추면 그 레벨 이하 옵션만 나와요`,`All tiers roll from ${maxModLvl()}; lower it to leave out high-level tiers`); $('#qual').value = S.item.quality;
-  $('#exc').innerHTML = [['',L('아님','No')],['sock',L('룬 소켓 +1','+1 rune socket'),!base().sock],['qual',L('기본 퀄리티 20% 초과','Base quality over 20%')]]
+  $('#exc').innerHTML = [['',L('아님','No')],['sock',L('룬 소켓 +1','+1 socket'),!base().sock]]   // quality is raised separately while crafting (사용자 2026-11-11)
     .map(([v,t,off])=>`<option value="${v}" ${off?'disabled':''} ${(S.item.exc||'')===v?'selected':''}>${t}</option>`).join('');
   $('#undo').disabled = !S.hist.length;
   $('#to-import').hidden = !S.start;
