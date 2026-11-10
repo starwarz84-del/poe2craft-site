@@ -76,36 +76,38 @@
   "rw": {
    "gi": 82
   },
+  "kq": {
+   "gi": 46
+  },
+  "cs": {
+   "gi": 32,
+   "tmax": 1
+  },
+  "cr": {
+   "gi": 24,
+   "tmax": 2
+  },
+  "cd": {
+   "gi": 25,
+   "tmax": 2
+  },
+  "ar": {
+   "gi": 7,
+   "tmax": 2
+  },
+  "rs": {
+   "gi": 26,
+   "tmax": 1
+  },
   "fin": {
    "anyOf": [
-    {
-     "gi": 46
-    },
-    {
-     "gi": 32,
-     "tmax": 1
-    },
-    {
-     "gi": 24,
-     "tmax": 2
-    },
-    {
-     "gi": 25,
-     "tmax": 2
-    },
-    {
-     "gi": 7,
-     "tmax": 2
-    },
-    {
-     "gi": 26,
-     "tmax": 1
-    }
-   ],
-   "label": {
-    "kr": "시전 속도·치명타·저항·희귀도·스킬 퀄리티",
-    "en": "Cast speed, crit, resist, rarity or skill quality"
-   }
+    "kq",
+    "cs",
+    "cr",
+    "cd",
+    "ar",
+    "rs"
+   ]
   }
  },
  "require": {
@@ -163,18 +165,17 @@
      "fr": true
     },
     {
-     "tag": "rw"
+     "tag": "rw",
+     "ess": true
     },
     {
      "tag": "spell",
      "tmax": 1
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "시전 속도·치명타·저항·희귀도·스킬 퀄리티",
-      "en": "Cast speed, crit, resist, rarity or skill quality"
-     }
+     "tag": "cs",
+     "tmax": 1,
+     "des": true
     }
    ]
   },
@@ -189,7 +190,8 @@
      "fr": true
     },
     {
-     "tag": "rw"
+     "tag": "rw",
+     "ess": true
     },
     {
      "tag": "spell",
@@ -317,7 +319,7 @@
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -369,7 +371,7 @@
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -535,7 +537,7 @@
      "s": "p",
      "kr": "최대 룬 수호 % (룬 합금)",
      "en": "% max runic ward (Runic Alloy)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "rw"
      ]
@@ -599,7 +601,7 @@
      "s": "p",
      "kr": "최대 룬 수호 % (룬 합금)",
      "en": "% max runic ward (Runic Alloy)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "rw"
      ]
@@ -683,7 +685,7 @@
      "s": "p",
      "kr": "최대 룬 수호 % (룬 합금)",
      "en": "% max runic ward (Runic Alloy)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "rw"
      ]
@@ -699,11 +701,16 @@
     },
     {
      "s": "s",
-     "kr": "시전 속도·치명타·저항·희귀도·스킬 퀄리티",
-     "en": "Cast speed, crit, resist, rarity or skill quality",
-     "m": "n",
+     "kr": "공개 옵션",
+     "en": "Revealed line",
+     "m": "d",
      "tags": [
-      "fin"
+      "kq",
+      "cs",
+      "cr",
+      "cd",
+      "ar",
+      "rs"
      ]
     }
    ],

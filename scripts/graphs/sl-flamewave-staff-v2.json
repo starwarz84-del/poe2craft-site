@@ -65,63 +65,59 @@
   "fire7": {
    "gi": 12
   },
+  "dsp": {
+   "gi": 3,
+   "tmax": 1
+  },
+  "dfi": {
+   "gi": 5,
+   "tmax": 1
+  },
+  "dco": {
+   "gi": 6,
+   "tmax": 1
+  },
+  "dli": {
+   "gi": 7,
+   "tmax": 1
+  },
+  "dch": {
+   "gi": 8,
+   "tmax": 1
+  },
+  "xfi": {
+   "gi": 32,
+   "tmax": 1
+  },
+  "xco": {
+   "gi": 33,
+   "tmax": 1
+  },
+  "xli": {
+   "gi": 34,
+   "tmax": 1
+  },
   "pd": {
    "anyOf": [
-    {
-     "gi": 3,
-     "tmax": 1
-    },
-    {
-     "gi": 5,
-     "tmax": 1
-    },
-    {
-     "gi": 6,
-     "tmax": 1
-    },
-    {
-     "gi": 7,
-     "tmax": 1
-    },
-    {
-     "gi": 8,
-     "tmax": 1
-    }
-   ],
-   "label": {
-    "kr": "피해 % 증가 1티어",
-    "en": "T1 % increased damage"
-   }
+    "dsp",
+    "dfi",
+    "dco",
+    "dli",
+    "dch"
+   ]
   },
   "px": {
    "anyOf": [
-    {
-     "gi": 32,
-     "tmax": 1
-    },
-    {
-     "gi": 33,
-     "tmax": 1
-    },
-    {
-     "gi": 34,
-     "tmax": 1
-    }
-   ],
-   "label": {
-    "kr": "피해의 %를 추가 피해로 1티어",
-    "en": "T1 damage as extra"
-   }
+    "xfi",
+    "xco",
+    "xli"
+   ]
   },
   "pre": {
    "anyOf": [
     "pd",
     "px"
-   ],
-   "label": {
-    "kr": "피해 접두 1티어",
-    "en": "T1 damage prefix"
-   }
+   ]
   },
   "fm": {
    "gi": 68
@@ -186,25 +182,16 @@
    "en": "High-end",
    "lines": [
     {
-     "side": "p",
-     "label": {
-      "kr": "피해 % 증가 1티어",
-      "en": "T1 % increased damage"
-     }
+     "tag": "dsp",
+     "tmax": 1
     },
     {
-     "side": "p",
-     "label": {
-      "kr": "피해 접두 1티어",
-      "en": "T1 damage prefix"
-     }
+     "tag": "dfi",
+     "tmax": 1
     },
     {
-     "side": "p",
-     "label": {
-      "kr": "피해 접두 1티어",
-      "en": "T1 damage prefix"
-     }
+     "tag": "xfi",
+     "tmax": 1
     },
     {
      "tag": "fire7",
@@ -215,7 +202,8 @@
      "tag": "fm"
     },
     {
-     "tag": "alloy"
+     "tag": "alloy",
+     "ess": true
     }
    ]
   },
@@ -225,18 +213,12 @@
    "en": "Balance",
    "lines": [
     {
-     "side": "p",
-     "label": {
-      "kr": "피해 % 증가 1티어",
-      "en": "T1 % increased damage"
-     }
+     "tag": "dsp",
+     "tmax": 1
     },
     {
-     "side": "p",
-     "label": {
-      "kr": "피해 접두 1티어",
-      "en": "T1 damage prefix"
-     }
+     "tag": "dfi",
+     "tmax": 1
     },
     {
      "side": "p",
@@ -252,7 +234,8 @@
      "random": true
     },
     {
-     "tag": "alloy"
+     "tag": "alloy",
+     "ess": true
     }
    ]
   }
@@ -346,8 +329,8 @@
    ],
    "act": "chaos",
    "goal": {
-    "kr": "피해 % 증가 1티어 (원소 무관)",
-    "en": "T1 % increased damage (any element)"
+    "kr": "접두 첫번째 옵션 (원소 무관)",
+    "en": "First prefix (any element)"
    },
    "label": {
     "kr": "카오스",
@@ -378,8 +361,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -437,8 +420,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -446,11 +429,12 @@
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     }
    ],
@@ -535,8 +519,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -544,11 +528,12 @@
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
@@ -638,8 +623,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -647,20 +632,22 @@
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     }
    ],
@@ -739,8 +726,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -748,20 +735,22 @@
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     }
    ],
@@ -813,8 +802,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -822,20 +811,22 @@
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
@@ -873,8 +864,8 @@
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접미 : 비고정 화염 속성 부여 규모",
-    "en": "Suffix: explicit fire magnitudes"
+    "kr": "접미 두번째 옵션 (가장 낮은 잡옵)",
+    "en": "Second suffix (the lowest junk line)"
    },
    "label": {
     "kr": "카오스",
@@ -905,8 +896,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -914,20 +905,22 @@
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
@@ -965,8 +958,8 @@
    ],
    "act": "essence",
    "goal": {
-    "kr": "접미 : 시전 속도 + 추가 냉기 (접미 하나가 지워짐)",
-    "en": "Suffix: cast speed + extra cold (a suffix goes)"
+    "kr": "접미 하나를 지우고 초월의 합금",
+    "en": "A suffix goes for the Transcendent Alloy"
    },
    "label": {
     "kr": "합금",
@@ -1005,8 +998,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -1014,20 +1007,22 @@
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
@@ -1043,7 +1038,7 @@
      "s": "s",
      "kr": "시전 속도 + 추가 냉기 (초월의 합금)",
      "en": "Cast speed + extra cold (Transcendent Alloy)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "alloy"
      ]
@@ -1053,8 +1048,8 @@
    "showText": [
     {
      "s": "s",
-     "kr": "초월의 합금 (제작 옵션)",
-     "en": "Transcendent Alloy (crafted)"
+     "kr": "시전 속도 (39—47)% 증가 · 원소 피해의 (11—16)%를 추가 냉기 피해로 획득 (제작 옵션)",
+     "en": "(39—47)% increased cast speed · gain (11—16)% of elemental damage as extra cold (crafted)"
     }
    ],
    "ess": "alloy"
@@ -1069,8 +1064,8 @@
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접미 : 비고정 화염 속성 부여 규모",
-    "en": "Suffix: explicit fire magnitudes"
+    "kr": "접미 : 지워진 화염 규모 다시 (가장 낮은 잡옵)",
+    "en": "Suffix: the lost fire magnitude again (the lowest junk line)"
    },
    "label": {
     "kr": "카오스",
@@ -1116,8 +1111,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -1125,20 +1120,22 @@
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
@@ -1154,7 +1151,7 @@
      "s": "s",
      "kr": "시전 속도 + 추가 냉기 (초월의 합금)",
      "en": "Cast speed + extra cold (Transcendent Alloy)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "alloy"
      ]
@@ -1203,8 +1200,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -1212,20 +1209,22 @@
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
@@ -1263,8 +1262,8 @@
    ],
    "act": "essence",
    "goal": {
-    "kr": "접미 : 시전 속도 + 추가 냉기 (접미 하나가 지워짐)",
-    "en": "Suffix: cast speed + extra cold (a suffix goes)"
+    "kr": "잡옵 접미 하나를 지우고 초월의 합금",
+    "en": "A junk suffix goes for the Transcendent Alloy"
    },
    "label": {
     "kr": "합금",
@@ -1287,8 +1286,8 @@
     },
     {
      "s": "p",
-     "kr": "피해 % 증가 1티어",
-     "en": "T1 % increased damage",
+     "kr": "피해 % 증가",
+     "en": "% increased damage",
      "m": "n",
      "tags": [
       "pd"
@@ -1296,20 +1295,22 @@
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
      "s": "p",
-     "kr": "피해 접두 1티어",
-     "en": "T1 damage prefix",
+     "kr": "피해 접두",
+     "en": "Damage prefix",
      "m": "n",
      "tags": [
-      "pre"
+      "pd",
+      "px"
      ]
     },
     {
@@ -1322,7 +1323,7 @@
      "s": "s",
      "kr": "시전 속도 + 추가 냉기 (초월의 합금)",
      "en": "Cast speed + extra cold (Transcendent Alloy)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "alloy"
      ]
@@ -1332,8 +1333,8 @@
    "showText": [
     {
      "s": "s",
-     "kr": "초월의 합금 (제작 옵션)",
-     "en": "Transcendent Alloy (crafted)"
+     "kr": "시전 속도 (39—47)% 증가 · 원소 피해의 (11—16)%를 추가 냉기 피해로 획득 (제작 옵션)",
+     "en": "(39—47)% increased cast speed · gain (11—16)% of elemental damage as extra cold (crafted)"
     }
    ],
    "ess": "alloy"

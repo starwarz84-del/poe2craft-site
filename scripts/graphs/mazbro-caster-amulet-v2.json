@@ -73,80 +73,43 @@
   "mq": {
    "gi": 81
   },
-  "blk": {
-   "anyOf": [
-    {
-     "gi": 21
-    },
-    {
-     "gi": 0
-    },
-    {
-     "gi": 1
-    },
-    {
-     "gi": 2
-    },
-    {
-     "gi": 3
-    },
-    {
-     "gi": 4
-    },
-    {
-     "gi": 5
-    },
-    {
-     "gi": 6
-    },
-    {
-     "gi": 7
-    }
-   ],
-   "label": {
-    "kr": "생명력 재생·능력치·저항",
-    "en": "Life regen, attribute or resistance"
-   }
+  "cs": {
+   "gi": 32,
+   "tmax": 1
+  },
+  "cr": {
+   "gi": 24,
+   "tmax": 1
+  },
+  "cd": {
+   "gi": 25,
+   "tmax": 1
   },
   "gs": {
    "anyOf": [
-    {
-     "gi": 32,
-     "tmax": 1
-    },
-    {
-     "gi": 24,
-     "tmax": 1
-    },
-    {
-     "gi": 25,
-     "tmax": 1
-    }
-   ],
-   "label": {
-    "kr": "시전 속도·치명타 1티어",
-    "en": "T1 cast speed or crit"
-   }
+    "cs",
+    "cr",
+    "cd"
+   ]
+  },
+  "mp": {
+   "gi": 12,
+   "tmax": 1
+  },
+  "mf": {
+   "gi": 11,
+   "tmax": 1
+  },
+  "sd": {
+   "gi": 31,
+   "tmax": 1
   },
   "gp": {
    "anyOf": [
-    {
-     "gi": 12,
-     "tmax": 1
-    },
-    {
-     "gi": 11,
-     "tmax": 1
-    },
-    {
-     "gi": 31,
-     "tmax": 1
-    }
-   ],
-   "label": {
-    "kr": "마나·주문 피해 1티어",
-    "en": "T1 mana or spell damage"
-   }
+    "mp",
+    "mf",
+    "sd"
+   ]
   },
   "kq": {
    "gi": 46
@@ -236,29 +199,20 @@
      "fr": true
     },
     {
-     "side": "p",
-     "label": {
-      "kr": "마나·주문 피해 1티어",
-      "en": "T1 mana or spell damage"
-     }
+     "tag": "mf",
+     "tmax": 1
     },
     {
-     "side": "p",
-     "label": {
-      "kr": "마나·주문 피해 1티어",
-      "en": "T1 mana or spell damage"
-     }
+     "tag": "mp",
+     "tmax": 1
     },
     {
      "tag": "spell",
      "tmax": 1
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "시전 속도·치명타 1티어",
-      "en": "T1 cast speed or crit"
-     }
+     "tag": "cs",
+     "tmax": 1
     },
     {
      "tag": "kq"
@@ -276,11 +230,8 @@
      "fr": true
     },
     {
-     "side": "p",
-     "label": {
-      "kr": "마나·주문 피해 1티어",
-      "en": "T1 mana or spell damage"
-     }
+     "tag": "mf",
+     "tmax": 1
     },
     {
      "side": "p",
@@ -291,11 +242,8 @@
      "tmax": 1
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "시전 속도·치명타 1티어",
-      "en": "T1 cast speed or crit"
-     }
+     "tag": "cs",
+     "tmax": 1
     },
     {
      "side": "s",
@@ -555,7 +503,7 @@
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -625,7 +573,7 @@
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -668,8 +616,8 @@
    ],
    "act": "reveal",
    "goal": {
-    "kr": "훼손 옵션 확인 (자리 막기)",
-    "en": "Reveal the desecrated modifier (blocker)"
+    "kr": "훼손 옵션 확인 (자리 막기 — 아무 옵션)",
+    "en": "Reveal the desecrated modifier (blocker — any line)"
    },
    "label": {
     "kr": "공개",
@@ -677,16 +625,7 @@
    },
    "edges": [
     {
-     "if": {
-      "added": "blk"
-     },
-     "to": "a6",
-     "res": "ok"
-    },
-    {
-     "to": "a5x",
-     "res": "fail",
-     "port": "right"
+     "to": "a6"
     }
    ],
    "item": [
@@ -709,7 +648,7 @@
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -725,52 +664,13 @@
     },
     {
      "s": "s",
-     "kr": "생명력 재생·능력치·저항 (자리 막기)",
-     "en": "Life regen, attribute or resistance (blocker)",
-     "m": "n",
-     "tags": [
-      "blk"
-     ]
+     "kr": "훼손 공개 옵션 (자리 막기)",
+     "en": "Revealed desecrated line (blocker)",
+     "m": "d"
     }
-   ],
-   "want": "blk",
-   "show": [
-    "blk"
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
-   ]
-  },
-  {
-   "id": "a5x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    5
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
-   },
-   "edges": [
-    {
-     "to": "a4",
-     "port": "right"
-    }
    ]
   },
   {
@@ -815,7 +715,7 @@
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -831,12 +731,9 @@
     },
     {
      "s": "s",
-     "kr": "생명력 재생·능력치·저항 (자리 막기)",
-     "en": "Life regen, attribute or resistance (blocker)",
-     "m": "n",
-     "tags": [
-      "blk"
-     ]
+     "kr": "훼손 공개 옵션 (자리 막기)",
+     "en": "Revealed desecrated line (blocker)",
+     "m": "d"
     }
    ],
    "cur": "Skittering_Catalyst",
@@ -852,8 +749,8 @@
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접미 : 시전 속도·치명타 1티어",
-    "en": "Suffix: T1 cast speed or crit"
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
    },
    "label": {
     "kr": "엑잘",
@@ -911,7 +808,7 @@
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -927,20 +824,19 @@
     },
     {
      "s": "s",
-     "kr": "생명력 재생·능력치·저항 (자리 막기)",
-     "en": "Life regen, attribute or resistance (blocker)",
-     "m": "n",
-     "tags": [
-      "blk"
-     ]
+     "kr": "훼손 공개 옵션 (자리 막기)",
+     "en": "Revealed desecrated line (blocker)",
+     "m": "d"
     },
     {
      "s": "s",
-     "kr": "시전 속도·치명타 1티어",
-     "en": "T1 cast speed or crit",
+     "kr": "시전 속도·치명타",
+     "en": "Cast speed or crit",
      "m": "n",
      "tags": [
-      "gs"
+      "cs",
+      "cr",
+      "cd"
      ]
     }
    ],
@@ -993,7 +889,7 @@
       }
      },
      "to": "a7e",
-     "hide": true
+     "res": "fail"
     },
     {
      "if": {
@@ -1039,7 +935,7 @@
    "group": "main",
    "pos": [
     2,
-    6
+    8
    ],
    "act": "essence",
    "goal": {
@@ -1125,7 +1021,7 @@
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -1141,12 +1037,9 @@
     },
     {
      "s": "s",
-     "kr": "생명력 재생·능력치·저항 (자리 막기)",
-     "en": "Life regen, attribute or resistance (blocker)",
-     "m": "n",
-     "tags": [
-      "blk"
-     ]
+     "kr": "훼손 공개 옵션 (자리 막기)",
+     "en": "Revealed desecrated line (blocker)",
+     "m": "d"
     }
    ],
    "cur": "Essence_of_the_Breach",
@@ -1268,7 +1161,7 @@
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -1284,20 +1177,19 @@
     },
     {
      "s": "s",
-     "kr": "생명력 재생·능력치·저항 (자리 막기)",
-     "en": "Life regen, attribute or resistance (blocker)",
-     "m": "n",
-     "tags": [
-      "blk"
-     ]
+     "kr": "훼손 공개 옵션 (자리 막기)",
+     "en": "Revealed desecrated line (blocker)",
+     "m": "d"
     },
     {
      "s": "s",
-     "kr": "시전 속도·치명타 1티어",
-     "en": "T1 cast speed or crit",
+     "kr": "시전 속도·치명타",
+     "en": "Cast speed or crit",
      "m": "n",
      "tags": [
-      "gs"
+      "cs",
+      "cr",
+      "cd"
      ]
     }
    ],
@@ -1350,7 +1242,7 @@
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -1366,20 +1258,19 @@
     },
     {
      "s": "s",
-     "kr": "생명력 재생·능력치·저항 (자리 막기)",
-     "en": "Life regen, attribute or resistance (blocker)",
-     "m": "n",
-     "tags": [
-      "blk"
-     ]
+     "kr": "훼손 공개 옵션 (자리 막기)",
+     "en": "Revealed desecrated line (blocker)",
+     "m": "d"
     },
     {
      "s": "s",
-     "kr": "시전 속도·치명타 1티어",
-     "en": "T1 cast speed or crit",
+     "kr": "시전 속도·치명타",
+     "en": "Cast speed or crit",
      "m": "n",
      "tags": [
-      "gs"
+      "cs",
+      "cr",
+      "cd"
      ]
     }
    ],
@@ -1396,8 +1287,8 @@
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 : 마나·주문 피해 1티어",
-    "en": "Prefix: T1 mana or spell damage"
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
    },
    "label": {
     "kr": "엑잘",
@@ -1429,18 +1320,20 @@
     },
     {
      "s": "p",
-     "kr": "마나·주문 피해 1티어",
-     "en": "T1 mana or spell damage",
+     "kr": "마나·주문 피해",
+     "en": "Mana or spell damage",
      "m": "n",
      "tags": [
-      "gp"
+      "mp",
+      "mf",
+      "sd"
      ]
     },
     {
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -1456,20 +1349,19 @@
     },
     {
      "s": "s",
-     "kr": "생명력 재생·능력치·저항 (자리 막기)",
-     "en": "Life regen, attribute or resistance (blocker)",
-     "m": "n",
-     "tags": [
-      "blk"
-     ]
+     "kr": "훼손 공개 옵션 (자리 막기)",
+     "en": "Revealed desecrated line (blocker)",
+     "m": "d"
     },
     {
      "s": "s",
-     "kr": "시전 속도·치명타 1티어",
-     "en": "T1 cast speed or crit",
+     "kr": "시전 속도·치명타",
+     "en": "Cast speed or crit",
      "m": "n",
      "tags": [
-      "gs"
+      "cs",
+      "cr",
+      "cd"
      ]
     }
    ],
@@ -1515,18 +1407,20 @@
     },
     {
      "s": "p",
-     "kr": "마나·주문 피해 1티어",
-     "en": "T1 mana or spell damage",
+     "kr": "마나·주문 피해",
+     "en": "Mana or spell damage",
      "m": "n",
      "tags": [
-      "gp"
+      "mp",
+      "mf",
+      "sd"
      ]
     },
     {
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
      "en": "+20% max quality (Essence of the Breach)",
-     "m": "n",
+     "m": "c",
      "tags": [
       "mq"
      ]
@@ -1542,20 +1436,19 @@
     },
     {
      "s": "s",
-     "kr": "생명력 재생·능력치·저항 (자리 막기)",
-     "en": "Life regen, attribute or resistance (blocker)",
-     "m": "n",
-     "tags": [
-      "blk"
-     ]
+     "kr": "훼손 공개 옵션 (자리 막기)",
+     "en": "Revealed desecrated line (blocker)",
+     "m": "d"
     },
     {
      "s": "s",
-     "kr": "시전 속도·치명타 1티어",
-     "en": "T1 cast speed or crit",
+     "kr": "시전 속도·치명타",
+     "en": "Cast speed or crit",
      "m": "n",
      "tags": [
-      "gs"
+      "cs",
+      "cr",
+      "cd"
      ]
     }
    ],
@@ -1572,8 +1465,8 @@
    ],
    "act": "chaos",
    "goal": {
-    "kr": "최대 퀄리티를 지우며 접두 : 마나·주문 피해 1티어",
-    "en": "Max quality out, prefix: T1 mana or spell damage"
+    "kr": "최대 퀄리티를 지우고 접두 세번째 옵션",
+    "en": "Max quality out, third prefix"
    },
    "label": {
     "kr": "카오스",
@@ -1617,20 +1510,24 @@
     },
     {
      "s": "p",
-     "kr": "마나·주문 피해 1티어",
-     "en": "T1 mana or spell damage",
+     "kr": "마나·주문 피해",
+     "en": "Mana or spell damage",
      "m": "n",
      "tags": [
-      "gp"
+      "mp",
+      "mf",
+      "sd"
      ]
     },
     {
      "s": "p",
-     "kr": "마나·주문 피해 1티어",
-     "en": "T1 mana or spell damage",
+     "kr": "마나·주문 피해",
+     "en": "Mana or spell damage",
      "m": "n",
      "tags": [
-      "gp"
+      "mp",
+      "mf",
+      "sd"
      ]
     },
     {
@@ -1644,20 +1541,19 @@
     },
     {
      "s": "s",
-     "kr": "생명력 재생·능력치·저항 (자리 막기)",
-     "en": "Life regen, attribute or resistance (blocker)",
-     "m": "n",
-     "tags": [
-      "blk"
-     ]
+     "kr": "훼손 공개 옵션 (자리 막기)",
+     "en": "Revealed desecrated line (blocker)",
+     "m": "d"
     },
     {
      "s": "s",
-     "kr": "시전 속도·치명타 1티어",
-     "en": "T1 cast speed or crit",
+     "kr": "시전 속도·치명타",
+     "en": "Cast speed or crit",
      "m": "n",
      "tags": [
-      "gs"
+      "cs",
+      "cr",
+      "cd"
      ]
     }
    ],
@@ -1735,20 +1631,24 @@
     },
     {
      "s": "p",
-     "kr": "마나·주문 피해 1티어",
-     "en": "T1 mana or spell damage",
+     "kr": "마나·주문 피해",
+     "en": "Mana or spell damage",
      "m": "n",
      "tags": [
-      "gp"
+      "mp",
+      "mf",
+      "sd"
      ]
     },
     {
      "s": "p",
-     "kr": "마나·주문 피해 1티어",
-     "en": "T1 mana or spell damage",
+     "kr": "마나·주문 피해",
+     "en": "Mana or spell damage",
      "m": "n",
      "tags": [
-      "gp"
+      "mp",
+      "mf",
+      "sd"
      ]
     },
     {
@@ -1762,11 +1662,13 @@
     },
     {
      "s": "s",
-     "kr": "시전 속도·치명타 1티어",
-     "en": "T1 cast speed or crit",
+     "kr": "시전 속도·치명타",
+     "en": "Cast speed or crit",
      "m": "n",
      "tags": [
-      "gs"
+      "cs",
+      "cr",
+      "cd"
      ]
     },
     {
@@ -1840,20 +1742,24 @@
     },
     {
      "s": "p",
-     "kr": "마나·주문 피해 1티어",
-     "en": "T1 mana or spell damage",
+     "kr": "마나·주문 피해",
+     "en": "Mana or spell damage",
      "m": "n",
      "tags": [
-      "gp"
+      "mp",
+      "mf",
+      "sd"
      ]
     },
     {
      "s": "p",
-     "kr": "마나·주문 피해 1티어",
-     "en": "T1 mana or spell damage",
+     "kr": "마나·주문 피해",
+     "en": "Mana or spell damage",
      "m": "n",
      "tags": [
-      "gp"
+      "mp",
+      "mf",
+      "sd"
      ]
     },
     {
@@ -1867,18 +1773,20 @@
     },
     {
      "s": "s",
-     "kr": "시전 속도·치명타 1티어",
-     "en": "T1 cast speed or crit",
+     "kr": "시전 속도·치명타",
+     "en": "Cast speed or crit",
      "m": "n",
      "tags": [
-      "gs"
+      "cs",
+      "cr",
+      "cd"
      ]
     },
     {
      "s": "s",
      "kr": "모든 스킬의 퀄리티 (쿠르갈)",
      "en": "Quality of all skills (Kurgal)",
-     "m": "n",
+     "m": "d",
      "tags": [
       "kq"
      ]

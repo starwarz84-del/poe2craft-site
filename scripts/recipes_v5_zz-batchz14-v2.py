@@ -17,8 +17,8 @@ for _t in ('high','bal'): _grade8('sl-flamewave-staff','sl-flamewave-staff-v2',_
 def _mzamu(r, t):
     _drop(r,'a18')   # 신성한 오브 + 축복받은 자의 징조는 수치 맞추기 (정책 23)
     a5=_node(r,'a5'); a5['cur']='Greater_Exalted_Orb'; a5['target']={'junk':'p','count':2}   # 영상: 상위 엑잘 2번으로 접두를 채워 균열의 에센스가 잡옵을 지우게
-    a8=_node(r,'a8'); a8['target']['reveal']={'anyOf':[{'gi':g} for g in (21,0,1,2,3,4,5,6,7)]}   # 자리 막기: 생명력 재생 → 능력치 → 저항
-    a10=_node(r,'a10'); a10['br']=K('빗나가면 소멸의 오브: 주문 +3이 지워지면 카오스부터, 막아 둔 옵션이 지워지면 훼손부터','Miss: Annulment — +3 spells gone: Chaos again; blocker gone: desecrate again')
+    a8=_node(r,'a8'); a8['target']['reveal']={'anyOf':[{'gi':g} for g in (21,0,1,2,3,4,5,6,7)]}; a8.pop('fail',None); a8['br']=K('자리 막기라 아무 옵션이나 그대로','A blocker: keep whatever comes')   # 사용자 확정 2026-11-10: 자리 막기는 아무 옵션이어도 됨
+    a10=_node(r,'a10'); a10['br']=K('빗나가면 소멸의 오브','Miss: Orb of Annulment')
     # 영상: 접두가 꽉 차 있어 좌측 소멸의 징조로 잡옵 접두를 지움(최대 퀄리티가 지워지면 좌측 결정화 + 균열의 에센스)
     ids=[n['id'] for n in r['nodes']]
     r['nodes'].insert(ids.index('a11'),{'id':'a10b','phase':_node(r,'a11').get('phase'),'do':'remove','cur':'Orb_of_Annulment','omens':['Omen_of_Sinistral_Annulment'],

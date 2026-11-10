@@ -416,7 +416,7 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcit li span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fcit li em{font-style:normal;color:var(--rare);font-weight:600;font-size:11.5px}
 .fcit li small{color:var(--faint);font-size:11px}.fcit li u{text-decoration:none;color:var(--muted)}
-.fcit li.m-f{color:#c9b27a}.fcit li.m-d,.fcit li.m-u{color:#9be86a}.fcit li.m-j{color:#8d877b}
+.fcit li.m-f{color:#c9b27a}.fcit li.m-d,.fcit li.m-u{color:#9be86a}.fcit li.m-c{color:#9fd8b0}.fcit li.m-j{color:#8d877b}
 .fcit li.new{border-left-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
 .fcit li.gone{text-decoration:line-through;opacity:.5}
 .fcitl{position:absolute;overflow:visible;pointer-events:none}.fcitl line{stroke:var(--line);stroke-dasharray:2 3}
@@ -1503,14 +1503,18 @@ function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||'')
   const noFr=t=>t.replace(/ ?\((?:분열|fractured)(?:, ?([^)]*))?\)/i,(_,x)=>x?` (${x})`:'');
   const text=l=>{ if(!l.tags) return {t:esc(noFr(tx(l))).replace(/ ?1티어$/,' T1'), tier:''}; const v=l.tags.map(t=>fcTagText(g,t,params)).filter(Boolean);
     return {t: v.map(x=>esc(x.txt)).join(` <u>${L('또는','or')}</u> `), tier: v[0]?.tier||''}; };
-  const row=(l,cls)=>{ const x=text(l); return `<li class="m-${isFr(l)?'f':(l.m||'n')} ${cls}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
+  // 사용자 확정 2026-11-10: 제작(에센스·합금·징표)·훼손 옵션도 색으로 — m 값이 없으면 이름·태그로 판단
+  const isDes=l=>l.m==='d' || l.m==='u' || /훼손|desecrat/i.test((l.kr||'')+' '+(l.en||''));
+  const isCr=l=>l.m==='c' || /제작 옵션|에센스\)|합금\)|징표|crafted|Essence of [^)]*\)|Alloy\)|Abyssal Lord/i.test((l.kr||'')+' '+(l.en||'')) || (l.tags||[]).some(t=>g.tags?.[t]?.sec==='e');
+  const cl=l=>isFr(l)?'f':isDes(l)?'d':isCr(l)?'c':(l.m||'n');
+  const row=(l,cls)=>{ const x=text(l); return `<li class="m-${cl(l)} ${cls}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
   const gone=(prev||[]).filter(l=>!now.has(key(l)) && !lines.some(x=>x.s===l.s && x.kr===l.kr));
   const ord=s=>s==='p'?0:s==='s'?2:1;   // 사용자 확정 2026-11-10: 접두(P)가 위, 접미(S)가 아래
   return [...lines.map(l=>[l, had.has(key(l))?'':'new']), ...gone.map(l=>[l,'gone'])].map((x,i)=>[...x,i]).sort((a,b)=>ord(a[0].s)-ord(b[0].s)||a[2]-b[2]).map(([l,c])=>row(l,c)).join(''); }
 // finished items (best / settle / budget) in the recipe's item-card format
 function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return ''; const fi=g.finalItem||{};
   const cards=g.finals.map(F=>{ const state=F.lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side, label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
-      return {gi:T.gi, side:T.s, tmax:l.tmax||null, fr:!!l.fr, des:!!l.des, hybrid:!!l.hybrid}; }).filter(Boolean);
+      return {gi:T.gi, side:T.s, tmax:l.tmax||null, fr:!!l.fr, des:!!l.des, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
     return `<div class="fcfin ${on?'on':''}"><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
