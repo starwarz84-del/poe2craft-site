@@ -95,7 +95,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 
 - 사용자가 도메인 poe2craft.xyz 구입. 화면 구성은 poe2filter.com(거래소 trade2 스타일)을 참고: 배너(워드마크 + 붉은 명판) → 아이콘 탭 바(활성 탭 갈색 #5a3806) → 테두리 패널 하나에 도구. GGG 그림·로고·trade2.css는 가져오지 않고 색·배치만 따라 했어요.
 - 원본: `site/shell.html`(껍데기, 아티팩트의 app.html 대응) · `site/theme.css`(도구 페이지 색·글꼴 토큰만 덮어씀, `:root:root`) · `site/about.html`(안내 탭: 확률을 믿을 수 있는 이유 6개 + 사용 방법 + GGG·카카오 무관 문구) · `site/favicon.svg`
-- 배포 폴더 만들기: 위 빌드 뒤에 `python3 scripts/build_web.py` → `web/`(index.html·도구 페이지·data·lib·CNAME·_headers·robots·sitemap). `web/`도 커밋해요(호스팅이 그대로 서빙).
+- 호스팅 = Cloudflare Workers(사용자의 lightview·roasterroute와 같은 방식), 저장소 루트 `wrangler.jsonc`가 `web/`를 정적 파일로 서빙. 배포 폴더 만들기: 위 빌드 뒤에 `python3 scripts/build_web.py` → `web/`(index.html·도구 페이지·data·lib·CNAME·_headers·robots·sitemap). `web/`도 커밋해요(호스팅이 그대로 서빙).
 - 아티팩트 밖에서는 다운로드 = 일반 브라우저 다운로드로 대체, **공유 레시피 저장소는 아직 없음**(code 'unavailable') → 서버 저장소(예: Cloudflare Workers + D1) 붙이기가 다음 일.
 - app.html(아티팩트판)은 그대로 두고 같이 유지해요.
 
