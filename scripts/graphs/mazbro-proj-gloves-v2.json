@@ -1,0 +1,6358 @@
+{
+ "id": "mazbro-proj-gloves-v2",
+ "recipe": "mazbro-proj-gloves-v2",
+ "cls": "Gloves_str_dex",
+ "base": "Blacksteel Gauntlets",
+ "ilvl": 82,
+ "note": "MazBro 투사체 +2 분열 장갑(원본 레시피 기록) — 콜르의 사냥 + 투사체 +2 분열 + 잡옵(퀄리티 30%) → 아스트리드의 창의성 → 카오스 오브(콜르 1티어 하나) → 반대쪽 면 상위 엑잘 + 면 찬미(빗나가면 결정화 + 군왕의 합금 → 결정화 + 발작의 에센스로 빗나간 옵션을 제작 옵션으로 바꿈) → 남은 제작 옵션 → 고대 갈비뼈 → 공개(투사체 속도·피해 1티어, 하이엔드 = 빛의 징조로 다시). 룬 교체·신성한 오브는 뺌.",
+ "params": {
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "v": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "v": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "v": 2
+   },
+   "desc": {
+    "kr": "공개 결과 그대로, 나머지는 영상대로",
+    "en": "Keep the reveal, the rest as in the video"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "v": 1
+   },
+   "desc": {
+    "kr": "영상: 공개는 빛의 징조로 다시",
+    "en": "Video: Light retries on the reveal"
+   }
+  }
+ ],
+ "tags": {
+  "proj": {
+   "gi": 81
+  },
+  "pspd": {
+   "gi": 72,
+   "tmax": 1
+  },
+  "pdmg": {
+   "gi": 70,
+   "tmax": 1
+  },
+  "crit": {
+   "gi": 73,
+   "tmax": 1
+  },
+  "pierce": {
+   "gi": 74
+  },
+  "ps": {
+   "anyOf": [
+    "pspd",
+    "pdmg"
+   ],
+   "label": {
+    "kr": "투사체 속도·피해 1티어",
+    "en": "T1 projectile speed or damage"
+   }
+  },
+  "ss": {
+   "anyOf": [
+    "crit",
+    "pierce"
+   ],
+   "label": {
+    "kr": "치명타 확률 1티어·관통",
+    "en": "T1 crit chance or pierce"
+   }
+  },
+  "ward": {
+   "gi": 69
+  },
+  "hyst": {
+   "gi": 57
+  },
+  "gp": {
+   "anyOf": [
+    "pspd",
+    "pdmg",
+    "ward"
+   ],
+   "label": {
+    "kr": "좋은 접두",
+    "en": "Good prefix"
+   }
+  },
+  "gs": {
+   "anyOf": [
+    "crit",
+    "pierce",
+    "hyst"
+   ],
+   "label": {
+    "kr": "좋은 접미",
+    "en": "Good suffix"
+   }
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "ps"
+   },
+   {
+    "has": "ss"
+   },
+   {
+    "has": "ward"
+   },
+   {
+    "has": "hyst"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "k15",
+    "k16",
+    "k16x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "side": "p",
+     "label": {
+      "kr": "투사체 속도·피해 1티어",
+      "en": "T1 projectile speed or damage"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "투사체 속도·피해 1티어",
+      "en": "T1 projectile speed or damage"
+     }
+    },
+    {
+     "tag": "ward",
+     "tmax": 1
+    },
+    {
+     "tag": "proj",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "치명타 확률 1티어·관통",
+      "en": "T1 crit chance or pierce"
+     }
+    },
+    {
+     "tag": "hyst",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "side": "p",
+     "label": {
+      "kr": "투사체 속도·피해 1티어",
+      "en": "T1 projectile speed or damage"
+     }
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "ward",
+     "tmax": 1
+    },
+    {
+     "tag": "proj",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "치명타 확률 1티어·관통",
+      "en": "T1 crit chance or pierce"
+     }
+    },
+    {
+     "tag": "hyst",
+     "tmax": 1
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 30,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "proj",
+      "fr": true
+     },
+     {
+      "junk": "p"
+     }
+    ],
+    "quality": 30
+   },
+   "label": {
+    "kr": "콜르의 사냥 장착, 모든 투사체 +2 분열 + 잡옵 1개 (퀄리티 30%, 특출난 베이스)",
+    "en": "Kolr’s Hunt socketed: fractured +2 projectile skills + one junk line (30% quality, Exceptional)"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "k8",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "k8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "k9"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ]
+  },
+  {
+   "id": "k9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "콜르 옵션 1티어 하나",
+    "en": "One T1 Kolr line"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "ps"
+     },
+     "to": "xs",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "ss"
+     },
+     "to": "xp",
+     "res": "ok"
+    },
+    {
+     "to": "k9",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "pspd",
+    "pdmg",
+    "crit",
+    "pierce"
+   ]
+  },
+  {
+   "id": "xs",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미: 치명타 확률 1티어·관통 (접두가 먼저 떴을 때)",
+    "en": "Suffix: T1 crit chance or pierce (prefix came first)"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    }
+   ],
+   "cur": "Greater_Exalted_Orb",
+   "show": [
+    "crit",
+    "pierce"
+   ],
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ]
+  },
+  {
+   "id": "csA",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "빗나간 접미를 지우고 룬 수호",
+    "en": "The missed suffix goes for runic ward"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "룬 수호 (군왕의 합금)",
+     "en": "Runic ward (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 (발작의 에센스)",
+     "en": "Crit damage (Essence of Hysteria)",
+     "m": "n",
+     "tags": [
+      "hyst"
+     ]
+    }
+   ],
+   "cur": "Sovereign_Alloy",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "룬 수호 (제작 옵션)",
+     "en": "Runic ward (crafted)"
+    }
+   ],
+   "ess": "ward",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "csH",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "빗나간 접미를 지우고 치명타 피해",
+    "en": "The missed suffix goes for crit damage"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "룬 수호 (군왕의 합금)",
+     "en": "Runic ward (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 (발작의 에센스)",
+     "en": "Crit damage (Essence of Hysteria)",
+     "m": "n",
+     "tags": [
+      "hyst"
+     ]
+    }
+   ],
+   "cur": "Essence_of_Hysteria",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 (제작 옵션)",
+     "en": "Crit damage (crafted)"
+    }
+   ],
+   "ess": "hyst",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "asx",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "annul",
+   "goal": {
+    "kr": "빗나간 접미 지우기",
+    "en": "Remove the missed suffix"
+   },
+   "label": {
+    "kr": "소멸",
+    "en": "Annul"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    }
+   ],
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ]
+  },
+  {
+   "id": "xp",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두: 투사체 속도·피해 1티어 (접미가 먼저 떴을 때)",
+    "en": "Prefix: T1 projectile speed or damage (suffix came first)"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    }
+   ],
+   "cur": "Greater_Exalted_Orb",
+   "show": [
+    "pspd",
+    "pdmg"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "cpA",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "빗나간 접두를 지우고 룬 수호",
+    "en": "The missed prefix goes for runic ward"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "룬 수호 (군왕의 합금)",
+     "en": "Runic ward (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 (발작의 에센스)",
+     "en": "Crit damage (Essence of Hysteria)",
+     "m": "n",
+     "tags": [
+      "hyst"
+     ]
+    }
+   ],
+   "cur": "Sovereign_Alloy",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "룬 수호 (제작 옵션)",
+     "en": "Runic ward (crafted)"
+    }
+   ],
+   "ess": "ward",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "cpH",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "빗나간 접두를 지우고 치명타 피해",
+    "en": "The missed prefix goes for crit damage"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "룬 수호 (군왕의 합금)",
+     "en": "Runic ward (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 (발작의 에센스)",
+     "en": "Crit damage (Essence of Hysteria)",
+     "m": "n",
+     "tags": [
+      "hyst"
+     ]
+    }
+   ],
+   "cur": "Essence_of_Hysteria",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 (제작 옵션)",
+     "en": "Crit damage (crafted)"
+    }
+   ],
+   "ess": "hyst",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "apx",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8
+   ],
+   "act": "annul",
+   "goal": {
+    "kr": "빗나간 접두 지우기",
+    "en": "Remove the missed prefix"
+   },
+   "label": {
+    "kr": "소멸",
+    "en": "Annul"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    }
+   ],
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Sinistral_Annulment"
+   ]
+  },
+  {
+   "id": "jp",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "합금이 바꿀 접두 하나 (룬 수호가 아직 없으면)",
+    "en": "A prefix for the alloy to replace (if runic ward is still missing)"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "ja",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접두 하나를 지우고 룬 수호 (좋은 접두가 지워지면 4번)",
+    "en": "A prefix goes for runic ward (losing the good prefix: back to 4)"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "res": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "룬 수호 (군왕의 합금)",
+     "en": "Runic ward (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 (발작의 에센스)",
+     "en": "Crit damage (Essence of Hysteria)",
+     "m": "n",
+     "tags": [
+      "hyst"
+     ]
+    }
+   ],
+   "cur": "Sovereign_Alloy",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "룬 수호 (제작 옵션)",
+     "en": "Runic ward (crafted)"
+    }
+   ],
+   "ess": "ward",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "js",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "에센스가 바꿀 접미 하나 (치명타 피해가 아직 없으면)",
+    "en": "A suffix for the essence to replace (if crit damage is still missing)"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh"
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ]
+  },
+  {
+   "id": "jh",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    12
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접미 하나를 지우고 치명타 피해 (좋은 접미가 지워지면 3번)",
+    "en": "A suffix goes for crit damage (losing the good suffix: back to 3)"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "룬 수호 (군왕의 합금)",
+     "en": "Runic ward (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 (발작의 에센스)",
+     "en": "Crit damage (Essence of Hysteria)",
+     "m": "n",
+     "tags": [
+      "hyst"
+     ]
+    }
+   ],
+   "cur": "Essence_of_Hysteria",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 (제작 옵션)",
+     "en": "Crit damage (crafted)"
+    }
+   ],
+   "ess": "hyst",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "kz",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    2
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep the fracture + one line"
+   },
+   "edges": [
+    {
+     "to": "k9",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "k15",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    13
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "k16"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "룬 수호 (군왕의 합금)",
+     "en": "Runic ward (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 (발작의 에센스)",
+     "en": "Crit damage (Essence of Hysteria)",
+     "m": "n",
+     "tags": [
+      "hyst"
+     ]
+    }
+   ],
+   "cur": "Ancient_Rib",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ]
+  },
+  {
+   "id": "k16",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    14
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "v": 1
+        }
+       },
+       {
+        "unrev": false
+       },
+       {
+        "not": {
+         "added": "ps"
+        }
+       }
+      ]
+     },
+     "to": "k16x",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "v": 2
+        }
+       },
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
+     "en": "+2 projectile skills (fractured, Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "룬 수호 (군왕의 합금)",
+     "en": "Runic ward (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도·피해 1티어",
+     "en": "T1 projectile speed or damage",
+     "m": "n",
+     "tags": [
+      "ps"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1티어·관통",
+     "en": "T1 crit chance or pierce",
+     "m": "n",
+     "tags": [
+      "ss"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 (발작의 에센스)",
+     "en": "Crit damage (Essence of Hysteria)",
+     "m": "n",
+     "tags": [
+      "hyst"
+     ]
+    }
+   ],
+   "want": "ps",
+   "show": [
+    "pspd",
+    "pdmg"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "edges": [
+       {
+        "if": {
+         "all": [
+          {
+           "has": "ps"
+          },
+          {
+           "has": "ss"
+          },
+          {
+           "has": "ward"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        },
+        "to": "ok",
+        "res": "ok"
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "all": [
+            {
+             "has": "ps"
+            },
+            {
+             "has": "ss"
+            },
+            {
+             "has": "ward"
+            },
+            {
+             "has": "hyst"
+            }
+           ]
+          },
+          {
+           "full": "p"
+          }
+         ]
+        },
+        "to": "apx",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "has": "ps"
+          },
+          {
+           "has": "ss"
+          },
+          {
+           "has": "ward"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        },
+        "to": "k15",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "not": {
+            "has": "ps"
+           }
+          },
+          {
+           "not": {
+            "has": "ss"
+           }
+          }
+         ]
+        },
+        "to": "kz",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "not": {
+            "has": "ss"
+           }
+          },
+          {
+           "not": {
+            "sideAll": {
+             "side": "s",
+             "tag": "gs"
+            }
+           }
+          },
+          {
+           "not": {
+            "has": "ward"
+           }
+          }
+         ]
+        },
+        "to": "csA",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "not": {
+            "has": "ss"
+           }
+          },
+          {
+           "not": {
+            "sideAll": {
+             "side": "s",
+             "tag": "gs"
+            }
+           }
+          },
+          {
+           "not": {
+            "has": "hyst"
+           }
+          }
+         ]
+        },
+        "to": "csH",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "not": {
+            "has": "ss"
+           }
+          },
+          {
+           "not": {
+            "sideAll": {
+             "side": "s",
+             "tag": "gs"
+            }
+           }
+          }
+         ]
+        },
+        "to": "asx",
+        "hide": true
+       },
+       {
+        "if": {
+         "not": {
+          "has": "ss"
+         }
+        },
+        "to": "xs",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "not": {
+            "has": "ps"
+           }
+          },
+          {
+           "not": {
+            "sideAll": {
+             "side": "p",
+             "tag": "gp"
+            }
+           }
+          },
+          {
+           "not": {
+            "has": "ward"
+           }
+          }
+         ]
+        },
+        "to": "cpA",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "not": {
+            "has": "ps"
+           }
+          },
+          {
+           "not": {
+            "sideAll": {
+             "side": "p",
+             "tag": "gp"
+            }
+           }
+          },
+          {
+           "not": {
+            "has": "hyst"
+           }
+          }
+         ]
+        },
+        "to": "cpH",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "not": {
+            "has": "ps"
+           }
+          },
+          {
+           "not": {
+            "sideAll": {
+             "side": "p",
+             "tag": "gp"
+            }
+           }
+          }
+         ]
+        },
+        "to": "apx",
+        "hide": true
+       },
+       {
+        "if": {
+         "not": {
+          "has": "ps"
+         }
+        },
+        "to": "xp",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "not": {
+            "has": "ward"
+           }
+          },
+          {
+           "any": [
+            {
+             "not": {
+              "sideAll": {
+               "side": "p",
+               "tag": "gp"
+              }
+             }
+            },
+            {
+             "full": "p"
+            }
+           ]
+          }
+         ]
+        },
+        "to": "ja",
+        "hide": true
+       },
+       {
+        "if": {
+         "not": {
+          "has": "ward"
+         }
+        },
+        "to": "jp",
+        "hide": true
+       },
+       {
+        "if": {
+         "any": [
+          {
+           "not": {
+            "sideAll": {
+             "side": "s",
+             "tag": "gs"
+            }
+           }
+          },
+          {
+           "full": "s"
+          }
+         ]
+        },
+        "to": "jh",
+        "hide": true
+       },
+       {
+        "to": "js",
+        "hide": true
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "k16x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    14
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "count": {
+         "tag": "ps",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "ps"
+         },
+         {
+          "has": "ss"
+         },
+         {
+          "has": "ward"
+         },
+         {
+          "has": "hyst"
+         }
+        ]
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ps"
+       },
+       {
+        "has": "ss"
+       },
+       {
+        "has": "ward"
+       },
+       {
+        "has": "hyst"
+       }
+      ]
+     },
+     "to": "k15",
+     "hide": true,
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "csA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       }
+      ]
+     },
+     "to": "asx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ss"
+      }
+     },
+     "to": "xs",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "hyst"
+        }
+       }
+      ]
+     },
+     "to": "cpH",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ps"
+      }
+     },
+     "to": "xp",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ward"
+        }
+       },
+       {
+        "any": [
+         {
+          "not": {
+           "sideAll": {
+            "side": "p",
+            "tag": "gp"
+           }
+          }
+         },
+         {
+          "full": "p"
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ja",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "ward"
+      }
+     },
+     "to": "jp",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "jh",
+     "hide": true
+    },
+    {
+     "to": "js",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    15
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "xsub": [
+  "Kolr's Hunt"
+ ],
+ "xroll": true
+}
