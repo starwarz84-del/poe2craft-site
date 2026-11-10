@@ -24,7 +24,7 @@ def T(gis, tm=None): return {'anyOf':[dict({'gi':g}, **({'tmax':tm} if tm else {
 tags={'spirit':{'gi':28,'tmax':1},'spell':{'gi':17,'tmax':1},'mq':{'gi':81},'rw':{'gi':82},
       'kq':{'gi':46},'cs':{'gi':32,'tmax':1},'cr':{'gi':24,'tmax':2},'cd':{'gi':25,'tmax':2},'ar':{'gi':7,'tmax':2},'rs':{'gi':26,'tmax':1},'fin':{'anyOf':['kq','cs','cr','cd','ar','rs']}}
 SP=it('p','정신력 +50 (분열)','+50 Spirit (fractured)',['spirit']); SL=it('s','모든 주문 스킬 레벨 +3','+3 spell skills',['spell']); MQ=it('p','최대 퀄리티 +20% (균열의 에센스)','+20% max quality (Essence of the Breach)',['mq'],'c')
-RW=it('p','최대 룬 수호 % (룬 합금)','% max runic ward (Runic Alloy)',['rw'],'c'); FN=it('s','공개 옵션','Revealed line',['kq','cs','cr','cd','ar','rs'],'d')
+RW=it('p','최대 룬 수호 % (룬 합금)','% max runic ward (Runic Alloy)',['rw'],'c'); FN=it('s','시전 속도','Cast speed',['cs'],'d')
 M0=[SP,J('s')]; M1=[SP,MQ]; M2=[SP,SL]; M3=[SP,J('p'),SL]; M4=[SP,RW,SL]; M5=M4+[UN('s')]; M6=M4+[FN]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'s'}]},K('정신력 +50 분열 + 잡옵 1개 (부재 목걸이)','Fractured +50 Spirit + one junk line (Absent Amulet)'),M0),
  mark([0,0.6],'z7',M0),
@@ -53,9 +53,9 @@ GN=[('rs',26),('ar',7),('fr',4),('co',5),('li',6),('cs',32),('cr',24),('cd',25),
 tags={'spirit':{'gi':28,'tmax':1},'spell':{'gi':17,'tmax':1},'mq':{'gi':81},'enh':{'gi':74},'markP':{'gi':79},'markS':{'gi':80},
       **{n:{'gi':g,'tmax':2} for n,g in GN},'gs':{'anyOf':[n for n,_ in GN[:8]]},'gpn':{'anyOf':[n for n,_ in GN[8:]]},
       'gp':{'anyOf':['gpn','enh']},'keepS':{'anyOf':['spell','gs']}}
-GS=it('s','좋은 접미','Good suffix',[n for n,_ in GN[:8]]); GP=lambda: it('p','좋은 접두','Good prefix',[n for n,_ in GN[8:]])
+GS=it('s','희귀도','Rarity',['rs']); GP=lambda: it('p','주문 피해','Spell damage',['sd']); GP2=it('p','마나 최대치','Maximum mana',['mf'])
 EN=it('p','방어 % (완벽한 강화의 에센스)','% defences (Perfect Essence of Enhancement)',['enh'],'c'); MK=lambda s: it(s,'심연 군주의 징표','Mark of the Abyssal Lord',['markP' if s=='p' else 'markS'],'c')
-Q0=[SP,J('s')]; Q1=[SP,SL]; Q2=[SP,J('p'),SL]; Q3=[SP,MQ,SL]; Q4=[SP,SL,GS]; Q5=[SP,GP(),J('p'),SL,GS]; Q6=[SP,GP(),EN,SL,GS]; Q7=[SP,J('p'),SL,GS,MK('s')]; Q8=[SP,GP(),GP(),SL,GS,UN('s')]; Q9=[SP,GP(),GP(),SL,GS,it('s','훼손 공개 옵션','Revealed desecrated line',[n for n,_ in GN[:8]],'d')]
+Q0=[SP,J('s')]; Q1=[SP,SL]; Q2=[SP,J('p'),SL]; Q3=[SP,MQ,SL]; Q4=[SP,SL,GS]; Q5=[SP,GP(),J('p'),SL,GS]; Q6=[SP,GP(),EN,SL,GS]; Q7=[SP,J('p'),SL,GS,MK('s')]; Q8=[SP,GP(),GP2,SL,GS,UN('s')]; Q9=[SP,GP(),GP2,SL,GS,it('s','시전 속도','Cast speed',['cs'],'d')]
 def RS(vis):
     return ROUTE_([{'if':{'not':{'has':'spell'}},'to':'k1r'},{'if':{'has':'gs'},'to':'p1'},{'if':{'sideLt':{'side':'s','n':2}},'to':'s2'},{'to':'s1b'}],vis)
 def RP(vis):

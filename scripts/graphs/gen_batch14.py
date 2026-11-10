@@ -19,9 +19,9 @@ tags={'fire7':{'gi':12},'dsp':{'gi':3,'tmax':1},'dfi':{'gi':5,'tmax':1},'dco':{'
       'pd':{'anyOf':['dsp','dfi','dco','dli','dch']},'px':{'anyOf':['xfi','xco','xli']},'pre':{'anyOf':['pd','px']},
       'fm':{'gi':68},'alloy':{'gi':65},'keep':{'anyOf':['fm','alloy']}}
 F7=it('s','모든 화염 주문 스킬 레벨 +7 (분열)','+7 fire spell skills (fractured)',['fire7'])
-PD=it('p','피해 % 증가','% increased damage',['pd']); PR=lambda: it('p','피해 접두','Damage prefix',['pd','px'])
+PD=it('p','주문 피해','Spell damage',['dsp']); PF2=it('p','화염 피해','Fire damage',['dfi']); PF3=it('p','추가 화염 피해','Extra fire',['xfi'],'d')
 FM=it('s','비고정 화염 속성 부여 규모 (스루드의 완력)','Explicit fire magnitudes (Thrud’s Might)',['fm']); AL=it('s','시전 속도 + 추가 냉기 (초월의 합금)','Cast speed + extra cold (Transcendent Alloy)',['alloy'],'c')
-S0=[F7,J('p')]; S1=[F7,PD]; S2=[F7,PD,PR()]; S3=[F7,PD,PR(),UN('p')]; S4=[F7,PD,PR(),PR()]
+S0=[F7,J('p')]; S1=[F7,PD]; S2=[F7,PD,PF2]; S3=[F7,PD,PF2,UN('p')]; S4=[F7,PD,PF2,PF3]
 RN=it('r','스루드의 완력 : 파괴 속성 부여 가능 · 모든 원소 저항 +5%','Thrud’s Might: Can roll Destruction modifiers · +5% to all Elemental Resistances',None,'r')
 S4r=S4+[RN]; S5=S4r+[J('s'),J('s')]; S6=S4r+[FM,J('s')]; S7=S4r+[FM,AL]; B1=S4+[J('s'),J('s')]; B2=S4+[J('s'),AL]
 F={'res':'fail','port':'right'}
@@ -50,7 +50,7 @@ graph11('sl-flamewave-staff-v2','Staves','Chiming Staff',81,
   'SL 화염파 지팡이(6EzSVUItzsg) — 화염 주문 +7 분열 + 잡옵 → 카오스 오브(피해 % 증가 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) → 좌측 강령술 + 고대 턱뼈 → 공개(빛의 징조로 다시). 하이엔드 = 스루드의 완력 → 상위 찬미 + 완벽한 엑잘 → 절사 + 완벽한 카오스 오브(화염 규모, 가중치 비공개: 영상 경험 절사 20~30번으로 맞춤) → 초월의 합금. 밸런스 = 영상의 가성비 마무리(엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로).',
   ROUTE,P2,{'high':K('영상: 스루드의 완력으로 화염 규모, 공개는 빛의 징조로 다시','Video: Thrud’s Might fire magnitudes, Light retries the reveal'),'bal':K('영상의 가성비 마무리: 엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로','Video budget finish: two exalted suffixes + Transcendent Alloy, reveal kept')},tags,nodes,
   [{'id':'L1','nodes':['p3','p4','p4x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'dsp','tmax':1},{'tag':'dfi','tmax':1},{'tag':'xfi','tmax':1} if v=='high' else {'side':'p','random':True},
+  FIN(('high','bal'),lambda v:[{'tag':'dsp','tmax':1},{'tag':'dfi','tmax':1},{'tag':'xfi','tmax':1,'des':True} if v=='high' else {'side':'p','random':True},
       {'tag':'fire7','tmax':1,'fr':True},{'tag':'fm'} if v=='high' else {'side':'s','random':True},{'tag':'alloy','ess':True}]),
   {'quality':20,'sockets':3},{'all':[{'has':'pd'},{'has':'alloy'}]},('high','bal'),xsub=["Thrud's Might"],xroll=True)
 
@@ -65,10 +65,10 @@ tags={'spirit':{'gi':28,'tmax':1},'spell':{'gi':17,'tmax':1},'mq':{'gi':81},
       'mp':{'gi':12,'tmax':1},'mf':{'gi':11,'tmax':1},'sd':{'gi':31,'tmax':1},'gp':{'anyOf':['mp','mf','sd']},
       'kq':{'gi':46},'keep':{'anyOf':['gp']}}
 SP=it('p','정신력 +50 (분열)','+50 Spirit (fractured)',['spirit']); SL=it('s','모든 주문 스킬 레벨 +3','+3 spell skills',['spell']); MQ=it('p','최대 퀄리티 +20% (균열의 에센스)','+20% max quality (Essence of the Breach)',['mq'],'c')
-BK=it('s','훼손 공개 옵션 (자리 막기)','Revealed desecrated line (blocker)',None,'d'); GS=it('s','시전 속도·치명타','Cast speed or crit',['cs','cr','cd'])
-GP=lambda: it('p','마나·주문 피해','Mana or spell damage',['mp','mf','sd']); KQ=it('s','모든 스킬의 퀄리티 (쿠르갈)','Quality of all skills (Kurgal)',['kq'],'d')
+BK=it('s','훼손 공개 옵션 (자리 막기)','Revealed desecrated line (blocker)',None,'d'); GS=it('s','시전 속도','Cast speed',['cs'])
+GP=lambda: it('p','마나 최대치','Maximum mana',['mf']); GP2=it('p','최대 마나 %','% maximum mana',['mp']); KQ=it('s','모든 스킬의 퀄리티 (쿠르갈)','Quality of all skills (Kurgal)',['kq'],'d')
 A0=[SP,J('s')]; A1=[SP,SL]; A2=[SP,J('p'),J('p'),SL]; A3=[SP,J('p'),MQ,SL]; A4=A3+[UN('s')]; A5=A3+[BK]; A6=A5+[GS]; A7=[SP,MQ,SL,BK,GS]; A8=[SP,GP(),MQ,SL,BK,GS]
-A9=[SP,GP(),GP(),SL,BK,GS]; A10=[SP,GP(),GP(),SL,GS]; A11=A10+[UN('s')]; A12=A10+[KQ]
+A9=[SP,GP(),GP2,SL,BK,GS]; A10=[SP,GP(),GP2,SL,GS]; A11=A10+[UN('s')]; A12=A10+[KQ]
 def R7(vis):   # after a missed suffix exalt (video: a plain Annulment) every step re-checks the item; only the edges in vis are drawn
     E=[{'if':{'not':{'has':'spell'}},'to':'a1r'},{'if':{'not':{'has':'mq'}},'to':'a7e'},{'if':{'full':'s'},'to':'a7x'},
        {'if':{'all':[{'des':False},{'sideLt':{'side':'s','n':2}}]},'to':'a4'},{'if':{'des':False},'to':'a7x'},{'to':'a6'}]
