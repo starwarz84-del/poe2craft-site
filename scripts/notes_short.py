@@ -7,7 +7,8 @@ _OLD = {'diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helm
         'ragna-spell4-amulet-v2':'ragna-spell4-amulet','noble-visceral-quiver-v2':'noble-visceral-quiver','sihan-highend-helmet-v2':'sihan-highend-helmet','barricade-quarterstaff-v2':'barricade-quarterstaff','diztoh-endgame-quarterstaff-v2':'diztoh-endgame-quarterstaff',
         'lilbotq-emerald-v2':'lilbotq-emerald','zenm-timelost-sapphire-v2':'zenm-timelost-sapphire','diztoh-5mod-emerald-v2':'diztoh-5mod-emerald','diztoh-5mod-sapphire-v2':'diztoh-5mod-sapphire',
         'sl-5mod-jewel-v2':'sl-5mod-jewel','vodnarg-timelost-emerald-v2':'vodnarg-timelost-emerald','lilbotq-boots-v2':'lilbotq-boots','mazbro-caster-ring-v2':'mazbro-caster-ring',
-        'diztoh-as-spear-v2':'diztoh-as-spear','diztoh-socket-gloves-v2':'diztoh-socket-gloves','seek-cyclone-boots-v2':'seek-cyclone-boots'}
+        'diztoh-as-spear-v2':'diztoh-as-spear','diztoh-socket-gloves-v2':'diztoh-socket-gloves','seek-cyclone-boots-v2':'seek-cyclone-boots',
+        'mastert-timelost-emerald-v2':'mastert-timelost-emerald','chiba-timelost-emerald-v2':'chiba-timelost-emerald'}
 # grade recipes copied straight from the original recipe (recipes_v5_zz-batch5-v2.py) also take its short notes and branch lines
 _COPIED = {'ragna-ashot-bow-v2','sane-resist-belt-v2','diztoh-budget-mace-v2','lilbotq-budget-boots-v2','icesly-budget-wand-v2',
            'diztoh-es-helmet-v2','belton-plus8-wand-v2','lilbotq-armour-shield-v2','diztoh-vile-robe-v2','diztoh-talisman-v2',
@@ -15,7 +16,8 @@ _COPIED = {'ragna-ashot-bow-v2','sane-resist-belt-v2','diztoh-budget-mace-v2','l
            'ragna-spell4-amulet-v2','noble-visceral-quiver-v2','sihan-highend-helmet-v2','barricade-quarterstaff-v2','diztoh-endgame-quarterstaff-v2',
            'lilbotq-emerald-v2','zenm-timelost-sapphire-v2','diztoh-5mod-emerald-v2','diztoh-5mod-sapphire-v2',
            'sl-5mod-jewel-v2','vodnarg-timelost-emerald-v2','lilbotq-boots-v2','mazbro-caster-ring-v2',
-           'diztoh-as-spear-v2','diztoh-socket-gloves-v2','seek-cyclone-boots-v2'}
+           'diztoh-as-spear-v2','diztoh-socket-gloves-v2','seek-cyclone-boots-v2',
+           'mastert-timelost-emerald-v2','chiba-timelost-emerald-v2'}
 # Step notes are short (사용자 확정 2026-11-09): a step shows only its target and currency (head + target line on screen);
 # a note is kept only for the start, the finish, and forks/choices, and then says just the branch. None = no note.
 # Steps that already show a currency and a target hide their note in recipes.html, so only these steps need text.
