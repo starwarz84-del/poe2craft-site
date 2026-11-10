@@ -577,6 +577,9 @@ for _r in R:
 exec(open('/home/claude/poe2data/scripts/difficulty.py').read())   # 난이도 재산정 표(시도량 기준)
 for _r in R:
     if _r['id'] in DIFFSET: _r['difficulty']=DIFFSET[_r['id']]
+# grades by difficulty (사용자 확정 2026-11-10): 어려움(3) 이하 = no High-end, 전문가(4) 이상 = no Essential
+_gd={x['id']:x.get('difficulty',0) for x in R if x.get('tierGroup')==x['id']}   # the group's difficulty = its High-end recipe's
+R[:]=[x for x in R if not (x.get('tierGroup') and ((_gd.get(x['tierGroup'],0)<=3 and x.get('tier')=='high') or (_gd.get(x['tierGroup'],0)>=4 and x.get('tier')=='ess')))]
 REPLACES={'diztoh-budget-crossbow':'diztoh-grenade-crossbow','diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helmet-armour-sl','sihan-highend-boots-v2':'sihan-highend-boots','diztoh-rarity-ring-v2':'diztoh-rarity-ring','saveq-absent-amulet-v2':'saveq-absent-amulet','farmer-budget-armour-v2':'farmer-budget-armour','farmer-starter-staff-v2':'farmer-starter-staff'}
 _ids={x['id'] for x in R}
 R[:]=[x for x in R if not any(o==x['id'] and n in _ids for n,o in REPLACES.items())]
@@ -587,6 +590,9 @@ for _r in R:
 print('base price missing:', sum(1 for _r in R if not _r.get('basePrice')), 'of', len(R))
 # flowchart + simulation (tools/sim/run.js → site/data/sim/<id>.json): the recipe tab shows its button only when the file exists
 for _r in R:
-    if os.path.exists(f"{D}sim/{_r['id']}.json"): _r['sim'] = 1
+    _sid=_r.get('tierGroup') or _r['id']
+    if os.path.exists(f"{D}sim/{_sid}.json"):
+        _r['sim'] = 1
+        if _sid!=_r['id']: _r['simId'] = _sid
 json.dump({'v':2,'recipes':R},open(D+'recipes.json','w'),ensure_ascii=False)
 print(len(R),'recipes')

@@ -13,8 +13,12 @@ def cname(cid):
 
 # recipes by (class, base index) — one card per tier group (the high-end id)
 use={}
+_lead={}
+for r in recs:   # one link per item: its best kept grade
+    g=r.get('tierGroup')
+    if g and (g not in _lead or ['high','bal','ess'].index(r['tier'])<['high','bal','ess'].index(_lead[g]['tier'])): _lead[g]=r
 for r in recs:
-    if r.get('tier') in ('bal','ess'): continue
+    if r.get('tierGroup') and _lead[r['tierGroup']] is not r: continue
     use.setdefault((r['cls'], r['base']), []).append({'id':r['id'], 'title':r['title']})
 
 SKILL=re.compile(r'^스킬 부여: 레벨 (\d+) (.+)$'); SKILL_EN=re.compile(r'^Grants Skill: Level (\d+) (.+)$')

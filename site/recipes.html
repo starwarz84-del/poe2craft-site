@@ -1298,7 +1298,7 @@ function itemTipHTML(r, o, opt={}){
 // grade tabs (사용자 확정 2026-11-09 23:35): 레시피(하이엔드) / 레시피(밸런스) / 레시피(에센셜) / 플로우 차트 — header and progress bar shared
 const TIER_ORDER=['high','bal','ess'];
 function tierSibs(r){ if(!r.tierGroup) return []; return S.recipes.filter(x=>x.tierGroup===r.tierGroup).sort((a,b)=>TIER_ORDER.indexOf(a.tier)-TIER_ORDER.indexOf(b.tier)); }
-function tierLead(r){ return tierSibs(r).find(x=>x.tier==='high') || r; }
+function tierLead(r){ return tierSibs(r)[0] || r; }   // the best grade this item keeps (easy items have no High-end, expert ones no Essential)
 function tabsHTML(r){ const sibs=tierSibs(r); if(!sibs.length) return ''; const lead=tierLead(r), fc=S.fcTab && lead.sim;
   const name={high:L('하이엔드','High-end'), bal:L('밸런스','Balance'), ess:L('에센셜','Essential')};
   return `<div class="rtabs" role="tablist">${sibs.map(x=>`<button type="button" role="tab" class="rtab ${!fc&&x.id===r.id?'on':''}" data-rtab="${esc(x.id)}" aria-selected="${!fc&&x.id===r.id}">${L('레시피','Recipe')}<small>(${name[x.tier]||esc(tx(x.tierLabel))})</small></button>`).join('')}${lead.sim?`<button type="button" role="tab" class="rtab ${fc?'on':''}" data-rtab="fc" aria-selected="${!!fc}">${L('플로우 차트','Flowchart')}</button>`:''}</div>`; }
@@ -1356,7 +1356,10 @@ function detailHTML(r){
 // data/sim/<id>.json is made at build time (tools/sim/run.js: real rolls, 20,000 finished items per strategy); the page only draws it
 S.simData={}; S.simOpen=false; S.fcItems=store.get('fcItems', true); S.simSel=store.get('simSel',{});
 function loadSim(r){ if(S.simData[r.id]) return;
-  S.simData[r.id]='loading'; fetch(`data/sim/${r.id}.json`).then(x=>x.ok?x.json():null).catch(()=>null).then(d=>{ S.simData[r.id]=d||'none'; const o=S.recipes.find(x=>x.id===S.open); if(o && (o.id===r.id || tierLead(o)===r)) keepY(renderDetail); }); }
+  S.simData[r.id]='loading'; fetch(`data/sim/${r.simId||r.id}.json`).then(x=>x.ok?x.json():null).catch(()=>null).then(d=>{ if(d && r.tierGroup) d=simTrim(d, tierSibs(r).map(x=>x.tier)); S.simData[r.id]=d||'none'; const o=S.recipes.find(x=>x.id===S.open); if(o && (o.id===r.id || tierLead(o)===r)) keepY(renderDetail); }); }
+// a grade the item does not keep (rule 2026-11-10): its version, strategy and final card leave the flowchart
+function simTrim(d, tiers){ const keep=id=>!['high','bal','ess'].includes(id) || tiers.includes(id); const g={...d.graph, versions:(d.graph.versions||[]).filter(v=>keep(v.tier||v.id)), finals:(d.graph.finals||[]).filter(F=>keep(F.tier||F.id))};
+  return {...d, graph:g, strategies:d.strategies.map(s=>keep(s.id)?s:{...s, hidden:true})}; }
 function simStrategy(d){ const vis=d.strategies.filter(s=>!s.hidden), keys=Object.keys(vis[0].params).filter(k=>new Set(vis.map(s=>String(s.params[k]))).size>1);
   const sel={}; keys.forEach(k=>{ const v=S.simSel[k]; sel[k] = v!=null && vis.some(s=>String(s.params[k])===String(v)) ? String(v) : String(vis[0].params[k]); });
   const s=vis.find(s=>keys.every(k=>String(s.params[k])===sel[k])) || vis[0]; return {s, keys, sel}; }
@@ -1715,7 +1718,7 @@ const pinned = () => pin && pin.r===S.open && (glide || Math.abs(scrollY-pin.y)<
 function list(){
   const q=S.q.trim().toLowerCase();
   let a = S.recipes.filter(r=>{
-    if(r.tierGroup && r.tier!=='high') return false;
+    if(r.tierGroup && tierLead(r)!==r) return false;
     if(S.cat && catOf(r)?.id!==S.cat) return false;
     if(S.curOnly && isOld(r)) return false;
     if(S.tags.size){ const t=tagsOf(r); for(const x of S.tags) if(!t.has(x)) return false; }
@@ -1808,7 +1811,9 @@ function renderTips(){
 }
 
 // ---------- routing / sharing ----------
-function setOpen(id){
+// an old link to a grade this item no longer keeps opens the item's lead grade
+function liveId(id){ if(!id || S.recipes.some(r=>r.id===id)) return id; const g=S.recipes.find(r=>r.tierGroup===id || r.tierGroup && id.startsWith(r.tierGroup+'-')); return g ? tierLead(g).id : id; }
+function setOpen(id){ id=liveId(id);
   if(!S.open) S.listY=scrollY;
   if(S.simFull){ S.simFull=false; document.body.classList.remove('simfull'); }
   if(!id || !S.recipes.find(x=>x.id===id)?.tierGroup) S.fcTab=false;
@@ -1877,7 +1882,7 @@ $('#detail').addEventListener('click', e=>{
   const sg=e.target.closest('[data-seg]'); if(sg){ const n=r.nodes.find(x=>x.phase===sg.dataset.seg); n && goNode(n.id); return; }
   const tk=e.target.closest('[data-done]'); if(tk){ const d=doneSet(r), id=tk.dataset.done; d.has(id)?d.delete(id):d.add(id); store.set('done:'+r.id,[...d]); keepY(renderDetail); return; }
   const rt=e.target.closest('[data-rtab]'); if(rt){ const v=rt.dataset.rtab; if(v==='fc'){ S.fcTab=true; renderDetail(); scrollTo(0,0); } else { S.fcTab=false; if(v!==r.id) setOpen(v); else renderDetail(); scrollTo(0,0); } return; }
-  const sv=e.target.closest('[data-simver]'); if(sv){ const d=S.simData[r.id], v=d?.graph?.versions?.find(x=>x.id===sv.dataset.simver); if(v){ S.simSel={...S.simSel, ...Object.fromEntries(Object.entries(v.params).map(([k,x])=>[k,String(x)]))}; store.set('simSel', S.simSel); keepY(renderDetail); } return; }
+  const sv=e.target.closest('[data-simver]'); if(sv){ const d=S.simData[tierLead(r).id], v=d?.graph?.versions?.find(x=>x.id===sv.dataset.simver); if(v){ S.simSel={...S.simSel, ...Object.fromEntries(Object.entries(v.params).map(([k,x])=>[k,String(x)]))}; store.set('simSel', S.simSel); keepY(renderDetail); } return; }
   const sk=e.target.closest('[data-simk]'); if(sk){ S.simSel={...S.simSel, [sk.dataset.simk]:sk.dataset.simv}; store.set('simSel', S.simSel); keepY(renderDetail); return; }
   const a=e.target.closest('[data-act]'); if(!a) return; const so=social(r.id);
   if(a.dataset.act==='back') setOpen(null);
@@ -1927,7 +1932,7 @@ let rl; function relayout(){ clearTimeout(rl); rl=setTimeout(()=>{ layout(); }, 
 let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if(!S.open) layout(); else { setHeadH(); pairRows($('#detail')); } }, 60); });
 window.addEventListener('message', e=>{ const d=e.data||{};
   if(d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); }
-  if(d.type==='poe2-open' && d.id && S.recipes.some(r=>r.id===d.id) && S.open!==d.id) setOpen(d.id);
+  if(d.type==='poe2-open' && d.id && S.recipes.some(r=>r.id===liveId(d.id)) && S.open!==liveId(d.id)) setOpen(d.id);
   if(d.type==='poe2-open' && d.id==='' && S.open) setOpen(null);
   if(d.type==='poe2-draft' && d.recipe && d.recipe.id && d.recipe.cls){ if(S.booted) addDraft(d.recipe, true); else S.pendingDraft=d.recipe; }
   if(e.source===parent && d.type==='poe2-shared' && Array.isArray(d.items)){ if(S.booted) applyShared(d); else S.pendingShared=d; }
@@ -2028,7 +2033,7 @@ async function boot(){
   const drafts = store.get('drafts',[]).filter(r=>r && /^draft-/.test(r.id) && Array.isArray(r.nodes)).map(r=>({likes:0, success:0, ...r, draft:true}));
   S.recipes = drafts.concat(S.recipes);
   await Promise.all([...new Set(S.recipes.map(r=>r.cls))].map(loadCls));
-  const h=location.hash.match(/^#r-(.+)$/); if(h && S.recipes.some(r=>r.id===h[1])) S.open=h[1];
+  const h=location.hash.match(/^#r-(.+)$/); if(h && S.recipes.some(r=>r.id===liveId(h[1]))) S.open=liveId(h[1]);
   S.booted=true; render();
   if(S.pendingDraft){ const d=S.pendingDraft; S.pendingDraft=null; addDraft(d, true); }
   if(S.pendingShared){ const d=S.pendingShared; S.pendingShared=null; applyShared(d); }

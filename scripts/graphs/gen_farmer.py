@@ -1,7 +1,7 @@
 # Writes the flowcharts of the two XTheFarmerX league-start recipes (policy 24/25 grades):
 #   farmer-budget-armour-v2.json  (Flowing Raiment, three energy shield prefixes)
 #   farmer-starter-staff-v2.json  (+5 lightning spells staff, extra damage gains)
-# Video steps kept; grades differ only in the tiers aimed for (and the bone that can roll them).
+# Base work uses Perfect Transmutation / Augmentation (사용자 확정 2026-11-10). Staff base = +6 roll (a +5 needs a Divine Orb later). Video steps kept; grades differ only in the tiers aimed for (and the bone that can roll them).
 import json, os
 H=os.path.dirname(os.path.abspath(__file__))
 K=lambda kr,en: {'kr':kr,'en':en}
@@ -35,7 +35,7 @@ I5=I4+[it('s','랜덤 2줄','Two random lines',None,'j')]
 nodes=[
  {'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'a2','start':{'rar':'magic','mods':['flat']},
   'label':K('에너지 보호막 최대치 매직 흐르는 의복 구입','Buy a magic Flowing Raiment with max energy shield'),'item':I0},
- {'id':'a2','kind':'act','group':'prep','pos':[0,1],'act':'augment','cur':'Greater_Orb_of_Augmentation','goal':K('접미 1줄 추가','Add a suffix'),
+ {'id':'a2','kind':'act','group':'prep','pos':[0,1],'act':'augment','cur':'Perfect_Orb_of_Augmentation','goal':K('접미 1줄 추가','Add a suffix'),
   'showText':[K('잡옵 (아무 옵션)','Junk (any line)')|{'s':'s'}],'label':K('확장','Augment'),'edges':[{'to':'a3'}],'item':I1},
  {'id':'a3','kind':'act','group':'prep','pos':[0,2],'act':'essence','ess':'ess','cur':'Greater_Essence_of_Enhancement','goal':K('레어로 업그레이드 + 접두 방어 %','Upgrade to rare + defences % prefix'),
   'showText':[K('방어 % (제작 옵션)','Defences % (crafted)')|{'s':'p'}],'label':K('에센스','Essence'),'edges':[{'to':'ms'}],'item':I2},
@@ -68,14 +68,14 @@ json.dump(g,open(f'{H}/farmer-budget-armour-v2.json','w'),ensure_ascii=False,ind
 P={'high':{'fT':1,'rvT':1,'bone':'a'},'bal':{'fT':2,'rvT':2,'bone':'a'},'ess':{'fT':2,'rvT':9,'bone':'p'}}
 tags={'l5':{'gi':17,'tmax':1},'fire':{'gi':32,'tmax':'$fT'},'ess':{'gi':49},'cold':{'gi':33,'tmax':'$rvT'},'lit':{'gi':34,'tmax':'$rvT'},'chaos':{'gi':35},
       'want':{'anyOf':['cold','lit','chaos']}}
-I0=[it('p','추가 화염 피해 획득','Extra fire damage',['fire']),it('s','모든 번개 주문 스킬 레벨 +5','+5 to all lightning spell skills',['l5'])]
+I0=[it('p','추가 화염 피해 획득','Extra fire damage',['fire']),it('s','모든 번개 주문 스킬 레벨 +6','+6 to all lightning spell skills',['l5'])]
 I2=I0+[it('p','주문 피해 % (제작 옵션)','Spell damage % (crafted)',['ess'])]
 I3=I2+[it('p','훼손 옵션(미공개)','Desecrated (unrevealed)')]
 I4=I2+[it('p','추가 냉기·번개·카오스 피해 획득 중 하나','Extra cold, lightning or chaos damage',['want'])]
 I5=I4+[it('s','랜덤 2줄','Two random lines',None,'j')]
 nodes=[
  {'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'w2','start':{'rar':'magic','mods':['fire','l5']},
-  'label':K('번개 주문 +5 + 추가 화염 피해 매직 지팡이 구입','Buy a magic staff with +5 lightning spells + extra fire'),'item':I0},
+  'label':K('번개 주문 +6 + 추가 화염 피해 매직 지팡이 구입','Buy a magic staff with +6 lightning spells + extra fire'),'item':I0},
  {'id':'w2','kind':'act','group':'prep','pos':[0,1],'act':'essence','ess':'ess','cur':'Greater_Essence_of_Sorcery','goal':K('레어로 업그레이드 + 접두 주문 피해','Upgrade to rare + spell damage prefix'),
   'showText':[K('주문 피해 % (제작 옵션)','Spell damage % (crafted)')|{'s':'p'}],'label':K('에센스','Essence'),'edges':[{'to':'ms'}],'item':I2},
  {'id':'ms','kind':'mark','group':'main','pos':[0,1.5],'next':'w3','label':K('아이템 제작 시작','Item crafting starts'),'item':I2},
@@ -101,5 +101,6 @@ g=graph('farmer-starter-staff-v2','Staves','Sanctified Staff',80,
      'high':K('추가 화염 피해 1티어, 훼손 1티어 (고대 턱뼈, 아이템 레벨 80+)','Extra fire T1, desecrated T1 (Ancient Jawbone, item level 80+)')},
   tags,nodes,['w3','w4','w4x'],K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),
   [fin('high','하이엔드 옵션','High-end',1,1),fin('bal','밸런스 옵션','Balance',2,2),fin('ess','에센셜 옵션','Essential',2,5)],{'quality':20,'sockets':0})
+g['basePrice']={'Chaos_Orb':1}   # 사용자 2026-11-10 거래소: +6 매직 지팡이 카오스 오브 1개
 json.dump(g,open(f'{H}/farmer-starter-staff-v2.json','w'),ensure_ascii=False,indent=1)
 print('wrote 2 graphs')

@@ -42,7 +42,7 @@ BASEPRICE = {
   'farmer-budget-armour': None,
   'farmer-starter-staff': None,
   'farmer-budget-armour-v2': None,
-  'farmer-starter-staff-v2': None,
+  'farmer-starter-staff-v2': 0.11, 'farmer-starter-staff-v2-bal': 0.11, 'farmer-starter-staff-v2-ess': 0.11,   # 사용자 2026-11-10 거래소: 번개 주문 +6 매직 지팡이 카오스 오브 1개(≈0.11 div)
   'icesly-budget-wand': None,
   'lilbotq-armour-shield': None,
   'lilbotq-budget-boots': None,

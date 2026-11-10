@@ -21,7 +21,7 @@ def fm_staff(tier):
  'start':{'rar':'magic','mods':[{'gi':fw2_xF,'tmax':ft},{'gi':fw2_l5,'tmax':1}]},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'pre','kr':'접두 세번째 옵션(훼손)','en':'Third prefix (desecrated)'},{'id':'suf','kr':'접미 두번째·세번째 옵션','en':'Suffix options 2–3'}],
  'nodes':[
-  {'id':'w1','phase':'base','do':'base','cost':'base','ts':'11:03','note':K('모든 번개 주문 스킬 레벨 +5 + 추가 화염 피해 획득 매직 지팡이. 베이스 종류는 상관없음.','A magic staff with +5 to all lightning spell skills and extra fire damage gain. Any staff base.')},
+  {'id':'w1','phase':'base','do':'base','cost':'base','ts':'11:03','target':{'vals':{fw2_l5:K('모든 번개 주문 스킬 레벨 +6','+6 to Level of all Lightning Spell Skills')}},'note':K('모든 번개 주문 스킬 레벨 +6 + 추가 화염 피해 획득 매직 지팡이(+5로 사면 신성한 오브가 더 들어감). 베이스 종류는 상관없음.','A magic staff with +6 to all lightning spell skills and extra fire damage gain (a +5 needs a Divine Orb later). Any staff base.')},
   {'id':'w2','phase':'base','do':'essence','cur':'Greater_Essence_of_Sorcery','target':{'gi':fw2_spellE},'ts':'12:20'},
   {'id':'w3','phase':'pre','do':'desecrate','cur':bone,'omens':['Omen_of_Sinistral_Necromancy'],'target':{'unrev':'p'},'ts':'14:14'},
   {'id':'w4','phase':'pre','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':[dict({'gi':g},**({'tmax':rv} if rv<9 else {})) for g in (fw2_xC,fw2_xL)]+[{'gi':fw2_xCh}]},'side':'p','bone':bone},'fail':{'goto':'w3','via':LIGHT},'ts':'14:30'},

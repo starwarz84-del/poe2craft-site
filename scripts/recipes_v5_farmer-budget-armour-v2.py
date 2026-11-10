@@ -21,7 +21,7 @@ def fm_armour(tier):
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'pre','kr':'접두 세번째 옵션(훼손)','en':'Third prefix (desecrated)'},{'id':'suf','kr':'접미 두번째·세번째 옵션','en':'Suffix options 2–3'}],
  'nodes':[
   {'id':'f1','phase':'base','do':'base','cost':'base','ts':'3:03','note':K('에너지 보호막 최대치(접두)만 붙은 매직 흐르는 의복.','A magic Flowing Raiment with only a flat energy shield prefix.')},
-  {'id':'f2','phase':'base','do':'augment','cur':'Greater_Orb_of_Augmentation','target':{'junk':'s'},'ts':'3:23'},
+  {'id':'f2','phase':'base','do':'augment','cur':'Perfect_Orb_of_Augmentation','target':{'junk':'s'},'ts':'3:23'},
   {'id':'f3','phase':'base','do':'essence','cur':'Greater_Essence_of_Enhancement','target':{'gi':fa2_ess},'ts':'3:31'},
   {'id':'f4','phase':'pre','do':'desecrate','cur':bone,'omens':['Omen_of_Sinistral_Necromancy'],'target':{'unrev':'p'},'ts':'3:55'},
   {'id':'f5','phase':'pre','do':'reveal','target':{'reveal':{'anyOf':[dict({'gi':g},**({'tmax':rv} if rv<9 else {})) for g in (fa2_hyb,fa2_life,fa2_spirit)]},'side':'p','bone':bone},'fail':{'goto':'f4','via':LIGHT},'ts':'4:13'},
