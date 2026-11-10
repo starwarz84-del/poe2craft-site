@@ -1,0 +1,999 @@
+{
+ "id": "barricade-quarterstaff-v2",
+ "recipe": "barricade-quarterstaff-v2",
+ "cls": "Quarterstaves",
+ "base": "Sinister Quarterstaff",
+ "ilvl": 81,
+ "note": "Barricade 험악한 육척봉(원본 레시피 기록) — 치명타 확률 5% 분열 + 잡옵(퀄리티 30%) → 카오스 오브(근접 스킬 +5) → 우측 강령술 + 보존된 턱뼈 → 공개(공격 속도·치명타 피해, 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 원소 피해 접두 2줄 → 완벽한 엑잘(세번째, 하이엔드는 빗나가면 절사 카오스 — 가장 낮은 줄이 버릴 줄일 때만). 하이엔드 = 영상(1티어), 밸런스 = 1~2티어 원소 피해 접두 1줄까지 절사 + 상위 카오스 오브, 나머지 접두는 결과 그대로.",
+ "params": {
+  "rT": {
+   "kr": "공격 속도·치명타 피해",
+   "en": "Attack speed or crit damage",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "eT": {
+   "kr": "원소 피해 접두",
+   "en": "Elemental prefixes",
+   "values": {
+    "1": {
+     "kr": "1티어 3줄 (완벽한 카오스)",
+     "en": "Three T1 lines (Perfect Chaos)"
+    },
+    "2": {
+     "kr": "1~2티어 1줄 이상 (상위 카오스)",
+     "en": "At least one T1–2 line (Greater Chaos)"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "rT": 1,
+    "eT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "rT": 2,
+    "eT": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "rT": 2,
+    "eT": 2
+   },
+   "desc": {
+    "kr": "1~2티어 2줄, 세번째는 결과 그대로",
+    "en": "Two T1–2 lines, the third as it comes"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "rT": 1,
+    "eT": 1
+   },
+   "desc": {
+    "kr": "영상: 원소 피해 1티어 3줄",
+    "en": "Video: three T1 elemental prefixes"
+   }
+  }
+ ],
+ "tags": {
+  "crit": {
+   "gi": 18,
+   "tmax": 1
+  },
+  "melee": {
+   "gi": 10,
+   "tmax": 1
+  },
+  "as": {
+   "gi": 16,
+   "tmax": "$rT"
+  },
+  "cdmg": {
+   "gi": 19,
+   "tmax": "$rT"
+  },
+  "rev": {
+   "anyOf": [
+    "as",
+    "cdmg"
+   ],
+   "label": {
+    "kr": "공격 속도·치명타 피해",
+    "en": "Attack speed or crit damage"
+   }
+  },
+  "eatk": {
+   "gi": 23,
+   "tmax": "$eT"
+  },
+  "fire": {
+   "gi": 4,
+   "tmax": "$eT"
+  },
+  "cold": {
+   "gi": 5,
+   "tmax": "$eT"
+  },
+  "lflat": {
+   "gi": 7,
+   "tmax": "$eT"
+  },
+  "ele": {
+   "anyOf": [
+    "eatk",
+    "fire",
+    "cold",
+    "lflat"
+   ],
+   "label": {
+    "kr": "원소 피해 접두",
+    "en": "Elemental damage prefix"
+   }
+  },
+  "keep": {
+   "anyOf": [
+    "melee",
+    "rev",
+    "ele"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "melee"
+   },
+   {
+    "has": "rev"
+   },
+   {
+    "has": "ele"
+   },
+   {
+    "full": "p"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "q3",
+    "q4",
+    "q4x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "side": "p",
+     "label": {
+      "kr": "원소 피해 접두",
+      "en": "Elemental damage prefix"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "원소 피해 접두",
+      "en": "Elemental damage prefix"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "원소 피해 접두",
+      "en": "Elemental damage prefix"
+     }
+    },
+    {
+     "tag": "crit",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "melee",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "공격 속도·치명타 피해",
+      "en": "Attack speed or crit damage"
+     }
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "side": "p",
+     "label": {
+      "kr": "원소 피해 접두",
+      "en": "Elemental damage prefix"
+     }
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "crit",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "melee",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "공격 속도·치명타 피해",
+      "en": "Attack speed or crit damage"
+     }
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 30,
+  "sockets": 3
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "crit",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "치명타 확률 5% 분열 + 잡옵 1줄 (특출난 베이스, 퀄리티 30%)",
+    "en": "Fractured 5% crit chance + one junk line (exceptional, 30% quality)"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 +5% (분열)",
+     "en": "+5% crit chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "q2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 +5% (분열)",
+     "en": "+5% crit chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "q2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix option"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "melee"
+     },
+     "to": "q3",
+     "res": "ok"
+    },
+    {
+     "to": "q2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 +5% (분열)",
+     "en": "+5% crit chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "melee"
+   ]
+  },
+  {
+   "id": "q3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "q4"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 +5% (분열)",
+     "en": "+5% crit chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Jawbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ]
+  },
+  {
+   "id": "q4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "rev"
+     },
+     "to": "p1",
+     "res": "ok"
+    },
+    {
+     "to": "q4x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 +5% (분열)",
+     "en": "+5% crit chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도·치명타 피해",
+     "en": "Attack speed or crit damage",
+     "m": "n",
+     "tags": [
+      "rev"
+     ]
+    }
+   ],
+   "want": "rev",
+   "show": [
+    "as",
+    "cdmg"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "q4x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    3
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "q3",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 2줄",
+    "en": "Two prefixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "ele",
+       "min": 2
+      }
+     },
+     "to": "p4",
+     "res": "ok"
+    },
+    {
+     "to": "p2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +5% (분열)",
+     "en": "+5% crit chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도·치명타 피해",
+     "en": "Attack speed or crit damage",
+     "m": "n",
+     "tags": [
+      "rev"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 2줄",
+     "en": "Two random lines"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ]
+  },
+  {
+   "id": "p2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "가장 낮은 줄을 원소 피해로",
+    "en": "The lowest line into elemental damage"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "ele",
+       "min": 2
+      }
+     },
+     "to": "p4",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "eT": 2
+        }
+       },
+       {
+        "count": {
+         "tag": "ele",
+         "min": 1
+        }
+       }
+      ]
+     },
+     "to": "p4",
+     "res": "ok"
+    },
+    {
+     "to": "p2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "원소 피해 접두",
+     "en": "Elemental damage prefix",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "원소 피해 접두",
+     "en": "Elemental damage prefix",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +5% (분열)",
+     "en": "+5% crit chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도·치명타 피해",
+     "en": "Attack speed or crit damage",
+     "m": "n",
+     "tags": [
+      "rev"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "원소 피해 접두 2줄",
+     "en": "Two elemental damage prefixes"
+    }
+   ],
+   "trim": {
+    "side": "p",
+    "keep": "keep"
+   },
+   "over": [
+    {
+     "param": {
+      "eT": 2
+     },
+     "set": {
+      "cur": "Greater_Chaos_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "p4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "ele",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "eT": 1
+      }
+     },
+     "to": "p5",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "원소 피해 접두",
+     "en": "Elemental damage prefix",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "원소 피해 접두",
+     "en": "Elemental damage prefix",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "원소 피해 접두",
+     "en": "Elemental damage prefix",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +5% (분열)",
+     "en": "+5% crit chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도·치명타 피해",
+     "en": "Attack speed or crit damage",
+     "m": "n",
+     "tags": [
+      "rev"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "fire",
+    "cold",
+    "lflat"
+   ]
+  },
+  {
+   "id": "p5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "버릴 줄을 원소 피해로",
+    "en": "The junk line into elemental damage"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "ele",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "p5",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "원소 피해 접두",
+     "en": "Elemental damage prefix",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "원소 피해 접두",
+     "en": "Elemental damage prefix",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "원소 피해 접두",
+     "en": "Elemental damage prefix",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +5% (분열)",
+     "en": "+5% crit chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도·치명타 피해",
+     "en": "Attack speed or crit damage",
+     "m": "n",
+     "tags": [
+      "rev"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "fire",
+    "cold",
+    "lflat"
+   ],
+   "trim": {
+    "side": "p",
+    "keep": "keep"
+   }
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

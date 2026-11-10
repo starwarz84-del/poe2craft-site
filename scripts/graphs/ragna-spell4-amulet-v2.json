@@ -1,0 +1,1172 @@
+{
+ "id": "ragna-spell4-amulet-v2",
+ "recipe": "ragna-spell4-amulet-v2",
+ "cls": "Amulets",
+ "base": "Solar Amulet",
+ "ilvl": 81,
+ "note": "라그나 주문 +4 목걸이(원본 레시피 기록) — 정신력 분열 + 주문 +3 베이스 → 좌측 찬미 + 엑잘 → 좌측 결정화 + 균열의 에센스 → 달리는 기폭제 → 촉진 + 우측 찬미 + 완벽한 엑잘 2번(시전 속도) → 보존된 빗장뼈 → 쇳소리 기폭제(주문 +4) → 공개(주문 피해) → 절사의 징조 + 상위 카오스(최대 퀄리티 줄). 밸런스 = 영상(시전 속도 1~2티어까지 우측 소멸의 징조로 다시, 공개는 빛의 징조로 다시), 에센셜 = 정신력 1~3티어 분열, 결과 그대로. 촉진 효과는 시뮬에 없음.",
+ "params": {
+  "sT": {
+   "kr": "정신력 (분열)",
+   "en": "Spirit (fractured)",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "cT": {
+   "kr": "시전 속도",
+   "en": "Cast speed",
+   "values": {
+    "2": {
+     "kr": "1~2티어 (다시 도전)",
+     "en": "T1–2 (retry)"
+    },
+    "3": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  },
+  "dT": {
+   "kr": "주문 피해",
+   "en": "Spell damage",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "sT": 1,
+    "cT": 2,
+    "dT": 2
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "sT": 3,
+    "cT": 3,
+    "dT": 4
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "sT": 3,
+    "cT": 3,
+    "dT": 4
+   },
+   "desc": {
+    "kr": "더 싼 분열 베이스, 결과 그대로",
+    "en": "Cheaper fractured base, keep whatever comes"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "sT": 1,
+    "cT": 2,
+    "dT": 2
+   },
+   "desc": {
+    "kr": "영상: 시전 속도·주문 피해가 나올 때까지 다시",
+    "en": "Video: retry until cast speed and spell damage"
+   }
+  }
+ ],
+ "tags": {
+  "spirit": {
+   "gi": 28,
+   "tmax": "$sT"
+  },
+  "spell": {
+   "gi": 17,
+   "tmax": 1
+  },
+  "maxQ": {
+   "gi": 81
+  },
+  "cast": {
+   "gi": 32,
+   "tmax": "$cT"
+  },
+  "sdmg": {
+   "gi": 31,
+   "tmax": "$dT"
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "spirit"
+   },
+   {
+    "has": "spell"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "g5b",
+    "g6",
+    "g6x"
+   ],
+   "kr": "시전 속도",
+   "en": "Cast speed"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "g7",
+    "g8",
+    "g9",
+    "g9x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "spirit",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "sdmg",
+     "tmax": 2
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "spell",
+     "tmax": 1
+    },
+    {
+     "tag": "cast",
+     "tmax": 2
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "spirit",
+     "tmax": 3,
+     "fr": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "spell",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 40,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "spirit",
+      "fr": true
+     },
+     "spell"
+    ]
+   },
+   "label": {
+    "kr": "정신력 분열 + 모든 주문 스킬 +3 태양의 목걸이",
+    "en": "Solar Amulet with fractured Spirit + all spell skills +3"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "g2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "g2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "에센스가 지울 접두",
+    "en": "The prefix for the essence to remove"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "g3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "g3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접두 잡옵을 최대 퀄리티로",
+    "en": "Swap the junk prefix for maximum quality"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "g4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)",
+     "m": "n",
+     "tags": [
+      "maxQ"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Breach",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)"
+    }
+   ],
+   "ess": "maxQ",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "g4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "quality",
+   "goal": {
+    "kr": "속도 퀄리티 40%",
+    "en": "Speed quality 40%"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "edges": [
+    {
+     "to": "g5"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)",
+     "m": "n",
+     "tags": [
+      "maxQ"
+     ]
+    }
+   ],
+   "cur": "Skittering_Catalyst",
+   "showText": [
+    {
+     "kr": "달리는 기폭제 40개",
+     "en": "40 Skittering Catalysts"
+    }
+   ],
+   "count": 40
+  },
+  {
+   "id": "g5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 두번째 옵션 (시전 속도 1차 도전)",
+    "en": "Second suffix (first try at cast speed)"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "g5b"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)",
+     "m": "n",
+     "tags": [
+      "maxQ"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 1줄 — 시전 속도면 좋음",
+     "en": "One random line — cast speed is good"
+    }
+   ],
+   "omens": [
+    "Omen_of_Catalysing_Exaltation",
+    "Omen_of_Dextral_Exaltation"
+   ]
+  },
+  {
+   "id": "g5b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "quality",
+   "goal": {
+    "kr": "속도 퀄리티 다시 40%",
+    "en": "Speed quality back to 40%"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "edges": [
+    {
+     "to": "g6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)",
+     "m": "n",
+     "tags": [
+      "maxQ"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Skittering_Catalyst",
+   "showText": [
+    {
+     "kr": "달리는 기폭제 40개 (촉진으로 0%가 됨)",
+     "en": "40 Skittering Catalysts (Catalysing used it up)"
+    }
+   ],
+   "count": 40
+  },
+  {
+   "id": "g6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "cast"
+     },
+     "to": "g7",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "cT": 2
+      }
+     },
+     "to": "g6x",
+     "res": "fail"
+    },
+    {
+     "to": "g7",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)",
+     "m": "n",
+     "tags": [
+      "maxQ"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도",
+     "en": "Cast speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "cast"
+   ],
+   "omens": [
+    "Omen_of_Catalysing_Exaltation",
+    "Omen_of_Dextral_Exaltation"
+   ]
+  },
+  {
+   "id": "g6x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    6
+   ],
+   "keep": [
+    "spell",
+    "cast"
+   ],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접미 하나 지우기 (주문 +3이 지워지면 새 베이스)",
+    "en": "Remove one suffix (losing +3 spells means a new base)"
+   },
+   "edges": [
+    {
+     "lost": "spell",
+     "to": "h1",
+     "port": "right"
+    },
+    {
+     "to": "g5b",
+     "port": "right"
+    }
+   ],
+   "side": "s"
+  },
+  {
+   "id": "g7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "g8"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)",
+     "m": "n",
+     "tags": [
+      "maxQ"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도",
+     "en": "Cast speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Collarbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ]
+  },
+  {
+   "id": "g8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "quality",
+   "goal": {
+    "kr": "시전 퀄리티 40% (주문 +3 → +4)",
+    "en": "Caster quality 40% (+3 spells → +4)"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "edges": [
+    {
+     "to": "g9"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)",
+     "m": "n",
+     "tags": [
+      "maxQ"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도",
+     "en": "Cast speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Sibilant_Catalyst",
+   "showText": [
+    {
+     "kr": "쇳소리 기폭제 40개",
+     "en": "40 Sibilant Catalysts"
+    }
+   ],
+   "count": 40
+  },
+  {
+   "id": "g9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "sdmg"
+     },
+     "to": "g10",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "cT": 2
+      }
+     },
+     "to": "g9x",
+     "res": "fail"
+    },
+    {
+     "to": "g10",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% maximum quality (crafted)",
+     "m": "n",
+     "tags": [
+      "maxQ"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도",
+     "en": "Cast speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해",
+     "en": "Spell damage",
+     "m": "n",
+     "tags": [
+      "sdmg"
+     ]
+    }
+   ],
+   "want": "sdmg",
+   "show": [
+    "sdmg"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "g9x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    9
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "g7",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "g10",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "최대 퀄리티 줄을 다른 접두로",
+    "en": "Replace the maximum quality line"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +50 (분열)",
+     "en": "+50 Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해",
+     "en": "Spell damage",
+     "m": "n",
+     "tags": [
+      "sdmg"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 +3",
+     "en": "+3 all spell skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도",
+     "en": "Cast speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    }
+   ],
+   "cur": "Greater_Chaos_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 1줄 (최대 퀄리티가 가장 낮아 그 줄만 바뀜)",
+     "en": "One random line (maximum quality is the lowest, so only it goes)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Whittling"
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    11
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

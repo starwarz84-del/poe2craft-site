@@ -1,0 +1,1188 @@
+{
+ "id": "diztoh-endgame-quarterstaff-v2",
+ "recipe": "diztoh-endgame-quarterstaff-v2",
+ "cls": "Quarterstaves",
+ "base": "Sinister Quarterstaff",
+ "ilvl": 82,
+ "note": "Diztoh 엔드게임 육척봉(원본 레시피 기록) — 근접 스킬 +5 분열 + 잡옵 → 상위 카오스 오브(물리 접두) → 좌측 찬미 + 완벽한 엑잘(물리 %·복합, 하이엔드는 빗나가면 좌측 소멸의 징조) → 좌측 찬미 + 완벽한 엑잘(복합·화염 추가, 하이엔드는 빗나가면 절사 + 좌측 말소 + 완벽한 카오스) → 완벽한 엑잘(접미, 하이엔드는 빗나가면 우측 말소 + 카오스) → 우측 강령술 + 고대 턱뼈 → 공개(치명타, 빗나가면 빛의 징조 — 영상의 우측 소멸의 징조는 접미 좋은 줄도 지울 수 있어 바꿈). 밸런스 = 물리 % 1~3티어, 상위 엑잘, 빗나가도 그대로.",
+ "params": {
+  "xT": {
+   "kr": "물리 %·복합",
+   "en": "% physical / hybrid",
+   "values": {
+    "2": {
+     "kr": "1~2티어 (다시 도전)",
+     "en": "T1–2 (retry)"
+    },
+    "3": {
+     "kr": "1~3티어 (결과 그대로)",
+     "en": "T1–3 (as it comes)"
+    }
+   }
+  },
+  "sT": {
+   "kr": "치명타 확률·피해",
+   "en": "Crit chance / damage",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "xT": 2,
+    "sT": 2
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "xT": 3,
+    "sT": 3
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "xT": 3,
+    "sT": 3
+   },
+   "desc": {
+    "kr": "상위 엑잘, 빗나가도 그대로, 공개는 빛의 징조로",
+    "en": "Greater Exalts, misses stay, Light on the reveal"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "xT": 2,
+    "sT": 2
+   },
+   "desc": {
+    "kr": "영상: 빗나가면 소멸·말소 징조로 다시",
+    "en": "Video: Annulment/Erasure omens on misses"
+   }
+  }
+ ],
+ "tags": {
+  "melee": {
+   "gi": 10,
+   "tmax": 1
+  },
+  "pflat": {
+   "gi": 3,
+   "tmax": 3
+  },
+  "ppct": {
+   "gi": 8,
+   "tmax": "$xT"
+  },
+  "hyb": {
+   "gi": 9,
+   "tmax": "$xT"
+  },
+  "fire": {
+   "gi": 4,
+   "tmax": 4
+  },
+  "p1": {
+   "anyOf": [
+    "pflat",
+    "ppct",
+    "hyb"
+   ],
+   "label": {
+    "kr": "물리 피해 접두",
+    "en": "Physical damage prefix"
+   }
+  },
+  "pp": {
+   "anyOf": [
+    "ppct",
+    "hyb"
+   ],
+   "label": {
+    "kr": "물리 % · 복합",
+    "en": "% physical or hybrid"
+   }
+  },
+  "p3": {
+   "anyOf": [
+    "hyb",
+    "fire"
+   ],
+   "label": {
+    "kr": "복합·화염 피해 추가",
+    "en": "Hybrid or flat fire"
+   }
+  },
+  "pre": {
+   "anyOf": [
+    "pflat",
+    "ppct",
+    "hyb",
+    "fire"
+   ],
+   "label": {
+    "kr": "물리·화염 피해 접두",
+    "en": "Physical or fire prefix"
+   }
+  },
+  "as": {
+   "gi": 16,
+   "tmax": 4
+  },
+  "crit": {
+   "gi": 18,
+   "tmax": "$sT"
+  },
+  "cdmg": {
+   "gi": 19,
+   "tmax": "$sT"
+  },
+  "suf": {
+   "anyOf": [
+    "as",
+    "crit",
+    "cdmg"
+   ],
+   "label": {
+    "kr": "공격 속도·치명타",
+    "en": "Attack speed or crit"
+   }
+  },
+  "cr": {
+   "anyOf": [
+    "crit",
+    "cdmg"
+   ],
+   "label": {
+    "kr": "치명타 확률·피해",
+    "en": "Crit chance or damage"
+   }
+  },
+  "keepP": {
+   "anyOf": [
+    "melee",
+    "pre",
+    "suf"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "melee"
+   },
+   {
+    "has": "p1"
+   },
+   {
+    "has": "cr"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "s6",
+    "s7",
+    "s7y"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "ppct",
+     "tmax": 2
+    },
+    {
+     "tag": "hyb",
+     "tmax": 2
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "물리·화염 피해 추가",
+      "en": "Flat physical or fire"
+     }
+    },
+    {
+     "tag": "melee",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "공격 속도·치명타",
+      "en": "Attack speed or crit"
+     }
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "치명타 확률·피해",
+      "en": "Crit chance or damage"
+     }
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "ppct",
+     "tmax": 3
+    },
+    {
+     "tag": "hyb",
+     "tmax": 3
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "melee",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "치명타 확률·피해",
+      "en": "Crit chance or damage"
+     }
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "melee",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "근접 스킬 +5 분열 + 잡옵 1줄 (퀄리티 20%)",
+    "en": "Fractured +5 melee skills + one junk line (20% quality)"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5 (분열)",
+     "en": "+5 melee skills (fractured)",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "s2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5 (분열)",
+     "en": "+5 melee skills (fractured)",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix option"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "p1"
+     },
+     "to": "s3",
+     "res": "ok"
+    },
+    {
+     "to": "s2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5 (분열)",
+     "en": "+5 melee skills (fractured)",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    }
+   ],
+   "cur": "Greater_Chaos_Orb",
+   "show": [
+    "pflat",
+    "ppct",
+    "hyb"
+   ]
+  },
+  {
+   "id": "s3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "s4",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "xT": 2
+      }
+     },
+     "to": "s3x",
+     "res": "fail"
+    },
+    {
+     "to": "s4",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5 (분열)",
+     "en": "+5 melee skills (fractured)",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "ppct",
+    "hyb"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "s3x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    2
+   ],
+   "keep": [
+    "pre"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 지우기 (첫번째 접두는 유지)",
+    "en": "Remove the missed prefix (keep the first)"
+   },
+   "edges": [
+    {
+     "lost": "pre",
+     "to": "s2",
+     "port": "right"
+    },
+    {
+     "to": "s3",
+     "port": "bottom"
+    }
+   ],
+   "side": "p"
+  },
+  {
+   "id": "s4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
+     },
+     "to": "s5",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "xT": 2
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepP",
+         "side": "p"
+        }
+       }
+      ]
+     },
+     "to": "s4b",
+     "res": "fail"
+    },
+    {
+     "to": "s5",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5 (분열)",
+     "en": "+5 melee skills (fractured)",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "hyb",
+    "fire"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "over": [
+    {
+     "param": {
+      "xT": 3
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "s4b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    3
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "가장 낮은 접두를 다시 (버릴 줄일 때만)",
+    "en": "Reroll the lowest prefix (only while it is junk)"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
+     },
+     "to": "s5",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepP",
+       "side": "p"
+      }
+     },
+     "to": "s4b",
+     "res": "fail"
+    },
+    {
+     "to": "s5",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5 (분열)",
+     "en": "+5 melee skills (fractured)",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "hyb",
+    "fire"
+   ],
+   "omens": [
+    "Omen_of_Whittling",
+    "Omen_of_Sinistral_Erasure"
+   ]
+  },
+  {
+   "id": "s5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "suf"
+     },
+     "to": "s6",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "xT": 2
+      }
+     },
+     "to": "s5b",
+     "res": "fail"
+    },
+    {
+     "to": "s6",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5 (분열)",
+     "en": "+5 melee skills (fractured)",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도·치명타",
+     "en": "Attack speed or crit",
+     "m": "n",
+     "tags": [
+      "suf"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "as",
+    "crit",
+    "cdmg"
+   ],
+   "over": [
+    {
+     "param": {
+      "xT": 3
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "s5b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미를 다시",
+    "en": "Reroll a suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "suf"
+     },
+     "to": "s6",
+     "res": "ok"
+    },
+    {
+     "to": "s5b",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5 (분열)",
+     "en": "+5 melee skills (fractured)",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도·치명타",
+     "en": "Attack speed or crit",
+     "m": "n",
+     "tags": [
+      "suf"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "as",
+    "crit",
+    "cdmg"
+   ],
+   "omens": [
+    "Omen_of_Dextral_Erasure"
+   ]
+  },
+  {
+   "id": "s6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "s7"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5 (분열)",
+     "en": "+5 melee skills (fractured)",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도·치명타",
+     "en": "Attack speed or crit",
+     "m": "n",
+     "tags": [
+      "suf"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ]
+  },
+  {
+   "id": "s7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "cr"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "s7y",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·화염 피해 접두",
+     "en": "Physical or fire prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "근접 스킬 +5 (분열)",
+     "en": "+5 melee skills (fractured)",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도·치명타",
+     "en": "Attack speed or crit",
+     "m": "n",
+     "tags": [
+      "suf"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도·치명타",
+     "en": "Attack speed or crit",
+     "m": "n",
+     "tags": [
+      "suf"
+     ]
+    }
+   ],
+   "want": "cr",
+   "show": [
+    "crit",
+    "cdmg"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "s7y",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "s6",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}
