@@ -229,7 +229,7 @@ bw_ppct=g(c,'(170—179)% increased Physical Damage','n','p'); bw_flat=g(c,'Adds
 bw_cold=g(c,'Adds (72—81) to (110—123) Cold Damage','n','p'); bw_light=g(c,'Adds (1—12) to (202—234) Lightning','n','p')
 bw_proj=g(c,'Level of all Projectile Skills','n','s'); bw_crit=g(c,'to Critical Hit Chance','n','s'); bw_flatE=g(c,'Adds (16—24) to (28—42) Physical','e','p')
 R.append({
- 'id':'diztoh-iceshot-bow','cls':c,'base':base(c,'Obliterator Bow'),'ilvl':82,'difficulty':4,'budget':'high',
+ 'id':'diztoh-iceshot-bow','cls':c,'base':base(c,'Obliterator Bow'),'ilvl':82,'sockets':3,'exceptional':{'sockets':1},'difficulty':4,'budget':'high',
  'buildTags':[K('얼음 사격','Ice Shot'),K('데드아이','Deadeye'),K('냉기','Cold')],'patch':'0.5.5','created':'2026-11-08','author':DZ,
  'source':src('29vO0mMUoME','How to craft an Endgame Iceshot Deadeye Bow','Diztoh'),
  'title':K('물리 % 분열 + 냉기 1티어 + 투사체 +4 활','fractured % phys + T1 cold + projectile +4 bow'),

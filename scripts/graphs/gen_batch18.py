@@ -72,7 +72,7 @@ ON=it('s','이 무기로 명중시켜 처치 시 (20—25)%의 확률로 맹공 
 MKB=it('s','심연의 군주의 징표','Mark of the Abyssal Lord',['mk'],'c')
 AL=it('r','알두르의 숨결','Breath of Aldur',None,'r'); AS=it('r','아스트리드의 창의성','Astrid’s Creativity',None,'r')
 W0=[PP,J('s')]; W1=[PP,FL]; W2=[PP,FL,CO]; W3=W2+[AL]; W4=W3+[AS]; W5=W4+[UN('s')]; W6=W4+[PJ]; W7=W4+[ON]; W8=W4+[MKB]; W9=W4+[PJ,J('s')]; W10=W4+[PJ,CC]; W11=W10+[R1('s')]
-nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pp','fr':True},{'junk':'s'}]},K('물리 피해 % 분열 + 잡옵 1개 (절멸자 활, 아이템 레벨 82)','Fractured % physical damage + one junk line (Obliterator Bow, item level 82)'),W0),
+nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pp','fr':True},{'junk':'s'}]},K('물리 피해 % 2티어 분열 + 잡옵 1개 (특출난 절멸자 활, 룬 소켓 3, 아이템 레벨 82)','Fractured T2 % physical damage + one junk line (exceptional Obliterator Bow, 3 rune sockets, item level 82)'),W0),
  mark([0,0.6],'c1',W0),
  act('c1','main',[0,1],'chaos','Chaos_Orb',K('접두 두번째 옵션','Second prefix'),None,K('카오스','Chaos'),[{'if':{'has':'fl'},'to':'e1','res':'ok'},{'to':'c1','res':'fail'}],W1,show=['fl']),
  act('e1','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),None,K('엑잘','Exalt'),[{'if':{'has':'conv'},'to':'al','res':'ok','hide':True},{'if':{'has':'ele'},'to':'r2','res':'ok'},{'to':'e1w',**F}],W2,show=['co','li','fi','hy'],omens=['Omen_of_Sinistral_Exaltation']),
@@ -96,4 +96,4 @@ graph11('diztoh-iceshot-bow-v2','Bows','Obliterator Bow',82,
   {'high':K('영상: 물리 피해 % 2티어 분열 · 물리 피해 추가 1티어 · 원소 1~2티어 · 투사체 +4 · 치명타 확률 1~3티어','Video: fractured T2 % physical, T1 flat physical, T1–2 elemental, +4 projectiles, T1–3 crit chance'),'bal':K('물리 피해 추가 1~3티어 · 원소 1~3티어 · 투사체 +3~+4 · 치명타 확률 1~3티어','T1–3 flat physical, T1–3 elemental, +3–+4 projectiles, T1–3 crit chance')},tags,nodes,
   [{'id':'L1','nodes':['d2','l1','l2','l3'],'kr':'빛 없이 다시 공개','en':'Lightless reroll'}],
   FIN(('high','bal'),lambda v:[{'tag':'pp','fr':True,'tmax':2,'tmin':2},{'tag':'fl','tmax':1 if v=='high' else 3},{'tag':'co','tmax':2 if v=='high' else 3},{'tag':'proj','tmax':1 if v=='high' else 2,'des':True},{'tag':'cc','tmax':3},{'side':'s','random':True}]),
-  {'quality':20,'sockets':2},{'all':[{'has':'fl'},{'has':'ele'},{'has':'proj'},{'has':'cc'}]},('high','bal'))
+  {'quality':20,'sockets':3,'exceptional':True},{'all':[{'has':'fl'},{'has':'ele'},{'has':'proj'},{'has':'cc'}]},('high','bal'))
