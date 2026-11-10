@@ -102,7 +102,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 - 호스팅 = Cloudflare Workers(사용자의 lightview·roasterroute와 같은 방식), 저장소 루트 `wrangler.jsonc`가 `web/`를 정적 파일로 서빙. 배포 폴더 만들기: 위 빌드 뒤에 `python3 scripts/build_web.py` → `web/`(index.html·도구 페이지·data·lib·CNAME·_headers·robots·sitemap). `web/`도 커밋해요(호스팅이 그대로 서빙).
 - 아티팩트 밖에서는 다운로드 = 일반 브라우저 다운로드로 대체, **공유 레시피 저장소는 아직 없음**(code 'unavailable') → POE 계정 로그인 + 서버 저장소(예: Cloudflare Workers + D1)는 로드맵 1-⑤에서.
 - app.html(아티팩트판)은 그대로 두고 같이 유지해요.
-- **글꼴**(사용자 확정 2026-11-10): 영문 제목 = POE2 글꼴 Fontin SmallCaps(exljbris 무료 글꼴, `site/fonts/fontin-sc.woff2` 14KB). 라이선스 조건: @font-face 옆 출처 주석 + 안내 탭 아래 exljbris 링크, 글꼴 파일을 따로 배포하지 않음. 한글 = 카카오 거래소와 같게 따로 글꼴 없이 컴퓨터 기본 한글 글꼴(맑은 고딕·Apple SD Gothic Neo) — 거래소 font-family = FontinSmallCaps, Verdana, Arial, Helvetica, sans-serif(사용자 확인). 구글 글꼴(Cinzel 등)은 뺌.
+- **글꼴**(사용자 확정 2026-11-10): 영문 제목 = POE2 글꼴 Fontin SmallCaps(exljbris 무료 글꼴, `site/fonts/fontin-sc.woff2` 14KB). 라이선스 조건: @font-face 옆 출처 주석 + 안내 탭 아래 exljbris 링크, 글꼴 파일을 따로 배포하지 않음. 한글 = 카카오 거래소와 같은 SUIT(SIL OFL 1.1 무료, `site/fonts/SUIT-Variable.woff2` 610KB + `SUIT-OFL.txt`, npm @sun-typeface/suit 2.0.5), 없으면 맑은 고딕 — 거래소 font-family = FontinSmallCaps, Verdana, Arial, Helvetica, sans-serif(사용자 확인). 구글 글꼴(Cinzel 등)은 뺌.
 - **배경 그림**(사용자 선택 2026-11-10): `site/img/bg.webp`(사용자가 올린 캐릭터 7명 그림, 1536×1024 → WebP 72KB), `shell.html` body 배경 + 위→아래 어둡게 덮기. GGG 아트일 수 있어 **테스트 기간에만** 쓰고, 공개 전에 GGG 허락 문의 또는 직접 만든 그림으로 교체(사용자와 합의). GGG 로고는 쓰지 않음.
 
 ## 로드맵 (사용자 확정 2026-11-10 22:09 — 이 순서대로 진행)
