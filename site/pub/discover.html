@@ -119,6 +119,14 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .bad{color:var(--warn)}
 .draft{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;background:color-mix(in srgb,var(--rare) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--rare) 40%,var(--line));border-radius:10px;padding:12px 14px}
 .draft > div{flex:1 1 320px;min-width:0}
+.need{grid-column:1/-1;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.needb{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:2px 10px;font:inherit;font-size:12px;cursor:pointer}
+.needb[aria-pressed="true"]{background:color-mix(in srgb,var(--ok) 22%,transparent);border-color:var(--ok);color:var(--text)}
+.mod.junkr{opacity:.62}
+.confirm{margin-bottom:10px;background:var(--panel);border:1px dashed var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.confirm .cr{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.confirm input[type=number]{width:70px;padding:3px 6px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;font:inherit}
+.confirm .hint{font-size:12px;color:var(--muted)}
 .draft p{margin:2px 0 0;font-size:12.5px;color:var(--muted);max-width:90ch}
 #mkmsg{font-size:13px}
 .mp{display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-size:12px;color:var(--muted)}.mp input{width:84px;padding:3px 6px;font:inherit;background:transparent;color:inherit;border:1px solid currentColor;border-radius:4px;opacity:.85}
@@ -180,7 +188,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 </div>
 
 <script>
-const S = { lang:'en', index:null, cache:{}, last:null, txt:'', itab:'item' };
+const S = { lang:'en', index:null, cache:{}, last:null, txt:'', itab:'item', need:new Set(), okQR:false };
 try{ const u=new URLSearchParams(location.search).get('lang'); S.lang = u || localStorage.getItem('poe2lang') || 'en'; }catch(e){}
 if(S.lang!=='kr') S.lang='en';
 const KR = () => S.lang==='kr', L = (kr,en) => KR()?kr:en;
@@ -1143,16 +1151,26 @@ function render(){
       m.out ? `<span class="tag q">${L('범위 초과','Above range')}</span>` : '', m.q ? `<span class="tag q">${L('퀄리티 적용','Quality applied')}</span>` : '',
       `<span class="tag">${esc(r.t[KR()?2:3])}</span>`].join('');
     const tierT = r.g.s==='n' ? L(`T${r.tierNo} · Lv ${r.t[0]}`,`T${r.tierNo} · lvl ${r.t[0]}`) : L(`Lv ${r.t[0]}`,`lvl ${r.t[0]}`);
-    return `<div class="mod ${side} ${m.fr?'fr':''}"><div class="mt"><div class="ml">${esc(m.l)}</div><div class="tags">${tags}<span class="tag">${tierT}</span></div></div></div>`;
+    const ri = an.rows.indexOf(r), on = m.fr || S.need.has(ri);
+    const needH = m.fr ? `<div class="need">${L('분열 옵션 — 베이스에 포함','Fractured — part of the base')}</div>`
+      : `<div class="need"><button type="button" class="needb" data-need="${ri}" aria-pressed="${on}">${on?L('✓ 필수 옵션','✓ Must-have'):L('필수로 지정','Mark must-have')}</button>${on?'':L('지정하지 않으면 잡옵으로 처리해요','Left unmarked = treated as junk')}</div>`;
+    return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml">${esc(m.l)}</div><div class="tags">${tags}<span class="tag">${tierT}</span></div></div>${needH}</div>`;
   }).join('');
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
   const otherHTML = it.other.length ? `<div class="other">${it.other.map(o=>`<div class="${o.k==='?'?'bad':''}"><span class="k">${kName[o.k]}</span>${esc(o.l)}</div>`).join('')}</div>` : '';
   const canDraft = it.rarity!=='normal' && an.rows.some(r=>!r.unrev) && !an.putrid;
-  $('#mods').innerHTML = (canDraft ? `<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '') + `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3></div>${rowsHTML}${otherHTML}`;
+  const runes = it.other.filter(o=>o.k==='rune'), nNeed = an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length, ready = nNeed>0 && S.okQR;
+  const confirmH = canDraft ? `<div class="confirm"><b>${L('리버스 전에 확인해 주세요','Before reverse-engineering')}</b>
+    <div class="cr">${L('① 필수 옵션','① Must-have modifiers')}: <b>${nNeed}${L('개','')}</b> <span class="hint">${L('— 아래 옵션에서 꼭 있어야 하는 것만 "필수로 지정"을 누르세요. 나머지는 잡옵(결과 그대로)으로 처리해요.','— press "Mark must-have" below on the lines you need; the rest are treated as junk (whatever rolls).')}</span></div>
+    <div class="cr">${L('② 퀄리티','② Quality')} <input type="number" id="qin" min="0" max="75" value="${it.qual||0}">%${it.qualType?` (${esc(it.qualType)})`:''} <span class="hint">${L('— 기폭제 퀄리티는 옵션 값을 올려서 티어 판단이 달라져요.','— catalyst quality raises modifier values, which changes the tier read.')}</span></div>
+    <div class="cr">${L('③ 룬','③ Runes')}: ${runes.length ? runes.map(o=>esc(o.l)).join(' · ') : L('없음','none')}</div>
+    <label class="cr"><input type="checkbox" id="qrok" ${S.okQR?'checked':''}> ${L('퀄리티와 룬을 확인했어요','I checked the quality and runes')}</label>
+    ${ready?'':`<span class="hint">${L('필수 옵션을 1개 이상 지정하고 퀄리티·룬을 확인하면 초안을 만들 수 있어요.','Mark at least one must-have and confirm quality and runes to make the draft.')}</span>`}</div>` : '';
+  $('#mods').innerHTML = (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary" id="mk" ${ready?'':'disabled'}>${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '') + `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3></div>${rowsHTML}${otherHTML}`;
 }
 
 async function run(){
-  await S.ready; S.draft=null; S.sent=false; $('#fb').hidden=true;
+  await S.ready; S.draft=null; S.sent=false; S.need=new Set(); S.okQR=false; $('#fb').hidden=true;
   const txt = $('#txt').value; if(!txt.trim()){ S.last=null; render(); return; }
   if(!S.index) [S.index, S.craft] = await Promise.all([fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json())]);
   if(!S.priority) S.priority = await fetch('data/priority.json').then(r=>r.json()).catch(()=>null);
@@ -1210,7 +1228,10 @@ $('#b-go').addEventListener('click', ()=>{ try{ if(parent!==window){ parent.loca
 $('#fb-go').addEventListener('click', ()=>{ const t=$('#fb-txt').value.trim(); if(!t) return; try{ const k='poe2r:feedback', a=JSON.parse(localStorage.getItem(k)||'[]'); a.unshift({at:Date.now(), text:t.slice(0,2000), draft:S.draft?.id||null, item:($('#txt').value||'').slice(0,4000)}); localStorage.setItem(k, JSON.stringify(a.slice(0,50))); }catch(_){}
   $('#fb-txt').value=''; $('#fb-msg').textContent=L('고마워요! 이 기기에 저장했어요 (서버가 열리면 함께 전송돼요).','Thanks! Saved on this device; it will be sent once the server is live.'); });
 $('#mods').addEventListener('click', e=>{
-  if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const mp=+($('#mp')?.value||0); const r = makeDraft(S.last.it, S.last.an, {market: mp>0?mp:0}); S.draft = r; S.check = verifyDraft(S.last.it, S.last.an, r); showCheck(); return; }
+  if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const an=S.last.an, nNeed=an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length; if(!nNeed || !S.okQR) return;
+    const an2 = {...an, rows: an.rows.filter((r,i)=>r.m.fr || (!r.unrev && S.need.has(i)))};   // only the must-haves are targets; the rest is junk (사용자 확정 2026-11-11)
+    const mp=+($('#mp')?.value||0); const r = makeDraft(S.last.it, an2, {market: mp>0?mp:0}); S.draft = r; S.check = verifyDraft(S.last.it, an2, r); showCheck(); return; }
+  const nb=e.target.closest('[data-need]'); if(nb && S.last?.an){ const i=+nb.dataset.need; if(S.need.has(i)) S.need.delete(i); else S.need.add(i); S.draft=null; S.sent=false; render(); return; }
   if(e.target.closest('#send') && S.draft && !S.sent){ const r=S.draft;
     try{ const k='poe2r:drafts', a=JSON.parse(localStorage.getItem(k)||'[]').filter(x=>x.id!==r.id); a.unshift(r); localStorage.setItem(k, JSON.stringify(a.slice(0,12))); }catch(_){}
     const inShell = window.parent && window.parent!==window;
@@ -1243,6 +1264,10 @@ $('#samples').addEventListener('click', e=>{ const b=e.target.closest('[data-sam
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-reverse-in' && typeof d.text==='string'){ S.itab='build'; $('#txt').value=d.text; $('#b-from').hidden=false; $('#b-from').textContent=L('속성부여에서 받은 옵션 조합을 분석했어요 — 오른쪽 요약과 아래 초안을 확인하세요.','Analysed the modifier set from the Modifiers tab — see the summary and draft below.'); run(); } });
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
 window.addEventListener('message', e=>{ const d=e.data, f=document.getElementById('pvf'); if(d && d.type==='poe2-preview-h' && f && e.source===f.contentWindow) f.style.height=Math.max(320, Math.min(+d.h||0, 6000))+'px'; });
+$('#mods').addEventListener('change', e=>{
+  if(e.target.id==='qrok'){ S.okQR=e.target.checked; render(); return; }
+  if(e.target.id==='qin' && S.last?.it){ const v=Math.max(0, Math.min(75, Math.round(+e.target.value||0))); S.last.it.qual=v; S.last.an=analyse(S.last.it); S.draft=null; S.okQR=true; render(); }   // quality changes the tier read
+});
 window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost});
 render();
 </script>
