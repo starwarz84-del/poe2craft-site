@@ -672,8 +672,8 @@ function rangeText(t0, tw){
   let k=0; return t0.replace(re, (m,a,b)=> `(${lo[k++]??a}—${b})`);
 }
 // one modifier with an accepted tier range → display text and tier tag
-function modLine(r, gi, tmax, max){
-  const g=grp(r,gi), ok=g.t.filter(x=>x[0]<=r.ilvl), off=Math.max(0,g.t.indexOf(ok[0]));
+function modLine(r, gi, tmax, max, tmin){
+  const g=grp(r,gi), ok=g.t.filter(x=>x[0]<=r.ilvl), off=Math.max(0,g.t.indexOf(ok[0]), tmin?Math.min(tmin,g.t.length)-1:0);   // tmin = 정확한 티어 아래 끝(분열 2티어 등)
   const tm = tmax ? Math.min(tmax, g.t.length) : null;
   const top=g.t[off]||g.t[0], worst = tm ? g.t[Math.max(off, tm-1)] : null;
   const ps = g.g==='p'?'P':'S';
@@ -705,7 +705,7 @@ function analyse(r){
   CUR_R=r;
   const D=C(r), b=baseOf(r), cap=r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)};   // a recipe can state the slots (jewels: 2/2)
   let rar='normal', mods=[];   // {gi, ti, side, junk, fr, unrev, des}
-  if(r.start){ rar=r.start.rar||'rare'; mods=(r.start.mods||[]).map(x=>x.junk ? {junk:true, side:x.junk} : x.unrev ? {unrev:true, junk:true, side:x.unrev} : {gi:x.gi, ti:0, side:grp(r,x.gi).g, tmax:x.tmax, ...(x.fr?{fr:true}:{}), ...(x.crafted?{ess:true}:{})}); }   // a bought item
+  if(r.start){ rar=r.start.rar||'rare'; mods=(r.start.mods||[]).map(x=>x.junk ? {junk:true, side:x.junk} : x.unrev ? {unrev:true, junk:true, side:x.unrev} : {gi:x.gi, ti:0, side:grp(r,x.gi).g, tmax:x.tmax, ...(x.tmin?{tmin:x.tmin}:{}), ...(x.fr?{fr:true}:{}), ...(x.crafted?{ess:true}:{})}); }   // a bought item
   const clone = () => mods.map(m=>({...m}));
   const fams = () => { const f=new Set(); mods.forEach(m=>{ if(m.gi!=null) grp(r,m.gi).f.forEach(x=>f.add(x)); }); return f; };
   const count = s => mods.filter(m=>m.side===s).length;
@@ -922,7 +922,7 @@ function analyse(r){
     if(n.cost){ const c=uc[n.cost]; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+ (+c.v)*passes[i]; }
       else if(n.cost==='base' && +r.basePrice>0 && !(c && c.v!=null && c.v!=='')) manual.Divine_Orb=(manual.Divine_Orb||0)+ (+r.basePrice)*passes[i]; }   // policy 22: the recipe's base price unless the viewer typed one
     o.use=u; o.passes=passes[i]; o.useTries=tries; });
-  const final = mods.filter(m=>m.gi!=null).map(m=>({...modLine(r,m.gi,m.tmax,m.max), fr:m.fr, des:m.des, ess:m.ess}))
+  const final = mods.filter(m=>m.gi!=null).map(m=>({...modLine(r,m.gi,m.tmax,m.max,m.tmin), fr:m.fr, des:m.des, ess:m.ess}))
     .sort((a,c)=>(a.g.g==='p'?0:1)-(c.g.g==='p'?0:1));
   CUR_R=null;
   const basesAll = passes[0] + (out[0]?.extraOpt||0), optMore = basesAll > passes[0]+0.05 || Object.keys(totAll).some(k=>totAll[k]-(tot[k]||0) >= 0.01);
@@ -1073,7 +1073,7 @@ function stateHTML(r, o){
   const row = m => m.unrev ? `<div class="sm des">${L('훼손 (미공개)','Desecrated (hidden)')}</div>`
     : m.gi==null ? (m.des ? `<div class="sm desj">${L('훼손 옵션 (잡옵)','Desecrated (junk)')}</div>` : `<div class="sm junk">${L('잡옵','junk')}</div>`)
     : m.mark ? `<div class="sm mark"><span class="tier ${m.side}">${m.side==='p'?'P':'S'}·${L('징표','Mark')}</span>${esc(KR()?grp(r,m.gi).t[0][4]:grp(r,m.gi).t[0][5])}</div>`
-    : (()=>{ const l=modLine(r,m.gi,m.tmax,m.max); return `<div class="sm ${m.fr?'fr':''} ${m.des?'desr':''} ${m.ess?'essm':''}"><span class="tier ${l.g.g}">${esc(l.tag)}</span>${esc(l.txt)}</div>`; })();
+    : (()=>{ const l=modLine(r,m.gi,m.tmax,m.max,m.tmin); return `<div class="sm ${m.fr?'fr':''} ${m.des?'desr':''} ${m.ess?'essm':''}"><span class="tier ${l.g.g}">${esc(l.tag)}</span>${esc(l.txt)}</div>`; })();
   const side = s => { const ms=o.state.filter(m=>m.side===s), free=Math.max(0,(o.cap[s]||3)-ms.length);
     return `<div class="sside"><span class="sl">${s==='p'?L('접두','Prefix'):L('접미','Suffix')} ${ms.length}/${o.cap[s]}</span>${ms.map(row).join('')}${'<div class="sm free"></div>'.repeat(Math.min(free,4))}</div>`; };
   const QT = {attack:['공격','attack'], caster:['시전','caster'], life:['생명력','life'], mana:['마나','mana'], defences:['방어','defences'], physical:['물리','physical'], fire:['화염','fire'], cold:['냉기','cold'], lightning:['번개','lightning'], chaos:['카오스','chaos'], speed:['속도','speed'], attribute:['능력치','attribute'], minion:['소환수','minion']};
@@ -1329,7 +1329,7 @@ function itemTipHTML(r, o, opt={}){
     if(m.unrev) return `<div class="tt-mod des-u ${cls}">${sl}${L('훼손 옵션 (미공개)','Desecrated (unrevealed)')}</div>`;
     if(m.gi==null) return `<div class="tt-mod junk ${cls}">${sl}${m.label?esc(tx(m.label)):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
     if(m.mark) return `<div class="tt-mod markm ${cls}"><span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>${esc(KR()?grp(r,m.gi).t[0][4]:grp(r,m.gi).t[0][5])}</div>`;
-    const l=modLine(r,m.gi,m.tmax,m.max), qv=o.qual?.v, qt=o.qual?.type, shown=(o.vals||{})[m.gi];
+    const l=modLine(r,m.gi,m.tmax,m.max,m.tmin), qv=o.qual?.v, qt=o.qual?.type, shown=(o.vals||{})[m.gi];
     let txt=l.txt, sub='';
     if(m.hybrid) txt=txt.replace(/생명력 최대치 \+\([^)]*\)|생명력 최대치 \+\d+/,'생명력/마나 최대치').replace(/\+\([^)]*\) to maximum Life|\+\d+ to maximum Life/,'maximum Life / Mana');
     if(shown){ txt=tx(shown); sub=L('영상 결과값','value in the video'); }
@@ -1588,7 +1588,7 @@ function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||'')
 // finished items (best / settle / budget) in the recipe's item-card format
 function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return ''; const fi=g.finalItem||{};
   const cards=g.finals.map(F=>{ const state=F.lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side, label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
-      return {gi:T.gi, side:T.s, tmax:l.tmax||null, fr:!!l.fr, des:!!l.des, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
+      return {gi:T.gi, side:T.s, tmax:l.tmax||null, tmin:l.tmin||null, fr:!!l.fr, des:!!l.des, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
     const go=r.tierGroup && tierSibs(r).find(x=>x.tier===(F.tier||F.id));   // 완성품 카드 → 그 등급 레시피 탭 (사용자 확정 2026-11-11)
     return `<div class="fcfin ${on?'on':''} ${go?'go':''}" ${go?`data-rtab="${esc(go.id)}" role="button" tabindex="0" title="${esc(L('이 완성품의 제작 과정 보기','Open the crafting steps for this item'))}"`:''}><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');

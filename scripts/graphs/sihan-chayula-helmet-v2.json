@@ -1,0 +1,775 @@
+{
+ "id": "sihan-chayula-helmet-v2",
+ "recipe": "sihan-chayula-helmet-v2",
+ "cls": "Helmets_dex_int",
+ "base": "Grinning Mask",
+ "ilvl": 82,
+ "note": "시한 차율라 투구(z_r1uAYIusk) — 회피·에너지 보호막 % 분열 → 카오스 오브(튕겨내기 평점) → 좌측 찬미 + 완벽한 엑잘(방어 접두) → 좌측 강령술 + 고대 갈비뼈 → 공개 → 상위 찬미 + 완벽한 엑잘(접미 2개 결과 그대로). 밸런스 = 영상(튕겨내기 1~2티어, 접두 1~3티어, 빗나가면 다시), 에센셜 = 튕겨내기 1~3티어, 접두·공개 결과 그대로.",
+ "params": {
+  "dT": {
+   "kr": "튕겨내기 평점",
+   "en": "Deflection",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "pT": {
+   "kr": "방어 접두",
+   "en": "Defence prefixes",
+   "values": {
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "dT": 2,
+    "pT": 3,
+    "v": 1
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "dT": 3,
+    "pT": 3,
+    "v": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "dT": 3,
+    "pT": 3,
+    "v": 2
+   },
+   "desc": {
+    "kr": "접두·공개 결과 그대로",
+    "en": "Keep the prefix and reveal results"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "dT": 2,
+    "pT": 3,
+    "v": 1
+   },
+   "desc": {
+    "kr": "영상: 방어 접두 3개 + 튕겨내기",
+    "en": "Video: three defence prefixes + deflection"
+   }
+  }
+ ],
+ "tags": {
+  "pct": {
+   "gi": 9,
+   "tmax": 1
+  },
+  "defl": {
+   "gi": 21,
+   "tmax": "$dT"
+  },
+  "flat": {
+   "gi": 8,
+   "tmax": "$pT"
+  },
+  "life": {
+   "gi": 6,
+   "tmax": "$pT"
+  },
+  "hyb": {
+   "gi": 10,
+   "tmax": "$pT"
+  },
+  "pre": {
+   "anyOf": [
+    "flat",
+    "life",
+    "hyb"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "pct"
+   },
+   {
+    "has": "defl"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "h5",
+    "h6",
+    "h6x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "pct",
+     "fr": true
+    },
+    {
+     "tag": "flat",
+     "tmax": 3
+    },
+    {
+     "tag": "hyb",
+     "tmax": 3,
+     "des": true
+    },
+    {
+     "tag": "defl",
+     "tmax": 2
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "pct",
+     "fr": true
+    },
+    {
+     "tag": "flat",
+     "tmax": 3
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "defl",
+     "tmax": 3
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 1
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "pct",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "웃는 가면(아이템 레벨 82), 회피·에너지 보호막 % 1티어 분열 + 잡옵 1개",
+    "en": "Grinning Mask (item level 82): fractured T1 evasion/ES % + one junk line"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "회피 및 에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Evasion and Energy Shield",
+     "m": "f",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "h2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "회피 및 에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Evasion and Energy Shield",
+     "m": "f",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "h2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 첫번째 옵션",
+    "en": "First suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "defl"
+     },
+     "to": "h4",
+     "res": "ok"
+    },
+    {
+     "to": "h2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "회피 및 에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Evasion and Energy Shield",
+     "m": "f",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+     "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+     "m": "n",
+     "tags": [
+      "defl"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "defl"
+   ]
+  },
+  {
+   "id": "h4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "h5",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "h4x",
+     "res": "fail"
+    },
+    {
+     "to": "h5",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "회피 및 에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Evasion and Energy Shield",
+     "m": "f",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+     "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+     "m": "n",
+     "tags": [
+      "defl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "회피 +(79—94) / 에너지 보호막 최대치 +(26—29)",
+     "en": "+(79—94) to Evasion Rating / +(26—29) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "flat",
+    "life",
+    "hyb"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "h4x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    2
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 지우기 (튕겨내기가 지워지면 카오스부터)",
+    "en": "Remove the missed prefix (deflection lost → back to Chaos)"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "defl"
+     },
+     "to": "h4",
+     "port": "right",
+     "res": "ok"
+    },
+    {
+     "to": "h2",
+     "res": "fail"
+    }
+   ]
+  },
+  {
+   "id": "h5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "h6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "회피 및 에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Evasion and Energy Shield",
+     "m": "f",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+     "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+     "m": "n",
+     "tags": [
+      "defl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "회피 +(79—94) / 에너지 보호막 최대치 +(26—29)",
+     "en": "+(79—94) to Evasion Rating / +(26—29) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Rib",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ]
+  },
+  {
+   "id": "h6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "pre"
+     },
+     "to": "h7",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "h6x",
+     "res": "fail"
+    },
+    {
+     "to": "h7",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "회피 및 에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Evasion and Energy Shield",
+     "m": "f",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+     "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+     "m": "n",
+     "tags": [
+      "defl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "회피 +(79—94) / 에너지 보호막 최대치 +(26—29)",
+     "en": "+(79—94) to Evasion Rating / +(26—29) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "회피 및 에너지 보호막 (39—42)% 증가 / 생명력 최대치 +(42—49)",
+     "en": "(39—42)% increased Evasion and Energy Shield / +(42—49) to maximum Life",
+     "m": "d",
+     "tags": [
+      "hyb"
+     ]
+    }
+   ],
+   "want": "pre",
+   "show": [
+    "flat",
+    "life",
+    "hyb"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "h6x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "h5",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "h7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 두번째·세번째 옵션",
+    "en": "Second and third suffixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "회피 및 에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Evasion and Energy Shield",
+     "m": "f",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+     "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+     "m": "n",
+     "tags": [
+      "defl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "회피 +(79—94) / 에너지 보호막 최대치 +(26—29)",
+     "en": "+(79—94) to Evasion Rating / +(26—29) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "회피 및 에너지 보호막 (39—42)% 증가 / 생명력 최대치 +(42—49)",
+     "en": "(39—42)% increased Evasion and Energy Shield / +(42—49) to maximum Life",
+     "m": "d",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

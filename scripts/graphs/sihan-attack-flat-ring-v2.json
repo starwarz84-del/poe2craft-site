@@ -1,0 +1,890 @@
+{
+ "id": "sihan-attack-flat-ring-v2",
+ "recipe": "sihan-attack-flat-ring-v2",
+ "cls": "Rings",
+ "base": "Unset Ring",
+ "ilvl": 75,
+ "note": "시한 공격 플랫 3줄 반지(bpXgZGw4WQo) — 플랫 1티어 분열 매물 → 균열의 에센스 → 강탈자 기폭제 → 카오스 오브(다른 원소 플랫, 최대 퀄리티 옵션이 바뀜) → 우측 찬미 잡옵 + 우측 결정화 + 재빠른 합금 → 상위·우측 찬미 + 완벽한 엑잘(접미 2개) → 고대 빗장뼈 → 공개(원소 플랫). 밸런스 = 영상(플랫 1~2티어, 공개 빗나가면 빛의 징조로 다시), 에센셜 = 플랫 1~3티어, 공개 결과 그대로.",
+ "params": {
+  "fT": {
+   "kr": "원소 공격 추가 피해",
+   "en": "Elemental attack flats",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "fT": 2,
+    "v": 1
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "fT": 3,
+    "v": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "fT": 3,
+    "v": 2
+   },
+   "desc": {
+    "kr": "플랫 1~3티어, 공개 결과 그대로",
+    "en": "T1–3 flats, keep the reveal"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "fT": 2,
+    "v": 1
+   },
+   "desc": {
+    "kr": "영상: 플랫 3개 + 공격 속도",
+    "en": "Video: three flats + attack speed"
+   }
+  }
+ ],
+ "tags": {
+  "phys": {
+   "gi": 13,
+   "tmax": 1
+  },
+  "fire": {
+   "gi": 15,
+   "tmax": "$fT"
+  },
+  "cold": {
+   "gi": 17,
+   "tmax": "$fT"
+  },
+  "lgt": {
+   "gi": 19,
+   "tmax": "$fT"
+  },
+  "flat": {
+   "anyOf": [
+    "fire",
+    "cold",
+    "lgt"
+   ]
+  },
+  "maxq": {
+   "gi": 71
+  },
+  "as": {
+   "gi": 73
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "phys"
+   },
+   {
+    "has": "flat"
+   },
+   {
+    "has": "as"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "f8",
+    "f9",
+    "f9x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "phys",
+     "fr": true
+    },
+    {
+     "tag": "cold",
+     "tmax": 2
+    },
+    {
+     "tag": "lgt",
+     "tmax": 2,
+     "des": true
+    },
+    {
+     "tag": "as",
+     "ess": true
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "phys",
+     "fr": true
+    },
+    {
+     "tag": "cold",
+     "tmax": 3
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "as",
+     "ess": true
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 40,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "f2",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "phys",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "무보석 반지(아이템 레벨 75+), 공격 추가 피해 1티어 분열 + 잡옵 1개 (약 75 div)",
+    "en": "Unset Ring (item level 75+): fractured T1 attack flat + one junk line (about 75 div)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "f2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "최대 퀄리티 +20%",
+    "en": "+20% maximum quality"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "f3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "maxq"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Breach",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "장신구 최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% to maximum quality (crafted)"
+    }
+   ],
+   "ess": "maxq"
+  },
+  {
+   "id": "f3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "quality",
+   "goal": {
+    "kr": "공격 퀄리티 40%",
+    "en": "40% attack quality"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "maxq"
+     ]
+    }
+   ],
+   "cur": "Reaver_Catalyst",
+   "count": 20
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    2.5
+   ],
+   "next": "f4",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "maxq"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "f4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 두번째 옵션 (최대 퀄리티 옵션이 바뀜)",
+    "en": "Second prefix (replaces the max-quality line)"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "flat"
+     },
+     "to": "f5",
+     "res": "ok"
+    },
+    {
+     "to": "f4",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 냉기 피해 (21—24)~(32—37) 추가",
+     "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "fire",
+    "cold",
+    "lgt"
+   ]
+  },
+  {
+   "id": "f5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "합금이 지울 접미",
+    "en": "The suffix for the alloy to remove"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "f6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 냉기 피해 (21—24)~(32—37) 추가",
+     "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ]
+  },
+  {
+   "id": "f6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접미 잡옵을 지우고 공격 속도",
+    "en": "Swap the junk suffix for attack speed"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "to": "f7"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 냉기 피해 (21—24)~(32—37) 추가",
+     "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (7—9)% 증가 (재빠른 합금)",
+     "en": "(7—9)% increased Attack Speed (Swift Alloy)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    }
+   ],
+   "cur": "Swift_Alloy",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "공격 속도 (7—9)% 증가 (제작 옵션)",
+     "en": "(7—9)% increased Attack Speed (crafted)"
+    }
+   ],
+   "ess": "as",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "f7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 두번째·세번째 옵션",
+    "en": "Second and third suffixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "f8"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 냉기 피해 (21—24)~(32—37) 추가",
+     "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (7—9)% 증가 (재빠른 합금)",
+     "en": "(7—9)% increased Attack Speed (Swift Alloy)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation",
+    "Omen_of_Dextral_Exaltation"
+   ]
+  },
+  {
+   "id": "f8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "f9"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 냉기 피해 (21—24)~(32—37) 추가",
+     "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (7—9)% 증가 (재빠른 합금)",
+     "en": "(7—9)% increased Attack Speed (Swift Alloy)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Collarbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ]
+  },
+  {
+   "id": "f9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "flat"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "f9x",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 냉기 피해 (21—24)~(32—37) 추가",
+     "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (7—9)% 증가 (재빠른 합금)",
+     "en": "(7—9)% increased Attack Speed (Swift Alloy)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 번개 피해 (1—4)~(60—71) 추가",
+     "en": "Adds (1—4) to (60—71) Lightning damage to Attacks",
+     "m": "d",
+     "tags": [
+      "lgt"
+     ]
+    }
+   ],
+   "want": "flat",
+   "show": [
+    "fire",
+    "cold",
+    "lgt"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "f9x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "f8",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "basePrice": 75
+}

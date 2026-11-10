@@ -9,8 +9,8 @@ def _iceshot(r, t):
     w8=_node(r,'w8'); el=w8['target']['anyOf']
     tm=2 if t=='high' else 3   # 영상: 냉기가 좋지만 다른 원소·복합 물리도 받음
     for x in el: x['tmax']=tm
+    _node(r,'w14')['target']['tmax']=3   # 영상 완성품 치명타 확률 = 3티어(+3.6%) — 하이엔드도 1~3티어 (2026-11-11 영상 재확인)
     if t=='bal':
         _node(r,'w7')['target']['tmax']=3
         _node(r,'w12')['target']['reveal']['tmax']=2   # 투사체 +3도 받음
-        _node(r,'w14')['target']['tmax']=3
 for _t in ('high','bal'): _grade8('diztoh-iceshot-bow','diztoh-iceshot-bow-v2',_t,_iceshot)

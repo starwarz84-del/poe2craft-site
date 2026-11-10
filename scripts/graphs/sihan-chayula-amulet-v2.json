@@ -1,0 +1,678 @@
+{
+ "id": "sihan-chayula-amulet-v2",
+ "recipe": "sihan-chayula-amulet-v2",
+ "cls": "Amulets",
+ "base": "Solar Amulet",
+ "ilvl": 82,
+ "note": "시한 차율라 목걸이(2vyq26ZFgOk) — 정신력 분열 실패 매물 구입 → 완벽한 무한의 에센스 → 우측 강령술 + 군주의 징조 + 보존된 빗장뼈 → 공개(모든 스킬 레벨 +1). 밸런스 = 영상(빗나가면 다시 — 영상은 완벽한 무한의 에센스, 시뮬은 빛의 징조), 에센셜 = 정신력 1~2티어 매물, 공개 결과 그대로.",
+ "params": {
+  "sT": {
+   "kr": "정신력",
+   "en": "Spirit",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "sT": 1,
+    "v": 1
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "sT": 2,
+    "v": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "sT": 2,
+    "v": 2
+   },
+   "desc": {
+    "kr": "더 싼 매물, 공개 결과 그대로",
+    "en": "Cheaper listing, keep the reveal"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "sT": 1,
+    "v": 1
+   },
+   "desc": {
+    "kr": "영상: 모든 스킬 레벨 +1이 나올 때까지",
+    "en": "Video: until +1 to all skills shows"
+   }
+  }
+ ],
+ "tags": {
+  "spirit": {
+   "gi": 28,
+   "tmax": "$sT"
+  },
+  "life": {
+   "gi": 9
+  },
+  "dex": {
+   "gi": 1,
+   "tmax": 1
+  },
+  "str": {
+   "gi": 67
+  },
+  "skill": {
+   "gi": 56
+  },
+  "l17": {
+   "gi": 17
+  },
+  "l18": {
+   "gi": 18
+  },
+  "l19": {
+   "gi": 19
+  },
+  "l20": {
+   "gi": 20
+  },
+  "blk": {
+   "anyOf": [
+    "l17",
+    "l18",
+    "l19",
+    "l20"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "spirit"
+   },
+   {
+    "has": "str"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "a3",
+    "a4",
+    "a4x"
+   ],
+   "kr": "울라만 공개",
+   "en": "Ulaman reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "spirit",
+     "tmax": 1
+    },
+    {
+     "tag": "life"
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "dex",
+     "fr": true
+    },
+    {
+     "tag": "str",
+     "ess": true
+    },
+    {
+     "tag": "skill",
+     "des": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "spirit",
+     "tmax": 2
+    },
+    {
+     "tag": "life"
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "dex",
+     "fr": true
+    },
+    {
+     "tag": "str",
+     "ess": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "spirit"
+     },
+     {
+      "tag": "life"
+     },
+     {
+      "tag": "dex",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "정신력 분열에 실패한 목걸이 구입 (약 15 div)",
+    "en": "Buy a failed Spirit-fracture amulet (about 15 div)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(120—149)",
+     "en": "+(120—149) to maximum Life",
+     "m": "n",
+     "tags": [
+      "life"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "민첩 +(31—33)",
+     "en": "+(31—33) to Dexterity",
+     "m": "f",
+     "tags": [
+      "dex"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "a2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(120—149)",
+     "en": "+(120—149) to maximum Life",
+     "m": "n",
+     "tags": [
+      "life"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "민첩 +(31—33)",
+     "en": "+(31—33) to Dexterity",
+     "m": "f",
+     "tags": [
+      "dex"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "a2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접미 잡옵을 지우고 힘",
+    "en": "Swap a junk suffix for Strength"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "a3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(120—149)",
+     "en": "+(120—149) to maximum Life",
+     "m": "n",
+     "tags": [
+      "life"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "민첩 +(31—33)",
+     "en": "+(31—33) to Dexterity",
+     "m": "f",
+     "tags": [
+      "dex"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "힘, 민첩 또는 지능 +(25—27) (완벽한 무한의 에센스)",
+     "en": "+(25—27) to Strength, Dexterity or Intelligence (Perfect Essence of the Infinite)",
+     "m": "c",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Essence_of_the_Infinite",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "힘 +(25—27) (제작 옵션)",
+     "en": "+(25—27) to Strength (crafted)"
+    }
+   ],
+   "ess": "str"
+  },
+  {
+   "id": "a3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 세번째 옵션(울라만 훼손)",
+    "en": "Third suffix (Ulaman desecration)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "str"
+      }
+     },
+     "to": "a2",
+     "res": "fail"
+    },
+    {
+     "to": "a4",
+     "res": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(120—149)",
+     "en": "+(120—149) to maximum Life",
+     "m": "n",
+     "tags": [
+      "life"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "민첩 +(31—33)",
+     "en": "+(31—33) to Dexterity",
+     "m": "f",
+     "tags": [
+      "dex"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "힘, 민첩 또는 지능 +(25—27) (완벽한 무한의 에센스)",
+     "en": "+(25—27) to Strength, Dexterity or Intelligence (Perfect Essence of the Infinite)",
+     "m": "c",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Collarbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "울라만 훼손 옵션(미공개)",
+     "en": "Ulaman desecration (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy",
+    "Omen_of_the_Sovereign"
+   ]
+  },
+  {
+   "id": "a4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "skill"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "blk"
+     },
+     "to": "ok",
+     "res": "fail"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "a4x",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(120—149)",
+     "en": "+(120—149) to maximum Life",
+     "m": "n",
+     "tags": [
+      "life"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "민첩 +(31—33)",
+     "en": "+(31—33) to Dexterity",
+     "m": "f",
+     "tags": [
+      "dex"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "힘, 민첩 또는 지능 +(25—27) (완벽한 무한의 에센스)",
+     "en": "+(25—27) to Strength, Dexterity or Intelligence (Perfect Essence of the Infinite)",
+     "m": "c",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 스킬 레벨 +1",
+     "en": "+1 to Level of all Skills",
+     "m": "d",
+     "tags": [
+      "skill"
+     ]
+    }
+   ],
+   "want": "skill",
+   "show": [
+    "skill"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "a4x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    3
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "a3",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "basePrice": 15
+}

@@ -1,0 +1,551 @@
+{
+ "id": "sihan-chayula-gloves-v2",
+ "recipe": "sihan-chayula-gloves-v2",
+ "cls": "Gloves_dex_int",
+ "base": "Secured Wraps",
+ "ilvl": 82,
+ "note": "시한 차율라 장갑(Sf-2cvWhQY0) — 카틀라의 순흑 + 중독 강도 분열 → 카오스 오브(저주 활성화 속도 30%) → 상위 + 좌측 찬미 엑잘(접두 2개) → 상위 + 우측 찬미 엑잘(접미 2개), 결과 그대로. 밸런스 = 영상(완벽한 엑잘티드 오브), 에센셜 = 상위 엑잘티드 오브. 카틀라 옵션 가중치는 추정.",
+ "params": {
+  "v": {
+   "kr": "엑잘",
+   "en": "Exalt",
+   "values": {
+    "1": {
+     "kr": "완벽한 엑잘티드 오브",
+     "en": "Perfect Exalted Orb"
+    },
+    "2": {
+     "kr": "상위 엑잘티드 오브",
+     "en": "Greater Exalted Orb"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "v": 1
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "v": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "v": 2
+   },
+   "desc": {
+    "kr": "상위 엑잘티드 오브",
+    "en": "Greater Exalted Orbs"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "v": 1
+   },
+   "desc": {
+    "kr": "영상: 완벽한 엑잘티드 오브",
+    "en": "Video: Perfect Exalted Orbs"
+   }
+  }
+ ],
+ "tags": {
+  "pois": {
+   "gi": 88,
+   "tmax": 1
+  },
+  "curse": {
+   "gi": 99,
+   "tmax": 1
+  },
+  "fast": {
+   "gi": 90
+  },
+  "ail": {
+   "gi": 89
+  },
+  "with": {
+   "gi": 95
+  },
+  "cmag": {
+   "gi": 96
+  },
+  "pgood": {
+   "anyOf": [
+    "fast",
+    "ail"
+   ]
+  },
+  "sgood": {
+   "anyOf": [
+    "with",
+    "cmag"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "pois"
+   },
+   {
+    "has": "curse"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "pois",
+     "fr": true
+    },
+    {
+     "tag": "fast"
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "curse"
+    },
+    {
+     "tag": "with"
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "pois",
+     "fr": true
+    },
+    {
+     "tag": "fast"
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "curse"
+    },
+    {
+     "tag": "with"
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "pois",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "카틀라의 순흑 장착, 중독 강도 30% 분열 + 잡옵 1개",
+    "en": "Katla’s Gloom socketed: fractured 30% poison magnitude + one junk line"
+   },
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "플레이어가 유발하는 중독의 강도 (30—42)% 증가",
+     "en": "(30—42)% increased Magnitude of Poison you inflict",
+     "m": "f",
+     "tags": [
+      "pois"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "g2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "플레이어가 유발하는 중독의 강도 (30—42)% 증가",
+     "en": "(30—42)% increased Magnitude of Poison you inflict",
+     "m": "f",
+     "tags": [
+      "pois"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "g2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 첫번째 옵션",
+    "en": "First suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "curse"
+     },
+     "to": "g3",
+     "res": "ok"
+    },
+    {
+     "to": "g2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "플레이어가 유발하는 중독의 강도 (30—42)% 증가",
+     "en": "(30—42)% increased Magnitude of Poison you inflict",
+     "m": "f",
+     "tags": [
+      "pois"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저주 활성화 속도 (20—30)% 가속",
+     "en": "(20—30)% faster Curse Activation",
+     "m": "n",
+     "tags": [
+      "curse"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "curse"
+   ]
+  },
+  {
+   "id": "g3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째·세번째 옵션",
+    "en": "Second and third prefixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "g4"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "플레이어가 유발하는 중독의 강도 (30—42)% 증가",
+     "en": "(30—42)% increased Magnitude of Poison you inflict",
+     "m": "f",
+     "tags": [
+      "pois"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저주 활성화 속도 (20—30)% 가속",
+     "en": "(20—30)% faster Curse Activation",
+     "m": "n",
+     "tags": [
+      "curse"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
+     "en": "Damaging Ailments deal damage (14—20)% faster",
+     "m": "n",
+     "tags": [
+      "fast"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 2개 — 상태 이상 피해 가속·상태 이상 강도면 좋음",
+     "en": "Two random lines — faster ailments or ailment magnitude are good"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation",
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "g4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 두번째·세번째 옵션",
+    "en": "Second and third suffixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "플레이어가 유발하는 중독의 강도 (30—42)% 증가",
+     "en": "(30—42)% increased Magnitude of Poison you inflict",
+     "m": "f",
+     "tags": [
+      "pois"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저주 활성화 속도 (20—30)% 가속",
+     "en": "(20—30)% faster Curse Activation",
+     "m": "n",
+     "tags": [
+      "curse"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
+     "en": "Damaging Ailments deal damage (14—20)% faster",
+     "m": "n",
+     "tags": [
+      "fast"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "위축 강도 (25—35)% 증가",
+     "en": "(25—35)% increased Withered Magnitude",
+     "m": "n",
+     "tags": [
+      "with"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개 — 위축·저주 강도면 좋음",
+     "en": "Two random lines — withered or curse magnitude are good"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation",
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "xsub": [
+  "Katla's Gloom"
+ ],
+ "xroll": true
+}

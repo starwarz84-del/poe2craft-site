@@ -1,0 +1,1420 @@
+{
+ "id": "sihan-proj-gloves-v2",
+ "recipe": "sihan-proj-gloves-v2",
+ "cls": "Gloves_str",
+ "base": "Massive Mitts",
+ "ilvl": 80,
+ "note": "시한 하이엔드 투사체 장갑(DH4jiORLg10) — 콜르의 사냥 + 투사체 +2 분열 → 카오스 오브(추가 발사) → 좌측 찬미 잡옵 + 좌측 결정화 + 발작의 에센스 → 아스트리드 → 좌측 찬미 + 완벽한 엑잘 접두 2개(첫째 빗나가면 소멸의 오브, 둘째 빗나가면 심연의 에센스 징표 → 보존된 갈비뼈 → 빛의 징조) → 고대 갈비뼈 공개. 하이엔드 = 1티어(영상), 밸런스 = 1~2티어(영상: 2티어는 금방). 콜르 옵션 가중치는 추정.",
+ "params": {
+  "pT": {
+   "kr": "접두 3개",
+   "en": "Three prefixes",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "aT": {
+   "kr": "투사체 추가 발사",
+   "en": "Additional projectile",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "pT": 1,
+    "aT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "pT": 2,
+    "aT": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "pT": 2,
+    "aT": 2
+   },
+   "desc": {
+    "kr": "접두 1~2티어",
+    "en": "T1–2 prefixes"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "pT": 1,
+    "aT": 1
+   },
+   "desc": {
+    "kr": "영상: 접두 1티어 3개",
+    "en": "Video: three tier 1 prefixes"
+   }
+  }
+ ],
+ "tags": {
+  "lvl": {
+   "gi": 78
+  },
+  "add": {
+   "gi": 72,
+   "tmax": "$aT"
+  },
+  "pdmg": {
+   "gi": 67,
+   "tmax": "$pT"
+  },
+  "pspd": {
+   "gi": 69,
+   "tmax": "$pT"
+  },
+  "phys": {
+   "gi": 13,
+   "tmax": "$pT"
+  },
+  "pre": {
+   "anyOf": [
+    "phys",
+    "pdmg",
+    "pspd"
+   ]
+  },
+  "cdb": {
+   "gi": 54
+  },
+  "mk": {
+   "gi": 56
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "lvl"
+   },
+   {
+    "has": "add"
+   },
+   {
+    "has": "cdb"
+   },
+   {
+    "count": {
+     "tag": "pre",
+     "min": 3
+    }
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "p7m",
+    "p7b",
+    "p7l"
+   ],
+   "kr": "접두 하나만 지우기",
+   "en": "Remove one prefix"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "p8",
+    "p9",
+    "p9x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "phys",
+     "tmax": 1
+    },
+    {
+     "tag": "pspd",
+     "tmax": 1
+    },
+    {
+     "tag": "pdmg",
+     "tmax": 1,
+     "des": true
+    },
+    {
+     "tag": "lvl",
+     "fr": true
+    },
+    {
+     "tag": "add",
+     "tmax": 1
+    },
+    {
+     "tag": "cdb",
+     "ess": true
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "phys",
+     "tmax": 2
+    },
+    {
+     "tag": "pspd",
+     "tmax": 2
+    },
+    {
+     "tag": "pdmg",
+     "tmax": 2,
+     "des": true
+    },
+    {
+     "tag": "lvl",
+     "fr": true
+    },
+    {
+     "tag": "add",
+     "tmax": 2
+    },
+    {
+     "tag": "cdb",
+     "ess": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "lvl",
+      "fr": true
+     },
+     {
+      "junk": "p"
+     }
+    ]
+   },
+   "label": {
+    "kr": "거대한 미트(룬 소켓 2), 콜르의 사냥 장착 상태로 투사체 +2 분열 + 잡옵 1개",
+    "en": "Massive Mitts (two sockets) with Kolr’s Hunt: fractured +2 projectile skills + one junk line"
+   },
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "p2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "add"
+     },
+     "to": "p3",
+     "res": "ok"
+    },
+    {
+     "to": "p2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "add"
+   ]
+  },
+  {
+   "id": "p3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "에센스가 지울 접두",
+    "en": "The prefix for the essence to remove"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "p4"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "p4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접두 잡옵을 지우고 치명타 피해 보너스",
+    "en": "Swap the junk prefix for critical damage bonus"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "p5"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    }
+   ],
+   "cur": "Essence_of_Hysteria",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (제작 옵션)",
+     "en": "(25—29)% increased Critical Damage Bonus (crafted)"
+    }
+   ],
+   "ess": "cdb",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "p5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "p6"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
+   }
+  },
+  {
+   "id": "p6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "p7",
+     "res": "ok"
+    },
+    {
+     "to": "p6x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "phys",
+    "pdmg",
+    "pspd"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "p6x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 지우기",
+    "en": "Remove the missed prefix"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "add"
+       },
+       {
+        "has": "cdb"
+       }
+      ]
+     },
+     "to": "p6",
+     "port": "right",
+     "res": "ok"
+    },
+    {
+     "to": "pc",
+     "res": "fail"
+    }
+   ]
+  },
+  {
+   "id": "pc",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    2,
+    5
+   ],
+   "keep": [
+    "lvl"
+   ],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Leave the fracture and one line"
+   },
+   "edges": [
+    {
+     "to": "p2",
+     "res": "fail"
+    }
+   ]
+  },
+  {
+   "id": "p7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "not": {
+         "full": "p"
+        }
+       }
+      ]
+     },
+     "to": "p8",
+     "res": "ok"
+    },
+    {
+     "to": "p7m",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "pspd"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "phys",
+    "pdmg",
+    "pspd"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "p7m",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접두 하나를 지우고 징표",
+    "en": "A prefix goes for the Mark"
+   },
+   "label": {
+    "kr": "심연",
+    "en": "Abyss"
+   },
+   "edges": [
+    {
+     "to": "p7b"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "pspd"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Abyss",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
+    }
+   ],
+   "ess": "mk",
+   "mark": true,
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "p7b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "징표 훼손",
+    "en": "Desecrate the Mark"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "p7l"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "pspd"
+     ]
+    }
+   ],
+   "cur": "Preserved_Rib",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "fromMark": true
+  },
+  {
+   "id": "p7l",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "has": "add"
+       },
+       {
+        "has": "cdb"
+       }
+      ]
+     },
+     "to": "p8",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "add"
+       },
+       {
+        "has": "cdb"
+       }
+      ]
+     },
+     "to": "p7",
+     "port": "right",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "add"
+       },
+       {
+        "has": "cdb"
+       }
+      ]
+     },
+     "to": "p6",
+     "res": "fail"
+    },
+    {
+     "to": "pc",
+     "res": "fail"
+    }
+   ]
+  },
+  {
+   "id": "p8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "p9"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "pspd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Rib",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ]
+  },
+  {
+   "id": "p9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "pre"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "p9x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "pspd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "d",
+     "tags": [
+      "pdmg"
+     ]
+    }
+   ],
+   "want": "pre",
+   "show": [
+    "phys",
+    "pdmg",
+    "pspd"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "p9x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    8
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "p8",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "xsub": [
+  "Kolr's Hunt"
+ ],
+ "xroll": true
+}

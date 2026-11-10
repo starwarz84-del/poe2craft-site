@@ -65,9 +65,9 @@ graph11('sl-proj7-gloves-v2','Gloves_int','Sirenscale Gloves',80,
 tags={'pp':{'gi':7},'fl':{'gi':2,'tmax':'$fT'},'co':{'gi':4,'tmax':'$pT'},'li':{'gi':6,'tmax':'$pT'},'fi':{'gi':3,'tmax':'$pT'},'hy':{'gi':8,'tmax':'$pT'},
       'ele':{'anyOf':['co','li','fi','hy']},'conv':{'anyOf':['li','fi']},'proj':{'gi':9,'tmax':'$jT'},'cc':{'gi':17,'tmax':'$cT'},'ons':{'gi':55},'mk':{'gi':57},
       'keepP':{'anyOf':['pp','fl','ele']},'keepS':{'anyOf':['proj','cc']}}
-PP=it('p','물리 피해 (170—179)% 증가 (분열)','(170—179)% increased Physical Damage (fractured)',['pp'])
+PP=it('p','물리 피해 (155—169)% 증가 (분열)','(155—169)% increased Physical Damage (fractured)',['pp'])   # 영상 완성품 = 2티어 분열(165%)
 FL=it('p','물리 피해 (26—39)~(44—66) 추가','Adds (26—39) to (44—66) Physical Damage',['fl']); CO=it('p','냉기 피해 (72—81)~(110—123) 추가','Adds (72—81) to (110—123) Cold Damage',['co'])
-PJ=it('s','모든 투사체 스킬 레벨 +4','+4 to Level of all Projectile Skills',['proj'],'d'); CC=it('s','치명타 확률 +(4.41—5)%','+(4.41—5)% to Critical Hit Chance',['cc'])
+PJ=it('s','모든 투사체 스킬 레벨 +4','+4 to Level of all Projectile Skills',['proj'],'d'); CC=it('s','치명타 확률 +(3.11—3.8)%','+(3.11—3.8)% to Critical Hit Chance',['cc'])   # 영상 완성품 = 3티어(+3.6%)
 ON=it('s','이 무기로 명중시켜 처치 시 (20—25)%의 확률로 맹공 획득 (완벽한 가속의 에센스)','(20—25)% chance to gain Onslaught on Killing Hits with this Weapon (Perfect Essence of Haste)',['ons'],'c')
 MKB=it('s','심연의 군주의 징표','Mark of the Abyssal Lord',['mk'],'c')
 AL=it('r','알두르의 숨결','Breath of Aldur',None,'r'); AS=it('r','아스트리드의 창의성','Astrid’s Creativity',None,'r')
@@ -92,8 +92,8 @@ graph11('diztoh-iceshot-bow-v2','Bows','Obliterator Bow',82,
   'Diztoh 얼음 사격 활(29vO0mMUoME) — 물리 % 분열 + 잡옵 → 카오스 오브(물리 피해 추가) → 좌측 찬미 + 완벽한 엑잘(냉기·번개·화염·복합, 빗나가면 절사의 징조 + 카오스 오브) → 번개·화염이면 알두르의 숨결 → 아스트리드의 창의성 → 우측 강령술 + 고대 턱뼈 → 공개(투사체 +4, 빗나가면 우측 결정화 + 완벽한 가속의 에센스 → 심연의 에센스 → 징표 훼손) → 우측 찬미 + 엑잘 → 절사(+ 우측 말소) + 카오스 오브(치명타 확률) → 완벽한 엑잘. 하이엔드 = 영상(원소 1~2티어 — 영상은 다른 원소·복합도 받음), 밸런스 = 투사체 +3~+4 · 물리 추가 1~3티어 · 원소 1~3티어 · 치명타 확률 1~3티어.',
   {**ROUTE,'pT':{'kr':'원소 피해 추가','en':'Elemental flat','values':TV({'2':('1~2티어','T1–2'),'3':('1~3티어','T1–3')})},'fT':{'kr':'물리 피해 추가','en':'Flat physical','values':TV({'1':('1티어','T1'),'3':('1~3티어','T1–3')})},
    'cT':{'kr':'치명타 확률','en':'Critical hit chance','values':TV({'1':('1티어','T1'),'3':('1~3티어','T1–3')})},'jT':{'kr':'모든 투사체 스킬 레벨','en':'Projectile skills','values':TV({'1':('+4','+4'),'2':('+3~+4','+3–+4')})}},
-  {'high':{'v':1,'pT':2,'fT':1,'jT':1,'cT':1},'bal':{'v':2,'pT':3,'fT':3,'jT':2,'cT':3}},
-  {'high':K('영상: 물리 피해 추가 1티어 · 원소 1~2티어 · 투사체 +4','Video: T1 flat physical, T1–2 elemental, +4 projectiles'),'bal':K('물리 피해 추가 1~3티어 · 원소 1~3티어 · 투사체 +3~+4 · 치명타 확률 1~3티어','T1–3 flat physical, T1–3 elemental, +3–+4 projectiles, T1–3 crit chance')},tags,nodes,
+  {'high':{'v':1,'pT':2,'fT':1,'jT':1,'cT':3},'bal':{'v':2,'pT':3,'fT':3,'jT':2,'cT':3}},
+  {'high':K('영상: 물리 피해 % 2티어 분열 · 물리 피해 추가 1티어 · 원소 1~2티어 · 투사체 +4 · 치명타 확률 1~3티어','Video: fractured T2 % physical, T1 flat physical, T1–2 elemental, +4 projectiles, T1–3 crit chance'),'bal':K('물리 피해 추가 1~3티어 · 원소 1~3티어 · 투사체 +3~+4 · 치명타 확률 1~3티어','T1–3 flat physical, T1–3 elemental, +3–+4 projectiles, T1–3 crit chance')},tags,nodes,
   [{'id':'L1','nodes':['d2','l1','l2','l3'],'kr':'빛 없이 다시 공개','en':'Lightless reroll'}],
-  FIN(('high','bal'),lambda v:[{'tag':'pp','fr':True},{'tag':'fl','tmax':1 if v=='high' else 3},{'tag':'co','tmax':2 if v=='high' else 3},{'tag':'proj','tmax':1 if v=='high' else 2,'des':True},{'tag':'cc','tmax':1 if v=='high' else 3},{'side':'s','random':True}]),
+  FIN(('high','bal'),lambda v:[{'tag':'pp','fr':True,'tmax':2,'tmin':2},{'tag':'fl','tmax':1 if v=='high' else 3},{'tag':'co','tmax':2 if v=='high' else 3},{'tag':'proj','tmax':1 if v=='high' else 2,'des':True},{'tag':'cc','tmax':3},{'side':'s','random':True}]),
   {'quality':20,'sockets':2},{'all':[{'has':'fl'},{'has':'ele'},{'has':'proj'},{'has':'cc'}]},('high','bal'))
