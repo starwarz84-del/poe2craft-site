@@ -59,7 +59,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .btn:hover{border-color:var(--muted)}
 .btn.primary{background:var(--rare);color:var(--ink);border-color:var(--rare);font-weight:600}
 .btn:disabled{opacity:.45;cursor:default}
-.top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:16px;align-items:start}
+.top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:16px;align-items:stretch}   /* left and right boxes always the same height (사용자 2026-11-11) */
 @media (max-width:860px){.top{grid-template-columns:minmax(0,1fr)}}
 .paste{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
 .paste textarea{width:100%;min-height:300px;resize:vertical;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:10px;font-family:var(--f-mono);font-size:12px;line-height:1.5}
@@ -285,6 +285,21 @@ async function parse(txt){
     // roll inside the tier range; values outside it were pushed by quality, sanctification or corruption
     let roll=null, out=false; const first = ranges.findIndex(r=>r[0]!==r[1]);
     if(first>=0){ const r=ranges[first], v=Math.abs(+vals[first]), a=Math.min(...r), bb=Math.max(...r), tol=boost>1?1/boost+0.5:1e-9; out = v<a-tol || v>bb+tol; roll = out ? null : Math.max(0,Math.min(1,bb===a?1:(v-a)/(bb-a))); }
+    // a value above every tier of its modifier, with the same modifier on the other side too (e.g. item rarity is both a prefix
+    // and a suffix): the game shows the two as one summed line → split it into the prefix + suffix pair whose ranges fit (사용자 2026-11-11)
+    if(out && c.lines.length===1 && !hint && !tag && c.s==='n' && first>=0){
+      const v=Math.abs(+best.raw[first]), src=c.lines[0].re.source, gA=D.groups[c.gi], rng=x=>{ const r=x.lines[0].ranges[0]; return [Math.min(...r), Math.max(...r)]; };
+      const cands = MX.filter(x=>x.lines.length===1 && x.lines[0].re.source===src && x.s==='n' && !used.has(x.gi) && D.groups[x.gi].t[x.ti][0]<=ilvl && D.groups[x.gi].t[x.ti][1]>0);
+      let pair=null;
+      for(const a of cands.filter(x=>D.groups[x.gi].g==='p')) for(const b2 of cands.filter(x=>D.groups[x.gi].g==='s')){
+        const [a1,a2]=rng(a), [b1,b2b]=rng(b2); if(v<a1+b1-1e-9 || v>a2+b2b+1e-9) continue;
+        const sc=Math.abs(v-(a1+a2+b1+b2b)/2); if(!pair || sc<pair.sc) pair={sc,a,b:b2}; }
+      if(pair && (pair.a.gi===c.gi || pair.b.gi===c.gi || D.groups[pair.a.gi].f.some(f=>gA.f.includes(f)) || D.groups[pair.b.gi].f.some(f=>gA.f.includes(f)) || true)){
+        const [a1,a2]=rng(pair.a), [b1,b2b]=rng(pair.b), tot=v-a1-b1, span=(a2-a1)+(b2b-b1), fr0=span>0?Math.max(0,Math.min(1,tot/span)):1;
+        for(const x of [pair.a, pair.b]){ const [x1,x2]=rng(x), part=Math.round(x1+(x2-x1)*fr0);
+          used.add(x.gi); mods.push({gi:x.gi, ti:x.ti, side:D.groups[x.gi].g, q:false, fr:false, desTag:false, crafted:false, roll:fr0, out:false, split:v, l:text.replace(/\d+(\.\d+)?/, String(part)), hintTier:null}); }
+        hint=null; continue; }
+    }
     used.add(c.gi);
     mods.push({gi:c.gi, ti:c.ti, side:D.groups[c.gi].g, q:boost>1, fr: tag==='fractured' || !!hint?.fr, desTag: tag==='desecrated' || !!hint?.des, crafted: tag==='crafted', roll, out, l:text, hintTier:hint?.tier||null});
     i += c.lines.length-1; hint=null;
@@ -1158,13 +1173,13 @@ function render(){
       `<span class="tag ${how[0]}">${how[1]}</span>`,
       m.fr && r.g.s!=='n' ? `<span class="tag ${r.g.s}">${SRC[r.g.s][KR()?0:1]}</span>` : '',
       r.lord ? `<span class="tag d">${L(LORDS[r.lord][0]+' 전용', LORDS[r.lord][1]+' only')}</span>` : '',
-      m.out ? `<span class="tag q">${L('범위 초과','Above range')}</span>` : '', m.q ? `<span class="tag q">${L('퀄리티 적용','Quality applied')}</span>` : '',
+      m.out ? `<span class="tag q">${L('범위 초과','Above range')}</span>` : '', m.split ? `<span class="tag q" title="${esc(L(`게임에선 한 줄(${m.split})로 보이는 접두·접미 합계`,`Shown in game as one summed line (${m.split})`))}">${L('접두+접미 합산','Prefix+suffix sum')}</span>` : '', m.q ? `<span class="tag q">${L('퀄리티 적용','Quality applied')}</span>` : '',
       `<span class="tag">${esc(r.t[KR()?2:3])}</span>`].join('');
     const tierT = r.g.s==='n' ? L(`T${r.tierNo} · Lv ${r.t[0]}`,`T${r.tierNo} · lvl ${r.t[0]}`) : L(`Lv ${r.t[0]}`,`lvl ${r.t[0]}`);
     const ri = an.rows.indexOf(r), on = m.fr || S.need.has(ri);
     const needH = m.fr ? `<div class="need">${L('분열 옵션 — 베이스에 포함','Fractured — part of the base')}</div>`
-      : `<div class="need"><button type="button" class="needb" data-need="${ri}" aria-pressed="${on}">${on?L('✓ 필수 옵션','✓ Must-have'):L('필수로 지정','Mark must-have')}</button>${on ? (()=>{ const cur=S.tsel[ri]||r.tierNo, opts=[]; for(let k=r.tierNo;k<=r.tierCnt;k++) opts.push(k);
-          return `<select class="tsel" data-tier="${ri}" aria-label="${esc(L('티어 범위','Tier range'))}">${opts.map(k=>`<option value="${k}" ${k===cur?'selected':''}>${k===r.tierCnt && k>r.tierNo ? L('아무 티어','Any tier') : k===1 ? L('1티어만','Tier 1 only') : L(`1~${k}티어`,`Tier 1–${k}`)}${k===r.tierNo?L(' (붙여 넣은 값)',' (as pasted)'):''}</option>`).join('')}</select>${r.how==='n' && S.last?.an && diff3(S.last.an) ? `<label class="buyl"><input type="checkbox" data-buy="${ri}" ${S.buy.has(ri)?'checked':''}> ${L('매직 베이스로 구입','On the bought magic base')}</label>` : ''}`; })() : L('지정하지 않으면 잡옵으로 처리해요','Left unmarked = treated as junk')}</div>`;
+      : `<div class="need"><button type="button" class="needb" data-need="${ri}" aria-pressed="${on}">${on?L('✓ 필수 옵션','✓ Must-have'):L('필수로 지정','Mark must-have')}</button>${(()=>{ const cur=S.tsel[ri]||r.tierNo, opts=[]; for(let k=r.tierNo;k<=r.tierCnt;k++) opts.push(k);
+          return `<select class="tsel" data-tier="${ri}" aria-label="${esc(L('티어 범위','Tier range'))}">${opts.map(k=>`<option value="${k}" ${k===cur?'selected':''}>${k===r.tierCnt && k>r.tierNo ? L('아무 티어','Any tier') : k===1 ? L('1티어만','Tier 1 only') : L(`1~${k}티어`,`Tier 1–${k}`)}${k===r.tierNo?L(' (붙여 넣은 값)',' (as pasted)'):''}</option>`).join('')}</select>${on && r.how==='n' && S.last?.an && diff3(S.last.an) ? `<label class="buyl"><input type="checkbox" data-buy="${ri}" ${S.buy.has(ri)?'checked':''}> ${L('매직 베이스로 구입','On the bought magic base')}</label>` : ''}`; })()}</div>`;
     return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml">${esc(m.l)}</div><div class="tags">${tags}<span class="tag">${tierT}</span></div></div>${needH}</div>`;
   }).join('');
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
@@ -1172,7 +1187,7 @@ function render(){
   const canDraft = it.rarity!=='normal' && an.rows.some(r=>!r.unrev) && !an.putrid;
   const runes = it.other.filter(o=>o.k==='rune'), nNeed = an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length, ready = nNeed>0 && S.okQR;
   const confirmH = canDraft ? `<div class="confirm"><b>${L('리버스 전에 확인해 주세요','Before reverse-engineering')}</b>
-    <div class="cr">${L('① 필수 옵션','① Must-have modifiers')}: <b>${nNeed}${L('개','')}</b> <span class="hint">${L('— 아래 옵션에서 꼭 있어야 하는 것만 "필수로 지정"을 누르세요. 나머지는 잡옵(결과 그대로)으로 처리해요.','— press "Mark must-have" below on the lines you need; the rest are treated as junk (whatever rolls).')}</span></div>
+    <div class="cr">${L('① 필수 옵션','① Must-have modifiers')}: <b>${nNeed}${L('개','')}</b> <span class="hint">${L('— 위 옵션에서 꼭 있어야 하는 것만 "필수로 지정"을 누르거나 티어 범위를 고르세요. 나머지는 잡옵(결과 그대로)으로 처리해요.','— press "Mark must-have" (or pick a tier range) above on the lines you need; the rest are treated as junk (whatever rolls).')}</span></div>
     <div class="cr">${L('② 퀄리티','② Quality')} <input type="number" id="qin" min="0" max="75" value="${it.qual||0}">%${it.qualType?` (${esc(it.qualType)})`:''} <span class="hint">${L('— 기폭제 퀄리티는 옵션 값을 올려서 티어 판단이 달라져요.','— catalyst quality raises modifier values, which changes the tier read.')}</span></div>
     <div class="cr">${L('③ 룬','③ Runes')}: ${runes.length ? runes.map(o=>esc(o.l)).join(' · ') : L('없음','none')}</div>
     <label class="cr"><input type="checkbox" id="qrok" ${S.okQR?'checked':''}> ${L('퀄리티와 룬을 확인했어요','I checked the quality and runes')}</label>
@@ -1181,7 +1196,7 @@ function render(){
         const v0=c(0), v2=c(2), v3=c(3);
         return `<div class="cr">${L('예상 비용 (대략, 매직 베이스 구입비 제외)','Est. cost (rough, magic base not included)')}: <b>${L('지금 선택','As chosen')} ${fd(v0)} div</b> · ${L('모두 1~2티어','All tier 1–2')} ${fd(v2)} div · ${L('모두 1~3티어','All tier 1–3')} ${fd(v3)} div</div>`; })() : ''}
     ${ready?'':`<span class="hint">${L('필수 옵션을 1개 이상 지정하고 퀄리티·룬을 확인하면 초안을 만들 수 있어요.','Mark at least one must-have and confirm quality and runes to make the draft.')}</span>`}</div>` : '';
-  $('#mods').innerHTML = (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary" id="mk" ${ready?'':'disabled'}>${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '') + `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3></div>${rowsHTML}${otherHTML}`;
+  $('#mods').innerHTML = `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3></div>${rowsHTML}${otherHTML}` + (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary" id="mk" ${ready?'':'disabled'}>${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '');
 }
 
 async function run(){
@@ -1283,7 +1298,7 @@ $('#mods').addEventListener('change', e=>{
   if(e.target.id==='qrok'){ S.okQR=e.target.checked; render(); return; }
   if(e.target.dataset?.buy!=null && S.last?.an){ const i=+e.target.dataset.buy, sd=S.last.an.rows[i].m.side;
     if(e.target.checked){ [...S.buy].forEach(j=>{ if(S.last.an.rows[j]?.m.side===sd) S.buy.delete(j); }); S.buy.add(i); } else S.buy.delete(i); S.draft=null; S.sent=false; render(); return; }   // one prefix + one suffix
-  if(e.target.dataset?.tier!=null){ S.tsel[+e.target.dataset.tier]=+e.target.value; S.draft=null; S.sent=false; render(); return; }
+  if(e.target.dataset?.tier!=null){ S.tsel[+e.target.dataset.tier]=+e.target.value; S.need.add(+e.target.dataset.tier); S.draft=null; S.sent=false; render(); return; }
   if(e.target.id==='qin' && S.last?.it){ const v=Math.max(0, Math.min(75, Math.round(+e.target.value||0))); S.last.it.qual=v; S.last.an=analyse(S.last.it); S.draft=null; S.okQR=true; render(); }   // quality changes the tier read
 });
 window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost});
