@@ -1831,6 +1831,7 @@ function list(){
 let cards=[], panel=null;
 function renderBoard(){
   const L0=list(); const board=$('#board');
+  S.shownN=L0.length; const vn=document.querySelector('#vtabs [data-view="recipes"] span'); if(vn) vn.textContent=L0.length;   // 탭 숫자 = 지금 목록의 카드 수 (사용자 2026-11-11)
   const busy = !!(S.q || S.cat || S.sub || S.curOnly || S.tags.size || S.stats.some(Boolean));
   const rb=$('#freset'); rb.textContent=L('↺ 필터 초기화','↺ Reset filters'); rb.disabled=!busy;
   const total=S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r)).length;
@@ -1903,7 +1904,7 @@ const catEn = g => CAT_EN[g.id] || g.id;
 function render(){ document.documentElement.lang = KR()?'ko':'en'; renderBar(); renderDlg();
   $('#listView').hidden=!!S.open; $('#detail').hidden=!S.open;
   const tipsOn = S.view==='tips'; $('#recView').hidden=tipsOn; $('#tipsView').hidden=!tipsOn;
-  $('#vtabs').innerHTML=[['recipes',L('레시피','Recipes'),S.recipes.length],['tips',L('제작 꿀팁','Crafting tips'),S.tips.length]].map(([k,t,n])=>`<button type="button" role="tab" data-view="${k}" aria-selected="${(S.view||'recipes')===k}">${esc(t)}<span>${n}</span></button>`).join('');
+  $('#vtabs').innerHTML=[['recipes',L('레시피','Recipes'),S.shownN ?? S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r)).length],['tips',L('제작 꿀팁','Crafting tips'),S.tips.length]].map(([k,t,n])=>`<button type="button" role="tab" data-view="${k}" aria-selected="${(S.view||'recipes')===k}">${esc(t)}<span>${n}</span></button>`).join('');
   if(S.open) renderDetail(); else if(tipsOn) renderTips(); else renderBoard(); }
 // general tips that are not tied to one item: each keeps its source (with time) and the recipes that use it
 const tsSec = ts => ts ? ts.split(':').reduce((s,x)=>s*60+(+x),0) : 0;
