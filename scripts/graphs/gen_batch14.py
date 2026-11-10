@@ -35,7 +35,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'fire7','fr':True},{'junk':'p'}]},
  LIGHTX('p4x',[1,4],'p3'),
  # 하이엔드
  act('r2','main',[0,5],'rune',None,K('스루드의 완력 장착','Socket Thrud’s Might'),[st(None,'파괴 속성 부여 가능','Can roll Destruction modifiers')],K('룬','Rune'),[{'to':'s1'}],S4),
- act('s1','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접미 잡옵 2개','Two junk suffixes'),[st('s','랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),[{'if':{'has':'fm'},'to':'s3','res':'ok'},{'to':'s2'}],S5,omens=['Omen_of_Greater_Exaltation']),
+ act('s1','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접미 잡옵 2개','Two junk suffixes'),[st('s','랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),[{'if':{'has':'fm'},'to':'s3','hide':True},{'to':'s2'}],S5,omens=['Omen_of_Greater_Exaltation']),
  act('s2','main',[0,7],'chaos','Perfect_Chaos_Orb',K('접미 : 비고정 화염 속성 부여 규모','Suffix: explicit fire magnitudes'),None,K('카오스','Chaos'),[{'if':{'has':'fm'},'to':'s3','res':'ok'},{'to':'s2','res':'fail'}],S6,show=['fm'],trim={'side':'s','keep':'keep'}),
  act('s3','main',[0,8],'essence','Transcendent_Alloy',K('접미 : 시전 속도 + 추가 냉기 (접미 하나가 지워짐)','Suffix: cast speed + extra cold (a suffix goes)'),[st('s','초월의 합금 (제작 옵션)','Transcendent Alloy (crafted)')],K('합금','Alloy'),
      [{'if':{'all':[{'has':'fm'},{'has':'alloy'}]},'to':'ok','res':'ok'},{'to':'s3m',**F}],S7,ess='alloy'),
@@ -49,7 +49,7 @@ graph11('sl-flamewave-staff-v2','Staves','Chiming Staff',81,
   'SL 화염파 지팡이(6EzSVUItzsg) — 화염 주문 +7 분열 + 잡옵 → 카오스 오브(피해 % 증가 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) → 좌측 강령술 + 고대 턱뼈 → 공개(빛의 징조로 다시). 하이엔드 = 스루드의 완력 → 상위 찬미 + 완벽한 엑잘 → 절사 + 완벽한 카오스 오브(화염 규모, 가중치 비공개: 영상 경험 절사 20~30번으로 맞춤) → 초월의 합금. 밸런스 = 영상의 가성비 마무리(엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로).',
   ROUTE,P2,{'high':K('영상: 스루드의 완력으로 화염 규모, 공개는 빛의 징조로 다시','Video: Thrud’s Might fire magnitudes, Light retries the reveal'),'bal':K('영상의 가성비 마무리: 엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로','Video budget finish: two exalted suffixes + Transcendent Alloy, reveal kept')},tags,nodes,
   [{'id':'L1','nodes':['p3','p4','p4x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'pd','tmax':1},{'side':'p','label':K('피해 접두 1티어','T1 damage prefix')},{'side':'p','label':K('피해 접두 1티어','T1 damage prefix')} if v=='high' else {'side':'p','random':True},
+  FIN(('high','bal'),lambda v:[{'side':'p','label':K('피해 % 증가 1티어','T1 % increased damage')},{'side':'p','label':K('피해 접두 1티어','T1 damage prefix')},{'side':'p','label':K('피해 접두 1티어','T1 damage prefix')} if v=='high' else {'side':'p','random':True},
       {'tag':'fire7','tmax':1,'fr':True},{'tag':'fm'} if v=='high' else {'side':'s','random':True},{'tag':'alloy'}]),
   {'quality':20,'sockets':3},{'all':[{'has':'pd'},{'has':'alloy'}]},('high','bal'),xsub=["Thrud's Might"],xroll=True)
 
