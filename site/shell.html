@@ -178,7 +178,15 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
       if(top > 40 && top > prev) setCompact(true);
       else if(top < 6) setCompact(false);
     }, true);
+    // scrolling up while everything under the pointer is already at the top fires no scroll event → unfold here (사용자 2026-11-11: 위로 스크롤이 안 됨)
+    const upAtTop = t=>{ for(let e=t; e && e.nodeType===1; e=e.parentElement){ if(e.scrollTop>0 && e.scrollHeight>e.clientHeight+2) return false; }
+      const se=doc.scrollingElement||doc.documentElement; return !se || se.scrollTop<6; };
+    doc.addEventListener('wheel', ev=>{ if(ev.deltaY<0 && !f.hidden && upAtTop(ev.target)){ f._top=0; setCompact(false); } }, {passive:true});
+    let ty=null; doc.addEventListener('touchstart', ev=>{ ty=ev.touches[0]?.clientY; }, {passive:true});
+    doc.addEventListener('touchmove', ev=>{ const y=ev.touches[0]?.clientY; if(ty!=null && y-ty>30 && !f.hidden && upAtTop(ev.target)){ f._top=0; setCompact(false); ty=null; } }, {passive:true});
   }
+  // wheel up on the shell itself (banner, tab bar, side margins) also unfolds
+  window.addEventListener('wheel', ev=>{ if(ev.deltaY<0) setCompact(false); }, {passive:true});
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-full' && Object.values(frames).some(f=>f.contentWindow===e.source)) document.body.classList.toggle('toolfull', !!d.on); });
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-route' && frames.recipes && e.source===frames.recipes.contentWindow){
     extreme = !!d.extreme; document.body.classList.toggle('extreme', extreme && !frames.recipes.hidden); } });
