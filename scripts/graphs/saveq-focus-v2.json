@@ -1,0 +1,1262 @@
+{
+ "id": "saveq-focus-v2",
+ "recipe": "saveq-focus-v2",
+ "cls": "Foci",
+ "base": "Tasalian Focus",
+ "ilvl": 80,
+ "note": "SaVeQ 집중구(R43FVay8_XI) — 주문 피해 분열 + 에너지 보호막 1티어 + 모든 주문 스킬 +2 + 잡옵 → 아스트리드의 창의성 → 좌측 결정화 + 초월의 합금 → 고대 갈비뼈(접미 훼손) → 완벽한 엑잘(접두) → 절사로 에너지 보호막 1~2티어 → 공개(빛의 징조로 다시). 하이엔드 = 영상(주문 치명타 1티어), 밸런스 = 1~2티어.",
+ "params": {
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  },
+  "pT": {
+   "kr": "주문 치명타 명중 확률",
+   "en": "Spell critical hit chance",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "v": 1,
+    "pT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "v": 2,
+    "pT": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "v": 2,
+    "pT": 2
+   },
+   "desc": {
+    "kr": "주문 치명타 명중 확률 1~2티어",
+    "en": "T1–2 spell crit chance"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "v": 1,
+    "pT": 1
+   },
+   "desc": {
+    "kr": "영상: 주문 치명타 명중 확률 1티어, 에너지 보호막은 2티어로 타협",
+    "en": "Video: T1 spell crit chance, settle for T2 energy shield"
+   }
+  }
+ ],
+ "tags": {
+  "sp": {
+   "gi": 43
+  },
+  "esp": {
+   "gi": 7,
+   "tmax": 1
+  },
+  "esf": {
+   "gi": 6,
+   "tmax": 2
+  },
+  "esh": {
+   "gi": 8,
+   "tmax": 2
+  },
+  "lvl": {
+   "gi": 16
+  },
+  "cs": {
+   "gi": 59
+  },
+  "cr": {
+   "gi": 19,
+   "tmax": "$pT"
+  },
+  "ges": {
+   "anyOf": [
+    "esp",
+    "esf",
+    "esh"
+   ]
+  },
+  "keepF": {
+   "anyOf": [
+    "ges",
+    "lvl",
+    "cs"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "cr"
+   },
+   {
+    "has": "cs"
+   },
+   {
+    "count": {
+     "tag": "ges",
+     "min": 2
+    }
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "d1",
+    "rv",
+    "rvx"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "sp",
+     "fr": true,
+     "ess": true
+    },
+    {
+     "tag": "esp",
+     "tmax": 1
+    },
+    {
+     "tag": "esf",
+     "tmax": 2
+    },
+    {
+     "tag": "lvl"
+    },
+    {
+     "tag": "cs",
+     "ess": true
+    },
+    {
+     "tag": "cr",
+     "tmax": 1,
+     "des": true
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "sp",
+     "fr": true,
+     "ess": true
+    },
+    {
+     "tag": "esp",
+     "tmax": 1
+    },
+    {
+     "tag": "esf",
+     "tmax": 2
+    },
+    {
+     "tag": "lvl"
+    },
+    {
+     "tag": "cs",
+     "ess": true
+    },
+    {
+     "tag": "cr",
+     "tmax": 2,
+     "des": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 22,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "sp",
+      "fr": true,
+      "ess": true
+     },
+     {
+      "tag": "esp"
+     },
+     {
+      "junk": "p"
+     },
+     {
+      "tag": "lvl"
+     }
+    ],
+    "runes": []
+   },
+   "label": {
+    "kr": "주문 피해 분열 + 에너지 보호막 1티어 + 모든 주문 스킬 +2 + 잡옵 1개 (퀄리티 22%, 특출난 베이스)",
+    "en": "Fractured spell damage + T1 energy shield + all spell skills +2 + one junk line (22% quality, exceptional)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (75—89)% 증가 (분열)",
+     "en": "(75—89)% increased Spell Damage (fractured)",
+     "m": "c",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "r1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (75—89)% 증가 (분열)",
+     "en": "(75—89)% increased Spell Damage (fractured)",
+     "m": "c",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "r1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "a1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (75—89)% 증가 (분열)",
+     "en": "(75—89)% increased Spell Damage (fractured)",
+     "m": "c",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ]
+  },
+  {
+   "id": "a1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "잡옵을 지우고 시전 속도 (26—31)% 증가",
+    "en": "The junk goes for (26—31)% increased Cast Speed"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "cr"
+        }
+       }
+      ]
+     },
+     "to": "rvx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cr"
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "ges",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "ges",
+        "min": 2
+       }
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "to": "ok",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (75—89)% 증가 (분열)",
+     "en": "(75—89)% increased Spell Damage (fractured)",
+     "m": "c",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "cur": "Transcendent_Alloy",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 (제작 옵션)",
+     "en": "(26—31)% increased Cast Speed (crafted)"
+    }
+   ],
+   "ess": "cs",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "d1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "cr"
+        }
+       }
+      ]
+     },
+     "to": "rvx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cr"
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "ges",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1"
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "ges",
+        "min": 2
+       }
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "to": "ok",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (75—89)% 증가 (분열)",
+     "en": "(75—89)% increased Spell Damage (fractured)",
+     "m": "c",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Rib",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ]
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "cr"
+        }
+       }
+      ]
+     },
+     "to": "rvx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cr"
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "ges",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "ges",
+        "min": 2
+       }
+      }
+     },
+     "to": "w1",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "rv",
+     "res": "ok"
+    },
+    {
+     "to": "ok",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (75—89)% 증가 (분열)",
+     "en": "(75—89)% increased Spell Damage (fractured)",
+     "m": "c",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(81—90)",
+     "en": "+(81—90) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "esp",
+    "esf",
+    "esh"
+   ]
+  },
+  {
+   "id": "w1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "has": "cr"
+        }
+       }
+      ]
+     },
+     "to": "rvx",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cr"
+        }
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "ges",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "ges",
+        "min": 2
+       }
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "rv",
+     "res": "ok"
+    },
+    {
+     "to": "ok",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (75—89)% 증가 (분열)",
+     "en": "(75—89)% increased Spell Damage (fractured)",
+     "m": "c",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(81—90)",
+     "en": "+(81—90) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "esp",
+    "esf",
+    "esh"
+   ],
+   "trim": {
+    "side": "p",
+    "keep": "keepF"
+   }
+  },
+  {
+   "id": "rv",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "ges",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "cr"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "rvx",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (75—89)% 증가 (분열)",
+     "en": "(75—89)% increased Spell Damage (fractured)",
+     "m": "c",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(81—90)",
+     "en": "+(81—90) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (54—59)% 증가",
+     "en": "(54—59)% increased Critical Hit Chance for Spells",
+     "m": "d",
+     "tags": [
+      "cr"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "want": "cr",
+   "show": [
+    "cr"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "rvx",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "d1",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}
