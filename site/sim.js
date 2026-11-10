@@ -13,15 +13,17 @@ function make(graph, D, craft, params){
   const byId={}; for(const k in craft) for(const x of craft[k]) byId[x.id]=x;
   const minOf = id => +(byId[id]?.min||0);
   const base = D.bases.find(b=>b.en===graph.base || b.id===graph.base) || {};
-  const cap = {p:3+(base.pd||0), s:3+(base.sd||0)}, ilvl=graph.ilvl;
+  const cap = graph.cap ? {...graph.cap} : {p:3+(base.pd||0), s:3+(base.sd||0)}, ilvl=graph.ilvl;   // graph.cap: jewels are 2/2
   const G = D.groups;
+  // desecrated-only groups weigh 1000 on the game's scale; in a flat-weight class (jewels, weights unknown) they weigh what an average normal group does (recipes.html dWeight)
+  const dW = (()=>{ const ns=G.filter(g=>g.s==='n'), ws=new Set(ns.flatMap(g=>g.t.map(t=>t[1]))); if(ws.size!==1) return 1000; const tot=ns.map(g=>g.t.filter(t=>t[0]<=graph.ilvl).reduce((a,t)=>a+t[1],0)).filter(x=>x>0); return tot.reduce((a,x)=>a+x,0)/Math.max(1,tot.length); })();
   const P = v => typeof v==='string' && v[0]==='$' ? params[v.slice(1)] : v;
   // tags: named modifier specs, resolved to group indexes once
   const tags={};
   const resolve = (name, t) => { if(t.anyOf) return {anyOf:t.anyOf.map(x=>typeof x==='string' ? x : resolve(null,x))};
     const gi=t.gi!=null ? t.gi : G.findIndex(g=>g.f.join('+')===t.fam && (!t.sec || g.s===t.sec) && (!t.side || g.g===t.side));
     if(gi<0) throw new Error('tag '+(name||'')+': no group '+t.fam); return {gi, tmax:P(t.tmax)}; };
-  for(const k in graph.tags) tags[k]=resolve(k, graph.tags[k]);
+  for(const k in graph.tags){ tags[k]=resolve(k, graph.tags[k]); if(graph.tags[k].slot) tags[k].slot=graph.tags[k].slot; }   // slot: a line that opens one (Potent Liquid Contempt: +1 suffix / prefix allowed)
   const match = (m, tag) => { if(!m || m.unrev) return false; const t = typeof tag==='string' ? tags[tag] : tag; if(!t) throw new Error('unknown tag '+tag);
     if(t.anyOf) return t.anyOf.some(x=>match(m,x)); return m.gi===t.gi && (!t.tmax || m.ti < t.tmax); };
   const nodes={}; graph.nodes.forEach(n=>{ const o=(n.over||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); nodes[n.id]=o ? {...n, ...o.set} : n; });   // over: per-version node fields
@@ -31,7 +33,8 @@ function make(graph, D, craft, params){
     const side = m => m.side, lvl = m => G[m.gi].t[m.ti][0];
     const count = s => it.mods.filter(m=>m.side===s).length;
     let capR={...cap};   // slots this run (a rune such as Serle's Triumph adds one)
-    const maxA = s => it.rar==='normal'?0 : it.rar==='magic'?1 : capR[s];
+    const maxA = s => it.rar==='normal'?0 : it.rar==='magic'?1 : capR[s] + it.mods.reduce((a,m)=>a+(m.slot?.[s]||0),0);
+    const over = () => ['p','s'].filter(s=>count(s)>maxA(s));   // a side above its limit (contempt line removed): Chaos then only rerolls the other side (Diztoh 5-mod jewel)
     const fams = () => { const f=new Set(); it.mods.forEach(m=>{ if(!m.unrev) G[m.gi].f.forEach(x=>f.add(x)); }); return f; };
     // eligible tiers per group for a minimum level (cached): a family's highest allowed tier always stays in
     const gcache={};
@@ -86,11 +89,11 @@ function make(graph, D, craft, params){
       else if(a==='exalt'){ const sd=sideOm(oms,/Sinistral_Exaltation/,/Dextral_Exaltation/); const k=oms.includes('Omen_of_Greater_Exaltation')?2:1; for(let i=0;i<k;i++) add(sd?[sd]:null, mn); }
       else if(a==='chaos'){ const er=sideOm(oms,/Sinistral_Erasure/,/Dextral_Erasure/);
         if(oms.includes('Omen_of_Whittling')){ const c=it.mods.filter(m=>!m.fr && !m.unrev && (!er || m.side===er)); if(c.length){ const lo=Math.min(...c.map(lvl)), xs=c.filter(m=>lvl(m)===lo); take(xs[Math.floor(rnd()*xs.length)]); } }
-        else takeRandom(er ? (m=>m.side===er) : null);
+        else { const ov=over(); takeRandom(er ? (m=>m.side===er) : ov.length ? (m=>!ov.includes(m.side)) : null); }
         add(null, mn); }
-      else if(a==='essence'){ const t=tags[n.ess], sd=G[t.gi].g, cr=sideOm(oms,/Sinistral_Crystallisation/,/Dextral_Crystallisation/);   // magic → rare + the essence line (top tier); on a rare one line goes first (Crystallisation picks its side)
+      else if(a==='essence'){ const tn = n.alt && rnd()<0.5 ? n.alt : n.ess, t=tags[tn], sd=G[t.gi].g, cr=sideOm(oms,/Sinistral_Crystallisation/,/Dextral_Crystallisation/);   // magic → rare + the essence line (top tier); on a rare one line goes first (Crystallisation picks its side)
         if(it.rar==='rare') takeRandom(cr ? (m=>m.side===cr) : count(sd)>=maxA(sd) ? (m=>m.side===sd) : null); it.rar='rare';   // its own side full: a line of that side makes way (발굴 규칙 6)
-        const m={gi:t.gi, ti:0, side:sd, ess:true, mark:!!n.mark}; it.mods.push(m); last.added.push(m); }
+        const m={gi:t.gi, ti:0, side:sd, ess:!n.liquid, mark:!!n.mark}; if(t.slot) m.slot=t.slot; it.mods.push(m); last.added.push(m); }
       else if(a==='annul'){ const sd=sideOm(oms,/Sinistral_Annulment/,/Dextral_Annulment/);
         takeRandom(oms.includes('Omen_of_Light') ? (m=>m.unrev||m.des||G[m.gi]?.s==='d') : sd ? (m=>m.side===sd) : null); }
       else if(a==='desecrate' && n.fromMark){ const mk=it.mods.find(m=>m.mark); if(mk){ take(mk); const m={unrev:true, side:mk.side, bone:cur, min:mn, marked:true}; it.mods.push(m); last.added.push(m); } }   // a bone on the Abyssal Lord's Mark: the mark becomes the unrevealed desecrated line
@@ -102,7 +105,7 @@ function make(graph, D, craft, params){
         const m={unrev:true, side:s, bone:cur, min:mn, lord}; it.mods.push(m); last.added.push(m); }
       else if(a==='reveal'){ const m=it.mods.find(x=>x.unrev); if(m){ it.mods.splice(it.mods.indexOf(m),1);
         const gs0=pool([m.side], m.min, ['n','d']);   // reveal: 3 groups without repeats, desecrated-only groups weigh 1000 (recipes.html revealChance, emulator revealOptions)
-        const draw = () => { let gs=gs0.map(g=>({g, w:g.d?1000:g.w})), out=[];
+        const draw = () => { let gs=gs0.map(g=>({g, w:g.d?dW:g.w})), out=[];
           if(m.lord){ const lg=gs.filter(x=>x.g.d && (G[x.g.gi].tg||[]).includes(m.lord+'_mod')); if(lg.length) gs=lg; }   // an Abyssal lord omen: every option is that lord's (영상 확인 2026-11-10) — recipes.html revealChance
           while(out.length<3 && gs.length){ const x=pickW(rnd, gs); gs=gs.filter(y=>y!==x); out.push(pickW(rnd, x.g.ts)); } return out; };
         const wt=P(n.want), want = o => wt && match({gi:o.gi, ti:o.ti}, wt);

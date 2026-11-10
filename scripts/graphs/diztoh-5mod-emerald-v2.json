@@ -1,0 +1,1224 @@
+{
+ "id": "diztoh-5mod-emerald-v2",
+ "recipe": "diztoh-5mod-emerald-v2",
+ "cls": "Emerald",
+ "base": "Emerald",
+ "ilvl": 80,
+ "note": "Diztoh 5옵션 에메랄드(원본 레시피 기록) — 공격 치명타 피해 + 잡옵 → 우측 찬미 + 엑잘(공격 속도, 빗나가면 소멸의 오브) → 엑잘(접두) → 위력적인 액체 경멸 → 보존된 두개골 → 공개(공격 속도) → 좌측 소멸의 징조로 경멸 줄 제거 → 엑잘 → 카오스 오브(공격·육척봉 피해) → 위력적인 액체 흉포함. 제련된 강탈자 기폭제(퀄리티)는 마무리라 시뮬에서 뺌. 주얼 가중치는 추정.",
+ "params": {
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "v": 1
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "v": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "v": 2
+   },
+   "desc": {
+    "kr": "공개 결과 그대로, 경멸 줄은 두고 액체 흉포함 한 번",
+    "en": "Keep the reveal, leave the contempt line, Ferocity once"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "v": 1
+   },
+   "desc": {
+    "kr": "영상: 빛의 징조로 다시 공개, 좌측 소멸의 징조로 경멸 줄 제거, 카오스 오브로 좋은 접두 → 액체 흉포함",
+    "en": "Video: Light retries, Sinistral Annulment for the contempt line, Chaos for a good prefix, then Ferocity"
+   }
+  }
+ ],
+ "tags": {
+  "critD": {
+   "gi": 5
+  },
+  "qas": {
+   "gi": 55
+  },
+  "as": {
+   "gi": 7
+  },
+  "asAny": {
+   "anyOf": [
+    "qas",
+    "as"
+   ],
+   "label": {
+    "kr": "공격 속도 (육척봉 포함)",
+    "en": "Attack speed (or with quarterstaves)"
+   }
+  },
+  "atk": {
+   "gi": 6
+  },
+  "qd": {
+   "gi": 53
+  },
+  "pre": {
+   "anyOf": [
+    "atk",
+    "qd"
+   ],
+   "label": {
+    "kr": "공격 피해·육척봉 피해",
+    "en": "Attack or quarterstaff damage"
+   }
+  },
+  "contS": {
+   "gi": 119,
+   "slot": {
+    "s": 1
+   }
+  },
+  "contP": {
+   "gi": 120,
+   "slot": {
+    "p": 1
+   }
+  },
+  "fer": {
+   "gi": 117
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "critD"
+   },
+   {
+    "has": "asAny"
+   },
+   {
+    "has": "fer"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "c2",
+    "c3",
+    "c3x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "c4",
+    "c4b"
+   ],
+   "kr": "경멸 줄 제거",
+   "en": "Contempt line"
+  },
+  {
+   "id": "L3",
+   "nodes": [
+    "c6",
+    "f1"
+   ],
+   "kr": "흉포함",
+   "en": "Ferocity"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "pre",
+     "tmax": 1,
+     "label": {
+      "kr": "공격·육척봉 피해",
+      "en": "Attack or quarterstaff damage"
+     }
+    },
+    {
+     "tag": "fer",
+     "tmax": 1
+    },
+    {
+     "tag": "critD",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "공격 속도",
+      "en": "Attack speed"
+     }
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "공격 속도",
+      "en": "Attack speed"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "side": "p",
+     "label": {
+      "kr": "+1 접미 허용 또는 랜덤",
+      "en": "+1 suffix allowed or random"
+     }
+    },
+    {
+     "tag": "fer",
+     "tmax": 1
+    },
+    {
+     "tag": "critD",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "공격 속도",
+      "en": "Attack speed"
+     }
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     "critD",
+     {
+      "junk": "p"
+     }
+    ]
+   },
+   "label": {
+    "kr": "공격 치명타 피해 접미 + 잡옵 1줄 희귀 에메랄드",
+    "en": "Rare Emerald: attack crit damage suffix + one junk line"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "e2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "asAny"
+     },
+     "to": "e3",
+     "res": "ok"
+    },
+    {
+     "to": "e2x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "show": [
+    "qas",
+    "as"
+   ],
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ]
+  },
+  {
+   "id": "e2x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    1
+   ],
+   "keep": [
+    "critD",
+    "asAny"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접미 지우기",
+    "en": "Remove the missed suffix"
+   },
+   "edges": [
+    {
+     "lost": "critD",
+     "to": "h1",
+     "port": "right"
+    },
+    {
+     "to": "e2",
+     "port": "bottom"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "full": "p"
+     },
+     "to": "c1"
+    },
+    {
+     "to": "e3",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line"
+    }
+   ]
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "위력적인 액체 경멸 (50%로 +1 접미 허용)",
+    "en": "Potent Liquid Contempt (50%: +1 suffix allowed)"
+   },
+   "label": {
+    "kr": "액체",
+    "en": "Liquid"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "contS"
+     },
+     "to": "c2",
+     "res": "ok"
+    },
+    {
+     "to": "h1",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "+1 접미 허용",
+     "en": "+1 suffix allowed",
+     "m": "n",
+     "tags": [
+      "contS"
+     ]
+    }
+   ],
+   "cur": "Potent_Liquid_Contempt",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "+1 접미 허용 (아니면 +1 접두 허용 → 접미가 지워짐)",
+     "en": "+1 suffix allowed (else +1 prefix allowed takes a suffix)"
+    }
+   ],
+   "ess": "contS",
+   "liquid": true,
+   "alt": "contP"
+  },
+  {
+   "id": "c2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "c3"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "+1 접미 허용",
+     "en": "+1 suffix allowed",
+     "m": "n",
+     "tags": [
+      "contS"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Cranium",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ]
+  },
+  {
+   "id": "c3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "asAny"
+     },
+     "to": "c4",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "c3x",
+     "res": "fail"
+    },
+    {
+     "to": "c4",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공개 접미",
+     "en": "Revealed suffix",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "+1 접미 허용",
+     "en": "+1 suffix allowed",
+     "m": "n",
+     "tags": [
+      "contS"
+     ]
+    }
+   ],
+   "want": "asAny",
+   "show": [
+    "qas",
+    "as"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "edges": [
+       {
+        "if": {
+         "added": "asAny"
+        },
+        "to": "f1",
+        "res": "ok"
+       },
+       {
+        "to": "f1",
+        "res": "fail"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "c3x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "c2",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "c4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "annul",
+   "goal": {
+    "kr": "+1 접미 허용 줄 제거 (접두 2줄 중 하나)",
+    "en": "Remove the +1 suffix line (one of the two prefixes)"
+   },
+   "label": {
+    "kr": "소멸",
+    "en": "Annul"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "contS"
+     },
+     "to": "c4b",
+     "res": "fail"
+    },
+    {
+     "to": "c5",
+     "res": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공개 접미",
+     "en": "Revealed suffix",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Sinistral_Annulment"
+   ]
+  },
+  {
+   "id": "c4b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "지워진 접두 다시 채우기",
+    "en": "Refill the prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "c4",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공개 접미",
+     "en": "Revealed suffix",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "+1 접미 허용",
+     "en": "+1 suffix allowed",
+     "m": "n",
+     "tags": [
+      "contS"
+     ]
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line"
+    }
+   ]
+  },
+  {
+   "id": "c5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "c6"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공개 접미",
+     "en": "Revealed suffix",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 1줄 (접미가 한도를 넘어 접두로만)",
+     "en": "One random line (suffixes are over the limit)"
+    }
+   ]
+  },
+  {
+   "id": "c6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "좋은 접두 (접미가 한도를 넘어 접두만 바뀜)",
+    "en": "A good prefix (only prefixes change)"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "fer"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "f1",
+     "res": "ok"
+    },
+    {
+     "to": "c6",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공개 접미",
+     "en": "Revealed suffix",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "좋은 접두",
+     "en": "Good prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "atk",
+    "qd"
+   ]
+  },
+  {
+   "id": "f1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "위력적인 액체 흉포함 (접두 하나가 지워짐)",
+    "en": "Potent Liquid Ferocity (one prefix goes)"
+   },
+   "label": {
+    "kr": "액체",
+    "en": "Liquid"
+   },
+   "edges": [
+    {
+     "if": {
+      "param": {
+       "v": 2
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "c6",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공개 접미",
+     "en": "Revealed suffix",
+     "m": "n",
+     "tags": [
+      "asAny"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "좋은 접두",
+     "en": "Good prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "접미 효과 증가",
+     "en": "Increased effect of suffixes",
+     "m": "n",
+     "tags": [
+      "fer"
+     ]
+    }
+   ],
+   "cur": "Potent_Liquid_Ferocity",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "접미 효과 증가",
+     "en": "Increased effect of suffixes"
+    }
+   ],
+   "ess": "fer",
+   "liquid": true
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "cap": {
+  "p": 2,
+  "s": 2
+ }
+}
