@@ -1501,7 +1501,7 @@ function fcLabels(list, rects){ // list: [{pts, w, ...}] → x,y per label: near
     placed.push(best.R); L0.x=best.x; L0.y=best.y; }); }
 const fcUse = (u, n=3) => Object.entries(u||{}).filter(([,v])=>v>=0.005).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k,v])=>`<span class="ci" title="${esc(nm(cur(k)))}">${icon(k)}${fmt(v)}</span>`).join('');
 function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
-  const side=s=>s==='p'?'P':s==='s'?'S':s==='r'?L('룬','Rune'):'P/S', mk={};
+  const side=s=>s==='p'?'P':s==='s'?'S':s==='r'?'R':'P/S', mk={};
   // fractured lines show by colour only (no tail text): graph items mark them in the label "(분열…)" / "(fractured…)"
   const isFr=l=>l.m==='f' || /\((분열|fractured)/i.test((l.kr||'')+' '+(l.en||''));
   const noFr=t=>t.replace(/ ?\((?:분열|fractured)(?:, ?([^)]*))?\)/i,(_,x)=>x?` (${x})`:'');
