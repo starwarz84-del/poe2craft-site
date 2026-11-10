@@ -8,12 +8,12 @@ _s11=open(f'{H}/gen_batch11.py').read(); exec(_s11[_s11.index('def graph11'):_s1
 # ---------- 1. 노블이 5옵션 오래된 사파이어 ----------
 # 원본: 주문 치명타 확률 분열 + 잡옵 → 카오스 오브(주문 치명타 피해) → 엑잘(접두) → 고대 위력적인 액체 경멸 → 우측 찬미 + 엑잘(치명타 피해, 빗나가면 소멸의 오브)
 # → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘(접두) → 고대 위력적인 액체 우울 → 보존된 두개골(접두가 꽉 차 접두 하나를 지우고 붙음) → 공개(최대 마나, 실패는 카오스 오브로 바꾸고 다시)
-# 영상 재확인(2026-11-10): 접두 1개로 경멸(실패 = 분열 + 옵션 1개로 카오스부터), 세 번째 접미 엑잘 실패는 소멸의 오브(셋 중 하나) — 경멸 옵션이 지워지면 카오스 오브(빗나간 접미가 접두로 넘어가면 경멸 다시), 경멸 옵션은 좌측 말소의 징조 + 카오스 오브(접두가 그것뿐이라 확정). 기폭제 퀄리티는 뺌.
+# 영상 재확인(2026-11-10) 뒤 사용자 확정: 경멸은 '지우고 붙음'이라 접두 2개를 채워서(성공 2/3, 영상은 1개). 세 번째 접미 엑잘 실패는 소멸의 오브 — 경멸 옵션이 지워지면 빗나간 접미까지 지우고 접두를 채워 경멸 다시. 기폭제 퀄리티는 뺌.
 FRS=it('s','주문 치명타 명중 확률 (분열)','Spell crit chance (fractured)',['cc'])
 tags={'cc':{'gi':50},'scd':{'gi':16},'cd':{'gi':15},'contS':{'gi':84,'slot':{'s':1}},'contP':{'gi':85,'slot':{'p':1}},'rad':{'gi':82},'mana':{'gi':69}}
 SCD=it('s','주문 치명타 피해 보너스','Spell crit damage bonus',['scd']); CD=it('s','치명타 피해 보너스','Crit damage bonus',['cd']); MN=it('p','최대 마나','Maximum mana',['mana'])
 RDs=it('p','범위 아주 큼','Very large radius',['rad'])
-I0=[FRS,J('p')]; I1=[FRS,SCD]; I2=[FRS,SCD,J('p')]; I3=[FRS,SCD,CS2]; I4=I3+[CD]; I5=[FRS,SCD,CD,J('p')]; I5b=[FRS,SCD,CD,J('p'),J('p')]; I6=[FRS,SCD,CD,J('p'),RDs]
+I0=[FRS,J('p')]; I1=[FRS,SCD]; I2=[FRS,SCD,J('p'),J('p')]; I3=[FRS,SCD,J('p'),CS2]; I4=I3+[CD]; I5=[FRS,SCD,CD,J('p'),J('p')]; I5b=I5; I6=[FRS,SCD,CD,J('p'),RDs]
 I7=[FRS,SCD,CD,J('p'),UN('p')]; I8=[FRS,SCD,CD,MN,RDs]
 def contempt_s(id,pos,ok,fail,item,keep):
     return LIQ(id,pos,'Ancient_Potent_Liquid_Contempt','contS',K('고대 위력적인 액체 경멸 (한 옵션을 지우고 붙음)','Ancient Potent Liquid Contempt (takes a line, then lands)'),
@@ -22,13 +22,13 @@ def contempt_s(id,pos,ok,fail,item,keep):
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cc','fr':True},{'junk':'p'}]},K('주문 치명타 확률 분열 + 잡옵 1개 오래된 사파이어','Time-Lost Sapphire: fractured spell crit chance + one junk line'),I0),
  mark([0,0.6],'n2',I0),
  act('n2','main',[0,1],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),[{'if':{'has':'scd'},'to':'n3','res':'ok'},{'to':'n2','res':'fail'}],I1,show=['scd']),
- act('n3','main',[0,2],'exalt','Exalted_Orb',K('접두 옵션 1개','One prefix'),[st('p','랜덤 옵션 1개 (접미가 꽉 차 접두로)','One random line (suffixes are full)')],K('엑잘','Exalt'),[{'to':'n4'}],I2),
+ act('n3','main',[0,2],'exalt','Exalted_Orb',K('접두 옵션 2개 (접두를 채워 경멸이 접미를 지울 확률을 낮춤)','Two prefixes (full prefixes make Contempt less likely to take a suffix)'),[st('p','랜덤 옵션 1개씩 (접미가 꽉 차 접두로)','One random line each (suffixes are full)')],K('엑잘','Exalt'),[{'if':{'full':'p'},'to':'n4'},{'to':'n3','hide':True}],I2),
  contempt_s('n4',[0,3],'n5','n4x',I3,'scd'), resetx('n4x',[1,3],'n2'),
  act('n5','main',[0,4],'exalt','Exalted_Orb',K('접미 세번째 옵션 (주문 치명타 피해가 지워졌으면 그것도)','Third suffix (and spell crit damage if it went)'),None,K('엑잘','Exalt'),[{'if':{'all':[{'has':'cd'},{'has':'scd'}]},'to':'n6','res':'ok'},{'if':{'full':'s'},'to':'n5x','res':'fail','port':'right'},{'to':'n5','res':'fail'}],I4,show=['cd','scd'],omens=['Omen_of_Dextral_Exaltation']),
  annul('n5x',[1,4],[{'if':{'not':{'has':'contS'}},'to':'n5c','port':'right'},{'if':{'full':'s'},'to':'n5x'},{'to':'n5','port':'bottom'}],omens=(),
-       target=K('빗나간 접미 지우기 (셋 중 하나가 지워짐)','Remove the missed suffix (one of the three goes)')),
- act('n5c','main',[2,4],'chaos','Chaos_Orb',K('경멸 옵션이 지워졌으면 카오스 오브','Contempt line gone: Chaos'),None,K('카오스','Chaos'),
-     [{'if':{'has':'scd'},'to':'n4','res':'ok','port':'right'},{'to':'n4x','res':'fail','port':'right'}],I2),
+       target=K('빗나간 접미 지우기','Remove the missed suffix')),
+ annul('n5c',[2,4],[{'if':{'not':{'has':'scd'}},'to':'n4x','port':'right'},{'if':{'not':{'sideLt':{'side':'s','n':3}}},'to':'n5c'},{'to':'n3','port':'right'}],omens=(),
+       target=K('경멸 옵션이 지워졌으면 빗나간 접미까지 지우고 접두를 채워 경멸 다시','Contempt line gone: remove the missed suffix too, refill prefixes and Contempt again')),
  erase('n6',[0,5],'n7',I5),
  act('n7','main',[0,6],'exalt','Exalted_Orb',K('접두 채우기','Fill the prefixes'),[st('p','랜덤 옵션 (접미가 한도를 넘어 접두로만)','Random lines (suffixes are over the limit)')],K('엑잘','Exalt'),[{'if':{'full':'p'},'to':'n9'},{'to':'n7','hide':True}],I5b),
  LIQ('n9',[0,7],'Ancient_Potent_Liquid_Melancholy','rad',K('고대 위력적인 액체 우울 (접두 하나가 지워짐)','Ancient Potent Liquid Melancholy (one prefix goes)'),[st('p','범위 아주 큼','Very large radius')],
@@ -42,7 +42,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cc','fr':True},{'junk':'p'}]},K('
  LIQ('n9k',[1,9.8],'Ancient_Potent_Liquid_Melancholy','rad',K('고대 위력적인 액체 우울 다시 (결과 그대로)','Ancient Potent Liquid Melancholy again (keep it)'),[st('p','범위 아주 큼','Very large radius')],[{'to':'ok'}],I6),
  done([0,10.6])]
 graph10('noble-timelost-sapphire-v2','Time-Lost_Sapphire','Time-Lost Sapphire',79,
-  '노블이 5옵션 오래된 사파이어(원본 레시피 기록, 영상 재확인) — 주문 치명타 확률 분열 + 잡옵 → 카오스 오브(주문 치명타 피해) → 엑잘(접두) → 고대 위력적인 액체 경멸(실패 = 분열 + 옵션 1개) → 우측 찬미 + 엑잘(치명타 피해, 빗나가면 소멸의 오브) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘 → 고대 위력적인 액체 우울 → 보존된 두개골 → 공개(최대 마나, 하이엔드 = 카오스 오브로 바꾸고 다시).',
+  '노블이 5옵션 오래된 사파이어(원본 레시피 기록, 영상 재확인) — 주문 치명타 확률 분열 + 잡옵 → 카오스 오브(주문 치명타 피해) → 엑잘 2번(접두, 사용자 확정) → 고대 위력적인 액체 경멸(실패 = 분열 + 옵션 1개) → 우측 찬미 + 엑잘(치명타 피해, 빗나가면 소멸의 오브) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘 → 고대 위력적인 액체 우울 → 보존된 두개골 → 공개(최대 마나, 하이엔드 = 카오스 오브로 바꾸고 다시).',
   ROUTE,PH,{'high':K('영상: 최대 마나가 나올 때까지 카오스 오브로 바꾸고 다시','Video: Chaos the line away and retry until maximum mana'),'bal':K('공개 결과 그대로, 나머지는 영상대로','Keep the reveal, the rest as in the video')},tags,nodes,
   [{'id':'L1','nodes':['n9','n10','n11','n11x'],'kr':'최대 마나','en':'Maximum mana'}],
   FIN(('high','bal'),lambda v:[{'tag':'mana','tmax':1} if v=='high' else {'side':'p','random':True},{'tag':'rad','tmax':1},{'tag':'cc','tmax':1,'fr':True},{'tag':'scd','tmax':1},{'tag':'cd','tmax':1}]),

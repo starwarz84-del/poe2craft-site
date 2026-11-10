@@ -4,7 +4,7 @@
  "cls": "Time-Lost_Sapphire",
  "base": "Time-Lost Sapphire",
  "ilvl": 79,
- "note": "노블이 5옵션 오래된 사파이어(원본 레시피 기록, 영상 재확인) — 주문 치명타 확률 분열 + 잡옵 → 카오스 오브(주문 치명타 피해) → 엑잘(접두) → 고대 위력적인 액체 경멸(실패 = 분열 + 옵션 1개) → 우측 찬미 + 엑잘(치명타 피해, 빗나가면 소멸의 오브) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘 → 고대 위력적인 액체 우울 → 보존된 두개골 → 공개(최대 마나, 하이엔드 = 카오스 오브로 바꾸고 다시).",
+ "note": "노블이 5옵션 오래된 사파이어(원본 레시피 기록, 영상 재확인) — 주문 치명타 확률 분열 + 잡옵 → 카오스 오브(주문 치명타 피해) → 엑잘 2번(접두, 사용자 확정) → 고대 위력적인 액체 경멸(실패 = 분열 + 옵션 1개) → 우측 찬미 + 엑잘(치명타 피해, 빗나가면 소멸의 오브) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘 → 고대 위력적인 액체 우울 → 보존된 두개골 → 공개(최대 마나, 하이엔드 = 카오스 오브로 바꾸고 다시).",
  "params": {
   "v": {
    "kr": "진행",
@@ -339,8 +339,8 @@
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 옵션 1개",
-    "en": "One prefix"
+    "kr": "접두 옵션 2개 (접두를 채워 경멸이 접미를 지울 확률을 낮춤)",
+    "en": "Two prefixes (full prefixes make Contempt less likely to take a suffix)"
    },
    "label": {
     "kr": "엑잘",
@@ -348,7 +348,14 @@
    },
    "edges": [
     {
+     "if": {
+      "full": "p"
+     },
      "to": "n4"
+    },
+    {
+     "to": "n3",
+     "hide": true
     }
    ],
    "item": [
@@ -375,14 +382,20 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ],
    "cur": "Exalted_Orb",
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 옵션 1개 (접미가 꽉 차 접두로)",
-     "en": "One random line (suffixes are full)"
+     "kr": "랜덤 옵션 1개씩 (접미가 꽉 차 접두로)",
+     "en": "One random line each (suffixes are full)"
     }
    ]
   },
@@ -442,6 +455,12 @@
      "tags": [
       "scd"
      ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     },
     {
      "s": "p",
@@ -560,6 +579,12 @@
     },
     {
      "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
      "kr": "+1 접미 허용",
      "en": "+1 suffix allowed",
      "m": "n",
@@ -606,8 +631,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접미 지우기 (셋 중 하나가 지워짐)",
-    "en": "Remove the missed suffix (one of the three goes)"
+    "kr": "빗나간 접미 지우기",
+    "en": "Remove the missed suffix"
    },
    "edges": [
     {
@@ -639,57 +664,47 @@
     2,
     4
    ],
-   "act": "chaos",
-   "goal": {
-    "kr": "경멸 옵션이 지워졌으면 카오스 오브",
-    "en": "Contempt line gone: Chaos"
-   },
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
    "label": {
-    "kr": "카오스",
-    "en": "Chaos"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "경멸 옵션이 지워졌으면 빗나간 접미까지 지우고 접두를 채워 경멸 다시",
+    "en": "Contempt line gone: remove the missed suffix too, refill prefixes and Contempt again"
    },
    "edges": [
     {
      "if": {
-      "has": "scd"
+      "not": {
+       "has": "scd"
+      }
      },
-     "to": "n4",
-     "res": "ok",
-     "port": "right"
-    },
-    {
      "to": "n4x",
-     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "not": {
+       "sideLt": {
+        "side": "s",
+        "n": 3
+       }
+      }
+     },
+     "to": "n5c"
+    },
+    {
+     "to": "n3",
      "port": "right"
     }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "주문 치명타 명중 확률 (분열)",
-     "en": "Spell crit chance (fractured)",
-     "m": "n",
-     "tags": [
-      "cc"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 피해 보너스",
-     "en": "Spell crit damage bonus",
-     "m": "n",
-     "tags": [
-      "scd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Chaos_Orb"
+   ]
   },
   {
    "id": "n6",
@@ -748,6 +763,12 @@
      "tags": [
       "cd"
      ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     },
     {
      "s": "p",

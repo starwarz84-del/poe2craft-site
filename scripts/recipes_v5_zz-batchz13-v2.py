@@ -1,8 +1,9 @@
 # ---- 2026-11-10 batch 13 (사용자: 전문가부터는 2개씩): 전문가 → High-end (video) + Balance (reveal kept). Matches scripts/graphs/gen_batch13.py. ----
 def _noble(r, t):
     _drop(r,'n8','n12','n13')   # optional radius reroll, the note step and the finishing catalyst quality (정책 23)
-    # 영상 재확인(2026-11-10): one prefix before Contempt (5:5), a missed third suffix → Annulment (one of three); the Contempt line going → Chaos, then Contempt again
-    _node(r,'n5')['br']=K('실패: 소멸의 오브(셋 중 하나). 경멸 옵션이 지워지면 카오스 오브 → 빗나간 접미가 접두로 가면 경멸 다시','Miss: Annulment (one of three). If the Contempt line goes: Chaos → the missed suffix moving to a prefix means Contempt again')
+    # 사용자 확정 2026-11-10: Contempt takes a line first, so fill both prefixes (2/3; the video uses one)
+    _node(r,'n3')['target']['count']=2; _node(r,'n4')['target']['chance']=2/3
+    _node(r,'n5')['br']=K('실패: 소멸의 오브. 경멸 옵션이 지워지면 빗나간 접미까지 지우고 접두를 채워 경멸 다시','Miss: Annulment. If the Contempt line goes: remove the missed suffix too, refill prefixes and Contempt again')
     n10=_node(r,'n10'); n10['omens']=['Omen_of_Sinistral_Necromancy']
     n11=_node(r,'n11')
     if t=='bal': n11.pop('fail',None); n11['br']=KEEP
