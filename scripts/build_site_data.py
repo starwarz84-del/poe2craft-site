@@ -102,3 +102,6 @@ d=json.load(open(OUT+'c/Body_Armours_str.json'))
 for cid in ['Rings','Amulets','Belts','Body_Armours_str','One_Hand_Swords']:
     d=json.load(open(OUT+f'c/{cid}.json'))
     print(cid, collections.Counter(b['sp'] for b in d['bases']), [ (b['en'],b['pd'],b['sd'],b['sock'],b['rk']) for b in d['bases'] if b['sp'] in('mod','breach','unique') or b['rk']], list(d['runesBy']))
+
+# 알두르 룬 4종 = 모든 무기 (patch_aldur_runes.py, 사용자 확정 2026-11-11)
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"patch_aldur_runes.py")).read())
