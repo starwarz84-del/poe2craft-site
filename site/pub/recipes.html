@@ -246,6 +246,20 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .dwrap{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:12px 48px;max-width:1560px;margin:0 auto}
 .dtop{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-start;margin-bottom:10px}
 .dtop .back{flex:none}
+/* detail head = 2 rows: back · title + link · meta | grade/flowchart tabs on the right (사용자 2026-11-11) */
+.dhead .dtop{flex-wrap:nowrap;align-items:center;gap:14px}
+.dtop .btn.back{width:46px;height:56px;padding:0;display:grid;place-items:center;border-radius:10px}
+.h1row{display:flex;align-items:center;gap:28px;min-width:0}
+.h1row h1{min-width:0}
+.btn.lnk{flex:none;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;font-size:12.5px}
+.dtabs{flex:none;margin-left:auto;align-self:stretch;display:flex;align-items:flex-end}
+.dtabs .rtabs{margin:0;border-bottom:0;gap:4px}
+.dtabs .rtab{font-size:15.5px;padding:9px 18px 10px;border:1px solid var(--line);border-bottom-width:3px;border-radius:8px 8px 0 0;background:color-mix(in srgb,var(--panel,#1b1610) 70%,transparent)}
+.dtabs .rtab small{font-size:13.5px}
+.dtabs .rtab.on{color:var(--fg);border-color:var(--rare);border-bottom-color:var(--rare);background:color-mix(in srgb,var(--rare) 16%,transparent);font-weight:700}
+.dtabs .rtab:hover:not(.on){color:var(--fg);border-color:color-mix(in srgb,var(--rare) 50%,var(--line))}
+.pend{appearance:none;flex:none;background:none;border:1px solid var(--line);border-radius:999px;color:var(--muted);font:inherit;font-size:12px;padding:2px 10px;cursor:pointer}
+.pend:hover{color:var(--fg);border-color:var(--rare)}
 .dtitle{flex:1 1 360px;min-width:0}
 .dtitle h1{margin:0;font-family:var(--f-display);font-size:22px;line-height:1.3;text-wrap:balance}
 .dtitle .meta{margin-top:4px}
@@ -322,6 +336,7 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
   .dhead .dtitle h1{font-size:15px;line-height:1.3}
   .dhead .meta{font-size:11.5px}
   .dhead .acts{grid-column:1/-1;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .dhead .dtabs{grid-column:1/-1;margin-left:0}.dtabs .rtab{font-size:13.5px;padding:7px 12px}.h1row{gap:12px}.dtop .btn.back{width:40px;height:44px}
   .dhead .acts .btn{flex:none;padding:4px 10px;font-size:12px}
   .dhead .prog{padding:2px 0 8px}
   .ditem{top:var(--dh,120px);max-height:38vh}
@@ -1372,13 +1387,11 @@ function detailHTML(r){
   const segs = r.phases.map(ph=>{ const items=a.nodes.filter(o=>o.n.phase===ph.id); if(!items.length) return '';
     return `<button type="button" class="seg" data-seg="${esc(ph.id)}" style="flex-grow:${items.length}" title="${esc(tx(ph))}"><span class="fill"></span></button>`; }).join('');
   return `<div class="dhead" data-dhead><div class="dtop">
-      <button type="button" class="btn back" data-act="back" aria-label="${esc(L('목록으로','Back to list'))}">←</button>
-      <div class="dtitle"><h1><span class="tbase">${esc(itemName(r))}</span></h1>
+      <button type="button" class="btn back" data-act="back" aria-label="${esc(L('목록으로','Back to list'))}" title="${esc(L('목록으로','Back to list'))}"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dtitle"><div class="h1row"><h1><span class="tbase">${esc(itemName(r))}</span></h1><button type="button" class="btn sm lnk" data-act="link"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>${L('링크 복사','Copy link')}</button></div>
         <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan?`<button type="button" class="btn" data-share="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>`:''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${budgetTag(r)}${leagueBadge(r, old)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
-      <div class="acts"><button type="button" class="btn" data-act="link">${L('링크 복사','Copy link')}</button><button type="button" class="btn" data-act="pdf">${L('PDF 다운로드','Download PDF')}</button>
-        <button type="button" class="btn" disabled title="${esc(L('준비 중','Coming soon'))}">${L('에뮬레이터에서 따라하기','Follow in emulator')}</button>
-        ${r.tierGroup?'':r.sim?`<button type="button" class="btn ${S.simOpen?'on':''}" data-act="sim" aria-pressed="${S.simOpen}">${L('플로우차트','Flowchart')}</button>`:`<button type="button" class="btn" disabled title="${esc(L('준비 중','Coming soon'))}">${L('시뮬레이션 진행','Run simulation')}</button>`}</div></div>
-    ${tabsHTML(r)}<div class="prog"><div class="segs">${segs}</div><span class="plabel" data-plabel></span></div></div>
+      <div class="dtabs">${tabsHTML(r) || (r.sim?`<div class="rtabs" role="tablist"><button type="button" role="tab" class="rtab ${S.simOpen?'':'on'}" data-act="sim" data-simoff="1" aria-selected="${!S.simOpen}">${L('레시피','Recipe')}</button><button type="button" role="tab" class="rtab ${S.simOpen?'on':''}" data-act="sim" aria-selected="${!!S.simOpen}">${L('플로우 차트','Flowchart')}</button></div>`:'')}</div></div></div>
+    <div class="prog"><button type="button" class="pend" data-go-node="${esc(a.nodes[0]?.n.id||'')}">${L('시작','Start')}</button><div class="segs">${segs}</div><button type="button" class="pend" data-go-node="${esc(a.nodes[a.nodes.length-1]?.n.id||'')}">${L('완성','Finish')}</button><span class="plabel" data-plabel hidden></span></div></div>
     <div class="dgrid">
       <nav class="dnav" aria-label="${esc(L('단계','Steps'))}">${nav}
         <div class="navx"><button type="button" class="btn sm" data-act="reset-done">${L('완료 표시 지우기','Clear ticks')}</button></div></nav>
@@ -1717,7 +1730,7 @@ function syncStep(force){
   const i=a.nodes.findIndex(o=>o.n.id===id); if(i===S.stepIdx && !force) return; S.stepIdx=i;
   const o=a.nodes[i];
   nodes.forEach(el=>el.classList.toggle('cur', el.dataset.node===id));
-  document.querySelectorAll('#detail [data-go-node]').forEach(el=>el.classList.toggle('on', el.dataset.goNode===id));
+  document.querySelectorAll('#detail .dnav [data-go-node]').forEach(el=>el.classList.toggle('on', el.dataset.goNode===id));
   $('#detail [data-tip]').innerHTML=itemTipHTML(r,o);
   $('#detail [data-dihead]').innerHTML=`<span class="k">${L(`${i+1}번 단계 후`,`After step ${i+1}`)}</span><b>${esc(shortTitle(o.n))}</b>`;
   // progress: every phase segment fills up to the current step
@@ -1725,7 +1738,7 @@ function syncStep(force){
     const k=items.filter(x=>a.nodes.indexOf(x)<=i).length; if(seg) seg.style.width=(100*k/items.length)+'%'; });
   const ph=r.phases.find(p=>p.id===o.n.phase);
   $('#detail [data-plabel]').textContent=`${i+1} / ${a.nodes.length} · ${tx(ph)}`;
-  const nv=document.querySelector(`#detail [data-go-node="${CSS.escape(id)}"]`); if(nv){ const box=nv.closest('.dnav'); const t=nv.offsetTop; if(t<box.scrollTop || t>box.scrollTop+box.clientHeight-30) box.scrollTop=t-60; }
+  const nv=document.querySelector(`#detail .dnav [data-go-node="${CSS.escape(id)}"]`); if(nv){ const box=nv.closest('.dnav'); const t=nv.offsetTop; if(t<box.scrollTop || t>box.scrollTop+box.clientHeight-30) box.scrollTop=t-60; }
 }
 // the sticky header's height drives where the side columns stick and where "current step" is read
 let headRO=null;
@@ -2003,7 +2016,7 @@ $('#detail').addEventListener('click', e=>{
   if(a.dataset.act==='pdf'){ makePDF(r, a); return; }
   if(a.dataset.act==='fcitems'){ S.fcItems = S.fcItems===false; store.set('fcItems', S.fcItems); keepY(renderDetail); return; }
   if(a.dataset.act==='simfull'){ setSimFull(!S.simFull); return; }
-  if(a.dataset.act==='sim'){ if(S.simOpen) setSimFull(false, true); S.simOpen=!S.simOpen; keepY(renderDetail); if(S.simOpen) document.querySelector('#detail [data-simbox]')?.scrollIntoView({block:'nearest'}); return; }
+  if(a.dataset.act==='sim'){ if(!!a.dataset.simoff === !S.simOpen) return; if(S.simOpen) setSimFull(false, true); S.simOpen=!S.simOpen; keepY(renderDetail); if(S.simOpen) document.querySelector('#detail [data-simbox]')?.scrollIntoView({block:'nearest'}); return; }
   if(a.dataset.act==='reset-done'){ store.set('done:'+r.id,[]); keepY(renderDetail); }
   if(a.dataset.act==='like'){ so.liked=!so.liked; setSocial(r.id,so); keepY(renderDetail); }
   if(a.dataset.act==='success'){ so.success++; setSocial(r.id,so); keepY(renderDetail); toast(L('성공 보고를 남겼어요','Success reported')); }
