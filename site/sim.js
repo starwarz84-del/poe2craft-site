@@ -93,8 +93,13 @@ function make(graph, D, craft, params){
         if(oms.includes('Omen_of_Whittling')){ const c=it.mods.filter(m=>!m.fr && !m.unrev && (!er || m.side===er)); if(c.length){ const lo=Math.min(...c.map(lvl)), xs=c.filter(m=>lvl(m)===lo); take(xs[Math.floor(rnd()*xs.length)]); } }
         else { const ov=over(); takeRandom(er ? (m=>m.side===er) : ov.length ? (m=>!ov.includes(m.side)) : null); }
         add(null, mn); }
-      else if(a==='essence'){ const tn = n.alt && rnd()<0.5 ? n.alt : n.ess, t=tags[tn], sd=G[t.gi].g, cr=sideOm(oms,/Sinistral_Crystallisation/,/Dextral_Crystallisation/);   // magic → rare + the essence line (top tier); on a rare one line goes first (Crystallisation picks its side)
-        if(it.rar==='rare') takeRandom(cr ? (m=>m.side===cr) : n.anyRemove ? null : count(sd)>=maxA(sd) ? (m=>m.side===sd) : null);   // anyRemove: a liquid that takes any line (SL 5-mod jewel: 1/3) it.rar='rare';   // its own side full: a line of that side makes way (발굴 규칙 6)
+      else if(a==='essence'){ let tn = n.alt && rnd()<0.5 ? n.alt : n.ess;
+        // two-outcome liquid (Contempt: +1 suffix allowed is a prefix, +1 prefix allowed a suffix) — 사용자 확정 2026-11-10: it first takes a random line,
+        // then lands where there is room: a removed prefix → the prefix outcome only, a removed suffix → the suffix outcome, or 50/50 when both sides have room
+        const rf = n.liquid && n.alt && it.rar==='rare' && !n.anyRemove;
+        if(rf){ takeRandom(null); const room=[n.ess,n.alt].filter(x=>count(G[tags[x].gi].g)<maxA(G[tags[x].gi].g)); tn = room.length ? room[Math.floor(rnd()*room.length)] : n.ess; }
+        const t=tags[tn], sd=G[t.gi].g, cr=sideOm(oms,/Sinistral_Crystallisation/,/Dextral_Crystallisation/);   // magic → rare + the essence line (top tier); on a rare one line goes first (Crystallisation picks its side)
+        if(it.rar==='rare' && !rf) takeRandom(cr ? (m=>m.side===cr) : n.anyRemove ? null : count(sd)>=maxA(sd) ? (m=>m.side===sd) : null);   // anyRemove: a liquid that takes any line (SL 5-mod jewel: 1/3) it.rar='rare';   // its own side full: a line of that side makes way (발굴 규칙 6)
         const m={gi:t.gi, ti:0, side:sd, ess:!n.liquid, mark:!!n.mark}; if(t.slot) m.slot=t.slot; it.mods.push(m); last.added.push(m); }
       else if(a==='annul'){ const sd=sideOm(oms,/Sinistral_Annulment/,/Dextral_Annulment/);
         takeRandom(oms.includes('Omen_of_Light') ? (m=>m.unrev||m.des||G[m.gi]?.s==='d') : sd ? (m=>m.side===sd) : null); }

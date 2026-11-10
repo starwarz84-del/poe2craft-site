@@ -1498,9 +1498,12 @@ function fcLabels(list, rects){ // list: [{pts, w, ...}] → x,y per label: near
 const fcUse = (u, n=3) => Object.entries(u||{}).filter(([,v])=>v>=0.005).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k,v])=>`<span class="ci" title="${esc(nm(cur(k)))}">${icon(k)}${fmt(v)}</span>`).join('');
 function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
   const side=s=>s==='p'?'P':s==='s'?'S':'P/S', mk={};
-  const text=l=>{ if(!l.tags) return {t:esc(tx(l)).replace(/ ?1티어$/,' T1'), tier:''}; const v=l.tags.map(t=>fcTagText(g,t,params)).filter(Boolean);
+  // fractured lines show by colour only (no tail text): graph items mark them in the label "(분열…)" / "(fractured…)"
+  const isFr=l=>l.m==='f' || /\((분열|fractured)/i.test((l.kr||'')+' '+(l.en||''));
+  const noFr=t=>t.replace(/ ?\((?:분열|fractured)(?:, ?([^)]*))?\)/i,(_,x)=>x?` (${x})`:'');
+  const text=l=>{ if(!l.tags) return {t:esc(noFr(tx(l))).replace(/ ?1티어$/,' T1'), tier:''}; const v=l.tags.map(t=>fcTagText(g,t,params)).filter(Boolean);
     return {t: v.map(x=>esc(x.txt)).join(` <u>${L('또는','or')}</u> `), tier: v[0]?.tier||''}; };
-  const row=(l,cls)=>{ const x=text(l); return `<li class="m-${l.m||'n'} ${cls}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
+  const row=(l,cls)=>{ const x=text(l); return `<li class="m-${isFr(l)?'f':(l.m||'n')} ${cls}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
   const gone=(prev||[]).filter(l=>!now.has(key(l)) && !lines.some(x=>x.s===l.s && x.kr===l.kr));
   const ord=s=>s==='p'?0:s==='s'?2:1;   // 사용자 확정 2026-11-10: 접두(P)가 위, 접미(S)가 아래
   return [...lines.map(l=>[l, had.has(key(l))?'':'new']), ...gone.map(l=>[l,'gone'])].map((x,i)=>[...x,i]).sort((a,b)=>ord(a[0].s)-ord(b[0].s)||a[2]-b[2]).map(([l,c])=>row(l,c)).join(''); }

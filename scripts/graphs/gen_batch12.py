@@ -10,10 +10,10 @@ DESC={'high':K('영상: 빛의 징조로 원하는 접미가 나올 때까지 �
 FRC=it('s','공격 치명타 명중 확률 (분열)','Attack crit chance (fractured)',['cc']); CS2=it('p','+1 접미 허용','+1 suffix allowed',['contS'])
 RD=it('p','범위 아주 큼','Very large radius',['rad'])
 BASE_TAGS={'cc':{'gi':8},'contS':{'gi':101,'slot':{'s':1}},'contP':{'gi':102,'slot':{'p':1}},'rad':{'gi':99}}
-def contempt(id,pos,ok,fail,item):
-    return LIQ(id,pos,'Ancient_Potent_Liquid_Contempt','contS',K('고대 위력적인 액체 경멸 (50%로 +1 접미 허용)','Ancient Potent Liquid Contempt (50%: +1 suffix allowed)'),
-        [st('p','+1 접미 허용 (아니면 +1 접두 허용 → 접미가 지워짐)','+1 suffix allowed (else +1 prefix allowed takes a suffix)')],
-        [{'if':{'has':'contS'},'to':ok,'res':'ok'},{'to':fail,'res':'fail','port':'right'}],item,alt='contP')
+def contempt(id,pos,ok,fail,item,keep=None):
+    return LIQ(id,pos,'Ancient_Potent_Liquid_Contempt','contS',K('고대 위력적인 액체 경멸 (한 옵션을 지우고 붙음)','Ancient Potent Liquid Contempt (takes a line, then lands)'),
+        [st('p','+1 접미 허용 (접두가 지워지면 성공, 접미가 지워지면 실패)','+1 suffix allowed (a prefix goes: success; a suffix goes: miss)')],
+        [{'if':{'all':[{'has':'contS'},{'has':keep}]} if keep else {'has':'contS'},'to':ok,'res':'ok'},{'to':fail,'res':'fail','port':'right'}],item,alt='contP')
 def resetx(id,pos,to):   # a failed contempt: Annulment down to the fracture + one line, then Chaos again (video)
     return cleanup(id,pos,[],[{'to':to,'port':'right'}],K('분열 + 옵션 1개만 남기기','Keep the fracture + one line'),maxJunk=1)
 def erase(id,pos,nxt,item):
@@ -37,7 +37,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cc','fr':True},{'junk':'p'}]},K('
  mark([0,0.6],'m2',I0),
  act('m2','main',[0,1],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),[{'if':{'has':'cd'},'to':'m3','res':'ok'},{'to':'m2','res':'fail'}],I1,show=['cd']),
  act('m3','main',[0,2],'exalt','Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 1개씩 (접미가 꽉 차 접두로)','One random line each (suffixes are full)')],K('엑잘','Exalt'),[{'if':{'full':'p'},'to':'m4'},{'to':'m3','hide':True}],I2),
- contempt('m4',[0,3],'m5','m4x',I3), resetx('m4x',[1,3],'m2'),
+ contempt('m4',[0,3],'m5','m4x',I3,keep='cd'), resetx('m4x',[1,3],'m2'),
  act('m5','main',[0,4],'desecrate','Preserved_Cranium',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'m6'}],I4,omens=['Omen_of_Dextral_Necromancy']),
  REVEAL('m6',[0,5],'ms',['ms'],'m7','m6x',I5), LIGHTX('m6x',[1,5],'m5'),
  erase('m7',[0,6],'m8',I6),
@@ -64,7 +64,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cc','fr':True},{'junk':'p'}]},K('
  mark([0,0.6],'c2',I0),
  act('c2','main',[0,1],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),[{'if':{'has':'suf'},'to':'c3','res':'ok'},{'to':'c2','res':'fail'}],I1,show=[f's{g}' for g in SUF]),
  act('c3','main',[0,2],'exalt','Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 1개씩 (접미가 꽉 차 접두로)','One random line each (suffixes are full)')],K('엑잘','Exalt'),[{'if':{'full':'p'},'to':'c4'},{'to':'c3','hide':True}],I2),
- contempt('c4',[0,3],'c5','c4x',I3), resetx('c4x',[1,3],'c2'),
+ contempt('c4',[0,3],'c5','c4x',I3,keep='suf'), resetx('c4x',[1,3],'c2'),
  act('c5','main',[0,4],'desecrate','Preserved_Cranium',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개, 접두가 꽉 차 접미로)','Desecrated modifier (unrevealed; prefixes are full)')],K('훼손','Desecrate'),[{'to':'c6'}],I4),
  REVEAL('c6',[0,5],'rev',[f's{g}' for g in REV],'c7','c6x',I5), LIGHTX('c6x',[1,5],'c5'),
  act('c7','main',[0,6],'annul','Orb_of_Annulment',K('+1 접미 허용 옵션 제거 (접두 옵션 2개 중 하나)','Remove the +1 suffix line (one of the two prefixes)'),None,K('소멸','Annul'),
