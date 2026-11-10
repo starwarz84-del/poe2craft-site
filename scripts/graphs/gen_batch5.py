@@ -137,38 +137,46 @@ graph('lilbotq-budget-boots-v2','Boots_int','Sandsworn Sandals',82,
   {'quality':20,'sockets':1},{'all':[{'has':'goodS'},{'full':'p'},{'full':'s'}]})
 
 # ---------- 5. Icesly 가성비 완드 ----------
+# 2026-11-10 다시 작성(사용자: 가성비엔 비싼 오브 없이, 영상 다시 확인). 영상(자막 + 화면): 번개 +5 매직(접두 마나 잡옵) 구입 → 완벽한 제왕의 오브 →
+# 좌측 결정화 + 초월의 합금(접두 마나 삭제) → 엑잘 2번(접두) → 보존된 턱뼈 훼손 → 아스트리드 + 천공의 합금 → 남은 훼손 공개.
+# 캡션 3:2x "옵션이 나쁘면 +1 레벨(천공의 합금)로 먹어 버려라", 3:52 "엑잘이 나쁘면 훼손 50/50 없이 먹게 둬라" → 소멸의 오브를 쓰지 않음.
+# 사용자 확정: 제왕의 오브는 우측 대관식의 징조로 접미에 → 접두 잡옵 정리 단계 없음. 엑잘은 상위 엑잘티드 오브(가성비).
+# 빗나간 접두를 천공의 합금이 지우게 할 땐 좌측 결정화의 징조(번개 +5가 지워지지 않게 — 영상엔 안 보임, 싼 징조).
+# 빛의 징조(약 7 div)는 밸런스에서만, 접두 좋은 줄 2개를 완성할 수 있을 때만(남은 훼손이 빗나간 경우).
 P={'bal':{'lT':1,'xT':2,'yT':3},'ess':{'lT':2,'xT':4,'yT':5}}
 tags={'l5':{'gi':13,'tmax':'$lT'},'trans':{'gi':60},'cel':{'gi':59},
       'lin':{'gi':7,'tmax':'$yT'},'spell':{'gi':3,'tmax':'$yT'},'xL':{'gi':28,'tmax':'$xT'},'xC':{'gi':27,'tmax':'$xT'},'xF':{'gi':26,'tmax':'$xT'},
-      'pre':{'anyOf':['lin','spell','xL','xC','xF']}}
-I0=[it('s','모든 번개 주문 스킬 레벨 +5','+5 lightning spell skills',['l5']),J('p')]
-I1=I0+[J('s')]
-I2=[it('s','모든 번개 주문 스킬 레벨 +5','+5 lightning spell skills',['l5']),J('s'),it('s','초월의 합금 (제작 옵션)','Transcendent Alloy (crafted)',['trans'])]
-I3=I2+[it('p','번개 피해·주문 피해·추가 피해 획득 중 하나','Lightning, spell or extra damage',['pre'])]
-I4=I3+[it('p','번개 피해·주문 피해·추가 피해 획득 중 하나','Lightning, spell or extra damage',['pre'])]
-I5=I4+[UN('p')]
-I6=[x for x in I5 if x['kr']!='훼손 옵션(미공개)']+[it('p','천공의 합금 (제작 옵션)','Celestial Alloy (crafted)',['cel'])]
-I7=I6
+      'pre':{'anyOf':['lin','spell','xL','xC','xF'],'label':K('번개 피해·주문 피해·추가 피해 획득','Lightning, spell or extra damage')}}
+L5=it('s','모든 번개 주문 스킬 레벨 +5','+5 lightning spell skills',['l5']); TR=it('s','초월의 합금 (제작 옵션)','Transcendent Alloy (crafted)',['trans'])
+CEL=it('p','천공의 합금 (제작 옵션)','Celestial Alloy (crafted)',['cel']); PRE=lambda: it('p','번개 피해·주문 피해·추가 피해 획득 중 하나','Lightning, spell or extra damage',['pre'])
+RND=lambda: it('p','랜덤 1줄','One random line',None,'j')
+I0=[L5,J('p')]; I1=I0+[J('s')]; I2=[L5,J('s'),TR]
+I3=I2+[PRE()]; I4=I3+[PRE()]; I5=I4+[UN('p')]; I6=I2+[PRE(),UN('p'),CEL]; I7=I2+[PRE(),CEL,PRE()]
+IA=I2+[CEL]; IB=IA+[RND()]; IC=I2+[RND(),CEL]; ID=IC+[UN('p')]
+GOOD2={'count':{'tag':'pre','min':2}}
 nodes=[base('i2',{'rar':'magic','mods':['l5'],'random':1},K('번개 주문 +5 매직 결투 완드 구입','Buy a magic Dueling Wand with +5 lightning spells'),I0),
- act('i2','prep',[0,1],'regal','Perfect_Regal_Orb',K('레어로 업그레이드','Upgrade to rare'),[st(None,'랜덤 1줄','One random line')],K('제왕','Regal'),[{'to':'i3'}],I1),
- act('i3','prep',[0,2],'essence','Transcendent_Alloy',K('접두 잡옵을 지우고 접미 초월의 합금','Replace the junk prefix with the Transcendent Alloy suffix'),[st('s','초월의 합금 (제작 옵션)','Transcendent Alloy (crafted)')],K('합금','Alloy'),[{'to':'i3c'}],I2,ess='trans',omens=['Omen_of_Sinistral_Crystallisation']),
- {'id':'i3c','kind':'cleanup','group':'prep','pos':[0,3],'side':'p','keep':[],'maxJunk':0,'label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('남은 접두 잡옵 정리','Clear a leftover junk prefix'),'target':K('제왕의 오브가 접두에 붙였으면 좌측 소멸','Sinistral Annulment if the regal landed on a prefix'),'edges':[{'to':'ms'}]},
- mark([0,3.5],'i4',I2),
- act('i4','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 첫번째 옵션','First prefix option'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'pre','min':1}},'to':'i5','res':'ok'},{'to':'i4x','res':'fail'}],I3,show=['pre']),
- {'id':'i4x','kind':'cleanup','group':'main','pos':[1,4],'side':'p','keep':['pre'],'maxJunk':0,'label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),'target':K('빗나간 접두 제거','Remove the missed prefix'),'edges':[{'to':'i4','port':'right'}]},
- act('i5','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접두 두번째 옵션','Second prefix option'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'pre','min':2}},'to':'i6','res':'ok'},{'to':'i5x','res':'fail'}],I4,show=['pre']),
- {'id':'i5x','kind':'cleanup','group':'main','pos':[1,5],'side':'p','keep':['pre'],'maxJunk':0,'label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),'target':K('빗나간 접두 제거 (좋은 접두가 지워지면 4번부터)','Remove the missed prefix (a good one gone: back to 4)'),'edges':[{'lost':'pre','to':'i4x','port':'right'},{'to':'i5','port':'right'}]},
- act('i6','main',[0,6],'desecrate','Preserved_Jawbone',K('접두 세번째 옵션(훼손, 공개 안 함)','Third prefix (desecrated, left unrevealed)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'i8'}],I5,omens=['Omen_of_Sinistral_Necromancy']),
- act('i8','main',[0,7],'essence','Celestial_Alloy',K('아스트리드의 창의성 장착 후 천공의 합금','Socket Astrid’s Creativity, then the Celestial Alloy'),[st('p','천공의 합금 (접두 하나가 지워짐 — 미공개 훼손이면 완성)','Celestial Alloy (a prefix makes way — the unrevealed desecration is the hit)')],K('합금','Alloy'),[{'if':{'unrev':False},'to':'ok','res':'ok'},{'to':'i9','res':'fail'}],I6,ess='cel',once=True),
- act('i9','main',[0,8],'reveal',None,K('남은 훼손 옵션 확인','Reveal the remaining desecration'),None,K('공개','Reveal'),[{'if':{'added':'pre'},'to':'ok','res':'ok'},{'to':'i9x','res':'fail'}],I7,want='pre',show=['pre']),
- annul('i9x',[1,8],[{'to':'i9d','port':'right'}]),
- act('i9d','main',[1,8.6],'desecrate','Preserved_Jawbone',K('다시 훼손','Desecrate again'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'i9','port':'right'}],I6,omens=['Omen_of_Sinistral_Necromancy']),
- done([0,9])]
+ act('i2','prep',[0,1],'regal','Perfect_Regal_Orb',K('레어로 업그레이드 + 접미 1줄','Upgrade to rare + one suffix'),[st('s','랜덤 1줄','One random line')],K('제왕','Regal'),[{'to':'i3'}],I1,omens=['Omen_of_Dextral_Coronation']),
+ act('i3','prep',[0,2],'essence','Transcendent_Alloy',K('접두 잡옵을 지우고 접미 초월의 합금','Replace the junk prefix with the Transcendent Alloy suffix'),[st('s','초월의 합금 (제작 옵션)','Transcendent Alloy (crafted)')],K('합금','Alloy'),[{'to':'ms'}],I2,ess='trans',omens=['Omen_of_Sinistral_Crystallisation']),
+ mark([0,2.5],'i4',I2),
+ act('i4','main',[0,3],'exalt','Greater_Exalted_Orb',K('접두 첫번째 옵션','First prefix option'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'pre','min':1}},'to':'i5','res':'ok'},{'to':'i4a','res':'fail'}],I3,show=['pre'],once=True),
+ act('i5','main',[0,4],'exalt','Greater_Exalted_Orb',K('접두 두번째 옵션','Second prefix option'),None,K('엑잘','Exalt'),[{'if':GOOD2,'to':'i6','res':'ok'},{'to':'i5a','res':'fail'}],I4,show=['pre'],once=True),
+ act('i6','main',[0,5],'desecrate','Preserved_Jawbone',K('접두 세번째 옵션(훼손, 공개 안 함)','Third prefix (desecrated, left unrevealed)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'i8'}],I5),
+ act('i8','main',[0,6],'essence','Celestial_Alloy',K('아스트리드의 창의성 장착 후 천공의 합금','Socket Astrid’s Creativity, then the Celestial Alloy'),[st('p','천공의 합금 (접두 하나가 지워짐 — 미공개 훼손이면 완성)','Celestial Alloy (a prefix makes way — the unrevealed desecration is the hit)')],K('합금','Alloy'),[{'if':{'unrev':False},'to':'ok','res':'ok'},{'to':'i9','res':'fail'}],I6,ess='cel',once=True),
+ act('i9','main',[0,7],'reveal',None,K('남은 훼손 옵션 확인','Reveal the remaining desecration'),None,K('공개','Reveal'),
+     [{'if':GOOD2,'to':'ok','res':'ok'},{'if':{'all':[{'param':{'lT':1}},{'not':{'added':'pre'}},{'count':{'tag':'pre','min':1}}]},'to':'i9x','res':'fail'},{'to':'ok','res':'fail'}],I7,want='pre',show=['pre'],omens=['Omen_of_Abyssal_Echoes']),
+ annul('i9x',[1,7],[{'to':'i9d','port':'right'}]),
+ act('i9d','main',[1,7.6],'desecrate','Preserved_Jawbone',K('다시 훼손','Desecrate again'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'i9','port':'right'}],I6),
+ # a missed exalt: the Celestial Alloy eats it (영상 캡션)
+ act('i4a','main',[1,3],'essence','Celestial_Alloy',K('빗나간 접두를 천공의 합금으로 지움','The Celestial Alloy eats the missed prefix'),[st('p','천공의 합금 (접두가 1줄뿐이라 그 줄이 지워짐)','Celestial Alloy (the only prefix makes way)')],K('합금','Alloy'),[{'to':'i4b'}],IA,ess='cel',omens=['Omen_of_Sinistral_Crystallisation']),
+ act('i4b','main',[1,4],'exalt','Greater_Exalted_Orb',K('접두 두번째 옵션','Second prefix option'),[st('p','번개 피해·주문 피해·추가 피해 획득 (안 나와도 그대로)','Lightning, spell or extra damage (keep whatever comes)')],K('엑잘','Exalt'),[{'to':'i6b'}],IB),
+ act('i5a','main',[2,4],'essence','Celestial_Alloy',K('빗나간 접두를 천공의 합금으로 지움 (1/2)','The Celestial Alloy eats a prefix (1/2 the missed one)'),[st('p','천공의 합금 (접두 2줄 중 하나가 지워짐)','Celestial Alloy (one of the two prefixes makes way)')],K('합금','Alloy'),[{'to':'i6b'}],IC,ess='cel',omens=['Omen_of_Sinistral_Crystallisation']),
+ act('i6b','main',[1,5],'desecrate','Preserved_Jawbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'i9'}],ID),
+ done([0,8])]
 graph('icesly-budget-wand-v2','Wands','Dueling Wand',81,
-  'Icesly 가성비 완드(영상 방식) — 번개 주문 +5 매직 구입 → 완벽한 제왕의 오브 → 좌측 결정화 + 초월의 합금(접두 잡옵을 지움) → 완벽한 엑잘 2번(접두, 빗나가면 좌측 소멸) → 보존된 턱뼈 훼손(공개 안 함) → 아스트리드의 창의성 + 천공의 합금: 미공개 훼손이 지워지면 완성(1/3), 좋은 접두가 지워지면 남은 훼손을 공개(빛의 징조로 다시). 시뮬은 훼손이 접두로 가도록 좌측 강령술의 징조를 넣음(영상은 접미가 꽉 차 있어 필요 없음). 밸런스 = 영상 티어, 에센셜 = 번개 +5 2티어·접두 목표 넓힘.',
+  'Icesly 가성비 완드(영상 다시 확인 2026-11-10) — 번개 주문 +5 매직 구입 → 완벽한 제왕의 오브 + 우측 대관식의 징조(접미 잡옵) → 좌측 결정화 + 초월의 합금(접두 잡옵 삭제) → 상위 엑잘 2번(접두) → 보존된 턱뼈 훼손 → 아스트리드의 창의성 + 천공의 합금(접두 3개 중 하나 삭제, 미공개 훼손이면 완성) → 좋은 줄이 지워지면 남은 훼손 공개(심연의 메아리). 엑잘이 빗나가면 소멸의 오브 대신 천공의 합금이 그 줄을 지우게 함(영상 캡션, 좌측 결정화의 징조). 빛의 징조는 밸런스에서 좋은 접두 2줄을 완성할 수 있을 때만. 밸런스 = 영상 티어, 에센셜 = 번개 +5 1~2티어·접두 목표 넓힘, 빛의 징조 없음.',
   {'lT':{'kr':'번개 주문 레벨','en':'Lightning spell levels','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'xT':{'kr':'추가 피해 획득','en':'Extra damage','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})},'yT':{'kr':'번개·주문 피해','en':'Lightning / spell damage','values':TV({'3':('1~3티어','T1–3'),'5':('1~5티어','T1–5')})}},P,
-  {'bal':K('번개 +5 1티어, 접두 목표 영상대로','T1 +5 lightning, prefix targets as the video'),'ess':K('번개 +5 1~2티어, 접두 목표 넓힘','T1–2 +5 lightning, looser prefix targets')},
-  tags,nodes,[{'id':'L1','nodes':['i4','i4x'],'kr':'접두 첫번째 옵션','en':'First prefix'},{'id':'L2','nodes':['i9','i9x','i9d'],'kr':'남은 훼손 공개','en':'Remaining desecration'}],
-  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'l5','tmax':a},{'tag':'trans','tmax':1},{'side':'s','random':True},{'tag':'xL','tmax':b},{'tag':'lin','tmax':c},{'tag':'cel','tmax':1}]} for v,kr,en,a,b,c in (('bal','밸런스 옵션','Balance',1,2,3),('ess','에센셜 옵션','Essential',2,4,5))],
-  {'quality':20,'sockets':1},{'all':[{'count':{'tag':'pre','min':2}},{'has':'cel'}]})
+  {'bal':K('번개 +5 1티어, 접두 목표 영상대로, 남은 훼손이 빗나가면 빛의 징조로 다시','T1 +5 lightning, prefix targets as the video, Light on a missed last desecration'),'ess':K('번개 +5 1~2티어, 접두 목표 넓힘, 결과 그대로','T1–2 +5 lightning, looser prefix targets, keep whatever comes')},
+  tags,nodes,[{'id':'L2','nodes':['i9','i9x','i9d'],'kr':'남은 훼손 공개','en':'Remaining desecration'}],
+  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'l5','tmax':a},{'tag':'trans','tmax':1},{'side':'s','random':True},{'side':'p','label':K('번개 피해·주문 피해·추가 피해 획득','Lightning, spell or extra damage')},{'side':'p','label':K('번개 피해·주문 피해·추가 피해 획득','Lightning, spell or extra damage')},{'tag':'cel','tmax':1}]} for v,kr,en,a in (('bal','밸런스 옵션','Balance',1),('ess','에센셜 옵션','Essential',2))],
+  {'quality':20,'sockets':1},{'all':[{'has':'cel'},{'has':'trans'},{'has':'l5'},{'full':'p'}]})
 print('wrote 5 graphs')

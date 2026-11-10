@@ -733,6 +733,7 @@ function analyse(r){
     if(['transmute','augment','regal','exalt'].includes(n.do)){
       const R = n.do==='transmute'?'magic' : n.do==='regal'?'rare' : rar;
       if(t.junk){ if(Array.isArray(t.junk)) t.junk.forEach(sd=>mods.push({junk:true, side:sd})); else for(let k=0;k<(t.count||1);k++) mods.push({junk:true, side:t.junk}); }
+      else if(t.asIs){ pushSpec(t, R); o.p=1; }   // aims at these lines but keeps whatever comes (a miss is handled later, e.g. an alloy eats it)
       else { if(t.replace) removeJunk(t.replace);
         o.p=addChance(t, sides?[sides]:null, R, minOf(n.cur)); o.missState=[...clone(), {junk:true, side:sides||grp(r,specList(t)[0].gi).g}]; pushSpec(t, R);
         // Greater Exaltation adds two modifiers: two chances at the target, and the other one is junk
@@ -1096,7 +1097,7 @@ const runeLines = (r, id) => { const t=runeRec(r,id); if(!t) return [];
   return en.map((e,i)=>({en:e.trim(), kr:(kr[i]||e).trim()})).filter(x=>x.en && !/^local /i.test(x.en) && !/^local /i.test(x.kr)); };   // a socketed rune: an id from our data, or a named one from the recipe
 function sideLbl(n, o, sd){
   const kr=sd==='p'?'접두':'접미', en=sd==='p'?'prefix':'suffix';
-  if(n.target?.fromMark || (n.omens||[]).some(x=>/(Sinistral|Dextral)_(Exaltation|Necromancy)/.test(x))) return {kr, en};   // an omen or a Mark fixes the side
+  if(n.target?.fromMark || (n.omens||[]).some(x=>/(Sinistral|Dextral)_(Exaltation|Necromancy|Coronation)/.test(x))) return {kr, en};   // an omen or a Mark fixes the side
   const pre=o?.pre||[], cap=o?.cap||{p:3,s:3}, cnt=x=>pre.filter(m=>m.side===x).length;
   const magic = n.do==='augment';   // a magic item has one slot per side, so the free one is the only choice
   if(!magic && cnt('p')<cap.p && cnt('s')<cap.s) return {any:true};
