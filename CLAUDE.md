@@ -17,7 +17,7 @@ Path of Exile 2 아이템 제작 사이트. 탭 5개짜리 한 화면이에요.
 
 | 탭 | 원본 파일 | 게시 파일 | 하는 일 |
 |---|---|---|---|
-| 에뮬레이터 | `site/emulator.html` | `pub/emulator.html` | 화폐를 직접 써 보는 제작 시뮬레이터. "다음 결과 확률" 목록 줄마다 티어 선택(그 티어 이상이 붙을 확률) + "올리기"(그 티어로 아이템에 붙이기, 사용자 확정 2026-11-10). 스크린샷 `tools/test/_shots_tier.js`. **화면 배치**(사용자 확정 2026-11-11: 커런시에서 장비까지 너무 멀어 옮기기 불편): 창 폭 1280px 이상이면 베이스 목록을 왼쪽에 고정(서랍 대신 `DOCK`) → 아이템 → 커런시(최대 640px, 칸 46px)를 아이템 바로 옆에, 그보다 좁으면 예전처럼 서랍 + '베이스 변경'. 스크린샷 `tools/test/_emu.js` |
+| 에뮬레이터 | `site/emulator.html` | `pub/emulator.html` | 화폐를 직접 써 보는 제작 시뮬레이터. "다음 결과 확률" 목록 줄마다 티어 선택(그 티어 이상이 붙을 확률) + "올리기"(그 티어로 아이템에 붙이기, 사용자 확정 2026-11-10). 스크린샷 `tools/test/_shots_tier.js`. **화면 배치**(사용자 확정 2026-11-11: 커런시에서 장비까지 너무 멀어 옮기기 불편): 창 폭 1280px 이상이면 베이스 목록을 왼쪽에 고정(서랍 대신 `DOCK`) → 아이템 → 커런시(최대 640px, 칸 46px)를 아이템 바로 옆에, 그보다 좁으면 예전처럼 서랍 + '베이스 변경'. 스크린샷 `tools/test/_emu.js`. **부위·세부 종류 = 드롭다운 2개**(`.pickrow` `#cats`·`#clss`, 사용자 확정 2026-11-11 — 속성부여도 같음, 속성부여는 옵션 분류·세부 분류도 드롭다운 `#toptabs`·`#subtabs`), 휴대폰(520px 이하)은 커런시 분류 4칸 2줄 |
 | 옵션 빌더 | `site/index.html` | `pub/builder.html` | 원하는 옵션 조합 만들기. 티어 칩 = 고르면 슬롯에 올림, 고른 줄의 오른쪽 숫자 = "Tn 이상" 확률(같은 면 일반 옵션 가중치 기준, `tierShare`), 칩에 마우스를 올리면 그 티어 이상 확률 |
 | 레시피 | `site/recipes.html` | `pub/recipes.html` | 유튜브 영상 기반 제작 레시피, 단계별 확률(가중치 계산) |
 | 발굴 | `site/reverse.html` | `pub/discover.html` | 아이템 텍스트 → 옵션 분석 → 레시피 초안 → 검산 → 레시피 탭에 올리기 |
@@ -89,6 +89,7 @@ node _shots_sim.js         # 플로우차트 화면 스크린샷 → shots/sim-<
 cd /home/claude/poe2data && bash tools/test/serve.sh stop
 ```
 
+- **영문 넘침 점검**(2026-11-11, 사용자: 번역으로 영역을 벗어나는 곳 수정): `node tools/test/_overflow.js [탭…]`(배포 폴더 서버 8790, 영문 1600·1280·1024·390px에서 글자 넘침·짧은 이름표 줄바꿈·가로 스크롤 → overflow.txt), 긴 스크린샷 `_ovshots.js [탭,…] [폭,…]` → shots/ovs-*, 플로우차트·리버스 분석 결과 `_ovextra.js` → shots/ovx-*. 줄인 Fontin 글꼴엔 ffi 합자 글자가 없어 'affix'가 'a  x'로 보였음 → theme.css·shell.html·about.html `html{font-variant-ligatures:none}`. CSS `content:` 글은 번역이 안 되니 `html[lang="en"]` 규칙을 따로 둠.
 - **배포 전 검수**(2026-11-11): `cd web && python3 -m http.server 8790 &` → `node tools/test/_web.js`(배포 폴더 그대로 탭 6개·레시피·플로우차트·영문·모바일, 오류·404·가로 스크롤 → shots/web-*.png), 배포 뒤엔 내장 브라우저로 poe2craft.xyz의 `/data/recipes.json`을 받아 최신 커밋 내용인지 확인(사이트는 robots 차단이라 WebFetch는 안 됨)
 - `audit.js` 레시피 정책 점검 · `omen.js` 불필요한 면 징조 · `unk.js` 가중치 모름 표시
 - `ver.js` 발굴 초안 17개 검산(오류 0이어야 함) · `eng.js` 초안을 레시피 엔진으로 계산(경고·확률)

@@ -56,12 +56,13 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .chips.cls .chip[aria-pressed="true"]{background:var(--panel-2);color:var(--rare);border-color:var(--rare)}
 .picker > *{flex:none}
 .picker > .bases-wrap{flex:1 1 auto;min-height:120px}
-.wrap-tabs{flex-wrap:wrap;padding-top:4px;overflow:visible;row-gap:2px}
-.wrap-tabs .ttab{margin-bottom:0}
-.wrap-tabs .ttab{padding:8px 9px 7px;font-size:13px}
+.pickrow{display:flex;gap:6px;padding:10px 12px 0}
+.pickrow select{flex:1 1 0;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:6px 8px;font-size:13px;font-weight:600;cursor:pointer}
+.pickrow[hidden],.pickrow select[hidden]{display:none}
+.pickrow #toptabs{flex-grow:1.4}
 .bkind{padding:10px 12px 8px}
-.bkind .seg{display:flex}
-.bkind .seg button{flex:1}
+.bkind .seg{display:flex;flex-wrap:nowrap}
+.bkind .seg button{flex:1;white-space:nowrap;padding:6px 4px;min-width:0}
 .bkind .seg .n{font-family:var(--f-mono);font-size:10.5px;color:var(--faint);margin-left:4px}
 .bases-wrap{overflow:auto;padding:0 8px 10px}
 @media (max-width:760px){.bases-wrap{max-height:320px}}
@@ -197,17 +198,6 @@ details.sum summary{cursor:pointer;font-size:12px;letter-spacing:.06em;color:var
 .pool-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px 10px}
 .pool-bar input[type=search]{flex:1;min-width:160px;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:6px 9px;font:inherit}
 .chk{font-size:12.5px;color:var(--muted);display:flex;gap:6px;align-items:center}
-.toptabs{display:flex;gap:0;padding:0 14px;border-bottom:1px solid var(--line);overflow-x:auto}
-.ttab{background:transparent;border:0;border-bottom:2px solid transparent;padding:9px 14px 8px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);white-space:nowrap;margin-bottom:-1px}
-.ttab .n{font-family:var(--f-mono);font-size:11px;font-weight:400;color:var(--faint);margin-left:5px}
-.ttab[aria-pressed="true"]{color:var(--fg);border-bottom-color:var(--tc,var(--rare))}
-.ttab:disabled{opacity:.35;cursor:not-allowed}
-.subtabs{display:flex;flex-wrap:wrap;gap:5px;padding:10px 14px 10px;background:var(--panel-2);border-bottom:1px solid var(--line)}
-.stab{background:transparent;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px;cursor:pointer;color:var(--muted)}
-.stab .n{font-family:var(--f-mono);font-size:10.5px;color:var(--faint);margin-left:4px}
-.stab[aria-pressed="true"]{background:var(--fg);color:var(--ink);border-color:var(--fg)}
-.stab[aria-pressed="true"] .n{color:var(--ink)}
-.stab:disabled{opacity:.35;cursor:not-allowed}
 .pool-bar{padding-top:10px}
 .hint{margin:0 14px 10px;font-size:12.5px;padding:8px 10px;border-radius:7px;background:var(--panel-2);color:var(--muted)}
 .hint b{color:var(--fg);font-weight:600}
@@ -266,8 +256,7 @@ footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
 
   <div class="grid">
     <section class="col picker" aria-label="베이스 아이템">
-      <div class="toptabs wrap-tabs" id="cats" role="group" aria-label="장비 부위"></div>
-      <div class="subtabs" id="clss" role="group" aria-label="세부 종류"></div>
+      <div class="pickrow"><select id="cats" aria-label="장비 부위"></select><select id="clss" aria-label="세부 종류"></select></div>
       <div class="bkind"><div class="seg" role="group" aria-label="베이스 구분" id="bkind"></div></div>
       <div class="bases-wrap" id="bases"></div>
     </section>
@@ -275,8 +264,7 @@ footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
     <section class="col card" aria-label="아이템" id="card"></section>
 
     <section class="col pool" aria-label="옵션 목록">
-      <div class="toptabs" id="toptabs" role="group" aria-label="옵션 분류"></div>
-      <div class="subtabs" id="subtabs" role="group" aria-label="세부 분류"></div>
+      <div class="pickrow"><select id="toptabs" aria-label="옵션 분류"></select><select id="subtabs" aria-label="세부 분류"></select></div>
       <div class="pool-bar">
         <input type="search" id="q" placeholder="옵션 검색 (예: 생명력, 저항, 치명)">
         <label class="chk" for="onlyok"><input type="checkbox" id="onlyok"> 선택 가능한 것만</label>
@@ -419,10 +407,10 @@ function firstBase(){ const o=orderedBases(); return (o.normal[0]||o.special[0])
 
 // ---------- picker ----------
 function renderCats(){
-  $('#cats').innerHTML = S.index.groups.map(g=>`<button type="button" class="ttab" data-cat="${g.id}" aria-pressed="${g.id===S.cat}">${esc(g.kr)}</button>`).join('');
+  $('#cats').innerHTML = S.index.groups.map(g=>`<option value="${g.id}" ${g.id===S.cat?'selected':''}>${esc(g.kr)}</option>`).join('');
   const g = S.index.groups.find(x=>x.id===S.cat);
   $('#clss').hidden = g.classes.length<2;
-  $('#clss').innerHTML = g.classes.map(c=>`<button type="button" class="stab" data-cls="${c.id}" aria-pressed="${c.id===S.cls}">${esc(KR()?c.short:c.en.replace(/^.*\((.*)\)$/,'$1'))}</button>`).join('');
+  $('#clss').innerHTML = g.classes.map(c=>`<option value="${c.id}" ${c.id===S.cls?'selected':''}>${esc(KR()?c.short:c.en.replace(/^.*\((.*)\)$/,'$1'))}</option>`).join('');
 }
 function renderBases(){
   const o = orderedBases();
@@ -827,11 +815,11 @@ function subCount(top, code){
 function renderTabs(){
   $('#toptabs').innerHTML = TOP.map(([id,label,color])=>{
     const n = id==='affix' ? subCount('affix','all') : id==='rune' ? (baseSockets()?subCount('rune','all'):0) : subCount('corrupt','c')+subCount('corrupt','u');
-    return `<button type="button" class="ttab" style="--tc:${color}" data-top="${id}" aria-pressed="${S.top===id}" ${n?'':'disabled'}>${label}<span class="n">${n}</span></button>`;
+    return `<option value="${id}" ${S.top===id?'selected':''} ${n?'':'disabled'}>${label}</option>`;
   }).join('');
   $('#subtabs').innerHTML = SUB[S.top].map(([id,label])=>{
     const n = subCount(S.top,id);
-    return `<button type="button" class="stab" data-sub="${id}" aria-pressed="${S.sub[S.top]===id}" ${n?'':'disabled'}>${label}<span class="n">${n}</span></button>`;
+    return `<option value="${id}" ${S.sub[S.top]===id?'selected':''} ${n?'':'disabled'}>${label} (${n})</option>`;
   }).join('');
 }
 function matchQ(...xs){ const q=S.q.trim().toLowerCase(); return !q || xs.some(x=>String(x).toLowerCase().includes(q)); }
@@ -957,17 +945,17 @@ async function copy(text, el){
 }
 
 // ---------- events ----------
-$('#cats').addEventListener('click', e=>{ const b=e.target.closest('[data-cat]'); if(!b) return; const g=S.index.groups.find(x=>x.id===b.dataset.cat); loadClass(g.classes[0].id); });
-$('#clss').addEventListener('click', e=>{ const b=e.target.closest('[data-cls]'); if(b) loadClass(b.dataset.cls); });
+$('#cats').addEventListener('change', e=>loadClass(S.index.groups.find(x=>x.id===e.target.value).classes[0].id));
+$('#clss').addEventListener('change', e=>loadClass(e.target.value));
 $('#bases').addEventListener('click', e=>{ const b=e.target.closest('.base'); if(b) selectBase(+b.dataset.i); });
 $('#bkind').addEventListener('click', e=>{ const b=e.target.closest('[data-k]'); if(!b||b.disabled) return; S.bkind=b.dataset.k; renderBases(); });
 for(const id of ['kr','en']) $('#lang-'+id).addEventListener('click', ()=>{ S.lang=id; $('#lang-kr').setAttribute('aria-pressed',id==='kr'); $('#lang-en').setAttribute('aria-pressed',id==='en'); renderCats(); renderBases(); render(); });
-$('#toptabs').addEventListener('click', e=>{ const b=e.target.closest('[data-top]'); if(!b||b.disabled) return; const top=b.dataset.top;
+$('#toptabs').addEventListener('change', e=>{ const top=e.target.value;
   if(top==='rune'){ const n=sockets(); const i=S.slots.k.slice(0,n).findIndex(v=>!v); S.active={g:'k',i:i<0?0:i}; }
   else if(top==='affix' && (S.active.g==='k'||S.active.g==='c')){ const f=firstEmpty(); S.active = f && (f.g==='p'||f.g==='s') ? f : {g:'p',i:Math.max(0,S.slots.p.findIndex(v=>!v))}; }
   else if(top==='corrupt' && S.corr===1) S.active={g:'c',i:0};
   S.top=top; render(); });
-$('#subtabs').addEventListener('click', e=>{ const b=e.target.closest('[data-sub]'); if(!b||b.disabled) return; S.sub[S.top]=b.dataset.sub; renderTabs(); renderPool(); });
+$('#subtabs').addEventListener('change', e=>{ S.sub[S.top]=e.target.value; renderTabs(); renderPool(); });
 $('#q').addEventListener('input', e=>{ S.q=e.target.value; renderPool(); });
 $('#onlyok').addEventListener('change', e=>{ S.onlyok=e.target.checked; renderPool(); });
 $('#list').addEventListener('click', e=>{
