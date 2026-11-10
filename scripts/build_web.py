@@ -31,7 +31,7 @@ def main():
         if not INDEX:
             s = s.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n' + NOINDEX_META, 1)
         open(os.path.join(WEB, dst), 'w', encoding='utf-8').write(s)
-    for d in ['data', 'lib', 'img']:
+    for d in ['data', 'lib', 'img', 'fonts']:
         shutil.copytree(os.path.join(SITE, d), os.path.join(WEB, d))
     for f in sorted(os.listdir(os.path.join(SITE, 'pub'))):
         if not f.endswith('.html'):
