@@ -38,6 +38,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--ink);border-color:var(--fg)}
 .count{font-size:12px;color:var(--faint)}
 .demo-note{font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:6px 10px;width:fit-content;max-width:100%}
+.bar .freset{padding:5px 12px;font-size:12.5px}
+.bar .freset:disabled{opacity:.45;cursor:default}
 .statrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}
 .statrow select{width:100%;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 8px;color:var(--fg)}
 .statrow select.on{border-color:var(--rare)}
@@ -534,6 +536,7 @@ body.simfull{overflow:hidden}
     <select id="fcat" aria-label="Category"></select>
     <select id="fsub" aria-label="Subcategory"></select>
     <label><input type="checkbox" id="fpatch"> <span id="l-patch"></span></label>
+    <button type="button" class="btn freset" id="freset"></button>
     <span class="sp"></span>
     <span class="count" id="count"></span>
     <button type="button" class="btn" id="analyze"></button>
@@ -1800,6 +1803,8 @@ function list(){
 let cards=[], panel=null;
 function renderBoard(){
   const L0=list(); const board=$('#board');
+  const busy = !!(S.q || S.cat || S.sub || S.curOnly || S.tags.size || S.stats.some(Boolean));
+  const rb=$('#freset'); rb.textContent=L('↺ 필터 초기화','↺ Reset filters'); rb.disabled=!busy;
   const total=S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r)).length;
   $('#count').textContent = L0.length===total ? L(`전체 ${total}개 레시피`, `${total} recipes`) : L(`${L0.length}개 / 전체 ${total}개 레시피`, `${L0.length} of ${total} recipes`);
   board.innerHTML = L0.length ? '' : `<div class="empty">${L('조건에 맞는 레시피가 없어요.','No recipes match these filters.')}</div>`;
@@ -2007,6 +2012,8 @@ $('#fsub').addEventListener('change', e=>{ S.sub=e.target.value; renderBoard(); 
 $('#sort').addEventListener('click', e=>{ const b=e.target.closest('[data-sort]'); if(!b) return; const k=b.dataset.sort;
   if(S.sort===k) S.sortDir=-S.sortDir; else { S.sort=k; S.sortDir = k==='price' ? 1 : -1; } renderBar(); renderBoard(); });
 $('#fpatch').addEventListener('change', e=>{ S.curOnly=e.target.checked; renderBoard(); });
+$('#freset').addEventListener('click', ()=>{ S.q=''; S.cat=''; S.sub=''; S.curOnly=false; S.tags.clear(); S.stats=['','',''];
+  $('#q').value=''; $('#fpatch').checked=false; renderBar(); renderBoard(); });   // 필터 초기화 (사용자 2026-11-11), 정렬은 그대로
 $('#vtabs').addEventListener('click', e=>{ const b=e.target.closest('[data-view]'); if(!b) return; S.view=b.dataset.view; store.set('view', S.view); render(); });
 $('#tipsView').addEventListener('click', e=>{ const a=e.target.closest('[data-open]'); if(a){ e.preventDefault(); setOpen(a.dataset.open); } });
 $('#tags').addEventListener('click', e=>{ const b=e.target.closest('[data-tag]'); if(!b) return; const k=b.dataset.tag; S.tags.has(k)?S.tags.delete(k):S.tags.add(k); renderBar(); renderBoard(); });
