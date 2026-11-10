@@ -60,6 +60,7 @@ function make(graph, D, craft, params){
       if(c.has) return it.mods.some(m=>match(m,P(c.has)));
       if(c.added) return last.added.some(m=>match(m,P(c.added)));
       if(c.removed) return last.removed.some(m=>match(m,c.removed));
+      if(c.unrevSide) return it.mods.some(m=>m.unrev && m.side===c.unrevSide);   // an unrevealed desecration on that side (SL 부재 목걸이: a prefix one is wiped, a suffix one revealed)
       if(c.unrev!=null) return it.mods.some(m=>m.unrev)===!!c.unrev;
       if(c.des!=null) return it.mods.some(m=>m.des)===!!c.des;   // a revealed desecrated line is on the item (MazBro 캐스터 목걸이: the blocker)
       if(c.fractured) return !!last.fr && match(last.fr, c.fractured);
@@ -113,7 +114,7 @@ function make(graph, D, craft, params){
         const m={gi:t.gi, ti:0, side:sd, ess:!n.liquid, mark:!!n.mark}; if(t.slot) m.slot=t.slot; it.mods.push(m); last.added.push(m); }
       else if(a==='annul'){ const sd=sideOm(oms,/Sinistral_Annulment/,/Dextral_Annulment/);
         takeRandom(oms.includes('Omen_of_Light') ? (m=>m.unrev||m.des||G[m.gi]?.s==='d') : sd ? (m=>m.side===sd) : null); }
-      else if(a==='desecrate' && n.fromMark){ const mk=it.mods.find(m=>m.mark); if(mk){ take(mk); const m={unrev:true, side:mk.side, bone:cur, min:mn, marked:true}; it.mods.push(m); last.added.push(m); } }   // a bone on the Abyssal Lord's Mark: the mark becomes the unrevealed desecrated line
+      else if(a==='desecrate' && n.fromMark){ const mk=it.mods.find(m=>m.mark); if(mk){ take(mk); const lord=oms.includes('Omen_of_the_Liege')?'amanamu':oms.includes('Omen_of_the_Sovereign')?'ulaman':oms.includes('Omen_of_the_Blackblooded')?'kurgal':null; const m={unrev:true, side:mk.side, bone:cur, min:mn, marked:true, lord}; it.mods.push(m); last.added.push(m); } }   // a bone on the Abyssal Lord's Mark: the mark becomes the unrevealed desecrated line
       else if(a==='desecrate'){ const sd=sideOm(oms,/Sinistral_Necromancy/,/Dextral_Necromancy/), ss=sd?[sd]:['p','s'];
         let free=ss.filter(s=>count(s)<maxA(s)), s;
         if(free.length) s=free[Math.floor(rnd()*free.length)];
