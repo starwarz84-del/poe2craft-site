@@ -47,8 +47,22 @@ button,input,select,textarea{font:inherit;color:inherit}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--ink);border-color:var(--fg)}
 .count{font-size:12px;color:var(--faint)}
 .demo-note{font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:6px 10px;width:fit-content;max-width:100%}
-.bar .freset{padding:5px 12px;font-size:12.5px}
-.bar .freset:disabled{opacity:.45;cursor:default}
+.bar .freset{padding:6px 14px;font-size:13px;font-weight:600;background:var(--rare);color:#1a1408;border-color:var(--rare)}
+.bar .freset:hover:not(:disabled){filter:brightness(1.08)}
+.bar .freset:disabled{background:var(--panel);color:var(--muted);border-color:var(--line);font-weight:500;cursor:default}
+.sbox{position:relative;min-width:0}
+.sbox input{width:100%;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 28px 6px 10px;color:var(--fg);font:inherit;font-size:13px}
+.sbox input:focus{outline:none;border-color:var(--rare)}
+.sbox.on input{border-color:var(--rare)}
+.sbox .sx{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 4px}
+.slist{position:absolute;left:0;right:0;top:calc(100% + 3px);z-index:30;max-height:340px;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.55);padding:4px}
+.slist button{display:flex;align-items:center;gap:6px;width:100%;text-align:left;border:0;background:none;color:var(--fg);font:inherit;font-size:13px;padding:6px 8px;border-radius:5px;cursor:pointer}
+.slist button.hi,.slist button:hover{background:color-mix(in srgb,var(--fg) 10%,transparent)}
+.slist .n{margin-left:auto;color:var(--muted);font-size:11.5px;padding-left:8px}
+.slist .empty{padding:8px;color:var(--muted);font-size:12.5px}
+.slist .hint{padding:4px 8px 6px;color:var(--muted);font-size:11.5px;border-bottom:1px solid var(--line);margin-bottom:3px}
+.rb{flex:none;font-size:10.5px;line-height:1;padding:3px 5px;border-radius:4px;background:#34405a;font-weight:600}
+.rb.p{color:#ff9d8a}.rb.s{color:#8fb4ff}.rb.i{color:#cfcfcf}.rb.fr{color:#e6c97a;background:#3f3520}.rb.des{color:#9be08a;background:#2a3a24}.rb.cr{color:#7fe0d0;background:#1f3a38}
 .statrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}
 .statrow select{width:100%;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 8px;color:var(--fg)}
 .statrow select.on{border-color:var(--rare)}
@@ -545,10 +559,9 @@ body.simfull{overflow:hidden}
     <select id="fcat" aria-label="Category"></select>
     <select id="fsub" aria-label="Subcategory"></select>
     <label><input type="checkbox" id="fpatch"> <span id="l-patch"></span></label>
-    <button type="button" class="btn freset" id="freset"></button>
     <span class="sp"></span>
     <span class="count" id="count"></span>
-    <button type="button" class="btn" id="analyze"></button>
+    <button type="button" class="btn freset" id="freset"></button>
     <button type="button" class="btn" id="clrdrafts" hidden></button>
   </div>
   <div class="statrow" id="stats"></div>
@@ -927,7 +940,13 @@ function analyse(r){
 // modifier search (사용자 2026-11-11): up to 3 dropdowns, a recipe must have every chosen modifier on its finished item
 const statKey = g => (g.t[0][5]||'').replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d+(?:\.\d+)?)?\)?/g,'#').replace(/\s+/g,' ').trim();
 const statLbl = g => { const t=g.t[0][KR()?4:5]||''; return t.replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d+(?:\.\d+)?)?\)?/g,'#').replace(/\s*\n\s*/g,' / ').trim(); };
-const statsOf = r => { if(r._sk) return r._sk; const s=new Set(); try{ analyse(r).final.forEach(m=>s.add(statKey(m.g))); }catch(e){} return r._sk=s; };
+const statRole = m => [m.g.g==='p'?'p':m.g.g==='s'?'s':'i', m.fr?'fr':m.des?'des':(m.ess||m.g.s==='e')?'cr':''];
+const statId = m => [statKey(m.g), ...statRole(m)].join('|');
+const statsOf = r => { if(r._sk) return r._sk; const s=new Set(); try{ analyse(r).final.forEach(m=>s.add(statId(m))); }catch(e){} return r._sk=s; };
+const ROLE = {p:['접두','Prefix'], s:['접미','Suffix'], i:['고정','Implicit'], fr:['분열','Fractured'], des:['훼손','Desecrated'], cr:['제작','Crafted']};
+const roleBadges = id => { const [, side, kind]=id.split('|'); return [side, kind].filter(Boolean).map(k=>`<span class="rb ${k}">${esc(L(...ROLE[k]))}</span>`).join(''); };
+// '~단어 단어' = every word anywhere (trade-site style), otherwise the text as typed
+const statMatch = (hay, q) => { q=q.trim().toLowerCase(); if(!q) return true; hay=hay.toLowerCase(); if(q.startsWith('~')) return q.slice(1).split(/\s+/).filter(Boolean).every(w=>hay.includes(w)); return hay.includes(q); };
 const tagsOf = r => { const s=new Set(); analyse(r).final.forEach(m=>m.g.tg.forEach(t=>s.add(t))); return s; };
 
 const fmt = v => !isFinite(v) ? '∞' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v>=1 ? v.toFixed(1) : v.toFixed(2);
@@ -1867,13 +1886,13 @@ function renderBar(){
   if(S.sub && !subs.some(c=>c.id===S.sub)) S.sub='';
   $('#fsub').innerHTML=`<option value="">${L('모든 세부 종류','All types')}</option>`+subs.map(c=>`<option value="${c.id}" ${S.sub===c.id?'selected':''}>${esc(KR()?c.kr:c.en)}</option>`).join('');
   $('#fsub').disabled=!subs.length;
-  const opts=new Map(); S.recipes.forEach(r=>{ if(r.tierGroup && tierLead(r)!==r) return; try{ analyse(r).final.forEach(m=>{ const k=statKey(m.g); const o=opts.get(k)||{l:statLbl(m.g), n:new Set()}; o.n.add(r.id); opts.set(k,o); }); }catch(e){} });
-  const ol=[...opts.entries()].sort((a,b)=>a[1].l.localeCompare(b[1].l, KR()?'ko':'en'));
-  $('#stats').innerHTML=S.stats.map((v,i)=>`<select data-stat="${i}" class="${v?'on':''}" aria-label="${esc(L('옵션','Modifier'))} ${i+1}"><option value="">${L(`+ 옵션 ${i+1} 선택`,`+ Modifier ${i+1}`)}</option>${ol.map(([k,o])=>`<option value="${esc(k)}" ${v===k?'selected':''}>${esc(o.l)} (${o.n.size})</option>`).join('')}</select>`).join('');
+  S.statOpts=new Map(); S.recipes.forEach(r=>{ if(r.tierGroup && tierLead(r)!==r) return; try{ analyse(r).final.forEach(m=>{ const k=statId(m); const o=S.statOpts.get(k)||{l:statLbl(m.g), n:new Set()}; o.n.add(r.id); S.statOpts.set(k,o); }); }catch(e){} });
+  S.statList=[...S.statOpts.entries()].sort((a,b)=>a[1].l.localeCompare(b[1].l, KR()?'ko':'en') || a[0].localeCompare(b[0]));
+  if(!document.querySelector('#stats .sbox:focus-within')) $('#stats').innerHTML=S.stats.map((v,i)=>`<div class="sbox ${v?'on':''}" data-sbox="${i}"><input type="text" data-stat="${i}" autocomplete="off" spellcheck="false" placeholder="${esc(L(`+ 옵션 ${i+1} — 입력해서 찾기 (~단어 단어)`,`+ Modifier ${i+1} — type to search (~word word)`))}" value="${esc(v?S.statOpts.get(v)?.l||'':'')}" aria-label="${esc(L('옵션','Modifier'))} ${i+1}">${v?`<button type="button" class="sx" data-sclear="${i}" aria-label="${esc(L('지우기','Clear'))}">✕</button>`:''}<div class="slist" hidden></div></div>`).join('');
   $('#sort').innerHTML=SORTS.map(([k,[kr,en]])=>`<button type="button" data-sort="${k}" aria-pressed="${S.sort===k}">${esc(L(kr,en))}${S.sort===k?`<span class="ar">${S.sortDir>0?'↑':'↓'}</span>`:''}</button>`).join('');
   const lgN=(LEAGUES.find(x=>x.p===String(S.index.patch))||{}).en, pl=lgN?`${lgN} ${S.index.patch}`:S.index.patch;
   $('#l-patch').textContent=L(`현재 패치(${pl})만`,`Current patch (${pl}) only`);
-  $('#analyze').textContent=L('아이템으로 레시피 찾기·요청','Find or request a recipe');
+  
   { const n=S.recipes.filter(r=>r.draft).length, b=$('#clrdrafts'); b.hidden=!n; b.textContent=L(`역산 초안 모두 지우기 (${n})`,`Delete all drafts (${n})`); }
   const have=new Set(); S.recipes.forEach(r=>{ try{ tagsOf(r).forEach(t=>have.add(t)); }catch(e){} });
   $('#tags').innerHTML=TAGS.filter(([k])=>have.has(k)||S.tags.has(k)||!have.size).map(([k,[kr,en]])=>`<button type="button" class="chip" data-tag="${k}" aria-pressed="${S.tags.has(k)}">${esc(L(kr,en))}</button>`).join('');
@@ -2016,7 +2035,22 @@ document.addEventListener('keydown', e=>{ if(!S.open || S.simFull || e.target.cl
   e.preventDefault(); goNode(r.nodes[i].id); });
 $('#q').addEventListener('input', e=>{ S.q=e.target.value; renderBoard(); });
 $('#fcat').addEventListener('change', e=>{ S.cat=e.target.value; S.sub=''; renderBar(); renderBoard(); });
-$('#stats').addEventListener('change', e=>{ const s=e.target.closest('[data-stat]'); if(!s) return; S.stats[+s.dataset.stat]=s.value; s.classList.toggle('on', !!s.value); renderBoard(); });
+// modifier search boxes (사용자 2026-11-11): list opens right under the box, roles shown, '~' = word search
+function statShow(inp){ const i=+inp.dataset.stat, box=inp.parentNode.querySelector('.slist'), q=inp.value===(S.statOpts.get(S.stats[i])?.l||'\u0000')?'':inp.value;
+  const rows=S.statList.filter(([k,o])=>statMatch(o.l+' '+roleBadges(k).replace(/<[^>]+>/g,' '), q)).slice(0,200);
+  box.innerHTML=`<div class="hint">${L('~ 뒤 단어는 순서와 상관없이 모두 포함 (예: ~공격 치명타)','After ~ every word must appear, any order (e.g. ~attack critical)')}</div>`+(rows.length?rows.map(([k,o],n)=>`<button type="button" data-spick="${esc(k)}" class="${n===0?'hi':''}">${roleBadges(k)}<span>${esc(o.l)}</span><span class="n">${o.n.size}</span></button>`).join(''):`<div class="empty">${L('맞는 옵션이 없어요','No matching modifiers')}</div>`);
+  box.hidden=false; }
+function statPick(i, k){ S.stats[i]=k; const b=document.querySelector(`#stats [data-sbox="${i}"]`); b?.querySelector('input')?.blur(); renderBar(); renderBoard(); }
+$('#stats').addEventListener('focusin', e=>{ const inp=e.target.closest('input[data-stat]'); if(inp){ inp.select(); statShow(inp); } });
+$('#stats').addEventListener('input', e=>{ const inp=e.target.closest('input[data-stat]'); if(inp) statShow(inp); });
+$('#stats').addEventListener('mousedown', e=>{ if(e.target.closest('.slist')) e.preventDefault(); });
+$('#stats').addEventListener('click', e=>{ const p=e.target.closest('[data-spick]'); if(p){ statPick(+p.closest('[data-sbox]').dataset.sbox, p.dataset.spick); return; }
+  const c=e.target.closest('[data-sclear]'); if(c){ S.stats[+c.dataset.sclear]=''; renderBar(); renderBoard(); } });
+$('#stats').addEventListener('keydown', e=>{ const inp=e.target.closest('input[data-stat]'); if(!inp) return; const box=inp.parentNode.querySelector('.slist'); const items=[...box.querySelectorAll('[data-spick]')]; let h=items.findIndex(x=>x.classList.contains('hi'));
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){ e.preventDefault(); if(box.hidden) statShow(inp); h=Math.max(0,Math.min(items.length-1,h+(e.key==='ArrowDown'?1:-1))); items.forEach((x,n)=>x.classList.toggle('hi',n===h)); items[h]?.scrollIntoView({block:'nearest'}); }
+  else if(e.key==='Enter'){ e.preventDefault(); if(items[h]) statPick(+inp.dataset.stat, items[h].dataset.spick); }
+  else if(e.key==='Escape'){ box.hidden=true; inp.blur(); } });
+$('#stats').addEventListener('focusout', e=>{ const inp=e.target.closest('input[data-stat]'); if(!inp) return; setTimeout(()=>{ if(inp.parentNode.contains(document.activeElement)) return; inp.parentNode.querySelector('.slist').hidden=true; inp.value=S.statOpts.get(S.stats[+inp.dataset.stat])?.l||''; }, 0); });
 $('#fsub').addEventListener('change', e=>{ S.sub=e.target.value; renderBoard(); });
 $('#sort').addEventListener('click', e=>{ const b=e.target.closest('[data-sort]'); if(!b) return; const k=b.dataset.sort;
   if(S.sort===k) S.sortDir=-S.sortDir; else { S.sort=k; S.sortDir = k==='price' ? 1 : -1; } renderBar(); renderBoard(); });
@@ -2026,7 +2060,7 @@ $('#freset').addEventListener('click', ()=>{ S.q=''; S.cat=''; S.sub=''; S.curOn
 $('#vtabs').addEventListener('click', e=>{ const b=e.target.closest('[data-view]'); if(!b) return; S.view=b.dataset.view; store.set('view', S.view); render(); });
 $('#tipsView').addEventListener('click', e=>{ const a=e.target.closest('[data-open]'); if(a){ e.preventDefault(); setOpen(a.dataset.open); } });
 $('#tags').addEventListener('click', e=>{ const b=e.target.closest('[data-tag]'); if(!b) return; const k=b.dataset.tag; S.tags.has(k)?S.tags.delete(k):S.tags.add(k); renderBar(); renderBoard(); });
-$('#analyze').addEventListener('click', ()=>{ $('#dlg').showModal(); $('#d-txt').focus(); });
+$('#analyze')?.addEventListener('click', ()=>{ $('#dlg').showModal(); $('#d-txt').focus(); });
 $('#d-close').addEventListener('click', ()=>$('#dlg').close());
 $('#d-find').addEventListener('click', analyze);
 $('#d-res').addEventListener('click', e=>{ const h=e.target.closest('[data-go]'); if(h){ $('#dlg').close(); setOpen(h.dataset.go); } });
