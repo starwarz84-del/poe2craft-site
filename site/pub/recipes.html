@@ -937,11 +937,11 @@ function analyse(r){
 // modifier search (사용자 2026-11-11): up to 3 dropdowns, a recipe must have every chosen modifier on its finished item
 const statKey = g => (g.t[0][5]||'').replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d+(?:\.\d+)?)?\)?/g,'#').replace(/\s+/g,' ').trim();
 const statLbl = g => { const t=g.t[0][KR()?4:5]||''; return t.replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d+(?:\.\d+)?)?\)?/g,'#').replace(/\s*\n\s*/g,' / ').trim(); };
-const statRole = m => [m.g.g==='p'?'p':m.g.g==='s'?'s':'i', m.fr?'fr':m.des?'des':(m.ess||m.g.s==='e')?'cr':''];
-const statId = m => [statKey(m.g), ...statRole(m)].join('|');
-const statsOf = r => { if(r._sk) return r._sk; const s=new Set(); try{ analyse(r).final.forEach(m=>s.add(statId(m))); }catch(e){} return r._sk=s; };
+// modifier search keys: wording + prefix/suffix only (사용자 2026-11-11 — 훼손·제작 등은 따로 나누지 않음, 고정 옵션은 목록에서 뺌)
+const statId = m => (m.g.g==='p'||m.g.g==='s') ? statKey(m.g)+'|'+m.g.g : null;
+const statsOf = r => { if(r._sk) return r._sk; const s=new Set(); try{ analyse(r).final.forEach(m=>{ const k=statId(m); if(k) s.add(k); }); }catch(e){} return r._sk=s; };
 const ROLE = {p:['접두','Prefix'], s:['접미','Suffix'], i:['고정','Implicit'], fr:['분열','Fractured'], des:['훼손','Desecrated'], cr:['제작','Crafted']};
-const roleBadges = id => { const [, side, kind]=id.split('|'); return [side, kind].filter(Boolean).map(k=>`<span class="rb ${k}">${esc(L(...ROLE[k]))}</span>`).join(''); };
+const roleBadges = id => { const [, side]=id.split('|'); return [side].filter(Boolean).map(k=>`<span class="rb ${k}">${esc(L(...ROLE[k]))}</span>`).join(''); };
 // '~단어 단어' = every word anywhere (trade-site style), otherwise the text as typed
 const statMatch = (hay, q) => { q=q.trim().toLowerCase(); if(!q) return true; hay=hay.toLowerCase(); if(q.startsWith('~')) return q.slice(1).split(/\s+/).filter(Boolean).every(w=>hay.includes(w)); return hay.includes(q); };
 const tagsOf = r => { const s=new Set(); analyse(r).final.forEach(m=>m.g.tg.forEach(t=>s.add(t))); return s; };
@@ -1883,8 +1883,8 @@ function renderBar(){
   if(S.sub && !subs.some(c=>c.id===S.sub)) S.sub='';
   $('#fsub').innerHTML=`<option value="">${L('모든 세부 종류','All types')}</option>`+subs.map(c=>`<option value="${c.id}" ${S.sub===c.id?'selected':''}>${esc(KR()?c.kr:c.en)}</option>`).join('');
   $('#fsub').disabled=!subs.length;
-  S.statOpts=new Map(); S.recipes.forEach(r=>{ if(r.tierGroup && tierLead(r)!==r) return; try{ analyse(r).final.forEach(m=>{ const k=statId(m); const o=S.statOpts.get(k)||{l:statLbl(m.g), n:new Set()}; o.n.add(r.id); S.statOpts.set(k,o); }); }catch(e){} });
-  S.statList=[...S.statOpts.entries()].sort((a,b)=>a[1].l.localeCompare(b[1].l, KR()?'ko':'en') || a[0].localeCompare(b[0]));
+  S.statOpts=new Map(); S.recipes.forEach(r=>{ if(r.tierGroup && tierLead(r)!==r) return; try{ analyse(r).final.forEach(m=>{ const k=statId(m); if(!k || S.statOpts.has(k)) return; S.statOpts.set(k,{l:statLbl(m.g)}); }); }catch(e){} });
+  S.statList=[...S.statOpts.entries()].sort((a,b)=>(a[0].endsWith('|p')?0:1)-(b[0].endsWith('|p')?0:1) || a[1].l.localeCompare(b[1].l, KR()?'ko':'en'));   // prefixes first
   if(!document.querySelector('#stats .sbox:focus-within')) $('#stats').innerHTML=S.stats.map((v,i)=>`<div class="sbox ${v?'on':''}" data-sbox="${i}"><input type="text" data-stat="${i}" autocomplete="off" spellcheck="false" placeholder="${esc(L(`+ 옵션 ${i+1} — 입력해서 찾기 (~단어 단어)`,`+ Modifier ${i+1} — type to search (~word word)`))}" value="${esc(v?S.statOpts.get(v)?.l||'':'')}" aria-label="${esc(L('옵션','Modifier'))} ${i+1}">${v?`<button type="button" class="sx" data-sclear="${i}" aria-label="${esc(L('지우기','Clear'))}">✕</button>`:''}<div class="slist" hidden></div></div>`).join('');
   $('#sort').innerHTML=SORTS.map(([k,[kr,en]])=>`<button type="button" data-sort="${k}" aria-pressed="${S.sort===k}">${esc(L(kr,en))}${S.sort===k?`<span class="ar">${S.sortDir>0?'↑':'↓'}</span>`:''}</button>`).join('');
   const lgN=(LEAGUES.find(x=>x.p===String(S.index.patch))||{}).en, pl=lgN?`${lgN} ${S.index.patch}`:S.index.patch;
@@ -2034,10 +2034,13 @@ $('#q').addEventListener('input', e=>{ S.q=e.target.value; renderBoard(); });
 $('#fcat').addEventListener('change', e=>{ S.cat=e.target.value; S.sub=''; renderBar(); renderBoard(); });
 // modifier search boxes (사용자 2026-11-11): list opens right under the box, roles shown, '~' = word search
 function statShow(inp){ const i=+inp.dataset.stat, box=inp.parentNode.querySelector('.slist'), q=inp.value===(S.statOpts.get(S.stats[i])?.l||'\u0000')?'':inp.value;
-  const rows=S.statList.filter(([k,o])=>statMatch(o.l+' '+roleBadges(k).replace(/<[^>]+>/g,' '), q)).slice(0,200);
+  // box n only offers modifiers found on recipes that already have the modifiers chosen in the boxes before it (사용자 2026-11-11)
+  const pool=S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r) && S.stats.slice(0,i).every(k=>!k || statsOf(r).has(k))), cnt=new Map();
+  pool.forEach(r=>statsOf(r).forEach(k=>cnt.set(k,(cnt.get(k)||0)+1)));
+  const rows=S.statList.filter(([k,o])=>cnt.has(k) && !S.stats.some((x,j)=>j!==i && x===k) && statMatch(o.l+' '+roleBadges(k).replace(/<[^>]+>/g,' '), q)).slice(0,300).map(([k,o])=>[k,{...o, n:{size:cnt.get(k)}}]);
   box.innerHTML=`<div class="hint">${L('~ 뒤 단어는 순서와 상관없이 모두 포함 (예: ~공격 치명타)','After ~ every word must appear, any order (e.g. ~attack critical)')}</div>`+(rows.length?rows.map(([k,o],n)=>`<button type="button" data-spick="${esc(k)}" class="${n===0?'hi':''}">${roleBadges(k)}<span>${esc(o.l)}</span><span class="n">${o.n.size}</span></button>`).join(''):`<div class="empty">${L('맞는 옵션이 없어요','No matching modifiers')}</div>`);
   box.hidden=false; }
-function statPick(i, k){ S.stats[i]=k; const b=document.querySelector(`#stats [data-sbox="${i}"]`); b?.querySelector('input')?.blur(); renderBar(); renderBoard(); }
+function statPick(i, k){ S.stats[i]=k; for(let j=i+1;j<S.stats.length;j++) if(S.stats[j] && !S.recipes.some(r=>S.stats.slice(0,j+1).every(x=>!x||statsOf(r).has(x)))) S.stats[j]=''; const b=document.querySelector(`#stats [data-sbox="${i}"]`); b?.querySelector('input')?.blur(); renderBar(); renderBoard(); }
 $('#stats').addEventListener('focusin', e=>{ const inp=e.target.closest('input[data-stat]'); if(inp){ inp.select(); statShow(inp); } });
 $('#stats').addEventListener('input', e=>{ const inp=e.target.closest('input[data-stat]'); if(inp) statShow(inp); });
 $('#stats').addEventListener('mousedown', e=>{ if(e.target.closest('.slist')) e.preventDefault(); });
