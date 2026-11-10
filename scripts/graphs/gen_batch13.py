@@ -8,12 +8,12 @@ _s11=open(f'{H}/gen_batch11.py').read(); exec(_s11[_s11.index('def graph11'):_s1
 # ---------- 1. 노블이 5옵션 오래된 사파이어 ----------
 # 원본: 주문 치명타 확률 분열 + 잡옵 → 카오스 오브(주문 치명타 피해) → 엑잘(접두) → 고대 위력적인 액체 경멸 → 우측 찬미 + 엑잘(치명타 피해, 빗나가면 소멸의 오브)
 # → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘(접두) → 고대 위력적인 액체 우울 → 보존된 두개골(접두가 꽉 차 접두 하나를 지우고 붙음) → 공개(최대 마나, 실패는 카오스 오브로 바꾸고 다시)
-# 액체 경멸 규칙(사용자 확정 2026-11-10: 먼저 지우고 붙음)으로 접두 2개를 채운 뒤 경멸(성공 2/3). 기폭제 퀄리티는 뺌.
+# 영상 재확인(2026-11-10): 접두 1개로 경멸(실패 = 분열 + 옵션 1개로 카오스부터), 세 번째 접미 엑잘 실패는 소멸의 오브(셋 중 하나) — 경멸 옵션이 지워지면 카오스 오브(빗나간 접미가 접두로 넘어가면 경멸 다시), 경멸 옵션은 좌측 말소의 징조 + 카오스 오브(접두가 그것뿐이라 확정). 기폭제 퀄리티는 뺌.
 FRS=it('s','주문 치명타 명중 확률 (분열)','Spell crit chance (fractured)',['cc'])
 tags={'cc':{'gi':50},'scd':{'gi':16},'cd':{'gi':15},'contS':{'gi':84,'slot':{'s':1}},'contP':{'gi':85,'slot':{'p':1}},'rad':{'gi':82},'mana':{'gi':69}}
 SCD=it('s','주문 치명타 피해 보너스','Spell crit damage bonus',['scd']); CD=it('s','치명타 피해 보너스','Crit damage bonus',['cd']); MN=it('p','최대 마나','Maximum mana',['mana'])
 RDs=it('p','범위 아주 큼','Very large radius',['rad'])
-I0=[FRS,J('p')]; I1=[FRS,SCD]; I2=[FRS,SCD,J('p'),J('p')]; I3=[FRS,SCD,J('p'),CS2]; I4=I3+[CD]; I5=[FRS,SCD,CD,J('p'),J('p')]; I6=[FRS,SCD,CD,J('p'),RDs]
+I0=[FRS,J('p')]; I1=[FRS,SCD]; I2=[FRS,SCD,J('p')]; I3=[FRS,SCD,CS2]; I4=I3+[CD]; I5=[FRS,SCD,CD,J('p')]; I5b=[FRS,SCD,CD,J('p'),J('p')]; I6=[FRS,SCD,CD,J('p'),RDs]
 I7=[FRS,SCD,CD,J('p'),UN('p')]; I8=[FRS,SCD,CD,MN,RDs]
 def contempt_s(id,pos,ok,fail,item,keep):
     return LIQ(id,pos,'Ancient_Potent_Liquid_Contempt','contS',K('고대 위력적인 액체 경멸 (한 옵션을 지우고 붙음)','Ancient Potent Liquid Contempt (takes a line, then lands)'),
@@ -22,13 +22,15 @@ def contempt_s(id,pos,ok,fail,item,keep):
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cc','fr':True},{'junk':'p'}]},K('주문 치명타 확률 분열 + 잡옵 1개 오래된 사파이어','Time-Lost Sapphire: fractured spell crit chance + one junk line'),I0),
  mark([0,0.6],'n2',I0),
  act('n2','main',[0,1],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),[{'if':{'has':'scd'},'to':'n3','res':'ok'},{'to':'n2','res':'fail'}],I1,show=['scd']),
- act('n3','main',[0,2],'exalt','Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 1개씩 (접미가 꽉 차 접두로)','One random line each (suffixes are full)')],K('엑잘','Exalt'),[{'if':{'full':'p'},'to':'n4'},{'to':'n3','hide':True}],I2),
+ act('n3','main',[0,2],'exalt','Exalted_Orb',K('접두 옵션 1개','One prefix'),[st('p','랜덤 옵션 1개 (접미가 꽉 차 접두로)','One random line (suffixes are full)')],K('엑잘','Exalt'),[{'to':'n4'}],I2),
  contempt_s('n4',[0,3],'n5','n4x',I3,'scd'), resetx('n4x',[1,3],'n2'),
  act('n5','main',[0,4],'exalt','Exalted_Orb',K('접미 세번째 옵션 (주문 치명타 피해가 지워졌으면 그것도)','Third suffix (and spell crit damage if it went)'),None,K('엑잘','Exalt'),[{'if':{'all':[{'has':'cd'},{'has':'scd'}]},'to':'n6','res':'ok'},{'if':{'full':'s'},'to':'n5x','res':'fail','port':'right'},{'to':'n5','res':'fail'}],I4,show=['cd','scd'],omens=['Omen_of_Dextral_Exaltation']),
- annul('n5x',[1,4],[{'if':{'not':{'has':'contS'}},'to':'n4x','port':'right'},{'if':{'full':'s'},'to':'n5x'},{'to':'n5','port':'bottom'}],omens=(),
-       target=K('빗나간 접미 지우기 (경멸 옵션이 지워지면 처음부터)','Remove the missed suffix (losing the contempt line: start over)')),
+ annul('n5x',[1,4],[{'if':{'not':{'has':'contS'}},'to':'n5c','port':'right'},{'if':{'full':'s'},'to':'n5x'},{'to':'n5','port':'bottom'}],omens=(),
+       target=K('빗나간 접미 지우기 (셋 중 하나가 지워짐)','Remove the missed suffix (one of the three goes)')),
+ act('n5c','main',[2,4],'chaos','Chaos_Orb',K('경멸 옵션이 지워졌으면 카오스 오브','Contempt line gone: Chaos'),None,K('카오스','Chaos'),
+     [{'if':{'has':'scd'},'to':'n4','res':'ok','port':'right'},{'to':'n4x','res':'fail','port':'right'}],I2),
  erase('n6',[0,5],'n7',I5),
- act('n7','main',[0,6],'exalt','Exalted_Orb',K('접두 채우기','Fill the prefixes'),[st('p','랜덤 옵션 (접미가 한도를 넘어 접두로만)','Random lines (suffixes are over the limit)')],K('엑잘','Exalt'),[{'if':{'full':'p'},'to':'n9'},{'to':'n7','hide':True}],I5),
+ act('n7','main',[0,6],'exalt','Exalted_Orb',K('접두 채우기','Fill the prefixes'),[st('p','랜덤 옵션 (접미가 한도를 넘어 접두로만)','Random lines (suffixes are over the limit)')],K('엑잘','Exalt'),[{'if':{'full':'p'},'to':'n9'},{'to':'n7','hide':True}],I5b),
  LIQ('n9',[0,7],'Ancient_Potent_Liquid_Melancholy','rad',K('고대 위력적인 액체 우울 (접두 하나가 지워짐)','Ancient Potent Liquid Melancholy (one prefix goes)'),[st('p','범위 아주 큼','Very large radius')],
      [{'if':{'all':[{'has':'mana'},{'has':'rad'}]},'to':'ok','res':'ok'},{'to':'n10'}],I6),
  act('n10','main',[0,8],'desecrate','Preserved_Cranium',K('접두 훼손 (접두가 꽉 차 하나를 지우고 붙음)','Prefix desecration (prefixes are full: one goes)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'n11'}],I7,omens=['Omen_of_Sinistral_Necromancy']),
@@ -40,7 +42,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cc','fr':True},{'junk':'p'}]},K('
  LIQ('n9k',[1,9.8],'Ancient_Potent_Liquid_Melancholy','rad',K('고대 위력적인 액체 우울 다시 (결과 그대로)','Ancient Potent Liquid Melancholy again (keep it)'),[st('p','범위 아주 큼','Very large radius')],[{'to':'ok'}],I6),
  done([0,10.6])]
 graph10('noble-timelost-sapphire-v2','Time-Lost_Sapphire','Time-Lost Sapphire',79,
-  '노블이 5옵션 오래된 사파이어(원본 레시피 기록) — 주문 치명타 확률 분열 + 잡옵 → 카오스 오브(주문 치명타 피해) → 엑잘 2번(접두) → 고대 위력적인 액체 경멸(실패 = 분열 + 옵션 1개) → 우측 찬미 + 엑잘(치명타 피해, 빗나가면 소멸의 오브) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘 → 고대 위력적인 액체 우울 → 보존된 두개골 → 공개(최대 마나, 하이엔드 = 카오스 오브로 바꾸고 다시).',
+  '노블이 5옵션 오래된 사파이어(원본 레시피 기록, 영상 재확인) — 주문 치명타 확률 분열 + 잡옵 → 카오스 오브(주문 치명타 피해) → 엑잘(접두) → 고대 위력적인 액체 경멸(실패 = 분열 + 옵션 1개) → 우측 찬미 + 엑잘(치명타 피해, 빗나가면 소멸의 오브) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘 → 고대 위력적인 액체 우울 → 보존된 두개골 → 공개(최대 마나, 하이엔드 = 카오스 오브로 바꾸고 다시).',
   ROUTE,PH,{'high':K('영상: 최대 마나가 나올 때까지 카오스 오브로 바꾸고 다시','Video: Chaos the line away and retry until maximum mana'),'bal':K('공개 결과 그대로, 나머지는 영상대로','Keep the reveal, the rest as in the video')},tags,nodes,
   [{'id':'L1','nodes':['n9','n10','n11','n11x'],'kr':'최대 마나','en':'Maximum mana'}],
   FIN(('high','bal'),lambda v:[{'tag':'mana','tmax':1} if v=='high' else {'side':'p','random':True},{'tag':'rad','tmax':1},{'tag':'cc','tmax':1,'fr':True},{'tag':'scd','tmax':1},{'tag':'cd','tmax':1}]),
@@ -50,7 +52,7 @@ graph10('noble-timelost-sapphire-v2','Time-Lost_Sapphire','Time-Lost Sapphire',7
 # 원본: 콜르의 사냥 장착 + 모든 투사체 +2 분열 + 잡옵 (퀄리티 30%, 특출난 검은강철 건틀릿) → 아스트리드의 창의성 → 카오스 오브(콜르 옵션 1티어 하나: 투사체 속도·피해 / 치명타 확률·관통)
 # → 반대쪽 면을 상위 엑잘 + 면 찬미로. 빗나가면 그 면 결정화의 징조 + 군왕의 합금(룬 수호) → 다시, 또 빗나가면 결정화 + 발작의 에센스(치명타 피해) → 다시
 # → 제작 옵션이 남았으면 잡옵을 하나 붙여 결정화 + 합금/에센스 → 남은 접두를 고대 갈비뼈로 훼손 → 공개(투사체 피해·속도 1티어, 빛의 징조로 다시).
-# 세 번째로도 빗나가면 영상은 소멸의 오브 — 여기선 그 면 소멸의 징조로 빗나간 옵션 쪽만(좋은 옵션·합금을 지우지 않게). 시전 속도 룬 교체·신성한 오브는 뺌(정책 23).
+# 영상 재확인(2026-11-10): 세 번째로도 빗나가면 징조 없는 소멸의 오브로 하나씩(좋은 옵션이 지워지면 카오스 오브부터). 첫 엑잘에 맞으면 접두에 잡옵 → 좌측 결정화 + 발작의 에센스(접미로) → 접두 잡옵 → 좌측 결정화 + 군왕의 합금. 시전 속도 룬 교체·룬 모루·신성한 오브는 뺌(정책 23).
 P2={'high':{'v':1},'bal':{'v':2}}
 tags={'proj':{'gi':81},'pspd':{'gi':72,'tmax':1},'pdmg':{'gi':70,'tmax':1},'crit':{'gi':73,'tmax':1},'pierce':{'gi':74},
       'ps':{'anyOf':['pspd','pdmg'],'label':K('투사체 속도·피해 1티어','T1 projectile speed or damage')},'ss':{'anyOf':['crit','pierce'],'label':K('치명타 확률 1티어·관통','T1 crit chance or pierce')},
@@ -71,10 +73,11 @@ def route(vis=None):   # every step re-checks the item: what is still missing de
        {'if':{'all':[{'not':{'has':'ps'}},missP,{'not':{'has':'hyst'}}]},'to':'cpH'},
        {'if':{'all':[{'not':{'has':'ps'}},missP]},'to':'apx'},
        {'if':{'not':{'has':'ps'}},'to':'xp'},
+       {'if':{'all':[{'not':{'has':'hyst'}},missS]},'to':'csH'},
+       {'if':{'all':[{'not':{'has':'hyst'}},{'any':[missP,{'full':'p'}]}]},'to':'jh'},
+       {'if':{'not':{'has':'hyst'}},'to':'js'},
        {'if':{'all':[{'not':{'has':'ward'}},{'any':[missP,{'full':'p'}]}]},'to':'ja'},
-       {'if':{'not':{'has':'ward'}},'to':'jp'},
-       {'if':{'any':[missS,{'full':'s'}]},'to':'jh'},
-       {'to':'js'}]
+       {'to':'jp'}]
     vis=vis or {}; out=[]; shown=set()
     for e in E:
         e=dict(e)
@@ -91,18 +94,18 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'proj','fr':True},{'junk':'p'}],'q
  mark([0,0.6],'k8',G0),
  RUNE('k8',[0,1],'k9',G0),
  act('k9','main',[0,2],'chaos','Chaos_Orb',K('콜르 옵션 1티어 하나','One T1 Kolr line'),None,K('카오스','Chaos'),[{'if':{'has':'ps'},'to':'xs','res':'ok'},{'if':{'has':'ss'},'to':'xp','res':'ok'},{'to':'k9','res':'fail'}],G1,show=['pspd','pdmg','crit','pierce']),
- ex('xs',[0,3],'Omen_of_Dextral_Exaltation',['crit','pierce'],G2,K('접미: 치명타 확률 1티어·관통 (접두가 먼저 떴을 때)','Suffix: T1 crit chance or pierce (prefix came first)'),{'jp':'ok','csA':F,'csH':F,'asx':F}),
+ ex('xs',[0,3],'Omen_of_Dextral_Exaltation',['crit','pierce'],G2,K('접미: 치명타 확률 1티어·관통 (접두가 먼저 떴을 때)','Suffix: T1 crit chance or pierce (prefix came first)'),{'js':'ok','csA':F,'csH':F,'asx':F}),
  cr('csA',[1,3],'Sovereign_Alloy','ward','Omen_of_Dextral_Crystallisation',K('빗나간 접미를 지우고 룬 수호','The missed suffix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'xs':{'port':'right'}}),
  cr('csH',[1,4],'Essence_of_Hysteria','hyst','Omen_of_Dextral_Crystallisation',K('빗나간 접미를 지우고 치명타 피해','The missed suffix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],G3,K('에센스','Essence'),{'xs':{'port':'right'}}),
- act('asx','main',[1,5],'annul','Orb_of_Annulment',K('빗나간 접미 지우기','Remove the missed suffix'),None,K('소멸','Annul'),route({'xs':{'port':'right'}}),G2,omens=['Omen_of_Dextral_Annulment']),
- ex('xp',[0,6],'Omen_of_Sinistral_Exaltation',['pspd','pdmg'],G2,K('접두: 투사체 속도·피해 1티어 (접미가 먼저 떴을 때)','Prefix: T1 projectile speed or damage (suffix came first)'),{'jp':'ok','cpA':F,'cpH':F,'apx':F}),
+ act('asx','main',[1,5],'annul','Orb_of_Annulment',K('빗나간 접미 지우기','Remove the missed suffix'),None,K('소멸','Annul'),route({'xs':{'port':'right'}}),G2),
+ ex('xp',[0,6],'Omen_of_Sinistral_Exaltation',['pspd','pdmg'],G2,K('접두: 투사체 속도·피해 1티어 (접미가 먼저 떴을 때)','Prefix: T1 projectile speed or damage (suffix came first)'),{'js':'ok','cpA':F,'cpH':F,'apx':F}),
  cr('cpA',[1,6],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('빗나간 접두를 지우고 룬 수호','The missed prefix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'xp':{'port':'right'}}),
  cr('cpH',[1,7],'Essence_of_Hysteria','hyst','Omen_of_Sinistral_Crystallisation',K('빗나간 접두를 지우고 치명타 피해','The missed prefix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],G3,K('에센스','Essence'),{'xp':{'port':'right'}}),
- act('apx','main',[1,8],'annul','Orb_of_Annulment',K('빗나간 접두 지우기','Remove the missed prefix'),None,K('소멸','Annul'),route({'xp':{'port':'right'}}),G2,omens=['Omen_of_Sinistral_Annulment']),
- act('jp','main',[0,9],'exalt','Exalted_Orb',K('합금이 바꿀 접두 하나 (룬 수호가 아직 없으면)','A prefix for the alloy to replace (if runic ward is still missing)'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'ja':{}}),G2,omens=['Omen_of_Sinistral_Exaltation']),
- cr('ja',[0,10],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 룬 수호 (좋은 접두가 지워지면 4번)','A prefix goes for runic ward (losing the good prefix: back to 4)'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'js':'ok','xp':F}),
- act('js','main',[0,11],'exalt','Exalted_Orb',K('에센스가 바꿀 접미 하나 (치명타 피해가 아직 없으면)','A suffix for the essence to replace (if crit damage is still missing)'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'jh':{}}),G2,omens=['Omen_of_Dextral_Exaltation']),
- cr('jh',[0,12],'Essence_of_Hysteria','hyst','Omen_of_Dextral_Crystallisation',K('접미 하나를 지우고 치명타 피해 (좋은 접미가 지워지면 3번)','A suffix goes for crit damage (losing the good suffix: back to 3)'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],G3,K('에센스','Essence'),{'k15':'ok','xs':F}),
+ act('apx','main',[1,8],'annul','Orb_of_Annulment',K('빗나간 접두 지우기','Remove the missed prefix'),None,K('소멸','Annul'),route({'xp':{'port':'right'}}),G2),
+ act('js','main',[0,9],'exalt','Exalted_Orb',K('에센스가 바꿀 접두 하나 (치명타 피해가 아직 없으면)','A prefix for the essence to replace (if crit damage is still missing)'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'jh':{}}),G2,omens=['Omen_of_Sinistral_Exaltation']),
+ cr('jh',[0,10],'Essence_of_Hysteria','hyst','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 치명타 피해 (좋은 접두가 지워지면 4번)','A prefix goes for crit damage (losing the good prefix: back to 4)'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],G3,K('에센스','Essence'),{'jp':'ok','xp':F}),
+ act('jp','main',[0,11],'exalt','Exalted_Orb',K('합금이 바꿀 접두 하나 (룬 수호가 아직 없으면)','A prefix for the alloy to replace (if runic ward is still missing)'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'ja':{}}),G2,omens=['Omen_of_Sinistral_Exaltation']),
+ cr('ja',[0,12],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 룬 수호 (좋은 접두가 지워지면 4번)','A prefix goes for runic ward (losing the good prefix: back to 4)'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'k15':'ok','xp':F}),
  resetx('kz',[1,2],'k9'),
  act('k15','main',[0,13],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'k16'}],G4,omens=['Omen_of_Sinistral_Necromancy']),
  act('k16','main',[0,14],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),

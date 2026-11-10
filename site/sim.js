@@ -91,7 +91,7 @@ function make(graph, D, craft, params){
       else if(a==='exalt'){ const sd=sideOm(oms,/Sinistral_Exaltation/,/Dextral_Exaltation/); const k=oms.includes('Omen_of_Greater_Exaltation')?2:1; for(let i=0;i<k;i++) add(sd?[sd]:null, mn); }
       else if(a==='chaos'){ const er=sideOm(oms,/Sinistral_Erasure/,/Dextral_Erasure/);
         if(oms.includes('Omen_of_Whittling')){ const c=it.mods.filter(m=>!m.fr && !m.unrev && (!er || m.side===er)); if(c.length){ const lo=Math.min(...c.map(lvl)), xs=c.filter(m=>lvl(m)===lo); take(xs[Math.floor(rnd()*xs.length)]); } }
-        else { const ov=over(); takeRandom(er ? (m=>m.side===er) : ov.length ? (m=>!ov.includes(m.side)) : null); }
+        else { const ov=over(), other=ov.length && it.mods.some(m=>!m.fr && !ov.includes(m.side)); takeRandom(er ? (m=>m.side===er) : other ? (m=>!ov.includes(m.side)) : null); }   // nothing removable on the other side (노블이 사파이어: prefix empty) → any line
         add(null, mn); }
       else if(a==='essence'){ let tn = n.alt && rnd()<0.5 ? n.alt : n.ess;
         // two-outcome liquid (Contempt: +1 suffix allowed is a prefix, +1 prefix allowed a suffix) — 사용자 확정 2026-11-10: it first takes a random line,
