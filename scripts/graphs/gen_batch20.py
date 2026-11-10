@@ -11,59 +11,59 @@ _src=open(f'{H}/gen_batch19.py').read(); exec(_src[:_src.index('# ---------- 1. 
 # → 완벽한 엑잘(접미 잡옵) → 우측 말소의 징조 + 카오스 오브(투사체 +4 또는 화살 초과 1티어) → 완벽한 엑잘 → 세를의 승리(접미 +1) → 완벽한 엑잘
 # → 절사의 징조 + 상위 카오스 오브(남은 투사체/화살 + 치명타 피해 보너스 1티어) → 빛의 징조로 막기 제거 → 고대 턱뼈 → 공개(남은 물리 접두 1티어, 빛의 징조로 다시).
 # 영상의 우측 결정화 + 심연의 에센스로 징표를 만드는 재시도 구간은 훼손이 붙은 아이템엔 심연의 에센스를 못 써서(MazBro 갑옷 영상) 고대 턱뼈 다시 훼손으로 바꿈.
-tags={'crit':{'gi':17,'tmax':1},'pp':{'gi':7,'tmax':1},'hyb':{'gi':8,'tmax':'$pT'},'flat':{'gi':2,'tmax':'$pT'},'eatk':{'gi':21,'tmax':1},'acc':{'gi':16,'tmax':1},
-      'proj':{'gi':9,'tmax':1},'arr':{'gi':20,'tmax':'$pT'},'cdm':{'gi':18,'tmax':'$pT'},
-      'blk':{'anyOf':['eatk','acc']},'p3':{'anyOf':['hyb','flat']},'sx':{'anyOf':['proj','arr']},
-      'keepP':{'anyOf':['pp','p31']},'hyb1':{'gi':8,'tmax':1},'flat1':{'gi':2,'tmax':1},'p31':{'anyOf':['hyb1','flat1']},'ppx':{'gi':7},'keepS':{'anyOf':['sx','cdm']}}
-V1={'param':{'pT':1}}
+tags={'crit':{'gi':17,'tmax':1},'pp':{'gi':7,'tmax':1},'hyb':{'gi':8,'tmax':1},'flat':{'gi':2,'tmax':1},'eatk':{'gi':21,'tmax':1},'acc':{'gi':16,'tmax':1},
+      'proj':{'gi':9,'tmax':1},'arr':{'gi':20,'tmax':1},'cdm':{'gi':18,'tmax':1},
+      'blk':{'anyOf':['eatk','acc']},'p3':{'anyOf':['hyb','flat']},'sx':{'anyOf':['proj','arr']},'sg':{'anyOf':['proj','arr','cdm']},
+      'keepP':{'anyOf':['pp','p3']},'keepT':{'anyOf':['pp','p3','blk']},'keepS':{'anyOf':['sx','cdm']}}
 CR=it('s','치명타 확률 +(4.41—5)% (분열)','+(4.41—5)% to Critical Hit Chance (fractured)',['crit']); PP=it('p','물리 피해 (170—179)% 증가','(170—179)% increased Physical Damage',['pp'])
-BK=it('p','공격 원소 피해 (87—100)% 증가 (훼손, 자리 막기)','(87—100)% increased Elemental Damage with Attacks (desecrated, blocker)',['eatk'],'d')
+BK=it('p','정확도 +(551—650) (훼손, 자리 막기)','+(551—650) to Accuracy Rating (desecrated, blocker)',['acc'],'d')
 HY=it('p','물리 피해 (75—79)% 증가 + 정확도 +(175—200)','(75—79)% increased Physical Damage + (175—200) to Accuracy Rating',['hyb'])
 FL=it('p','물리 피해 (26—39)~(44—66) 추가','Adds (26—39) to (44—66) Physical Damage',['flat'],'d')
 PJ=it('s','모든 투사체 스킬 레벨 +4','+4 to Level of all Projectile Skills',['proj']); AR=it('s','화살 하나를 추가로 발사할 초과 확률 +(175—200)%','+(175—200)% Surpassing chance to fire an additional Arrow',['arr'])
 CD=it('s','치명타 피해 보너스 +(23—25)%','+(23—25)% to Critical Damage Bonus',['cdm']); SE=it('r','세를의 승리','Serle’s Triumph',None,'r')
-V2={'param':{'pT':2}}
-def RB(vis):   # every step re-checks the item. 밸런스: 접두 엑잘이 빗나가고 절사가 위험하면 그 잡옵을 두고 진행, 마지막 공개로 물리 접두 하나
-    fs={'all':[{'has':'cdm'},{'count':{'tag':'sx','min':2}}]}
-    pre={'any':[V1,{'not':fs}]}   # prefix work (밸런스는 접미를 끝내기 전까지만)
-    WS={'whittleSafe':{'tag':'keepP','side':'p','keepDes':True}}
-    return ROUTE_([{'if':{'not':{'has':'pp'}},'to':'c0'},{'if':{'all':[fs,{'any':[{'has':'p31'},V2]},{'not':{'des':True}},{'unrevSide':'p'}]},'to':'f3'},{'if':{'unrevSide':'p'},'to':'rv'},
-       {'if':{'all':[pre,{'not':{'des':True}},{'not':{'has':'p31'}},{'sideLt':{'side':'p','n':3}}]},'to':'d1'},
-       {'if':{'all':[pre,{'not':{'has':'p31'}},{'sideLt':{'side':'p','n':3}}]},'to':'e1'},{'if':{'all':[pre,{'not':{'has':'p31'}},WS]},'to':'w1'},{'if':{'all':[V1,{'not':{'has':'p31'}}]},'to':'pa'},
+def RB(vis):   # every step re-checks the item
+    fs={'all':[{'has':'cdm'},{'count':{'tag':'sx','min':2}}]}; s3={'count':{'tag':'sg','min':2}}
+    return ROUTE_([{'if':{'not':{'has':'pp'}},'to':'c0'},{'if':JK('p','keepP'),'to':'w1'},{'if':{'all':[fs,{'has':'p3'},{'not':{'des':True}},{'unrevSide':'p'}]},'to':'f3'},{'if':{'unrevSide':'p'},'to':'rv'},
+       {'if':{'all':[{'not':{'des':True}},{'not':{'has':'p3'}},{'sideLt':{'side':'p','n':3}}]},'to':'d1'},
+       {'if':{'all':[{'not':{'has':'p3'}},{'sideLt':{'side':'p','n':3}}]},'to':'e1'},{'if':{'not':{'has':'p3'}},'to':'w1'},
        {'if':{'all':[{'not':{'has':'sx'}},{'sideLt':{'side':'s','n':2}}]},'to':'s1'},{'if':{'not':{'has':'sx'}},'to':'s2'},
-       {'if':{'sideLt':{'side':'s','n':4}},'to':'s3'},{'if':{'not':fs},'to':'w2'},
-       {'if':{'all':[V1,JK('p','keepP'),WS]},'to':'w1'},{'if':{'all':[V1,JK('p','keepP')]},'to':'pa'},{'if':{'des':True},'to':'f1'},
-       {'if':{'count':{'tag':'p3','min':2}},'to':'ok'},{'if':{'all':[V2,{'has':'p3'},{'not':{'sideLt':{'side':'p','n':3}}}]},'to':'ok'},{'to':'f2'}],vis)
-I0=[PP,UN('p'),CR]; I0r=I0+[SE]; I1=[PP,BK,CR,SE]; I2=[PP,BK,HY,CR,SE]; I3=I2+[J('s')]; I4=I2[:3]+[CR,PJ,SE]; I7=I2[:3]+[CR,PJ,J('s'),J('s'),SE]
-I8=I2[:3]+[CR,PJ,AR,CD,SE]; I9=[PP,HY,CR,PJ,AR,CD,SE]; I10=[PP,HY,UN('p'),CR,PJ,AR,CD,SE]; I11=[PP,HY,FL,CR,PJ,AR,CD,SE]
+       {'if':{'all':[{'not':s3},{'sideLt':{'side':'s','n':3}}]},'to':'s3'},{'if':{'not':s3},'to':'w2'},
+       {'if':{'all':[{'full':'s'},{'sideLt':{'side':'s','n':4}}]},'to':'r1'},
+       {'if':{'all':[{'not':fs},{'sideLt':{'side':'s','n':4}}]},'to':'s4'},{'if':{'not':fs},'to':'w3'},
+       {'if':JK('p','keepP'),'to':'w1'},{'if':{'des':True},'to':'f1'},{'if':{'count':{'tag':'p3','min':2}},'to':'ok'},{'to':'f2'}],vis)
+I0=[PP,UN('p'),CR]; I1=[PP,BK,CR]; I2=[PP,BK,HY,CR]; I3=I2+[J('s')]; I4=I2+[PJ]; I5=I4+[J('s')]; I6=I4+[AR]; I7=I6+[SE]; I8=I6+[J('s'),SE]; I9=I6+[CD,SE]
+I10=[PP,HY,UN('p'),CR,PJ,AR,CD,SE]; I11=[PP,HY,FL,CR,PJ,AR,CD,SE]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'crit','fr':True},{'tag':'pp'},{'unrev':'p','bone':'Preserved_Jawbone'}]},K('치명타 확률 1티어 분열 + 물리 피해 % 1티어 + 미공개 접두 훼손 (퀄리티 30%)','Fractured T1 crit chance + T1 % physical + an unrevealed desecrated prefix (30% quality)'),I0),
- mark([0,0.6],'r1',I0),
- act('r1','main',[0,1],'rune',None,K('세를의 승리 장착 (접미 +1)','Socket Serle’s Triumph (+1 suffix)'),[st(None,'접미 옵션 4개','Four suffixes')],K('룬','Rune'),[{'to':'rv'}],I0r,slots={'s':1},rune=K('세를의 승리','Serle’s Triumph')),
- act('rv','main',[0,2],'reveal',None,K('자리 막기 옵션 확인','Reveal the blocker'),None,K('공개','Reveal'),
-     [{'if':{'added':'blk'},'to':'e1','res':'ok'},{'to':'rvx',**F}],I1,want='blk',show=['eatk','acc'],omens=['Omen_of_Abyssal_Echoes']),
- annul('rvx',[1,2],RB({'d1':{'port':'right'}})),
- act('d1','main',[2,2],'desecrate','Ancient_Jawbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RB({'rv':{}}),I0,omens=['Omen_of_Sinistral_Necromancy']),
- act('e1','main',[0,3],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),None,K('엑잘','Exalt'),RB({'s1':'ok','w1':F}),I2,show=['hyb','flat'],omens=['Omen_of_Sinistral_Exaltation']),
- act('w1','main',[1,3],'chaos','Perfect_Chaos_Orb',K('접두 세번째 옵션','Third prefix'),None,K('카오스','Chaos'),RB({'s1':'ok','e1':{'res':'fail'}}),I2,show=['hyb','flat'],omens=['Omen_of_Whittling','Omen_of_Sinistral_Erasure']),
- annul('pa',[2,3],RB({'e1':{'res':'ok'},'c0':F}),omens=('Omen_of_Sinistral_Annulment',),target=K('접두 잡옵 지우기','Remove the junk prefix')),
- act('c0','main',[2,4],'chaos','Perfect_Chaos_Orb',K('접두 첫번째 옵션','First prefix'),None,K('카오스','Chaos'),[e if e.get('res') or e['to']=='c0' else dict(e,res='ok') for e in RB({'e1':{'res':'ok'}})],I2,show=['pp'],omens=['Omen_of_Sinistral_Erasure']),
- act('s1','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','잡옵','Junk')],K('엑잘','Exalt'),RB({'s2':{}}),I3),
- act('s2','main',[0,5],'chaos','Perfect_Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),RB({'s3':'ok'}),I4,show=['proj','arr'],omens=['Omen_of_Dextral_Erasure']),
- act('s3','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','잡옵','Junk')],K('엑잘','Exalt'),RB({'w2':{}}),I7),
- act('w2','main',[0,7],'chaos','Perfect_Chaos_Orb',K('접미 세번째·네번째 옵션','Third and fourth suffixes'),None,K('카오스','Chaos'),RB({'f1':'ok'}),I8,show=['proj','arr','cdm'],trim={'side':'s','keep':'keepS'}),
- annul('f1',[0,8],RB({'f2':{}}),target=K('자리 막기 훼손 옵션 제거','Remove the blocking desecration')),
- act('f2','main',[0,9],'desecrate','Ancient_Jawbone',K('접두 네번째 옵션(훼손)','Last prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'f3'}],I10),
- act('f3','main',[0,10],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'p3'},'to':'ok','res':'ok'},{'to':'f3x',**F}],I11,want='p3',show=['flat','hyb'],omens=['Omen_of_Abyssal_Echoes']),
- annul('f3x',[1,10],RB({'f2':{'port':'right'}})),
- done([0,11])]
+ mark([0,0.6],'rv',I0),
+ act('rv','main',[0,1],'reveal',None,K('자리 막기 옵션 확인','Reveal the blocker'),None,K('공개','Reveal'),
+     [{'if':{'added':'$bw'},'to':'e1','res':'ok'},{'to':'rvx',**F}],I1,want='$bw',show=['acc','eatk'],omens=['Omen_of_Abyssal_Echoes'],showIf=[{'param':{'bw':'acc'},'show':['acc']}]),
+ annul('rvx',[1,1],RB({'d1':{'port':'right'}})),
+ act('d1','main',[2,1],'desecrate','Ancient_Jawbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RB({'rv':{}}),I0,omens=['Omen_of_Sinistral_Necromancy']),
+ act('e1','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),None,K('엑잘','Exalt'),RB({'s1':'ok','w1':F}),I2,show=['hyb','flat'],omens=['Omen_of_Sinistral_Exaltation']),
+ act('w1','main',[1,2],'chaos','Perfect_Chaos_Orb',K('접두 세번째 옵션','Third prefix'),None,K('카오스','Chaos'),RB({'s1':'ok','e1':{'res':'fail'},'c0':F}),I2,show=['hyb','flat'],trim={'side':'p','keep':'keepP','keepDes':True}),
+ act('c0','main',[2,2],'chaos','Perfect_Chaos_Orb',K('접두 첫번째 옵션','First prefix'),None,K('카오스','Chaos'),[e if e.get('res') or e['to']=='c0' else dict(e,res='ok') for e in RB({'e1':{'res':'ok'}})],I2,show=['pp'],omens=['Omen_of_Sinistral_Erasure']),
+ act('s1','main',[0,3],'exalt','Perfect_Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','잡옵','Junk')],K('엑잘','Exalt'),RB({'s2':{}}),I3),
+ act('s2','main',[0,4],'chaos','Perfect_Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),RB({'s3':'ok'}),I4,show=['proj','arr'],omens=['Omen_of_Dextral_Erasure']),
+ act('s3','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','잡옵','Junk')],K('엑잘','Exalt'),RB({'w2':{}}),I5),
+ act('w2','main',[0,6],'chaos','Perfect_Chaos_Orb',K('접미 세번째 옵션','Third suffix'),None,K('카오스','Chaos'),RB({'r1':'ok'}),I6,show=['proj','arr','cdm'],trim={'side':'s','keep':'keepS'}),
+ act('r1','main',[0,7],'rune',None,K('세를의 승리 장착 (접미 +1)','Socket Serle’s Triumph (+1 suffix)'),[st(None,'접미 옵션 4개','Four suffixes')],K('룬','Rune'),[{'to':'s4'}],I7,slots={'s':1},rune=K('세를의 승리','Serle’s Triumph')),
+ act('s4','main',[0,8],'exalt','Perfect_Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','잡옵','Junk')],K('엑잘','Exalt'),RB({'w3':{}}),I8),
+ act('w3','main',[0,9],'chaos','Perfect_Chaos_Orb',K('접미 네번째 옵션','Fourth suffix'),None,K('카오스','Chaos'),RB({'f1':'ok'}),I9,show=['proj','arr','cdm'],trim={'side':'s','keep':'keepS'}),
+ annul('f1',[0,10],RB({'f2':{}}),target=K('자리 막기 훼손 옵션 제거','Remove the blocking desecration')),
+ act('f2','main',[0,11],'desecrate','Ancient_Jawbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'f3'}],I10),
+ act('f3','main',[0,12],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'p3'},'to':'ok','res':'ok'},{'to':'f3x',**F}],I11,want='p3',show=['flat','hyb'],omens=['Omen_of_Abyssal_Echoes']),
+ annul('f3x',[1,12],RB({'f2':{'port':'right'}})),
+ done([0,13])]
 nodes[0]['start']['quality']=30
 graph11('mirror-bow-video-v2','Bows','Warmonger Bow',82,
-  '반지깎는노인 미러 활(J0LF3MRssh0, 사용자 단계 목록) — 치명타 확률 분열 + 물리 피해 % 1티어 + 미공개 접두 훼손 → 자리 막기 공개 → 좌측 찬미 + 완벽한 엑잘(물리 % + 정확도 또는 물리 피해 추가, 빗나가면 절사 카오스) → 접미 잡옵 + 우측 말소의 징조 + 카오스 오브(투사체 +4 또는 화살 초과) → 세를의 승리 → 절사의 징조 + 상위 카오스 오브(남은 투사체/화살 + 치명타 피해 보너스) → 빛의 징조로 막기 제거 → 고대 턱뼈 → 남은 물리 접두 공개. 하이엔드 = 1티어, 밸런스 = 접두 엑잘이 빗나가면 잡옵을 두고 마지막 공개로 물리 접두 하나(1~2티어), 화살·치명타 피해 1~2티어.',
-  {'pT':{'kr':'목표 티어','en':'Target tier','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},PT,
-  {'high':K('영상: 접두·접미 모두 1티어','Video: all T1'),'bal':K('접두 엑잘이 빗나가면 잡옵을 두고 진행 · 물리 접두 하나는 마지막 공개(1~2티어) · 화살·치명타 피해 1~2티어','A missed prefix exalt stays as junk; one phys prefix from the last reveal (T1–2); T1–2 arrow and crit damage')},tags,nodes,
+  '반지깎는노인 미러 활(J0LF3MRssh0, 사용자 단계 목록) — 치명타 확률 분열 + 물리 피해 % 1티어 + 미공개 접두 훼손 → 자리 막기 공개(정확도 1티어 — 막아 두면 카오스 오브에 정확도가 안 나와 물리 피해 %보다 낮은 잡옵을 절사로 안전하게 지움, 타협 = 정확도 또는 공격 원소 피해 1티어) → 좌측 찬미 + 완벽한 엑잘(물리 % + 정확도 또는 물리 피해 추가 1티어, 빗나가면 절사 카오스) → 접미 잡옵 + 우측 말소 + 완벽한 카오스 오브(투사체 +4 또는 화살 초과) → 접미 잡옵 + 절사 카오스(세 번째 접미) → 세를의 승리 → 접미 잡옵 + 절사 카오스(네 번째 접미) → 빛의 징조로 막기 제거 → 고대 턱뼈 → 남은 물리 접두 공개.',
+  {'pT':{'kr':'목표 티어','en':'Target tier','values':TV({'1':('1티어','T1')})},'bw':{'kr':'자리 막기','en':'Blocker','values':TV({'acc':('정확도 1티어','T1 accuracy'),'blk':('정확도 또는 공격 원소 피해 1티어 (타협)','T1 accuracy or attack elemental (settle)')})}},
+  {'high':{'pT':1,'bw':'acc'}},
+  {'high':K('영상·사용자 방식: 정확도 1티어로 자리 막기 → 절사로 확정 제작','Video/user method: block with T1 accuracy, then whittle safely')},tags,nodes,
   [{'id':'L1','nodes':['f2','f3','f3x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['rv','rvx','d1'],'kr':'자리 막기','en':'Block'}],
-  FIN(('high','bal'),lambda v:[{'tag':'pp'},{'tag':'hyb','tmax':1} if v=='high' else {'side':'p','random':True},{'tag':'flat','tmax':1 if v=='high' else 2,'des':True},{'tag':'crit','fr':True},{'tag':'proj'},{'tag':'arr','tmax':1 if v=='high' else 2},{'tag':'cdm','tmax':1 if v=='high' else 2}]),
-  {'quality':30,'sockets':3},{'all':[{'has':'pp'},{'any':[{'count':{'tag':'p3','min':2}},{'all':[V2,{'has':'p3'}]}]},{'count':{'tag':'sx','min':2}},{'has':'cdm'}]},('high','bal'))
+  FIN(('high',),lambda v:[{'tag':'pp'},{'tag':'hyb'},{'tag':'flat','des':True},{'tag':'crit','fr':True},{'tag':'proj'},{'tag':'arr'},{'tag':'cdm'}]),
+  {'quality':30,'sockets':3},{'all':[{'has':'pp'},{'count':{'tag':'p3','min':2}},{'count':{'tag':'sx','min':2}},{'has':'cdm'}]},('high',))
+_g=json.load(open(f'{H}/mirror-bow-video-v2.json')); _g['strategies'].append({'id':'high-settle','params':{'pT':1,'bw':'blk'}}); json.dump(_g,open(f'{H}/mirror-bow-video-v2.json','w'),ensure_ascii=False,indent=1)
 
 # ---------- 2. 반지깎는노인 주문 +6 부재 목걸이 (Yi1u0LhJztI) ----------
 # 시작: 정신력 +50 분열 + 잡옵(시전 퀄리티 48%) → 카오스 오브(모든 주문 스킬 +3) → 좌측 찬미 + 엑잘(접두 잡옵) → 균열의 에센스(최대 퀄리티, 접두가 꽉 차 있어 징조 없음)

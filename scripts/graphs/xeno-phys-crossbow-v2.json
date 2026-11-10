@@ -1,0 +1,2515 @@
+{
+ "id": "xeno-phys-crossbow-v2",
+ "recipe": "xeno-phys-crossbow-v2",
+ "cls": "Crossbows",
+ "base": "Desolate Crossbow",
+ "ilvl": 82,
+ "note": "XenoARPG 물리 석궁(1TP4aGqxU7Q, 자막 없음 — 화면 기준) — 치명타 확률 분열 + 잡옵 → 카오스 오브(물리 피해 % 1티어) → 고대 턱뼈 자리 막기(정확도 1티어, 영상·타협 = 공격 원소 피해 1티어) → 좌측 찬미 + 완벽한 엑잘(물리 % + 정확도, 빗나가면 절사 카오스) → 상위 찬미 + 완벽한 엑잘(투사체 +5·공격 속도) → 절사 + 완벽한 카오스 오브 → 빛의 징조로 막기 제거 → 고대 턱뼈 → 물리 피해 추가 공개.",
+ "params": {
+  "pT": {
+   "kr": "목표 티어",
+   "en": "Target tier",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    }
+   }
+  },
+  "bw": {
+   "kr": "자리 막기",
+   "en": "Blocker",
+   "values": {
+    "acc": {
+     "kr": "정확도 1티어",
+     "en": "T1 accuracy"
+    },
+    "blk": {
+     "kr": "정확도 또는 공격 원소 피해 1티어 (영상·타협)",
+     "en": "T1 accuracy or attack elemental (video, settle)"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "pT": 1,
+    "bw": "acc"
+   }
+  },
+  {
+   "id": "high-settle",
+   "params": {
+    "pT": 1,
+    "bw": "blk"
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "pT": 1,
+    "bw": "acc"
+   },
+   "desc": {
+    "kr": "정확도 1티어로 자리 막기 → 절사로 확정 제작",
+    "en": "Block with T1 accuracy, then whittle safely"
+   }
+  }
+ ],
+ "tags": {
+  "crit": {
+   "gi": 18,
+   "tmax": 1
+  },
+  "pp": {
+   "gi": 8,
+   "tmax": 1
+  },
+  "hyb": {
+   "gi": 9,
+   "tmax": 1
+  },
+  "flat": {
+   "gi": 3,
+   "tmax": 1
+  },
+  "eatk": {
+   "gi": 23,
+   "tmax": 1
+  },
+  "acc": {
+   "gi": 17,
+   "tmax": 1
+  },
+  "proj": {
+   "gi": 10,
+   "tmax": 1
+  },
+  "as": {
+   "gi": 16,
+   "tmax": 1
+  },
+  "blk": {
+   "anyOf": [
+    "eatk",
+    "acc"
+   ]
+  },
+  "p3": {
+   "anyOf": [
+    "hyb",
+    "flat"
+   ]
+  },
+  "sg": {
+   "anyOf": [
+    "proj",
+    "as"
+   ]
+  },
+  "keepP": {
+   "anyOf": [
+    "pp",
+    "p3"
+   ]
+  },
+  "keepS": {
+   "anyOf": [
+    "proj",
+    "as"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "pp"
+   },
+   {
+    "count": {
+     "tag": "p3",
+     "min": 2
+    }
+   },
+   {
+    "count": {
+     "tag": "sg",
+     "min": 2
+    }
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "f2",
+    "f3",
+    "f3x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "d1",
+    "rv",
+    "rvx"
+   ],
+   "kr": "자리 막기",
+   "en": "Block"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "pp"
+    },
+    {
+     "tag": "hyb"
+    },
+    {
+     "tag": "flat",
+     "des": true
+    },
+    {
+     "tag": "crit",
+     "fr": true
+    },
+    {
+     "tag": "proj"
+    },
+    {
+     "tag": "as"
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 3
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "crit",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "치명타 확률 1티어 분열 + 잡옵 1개",
+    "en": "Fractured T1 crit chance + one junk line"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "c1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pp"
+     },
+     "to": "d1",
+     "res": "ok"
+    },
+    {
+     "to": "c1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "pp"
+   ]
+  },
+  {
+   "id": "d1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 두번째 옵션(훼손)",
+    "en": "Second prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "sg",
+         "min": 2
+        }
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ]
+  },
+  {
+   "id": "rv",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "자리 막기 옵션 확인",
+    "en": "Reveal the blocker"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "$bw"
+     },
+     "to": "e1",
+     "res": "ok"
+    },
+    {
+     "to": "rvx",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "want": "$bw",
+   "show": [
+    "acc",
+    "eatk"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "showIf": [
+    {
+     "param": {
+      "bw": "acc"
+     },
+     "show": [
+      "acc"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rvx",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    3
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "sg",
+         "min": 2
+        }
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "sg",
+         "min": 2
+        }
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "hyb",
+    "flat"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "w1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "sg",
+         "min": 2
+        }
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "res": "fail"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "hyb",
+    "flat"
+   ],
+   "trim": {
+    "side": "p",
+    "keep": "keepP",
+    "keepDes": true
+   }
+  },
+  {
+   "id": "s1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 두번째·세번째 옵션",
+    "en": "Second and third suffixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "sg",
+         "min": 2
+        }
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +5",
+     "en": "+5 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "proj",
+    "as"
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ]
+  },
+  {
+   "id": "w2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "sg",
+         "min": 2
+        }
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +5",
+     "en": "+5 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (17—19)% 증가",
+     "en": "(17—19)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "proj",
+    "as"
+   ],
+   "trim": {
+    "side": "s",
+    "keep": "keepS",
+    "keepDes": true
+   }
+  },
+  {
+   "id": "f1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "자리 막기 훼손 옵션 제거",
+    "en": "Remove the blocking desecration"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "sg",
+         "min": 2
+        }
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2"
+    }
+   ]
+  },
+  {
+   "id": "f2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "f3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +5",
+     "en": "+5 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (17—19)% 증가",
+     "en": "(17—19)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ]
+  },
+  {
+   "id": "f3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "p3"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "f3x",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (37—55)~(63—94) 추가",
+     "en": "Adds (37—55) to (63—94) Physical Damage",
+     "m": "d",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +5",
+     "en": "+5 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (17—19)% 증가",
+     "en": "(17—19)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    }
+   ],
+   "want": "p3",
+   "show": [
+    "flat",
+    "hyb"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "f3x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "sg",
+         "min": 2
+        }
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

@@ -77,7 +77,7 @@ function make(graph, D, craft, params){
     // Whittling / Erasure choice (policy 23 ④): the junk line is the lowest → Whittling; lowest of its side only → Whittling + that side's Erasure;
     // a wanted line of that side is lower → Erasure alone (1/2)
     function trimOmens(n){ const sd=n.trim.side, keep=n.trim.keep;
-      const junk=it.mods.filter(m=>m.side===sd && !m.fr && !m.unrev && !match(m,keep)); if(!junk.length) return [sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure'];
+      const junk=it.mods.filter(m=>m.side===sd && !m.fr && !m.unrev && !(n.trim.keepDes && m.des) && !match(m,keep));   // keepDes: a revealed desecrated line (the blocker) is never the junk if(!junk.length) return [sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure'];
       // several junk lines (SL 화염파 지팡이: two junk suffixes): the lowest junk line decides — Whittling hits a junk line whenever every other line is higher
       const lj=Math.min(...junk.map(lvl)), others=it.mods.filter(m=>!m.fr && !m.unrev && !junk.includes(m)), same=others.filter(m=>m.side===sd);
       const er = sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure';

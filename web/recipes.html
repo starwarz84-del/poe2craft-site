@@ -950,7 +950,7 @@ const divineChip = r => { const c=recipeCost(r), d=cur('Divine_Orb');
 // policy 21: the difficulty's cost limit and expensive-omen limit (site/data/budget.json); a draft's market price (entered on the Discover tab) wins
 const EXPENSIVE = () => S.budget?.expensive || ['Omen_of_Whittling','Omen_of_Sinistral_Erasure','Omen_of_Dextral_Erasure','Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment','Omen_of_Light','Hinekoras_Lock'];
 // 전문가 이상(사용자 확정 2026-11-10): 시세가 계속 바뀌고 가중치를 확인할 수 없는 옵션이 많아 비용은 추정치
-const estNote = r => difficulty(r)>=4 ? `<p class="estnote">${L('ⓘ 전문가 이상 제작은 시세가 계속 바뀌고 가중치를 확인할 수 없는 옵션이 많아요. 비용은 추정치라 그대로 믿기는 어려워요.','ⓘ Expert-level crafts: prices keep moving and many weights cannot be checked, so costs are estimates, not exact figures.')}</p>` : '';
+const estNote = r => difficulty(r)>=4 ? `<p class="estnote">${L('ⓘ 전문가 이상 제작은 시세가 계속 바뀌고 가중치를 확인할 수 없는 옵션이 많습니다. 비용은 추정치이므로 그대로 믿기는 어렵습니다.','ⓘ Expert-level crafts: prices keep moving and many weights cannot be checked, so costs are estimates, not exact figures.')}</p>` : '';
 function budgetLine(r){ const c=recipeCost(r); if(!c) return ''; const a=analyse(r), lv0=S.budget?.levels?.[difficulty(r)], pt=priceTier(r);
   const lv = !lv0 || pt?.id==='mirror' ? null : {kr:lv0.kr, en:lv0.en, omens:lv0.omens, div: r.priceTier && pt ? tierMax(pt) : null, tier:pt};
   const om = EXPENSIVE().reduce((s,k)=>s+(a.tot[k]||0),0);

@@ -11,7 +11,7 @@ _OLD = {'diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helm
         'mastert-timelost-emerald-v2':'mastert-timelost-emerald','chiba-timelost-emerald-v2':'chiba-timelost-emerald',
         'noble-timelost-sapphire-v2':'noble-timelost-sapphire','mazbro-proj-gloves-v2':'mazbro-proj-gloves',
         'sl-flamewave-staff-v2':'sl-flamewave-staff','mazbro-caster-amulet-v2':'mazbro-caster-amulet',
-        'mazbro-spell5-amulet-v2':'mazbro-spell5-amulet','gold-amulet-6line-v2':'gold-amulet-6line','absent-amulet-video-v2':'absent-amulet-video','sl-flamewave-ring-v2':'sl-flamewave-ring','breach-ring-video-v2':'breach-ring-video','saveq-focus-v2':'saveq-focus','sl-proj7-gloves-v2':'sl-proj7-gloves','diztoh-iceshot-bow-v2':'diztoh-iceshot-bow','grasping-mail-spell1-v2':'grasping-mail-spell1','mazbro-bis-chest-v2':'mazbro-bis-chest','mirror-bow-video-v2':'mirror-bow-video','absent-amulet-spell6-v2':'absent-amulet-spell6'}
+        'mazbro-spell5-amulet-v2':'mazbro-spell5-amulet','gold-amulet-6line-v2':'gold-amulet-6line','absent-amulet-video-v2':'absent-amulet-video','sl-flamewave-ring-v2':'sl-flamewave-ring','breach-ring-video-v2':'breach-ring-video','saveq-focus-v2':'saveq-focus','sl-proj7-gloves-v2':'sl-proj7-gloves','diztoh-iceshot-bow-v2':'diztoh-iceshot-bow','grasping-mail-spell1-v2':'grasping-mail-spell1','mazbro-bis-chest-v2':'mazbro-bis-chest','mirror-bow-video-v2':'mirror-bow-video','absent-amulet-spell6-v2':'absent-amulet-spell6','mazbro-sceptre-v2':'mazbro-sceptre','xeno-phys-crossbow-v2':'xeno-phys-crossbow'}
 # grade recipes copied straight from the original recipe (recipes_v5_zz-batch5-v2.py) also take its short notes and branch lines
 _COPIED = {'ragna-ashot-bow-v2','sane-resist-belt-v2','diztoh-budget-mace-v2','lilbotq-budget-boots-v2','icesly-budget-wand-v2',
            'diztoh-es-helmet-v2','belton-plus8-wand-v2','lilbotq-armour-shield-v2','diztoh-vile-robe-v2','diztoh-talisman-v2',
@@ -21,7 +21,7 @@ _COPIED = {'ragna-ashot-bow-v2','sane-resist-belt-v2','diztoh-budget-mace-v2','l
            'sl-5mod-jewel-v2','vodnarg-timelost-emerald-v2','lilbotq-boots-v2','mazbro-caster-ring-v2',
            'diztoh-as-spear-v2','diztoh-socket-gloves-v2','seek-cyclone-boots-v2',
            'mastert-timelost-emerald-v2','chiba-timelost-emerald-v2','noble-timelost-sapphire-v2','mazbro-proj-gloves-v2',
-           'sl-flamewave-staff-v2','mazbro-caster-amulet-v2','mazbro-spell5-amulet-v2','gold-amulet-6line-v2','absent-amulet-video-v2','sl-flamewave-ring-v2','breach-ring-video-v2','saveq-focus-v2','sl-proj7-gloves-v2','diztoh-iceshot-bow-v2','grasping-mail-spell1-v2','mazbro-bis-chest-v2','mirror-bow-video-v2','absent-amulet-spell6-v2'}
+           'sl-flamewave-staff-v2','mazbro-caster-amulet-v2','mazbro-spell5-amulet-v2','gold-amulet-6line-v2','absent-amulet-video-v2','sl-flamewave-ring-v2','breach-ring-video-v2','saveq-focus-v2','sl-proj7-gloves-v2','diztoh-iceshot-bow-v2','grasping-mail-spell1-v2','mazbro-bis-chest-v2','mirror-bow-video-v2','absent-amulet-spell6-v2','mazbro-sceptre-v2','xeno-phys-crossbow-v2'}
 # Step notes are short (사용자 확정 2026-11-09): a step shows only its target and currency (head + target line on screen);
 # a note is kept only for the start, the finish, and forks/choices, and then says just the branch. None = no note.
 # Steps that already show a currency and a target hide their note in recipes.html, so only these steps need text.
@@ -43,7 +43,7 @@ SHORT = {
  ('absent-amulet-spell6','e2'): ('성유: 자로크의 선물.','Anoint: Zarokh\'s Gift.'),
  ('absent-amulet-spell6','e4'): ('선택: 신성한 오브 → 축성(주문 +4 → +6 노림).','Optional: Divine, then sanctify (aiming +4 → +6 spells).'),
  ('absent-amulet-spell6','e9'): ('완성.','Done.'),
- ('absent-amulet-spell6','q2'): None, ('absent-amulet-spell6','m1'): ('좌측 강령술의 징조로 최대 퀄리티 자리를 훼손 → 빛의 징조 + 소멸의 오브 → 우측 강령술의 징조로 다시 훼손(접미).','Sinistral Necromancy over the Maximum Quality slot, Light + Annulment, then Dextral Necromancy again (suffix).'), ('absent-amulet-spell6','c1'): None,
+ ('mirror-bow-video','b8w'): None, ('mirror-bow-video','b9x'): None, ('absent-amulet-spell6','q2'): None, ('absent-amulet-spell6','m1'): ('좌측 강령술의 징조로 최대 퀄리티 자리를 훼손 → 빛의 징조 + 소멸의 오브 → 우측 강령술의 징조로 다시 훼손(접미).','Sinistral Necromancy over the Maximum Quality slot, Light + Annulment, then Dextral Necromancy again (suffix).'), ('absent-amulet-spell6','c1'): None,
  ('mazbro-caster-ring','r7'): ('바알 촉진시키는 주입기 1회(안전).','One Vaal Catalysing Infuser (safe).'),
  ('mazbro-caster-ring','r15'): ('완성.','Done.'),
  ('mazbro-caster-amulet','a18'): ('신성한 오브 + 축복받은 자의 징조(고정 옵션 정신력 15). 완성.','Divine + Omen of the Blessed (implicit Spirit 15). Done.'),

@@ -4,7 +4,7 @@
  "cls": "Bows",
  "base": "Warmonger Bow",
  "ilvl": 82,
- "note": "반지깎는노인 미러 활(J0LF3MRssh0, 사용자 단계 목록) — 치명타 확률 분열 + 물리 피해 % 1티어 + 미공개 접두 훼손 → 자리 막기 공개 → 좌측 찬미 + 완벽한 엑잘(물리 % + 정확도 또는 물리 피해 추가, 빗나가면 절사 카오스) → 접미 잡옵 + 우측 말소의 징조 + 카오스 오브(투사체 +4 또는 화살 초과) → 세를의 승리 → 절사의 징조 + 상위 카오스 오브(남은 투사체/화살 + 치명타 피해 보너스) → 빛의 징조로 막기 제거 → 고대 턱뼈 → 남은 물리 접두 공개. 하이엔드 = 1티어, 밸런스 = 접두 엑잘이 빗나가면 잡옵을 두고 마지막 공개로 물리 접두 하나(1~2티어), 화살·치명타 피해 1~2티어.",
+ "note": "반지깎는노인 미러 활(J0LF3MRssh0, 사용자 단계 목록) — 치명타 확률 분열 + 물리 피해 % 1티어 + 미공개 접두 훼손 → 자리 막기 공개(정확도 1티어 — 막아 두면 카오스 오브에 정확도가 안 나와 물리 피해 %보다 낮은 잡옵을 절사로 안전하게 지움, 타협 = 정확도 또는 공격 원소 피해 1티어) → 좌측 찬미 + 완벽한 엑잘(물리 % + 정확도 또는 물리 피해 추가 1티어, 빗나가면 절사 카오스) → 접미 잡옵 + 우측 말소 + 완벽한 카오스 오브(투사체 +4 또는 화살 초과) → 접미 잡옵 + 절사 카오스(세 번째 접미) → 세를의 승리 → 접미 잡옵 + 절사 카오스(네 번째 접미) → 빛의 징조로 막기 제거 → 고대 턱뼈 → 남은 물리 접두 공개.",
  "params": {
   "pT": {
    "kr": "목표 티어",
@@ -13,10 +13,20 @@
     "1": {
      "kr": "1티어",
      "en": "T1"
+    }
+   }
+  },
+  "bw": {
+   "kr": "자리 막기",
+   "en": "Blocker",
+   "values": {
+    "acc": {
+     "kr": "정확도 1티어",
+     "en": "T1 accuracy"
     },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
+    "blk": {
+     "kr": "정확도 또는 공격 원소 피해 1티어 (타협)",
+     "en": "T1 accuracy or attack elemental (settle)"
     }
    }
   }
@@ -25,39 +35,30 @@
   {
    "id": "high",
    "params": {
-    "pT": 1
+    "pT": 1,
+    "bw": "acc"
    }
   },
   {
-   "id": "bal",
+   "id": "high-settle",
    "params": {
-    "pT": 2
+    "pT": 1,
+    "bw": "blk"
    }
   }
  ],
  "versions": [
   {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "pT": 2
-   },
-   "desc": {
-    "kr": "접두 엑잘이 빗나가면 잡옵을 두고 진행 · 물리 접두 하나는 마지막 공개(1~2티어) · 화살·치명타 피해 1~2티어",
-    "en": "A missed prefix exalt stays as junk; one phys prefix from the last reveal (T1–2); T1–2 arrow and crit damage"
-   }
-  },
-  {
    "id": "high",
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "pT": 1
+    "pT": 1,
+    "bw": "acc"
    },
    "desc": {
-    "kr": "영상: 접두·접미 모두 1티어",
-    "en": "Video: all T1"
+    "kr": "영상·사용자 방식: 정확도 1티어로 자리 막기 → 절사로 확정 제작",
+    "en": "Video/user method: block with T1 accuracy, then whittle safely"
    }
   }
  ],
@@ -72,11 +73,11 @@
   },
   "hyb": {
    "gi": 8,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "flat": {
    "gi": 2,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "eatk": {
    "gi": 21,
@@ -92,11 +93,11 @@
   },
   "arr": {
    "gi": 20,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "cdm": {
    "gi": 18,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "blk": {
    "anyOf": [
@@ -116,28 +117,25 @@
     "arr"
    ]
   },
+  "sg": {
+   "anyOf": [
+    "proj",
+    "arr",
+    "cdm"
+   ]
+  },
   "keepP": {
    "anyOf": [
     "pp",
-    "p31"
+    "p3"
    ]
   },
-  "hyb1": {
-   "gi": 8,
-   "tmax": 1
-  },
-  "flat1": {
-   "gi": 2,
-   "tmax": 1
-  },
-  "p31": {
+  "keepT": {
    "anyOf": [
-    "hyb1",
-    "flat1"
+    "pp",
+    "p3",
+    "blk"
    ]
-  },
-  "ppx": {
-   "gi": 7
   },
   "keepS": {
    "anyOf": [
@@ -152,26 +150,10 @@
     "has": "pp"
    },
    {
-    "any": [
-     {
-      "count": {
-       "tag": "p3",
-       "min": 2
-      }
-     },
-     {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       }
-      ]
-     }
-    ]
+    "count": {
+     "tag": "p3",
+     "min": 2
+    }
    },
    {
     "count": {
@@ -237,12 +219,10 @@
      "tag": "pp"
     },
     {
-     "tag": "hyb",
-     "tmax": 1
+     "tag": "hyb"
     },
     {
      "tag": "flat",
-     "tmax": 1,
      "des": true
     },
     {
@@ -253,46 +233,10 @@
      "tag": "proj"
     },
     {
-     "tag": "arr",
-     "tmax": 1
+     "tag": "arr"
     },
     {
-     "tag": "cdm",
-     "tmax": 1
-    }
-   ]
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "pp"
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "tag": "flat",
-     "tmax": 2,
-     "des": true
-    },
-    {
-     "tag": "crit",
-     "fr": true
-    },
-    {
-     "tag": "proj"
-    },
-    {
-     "tag": "arr",
-     "tmax": 2
-    },
-    {
-     "tag": "cdm",
-     "tmax": 2
+     "tag": "cdm"
     }
    ]
   }
@@ -367,7 +311,7 @@
     0,
     0.6
    ],
-   "next": "r1",
+   "next": "rv",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -400,80 +344,12 @@
    ]
   },
   {
-   "id": "r1",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    1
-   ],
-   "act": "rune",
-   "goal": {
-    "kr": "세를의 승리 장착 (접미 +1)",
-    "en": "Socket Serle’s Triumph (+1 suffix)"
-   },
-   "label": {
-    "kr": "룬",
-    "en": "Rune"
-   },
-   "edges": [
-    {
-     "to": "rv"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
-     "m": "n",
-     "tags": [
-      "pp"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    },
-    {
-     "s": "s",
-     "kr": "치명타 확률 +(4.41—5)% (분열)",
-     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
-    }
-   ],
-   "showText": [
-    {
-     "kr": "접미 옵션 4개",
-     "en": "Four suffixes"
-    }
-   ],
-   "slots": {
-    "s": 1
-   },
-   "rune": {
-    "kr": "세를의 승리",
-    "en": "Serle’s Triumph"
-   }
-  },
-  {
    "id": "rv",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    1
    ],
    "act": "reveal",
    "goal": {
@@ -487,7 +363,7 @@
    "edges": [
     {
      "if": {
-      "added": "blk"
+      "added": "$bw"
      },
      "to": "e1",
      "res": "ok"
@@ -510,11 +386,11 @@
     },
     {
      "s": "p",
-     "kr": "공격 원소 피해 (87—100)% 증가 (훼손, 자리 막기)",
-     "en": "(87—100)% increased Elemental Damage with Attacks (desecrated, blocker)",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
      "m": "d",
      "tags": [
-      "eatk"
+      "acc"
      ]
     },
     {
@@ -525,21 +401,25 @@
      "tags": [
       "crit"
      ]
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
     }
    ],
-   "want": "blk",
+   "want": "$bw",
    "show": [
-    "eatk",
-    "acc"
+    "acc",
+    "eatk"
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
+   ],
+   "showIf": [
+    {
+     "param": {
+      "bw": "acc"
+     },
+     "show": [
+      "acc"
+     ]
+    }
    ]
   },
   {
@@ -548,7 +428,7 @@
    "group": "main",
    "pos": [
     1,
-    2
+    1
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -579,6 +459,16 @@
     },
     {
      "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
       "all": [
        {
         "all": [
@@ -594,16 +484,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -629,37 +510,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -677,32 +534,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -718,64 +551,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -808,12 +588,82 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
      "hide": true
     },
     {
@@ -832,52 +682,17 @@
        ]
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -898,30 +713,6 @@
      "hide": true
     },
     {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
      "to": "f2",
      "hide": true
     }
@@ -933,7 +724,7 @@
    "group": "main",
    "pos": [
     2,
-    2
+    1
    ],
    "act": "desecrate",
    "goal": {
@@ -956,6 +747,16 @@
     },
     {
      "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
       "all": [
        {
         "all": [
@@ -971,16 +772,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -1005,37 +797,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -1053,32 +821,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -1094,64 +838,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -1184,12 +875,82 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
      "hide": true
     },
     {
@@ -1208,52 +969,17 @@
        ]
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -1269,30 +995,6 @@
        "tag": "p3",
        "min": 2
       }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
      },
      "to": "ok",
      "hide": true
@@ -1346,7 +1048,7 @@
    "group": "main",
    "pos": [
     0,
-    3
+    2
    ],
    "act": "exalt",
    "goal": {
@@ -1369,6 +1071,17 @@
     },
     {
      "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
       "all": [
        {
         "all": [
@@ -1384,16 +1097,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -1419,37 +1123,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -1467,32 +1147,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -1508,65 +1164,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -1599,12 +1201,82 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
      "hide": true
     },
     {
@@ -1623,52 +1295,17 @@
        ]
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -1684,30 +1321,6 @@
        "tag": "p3",
        "min": 2
       }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
      },
      "to": "ok",
      "hide": true
@@ -1729,11 +1342,11 @@
     },
     {
      "s": "p",
-     "kr": "공격 원소 피해 (87—100)% 증가 (훼손, 자리 막기)",
-     "en": "(87—100)% increased Elemental Damage with Attacks (desecrated, blocker)",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
      "m": "d",
      "tags": [
-      "eatk"
+      "acc"
      ]
     },
     {
@@ -1753,12 +1366,6 @@
      "tags": [
       "crit"
      ]
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
     }
    ],
    "cur": "Perfect_Exalted_Orb",
@@ -1776,7 +1383,7 @@
    "group": "main",
    "pos": [
     1,
-    3
+    2
    ],
    "act": "chaos",
    "goal": {
@@ -1795,6 +1402,17 @@
       }
      },
      "to": "c0",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
      "hide": true
     },
     {
@@ -1814,16 +1432,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -1849,37 +1458,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -1897,32 +1482,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -1938,64 +1499,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -2028,12 +1536,82 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
      "hide": true
     },
     {
@@ -2052,52 +1630,17 @@
        ]
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -2113,30 +1656,6 @@
        "tag": "p3",
        "min": 2
       }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
      },
      "to": "ok",
      "hide": true
@@ -2158,11 +1677,11 @@
     },
     {
      "s": "p",
-     "kr": "공격 원소 피해 (87—100)% 증가 (훼손, 자리 막기)",
-     "en": "(87—100)% increased Elemental Damage with Attacks (desecrated, blocker)",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
      "m": "d",
      "tags": [
-      "eatk"
+      "acc"
      ]
     },
     {
@@ -2182,12 +1701,6 @@
      "tags": [
       "crit"
      ]
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
     }
    ],
    "cur": "Perfect_Chaos_Orb",
@@ -2195,396 +1708,11 @@
     "hyb",
     "flat"
    ],
-   "omens": [
-    "Omen_of_Whittling",
-    "Omen_of_Sinistral_Erasure"
-   ]
-  },
-  {
-   "id": "pa",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    2,
-    3
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Sinistral_Annulment"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "접두 잡옵 지우기",
-    "en": "Remove the junk prefix"
-   },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "pp"
-      }
-     },
-     "to": "c0",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "all": [
-         {
-          "has": "cdm"
-         },
-         {
-          "count": {
-           "tag": "sx",
-           "min": 2
-          }
-         }
-        ]
-       },
-       {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "des": true
-        }
-       },
-       {
-        "unrevSide": "p"
-       }
-      ]
-     },
-     "to": "f3",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "rv",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "des": true
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
-     },
-     "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "sx"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "sx"
-      }
-     },
-     "to": "s2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
-     },
-     "to": "s3",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "has": "cdm"
-        },
-        {
-         "count": {
-          "tag": "sx",
-          "min": 2
-         }
-        }
-       ]
-      }
-     },
-     "to": "w2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
-     },
-     "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
-     "hide": true
-    },
-    {
-     "if": {
-      "des": true
-     },
-     "to": "f1",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "p3",
-       "min": 2
-      }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "to": "f2",
-     "hide": true
-    }
-   ]
+   "trim": {
+    "side": "p",
+    "keep": "keepP",
+    "keepDes": true
+   }
   },
   {
    "id": "c0",
@@ -2592,7 +1720,7 @@
    "group": "main",
    "pos": [
     2,
-    4
+    2
    ],
    "act": "chaos",
    "goal": {
@@ -2615,6 +1743,17 @@
     },
     {
      "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true,
+     "res": "ok"
+    },
+    {
+     "if": {
       "all": [
        {
         "all": [
@@ -2630,16 +1769,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -2667,37 +1797,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -2716,32 +1822,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -2757,65 +1839,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "hide": true,
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true,
      "res": "ok"
     },
@@ -2851,12 +1879,85 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
+     "hide": true,
+     "res": "ok"
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true,
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true,
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
      "hide": true,
      "res": "ok"
     },
@@ -2876,54 +1977,18 @@
        ]
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true,
      "res": "ok"
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
      "to": "w1",
-     "hide": true,
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true,
      "res": "ok"
     },
@@ -2947,31 +2012,6 @@
      "res": "ok"
     },
     {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true,
-     "res": "ok"
-    },
-    {
      "to": "f2",
      "hide": true,
      "res": "ok"
@@ -2989,11 +2029,11 @@
     },
     {
      "s": "p",
-     "kr": "공격 원소 피해 (87—100)% 증가 (훼손, 자리 막기)",
-     "en": "(87—100)% increased Elemental Damage with Attacks (desecrated, blocker)",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
      "m": "d",
      "tags": [
-      "eatk"
+      "acc"
      ]
     },
     {
@@ -3013,12 +2053,6 @@
      "tags": [
       "crit"
      ]
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
     }
    ],
    "cur": "Perfect_Chaos_Orb",
@@ -3035,7 +2069,7 @@
    "group": "main",
    "pos": [
     0,
-    4
+    3
    ],
    "act": "exalt",
    "goal": {
@@ -3058,6 +2092,16 @@
     },
     {
      "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
       "all": [
        {
         "all": [
@@ -3073,16 +2117,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -3108,37 +2143,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -3156,32 +2167,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -3197,64 +2184,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -3286,12 +2220,82 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
      "hide": true
     },
     {
@@ -3310,52 +2314,17 @@
        ]
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -3371,30 +2340,6 @@
        "tag": "p3",
        "min": 2
       }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
      },
      "to": "ok",
      "hide": true
@@ -3416,11 +2361,11 @@
     },
     {
      "s": "p",
-     "kr": "공격 원소 피해 (87—100)% 증가 (훼손, 자리 막기)",
-     "en": "(87—100)% increased Elemental Damage with Attacks (desecrated, blocker)",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
      "m": "d",
      "tags": [
-      "eatk"
+      "acc"
      ]
     },
     {
@@ -3440,12 +2385,6 @@
      "tags": [
       "crit"
      ]
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
     },
     {
      "s": "s",
@@ -3469,7 +2408,7 @@
    "group": "main",
    "pos": [
     0,
-    5
+    4
    ],
    "act": "chaos",
    "goal": {
@@ -3492,6 +2431,16 @@
     },
     {
      "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
       "all": [
        {
         "all": [
@@ -3507,16 +2456,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -3542,37 +2482,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -3590,32 +2506,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -3631,64 +2523,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -3721,13 +2560,83 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
      "res": "ok"
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
+     "hide": true
     },
     {
      "if": {
@@ -3745,52 +2654,17 @@
        ]
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -3806,30 +2680,6 @@
        "tag": "p3",
        "min": 2
       }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
      },
      "to": "ok",
      "hide": true
@@ -3851,11 +2701,11 @@
     },
     {
      "s": "p",
-     "kr": "공격 원소 피해 (87—100)% 증가 (훼손, 자리 막기)",
-     "en": "(87—100)% increased Elemental Damage with Attacks (desecrated, blocker)",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
      "m": "d",
      "tags": [
-      "eatk"
+      "acc"
      ]
     },
     {
@@ -3884,12 +2734,6 @@
      "tags": [
       "proj"
      ]
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
     }
    ],
    "cur": "Perfect_Chaos_Orb",
@@ -3907,7 +2751,7 @@
    "group": "main",
    "pos": [
     0,
-    6
+    5
    ],
    "act": "exalt",
    "goal": {
@@ -3930,6 +2774,16 @@
     },
     {
      "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
       "all": [
        {
         "all": [
@@ -3945,16 +2799,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -3980,37 +2825,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -4028,32 +2849,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -4069,64 +2866,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -4159,12 +2903,81 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
      "hide": true
     },
     {
@@ -4183,51 +2996,17 @@
        ]
       }
      },
-     "to": "w2"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
-     },
-     "to": "w1",
+     "to": "w3",
      "hide": true
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
-     "to": "pa",
+     "to": "w1",
      "hide": true
     },
     {
@@ -4243,30 +3022,6 @@
        "tag": "p3",
        "min": 2
       }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
      },
      "to": "ok",
      "hide": true
@@ -4288,11 +3043,11 @@
     },
     {
      "s": "p",
-     "kr": "공격 원소 피해 (87—100)% 증가 (훼손, 자리 막기)",
-     "en": "(87—100)% increased Elemental Damage with Attacks (desecrated, blocker)",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
      "m": "d",
      "tags": [
-      "eatk"
+      "acc"
      ]
     },
     {
@@ -4327,6 +3082,809 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk"
+    }
+   ]
+  },
+  {
+   "id": "w2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c0",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "cdm"
+         },
+         {
+          "count": {
+           "tag": "sx",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "sx"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "sx"
+      }
+     },
+     "to": "s2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "all": [
+        {
+         "has": "cdm"
+        },
+        {
+         "count": {
+          "tag": "sx",
+          "min": 2
+         }
+        }
+       ]
+      }
+     },
+     "to": "w3",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +4",
+     "en": "+4 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화살 하나를 추가로 발사할 초과 확률 +(175—200)%",
+     "en": "+(175—200)% Surpassing chance to fire an additional Arrow",
+     "m": "n",
+     "tags": [
+      "arr"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "proj",
+    "arr",
+    "cdm"
+   ],
+   "trim": {
+    "side": "s",
+    "keep": "keepS"
+   }
+  },
+  {
+   "id": "r1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "세를의 승리 장착 (접미 +1)",
+    "en": "Socket Serle’s Triumph (+1 suffix)"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "s4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +4",
+     "en": "+4 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화살 하나를 추가로 발사할 초과 확률 +(175—200)%",
+     "en": "+(175—200)% Surpassing chance to fire an additional Arrow",
+     "m": "n",
+     "tags": [
+      "arr"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "세를의 승리",
+     "en": "Serle’s Triumph",
+     "m": "r"
+    }
+   ],
+   "showText": [
+    {
+     "kr": "접미 옵션 4개",
+     "en": "Four suffixes"
+    }
+   ],
+   "slots": {
+    "s": 1
+   },
+   "rune": {
+    "kr": "세를의 승리",
+    "en": "Serle’s Triumph"
+   }
+  },
+  {
+   "id": "s4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 잡옵",
+    "en": "A junk suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c0",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "cdm"
+         },
+         {
+          "count": {
+           "tag": "sx",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "sx"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "sx"
+      }
+     },
+     "to": "s2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "all": [
+        {
+         "has": "cdm"
+        },
+        {
+         "count": {
+          "tag": "sx",
+          "min": 2
+         }
+        }
+       ]
+      }
+     },
+     "to": "w3"
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +4",
+     "en": "+4 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화살 하나를 추가로 발사할 초과 확률 +(175—200)%",
+     "en": "+(175—200)% Surpassing chance to fire an additional Arrow",
+     "m": "n",
+     "tags": [
+      "arr"
+     ]
     },
     {
      "s": "s",
@@ -4351,17 +3909,17 @@
    ]
   },
   {
-   "id": "w2",
+   "id": "w3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7
+    9
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접미 세번째·네번째 옵션",
-    "en": "Third and fourth suffixes"
+    "kr": "접미 네번째 옵션",
+    "en": "Fourth suffix"
    },
    "label": {
     "kr": "카오스",
@@ -4375,6 +3933,16 @@
       }
      },
      "to": "c0",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
      "hide": true
     },
     {
@@ -4394,16 +3962,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -4429,37 +3988,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -4477,32 +4012,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -4518,64 +4029,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -4608,12 +4066,82 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
      "hide": true
     },
     {
@@ -4632,52 +4160,17 @@
        ]
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -4693,30 +4186,6 @@
        "tag": "p3",
        "min": 2
       }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
      },
      "to": "ok",
      "hide": true
@@ -4738,11 +4207,11 @@
     },
     {
      "s": "p",
-     "kr": "공격 원소 피해 (87—100)% 증가 (훼손, 자리 막기)",
-     "en": "(87—100)% increased Elemental Damage with Attacks (desecrated, blocker)",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
      "m": "d",
      "tags": [
-      "eatk"
+      "acc"
      ]
     },
     {
@@ -4814,7 +4283,7 @@
    "group": "main",
    "pos": [
     0,
-    8
+    10
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -4845,6 +4314,16 @@
     },
     {
      "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
       "all": [
        {
         "all": [
@@ -4860,16 +4339,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -4895,37 +4365,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -4943,32 +4389,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -4984,64 +4406,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -5074,12 +4443,82 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
      "hide": true
     },
     {
@@ -5098,52 +4537,17 @@
        ]
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -5164,30 +4568,6 @@
      "hide": true
     },
     {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
      "to": "f2"
     }
    ]
@@ -5198,12 +4578,12 @@
    "group": "main",
    "pos": [
     0,
-    9
+    11
    ],
    "act": "desecrate",
    "goal": {
-    "kr": "접두 네번째 옵션(훼손)",
-    "en": "Last prefix (desecrated)"
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
    },
    "label": {
     "kr": "훼손",
@@ -5297,7 +4677,7 @@
    "group": "main",
    "pos": [
     0,
-    10
+    12
    ],
    "act": "reveal",
    "goal": {
@@ -5408,7 +4788,7 @@
    "group": "main",
    "pos": [
     1,
-    10
+    12
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -5439,6 +4819,16 @@
     },
     {
      "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
       "all": [
        {
         "all": [
@@ -5454,16 +4844,7 @@
         ]
        },
        {
-        "any": [
-         {
-          "has": "p31"
-         },
-         {
-          "param": {
-           "pT": 2
-          }
-         }
-        ]
+        "has": "p3"
        },
        {
         "not": {
@@ -5489,37 +4870,13 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
          "des": true
         }
        },
        {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -5537,32 +4894,8 @@
      "if": {
       "all": [
        {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
         "not": {
-         "has": "p31"
+         "has": "p3"
         }
        },
        {
@@ -5578,64 +4911,11 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "param": {
-           "pT": 1
-          }
-         },
-         {
-          "not": {
-           "all": [
-            {
-             "has": "cdm"
-            },
-            {
-             "count": {
-              "tag": "sx",
-              "min": 2
-             }
-            }
-           ]
-          }
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "not": {
+       "has": "p3"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "not": {
-         "has": "p31"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -5668,12 +4948,82 @@
     },
     {
      "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 4
-      }
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "sg",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "sg",
+        "min": 2
+       }
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "full": "s"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "all": [
+          {
+           "has": "cdm"
+          },
+          {
+           "count": {
+            "tag": "sx",
+            "min": 2
+           }
+          }
+         ]
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 4
+        }
+       }
+      ]
+     },
+     "to": "s4",
      "hide": true
     },
     {
@@ -5692,52 +5042,17 @@
        ]
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP",
-         "side": "p",
-         "keepDes": true
-        }
-       }
-      ]
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
      },
      "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 1
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "pa",
      "hide": true
     },
     {
@@ -5758,30 +5073,6 @@
      "hide": true
     },
     {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "has": "p3"
-       },
-       {
-        "not": {
-         "sideLt": {
-          "side": "p",
-          "n": 3
-         }
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
      "to": "f2",
      "port": "right"
     }
@@ -5793,7 +5084,7 @@
    "group": "main",
    "pos": [
     0,
-    11
+    13
    ],
    "label": {
     "kr": "완성",
