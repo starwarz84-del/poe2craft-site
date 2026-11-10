@@ -1,0 +1,898 @@
+{
+ "id": "lilbotq-boots-v2",
+ "recipe": "lilbotq-boots-v2",
+ "cls": "Boots_str",
+ "base": "Tasalian Greaves",
+ "ilvl": 82,
+ "note": "LilBotQ 고급 장화(원본 레시피 기록) — 우트레드의 성좌 장착 + 이동 속도 분열 + 번개 저항 + 희귀도 + 미공개 훼손 → 아스트리드 → 좌측 결정화 + 신비한 합금(정신력) → 완벽한 엑잘(방어도·생명력, 밸런스는 빗나가면 좌측 말소의 징조 + 카오스 오브) → 고대 갈비뼈 → 공개(우트레드 구르기 거리, 밸런스 = 빛의 징조로 다시). 우트레드 옵션은 공개 가중치가 없어 훼손 전용 옵션과 같은 기준으로 추정.",
+ "params": {
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "v": 1
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "v": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "v": 2
+   },
+   "desc": {
+    "kr": "엑잘·공개 결과 그대로",
+    "en": "Keep the exalt and the reveal"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "v": 1
+   },
+   "desc": {
+    "kr": "영상: 접두 말소 반복, 구르기 거리까지 빛의 징조",
+    "en": "Video: Erasure for the prefix, Light until dodge roll"
+   }
+  }
+ ],
+ "tags": {
+  "ms": {
+   "gi": 55
+  },
+  "lres": {
+   "gi": 3,
+   "tmax": 1
+  },
+  "rar": {
+   "gi": 44
+  },
+  "spirit": {
+   "gi": 51
+  },
+  "flat": {
+   "gi": 7,
+   "tmax": 1
+  },
+  "pct": {
+   "gi": 8,
+   "tmax": 2
+  },
+  "life": {
+   "gi": 5,
+   "tmax": 2
+  },
+  "pre": {
+   "anyOf": [
+    "flat",
+    "pct",
+    "life"
+   ],
+   "label": {
+    "kr": "방어도·생명력 접두",
+    "en": "Armour or life prefix"
+   }
+  },
+  "dodge": {
+   "gi": 57,
+   "tmax": 2
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "ms"
+   },
+   {
+    "has": "spirit"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "h5",
+    "h6",
+    "h6x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "ms",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "방어도·생명력 접두",
+      "en": "Armour or life prefix"
+     }
+    },
+    {
+     "tag": "dodge",
+     "tmax": 2
+    },
+    {
+     "tag": "lres",
+     "tmax": 1
+    },
+    {
+     "tag": "rar",
+     "tmax": 1
+    },
+    {
+     "tag": "spirit",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "ms",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "lres",
+     "tmax": 1
+    },
+    {
+     "tag": "rar",
+     "tmax": 1
+    },
+    {
+     "tag": "spirit",
+     "tmax": 1
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 26,
+  "sockets": 3
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "ms",
+      "fr": true
+     },
+     "lres",
+     {
+      "tag": "rar",
+      "ess": true
+     },
+     {
+      "unrev": "p",
+      "bone": "Ancient_Rib"
+     }
+    ]
+   },
+   "label": {
+    "kr": "우트레드의 성좌 장착, 이동 속도 분열 + 번개 저항 + 희귀도 + 미공개 훼손 (퀄리티 26%, 특출난 베이스)",
+    "en": "Uhtred socketed: fractured movement speed + lightning res + rarity + unrevealed desecration (26% quality, exceptional)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
+     "en": "Movement speed + slow reduction (fractured, Uhtred)",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 1티어",
+     "en": "T1 lightning resistance",
+     "m": "n",
+     "tags": [
+      "lres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "희귀도 (제작 옵션)",
+     "en": "Rarity (crafted)",
+     "m": "n",
+     "tags": [
+      "rar"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "h2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
+     "en": "Movement speed + slow reduction (fractured, Uhtred)",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 1티어",
+     "en": "T1 lightning resistance",
+     "m": "n",
+     "tags": [
+      "lres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "희귀도 (제작 옵션)",
+     "en": "Rarity (crafted)",
+     "m": "n",
+     "tags": [
+      "rar"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "h3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
+     "en": "Movement speed + slow reduction (fractured, Uhtred)",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 1티어",
+     "en": "T1 lightning resistance",
+     "m": "n",
+     "tags": [
+      "lres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "희귀도 (제작 옵션)",
+     "en": "Rarity (crafted)",
+     "m": "n",
+     "tags": [
+      "rar"
+     ]
+    }
+   ],
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ]
+  },
+  {
+   "id": "h3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "미공개 훼손 접두를 지우고 접미 정신력",
+    "en": "Swap the unrevealed prefix for Spirit"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "to": "h4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
+     "en": "Movement speed + slow reduction (fractured, Uhtred)",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 1티어",
+     "en": "T1 lightning resistance",
+     "m": "n",
+     "tags": [
+      "lres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "희귀도 (제작 옵션)",
+     "en": "Rarity (crafted)",
+     "m": "n",
+     "tags": [
+      "rar"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "정신력 (합금)",
+     "en": "Spirit (alloy)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    }
+   ],
+   "cur": "Mystic_Alloy",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "정신력 (제작 옵션)",
+     "en": "Spirit (crafted)"
+    }
+   ],
+   "ess": "spirit",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "h4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "h5",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "h4b",
+     "res": "fail"
+    },
+    {
+     "to": "h5",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
+     "en": "Movement speed + slow reduction (fractured, Uhtred)",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도·생명력 접두",
+     "en": "Armour or life prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 1티어",
+     "en": "T1 lightning resistance",
+     "m": "n",
+     "tags": [
+      "lres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "희귀도 (제작 옵션)",
+     "en": "Rarity (crafted)",
+     "m": "n",
+     "tags": [
+      "rar"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "정신력 (합금)",
+     "en": "Spirit (alloy)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "flat",
+    "pct",
+    "life"
+   ]
+  },
+  {
+   "id": "h4b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    3
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 다시",
+    "en": "Reroll the prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "h5",
+     "res": "ok"
+    },
+    {
+     "to": "h4b",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
+     "en": "Movement speed + slow reduction (fractured, Uhtred)",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도·생명력 접두",
+     "en": "Armour or life prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 1티어",
+     "en": "T1 lightning resistance",
+     "m": "n",
+     "tags": [
+      "lres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "희귀도 (제작 옵션)",
+     "en": "Rarity (crafted)",
+     "m": "n",
+     "tags": [
+      "rar"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "정신력 (합금)",
+     "en": "Spirit (alloy)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "flat",
+    "pct",
+    "life"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Erasure"
+   ]
+  },
+  {
+   "id": "h5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "h6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
+     "en": "Movement speed + slow reduction (fractured, Uhtred)",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도·생명력 접두",
+     "en": "Armour or life prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 1티어",
+     "en": "T1 lightning resistance",
+     "m": "n",
+     "tags": [
+      "lres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "희귀도 (제작 옵션)",
+     "en": "Rarity (crafted)",
+     "m": "n",
+     "tags": [
+      "rar"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "정신력 (합금)",
+     "en": "Spirit (alloy)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    }
+   ],
+   "cur": "Ancient_Rib",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ]
+  },
+  {
+   "id": "h6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "dodge"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "h6x",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
+     "en": "Movement speed + slow reduction (fractured, Uhtred)",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도·생명력 접두",
+     "en": "Armour or life prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "구르기 거리 (우트레드)",
+     "en": "Dodge roll distance (Uhtred)",
+     "m": "n",
+     "tags": [
+      "dodge"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 1티어",
+     "en": "T1 lightning resistance",
+     "m": "n",
+     "tags": [
+      "lres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "희귀도 (제작 옵션)",
+     "en": "Rarity (crafted)",
+     "m": "n",
+     "tags": [
+      "rar"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "정신력 (합금)",
+     "en": "Spirit (alloy)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    }
+   ],
+   "want": "dodge",
+   "show": [
+    "dodge"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "h6x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "h5",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "xsub": [
+  "Uhtred's Sidereus"
+ ]
+}

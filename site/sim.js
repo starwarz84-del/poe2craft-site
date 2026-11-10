@@ -38,15 +38,16 @@ function make(graph, D, craft, params){
     const fams = () => { const f=new Set(); it.mods.forEach(m=>{ if(!m.unrev) G[m.gi].f.forEach(x=>f.add(x)); }); return f; };
     // eligible tiers per group for a minimum level (cached): a family's highest allowed tier always stays in
     const gcache={};
-    const groupsFor = (minLvl, sec) => { const k=minLvl+'|'+sec; if(gcache[k]) return gcache[k];
-      const out=[]; G.forEach((g,gi)=>{ if(!sec.includes(g.s)) return; const top=g.t.findIndex(t=>t[0]<=ilvl && (t[1]>0 || g.s==='d'));
+    const groupsFor = (minLvl, sec, xs=[]) => { const k=minLvl+'|'+sec+'|'+xs.join(','); if(gcache[k]) return gcache[k];
+      const out=[]; G.forEach((g,gi)=>{ if(!sec.includes(g.s)) return; if(g.s==='x' && !xs.includes(g.sub?.[1])) return; const top=g.t.findIndex(t=>t[0]<=ilvl && (t[1]>0 || g.s==='d'));
         const ts=[]; g.t.forEach((t,ti)=>{ if(t[0]<=ilvl && (t[0]>=minLvl || ti===top) && (t[1]>0 || g.s==='d')) ts.push({gi, ti, w:g.s==='d'?1:t[1]}); });
-        if(ts.length) out.push({gi, side:g.g, f:g.f, ts, w:ts.reduce((a,x)=>a+x.w,0), d:g.s==='d'}); });
+        if(ts.length) out.push({gi, side:g.g, f:g.f, ts, w:ts.reduce((a,x)=>a+x.w,0), d:g.s==='d'||g.s==='x'}); });
       return gcache[k]=out; };
+    // x (augment / Otherworldly) lines join only for the socketed rune (graph.xsub) or an Altered bone, weighted like desecrated-only lines
     // candidate groups now: free side, family not on the item
-    function pool(sides, minLvl, sections=['n']){
+    function pool(sides, minLvl, sections=['n'], xs=[]){
       const F=fams(), free=(sides||['p','s']).filter(s=>count(s)<maxA(s));
-      return groupsFor(minLvl, sections.join('')).filter(g=>free.includes(g.side) && !g.f.some(x=>F.has(x))); }
+      return groupsFor(minLvl, sections.join(''), xs).filter(g=>free.includes(g.side) && !g.f.some(x=>F.has(x))); }
     const add = (sides, minLvl) => { const gs=pool(sides, minLvl); if(!gs.length) return null; const g=pickW(rnd, gs), p=pickW(rnd, g.ts); const m={gi:p.gi, ti:p.ti, side:g.side}; it.mods.push(m); last.added.push(m); return m; };
     const take = m => { it.mods.splice(it.mods.indexOf(m),1); last.removed.push(m); return m; };
     const takeRandom = f => { const c=it.mods.filter(m=>!m.fr && (!f || f(m))); if(!c.length) return null; return take(c[Math.floor(rnd()*c.length)]); };
@@ -104,7 +105,7 @@ function make(graph, D, craft, params){
         const lord=oms.includes('Omen_of_the_Liege')?'amanamu':oms.includes('Omen_of_the_Sovereign')?'ulaman':oms.includes('Omen_of_the_Blackblooded')?'kurgal':null;   // an Abyssal lord omen: one revealed option is that lord's
         const m={unrev:true, side:s, bone:cur, min:mn, lord}; it.mods.push(m); last.added.push(m); }
       else if(a==='reveal'){ const m=it.mods.find(x=>x.unrev); if(m){ it.mods.splice(it.mods.indexOf(m),1);
-        const gs0=pool([m.side], m.min, ['n','d']);   // reveal: 3 groups without repeats, desecrated-only groups weigh 1000 (recipes.html revealChance, emulator revealOptions)
+        const gs0=pool([m.side], m.min, ['n','d','x'], [...(graph.xsub||[]), ...(/^Altered_/.test(m.bone||'')?['Otherworldly']:[])]);   // x lines have no published weight: counted like desecrated-only lines (dW)   // reveal: 3 groups without repeats, desecrated-only groups weigh 1000 (recipes.html revealChance, emulator revealOptions)
         const draw = () => { let gs=gs0.map(g=>({g, w:g.d?dW:g.w})), out=[];
           if(m.lord){ const lg=gs.filter(x=>x.g.d && (G[x.g.gi].tg||[]).includes(m.lord+'_mod')); if(lg.length) gs=lg; }   // an Abyssal lord omen: every option is that lord's (영상 확인 2026-11-10) — recipes.html revealChance
           while(out.length<3 && gs.length){ const x=pickW(rnd, gs); gs=gs.filter(y=>y!==x); out.push(pickW(rnd, x.g.ts)); } return out; };
