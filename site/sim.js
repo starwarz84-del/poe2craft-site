@@ -90,7 +90,15 @@ function make(graph, D, craft, params){
       if(a==='transmute'){ it.rar='magic'; add(null, mn); }
       else if(a==='augment') add(null, mn);
       else if(a==='regal'){ it.rar='rare'; add(sideOm(oms,/Sinistral_Coronation/,/Dextral_Coronation/) ? [sideOm(oms,/Sinistral_Coronation/,/Dextral_Coronation/)] : null, mn); }
-      else if(a==='exalt'){ const sd=sideOm(oms,/Sinistral_Exaltation/,/Dextral_Exaltation/); const k=oms.includes('Omen_of_Greater_Exaltation')?2:1; for(let i=0;i<k;i++) add(sd?[sd]:null, mn); }
+      else if(a==='exalt'){ const sd=sideOm(oms,/Sinistral_Exaltation/,/Dextral_Exaltation/); const k=oms.includes('Omen_of_Greater_Exaltation')?2:1;
+        // Omen of Catalysing Exaltation (n.cat = the tag the catalyst quality pushes) consumes the catalyst quality; the game hides the number —
+        // 사용자 경험값 2026-11-10: a wanted line lands about as often as the quality % consumed (20% → about 20%, 40% → about 40%) (estimate)
+        const catQ = oms.includes('Omen_of_Catalysing_Exaltation') ? (it.cq||0) : 0; if(oms.includes('Omen_of_Catalysing_Exaltation')) it.cq=0;
+        const catHit = n.cat && catQ>0 && rnd() < catQ/100;
+        for(let i=0;i<k;i++){ if(catHit && i===0){ const base=graph.xroll ? pool(sd?[sd]:null, mn, ['n','x'], graph.xsub||[]) : pool(sd?[sd]:null, mn);
+            const gs=base.map(g=>{ const ts=g.ts.filter(t=>match({gi:t.gi, ti:t.ti}, P(n.cat))); return {...g, ts, w:ts.reduce((q,t)=>q+t.w,0)}; }).filter(g=>g.ts.length);
+            if(gs.length){ const g=pickW(rnd, gs), p=pickW(rnd, g.ts); const m={gi:p.gi, ti:p.ti, side:g.side}; it.mods.push(m); last.added.push(m); continue; } }
+          add(sd?[sd]:null, mn); } }
       else if(a==='chaos'){ const er=sideOm(oms,/Sinistral_Erasure/,/Dextral_Erasure/);
         if(oms.includes('Omen_of_Whittling')){ const c=it.mods.filter(m=>!m.fr && !m.unrev && (!er || m.side===er)); if(c.length){ const lo=Math.min(...c.map(lvl)), xs=c.filter(m=>lvl(m)===lo); take(xs[Math.floor(rnd()*xs.length)]); } }
         else { const ov=over(), other=ov.length && it.mods.some(m=>!m.fr && !ov.includes(m.side)); takeRandom(er ? (m=>m.side===er) : other ? (m=>!ov.includes(m.side)) : null); }   // nothing removable on the other side (노블이 사파이어: prefix empty) → any line
@@ -122,7 +130,8 @@ function make(graph, D, craft, params){
         const o=os.find(want)||os[0]; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true}; it.mods.push(nm); last.added.push(nm); } }
       else if(a==='fracture'){ const c=it.mods.filter(m=>!m.unrev && !m.fr); const m=c[Math.floor(rnd()*c.length)]; if(m){ m.fr=true; last.fr=m; } }
       else if(a==='rune'){ for(const k in (n.slots||{})) capR[k]+=n.slots[k]; }   // a socketed rune that opens a slot (Serle's Triumph: one more suffix)
-      else if(a==='divine' || a==='quality'){ /* values / catalyst quality only */ }
+      else if(a==='quality'){ it.cq = n.q || n.count || 0; }   // catalyst quality % (count = catalysts ≈ %), used up by Catalysing Exaltation
+      else if(a==='divine'){ /* values only */ }
       else throw new Error('unknown act '+a);
       return use; }
 
