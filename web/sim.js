@@ -69,7 +69,8 @@ function make(graph, D, craft, params){
       if(c.count) return it.mods.filter(m=>match(m,c.count.tag)).length>=c.count.min;
       if(c.allMods) return it.mods.every(m=>m.unrev || match(m,c.allMods));
       if(c.sideAll){ const xs=it.mods.filter(m=>m.side===c.sideAll.side && !m.fr); return xs.every(m=>match(m,c.sideAll.tag)); }
-      if(c.whittleSafe){ const ws=c.whittleSafe.tag!=null ? c.whittleSafe : {tag:c.whittleSafe}, cs=it.mods.filter(m=>!m.fr && !m.unrev && (!ws.side || m.side===ws.side)); if(!cs.length) return false; const lo=Math.min(...cs.map(lvl)); return cs.filter(m=>lvl(m)===lo).every(m=>!match(m,P(ws.tag))); }   // Whittling would hit only lines outside this tag ({tag, side}: with a side Erasure omen, that side only)
+      if(c.whittleSafe){ const ws=c.whittleSafe.tag!=null ? c.whittleSafe : {tag:c.whittleSafe}, cs=it.mods.filter(m=>!m.fr && !m.unrev && (!ws.side || m.side===ws.side)); if(!cs.length) return false; const lo=Math.min(...cs.map(lvl)); return cs.filter(m=>lvl(m)===lo).every(m=>!match(m,P(ws.tag)) && !(ws.keepDes && m.des)); }   // keepDes: a revealed desecrated line counts as kept (MazBro BiS 갑옷: the blocker)
+      if(c.junk){ const j=c.junk; return it.mods.some(m=>m.side===j.side && !m.fr && !m.unrev && !m.des && !match(m,P(j.tag))); }   // a plain junk line on that side (not fractured, not desecrated, outside the tag)   // Whittling would hit only lines outside this tag ({tag, side}: with a side Erasure omen, that side only)
       if(c.param) return Object.entries(c.param).every(([k,v])=>params[k]===v);
       throw new Error('bad condition '+JSON.stringify(c)); }
     const pickEdge = n => (n.edges||[]).find(e=>cond(e.if));

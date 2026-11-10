@@ -1,0 +1,6815 @@
+{
+ "id": "mazbro-bis-chest-v2",
+ "recipe": "mazbro-bis-chest-v2",
+ "cls": "Body_Armours_str_int",
+ "base": "Conjurer Mantle",
+ "ilvl": 82,
+ "note": "MazBro BiS 갑옷(LUB59xlkNtk) — 정신력 1티어 분열 + 잡옵 → 메드베드의 보살핌 → 카오스 오브(정신력 % 또는 마나 %) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) → 접미 첫 엑잘 → 우측 결정화 + 심연의 에센스 → 보존된 갈비뼈로 징표 훼손 → 자리 막기 공개 → 상위 찬미 + 완벽한 엑잘(복합 저항) → 절사의 징조 + 완벽한 카오스 오브 또는 우측 소멸의 징조 + 소멸의 오브 → 빛의 징조로 막기 제거 → 고대 갈비뼈 → 받는 피해를 마나로·정신력 점유 효율 공개. 하이엔드 = 영상(복합 저항 2개), 밸런스 = 복합 저항 1개 + 원소 저항 1티어(영상 중간 판단). 메드베드 옵션 가중치는 추정.",
+ "params": {
+  "pT": {
+   "kr": "접미 저항",
+   "en": "Suffix resistances",
+   "values": {
+    "1": {
+     "kr": "복합 저항 2개",
+     "en": "Two hybrids"
+    },
+    "2": {
+     "kr": "복합 저항 + 원소 저항 1티어",
+     "en": "Hybrid + T1 resistance"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "pT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "pT": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "pT": 2
+   },
+   "desc": {
+    "kr": "복합 저항 1개 + 원소 저항 1티어",
+    "en": "One hybrid + a T1 resistance"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "pT": 1
+   },
+   "desc": {
+    "kr": "영상: 메드베드 복합 저항 2개",
+    "en": "Video: two Medved hybrid resistances"
+   }
+  }
+ ],
+ "tags": {
+  "spirit": {
+   "gi": 15,
+   "tmax": 1
+  },
+  "isp": {
+   "gi": 53
+  },
+  "ima": {
+   "gi": 52
+  },
+  "hf": {
+   "gi": 56
+  },
+  "hc": {
+   "gi": 57
+  },
+  "hl": {
+   "gi": 58
+  },
+  "rf": {
+   "gi": 2,
+   "tmax": 1
+  },
+  "rc": {
+   "gi": 3,
+   "tmax": 1
+  },
+  "rl": {
+   "gi": 4,
+   "tmax": 1
+  },
+  "mbl": {
+   "gi": 26
+  },
+  "sre": {
+   "gi": 23
+  },
+  "mkS": {
+   "gi": 47
+  },
+  "pre": {
+   "anyOf": [
+    "isp",
+    "ima"
+   ]
+  },
+  "hyb": {
+   "anyOf": [
+    "hf",
+    "hc",
+    "hl"
+   ]
+  },
+  "nres": {
+   "anyOf": [
+    "rf",
+    "rc",
+    "rl"
+   ]
+  },
+  "fin": {
+   "anyOf": [
+    "mbl",
+    "sre"
+   ]
+  },
+  "sgood": {
+   "anyOf": [
+    "hyb",
+    "nres"
+   ]
+  },
+  "keepS": {
+   "anyOf": [
+    "hyb",
+    "nres",
+    "fin"
+   ]
+  },
+  "keepW": {
+   "anyOf": [
+    "pre",
+    "hyb",
+    "nres",
+    "fin"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "any": [
+     {
+      "all": [
+       {
+        "param": {
+         "pT": 1
+        }
+       },
+       {
+        "count": {
+         "tag": "hyb",
+         "min": 2
+        }
+       }
+      ]
+     },
+     {
+      "all": [
+       {
+        "param": {
+         "pT": 2
+        }
+       },
+       {
+        "has": "hyb"
+       },
+       {
+        "count": {
+         "tag": "sgood",
+         "min": 2
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "count": {
+     "tag": "pre",
+     "min": 2
+    }
+   },
+   {
+    "has": "fin"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "f2",
+    "f3",
+    "f3x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "mA",
+    "b2",
+    "b3"
+   ],
+   "kr": "자리 막기",
+   "en": "Block"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "spirit",
+     "fr": true
+    },
+    {
+     "tag": "isp"
+    },
+    {
+     "tag": "ima"
+    },
+    {
+     "tag": "hc"
+    },
+    {
+     "tag": "hl"
+    },
+    {
+     "tag": "sre",
+     "des": true
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "spirit",
+     "fr": true
+    },
+    {
+     "tag": "isp"
+    },
+    {
+     "tag": "ima"
+    },
+    {
+     "tag": "hc"
+    },
+    {
+     "tag": "rf"
+    },
+    {
+     "tag": "sre",
+     "des": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "spirit",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "정신력 1티어 분열 + 잡옵 1개",
+    "en": "Fractured T1 Spirit + one junk line"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "r1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "r1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "메드베드의 보살핌 장착",
+    "en": "Socket Medved’s Tending"
+   },
+   "label": {
+    "kr": "영혼 핵",
+    "en": "Soul core"
+   },
+   "edges": [
+    {
+     "to": "c1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "showText": [
+    {
+     "kr": "영혼 핵 옵션",
+     "en": "Soul core modifiers"
+    }
+   ],
+   "rune": {
+    "kr": "메드베드의 보살핌",
+    "en": "Medved’s Tending"
+   }
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "e1",
+     "res": "ok"
+    },
+    {
+     "to": "c1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "isp",
+    "ima"
+   ]
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 (1—20)% 증가",
+     "en": "(1—20)% increased maximum Mana",
+     "m": "n",
+     "tags": [
+      "ima"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "isp",
+    "ima"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "e1x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    3
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접두 잡옵 지우기",
+    "en": "Remove the junk prefix"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "res": "fail"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "res": "ok",
+     "port": "right"
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "s0",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 첫번째 옵션",
+    "en": "First suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 (1—20)% 증가",
+     "en": "(1—20)% increased maximum Mana",
+     "m": "n",
+     "tags": [
+      "ima"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "cur": "Greater_Exalted_Orb",
+   "show": [
+    "hf",
+    "hc",
+    "hl"
+   ]
+  },
+  {
+   "id": "mA",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접미 옵션을 지우고 심연의 군주의 징표",
+    "en": "A suffix goes for the Mark of the Abyssal Lord"
+   },
+   "label": {
+    "kr": "심연",
+    "en": "Abyss"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 (1—20)% 증가",
+     "en": "(1—20)% increased maximum Mana",
+     "m": "n",
+     "tags": [
+      "ima"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "mkS"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "cur": "Essence_of_the_Abyss",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
+    }
+   ],
+   "ess": "mkS",
+   "mark": true,
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "b2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 징표 훼손",
+    "en": "Desecrate the suffix Mark"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3"
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 (1—20)% 증가",
+     "en": "(1—20)% increased maximum Mana",
+     "m": "n",
+     "tags": [
+      "ima"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "cur": "Preserved_Rib",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "fromMark": true
+  },
+  {
+   "id": "b2n",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    5
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 빈자리 훼손",
+    "en": "Desecrate the open suffix"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3"
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 (1—20)% 증가",
+     "en": "(1—20)% increased maximum Mana",
+     "m": "n",
+     "tags": [
+      "ima"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "cur": "Preserved_Rib",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ]
+  },
+  {
+   "id": "b3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "자리 막기 옵션 확인",
+    "en": "Reveal the blocker"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1"
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 (1—20)% 증가",
+     "en": "(1—20)% increased maximum Mana",
+     "m": "n",
+     "tags": [
+      "ima"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초당 생명력 재생 (훼손, 자리 막기)",
+     "en": "Life Regeneration per second (desecrated, blocker)",
+     "m": "d"
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "want": "fin",
+   "show": [
+    "fin"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "s1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 복합 저항 옵션",
+    "en": "Suffix hybrid resistances"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 (1—20)% 증가",
+     "en": "(1—20)% increased maximum Mana",
+     "m": "n",
+     "tags": [
+      "ima"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "냉기 및 카오스 저항 +(3—31)%",
+     "en": "+(3—31)% to Cold and Chaos Resistances",
+     "m": "n",
+     "tags": [
+      "hc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "초당 생명력 재생 (훼손, 자리 막기)",
+     "en": "Life Regeneration per second (desecrated, blocker)",
+     "m": "d"
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "hf",
+    "hc",
+    "hl",
+    "rf",
+    "rc",
+    "rl"
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "showIf": [
+    {
+     "param": {
+      "pT": 1
+     },
+     "show": [
+      "hf",
+      "hc",
+      "hl"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "w1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "가장 낮은 잡옵을 다시",
+    "en": "Reroll the lowest junk line"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "res": "fail"
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 (1—20)% 증가",
+     "en": "(1—20)% increased maximum Mana",
+     "m": "n",
+     "tags": [
+      "ima"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "냉기 및 카오스 저항 +(3—31)%",
+     "en": "+(3—31)% to Cold and Chaos Resistances",
+     "m": "n",
+     "tags": [
+      "hc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "초당 생명력 재생 (훼손, 자리 막기)",
+     "en": "Life Regeneration per second (desecrated, blocker)",
+     "m": "d"
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "hf",
+    "hc",
+    "hl"
+   ],
+   "omens": [
+    "Omen_of_Whittling"
+   ]
+  },
+  {
+   "id": "da",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    7
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접미 잡옵 지우기",
+    "en": "Remove the junk suffix"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "res": "fail"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "f1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "자리 막기 훼손 옵션 제거",
+    "en": "Remove the blocking desecration"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "f2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3"
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 (1—20)% 증가",
+     "en": "(1—20)% increased maximum Mana",
+     "m": "n",
+     "tags": [
+      "ima"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "냉기 및 카오스 저항 +(3—31)%",
+     "en": "+(3—31)% to Cold and Chaos Resistances",
+     "m": "n",
+     "tags": [
+      "hc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 및 카오스 저항 +(3—31)%",
+     "en": "+(3—31)% to Lightning and Chaos Resistances",
+     "m": "n",
+     "tags": [
+      "hl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "cur": "Ancient_Rib",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ]
+  },
+  {
+   "id": "f3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "fin"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "f3x",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61) (분열)",
+     "en": "+(57—61) to Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (1—20)% 증가",
+     "en": "(1—20)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "isp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 (1—20)% 증가",
+     "en": "(1—20)% increased maximum Mana",
+     "m": "n",
+     "tags": [
+      "ima"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "냉기 및 카오스 저항 +(3—31)%",
+     "en": "+(3—31)% to Cold and Chaos Resistances",
+     "m": "n",
+     "tags": [
+      "hc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 및 카오스 저항 +(3—31)%",
+     "en": "+(3—31)% to Lightning and Chaos Resistances",
+     "m": "n",
+     "tags": [
+      "hl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "스킬의 정신력 점유 효율 (6—12)% 증가",
+     "en": "(6—12)% increased Spirit Reservation Efficiency of Skills",
+     "m": "d",
+     "tags": [
+      "sre"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "메드베드의 보살핌",
+     "en": "Medved’s Tending",
+     "m": "r"
+    }
+   ],
+   "want": "fin",
+   "show": [
+    "mbl",
+    "sre"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "f3x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    10
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pre"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "pre",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pre",
+        "min": 2
+       }
+      }
+     },
+     "to": "e1x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fin"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "unrevSide": "s"
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "b3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mkS"
+     },
+     "to": "b2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "hyb",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "pT": 2
+            }
+           },
+           {
+            "has": "hyb"
+           },
+           {
+            "count": {
+             "tag": "sgood",
+             "min": 2
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "da",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "hyb",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "pT": 2
+          }
+         },
+         {
+          "has": "hyb"
+         },
+         {
+          "count": {
+           "tag": "sgood",
+           "min": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "f2",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "junk": {
+         "side": "s",
+         "tag": "sgood"
+        }
+       }
+      ]
+     },
+     "to": "mA",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
+        }
+       }
+      ]
+     },
+     "to": "s0",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 3
+      }
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "to": "da",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    11
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "xsub": [
+  "Medved's Tending"
+ ],
+ "xroll": true
+}
