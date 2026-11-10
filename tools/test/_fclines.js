@@ -1,0 +1,21 @@
+// every flowchart × version: line crossings, overlapping parallel lines and lines through boxes → fclines.txt
+const {chromium}=require('playwright'), fs=require('fs');
+const ids=process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync('../../site/data/sim').filter(f=>f.endsWith('.json')).map(f=>f.slice(0,-5));
+(async()=>{ const b=await chromium.launch(), p=await b.newPage({viewport:{width:1700,height:1000}}); const out=[]; let tot=0;
+  for(const id of ids){ await p.goto(`http://localhost:8779/recipes.html?lang=kr&_=${encodeURIComponent(id)}#r-${id}`); await p.waitForFunction(()=>window.__rec && __rec.booted);
+    if(!await p.$('[data-rtab="fc"]')){ out.push(`${id}: no flowchart`); continue; }
+    await p.click('[data-rtab="fc"]'); await p.waitForSelector('.fcpane .fcn');
+    const vers=await p.$$eval('[data-simver]', xs=>xs.map(x=>x.dataset.simver));
+    for(const v of vers){ await p.click(`[data-simver="${v}"]`); await p.waitForTimeout(80);
+      const r=await p.evaluate(()=>{ const {edges,rects}=window.__fcLast, segs=[]; edges.forEach((e,ei)=>{ for(let i=0;i<e.pts.length-1;i++) segs.push({a:e.pts[i],b:e.pts[i+1],e,ei,i,n:e.pts.length-1}); });
+        const iss=[]; const nm=e=>`${e.a}→${e.b}`;
+        for(let x=0;x<segs.length;x++) for(let y=x+1;y<segs.length;y++){ const s=segs[x], t=segs[y]; if(s.ei===t.ei) continue; const same = s.e.b===t.e.b || (s.e.lane && s.e.lane===t.e.lane) || s.e.a===t.e.a;
+          const v1=s.a[0]===s.b[0], v2=t.a[0]===t.b[0];
+          if(v1!==v2){ if(same) continue; const [V,H]=v1?[s,t]:[t,s]; const vx=V.a[0], hy=H.a[1];
+            if(vx>Math.min(H.a[0],H.b[0])+1 && vx<Math.max(H.a[0],H.b[0])-1 && hy>Math.min(V.a[1],V.b[1])+1 && hy<Math.max(V.a[1],V.b[1])-1) iss.push(`교차 ${nm(s.e)} × ${nm(t.e)}`); }
+          else { if(same) continue; const k=v1?0:1, o=1-k; if(Math.abs(s.a[k]-t.a[k])>=7) continue; const ov=Math.min(Math.max(s.a[o],s.b[o]),Math.max(t.a[o],t.b[o]))-Math.max(Math.min(s.a[o],s.b[o]),Math.min(t.a[o],t.b[o])); if(ov>4) iss.push(`겹침 ${nm(s.e)} ∥ ${nm(t.e)} (${Math.round(ov)}px)`); } }
+        for(const s of segs){ if(s.i===0 || s.i===s.n-1) continue; const x0=Math.min(s.a[0],s.b[0]), x1=Math.max(s.a[0],s.b[0]), y0=Math.min(s.a[1],s.b[1]), y1=Math.max(s.a[1],s.b[1]);
+          for(const r of rects) if(x1>r.x+2 && x0<r.x+r.w-2 && y1>r.y+2 && y0<r.y+r.h-2) iss.push(`상자 통과 ${nm(s.e)} / ${r.id}`); }
+        return [...new Set(iss)]; });
+      tot+=r.length; if(r.length) out.push(`${id} [${v}] ${r.length}\n  `+r.join('\n  ')); } }
+  out.push(`TOTAL ${tot}`); fs.writeFileSync('fclines.txt', out.join('\n')); console.log(out.slice(-1)[0]); await b.close(); })();

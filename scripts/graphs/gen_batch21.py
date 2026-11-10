@@ -67,9 +67,10 @@ def RX(vis):
     return ROUTE_([{'if':{'not':{'has':'pp'}},'to':'c1'},{'if':JK('p','keepP'),'to':'w1'},{'if':{'all':[fs,{'has':'p3'},{'not':{'des':True}},{'unrevSide':'p'}]},'to':'f3'},{'if':{'unrevSide':'p'},'to':'rv'},
        {'if':{'all':[{'not':{'des':True}},{'not':{'has':'p3'}},{'sideLt':{'side':'p','n':3}}]},'to':'d1'},
        {'if':{'all':[{'not':{'has':'p3'}},{'sideLt':{'side':'p','n':3}}]},'to':'e1'},{'if':{'not':{'has':'p3'}},'to':'w1'},
-       {'if':{'all':[{'not':fs},{'sideLt':{'side':'s','n':2}}]},'to':'s1'},{'if':{'all':[{'not':fs},{'sideLt':{'side':'s','n':3}}]},'to':'s1'},{'if':{'not':fs},'to':'w2'},
+       {'if':{'all':[{'not':{'has':'proj'}},{'sideLt':{'side':'s','n':3}}]},'to':'s1'},{'if':{'not':{'has':'proj'}},'to':'w2'},
+       {'if':{'all':[{'not':{'has':'as'}},{'sideLt':{'side':'s','n':3}}]},'to':'s3'},{'if':{'not':{'has':'as'}},'to':'w3'},
        {'if':{'des':True},'to':'f1'},{'if':{'count':{'tag':'p3','min':2}},'to':'ok'},{'to':'f2'}],vis)
-X0=[PPX,CRX,J('s')]; X0b=[PPX,UN('p'),CRX]; X1=[PPX,BKX,CRX]; X2=[PPX,BKX,HYX,CRX]; X3=X2+[PJX,J('s')]; X4=X2+[PJX,ASX]; X5=[PPX,HYX,UN('p'),CRX,PJX,ASX]; X6=[PPX,HYX,FLX,CRX,PJX,ASX]
+X0=[PPX,CRX,J('s')]; X0b=[PPX,UN('p'),CRX]; X1=[PPX,BKX,CRX]; X2=[PPX,BKX,HYX,CRX]; X3=X2+[PJX,J('s')]; X3b=X2+[PJX]; X4j=X2+[PJX,J('s')]; X4=X2+[PJX,ASX]; X5=[PPX,HYX,UN('p'),CRX,PJX,ASX]; X6=[PPX,HYX,FLX,CRX,PJX,ASX]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'crit','fr':True},{'junk':'s'}]},K('치명타 확률 1티어 분열 + 잡옵 1개','Fractured T1 crit chance + one junk line'),[CRX,J('s')]),
  mark([0,0.6],'c1',[CRX,J('s')]),
  act('c1','main',[0,1],'chaos','Chaos_Orb',K('접두 첫번째 옵션','First prefix'),None,K('카오스','Chaos'),[{'if':{'has':'pp'},'to':'d1','res':'ok'},{'to':'c1','res':'fail'}],X0,show=['pp']),
@@ -78,15 +79,17 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'crit','fr':True},{'junk':'s'}]},K
  annul('rvx',[1,3],RX({'d1':{'port':'right'}})),
  act('e1','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),None,K('엑잘','Exalt'),RX({'s1':'ok','w1':F}),X2,show=['hyb','flat'],omens=['Omen_of_Sinistral_Exaltation']),
  act('w1','main',[1,4],'chaos','Perfect_Chaos_Orb',K('접두 세번째 옵션','Third prefix'),None,K('카오스','Chaos'),RX({'s1':'ok','e1':{'res':'fail'}}),X2,show=['hyb','flat'],trim={'side':'p','keep':'keepP','keepDes':True}),
- act('s1','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접미 두번째·세번째 옵션','Second and third suffixes'),None,K('엑잘','Exalt'),RX({'f1':'ok','w2':F}),X3,show=['proj','as'],omens=['Omen_of_Greater_Exaltation']),
- act('w2','main',[1,5],'chaos','Perfect_Chaos_Orb',K('접미 세번째 옵션','Third suffix'),None,K('카오스','Chaos'),RX({'f1':'ok'}),X4,show=['proj','as'],trim={'side':'s','keep':'keepS','keepDes':True}),
- annul('f1',[0,6],RX({'f2':{}}),target=K('자리 막기 훼손 옵션 제거','Remove the blocking desecration')),
- act('f2','main',[0,7],'desecrate','Ancient_Jawbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'f3'}],X5),
- act('f3','main',[0,8],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'p3'},'to':'ok','res':'ok'},{'to':'f3x',**F}],X6,want='p3',show=['flat','hyb'],omens=['Omen_of_Abyssal_Echoes']),
- annul('f3x',[1,8],RX({'f2':{'port':'right'}})),
- done([0,9])]
+ act('s1','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접미 두번째 옵션','Second suffix'),None,K('엑잘','Exalt'),RX({'s3':'ok','w2':F}),X3,show=['proj'],omens=['Omen_of_Greater_Exaltation']),
+ act('w2','main',[1,5],'chaos','Perfect_Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),RX({'s3':'ok'}),X3b,show=['proj'],trim={'side':'s','keep':'keepS','keepDes':True}),
+ act('s3','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),None,K('엑잘','Exalt'),RX({'f1':'ok','w3':F}),X4j,show=['as']),
+ act('w3','main',[1,6],'chaos','Greater_Chaos_Orb',K('접미 세번째 옵션','Third suffix'),None,K('카오스','Chaos'),RX({'f1':'ok'}),X4,show=['as'],trim={'side':'s','keep':'keepS','keepDes':True}),
+ annul('f1',[0,7],RX({'f2':{}}),target=K('자리 막기 훼손 옵션 제거','Remove the blocking desecration')),
+ act('f2','main',[0,8],'desecrate','Ancient_Jawbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'f3'}],X5),
+ act('f3','main',[0,9],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'p3'},'to':'ok','res':'ok'},{'to':'f3x',**F}],X6,want='p3',show=['flat','hyb'],omens=['Omen_of_Abyssal_Echoes']),
+ annul('f3x',[1,9],RX({'f2':{'port':'right'}})),
+ done([0,10])]
 graph11('xeno-phys-crossbow-v2','Crossbows','Desolate Crossbow',82,
-  'XenoARPG 물리 석궁(1TP4aGqxU7Q, 자막 없음 — 화면 기준) — 치명타 확률 분열 + 잡옵 → 카오스 오브(물리 피해 % 1티어) → 고대 턱뼈 자리 막기(정확도 1티어, 영상·타협 = 공격 원소 피해 1티어) → 좌측 찬미 + 완벽한 엑잘(물리 % + 정확도, 빗나가면 절사 카오스) → 상위 찬미 + 완벽한 엑잘(투사체 +5·공격 속도) → 절사 + 완벽한 카오스 오브 → 빛의 징조로 막기 제거 → 고대 턱뼈 → 물리 피해 추가 공개.',
+  'XenoARPG 물리 석궁(1TP4aGqxU7Q, 자막 없음 — 화면 기준) — 치명타 확률 분열 + 잡옵 → 카오스 오브(물리 피해 % 1티어) → 고대 턱뼈 자리 막기(정확도 1티어, 영상·타협 = 공격 원소 피해 1티어) → 좌측 찬미 + 완벽한 엑잘(물리 % + 정확도, 빗나가면 절사 카오스) → 상위 찬미 + 완벽한 엑잘 → 절사 + 완벽한 카오스 오브(투사체 +5) → 완벽한 엑잘 → 절사 + 상위 카오스 오브(공격 속도 1티어, 레벨 37) → 빛의 징조로 막기 제거 → 고대 턱뼈 → 물리 피해 추가 공개.',
   {**PT1,'bw':{'kr':'자리 막기','en':'Blocker','values':TV({'acc':('정확도 1티어','T1 accuracy'),'blk':('정확도 또는 공격 원소 피해 1티어 (영상·타협)','T1 accuracy or attack elemental (video, settle)')})}},
   {'high':{'pT':1,'bw':'acc'}},{'high':K('정확도 1티어로 자리 막기 → 절사로 확정 제작','Block with T1 accuracy, then whittle safely')},tags,nodes,
   [{'id':'L1','nodes':['f2','f3','f3x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['d1','rv','rvx'],'kr':'자리 막기','en':'Block'}],

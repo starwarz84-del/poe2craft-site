@@ -4,7 +4,7 @@
  "cls": "Crossbows",
  "base": "Desolate Crossbow",
  "ilvl": 82,
- "note": "XenoARPG 물리 석궁(1TP4aGqxU7Q, 자막 없음 — 화면 기준) — 치명타 확률 분열 + 잡옵 → 카오스 오브(물리 피해 % 1티어) → 고대 턱뼈 자리 막기(정확도 1티어, 영상·타협 = 공격 원소 피해 1티어) → 좌측 찬미 + 완벽한 엑잘(물리 % + 정확도, 빗나가면 절사 카오스) → 상위 찬미 + 완벽한 엑잘(투사체 +5·공격 속도) → 절사 + 완벽한 카오스 오브 → 빛의 징조로 막기 제거 → 고대 턱뼈 → 물리 피해 추가 공개.",
+ "note": "XenoARPG 물리 석궁(1TP4aGqxU7Q, 자막 없음 — 화면 기준) — 치명타 확률 분열 + 잡옵 → 카오스 오브(물리 피해 % 1티어) → 고대 턱뼈 자리 막기(정확도 1티어, 영상·타협 = 공격 원소 피해 1티어) → 좌측 찬미 + 완벽한 엑잘(물리 % + 정확도, 빗나가면 절사 카오스) → 상위 찬미 + 완벽한 엑잘 → 절사 + 완벽한 카오스 오브(투사체 +5) → 완벽한 엑잘 → 절사 + 상위 카오스 오브(공격 속도 1티어, 레벨 37) → 빛의 징조로 막기 제거 → 고대 턱뼈 → 물리 피해 추가 공개.",
  "params": {
   "pT": {
    "kr": "목표 티어",
@@ -482,32 +482,7 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
+         "has": "proj"
         }
        },
        {
@@ -524,13 +499,38 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "sg",
-        "min": 2
-       }
+       "has": "proj"
       }
      },
      "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "as"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "as"
+      }
+     },
+     "to": "w3",
      "hide": true
     },
     {
@@ -806,32 +806,7 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
+         "has": "proj"
         }
        },
        {
@@ -848,13 +823,38 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "sg",
-        "min": 2
-       }
+       "has": "proj"
       }
      },
      "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "as"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "as"
+      }
+     },
+     "to": "w3",
      "hide": true
     },
     {
@@ -1007,32 +1007,7 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
+         "has": "proj"
         }
        },
        {
@@ -1044,18 +1019,43 @@
       ]
      },
      "to": "s1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "proj"
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "as"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
      "hide": true
     },
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "sg",
-        "min": 2
-       }
+       "has": "as"
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
@@ -1253,32 +1253,7 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
+         "has": "proj"
         }
        },
        {
@@ -1290,18 +1265,43 @@
       ]
      },
      "to": "s1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "proj"
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "as"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
      "hide": true
     },
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "sg",
-        "min": 2
-       }
+       "has": "as"
       }
      },
-     "to": "w2",
+     "to": "w3",
      "hide": true
     },
     {
@@ -1385,8 +1385,8 @@
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접미 두번째·세번째 옵션",
-    "en": "Second and third suffixes"
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
    },
    "label": {
     "kr": "엑잘",
@@ -1501,32 +1501,7 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
+         "has": "proj"
         }
        },
        {
@@ -1543,13 +1518,555 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "sg",
-        "min": 2
-       }
+       "has": "proj"
       }
      },
      "to": "w2",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "as"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "as"
+      }
+     },
+     "to": "w3",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +5",
+     "en": "+5 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "proj"
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ]
+  },
+  {
+   "id": "w2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "sg",
+         "min": 2
+        }
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "proj"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "proj"
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "as"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "as"
+      }
+     },
+     "to": "w3",
+     "hide": true
+    },
+    {
+     "if": {
+      "des": true
+     },
+     "to": "f1",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "p3",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "to": "f2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(551—650) (훼손, 자리 막기)",
+     "en": "+(551—650) to Accuracy Rating (desecrated, blocker)",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (75—79)% 증가 + 정확도 +(175—200)",
+     "en": "(75—79)% increased Physical Damage + (175—200) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +5",
+     "en": "+5 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "proj"
+   ],
+   "trim": {
+    "side": "s",
+    "keep": "keepS",
+    "keepDes": true
+   }
+  },
+  {
+   "id": "s3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "sg",
+         "min": 2
+        }
+       },
+       {
+        "has": "p3"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "unrevSide": "p"
+       }
+      ]
+     },
+     "to": "f3",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "rv",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "p3"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "p3"
+      }
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "proj"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "proj"
+      }
+     },
+     "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "as"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "as"
+      }
+     },
+     "to": "w3",
      "res": "fail",
      "port": "right"
     },
@@ -1630,20 +2147,16 @@
    ],
    "cur": "Perfect_Exalted_Orb",
    "show": [
-    "proj",
     "as"
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
    ]
   },
   {
-   "id": "w2",
+   "id": "w3",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    5
+    6
    ],
    "act": "chaos",
    "goal": {
@@ -1763,32 +2276,7 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
+         "has": "proj"
         }
        },
        {
@@ -1805,13 +2293,38 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "sg",
-        "min": 2
-       }
+       "has": "proj"
       }
      },
      "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "as"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "as"
+      }
+     },
+     "to": "w3",
      "hide": true
     },
     {
@@ -1892,9 +2405,8 @@
      ]
     }
    ],
-   "cur": "Perfect_Chaos_Orb",
+   "cur": "Greater_Chaos_Orb",
    "show": [
-    "proj",
     "as"
    ],
    "trim": {
@@ -1909,7 +2421,7 @@
    "group": "main",
    "pos": [
     0,
-    6
+    7
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -2037,32 +2549,7 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
+         "has": "proj"
         }
        },
        {
@@ -2079,13 +2566,38 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "sg",
-        "min": 2
-       }
+       "has": "proj"
       }
      },
      "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "as"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "as"
+      }
+     },
+     "to": "w3",
      "hide": true
     },
     {
@@ -2116,7 +2628,7 @@
    "group": "main",
    "pos": [
     0,
-    7
+    8
    ],
    "act": "desecrate",
    "goal": {
@@ -2200,7 +2712,7 @@
    "group": "main",
    "pos": [
     0,
-    8
+    9
    ],
    "act": "reveal",
    "goal": {
@@ -2296,7 +2808,7 @@
    "group": "main",
    "pos": [
     1,
-    8
+    9
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -2424,32 +2936,7 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "count": {
-          "tag": "sg",
-          "min": 2
-         }
+         "has": "proj"
         }
        },
        {
@@ -2466,13 +2953,38 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "sg",
-        "min": 2
-       }
+       "has": "proj"
       }
      },
      "to": "w2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "as"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "s3",
+     "hide": true
+    },
+    {
+     "if": {
+      "not": {
+       "has": "as"
+      }
+     },
+     "to": "w3",
      "hide": true
     },
     {
@@ -2504,7 +3016,7 @@
    "group": "main",
    "pos": [
     0,
-    9
+    10
    ],
    "label": {
     "kr": "완성",

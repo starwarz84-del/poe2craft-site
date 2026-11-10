@@ -1456,7 +1456,8 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
     return {ids, R:[Math.min(...bs.map(b=>b.x))-P, Math.min(...bs.map(b=>b.y))-P, Math.max(...bs.map(b=>b.x+b.w))+P+36, Math.max(...bs.map(b=>b.y+b.h))+P]}; }).filter(Boolean);
   const segIn=(a,b,R)=>{ const x0=Math.min(a[0],b[0]), x1=Math.max(a[0],b[0]), y0=Math.min(a[1],b[1]), y1=Math.max(a[1],b[1]); return x1>R[0] && x0<R[2] && y1>R[1] && y0<R[3]; };
   const port=(b,s)=>{ const cx=b.x+(b.aw||b.w)/2, cy=b.y+b.h/2; return {top:[cx,b.y,0,-1], bottom:[cx,b.y+b.h,0,1], left:[b.x,cy,-1,0], right:[b.x+b.w,cy,1,0]}[s]; };
-  const cxs=[]; Lay.colIds.forEach((c,i)=>{ const r=Lay.colX[c]+Lay.colW[c], nx=i<Lay.colIds.length-1 ? Lay.colX[Lay.colIds[i+1]] : r+FX.GAPX, mid=(r+nx)/2; [-42,-30,-18,-6,6,18,30,42].forEach(o=>cxs.push(mid+o)); });
+  // channels between columns; right of the last column = past its widest box
+  const cxs=[]; Lay.colIds.forEach((c,i)=>{ const last=i===Lay.colIds.length-1, r=Math.max(Lay.colX[c]+Lay.colW[c], ...(last ? Object.values(Lay.box).filter(b=>b.col===c).map(b=>b.x+b.w) : [])), nx=!last ? Lay.colX[Lay.colIds[i+1]] : r+FX.GAPX, mid=(r+nx)/2;   [-42,-30,-18,-6,6,18,30,42].forEach(o=>cxs.push(mid+o)); });
   const l0=Lay.colX[Lay.colIds[0]]; [14,24,34].forEach(o=>cxs.push(l0-o));
   const cys=[]; Lay.rowSpan.forEach((s,i)=>{ const nx=Lay.rowSpan[i+1]; const mid = nx ? (s[1]+nx[0])/2 : s[1]+20; [-16,-8,0,8,16].forEach(o=>cys.push(mid+o)); });
   const hit=(a,b)=>{ let n=0; const x0=Math.min(a[0],b[0]), x1=Math.max(a[0],b[0]), y0=Math.min(a[1],b[1]), y1=Math.max(a[1],b[1]);
@@ -1474,28 +1475,40 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
   const rank = st => /^ok/.test(st)?0:/^fwd/.test(st)?1:2;
   Object.values(slots).forEach(L2=>L2.sort((a,b)=>(b.up-a.up)||(rank(a.st)-rank(b.st))));
   const joinFor = e => { const T=e.dst, L2=slots[T.id]||[], i=Math.max(0,L2.findIndex(x=>x.st===style(e))), gap=Math.min(gapAbove(T), 160); return Math.round(T.y - gap + gap*(i+1)/(Math.max(1,L2.length)+1)); };
-  order.forEach(e=>{ const S=e.src, T=e.dst, sp = e.port ? [e.port] : ['bottom','right'], jy = joinFor(e);   // main-line boxes take lines only from the top (사용자 확정 2026-11-10)
+  const routeOne = e=>{ const S=e.src, T=e.dst, hard = e.port && (e.turn || e.lane), sp = hard ? [e.port] : ['bottom','right'], jy = joinFor(e);   // a set exit side is a wish (worth less than one crossing) unless the line also has a set turn or lane   // main-line boxes take lines only from the top (사용자 확정 2026-11-10)
     const tryRoute = tp => {
     let best=null;
+    const cand=[];   // cheap part first (length, bends, fixed penalties); collisions and crossings only for candidates that can still win
     for(const s of sp) for(const t of tp){ const P0=port(S,s), P1=port(T,t), A=[P0[0]+P0[2]*FX.STUB, P0[1]+P0[3]*FX.STUB], B=[P1[0]-(t==='top'?0:(t==='left'?FX.STUB:-FX.STUB)), P1[1]-(t==='top'?FX.STUB:0)];
       const mids=[[A,B],[A,[B[0],A[1]],B],[A,[A[0],B[1]],B]]; cxs.forEach(cx=>mids.push([A,[cx,A[1]],[cx,B[1]],B])); [...cys, jy].forEach(cy=>{ mids.push([A,[A[0],cy],[B[0],cy],B]); if(t==='top') cxs.forEach(cx=>mids.push([A,[cx,A[1]],[cx,cy],[B[0],cy],B])); });
+      // out of the bottom, sideways into a channel, along it, then across into the target's top (a line going back up without cutting through the boxes in between)
+      if(s==='bottom' && t==='top'){ const below=cys.filter(cy=>cy>A[1]).slice(0,3); for(const c1 of below) for(const cx of cxs) for(const c2 of [...cys, jy]) if(Math.abs(c2-c1)>1) mids.push([A,[A[0],c1],[cx,c1],[cx,c2],[B[0],c2],B]); }
       for(const m of mids){ if(m.length===2 && A[0]!==B[0] && A[1]!==B[1]) continue;
         const pts=clean([[P0[0],P0[1]], ...m, [P1[0],P1[1]]]); if(!pts || pts.length<2) continue;
         // first segment must leave along the port, the last must enter along the port
         const d0=[Math.sign(pts[1][0]-pts[0][0]), Math.sign(pts[1][1]-pts[0][1])]; if(d0[0]!==P0[2] || d0[1]!==P0[3]) continue;
         const k=pts.length, dl=[Math.sign(pts[k-1][0]-pts[k-2][0]), Math.sign(pts[k-1][1]-pts[k-2][1])], want={top:[0,1],left:[1,0]}[t]; if(dl[0]!==want[0]||dl[1]!==want[1]) continue;
-        let coll=0, len=0, ov=0; for(let i=0;i<k-1;i++){ const a=pts[i], b=pts[i+1]; len+=Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1]);
+        let len=0; for(let i=0;i<k-1;i++) len+=Math.abs(pts[i][0]-pts[i+1][0])+Math.abs(pts[i][1]-pts[i+1][1]);
+        const up = T.y < S.y + S.h/2, lastH = k>=3 && pts[k-2][0]===pts[k-1][0] && pts[k-3][1]===pts[k-2][1] ? pts[k-2][1] : null, offJoin = t==='top' && lastH!=null && Math.abs(lastH-jy)>1 && pts[k-3][0]!==pts[k-1][0] ? 3000 : 0;
+        const td=e.turn==='right'?1:e.turn==='left'?-1:0, tw = td && (k<3 || Math.sign(pts[2][0]-pts[1][0])!==td) ? 5000 : 0;   // turn: after leaving the port the line bends this way (사용자 확정 2026-11-10)
+        const fixed=(k-2)*28 + offJoin + (t==='left' && S.x > T.x+T.w ? 2000 : 0) + (t==='top'?0:24) + (S.dia && s==='bottom' && T.col!==S.col ? 400 : 0) + (up && s==='bottom' ? (S.col>0 ? 1500 : 260) : 0) + (e.port && s!==e.port ? 600 : 0) + tw;
+        cand.push({pts, k, d0, dl, len, fixed, lb: fixed + len*0.6}); } }   // a shared stretch can take off at most 0.4 per pixel, so lb never overestimates
+    cand.sort((p,q)=>p.lb-q.lb);
+    for(const c of cand){ if(best && c.lb>=best.sc) break; const {pts,k,d0,dl}=c;
+        let coll=0, ov=0; for(let i=0;i<k-1;i++){ const a=pts[i], b=pts[i+1];
           if(i>0 && i<k-2) coll+=hit(a,b); else { const a2 = i===0 ? [a[0]+d0[0]*6, a[1]+d0[1]*6] : a, b2 = i===k-2 ? [b[0]-dl[0]*6, b[1]-dl[1]*6] : b; if(Math.abs(a2[0]-b2[0])+Math.abs(a2[1]-b2[1])>2 && Math.sign(b2[0]-a2[0])===Math.sign(b[0]-a[0]) && Math.sign(b2[1]-a2[1])===Math.sign(b[1]-a[1])) coll+=hit(a2,b2); }
           ov+=overlap(a,b,T.id,e.lane); for(const L of loopR) if(!L.ids.has(e.a) && !L.ids.has(e.b) && segIn(a,b,L.R)) coll+=0.5; }
-        let cross=0; for(let i=0;i<k-1;i++){ const a=pts[i], b=pts[i+1]; for(const [c,d] of placed){ const v1=a[0]===b[0], v2=c[0]===d[0]; if(v1===v2) continue;
-            const [V0,V1,H0,H1] = v1 ? [a,b,c,d] : [c,d,a,b]; if(V0[0]>Math.min(H0[0],H1[0])+1 && V0[0]<Math.max(H0[0],H1[0])-1 && H0[1]>Math.min(V0[1],V1[1])+1 && H0[1]<Math.max(V0[1],V1[1])-1) cross++; } }
-        const up = T.y < S.y + S.h/2, lastH = k>=3 && pts[k-2][0]===pts[k-1][0] && pts[k-3][1]===pts[k-2][1] ? pts[k-2][1] : null, offJoin = t==='top' && lastH!=null && Math.abs(lastH-jy)>1 && pts[k-3][0]!==pts[k-1][0] ? 3000 : 0;
-        const sc=coll*5000 + len + (k-2)*28 + ov + cross*60 + offJoin + (t==='left' && S.x > T.x+T.w ? 2000 : 0) + (t==='top'?0:24) + (S.dia && s==='bottom' && T.col!==S.col ? 400 : 0) + (up && s==='bottom' ? 260 : 0);
-        const td=e.turn==='right'?1:e.turn==='left'?-1:0, tw = td && (k<3 || Math.sign(pts[2][0]-pts[1][0])!==td) ? 5000 : 0;   // turn: after leaving the port the line bends this way (사용자 확정 2026-11-10)
-        if(!best || sc+tw<best.sc) best={sc:sc+tw, pts}; } }
+        let sc=coll*5000 + c.len + ov + c.fixed; if(best && sc>=best.sc) continue;
+        let cross=0; for(let i=0;i<k-1;i++){ const a=pts[i], b=pts[i+1]; for(const [cc,d,t2,l2] of placed){ const v1=a[0]===b[0], v2=cc[0]===d[0]; if(v1===v2 || t2===T.id || (e.lane && l2===e.lane)) continue;
+            const [V0,V1,H0,H1] = v1 ? [a,b,cc,d] : [cc,d,a,b]; if(V0[0]>Math.min(H0[0],H1[0])+1 && V0[0]<Math.max(H0[0],H1[0])-1 && H0[1]>Math.min(V0[1],V1[1])+1 && H0[1]<Math.max(V0[1],V1[1])-1) cross++; } }
+        sc+=cross*1400;
+        if(!best || sc<best.sc) best={sc, pts}; }
       return best; };
     let best=tryRoute(e.enter ? [e.enter] : T.col===0 ? ['top'] : ['top','left']); if(!best) best=tryRoute(['top','left']);
-    e.pts=best.pts; for(let i=0;i<best.pts.length-1;i++) placed.push([best.pts[i],best.pts[i+1],T.id,e.lane]); }); }
+    e.pts=best.pts; for(let i=0;i<best.pts.length-1;i++) placed.push([best.pts[i],best.pts[i+1],T.id,e.lane,e]); };
+  order.forEach(routeOne);
+  // second and third pass: each line is routed again knowing where every other line went, so a line drawn early can step out of the way of one drawn later
+  for(let pass=0; pass<2; pass++) (pass%2 ? [...order].reverse() : order).forEach(e=>{ for(let i=placed.length-1;i>=0;i--) if(placed[i][4]===e) placed.splice(i,1); routeOne(e); }); }
 function fcD(pts, sharp){ let d=`M${pts[0][0]},${pts[0][1]}`;
   for(let i=1;i<pts.length;i++){ const p=pts[i]; if(i===pts.length-1){ d+=` L${p[0]},${p[1]}`; break; } const a=pts[i-1], c=pts[i+1];
     const l1=Math.abs(p[0]-a[0])+Math.abs(p[1]-a[1]), l2=Math.abs(c[0]-p[0])+Math.abs(c[1]-p[1]), r=sharp?.has(i) ? 0 : Math.min(FX.R, l1/2, l2/2);
@@ -1558,6 +1571,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=
     const kind = e.res==='fail' || B.kind==='base' ? 'fail' : e.res==='ok' ? 'ok' : 'fwd';
     return {...e, dash: e.dash ?? (A.edges||[]).find(x=>x.to===e.b)?.dash, src, dst, on, kind, share: (A.edges||[]).find(x=>x.to===e.b)?.p ?? (M.multi[e.a] && !e.skip && out ? f/out : null), d0:Math.abs(src.x-dst.x)+Math.abs(src.y-dst.y) + (kind==='fwd'?0:5000)}; }).filter(Boolean);
   fcRoute(Lay, M, edges);
+  window.__fcLast={edges:edges.map(e=>({a:e.a,b:e.b,kind:e.kind,lane:e.lane,on:e.on,pts:e.pts})), rects:[...Object.entries(Lay.box)].map(([id,b])=>({id,x:b.x,y:b.y,w:b.w,h:b.h}))};   // for tools/test/_fclines.js
   // where a line runs into another one the corner stays square; success lines are drawn last so they sit on top
   const onSeg=(p,a,b)=>(a[0]===b[0] && Math.abs(p[0]-a[0])<0.5 && p[1]>=Math.min(a[1],b[1])-0.5 && p[1]<=Math.max(a[1],b[1])+0.5) || (a[1]===b[1] && Math.abs(p[1]-a[1])<0.5 && p[0]>=Math.min(a[0],b[0])-0.5 && p[0]<=Math.max(a[0],b[0])+0.5);
   edges.forEach(e=>{ e.sharp=new Set(); for(let i=1;i<e.pts.length-1;i++) if(edges.some(f=>f!==e && f.pts.some((q,j)=>j<f.pts.length-1 && onSeg(e.pts[i], q, f.pts[j+1])))) e.sharp.add(i); });
