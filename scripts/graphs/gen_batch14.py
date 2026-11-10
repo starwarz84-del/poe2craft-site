@@ -49,7 +49,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'fire7','fr':True},{'junk':'p'}]},
 graph11('sl-flamewave-staff-v2','Staves','Chiming Staff',81,
   'SL 화염파 지팡이(6EzSVUItzsg) — 화염 주문 +7 분열 + 잡옵 → 카오스 오브(피해 % 증가 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) → 좌측 강령술 + 고대 턱뼈 → 공개(빛의 징조로 다시). 하이엔드 = 스루드의 완력 → 상위 찬미 + 완벽한 엑잘 → 절사 + 완벽한 카오스 오브(화염 규모, 가중치 비공개: 영상 경험 절사 20~30번으로 맞춤) → 초월의 합금. 밸런스 = 영상의 가성비 마무리(엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로).',
   ROUTE,P2,{'high':K('영상: 스루드의 완력으로 화염 규모, 공개는 빛의 징조로 다시','Video: Thrud’s Might fire magnitudes, Light retries the reveal'),'bal':K('영상의 가성비 마무리: 엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로','Video budget finish: two exalted suffixes + Transcendent Alloy, reveal kept')},tags,nodes,
-  [{'id':'L1','nodes':['p3','p4','p4x'],'kr':'훼손 공개','en':'Reveal'}],
+  [{'id':'L1','nodes':['p3','p4','p4x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['s3','s3m'],'kr':'초월의 합금','en':'Transcendent Alloy'}],
   FIN(('high','bal'),lambda v:[{'tag':'dsp','tmax':1},{'tag':'dfi','tmax':1},{'tag':'xfi','tmax':1,'des':True} if v=='high' else {'side':'p','random':True},
       {'tag':'fire7','tmax':1,'fr':True},{'tag':'fm'} if v=='high' else {'side':'s','random':True},{'tag':'alloy','ess':True}]),
   {'quality':20,'sockets':3},{'all':[{'has':'pd'},{'has':'alloy'}]},('high','bal'),xsub=["Thrud's Might"],xroll=True)
