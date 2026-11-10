@@ -349,6 +349,9 @@ footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
   .bench .cbtn{width:46px;height:46px}.bench .cbtn img{width:34px;height:34px}.bench .cur{gap:6px}
   .bench .ctab{min-width:54px;padding:6px 6px 5px}
 }
+.mts{display:inline-flex;flex-wrap:wrap;gap:3px;margin-left:6px;vertical-align:middle}
+.mt{font-size:10.5px;line-height:1;padding:3px 5px;border-radius:4px;background:#34405a;color:#dfe5ee;font-weight:600;white-space:nowrap;font-style:normal}
+.mt-damage{color:#ff7262}.mt-physical{color:#d2d2d2}.mt-elemental{color:#fff}.mt-fire{color:#ff9a6a}.mt-cold{color:#8fd0ff}.mt-lightning{color:#ffd84a}.mt-chaos{color:#d39bff}.mt-attack{color:#f2a86c}.mt-caster{color:#a9bcff}.mt-life{color:#ff8a8a}.mt-mana{color:#8ea8ff}.mt-minion{color:#b8e08a}
 </style>
 
 <div class="wrap">
@@ -440,6 +443,10 @@ function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');cl
 const S = { lang:((()=>{try{const q=new URLSearchParams(location.search).get('lang');if(q)return q;return localStorage.getItem('poe2lang')}catch(e){return null}})()||'en'), index:null, craft:null, cat:null, cls:null, data:null, base:0, bkind:'normal', item:null, hist:[], spend:{}, omens:new Set(), pane:'odds', ctab:'orb', fore:null, mode:'cur', held:null, opt:{sec:'n', side:'all', q:'', roll:'rand', tier:{}}, oddsAct:'exalt', oddsMin:0, oddsTier:{}, essTier:'all', last:null, reveal:null };
 const cache = {};
 const KR = () => S.lang==='kr';
+// mod tags beside each modifier, like poe2db (사용자 2026-11-11)
+const MTAG=[['damage','피해','Damage'],['physical','물리','Physical'],['elemental','원소','Elemental'],['fire','화염','Fire'],['cold','냉기','Cold'],['lightning','번개','Lightning'],['chaos','카오스','Chaos'],['attack','공격','Attack'],['caster','주문','Caster'],['minion','소환수','Minion'],['speed','속도','Speed'],['critical','치명타','Critical'],['life','생명력','Life'],['mana','마나','Mana'],['defences','방어','Defences'],['resistance','저항','Resistance'],['attribute','능력치','Attribute'],['ailment','상태 이상','Ailment'],['bleed','출혈','Bleed'],['poison','중독','Poison'],['curse','저주','Curse'],['aura','오라','Aura'],['gem','젬','Gem'],['block','막기','Block'],['drop','희귀도','Rarity'],['flask','플라스크','Flask'],['charm','부적','Charm']];
+const mtags = g => { const s=new Set(g.tg||[]), h=MTAG.filter(x=>s.has(x[0])).map(([k,kr,en])=>`<span class="mt mt-${k}">${KR()?kr:en}</span>`).join(''); return h?`<span class="mts">${h}</span>`:''; };
+
 const L = (kr,en) => KR()?kr:en;
 // tier row: [ilvl, weight, nameKr, nameEn, textKr, textEn]
 const tName = t => KR()?t[2]:t[3], tText = t => KR()?t[4]:t[5];
@@ -1123,7 +1130,7 @@ function renderPane(){
     (rows.length ? rows.map(r=>{ const g=S.data.groups[r.gi], ts=[...r.tiers].sort((a,b)=>a-b), lo=ts[ts.length-1];
       const pick=Math.min(lo, Math.max(ts[0], S.oddsTier[r.gi]||lo));   // chosen tier: chance of that tier or better (사용자 2026-11-10)
       const w=opts.filter(o=>o.gi===r.gi && o.ti+1<=pick).reduce((a,o)=>a+o.w,0), t=g.t[pick-1];
-      return `<div class="odds-row ${g.g}"><span class="bar"></span><div>${esc(rollText(tText(t),.5).replace(/\n/g,' / '))}<div class="tiers">${g.g==='p'?L('접두','Prefix'):L('접미','Suffix')} · <select data-otier="${r.gi}" aria-label="${L('티어','Tier')}">${ts.map(x=>`<option value="${x}" ${x===pick?'selected':''}>${x===ts[0]?`T${x}`:`T${ts[0]}~T${x}`}</option>`).join('')}</select> <button type="button" class="oadd" data-oadd="${r.gi}" data-ot="${pick}" title="${L('이 티어로 아이템에 붙이기','Put this tier on the item')}">${L('올리기','Add')}</button></div></div><span class="pct">${(w/tot*100).toFixed(w/tot<0.001?2:1)}%</span></div>`; }).join('') : `<div class="empty">${L('지금은 새로 붙을 수 있는 옵션이 없어요','No modifiers can be added right now')}</div>`);
+      return `<div class="odds-row ${g.g}"><span class="bar"></span><div>${esc(rollText(tText(t),.5).replace(/\n/g,' / '))}${mtags(g)}<div class="tiers">${g.g==='p'?L('접두','Prefix'):L('접미','Suffix')} · <select data-otier="${r.gi}" aria-label="${L('티어','Tier')}">${ts.map(x=>`<option value="${x}" ${x===pick?'selected':''}>${x===ts[0]?`T${x}`:`T${ts[0]}~T${x}`}</option>`).join('')}</select> <button type="button" class="oadd" data-oadd="${r.gi}" data-ot="${pick}" title="${L('이 티어로 아이템에 붙이기','Put this tier on the item')}">${L('올리기','Add')}</button></div></div><span class="pct">${(w/tot*100).toFixed(w/tot<0.001?2:1)}%</span></div>`; }).join('') : `<div class="empty">${L('지금은 새로 붙을 수 있는 옵션이 없어요','No modifiers can be added right now')}</div>`);
 }
 function renderPicker(){
   $('#cats').innerHTML = S.index.groups.map(g=>`<button type="button" class="ttab" data-cat="${g.id}" aria-pressed="${g.id===S.cat}">${esc(g.kr)}</button>`).join('');
@@ -1421,7 +1428,7 @@ function renderOptPicker(){
   });
   const list = ['p','s'].map(side=>{ const r=rows.filter(x=>x.g.g===side); if(!r.length) return '';
     return `<div class="ocol"><div class="oh">${side==='p'?L('접두어','PREFIXES'):L('접미어','SUFFIXES')} · ${r.length}</div>` + r.map(({g,gi,tiers,txt})=>{ const why=manualWhy(gi); const sel=o.tier[gi] ?? tiers[0].ti;
-      return `<div class="orow ${g.g} ${why?'off':''}"><span class="bar"></span><div><div class="txt">${esc(txt)}</div><span class="sec ${g.s}">${esc(KR()?g.sub[0]:g.sub[1])}</span>${why?` <span class="why">· ${esc(why)}</span>`:''}</div>
+      return `<div class="orow ${g.g} ${why?'off':''}"><span class="bar"></span><div><div class="txt">${esc(txt)}${mtags(g)}</div><span class="sec ${g.s}">${esc(KR()?g.sub[0]:g.sub[1])}</span>${why?` <span class="why">· ${esc(why)}</span>`:''}</div>
         <select data-tsel="${gi}" aria-label="${L('티어','Tier')}">${tiers.map(({t,ti})=>`<option value="${ti}" ${ti==sel?'selected':''}>${g.s==='n'?'T'+(ti+1):'#'+(ti+1)} · ${L('레벨','lv')} ${t[0]}</option>`).join('')}</select>
         <button type="button" class="btn" data-add="${gi}" ${why?'disabled':''} style="padding:3px 10px;font-size:12px">${L('붙이기','Add')}</button></div>`; }).join('') + '</div>'; }).join('');
   $('#shelves').innerHTML = `<div class="optp">

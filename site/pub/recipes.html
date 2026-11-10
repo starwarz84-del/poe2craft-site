@@ -563,7 +563,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&
 const store = { get(k,d){ try{ const v=localStorage.getItem('poe2r:'+k); return v?JSON.parse(v):d; }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem('poe2r:'+k, JSON.stringify(v)); }catch(e){} } };
 function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(), 1800); }
 
-const TAGS = [['life',['생명력','Life']],['resistance',['저항','Resistance']],['defences',['방어','Defences']],['physical',['물리','Physical']],['elemental',['원소','Elemental']],['attack',['공격','Attack']],['caster',['주문','Caster']],['speed',['속도','Speed']],['critical',['치명타','Critical']],['drop',['희귀도','Rarity']]];
+const TAGS = [['life',['생명력','Life']],['mana',['마나','Mana']],['resistance',['저항','Resistance']],['defences',['방어','Defences']],['damage',['피해','Damage']],['physical',['물리','Physical']],['elemental',['원소','Elemental']],['fire',['화염','Fire']],['cold',['냉기','Cold']],['lightning',['번개','Lightning']],['chaos',['카오스','Chaos']],['attack',['공격','Attack']],['caster',['주문','Caster']],['minion',['소환수','Minion']],['speed',['속도','Speed']],['critical',['치명타','Critical']],['attribute',['능력치','Attribute']],['ailment',['상태 이상','Ailment']],['gem',['젬','Gem']],['drop',['희귀도','Rarity']]];
 const SORTS = [['popular',['인기순','Popular']],['new',['최신순','Newest']],['cheap',['적은 소모순','Fewest currency']],['rate',['성공률순','Success rate']],['reports',['성공 보고순','Most success reports']]];
 const DO = { transmute:['진화','Transmute'], augment:['확장','Augment'], regal:['제왕','Regal'], exalt:['엑잘','Exalt'], essence:['에센스','Essence'], fracture:['분열','Fracture'] };
 
@@ -1839,7 +1839,8 @@ function renderBar(){
   $('#l-patch').textContent=L(`현재 패치(${S.index.patch})만`,`Current patch (${S.index.patch}) only`);
   $('#analyze').textContent=L('아이템으로 레시피 찾기·요청','Find or request a recipe');
   { const n=S.recipes.filter(r=>r.draft).length, b=$('#clrdrafts'); b.hidden=!n; b.textContent=L(`역산 초안 모두 지우기 (${n})`,`Delete all drafts (${n})`); }
-  $('#tags').innerHTML=TAGS.map(([k,[kr,en]])=>`<button type="button" class="chip" data-tag="${k}" aria-pressed="${S.tags.has(k)}">${esc(L(kr,en))}</button>`).join('');
+  const have=new Set(); S.recipes.forEach(r=>{ try{ tagsOf(r).forEach(t=>have.add(t)); }catch(e){} });
+  $('#tags').innerHTML=TAGS.filter(([k])=>have.has(k)||S.tags.has(k)||!have.size).map(([k,[kr,en]])=>`<button type="button" class="chip" data-tag="${k}" aria-pressed="${S.tags.has(k)}">${esc(L(kr,en))}</button>`).join('');
   $('#demo').textContent=L('레시피 등록 기능은 준비 중이에요. 지금은 공개 영상을 해석해 만든 레시피만 있어요. 확률과 비용은 에뮬레이터와 같은 옵션 가중치로 계산한 값이에요.','Recipe submission is coming. For now the board holds recipes interpreted from public videos. Odds and costs use the same modifier weights as the emulator.');
 }
 const CAT_EN = {weapon:'One-Handed', weapon2:'Two-Handed', offhand:'Off-hand', helmet:'Helmets', body:'Body Armour', gloves:'Gloves', boots:'Boots', jewellery:'Jewellery', jewel:'Jewels', flask:'Flasks'};

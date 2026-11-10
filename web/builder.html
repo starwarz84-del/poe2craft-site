@@ -248,6 +248,9 @@ details.sum summary{cursor:pointer;font-size:12px;letter-spacing:.06em;color:var
 .toast.show{opacity:1}
 footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.mts{display:inline-flex;flex-wrap:wrap;gap:3px;margin-left:6px;vertical-align:middle}
+.mt{font-size:10.5px;line-height:1;padding:3px 5px;border-radius:4px;background:#34405a;color:#dfe5ee;font-weight:600;white-space:nowrap;font-style:normal}
+.mt-damage{color:#ff7262}.mt-physical{color:#d2d2d2}.mt-elemental{color:#fff}.mt-fire{color:#ff9a6a}.mt-cold{color:#8fd0ff}.mt-lightning{color:#ffd84a}.mt-chaos{color:#d39bff}.mt-attack{color:#f2a86c}.mt-caster{color:#a9bcff}.mt-life{color:#ff8a8a}.mt-mana{color:#8ea8ff}.mt-minion{color:#b8e08a}
 </style>
 
 <div class="wrap">
@@ -329,6 +332,10 @@ const S = { ilvlBy:{}, infused:false, quality:20, catalyst:'', imp:[], meta:null
 const cache = {};
 const LB = () => S.lang==='kr' ? 1 : 0;           // base data stores [english, korean]
 const KR = () => S.lang==='kr';
+// mod tags beside each modifier, like poe2db (사용자 2026-11-11)
+const MTAG=[['damage','피해','Damage'],['physical','물리','Physical'],['elemental','원소','Elemental'],['fire','화염','Fire'],['cold','냉기','Cold'],['lightning','번개','Lightning'],['chaos','카오스','Chaos'],['attack','공격','Attack'],['caster','주문','Caster'],['minion','소환수','Minion'],['speed','속도','Speed'],['critical','치명타','Critical'],['life','생명력','Life'],['mana','마나','Mana'],['defences','방어','Defences'],['resistance','저항','Resistance'],['attribute','능력치','Attribute'],['ailment','상태 이상','Ailment'],['bleed','출혈','Bleed'],['poison','중독','Poison'],['curse','저주','Curse'],['aura','오라','Aura'],['gem','젬','Gem'],['block','막기','Block'],['drop','희귀도','Rarity'],['flask','플라스크','Flask'],['charm','부적','Charm']];
+const mtags = g => { const s=new Set(g.tg||[]), h=MTAG.filter(x=>s.has(x[0])).map(([k,kr,en])=>`<span class="mt mt-${k}">${KR()?kr:en}</span>`).join(''); return h?`<span class="mts">${h}</span>`:''; };
+
 const GEN_KR = {p:'접두', s:'접미', k:'룬 소켓', c:'타락 고정 옵션'};
 const TOP = [['affix','접두·접미 옵션','var(--rare)'],['rune','룬(증강물)','var(--rune)'],['corrupt','타락','var(--corrupt)']];
 const SUB = {
@@ -861,7 +868,7 @@ function renderPool(){
     const st = sel.has(gi) && g.s==='n' ? sel.get(gi) : null;
     const share = g.s==='n' ? (st!=null ? `${pctTxt(tierShare(gi,st))}<small>T${st+1} 이상</small>` : `${(sh[gi]*100).toFixed(1)}%<small>비중</small>`) : `<small>ilvl ${Math.min(...g.t.map(t=>t[0]))}+</small>`;
     rows[g.g].push({w: g.s==='n'?sh[gi]:-1-(g.t[0][0]/1000), html:`<div class="row ${g.g} ${why?'off':'ok'}"><span class="bar"></span>
-      <div class="main"><button type="button" class="t" data-g="${gi}" ${why?'aria-disabled="true"':''}>${tag}${nl(tText(shown))}</button>${why?`<span class="why">${esc(why)}</span>`:''}
+      <div class="main"><button type="button" class="t" data-g="${gi}" ${why?'aria-disabled="true"':''}>${tag}${nl(tText(shown))}${mtags(g)}</button>${why?`<span class="why">${esc(why)}</span>`:''}
       <div class="tiers">${chips}</div></div><div class="share">${share}</div></div>`});
   });
   const order = a.g==='s' ? ['s','p'] : ['p','s'];
