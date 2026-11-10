@@ -16,6 +16,7 @@ function make(graph, D, craft, params){
   const cap = graph.cap ? {...graph.cap} : {p:3+(base.pd||0), s:3+(base.sd||0)}, ilvl=graph.ilvl;   // graph.cap: jewels are 2/2
   const G = D.groups;
   // desecrated-only groups weigh 1000 on the game's scale; in a flat-weight class (jewels, weights unknown) they weigh what an average normal group does (recipes.html dWeight)
+  const xTW = (()=>{ const ws=G.filter(g=>g.s==='n').flatMap(g=>g.t.map(t=>t[1])).filter(w=>w>0); return ws.reduce((a,w)=>a+w,0)/Math.max(1,ws.length); })();   // graph.xroll: a socketed rune's lines roll on exalts/chaos too, each tier at the average normal tier weight (estimate)
   const dW = (()=>{ const ns=G.filter(g=>g.s==='n'), ws=new Set(ns.flatMap(g=>g.t.map(t=>t[1]))); if(ws.size!==1) return 1000; const tot=ns.map(g=>g.t.filter(t=>t[0]<=graph.ilvl).reduce((a,t)=>a+t[1],0)).filter(x=>x>0); return tot.reduce((a,x)=>a+x,0)/Math.max(1,tot.length); })();
   const P = v => typeof v==='string' && v[0]==='$' ? params[v.slice(1)] : v;
   // tags: named modifier specs, resolved to group indexes once
@@ -40,7 +41,7 @@ function make(graph, D, craft, params){
     const gcache={};
     const groupsFor = (minLvl, sec, xs=[]) => { const k=minLvl+'|'+sec+'|'+xs.join(','); if(gcache[k]) return gcache[k];
       const out=[]; G.forEach((g,gi)=>{ if(!sec.includes(g.s)) return; if(g.s==='x' && !xs.includes(g.sub?.[1])) return; const top=g.t.findIndex(t=>t[0]<=ilvl && (t[1]>0 || g.s==='d'));
-        const ts=[]; g.t.forEach((t,ti)=>{ if(t[0]<=ilvl && (t[0]>=minLvl || ti===top) && (t[1]>0 || g.s==='d')) ts.push({gi, ti, w:g.s==='d'?1:t[1]}); });
+        const ts=[]; g.t.forEach((t,ti)=>{ if(t[0]<=ilvl && (t[0]>=minLvl || ti===top) && (t[1]>0 || g.s==='d')) ts.push({gi, ti, w:g.s==='d'?1:g.s==='x'?xTW:t[1]}); });
         if(ts.length) out.push({gi, side:g.g, f:g.f, ts, w:ts.reduce((a,x)=>a+x.w,0), d:g.s==='d'||g.s==='x'}); });
       return gcache[k]=out; };
     // x (augment / Otherworldly) lines join only for the socketed rune (graph.xsub) or an Altered bone, weighted like desecrated-only lines
@@ -48,7 +49,7 @@ function make(graph, D, craft, params){
     function pool(sides, minLvl, sections=['n'], xs=[]){
       const F=fams(), free=(sides||['p','s']).filter(s=>count(s)<maxA(s));
       return groupsFor(minLvl, sections.join(''), xs).filter(g=>free.includes(g.side) && !g.f.some(x=>F.has(x))); }
-    const add = (sides, minLvl) => { const gs=pool(sides, minLvl); if(!gs.length) return null; const g=pickW(rnd, gs), p=pickW(rnd, g.ts); const m={gi:p.gi, ti:p.ti, side:g.side}; it.mods.push(m); last.added.push(m); return m; };
+    const add = (sides, minLvl) => { const gs=graph.xroll ? pool(sides, minLvl, ['n','x'], graph.xsub||[]) : pool(sides, minLvl); if(!gs.length) return null; const g=pickW(rnd, gs), p=pickW(rnd, g.ts); const m={gi:p.gi, ti:p.ti, side:g.side}; it.mods.push(m); last.added.push(m); return m; };
     const take = m => { it.mods.splice(it.mods.indexOf(m),1); last.removed.push(m); return m; };
     const takeRandom = f => { const c=it.mods.filter(m=>!m.fr && (!f || f(m))); if(!c.length) return null; return take(c[Math.floor(rnd()*c.length)]); };
     const sideOm = (oms, a, b) => oms.some(o=>a.test(o)) ? 'p' : oms.some(o=>b.test(o)) ? 's' : null;

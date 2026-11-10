@@ -1,0 +1,1062 @@
+{
+ "id": "diztoh-as-spear-v2",
+ "recipe": "diztoh-as-spear-v2",
+ "cls": "Spears",
+ "base": "Akoyan Spear",
+ "ilvl": 82,
+ "note": "Diztoh 트위스터 공격 속도 창(원본 레시피 기록, 같은 영상의 두 레시피를 하나로) — 투사체 +4 분열 + 잡옵(아스트리드의 창의성) → 카오스 오브(공격 속도) → 좌측 찬미 + 엑잘 → 좌측 결정화 + 군왕의 합금 → 엑잘 → 좌측 결정화 + 천공의 합금 → 스루드의 완력 교체 → 고대 턱뼈 → 공개(명시 속도 옵션 강화, 빛의 징조로 다시) → 완벽한 엑잘(물리 접두, 밸런스는 빗나가면 절사의 징조 + 카오스 오브 — 가장 낮은 줄이 버릴 줄일 때만). 스루드 옵션은 공개 가중치가 없어 추정. 에센셜 = 상위 엑잘 결과 그대로.",
+ "params": {
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "v": 1
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "v": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "v": 2
+   },
+   "desc": {
+    "kr": "상위 엑잘 결과 그대로",
+    "en": "Greater Exalt, keep it"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "v": 1
+   },
+   "desc": {
+    "kr": "영상: 물리 접두까지 절사의 징조",
+    "en": "Video: Whittling until a physical prefix"
+   }
+  }
+ ],
+ "tags": {
+  "proj": {
+   "gi": 11,
+   "tmax": 1
+  },
+  "as": {
+   "gi": 17,
+   "tmax": 3
+  },
+  "sov": {
+   "gi": 63
+  },
+  "cel": {
+   "gi": 64
+  },
+  "thrud": {
+   "gi": 74
+  },
+  "ppct": {
+   "gi": 8,
+   "tmax": 2
+  },
+  "hyb": {
+   "gi": 9,
+   "tmax": 2
+  },
+  "flat": {
+   "gi": 3,
+   "tmax": 2
+  },
+  "phys": {
+   "anyOf": [
+    "ppct",
+    "hyb",
+    "flat"
+   ],
+   "label": {
+    "kr": "물리 피해 접두",
+    "en": "Physical damage prefix"
+   }
+  },
+  "keep": {
+   "anyOf": [
+    "proj",
+    "as",
+    "sov",
+    "cel",
+    "thrud",
+    "phys"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "proj"
+   },
+   {
+    "has": "as"
+   },
+   {
+    "has": "thrud"
+   },
+   {
+    "full": "p"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "a8",
+    "a9",
+    "a9x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "cel",
+     "tmax": 1
+    },
+    {
+     "tag": "thrud",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "물리 피해 접두",
+      "en": "Physical damage prefix"
+     }
+    },
+    {
+     "tag": "proj",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "as",
+     "tmax": 3
+    },
+    {
+     "tag": "sov",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "cel",
+     "tmax": 1
+    },
+    {
+     "tag": "thrud",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "proj",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "as",
+     "tmax": 3
+    },
+    {
+     "tag": "sov",
+     "tmax": 1
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "proj",
+      "fr": true
+     },
+     {
+      "junk": "p"
+     }
+    ]
+   },
+   "label": {
+    "kr": "투사체 스킬 +4 분열 + 잡옵 1줄 (아스트리드의 창의성 장착)",
+    "en": "Fractured +4 projectile skills + one junk line (Astrid’s Creativity socketed)"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "a2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "a2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "as"
+     },
+     "to": "a3",
+     "res": "ok"
+    },
+    {
+     "to": "a2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "as"
+   ]
+  },
+  {
+   "id": "a3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "합금이 지울 접두",
+    "en": "The prefix for the alloy to remove"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "a4"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "a4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접두 잡옵을 지우고 장착 증강 효과",
+    "en": "Swap the junk prefix for socketed augment effect"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "to": "a5"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "장착 증강 효과 (군왕의 합금)",
+     "en": "Socketed augment effect (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "sov"
+     ]
+    }
+   ],
+   "cur": "Sovereign_Alloy",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "장착 증강 효과 (제작 옵션)",
+     "en": "Socketed augment effect (crafted)"
+    }
+   ],
+   "ess": "sov",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "a5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "합금이 지울 접두",
+    "en": "The prefix for the alloy to remove"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "a6"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "장착 증강 효과 (군왕의 합금)",
+     "en": "Socketed augment effect (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "sov"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line"
+    }
+   ]
+  },
+  {
+   "id": "a6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접두 잡옵을 정확도 + 공격 속도로",
+    "en": "Swap the junk prefix for accuracy + attack speed"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "to": "a8"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "장착 증강 효과 (군왕의 합금)",
+     "en": "Socketed augment effect (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "sov"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 + 공격 속도 (천공의 합금)",
+     "en": "Accuracy + attack speed (Celestial Alloy)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    }
+   ],
+   "cur": "Celestial_Alloy",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "정확도 + 공격 속도 (제작 옵션)",
+     "en": "Accuracy + attack speed (crafted)"
+    }
+   ],
+   "ess": "cel",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "a8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "스루드의 완력으로 교체 후 접두 훼손",
+    "en": "Swap to Thrud’s Might, then desecrate a prefix"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "a9"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "장착 증강 효과 (군왕의 합금)",
+     "en": "Socketed augment effect (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "sov"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 + 공격 속도 (천공의 합금)",
+     "en": "Accuracy + attack speed (Celestial Alloy)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ]
+  },
+  {
+   "id": "a9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "thrud"
+     },
+     "to": "a10",
+     "res": "ok"
+    },
+    {
+     "to": "a9x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "장착 증강 효과 (군왕의 합금)",
+     "en": "Socketed augment effect (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "sov"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 + 공격 속도 (천공의 합금)",
+     "en": "Accuracy + attack speed (Celestial Alloy)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "명시 속도 옵션 강화 (스루드의 완력)",
+     "en": "Explicit speed magnitudes (Thrud’s Might)",
+     "m": "n",
+     "tags": [
+      "thrud"
+     ]
+    }
+   ],
+   "want": "thrud",
+   "show": [
+    "thrud"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "a9x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "a8",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "a10",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "phys"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "v": 1
+        }
+       },
+       {
+        "whittleSafe": "keep"
+       }
+      ]
+     },
+     "to": "a11",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "장착 증강 효과 (군왕의 합금)",
+     "en": "Socketed augment effect (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "sov"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 + 공격 속도 (천공의 합금)",
+     "en": "Accuracy + attack speed (Celestial Alloy)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "명시 속도 옵션 강화 (스루드의 완력)",
+     "en": "Explicit speed magnitudes (Thrud’s Might)",
+     "m": "n",
+     "tags": [
+      "thrud"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 접두",
+     "en": "Physical damage prefix",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "ppct",
+    "hyb",
+    "flat"
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "a11",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "가장 낮은 줄을 다시 (버릴 줄일 때만)",
+    "en": "Reroll the lowest line (only while it is junk)"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "phys"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "whittleSafe": "keep"
+     },
+     "to": "a11",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "투사체 스킬 +4 (분열)",
+     "en": "+4 projectile skills (fractured)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도",
+     "en": "Attack speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "장착 증강 효과 (군왕의 합금)",
+     "en": "Socketed augment effect (Sovereign Alloy)",
+     "m": "n",
+     "tags": [
+      "sov"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 + 공격 속도 (천공의 합금)",
+     "en": "Accuracy + attack speed (Celestial Alloy)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "명시 속도 옵션 강화 (스루드의 완력)",
+     "en": "Explicit speed magnitudes (Thrud’s Might)",
+     "m": "n",
+     "tags": [
+      "thrud"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 접두",
+     "en": "Physical damage prefix",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "ppct",
+    "hyb",
+    "flat"
+   ],
+   "omens": [
+    "Omen_of_Whittling"
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "xsub": [
+  "Thrud's Might"
+ ]
+}
