@@ -1391,7 +1391,7 @@ function fcPrune(g, res){ if(!res?.nodes) return g; const gone=new Set(g.nodes.f
 function fcModel(g, params={}){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const E=[], seen=new Set(), add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(seen.has(k)) return; seen.add(k); E.push({a,b,label,...x}); };
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
-    (n.edges||[]).filter(e=>!e.hide && !(e.to===n.id && n.act==='chaos') && !(e.when && Object.entries(e.when).some(([k,v])=>String(params[k])!==String(v)))).forEach(e=>add(n.id, e.to, e.label, {res:e.res, port:e.port, enter:e.enter, lane:e.lane}));
+    (n.edges||[]).filter(e=>!e.hide && !(e.to===n.id && n.act==='chaos') && !(e.when && Object.entries(e.when).some(([k,v])=>String(params[k])!==String(v)))).forEach(e=>add(n.id, e.to, e.label, {res:e.res, port:e.port, enter:e.enter, lane:e.lane, turn:e.turn}));
     if(n.options) for(const [v,to] of Object.entries(n.options)) add(n.id, to, n.edgeLabels?.[v] || g.params?.[n.param]?.values?.[v], {opt:[n.param, v], ...(n.optStyle?.[v]||{})});
     if(n.skipTo && !n.skipNote && !n.skipHide) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
   const dec={}, multi={}; g.nodes.forEach(n=>{ if(n.kind!=='act' && n.kind!=='cleanup') return; if(new Set(E.filter(e=>e.a===n.id && !e.skip).map(e=>e.b)).size>=3) multi[n.id]=true; });   // simple two-way outcomes are just two coloured lines
@@ -1482,7 +1482,8 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
             const [V0,V1,H0,H1] = v1 ? [a,b,c,d] : [c,d,a,b]; if(V0[0]>Math.min(H0[0],H1[0])+1 && V0[0]<Math.max(H0[0],H1[0])-1 && H0[1]>Math.min(V0[1],V1[1])+1 && H0[1]<Math.max(V0[1],V1[1])-1) cross++; } }
         const up = T.y < S.y + S.h/2, lastH = k>=3 && pts[k-2][0]===pts[k-1][0] && pts[k-3][1]===pts[k-2][1] ? pts[k-2][1] : null, offJoin = t==='top' && lastH!=null && Math.abs(lastH-jy)>1 && pts[k-3][0]!==pts[k-1][0] ? 3000 : 0;
         const sc=coll*5000 + len + (k-2)*28 + ov + cross*60 + offJoin + (t==='left' && S.x > T.x+T.w ? 2000 : 0) + (t==='top'?0:24) + (S.dia && s==='bottom' && T.col!==S.col ? 400 : 0) + (up && s==='bottom' ? 260 : 0);
-        if(!best || sc<best.sc) best={sc, pts}; } }
+        const td=e.turn==='right'?1:e.turn==='left'?-1:0, tw = td && (k<3 || Math.sign(pts[2][0]-pts[1][0])!==td) ? 5000 : 0;   // turn: after leaving the port the line bends this way (사용자 확정 2026-11-10)
+        if(!best || sc+tw<best.sc) best={sc:sc+tw, pts}; } }
       return best; };
     let best=tryRoute(e.enter ? [e.enter] : T.col===0 ? ['top'] : ['top','left']); if(!best) best=tryRoute(['top','left']);
     e.pts=best.pts; for(let i=0;i<best.pts.length-1;i++) placed.push([best.pts[i],best.pts[i+1],T.id,e.lane]); }); }
