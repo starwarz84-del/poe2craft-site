@@ -1067,7 +1067,7 @@ function renderShelves(){
   else if(T==='breach') body = shelf(L('기폭제','CATALYSTS'), S.item.catalyst?L(`현재 ${catName(S.item.catalyst)} 속성 ${S.item.quality}% · 해당 태그 옵션 수치 ×${(1+S.item.quality/100).toFixed(2)}`,''):L('퀄리티 종류를 정하고 해당 옵션 수치를 올려요 (다른 기폭제를 쓰면 종류가 바뀜)',''), cats, L('반지·목걸이(기폭제)와 주얼(제련된 기폭제)에만 쓸 수 있어요','Rings, amulets and jewels only'));
   else if(T==='delir') body = shelf(L('액체 감정','LIQUID EMOTIONS'), L(`희귀 주얼: 1개 빼고 확정 옵션 · 제작 속성 ${craftedCount()}/${craftedLimit()}`,''), liqs, L('희귀 주얼(고대 액체는 시간이 멈춘 주얼)에만 쓸 수 있어요','Rare jewels only'));
   else if(T==='exped') body = shelf(L('합금','ALLOYS'), L(`희귀: 1개 빼고 확정 옵션 · 제작 속성 ${craftedCount()}/${craftedLimit()}`,''), alloys, L('이 아이템에 쓸 수 있는 합금이 없어요','No alloys for this item')) + omenRow(['sin_crystal','dex_crystal']);
-  else if(T==='rune') body = runeShelf();
+  else if(T==='rune'){ body = runeShelf(); if(body===null) return; }
   else if(T==='abyss') body = shelf(L('심연의 뼈 (훼손)','DESECRATION'), L('희귀 아이템에 공개되지 않은 훼손 옵션 추가 → 영혼의 우물에서 3개 중 1개',''), bones, L('이 부위는 훼손할 수 없어요','Not available'))
     + omenRow(['liege','sovereign','blackblooded','echoes','sin_necro','dex_necro','putrefaction']);
   else if(T==='temple') body = shelf(L('타락 · 희생','CORRUPTION'), L('바알 오브: 변화 없음 · 옵션 1~3개 무작위 변경 · 타락 인챈트 · 소켓 +1(지팡이·마법봉은 퀄리티 ±10%) 각 25%','Vaal Orb: no change · 1–3 modifiers randomised · corrupted enchant · +1 socket (wands/staves: quality ±10%), 25% each'), [...vaal,...sacs], '')
@@ -1089,12 +1089,14 @@ function runeShelf(){
   const list = runesList().map((f,ri)=>({f,ri})).filter(({f})=>cat==='all'||RCAT(f.f)===cat).flatMap(({f,ri})=>f.t.map((t,ti)=>({t,ri,ti})))
     .filter(({t})=>!q || (t[0]+t[1]+t[2]+t[3]).toLowerCase().includes(q));
   const fxs = [fx.p?L(`접두 ${fx.p>0?'+':''}${fx.p}`,`prefix ${fx.p}`):'', fx.s?L(`접미 ${fx.s>0?'+':''}${fx.s}`,`suffix ${fx.s}`):'', fx.craft?L(`제작 속성 +${fx.craft}`,`crafted +${fx.craft}`):'', ...[...fx.names].filter(nm=>S.data.groups.some(g=>g.s==='x'&&g.sub[1]===nm)).map(nm=>L('특수 옵션 해금','unlocks special'))].filter(Boolean);
+  const runesHTML = list.map(({t,ri,ti})=>`<button type="button" class="rbtn ${runeLocked(t)?'sp':''} ${runeUniqueOnly(t)||(runeAldur(t)&&(S.item.corrupted||S.item.sanctified||S.item.rarity!=='rare'))?'off':''}" data-rune="${ri}:${ti}"><b>${esc(KR()?t[0]:t[1])}${runeLocked(t)?`<em>${L('소켓 귀속 · 교체 불가','socket-bound')}</em>`:''}${runeAncient(t)?`<em class="bd">${L('고대 · 1개 제한','ancient')}</em>`:''}${runeOnePer(t)&&!runeAncient(t)?`<em class="bd">${L('1개 제한','limit 1')}</em>`:''}${runeLegacy(t)?`<em class="bd">${L('유산 1개 제한','1 Legacy')}</em>`:''}${t[1]==='Masterwork Rune'?`<em class="uo">${L('등급 룬 업그레이드','upgrades a tiered rune')}</em>`:''}${runeAldur(t)?`<em class="uo">${L('희귀 무기 · 타락·축성 불가','rare weapon · not corrupted/sanctified')}</em>`:''}${runeUniqueOnly(t)?`<em class="uo">${L('고유 전용','unique only')}</em>`:''}</b><span>${esc(runeTxt(t,' / '))}</span></button>`).join('') || `<span class="empty">${L('결과 없음','None')}</span>`;
+  if(S.runeListOnly && document.querySelector('#shelves .runes') && document.getElementById('rq')){ S.runeListOnly=false; document.querySelector('#shelves .runes').innerHTML=runesHTML; return null; }
   return `<div class="shelf"><h3><span>${L('룬 소켓','RUNES')} · ${n}/${maxSockets()}${n>maxSockets()?L(' (타락 +1)',' (+1)'):''}</span><span>${fxs.join(' · ')}</span></h3>
     <div class="socks">${socks}</div>
     ${n?`<div class="sockhint">${L('모든 증강물은 타락·축성된 아이템에도 끼우거나 덮어 끼울 수 있어요(덮어 끼우면 이전 것은 파괴). <b>소켓 귀속</b>(워프 룬·알두르 룬·아치리 영혼핵·까마귀 손길 파편)은 한 번 끼우면 교체할 수 없어요. <b>고대 증강물</b>(응시·논문)은 동시에 1개만 끼울 수 있고 타락·축성 아이템에도 쓸 수 있어요. 단 <b>알두르 룬</b>은 옵션을 바꾸는 룬이라 타락·축성 아이템엔 못 끼우고, 희귀 무기의 빈 소켓에만 끼울 수 있어요(옵션 변환 효과는 아직 계산 안 함).','All augments can be socketed into corrupted or sanctified items. Socket-bound augments are permanent; only one Ancient augment at a time.')}</div>`:''}
     ${n?`<div class="runebar"><div class="seg" role="group" aria-label="룬 종류">${[['all',L('전체','All')],['rune',L('룬','Runes')],['core',L('영혼핵','Soul cores')],['idol',L('우상','Idols')],['etc',L('기타','Other')]].map(([k,t])=>`<button type="button" data-rcat="${k}" aria-pressed="${cat===k}">${t}</button>`).join('')}</div>
       <input type="search" id="rq" placeholder="${L('룬 검색','Search runes')}" value="${esc(S.runeQ||'')}"></div>
-    <div class="runes">${list.map(({t,ri,ti})=>`<button type="button" class="rbtn ${runeLocked(t)?'sp':''} ${runeUniqueOnly(t)||(runeAldur(t)&&(S.item.corrupted||S.item.sanctified||S.item.rarity!=='rare'))?'off':''}" data-rune="${ri}:${ti}"><b>${esc(KR()?t[0]:t[1])}${runeLocked(t)?`<em>${L('소켓 귀속 · 교체 불가','socket-bound')}</em>`:''}${runeAncient(t)?`<em class="bd">${L('고대 · 1개 제한','ancient')}</em>`:''}${runeOnePer(t)&&!runeAncient(t)?`<em class="bd">${L('1개 제한','limit 1')}</em>`:''}${runeLegacy(t)?`<em class="bd">${L('유산 1개 제한','1 Legacy')}</em>`:''}${t[1]==='Masterwork Rune'?`<em class="uo">${L('등급 룬 업그레이드','upgrades a tiered rune')}</em>`:''}${runeAldur(t)?`<em class="uo">${L('희귀 무기 · 타락·축성 불가','rare weapon · not corrupted/sanctified')}</em>`:''}${runeUniqueOnly(t)?`<em class="uo">${L('고유 전용','unique only')}</em>`:''}</b><span>${esc(runeTxt(t,' / '))}</span></button>`).join('') || `<span class="empty">${L('결과 없음','None')}</span>`}</div>`:''}</div>`;
+    <div class="runes">${runesHTML}</div>`:''}</div>`;
 }
 function renderPane(){
   document.querySelectorAll('.pane-t').forEach(b=>b.setAttribute('aria-pressed', b.dataset.pane===S.pane));
@@ -1448,7 +1450,7 @@ function socketRune(i, r){
   const over = ['p','s'].filter(g=>it.rarity==='rare' && it.mods.filter(m=>genOf(m)===g).length>rareCap(g));
   if(over.length) toast(L('룬을 빼서 옵션 자리보다 옵션이 많아졌어요','More modifiers than slots now'));
 }
-$('#shelves').addEventListener('input', e=>{ if(e.target.id==='rq'){ S.runeQ=e.target.value; const pos=e.target.selectionStart; renderShelves(); const q=$('#rq'); if(q){ q.focus(); q.setSelectionRange(pos,pos); } } });
+$('#shelves').addEventListener('input', e=>{ if(e.target.id==='rq'){ S.runeQ=e.target.value; S.runeListOnly=true; renderShelves(); } });
 const MANUAL = {id:'manual', kr:'직접 붙이기', en:'Manual', icon:''}, MANUAL_RM = {id:'manual', kr:'직접 제거', en:'Manual remove', icon:''};
 $('#shelves').addEventListener('click', e=>{
   if(S.mode!=='opt') return;
