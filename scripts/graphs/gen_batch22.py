@@ -26,29 +26,29 @@ REV22=lambda id,pos,want,show,ok,retry,item,omens=('Omen_of_Abyssal_Echoes',): a
 VBE=('bal','ess'); VHB=('high','bal')
 
 # ---------- 1. 시한 차율라 목걸이 (2vyq26ZFgOk) ----------
-# 정신력 분열 실패 매물(정신력 + 생명력, 접미 민첩 분열 + 잡옵 2개, 약 15 div) → 완벽한 무한의 에센스(접미 잡옵 → 힘)
-# → 우측 강령술 + 군주의 징조 + 보존된 빗장뼈(접미가 꽉 차 하나가 지워지고 들어감) → 공개(모든 스킬 레벨 +1, 울라만 접미 6개라 1/2·메아리 3/4).
-# 영상은 빗나가면 완벽한 무한의 에센스로 훼손 옵션을 지우지만 시뮬은 같은 에센스 줄이 겹쳐 빛의 징조로 계산(꿀팁 failed-fracture-base).
+# 영상 재확인 2026-11-11(사용자 지적: 베이스·에센스 옵션이 틀림): 베이스 = 부재 목걸이(접두·접미 2개, 아이템 레벨 80),
+# 정신력 분열에 실패한 매물 = 에너지 보호막 최대치 2티어 + 정신력 1티어 / 민첩 1티어 분열 + 미공개 훼손 접미(약 15 div, 3:08).
+# 완벽한 무한의 에센스 = 접미 '힘·민첩·지능 (7—10)% 증가'(힘 +25—27은 상위 무한의 에센스) — 접미가 꽉 차 미공개 훼손 줄이 지워지고 힘 %가 들어감(3:20).
+# → 우측 강령술 + 군주의 징조 + 보존된 빗장뼈: 접미가 꽉 차 힘 %가 지워지고 울라만 훼손(3:35) → 공개(모든 스킬 레벨 +1, 심연의 메아리).
+# 빗나가면 완벽한 무한의 에센스로 훼손 옵션을 지우고(분열 민첩 말고 지울 접미가 그것뿐) 다시 — 빛의 징조 없음(4:03).
 c='Amulets'; P={'bal':{'sT':1,'v':1},'ess':{'sT':2,'v':2}}
-tags={'spirit':{'gi':28,'tmax':'$sT'},'life':{'gi':9},'dex':{'gi':1,'tmax':1},'str':{'gi':67},'skill':{'gi':56},
-      'l17':{'gi':17},'l18':{'gi':18},'l19':{'gi':19},'l20':{'gi':20},'blk':{'anyOf':['l17','l18','l19','l20']}}   # +3 skill lines share the family: then +1 all skills cannot show
-SP=itg('p',c,28,['spirit']); LF=itg('p',c,9,['life']); DX=itg('s',c,1,['dex'],'f'); ST=itg('s',c,67,['str'],'c',suffix=('완벽한 무한의 에센스','Perfect Essence of the Infinite')); SK=itg('s',c,56,['skill'],'d')
-I0=[SP,LF,DX,J('s'),J('s')]; I1=[SP,LF,DX,ST,J('s')]; I2=[SP,LF,DX,ST,UN('s')]; I3=[SP,LF,DX,ST,SK]
-nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spirit'},{'tag':'life'},{'tag':'dex','fr':True},{'junk':'s'},{'junk':'s'}]},K('정신력 분열에 실패한 목걸이 구입 (약 15 div)','Buy a failed Spirit-fracture amulet (about 15 div)'),I0),
+tags={'spirit':{'gi':28,'tmax':'$sT'},'es':{'gi':13,'tmax':2},'dex':{'gi':1,'tmax':1},'strp':{'gi':75},'skill':{'gi':56}}
+SP=itg('p',c,28,['spirit']); ES=itg('p',c,13,['es'],ti=1); DX=itg('s',c,1,['dex'],'f'); STP=itg('s',c,75,['strp'],'c',suffix=('완벽한 무한의 에센스','Perfect Essence of the Infinite')); SK=itg('s',c,56,['skill'],'d')
+I0=[ES,SP,DX,UN('s')]; I1=[ES,SP,DX,STP]; I2=[ES,SP,DX,UN('s')]; I3=[ES,SP,DX,SK]
+nodes=[base('ms',{'rar':'rare','mods':[{'tag':'es'},{'tag':'spirit'},{'tag':'dex','fr':True},{'unrev':'s'}]},K('정신력 분열에 실패한 부재 목걸이 구입 (약 15 div)','Buy a failed Spirit-fracture Absent Amulet (about 15 div)'),I0),
  mark([0,0.6],'a2',I0),
- act('a2','main',[0,1],'essence','Perfect_Essence_of_the_Infinite',K('접미 잡옵을 지우고 힘','Swap a junk suffix for Strength'),[st('s','힘 +(25—27) (제작 옵션)','+(25—27) to Strength (crafted)')],K('에센스','Essence'),[{'to':'a3'}],I1,ess='str'),
- act('a3','main',[0,2],'desecrate','Preserved_Collarbone',K('접미 세번째 옵션(울라만 훼손)','Third suffix (Ulaman desecration)'),[st('s','울라만 훼손 옵션(미공개)','Ulaman desecration (unrevealed)')],K('훼손','Desecrate'),[{'if':{'not':{'has':'str'}},'to':'a2','res':'fail'},{'to':'a4','res':'ok'}],I2,omens=['Omen_of_Dextral_Necromancy','Omen_of_the_Sovereign']),
+ act('a2','main',[0,1],'essence','Perfect_Essence_of_the_Infinite',K('접미 두번째 옵션 바꾸기','Swap the second suffix'),[st('s','힘 (7—10)% 증가 (제작 옵션)','(7—10)% increased Strength (crafted)')],K('에센스','Essence'),[{'to':'a3'}],I1,ess='strp'),
+ act('a3','main',[0,2],'desecrate','Preserved_Collarbone',K('접미 두번째 옵션(울라만 훼손)','Second suffix (Ulaman desecration)'),[st('s','울라만 훼손 옵션(미공개)','Ulaman desecration (unrevealed)')],K('훼손','Desecrate'),[{'to':'a4'}],I2,omens=['Omen_of_Dextral_Necromancy','Omen_of_the_Sovereign']),
  act('a4','main',[0,3],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),
-     [{'if':{'added':'skill'},'to':'ok','res':'ok'},{'if':{'has':'blk'},'to':'ok','res':'fail'},{'if':{'param':{'v':1}},'to':'a4x','res':'fail'},{'to':'ok','res':'fail'}],I3,want='skill',show=['skill'],omens=['Omen_of_Abyssal_Echoes']),
- annul('a4x',[1,3],[{'to':'a3','port':'right'}]),
+     [{'if':{'added':'skill'},'to':'ok','res':'ok'},{'if':{'param':{'v':1}},'to':'a2','res':'fail','port':'right'},{'to':'ok','res':'fail'}],I3,want='skill',show=['skill'],omens=['Omen_of_Abyssal_Echoes']),
  done([0,4])]
-g22('sihan-chayula-amulet-v2',c,'Solar Amulet',82,
-  '시한 차율라 목걸이(2vyq26ZFgOk) — 정신력 분열 실패 매물 구입 → 완벽한 무한의 에센스 → 우측 강령술 + 군주의 징조 + 보존된 빗장뼈 → 공개(모든 스킬 레벨 +1). 밸런스 = 영상(빗나가면 다시 — 영상은 완벽한 무한의 에센스, 시뮬은 빛의 징조), 에센셜 = 정신력 1~2티어 매물, 공개 결과 그대로.',
+g22('sihan-chayula-amulet-v2',c,'Absent Amulet',80,
+  '시한 차율라 목걸이(2vyq26ZFgOk, 2026-11-11 영상 재확인) — 정신력 분열에 실패한 부재 목걸이(에너지 보호막 2티어 + 정신력 1티어 / 민첩 분열 + 미공개 훼손) 구입 → 완벽한 무한의 에센스(힘 % — 훼손 줄 자리) → 우측 강령술 + 군주의 징조 + 보존된 빗장뼈(힘 % 자리) → 공개(모든 스킬 레벨 +1). 밸런스 = 영상(빗나가면 에센스로 훼손 줄을 지우고 다시, 빛의 징조 없음), 에센셜 = 정신력 1~2티어 매물, 공개 결과 그대로.',
   {'sT':{'kr':'정신력','en':'Spirit','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'v':{'kr':'진행','en':'Route','values':TV({'1':('영상','Video'),'2':('결과 그대로','As it comes')})}},P,
   {'bal':K('영상: 모든 스킬 레벨 +1이 나올 때까지','Video: until +1 to all skills shows'),'ess':K('더 싼 매물, 공개 결과 그대로','Cheaper listing, keep the reveal')},
-  tags,nodes,[{'id':'L1','nodes':['a3','a4','a4x'],'kr':'울라만 공개','en':'Ulaman reveal'}],
-  FIN(VBE,lambda v:[{'tag':'spirit','tmax':1 if v=='bal' else 2},{'tag':'life'},{'side':'p','random':True},{'tag':'dex','fr':True},{'tag':'str','ess':True},{'tag':'skill','des':True} if v=='bal' else {'side':'s','random':True}]),
-  {'quality':20,'sockets':0},{'all':[{'has':'spirit'},{'has':'str'},{'full':'s'}]},VBE,basePrice=15)
+  tags,nodes,[{'id':'L1','nodes':['a2','a3','a4'],'kr':'울라만 공개','en':'Ulaman reveal'}],
+  FIN(VBE,lambda v:[{'tag':'es'},{'tag':'spirit','tmax':1 if v=='bal' else 2},{'tag':'dex','fr':True},{'tag':'skill','des':True} if v=='bal' else {'side':'s','random':True}]),
+  {'quality':20,'sockets':0},{'all':[{'has':'spirit'},{'full':'s'}]},VBE,basePrice=15)
 
 # ---------- 2. 시한 차율라 장갑 (Sf-2cvWhQY0) ----------
 # 고정된 싸개 + 카틀라의 순흑, 중독 강도 30% 분열 + 잡옵 → 카오스 오브(저주 활성화 속도 30%) → 상위 + 좌측 찬미 + 완벽한 엑잘(접두 2개) → 상위 + 우측 찬미 + 완벽한 엑잘(접미 2개), 결과 그대로.

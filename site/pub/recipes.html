@@ -1717,7 +1717,7 @@ function renderDetail(){
   const r=S.recipes.find(x=>x.id===S.open); if(!r) return;
   let html=detailHTML(r); const lead=tierLead(r);
   if(S.fcTab && r.tierGroup && lead.sim){ const i=html.indexOf('<div class="dgrid">'); html=html.slice(0,i)+`<div class="fcpane">${simHTML(lead, true)}</div>`; }
-  $('#detail').innerHTML=html; S.stepIdx=-1; setHeadH(); pairRows($('#detail')); document.fonts?.ready.then(()=>pairRows($('#detail'))); syncStep(true);
+  $('#detail').innerHTML=html; S.stepIdx=-1; setHeadH(); pairRows($('#detail')); document.fonts?.ready.then(()=>pairRows($('#detail'))); syncStep(true); setTimeout(syncFcProg,60);
 }
 // which step is "current": the last node whose top has passed 45% of the space under the header
 function syncStep(force){
@@ -1741,6 +1741,17 @@ function syncStep(force){
   $('#detail [data-plabel]').textContent=`${i+1} / ${a.nodes.length} · ${tx(ph)}`;
   const nv=document.querySelector(`#detail .dnav [data-go-node="${CSS.escape(id)}"]`); if(nv){ const box=nv.closest('.dnav'); const t=nv.offsetTop; if(t<box.scrollTop || t>box.scrollTop+box.clientHeight-30) box.scrollTop=t-60; }
 }
+// flowchart tab: no step list, so the progress bar follows how far you've scrolled through the chart (사용자 2026-11-11)
+function syncFcProg(){
+  if(!document.querySelector('#detail [data-simbox]') || document.querySelector('#detail .node')) return;
+  const fc=document.querySelector('#detail .fc'); let f=0;
+  if(fc && fc.scrollHeight-fc.clientHeight>4) f=fc.scrollTop/(fc.scrollHeight-fc.clientHeight);
+  else { const b=document.querySelector('#detail [data-simbox]').getBoundingClientRect(), dh=document.querySelector('#detail [data-dhead]')?.offsetHeight||0, span=Math.max(1,b.height-(innerHeight-dh)); f=(dh-b.top)/span; }
+  f=Math.max(0,Math.min(1,f)); if(document.documentElement.scrollHeight-innerHeight-scrollY<4 && (!fc || fc.scrollTop>=fc.scrollHeight-fc.clientHeight-4)) f=1;
+  const segs=[...document.querySelectorAll('#detail [data-seg]')], w=segs.map(x=>+x.style.flexGrow||1), tot=w.reduce((a,b)=>a+b,0); let acc=0;
+  segs.forEach((x,i)=>{ const st=acc/tot, en=(acc+w[i])/tot; acc+=w[i]; const k=Math.max(0,Math.min(1,(f-st)/(en-st))); const fl=x.querySelector('.fill'); if(fl) fl.style.width=(100*k)+'%'; });
+}
+document.addEventListener('scroll', ()=>requestAnimationFrame(syncFcProg), true);
 // the sticky header's height drives where the side columns stick and where "current step" is read
 let headRO=null;
 document.addEventListener('toggle', e=>{ if(e.target.matches?.('[data-totbox]')) store.set('totOpen', e.target.open); }, true);

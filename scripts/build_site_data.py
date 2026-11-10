@@ -105,3 +105,6 @@ for cid in ['Rings','Amulets','Belts','Body_Armours_str','One_Hand_Swords']:
 
 # 알두르 룬 4종 = 모든 무기 (patch_aldur_runes.py, 사용자 확정 2026-11-11)
 exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"patch_aldur_runes.py")).read())
+
+# 무한의 에센스 문구를 능력치별로 (patch_essence_text.py, 2026-11-11)
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"patch_essence_text.py")).read())

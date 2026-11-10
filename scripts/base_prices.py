@@ -68,7 +68,7 @@ BASEPRICE = {
   'sihan-highend-boots': None,
   'sihan-highend-boots-v2': None, 'sihan-highend-boots-v2-bal': None, 'sihan-highend-boots-v2-ess': None,
   'sihan-highend-helmet': None,
-  'sihan-chayula-amulet': 15,       # 영상 1:28 — 정신력 분열 실패 매물 약 15 div
+  'sihan-chayula-amulet': 15,       # 영상 3:08 — 정신력 분열 실패 부재 목걸이 매물 15 div
   'sihan-chayula-amulet-v2-bal': 15, 'sihan-chayula-amulet-v2-ess': 15,
   'sihan-attack-flat-ring-v2-bal': 75, 'sihan-attack-flat-ring-v2-ess': 75,
   'sihan-attack-flat-ring': 75,     # 영상 9:23 — 1티어 플랫 분열 매물 75 div 구입

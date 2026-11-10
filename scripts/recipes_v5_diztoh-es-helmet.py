@@ -6,7 +6,7 @@ def textE(t, sec, side=None, f=None):
     if not hits: raise Exception(t)
     return hits[0]
 de_esf=textE('to maximum Energy Shield','n','p'); de_esp=textE('% increased Energy Shield','n','p'); de_rarP=textE('increased Rarity of Items found','n','p')
-de_rarS=textE('increased Rarity of Items found','n','s'); de_int=textE('Strength, Dexterity or Intelligence','e','s','Intelligence')
+de_rarS=textE('increased Rarity of Items found','n','s'); de_int=textE('to Intelligence','e','s','Intelligence')
 DE_LIGHT={'cur':'Orb_of_Annulment','omens':['Omen_of_Light']}
 DE_PRE=[{'gi':de_esp,'tmax':3},{'gi':de_rarP,'tmax':1}]
 R.append({

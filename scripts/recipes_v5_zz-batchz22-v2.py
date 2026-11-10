@@ -2,13 +2,10 @@
 # Matches scripts/graphs/gen_batch22.py step for step (same step ids). 어려움 → 밸런스 + 에센셜, 전문가 → 하이엔드 + 밸런스 (정책 30).
 # (_orig/_node from recipes_v5_zz-batch5-v2.py, _drop/KEEP from batch6, _grade8/LIGHT8/_asIs from batch8)
 
-# 1. 차율라 목걸이 — 밸런스 = 영상(빗나가면 빛의 징조로 다시 — 그래프와 같게), 에센셜 = 정신력 1~2티어 매물, 공개 결과 그대로
+# 1. 차율라 목걸이(부재 목걸이) — 밸런스 = 영상(빗나가면 완벽한 무한의 에센스로 훼손 옵션을 지우고 다시), 에센셜 = 정신력 1~2티어 매물·공개 결과 그대로 (2026-11-11 영상 화면 재확인: 베이스·에센스 옵션 바로잡음)
 def _amu(r, t):
-    if t=='ess': r['start']['mods'][0]['tmax']=2
-    a3=_node(r,'a3'); a3['fail']={'goto':'a2'}; a3['br']=K('힘이 지워지면 완벽한 무한의 에센스부터 다시','Strength lost → Perfect Essence of the Infinite again')
     a4=_node(r,'a4')
-    if t=='bal': a4['fail']={'goto':'a3','via':LIGHT8}; a4['br']=K('실패: 빛의 징조 + 소멸의 오브로 지우고 다시 훼손 (영상은 완벽한 무한의 에센스로 지움)','Miss: Light + Annulment and desecrate again (the video clears it with the essence)')
-    else: a4.pop('fail',None); a4['br']=KEEP
+    if t=='ess': a4.pop('fail',None); a4['br']=KEEP; r['start']['mods'][1]['tmax']=2   # 정신력 1~2티어 매물
 for _t in ('bal','ess'): _grade8('sihan-chayula-amulet','sihan-chayula-amulet-v2',_t,_amu)
 
 # 2. 차율라 장갑 — 밸런스 = 영상(완벽한 엑잘티드 오브), 에센셜 = 상위 엑잘티드 오브
