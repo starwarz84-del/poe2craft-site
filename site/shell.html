@@ -93,6 +93,7 @@ body.compact .fx,body.compact .fog{display:none}
 /* tool panel */
 main{flex:1 1 auto;min-height:0;position:relative;border:1px solid var(--edge);border-top:0;background:linear-gradient(#0e0b06 50%,#000)}
 main iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent}
+body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;margin:0}   /* flowchart full screen uses the whole window (사용자 2026-11-11) */
 
 .toast{position:fixed;right:16px;bottom:16px;z-index:20;max-width:min(360px,calc(100vw - 32px));background:#15110b;border:1px solid #3a2d1b;border-left:3px solid #c8a85a;padding:10px 14px;color:var(--white);font:inherit;text-align:left;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.6)}
 .toast small{display:block;color:var(--text);font-size:12px;margin-bottom:2px}
@@ -178,6 +179,7 @@ main iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background
       else if(top < 6) setCompact(false);
     }, true);
   }
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-full' && Object.values(frames).some(f=>f.contentWindow===e.source)) document.body.classList.toggle('toolfull', !!d.on); });
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-route' && frames.recipes && e.source===frames.recipes.contentWindow){
     extreme = !!d.extreme; document.body.classList.toggle('extreme', extreme && !frames.recipes.hidden); } });
 

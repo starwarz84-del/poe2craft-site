@@ -27,6 +27,7 @@ nav a[aria-current="page"]{color:var(--fg);border-bottom-color:var(--accent)}
 .lang button[aria-pressed="true"]{background:#262a33;color:var(--fg)}
 main{flex:1 1 auto;min-height:0;position:relative}
 main iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg)}
+body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;margin:0}   /* flowchart full screen uses the whole window (사용자 2026-11-11) */
 @media (max-width:480px){.bar{gap:0 12px}nav a{padding:0 8px}}
 nav a .nb{margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent);color:#13151a;font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center}
 .toast{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:20;max-width:min(360px,calc(100vw - 32px));background:#22252d;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:10px 14px;color:var(--fg);font:inherit;text-align:left;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.4)}
@@ -84,6 +85,7 @@ nav a .nb{margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius
     else { try{ const r=await dl.save({filename:d.filename, data:d.blob}); out.status=r.status; }catch(err){ out.code=err&&err.code||'unavailable'; } }
     try{ e.source.postMessage(out, '*'); }catch(_){} });
   // a tool can update the address (e.g. an opened recipe) without reloading anything
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-full' && Object.values(frames).some(f=>f.contentWindow===e.source)) document.body.classList.toggle('toolfull', !!d.on); });
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-route' && /^[A-Za-z0-9-]+$/.test(d.hash||'') && frames.recipes && e.source===frames.recipes.contentWindow){
     if(location.hash.slice(1)!==d.hash){ try{ history.replaceState(null,'','#'+d.hash); }catch(_){ } } } });
   // Special Bases links a recipe → open it in Recipes
