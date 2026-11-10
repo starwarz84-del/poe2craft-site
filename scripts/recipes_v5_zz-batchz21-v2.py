@@ -17,5 +17,6 @@ def _xeno(r, t):
     x4=_node(r,'x4'); x4['cur']='Ancient_Jawbone'
     x5['fail']={'goto':'x4','via':LIGHT8}
     _node(r,'x8')['cur']='Ancient_Jawbone'
-    _node(r,'x10')['cur']='Greater_Chaos_Orb'   # 영상(9:45): 공격 속도 1티어는 레벨 37이라 상위 카오스 오브(최소 레벨 35)로 돌림; _node(r,'x9')['target']['bone']='Ancient_Jawbone'
+    _node(r,'x9')['target']['bone']='Ancient_Jawbone'
+    _node(r,'x10')['cur']='Greater_Chaos_Orb'   # 영상(9:45): 공격 속도 1티어는 레벨 37이라 상위 카오스 오브(최소 레벨 35)로 돌림
 for _t in ('high',): _grade8('xeno-phys-crossbow','xeno-phys-crossbow-v2',_t,_xeno)
