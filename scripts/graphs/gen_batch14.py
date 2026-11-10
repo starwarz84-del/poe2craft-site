@@ -22,24 +22,25 @@ F7=it('s','모든 화염 주문 스킬 레벨 +7 (분열)','+7 fire spell skills
 PD=it('p','피해 % 증가','% increased damage',['pd']); PR=lambda: it('p','피해 접두','Damage prefix',['pd','px'])
 FM=it('s','비고정 화염 속성 부여 규모 (스루드의 완력)','Explicit fire magnitudes (Thrud’s Might)',['fm']); AL=it('s','시전 속도 + 추가 냉기 (초월의 합금)','Cast speed + extra cold (Transcendent Alloy)',['alloy'],'c')
 S0=[F7,J('p')]; S1=[F7,PD]; S2=[F7,PD,PR()]; S3=[F7,PD,PR(),UN('p')]; S4=[F7,PD,PR(),PR()]
-S5=S4+[J('s'),J('s')]; S6=S4+[FM,J('s')]; S7=S4+[FM,AL]; B1=S4+[J('s'),J('s')]; B2=S4+[J('s'),AL]
+RN=it('r','스루드의 완력 : 파괴 속성 부여 가능 · 모든 원소 저항 +5%','Thrud’s Might: Can roll Destruction modifiers · +5% to all Elemental Resistances',None,'r')
+S4r=S4+[RN]; S5=S4r+[J('s'),J('s')]; S6=S4r+[FM,J('s')]; S7=S4r+[FM,AL]; B1=S4+[J('s'),J('s')]; B2=S4+[J('s'),AL]
 F={'res':'fail','port':'right'}
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'fire7','fr':True},{'junk':'p'}]},K('모든 화염 주문 +7 분열 + 잡옵 1개','Fractured +7 fire spell skills + one junk line'),S0),
  mark([0,0.6],'p1',S0),
  act('p1','main',[0,1],'chaos','Chaos_Orb',K('접두 첫번째 옵션 (원소 무관)','First prefix (any element)'),None,K('카오스','Chaos'),[{'if':{'has':'pd'},'to':'p2','res':'ok'},{'to':'p1','res':'fail'}],S1,show=['pd']),
  act('p2','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'pre','min':2}},'to':'p3','res':'ok'},{'to':'p2x',**F}],S2,show=['pd','px'],omens=['Omen_of_Sinistral_Exaltation']),
- annul('p2x',[1,2],[{'if':{'has':'pre'},'to':'p2','res':'ok','port':'right'},{'to':'p1','res':'fail'}],omens=(),target=K('빗나간 접두 지우기','Remove the missed prefix')),
+ annul('p2x',[1,2],[{'if':{'has':'pre'},'to':'p2','res':'ok','port':'right'},{'to':'p1','res':'fail','port':'bottom'}],omens=(),target=K('빗나간 접두 지우기','Remove the missed prefix')),
  act('p3','main',[0,3],'desecrate','Ancient_Jawbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'p4'}],S3,omens=['Omen_of_Sinistral_Necromancy']),
  act('p4','main',[0,4],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),
      [{'if':{'all':[{'added':'pre'},V1]},'to':'r2','res':'ok'},{'if':V1,'to':'p4x',**F},{'if':{'added':'pre'},'to':'b1','res':'ok'},{'to':'b1','res':'fail'}],S4,want='pre',show=['pd','px'],omens=['Omen_of_Abyssal_Echoes']),
  LIGHTX('p4x',[1,4],'p3'),
  # 하이엔드
- act('r2','main',[0,5],'rune',None,K('스루드의 완력 장착','Socket Thrud’s Might'),[st(None,'파괴 속성 부여 가능','Can roll Destruction modifiers')],K('룬','Rune'),[{'to':'s1'}],S4),
+ act('r2','main',[0,5],'rune',None,K('스루드의 완력 장착','Socket Thrud’s Might'),[st(None,'파괴 속성 부여 가능','Can roll Destruction modifiers')],K('룬','Rune'),[{'to':'s1'}],S4r,rune=K('스루드의 완력','Thrud’s Might')),
  act('s1','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접미 잡옵 2개','Two junk suffixes'),[st('s','랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),[{'if':{'has':'fm'},'to':'s3','hide':True},{'to':'s2'}],S5,omens=['Omen_of_Greater_Exaltation']),
  act('s2','main',[0,7],'chaos','Perfect_Chaos_Orb',K('접미 두번째 옵션 (가장 낮은 잡옵)','Second suffix (the lowest junk line)'),None,K('카오스','Chaos'),[{'if':{'has':'fm'},'to':'s3','res':'ok'},{'to':'s2','res':'fail'}],S6,show=['fm'],trim={'side':'s','keep':'keep'}),
  act('s3','main',[0,8],'essence','Transcendent_Alloy',K('접미 하나를 지우고 초월의 합금','A suffix goes for the Transcendent Alloy'),[st('s','시전 속도 (39—47)% 증가 · 원소 피해의 (11—16)%를 추가 냉기 피해로 획득 (제작 옵션)','(39—47)% increased cast speed · gain (11—16)% of elemental damage as extra cold (crafted)')],K('합금','Alloy'),
      [{'if':{'all':[{'has':'fm'},{'has':'alloy'}]},'to':'ok','res':'ok'},{'to':'s3m',**F}],S7,ess='alloy'),
- act('s3m','main',[1,8],'chaos','Perfect_Chaos_Orb',K('접미 : 지워진 화염 규모 다시 (가장 낮은 잡옵)','Suffix: the lost fire magnitude again (the lowest junk line)'),None,K('카오스','Chaos'),
+ act('s3m','main',[1,8],'chaos','Perfect_Chaos_Orb',K('접미 두번째 옵션 다시 (가장 낮은 잡옵)','Second suffix again (the lowest junk line)'),None,K('카오스','Chaos'),
      [{'if':{'all':[{'has':'fm'},{'has':'alloy'}]},'to':'ok','res':'ok'},{'if':{'has':'fm'},'to':'s3','res':'ok','port':'right'},{'to':'s3m','res':'fail'}],S7,show=['fm'],trim={'side':'s','keep':'keep'}),
  # 밸런스 (영상의 가성비 마무리)
  act('b1','main',[2,5],'exalt','Exalted_Orb',K('접미 잡옵 2개','Two junk suffixes'),[st('s','랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),[{'to':'b2'}],B1,omens=['Omen_of_Greater_Exaltation']),

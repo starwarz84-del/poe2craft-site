@@ -416,7 +416,7 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcit li span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fcit li em{font-style:normal;color:var(--rare);font-weight:600;font-size:11.5px}
 .fcit li small{color:var(--faint);font-size:11px}.fcit li u{text-decoration:none;color:var(--muted)}
-.fcit li.m-f{color:#c9b27a}.fcit li.m-d,.fcit li.m-u{color:#9be86a}.fcit li.m-c{color:#9fd8b0}.fcit li.m-j{color:#8d877b}
+.fcit li.m-f{color:#c9b27a}.fcit li.m-d,.fcit li.m-u{color:#9be86a}.fcit li.m-c{color:#9fd8b0}.fcit li.m-r{color:#c9a96e}.fcit li.m-j{color:#8d877b}
 .fcit li.new{border-left-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
 .fcit li.gone{text-decoration:line-through;opacity:.5}
 .fcitl{position:absolute;overflow:visible;pointer-events:none}.fcitl line{stroke:var(--line);stroke-dasharray:2 3}
@@ -1370,8 +1370,11 @@ function simStrategy(d){ const vis=d.strategies.filter(s=>!s.hidden), keys=Objec
   const s=vis.find(s=>keys.every(k=>String(s.params[k])===sel[k])) || vis[0]; return {s, keys, sel}; }
 function nodeCur(n){ const ids=[...(n.curIf||[]), n.cur, ...(n.omens||[])].filter(Boolean);
   if(n.kind==='cleanup') ids.unshift('Orb_of_Annulment');
-  const uniq=[...new Set(ids)], txt=uniq.map(id=>nm(cur(id))).join(' + ') + (n.trim ? ' + '+L('절사/좌측 말소의 징조','Whittling / Sinistral Erasure') : '');
-  return {html: uniq.map(id=>icon(id)).join('') + esc(txt), title: txt}; }
+  if(n.act==='rune' && n.rune){ const t=tx(n.rune); return {html: esc(t), title: t}; }   // a socketed rune: its name (사용자 확정 2026-11-10)
+  // Whittling / Erasure chosen by the item (policy 23 ④): both omens by their full names
+  const tr=n.trim ? ['Omen_of_Whittling', n.trim.side==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure'] : [];
+  const uniq=[...new Set(ids)], txt=uniq.map(id=>nm(cur(id))).join(' + ') + (tr.length ? ' + '+tr.map(id=>nm(cur(id))).join(L(' 또는 ',' or ')) : '');
+  return {html: [...uniq, ...tr].map(id=>icon(id)).join('') + esc(txt), title: txt}; }
 // flowchart layout: top → down, main path in the first column, branches to the right, orthogonal edges with rounded corners
 const FX={W:540, WB:330, GAPX:118, LANE:330, LANEGAP:40, ROWGAP:44, GROUPGAP:110, PAD:22, DW:150, DH:66, DGAP:18, CW:200, CH:104, STUB:14, R:9};
 let _fcCtx; const fcText = (t, px) => { try{ _fcCtx=_fcCtx||document.createElement('canvas').getContext('2d'); _fcCtx.font=`${px}px ${getComputedStyle(document.body).getPropertyValue('--f-body')||'sans-serif'}`; return Math.ceil(_fcCtx.measureText(t).width); }catch(e){ return fcLen(t)*px/12; } };
@@ -1382,7 +1385,7 @@ function fcPrune(g, res){ if(!res?.nodes) return g; const gone=new Set(g.nodes.f
 function fcModel(g, params={}){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const E=[], seen=new Set(), add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(seen.has(k)) return; seen.add(k); E.push({a,b,label,...x}); };
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
-    (n.edges||[]).filter(e=>!e.hide && !(e.when && Object.entries(e.when).some(([k,v])=>String(params[k])!==String(v)))).forEach(e=>add(n.id, e.to, e.label, {res:e.res, port:e.port, enter:e.enter, lane:e.lane}));
+    (n.edges||[]).filter(e=>!e.hide && !(e.to===n.id && n.act==='chaos') && !(e.when && Object.entries(e.when).some(([k,v])=>String(params[k])!==String(v)))).forEach(e=>add(n.id, e.to, e.label, {res:e.res, port:e.port, enter:e.enter, lane:e.lane}));
     if(n.options) for(const [v,to] of Object.entries(n.options)) add(n.id, to, n.edgeLabels?.[v] || g.params?.[n.param]?.values?.[v], {opt:[n.param, v], ...(n.optStyle?.[v]||{})});
     if(n.skipTo && !n.skipNote && !n.skipHide) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
   const dec={}, multi={}; g.nodes.forEach(n=>{ if(n.kind!=='act' && n.kind!=='cleanup') return; if(new Set(E.filter(e=>e.a===n.id && !e.skip).map(e=>e.b)).size>=3) multi[n.id]=true; });   // simple two-way outcomes are just two coloured lines
@@ -1497,7 +1500,7 @@ function fcLabels(list, rects){ // list: [{pts, w, ...}] → x,y per label: near
     placed.push(best.R); L0.x=best.x; L0.y=best.y; }); }
 const fcUse = (u, n=3) => Object.entries(u||{}).filter(([,v])=>v>=0.005).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k,v])=>`<span class="ci" title="${esc(nm(cur(k)))}">${icon(k)}${fmt(v)}</span>`).join('');
 function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
-  const side=s=>s==='p'?'P':s==='s'?'S':'P/S', mk={};
+  const side=s=>s==='p'?'P':s==='s'?'S':s==='r'?L('룬','Rune'):'P/S', mk={};
   // fractured lines show by colour only (no tail text): graph items mark them in the label "(분열…)" / "(fractured…)"
   const isFr=l=>l.m==='f' || /\((분열|fractured)/i.test((l.kr||'')+' '+(l.en||''));
   const noFr=t=>t.replace(/ ?\((?:분열|fractured)(?:, ?([^)]*))?\)/i,(_,x)=>x?` (${x})`:'');
@@ -1509,7 +1512,7 @@ function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||'')
   const cl=l=>isFr(l)?'f':isDes(l)?'d':isCr(l)?'c':(l.m||'n');
   const row=(l,cls)=>{ const x=text(l); return `<li class="m-${cl(l)} ${cls}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
   const gone=(prev||[]).filter(l=>!now.has(key(l)) && !lines.some(x=>x.s===l.s && x.kr===l.kr));
-  const ord=s=>s==='p'?0:s==='s'?2:1;   // 사용자 확정 2026-11-10: 접두(P)가 위, 접미(S)가 아래
+  const ord=s=>s==='p'?0:s==='s'?2:s==='r'?3:1;   // 사용자 확정 2026-11-10: 접두(P)가 위, 접미(S)가 아래
   return [...lines.map(l=>[l, had.has(key(l))?'':'new']), ...gone.map(l=>[l,'gone'])].map((x,i)=>[...x,i]).sort((a,b)=>ord(a[0].s)-ord(b[0].s)||a[2]-b[2]).map(([l,c])=>row(l,c)).join(''); }
 // finished items (best / settle / budget) in the recipe's item-card format
 function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return ''; const fi=g.finalItem||{};
