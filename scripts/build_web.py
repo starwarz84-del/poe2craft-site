@@ -39,7 +39,7 @@ def main():
         s = open(os.path.join(SITE, 'pub', f), encoding='utf-8').read()
         # theme goes right after the document head the i18n build added; its :root:root rules win over the page's own tokens
         i = s.find('</style>')
-        head = FONTS + THEME + ('' if INDEX else NOINDEX_META)
+        head = THEME + ('' if INDEX else NOINDEX_META)
         s = s[:i + 8] + '\n' + head + s[i + 8:] if i >= 0 else head + s
         open(os.path.join(WEB, f), 'w', encoding='utf-8').write(s)
     open(os.path.join(WEB, 'CNAME'), 'w').write(DOMAIN + '\n')
