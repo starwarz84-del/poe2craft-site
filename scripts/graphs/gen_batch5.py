@@ -36,7 +36,7 @@ TV=lambda d: {k:K(*v) for k,v in d.items()}
 
 # ---------- 1. 라그나 아샷 활 ----------
 P={'bal':{'pT':1},'ess':{'pT':3}}
-tags={'pct':{'gi':7,'tmax':'$pT'},'flat':{'gi':39},'as':{'gi':29},'asn':{'gi':15},'anyas':{'anyOf':['as','asn']}}
+tags={'pct':{'gi':7,'tmax':'$pT'},'flat':{'gi':39},'as':{'gi':29},'asn':{'gi':15},'anyas':{'anyOf':['as','asn']},'anyam':{'anyOf':['as',{'gi':28},{'gi':30}]}}
 I0=[it('p','물리 피해 % 증가','% physical damage',['pct']),J('s')]
 I1=I0+[it('p','물리 피해 추가 (제작 옵션)','Flat physical (crafted)',['flat'])]
 I2=I1+[it('p','랜덤 1줄','One random line',None,'j')]
@@ -48,15 +48,14 @@ nodes=[base('w2',{'rar':'magic','mods':['pct'],'random':1},K('물리 피해 % �
  mark([0,1.5],'w3',I1),
  act('w3','main',[0,2],'exalt','Exalted_Orb',K('접두 세번째 옵션','Third prefix option'),[st('p','랜덤 1줄 (원소 플랫이면 좋음) — 결과 그대로','One random line (an elemental flat is good) — keep whatever comes')],K('엑잘','Exalt'),[{'to':'w4'}],I2,omens=['Omen_of_Sinistral_Exaltation']),
  act('w4','main',[0,3],'desecrate','Preserved_Jawbone',K('접미 두번째 옵션(훼손)','Second suffix option (desecrated)'),[st('s','아마나무 훼손 옵션(미공개)','Amanamu desecration (unrevealed)')],K('훼손','Desecrate'),[{'if':{'unrev':True},'to':'w5'}],I3,omens=['Omen_of_the_Liege']),
- act('w5','main',[0,4],'exalt','Greater_Exalted_Orb',K('접미 세번째 옵션','Third suffix option'),[st('s','랜덤 1줄 (레벨 35+) — 결과 그대로','One random line (level 35+) — keep whatever comes')],K('엑잘','Exalt'),[{'to':'w6'}],I4,skipIf={'full':'s'},skipTo='w6'),
- act('w6','main',[0,5],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'as'},'to':'ok','res':'ok'},{'if':{'has':'asn'},'to':'ok','res':'ok'},{'to':'w6x','res':'fail'}],I5,want='as',show=['as']),
- annul('w6x',[1,5],[{'to':'w4','port':'right'}]),
+ act('w5','main',[0,4],'exalt','Greater_Exalted_Orb',K('접미 세번째 옵션 (일반 공격 속도 먼저 노림)','Third suffix (a normal attack speed first)'),[st('s','랜덤 1줄 (레벨 35+) — 공격 속도가 뜨면 훼손은 다른 아마나무 옵션으로','One random line (level 35+) — attack speed here frees the desecration for another Amanamu line')],K('엑잘','Exalt'),[{'to':'w6'}],I4,skipIf={'full':'s'},skipTo='w6'),
+ act('w6','main',[0,5],'reveal',None,K('훼손 옵션 확인 (아마나무 3개 전부 나옴)','Reveal (all three Amanamu lines show)'),[st('s','공격 속도 + 반려수 공격 속도 (일반 공격 속도가 있으면 관통·정신력 효율 중 하나)','Attack speed + companion attack speed (with a normal attack speed: pierce or spirit efficiency)')],K('공개','Reveal'),[{'to':'ok'}],I5,want='as'),
  done([0,6])]
 graph('ragna-ashot-bow-v2','Bows','Warmonger Bow',82,
-  '라그나 아샷 활(영상 방식) — 물리 % 매직 구입 → 상위 마모의 에센스 → 좌측 찬미 + 엑잘(접두 결과 그대로) → 보존된 턱뼈 + 군왕의 징조(아마나무) → 상위 엑잘(접미 결과 그대로) → 공개(공격 속도), 실패 시 빛의 징조 + 소멸의 오브. 밸런스 = 영상(물리 % 1티어), 에센셜 = 물리 % 1~3티어 베이스.',
+  '라그나 아샷 활(영상 방식) — 물리 % 매직 구입 → 상위 마모의 에센스 → 좌측 찬미 + 엑잘(접두 결과 그대로) → 보존된 턱뼈 + 군왕의 징조(아마나무) → 상위 엑잘(접미 결과 그대로) → 공개: 군왕의 징조라 아마나무 접미 3개(공격 속도·관통·정신력 효율)가 전부 나와서 공격 속도 확정(영상 5:06 확인). 마지막 엑잘에서 일반 공격 속도가 뜨면 같은 계열이라 훼손은 관통·정신력 효율 중 하나. 밸런스 = 영상(물리 % 1티어), 에센셜 = 물리 % 1~3티어 베이스.',
   {'pT':{'kr':'물리 피해 %','en':'% physical','values':TV({'1':('1티어','T1'),'3':('1~3티어','T1–3')})}},P,
   {'bal':K('물리 % 1티어 매직 구입 (영상)','Buy a T1 % physical magic bow (as the video)'),'ess':K('물리 % 1~3티어 매직 구입','Buy a T1–3 % physical magic bow')},
-  tags,nodes,LIGHT_LOOP(['w4','w5','w6','w6x'],'접미 두번째 옵션(훼손)','Second suffix (desecrated)'),
+  tags,nodes,[],
   [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'pct','tmax':t},{'tag':'flat','tmax':1},{'side':'p','random':True},{'tag':'as','tmax':1},{'side':'s','random':True},{'side':'s','random':True}]} for v,kr,en,t in (('bal','밸런스 옵션','Balance',1),('ess','에센셜 옵션','Essential',3))],
   {'quality':20,'sockets':0},{'all':[{'has':'anyas'},{'full':'p'},{'full':'s'}]})
 

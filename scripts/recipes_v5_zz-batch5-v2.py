@@ -13,7 +13,10 @@ def _node(r, nid): return next(n for n in r['nodes'] if n['id']==nid)
 def _bow(r, t):
     r['start']['mods'][0]['tmax'] = 1 if t=='bal' else 3
     r['nodes']=[n for n in r['nodes'] if n['id']!='w7']
-    _node(r,'w6')['br']=K('공격 속도 → 완성 (마지막 엑잘이 일반 공격 속도면 공개 결과 무관). 실패: 빛의 징조 + 소멸의 오브로 다시 훼손','Attack speed → done (a normal attack speed from the last exalt also does it); miss: Light + Annulment and desecrate again')
+    w6=_node(r,'w6'); w6.pop('fail',None)   # the Liege shows all three Amanamu suffixes (영상 5:06): attack speed is sure
+    am=[gi for gi,gr in enumerate(cd(r['cls'])['groups']) if gr['s']=='d' and gr['g']=='s' and 'amanamu_mod' in gr['tg']]
+    w6['target']['reveal']={'anyOf':[{'gi':g} for g in am]}
+    w6['br']=K('아마나무 3개가 전부 나와서 공격 속도 확정. 마지막 엑잘에서 일반 공격 속도가 떴으면 관통·정신력 효율 중 하나.','All three Amanamu lines show, so attack speed is sure; with a normal attack speed from the last exalt, take pierce or spirit efficiency.')
 for _t in ('bal','ess'): _grade('ragna-ashot-bow','ragna-ashot-bow-v2',_t,_bow)
 
 # 2. TheSaneExile 저항 벨트 — Balance = video (T1 life + T1–2 lightning res), Essential = both T1–3

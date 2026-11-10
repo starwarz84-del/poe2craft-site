@@ -709,9 +709,9 @@ function analyse(r){
     let seed=12345; const rnd=()=>{ seed=(seed*1664525+1013904223)>>>0; return seed/4294967296; };
     const N=20000; let ok=0;
     const lordG = groups.filter(g=>g.lord);
-    for(let n=0;n<N;n++){ let pool=groups.slice(), got=false;
-      if(lordG.length){ const pick=lordG[Math.floor(rnd()*lordG.length)]; if(pick.hit && rnd()<pick.hit) got=true; pool=pool.filter(g=>g!==pick); }
-      for(let k=lordG.length?1:0;k<3 && pool.length;k++){ let x=rnd()*pool.reduce((s,g)=>s+g.w,0), pick=pool[pool.length-1];
+    // an Abyssal lord omen: every revealed option is that lord's (영상 확인 2026-11-10, 라그나 아샷 활 5:06 — 아마나무 접미 3개가 전부 나옴)
+    for(let n=0;n<N;n++){ let pool=lordG.length ? lordG.slice() : groups.slice(), got=false;
+      for(let k=0;k<3 && pool.length;k++){ let x=rnd()*pool.reduce((s,g)=>s+g.w,0), pick=pool[pool.length-1];
         for(const g of pool){ x-=g.w; if(x<=0){ pick=g; break; } }
         if(pick.hit && rnd()<pick.hit) got=true; pool=pool.filter(g=>g!==pick); }
       if(got) ok++; }
@@ -1057,7 +1057,7 @@ function nodeHTML(r, o, i, idx){
   if(t.removeMark) tgt=L('징표를 훼손한 뒤 제거','Desecrate the Mark, then remove it');
   if(t.quality) tgt=L(`퀄리티 ${t.quality}%까지 (평균 ${fmt(o.fixedTries)}개, 레어는 1개당 +1${r.ilvl>=82?' · 20% 확률로 +2':''})`,`Quality to ${t.quality}% (avg ${fmt(o.fixedTries)}; +1 each on a rare${r.ilvl>=82?', 20% chance of +2':''})`);
   if(t.removeGi!=null && t.junk) tgt=L(`${esc(modLine(r,t.removeGi).txt)} 제거 (접두엔 아무 옵션)`,`Removes ${esc(modLine(r,t.removeGi).txt)} (any prefix lands)`);
-  if(t.lord && tgt){ const LN={kurgal:['쿠르갈','Kurgal'],amanamu:['아마나무','Amanamu'],ulaman:['울라만','Ulaman']}[t.lord]||[t.lord,t.lord]; tgt += ` <small>(${L(LN[0]+' 옵션 1개 확정','one '+LN[1]+' option guaranteed')})</small>`; }
+  if(t.lord && tgt){ const LN={kurgal:['쿠르갈','Kurgal'],amanamu:['아마나무','Amanamu'],ulaman:['울라만','Ulaman']}[t.lord]||[t.lord,t.lord]; tgt += ` <small>(${L('공개 옵션 모두 '+LN[0],'all revealed options are '+LN[1]+'’s')})</small>`; }
   const showP = o.p<0.995 && !t.reroll;
   const ts = n.ts && r.source?.url ? `<a class="ts" href="${esc(r.source.url)}&t=${n.ts.split(':').reduce((s,x)=>s*60+(+x),0)}s" target="_blank" rel="noopener">▶ ${esc(n.ts)}</a>` : '';
   const viaOne = v => `${icon(v.cur,r)}${esc(nm(cur(v.cur)))}${(v.omens||[]).map(x=>` + ${icon(x,r)}${esc(nm(cur(x)))}`).join('')}`;
