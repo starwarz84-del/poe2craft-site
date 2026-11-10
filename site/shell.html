@@ -39,7 +39,7 @@ a{color:var(--hi)}
 .wrapper{max-width:1520px;height:100%;margin:0 auto;display:flex;flex-direction:column;padding:0 5px}
 
 /* banner — spacing follows poe2filter.com: logo with room above/below, tab bar right under it */
-.logo{position:relative;flex:none;height:var(--banner);display:flex;align-items:flex-end;justify-content:center;padding-bottom:46px;
+.logo{position:relative;flex:none;height:var(--banner);overflow:hidden;display:flex;align-items:flex-end;justify-content:center;padding-bottom:46px;
   transition:height .25s ease, padding .25s ease, opacity .2s ease}
 .brand{position:relative;display:block;width:var(--lw);aspect-ratio:1146/618;flex:none}
 .brand img{display:block;position:absolute;pointer-events:none;transition:opacity .35s ease}
@@ -56,14 +56,15 @@ body.compact{--banner:0px} body.compact .logo{padding-bottom:0;opacity:0;pointer
 .fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .fx canvas{position:absolute;inset:0;width:100%;height:100%}
 .brand{z-index:1}
-.fog{position:absolute;left:-10%;right:-10%;bottom:14px;height:84px;pointer-events:none;z-index:2;opacity:.9;
+.fog{position:absolute;left:18%;right:18%;bottom:18px;height:70px;pointer-events:none;z-index:2;opacity:.45;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 25%,#000 75%,transparent);mask-image:linear-gradient(90deg,transparent,#000 25%,#000 75%,transparent);
   background:
     radial-gradient(ellipse 22% 60% at 30% 60%, rgba(170,155,140,.36), transparent 70%),
     radial-gradient(ellipse 26% 55% at 62% 70%, rgba(160,145,130,.32), transparent 70%),
     radial-gradient(ellipse 18% 50% at 82% 55%, rgba(170,155,140,.26), transparent 70%),
     radial-gradient(ellipse 20% 50% at 12% 65%, rgba(170,155,140,.26), transparent 70%);
   filter:blur(6px);animation:fog 26s ease-in-out infinite alternate}
-.fog.b{animation-duration:34s;animation-direction:alternate-reverse;opacity:.6;bottom:30px;height:60px}
+.fog.b{animation-duration:34s;animation-direction:alternate-reverse;opacity:.3;bottom:30px;height:50px}
 @keyframes fog{from{transform:translateX(-4%)}to{transform:translateX(4%)}}
 body.compact .fx,body.compact .fog{display:none}
 @media (prefers-reduced-motion:reduce){.fog{animation:none}.fx{display:none}}
