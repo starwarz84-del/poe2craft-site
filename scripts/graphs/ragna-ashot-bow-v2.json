@@ -1,0 +1,692 @@
+{
+ "id": "ragna-ashot-bow-v2",
+ "recipe": "ragna-ashot-bow-v2",
+ "cls": "Bows",
+ "base": "Warmonger Bow",
+ "ilvl": 82,
+ "note": "라그나 아샷 활(영상 방식) — 물리 % 매직 구입 → 상위 마모의 에센스 → 좌측 찬미 + 엑잘(접두 결과 그대로) → 보존된 턱뼈 + 군왕의 징조(아마나무) → 상위 엑잘(접미 결과 그대로) → 공개(공격 속도), 실패 시 빛의 징조 + 소멸의 오브. 밸런스 = 영상(물리 % 1티어), 에센셜 = 물리 % 1~3티어 베이스.",
+ "params": {
+  "pT": {
+   "kr": "물리 피해 %",
+   "en": "% physical",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "pT": 1
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "pT": 3
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "pT": 3
+   },
+   "desc": {
+    "kr": "물리 % 1~3티어 매직 구입",
+    "en": "Buy a T1–3 % physical magic bow"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "pT": 1
+   },
+   "desc": {
+    "kr": "물리 % 1티어 매직 구입 (영상)",
+    "en": "Buy a T1 % physical magic bow (as the video)"
+   }
+  }
+ ],
+ "tags": {
+  "pct": {
+   "gi": 7,
+   "tmax": "$pT"
+  },
+  "flat": {
+   "gi": 39
+  },
+  "as": {
+   "gi": 29
+  },
+  "asn": {
+   "gi": 15
+  },
+  "anyas": {
+   "anyOf": [
+    "as",
+    "asn"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "anyas"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "w4",
+    "w5",
+    "w6",
+    "w6x"
+   ],
+   "kr": "접미 두번째 옵션(훼손)",
+   "en": "Second suffix (desecrated)"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "pct",
+     "tmax": 1
+    },
+    {
+     "tag": "flat",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "as",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "pct",
+     "tmax": 3
+    },
+    {
+     "tag": "flat",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "as",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "w2",
+   "start": {
+    "rar": "magic",
+    "mods": [
+     "pct"
+    ],
+    "random": 1
+   },
+   "label": {
+    "kr": "물리 피해 % 증가 매직 전쟁광 활 구입",
+    "en": "Buy a magic Warmonger Bow with % physical"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "w2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "레어로 업그레이드 + 접두 물리 피해 추가",
+    "en": "Upgrade to rare + flat physical prefix"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    }
+   ],
+   "cur": "Greater_Essence_of_Abrasion",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)"
+    }
+   ],
+   "ess": "flat"
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    1.5
+   ],
+   "next": "w3",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "w3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix option"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "w4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 1줄 (원소 플랫이면 좋음) — 결과 그대로",
+     "en": "One random line (an elemental flat is good) — keep whatever comes"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "w4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 두번째 옵션(훼손)",
+    "en": "Second suffix option (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "if": {
+      "unrev": true
+     },
+     "to": "w5"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Jawbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "아마나무 훼손 옵션(미공개)",
+     "en": "Amanamu desecration (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_the_Liege"
+   ]
+  },
+  {
+   "id": "w5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix option"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "w6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 1줄",
+     "en": "One random line",
+     "m": "j"
+    }
+   ],
+   "cur": "Greater_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 1줄 (레벨 35+) — 결과 그대로",
+     "en": "One random line (level 35+) — keep whatever comes"
+    }
+   ],
+   "skipIf": {
+    "full": "s"
+   },
+   "skipTo": "w6"
+  },
+  {
+   "id": "w6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "as"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "asn"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "w6x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 1줄",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 + 반려수 공격 속도 (아마나무)",
+     "en": "Attack speed + companion attack speed (Amanamu)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    }
+   ],
+   "want": "as",
+   "show": [
+    "as"
+   ]
+  },
+  {
+   "id": "w6x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "w4",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

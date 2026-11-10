@@ -1,0 +1,1110 @@
+{
+ "id": "icesly-budget-wand-v2",
+ "recipe": "icesly-budget-wand-v2",
+ "cls": "Wands",
+ "base": "Dueling Wand",
+ "ilvl": 81,
+ "note": "Icesly 가성비 완드(영상 방식) — 번개 주문 +5 매직 구입 → 완벽한 제왕의 오브 → 좌측 결정화 + 초월의 합금(접두 잡옵을 지움) → 완벽한 엑잘 2번(접두, 빗나가면 좌측 소멸) → 보존된 턱뼈 훼손(공개 안 함) → 아스트리드의 창의성 + 천공의 합금: 미공개 훼손이 지워지면 완성(1/3), 좋은 접두가 지워지면 남은 훼손을 공개(빛의 징조로 다시). 시뮬은 훼손이 접두로 가도록 좌측 강령술의 징조를 넣음(영상은 접미가 꽉 차 있어 필요 없음). 밸런스 = 영상 티어, 에센셜 = 번개 +5 2티어·접두 목표 넓힘.",
+ "params": {
+  "lT": {
+   "kr": "번개 주문 레벨",
+   "en": "Lightning spell levels",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "xT": {
+   "kr": "추가 피해 획득",
+   "en": "Extra damage",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  },
+  "yT": {
+   "kr": "번개·주문 피해",
+   "en": "Lightning / spell damage",
+   "values": {
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    },
+    "5": {
+     "kr": "1~5티어",
+     "en": "T1–5"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "lT": 1,
+    "xT": 2,
+    "yT": 3
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "lT": 2,
+    "xT": 4,
+    "yT": 5
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "lT": 2,
+    "xT": 4,
+    "yT": 5
+   },
+   "desc": {
+    "kr": "번개 +5 1~2티어, 접두 목표 넓힘",
+    "en": "T1–2 +5 lightning, looser prefix targets"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "lT": 1,
+    "xT": 2,
+    "yT": 3
+   },
+   "desc": {
+    "kr": "번개 +5 1티어, 접두 목표 영상대로",
+    "en": "T1 +5 lightning, prefix targets as the video"
+   }
+  }
+ ],
+ "tags": {
+  "l5": {
+   "gi": 13,
+   "tmax": "$lT"
+  },
+  "trans": {
+   "gi": 60
+  },
+  "cel": {
+   "gi": 59
+  },
+  "lin": {
+   "gi": 7,
+   "tmax": "$yT"
+  },
+  "spell": {
+   "gi": 3,
+   "tmax": "$yT"
+  },
+  "xL": {
+   "gi": 28,
+   "tmax": "$xT"
+  },
+  "xC": {
+   "gi": 27,
+   "tmax": "$xT"
+  },
+  "xF": {
+   "gi": 26,
+   "tmax": "$xT"
+  },
+  "pre": {
+   "anyOf": [
+    "lin",
+    "spell",
+    "xL",
+    "xC",
+    "xF"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "count": {
+     "tag": "pre",
+     "min": 2
+    }
+   },
+   {
+    "has": "cel"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "i4",
+    "i4x"
+   ],
+   "kr": "접두 첫번째 옵션",
+   "en": "First prefix"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "i9",
+    "i9x",
+    "i9d"
+   ],
+   "kr": "남은 훼손 공개",
+   "en": "Remaining desecration"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "l5",
+     "tmax": 1
+    },
+    {
+     "tag": "trans",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "tag": "xL",
+     "tmax": 2
+    },
+    {
+     "tag": "lin",
+     "tmax": 3
+    },
+    {
+     "tag": "cel",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "l5",
+     "tmax": 2
+    },
+    {
+     "tag": "trans",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "tag": "xL",
+     "tmax": 4
+    },
+    {
+     "tag": "lin",
+     "tmax": 5
+    },
+    {
+     "tag": "cel",
+     "tmax": 1
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 1
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "i2",
+   "start": {
+    "rar": "magic",
+    "mods": [
+     "l5"
+    ],
+    "random": 1
+   },
+   "label": {
+    "kr": "번개 주문 +5 매직 결투 완드 구입",
+    "en": "Buy a magic Dueling Wand with +5 lightning spells"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 lightning spell skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "i2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "regal",
+   "goal": {
+    "kr": "레어로 업그레이드",
+    "en": "Upgrade to rare"
+   },
+   "label": {
+    "kr": "제왕",
+    "en": "Regal"
+   },
+   "edges": [
+    {
+     "to": "i3"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 lightning spell skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Regal_Orb",
+   "showText": [
+    {
+     "kr": "랜덤 1줄",
+     "en": "One random line"
+    }
+   ]
+  },
+  {
+   "id": "i3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접두 잡옵을 지우고 접미 초월의 합금",
+    "en": "Replace the junk prefix with the Transcendent Alloy suffix"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "to": "i3c"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 lightning spell skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    }
+   ],
+   "cur": "Transcendent_Alloy",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)"
+    }
+   ],
+   "ess": "trans",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "i3c",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "side": "p",
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "남은 접두 잡옵 정리",
+    "en": "Clear a leftover junk prefix"
+   },
+   "target": {
+    "kr": "제왕의 오브가 접두에 붙였으면 좌측 소멸",
+    "en": "Sinistral Annulment if the regal landed on a prefix"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    3.5
+   ],
+   "next": "i4",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 lightning spell skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "i4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix option"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 1
+      }
+     },
+     "to": "i5",
+     "res": "ok"
+    },
+    {
+     "to": "i4x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 lightning spell skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "pre"
+   ]
+  },
+  {
+   "id": "i4x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "side": "p",
+   "keep": [
+    "pre"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 제거",
+    "en": "Remove the missed prefix"
+   },
+   "edges": [
+    {
+     "to": "i4",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "i5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix option"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "i6",
+     "res": "ok"
+    },
+    {
+     "to": "i5x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 lightning spell skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "pre"
+   ]
+  },
+  {
+   "id": "i5x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "side": "p",
+   "keep": [
+    "pre"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 제거 (좋은 접두가 지워지면 4번부터)",
+    "en": "Remove the missed prefix (a good one gone: back to 4)"
+   },
+   "edges": [
+    {
+     "lost": "pre",
+     "to": "i4x",
+     "port": "right"
+    },
+    {
+     "to": "i5",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "i6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손, 공개 안 함)",
+    "en": "Third prefix (desecrated, left unrevealed)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "i8"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 lightning spell skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ]
+  },
+  {
+   "id": "i8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착 후 천공의 합금",
+    "en": "Socket Astrid’s Creativity, then the Celestial Alloy"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "if": {
+      "unrev": false
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "i9",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 lightning spell skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    }
+   ],
+   "cur": "Celestial_Alloy",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "천공의 합금 (접두 하나가 지워짐 — 미공개 훼손이면 완성)",
+     "en": "Celestial Alloy (a prefix makes way — the unrevealed desecration is the hit)"
+    }
+   ],
+   "ess": "cel",
+   "once": true
+  },
+  {
+   "id": "i9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "남은 훼손 옵션 확인",
+    "en": "Reveal the remaining desecration"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "pre"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "i9x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 lightning spell skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    }
+   ],
+   "want": "pre",
+   "show": [
+    "pre"
+   ]
+  },
+  {
+   "id": "i9x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "i9d",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "i9d",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8.6
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "다시 훼손",
+    "en": "Desecrate again"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "i9",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 lightning spell skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해·주문 피해·추가 피해 획득 중 하나",
+     "en": "Lightning, spell or extra damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    }
+   ],
+   "cur": "Preserved_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

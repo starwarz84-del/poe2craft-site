@@ -54,6 +54,7 @@ function make(graph, D, craft, params){
       if(c.has) return it.mods.some(m=>match(m,P(c.has)));
       if(c.added) return last.added.some(m=>match(m,P(c.added)));
       if(c.removed) return last.removed.some(m=>match(m,c.removed));
+      if(c.unrev!=null) return it.mods.some(m=>m.unrev)===!!c.unrev;
       if(c.fractured) return !!last.fr && match(last.fr, c.fractured);
       if(c.full) return count(c.full)>=maxA(c.full);
       if(c.sideLt) return count(c.sideLt.side) < c.sideLt.n;
@@ -86,7 +87,7 @@ function make(graph, D, craft, params){
         else takeRandom(er ? (m=>m.side===er) : null);
         add(null, mn); }
       else if(a==='essence'){ const t=tags[n.ess], sd=G[t.gi].g, cr=sideOm(oms,/Sinistral_Crystallisation/,/Dextral_Crystallisation/);   // magic → rare + the essence line (top tier); on a rare one line goes first (Crystallisation picks its side)
-        if(it.rar==='rare') takeRandom(cr ? (m=>m.side===cr) : null); it.rar='rare';
+        if(it.rar==='rare') takeRandom(cr ? (m=>m.side===cr) : count(sd)>=maxA(sd) ? (m=>m.side===sd) : null); it.rar='rare';   // its own side full: a line of that side makes way (발굴 규칙 6)
         const m={gi:t.gi, ti:0, side:sd, ess:true, mark:!!n.mark}; it.mods.push(m); last.added.push(m); }
       else if(a==='annul'){ const sd=sideOm(oms,/Sinistral_Annulment/,/Dextral_Annulment/);
         takeRandom(oms.includes('Omen_of_Light') ? (m=>m.unrev||m.des||G[m.gi]?.s==='d') : sd ? (m=>m.side===sd) : null); }
@@ -95,10 +96,13 @@ function make(graph, D, craft, params){
         let free=ss.filter(s=>count(s)<maxA(s)), s;
         if(free.length) s=free[Math.floor(rnd()*free.length)];
         else { s=ss[Math.floor(rnd()*ss.length)]; takeRandom(m=>m.side===s); }   // a full side: one of its lines makes way
-        const m={unrev:true, side:s, bone:cur, min:mn}; it.mods.push(m); last.added.push(m); }
+        const lord=oms.includes('Omen_of_the_Liege')?'amanamu':oms.includes('Omen_of_the_Sovereign')?'ulaman':oms.includes('Omen_of_the_Blackblooded')?'kurgal':null;   // an Abyssal lord omen: one revealed option is that lord's
+        const m={unrev:true, side:s, bone:cur, min:mn, lord}; it.mods.push(m); last.added.push(m); }
       else if(a==='reveal'){ const m=it.mods.find(x=>x.unrev); if(m){ it.mods.splice(it.mods.indexOf(m),1);
         const gs0=pool([m.side], m.min, ['n','d']);   // reveal: 3 groups without repeats, desecrated-only groups weigh 1000 (recipes.html revealChance, emulator revealOptions)
-        const draw = () => { let gs=gs0.map(g=>({g, w:g.d?1000:g.w})), out=[]; for(let k=0;k<3 && gs.length;k++){ const x=pickW(rnd, gs); gs=gs.filter(y=>y!==x); out.push(pickW(rnd, x.g.ts)); } return out; };
+        const draw = () => { let gs=gs0.map(g=>({g, w:g.d?1000:g.w})), out=[];
+          if(m.lord){ const lg=gs.filter(x=>x.g.d && (G[x.g.gi].tg||[]).includes(m.lord+'_mod')); if(lg.length){ const x=lg[Math.floor(rnd()*lg.length)]; gs=gs.filter(y=>y!==x); out.push(pickW(rnd, x.g.ts)); } }   // recipes.html revealChance: one lord group for sure
+          while(out.length<3 && gs.length){ const x=pickW(rnd, gs); gs=gs.filter(y=>y!==x); out.push(pickW(rnd, x.g.ts)); } return out; };
         const wt=P(n.want), want = o => wt && match({gi:o.gi, ti:o.ti}, wt);
         let os=draw(); if(!os.some(want) && oms.includes('Omen_of_Abyssal_Echoes')) os=draw();
         const o=os.find(want)||os[0]; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true}; it.mods.push(nm); last.added.push(nm); } }

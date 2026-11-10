@@ -1577,7 +1577,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=
     if(t) tip+=`\n${L('평균','avg')} ${fmt(n.kind==='cleanup'?(t.use?.Orb_of_Annulment||0):tries)}${L('회','×')} · ${L('도달','reached')} ${pct1(t.reach)} · ≈ ${fmtDiv(t.div)} div`;
     if(LH && t){ const ids=new Set(LH.nodes); let dv=0; LH.nodes.forEach(id=>{ dv+=st(id)?.div||0; }); const into=M.E.filter(e=>ids.has(e.b) && !ids.has(e.a)).reduce((s2,e)=>s2+ecount(e.a,e.b),0);
       tip+=`\n↺ ${tx(LH)}${into?` · ${L('평균','avg')} ${fmt(t.visits/into)}${L('바퀴',' rounds')}`:''} · ${L('구간 총','loop total')} ≈ ${fmtDiv(dv)} div`; }
-    const want=fcWant(g, n, s.params), per = !t ? 0 : n.kind==='cleanup' ? (t.use?.Orb_of_Annulment||0)/Math.max(1e-9,t.visits) : pS>0 ? 1/pS : 0;   // per success of this step
+    const want=fcWant(g, n, s.params), per = !t ? 0 : n.kind==='cleanup' ? (t.use?.Orb_of_Annulment||0)/Math.max(1e-9,t.visits) : n.once ? 1 : pS>0 ? 1/pS : 0;   // per success of this step (once: used one time whatever happens — the miss goes elsewhere)
     return `<div class="fcn k-task ${n.kind==='cleanup'?'k-clean':''} ${t?'':'off'}" style="${pos}" title="${esc(tip)}">
       <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b>${esc(tx(n.goal||n.label))}</b></div>
       ${want.length?`<div class="fcw">${want.map(h=>`<p>${h}</p>`).join('')}</div>`:''}

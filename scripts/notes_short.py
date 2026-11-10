@@ -1,7 +1,16 @@
+# grade recipes (policy 25) keep the short notes, branch lines and tips of the recipe they rewrite: same step ids, any tier
+_OLD = {'diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helmet-armour-sl','sihan-highend-boots-v2':'sihan-highend-boots',
+        'diztoh-rarity-ring-v2':'diztoh-rarity-ring','saveq-absent-amulet-v2':'saveq-absent-amulet','farmer-budget-armour-v2':'farmer-budget-armour','farmer-starter-staff-v2':'farmer-starter-staff',
+        'ragna-ashot-bow-v2':'ragna-ashot-bow','sane-resist-belt-v2':'sane-resist-belt','diztoh-budget-mace-v2':'diztoh-budget-mace','lilbotq-budget-boots-v2':'lilbotq-budget-boots','icesly-budget-wand-v2':'icesly-budget-wand'}
+# grade recipes copied straight from the original recipe (recipes_v5_zz-batch5-v2.py) also take its short notes and branch lines
+_COPIED = {'ragna-ashot-bow-v2','sane-resist-belt-v2','diztoh-budget-mace-v2','lilbotq-budget-boots-v2','icesly-budget-wand-v2'}
 # Step notes are short (사용자 확정 2026-11-09): a step shows only its target and currency (head + target line on screen);
 # a note is kept only for the start, the finish, and forks/choices, and then says just the branch. None = no note.
 # Steps that already show a currency and a target hide their note in recipes.html, so only these steps need text.
 SHORT = {
+ ('diztoh-budget-mace-v2-bal','d10'): ('완성. 아스트리드의 창의성은 빼고 원하는 룬으로.','Done. Swap Astrid’s Creativity for the runes you like.'),
+ ('diztoh-budget-mace-v2-ess','d10'): ('완성. 아스트리드의 창의성은 빼고 원하는 룬으로.','Done. Swap Astrid’s Creativity for the runes you like.'),
+ ('diztoh-budget-mace-v2-ess','d1'): ('물리 복합(1~4티어) 매직 특출난 거대한 대망치(소켓 3).','A magic exceptional Massive Greathammer (3 sockets) with T1–4 hybrid physical.'),
  ('mirror-bow-video','e3'): ('완성. 남은 룬 2자리는 취향껏.','Done. The two free rune sockets are up to you.'),
  ('absent-amulet-video','a12b'): ('가성비 마무리: 좌측 결정화의 징조 + 완벽한 강화의 에센스.','Budget finish: Sinistral Crystallisation + Perfect Essence of Enhancement.'),
  ('absent-amulet-video','a16c'): ('가성비 마무리: 좌측 결정화의 징조 + 완벽한 강화의 에센스.','Budget finish: Sinistral Crystallisation + Perfect Essence of Enhancement.'),
@@ -75,6 +84,7 @@ SHORT = {
 for _r in R:
     for _n in _r['nodes']:
         _k = (_r['id'], _n['id'])
+        if _k not in SHORT and _r.get('tierGroup') in _COPIED: _k = (_OLD[_r['tierGroup']], _n['id'])
         if _k in SHORT:
             if SHORT[_k] is None: _n.pop('note', None)
             else: _n['note'] = K(*SHORT[_k])
@@ -105,6 +115,7 @@ BRANCH = {
 for _r in R:
     for _n in _r['nodes']:
         _k = (_r['id'], _n['id'])
+        if _k not in BRANCH and _r.get('tierGroup') in _COPIED and _n.get('br') is None: _k = (_OLD[_r['tierGroup']], _n['id'])
         if _k in BRANCH: _n['br'] = K(*BRANCH[_k])
 
 # Tip numbers under a step (hover shows the tip): step → tip ids from tips.json (사용자 요청 2026-11-09)
@@ -123,9 +134,6 @@ TIPREF = {('tankjung-kitava-shield','t7'):['whittle-safe-top-level'],('xeno-phys
  ('diztoh-as-spear','a7'):['thrud-last'], ('diztoh-as-spear','a3'):['side-omen-save'], ('lilbotq-emerald','l1'):['cheap-jewel-liquid-gamble'], ('lilbotq-emerald','l5'):['plus-one-erasure'], ('lilbotq-emerald','l7'):['jewel-five-mods'],
  ('noble-timelost-sapphire','n1'):['spell-tag-fracture'], ('noble-timelost-sapphire','n4'):['jewel-five-mods'], ('noble-timelost-sapphire','n5'):['chaos-instead-of-annul'], ('noble-timelost-sapphire','n6'):['plus-one-erasure'],
  ('zenm-timelost-sapphire','z1'):['timelost-profit-batch'], ('diztoh-talisman','t3'):['liege-omen-resist-jewellery'], ('lilbotq-budget-boots','b1'):['cheap-resist-essence'], ('lilbotq-boots','h2'):['augment-rune-before-chaos']}
-# grade recipes (policy 25) keep the tips of the recipe they rewrite: same step ids, any tier
-_OLD = {'diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helmet-armour-sl','sihan-highend-boots-v2':'sihan-highend-boots',
-        'diztoh-rarity-ring-v2':'diztoh-rarity-ring','saveq-absent-amulet-v2':'saveq-absent-amulet','farmer-budget-armour-v2':'farmer-budget-armour','farmer-starter-staff-v2':'farmer-starter-staff'}
 _old = lambda r: _OLD.get(r.get('tierGroup') or r['id'], r['id'])
 for _r in R:
     for _n in _r['nodes']:
