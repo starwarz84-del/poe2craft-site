@@ -1,0 +1,809 @@
+{
+ "id": "diztoh-talisman-v2",
+ "recipe": "diztoh-talisman-v2",
+ "cls": "Talismans",
+ "base": "Maji Talisman",
+ "ilvl": 81,
+ "note": "Diztoh +5 부적(원본 레시피 기록) — 근접 +5 + 화염 피해 추가 매직 구입 → 상위 추구의 에센스(치명타) → 우측 강령술 + 군왕의 징조 + 보존된 턱뼈 → 공개(아마나무 접미 3개 전부 → 공격 속도 확정) → 상위 찬미 + 완벽한 엑잘(접두 2줄, 결과 그대로) → 세를의 승리 → 완벽한 엑잘(접미 4번째, 결과 그대로). 소멸의 징조 재도전은 뺌(영상도 타협). 에센셜 = 화염 피해 1~5티어 베이스, 엑잘은 상위 엑잘티드 오브.",
+ "params": {
+  "fT": {
+   "kr": "화염 피해 추가",
+   "en": "Flat fire damage",
+   "values": {
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    },
+    "5": {
+     "kr": "1~5티어",
+     "en": "T1–5"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "fT": 3
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "fT": 5
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "fT": 5
+   },
+   "desc": {
+    "kr": "더 싼 베이스, 상위 엑잘티드 오브",
+    "en": "Cheaper base, Greater Exalts"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "fT": 3
+   },
+   "desc": {
+    "kr": "영상 그대로 (완벽한 엑잘티드 오브)",
+    "en": "As the video (Perfect Exalts)"
+   }
+  }
+ ],
+ "tags": {
+  "melee": {
+   "gi": 10,
+   "tmax": 1
+  },
+  "fire": {
+   "gi": 4,
+   "tmax": "$fT"
+  },
+  "crit": {
+   "gi": 51
+  },
+  "as": {
+   "gi": 32
+  },
+  "cdmg": {
+   "gi": 19,
+   "tmax": 2
+  },
+  "phys": {
+   "gi": 3,
+   "tmax": 3
+  },
+  "cold": {
+   "gi": 5,
+   "tmax": 3
+  },
+  "light": {
+   "gi": 7,
+   "tmax": 3
+  },
+  "ppct": {
+   "gi": 8,
+   "tmax": 4
+  },
+  "hyb": {
+   "gi": 9,
+   "tmax": 3
+  },
+  "eatk": {
+   "gi": 23,
+   "tmax": 2
+  },
+  "pre": {
+   "anyOf": [
+    "phys",
+    "cold",
+    "light",
+    "ppct",
+    "hyb",
+    "eatk"
+   ],
+   "label": {
+    "kr": "물리·원소 피해 접두",
+    "en": "Physical or elemental damage prefix"
+   }
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "as"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "fire",
+     "tmax": 3
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "물리·원소 피해 접두",
+      "en": "Physical or elemental damage"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "물리·원소 피해 접두",
+      "en": "Physical or elemental damage"
+     }
+    },
+    {
+     "tag": "melee",
+     "tmax": 1
+    },
+    {
+     "tag": "crit",
+     "tmax": 1
+    },
+    {
+     "tag": "as",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "fire",
+     "tmax": 5
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "물리·원소 피해 접두",
+      "en": "Physical or elemental damage"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "물리·원소 피해 접두",
+      "en": "Physical or elemental damage"
+     }
+    },
+    {
+     "tag": "melee",
+     "tmax": 1
+    },
+    {
+     "tag": "crit",
+     "tmax": 1
+    },
+    {
+     "tag": "as",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "t2",
+   "start": {
+    "rar": "magic",
+    "mods": [
+     "melee",
+     "fire"
+    ]
+   },
+   "label": {
+    "kr": "근접 +5 + 화염 피해 추가 매직 부적 구입",
+    "en": "Buy a magic talisman with +5 melee + flat fire"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 근접 스킬 레벨 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "화염 피해 추가",
+     "en": "Flat fire damage",
+     "m": "n",
+     "tags": [
+      "fire"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "레어로 업그레이드 + 접미 치명타 확률",
+    "en": "Upgrade to rare + crit chance suffix"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 근접 스킬 레벨 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "화염 피해 추가",
+     "en": "Flat fire damage",
+     "m": "n",
+     "tags": [
+      "fire"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (제작 옵션)",
+     "en": "Critical hit chance (crafted)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "cur": "Greater_Essence_of_Seeking",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 (제작 옵션)",
+     "en": "Critical hit chance (crafted)"
+    }
+   ],
+   "ess": "crit"
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    1.5
+   ],
+   "next": "t3",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 근접 스킬 레벨 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "화염 피해 추가",
+     "en": "Flat fire damage",
+     "m": "n",
+     "tags": [
+      "fire"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (제작 옵션)",
+     "en": "Critical hit chance (crafted)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "t4"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 근접 스킬 레벨 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "화염 피해 추가",
+     "en": "Flat fire damage",
+     "m": "n",
+     "tags": [
+      "fire"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (제작 옵션)",
+     "en": "Critical hit chance (crafted)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Jawbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "아마나무 훼손 옵션(미공개)",
+     "en": "Amanamu desecration (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy",
+    "Omen_of_the_Liege"
+   ]
+  },
+  {
+   "id": "t4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인 (아마나무 3개 전부 나옴)",
+    "en": "Reveal (all three Amanamu lines show)"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "to": "t5"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 근접 스킬 레벨 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "화염 피해 추가",
+     "en": "Flat fire damage",
+     "m": "n",
+     "tags": [
+      "fire"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (제작 옵션)",
+     "en": "Critical hit chance (crafted)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 + 반려수 공격 속도 (아마나무)",
+     "en": "Attack speed + companion attack speed (Amanamu)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    }
+   ],
+   "showText": [
+    {
+     "s": "s",
+     "kr": "공격 속도 + 반려수 공격 속도",
+     "en": "Attack speed + companion attack speed"
+    }
+   ],
+   "want": "as"
+  },
+  {
+   "id": "t5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 2줄",
+    "en": "Two prefixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "t8"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 근접 스킬 레벨 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "화염 피해 추가",
+     "en": "Flat fire damage",
+     "m": "n",
+     "tags": [
+      "fire"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (제작 옵션)",
+     "en": "Critical hit chance (crafted)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 + 반려수 공격 속도 (아마나무)",
+     "en": "Attack speed + companion attack speed (Amanamu)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·원소 피해 접두 (2줄)",
+     "en": "Physical or elemental damage (two lines)",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리·원소 피해 접두 (안 나와도 그대로)",
+     "en": "Physical or elemental damage (keep whatever comes)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "over": [
+    {
+     "param": {
+      "fT": 5
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "t8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "세를의 승리 장착 (접미 +1)",
+    "en": "Socket Serle’s Triumph (one more suffix)"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "t9"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 근접 스킬 레벨 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "화염 피해 추가",
+     "en": "Flat fire damage",
+     "m": "n",
+     "tags": [
+      "fire"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (제작 옵션)",
+     "en": "Critical hit chance (crafted)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 + 반려수 공격 속도 (아마나무)",
+     "en": "Attack speed + companion attack speed (Amanamu)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·원소 피해 접두 (2줄)",
+     "en": "Physical or elemental damage (two lines)",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    }
+   ],
+   "showText": [
+    {
+     "s": "s",
+     "kr": "접미 자리 +1",
+     "en": "One more suffix slot"
+    }
+   ],
+   "slots": {
+    "s": 1
+   }
+  },
+  {
+   "id": "t9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 네번째 옵션",
+    "en": "Fourth suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 근접 스킬 레벨 +5",
+     "en": "+5 melee skills",
+     "m": "n",
+     "tags": [
+      "melee"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "화염 피해 추가",
+     "en": "Flat fire damage",
+     "m": "n",
+     "tags": [
+      "fire"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (제작 옵션)",
+     "en": "Critical hit chance (crafted)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 + 반려수 공격 속도 (아마나무)",
+     "en": "Attack speed + companion attack speed (Amanamu)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·원소 피해 접두 (2줄)",
+     "en": "Physical or elemental damage (two lines)",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 1줄 (치명타 피해면 좋음)",
+     "en": "One random line (crit damage is good)",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 1~2티어 (안 나와도 그대로 — 영상: 정확도 + 빛 반경)",
+     "en": "Crit damage bonus T1–2 (keep whatever comes — accuracy + light radius in the video)"
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "fT": 5
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

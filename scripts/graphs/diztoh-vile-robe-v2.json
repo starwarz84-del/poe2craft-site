@@ -1,0 +1,1109 @@
+{
+ "id": "diztoh-vile-robe-v2",
+ "recipe": "diztoh-vile-robe-v2",
+ "cls": "Body_Armours_int",
+ "base": "Vile Robe",
+ "ilvl": 81,
+ "note": "Diztoh 정신력 로브(원본 레시피 기록) — 정신력 분열 + 잡옵 → 카오스 오브(에너지 보호막 최대치, 정책 16 — 영상의 상위 카오스 오브보다 시뮬상 쌈) → 좌측 찬미 + 완벽한 엑잘(에너지 보호막 %, 빗나가면 징조 없는 소멸의 오브 — 최대치가 지워지면 카오스부터; 에센셜은 상위 엑잘) → 아스트리드의 창의성 + 보존된 갈비뼈 → 공개(정신력 점유 효율) — 실패는 빛의 징조 대신 우측 결정화 + 완벽한 추구의 에센스 → 우측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈(약 2.6 div, 빛의 징조 약 7.5 div) → 상위 찬미 + 완벽한 엑잘(접미 2줄) → 저항이 없으면 절사의 징조 + 상위 카오스 오브(밸런스만, 가장 낮은 줄이 버릴 줄일 때만 — 정신력 점유 효율(레벨 65)이 가장 낮아지면 타협). 에센셜 = 낮은 티어 베이스·상위 엑잘·저항 결과 그대로.",
+ "params": {
+  "sT": {
+   "kr": "정신력 (분열)",
+   "en": "Spirit (fractured)",
+   "values": {
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    },
+    "6": {
+     "kr": "1~6티어",
+     "en": "T1–6"
+    }
+   }
+  },
+  "fT": {
+   "kr": "에너지 보호막 최대치",
+   "en": "Flat energy shield",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "eT": {
+   "kr": "에너지 보호막 %",
+   "en": "% energy shield",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "sT": 4,
+    "fT": 1,
+    "eT": 2
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "sT": 6,
+    "fT": 2,
+    "eT": 3
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "sT": 6,
+    "fT": 2,
+    "eT": 3
+   },
+   "desc": {
+    "kr": "낮은 티어, 상위 엑잘, 저항은 결과 그대로",
+    "en": "Lower tiers, Greater Exalts, resistances as they come"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "sT": 4,
+    "fT": 1,
+    "eT": 2
+   },
+   "desc": {
+    "kr": "영상: 에너지 보호막 1티어 2줄 + 저항(절사의 징조)",
+    "en": "Video: two T1 energy shield lines + a resistance (Whittling)"
+   }
+  }
+ ],
+ "tags": {
+  "spirit": {
+   "gi": 14,
+   "tmax": "$sT"
+  },
+  "esf": {
+   "gi": 6,
+   "tmax": "$fT"
+  },
+  "esp": {
+   "gi": 7,
+   "tmax": "$eT"
+  },
+  "res": {
+   "gi": 21
+  },
+  "seek": {
+   "gi": 43
+  },
+  "mark": {
+   "gi": 45
+  },
+  "fire": {
+   "gi": 1,
+   "tmax": 3
+  },
+  "cold": {
+   "gi": 2,
+   "tmax": 3
+  },
+  "light": {
+   "gi": 3,
+   "tmax": 3
+  },
+  "anyres": {
+   "anyOf": [
+    "fire",
+    "cold",
+    "light"
+   ],
+   "label": {
+    "kr": "원소 저항 1~3티어",
+    "en": "Elemental resistance T1–3"
+   }
+  },
+  "keepR": {
+   "anyOf": [
+    "spirit",
+    "esf",
+    "esp",
+    "res"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "spirit"
+   },
+   {
+    "has": "esf"
+   },
+   {
+    "has": "esp"
+   },
+   {
+    "has": "res"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "v6",
+    "v6a",
+    "v6b",
+    "v6c"
+   ],
+   "kr": "정신력 점유 효율 공개",
+   "en": "Reservation efficiency reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "spirit",
+     "tmax": 4
+    },
+    {
+     "tag": "esf",
+     "tmax": 1
+    },
+    {
+     "tag": "esp",
+     "tmax": 2
+    },
+    {
+     "tag": "res",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "원소 저항 1~3티어",
+      "en": "Elemental resistance T1–3"
+     }
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "spirit",
+     "tmax": 6
+    },
+    {
+     "tag": "esf",
+     "tmax": 2
+    },
+    {
+     "tag": "esp",
+     "tmax": 3
+    },
+    {
+     "tag": "res",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "랜덤 옵션",
+      "en": "Random modifier"
+     }
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 3
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "spirit",
+      "fr": true
+     },
+     {
+      "junk": "p"
+     }
+    ]
+   },
+   "label": {
+    "kr": "정신력 분열 + 잡옵 1줄 특출난 끔찍한 로브 구입",
+    "en": "Buy an exceptional Vile Robe with fractured Spirit + one junk line"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "v2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "v2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix option"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "esf"
+     },
+     "to": "v3",
+     "res": "ok"
+    },
+    {
+     "to": "v2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "esf"
+   ]
+  },
+  {
+   "id": "v3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix option"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "esp"
+     },
+     "to": "v5",
+     "res": "ok"
+    },
+    {
+     "to": "v3x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "esp"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "over": [
+    {
+     "param": {
+      "fT": 2
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "v3x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    2
+   ],
+   "keep": [
+    "esf",
+    "esp"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 제거 (접미가 비어 있어 접두만 지워짐)",
+    "en": "Remove the missed prefix (no suffixes yet)"
+   },
+   "edges": [
+    {
+     "lost": "esf",
+     "to": "v2",
+     "port": "right"
+    },
+    {
+     "to": "v3",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "v5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착 후 접미 첫번째(훼손)",
+    "en": "Socket Astrid’s Creativity, then the first suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "v6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Rib",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개) — 접두가 꽉 차 접미로",
+     "en": "Desecrated (unrevealed) — prefixes are full"
+    }
+   ]
+  },
+  {
+   "id": "v6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "res"
+     },
+     "to": "v7",
+     "res": "ok"
+    },
+    {
+     "to": "v6a",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "스킬의 정신력 점유 효율 (아마나무)",
+     "en": "Spirit reservation efficiency (Amanamu)",
+     "m": "n",
+     "tags": [
+      "res"
+     ]
+    }
+   ],
+   "want": "res",
+   "show": [
+    "res"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "v6a",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "빗나간 훼손 줄 삭제 (빛의 징조 없이)",
+    "en": "Remove the missed desecration (no Omen of Light)"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "v6b"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "추구의 에센스 줄 (제작 옵션)",
+     "en": "Essence of Seeking line (crafted)",
+     "m": "n",
+     "tags": [
+      "seek"
+     ]
+    }
+   ],
+   "cur": "Perfect_Essence_of_Seeking",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "추구의 에센스 줄 (유일한 접미가 지워짐)",
+     "en": "Essence of Seeking line (the only suffix goes)"
+    }
+   ],
+   "ess": "seek",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "v6b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "심연 군주의 징표로 바꿈",
+    "en": "Turn it into the Abyssal Lord’s Mark"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "v6c"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "심연 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "n",
+     "tags": [
+      "mark"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Abyss",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "심연 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
+    }
+   ],
+   "ess": "mark",
+   "mark": true,
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "v6c",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "징표 훼손",
+    "en": "Desecrate the Mark"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "v6",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Rib",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "fromMark": true
+  },
+  {
+   "id": "v7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 2줄",
+    "en": "Two suffixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "any": [
+       {
+        "has": "anyres"
+       },
+       {
+        "param": {
+         "fT": 2
+        }
+       }
+      ]
+     },
+     "to": "ok"
+    },
+    {
+     "if": {
+      "whittleSafe": "keepR"
+     },
+     "to": "v8"
+    },
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "스킬의 정신력 점유 효율 (아마나무)",
+     "en": "Spirit reservation efficiency (Amanamu)",
+     "m": "n",
+     "tags": [
+      "res"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 2줄 — 저항 하나면 충분",
+     "en": "Two random lines — one resistance is enough"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "over": [
+    {
+     "param": {
+      "fT": 2
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "v8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "가장 낮은 줄을 저항으로",
+    "en": "The lowest line into a resistance"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "anyres"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "whittleSafe": "keepR"
+     },
+     "to": "v8",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "스킬의 정신력 점유 효율 (아마나무)",
+     "en": "Spirit reservation efficiency (Amanamu)",
+     "m": "n",
+     "tags": [
+      "res"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "원소 저항",
+     "en": "Elemental resistance",
+     "m": "n",
+     "tags": [
+      "anyres"
+     ]
+    }
+   ],
+   "cur": "Greater_Chaos_Orb",
+   "show": [
+    "anyres"
+   ],
+   "omens": [
+    "Omen_of_Whittling"
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

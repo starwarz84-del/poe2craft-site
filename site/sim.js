@@ -30,7 +30,8 @@ function make(graph, D, craft, params){
     let it={rar:'normal', mods:[]}, last={added:[], removed:[], fr:null};
     const side = m => m.side, lvl = m => G[m.gi].t[m.ti][0];
     const count = s => it.mods.filter(m=>m.side===s).length;
-    const maxA = s => it.rar==='normal'?0 : it.rar==='magic'?1 : cap[s];
+    let capR={...cap};   // slots this run (a rune such as Serle's Triumph adds one)
+    const maxA = s => it.rar==='normal'?0 : it.rar==='magic'?1 : capR[s];
     const fams = () => { const f=new Set(); it.mods.forEach(m=>{ if(!m.unrev) G[m.gi].f.forEach(x=>f.add(x)); }); return f; };
     // eligible tiers per group for a minimum level (cached): a family's highest allowed tier always stays in
     const gcache={};
@@ -61,6 +62,7 @@ function make(graph, D, craft, params){
       if(c.count) return it.mods.filter(m=>match(m,c.count.tag)).length>=c.count.min;
       if(c.allMods) return it.mods.every(m=>m.unrev || match(m,c.allMods));
       if(c.sideAll){ const xs=it.mods.filter(m=>m.side===c.sideAll.side && !m.fr); return xs.every(m=>match(m,c.sideAll.tag)); }
+      if(c.whittleSafe){ const cs=it.mods.filter(m=>!m.fr && !m.unrev); if(!cs.length) return false; const lo=Math.min(...cs.map(lvl)); return cs.filter(m=>lvl(m)===lo).every(m=>!match(m,P(c.whittleSafe))); }   // Whittling would hit only lines outside this tag
       if(c.param) return Object.entries(c.param).every(([k,v])=>params[k]===v);
       throw new Error('bad condition '+JSON.stringify(c)); }
     const pickEdge = n => (n.edges||[]).find(e=>cond(e.if));
@@ -107,6 +109,7 @@ function make(graph, D, craft, params){
         let os=draw(); if(!os.some(want) && oms.includes('Omen_of_Abyssal_Echoes')) os=draw();
         const o=os.find(want)||os[0]; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true}; it.mods.push(nm); last.added.push(nm); } }
       else if(a==='fracture'){ const c=it.mods.filter(m=>!m.unrev && !m.fr); const m=c[Math.floor(rnd()*c.length)]; if(m){ m.fr=true; last.fr=m; } }
+      else if(a==='rune'){ for(const k in (n.slots||{})) capR[k]+=n.slots[k]; }   // a socketed rune that opens a slot (Serle's Triumph: one more suffix)
       else if(a==='divine' || a==='quality'){ /* values / catalyst quality only */ }
       else throw new Error('unknown act '+a);
       return use; }
@@ -119,7 +122,13 @@ function make(graph, D, craft, params){
       if(n.kind==='done'){ tally.done(it, cond); return it; }
       if(n.kind==='mark'){ tally.edge(id, n.next); id=n.next; continue; }   // a milestone on the chart (starting item of the main craft)
       if(n.kind==='exit'){ if(n.swapFracture){ it.mods.forEach(m=>{ if(m.fr) delete m.fr; }); const m=it.mods.find(x=>match(x,n.swapFracture)); if(m) m.fr=true; } tally.edge(id, n.simTo); id=n.simTo; continue; }   // this item is set aside (sold / thrown away): the cost goes on from simTo
-      if(n.kind==='base'){ it={rar:'normal', mods:[]}; if(n.start){ it.rar=n.start.rar||'normal'; (n.start.mods||[]).forEach(tg=>{ const t=tags[tg]; it.mods.push({gi:t.gi, ti:Math.max(0,(t.tmax||1)-1), side:G[t.gi].g}); }); for(let i=0;i<(n.start.random||0);i++) add(null,0); } tally.base(id); tally.edge(id, n.next); id=n.next; continue; }
+      if(n.kind==='base'){ it={rar:'normal', mods:[]}; capR={...cap}; if(n.start){ it.rar=n.start.rar||'normal';
+          // a start line: a tag name, or {tag, fr, ess} (fractured / crafted), {unrev:'p'|'s', bone, lord} (an unrevealed desecration), {junk:'p'|'s'} (a random line)
+          (n.start.mods||[]).forEach(x=>{ if(typeof x==='string') x={tag:x};
+            if(x.unrev){ it.mods.push({unrev:true, side:x.unrev, bone:x.bone, min:minOf(x.bone), lord:x.lord||null}); return; }
+            if(x.junk){ add([x.junk], 0); return; }
+            const t=tags[x.tag], m={gi:t.gi, ti:Math.max(0,(P(t.tmax)||1)-1), side:G[t.gi].g}; if(x.fr) m.fr=true; if(x.ess) m.ess=true; it.mods.push(m); });
+          for(let i=0;i<(n.start.random||0);i++) add(null,0); } tally.base(id); tally.edge(id, n.next); id=n.next; continue; }
       if(n.kind==='choice'){ const v=params[n.param], to=n.options[v]; if(!to) throw new Error(n.id+': no option '+v); tally.edge(id, to); id=to; continue; }
       if(n.kind==='assume'){ if(n.swapFracture){ it.mods.forEach(m=>{ if(m.fr) delete m.fr; }); const m=it.mods.find(x=>match(x,n.swapFracture)); if(m) m.fr=true; } tally.edge(id, n.next); id=n.next; continue; }
       if(n.kind==='cleanup'){   // plain Annulment until at most maxJunk lines outside `keep` are left; a kept line going ends it

@@ -1,0 +1,1155 @@
+{
+ "id": "belton-plus8-wand-v2",
+ "recipe": "belton-plus8-wand-v2",
+ "cls": "Wands",
+ "base": "Dueling Wand",
+ "ilvl": 82,
+ "note": "Belton +8 완드(영상 자막 확인 2026-11-10) — 모든 주문 +4 · 초월의 합금 분열 · 천공의 합금 · 군왕의 징조 미공개 훼손 준비 → 공개(원소 피해 = 막기, 아마나무 3개 전부) → 좌측 찬미 + 완벽한 엑잘(추가 피해·주문 피해) → 빛의 징조 + 소멸의 오브로 막기 줄 삭제 → 우측 강령술 + 고대 턱뼈 → 공개 → 마지막 접두 엑잘(결과 그대로). 밸런스 = 영상(빗나간 엑잘은 좌측 소멸의 징조로 다시, 공개 실패는 빛의 징조), 에센셜 = 목표 넓힘·결과 그대로·마지막 엑잘은 상위 엑잘티드 오브.",
+ "params": {
+  "xT": {
+   "kr": "추가 피해 획득",
+   "en": "Extra damage",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  },
+  "yT": {
+   "kr": "주문 피해",
+   "en": "Spell damage",
+   "values": {
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    },
+    "5": {
+     "kr": "1~5티어",
+     "en": "T1–5"
+    }
+   }
+  },
+  "sT": {
+   "kr": "마나 재생",
+   "en": "Mana regen",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "cT": {
+   "kr": "주문 치명타",
+   "en": "Spell crit",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "xT": 2,
+    "yT": 3,
+    "sT": 1,
+    "cT": 2
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "xT": 4,
+    "yT": 5,
+    "sT": 3,
+    "cT": 4
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "xT": 4,
+    "yT": 5,
+    "sT": 3,
+    "cT": 4
+   },
+   "desc": {
+    "kr": "목표 넓힘, 결과 그대로",
+    "en": "Looser targets, keep whatever comes"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "xT": 2,
+    "yT": 3,
+    "sT": 1,
+    "cT": 2
+   },
+   "desc": {
+    "kr": "영상 목표, 빗나가면 다시",
+    "en": "Video targets, redo misses"
+   }
+  }
+ ],
+ "tags": {
+  "l4": {
+   "gi": 10,
+   "tmax": 1
+  },
+  "trans": {
+   "gi": 60
+  },
+  "cel": {
+   "gi": 59
+  },
+  "ele": {
+   "gi": 30
+  },
+  "xF": {
+   "gi": 26,
+   "tmax": "$xT"
+  },
+  "xC": {
+   "gi": 27,
+   "tmax": "$xT"
+  },
+  "xL": {
+   "gi": 28,
+   "tmax": "$xT"
+  },
+  "spell": {
+   "gi": 3,
+   "tmax": "$yT"
+  },
+  "hyb": {
+   "gi": 4,
+   "tmax": 1
+  },
+  "pre": {
+   "anyOf": [
+    "xF",
+    "xC",
+    "xL",
+    "spell",
+    "hyb"
+   ],
+   "label": {
+    "kr": "추가 피해 획득·주문 피해",
+    "en": "Extra damage or spell damage"
+   }
+  },
+  "regen": {
+   "gi": 16,
+   "tmax": "$sT"
+  },
+  "scrit": {
+   "gi": 20,
+   "tmax": "$cT"
+  },
+  "cdmg": {
+   "gi": 21,
+   "tmax": "$cT"
+  },
+  "suf": {
+   "anyOf": [
+    "regen",
+    "scrit",
+    "cdmg"
+   ],
+   "label": {
+    "kr": "마나 재생·주문 치명타·주문 치명타 피해",
+    "en": "Mana regen, spell crit or spell crit damage"
+   }
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "cel"
+   },
+   {
+    "has": "l4"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "b3",
+    "b3x"
+   ],
+   "kr": "접두 엑잘",
+   "en": "Prefix exalt"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "b6",
+    "b6x",
+    "b6d"
+   ],
+   "kr": "접미 훼손 공개",
+   "en": "Suffix reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "cel",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "추가 피해 획득·주문 피해",
+      "en": "Extra damage or spell damage"
+     }
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "l4",
+     "tmax": 1
+    },
+    {
+     "tag": "trans",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "마나 재생·주문 치명타·주문 치명타 피해",
+      "en": "Mana regen or spell crit"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "cel",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "추가 피해 획득·주문 피해",
+      "en": "Extra damage or spell damage"
+     }
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "l4",
+     "tmax": 1
+    },
+    {
+     "tag": "trans",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "마나 재생·주문 치명타·주문 치명타 피해",
+      "en": "Mana regen or spell crit"
+     }
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     "l4",
+     {
+      "tag": "trans",
+      "fr": true,
+      "ess": true
+     },
+     {
+      "tag": "cel",
+      "ess": true
+     },
+     {
+      "unrev": "p",
+      "bone": "Preserved_Jawbone",
+      "lord": "amanamu"
+     }
+    ]
+   },
+   "label": {
+    "kr": "모든 주문 +4 · 초월의 합금 분열 완드 준비",
+    "en": "+4 all spells wand with fractured Transcendent Alloy"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +4",
+     "en": "+4 all spell skills",
+     "m": "n",
+     "tags": [
+      "l4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (분열)",
+     "en": "Transcendent Alloy (fractured)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "b2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +4",
+     "en": "+4 all spell skills",
+     "m": "n",
+     "tags": [
+      "l4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (분열)",
+     "en": "Transcendent Alloy (fractured)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인 (아마나무 3개 전부 나옴)",
+    "en": "Reveal (all three Amanamu lines show)"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "to": "b3"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +4",
+     "en": "+4 all spell skills",
+     "m": "n",
+     "tags": [
+      "l4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (분열)",
+     "en": "Transcendent Alloy (fractured)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "원소 피해 증가 (아마나무, 막기)",
+     "en": "Elemental damage (Amanamu, blocker)",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    }
+   ],
+   "showText": [
+    {
+     "s": "p",
+     "kr": "원소 피해 증가 — 화염·냉기·번개 %를 막음",
+     "en": "Elemental damage — blocks fire, cold and lightning %"
+    }
+   ],
+   "want": "ele",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "b3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix option"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 1
+      }
+     },
+     "to": "b4",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "sT": 1
+      }
+     },
+     "to": "b3x",
+     "res": "fail"
+    },
+    {
+     "to": "b4",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +4",
+     "en": "+4 all spell skills",
+     "m": "n",
+     "tags": [
+      "l4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (분열)",
+     "en": "Transcendent Alloy (fractured)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "원소 피해 증가 (아마나무, 막기)",
+     "en": "Elemental damage (Amanamu, blocker)",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "추가 피해 획득·주문 피해",
+     "en": "Extra damage or spell damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "pre"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "b3x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    2
+   ],
+   "keep": [
+    "cel",
+    "ele",
+    "pre"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 제거 (천공의 합금이 지워지면 다시)",
+    "en": "Remove the missed prefix (Celestial Alloy gone: craft it again)"
+   },
+   "edges": [
+    {
+     "lost": "cel",
+     "to": "b3c",
+     "port": "right"
+    },
+    {
+     "lost": "ele",
+     "to": "b3",
+     "port": "right"
+    },
+    {
+     "to": "b3",
+     "port": "right"
+    }
+   ],
+   "side": "p"
+  },
+  {
+   "id": "b3c",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    2
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "천공의 합금 다시",
+    "en": "Celestial Alloy again"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "to": "b3",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +4",
+     "en": "+4 all spell skills",
+     "m": "n",
+     "tags": [
+      "l4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (분열)",
+     "en": "Transcendent Alloy (fractured)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "원소 피해 증가 (아마나무, 막기)",
+     "en": "Elemental damage (Amanamu, blocker)",
+     "m": "n",
+     "tags": [
+      "ele"
+     ]
+    }
+   ],
+   "cur": "Celestial_Alloy",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)"
+    }
+   ],
+   "ess": "cel",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "b4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "원소 피해(막기 줄) 제거",
+    "en": "Remove the elemental damage blocker"
+   },
+   "edges": [
+    {
+     "to": "b5"
+    }
+   ]
+  },
+  {
+   "id": "b5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "b6"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +4",
+     "en": "+4 all spell skills",
+     "m": "n",
+     "tags": [
+      "l4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (분열)",
+     "en": "Transcendent Alloy (fractured)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "추가 피해 획득·주문 피해",
+     "en": "Extra damage or spell damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ]
+  },
+  {
+   "id": "b6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "suf"
+     },
+     "to": "b7",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "sT": 1
+      }
+     },
+     "to": "b6x",
+     "res": "fail"
+    },
+    {
+     "to": "b7",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +4",
+     "en": "+4 all spell skills",
+     "m": "n",
+     "tags": [
+      "l4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (분열)",
+     "en": "Transcendent Alloy (fractured)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "추가 피해 획득·주문 피해",
+     "en": "Extra damage or spell damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "마나 재생·주문 치명타·주문 치명타 피해",
+     "en": "Mana regen or spell crit",
+     "m": "n",
+     "tags": [
+      "suf"
+     ]
+    }
+   ],
+   "want": "suf",
+   "show": [
+    "suf"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "b6x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "b6d",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "b6d",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5.6
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "다시 훼손",
+    "en": "Desecrate again"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "b6",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +4",
+     "en": "+4 all spell skills",
+     "m": "n",
+     "tags": [
+      "l4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (분열)",
+     "en": "Transcendent Alloy (fractured)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "추가 피해 획득·주문 피해",
+     "en": "Extra damage or spell damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ]
+  },
+  {
+   "id": "b7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 마지막 옵션",
+    "en": "Last prefix option"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +4",
+     "en": "+4 all spell skills",
+     "m": "n",
+     "tags": [
+      "l4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (분열)",
+     "en": "Transcendent Alloy (fractured)",
+     "m": "n",
+     "tags": [
+      "trans"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "천공의 합금 (제작 옵션)",
+     "en": "Celestial Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "추가 피해 획득·주문 피해",
+     "en": "Extra damage or spell damage",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "마나 재생·주문 치명타·주문 치명타 피해",
+     "en": "Mana regen or spell crit",
+     "m": "n",
+     "tags": [
+      "suf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "추가 피해 획득·주문 피해 (안 나와도 그대로 — 영상: 카오스 피해 3티어)",
+     "en": "Extra or spell damage (keep whatever comes — chaos damage T3 in the video)"
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "sT": 3
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}
