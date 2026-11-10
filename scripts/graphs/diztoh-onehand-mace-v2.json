@@ -1,0 +1,1081 @@
+{
+ "id": "diztoh-onehand-mace-v2",
+ "recipe": "diztoh-onehand-mace-v2",
+ "cls": "One_Hand_Maces",
+ "base": "Marauding Mace",
+ "ilvl": 82,
+ "note": "Diztoh 한손 둔기(원본 레시피 기록) — 치명타 확률 매직 베이스 구입(정책 18 — 영상의 완벽한 진화 반복은 시뮬상 약 55 div) → 완벽한 확장 → 상위 가속의 에센스 → 아스트리드 → 좌측 결정화 + 완벽한 전투의 에센스 → 완벽한 엑잘(물리 접두, 결과 그대로 — 영상의 좌측 말소의 징조(약 20 div) 반복은 시뮬상 평균 470 div라 뺌) → 검은 피의 징조 + 보존된 턱뼈 → 완벽한 엑잘(피해 추가) → 공개(쿠르갈 접두 3개 — 물리 %가 이미 있으면 같은 계열이라 다른 쿠르갈 옵션) → 밸런스는 물리·원소 피해 접두가 2줄이 될 때까지 절사의 징조 + 상위 카오스(가장 낮은 줄이 버릴 줄일 때만). 에센셜 = 치명타 1~3티어 베이스, 상위 엑잘, 결과 그대로.",
+ "params": {
+  "cT": {
+   "kr": "치명타 확률",
+   "en": "Crit chance",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "xT": {
+   "kr": "피해 추가",
+   "en": "Flat damage",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "cT": 2,
+    "xT": 2
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "cT": 3,
+    "xT": 4
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "cT": 3,
+    "xT": 4
+   },
+   "desc": {
+    "kr": "목표 넓힘, 결과 그대로",
+    "en": "Looser targets, keep whatever comes"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "cT": 2,
+    "xT": 2
+   },
+   "desc": {
+    "kr": "영상: 빗나가면 말소·절사로 다시",
+    "en": "Video: Erasure/Whittling on misses"
+   }
+  }
+ ],
+ "tags": {
+  "crit": {
+   "gi": 17,
+   "tmax": "$cT"
+  },
+  "as": {
+   "gi": 44
+  },
+  "atk": {
+   "gi": 54
+  },
+  "kpct": {
+   "gi": 25
+  },
+  "hyb": {
+   "gi": 8,
+   "tmax": 2
+  },
+  "ppct": {
+   "gi": 7,
+   "tmax": 3
+  },
+  "pflat": {
+   "gi": 2,
+   "tmax": "$xT"
+  },
+  "fire": {
+   "gi": 3,
+   "tmax": "$xT"
+  },
+  "cold": {
+   "gi": 4,
+   "tmax": "$xT"
+  },
+  "light": {
+   "gi": 6,
+   "tmax": "$xT"
+  },
+  "phys": {
+   "anyOf": [
+    "hyb",
+    "ppct",
+    "pflat"
+   ],
+   "label": {
+    "kr": "물리 피해 접두",
+    "en": "Physical damage prefix"
+   }
+  },
+  "good": {
+   "anyOf": [
+    "hyb",
+    "ppct",
+    "pflat",
+    "fire",
+    "cold",
+    "light"
+   ],
+   "label": {
+    "kr": "물리·원소 피해 접두",
+    "en": "Physical or elemental prefix"
+   }
+  },
+  "kAny": {
+   "anyOf": [
+    {
+     "gi": 25
+    },
+    {
+     "gi": 26
+    },
+    {
+     "gi": 27
+    }
+   ]
+  },
+  "flat": {
+   "anyOf": [
+    "pflat",
+    "fire",
+    "cold",
+    "light"
+   ],
+   "label": {
+    "kr": "물리·원소 피해 추가",
+    "en": "Flat physical or elemental"
+   }
+  },
+  "keep": {
+   "anyOf": [
+    "crit",
+    "as",
+    "atk",
+    "kAny",
+    "good"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "crit"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "side": "p",
+     "label": {
+      "kr": "물리·원소 피해 접두",
+      "en": "Physical or elemental prefix"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "쿠르갈 접두 (물리 %가 없으면 물리 % + 공격 속도 감소)",
+      "en": "Kurgal prefix (% physical with reduced AS when free)"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "물리·원소 피해 접두",
+      "en": "Physical or elemental prefix"
+     }
+    },
+    {
+     "tag": "crit",
+     "tmax": 2
+    },
+    {
+     "tag": "as",
+     "tmax": 1
+    },
+    {
+     "tag": "atk",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "side": "p",
+     "label": {
+      "kr": "물리·원소 피해 접두",
+      "en": "Physical or elemental prefix"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "쿠르갈 접두 (물리 %가 없으면 물리 % + 공격 속도 감소)",
+      "en": "Kurgal prefix (% physical with reduced AS when free)"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "물리·원소 피해 접두",
+      "en": "Physical or elemental prefix"
+     }
+    },
+    {
+     "tag": "crit",
+     "tmax": 3
+    },
+    {
+     "tag": "as",
+     "tmax": 1
+    },
+    {
+     "tag": "atk",
+     "tmax": 1
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "m3",
+   "start": {
+    "rar": "magic",
+    "mods": [
+     "crit"
+    ]
+   },
+   "label": {
+    "kr": "치명타 확률 매직 둔기 구입 (특출난 베이스, 퀄리티 20%)",
+    "en": "Buy a magic exceptional mace with crit chance (20% quality)"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "augment",
+   "goal": {
+    "kr": "접두 1줄",
+    "en": "One prefix"
+   },
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "edges": [
+    {
+     "to": "m4"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Orb_of_Augmentation",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line"
+    }
+   ]
+  },
+  {
+   "id": "m4",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "레어로 업그레이드 + 접미 공격 속도",
+    "en": "Upgrade to rare + attack speed suffix"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "m5"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (제작 옵션)",
+     "en": "Attack speed (crafted)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    }
+   ],
+   "cur": "Greater_Essence_of_Haste",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "공격 속도 (제작 옵션)",
+     "en": "Attack speed (crafted)"
+    }
+   ],
+   "ess": "as"
+  },
+  {
+   "id": "m5",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "m6"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (제작 옵션)",
+     "en": "Attack speed (crafted)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    }
+   ],
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ]
+  },
+  {
+   "id": "m6",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접두 잡옵을 지우고 공격 스킬 +2",
+    "en": "Swap the junk prefix for +2 attack skills"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (제작 옵션)",
+     "en": "Attack speed (crafted)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
+     "en": "+2 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "atk"
+     ]
+    }
+   ],
+   "cur": "Perfect_Essence_of_Battle",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
+     "en": "+2 attack skills (crafted)"
+    }
+   ],
+   "ess": "atk",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    5.5
+   ],
+   "next": "m7",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (제작 옵션)",
+     "en": "Attack speed (crafted)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
+     "en": "+2 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "atk"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix option"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "m8"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (제작 옵션)",
+     "en": "Attack speed (crafted)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
+     "en": "+2 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "atk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 접두",
+     "en": "Physical damage prefix",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 피해 접두 (안 나와도 그대로 — 공개 뒤 절사로)",
+     "en": "Physical prefix (a miss stays — Whittling after the reveal)"
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "cT": 3
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "m8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 두번째 옵션(훼손)",
+    "en": "Second prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "m9"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (제작 옵션)",
+     "en": "Attack speed (crafted)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
+     "en": "+2 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "atk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 접두",
+     "en": "Physical damage prefix",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "쿠르갈 훼손 옵션(미공개)",
+     "en": "Kurgal desecration (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_the_Blackblooded"
+   ]
+  },
+  {
+   "id": "m9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix option"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "m10"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (제작 옵션)",
+     "en": "Attack speed (crafted)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
+     "en": "+2 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "atk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 접두",
+     "en": "Physical damage prefix",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "물리·원소 피해 추가",
+     "en": "Flat physical or elemental",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리·원소 피해 추가 (안 나오면 공개 뒤 절사)",
+     "en": "Flat physical or elemental (a miss: Whittling after the reveal)"
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "cT": 3
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "m10",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인 (쿠르갈 3개 전부 나옴)",
+    "en": "Reveal (all three Kurgal lines show)"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "any": [
+       {
+        "count": {
+         "tag": "good",
+         "min": 2
+        }
+       },
+       {
+        "param": {
+         "cT": 3
+        }
+       }
+      ]
+     },
+     "to": "ok"
+    },
+    {
+     "if": {
+      "whittleSafe": "keep"
+     },
+     "to": "m11"
+    },
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (제작 옵션)",
+     "en": "Attack speed (crafted)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
+     "en": "+2 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "atk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 접두",
+     "en": "Physical damage prefix",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·원소 피해 추가",
+     "en": "Flat physical or elemental",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "쿠르갈 물리 % (공격 속도 감소)",
+     "en": "Kurgal % physical (reduced attack speed)",
+     "m": "n",
+     "tags": [
+      "kpct"
+     ]
+    }
+   ],
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 % (공격 속도 감소)",
+     "en": "% physical (reduced attack speed)"
+    }
+   ],
+   "want": "kpct"
+  },
+  {
+   "id": "m11",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "가장 낮은 줄을 피해 추가로 (버릴 줄일 때만)",
+    "en": "Replace the lowest line (only while it is junk)"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "good",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "whittleSafe": "keep"
+     },
+     "to": "m11",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률",
+     "en": "Critical hit chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (제작 옵션)",
+     "en": "Attack speed (crafted)",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
+     "en": "+2 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "atk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 접두",
+     "en": "Physical damage prefix",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리·원소 피해 추가",
+     "en": "Flat physical or elemental",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "쿠르갈 물리 % (공격 속도 감소)",
+     "en": "Kurgal % physical (reduced attack speed)",
+     "m": "n",
+     "tags": [
+      "kpct"
+     ]
+    }
+   ],
+   "cur": "Greater_Chaos_Orb",
+   "show": [
+    "good"
+   ],
+   "omens": [
+    "Omen_of_Whittling"
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    11
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

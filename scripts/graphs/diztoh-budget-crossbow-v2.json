@@ -1,0 +1,919 @@
+{
+ "id": "diztoh-budget-crossbow-v2",
+ "recipe": "diztoh-budget-crossbow-v2",
+ "cls": "Crossbows",
+ "base": "Siege Crossbow",
+ "ilvl": 82,
+ "note": "Diztoh 가성비 석궁(원본 레시피 기록) — 물리 % 매직 베이스 구입(정책 18 — 영상의 완벽한 진화의 오브 반복은 시뮬상 약 86 div) → 완벽한 확장의 오브(접미) → 상위 마모의 에센스 → 아스트리드 → 우측 결정화 + 완벽한 전투의 에센스 → 우측 강령술 + 군왕의 징조 + 보존된 턱뼈 → 공개(아마나무 접미 2개라 수류탄 2회 발동 확정) → 상위 찬미 + 완벽한 엑잘. 밸런스는 접두가 빗나가면 절사의 징조 + 완벽한 카오스 오브(가장 낮은 줄이 버릴 줄일 때만, 영상 선택 단계), 에센셜 = 물리 % 1~3티어 베이스, 상위 엑잘, 결과 그대로.",
+ "params": {
+  "pT": {
+   "kr": "물리 피해 %",
+   "en": "% physical",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "eT": {
+   "kr": "원소 피해 추가",
+   "en": "Flat elemental",
+   "values": {
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    },
+    "5": {
+     "kr": "1~5티어",
+     "en": "T1–5"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "pT": 2,
+    "eT": 3
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "pT": 3,
+    "eT": 5
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "pT": 3,
+    "eT": 5
+   },
+   "desc": {
+    "kr": "더 넓은 목표, 결과 그대로",
+    "en": "Looser targets, keep whatever comes"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "pT": 2,
+    "eT": 3
+   },
+   "desc": {
+    "kr": "영상 + 절사로 접두 맞추기",
+    "en": "Video + Whittling for the prefix"
+   }
+  }
+ ],
+ "tags": {
+  "ppct": {
+   "gi": 8,
+   "tmax": "$pT"
+  },
+  "flatE": {
+   "gi": 39
+  },
+  "battle": {
+   "gi": 53
+  },
+  "gren": {
+   "gi": 30
+  },
+  "hyb": {
+   "gi": 9,
+   "tmax": 3
+  },
+  "fire": {
+   "gi": 4,
+   "tmax": 4
+  },
+  "cold": {
+   "gi": 5,
+   "tmax": 4
+  },
+  "light": {
+   "gi": 7,
+   "tmax": 4
+  },
+  "eatk": {
+   "gi": 23,
+   "tmax": 2
+  },
+  "pre": {
+   "anyOf": [
+    "hyb",
+    "fire",
+    "cold",
+    "light",
+    "eatk"
+   ],
+   "label": {
+    "kr": "복합 물리·원소 피해 추가",
+    "en": "Hybrid physical or flat elemental"
+   }
+  },
+  "keep": {
+   "anyOf": [
+    "ppct",
+    "flatE",
+    "battle",
+    "gren",
+    "pre"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "ppct"
+   },
+   {
+    "has": "gren"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "ppct",
+     "tmax": 2
+    },
+    {
+     "tag": "flatE",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "복합 물리·원소 피해 추가",
+      "en": "Hybrid physical or flat elemental"
+     }
+    },
+    {
+     "tag": "battle",
+     "tmax": 1
+    },
+    {
+     "tag": "gren",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "ppct",
+     "tmax": 3
+    },
+    {
+     "tag": "flatE",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "복합 물리·원소 피해 추가",
+      "en": "Hybrid physical or flat elemental"
+     }
+    },
+    {
+     "tag": "battle",
+     "tmax": 1
+    },
+    {
+     "tag": "gren",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 3
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "c3",
+   "start": {
+    "rar": "magic",
+    "mods": [
+     "ppct"
+    ]
+   },
+   "label": {
+    "kr": "물리 피해 % 매직 석궁 구입 (특출난 베이스, 룬 소켓 3)",
+    "en": "Buy a magic exceptional crossbow with % physical (3 rune sockets)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "augment",
+   "goal": {
+    "kr": "접미 1줄",
+    "en": "One suffix"
+   },
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "edges": [
+    {
+     "to": "c4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Orb_of_Augmentation",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 1줄",
+     "en": "One random line"
+    }
+   ]
+  },
+  {
+   "id": "c4",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "레어로 업그레이드 + 접두 물리 피해 추가",
+    "en": "Upgrade to rare + flat physical prefix"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "c5"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flatE"
+     ]
+    }
+   ],
+   "cur": "Greater_Essence_of_Abrasion",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)"
+    }
+   ],
+   "ess": "flatE"
+  },
+  {
+   "id": "c5",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "c6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flatE"
+     ]
+    }
+   ],
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ]
+  },
+  {
+   "id": "c6",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접미 잡옵을 지우고 공격 스킬 +3",
+    "en": "Swap the junk suffix for +3 attack skills"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flatE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "battle"
+     ]
+    }
+   ],
+   "cur": "Perfect_Essence_of_Battle",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 attack skills (crafted)"
+    }
+   ],
+   "ess": "battle",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    5.5
+   ],
+   "next": "c7",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flatE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "battle"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 두번째 옵션(훼손)",
+    "en": "Second suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "c8"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flatE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Jawbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "아마나무 훼손 옵션(미공개)",
+     "en": "Amanamu desecration (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy",
+    "Omen_of_the_Liege"
+   ]
+  },
+  {
+   "id": "c8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인 (아마나무 2개 전부 나옴)",
+    "en": "Reveal (both Amanamu lines show)"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "to": "c9"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flatE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "수류탄 2회 발동 (아마나무)",
+     "en": "Grenade double activation (Amanamu)",
+     "m": "n",
+     "tags": [
+      "gren"
+     ]
+    }
+   ],
+   "showText": [
+    {
+     "s": "s",
+     "kr": "수류탄 2회 발동",
+     "en": "Grenade double activation"
+    }
+   ],
+   "want": "gren",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "c9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두·접미 1줄씩",
+    "en": "One prefix and one suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "pT": 2
+        }
+       },
+       {
+        "whittleSafe": "keep"
+       }
+      ]
+     },
+     "to": "c11"
+    },
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flatE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "수류탄 2회 발동 (아마나무)",
+     "en": "Grenade double activation (Amanamu)",
+     "m": "n",
+     "tags": [
+      "gren"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "kr": "랜덤 2줄 — 복합 물리·원소 피해 추가면 좋음",
+     "en": "Two random lines — hybrid physical or flat elemental is good"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "over": [
+    {
+     "param": {
+      "pT": 3
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "c11",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "가장 낮은 줄을 접두로 (버릴 줄일 때만)",
+    "en": "Replace the lowest line (only while it is junk)"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "whittleSafe": "keep"
+     },
+     "to": "c11",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가",
+     "en": "% physical damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical (crafted)",
+     "m": "n",
+     "tags": [
+      "flatE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 attack skills (crafted)",
+     "m": "n",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "수류탄 2회 발동 (아마나무)",
+     "en": "Grenade double activation (Amanamu)",
+     "m": "n",
+     "tags": [
+      "gren"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "복합 물리·원소 피해 추가",
+     "en": "Hybrid physical or flat elemental",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "pre"
+   ],
+   "omens": [
+    "Omen_of_Whittling"
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

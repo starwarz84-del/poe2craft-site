@@ -2,10 +2,12 @@
 _OLD = {'diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helmet-armour-sl','sihan-highend-boots-v2':'sihan-highend-boots',
         'diztoh-rarity-ring-v2':'diztoh-rarity-ring','saveq-absent-amulet-v2':'saveq-absent-amulet','farmer-budget-armour-v2':'farmer-budget-armour','farmer-starter-staff-v2':'farmer-starter-staff',
         'ragna-ashot-bow-v2':'ragna-ashot-bow','sane-resist-belt-v2':'sane-resist-belt','diztoh-budget-mace-v2':'diztoh-budget-mace','lilbotq-budget-boots-v2':'lilbotq-budget-boots','icesly-budget-wand-v2':'icesly-budget-wand',
-        'diztoh-es-helmet-v2':'diztoh-es-helmet','belton-plus8-wand-v2':'belton-plus8-wand','lilbotq-armour-shield-v2':'lilbotq-armour-shield','diztoh-vile-robe-v2':'diztoh-vile-robe','diztoh-talisman-v2':'diztoh-talisman'}
+        'diztoh-es-helmet-v2':'diztoh-es-helmet','belton-plus8-wand-v2':'belton-plus8-wand','lilbotq-armour-shield-v2':'lilbotq-armour-shield','diztoh-vile-robe-v2':'diztoh-vile-robe','diztoh-talisman-v2':'diztoh-talisman',
+        'sihan-chayula-sceptre-v2':'sihan-chayula-sceptre','diztoh-budget-crossbow-v2':'diztoh-budget-crossbow','diztoh-onehand-mace-v2':'diztoh-onehand-mace','saveq-alloy-focus-v2':'saveq-alloy-focus','tankjung-kitava-shield-v2':'tankjung-kitava-shield'}
 # grade recipes copied straight from the original recipe (recipes_v5_zz-batch5-v2.py) also take its short notes and branch lines
 _COPIED = {'ragna-ashot-bow-v2','sane-resist-belt-v2','diztoh-budget-mace-v2','lilbotq-budget-boots-v2','icesly-budget-wand-v2',
-           'diztoh-es-helmet-v2','belton-plus8-wand-v2','lilbotq-armour-shield-v2','diztoh-vile-robe-v2','diztoh-talisman-v2'}
+           'diztoh-es-helmet-v2','belton-plus8-wand-v2','lilbotq-armour-shield-v2','diztoh-vile-robe-v2','diztoh-talisman-v2',
+           'sihan-chayula-sceptre-v2','diztoh-budget-crossbow-v2','diztoh-onehand-mace-v2','saveq-alloy-focus-v2','tankjung-kitava-shield-v2'}
 # Step notes are short (사용자 확정 2026-11-09): a step shows only its target and currency (head + target line on screen);
 # a note is kept only for the start, the finish, and forks/choices, and then says just the branch. None = no note.
 # Steps that already show a currency and a target hide their note in recipes.html, so only these steps need text.

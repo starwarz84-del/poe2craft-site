@@ -1,0 +1,955 @@
+{
+ "id": "saveq-alloy-focus-v2",
+ "recipe": "saveq-alloy-focus-v2",
+ "cls": "Foci",
+ "base": "Tasalian Focus",
+ "ilvl": 81,
+ "note": "SaVeQ 합금 집중구(원본 레시피 기록) — 모든 주문 +2 분열 + 주문 피해 1티어 + 주문 치명타(상위 추구의 에센스) + 미공개 훼손 접두 준비 → 공개(에너지 보호막 %·복합·마나 1티어, 밸런스는 빛의 징조 + 고대 갈비뼈로 다시) → 좌측 찬미 + 완벽한 엑잘 → 아스트리드 + 좌측 결정화 + 초월의 합금(접두 3개 중 하나 삭제) → 완벽한 엑잘로 빈 접두(밸런스는 빗나가면 좌측 소멸의 징조). 에센셜 = 목표 넓힘, 상위 엑잘, 결과 그대로.",
+ "params": {
+  "rT": {
+   "kr": "공개 목표",
+   "en": "Reveal target",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "gT": {
+   "kr": "마지막 접두",
+   "en": "Last prefix",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "rT": 1,
+    "gT": 2
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "rT": 3,
+    "gT": 4
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "rT": 3,
+    "gT": 4
+   },
+   "desc": {
+    "kr": "목표 넓힘, 결과 그대로",
+    "en": "Looser targets, keep whatever comes"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "rT": 1,
+    "gT": 2
+   },
+   "desc": {
+    "kr": "영상: 1티어까지 빛의 징조, 빗나간 엑잘은 좌측 소멸의 징조",
+    "en": "Video: Light until T1, Sinistral Annulment on a miss"
+   }
+  }
+ ],
+ "tags": {
+  "lvl": {
+   "gi": 16
+  },
+  "spell": {
+   "gi": 10,
+   "tmax": 1
+  },
+  "critE": {
+   "gi": 47
+  },
+  "alloy": {
+   "gi": 59
+  },
+  "esp": {
+   "gi": 7,
+   "tmax": "$rT"
+  },
+  "hyb": {
+   "gi": 8,
+   "tmax": "$rT"
+  },
+  "mana": {
+   "gi": 5,
+   "tmax": "$rT"
+  },
+  "rev": {
+   "anyOf": [
+    "esp",
+    "hyb",
+    "mana"
+   ],
+   "label": {
+    "kr": "에너지 보호막 %·복합·마나",
+    "en": "% ES, hybrid or mana"
+   }
+  },
+  "esp2": {
+   "gi": 7,
+   "tmax": "$gT"
+  },
+  "hyb2": {
+   "gi": 8,
+   "tmax": "$gT"
+  },
+  "esf2": {
+   "gi": 6,
+   "tmax": 3
+  },
+  "mana2": {
+   "gi": 5,
+   "tmax": "$gT"
+  },
+  "spell2": {
+   "gi": 10,
+   "tmax": 2
+  },
+  "gp": {
+   "anyOf": [
+    "esp2",
+    "hyb2",
+    "esf2",
+    "mana2",
+    "spell2"
+   ],
+   "label": {
+    "kr": "주문 피해·에너지 보호막·마나",
+    "en": "Spell damage, ES or mana"
+   }
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "lvl"
+   },
+   {
+    "has": "alloy"
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "v2",
+    "v2x",
+    "v2d"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "v6",
+    "v6x"
+   ],
+   "kr": "빈 접두",
+   "en": "Free prefix"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "side": "p",
+     "label": {
+      "kr": "주문 피해·에너지 보호막·마나",
+      "en": "Spell damage, ES or mana"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "주문 피해·에너지 보호막·마나",
+      "en": "Spell damage, ES or mana"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "주문 피해·에너지 보호막·마나",
+      "en": "Spell damage, ES or mana"
+     }
+    },
+    {
+     "tag": "lvl",
+     "tmax": 1
+    },
+    {
+     "tag": "critE",
+     "tmax": 1
+    },
+    {
+     "tag": "alloy",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "side": "p",
+     "label": {
+      "kr": "주문 피해·에너지 보호막·마나",
+      "en": "Spell damage, ES or mana"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "주문 피해·에너지 보호막·마나",
+      "en": "Spell damage, ES or mana"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "주문 피해·에너지 보호막·마나",
+      "en": "Spell damage, ES or mana"
+     }
+    },
+    {
+     "tag": "lvl",
+     "tmax": 1
+    },
+    {
+     "tag": "critE",
+     "tmax": 1
+    },
+    {
+     "tag": "alloy",
+     "tmax": 1
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 1
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "lvl",
+      "fr": true
+     },
+     "spell",
+     {
+      "tag": "critE",
+      "ess": true
+     },
+     {
+      "unrev": "p",
+      "bone": "Ancient_Rib"
+     }
+    ]
+   },
+   "label": {
+    "kr": "모든 주문 +2 분열 집중구 준비",
+    "en": "Focus with fractured +2 spells"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2 (분열)",
+     "en": "+2 all spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 1티어",
+     "en": "T1 spell damage",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 (제작 옵션)",
+     "en": "Spell crit (crafted)",
+     "m": "n",
+     "tags": [
+      "critE"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "v2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2 (분열)",
+     "en": "+2 all spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 1티어",
+     "en": "T1 spell damage",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 (제작 옵션)",
+     "en": "Spell crit (crafted)",
+     "m": "n",
+     "tags": [
+      "critE"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "v2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "rev"
+     },
+     "to": "v4",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "rT": 1
+      }
+     },
+     "to": "v2x",
+     "res": "fail"
+    },
+    {
+     "to": "v4",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2 (분열)",
+     "en": "+2 all spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 1티어",
+     "en": "T1 spell damage",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 (제작 옵션)",
+     "en": "Spell crit (crafted)",
+     "m": "n",
+     "tags": [
+      "critE"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 %·복합·마나",
+     "en": "% ES, hybrid or mana",
+     "m": "n",
+     "tags": [
+      "rev"
+     ]
+    }
+   ],
+   "want": "rev",
+   "show": [
+    "rev"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "v2x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    1
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "v2d",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "v2d",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    1.6
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "다시 훼손",
+    "en": "Desecrate again"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "v2",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2 (분열)",
+     "en": "+2 all spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 1티어",
+     "en": "T1 spell damage",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 (제작 옵션)",
+     "en": "Spell crit (crafted)",
+     "m": "n",
+     "tags": [
+      "critE"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Rib",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ]
+  },
+  {
+   "id": "v4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "합금이 지울 접두",
+    "en": "The prefix for the alloy to remove"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "v5"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2 (분열)",
+     "en": "+2 all spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 1티어",
+     "en": "T1 spell damage",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 (제작 옵션)",
+     "en": "Spell crit (crafted)",
+     "m": "n",
+     "tags": [
+      "critE"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 %·복합·마나",
+     "en": "% ES, hybrid or mana",
+     "m": "n",
+     "tags": [
+      "rev"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 1줄",
+     "en": "One random line"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "over": [
+    {
+     "param": {
+      "rT": 3
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "v5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착 후 초월의 합금",
+    "en": "Socket Astrid’s Creativity, then the Transcendent Alloy"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "to": "v6"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2 (분열)",
+     "en": "+2 all spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 1티어",
+     "en": "T1 spell damage",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 (제작 옵션)",
+     "en": "Spell crit (crafted)",
+     "m": "n",
+     "tags": [
+      "critE"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 %·복합·마나",
+     "en": "% ES, hybrid or mana",
+     "m": "n",
+     "tags": [
+      "rev"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "alloy"
+     ]
+    }
+   ],
+   "cur": "Transcendent_Alloy",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "초월의 합금 (접두 3개 중 하나가 지워짐)",
+     "en": "Transcendent Alloy (one of the three prefixes goes)"
+    }
+   ],
+   "ess": "alloy",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "v6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "빈 접두 채우기",
+    "en": "Fill the free prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "gp",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "rT": 1
+        }
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "v6x",
+     "res": "fail"
+    },
+    {
+     "if": {
+      "not": {
+       "full": "p"
+      }
+     },
+     "to": "v6",
+     "res": "ok"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2 (분열)",
+     "en": "+2 all spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 1티어",
+     "en": "T1 spell damage",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 (제작 옵션)",
+     "en": "Spell crit (crafted)",
+     "m": "n",
+     "tags": [
+      "critE"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 %·복합·마나",
+     "en": "% ES, hybrid or mana",
+     "m": "n",
+     "tags": [
+      "rev"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)",
+     "m": "n",
+     "tags": [
+      "alloy"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해·에너지 보호막·마나",
+     "en": "Spell damage, ES or mana",
+     "m": "n",
+     "tags": [
+      "gp"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "gp"
+   ],
+   "over": [
+    {
+     "param": {
+      "rT": 3
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ]
+  },
+  {
+   "id": "v6x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "keep": [
+    "gp",
+    "rev"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 제거",
+    "en": "Remove the missed prefix"
+   },
+   "edges": [
+    {
+     "lost": "gp",
+     "to": "v6x"
+    },
+    {
+     "lost": "rev",
+     "to": "v6x"
+    },
+    {
+     "to": "v6",
+     "port": "right"
+    }
+   ],
+   "side": "p"
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}
