@@ -125,7 +125,7 @@ TIPREF = {('tankjung-kitava-shield','t7'):['whittle-safe-top-level'],('xeno-phys
  ('zenm-timelost-sapphire','z1'):['timelost-profit-batch'], ('diztoh-talisman','t3'):['liege-omen-resist-jewellery'], ('lilbotq-budget-boots','b1'):['cheap-resist-essence'], ('lilbotq-boots','h2'):['augment-rune-before-chaos']}
 # grade recipes (policy 25) keep the tips of the recipe they rewrite: same step ids, any tier
 _OLD = {'diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helmet-armour-sl','sihan-highend-boots-v2':'sihan-highend-boots',
-        'diztoh-rarity-ring-v2':'diztoh-rarity-ring','saveq-absent-amulet-v2':'saveq-absent-amulet'}
+        'diztoh-rarity-ring-v2':'diztoh-rarity-ring','saveq-absent-amulet-v2':'saveq-absent-amulet','farmer-budget-armour-v2':'farmer-budget-armour','farmer-starter-staff-v2':'farmer-starter-staff'}
 _old = lambda r: _OLD.get(r.get('tierGroup') or r['id'], r['id'])
 for _r in R:
     for _n in _r['nodes']:

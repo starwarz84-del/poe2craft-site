@@ -41,6 +41,8 @@ BASEPRICE = {
   'diztoh-vile-robe': None,
   'farmer-budget-armour': None,
   'farmer-starter-staff': None,
+  'farmer-budget-armour-v2': None,
+  'farmer-starter-staff-v2': None,
   'icesly-budget-wand': None,
   'lilbotq-armour-shield': None,
   'lilbotq-budget-boots': None,
