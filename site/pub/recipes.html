@@ -44,6 +44,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--ink);border-color:var(--fg)}
 .count{font-size:12px;color:var(--faint)}
 .demo-note{font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:6px 10px;width:fit-content;max-width:100%}
+.statrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.statrow select{width:100%;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 8px;color:var(--fg)}
+.statrow select.on{border-color:var(--rare)}
+@media (max-width:640px){.statrow{grid-template-columns:minmax(0,1fr)}}
 .noterow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;margin-bottom:12px}
 .sortseg{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--panel);margin-left:auto}
 .sortseg button{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;padding:5px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
@@ -539,6 +543,7 @@ body.simfull{overflow:hidden}
     <button type="button" class="btn" id="analyze"></button>
     <button type="button" class="btn" id="clrdrafts" hidden></button>
   </div>
+  <div class="statrow" id="stats"></div>
   <div class="chips" id="tags"></div>
   <div class="noterow"><div class="demo-note" id="demo"></div><div class="sortseg" id="sort" role="group" aria-label="Sort"></div></div>
   <div class="board" id="board"></div>
@@ -560,7 +565,7 @@ body.simfull{overflow:hidden}
 'use strict';
 // ---------- state / i18n ----------
 const store0 = (k,d) => { try{ const v=localStorage.getItem('poe2r:'+k); return v?JSON.parse(v):d; }catch(e){ return d; } };
-const S = { tips:[], view:store0('view','recipes'), navClosed:new Set(), stepIdx:-1, lang:'en', recipes:[], cls:{}, craft:null, byId:{}, index:null, open:null, sim:{}, tags:new Set(), q:'', cat:'', sort:'views', sortDir:-1, sub:'', curOnly:false };
+const S = { tips:[], view:store0('view','recipes'), navClosed:new Set(), stepIdx:-1, lang:'en', recipes:[], cls:{}, craft:null, byId:{}, index:null, open:null, sim:{}, tags:new Set(), q:'', cat:'', sort:'views', sortDir:-1, sub:'', stats:['','',''], curOnly:false };
 try{ const u=new URLSearchParams(location.search).get('lang'); S.lang = u || localStorage.getItem('poe2lang') || 'en'; }catch(e){}
 if(S.lang!=='kr') S.lang='en';
 const KR = () => S.lang==='kr', L = (kr,en) => KR()?kr:en;
@@ -587,10 +592,10 @@ const clsName = r => { for(const g of S.index.groups) for(const c of g.classes) 
 const catOf = r => S.index.groups.find(g=>g.classes.some(c=>c.id===r.cls));
 const sideOfOmens = os => { for(const o of os||[]){ if(/Sinistral/.test(o)) return 'p'; if(/Dextral/.test(o)) return 's'; } return null; };
 // league each patch belongs to (badge shows the league, hovering shows the patch)
-const LEAGUES = [{p:'0.5.5', en:'Forbidden Rites'}, {p:'0.5', en:'Runes of Aldur'}];
+const LEAGUES = [{p:'0.5.5', en:'Forbidden Rites'}, {p:'0.5', en:'Runes of Aldur'}, {p:'0.4', en:'Fate of the Vaal'}, {p:'0.3', en:'Rise of the Abyssal'}, {p:'0.2', en:'Dawn of the Hunt'}];   // patch → league name
 const leagueOf = r => LEAGUES.find(x=>String(r.patch)===x.p) || LEAGUES.find(x=>String(r.patch).startsWith(x.p)) || null;
 const leagueBadge = (r, old) => { const lg=leagueOf(r); const tip=L(`패치 ${r.patch}`,`Patch ${r.patch}`)+(old?L(' · 현재 패치와 다름',' · not the current patch'):'');
-  return `<span class="lg ${old?'old':''}" tabindex="0" data-tipx="${esc(tip)}">${esc(lg?lg.en:L(`패치 ${r.patch}`,`Patch ${r.patch}`))}${old?' ⚠':''}</span>`; };
+  return `<span class="lg ${old?'old':''}" tabindex="0" data-tipx="${esc(tip)}">${esc(lg?`${lg.en} ${r.patch}`:L(`패치 ${r.patch}`,`Patch ${r.patch}`))}${old?' ⚠':''}</span>`; };
 const featureOf = r => { const t=tx(r.title); const i=t.indexOf('—'); return (i>=0 ? t.slice(i+1) : t).trim(); };
 // title = base chosen at registration + the author's own title (its feature)
 const baseName = r => KR()?baseOf(r).kr:baseOf(r).en;
@@ -911,6 +916,10 @@ function analyse(r){
     phaseSum[ph.id]={reach, bases: keep>0 ? 1/keep : Infinity}; });
   return r._an = {nodes:out, tot, totAll, optMore, manual, bases:passes[0], final, keys:Object.keys(tot), qual, runes, sockets, sanct, phaseSum, basesAll};
 }
+// modifier search (사용자 2026-11-11): up to 3 dropdowns, a recipe must have every chosen modifier on its finished item
+const statKey = g => (g.t[0][5]||'').replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d+(?:\.\d+)?)?\)?/g,'#').replace(/\s+/g,' ').trim();
+const statLbl = g => { const t=g.t[0][KR()?4:5]||''; return t.replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d+(?:\.\d+)?)?\)?/g,'#').replace(/\s*\n\s*/g,' / ').trim(); };
+const statsOf = r => { if(r._sk) return r._sk; const s=new Set(); try{ analyse(r).final.forEach(m=>s.add(statKey(m.g))); }catch(e){} return r._sk=s; };
 const tagsOf = r => { const s=new Set(); analyse(r).final.forEach(m=>m.g.tg.forEach(t=>s.add(t))); return s; };
 
 const fmt = v => !isFinite(v) ? '∞' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v>=1 ? v.toFixed(1) : v.toFixed(2);
@@ -1779,6 +1788,7 @@ function list(){
     if(r.tierGroup && tierLead(r)!==r) return false;
     if(S.cat && catOf(r)?.id!==S.cat) return false;
     if(S.sub && r.cls!==S.sub) return false;
+    for(const k of S.stats) if(k && !statsOf(r).has(k)) return false;
     if(S.curOnly && isOld(r)) return false;
     if(S.tags.size){ const t=tagsOf(r); for(const x of S.tags) if(!t.has(x)) return false; }
     if(q){ const hay=[r.title.kr,r.title.en,tx(r.author),baseOf(r).kr,baseOf(r).en,clsName(r),...analyse(r).final.map(m=>m.txt)].join(' ').toLowerCase(); if(!hay.includes(q)) return false; }
@@ -1794,7 +1804,8 @@ function list(){
 let cards=[], panel=null;
 function renderBoard(){
   const L0=list(); const board=$('#board');
-  $('#count').textContent = L(`${L0.length}개 레시피`, `${L0.length} recipe${L0.length===1?'':'s'}`);
+  const total=S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r)).length;
+  $('#count').textContent = L0.length===total ? L(`전체 ${total}개 레시피`, `${total} recipes`) : L(`${L0.length}개 / 전체 ${total}개 레시피`, `${L0.length} of ${total} recipes`);
   board.innerHTML = L0.length ? '' : `<div class="empty">${L('조건에 맞는 레시피가 없어요.','No recipes match these filters.')}</div>`;
   cards = L0.map(r=>{ const el=document.createElement('article'); el.className='card'+(S.open===r.id?' open':''); el.dataset.id=r.id; el.tabIndex=0; el.setAttribute('role','button'); el.setAttribute('aria-expanded', S.open===r.id);
     el.innerHTML=cardHTML(r); board.appendChild(el);
@@ -1846,8 +1857,12 @@ function renderBar(){
   if(S.sub && !subs.some(c=>c.id===S.sub)) S.sub='';
   $('#fsub').innerHTML=`<option value="">${L('모든 세부 종류','All types')}</option>`+subs.map(c=>`<option value="${c.id}" ${S.sub===c.id?'selected':''}>${esc(KR()?c.kr:c.en)}</option>`).join('');
   $('#fsub').disabled=!subs.length;
+  const opts=new Map(); S.recipes.forEach(r=>{ if(r.tierGroup && tierLead(r)!==r) return; try{ analyse(r).final.forEach(m=>{ const k=statKey(m.g); const o=opts.get(k)||{l:statLbl(m.g), n:new Set()}; o.n.add(r.id); opts.set(k,o); }); }catch(e){} });
+  const ol=[...opts.entries()].sort((a,b)=>a[1].l.localeCompare(b[1].l, KR()?'ko':'en'));
+  $('#stats').innerHTML=S.stats.map((v,i)=>`<select data-stat="${i}" class="${v?'on':''}" aria-label="${esc(L('옵션','Modifier'))} ${i+1}"><option value="">${L(`+ 옵션 ${i+1} 선택`,`+ Modifier ${i+1}`)}</option>${ol.map(([k,o])=>`<option value="${esc(k)}" ${v===k?'selected':''}>${esc(o.l)} (${o.n.size})</option>`).join('')}</select>`).join('');
   $('#sort').innerHTML=SORTS.map(([k,[kr,en]])=>`<button type="button" data-sort="${k}" aria-pressed="${S.sort===k}">${esc(L(kr,en))}${S.sort===k?`<span class="ar">${S.sortDir>0?'↑':'↓'}</span>`:''}</button>`).join('');
-  $('#l-patch').textContent=L(`현재 패치(${S.index.patch})만`,`Current patch (${S.index.patch}) only`);
+  const lgN=(LEAGUES.find(x=>x.p===String(S.index.patch))||{}).en, pl=lgN?`${lgN} ${S.index.patch}`:S.index.patch;
+  $('#l-patch').textContent=L(`현재 패치(${pl})만`,`Current patch (${pl}) only`);
   $('#analyze').textContent=L('아이템으로 레시피 찾기·요청','Find or request a recipe');
   { const n=S.recipes.filter(r=>r.draft).length, b=$('#clrdrafts'); b.hidden=!n; b.textContent=L(`역산 초안 모두 지우기 (${n})`,`Delete all drafts (${n})`); }
   const have=new Set(); S.recipes.forEach(r=>{ try{ tagsOf(r).forEach(t=>have.add(t)); }catch(e){} });
@@ -1983,6 +1998,7 @@ document.addEventListener('keydown', e=>{ if(!S.open || S.simFull || e.target.cl
   e.preventDefault(); goNode(r.nodes[i].id); });
 $('#q').addEventListener('input', e=>{ S.q=e.target.value; renderBoard(); });
 $('#fcat').addEventListener('change', e=>{ S.cat=e.target.value; S.sub=''; renderBar(); renderBoard(); });
+$('#stats').addEventListener('change', e=>{ const s=e.target.closest('[data-stat]'); if(!s) return; S.stats[+s.dataset.stat]=s.value; s.classList.toggle('on', !!s.value); renderBoard(); });
 $('#fsub').addEventListener('change', e=>{ S.sub=e.target.value; renderBoard(); });
 $('#sort').addEventListener('click', e=>{ const b=e.target.closest('[data-sort]'); if(!b) return; const k=b.dataset.sort;
   if(S.sort===k) S.sortDir=-S.sortDir; else { S.sort=k; S.sortDir = k==='price' ? 1 : -1; } renderBar(); renderBoard(); });
