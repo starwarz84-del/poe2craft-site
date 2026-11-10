@@ -1410,14 +1410,17 @@ function fcWant(g, n, params){ const out=[]; const ov=(n.showIf||[]).find(o=>Obj
   if(n.target) out.push(`<b class="sd">${L('목표','Goal')}</b> : ${esc(tx(n.target))}`);
   (n.showText||[]).forEach(t=>out.push(t.s ? `<b class="sd">${t.s==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${esc(tx(t))}` : esc(tx(t))));
   return out; }
-function fcSize(n, M, g, params){ let W = n.pos[0]===0 ? FX.W : FX.WB;
-  if(n.curRows) W=Math.max(W, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcText(tx(rw)+' → ', 12.5)+6+ids.length*18+fcText(ids.map(id=>nm(cur(id))).join(' + '), 12.5)+fcText('확률 25% · 평균 4.0개', 12.5)+24+28; })); if((n.kind==='act'||n.kind==='cleanup') && !n.curRows){ const c=nodeCur(n); W=Math.max(W, Math.min(FX.W, 16+((n.cur?1:0)+(n.omens||[]).length)*18+fcText(c.title,12.5)+fcText('확률 25% · 평균 4.0개',12.5))); } if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
+function fcSize(n, M, g, params, cap){ let W = n.pos[0]===0 ? FX.W : FX.WB;
+  if(n.curRows) W=Math.max(W, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcText(tx(rw)+' → ', 12.5)+6+ids.length*18+fcText(ids.map(id=>nm(cur(id))).join(' + '), 12.5)+fcText('확률 25% · 평균 4.0개', 12.5)+24+28; })); if((n.kind==='act'||n.kind==='cleanup') && !n.curRows){ const c=nodeCur(n); W=Math.max(W, Math.min(n.pos[0]===0 ? FX.W : 1100, (n.pos[0]===0?16:60)+((n.cur?1:0)+(n.omens||[]).length+(n.trim?2:0))*18+fcText(c.title,12.5)*(n.pos[0]===0?1:1.1)+fcText('확률 25% · 평균 4.0개',12.5)), n.pos[0]===0 ? 0 : Math.min(1100, fcText(tx(n.goal||n.label||''),14)+76)); }
+  // 사용자 확정 2026-11-10: a right-hand box (A, B …) with nothing further right on its row grows to fit its text; with an a-box beside it, it keeps the column width (ellipsis)
+  if(cap) W=Math.min(W, FX.WB); if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
   if(n.kind==='assume') return [222, 84];
   if(n.kind==='exit') return [FX.WB, 78];
   const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
   return [W, 40 + (want.length?Math.max(1,lines)*20+6:0) + 40 + (n.curRows?(n.curRows.length-1)*22:0) + (n.skipNote?18:0) - (n.kind==='side'?4:0)]; }
 function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[...new Set(g.nodes.map(n=>n.pos[0]).filter(Number.isInteger))].sort((a,b)=>a-b);
-  const size={}; g.nodes.forEach(n=>size[n.id]=fcSize(n, M, g, params));
+  const capped=n=>n.pos[0]!==0 && Number.isInteger(n.pos[0]) && g.nodes.some(o=>o!==n && o.pos[1]===n.pos[1] && o.pos[0]>n.pos[0]);
+  const size={}; g.nodes.forEach(n=>size[n.id]=fcSize(n, M, g, params, capped(n)));
   // columns keep their standard width; a wider box (e.g. one with per-row currencies) runs into the free space on its right
   const colW={}; colIds.forEach(c=>colW[c]=Math.max(...g.nodes.filter(n=>n.pos[0]===c).map(n=>Math.min(Math.max(size[n.id][0], M.dec[n.id]?FX.DW:0), c===0?FX.W:FX.WB))));
   const colX={}; let x=FX.PAD+(items && S.fcItems!==false?FX.LANE+FX.LANEGAP:0); const between=c=>g.nodes.filter(n=>!Number.isInteger(n.pos[0]) && n.pos[0]>c && n.pos[0]<c+1);
@@ -1517,7 +1520,7 @@ function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||'')
   const isDes=l=>l.m==='d' || l.m==='u' || /훼손|desecrat/i.test((l.kr||'')+' '+(l.en||''));
   const isCr=l=>l.m==='c' || /제작 옵션|에센스\)|합금\)|징표|crafted|Essence of [^)]*\)|Alloy\)|Abyssal Lord/i.test((l.kr||'')+' '+(l.en||'')) || (l.tags||[]).some(t=>g.tags?.[t]?.sec==='e');
   const cl=l=>isFr(l)?'f':isDes(l)?'d':isCr(l)?'c':(l.m||'n');
-  const row=(l,cls)=>{ const x=text(l); return `<li class="m-${cl(l)} ${cls}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
+  const row=(l,cls)=>{ const x=text(l), plain=x.t.replace(/<[^>]+>/g,'').replace(/&amp;/g,'&')+(x.tier?' '+x.tier:''); return `<li class="m-${cl(l)} ${cls}" title="${esc(plain)}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
   const gone=(prev||[]).filter(l=>!now.has(key(l)) && !lines.some(x=>x.s===l.s && x.kr===l.kr));
   const ord=s=>s==='p'?0:s==='s'?2:s==='r'?3:1;   // 사용자 확정 2026-11-10: 접두(P)가 위, 접미(S)가 아래
   return [...lines.map(l=>[l, had.has(key(l))?'':'new']), ...gone.map(l=>[l,'gone'])].map((x,i)=>[...x,i]).sort((a,b)=>ord(a[0].s)-ord(b[0].s)||a[2]-b[2]).map(([l,c])=>row(l,c)).join(''); }
@@ -1590,7 +1593,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=
     if(n.kind==='choice') return `<div class="fcn k-choice ${t?'':'off'}" style="${pos}"><svg viewBox="0 0 220 54" preserveAspectRatio="none"><polygon points="16,1 204,1 219,27 204,53 16,53 1,27"/></svg><span><small>${L('분기','Branch')}</small><b>${esc(tx(n.label))}</b></span></div>`;
     if(n.kind==='mark') return `<div class="fcn k-start k-mark" style="${pos}"><b>${esc(tx(n.label))}</b><ul class="fcmk">${fcItem(g, n.item||[], n.item||[], s.params)}</ul></div>`;
     if(n.kind==='exit') return `<div class="fcn k-exit v-${n.variant||'fail'} ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b>${n.note?`<span>${esc(tx(n.note))}</span>`:''}</div>`;
-    if(n.kind==='side'){ const c=nodeCur(n); return `<div class="fcn k-task k-side" style="${pos}"><div class="fch"><b>${esc(tx(n.goal||n.label))}</b></div><div class="fcf"><div class="fc1"><span class="cn">${c.html}</span></div></div></div>`; }
+    if(n.kind==='side'){ const c=nodeCur(n); return `<div class="fcn k-task k-side" style="${pos}"><div class="fch"><b>${esc(tx(n.goal||n.label))}</b></div><div class="fcf"><div class="fc1"><span class="cn" title="${esc(c.title)}">${c.html}</span></div></div></div>`; }
     if(n.kind==='assume') return `<div class="fcn k-note ${t?'':'off'}" style="${pos}"><small>${L('별첨','Note')}</small><b>${esc(tx(n.label))}</b>${n.note?`<span>${esc(tx(n.note))}</span>`:''}</div>`;
     const c=nodeCur(n), tries=t ? (n.kind==='cleanup' ? t.visits : t.visits-(t.skips||0)) : 0;
     const outs=M.E.filter(e=>e.a===n.id && !e.skip), okE=[...new Set((n.edges||[]).filter(x=>x.res==='ok' && (n.pAll || !x.dash)).map(x=>x.to))].map(to=>({a:n.id, b:to})), hasRes=outs.some(e=>e.res);
@@ -1602,11 +1605,11 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=
       tip+=`\n↺ ${tx(LH)}${into?` · ${L('평균','avg')} ${fmt(t.visits/into)}${L('바퀴',' rounds')}`:''} · ${L('구간 총','loop total')} ≈ ${fmtDiv(dv)} div`; }
     const want=fcWant(g, n, s.params), per = !t ? 0 : n.kind==='cleanup' ? (t.use?.Orb_of_Annulment||0)/Math.max(1e-9,t.visits) : n.once ? 1 : pS>0 ? 1/pS : 0;   // per success of this step (once: used one time whatever happens — the miss goes elsewhere)
     return `<div class="fcn k-task ${n.kind==='cleanup'?'k-clean':''} ${t?'':'off'}" style="${pos}" title="${esc(tip)}">
-      <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b>${esc(tx(n.goal||n.label))}</b></div>
+      <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b title="${esc(tx(n.goal||n.label))}">${esc(tx(n.goal||n.label))}</b></div>
       ${want.length?`<div class="fcw">${want.map(h=>`<p>${h}</p>`).join('')}</div>`:''}
       ${n.skipNote?`<div class="fcsk">↷ ${esc(tx(n.skipNote))}</div>`:''}
       <div class="fcf">${n.curRows && t?.byCur ? n.curRows.map(rw=>{ const b=t.byCur[rw.key||rw.cur], p2=b&&b.t?b.ok/b.t:null, ids=rw.ids || [rw.cur, ...(n.omens||[])];
-          return `<div class="fc1" title="${esc(ids.map(id=>nm(cur(id))).join(' + '))}"><span class="cn"><i class="rw">${esc(tx(rw))} →</i>${ids.map(id=>icon(id)).join('')}${esc(ids.map(id=>nm(cur(id))).join(' + '))}</span><span class="pr">${p2!=null?`${L('확률','Chance')} <b>${pct1(p2)}</b><span class="dot">·</span>${L('평균','avg')} <b>${fmt(1/p2)}</b>${L('개','')}`:L('해당 없음','n/a')}</span></div>`; }).join('') : `<div class="fc1"><span class="cn">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(per)}</b>${L('개','')}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div>`}</div></div>`; }).join('');
+          return `<div class="fc1" title="${esc(ids.map(id=>nm(cur(id))).join(' + '))}"><span class="cn"><i class="rw">${esc(tx(rw))} →</i>${ids.map(id=>icon(id)).join('')}${esc(ids.map(id=>nm(cur(id))).join(' + '))}</span><span class="pr">${p2!=null?`${L('확률','Chance')} <b>${pct1(p2)}</b><span class="dot">·</span>${L('평균','avg')} <b>${fmt(1/p2)}</b>${L('개','')}`:L('해당 없음','n/a')}</span></div>`; }).join('') : `<div class="fc1"><span class="cn" title="${esc(c.title)}">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(per)}</b>${L('개','')}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div>`}</div></div>`; }).join('');
   const diamonds=Object.values(Lay.dia).map(D=>{ const n=M.byId[D.id.slice(0,-1)]; return `<div class="fcn k-dec ${st(n.id)?'':'off'}" style="left:${D.x}px;top:${D.y}px;width:${D.w}px;height:${D.h}px"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,2 98,50 50,98 2,50"/></svg><span>${esc(tx(n.ask)||L('결과','Result'))}</span></div>`; }).join('');
   // top bar: versions, then detailed toggles
   const vers=(g.versions||[]).map(v=>{ const on=Object.entries(v.params).every(([k2,x])=>String(sel[k2]??s.params[k2])===String(x)) && keys.every(k2=>v.params[k2]!=null);
