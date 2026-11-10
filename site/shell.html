@@ -22,7 +22,7 @@
   --bg:#0e1115; --text:#a38d6d; --hi:#e9cf9f; --white:#e2e2e2; --edge:#2c2317; --tab:rgba(10,10,10,.9); --tab-on:#5a3806;
   --f-title:"Fontin SmallCaps",Verdana,Arial,"SUIT Variable","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;
   --f-body:Verdana,Arial,Helvetica,"SUIT Variable","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;
-  --lw:300px; --banner:224px; --tabs:32px;
+  --lw:300px; --banner:244px; --tabs:32px;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -39,7 +39,7 @@ a{color:var(--hi)}
 .wrapper{max-width:1520px;height:100%;margin:0 auto;display:flex;flex-direction:column;padding:0 5px}
 
 /* banner — spacing follows poe2filter.com: logo with room above/below, tab bar right under it */
-.logo{position:relative;flex:none;height:var(--banner);display:flex;align-items:flex-end;justify-content:center;padding-bottom:28px;
+.logo{position:relative;flex:none;height:var(--banner);display:flex;align-items:flex-end;justify-content:center;padding-bottom:46px;
   transition:height .25s ease, padding .25s ease, opacity .2s ease}
 .brand{position:relative;display:block;width:var(--lw);aspect-ratio:1146/618;flex:none}
 .brand img{display:block;position:absolute;pointer-events:none;transition:opacity .35s ease}
@@ -52,6 +52,21 @@ a{color:var(--hi)}
 .brand .ext{width:calc(var(--lw)*1.2208);height:auto;left:calc(var(--lw)*-.1056);top:calc(var(--lw)*-.0820);opacity:0}
 body.extreme .brand .ext{opacity:1} body.extreme .brand .main{opacity:0}
 body.compact{--banner:0px} body.compact .logo{padding-bottom:0;opacity:0;pointer-events:none}
+/* test 2026-11-11: drifting fog under the logo + rising embers (canvas). Off for reduced motion. */
+.fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.fx canvas{position:absolute;inset:0;width:100%;height:100%}
+.brand{z-index:1}
+.fog{position:absolute;left:-10%;right:-10%;bottom:14px;height:84px;pointer-events:none;z-index:2;opacity:.9;
+  background:
+    radial-gradient(ellipse 22% 60% at 30% 60%, rgba(170,155,140,.36), transparent 70%),
+    radial-gradient(ellipse 26% 55% at 62% 70%, rgba(160,145,130,.32), transparent 70%),
+    radial-gradient(ellipse 18% 50% at 82% 55%, rgba(170,155,140,.26), transparent 70%),
+    radial-gradient(ellipse 20% 50% at 12% 65%, rgba(170,155,140,.26), transparent 70%);
+  filter:blur(6px);animation:fog 26s ease-in-out infinite alternate}
+.fog.b{animation-duration:34s;animation-direction:alternate-reverse;opacity:.6;bottom:30px;height:60px}
+@keyframes fog{from{transform:translateX(-4%)}to{transform:translateX(4%)}}
+body.compact .fx,body.compact .fog{display:none}
+@media (prefers-reduced-motion:reduce){.fog{animation:none}.fx{display:none}}
 .corner{position:absolute;top:12px;font-size:12.5px;display:flex;gap:6px;align-items:center}
 .corner.l{left:4px}.corner.r{right:4px}
 .lang button{background:none;border:0;padding:2px 3px;font:inherit;color:var(--text);cursor:pointer}
@@ -79,14 +94,16 @@ main iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background
 .toast{position:fixed;right:16px;bottom:16px;z-index:20;max-width:min(360px,calc(100vw - 32px));background:#15110b;border:1px solid #3a2d1b;border-left:3px solid #c8a85a;padding:10px 14px;color:var(--white);font:inherit;text-align:left;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.6)}
 .toast small{display:block;color:var(--text);font-size:12px;margin-bottom:2px}
 
-@media (max-height:820px){ :root{--lw:220px; --banner:170px} .logo{padding-bottom:20px} }
-@media (max-height:620px){ :root{--lw:150px; --banner:110px} .logo{padding-bottom:14px} }
-@media (max-width:860px){ :root{--lw:200px; --banner:162px} .tabs a{padding:0 9px} .tabs a.lbl span{display:none} .corner.l{display:none} .wrapper{padding:0} }
+@media (max-height:820px){ :root{--lw:220px; --banner:184px} .logo{padding-bottom:32px} }
+@media (max-height:620px){ :root{--lw:150px; --banner:118px} .logo{padding-bottom:20px} }
+@media (max-width:860px){ :root{--lw:200px; --banner:176px} .tabs a{padding:0 9px} .tabs a.lbl span{display:none} .corner.l{display:none} .wrapper{padding:0} }
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div class="logo">
+    <div class="fx" aria-hidden="true"><canvas id="embers"></canvas></div>
+    <div class="fog" aria-hidden="true"></div><div class="fog b" aria-hidden="true"></div>
     <div class="corner l"><span class="ver" data-kr="POE2 크래프팅 시뮬레이터 · 레시피" data-en="PoE 2 crafting simulator · recipes">PoE 2 crafting simulator · recipes</span></div>
     <a class="brand" href="#emulator" aria-label="PoE 2 Craft">
       <img class="main" src="img/logo.webp" alt="PoE 2 Craft" width="640" height="345">
@@ -266,6 +283,31 @@ main iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background
   document.getElementById('l-kr').addEventListener('click', ()=>setLang('kr'));
   window.addEventListener('hashchange', show);
   setLang(lang); show();
+
+  // ---------- banner embers (test) ----------
+  (()=>{
+    const cv=document.getElementById('embers'); if(!cv || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const cx=cv.getContext('2d'); let W=0,H=0,dpr=1; const P=[];
+    function size(){ dpr=Math.min(2,devicePixelRatio||1); W=cv.clientWidth; H=cv.clientHeight; cv.width=W*dpr; cv.height=H*dpr; cx.setTransform(dpr,0,0,dpr,0,0); }
+    function spawn(p, fresh){ p.x=W/2+(Math.random()-.5)*Math.min(W,520); p.y=fresh?Math.random()*H:H+4; p.r=.5+Math.random()*1.1;
+      p.vy=-(10+Math.random()*22); p.vx=(Math.random()-.5)*8; p.life=0; p.max=3+Math.random()*4; p.ph=Math.random()*6.3; return p; }
+    size(); addEventListener('resize', size);
+    for(let i=0;i<34;i++) P.push(spawn({}, true));
+    let last=performance.now();
+    function tick(t){ const dt=Math.min(.05,(t-last)/1000); last=t;
+      if(!document.body.classList.contains('compact') && !document.hidden){
+        cx.clearRect(0,0,W,H); cx.globalCompositeOperation='lighter';
+        for(const p of P){ p.life+=dt; p.x+=(p.vx+Math.sin(p.ph+p.life*2)*6)*dt; p.y+=p.vy*dt;
+          if(p.life>p.max || p.y<-6) spawn(p,false);
+          const k=p.life/p.max, a=(k<.15?k/.15:1-(k-.15)/.85)*.85;
+          const g=cx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*3);
+          g.addColorStop(0,`rgba(255,235,190,${a})`); g.addColorStop(.25,`rgba(255,150,60,${a*.8})`); g.addColorStop(1,'rgba(255,80,20,0)');
+          cx.fillStyle=g; cx.beginPath(); cx.arc(p.x,p.y,p.r*3,0,6.283); cx.fill();
+          cx.fillStyle=`rgba(255,240,210,${a})`; cx.beginPath(); cx.arc(p.x,p.y,p.r*.6,0,6.283); cx.fill(); }
+        cx.globalCompositeOperation='source-over'; }
+      requestAnimationFrame(tick); }
+    requestAnimationFrame(tick);
+  })();
 })();
 </script>
 </body>
