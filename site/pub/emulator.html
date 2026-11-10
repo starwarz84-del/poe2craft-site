@@ -1431,6 +1431,8 @@ function renderOptPicker(){
       return `<div class="orow ${g.g} ${why?'off':''}"><span class="bar"></span><div><div class="txt">${esc(txt)}${mtags(g)}</div><span class="sec ${g.s}">${esc(KR()?g.sub[0]:g.sub[1])}</span>${why?` <span class="why">· ${esc(why)}</span>`:''}</div>
         <select data-tsel="${gi}" aria-label="${L('티어','Tier')}">${tiers.map(({t,ti})=>`<option value="${ti}" ${ti==sel?'selected':''}>${g.s==='n'?'T'+(ti+1):'#'+(ti+1)} · ${L('레벨','lv')} ${t[0]}</option>`).join('')}</select>
         <button type="button" class="btn" data-add="${gi}" ${why?'disabled':''} style="padding:3px 10px;font-size:12px">${L('붙이기','Add')}</button></div>`; }).join('') + '</div>'; }).join('');
+  // typing in the search box: only the list changes, so the box (and Korean IME composition) stays untouched (사용자 2026-11-11)
+  if(S.optListOnly && document.querySelector('#shelves .olist') && document.getElementById('oq')){ S.optListOnly=false; document.querySelector('#shelves .olist').innerHTML = list || `<div class="empty">${L('조건에 맞는 옵션이 없어요','No modifiers')}</div>`; return; }
   $('#shelves').innerHTML = `<div class="optp">
       <div class="row"><b style="color:var(--fg);font-weight:600">${L('현재 옵션','Current')}</b><span>${L('제거를 누르면 바로 빠져요','')}</span></div>
       <div class="cur-mods">${curMods || `<span class="empty">${L('붙은 옵션이 없어요','No modifiers')}</span>`}</div>
@@ -1476,7 +1478,7 @@ $('#shelves').addEventListener('click', e=>{
   S.hist.unshift({c:MANUAL, before, added:[modText(m)], removed:[], note:'', omens:[]}); S.last={added:new Set([m])}; render();
 });
 $('#shelves').addEventListener('change', e=>{ if(e.target.dataset.tsel){ S.opt.tier[e.target.dataset.tsel]=+e.target.value; } });
-$('#shelves').addEventListener('input', e=>{ if(e.target.id==='oq'){ S.opt.q=e.target.value; const pos=e.target.selectionStart; renderShelves(); const q=$('#oq'); q.focus(); q.setSelectionRange(pos,pos); } });
+$('#shelves').addEventListener('input', e=>{ if(e.target.id==='oq'){ S.opt.q=e.target.value; S.optListOnly=true; renderShelves(); } });
 $('#reveal').addEventListener('click', e=>{
   if(e.target.id==='do-reveal') return startReveal();
   if(e.target.id==='echo'){ const i=S.reveal.i; const saved=S.item.mods.splice(i,1)[0]; S.reveal={opts:revealOptions(saved), echoes:false, i}; S.item.mods.splice(i,0,saved); renderReveal(); return; }

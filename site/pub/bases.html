@@ -109,9 +109,10 @@ function render(){
       </tbody></table></section>`;
   }
   if(!/<section/.test(h)) h+=`<p class="empty">${L('검색 결과가 없어요.','No matches.')}</p>`;
-  const app=document.getElementById('app'), hadFocus=document.activeElement && document.activeElement.id==='q', pos=hadFocus?document.activeElement.selectionStart:null;
-  app.innerHTML=h;
-  if(hadFocus){ const q=document.getElementById('q'); q.focus(); try{ q.setSelectionRange(pos,pos); }catch(_){} }
+  // keep the search box itself (Korean IME composition breaks if it is rebuilt while typing)
+  const app=document.getElementById('app'), q0=document.getElementById('q');
+  if(q0 && app.contains(q0)){ const i=h.indexOf('</div>')+6; let body=app.querySelector('#body'); if(!body){ app.innerHTML=h.slice(0,i)+'<div id="body"></div>'; body=app.querySelector('#body'); app.querySelector('#q').replaceWith(q0); } body.innerHTML=h.slice(i); }
+  else app.innerHTML=h.slice(0,h.indexOf('</div>')+6)+'<div id="body">'+h.slice(h.indexOf('</div>')+6)+'</div>';
 }
 document.addEventListener('input', e=>{ if(e.target.id==='q'){ S.q=e.target.value.trim().toLowerCase(); render(); } });
 document.addEventListener('click', e=>{
