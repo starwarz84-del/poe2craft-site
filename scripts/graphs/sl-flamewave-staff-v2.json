@@ -1,0 +1,1353 @@
+{
+ "id": "sl-flamewave-staff-v2",
+ "recipe": "sl-flamewave-staff-v2",
+ "cls": "Staves",
+ "base": "Chiming Staff",
+ "ilvl": 81,
+ "note": "SL 화염파 지팡이(6EzSVUItzsg) — 화염 주문 +7 분열 + 잡옵 → 카오스 오브(피해 % 증가 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) → 좌측 강령술 + 고대 턱뼈 → 공개(빛의 징조로 다시). 하이엔드 = 스루드의 완력 → 상위 찬미 + 완벽한 엑잘 → 절사 + 완벽한 카오스 오브(화염 규모, 가중치 비공개: 영상 경험 절사 20~30번으로 맞춤) → 초월의 합금. 밸런스 = 영상의 가성비 마무리(엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로).",
+ "params": {
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "v": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "v": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "v": 2
+   },
+   "desc": {
+    "kr": "영상의 가성비 마무리: 엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로",
+    "en": "Video budget finish: two exalted suffixes + Transcendent Alloy, reveal kept"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "v": 1
+   },
+   "desc": {
+    "kr": "영상: 스루드의 완력으로 화염 규모, 공개는 빛의 징조로 다시",
+    "en": "Video: Thrud’s Might fire magnitudes, Light retries the reveal"
+   }
+  }
+ ],
+ "tags": {
+  "fire7": {
+   "gi": 12
+  },
+  "pd": {
+   "anyOf": [
+    {
+     "gi": 3,
+     "tmax": 1
+    },
+    {
+     "gi": 5,
+     "tmax": 1
+    },
+    {
+     "gi": 6,
+     "tmax": 1
+    },
+    {
+     "gi": 7,
+     "tmax": 1
+    },
+    {
+     "gi": 8,
+     "tmax": 1
+    }
+   ],
+   "label": {
+    "kr": "피해 % 증가 1티어",
+    "en": "T1 % increased damage"
+   }
+  },
+  "px": {
+   "anyOf": [
+    {
+     "gi": 32,
+     "tmax": 1
+    },
+    {
+     "gi": 33,
+     "tmax": 1
+    },
+    {
+     "gi": 34,
+     "tmax": 1
+    }
+   ],
+   "label": {
+    "kr": "피해의 %를 추가 피해로 1티어",
+    "en": "T1 damage as extra"
+   }
+  },
+  "pre": {
+   "anyOf": [
+    "pd",
+    "px"
+   ],
+   "label": {
+    "kr": "피해 접두 1티어",
+    "en": "T1 damage prefix"
+   }
+  },
+  "fm": {
+   "gi": 68
+  },
+  "alloy": {
+   "gi": 65
+  },
+  "keep": {
+   "anyOf": [
+    "fm",
+    "alloy"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "pd"
+   },
+   {
+    "has": "alloy"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "p3",
+    "p4",
+    "p4x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "pd",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "피해 접두 1티어",
+      "en": "T1 damage prefix"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "피해 접두 1티어",
+      "en": "T1 damage prefix"
+     }
+    },
+    {
+     "tag": "fire7",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "tag": "fm"
+    },
+    {
+     "tag": "alloy"
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "pd",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "피해 접두 1티어",
+      "en": "T1 damage prefix"
+     }
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "fire7",
+     "tmax": 1,
+     "fr": true
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "tag": "alloy"
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 3
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "fire7",
+      "fr": true
+     },
+     {
+      "junk": "p"
+     }
+    ]
+   },
+   "label": {
+    "kr": "모든 화염 주문 +7 분열 + 잡옵 1개",
+    "en": "Fractured +7 fire spell skills + one junk line"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "p1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "피해 % 증가 1티어 (원소 무관)",
+    "en": "T1 % increased damage (any element)"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pd"
+     },
+     "to": "p2",
+     "res": "ok"
+    },
+    {
+     "to": "p1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "pd"
+   ]
+  },
+  {
+   "id": "p2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "p3",
+     "res": "ok"
+    },
+    {
+     "to": "p2x",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "pd",
+    "px"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "p2x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    2
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 지우기",
+    "en": "Remove the missed prefix"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "p2",
+     "res": "ok",
+     "port": "right"
+    },
+    {
+     "to": "p1",
+     "res": "fail"
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "p4"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ]
+  },
+  {
+   "id": "p4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "added": "pre"
+       },
+       {
+        "param": {
+         "v": 1
+        }
+       }
+      ]
+     },
+     "to": "r2",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "p4x",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "added": "pre"
+     },
+     "to": "b1",
+     "res": "ok"
+    },
+    {
+     "to": "b1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    }
+   ],
+   "want": "pre",
+   "show": [
+    "pd",
+    "px"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "p4x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "p3",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "r2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "스루드의 완력 장착",
+    "en": "Socket Thrud’s Might"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "s1"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    }
+   ],
+   "showText": [
+    {
+     "kr": "파괴 속성 부여 가능",
+     "en": "Can roll Destruction modifiers"
+    }
+   ]
+  },
+  {
+   "id": "s1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 잡옵 2개",
+    "en": "Two junk suffixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "fm"
+     },
+     "to": "s3",
+     "res": "ok"
+    },
+    {
+     "to": "s2"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ]
+  },
+  {
+   "id": "s2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 : 비고정 화염 속성 부여 규모",
+    "en": "Suffix: explicit fire magnitudes"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "fm"
+     },
+     "to": "s3",
+     "res": "ok"
+    },
+    {
+     "to": "s2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "비고정 화염 속성 부여 규모 (스루드의 완력)",
+     "en": "Explicit fire magnitudes (Thrud’s Might)",
+     "m": "n",
+     "tags": [
+      "fm"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "fm"
+   ],
+   "trim": {
+    "side": "s",
+    "keep": "keep"
+   }
+  },
+  {
+   "id": "s3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접미 : 시전 속도 + 추가 냉기 (접미 하나가 지워짐)",
+    "en": "Suffix: cast speed + extra cold (a suffix goes)"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fm"
+       },
+       {
+        "has": "alloy"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "s3m",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "비고정 화염 속성 부여 규모 (스루드의 완력)",
+     "en": "Explicit fire magnitudes (Thrud’s Might)",
+     "m": "n",
+     "tags": [
+      "fm"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 + 추가 냉기 (초월의 합금)",
+     "en": "Cast speed + extra cold (Transcendent Alloy)",
+     "m": "n",
+     "tags": [
+      "alloy"
+     ]
+    }
+   ],
+   "cur": "Transcendent_Alloy",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)"
+    }
+   ],
+   "ess": "alloy"
+  },
+  {
+   "id": "s3m",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 : 비고정 화염 속성 부여 규모",
+    "en": "Suffix: explicit fire magnitudes"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "fm"
+       },
+       {
+        "has": "alloy"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "fm"
+     },
+     "to": "s3",
+     "res": "ok",
+     "port": "right"
+    },
+    {
+     "to": "s3m",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "비고정 화염 속성 부여 규모 (스루드의 완력)",
+     "en": "Explicit fire magnitudes (Thrud’s Might)",
+     "m": "n",
+     "tags": [
+      "fm"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 + 추가 냉기 (초월의 합금)",
+     "en": "Cast speed + extra cold (Transcendent Alloy)",
+     "m": "n",
+     "tags": [
+      "alloy"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "fm"
+   ],
+   "trim": {
+    "side": "s",
+    "keep": "keep"
+   }
+  },
+  {
+   "id": "b1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    5
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 잡옵 2개",
+    "en": "Two junk suffixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "b2"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ]
+  },
+  {
+   "id": "b2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    6
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접미 : 시전 속도 + 추가 냉기 (접미 하나가 지워짐)",
+    "en": "Suffix: cast speed + extra cold (a suffix goes)"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 화염 주문 스킬 레벨 +7 (분열)",
+     "en": "+7 fire spell skills (fractured)",
+     "m": "n",
+     "tags": [
+      "fire7"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 % 증가 1티어",
+     "en": "T1 % increased damage",
+     "m": "n",
+     "tags": [
+      "pd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해 접두 1티어",
+     "en": "T1 damage prefix",
+     "m": "n",
+     "tags": [
+      "pre"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 + 추가 냉기 (초월의 합금)",
+     "en": "Cast speed + extra cold (Transcendent Alloy)",
+     "m": "n",
+     "tags": [
+      "alloy"
+     ]
+    }
+   ],
+   "cur": "Transcendent_Alloy",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "초월의 합금 (제작 옵션)",
+     "en": "Transcendent Alloy (crafted)"
+    }
+   ],
+   "ess": "alloy"
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "xsub": [
+  "Thrud's Might"
+ ],
+ "xroll": true
+}

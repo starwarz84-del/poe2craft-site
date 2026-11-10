@@ -61,6 +61,7 @@ function make(graph, D, craft, params){
       if(c.added) return last.added.some(m=>match(m,P(c.added)));
       if(c.removed) return last.removed.some(m=>match(m,c.removed));
       if(c.unrev!=null) return it.mods.some(m=>m.unrev)===!!c.unrev;
+      if(c.des!=null) return it.mods.some(m=>m.des)===!!c.des;   // a revealed desecrated line is on the item (MazBro 캐스터 목걸이: the blocker)
       if(c.fractured) return !!last.fr && match(last.fr, c.fractured);
       if(c.full) return count(c.full)>=maxA(c.full);
       if(c.sideLt) return count(c.sideLt.side) < c.sideLt.n;
@@ -74,8 +75,9 @@ function make(graph, D, craft, params){
     // Whittling / Erasure choice (policy 23 ④): the junk line is the lowest → Whittling; lowest of its side only → Whittling + that side's Erasure;
     // a wanted line of that side is lower → Erasure alone (1/2)
     function trimOmens(n){ const sd=n.trim.side, keep=n.trim.keep;
-      const junk=it.mods.filter(m=>m.side===sd && !m.fr && !m.unrev && !match(m,keep)); if(junk.length!==1) return [sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure'];
-      const lj=lvl(junk[0]), others=it.mods.filter(m=>!m.fr && !m.unrev && m!==junk[0]), same=others.filter(m=>m.side===sd);
+      const junk=it.mods.filter(m=>m.side===sd && !m.fr && !m.unrev && !match(m,keep)); if(!junk.length) return [sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure'];
+      // several junk lines (SL 화염파 지팡이: two junk suffixes): the lowest junk line decides — Whittling hits a junk line whenever every other line is higher
+      const lj=Math.min(...junk.map(lvl)), others=it.mods.filter(m=>!m.fr && !m.unrev && !junk.includes(m)), same=others.filter(m=>m.side===sd);
       const er = sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure';
       if(same.some(m=>lvl(m)<=lj)) return [er];
       if(others.every(m=>lvl(m)>lj)) return ['Omen_of_Whittling'];

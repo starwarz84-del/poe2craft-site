@@ -9,7 +9,8 @@ _OLD = {'diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helm
         'sl-5mod-jewel-v2':'sl-5mod-jewel','vodnarg-timelost-emerald-v2':'vodnarg-timelost-emerald','lilbotq-boots-v2':'lilbotq-boots','mazbro-caster-ring-v2':'mazbro-caster-ring',
         'diztoh-as-spear-v2':'diztoh-as-spear','diztoh-socket-gloves-v2':'diztoh-socket-gloves','seek-cyclone-boots-v2':'seek-cyclone-boots',
         'mastert-timelost-emerald-v2':'mastert-timelost-emerald','chiba-timelost-emerald-v2':'chiba-timelost-emerald',
-        'noble-timelost-sapphire-v2':'noble-timelost-sapphire','mazbro-proj-gloves-v2':'mazbro-proj-gloves'}
+        'noble-timelost-sapphire-v2':'noble-timelost-sapphire','mazbro-proj-gloves-v2':'mazbro-proj-gloves',
+        'sl-flamewave-staff-v2':'sl-flamewave-staff','mazbro-caster-amulet-v2':'mazbro-caster-amulet'}
 # grade recipes copied straight from the original recipe (recipes_v5_zz-batch5-v2.py) also take its short notes and branch lines
 _COPIED = {'ragna-ashot-bow-v2','sane-resist-belt-v2','diztoh-budget-mace-v2','lilbotq-budget-boots-v2','icesly-budget-wand-v2',
            'diztoh-es-helmet-v2','belton-plus8-wand-v2','lilbotq-armour-shield-v2','diztoh-vile-robe-v2','diztoh-talisman-v2',
@@ -18,7 +19,8 @@ _COPIED = {'ragna-ashot-bow-v2','sane-resist-belt-v2','diztoh-budget-mace-v2','l
            'lilbotq-emerald-v2','zenm-timelost-sapphire-v2','diztoh-5mod-emerald-v2','diztoh-5mod-sapphire-v2',
            'sl-5mod-jewel-v2','vodnarg-timelost-emerald-v2','lilbotq-boots-v2','mazbro-caster-ring-v2',
            'diztoh-as-spear-v2','diztoh-socket-gloves-v2','seek-cyclone-boots-v2',
-           'mastert-timelost-emerald-v2','chiba-timelost-emerald-v2','noble-timelost-sapphire-v2','mazbro-proj-gloves-v2'}
+           'mastert-timelost-emerald-v2','chiba-timelost-emerald-v2','noble-timelost-sapphire-v2','mazbro-proj-gloves-v2',
+           'sl-flamewave-staff-v2','mazbro-caster-amulet-v2'}
 # Step notes are short (사용자 확정 2026-11-09): a step shows only its target and currency (head + target line on screen);
 # a note is kept only for the start, the finish, and forks/choices, and then says just the branch. None = no note.
 # Steps that already show a currency and a target hide their note in recipes.html, so only these steps need text.
@@ -134,7 +136,7 @@ for _r in R:
         if _k in BRANCH: _n['br'] = K(*BRANCH[_k])
 
 # Tip numbers under a step (hover shows the tip): step → tip ids from tips.json (사용자 요청 2026-11-09)
-TIPREF = {('mastert-timelost-emerald','t4'):['contempt-fill-prefixes'],('chiba-timelost-emerald','c4'):['contempt-fill-prefixes'],('tankjung-kitava-shield','t7'):['whittle-safe-top-level'],('xeno-phys-crossbow','x4'):['block-prefix-with-desecration'], ('xeno-phys-crossbow','x7'):['block-prefix-with-desecration'], ('xeno-phys-crossbow','x8'):['block-prefix-with-desecration'],('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-iceshot-bow','w10'):['desecrate-reroll-no-light'],
+TIPREF = {('mazbro-caster-amulet','a14'):['reveal-high-to-steer-whittle'],('mastert-timelost-emerald','t4'):['contempt-fill-prefixes'],('chiba-timelost-emerald','c4'):['contempt-fill-prefixes'],('tankjung-kitava-shield','t7'):['whittle-safe-top-level'],('xeno-phys-crossbow','x4'):['block-prefix-with-desecration'], ('xeno-phys-crossbow','x7'):['block-prefix-with-desecration'], ('xeno-phys-crossbow','x8'):['block-prefix-with-desecration'],('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-iceshot-bow','w10'):['desecrate-reroll-no-light'],
  ('sl-flamewave-ring','s2'):['erasure-chaos-cheaper','min-level-lock-tier'], ('mazbro-sceptre','z13'):['reveal-miss-exalt-first'], ('diztoh-socket-gloves','d11'):['reveal-miss-exalt-first'],
  ('absent-amulet-video','a18'):['reveal-miss-exalt-first'], ('ragna-ashot-bow','w5'):['min-level-lock-tier'], ('breach-ring-phys','b6'):['single-res-catalyst'], ('mazbro-sceptre','z11'):['augment-effect-alloy'], ('mazbro-spell5-amulet','z17'):['sanctify-checklist'],
  ('helmet-armour-sl','s1'):['liquid-resist-swap'], ('sl-flamewave-ring','s1'):['liquid-resist-swap'], ('mazbro-caster-amulet','a4'):['chaos-side-swap','sell-offtarget'], ('gold-amulet-6line','k1'):['sell-offtarget'],
