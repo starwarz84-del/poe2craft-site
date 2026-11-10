@@ -156,16 +156,18 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
     if(!SRC[v]) v = 'recipes';
     links.forEach(a=>{ if(a.dataset.view===v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
     if(!frames[v]){ const f=document.createElement('iframe'); f.src=`${SRC[v]}?lang=${lang}${rid?'#r-'+rid:''}`; f.title=v;
-      f.addEventListener('load', ()=>{ try{ f.contentWindow.postMessage({type:'poe2-lang', lang}, '*'); }catch(e){} watchScroll(f); }); frames[v]=f; document.getElementById('main').appendChild(f); }
+      f.addEventListener('load', ()=>{ try{ f.contentWindow.postMessage({type:'poe2-lang', lang}, '*'); }catch(e){} if(FOLD) watchScroll(f); }); frames[v]=f; document.getElementById('main').appendChild(f); }
     else if(rid){ try{ frames[v].contentWindow.postMessage({type:'poe2-open', id:rid}, '*'); }catch(e){} }
     else if(v==='recipes' && ph.startsWith('r-')){ try{ frames[v].contentWindow.postMessage({type:'poe2-open', id:''}, '*'); }catch(e){} }   // browser back from a recipe
     Object.entries(frames).forEach(([k,f])=>f.hidden = k!==v);
     if(v==='recipes') markSeen(); else badge();
     document.body.classList.toggle('extreme', v==='recipes' && extreme);
-    setCompact(frames[v]._top > 40);
+    setCompact(FOLD && frames[v]._top > 40);
   }
 
   // ---------- banner: fire logo on extreme recipes, folds away while a tool page is scrolled ----------
+  // 배너·탭 바는 고정(사용자 2026-11-11: 스크롤하면 위쪽이 접히며 화면 전체가 튀어 올라 어지러움). 다시 접히게 하려면 true.
+  const FOLD = false;
   let extreme = false;
   function setCompact(on){ document.body.classList.toggle('compact', !!on); }
   function watchScroll(f){
@@ -187,7 +189,7 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
     doc.addEventListener('touchmove', ev=>{ const y=ev.touches[0]?.clientY; if(ty!=null && y-ty>30 && !f.hidden && upAtTop(ev.target)){ f._top=0; setCompact(false); ty=null; } }, {passive:true});
   }
   // wheel up on the shell itself (banner, tab bar, side margins) also unfolds
-  window.addEventListener('wheel', ev=>{ if(ev.deltaY<0) setCompact(false); }, {passive:true});
+  if(FOLD) window.addEventListener('wheel', ev=>{ if(ev.deltaY<0) setCompact(false); }, {passive:true});
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-full' && Object.values(frames).some(f=>f.contentWindow===e.source)) document.body.classList.toggle('toolfull', !!d.on); });
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-route' && frames.recipes && e.source===frames.recipes.contentWindow){
     extreme = !!d.extreme; document.body.classList.toggle('extreme', extreme && !frames.recipes.hidden); } });
