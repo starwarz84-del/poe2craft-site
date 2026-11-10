@@ -321,7 +321,7 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .dhead{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;background:var(--bg);border-bottom:1px solid var(--line);margin-bottom:14px;padding-top:6px}
 .dhead .dtop{margin-bottom:6px;align-items:center}
 .dhead .dtitle h1{font-size:19px}
-.dhead .prog{position:static;border:0;margin:0;padding:4px 0 10px}
+.dhead .prog{position:static;border:0;border-top:1px solid var(--line);margin:0;padding:9px 0}
 .rtabs{display:flex;gap:2px;margin:4px 0 2px;border-bottom:1px solid var(--line);overflow-x:auto}
 .rtab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font:inherit;font-size:13.5px;padding:7px 14px 8px;cursor:pointer;white-space:nowrap}
 .rtab small{margin-left:2px;font-size:12.5px}
@@ -1391,8 +1391,8 @@ function detailHTML(r){
       <button type="button" class="btn back" data-act="back" aria-label="${esc(L('목록으로','Back to list'))}" title="${esc(L('목록으로','Back to list'))}"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="dtitle"><div class="h1row"><h1><span class="tbase">${esc(itemName(r))}</span></h1><button type="button" class="btn sm lnk" data-act="link"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>${L('링크 복사','Copy link')}</button></div>
         <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan?`<button type="button" class="btn" data-share="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>`:''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${budgetTag(r)}${leagueBadge(r, old)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
-      <div class="dtabs">${tabsHTML(r) || (r.sim?`<div class="rtabs" role="tablist"><button type="button" role="tab" class="rtab ${S.simOpen?'':'on'}" data-act="sim" data-simoff="1" aria-selected="${!S.simOpen}">${L('레시피','Recipe')}</button><button type="button" role="tab" class="rtab ${S.simOpen?'on':''}" data-act="sim" aria-selected="${!!S.simOpen}">${L('플로우 차트','Flowchart')}</button></div>`:'')}</div></div></div>
-    <div class="prog"><button type="button" class="pend" data-go-node="${esc(a.nodes[0]?.n.id||'')}">${L('시작','Start')}</button><div class="segs">${segs}</div><button type="button" class="pend" data-go-node="${esc(a.nodes[a.nodes.length-1]?.n.id||'')}">${L('완성','Finish')}</button><span class="plabel" data-plabel hidden></span></div></div>
+      <div class="dtabs">${tabsHTML(r) || (r.sim?`<div class="rtabs" role="tablist"><button type="button" role="tab" class="rtab ${S.simOpen?'':'on'}" data-act="sim" data-simoff="1" aria-selected="${!S.simOpen}">${L('레시피','Recipe')}</button><button type="button" role="tab" class="rtab ${S.simOpen?'on':''}" data-act="sim" aria-selected="${!!S.simOpen}">${L('플로우 차트','Flowchart')}</button></div>`:'')}</div></div>
+    <div class="prog"><button type="button" class="pend" data-pend="start" data-go-node="${esc(a.nodes[0]?.n.id||'')}">${L('시작','Start')}</button><div class="segs">${segs}</div><button type="button" class="pend" data-pend="end" data-go-node="${esc(a.nodes[a.nodes.length-1]?.n.id||'')}">${L('완성','Finish')}</button><span class="plabel" data-plabel hidden></span></div></div>
     <div class="dgrid">
       <nav class="dnav" aria-label="${esc(L('단계','Steps'))}">${nav}
         <div class="navx"><button type="button" class="btn sm" data-act="reset-done">${L('완료 표시 지우기','Clear ticks')}</button></div></nav>
@@ -2000,6 +2000,13 @@ const keepY = fn => { const y=scrollY; fn(); scrollTo(0,y); };
 $('#detail').addEventListener('click', e=>{
   const r=S.recipes.find(x=>x.id===S.open); if(!r) return;
   if(e.target.closest('[data-dihead]') && matchMedia('(max-width:760px)').matches){ e.target.closest('.ditem').classList.toggle('min'); return; }
+  const pe=e.target.closest('[data-pend]');
+  if(pe && !document.querySelector('#detail .node')){   // flowchart tab: start = top of the chart, finish = the finished-item cards
+    e.preventDefault(); const dh=document.querySelector('#detail [data-dhead]')?.offsetHeight||0;
+    const t = pe.dataset.pend==='start' ? document.querySelector('#detail [data-simbox]') : (document.querySelector('#detail .fcfins') || document.querySelector('#detail [data-simbox]'));
+    const fc=document.querySelector('#detail .fc'); if(fc) fc.scrollTo({top: pe.dataset.pend==='start' ? 0 : fc.scrollHeight, behavior:'smooth'});
+    if(t){ const y = pe.dataset.pend==='start' ? t.getBoundingClientRect().top+scrollY-dh-12 : t.getBoundingClientRect().bottom+scrollY-innerHeight+24; scrollTo({top:Math.max(0,y), behavior:'smooth'}); }
+    return; }
   const g=e.target.closest('[data-go-node]'); if(g){ e.preventDefault(); goNode(g.dataset.goNode); return; }
   // clicking anywhere on a step (not on its controls, and not while selecting text) makes it the current step
   const nd=e.target.closest('.node'); if(nd && !e.target.closest('button,a,input,select,textarea,label,summary,[data-done]') && !String(getSelection?.()||'')){ goNode(nd.dataset.node); return; }
