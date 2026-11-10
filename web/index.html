@@ -23,7 +23,7 @@
   --bg:#0e1115; --text:#a38d6d; --hi:#e9cf9f; --white:#e2e2e2; --edge:#2c2317; --tab:rgba(10,10,10,.9); --tab-on:#5a3806;
   --f-title:"Fontin SmallCaps",Verdana,Arial,"SUIT Variable","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;
   --f-body:Verdana,Arial,Helvetica,"SUIT Variable","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;
-  --banner:104px; --tabs:34px;
+  --lw:300px; --banner:210px; --tabs:32px;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -36,23 +36,23 @@ body{margin:0;color:var(--text);font-family:var(--f-body);font-size:13px;overflo
 :focus-visible{outline:2px solid var(--hi);outline-offset:2px}
 a{color:var(--hi)}
 
-.wrapper{max-width:1360px;height:100%;margin:0 auto;display:flex;flex-direction:column;padding:0 12px}
+.wrapper{max-width:1520px;height:100%;margin:0 auto;display:flex;flex-direction:column;padding:0 5px}
 
-/* banner */
-.logo{position:relative;flex:none;height:var(--banner);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.logo::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 22% 70% at 50% 62%, rgba(160,110,255,.30), transparent 70%),
-    linear-gradient(90deg, transparent, rgba(233,207,159,.08) 30%, rgba(233,207,159,.08) 70%, transparent) bottom/100% 1px no-repeat;}
-.mark{position:relative;display:flex;flex-direction:column;align-items:center;text-decoration:none;line-height:1}
-.mark .w{font-family:var(--f-title);font-weight:400;font-size:38px;letter-spacing:.06em;
-  background:linear-gradient(180deg,#fff,#8f7859);-webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 2px 6px rgba(0,0,0,.9))}
-.mark .w b{font-weight:700;background:linear-gradient(180deg,#ffe7b8,#b8862f);-webkit-background-clip:text;background-clip:text;color:transparent}
-.mark .p{margin-top:7px;padding:4px 18px 3px;font-family:var(--f-title);font-size:12.5px;letter-spacing:.22em;color:#f0dcc0;text-transform:uppercase;
-  background:linear-gradient(180deg,#5c1d14,#3a100b);border:1px solid #8a5a2c;box-shadow:inset 0 0 0 1px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.7)}
-:lang(ko) .mark .p{letter-spacing:.12em;font-weight:700;font-size:12px}
-.corner{position:absolute;top:10px;font-size:12.5px;display:flex;gap:6px;align-items:center}
+/* banner — spacing follows poe2filter.com: logo with room above/below, tab bar right under it */
+.logo{position:relative;flex:none;height:var(--banner);display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;
+  transition:height .25s ease, padding .25s ease, opacity .2s ease}
+.brand{position:relative;display:block;width:var(--lw);aspect-ratio:1134/600;flex:none}
+.brand img{display:block;position:absolute;pointer-events:none;transition:opacity .35s ease}
+.brand .main{inset:0;width:100%;height:100%}
+.brand .ext{width:calc(var(--lw)*1.0812);height:auto;left:calc(var(--lw)*-.0406);top:calc(var(--lw)*-.0635);opacity:0}
+.rb{position:absolute;left:50%;top:83.2%;transform:translate(-50%,-50%);white-space:nowrap;font-family:var(--f-title);
+  font-size:calc(var(--lw)*.042);letter-spacing:.07em;color:#f3dfb8;text-shadow:0 1px 2px #000,0 0 6px rgba(0,0,0,.6);transition:top .35s ease}
+:lang(ko) .rb{font-weight:700;letter-spacing:.04em}
+.rb .x{display:none}
+body.extreme .brand .ext{opacity:1} body.extreme .brand .main{opacity:0}
+body.extreme .rb{top:77.7%;color:#ffd892} body.extreme .rb .n{display:none} body.extreme .rb .x{display:inline}
+body.compact{--banner:0px} body.compact .logo{padding-bottom:0;opacity:0;pointer-events:none}
+.corner{position:absolute;top:12px;font-size:12.5px;display:flex;gap:6px;align-items:center}
 .corner.l{left:4px}.corner.r{right:4px}
 .lang button{background:none;border:0;padding:2px 3px;font:inherit;color:var(--text);cursor:pointer}
 .lang button[aria-pressed="true"]{color:var(--hi)}
@@ -79,17 +79,19 @@ main iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background
 .toast{position:fixed;right:16px;bottom:16px;z-index:20;max-width:min(360px,calc(100vw - 32px));background:#15110b;border:1px solid #3a2d1b;border-left:3px solid #c8a85a;padding:10px 14px;color:var(--white);font:inherit;text-align:left;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.6)}
 .toast small{display:block;color:var(--text);font-size:12px;margin-bottom:2px}
 
-@media (max-height:760px){ :root{--banner:60px} .mark .w{font-size:26px} .mark .p{display:none} .corner{top:50%;transform:translateY(-50%)} }
-@media (max-width:860px){ .tabs a{padding:0 9px} .tabs a.lbl span{display:none} .corner.l{display:none} .wrapper{padding:0} }
+@media (max-height:820px){ :root{--lw:220px; --banner:156px} .logo{padding-bottom:10px} }
+@media (max-height:620px){ :root{--lw:150px; --banner:100px} .logo{padding-bottom:8px} }
+@media (max-width:860px){ :root{--lw:200px; --banner:150px} .tabs a{padding:0 9px} .tabs a.lbl span{display:none} .corner.l{display:none} .wrapper{padding:0} }
 </style>
 </head>
 <body>
 <div class="wrapper">
   <div class="logo">
     <div class="corner l"><span class="ver" data-kr="POE2 크래프팅 시뮬레이터 · 레시피" data-en="PoE 2 crafting simulator · recipes">PoE 2 crafting simulator · recipes</span></div>
-    <a class="mark" href="#emulator" aria-label="PoE 2 Craft">
-      <span class="w">PoE 2 <b>Craft</b></span>
-      <span class="p" data-kr="크래프팅" data-en="Crafting">Crafting</span>
+    <a class="brand" href="#emulator" aria-label="PoE 2 Craft">
+      <img class="main" src="img/logo.webp" alt="PoE 2 Craft" width="640" height="339">
+      <img class="ext" src="img/logo-extreme.webp" alt="" width="790" height="433">
+      <span class="rb"><span class="n" data-kr="레시피 · 시뮬레이터" data-en="Recipes &amp; Simulator">Recipes &amp; Simulator</span><span class="x" data-kr="극한" data-en="Extreme">Extreme</span></span>
     </a>
     <div class="corner r lang" role="group" aria-label="Language">
       <button type="button" id="l-en" aria-pressed="true">English</button><span>·</span><button type="button" id="l-kr" aria-pressed="false">한국어</button>
@@ -132,11 +134,31 @@ main iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background
     if(!SRC[v]) v = 'emulator';
     links.forEach(a=>{ if(a.dataset.view===v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
     if(!frames[v]){ const f=document.createElement('iframe'); f.src=`${SRC[v]}?lang=${lang}${rid?'#r-'+rid:''}`; f.title=v;
-      f.addEventListener('load', ()=>{ try{ f.contentWindow.postMessage({type:'poe2-lang', lang}, '*'); }catch(e){} }); frames[v]=f; document.getElementById('main').appendChild(f); }
+      f.addEventListener('load', ()=>{ try{ f.contentWindow.postMessage({type:'poe2-lang', lang}, '*'); }catch(e){} watchScroll(f); }); frames[v]=f; document.getElementById('main').appendChild(f); }
     else if(rid){ try{ frames[v].contentWindow.postMessage({type:'poe2-open', id:rid}, '*'); }catch(e){} }
     Object.entries(frames).forEach(([k,f])=>f.hidden = k!==v);
     if(v==='recipes') markSeen(); else badge();
+    document.body.classList.toggle('extreme', v==='recipes' && extreme);
+    setCompact(frames[v]._top > 40);
   }
+
+  // ---------- banner: fire logo on extreme recipes, folds away while a tool page is scrolled ----------
+  let extreme = false;
+  function setCompact(on){ document.body.classList.toggle('compact', !!on); }
+  function watchScroll(f){
+    let doc; try{ doc = f.contentDocument; }catch(e){ return; } if(!doc) return;
+    f._top = 0;
+    doc.addEventListener('scroll', ev=>{
+      const t = ev.target, el = (t===doc || t===doc.documentElement || t===doc.body) ? (doc.scrollingElement||doc.documentElement) : t;
+      if(!el || el.scrollHeight - el.clientHeight < 260) return;   // short pages: leave the banner alone (no fold/unfold loop)
+      const top = el.scrollTop, prev = f._top; f._top = top;
+      if(f.hidden) return;
+      if(top > 40 && top > prev) setCompact(true);
+      else if(top < 6) setCompact(false);
+    }, true);
+  }
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-route' && frames.recipes && e.source===frames.recipes.contentWindow){
+    extreme = !!d.extreme; document.body.classList.toggle('extreme', extreme && !frames.recipes.hidden); } });
 
   // ---------- downloads: tools ask the shell to save a file ----------
   // On claude.ai the page's downloads capability saves it; on our own domain a normal browser download does.

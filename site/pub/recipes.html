@@ -1852,7 +1852,8 @@ function setOpen(id){ id=liveId(id);
   if(S.simFull){ S.simFull=false; document.body.classList.remove('simfull'); }
   if(!id || !S.recipes.find(x=>x.id===id)?.tierGroup) S.fcTab=false;
   S.open=id||null; render();
-  try{ parent.postMessage({type:'poe2-route', hash: S.open?('r-'+S.open):'recipes'}, '*'); }catch(e){}
+  const ro=S.open && S.recipes.find(x=>x.id===S.open);
+  try{ parent.postMessage({type:'poe2-route', hash: S.open?('r-'+S.open):'recipes', extreme: !!ro && difficulty(ro)>=5}, '*'); }catch(e){}
   if(S.open) scrollTo(0,0); else requestAnimationFrame(()=>scrollTo(0,S.listY||0));
 }
 function shareURL(id){ let u; try{ u=parent.location.href.split('#')[0]; }catch(e){ u=location.href.split('#')[0]; } return u+'#r-'+id; }
@@ -2069,6 +2070,7 @@ async function boot(){
   await Promise.all([...new Set(S.recipes.map(r=>r.cls))].map(loadCls));
   const h=location.hash.match(/^#r-(.+)$/); if(h && S.recipes.some(r=>r.id===liveId(h[1]))) S.open=liveId(h[1]);
   S.booted=true; render();
+  if(S.open){ const ro=S.recipes.find(x=>x.id===S.open); try{ parent.postMessage({type:'poe2-route', hash:'r-'+S.open, extreme: !!ro && difficulty(ro)>=5}, '*'); }catch(_){} }
   if(S.pendingDraft){ const d=S.pendingDraft; S.pendingDraft=null; addDraft(d, true); }
   if(S.pendingShared){ const d=S.pendingShared; S.pendingShared=null; applyShared(d); }
   try{ if(parent!==window) parent.postMessage({type:'poe2-share-ready'}, '*'); }catch(_){}
