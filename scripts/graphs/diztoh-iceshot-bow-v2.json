@@ -1,0 +1,1489 @@
+{
+ "id": "diztoh-iceshot-bow-v2",
+ "recipe": "diztoh-iceshot-bow-v2",
+ "cls": "Bows",
+ "base": "Obliterator Bow",
+ "ilvl": 82,
+ "note": "Diztoh 얼음 사격 활(29vO0mMUoME) — 물리 % 분열 + 잡옵 → 카오스 오브(물리 피해 추가) → 좌측 찬미 + 완벽한 엑잘(냉기·번개·화염·복합, 빗나가면 절사의 징조 + 카오스 오브) → 번개·화염이면 알두르의 숨결 → 아스트리드의 창의성 → 우측 강령술 + 고대 턱뼈 → 공개(투사체 +4, 빗나가면 우측 결정화 + 완벽한 가속의 에센스 → 심연의 에센스 → 징표 훼손) → 우측 찬미 + 엑잘 → 절사(+ 우측 말소) + 카오스 오브(치명타 확률) → 완벽한 엑잘. 하이엔드 = 영상(원소 1~2티어 — 영상은 다른 원소·복합도 받음), 밸런스 = 투사체 +3~+4 · 물리 추가 1~3티어 · 원소 1~3티어 · 치명타 확률 1~3티어.",
+ "params": {
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상",
+     "en": "Video"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  },
+  "pT": {
+   "kr": "원소 피해 추가",
+   "en": "Elemental flat",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "fT": {
+   "kr": "물리 피해 추가",
+   "en": "Flat physical",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "cT": {
+   "kr": "치명타 확률",
+   "en": "Critical hit chance",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "jT": {
+   "kr": "모든 투사체 스킬 레벨",
+   "en": "Projectile skills",
+   "values": {
+    "1": {
+     "kr": "+4",
+     "en": "+4"
+    },
+    "2": {
+     "kr": "+3~+4",
+     "en": "+3–+4"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "v": 1,
+    "pT": 2,
+    "fT": 1,
+    "jT": 1,
+    "cT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "v": 2,
+    "pT": 3,
+    "fT": 3,
+    "jT": 2,
+    "cT": 3
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "v": 2,
+    "pT": 3,
+    "fT": 3,
+    "jT": 2,
+    "cT": 3
+   },
+   "desc": {
+    "kr": "물리 피해 추가 1~3티어 · 원소 1~3티어 · 투사체 +3~+4 · 치명타 확률 1~3티어",
+    "en": "T1–3 flat physical, T1–3 elemental, +3–+4 projectiles, T1–3 crit chance"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "v": 1,
+    "pT": 2,
+    "fT": 1,
+    "jT": 1,
+    "cT": 1
+   },
+   "desc": {
+    "kr": "영상: 물리 피해 추가 1티어 · 원소 1~2티어 · 투사체 +4",
+    "en": "Video: T1 flat physical, T1–2 elemental, +4 projectiles"
+   }
+  }
+ ],
+ "tags": {
+  "pp": {
+   "gi": 7
+  },
+  "fl": {
+   "gi": 2,
+   "tmax": "$fT"
+  },
+  "co": {
+   "gi": 4,
+   "tmax": "$pT"
+  },
+  "li": {
+   "gi": 6,
+   "tmax": "$pT"
+  },
+  "fi": {
+   "gi": 3,
+   "tmax": "$pT"
+  },
+  "hy": {
+   "gi": 8,
+   "tmax": "$pT"
+  },
+  "ele": {
+   "anyOf": [
+    "co",
+    "li",
+    "fi",
+    "hy"
+   ]
+  },
+  "conv": {
+   "anyOf": [
+    "li",
+    "fi"
+   ]
+  },
+  "proj": {
+   "gi": 9,
+   "tmax": "$jT"
+  },
+  "cc": {
+   "gi": 17,
+   "tmax": "$cT"
+  },
+  "ons": {
+   "gi": 55
+  },
+  "mk": {
+   "gi": 57
+  },
+  "keepP": {
+   "anyOf": [
+    "pp",
+    "fl",
+    "ele"
+   ]
+  },
+  "keepS": {
+   "anyOf": [
+    "proj",
+    "cc"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "fl"
+   },
+   {
+    "has": "ele"
+   },
+   {
+    "has": "proj"
+   },
+   {
+    "has": "cc"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "d2",
+    "l1",
+    "l2",
+    "l3"
+   ],
+   "kr": "빛 없이 다시 공개",
+   "en": "Lightless reroll"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "pp",
+     "fr": true
+    },
+    {
+     "tag": "fl",
+     "tmax": 1
+    },
+    {
+     "tag": "co",
+     "tmax": 2
+    },
+    {
+     "tag": "proj",
+     "tmax": 1,
+     "des": true
+    },
+    {
+     "tag": "cc",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "pp",
+     "fr": true
+    },
+    {
+     "tag": "fl",
+     "tmax": 3
+    },
+    {
+     "tag": "co",
+     "tmax": 3
+    },
+    {
+     "tag": "proj",
+     "tmax": 2,
+     "des": true
+    },
+    {
+     "tag": "cc",
+     "tmax": 3
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "pp",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "물리 피해 % 분열 + 잡옵 1개 (절멸자 활, 아이템 레벨 82)",
+    "en": "Fractured % physical damage + one junk line (Obliterator Bow, item level 82)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "c1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "fl"
+     },
+     "to": "e1",
+     "res": "ok"
+    },
+    {
+     "to": "c1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "fl"
+   ]
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "conv"
+     },
+     "to": "al",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "ele"
+     },
+     "to": "r2",
+     "res": "ok"
+    },
+    {
+     "to": "e1w",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "co",
+    "li",
+    "fi",
+    "hy"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ]
+  },
+  {
+   "id": "e1w",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    2
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "fl"
+      }
+     },
+     "to": "c1",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "conv"
+     },
+     "to": "al",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "ele"
+     },
+     "to": "r2",
+     "res": "ok"
+    },
+    {
+     "to": "e1w",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "co",
+    "li",
+    "fi",
+    "hy"
+   ],
+   "trim": {
+    "side": "p",
+    "keep": "keepP"
+   }
+  },
+  {
+   "id": "al",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    3
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "알두르의 숨결 장착",
+    "en": "Socket Breath of Aldur"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "r2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "알두르의 숨결",
+     "en": "Breath of Aldur",
+     "m": "r"
+    }
+   ],
+   "showText": [
+    {
+     "kr": "화염·번개 옵션 → 냉기",
+     "en": "Fire and lightning mods → cold"
+    }
+   ],
+   "rune": {
+    "kr": "알두르의 숨결",
+    "en": "Breath of Aldur"
+   }
+  },
+  {
+   "id": "r2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "d1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "알두르의 숨결",
+     "en": "Breath of Aldur",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
+   }
+  },
+  {
+   "id": "d1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 첫번째 옵션(훼손)",
+    "en": "First suffix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "d2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "알두르의 숨결",
+     "en": "Breath of Aldur",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ]
+  },
+  {
+   "id": "d2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "proj"
+     },
+     "to": "x1",
+     "res": "ok"
+    },
+    {
+     "to": "l1",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "알두르의 숨결",
+     "en": "Breath of Aldur",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +4",
+     "en": "+4 to Level of all Projectile Skills",
+     "m": "d",
+     "tags": [
+      "proj"
+     ]
+    }
+   ],
+   "want": "proj",
+   "show": [
+    "proj"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "l1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "훼손 옵션을 지우고 맹공",
+    "en": "The desecration goes for Onslaught"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "l2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "알두르의 숨결",
+     "en": "Breath of Aldur",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "이 무기로 명중시켜 처치 시 (20—25)%의 확률로 맹공 획득 (완벽한 가속의 에센스)",
+     "en": "(20—25)% chance to gain Onslaught on Killing Hits with this Weapon (Perfect Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "ons"
+     ]
+    }
+   ],
+   "cur": "Perfect_Essence_of_Haste",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "맹공 획득 (제작 옵션)",
+     "en": "Onslaught (crafted)"
+    }
+   ],
+   "ess": "ons",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "l2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "맹공을 지우고 심연의 군주의 징표",
+    "en": "Onslaught goes for the Mark of the Abyssal Lord"
+   },
+   "label": {
+    "kr": "심연",
+    "en": "Abyss"
+   },
+   "edges": [
+    {
+     "to": "l3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "알두르의 숨결",
+     "en": "Breath of Aldur",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "mk"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Abyss",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
+    }
+   ],
+   "ess": "mk",
+   "mark": true,
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "l3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접미 징표 훼손",
+    "en": "Desecrate the suffix Mark"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "d2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "알두르의 숨결",
+     "en": "Breath of Aldur",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "fromMark": true
+  },
+  {
+   "id": "x1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 잡옵",
+    "en": "A junk suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "x2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "알두르의 숨결",
+     "en": "Breath of Aldur",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +4",
+     "en": "+4 to Level of all Projectile Skills",
+     "m": "d",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ]
+  },
+  {
+   "id": "x2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "proj"
+      }
+     },
+     "to": "d1",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "cc"
+     },
+     "to": "x3",
+     "res": "ok"
+    },
+    {
+     "to": "x2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "알두르의 숨결",
+     "en": "Breath of Aldur",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +4",
+     "en": "+4 to Level of all Projectile Skills",
+     "m": "d",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "cc"
+   ],
+   "trim": {
+    "side": "s",
+    "keep": "keepS"
+   }
+  },
+  {
+   "id": "x3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가 (분열)",
+     "en": "(170—179)% increased Physical Damage (fractured)",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (72—81)~(110—123) 추가",
+     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "m": "n",
+     "tags": [
+      "co"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "알두르의 숨결",
+     "en": "Breath of Aldur",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +4",
+     "en": "+4 to Level of all Projectile Skills",
+     "m": "d",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    12
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}
