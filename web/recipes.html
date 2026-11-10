@@ -549,6 +549,8 @@ body.simfull{overflow:hidden}
 .simtab .ci{margin-right:6px;white-space:nowrap}
 .simtab img{width:14px;height:14px;vertical-align:-3px}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--ink);border-radius:8px;padding:7px 14px;font-size:13px;z-index:50}
+/* preview: the reverse-crafting tab shows one draft here before it goes to the list (사용자 확정 2026-11-11) */
+body.preview .btn.back, body.preview [data-act="link"], body.preview [data-act="like"], body.preview [data-act="success"], body.preview [data-deldraft], body.preview [data-share], body.preview .tag.draftb{display:none !important}
 </style>
 
 <div class="wrap" id="listView">
@@ -586,6 +588,7 @@ body.simfull{overflow:hidden}
 'use strict';
 // ---------- state / i18n ----------
 const store0 = (k,d) => { try{ const v=localStorage.getItem('poe2r:'+k); return v?JSON.parse(v):d; }catch(e){ return d; } };
+const PREVIEW = new URLSearchParams(location.search).has('preview');   // reverse tab: show one draft only, nothing is stored
 const S = { tips:[], view:store0('view','recipes'), navClosed:new Set(), stepIdx:-1, lang:'en', recipes:[], cls:{}, craft:null, byId:{}, index:null, open:null, sim:{}, tags:new Set(), q:'', cat:'', sort:'views', sortDir:-1, fcZoom:store0('fcZoom',1), sub:'', stats:['','',''], curOnly:false };
 try{ const u=new URLSearchParams(location.search).get('lang'); S.lang = u || localStorage.getItem('poe2lang') || 'en'; }catch(e){}
 if(S.lang!=='kr') S.lang='en';
@@ -2077,7 +2080,8 @@ window.addEventListener('message', e=>{ const d=e.data||{};
   if(d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); }
   if(d.type==='poe2-open' && d.id && S.recipes.some(r=>r.id===liveId(d.id)) && S.open!==liveId(d.id)) setOpen(d.id);
   if(d.type==='poe2-open' && d.id==='' && S.open) setOpen(null);
-  if(d.type==='poe2-draft' && d.recipe && d.recipe.id && d.recipe.cls){ if(S.booted) addDraft(d.recipe, true); else S.pendingDraft=d.recipe; }
+  if(d.type==='poe2-preview' && PREVIEW && d.recipe){ if(S.booted) showPreview(d.recipe); else S.pendingPreview=d.recipe; }
+  if(d.type==='poe2-draft' && d.recipe && d.recipe.id && d.recipe.cls && !PREVIEW){ if(d.stay){ if(S.booted) addDraft(d.recipe, false); return; } if(S.booted) addDraft(d.recipe, true); else S.pendingDraft=d.recipe; }
   if(e.source===parent && d.type==='poe2-shared' && Array.isArray(d.items)){ if(S.booted) applyShared(d); else S.pendingShared=d; }
   if(e.source===parent && d.type==='poe2-share-result') shareResult(d); });
 document.addEventListener('click', e=>{ const b=e.target.closest('[data-deldraft]'); if(b){ e.stopPropagation(); removeDraft(b.dataset.deldraft); } }, true);
@@ -2150,6 +2154,15 @@ function shareResult(d){
   } else { if(d.ok){ toast(L('공유를 취소했어요','Unshared')); } else { render(); toast(why(d.code)); } }
 }
 // drafts made on the Discover tab: kept in this browser, shown first with a draft badge
+async function showPreview(r){
+  if(!r || !/^draft-[a-z0-9]+$/.test(r.id) || !Array.isArray(r.nodes)) return;
+  r = {likes:0, success:0, ...r, draft:true}; delete r._an; delete r._prep;
+  S.recipes = S.recipes.filter(x=>!x.draft); S.recipes.unshift(r);
+  await loadCls(r.cls); S.open=r.id; render(); scrollTo(0,0);
+}
+if(PREVIEW){ document.body.classList.add('preview');
+  const post=()=>{ try{ parent.postMessage({type:'poe2-preview-h', h:document.documentElement.scrollHeight}, '*'); }catch(_){} };
+  try{ new ResizeObserver(post).observe(document.body); }catch(_){} setInterval(post, 1500); }
 async function addDraft(r, open){
   if(!/^draft-[a-z0-9]+$/.test(r.id) || !Array.isArray(r.nodes)) return;
   r = {likes:0, success:0, ...r, draft:true}; delete r._an; delete r._prep;
@@ -2173,13 +2186,14 @@ async function boot(){
   S.tips = tips.tips||[];
   S.index=idx; S.craft=craft; for(const k in craft) for(const x of craft[k]) S.byId[x.id]=x;
   S.recipes = rec.recipes.map(r=>({likes:0, success:0, ...r}));
-  const drafts = store.get('drafts',[]).filter(r=>r && /^draft-/.test(r.id) && Array.isArray(r.nodes)).map(r=>({likes:0, success:0, ...r, draft:true}));
+  const drafts = PREVIEW ? [] : store.get('drafts',[]).filter(r=>r && /^draft-/.test(r.id) && Array.isArray(r.nodes)).map(r=>({likes:0, success:0, ...r, draft:true}));
   S.recipes = drafts.concat(S.recipes);
   await Promise.all([...new Set(S.recipes.map(r=>r.cls))].map(loadCls));
   const h=location.hash.match(/^#r-(.+)$/); if(h && S.recipes.some(r=>r.id===liveId(h[1]))) S.open=liveId(h[1]);
   S.booted=true; render();
   if(S.open){ const ro=S.recipes.find(x=>x.id===S.open); try{ parent.postMessage({type:'poe2-route', hash:'r-'+S.open, extreme: !!ro && difficulty(ro)>=5}, '*'); }catch(_){} }
   if(S.pendingDraft){ const d=S.pendingDraft; S.pendingDraft=null; addDraft(d, true); }
+  if(S.pendingPreview){ const d=S.pendingPreview; S.pendingPreview=null; showPreview(d); }
   if(S.pendingShared){ const d=S.pendingShared; S.pendingShared=null; applyShared(d); }
   try{ if(parent!==window) parent.postMessage({type:'poe2-share-ready'}, '*'); }catch(_){}
 }

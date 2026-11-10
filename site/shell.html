@@ -221,6 +221,7 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
     const send = ()=>{ try{ frames.discover.contentWindow.postMessage({type:'poe2-reverse-in', text:d.text.slice(0,8000)}, '*'); }catch(_){} };
     if(had) send(); else frames.discover.addEventListener('load', send, {once:true}); });
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-draft' || !frames.discover || e.source!==frames.discover.contentWindow) return;
+    if(d.stay){ if(frames.recipes) try{ frames.recipes.contentWindow.postMessage({type:'poe2-draft', recipe:d.recipe, stay:true}, '*'); }catch(_){} return; }   // reverse tab keeps its place (사용자 확정 2026-11-11)
     const had = !!frames.recipes; location.hash = 'recipes'; show();
     const send = ()=>{ try{ frames.recipes.contentWindow.postMessage({type:'poe2-draft', recipe:d.recipe}, '*'); }catch(_){} };
     if(had) send(); else frames.recipes.addEventListener('load', send, {once:true}); });

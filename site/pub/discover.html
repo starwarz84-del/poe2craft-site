@@ -124,6 +124,10 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .mp{display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-size:12px;color:var(--muted)}.mp input{width:84px;padding:3px 6px;font:inherit;background:transparent;color:inherit;border:1px solid currentColor;border-radius:4px;opacity:.85}
 .costl{margin:4px 0 0;font-size:12px;color:var(--muted)}.costl.over{color:#e0a060}
 #mkmsg .ok{color:var(--ok)}
+.pv{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.pv-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.pv-h span{font-size:12px;color:var(--muted)}
+#pvf{width:100%;height:640px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+#pvact{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .check{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
 .ch-h{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}.ch-h span{color:var(--muted);font-size:12.5px}
 .check ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
@@ -1144,7 +1148,7 @@ function render(){
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
   const otherHTML = it.other.length ? `<div class="other">${it.other.map(o=>`<div class="${o.k==='?'?'bad':''}"><span class="k">${kName[o.k]}</span>${esc(o.l)}</div>`).join('')}</div>` : '';
   const canDraft = it.rarity!=='normal' && an.rows.some(r=>!r.unrev) && !an.putrid;
-  $('#mods').innerHTML = (canDraft ? `<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고 레시피 탭에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis and opens it in Recipes: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '') + `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3></div>${rowsHTML}${otherHTML}`;
+  $('#mods').innerHTML = (canDraft ? `<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '') + `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3></div>${rowsHTML}${otherHTML}`;
 }
 
 async function run(){
@@ -1207,12 +1211,15 @@ $('#fb-go').addEventListener('click', ()=>{ const t=$('#fb-txt').value.trim(); i
   $('#fb-txt').value=''; $('#fb-msg').textContent=L('고마워요! 이 기기에 저장했어요 (서버가 열리면 함께 전송돼요).','Thanks! Saved on this device; it will be sent once the server is live.'); });
 $('#mods').addEventListener('click', e=>{
   if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const mp=+($('#mp')?.value||0); const r = makeDraft(S.last.it, S.last.an, {market: mp>0?mp:0}); S.draft = r; S.check = verifyDraft(S.last.it, S.last.an, r); showCheck(); return; }
-  if(e.target.closest('#send') && S.draft){ const r=S.draft;
+  if(e.target.closest('#send') && S.draft && !S.sent){ const r=S.draft;
     try{ const k='poe2r:drafts', a=JSON.parse(localStorage.getItem(k)||'[]').filter(x=>x.id!==r.id); a.unshift(r); localStorage.setItem(k, JSON.stringify(a.slice(0,12))); }catch(_){}
     const inShell = window.parent && window.parent!==window;
-    if(inShell){ try{ window.parent.postMessage({type:'poe2-draft', recipe:r}, '*'); }catch(_){} }
+    if(inShell){ try{ window.parent.postMessage({type:'poe2-draft', recipe:r, stay:true}, '*'); }catch(_){} }   // stay here; the list picks it up (사용자 확정 2026-11-11)
     S.sent=true; $('#fb').hidden=false; renderStatic();
-    $('#mkmsg').innerHTML = `<span class="ok">${inShell ? L(`초안 ${r.nodes.length}단계를 레시피 탭에 올렸어요.`,`Draft with ${r.nodes.length} steps added to Recipes.`) : L(`초안 ${r.nodes.length}단계를 저장했어요. 레시피 탭에서 확인하세요.`,`Draft with ${r.nodes.length} steps saved. Open the Recipes tab to see it.`)}</span>`; }
+    $('#pvact').innerHTML = `<span class="ok">${L('크래프팅 목록에 올렸어요.','Added to the Crafting list.')}</span>${inShell?`<button type="button" class="btn" id="pvgo">${L('크래프팅에서 보기 →','Open in Crafting →')}</button>`:''}`; return; }
+  if(e.target.closest('#pvgo') && S.draft){ try{ window.parent.postMessage({type:'poe2-goto', id:S.draft.id}, '*'); }catch(_){} return; }
+  if(e.target.closest('#discard') && S.draft){ S.draft=null; S.check=null; S.sent=false; renderStatic();
+    $('#mkmsg').innerHTML = `<span class="ok">${L('초안을 지웠어요. 아쉬운 점을 아래에 남겨 주시면 다음 초안에 반영할게요.','Draft deleted. Tell us what was off below so the next one is better.')}</span>`; $('#fb').hidden=false; return; }
 });
 function showCheck(){
   const c=S.check||[], nE=c.filter(x=>x.lv==='err').length, nW=c.filter(x=>x.lv==='warn').length;
@@ -1221,7 +1228,12 @@ function showCheck(){
   const costL = dc==null ? '' : `<p class="costl ${mp && dc>mp ? 'over' : ''}">${L('예상 비용','Est. cost')} ${L('약','≈')} ${fd(dc)} div${mp?` / ${L('시세','market')} ${fd(mp)} div${dc>mp?` — ${L('시세보다 비쌈, 구입 권장','dearer than buying it')}`:''}`:''}${S.draft.compromises?` · ${L(`타협 갈림길 ${S.draft.compromises}곳`,`${S.draft.compromises} settle fork(s)`)}`:''}</p>`;
   $('#mkmsg').innerHTML = `${costL}<div class="check"><div class="ch-h"><b>${L('검산','Verification')}</b><span>${L(`초안 ${S.draft.nodes.length}단계를 처음부터 다시 따라가며 확인했어요`,`Replayed the ${S.draft.nodes.length}-step draft from the start`)} · <span class="bad">${L('오류','errors')} ${nE}</span> · <span class="wn">${L('주의','warnings')} ${nW}</span></span></div>
     <ul>${c.map(x=>`<li class="${x.lv}"><span class="ic">${ic[x.lv]}</span>${esc(KR()?x.kr:x.en)}</li>`).join('')}</ul>
-    <div class="row"><button type="button" class="btn ${nE?'':'primary'}" id="send">${nE ? L('오류가 있어도 레시피 탭에 올리기','Add to Recipes anyway') : L('레시피 탭에 올리기','Add to Recipes')}</button></div></div>`;
+  </div>
+    <div class="pv"><div class="pv-h"><b>${L('레시피 미리보기','Recipe preview')}</b><span>${L('잘 만들어졌는지 확인한 뒤 올리거나 지우세요','Check it, then add it or delete it')}</span></div>
+      <iframe id="pvf" title="${esc(L('레시피 미리보기','Recipe preview'))}" src="recipes.html?preview=1&lang=${S.lang}"></iframe>
+      <div class="row" id="pvact"><button type="button" class="btn ${nE?'':'primary'}" id="send">${nE ? L('오류가 있어도 만족 — 크래프팅 목록에 올리기','Add to Crafting anyway') : L('만족 — 크래프팅 목록에 올리기','Looks good — add to Crafting')}</button><button type="button" class="btn" id="discard">${L('삭제','Delete')}</button></div></div>`;
+  const f=$('#pvf'), send=()=>{ try{ f.contentWindow.postMessage({type:'poe2-preview', recipe:S.draft}, '*'); }catch(_){} };
+  f.addEventListener('load', send, {once:true});
 }
 $('#clr').addEventListener('click', ()=>{ $('#txt').value=''; S.last=null; render(); $('#txt').focus(); });
 $('#txt').addEventListener('paste', ()=>{ S.recIdx=null; setTimeout(run, 0); });
@@ -1230,6 +1242,7 @@ fetch('data/samples.json').then(r=>r.ok?r.json():{samples:[]}).then(d=>{ S.recSa
 $('#samples').addEventListener('click', e=>{ const b=e.target.closest('[data-sample]'); if(!b) return; $('#txt').value=SAMPLES[+b.dataset.sample].t; run(); });
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-reverse-in' && typeof d.text==='string'){ S.itab='build'; $('#txt').value=d.text; $('#b-from').hidden=false; $('#b-from').textContent=L('속성부여에서 받은 옵션 조합을 분석했어요 — 오른쪽 요약과 아래 초안을 확인하세요.','Analysed the modifier set from the Modifiers tab — see the summary and draft below.'); run(); } });
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
+window.addEventListener('message', e=>{ const d=e.data, f=document.getElementById('pvf'); if(d && d.type==='poe2-preview-h' && f && e.source===f.contentWindow) f.style.height=Math.max(320, Math.min(+d.h||0, 6000))+'px'; });
 window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost});
 render();
 </script>
