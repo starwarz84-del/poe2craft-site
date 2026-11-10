@@ -15,7 +15,7 @@ R.append({
  'id':'lilbotq-budget-boots','cls':c,'base':base(c,'Sandsworn Sandals'),'ilvl':82,'difficulty':1,'budget':'low',
  'buildTags':[K('이동 속도','Movement speed'),K('저항','Resistances'),K('에너지 보호막','Energy Shield')],'patch':'0.5.5','created':'2026-11-09','author':LBB,
  'source':LBB_SRC,
- 'title':K('이동 속도 + 저항 3줄 가성비','budget movement speed + three resistances'),
+ 'title':K('이동 속도 + 저항 옵션 3개 가성비','budget movement speed + three resistances'),
  'start':{'rar':'magic','mods':[{'gi':lb_ms,'tmax':1},{'gi':lb_cold,'tmax':1}]},
  'phases':[{'id':'suf','kr':'접미','en':'Suffixes'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[

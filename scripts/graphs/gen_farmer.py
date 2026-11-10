@@ -31,11 +31,11 @@ I1=I0+[it('s','잡옵','Junk',None,'j')]
 I2=I1+[it('p','방어 % (제작 옵션)','Defences % (crafted)',['ess'])]
 I3=I2+[it('p','훼손 옵션(미공개)','Desecrated (unrevealed)')]
 I4=I2+[it('p','에너지 보호막 혼합 · 생명력 · 정신력 중 하나','Hybrid ES, ES + life or Spirit',['want'])]
-I5=I4+[it('s','랜덤 2줄','Two random lines',None,'j')]
+I5=I4+[it('s','랜덤 옵션 2개','Two random lines',None,'j')]
 nodes=[
  {'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'a2','start':{'rar':'magic','mods':['flat']},
   'label':K('에너지 보호막 최대치 매직 흐르는 의복 구입','Buy a magic Flowing Raiment with max energy shield'),'item':I0},
- {'id':'a2','kind':'act','group':'prep','pos':[0,1],'act':'augment','cur':'Perfect_Orb_of_Augmentation','goal':K('접미 1줄 추가','Add a suffix'),
+ {'id':'a2','kind':'act','group':'prep','pos':[0,1],'act':'augment','cur':'Perfect_Orb_of_Augmentation','goal':K('접미 옵션 1개 추가','Add a suffix'),
   'showText':[K('잡옵 (아무 옵션)','Junk (any line)')|{'s':'s'}],'label':K('확장','Augment'),'edges':[{'to':'a3'}],'item':I1},
  {'id':'a3','kind':'act','group':'prep','pos':[0,2],'act':'essence','ess':'ess','cur':'Greater_Essence_of_Enhancement','goal':K('레어로 업그레이드 + 접두 방어 %','Upgrade to rare + defences % prefix'),
   'showText':[K('방어 % (제작 옵션)','Defences % (crafted)')|{'s':'p'}],'label':K('에센스','Essence'),'edges':[{'to':'ms'}],'item':I2},
@@ -48,12 +48,12 @@ nodes=[
   'label':K('공개','Reveal'),'edges':[{'if':{'added':'want'},'to':'a6','res':'ok'},{'to':'a5x','res':'fail'}],'item':I4},
  annul('a5x',[1,4],'a4'),
  {'id':'a6','kind':'act','group':'main','pos':[0,5],'act':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],
-  'goal':K('접미 두번째·세번째 옵션','Second and third suffix options'),'showText':[K('랜덤 2줄 (저항이 뜨면 대박) — 결과 그대로','Two random lines (resistances are the jackpot) — keep whatever comes')|{'s':'s'}],
+  'goal':K('접미 두번째·세번째 옵션','Second and third suffix options'),'showText':[K('랜덤 옵션 2개 (저항이 뜨면 대박) — 결과 그대로','Two random lines (resistances are the jackpot) — keep whatever comes')|{'s':'s'}],
   'label':K('엑잘','Exalt'),'edges':[{'to':'ok'}],'item':I5},
  {'id':'ok','kind':'done','group':'main','pos':[0,6],'label':K('완성','Finished')}]
 fin=lambda v,kr,en,e,r: {'id':v,'kr':kr,'en':en,'lines':[{'tag':'flat','tmax':e},{'tag':'ess','tmax':1},{'tag':'hyb','tmax':r},{'side':'s','random':True},{'side':'s','random':True},{'side':'s','random':True}]}
 g=graph('farmer-budget-armour-v2','Body_Armours_int','Flowing Raiment',79,
-  'XTheFarmerX 리그 초반 에너지 보호막 갑옷(영상 방식) — 에너지 보호막 최대치 매직 구입 → 상위 확장의 오브(접미 잡옵) → 상위 강화의 에센스(접두 방어 %) → 좌측 강령술 + 갈비뼈 → 공개(혼합·생명력·정신력) → 상위 찬미 + 상위 엑잘(접미 2줄 결과 그대로). 상위 철 룬은 취향(정책 23)이라 뺌. 에센셜 = 영상(보존된 갈비뼈, 아무 티어), 밸런스·하이엔드는 고대 갈비뼈(레벨 40+ 티어만)로 1~2티어 / 1티어.',
+  'XTheFarmerX 리그 초반 에너지 보호막 갑옷(영상 방식) — 에너지 보호막 최대치 매직 구입 → 상위 확장의 오브(접미 잡옵) → 상위 강화의 에센스(접두 방어 %) → 좌측 강령술 + 갈비뼈 → 공개(혼합·생명력·정신력) → 상위 찬미 + 상위 엑잘(접미 옵션 2개 결과 그대로). 상위 철 룬은 취향(정책 23)이라 뺌. 에센셜 = 영상(보존된 갈비뼈, 아무 티어), 밸런스·하이엔드는 고대 갈비뼈(레벨 40+ 티어만)로 1~2티어 / 1티어.',
   {'esT':{'kr':'에너지 보호막 최대치','en':'Max energy shield','values':{'1':K('1티어','T1'),'2':K('1~2티어','T1–2'),'3':K('1~3티어','T1–3')}},
    'rvT':{'kr':'훼손 공개 목표','en':'Reveal target','values':{'1':K('1티어','T1'),'2':K('1~2티어','T1–2'),'9':K('아무 티어','Any tier')}},
    'bone':{'kr':'갈비뼈','en':'Rib','values':{'a':K('고대 갈비뼈','Ancient Rib'),'p':K('보존된 갈비뼈','Preserved Rib')}}},
@@ -72,7 +72,7 @@ I0=[it('p','추가 화염 피해 획득','Extra fire damage',['fire']),it('s','�
 I2=I0+[it('p','주문 피해 % (제작 옵션)','Spell damage % (crafted)',['ess'])]
 I3=I2+[it('p','훼손 옵션(미공개)','Desecrated (unrevealed)')]
 I4=I2+[it('p','추가 냉기·번개·카오스 피해 획득 중 하나','Extra cold, lightning or chaos damage',['want'])]
-I5=I4+[it('s','랜덤 2줄','Two random lines',None,'j')]
+I5=I4+[it('s','랜덤 옵션 2개','Two random lines',None,'j')]
 nodes=[
  {'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'w2','start':{'rar':'magic','mods':['fire','l5']},
   'label':K('번개 주문 +6 + 추가 화염 피해 매직 지팡이 구입','Buy a magic staff with +6 lightning spells + extra fire'),'item':I0},
@@ -87,12 +87,12 @@ nodes=[
   'label':K('공개','Reveal'),'edges':[{'if':{'added':'want'},'to':'w5','res':'ok'},{'to':'w4x','res':'fail'}],'item':I4},
  annul('w4x',[1,3],'w3'),
  {'id':'w5','kind':'act','group':'main','pos':[0,4],'act':'exalt','cur':'Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],
-  'goal':K('접미 두번째·세번째 옵션','Second and third suffix options'),'showText':[K('랜덤 2줄 (시전 속도·치명타가 뜨면 대박) — 결과 그대로','Two random lines (cast speed or crit is the jackpot) — keep whatever comes')|{'s':'s'}],
+  'goal':K('접미 두번째·세번째 옵션','Second and third suffix options'),'showText':[K('랜덤 옵션 2개 (시전 속도·치명타가 뜨면 대박) — 결과 그대로','Two random lines (cast speed or crit is the jackpot) — keep whatever comes')|{'s':'s'}],
   'label':K('엑잘','Exalt'),'edges':[{'to':'ok'}],'item':I5},
  {'id':'ok','kind':'done','group':'main','pos':[0,5],'label':K('완성','Finished')}]
 fin=lambda v,kr,en,f,r: {'id':v,'kr':kr,'en':en,'lines':[{'tag':'fire','tmax':f},{'tag':'ess','tmax':1},{'tag':'lit','tmax':r},{'tag':'l5','tmax':1},{'side':'s','random':True},{'side':'s','random':True}]}
 g=graph('farmer-starter-staff-v2','Staves','Sanctified Staff',80,
-  'XTheFarmerX 리그 초반 번개 지팡이(영상 방식) — 번개 주문 +5 + 추가 화염 피해 매직 구입 → 상위 마법의 에센스(접두 주문 피해) → 좌측 강령술 + 턱뼈 → 공개(추가 냉기·번개·카오스) → 상위 찬미 + 엑잘(접미 2줄 결과 그대로). 영상 베이스는 아이템 레벨 73(추가 피해 1티어는 레벨 80) — 그래프는 80으로 두고 에센셜·밸런스는 2티어까지로 맞춤. 에센셜 = 영상(보존된 턱뼈, 아무 티어), 밸런스·하이엔드는 고대 턱뼈(레벨 40+)로 1~2티어 / 1티어.',
+  'XTheFarmerX 리그 초반 번개 지팡이(영상 방식) — 번개 주문 +5 + 추가 화염 피해 매직 구입 → 상위 마법의 에센스(접두 주문 피해) → 좌측 강령술 + 턱뼈 → 공개(추가 냉기·번개·카오스) → 상위 찬미 + 엑잘(접미 옵션 2개 결과 그대로). 영상 베이스는 아이템 레벨 73(추가 피해 1티어는 레벨 80) — 그래프는 80으로 두고 에센셜·밸런스는 2티어까지로 맞춤. 에센셜 = 영상(보존된 턱뼈, 아무 티어), 밸런스·하이엔드는 고대 턱뼈(레벨 40+)로 1~2티어 / 1티어.',
   {'fT':{'kr':'추가 화염 피해','en':'Extra fire damage','values':{'1':K('1티어','T1'),'2':K('1~2티어','T1–2')}},
    'rvT':{'kr':'훼손 공개 목표','en':'Reveal target','values':{'1':K('1티어','T1'),'2':K('1~2티어','T1–2'),'9':K('아무 티어','Any tier')}},
    'bone':{'kr':'턱뼈','en':'Jawbone','values':{'a':K('고대 턱뼈','Ancient Jawbone'),'p':K('보존된 턱뼈','Preserved Jawbone')}}},

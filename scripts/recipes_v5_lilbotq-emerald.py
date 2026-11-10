@@ -14,11 +14,11 @@ R.append({
  'id':'lilbotq-emerald','cls':c,'base':0,'ilvl':82,'cap':{'p':2,'s':2},'difficulty':3,'budget':'high','unknownW':True,
  'buildTags':[K('주얼','Jewel'),K('치명타','Critical'),K('이동 속도','Movement speed')],'patch':'0.5','created':'2026-11-09','author':LBQ,
  'source':{'url':'https://www.youtube.com/watch?v=Hcb_HcWDUOA','title':'How I Make 100s Of Divines Selling Jewels - Crafting Guide for Path of Exile 2','channel':'LilBotQ'},
- 'title':K('공격 치명타 접미 3줄 + 접미 효과 5옵션','three attack crit/speed suffixes + suffix effect, five mods'),
+ 'title':K('공격 치명타 접미 옵션 3개 + 접미 효과 5옵션','three attack crit/speed suffixes + suffix effect, five mods'),
  'start':{'rar':'rare','mods':[{'gi':lq_cdmg},{'gi':lq_ms},{'junk':'p'},{'junk':'p'}]},
  'phases':[{'id':'con','kr':'경멸: 접미 +1','en':'Contempt: +1 suffix'},{'id':'des','kr':'3번째 접미 (훼손)','en':'Third suffix (desecrated)'},{'id':'pre','kr':'접두 · 흉포함','en':'Prefixes and Ferocity'}],
  'nodes':[
-  {'id':'l1','phase':'con','do':'base','cost':'base','ts':'10:38','note':K('공격 치명타 피해 보너스 + 이동 속도 접미, 접두 2줄이 붙은 희귀 에메랄드를 구매.','Buy a rare Emerald with attack crit damage bonus and movement speed suffixes plus two prefixes.')},
+  {'id':'l1','phase':'con','do':'base','cost':'base','ts':'10:38','note':K('공격 치명타 피해 보너스 + 이동 속도 접미, 접두 옵션 2개가 붙은 희귀 에메랄드를 구매.','Buy a rare Emerald with attack crit damage bonus and movement speed suffixes plus two prefixes.')},
   {'id':'l2','phase':'con','do':'essence','cur':'Potent_Liquid_Contempt','knownP':True,'target':{'gi':lq_plus,'chance':0.5,'slots':{'s':1}},'fail':{'goto':'restart'},'ts':'14:58'},
   {'id':'l3','phase':'des','do':'desecrate','cur':'Preserved_Cranium','target':{'unrev':'s'},'ts':'15:20'},
   {'id':'l4','phase':'des','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':[{'gi':lq_cc},{'gi':lq_as}]},'side':'s','bone':'Preserved_Cranium'},'fail':{'goto':'l3','via':LIGHT},'ts':'15:31'},

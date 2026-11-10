@@ -19,7 +19,7 @@ R.append({
  'start':{'rar':'rare','runes':[K('아스트리드의 창의성',"Astrid's Creativity")],'mods':[{'gi':sp_proj,'tmax':1,'fr':True},{'junk':'p'}]},
  'phases':[{'id':'suf','kr':'접미','en':'Suffixes'},{'id':'alloy','kr':'합금 2개','en':'Two alloys'},{'id':'pre','kr':'스루드의 완력 · 접두','en':'Thrud\'s Might and prefixes'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[
-  {'id':'a1','phase':'suf','do':'base','cost':'base','ts':'0:20','note':K('투사체 +4 분열 + 잡옵 1줄, 아스트리드의 창의성 장착.','Fractured +4 projectile plus one junk line, Astrid\'s Creativity socketed.')},
+  {'id':'a1','phase':'suf','do':'base','cost':'base','ts':'0:20','note':K('투사체 +4 분열 + 잡옵 1개, 아스트리드의 창의성 장착.','Fractured +4 projectile plus one junk line, Astrid\'s Creativity socketed.')},
   {'id':'a2','phase':'suf','do':'chaos','cur':'Chaos_Orb','target':{'gi':sp_as,'tmax':3},'fail':{'goto':'self'},'ts':'0:40'},
   {'id':'a3','phase':'alloy','do':'exalt','cur':'Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'junk':'p'},'ts':'1:36'},
   {'id':'a4','phase':'alloy','do':'essence','cur':'Sovereign_Alloy','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':sp_aug},'ts':'1:54'},
@@ -31,7 +31,7 @@ R.append({
   {'id':'a10','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':SP_PRE},'ts':'4:20',
    'br':K('대박 → 완성, 실패: 그대로 완성(영상) / 절사의 징조 + 카오스 오브','Hit → done; miss: keep it (video) or Whittling + Chaos')},
   {'id':'a11','phase':'pre','do':'chaos','cur':'Chaos_Orb','omens':['Omen_of_Whittling'],'fallbackFor':'a10','optional':True,'target':{'anyOf':SP_PRE,'replace':'p'},'fail':{'goto':'self'},'ts':'5:47',
-   'br':K('새 줄이 레벨 65 이상인데 목표가 아니면 다시 쓰지 않음(합금·훼손 줄이 지워짐)','A new non-target line of level 65+ ends it (the alloy or desecrated line would go next)')},
+   'br':K('새 옵션이 레벨 65 이상인데 목표가 아니면 다시 쓰지 않음(합금·훼손 옵션이 지워짐)','A new non-target line of level 65+ ends it (the alloy or desecrated line would go next)')},
   {'id':'a12','phase':'fin','do':'note','optional':True,'ts':'6:34','label':K('타락으로 소켓 추가 (선택)','Corrupt for a socket (optional)'),
    'note':K('퀄리티 20% · 신성한 오브 후 바알 오브로 두 번째 소켓 노림(망가질 수 있음).','20% quality and Divine, then a Vaal Orb for a second socket (can brick).')},
  ]})

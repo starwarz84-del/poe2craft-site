@@ -12,7 +12,7 @@ def _esh(r, t):
     e3=_node(r,'e3'); e3.pop('fail',None); e3['target']={'anyOf':pre,'asIs':True,'side':'p'}
     e3['br']=K('에너지 보호막 % 또는 희귀도. 안 나와도 그대로(소멸의 오브 반복 없음).','% energy shield or rarity; a miss stays (no Annulment loop).')
     e4=_node(r,'e4'); e4['target']['reveal']={'anyOf':pre}
-    if t=='bal': e4['br']=K('좋은 줄 → 완성, 빗나감: 빛의 징조 + 소멸의 오브 → 고대 갈비뼈로 다시 (엑잘이 맞았을 때만)','Hit → done; miss: Light + Annulment, Ancient Rib again (only when the exalt hit)')
+    if t=='bal': e4['br']=K('좋은 옵션 → 완성, 빗나감: 빛의 징조 + 소멸의 오브 → 고대 갈비뼈로 다시 (엑잘이 맞았을 때만)','Hit → done; miss: Light + Annulment, Ancient Rib again (only when the exalt hit)')
     else: e4.pop('fail',None); e4['br']=KEEP
     _drop(r,'e5','e6','e7')   # idols and runes are taste (정책 23); the corruption is optional
     r['nodes'].append({'id':'e8','phase':'fin','do':'note','ts':'4:00','note':K('완성. 퀄리티 20%, 소켓은 취향대로.','Done. 20% quality; sockets to taste.')})
@@ -46,14 +46,14 @@ for _t in ('bal','ess'): _grade('lilbotq-armour-shield','lilbotq-armour-shield-v
 # 4. Diztoh 정신력 로브 — Chaos Orb for flat ES (정책 16, cheaper than the video's Greater Chaos in the sim); Balance = Perfect Exalt + Whittling for a resistance,
 #    Essential = lower tiers, Greater Exalts, resistances as they come
 def _robe(r, t):
-    # 영상 자막 확인 2026-11-10: 좌측 찬미의 징조 + 상위 엑잘티드 오브로 에너지 보호막 최대치·% 두 줄, 빗나가면 소멸의 오브(접미가 비어 있어 접두만 지워짐)
+    # 영상 자막 확인 2026-11-10: 좌측 찬미의 징조 + 상위 엑잘티드 오브로 에너지 보호막 최대치·% 옵션 두 개, 빗나가면 소멸의 오브(접미가 비어 있어 접두만 지워짐)
     r['start']['mods'][0]['tmax']=4 if t=='bal' else 6
     ANN={'cur':'Orb_of_Annulment'}
     v2=_node(r,'v2'); v2.update({'do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'fail':{'goto':'self','via':ANN}})
     v2['target']={'gi':vr_flat,'tmax':1 if t=='bal' else 2}
     v3=_node(r,'v3'); v3['target']['tmax']=2 if t=='bal' else 3; v3['cur']='Greater_Exalted_Orb'
     if t=='bal':
-        _node(r,'v8')['br']=K('가장 낮은 줄이 버릴 줄일 때만. 정신력 점유 효율(레벨 65)이 가장 낮아지면 그대로 타협.','Only while the lowest line is junk; once the reservation line (level 65) is lowest, settle.')
+        _node(r,'v8')['br']=K('가장 낮은 옵션이 버릴 옵션일 때만. 정신력 점유 효율(레벨 65)이 가장 낮아지면 그대로 타협.','Only while the lowest line is junk; once the reservation line (level 65) is lowest, settle.')
     else:
         _drop(r,'v8'); _node(r,'v7')['cur']='Greater_Exalted_Orb'; _node(r,'v7')['br']=KEEP
 for _t in ('bal','ess'): _grade('diztoh-vile-robe','diztoh-vile-robe-v2',_t,_robe)

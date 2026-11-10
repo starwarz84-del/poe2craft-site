@@ -17,7 +17,7 @@ R.append({
  'start':{'rar':'rare','mods':[{'gi':sa_crit,'tmax':1,'fr':True},{'junk':'p'}]},
  'phases':[{'id':'suf','kr':'접미','en':'Suffix'},{'id':'quality','kr':'퀄리티 작업','en':'Quality'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[
-  {'id':'v1','phase':'suf','do':'base','cost':'base','ts':'8:59','note':K('치명타 피해 보너스 1티어 분열 + 잡옵 1줄.','Fractured T1 critical damage bonus plus one junk line.')},
+  {'id':'v1','phase':'suf','do':'base','cost':'base','ts':'8:59','note':K('치명타 피해 보너스 1티어 분열 + 잡옵 1개.','Fractured T1 critical damage bonus plus one junk line.')},
   {'id':'v2','phase':'suf','do':'chaos','cur':'Chaos_Orb','target':{'anyOf':[{'gi':sa_melee,'tmax':1},{'gi':sa_proj,'tmax':1}]},'fail':{'goto':'self'},'ts':'9:55'},
   {'id':'v3','phase':'quality','do':'exalt','cur':'Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'junk':'p'},'ts':'12:15'},
   {'id':'v4','phase':'quality','do':'essence','cur':'Essence_of_the_Breach','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':sa_maxQ},'ts':'12:19'},

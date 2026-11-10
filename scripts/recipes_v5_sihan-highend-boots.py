@@ -19,7 +19,7 @@ R.append({
  'start':{'rar':'rare','mods':[{'gi':sh_arm,'tmax':1,'fr':True},{'junk':'s'}]},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'suf','kr':'접미 먼저','en':'Suffixes first'},{'id':'pre','kr':'접두','en':'Prefixes'}],
  'nodes':[
-  {'id':'h1','phase':'base','do':'base','cost':'base','ts':'9:40','note':K('방어도 % 증가 1티어 분열 + 잡옵 1줄.','Fractured T1 % increased armour plus one junk line.')},
+  {'id':'h1','phase':'base','do':'base','cost':'base','ts':'9:40','note':K('방어도 % 증가 1티어 분열 + 잡옵 1개.','Fractured T1 % increased armour plus one junk line.')},
   {'id':'s1','phase':'suf','do':'chaos','cur':'Chaos_Orb','target':{'gi':sh_ele,'tmax':1},'fail':{'goto':'self'},'ts':'9:59'},
   {'id':'s2','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Dextral_Exaltation'],'target':{'gi':sh_str,'tmax':2},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s1'},'ts':'11:57'},
   {'id':'s3','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Dextral_Exaltation'],'target':{'anyOf':SH_RES},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s2'},'ts':'10:17'},

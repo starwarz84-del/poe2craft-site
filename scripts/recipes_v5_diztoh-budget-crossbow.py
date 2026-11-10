@@ -16,7 +16,7 @@ R.append({
  'id':'diztoh-budget-crossbow','cls':c,'base':base(c,'Siege Crossbow'),'ilvl':82,'sockets':3,'exceptional':{'sockets':1},'difficulty':1,'budget':'low',
  'buildTags':[K('수류탄','Grenade'),K('물리','Physical'),K('가성비','Budget')],'patch':'0.5','created':'2026-11-09','author':DZX,
  'source':{'url':'https://www.youtube.com/watch?v=vk3pLFUov8U','title':'Easy Budget Endgame Crossbow Crafting Guide | PoE 2 0.5','channel':'Diztoh'},
- 'title':K('에센스 2줄(물리 추가 + 공격 스킬 +3) + 아마나무 수류탄 2회 발동','two essence lines (flat physical + attack skills +3) + Amanamu grenade double activation'),
+ 'title':K('에센스 옵션 2개(물리 추가 + 공격 스킬 +3) + 아마나무 수류탄 2회 발동','two essence lines (flat physical + attack skills +3) + Amanamu grenade double activation'),
  'start':{'rar':'normal','mods':[]},
  'phases':[{'id':'base','kr':'매직 · 에센스','en':'Magic and essences'},{'id':'des','kr':'훼손 · 엑잘','en':'Desecration and slam'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[
@@ -32,7 +32,7 @@ R.append({
    'br':K('대박(복합 물리·공격 속도) → 완성, 아니면 절사로 접두 바꾸기','Hit (hybrid physical, attack speed) → done; otherwise Whittling on the prefix')},
   {'id':'c10','phase':'fin','do':'note','target':{'runeSwap':[XD_ASTRID,XD_IRON]},'ts':'3:15'},
   {'id':'c11','phase':'fin','do':'chaos','cur':'Perfect_Chaos_Orb','omens':['Omen_of_Whittling'],'optional':True,'target':{'anyOf':XD_PRE,'replace':'p'},'fail':{'goto':'self'},'ts':'3:33',
-   'br':K('버릴 줄이 레벨 60 미만(영상: 정확도 4티어)일 때만. 레벨 60 이상 줄이 뜨면 멈춤(다음 절사가 에센스 줄을 지움)','Only while the junk line is below level 60 (video: tier 4 accuracy). Stop once a level 60+ line lands (the next Whittling would take the essence line)')},
+   'br':K('버릴 옵션이 레벨 60 미만(영상: 정확도 4티어)일 때만. 레벨 60 이상 옵션이 뜨면 멈춤(다음 절사가 에센스 옵션을 지움)','Only while the junk line is below level 60 (video: tier 4 accuracy). Stop once a level 60+ line lands (the next Whittling would take the essence line)')},
   {'id':'c12','phase':'fin','do':'quality','cur':'Blacksmiths_Whetstone','target':{'quality':20},'ts':'4:00'},
   {'id':'c13','phase':'fin','do':'manual','target':{'rune':XD_IRON},'label':K('완벽한 철 룬 장착','Socket a Perfect Iron Rune'),'ts':'4:05'},
   {'id':'c14','phase':'fin','do':'manual','target':{'rune':XD_IRON},'label':K('완벽한 철 룬 장착','Socket a Perfect Iron Rune'),'ts':'4:05'},

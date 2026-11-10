@@ -13,7 +13,7 @@ R.append({
  'id':'diztoh-es-helmet','cls':c,'base':base(c,'Kamasan Tiara'),'ilvl':81,'sockets':2,'exceptional':{'sockets':1},'difficulty':2,'budget':'low',
  'buildTags':[K('에너지 보호막','Energy Shield'),K('아이템 희귀도','Item rarity')],'patch':'0.5','created':'2026-11-09','author':DZ5,
  'source':{'url':'https://www.youtube.com/watch?v=yegMdBTuEtY','title':'How to Craft an Endgame Energy Shield Helmet | Temple of Corruption | PoE 2','channel':'Diztoh'},
- 'title':K('에너지 보호막 분열 + 희귀도 2줄 + 에너지 보호막 %','fractured flat energy shield + two rarity lines + % energy shield'),
+ 'title':K('에너지 보호막 분열 + 희귀도 옵션 2개 + 에너지 보호막 %','fractured flat energy shield + two rarity lines + % energy shield'),
  'start':{'rar':'rare','quality':20,'mods':[{'gi':de_esf,'tmax':1,'fr':True},{'unrev':'p'},{'gi':de_rarS,'tmax':1},{'gi':de_int,'crafted':True}]},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'fill','kr':'채우기','en':'Fill'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[

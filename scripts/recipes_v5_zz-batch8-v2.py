@@ -52,7 +52,7 @@ def _barr(r, t):
     if t=='high': return
     q4=_node(r,'q4'); q4['target']['reveal']={'anyOf':[dict(x,tmax=2) for x in q4['target']['reveal']['anyOf']]}
     p2=_node(r,'p2'); p2['cur']='Greater_Chaos_Orb'; p2['target']['anyOf']=[dict(x,tmax=2) for x in p2['target']['anyOf']]
-    p2['br']=K('원소 피해 접두 1줄이 나오면 다음 단계','Move on once one elemental prefix shows')
+    p2['br']=K('원소 피해 접두 옵션 1개가 나오면 다음 단계','Move on once one elemental prefix shows')
     p4=_node(r,'p4'); _asIs(p4, p2['target']['anyOf'], 'p')
     _drop(r,'p3','p5','p6')
 for _t in ('high','bal'): _grade8('barricade-quarterstaff','barricade-quarterstaff-v2',_t,_barr)

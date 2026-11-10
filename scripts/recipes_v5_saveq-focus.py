@@ -18,7 +18,7 @@ R.append({
  'phases':[{'id':'alloy','kr':'초월의 합금','en':'Transcendent Alloy'},{'id':'pre','kr':'접두','en':'Prefix'},{'id':'suf','kr':'접미 훼손','en':'Suffix desecration'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[
   {'id':'q1','phase':'alloy','do':'base','cost':'base','ts':'18:20',
-   'note':K('퀄리티 22%. 상위 마술의 에센스 주문 피해 분열 + 에너지 보호막 % 1티어 + 모든 주문 스킬 +2 + 잡옵 접두 1줄.','22% quality. Fractured Greater Essence of Sorcery spell damage + T1 % energy shield + all spell skills +2 + one junk prefix.')},
+   'note':K('퀄리티 22%. 상위 마술의 에센스 주문 피해 분열 + 에너지 보호막 % 1티어 + 모든 주문 스킬 +2 + 잡옵 접두 옵션 1개.','22% quality. Fractured Greater Essence of Sorcery spell damage + T1 % energy shield + all spell skills +2 + one junk prefix.')},
   {'id':'q2','phase':'alloy','do':'manual','target':{'rune':K('아스트리드의 창의성',"Astrid's Creativity")},'label':K('아스트리드의 창의성 룬 장착',"Socket Astrid's Creativity"),'ts':'20:40'},
   {'id':'q3','phase':'alloy','do':'essence','cur':'Transcendent_Alloy','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':sq_alloy,'chance':0.5,'missDrop':sq_esp},'ts':'21:20',
    'br':K('잡옵이 지워지면 → 계속, 에너지 보호막이 지워지면 → 그 자리 엑잘','Junk removed → continue; energy shield removed → exalt that slot')},

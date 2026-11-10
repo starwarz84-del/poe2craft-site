@@ -33,7 +33,7 @@ R.append({
    'br':K('합금이 지울 접두 (에너지 보호막·마나가 뜨면 그대로 써도 됨)','The prefix for the alloy to remove (keep it if energy shield or mana lands)')},
   {'id':'v3','phase':'alloy','do':'manual','target':{'rune':K('아스트리드의 창의성',"Astrid's Creativity")},'label':K('아스트리드의 창의성 룬 장착',"Socket Astrid's Creativity"),'ts':'9:50'},
   {'id':'v5','phase':'alloy','do':'essence','cur':'Transcendent_Alloy','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':sa_alloy,'chance':1/3,'missDrop':sa_spell},'ts':'10:05',
-   'br':K('방금 엑잘한 줄이 지워지면 → 계속, 주문 피해·공개 줄이 지워지면 → 그 자리 엑잘','The exalted line goes → continue; spell damage or the revealed line goes → exalt that slot')},
+   'br':K('방금 엑잘한 옵션이 지워지면 → 계속, 주문 피해·공개 옵션이 지워지면 → 그 자리 엑잘','The exalted line goes → continue; spell damage or the revealed line goes → exalt that slot')},
   {'id':'v6','phase':'fin','branch':{'of':'v5','when':'ok'},'do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':SA_PRE},'fail':{'goto':'self','via':SA_ANN,'lost':'v2'},'ts':'10:20'},
   {'id':'vm1','phase':'fin','branch':{'of':'v5','when':'miss'},'do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':[{'gi':sa_spell,'tmax':2}]+SA_PRE},'fail':{'goto':'self','via':SA_ANN,'lost':'v2'},'ts':'10:20'},
   {'id':'v7','phase':'fin','do':'note','optional':True,'target':{'runeSwap':[K('아스트리드의 창의성',"Astrid's Creativity"),K('완벽한 철 룬','Perfect Iron Rune')]},'ts':'14:30',

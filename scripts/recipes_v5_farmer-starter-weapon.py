@@ -12,7 +12,7 @@ R.append({
  'id':'farmer-starter-staff','cls':c,'base':base(c,'Sanctified Staff'),'ilvl':73,'difficulty':1,'budget':'low',
  'buildTags':[K('번개','Lightning'),K('주문','Spell'),K('리그 초반','League start'),K('가성비','Budget')],'patch':'0.5.5','created':'2026-11-09','author':FW5,
  'source':{'url':'https://www.youtube.com/watch?v=ITBexsgq2NI','title':'How To Craft Your League Starter Weapon For CHEAP In POE2 0.5.5!','channel':'XTheFarmerX'},
- 'title':K('번개 주문 +5 + 추가 피해 획득 2줄 + 주문 피해 (리그 초반 가성비)','+5 lightning spells + two extra-damage gains + spell damage (league-start budget)'),
+ 'title':K('번개 주문 +5 + 추가 피해 획득 옵션 2개 + 주문 피해 (리그 초반 가성비)','+5 lightning spells + two extra-damage gains + spell damage (league-start budget)'),
  'start':{'rar':'magic','mods':[{'gi':fw_xF,'tmax':2},{'gi':fw_l5,'tmax':1}]},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'suf','kr':'접미','en':'Suffixes'}],
  'nodes':[

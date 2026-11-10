@@ -12,11 +12,11 @@ R.append({
  'id':'sihan-chayula-sceptre','cls':c,'base':base(c,'Stoic Sceptre'),'ilvl':82,'difficulty':2,'budget':'low',
  'buildTags':[K('정신력','Spirit'),K('오라','Aura'),K('룬 수호','Runic Ward')],'patch':'0.5.5','created':'2026-11-09','author':SHS,
  'source':{'url':'https://www.youtube.com/watch?v=-F7pV0Y7BMA','title':'[POE2 0.5.5] 차율라 부패운반자 장비 제작｜셉터 제작 가이드｜매물이 없다면 직접 만들자!','channel':'시한'},
- 'title':K('정신력 분열 + 접근 효과 범위 1티어 + 제작 옵션 2줄','fractured Spirit + T1 presence area + two crafted lines'),
+ 'title':K('정신력 분열 + 접근 효과 범위 1티어 + 제작 옵션 2개','fractured Spirit + T1 presence area + two crafted lines'),
  'start':{'rar':'rare','quality':20,'mods':[{'gi':ss_spirit,'tmax':2,'fr':True},{'junk':'p'}]},
  'phases':[{'id':'suf','kr':'접미','en':'Suffixes'},{'id':'pre','kr':'접두','en':'Prefixes'}],
  'nodes':[
-  {'id':'s1','phase':'suf','do':'base','cost':'base','ts':'1:10','note':K('정신력 % 2티어 이상 분열 + 잡옵 1줄.','Fractured T2+ % Spirit plus one junk line.')},
+  {'id':'s1','phase':'suf','do':'base','cost':'base','ts':'1:10','note':K('정신력 % 2티어 이상 분열 + 잡옵 1개.','Fractured T2+ % Spirit plus one junk line.')},
   {'id':'s2','phase':'suf','do':'manual','target':{'rune':K('아스트리드의 창의성',"Astrid's Creativity")},'label':K('아스트리드의 창의성 룬 장착',"Socket Astrid's Creativity"),'ts':'1:13'},
   {'id':'s3','phase':'suf','do':'chaos','cur':'Chaos_Orb','target':{'gi':ss_aoe,'tmax':1},'fail':{'goto':'self'},'ts':'1:18'},
   {'id':'s4','phase':'suf','do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'junk':'p'},'ts':'1:40'},

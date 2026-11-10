@@ -15,7 +15,7 @@ function make(graph, D, craft, params){
   const base = D.bases.find(b=>b.en===graph.base || b.id===graph.base) || {};
   const cap = graph.cap ? {...graph.cap} : {p:3+(base.pd||0), s:3+(base.sd||0)}, ilvl=graph.ilvl;   // graph.cap: jewels are 2/2
   const G = D.groups;
-  // desecrated-only groups weigh 1000 on the game's scale; in a flat-weight class (jewels, weights unknown) they weigh what an average normal group does (recipes.html dWeight)
+  // desecrated-only groups weigh 1000 on the game's scale; in a flat-weight class (jewels: every modifier weighs the same) they weigh what an average normal group does (recipes.html dWeight)
   const xTW = (()=>{ const ws=G.filter(g=>g.s==='n').flatMap(g=>g.t.map(t=>t[1])).filter(w=>w>0); return ws.reduce((a,w)=>a+w,0)/Math.max(1,ws.length); })();   // graph.xroll: a socketed rune's lines roll on exalts/chaos too, each tier at the average normal tier weight (estimate)
   const dW = (()=>{ const ns=G.filter(g=>g.s==='n'), ws=new Set(ns.flatMap(g=>g.t.map(t=>t[1]))); if(ws.size!==1) return 1000; const tot=ns.map(g=>g.t.filter(t=>t[0]<=graph.ilvl).reduce((a,t)=>a+t[1],0)).filter(x=>x>0); return tot.reduce((a,x)=>a+x,0)/Math.max(1,tot.length); })();
   const P = v => typeof v==='string' && v[0]==='$' ? params[v.slice(1)] : v;

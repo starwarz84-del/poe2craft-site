@@ -16,7 +16,7 @@ def fm_armour(tier):
  'cls':c,'base':base(c,'Flowing Raiment'),'ilvl':79,'difficulty':1,'budget':'low',
  'buildTags':[K('에너지 보호막','Energy Shield'),K('리그 초반','League start'),K('가성비','Budget')],'patch':'0.5.5','created':'2026-11-09','author':K('XTheFarmerX 영상 기반','Based on XTheFarmerX'),
  'source':{'url':'https://www.youtube.com/watch?v=UWrIgHklsPg','title':'INSANELY Cheap Way To Craft Your League Start ALL Of Your Armor For POE2 0.5.5','channel':'XTheFarmerX'},
- 'title':K('에너지 보호막 접두 3줄 (리그 초반 가성비)','three energy shield prefixes (league-start budget)'),
+ 'title':K('에너지 보호막 접두 옵션 3개 (리그 초반 가성비)','three energy shield prefixes (league-start budget)'),
  'start':{'rar':'magic','mods':[{'gi':fa2_flat,'tmax':es}]},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'pre','kr':'접두 세번째 옵션(훼손)','en':'Third prefix (desecrated)'},{'id':'suf','kr':'접미 두번째·세번째 옵션','en':'Suffix options 2–3'}],
  'nodes':[

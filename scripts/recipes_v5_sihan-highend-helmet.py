@@ -16,11 +16,11 @@ R.append({
  'id':'sihan-highend-helmet','cls':c,'base':base(c,'Imperial Greathelm'),'ilvl':82,'sockets':2,'exceptional':{'sockets':1},'difficulty':3,'budget':'medium',
  'buildTags':[K('방어도','Armour'),K('생명력','Life'),K('치명타','Critical')],'patch':'0.5.5','created':'2026-11-09','author':SH5,
  'source':{'url':'https://www.youtube.com/watch?v=CTrIbhQVU8U','title':'[POE2 0.5.5] 하이엔드 투구 제작 방법｜범용 적용 가능｜실전 제작 포함','channel':'시한'},
- 'title':K('생명력 분열 + 방어도 1티어 2줄 + 치명타·방어도 원소 적용','fractured life + two T1 armour lines + crit, armour applies to elemental'),
+ 'title':K('생명력 분열 + 방어도 1티어 옵션 2개 + 치명타·방어도 원소 적용','fractured life + two T1 armour lines + crit, armour applies to elemental'),
  'start':{'rar':'rare','mods':[{'gi':ht_life,'tmax':1,'fr':True},{'junk':'s'}]},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'suf','kr':'접미 먼저','en':'Suffixes first'},{'id':'pre','kr':'접두','en':'Prefixes'}],
  'nodes':[
-  {'id':'h1','phase':'base','do':'base','cost':'base','ts':'13:58','note':K('생명력 최대치 1티어 분열 + 잡옵 1줄.','Fractured T1 maximum life plus one junk line.')},
+  {'id':'h1','phase':'base','do':'base','cost':'base','ts':'13:58','note':K('생명력 최대치 1티어 분열 + 잡옵 1개.','Fractured T1 maximum life plus one junk line.')},
   {'id':'s1','phase':'suf','do':'chaos','cur':'Chaos_Orb','target':{'anyOf':HT_SUF},'fail':{'goto':'self'},'ts':'14:21'},
   {'id':'s2','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Dextral_Exaltation','Omen_of_Greater_Exaltation'],'target':{'anyOf':HT_SUF},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s1'},'ts':'14:50'},
   {'id':'s3','phase':'suf','do':'chaos','cur':'Greater_Chaos_Orb','target':{'anyOf':HT_RES,'replace':'s'},'fail':{'goto':'self','lost':'s2'},'ts':'15:21'},

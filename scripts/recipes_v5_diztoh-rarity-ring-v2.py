@@ -17,7 +17,7 @@ def dz_ring(tier):
  'cls':c,'base':base(c,'Gold Ring'),'ilvl':82 if hi else 81,'difficulty':2,'budget':'low',
  'buildTags':[K('아이템 희귀도','Item rarity'),K('냉기','Cold'),K('가성비','Budget')],'patch':'0.5.5','created':'2026-11-09','author':K('Diztoh 영상 기반','Based on Diztoh'),
  'source':{'url':'https://www.youtube.com/watch?v=GDLDxn6yxEs','title':'I Crafted Gold Rings to Increase my Item Rarity | Path of Exile 2 0.5.5','channel':'Diztoh'},
- 'title':K('희귀도 2줄 + 냉기 저항 + 모든 원소 저항','double rarity + cold res + all resistances'),
+ 'title':K('희귀도 옵션 2개 + 냉기 저항 + 모든 원소 저항','double rarity + cold res + all resistances'),
  'start':{'rar':'magic','mods':[{'gi':rr_rarP,'tmax':rp},{'gi':rr_cres,'tmax':cr}]},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'suf','kr':'접미 세번째 옵션(훼손)','en':'Third suffix (desecrated)'},{'id':'pre','kr':'접두 두번째·세번째 옵션','en':'Prefix options 2–3'}],
  'nodes':[

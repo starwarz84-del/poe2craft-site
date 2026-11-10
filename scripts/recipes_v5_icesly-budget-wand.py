@@ -25,7 +25,7 @@ R.append({
   {'id':'i2','phase':'base','do':'regal','cur':'Perfect_Regal_Orb','target':{'junk':'s'},'ts':'1:41'},
   {'id':'i3','phase':'suf','do':'essence','cur':'Transcendent_Alloy','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':ic_trans},'ts':'2:42'},
   {'id':'i4','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':IC_PRE},'fail':{'goto':'self','via':IC_ANN},'ts':'3:09',
-   'br':K('나쁜 줄이면 그대로 두고 훼손 생략 → 천공의 합금이 지울 후보로.','A bad roll can stay: skip the desecration and let the Celestial Alloy take it.')},
+   'br':K('나쁜 옵션이면 그대로 두고 훼손 생략 → 천공의 합금이 지울 후보로.','A bad roll can stay: skip the desecration and let the Celestial Alloy take it.')},
   {'id':'i5','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':IC_PRE},'fail':{'goto':'self','via':IC_ANN,'lost':'i4'},'ts':'3:29'},
   {'id':'i6','phase':'pre','do':'desecrate','cur':'Preserved_Jawbone','target':{'unrev':'p'},'ts':'3:46'},
   {'id':'i7','phase':'fin','do':'manual','target':{'rune':K('아스트리드의 창의성',"Astrid's Creativity")},'label':K('아스트리드의 창의성 룬 장착',"Socket Astrid's Creativity"),'ts':'4:20'},

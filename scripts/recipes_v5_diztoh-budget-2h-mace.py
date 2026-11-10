@@ -14,7 +14,7 @@ R.append({
  'id':'diztoh-budget-2h-mace','cls':c,'base':base(c,'Massive Greathammer'),'ilvl':84,'sockets':3,'exceptional':{'sockets':1},'difficulty':2,'budget':'low',
  'buildTags':[K('물리','Physical'),K('공격 스킬','Attack skills'),K('가성비','Budget')],'patch':'0.5','created':'2026-11-09','author':DZB,
  'source':{'url':'https://www.youtube.com/watch?v=ITbefGq6V18','title':'How to Craft a Budget Two-Handed Mace in PoE 2 - 0.5 | Step-by-Step','channel':'Diztoh'},
- 'title':K('에센스 2줄(물리 피해 추가 + 공격 스킬 +3) + 쿠르갈 물리','two essence lines (flat physical + attack skills +3) + Kurgal physical'),
+ 'title':K('에센스 옵션 2개(물리 피해 추가 + 공격 스킬 +3) + 쿠르갈 물리','two essence lines (flat physical + attack skills +3) + Kurgal physical'),
  'start':{'rar':'normal','mods':[]},
  'phases':[{'id':'base','kr':'매직 · 에센스','en':'Magic and essence'},{'id':'des','kr':'훼손 · 공격 스킬','en':'Desecration and attack skills'},{'id':'suf','kr':'접미','en':'Suffixes'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[
@@ -29,7 +29,7 @@ R.append({
   {'id':'g9','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],'target':{'anyOf':TM_SUF},'ts':'2:45',
    'br':K('대박 → 완성, 실패: 그대로 완성(영상) / 접미 다시','Hit → done; miss: keep it (video) or redo the suffixes')},
   {'id':'g9b','phase':'suf','do':'note','fallbackFor':'g9','optional':True,'label':K('갈림길: 접미 다시','Fork: redo the suffixes'),'ts':'3:20',
-   'note':K('우측 소멸의 징조 + 소멸의 오브로 접미를 하나씩 제거(공격 스킬 +3이 지워지면 우측 결정화의 징조 + 완벽한 전투의 에센스로 다시) → 상위 찬미의 징조 + 엑잘티드 오브로 2줄.',
+   'note':K('우측 소멸의 징조 + 소멸의 오브로 접미를 하나씩 제거(공격 스킬 +3이 지워지면 우측 결정화의 징조 + 완벽한 전투의 에센스로 다시) → 상위 찬미의 징조 + 엑잘티드 오브로 옵션 2개.',
             'Remove suffixes one at a time with Dextral Annulment + Annulment (if +3 attack skills goes, Dextral Crystallisation + Perfect Essence of Battle again) → Greater Exaltation + Exalted Orb for two lines.')},
   {'id':'g10','phase':'fin','do':'manual','target':{'rune':TM_IRON},'label':K('상위 철 룬 장착','Socket a Greater Iron Rune'),'ts':'4:12'},
   {'id':'g11','phase':'fin','do':'manual','target':{'rune':TM_IRON},'label':K('상위 철 룬 장착','Socket a Greater Iron Rune'),'ts':'4:12'},

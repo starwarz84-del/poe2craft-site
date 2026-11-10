@@ -16,7 +16,7 @@ R.append({
  'id':'diztoh-onehand-mace','cls':c,'base':base(c,'Marauding Mace'),'ilvl':82,'sockets':2,'exceptional':{'sockets':1},'difficulty':3,'budget':'medium',
  'buildTags':[K('물리','Physical'),K('공격 속도','Attack speed'),K('치명타','Critical hit')],'patch':'0.5','created':'2026-11-09','author':DZM,
  'source':{'url':'https://www.youtube.com/watch?v=WDEkEIQFgT4','title':'How to Craft a One-Handed Mace | Double Crafted Mod Tech Explained | PoE 2','channel':'Diztoh'},
- 'title':K('에센스 2줄(공격 속도 + 공격 스킬 +2) + 쿠르갈 물리','two essence lines (attack speed + attack skills +2) + Kurgal physical'),
+ 'title':K('에센스 옵션 2개(공격 속도 + 공격 스킬 +2) + 쿠르갈 물리','two essence lines (attack speed + attack skills +2) + Kurgal physical'),
  'start':{'rar':'normal','quality':20,'mods':[]},
  'phases':[{'id':'base','kr':'매직 · 에센스','en':'Magic and essences'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[
@@ -34,7 +34,7 @@ R.append({
    'br':K('실패: 절사의 징조 + 상위 카오스 오브','Miss: Whittling + Greater Chaos')},
   {'id':'m10','phase':'pre','do':'reveal','target':{'reveal':{'gi':om_kpct},'side':'p','lord':'kurgal','bone':'Preserved_Jawbone'},'fail':{'goto':'m8','via':LIGHT},'ts':'4:46'},
   {'id':'m11','phase':'pre','do':'chaos','cur':'Greater_Chaos_Orb','omens':['Omen_of_Whittling'],'target':{'anyOf':OM_FLAT,'replace':'p'},'fallbackFor':'m9','fail':{'goto':'self'},'ts':'4:55',
-   'br':K('버릴 줄이 공격 속도 에센스(레벨 60)보다 낮을 때만','Only while the junk line is below the attack speed essence (level 60)')},
+   'br':K('버릴 옵션이 공격 속도 에센스(레벨 60)보다 낮을 때만','Only while the junk line is below the attack speed essence (level 60)')},
   {'id':'m12','phase':'fin','do':'divine','cur':'Divine_Orb','target':{'roll':{'gi':om_kpct}},'fail':{'goto':'self'},'ts':'5:12'},
   {'id':'m13','phase':'fin','do':'note','target':{'runeSwap':[OM_ASTRID,K('완벽한 철 룬','Perfect Iron Rune')]},'ts':'5:40'},
   {'id':'m14','phase':'fin','do':'note','ts':'6:17','note':K('선택: 타락(소켓 3개 노림). 건축가의 오브 2차 타락은 아이템이 바뀌거나 사라질 수 있음.','Optional: corrupt for a third socket. A second corruption with an Architect\'s Orb can transform or destroy the item.')},

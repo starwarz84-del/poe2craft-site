@@ -25,11 +25,11 @@ R.append({
  'phases':[{'id':'suf','kr':'접미: 치명타','en':'Suffixes: crit'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'fin','kr':'훼손 공개','en':'Reveal'}],
  'nodes':[
   {'id':'q1','phase':'suf','do':'base','cost':'base','ts':'0:24',
-   'note':K('번개 피해 추가 1티어 분열 + 잡옵 1줄.','Fractured T1 added lightning damage plus one junk line.')},
+   'note':K('번개 피해 추가 1티어 분열 + 잡옵 1개.','Fractured T1 added lightning damage plus one junk line.')},
   {'id':'q2','phase':'suf','do':'chaos','cur':'Chaos_Orb','target':{'anyOf':NQ_SUF},'fail':{'goto':'self'},'ts':'5:15'},
   {'id':'q3','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Dextral_Exaltation'],'target':{'anyOf':NQ_SUF},
    'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'q2'},'ts':'6:00',
-   'br':K('실패: 소멸의 오브. 치명타 줄이 지워지면 카오스 오브부터','Miss: Annulment; if the crit line goes, chaos again')},
+   'br':K('실패: 소멸의 오브. 치명타 옵션이 지워지면 카오스 오브부터','Miss: Annulment; if the crit line goes, chaos again')},
   {'id':'q4','phase':'suf','do':'desecrate','cur':'Preserved_Jawbone','omens':['Omen_of_Dextral_Necromancy'],'target':{'unrev':'s'},'ts':'8:00'},
   {'id':'q5','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':NQ_PRE},'fail':{'goto':'self','via':NQ_SANN},'ts':'8:16'},
   {'id':'q6','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':NQ_PRE},'fail':{'goto':'self','via':NQ_SANN,'lost':'q5'},'ts':'10:39',

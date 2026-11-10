@@ -47,7 +47,7 @@ def sh_boots(tier):
   {'id':'q3','phase':'prefix','branch':{'of':'p1','when':'miss'},'do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':PRED},'side':'p','bone':'Ancient_Rib'},'fail':{'goto':'p1','via':LIGHT},
    'br':K('실패: 빛의 징조 + 소멸의 오브 → {#p1}번부터','Miss: Light + Annulment → back to step {#p1}')},
   {'id':'q4','phase':'prefix','branch':{'of':'p1','when':'miss'},'do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':PRE},'fail':{'goto':'q1','via':LIGHT},
-   'br':K('실패: 빛의 징조 + 소멸의 오브로 훼손 줄 제거 → {#q1}번부터','Miss: remove the desecrated line with Light + Annulment → back to step {#q1}')},
+   'br':K('실패: 빛의 징조 + 소멸의 오브로 훼손 옵션 제거 → {#q1}번부터','Miss: remove the desecrated line with Light + Annulment → back to step {#q1}')},
   {'id':'fz','phase':'prefix','do':'note','note':K('완성. 룬 소켓 2개는 비워 둠(취향껏).','Done. Both rune sockets are left empty (your choice).')}]
     R.append({
  'id':rid,'tierGroup':'sihan-highend-boots-v2','tier':tier,'tierLabel':{'high':K('하이엔드','High-end'),'bal':K('밸런스','Balance'),'ess':K('에센셜','Essential')}[tier],

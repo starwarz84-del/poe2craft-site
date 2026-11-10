@@ -115,7 +115,7 @@ for grp in I['groups']:
         classes[c] = e
 
 out = {'v': 1,
-       'note': {'kr': '부위(클래스)·베이스별로 매직 단계에서 먼저 맞추는 핵심 옵션. 순위 = 우리 레시피에서 실제로 먼저 만든 줄(횟수 순) → IGGM 0.5.0 제작 가이드 요약. 베이스 항목이 미정이면 클래스 항목을 씀. 화면에는 표시하지 않음.',
+       'note': {'kr': '부위(클래스)·베이스별로 매직 단계에서 먼저 맞추는 핵심 옵션. 순위 = 우리 레시피에서 실제로 먼저 만든 옵션(횟수 순) → IGGM 0.5.0 제작 가이드 요약. 베이스 항목이 미정이면 클래스 항목을 씀. 화면에는 표시하지 않음.',
                 'en': 'Core modifiers bought on the magic base first, per class and base. Rank: lines our recipes make first (by count), then the IGGM 0.5.0 crafting guide summary. A base marked 미정 falls back to its class. Not shown on screen.'},
        'sources': {'recipes': 'site/data/recipes.json (start mods, fractured line, magic-stage orbs/essence, first Chaos on a fractured base)',
                    'iggm': 'IGGM POE2 0.5.0 crafting guide (summary given by the user 2026-11-09)'},

@@ -17,7 +17,7 @@ R.append({
  'source':{'url':'https://www.youtube.com/watch?v=p6HIFmJ9mRU','title':'How to Craft a +5 Talisman for Early Endgame | PoE 2 0.5','channel':'Diztoh'},
  'title':K('근접 스킬 +5 + 아마나무 공격 속도','+5 melee skills + Amanamu attack speed'),
  'start':{'rar':'magic','mods':[{'gi':tl_melee,'tmax':1},{'gi':tl_fire,'tmax':3}]},
- 'phases':[{'id':'suf','kr':'접미','en':'Suffixes'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'fin','kr':'7번째 줄 · 마무리','en':'Seventh line and finish'}],
+ 'phases':[{'id':'suf','kr':'접미','en':'Suffixes'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'fin','kr':'7번째 옵션 · 마무리','en':'Seventh line and finish'}],
  'nodes':[
   {'id':'t1','phase':'suf','do':'base','cost':'base','ts':'0:31','note':K('모든 근접 스킬 +5 + 화염 피해 추가가 붙은 매직 부적 구매.','Buy a magic talisman with +5 melee skills and flat fire damage.')},
   {'id':'t2','phase':'suf','do':'essence','cur':'Greater_Essence_of_Seeking','target':{'gi':tl_crit},'ts':'0:50'},
@@ -26,7 +26,7 @@ R.append({
   {'id':'t5','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],'target':{'anyOf':TL_PRE},'ts':'2:14',
    'br':K('만족 → 다음 단계, 아니면 갈림길(접두 다시)','Happy → next step; otherwise the fork (redo prefixes)')},
   {'id':'t5b','phase':'pre','do':'note','fallbackFor':'t5','label':K('갈림길: 접두 다시','Fork: redo prefixes'),'ts':'3:25',
-   'note':K('좌측 소멸의 징조 + 소멸의 오브로 접두를 비움 → 완벽한 엑잘티드 오브 1줄(별로면 좌측 말소의 징조 + 카오스 오브) → 상위 찬미의 징조 + 완벽한 엑잘티드 오브로 2줄.','Clear the prefixes with Sinistral Annulment + Annulment → Perfect Exalt one line (reroll a bad one with Sinistral Erasure + Chaos) → Greater Exaltation + Perfect Exalt for two.')},
+   'note':K('좌측 소멸의 징조 + 소멸의 오브로 접두를 비움 → 완벽한 엑잘티드 오브 옵션 1개(별로면 좌측 말소의 징조 + 카오스 오브) → 상위 찬미의 징조 + 완벽한 엑잘티드 오브로 옵션 2개.','Clear the prefixes with Sinistral Annulment + Annulment → Perfect Exalt one line (reroll a bad one with Sinistral Erasure + Chaos) → Greater Exaltation + Perfect Exalt for two.')},
   {'id':'t6','phase':'fin','do':'quality','cur':'Blacksmiths_Whetstone','target':{'quality':20},'ts':'2:50'},
   {'id':'t7','phase':'fin','do':'manual','target':{'rune':TL_IRON},'label':K('완벽한 철 룬 장착','Socket a Perfect Iron Rune'),'ts':'4:28'},
   {'id':'t8','phase':'fin','do':'manual','target':{'rune':TL_SERLE,'slots':{'s':1}},'label':K('세를의 승리 장착',"Socket Serle's Triumph"),'ts':'4:36'},

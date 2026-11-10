@@ -20,7 +20,7 @@ R.append({
  'start':{'rar':'rare','mods':[{'gi':sk_ele,'tmax':1,'fr':True},{'junk':'p'}]},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'suf','kr':'접미','en':'Suffixes'},{'id':'pre','kr':'접두','en':'Prefixes'}],
  'nodes':[
-  {'id':'k1','phase':'base','do':'base','cost':'base','ts':'3:57','note':K('방어도의 원소 피해 적용 분열 + 잡옵 1줄.','Fractured armour applies to elemental damage plus one junk line.')},
+  {'id':'k1','phase':'base','do':'base','cost':'base','ts':'3:57','note':K('방어도의 원소 피해 적용 분열 + 잡옵 1개.','Fractured armour applies to elemental damage plus one junk line.')},
   {'id':'k2','phase':'suf','do':'manual','target':{'rune':UHTRED},'label':K('우트레드의 성좌 장착',"Socket Uhtred's Sidereus"),'ts':'4:31'},
   {'id':'k3','phase':'suf','do':'chaos','cur':'Chaos_Orb','target':{'gi':sk_chg,'tmax':2},'fail':{'goto':'self'},'ts':'5:03'},
   {'id':'k4','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation','Omen_of_Greater_Exaltation'],'target':{'junk':['p','p']},'ts':'6:21'},

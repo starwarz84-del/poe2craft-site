@@ -61,8 +61,8 @@ def _wand(r, t):
     r['start']['mods'][0]['tmax']=1 if t=='bal' else 2
     pre=[{'gi':ic_lin,'tmax':yT},{'gi':ic_spell,'tmax':yT},{'gi':ic_xL,'tmax':xT},{'gi':ic_xC,'tmax':xT},{'gi':ic_xF,'tmax':xT}]
     i1=_node(r,'i1'); i3=_node(r,'i3'); i7=_node(r,'i7')
-    i1['note']=K('모든 번개 주문 스킬 레벨 +5 매직 완드(접두 잡옵 1줄, 아이템 레벨 81). 화염·냉기 등 다른 원소 +5도 같은 방법.','A magic wand with +5 to all lightning spell skills (one junk prefix, item level 81). Other elements work the same way.')
-    miss=K('번개·주문·추가 피해 획득이면 다음, 빗나가면 그대로 두고 {#i8}에서 좌측 결정화의 징조 + 천공의 합금으로 그 줄을 지움(소멸의 오브 안 씀)',
+    i1['note']=K('모든 번개 주문 스킬 레벨 +5 매직 완드(접두 잡옵 1개, 아이템 레벨 81). 화염·냉기 등 다른 원소 +5도 같은 방법.','A magic wand with +5 to all lightning spell skills (one junk prefix, item level 81). Other elements work the same way.')
+    miss=K('번개·주문·추가 피해 획득이면 다음, 빗나가면 그대로 두고 {#i8}에서 좌측 결정화의 징조 + 천공의 합금으로 그 옵션을 지움(소멸의 오브 안 씀)',
            'Lightning, spell or extra damage → next; a miss stays and the Celestial Alloy eats it at {#i8} (Sinistral Crystallisation) — no Annulment')
     nodes=[i1,
       {'id':'i2','phase':'base','do':'regal','cur':'Perfect_Regal_Orb','omens':['Omen_of_Dextral_Coronation'],'target':{'junk':'s'},'ts':'1:41'},
@@ -70,7 +70,7 @@ def _wand(r, t):
       {'id':'i4','phase':'pre','do':'exalt','cur':'Greater_Exalted_Orb','target':{'anyOf':pre,'asIs':True,'side':'p'},'ts':'3:09','br':miss},
       {'id':'i5','phase':'pre','do':'exalt','cur':'Greater_Exalted_Orb','target':{'anyOf':pre,'asIs':True,'side':'p'},'ts':'3:29','br':miss},
       {'id':'i6','phase':'pre','do':'desecrate','cur':'Preserved_Jawbone','target':{'unrev':'p'},'ts':'3:46',
-       'br':K('엑잘 2줄이 모두 좋을 때만. 하나가 빗나갔으면 {#i8} 다음에 훼손.','Only when both exalts hit; with a miss, desecrate after {#i8}.')},
+       'br':K('엑잘 옵션 2개가 모두 좋을 때만. 하나가 빗나갔으면 {#i8} 다음에 훼손.','Only when both exalts hit; with a miss, desecrate after {#i8}.')},
       i7,
       {'id':'i8','phase':'fin','do':'essence','cur':'Celestial_Alloy','target':{'gi':ic_cel,'chance':1/3,'missDrop':ic_lin},'ts':'4:38',
        'br':K('미공개 훼손이 지워지면 → 완성. 좋은 접두가 지워지면 → 남은 훼손 공개.','Takes the unrevealed desecration → done; takes a good prefix → reveal the desecration.')},
@@ -78,7 +78,7 @@ def _wand(r, t):
        'target':{'reveal':{'anyOf':pre},'side':'p','bone':'Preserved_Jawbone'},'ts':'5:40'}]
     if t=='bal':
         nodes[-1]['fail']={'goto':'self','via':dict(IC_LIGHT, also=[{'cur':'Preserved_Jawbone'},{'cur':'Omen_of_Abyssal_Echoes'}])}
-        nodes[-1]['br']=K('좋은 줄 → 완성, 빗나감: 빛의 징조 + 소멸의 오브 → 보존된 턱뼈로 다시 훼손','Hit → done; miss: Light + Annulment, desecrate again with a Preserved Jawbone')
+        nodes[-1]['br']=K('좋은 옵션 → 완성, 빗나감: 빛의 징조 + 소멸의 오브 → 보존된 턱뼈로 다시 훼손','Hit → done; miss: Light + Annulment, desecrate again with a Preserved Jawbone')
     else:
         nodes[-1]['br']=K('결과 그대로 완성(빛의 징조 안 씀)','Keep whatever comes (no Light)')
     r['nodes']=nodes

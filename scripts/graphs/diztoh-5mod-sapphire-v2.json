@@ -4,7 +4,7 @@
  "cls": "Sapphire",
  "base": "Sapphire",
  "ilvl": 82,
- "note": "Diztoh 5옵션 사파이어(원본 레시피 기록) — 카오스 오브(치명타 접미) → 우측 찬미 + 엑잘(다른 치명타, 빗나가면 소멸의 오브) → 접두 2줄(영상은 엑잘 2개, 그림은 상위 찬미로 표시) → 위력적인 액체 경멸 → 보존된 두개골 → 공개(시전 속도) → 좌측 소멸의 징조로 경멸 줄 제거 → 상위 엑잘 → 카오스 오브(냉기·주문·원소 피해) → 위력적인 액체 흉포함. 주얼 가중치는 추정.",
+ "note": "Diztoh 5옵션 사파이어(원본 레시피 기록) — 카오스 오브(치명타 접미) → 우측 찬미 + 엑잘(다른 치명타, 빗나가면 소멸의 오브) → 접두 옵션 2개(영상은 엑잘 2개, 그림은 상위 찬미로 표시) → 위력적인 액체 경멸 → 보존된 두개골 → 공개(시전 속도) → 좌측 소멸의 징조로 경멸 옵션 제거 → 상위 엑잘 → 카오스 오브(냉기·주문·원소 피해) → 위력적인 액체 흉포함.",
  "params": {
   "v": {
    "kr": "진행",
@@ -44,7 +44,7 @@
     "v": 2
    },
    "desc": {
-    "kr": "공개 결과 그대로, 경멸 줄은 두고 액체 흉포함 한 번",
+    "kr": "공개 결과 그대로, 경멸 옵션은 두고 액체 흉포함 한 번",
     "en": "Keep the reveal, leave the contempt line, Ferocity once"
    }
   },
@@ -56,7 +56,7 @@
     "v": 1
    },
    "desc": {
-    "kr": "영상: 빛의 징조로 다시 공개, 좌측 소멸의 징조로 경멸 줄 제거, 카오스 오브로 좋은 접두 → 액체 흉포함",
+    "kr": "영상: 빛의 징조로 다시 공개, 좌측 소멸의 징조로 경멸 옵션 제거, 카오스 오브로 좋은 접두 → 액체 흉포함",
     "en": "Video: Light retries, Sinistral Annulment for the contempt line, Chaos for a good prefix, then Ferocity"
    }
   }
@@ -183,7 +183,7 @@
     "c4",
     "c4b"
    ],
-   "kr": "경멸 줄 제거",
+   "kr": "경멸 옵션 제거",
    "en": "Contempt line"
   },
   {
@@ -296,7 +296,7 @@
     ]
    },
    "label": {
-    "kr": "희귀 사파이어 (소멸의 오브로 1줄만 남김)",
+    "kr": "희귀 사파이어 (소멸의 오브로 옵션 1개만 남김)",
     "en": "Rare Sapphire (annulled down to one line)"
    },
    "item": [
@@ -487,7 +487,7 @@
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 2줄",
+    "kr": "접두 옵션 2개",
     "en": "Two prefixes"
    },
    "label": {
@@ -535,7 +535,7 @@
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 2줄 (엑잘티드 오브 2개)",
+     "kr": "랜덤 옵션 2개 (엑잘티드 오브 2개)",
      "en": "Two random lines (two Exalted Orbs)"
     }
    ],
@@ -567,6 +567,13 @@
      },
      "to": "c2",
      "res": "ok"
+    },
+    {
+     "if": {
+      "has": "critAny"
+     },
+     "to": "c1x",
+     "res": "fail"
     },
     {
      "to": "h1",
@@ -620,6 +627,43 @@
    "ess": "contS",
    "liquid": true,
    "alt": "contP"
+  },
+  {
+   "id": "c1x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    3
+   ],
+   "keep": [
+    "critAny"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "+1 접두 허용 제거 (우측 소멸의 징조)",
+    "en": "Remove +1 prefix allowed (Dextral Annulment)"
+   },
+   "edges": [
+    {
+     "lost": "critAny",
+     "to": "j1",
+     "port": "right"
+    },
+    {
+     "to": "j2",
+     "port": "right"
+    }
+   ],
+   "side": "s"
   },
   {
    "id": "c2",
@@ -850,7 +894,7 @@
    ],
    "act": "annul",
    "goal": {
-    "kr": "+1 접미 허용 줄 제거 (접두 2줄 중 하나)",
+    "kr": "+1 접미 허용 옵션 제거 (접두 옵션 2개 중 하나)",
     "en": "Remove the +1 suffix line (one of the two prefixes)"
    },
    "label": {
@@ -981,7 +1025,7 @@
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 1줄",
+     "kr": "랜덤 옵션 1개",
      "en": "One random line"
     }
    ]
@@ -1053,7 +1097,7 @@
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 1줄 (접미가 한도를 넘어 접두로만)",
+     "kr": "랜덤 옵션 1개 (접미가 한도를 넘어 접두로만)",
      "en": "One random line (suffixes are over the limit)"
     }
    ]
@@ -1076,20 +1120,6 @@
     "en": "Chaos"
    },
    "edges": [
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "fer"
-       }
-      ]
-     },
-     "to": "ok",
-     "res": "ok"
-    },
     {
      "if": {
       "has": "pre"
