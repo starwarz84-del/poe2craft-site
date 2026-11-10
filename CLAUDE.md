@@ -16,8 +16,8 @@ Path of Exile 2 아이템 제작 사이트. 탭 5개짜리 한 화면이에요.
 
 | 탭 | 원본 파일 | 게시 파일 | 하는 일 |
 |---|---|---|---|
-| 에뮬레이터 | `site/emulator.html` | `pub/emulator.html` | 화폐를 직접 써 보는 제작 시뮬레이터 |
-| 옵션 빌더 | `site/index.html` | `pub/builder.html` | 원하는 옵션 조합 만들기 |
+| 에뮬레이터 | `site/emulator.html` | `pub/emulator.html` | 화폐를 직접 써 보는 제작 시뮬레이터. "다음 결과 확률" 목록 줄마다 티어 선택(그 티어 이상이 붙을 확률) + "올리기"(그 티어로 아이템에 붙이기, 사용자 확정 2026-11-10). 스크린샷 `tools/test/_shots_tier.js` |
+| 옵션 빌더 | `site/index.html` | `pub/builder.html` | 원하는 옵션 조합 만들기. 티어 칩 = 고르면 슬롯에 올림, 고른 줄의 오른쪽 숫자 = "Tn 이상" 확률(같은 면 일반 옵션 가중치 기준, `tierShare`), 칩에 마우스를 올리면 그 티어 이상 확률 |
 | 레시피 | `site/recipes.html` | `pub/recipes.html` | 유튜브 영상 기반 제작 레시피, 단계별 확률(가중치 계산) |
 | 발굴 | `site/reverse.html` | `pub/discover.html` | 아이템 텍스트 → 옵션 분석 → 레시피 초안 → 검산 → 레시피 탭에 올리기 |
 | 특수 베이스 | `site/bases.html` | `pub/bases.html` | 특수 베이스 안내(사용자 확정 2026-11-10: 따로 안내 페이지, 모든 특수 베이스). 데이터 `scripts/build_special.py` → `site/data/special.json`(게임 데이터만: 스킬 부여 목걸이·면 개수 바뀌는 장신구·균열 반지·다른 부위처럼 쓰는 베이스·룬벼림/룬숙련 691개, 그 베이스를 쓰는 레시피 링크 → 껍데기 `poe2-goto`). 레시피를 추가하면 build_special.py 다시 실행. 스크린샷 `tools/test/_shots_bases.js` |

@@ -1,4 +1,5 @@
 EN = {
+" 이상 ":" or better ", " 이상":" or better", "올리기":"Add",
 " · 모든 티어 ":" · all tiers from ", "부터 · 낮추면 높은 티어가 빠져요)":"; lower it to leave out high tiers)",
 "특출난 베이스: ":"Exceptional base: ", " (특출난 +1)":" (exceptional +1)", " (특출난)":" (exceptional)", "아님":"No", "옵션 색상 안내":"Modifier colours",
 "특출난":"Exceptional", "특출난 베이스":"Exceptional base", "룬 소켓 +1":"+1 rune socket", "기본 퀄리티 20% 초과":"Base quality over 20%",

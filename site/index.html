@@ -465,6 +465,11 @@ function shares(){
   S.data.groups.forEach((g,i)=>{ let w=0; if(g.s==='n') g.t.forEach(t=>{ if(t[0]<=S.ilvl) w+=t[1]; }); per[i]=w; if(g.g in tot) tot[g.g]+=w; });
   return per.map((w,i)=>{ const t=tot[S.data.groups[i].g]; return t ? w/t : 0; });
 }
+// chance that a new line on that side is this group at tier ti or better (사용자 2026-11-10: show the chosen tier's odds)
+function tierShare(gi, ti){ const g=S.data.groups[gi]; if(g.s!=='n') return null; let tot=0, w=0;
+  S.data.groups.forEach(x=>{ if(x.s==='n' && x.g===g.g) x.t.forEach(t=>{ if(t[0]<=S.ilvl) tot+=t[1]; }); });
+  g.t.forEach((t,j)=>{ if(j<=ti && t[0]<=S.ilvl) w+=t[1]; }); return tot ? w/tot : 0; }
+const pctTxt = v => (v*100).toFixed(v<0.001?2:1)+'%';
 function goNext(){ const f=firstEmpty(); if(f) setActive(f.g,f.i); }
 function assignAffix(gi, ti){
   if(ti==null) ti = bestTier(gi);
@@ -840,9 +845,11 @@ function renderPool(){
       if(t[0] > S.ilvl) return '';
       const r = reason(gi,ti);
       const label = g.s==='e' ? esc(KR()? t[2].replace(/의 에센스$/,'').replace(/ 에센스$/,'') : t[3].replace(/ Essence of .*$/,'')) : g.s==='x' ? '선택' : `T${ti+1}`;
-      return `<button type="button" class="tier ${word?'word':''} ${sel.get(gi)===ti?'sel':''}" data-g="${gi}" data-t="${ti}" ${r?'disabled':''} title="${esc(tName(t))} · ${esc(tText(t))} · ilvl ${t[0]}">${label}</button>`;
+      const ts = tierShare(gi, ti);
+      return `<button type="button" class="tier ${word?'word':''} ${sel.get(gi)===ti?'sel':''}" data-g="${gi}" data-t="${ti}" ${r?'disabled':''} title="${esc(tName(t))} · ${esc(tText(t))} · ilvl ${t[0]}${ts!=null?` · T${ti+1} 이상 ${pctTxt(ts)}`:''}">${label}</button>`;
     }).join('');
-    const share = g.s==='n' ? `${(sh[gi]*100).toFixed(1)}%<small>비중</small>` : `<small>ilvl ${Math.min(...g.t.map(t=>t[0]))}+</small>`;
+    const st = sel.has(gi) && g.s==='n' ? sel.get(gi) : null;
+    const share = g.s==='n' ? (st!=null ? `${pctTxt(tierShare(gi,st))}<small>T${st+1} 이상</small>` : `${(sh[gi]*100).toFixed(1)}%<small>비중</small>`) : `<small>ilvl ${Math.min(...g.t.map(t=>t[0]))}+</small>`;
     rows[g.g].push({w: g.s==='n'?sh[gi]:-1-(g.t[0][0]/1000), html:`<div class="row ${g.g} ${why?'off':'ok'}"><span class="bar"></span>
       <div class="main"><button type="button" class="t" data-g="${gi}" ${why?'aria-disabled="true"':''}>${tag}${nl(tText(shown))}</button>${why?`<span class="why">${esc(why)}</span>`:''}
       <div class="tiers">${chips}</div></div><div class="share">${share}</div></div>`});

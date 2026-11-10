@@ -315,7 +315,9 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .odds-row .bar{align-self:stretch;border-radius:2px;background:var(--c)}
 .odds-row.p{--c:var(--prefix)} .odds-row.s{--c:var(--suffix)}
 .odds-row .pct{font-family:var(--f-mono);text-align:right;color:var(--muted)}
-.odds-row .tiers{font-size:11px;color:var(--faint)}
+.odds-row .tiers{font-size:11px;color:var(--faint);display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
+.odds-row .tiers select{background:var(--bg);border:1px solid var(--line);border-radius:5px;color:var(--fg);padding:1px 4px;font:inherit;font-size:11px}
+.oadd{background:transparent;border:1px solid var(--line);border-radius:5px;color:var(--muted);font:inherit;font-size:11px;padding:1px 7px;cursor:pointer}.oadd:hover{color:var(--fg);border-color:var(--fg)}
 .oddsbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;font-size:12.5px;color:var(--muted)}
 .oddsbar select{background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:3px 6px;font:inherit;font-size:12.5px}
 .empty{color:var(--faint);font-size:12.5px;padding:8px 0}
@@ -416,7 +418,7 @@ const $ = s => document.querySelector(s);
 const esc = t => String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function warn(m, title){ const w=$('#warn'); $('#warn-t').textContent = title || L('사용할 수 없어요','Can\'t use this'); $('#warn-m').textContent=m; w.hidden=false; $('#warn-ok').focus(); }
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),2000)}
-const S = { lang:'kr', index:null, craft:null, cat:null, cls:null, data:null, base:0, bkind:'normal', item:null, hist:[], spend:{}, omens:new Set(), pane:'odds', ctab:'orb', fore:null, mode:'cur', held:null, opt:{sec:'n', side:'all', q:'', roll:'rand', tier:{}}, oddsAct:'exalt', oddsMin:0, essTier:'all', last:null, reveal:null };
+const S = { lang:'kr', index:null, craft:null, cat:null, cls:null, data:null, base:0, bkind:'normal', item:null, hist:[], spend:{}, omens:new Set(), pane:'odds', ctab:'orb', fore:null, mode:'cur', held:null, opt:{sec:'n', side:'all', q:'', roll:'rand', tier:{}}, oddsAct:'exalt', oddsMin:0, oddsTier:{}, essTier:'all', last:null, reveal:null };
 const cache = {};
 const KR = () => S.lang==='kr';
 const L = (kr,en) => KR()?kr:en;
@@ -1097,7 +1099,10 @@ function renderPane(){
   const rows = [...byG.values()].sort((a,b)=>b.w-a.w);
   P.innerHTML = `<div class="oddsbar"><label for="odds-min">${L('오브 등급','Orb tier')}</label><select id="odds-min">${mins.map(([v,t])=>`<option value="${v}" ${S.oddsMin===v?'selected':''}>${t}</option>`).join('')}</select>
     <span>${L('지금 아이템에 새로 붙을 수 있는 옵션과 확률 (같은 계열·꽉 찬 쪽 제외)','Chance of each new modifier on the current item')}</span></div>` +
-    (rows.length ? rows.map(r=>{ const g=S.data.groups[r.gi], t=g.t[Math.min(...r.tiers)-1]; return `<div class="odds-row ${g.g}"><span class="bar"></span><div>${esc(rollText(tText(t),.5).replace(/\n/g,' / '))}<div class="tiers">T${Math.min(...r.tiers)}~T${Math.max(...r.tiers)} · ${g.g==='p'?L('접두','Prefix'):L('접미','Suffix')}</div></div><span class="pct">${(r.w/tot*100).toFixed(1)}%</span></div>`; }).join('') : `<div class="empty">${L('지금은 새로 붙을 수 있는 옵션이 없어요','No modifiers can be added right now')}</div>`);
+    (rows.length ? rows.map(r=>{ const g=S.data.groups[r.gi], ts=[...r.tiers].sort((a,b)=>a-b), lo=ts[ts.length-1];
+      const pick=Math.min(lo, Math.max(ts[0], S.oddsTier[r.gi]||lo));   // chosen tier: chance of that tier or better (사용자 2026-11-10)
+      const w=opts.filter(o=>o.gi===r.gi && o.ti+1<=pick).reduce((a,o)=>a+o.w,0), t=g.t[pick-1];
+      return `<div class="odds-row ${g.g}"><span class="bar"></span><div>${esc(rollText(tText(t),.5).replace(/\n/g,' / '))}<div class="tiers">${g.g==='p'?L('접두','Prefix'):L('접미','Suffix')} · <select data-otier="${r.gi}" aria-label="${L('티어','Tier')}">${ts.map(x=>`<option value="${x}" ${x===pick?'selected':''}>${x===ts[0]?`T${x}`:`T${ts[0]}~T${x}`}</option>`).join('')}</select> <button type="button" class="oadd" data-oadd="${r.gi}" data-ot="${pick}" title="${L('이 티어로 아이템에 붙이기','Put this tier on the item')}">${L('올리기','Add')}</button></div></div><span class="pct">${(w/tot*100).toFixed(w/tot<0.001?2:1)}%</span></div>`; }).join('') : `<div class="empty">${L('지금은 새로 붙을 수 있는 옵션이 없어요','No modifiers can be added right now')}</div>`);
 }
 function renderPicker(){
   $('#cats').innerHTML = S.index.groups.map(g=>`<button type="button" class="ttab" data-cat="${g.id}" aria-pressed="${g.id===S.cat}">${esc(g.kr)}</button>`).join('');
@@ -1450,7 +1455,15 @@ $('#reveal').addEventListener('click', e=>{
   if(e.target.id==='well-ok' && S.reveal && S.reveal.sel!=null) chooseReveal(S.reveal.sel);
 });
 document.querySelector('.panes').addEventListener('click', e=>{ const b=e.target.closest('[data-pane]'); if(b){ S.pane=b.dataset.pane; renderPane(); } });
-$('#pane').addEventListener('change', e=>{ if(e.target.id==='odds-min'){ S.oddsMin=+e.target.value; renderPane(); } });
+$('#pane').addEventListener('change', e=>{ if(e.target.id==='odds-min'){ S.oddsMin=+e.target.value; renderPane(); } if(e.target.dataset.otier){ S.oddsTier[e.target.dataset.otier]=+e.target.value; renderPane(); } });
+// odds list → put the chosen tier on the item (same as "옵션 직접 붙이기")
+$('#pane').addEventListener('click', e=>{ const b=e.target.closest('[data-oadd]'); if(!b) return; const gi=+b.dataset.oadd, ti=+b.dataset.ot-1, it=S.item, g=S.data.groups[gi];
+  const why=manualWhy(gi); if(why){ warn(why); return; } if(it.mirrored){ warn(L('복제된 아이템은 변경할 수 없어요','Mirrored')); return; }
+  const before=clone(it); it.hinekora=false; S.fore=null;
+  const m={gi, ti, roll:rolls(), m:1}; it.mods.push(m);
+  const pc=it.mods.filter(x=>genOf(x)==='p').length, sc=it.mods.filter(x=>genOf(x)==='s').length;
+  if(it.rarity!=='rare') it.rarity = (pc>1||sc>1||g.s!=='n') ? 'rare' : 'magic';
+  S.hist.unshift({c:MANUAL, before, added:[modText(m)], removed:[], note:'', omens:[]}); S.last={added:new Set([m])}; render(); });
 for(const id of ['kr','en']) $('#lang-'+id).addEventListener('click', ()=>{ S.lang=id; $('#lang-kr').setAttribute('aria-pressed',id==='kr'); $('#lang-en').setAttribute('aria-pressed',id==='en'); renderPicker(); render(); });
 // hover tooltip for currencies
 const tip = $('#tip');
