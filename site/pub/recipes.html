@@ -483,6 +483,8 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcfins{margin:14px 0 4px}.fcfinrow{display:flex;flex-wrap:wrap;gap:14px}
 .fcfin{flex:1 1 280px;max-width:360px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel)}
 .fcfin.on{border-color:var(--rare)}
+.fcfin.go{cursor:pointer;transition:border-color .15s,transform .15s}.fcfin.go:hover,.fcfin.go:focus-visible{border-color:var(--rare);transform:translateY(-2px);outline:none}
+.fcgo{margin:8px 0 0;text-align:right;font-size:12.5px;color:var(--rare);font-weight:600}
 .fcfh{margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;align-items:baseline;font-size:13.5px}
 .fcfh span{color:var(--muted);font-size:12.5px}.fcfh span b{color:var(--rare)}
 .fcfins{padding:0 16px 16px;margin:0}
@@ -1546,7 +1548,8 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
   const cards=g.finals.map(F=>{ const state=F.lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side, label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
       return {gi:T.gi, side:T.s, tmax:l.tmax||null, fr:!!l.fr, des:!!l.des, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
-    return `<div class="fcfin ${on?'on':''}"><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}</div>`; }).join('');
+    const go=r.tierGroup && tierSibs(r).find(x=>x.tier===(F.tier||F.id));   // 완성품 카드 → 그 등급 레시피 탭 (사용자 확정 2026-11-11)
+    return `<div class="fcfin ${on?'on':''} ${go?'go':''}" ${go?`data-rtab="${esc(go.id)}" role="button" tabindex="0" title="${esc(L('이 완성품의 제작 과정 보기','Open the crafting steps for this item'))}"`:''}><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
 function fcOver(g, params){ return {...g, nodes:g.nodes.map(n=>{ const o=(n.over||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); return o ? {...n, ...o.set} : n; })}; }   // per-version node fields (same rule as sim.js)
 function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=fcPrune(fcOver(d.graph, s.params), res), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
@@ -1931,7 +1934,7 @@ $('#detail').addEventListener('click', e=>{
   const ph=e.target.closest('[data-phase]'); if(ph){ const id=ph.dataset.phase; S.navClosed.has(id)?S.navClosed.delete(id):S.navClosed.add(id); ph.closest('.nvp').classList.toggle('closed'); ph.setAttribute('aria-expanded', !S.navClosed.has(id)); return; }
   const sg=e.target.closest('[data-seg]'); if(sg){ const n=r.nodes.find(x=>x.phase===sg.dataset.seg); n && goNode(n.id); return; }
   const tk=e.target.closest('[data-done]'); if(tk){ const d=doneSet(r), id=tk.dataset.done; d.has(id)?d.delete(id):d.add(id); store.set('done:'+r.id,[...d]); keepY(renderDetail); return; }
-  const rt=e.target.closest('[data-rtab]'); if(rt){ const v=rt.dataset.rtab; if(v==='fc'){ S.fcTab=true; renderDetail(); scrollTo(0,0); } else { S.fcTab=false; if(v!==r.id) setOpen(v); else renderDetail(); scrollTo(0,0); } return; }
+  const rt=e.target.closest('[data-rtab]'); if(rt){ const v=rt.dataset.rtab; if(v==='fc'){ S.fcTab=true; renderDetail(); scrollTo(0,0); } else { if(S.simFull) setSimFull(false, true); S.fcTab=false; if(v!==r.id) setOpen(v); else renderDetail(); scrollTo(0,0); } return; }
   const sv=e.target.closest('[data-simver]'); if(sv){ const d=S.simData[tierLead(r).id], v=d?.graph?.versions?.find(x=>x.id===sv.dataset.simver); if(v){ S.simSel={...S.simSel, ...Object.fromEntries(Object.entries(v.params).map(([k,x])=>[k,String(x)]))}; store.set('simSel', S.simSel); keepY(renderDetail); } return; }
   const sk=e.target.closest('[data-simk]'); if(sk){ S.simSel={...S.simSel, [sk.dataset.simk]:sk.dataset.simv}; store.set('simSel', S.simSel); keepY(renderDetail); return; }
   const a=e.target.closest('[data-act]'); if(!a) return; const so=social(r.id);
@@ -1957,6 +1960,7 @@ let sy=false; window.addEventListener('scroll', ()=>{ if(!S.open || sy) return; 
 let kbNav={i:-1,t:0};
 // flowchart full screen: a fixed overlay (the Fullscreen API is blocked in the sandboxed iframe); Esc closes
 function setSimFull(on, quiet){ S.simFull=!!on; document.body.classList.toggle('simfull', S.simFull); if(!quiet) keepY(renderDetail); }
+document.addEventListener('keydown', e=>{ const c=e.target.closest?.('.fcfin.go'); if(c && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); c.click(); } });
 document.addEventListener('keydown', e=>{ if(S.simFull && e.key==='Escape'){ e.preventDefault(); setSimFull(false); } }, true);
 document.addEventListener('keydown', e=>{ if(!S.open || S.simFull || e.target.closest?.('input,textarea,select')) return;
   const dir = {ArrowDown:1, ArrowRight:1, ArrowUp:-1, ArrowLeft:-1}[e.key]; if(!dir || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
