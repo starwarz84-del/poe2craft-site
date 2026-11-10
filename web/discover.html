@@ -90,6 +90,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 /* per-mod analysis */
 .mods{margin-top:18px;display:flex;flex-direction:column;gap:8px}
 .mods-h{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.needguide{font-size:13px;color:var(--text);background:color-mix(in srgb,var(--gold,#c8a95a) 10%,transparent);border:1px solid color-mix(in srgb,var(--gold,#c8a95a) 40%,transparent);border-radius:8px;padding:6px 10px;flex-basis:100%}
 .legend{font-size:12px;color:var(--faint)}
 .mod{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,2fr);gap:6px 16px}
 .mod.p{border-left-color:var(--pre)} .mod.s{border-left-color:var(--suf)}
@@ -122,11 +123,16 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .bad{color:var(--warn)}
 .draft{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;background:color-mix(in srgb,var(--rare) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--rare) 40%,var(--line));border-radius:10px;padding:12px 14px}
 .draft > div{flex:1 1 320px;min-width:0}
-.need{grid-column:1/-1;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
-.needb{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:2px 10px;font:inherit;font-size:12px;cursor:pointer}
+.need{grid-column:2;grid-row:1/span 3;justify-self:end;align-self:center;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:12px;color:var(--muted)}
+@media (max-width:640px){.need{grid-column:1/-1;grid-row:auto;justify-self:start;align-items:flex-start}}
+.need .tl{display:flex;align-items:center;gap:6px}
+.tfix{font-size:12px;color:var(--muted)}
+.needb{border:1px solid var(--gold,#c8a95a);background:transparent;color:var(--gold,#e2c27a);border-radius:8px;padding:7px 16px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-width:132px}
+.needb:hover{background:color-mix(in srgb,var(--gold,#c8a95a) 14%,transparent)}
+.needb.lock{cursor:default;text-align:center}
 .tsel{padding:2px 6px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;font:inherit;font-size:12px}
 .buyl{display:inline-flex;gap:4px;align-items:center;cursor:pointer}
-.needb[aria-pressed="true"]{background:color-mix(in srgb,var(--ok) 22%,transparent);border-color:var(--ok);color:var(--text)}
+.needb[aria-pressed="true"]{background:color-mix(in srgb,var(--ok) 26%,transparent);border-color:var(--ok);color:var(--text)}
 .mod.junkr{opacity:.62}
 .confirm{margin-bottom:10px;background:var(--panel);border:1px dashed var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:6px;font-size:13px}
 .confirm .cr{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
@@ -1177,9 +1183,10 @@ function render(){
       `<span class="tag">${esc(r.t[KR()?2:3])}</span>`].join('');
     const tierT = r.g.s==='n' ? L(`T${r.tierNo} · Lv ${r.t[0]}`,`T${r.tierNo} · lvl ${r.t[0]}`) : L(`Lv ${r.t[0]}`,`lvl ${r.t[0]}`);
     const ri = an.rows.indexOf(r), on = m.fr || S.need.has(ri);
-    const needH = m.fr ? `<div class="need">${L('분열 옵션 — 베이스에 포함','Fractured — part of the base')}</div>`
-      : `<div class="need"><button type="button" class="needb" data-need="${ri}" aria-pressed="${on}">${on?L('✓ 필수 옵션','✓ Must-have'):L('필수로 지정','Mark must-have')}</button>${(()=>{ const cur=S.tsel[ri]||r.tierNo, opts=[]; for(let k=r.tierNo;k<=r.tierCnt;k++) opts.push(k);
-          return `<select class="tsel" data-tier="${ri}" aria-label="${esc(L('티어 범위','Tier range'))}">${opts.map(k=>`<option value="${k}" ${k===cur?'selected':''}>${k===r.tierCnt && k>r.tierNo ? L('아무 티어','Any tier') : k===1 ? L('1티어만','Tier 1 only') : L(`1~${k}티어`,`Tier 1–${k}`)}${k===r.tierNo?L(' (붙여 넣은 값)',' (as pasted)'):''}</option>`).join('')}</select>${on && r.how==='n' && S.last?.an && diff3(S.last.an) ? `<label class="buyl"><input type="checkbox" data-buy="${ri}" ${S.buy.has(ri)?'checked':''}> ${L('매직 베이스로 구입','On the bought magic base')}</label>` : ''}`; })()}</div>`;
+    const nOrd = [...S.need].indexOf(ri)+1;
+    const needH = m.fr ? `<div class="need"><span class="needb lock" aria-pressed="true">${L('✓ 필수 · 분열','✓ Must-have · fractured')}</span><span class="tfix">${L(`T${r.tierNo} 고정`,`T${r.tierNo} fixed`)}</span></div>`
+      : `<div class="need"><button type="button" class="needb" data-need="${ri}" aria-pressed="${on}">${on?L(`✓ 필수 ${nOrd}`,`✓ Must-have ${nOrd}`):L('필수로 선택','Make must-have')}</button>${on ? (()=>{ const cur=S.tsel[ri]||r.tierNo, opts=[]; for(let k=r.tierNo;k<=r.tierCnt;k++) opts.push(k);
+          return `<label class="tl">${L('티어 범위','Tier range')}<select class="tsel" data-tier="${ri}">${opts.map(k=>`<option value="${k}" ${k===cur?'selected':''}>${k===r.tierCnt && k>r.tierNo ? L('아무 티어','Any tier') : k===1 ? L('1티어만','Tier 1 only') : L(`1~${k}티어`,`Tier 1–${k}`)}${k===r.tierNo?L(' (붙여 넣은 값)',' (as pasted)'):''}</option>`).join('')}</select></label>${r.how==='n' && S.last?.an && diff3(S.last.an) ? `<label class="buyl"><input type="checkbox" data-buy="${ri}" ${S.buy.has(ri)?'checked':''}> ${L('매직 베이스로 구입','On the bought magic base')}</label>` : ''}`; })() : ''}</div>`;
     return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml">${esc(m.l)}</div><div class="tags">${tags}<span class="tag">${tierT}</span></div></div>${needH}</div>`;
   }).join('');
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
@@ -1187,7 +1194,7 @@ function render(){
   const canDraft = it.rarity!=='normal' && an.rows.some(r=>!r.unrev) && !an.putrid;
   const runes = it.other.filter(o=>o.k==='rune'), nNeed = an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length, ready = nNeed>0 && S.okQR;
   const confirmH = canDraft ? `<div class="confirm"><b>${L('리버스 전에 확인해 주세요','Before reverse-engineering')}</b>
-    <div class="cr">${L('① 필수 옵션','① Must-have modifiers')}: <b>${nNeed}${L('개','')}</b> <span class="hint">${L('— 위 옵션에서 꼭 있어야 하는 것만 "필수로 지정"을 누르거나 티어 범위를 고르세요. 나머지는 잡옵(결과 그대로)으로 처리해요.','— press "Mark must-have" (or pick a tier range) above on the lines you need; the rest are treated as junk (whatever rolls).')}</span></div>
+    <div class="cr">${L('① 필수 옵션','① Must-have modifiers')}: <b>${nNeed}${L('개','')}</b> <span class="hint">${L('— 위 옵션 오른쪽 "필수로 선택"으로 고르고 티어 범위를 정하세요. 나머지는 잡옵(결과 그대로)으로 처리해요.','— use "Make must-have" on the right of the lines above and set a tier range; the rest are treated as junk (whatever rolls).')}</span></div>
     <div class="cr">${L('② 퀄리티','② Quality')} <input type="number" id="qin" min="0" max="75" value="${it.qual||0}">%${it.qualType?` (${esc(it.qualType)})`:''} <span class="hint">${L('— 기폭제 퀄리티는 옵션 값을 올려서 티어 판단이 달라져요.','— catalyst quality raises modifier values, which changes the tier read.')}</span></div>
     <div class="cr">${L('③ 룬','③ Runes')}: ${runes.length ? runes.map(o=>esc(o.l)).join(' · ') : L('없음','none')}</div>
     <label class="cr"><input type="checkbox" id="qrok" ${S.okQR?'checked':''}> ${L('퀄리티와 룬을 확인했어요','I checked the quality and runes')}</label>
@@ -1195,8 +1202,8 @@ function render(){
         const c = f => { try{ const a2=needAn(an, f), d=makeDraft(it, a2, {buy:buySet(an)}); return d ? draftCost(it, a2, d) : null; }catch(_){ return null; } };
         const v0=c(0), v2=c(2), v3=c(3);
         return `<div class="cr">${L('예상 비용 (대략, 매직 베이스 구입비 제외)','Est. cost (rough, magic base not included)')}: <b>${L('지금 선택','As chosen')} ${fd(v0)} div</b> · ${L('모두 1~2티어','All tier 1–2')} ${fd(v2)} div · ${L('모두 1~3티어','All tier 1–3')} ${fd(v3)} div</div>`; })() : ''}
-    ${ready?'':`<span class="hint">${L('필수 옵션을 1개 이상 지정하고 퀄리티·룬을 확인하면 초안을 만들 수 있어요.','Mark at least one must-have and confirm quality and runes to make the draft.')}</span>`}</div>` : '';
-  $('#mods').innerHTML = `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3></div>${rowsHTML}${otherHTML}` + (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary" id="mk" ${ready?'':'disabled'}>${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '');
+    ${ready?'':`<span class="hint">${L('필수 옵션을 1개 이상 선택하고 퀄리티·룬을 확인하면 초안을 만들 수 있어요.','Mark at least one must-have and confirm quality and runes to make the draft.')}</span>`}</div>` : '';
+  $('#mods').innerHTML = `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3>${canDraft?`<span class="needguide">${L('① 꼭 있어야 하는 옵션을 <b>중요한 것부터</b> 오른쪽 \'필수로 선택\'으로 고르세요 → ② 필수 옵션마다 티어 범위 → ③ 아래에서 퀄리티·룬 확인 → ④ 초안 만들기. 분열 옵션은 항상 필수(티어 고정), 고르지 않은 옵션은 잡옵이에요.','① Pick the lines you must have, <b>most important first</b>, with \'Make must-have\' on the right → ② a tier range for each → ③ confirm quality and runes below → ④ make the draft. Fractured lines are always must-have (tier fixed); unpicked lines are junk.')}</span>`:''}</div>${rowsHTML}${otherHTML}` + (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary" id="mk" ${ready?'':'disabled'}>${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '');
 }
 
 async function run(){
