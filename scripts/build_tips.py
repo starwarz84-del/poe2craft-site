@@ -338,6 +338,14 @@ T+=[
   'title':K('목표 옵션이 그 면 최고 레벨이면 절사를 마음껏','Whittle freely when your targets are the highest level on that side'),
   'body':K('절사의 징조는 요구 레벨이 가장 낮은 옵션을 바꿈. 방패 접두에 뜰 수 있는 옵션의 최고 레벨은 75이고 방어도·방어도 % 1티어가 바로 75라, 이 둘이 붙은 뒤에도 절사는 항상 잡옵만 바꿈. 접미는 최대 저항 1티어(81)·분열 옵션로 막아 두면 접미도 안 건드림. 목표 옵션이 그 면 최고 레벨이 아니면(예: 75 미만) 레벨 높은 잡옵이 뜨는 순간 목표 옵션이 지워지니 면 말소의 징조를 씀.','Whittling changes the lowest-level line. On a shield the highest prefix level is 75, and T1 flat and % armour are exactly 75, so once they land Whittling only ever hits junk. With the suffixes locked by T1 max resistances (81) and the fracture, it never touches them either. If a target is below the side\'s top level, a higher-level junk line makes Whittling take the target instead — use a side Erasure omen there.'),
   'source':{'url':'https://www.youtube.com/watch?v=gQa51XOS98s','title':'[POE2] 방패분쇄 키타바 2부 | 하이엔드 장비 제작 가이드 (워리어 방패·장갑·장화·철퇴)','channel':'탱정-탱커의정석','ts':'20:00'},'recipes':['tankjung-kitava-shield']},
+{'id':'contempt-fill-prefixes','tags':[K('주얼','Jewel'),K('액체','Liquid')],'patch':'0.5.5',
+  'title':K('액체 경멸 전에 접두를 2개 채우기','Fill both prefixes before Liquid Contempt'),
+  'body':K('액체 경멸은 분열을 뺀 옵션 하나를 먼저 지우고 나서 붙음. 접두가 지워져야 "+1 접미 허용"(접두)이 붙고, 접미가 지워지면 좋은 접미를 잃음. 접두 잡옵을 2개 채우면 지워질 옵션 중 접두 비율이 올라가서 성공 1/2 → 2/3(분열 + 좋은 접미 1개 기준). 대신 성공 뒤 접두에 잡옵이 남아 좌측 말소의 징조 + 카오스 오브가 평균 2번 들지만, 경멸 한 번 더 쓰는 것보다 쌈.','Liquid Contempt removes a non-fractured line first, then adds. Only a removed prefix gives "+1 suffix allowed" (a prefix); a removed suffix loses a good one. Two junk prefixes raise the odds from 1/2 to 2/3 (fracture + one good suffix). The leftover junk prefix means about two Sinistral Erasure + Chaos tries afterwards, still cheaper than another Contempt.'),
+  'source':{'url':'https://www.youtube.com/watch?v=zEV8kWwveYQ','title':'[POE2] 제작의 신이 말아주는 가장 비싼 오래된 사파이어 주얼 5줄 제작 방법','channel':'노블이-NoblE','ts':'3:41'},'recipes':['noble-timelost-sapphire','mastert-timelost-emerald','chiba-timelost-emerald']},
+ {'id':'contempt-line-annulled','tags':[K('주얼','Jewel'),K('소멸','Annulment')],'patch':'0.5.5',
+  'title':K('소멸의 오브가 경멸 옵션을 지우면 한 번 더 소멸','If Annulment takes the Contempt line, annul once more'),
+  'body':K('경멸 뒤 세 번째 접미를 엑잘로 노리다 빗나가면 소멸의 오브로 지움. 이때 경멸 옵션이 지워지면 접미가 한도를 넘은 상태라 카오스 오브는 접두만 바꿈 — 소멸의 오브를 한 번 더 써서 빗나간 접미를 지우고(좋은 접미가 지워지면 처음부터), 접두를 다시 채우고 경멸 다시.','After Contempt, a missed third-suffix exalt is annulled. If that takes the Contempt line, suffixes are over the limit and Chaos would only touch prefixes, so annul once more for the missed suffix (losing the good one means starting over), refill the prefixes and Contempt again.'),
+  'source':{'url':'https://www.youtube.com/watch?v=zEV8kWwveYQ','title':'[POE2] 제작의 신이 말아주는 가장 비싼 오래된 사파이어 주얼 5줄 제작 방법','channel':'노블이-NoblE','ts':'5:13'},'recipes':['noble-timelost-sapphire']},
 ]
 json.dump({'v':1,'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
 print(len(T),'tips')

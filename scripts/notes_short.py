@@ -134,7 +134,7 @@ for _r in R:
         if _k in BRANCH: _n['br'] = K(*BRANCH[_k])
 
 # Tip numbers under a step (hover shows the tip): step → tip ids from tips.json (사용자 요청 2026-11-09)
-TIPREF = {('tankjung-kitava-shield','t7'):['whittle-safe-top-level'],('xeno-phys-crossbow','x4'):['block-prefix-with-desecration'], ('xeno-phys-crossbow','x7'):['block-prefix-with-desecration'], ('xeno-phys-crossbow','x8'):['block-prefix-with-desecration'],('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-iceshot-bow','w10'):['desecrate-reroll-no-light'],
+TIPREF = {('mastert-timelost-emerald','t4'):['contempt-fill-prefixes'],('chiba-timelost-emerald','c4'):['contempt-fill-prefixes'],('tankjung-kitava-shield','t7'):['whittle-safe-top-level'],('xeno-phys-crossbow','x4'):['block-prefix-with-desecration'], ('xeno-phys-crossbow','x7'):['block-prefix-with-desecration'], ('xeno-phys-crossbow','x8'):['block-prefix-with-desecration'],('diztoh-vile-robe','v4'):['desecrate-reroll-no-light'], ('diztoh-iceshot-bow','w10'):['desecrate-reroll-no-light'],
  ('sl-flamewave-ring','s2'):['erasure-chaos-cheaper','min-level-lock-tier'], ('mazbro-sceptre','z13'):['reveal-miss-exalt-first'], ('diztoh-socket-gloves','d11'):['reveal-miss-exalt-first'],
  ('absent-amulet-video','a18'):['reveal-miss-exalt-first'], ('ragna-ashot-bow','w5'):['min-level-lock-tier'], ('breach-ring-phys','b6'):['single-res-catalyst'], ('mazbro-sceptre','z11'):['augment-effect-alloy'], ('mazbro-spell5-amulet','z17'):['sanctify-checklist'],
  ('helmet-armour-sl','s1'):['liquid-resist-swap'], ('sl-flamewave-ring','s1'):['liquid-resist-swap'], ('mazbro-caster-amulet','a4'):['chaos-side-swap','sell-offtarget'], ('gold-amulet-6line','k1'):['sell-offtarget'],
@@ -147,7 +147,7 @@ TIPREF = {('tankjung-kitava-shield','t7'):['whittle-safe-top-level'],('xeno-phys
  ('sihan-highend-helmet','p2'):['helmet-prefix-desecration'], ('sihan-highend-helmet','m1'):['cheap-junk-removal'], ('diztoh-es-helmet','e2'):['side-omen-save'],
  ('saveq-absent-amulet','v5'):['attack-quality-plus1'], ('saveq-absent-amulet','v2'):['base-flipping'], ('diztoh-onehand-mace','m10'):['kurgal-speed-offset'], ('diztoh-onehand-mace','m5'):['thrud-last'],
  ('diztoh-as-spear','a7'):['thrud-last'], ('diztoh-as-spear','a3'):['side-omen-save'], ('lilbotq-emerald','l1'):['cheap-jewel-liquid-gamble'], ('lilbotq-emerald','l5'):['plus-one-erasure'], ('lilbotq-emerald','l7'):['jewel-five-mods'],
- ('noble-timelost-sapphire','n1'):['spell-tag-fracture'], ('noble-timelost-sapphire','n4'):['jewel-five-mods'], ('noble-timelost-sapphire','n5'):['chaos-instead-of-annul'], ('noble-timelost-sapphire','n6'):['plus-one-erasure'],
+ ('noble-timelost-sapphire','n1'):['spell-tag-fracture'], ('noble-timelost-sapphire','n4'):['contempt-fill-prefixes','jewel-five-mods'], ('noble-timelost-sapphire','n5'):['contempt-line-annulled'], ('noble-timelost-sapphire','n6'):['plus-one-erasure'],
  ('zenm-timelost-sapphire','z1'):['timelost-profit-batch'], ('diztoh-talisman','t3'):['liege-omen-resist-jewellery'], ('lilbotq-budget-boots','b1'):['cheap-resist-essence'], ('lilbotq-boots','h2'):['augment-rune-before-chaos']}
 _old = lambda r: _OLD.get(r.get('tierGroup') or r['id'], r['id'])
 for _r in R:

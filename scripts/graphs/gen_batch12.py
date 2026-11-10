@@ -11,8 +11,8 @@ FRC=it('s','공격 치명타 명중 확률 (분열)','Attack crit chance (fractu
 RD=it('p','범위 아주 큼','Very large radius',['rad'])
 BASE_TAGS={'cc':{'gi':8},'contS':{'gi':101,'slot':{'s':1}},'contP':{'gi':102,'slot':{'p':1}},'rad':{'gi':99}}
 def contempt(id,pos,ok,fail,item,keep=None):
-    return LIQ(id,pos,'Ancient_Potent_Liquid_Contempt','contS',K('고대 위력적인 액체 경멸 (한 옵션을 지우고 붙음)','Ancient Potent Liquid Contempt (takes a line, then lands)'),
-        [st('p','+1 접미 허용 (접두가 지워지면 성공, 접미가 지워지면 실패)','+1 suffix allowed (a prefix goes: success; a suffix goes: miss)')],
+    return LIQ(id,pos,'Ancient_Potent_Liquid_Contempt','contS',K('고대 위력적인 액체 경멸','Ancient Potent Liquid Contempt'),
+        [st('p','+1 접미 허용','+1 suffix allowed')],
         [{'if':{'all':[{'has':'contS'},{'has':keep}]} if keep else {'has':'contS'},'to':ok,'res':'ok'},{'to':fail,'res':'fail','port':'right'}],item,alt='contP')
 def resetx(id,pos,to):   # a failed contempt: Annulment down to the fracture + one line, then Chaos again (video)
     return cleanup(id,pos,[],[{'to':to,'port':'right'}],K('분열 + 옵션 1개만 남기기','Keep the fracture + one line'),maxJunk=1)
