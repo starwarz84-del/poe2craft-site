@@ -46,9 +46,12 @@ for _t in ('bal','ess'): _grade('lilbotq-armour-shield','lilbotq-armour-shield-v
 # 4. Diztoh 정신력 로브 — Chaos Orb for flat ES (정책 16, cheaper than the video's Greater Chaos in the sim); Balance = Perfect Exalt + Whittling for a resistance,
 #    Essential = lower tiers, Greater Exalts, resistances as they come
 def _robe(r, t):
+    # 영상 자막 확인 2026-11-10: 좌측 찬미의 징조 + 상위 엑잘티드 오브로 에너지 보호막 최대치·% 두 줄, 빗나가면 소멸의 오브(접미가 비어 있어 접두만 지워짐)
     r['start']['mods'][0]['tmax']=4 if t=='bal' else 6
-    v2=_node(r,'v2'); v2['cur']='Chaos_Orb'; v2['target']['tmax']=1 if t=='bal' else 2
-    v3=_node(r,'v3'); v3['target']['tmax']=2 if t=='bal' else 3; v3['cur']='Perfect_Exalted_Orb' if t=='bal' else 'Greater_Exalted_Orb'
+    ANN={'cur':'Orb_of_Annulment'}
+    v2=_node(r,'v2'); v2.update({'do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'fail':{'goto':'self','via':ANN}})
+    v2['target']={'gi':vr_flat,'tmax':1 if t=='bal' else 2}
+    v3=_node(r,'v3'); v3['target']['tmax']=2 if t=='bal' else 3; v3['cur']='Greater_Exalted_Orb'
     if t=='bal':
         _node(r,'v8')['br']=K('가장 낮은 줄이 버릴 줄일 때만. 정신력 점유 효율(레벨 65)이 가장 낮아지면 그대로 타협.','Only while the lowest line is junk; once the reservation line (level 65) is lowest, settle.')
     else:
