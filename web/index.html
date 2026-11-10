@@ -166,16 +166,21 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
   }
 
   // ---------- banner: fire logo on extreme recipes, folds away while a tool page is scrolled ----------
-  // 배너·탭 바는 고정(사용자 2026-11-11: 스크롤하면 위쪽이 접히며 화면 전체가 튀어 올라 어지러움). 다시 접히게 하려면 true.
-  const FOLD = false;
+  const FOLD = true;
   let extreme = false;
   function setCompact(on){ document.body.classList.toggle('compact', !!on); }
   function watchScroll(f){
     let doc; try{ doc = f.contentDocument; }catch(e){ return; } if(!doc) return;
     f._top = 0;
     doc.addEventListener('scroll', ev=>{
-      const t = ev.target, el = (t===doc || t===doc.documentElement || t===doc.body) ? (doc.scrollingElement||doc.documentElement) : t;
-      if(!el || el.scrollHeight - el.clientHeight < 260) return;   // short pages: leave the banner alone (no fold/unfold loop)
+      const t = ev.target;
+      // only the page itself folds/unfolds the banner — an inner box (recipe card, base list) scrolling to its own top
+      // used to unfold the banner mid-page and make the whole tool jump up and down (사용자 2026-11-11)
+      if(!(t===doc || t===doc.documentElement || t===doc.body)) return;
+      const el = doc.scrollingElement||doc.documentElement;
+      // page must stay scrollable even with the banner folded, or folding clamps scrollTop to 0 and it unfolds again (jitter)
+      const bh = document.querySelector('.logo')?.offsetHeight||0, ext = el.scrollHeight - el.clientHeight - (document.body.classList.contains('compact') ? 0 : bh);
+      if(!el || ext < 120) return;   // short pages: leave the banner alone (no fold/unfold loop)
       const top = el.scrollTop, prev = f._top; f._top = top;
       if(f.hidden) return;
       if(top > 40 && top > prev) setCompact(true);
