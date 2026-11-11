@@ -15,10 +15,10 @@
 | banzino-mirror-staff-v2 | vT482uJFESs | high 7,754, bal 4,686 | 5 | 완료 11-11 | A2(서브) | 접미 두·세번째는 영상대로 절사의 징조만(말소 빼기). 마지막 접두 pT는 말소 포함 절사 유지(치명타 1티어 레벨 76이라 절사만으로는 끝나지 않음). 하이엔드 7,754→5,415, 밸런스 4,686→3,325 |
 | xeno-phys-crossbow-v2 | 1TP4aGqxU7Q | high 7,227 | 7 | 진행 중 | A2(서브) |  |
 | barricade-quarterstaff-v2 | B4yShuKydt0 | high 4,068, bal 387 | 2 | 진행 중 | A2(서브) |  |
-| mazbro-bis-chest-v2 | LUB59xlkNtk | high 3,023, bal 960 | 15 | 진행 중 | B(Fable) |  |
+| mazbro-bis-chest-v2 | LUB59xlkNtk | high 3,023, bal 960 | 15 | 대조만 끝남 | B(Fable) | 영상 기록 tools/notes/mazbro-LUB59xlkNtk.md. 접두 엑잘·절사 카오스를 상위로 바꾸면 조금 쌈(시뮬 확인) — 아직 안 고침 |
 | sihan-highend-helmet-v2 | CTrIbhQVU8U | high 2,616, bal 180 | 1 | 대기 |  |  |
 | noble-visceral-quiver-v2 | 2PUEwoePtRs | high 2,240, bal 110 | 3 | 대기 |  |  |
-| diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 진행 중 | B(Fable) | 제작 옵션 한도 위반(l1·l2)이 남아 다시 봄 |
+| diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 대기 | | 제작 옵션 한도 위반(l1·l2) 남음 |
 | breach-ring-video-v2 | RiJixgqBnBY | high 1,956, bal 934 | 4 | 대기 |  |  |
 | sihan-proj-gloves-v2 | DH4jiORLg10 | high 1,659, bal 327 | 2 | 대기 |  |  |
 | sl-blacksteel-gauntlets-v2 | J7J8Jo7ibvE | high 1,649, bal 140 | 4 | 대기 |  |  |
@@ -36,13 +36,13 @@
 | unstoppable-slipstrike-vest-v2 | swF5mwXmZ0k | high 651, bal 176 | 1 | 완료 11-11 | A(Opus) | 영상 40:45~46:30 대조. 첫 카오스 추가, 반복은 상위 카오스, 접두 결정화+심연. 하이엔드 870→651, 밸런스 540→176 |
 | breach-ring-phys-v2 |  | bal 535, ess 89 | 2 | 대기 |  |  |
 | diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 512, bal 340, ess 278 | 1 | 대기 |  |  |
-| mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 완료 11-11 | B(Fable) | 영상 설명란 + 14:06~21:32·41:30~58:00 대조. 단계는 실제 진행과 같음, 숨긴 선 4갈래를 보이게. 504 그대로 |
+| mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 완료 11-11(그림만 확인 안 됨) | B(Fable) | 단계 대조는 함. 화면 캡처가 오른쪽이 잘린 채였음 — 선은 다시 볼 것 |
 | sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 대기 |  |  |
 | mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 대기 |  |  |
 | noble-timelost-sapphire-v2 | zEV8kWwveYQ | high 468, bal 418 | 3 | 대기 |  |  |
 | tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 대기 |  |  |
 | absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 대기 |  |  |
-| gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 완료 11-11 | B(Fable) | 영상 1:54~11:02 대조. 단계는 영상의 경우 나누기와 같음, 숨긴 선 5갈래를 보이게. 354·345 그대로 |
+| gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 다시 해야 함 | B(Fable) | 사용자 지적 11-11 22:13: 영상이 만든 목걸이(정신력 +50 분열 · 에너지 보호막 · 강화의 에센스 / 모든 소환수 스킬 레벨 · 번개 저항 · 재사용 대기시간 회복 속도 훼손)와 플로우차트 옵션(주문 +3 · 주문 피해 · 마나 · 희귀도 · 시전 속도)이 다름. 분열 옵션 표기(+50), 1.A 위치·들어오는 선도 틀림. 앞의 "완료"는 제작 방법 설명 구간만 보고 적은 것이라 취소 |
 | saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 대기 |  |  |
 | mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 대기 |  |  |
 | diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 대기 |  |  |
