@@ -990,7 +990,7 @@ function renderItem(){
     it.mirrored?`<div class="tt-state mir">${L('복제된','Mirrored')}</div>`:'', it.sanctified?`<div class="tt-state san">${L('축성된','Sanctified')}</div>`:'', it.corrupted?`<div class="tt-state cor">${L('타락','Corrupted')}</div>`:''].filter(Boolean);
   const dps = lp.isW && (lp.dps||lp.edps) ? `<div class="dpsbar"><span>DPS: <b>${(lp.dps+lp.edps).toFixed(1)}</b></span><span>${L('물리 DPS','Physical DPS')}: <b>${lp.dps.toFixed(1)}</b></span>${lp.edps?`<span>${L('원소·카오스 DPS','Ele/Chaos DPS')}: <b>${lp.edps.toFixed(1)}</b></span>`:''}</div>` : '';
   $('#item').innerHTML = `<div class="itemwrap">
-    <div class="ttcol"><div class="tt ${r}"><div class="tt-head">${title}${it.exc?`<div class="tt-exc">${L('특출난','Exceptional')} · ${it.exc==='sock'?L('룬 소켓 +1','+1 rune socket'):L('기본 퀄리티 20% 초과','base quality over 20%')}</div>`:''}</div><div class="tt-body">${secs.join('<div class="tt-sep"></div>')}${status.map(x=>'<div class="tt-sep"></div>'+x).join('')}</div></div>${dps}${legendHTML()}</div></div>`;
+    <div class="ttcol"><div class="tt ${r}"><div class="tt-head">${title}${it.exc?`<div class="tt-exc">${L('특출난','Exceptional')} · ${L('룬 소켓 +1','+1 rune socket')}</div>`:''}</div><div class="tt-body">${secs.join('<div class="tt-sep"></div>')}${status.map(x=>'<div class="tt-sep"></div>'+x).join('')}</div></div>${dps}${legendHTML()}</div></div>`;
 }
 // colour guide under the tooltip (same idea as the recipe page)
 function legendHTML(){
