@@ -7,15 +7,15 @@
  "basePrice": {
   "Chaos_Orb": 8
  },
- "note": "사용자 확정 흐름(2026-11-09). 접미 분열·잡옵 분열은 이 아이템으로는 끝(접미 = 가성비 작업/판매, 잡옵 = 버림) — 비용 계산은 둘 다 새 베이스부터(판매 수익은 빼지 않음).",
+ "note": "사용자 확정 흐름(2026-11-09). 접미 분열·잡옵 분열은 이 아이템으로는 끝(접미 = 가성비 작업/판매, 잡옵 = 버림) — 비용 계산은 둘 다 새 베이스부터(판매 수익은 빼지 않음). 2026-11-12 영상 전체 대조(자동 번역 자막 0:00~22:40, 메인 세션): 단계 일치(치명타 확률 1티어일 때만 완벽한 엑잘 6:00, 상위 카오스 + 절사 + 좌측 말소 9:00, 고대 갈비뼈 + 메아리 + 빛의 징조 10:00, 마지막 완벽한 엑잘은 나오는 대로 11:30). 등급 C17: 하이엔드 1티어(치명타 확률·최대치·C), 밸런스 1~2티어, 에센셜 최대치 1~4티어·훼손 공개 한 번. 하이엔드 마지막 접미 도박 = 영상이 원한 희귀도·화염·카오스 저항 1티어(절사 + 상위 카오스, 잡옵이 가장 낮은 레벨일 때만 — 아니면 그대로).",
  "params": {
   "cMiss": {
    "kr": "C 실패 시",
    "en": "If C misses",
    "values": {
     "settle": {
-     "kr": "타협(그대로 D)",
-     "en": "Settle (go to D)"
+     "kr": "랜덤 옵션 (그대로 D)",
+     "en": "Random line (go to D)"
     },
     "erase": {
      "kr": "좌측 말소 반복",
@@ -34,37 +34,102 @@
     "2": {
      "kr": "최대치 1~2티어",
      "en": "Flat T1–2"
+    },
+    "4": {
+     "kr": "최대치 1~4티어",
+     "en": "Flat T1–4"
+    }
+   }
+  },
+  "cT": {
+   "kr": "치명타 확률",
+   "en": "Crit chance",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "hT": {
+   "kr": "C 회피·ES % + 생명력/마나",
+   "en": "C % eva/ES + life/mana",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "L": {
+   "kr": "훼손 공개 빗나감",
+   "en": "Reveal miss",
+   "values": {
+    "1": {
+     "kr": "빛의 징조로 다시",
+     "en": "Light and retry"
+    },
+    "0": {
+     "kr": "그대로",
+     "en": "Keep it"
+    }
+   }
+  },
+  "g": {
+   "kr": "마지막 접미",
+   "en": "Last suffix",
+   "values": {
+    "1": {
+     "kr": "희귀도·화염·카오스 저항 1티어까지 도박",
+     "en": "Gamble for T1 rarity, fire or chaos res"
+    },
+    "0": {
+     "kr": "랜덤 옵션",
+     "en": "Random line"
     }
    }
   }
  },
  "strategies": [
   {
-   "id": "settle-1",
-   "params": {
-    "cMiss": "settle",
-    "bTier": 1
-   }
-  },
-  {
-   "id": "erase-1",
+   "id": "best",
    "params": {
     "cMiss": "erase",
-    "bTier": 1
+    "bTier": 1,
+    "cT": 1,
+    "hT": 1,
+    "L": 1,
+    "g": 1
    }
   },
   {
-   "id": "settle-2",
+   "id": "settle",
    "params": {
     "cMiss": "settle",
-    "bTier": 2
+    "bTier": 2,
+    "cT": 2,
+    "hT": 3,
+    "L": 1,
+    "g": 0
    }
   },
   {
-   "id": "erase-2",
+   "id": "budget",
    "params": {
-    "cMiss": "erase",
-    "bTier": 2
+    "cMiss": "settle",
+    "bTier": 4,
+    "cT": 2,
+    "hT": 3,
+    "L": 0,
+    "g": 0
    }
   }
  ],
@@ -80,7 +145,7 @@
   },
   "crit": {
    "fam": "CriticalStrikeChanceIncrease",
-   "tmax": 2
+   "tmax": "$cT"
   },
   "rarS1": {
    "fam": "ItemFoundRarityIncrease",
@@ -92,11 +157,11 @@
   },
   "hybL": {
    "fam": "BaseLocalDefencesAndLife",
-   "tmax": 3
+   "tmax": "$hT"
   },
   "hybM": {
    "fam": "BaseLocalDefencesAndMana",
-   "tmax": 3
+   "tmax": "$hT"
   },
   "rarP": {
    "fam": "ItemFoundRarityIncreasePrefix",
@@ -132,6 +197,32 @@
     "hybL",
     "hybM",
     "rarP"
+   ]
+  },
+  "fireR": {
+   "fam": "FireResistance",
+   "tmax": 1
+  },
+  "chaosR": {
+   "fam": "ChaosResistance",
+   "tmax": 1
+  },
+  "lastS": {
+   "anyOf": [
+    "rarS1",
+    "fireR",
+    "chaosR"
+   ],
+   "label": {
+    "kr": "희귀도·화염·카오스 저항 1티어",
+    "en": "T1 rarity, fire or chaos res"
+   }
+  },
+  "keepS3": {
+   "anyOf": [
+    "crit",
+    "cdmg",
+    "lastS"
    ]
   }
  },
@@ -200,7 +291,16 @@
     "has": "crit"
    },
    {
-    "has": "cdmg"
+    "any": [
+     {
+      "has": "cdmg"
+     },
+     {
+      "param": {
+       "L": 0
+      }
+     }
+    ]
    },
    {
     "full": "p"
@@ -874,8 +974,8 @@
    },
    "skipTo": "p1",
    "label": {
-    "kr": "A 접미 치명타 확률 1~2티어",
-    "en": "A crit chance suffix T1–2"
+    "kr": "A 접미 치명타 확률",
+    "en": "A crit chance suffix"
    },
    "edges": [
     {
@@ -1496,7 +1596,27 @@
    "goal": {
     "kr": "훼손 옵션 확인",
     "en": "Reveal the desecrated modifier"
-   }
+   },
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "edges": [
+       {
+        "to": "f1",
+        "res": "ok"
+       }
+      ],
+      "omens": [],
+      "goal": {
+       "kr": "훼손 옵션 확인 (나오는 대로)",
+       "en": "Reveal (keep what comes)"
+      }
+     }
+    }
+   ]
   },
   {
    "id": "dx",
@@ -1550,12 +1670,37 @@
    "act": "exalt",
    "cur": "Perfect_Exalted_Orb",
    "label": {
-    "kr": "E 마지막 접미(나오는 대로)",
-    "en": "E last suffix (as it comes)"
+    "kr": "E 마지막 접미",
+    "en": "E last suffix"
    },
    "edges": [
     {
-     "to": "ok"
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 1
+        }
+       },
+       {
+        "not": {
+         "has": "lastS"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepS3",
+         "side": "s"
+        }
+       }
+      ]
+     },
+     "to": "f2",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "ok"
     }
    ],
    "item": [
@@ -1622,7 +1767,123 @@
    "goal": {
     "kr": "접미 세번째 옵션",
     "en": "Third suffix option"
-   }
+   },
+   "show": [
+    "rarS1",
+    "fireR",
+    "chaosR"
+   ]
+  },
+  {
+   "id": "f2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    15
+   ],
+   "act": "chaos",
+   "cur": "Greater_Chaos_Orb",
+   "trim": {
+    "side": "s",
+    "keep": "keepS3"
+   },
+   "label": {
+    "kr": "절사 + 카오스 오브",
+    "en": "Whittling + Chaos"
+   },
+   "goal": {
+    "kr": "마지막 접미를 다시 (가장 낮은 레벨일 때)",
+    "en": "Reroll the last suffix (while it is the lowest level)"
+   },
+   "target": {
+    "kr": "희귀도·화염·카오스 저항 1티어",
+    "en": "T1 rarity, fire or chaos res"
+   },
+   "show": [
+    "rarS1",
+    "fireR",
+    "chaosR"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "lastS"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepS3",
+       "side": "s"
+      }
+     },
+     "to": "f2",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "to": "ok",
+     "res": "ok",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "회피·에너지 보호막 % 증가 1티어",
+     "en": "Eva/ES % T1",
+     "m": "f",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "회피·에너지 보호막 최대치 1티어",
+     "en": "Flat eva/ES T1",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "회피·에너지 보호막 % + 생명력/마나 1~3티어",
+     "en": "Eva/ES % + life/mana T1–3",
+     "m": "n",
+     "tags": [
+      "hybL",
+      "hybM"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 1~2티어",
+     "en": "Crit chance T1–2",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스",
+     "en": "Crit damage bonus",
+     "m": "d",
+     "tags": [
+      "cdmg"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션",
+     "en": "Random modifier",
+     "m": "j"
+    }
+   ]
   },
   {
    "id": "ok",
@@ -1690,11 +1951,15 @@
    "en": "Essential",
    "params": {
     "cMiss": "settle",
-    "bTier": 2
+    "bTier": 4,
+    "cT": 2,
+    "hT": 3,
+    "L": 0,
+    "g": 0
    },
    "desc": {
-    "kr": "최대치 1~2티어 + C 실패 시 타협",
-    "en": "Flat T1–2, settle if C misses"
+    "kr": "최대치 1~4티어, 치명타 확률 1~2티어, 훼손 공개 한 번",
+    "en": "Flat T1–4, crit chance T1–2, one reveal"
    },
    "tier": "ess"
   },
@@ -1704,11 +1969,15 @@
    "en": "Balance",
    "params": {
     "cMiss": "settle",
-    "bTier": 1
+    "bTier": 2,
+    "cT": 2,
+    "hT": 3,
+    "L": 1,
+    "g": 0
    },
    "desc": {
-    "kr": "최대치 1티어 + C 실패 시 타협",
-    "en": "Flat T1, settle if C misses"
+    "kr": "최대치·치명타 확률 1~2티어, C·마지막 접미 랜덤 옵션",
+    "en": "Flat and crit chance T1–2, C and the last suffix random"
    },
    "tier": "bal"
   },
@@ -1718,11 +1987,15 @@
    "en": "High-end",
    "params": {
     "cMiss": "erase",
-    "bTier": 1
+    "bTier": 1,
+    "cT": 1,
+    "hT": 1,
+    "L": 1,
+    "g": 1
    },
    "desc": {
-    "kr": "최대치 1티어 + C 실패 시 말소 반복",
-    "en": "Flat T1, erasure loop if C misses"
+    "kr": "최대치·치명타 확률·C 1티어, C 실패 시 말소 반복, 마지막 접미 도박",
+    "en": "Flat, crit chance and C at T1, erasure loop if C misses, last suffix gambled"
    },
    "tier": "high"
   }
@@ -1757,8 +2030,7 @@
      "des": true
     },
     {
-     "side": "s",
-     "random": true
+     "tag": "lastS"
     }
    ],
    "tier": "high"
@@ -1775,12 +2047,11 @@
     },
     {
      "tag": "flat",
-     "tmax": 1
+     "tmax": 2
     },
     {
-     "tag": "hybL",
-     "tmax": 3,
-     "hybrid": true
+     "side": "p",
+     "random": true
     },
     {
      "tag": "crit",
@@ -1810,7 +2081,7 @@
     },
     {
      "tag": "flat",
-     "tmax": 2
+     "tmax": 4
     },
     {
      "side": "p",
@@ -1821,9 +2092,8 @@
      "tmax": 2
     },
     {
-     "tag": "cdmg",
-     "tmax": null,
-     "des": true
+     "side": "s",
+     "random": true
     },
     {
      "side": "s",
