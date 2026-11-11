@@ -55,8 +55,11 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .bnums{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
 .bnums label{white-space:nowrap}
 .bnums .bn{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-.bnums{column-gap:12px;flex-wrap:nowrap;width:100%}
-.bnums .bn:last-child select{max-width:110px}
+.bnums{column-gap:12px;flex-wrap:wrap;width:100%}
+.bnums #exc{max-width:110px}
+.bnums #skillbn{flex-basis:100%}
+.bnums #skillbn[hidden]{display:none}
+.bnums #skill{flex:1;min-width:0}
 .bnums select{background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:4px 6px;font-size:12px}
 .bnums input{width:48px;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:4px 6px;font-family:var(--f-mono);font-size:12.5px}
 .toolbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
@@ -146,6 +149,7 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .tt-tier.tp{color:#e88a7a} .tt-tier.ts{color:#7fa6ff}
 .tt-mod.des{color:var(--tt-mod);background:linear-gradient(90deg,rgba(120,160,40,.55),rgba(120,160,40,.08) 22%,rgba(120,160,40,0) 40%,rgba(120,160,40,0) 60%,rgba(120,160,40,.08) 78%,rgba(120,160,40,.55));box-shadow:inset 0 1px 0 rgba(170,210,80,.45),inset 0 -1px 0 rgba(170,210,80,.45)}
 .tt-mod.fr{color:#c9b27a}
+.tt-mod.cr{color:#9fd8b0}
 .tt-mod.slot0{min-height:21px;opacity:.55}
 .tt-tier.tr{color:#9fb4ff} .tt-tier.tv{color:#e0605a}
 .tt-cnt{display:flex;justify-content:center;gap:12px;font-family:var(--f-mono);font-size:11px;color:#6d6a62;margin-top:4px}
@@ -374,7 +378,7 @@ footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
     <section class="col itemcol" aria-label="제작 중인 아이템">
       <div class="basebar">
         <button type="button" class="basechip" id="base-open" aria-controls="drawer"><span class="bthumb" id="bb-img"></span><span class="bmeta"><b id="bb-name"></b><small id="bb-cls"></small></span><span class="bchg">베이스 변경</span></button>
-        <div class="bnums"><span class="bn"><label for="ilvl">아이템 레벨</label><input id="ilvl" type="number"></span><span class="bn"><label for="qual">퀄리티</label><input id="qual" type="number" min="0" max="30"></span><span class="bn"><label for="exc">특출난</label><select id="exc"></select></span></div>
+        <div class="bnums"><span class="bn"><label for="ilvl">아이템 레벨</label><input id="ilvl" type="number"></span><span class="bn"><label for="qual">퀄리티</label><input id="qual" type="number" min="0" max="30"></span><span class="bn"><label for="exc">특출난</label><select id="exc"></select></span><span class="bn" id="skillbn" hidden><label for="skill">부여 스킬</label><select id="skill"></select></span></div>
       </div>
       <div class="toolbar">
         <button type="button" class="tbtn" id="undo" title="Ctrl+Z">되돌리기</button>
@@ -470,7 +474,8 @@ const maxModLvl = () => Math.min(86, Math.max(1, ...S.data.groups.filter(g=>g.s=
 function newItem(bi, keepIlvl){
   const b = S.data.bases[bi];
   const ilvl = Math.max(b.dl||1, Math.min(86, keepIlvl ?? maxModLvl()));
-  S.item = { base:bi, ilvl, quality:0, rarity:'normal', mods:[], corrupted:false, corrImp:null, sockets:0, runes:[], impRoll:rolls(), rev:0 };
+  const keepSkill = S.item && S.item.base===bi ? S.item.skill||0 : 0;
+  S.item = { base:bi, ilvl, quality:0, rarity:'normal', mods:[], corrupted:false, corrImp:null, sockets:0, runes:[], impRoll:rolls(), rev:0, skill:keepSkill };
   S.hist = []; S.spend = {}; S.omens = new Set(); S.reveal = null; S.last = null; S.start = null;
   render(); renderPicker();
 }
@@ -511,10 +516,19 @@ function runeFx(){
 }
 const gateNames = () => new Set(runesList().flatMap(r=>r.t.map(t=>t[1])));
 const gated = g => g.s==='x' && gateNames().has(g.sub[1]) && !runeFx().names.has(g.sub[1]);
+// a base with fewer prefix/suffix slots also has fewer magic slots (사용자 확정 2026-11-11):
+// Absent Amulet (-1/-1) can't be magic — normal goes straight to rare with a Regal Orb; Lament (-1 prefix) is suffix-only while magic
+const magicCap = g => Math.max(0, Math.min(1, 1 + (g==='p'?base().pd:base().sd)));
+const canMagic = () => magicCap('p')+magicCap('s') > 0;
+// skill-granting bases roll one skill from a list: keep only the chosen one
+const SKILL_RE = /^(Grants Skill|스킬 부여)/;
+const skillIdx = b => (b.imp[0]||[]).map((x,i)=>SKILL_RE.test(x)?i:-1).filter(i=>i>=0);
+const impOf = (b, lang) => { const sk=skillIdx(b), keep=sk.length>1 ? sk[Math.min(S.item?.skill||0, sk.length-1)] : -1;
+  return (b.imp[lang]||[]).filter((x,i)=>keep<0 || !sk.includes(i) || i===keep); };
 const rareCap = g => { const fx=runeFx(); return Math.max(0, 3 + (g==='p'?base().pd+fx.p:base().sd+fx.s)); };
 const craftedLimit = () => 1 + runeFx().craft;
 const craftedCount = () => S.item.mods.filter(m=>!m.unrev && grp(m).cr).length;
-function maxAff(g){ const it=S.item; if(it.rarity==='normal') return 0; if(it.rarity==='magic') return 1; return rareCap(g); }
+function maxAff(g){ const it=S.item; if(it.rarity==='normal') return 0; if(it.rarity==='magic') return magicCap(g); return rareCap(g); }
 const countGen = g => S.item.mods.filter(m=>genOf(m)===g).length;
 const freeGen = g => countGen(g) < maxAff(g);
 const famSet = (excl) => { const f=new Set(); S.item.mods.forEach(m=>{ if(m!==excl && !m.unrev) grp(m).f.forEach(x=>f.add(x)); }); return f; };
@@ -533,7 +547,7 @@ const QMAX = 20;
 // 최대 퀄리티(사용자 확정 2026-11-11): 기본 20% + 고정 옵션(균열 반지 +20%, 제련된 균열 반지 +25%) + 균열의 에센스 옵션(+20%, 붙어 있는 동안).
 // 옵션이 지워져도 이미 올린 퀄리티는 그대로 — 상한은 퀄리티를 올릴 때만 봄
 const maxQOf = t => { let v=0; for(const m of String(t||'').matchAll(/\+(\d+)% to Maximum Quality/gi)) v+=+m[1]; return v; };
-const qmax = () => QMAX + (base().imp[0]||[]).reduce((v,x)=>v+maxQOf(x),0) + S.item.mods.reduce((v,m)=>m.unrev?v:v+maxQOf(grp(m).t[m.ti][5]),0);
+const qmax = () => QMAX + impOf(base(),0).reduce((v,x)=>v+maxQOf(x),0) + S.item.mods.reduce((v,m)=>m.unrev?v:v+maxQOf(grp(m).t[m.ti][5]),0);
 const sacPart = () => S.cat==='jewellery' ? 'jewellery' : S.cat==='jewel' ? 'jewel' : (S.cat==='weapon'||S.cat==='weapon2'||S.cls==='Quivers') ? 'weapon' : ['helmet','body','gloves','boots','offhand'].includes(S.cat) ? 'armour' : null;
 const qualStep = () => ({normal:5, magic:2, rare:1})[S.item.rarity] || 1;
 const bonusStep = () => rnd()<0.2 ? 2 : 1;   // ilvl 82+: 20% chance of +2 (community data)
@@ -546,7 +560,7 @@ function sacTarget(){ const ci=S.item.corrImp; if(!ci) return null; const cg=S.d
 function pool({gens, minLvl=0, sections=['n'], tagsAny=null, lord=null, rarity}={}){
   const it=S.item, fams=famSet(), out=[];
   const R = rarity || it.rarity;
-  const free = g => it.mods.filter(m=>genOf(m)===g).length < (R==='magic'?1:R==='rare'?rareCap(g):0);
+  const free = g => it.mods.filter(m=>genOf(m)===g).length < (R==='magic'?magicCap(g):R==='rare'?rareCap(g):0);
   const G = (gens||['p','s']).filter(free);
   S.data.groups.forEach((g,gi)=>{
     if(!sections.includes(g.s) || !G.includes(g.g)) return;
@@ -577,14 +591,14 @@ function check(c){
   if(S.item.corrupted && c.act==='divine' && omen('sanctify')) return '타락한 아이템은 축성 불가';
   if(!isCraftable() && !['sacrifice'].includes(c.act)) return '타락한 아이템은 제작 불가';
   switch(c.act){
-    case 'transmute': return r!=='normal' ? '일반 아이템 전용' : addCheck('transmute', c);
-    case 'augment': return r!=='magic' ? '마법 아이템 전용' : n>=2 ? '옵션 자리 없음' : addCheck('augment', c);
-    case 'regal': return r!=='magic' ? '마법 아이템 전용' : addCheck('regal', c);
+    case 'transmute': return r!=='normal' ? '일반 아이템 전용' : !canMagic() ? '마법 불가 · 제왕의 오브 사용' : addCheck('transmute', c);
+    case 'augment': return r!=='magic' ? '마법 아이템 전용' : n>=magicCap('p')+magicCap('s') ? '옵션 자리 없음' : addCheck('augment', c);
+    case 'regal': return !(r==='magic' || (r==='normal' && !canMagic())) ? '마법 아이템 전용' : addCheck('regal', c);
     case 'alchemy': return r==='rare' ? '일반·마법 아이템 전용' : '';
     case 'exalt': return r!=='rare' ? '희귀 아이템 전용' : (!freeGen('p') && !freeGen('s')) ? '옵션 자리 없음' : addCheck('exalt', c);
     case 'chaos': return r!=='rare' ? '희귀 아이템 전용' : !it.mods.some(m=>!m.fr) ? '바꿀 옵션 없음' : removeCheck('chaos');
     case 'annul': return r==='normal' ? '마법·희귀 아이템 전용' : !it.mods.some(m=>!m.fr) ? '제거할 옵션 없음' : removeCheck('annul');
-    case 'divine': return omen('sanctify') && r!=='rare' ? '축성의 징조: 희귀 아이템 전용' : r==='normal' && !(base().imp[0]||[]).length ? '바꿀 수치 없음' : '';
+    case 'divine': return omen('sanctify') && r!=='rare' ? '축성의 징조: 희귀 아이템 전용' : r==='normal' && !impOf(base(),0).length ? '바꿀 수치 없음' : '';
     case 'fracture': return r!=='rare' ? '희귀 아이템 전용' : n<4 ? '옵션 4개 이상 필요' : it.mods.some(m=>m.fr) ? '분열된 옵션 있음' : '';
     case 'vaal': return '';
     case 'artificer': return !maxSockets() ? '소켓 추가 불가' : it.sockets>=maxSockets() ? `소켓 최대 ${maxSockets()}개` : it.corrupted ? '타락한 아이템' : '';
@@ -606,7 +620,7 @@ function addCheck(act, c){
   const gens = pr ? (omen(pr[0]) ? ['p'] : omen(pr[1]) ? ['s'] : null) : null;
   const need = act==='exalt' && omen('greater_exaltation') ? 2 : 1;
   const R = act==='regal' ? 'rare' : act==='transmute' ? 'magic' : it.rarity;
-  const cap = g => R==='magic' ? 1 : rareCap(g);
+  const cap = g => R==='magic' ? magicCap(g) : rareCap(g);
   const sides = gens || ['p','s'];
   const free = sides.reduce((n,g)=>n+Math.max(0, cap(g)-it.mods.filter(m=>genOf(m)===g).length), 0);
   const who = gens ? gens[0] : null;
@@ -631,7 +645,7 @@ function removeCheck(act){
     if(g && !nf.some(m=>genOf(m)===g)) return L(`${sideKr(g)} 바꿀 옵션 없음`, `No ${sideKr(g)} can be changed.`);
     return '';
   }
-  if(omen('light')){ if(!it.mods.some(m=>!m.fr && (m.unrev || grp(m).s==='d'))) return L('빛의 징조: 훼손 옵션 없음','Omen of Light: no desecrated modifier to remove.'); return ''; }
+  if(omen('light')){ if(!it.mods.some(m=>!m.fr && (m.unrev || isDes(m)))) return L('빛의 징조: 훼손 옵션 없음','Omen of Light: no desecrated modifier to remove.'); return ''; }
   const g = sideOf('sin_annulment','dex_annulment'), need = omen('greater_annulment') ? 2 : 1;
   const pool2 = g ? nf.filter(m=>genOf(m)===g) : nf;
   if(!pool2.length) return L(`${sideKr(g)} 제거할 옵션 없음`, `No ${sideKr(g)} can be removed.`);
@@ -671,6 +685,9 @@ function essWhy(c, hit){
 }
 const implText = ci => ci ? rollText(tText(S.data.groups[ci.gi].t[ci.ti||0]), ci.roll) : '';
 const PART = {jaw:['weapon','weapon2'], rib:['helmet','body','gloves','boots','offhand'], collar:['jewellery'], cranium:['jewel']};
+// one colour per modifier: fractured > desecrated (revealed from a bone, any section) > crafted (essence·alloy·mark) > normal
+const isDes = m => !m.unrev && (m.des || grp(m).s==='d');
+const modKind = m => m.fr ? 'fr' : isDes(m) ? 'des' : (grp(m).cr || isMark(m)) ? 'cr' : '';
 function boneCheck(c){
   const it=S.item;
   if(!PART[c.part].includes(S.cat) || (c.part==='rib' && S.cls==='Quivers') ) { if(!(c.part==='jaw' && S.cls==='Quivers')) return '이 부위에 사용 불가'; }
@@ -678,6 +695,7 @@ function boneCheck(c){
   if(it.rarity!=='rare') return '희귀 아이템 전용';
   if(c.maxilvl && it.ilvl>c.maxilvl) return `아이템 레벨 ${c.maxilvl} 이하 전용`;
   if(S.reveal || it.mods.some(m=>m.unrev)) return '미공개 훼손 옵션 먼저 공개';
+  if(!omen('putrefaction') && it.mods.some(isDes)) return L('훼손 옵션은 아이템당 1개','Only one desecrated modifier per item');
   const lord = omen('liege') ? 'amanamu' : omen('sovereign') ? 'ulaman' : omen('blackblooded') ? 'kurgal' : null;
   if(lord && !['weapon','weapon2','jewellery'].includes(S.cat)) return L('군주 징조: 무기·장신구 전용','Lord omens work on weapons and jewellery only');
   const mk = it.mods.find(isMark);
@@ -731,7 +749,7 @@ function apply(c){
       added.push(addRandom({minLvl:c.min})); break; }
     case 'annul': {
       let f=null;
-      if(omen('light')){ f=m=>m.unrev||grp(m).s==='d'; take('light'); }
+      if(omen('light')){ f=m=>m.unrev||isDes(m); take('light'); }
       else if(omen('sin_annulment')){ f=m=>genOf(m)==='p'; take('sin_annulment'); }
       else if(omen('dex_annulment')){ f=m=>genOf(m)==='s'; take('dex_annulment'); }
       const times = omen('greater_annulment') ? 2 : 1; if(times===2) take('greater_annulment');
@@ -829,7 +847,7 @@ function startReveal(){
 function chooseReveal(k){
   const m = S.item.mods[S.reveal.i]; const o = S.reveal.opts[k];
   const before = clone(S.item);
-  delete m.unrev; m.gi=o.gi; m.ti=o.ti; delete m.bone; delete m.lord; delete m.minLvl;
+  delete m.unrev; m.gi=o.gi; m.ti=o.ti; m.des=true; delete m.bone; delete m.lord; delete m.minLvl;
   S.hist.unshift({c:{id:'reveal', kr:'훼손 옵션 공개', en:'Reveal', icon:''}, before, added:[modText(m)], removed:[], note:'', omens:[]});
   S.reveal = null; S.last={added:new Set([m])}; render();
 }
@@ -867,7 +885,7 @@ function tierTag(m){
 function localProps(){
   const b=base(), en=b.props[0]||[], loc=b.props[KR()?1:0]||[], it=S.item;
   const lines=[]; it.mods.forEach(m=>{ if(!m.unrev) rollText(grp(m).t[m.ti][5], m.roll, m.m||1).split('\n').forEach(x=>lines.push(x.trim())); });
-  (b.imp[0]||[]).forEach(x=>rollText(x,it.impRoll).split('\n').forEach(y=>lines.push(y.trim())));
+  impOf(b,0).forEach(x=>rollText(x,it.impRoll).split('\n').forEach(y=>lines.push(y.trim())));
   if(it.corrImp) rollText(S.data.groups[it.corrImp.gi].t[it.corrImp.ti||0][5], it.corrImp.roll).split('\n').forEach(y=>lines.push(y.trim()));
   (it.runes||[]).slice(0,it.sockets).forEach(r=>{ const t=r&&runeAt(r); if(t) t[3].split('\n').forEach(y=>lines.push(y.trim())); });
   const st={ele:[0,0], flat:{Physical:[0,0]}, incPhys:0, incAS:0, crit:0, fd:{Armour:0,'Evasion Rating':0,'Energy Shield':0}, id:{Armour:0,'Evasion Rating':0,'Energy Shield':0}};
@@ -917,6 +935,8 @@ function fitCol(){ const c=document.querySelector('.itemcol'); if(c) c.classList
 addEventListener('resize', fitCol);
 function render(){ renderItem(); renderReveal(); renderShelves(); renderPane(); renderLast(); renderBasebar(); renderOmenbar(); fitCol();
   $('#qual').max = qmax()+10; $('#ilvl').min = base().dl||1; $('#ilvl').max = 86; $('#ilvl').value = S.item.ilvl; $('#ilvl').title = L(`모든 옵션 티어가 나오는 레벨: ${maxModLvl()} · 낮추면 그 레벨 이하 옵션만`,`All tiers roll from ${maxModLvl()}; lower it to leave out high-level tiers`); $('#qual').value = S.item.quality;
+  { const sk=skillIdx(base()); $('#skillbn').hidden = sk.length<2;
+    $('#skill').innerHTML = sk.length<2 ? '' : sk.map((ii,k)=>`<option value="${k}" ${(S.item.skill||0)===k?'selected':''}>${esc((base().imp[KR()?1:0][ii]||'').replace(/^(스킬 부여|Grants Skill): /,''))}</option>`).join(''); }
   $('#exc').innerHTML = [['',L('아니요','No')],['sock',L('룬 소켓 +1','+1 socket'),!base().sock]]   // quality is raised separately while crafting (사용자 2026-11-11)
     .map(([v,t,off])=>`<option value="${v}" ${off?'disabled':''} ${(S.item.exc||'')===v?'selected':''}>${t}</option>`).join('');
   $('#undo').disabled = !S.hist.length;
@@ -933,7 +953,7 @@ function affected(){
   if(o.has('whittling') && want('chaos') && nf.length){ const low=Math.min(...nf.map(m=>grp(m).t[m.ti][0])); pick('whittling', nf.filter(m=>grp(m).t[m.ti][0]===low)); }
   else if(o.has('sin_erasure') && want('chaos')) pick('sin_erasure', side('p'));
   else if(o.has('dex_erasure') && want('chaos')) pick('dex_erasure', side('s'));
-  else if(o.has('light') && want('annul')) pick('light', nf.filter(m=>grp(m).s==='d'));
+  else if(o.has('light') && want('annul')) pick('light', nf.filter(m=>m.unrev||isDes(m)));
   else if(o.has('sin_annulment') && want('annul')) pick('sin_annulment', side('p'));
   else if(o.has('dex_annulment') && want('annul')) pick('dex_annulment', side('s'));
   else if(o.has('sin_crystal') && (!held||held==='essence')) pick('sin_crystal', side('p'));
@@ -964,16 +984,16 @@ function renderItem(){
   const runeLines = runeOn.map(t=>{ const bd=KR()?t[4]:t[5]; return `<div class="tt-mod rune">${rtag}${esc(runeTxt(t))}${bd?`<button type="button" class="bond-tg" data-bond aria-pressed="${!!S.showBond}" title="${L('결속 효과 보기','Show bonded effect')}">${L('결속','Bond')}</button>`:''}</div>${bd&&S.showBond?`<div class="tt-mod rune bond">${L('결속됨','Bonded')}: ${esc(bd)}</div>`:''}`; });
   for(let i=runeOn.length;i<(it.sockets||0);i++) runeLines.push(`<div class="tt-mod slot0">${rtag}</div>`);
   const ench = it.corrImp ? `<div class="tt-mod ${S.data.groups[it.corrImp.gi].s==='u'?'sac':'ench'}"><span class="tt-tier tv">Vaal</span>${esc(implText(it.corrImp))}</div>` : '';
-  const imps = (b.imp[KR()?1:0]||[]).filter(x=>!/hidden|\[\d+\]/i.test(x)).map(x=>`<div class="tt-mod">${esc(rollText(x,it.impRoll))}</div>`);
+  const imps = impOf(b, KR()?1:0).filter(x=>!/hidden|\[\d+\]/i.test(x)).map(x=>`<div class="tt-mod">${esc(rollText(x,it.impRoll))}</div>`);
   // explicit mods: prefixes, suffixes, then desecrated (game/trade order), tier tag in the left gutter
   // grouped by slot side so empty slots read in place: prefixes, then suffixes (desecrated last within each side)
-  const rank = m => (genOf(m)==='p'?0:2) + ((m.unrev || grp(m).s==='d') ? 1 : 0);
+  const rank = m => (genOf(m)==='p'?0:2) + ((m.unrev || isDes(m)) ? 1 : 0);
   const order = [...it.mods].sort((a,c)=>rank(a)-rank(c));
-  const capOf = g => r==='magic' ? 1 : r==='rare' ? rareCap(g) : 0;
+  const capOf = g => r==='magic' ? magicCap(g) : r==='rare' ? rareCap(g) : 0;
   const tag = (m,txt) => `<span class="tt-tier ${genOf(m)==='p'?'tp':'ts'}">${esc(txt)}</span>`;
   const mods = order.map(m=>m.unrev
     ? `<div class="tt-mod unrev des ${S.last?.added.has(m)?'new':''}" aria-label="${esc(modText(m))}">${tag(m, m.unrev==='p'?'P?':'S?')}<span class="glyph" aria-hidden="true">${glyphs(m)}</span></div>`
-    : `<div class="tt-mod ${m.fr?'fr':''} ${aff.set.has(m)?'aff':''} ${grp(m).s==='d'?'des':''} ${S.last?.added.has(m)?'new':''}">${tag(m, tierTag(m))}${esc(modText(m))}</div>`);
+    : `<div class="tt-mod ${modKind(m)} ${aff.set.has(m)?'aff':''} ${S.last?.added.has(m)?'new':''}">${tag(m, tierTag(m))}${esc(modText(m))}</div>`);
   // empty slots: just the side label, at the end of each side
   ['p','s'].forEach(g=>{ const n=Math.max(0, capOf(g)-it.mods.filter(m=>genOf(m)===g).length); if(!n) return;
     const at = g==='p' ? mods.length - order.filter(m=>genOf(m)==='s').length : mods.length;
@@ -994,7 +1014,7 @@ function renderItem(){
 }
 // colour guide under the tooltip (same idea as the recipe page)
 function legendHTML(){
-  const it=[['#8888ff',L('일반 옵션','Normal')],['#c9b27a',L('분열 옵션','Fractured')],['linear-gradient(90deg,rgba(120,160,40,.9),rgba(120,160,40,.2))',L('훼손 옵션','Desecrated')],['#9be86a',L('공개 전 훼손','Unrevealed')],
+  const it=[['#8888ff',L('일반 옵션','Normal')],['#c9b27a',L('분열 옵션','Fractured')],['linear-gradient(90deg,rgba(120,160,40,.9),rgba(120,160,40,.2))',L('훼손 옵션','Desecrated')],['#9be86a',L('공개 전 훼손','Unrevealed')],['#9fd8b0',L('제작 옵션','Crafted')],
     ['#9fb4ff',L('룬 옵션','Rune')],['#e0605a',L('타락 옵션','Corruption')],['#ff9a3c',L('징조로 바뀔 옵션','Will change')]];
   return `<ul class="olegend" aria-label="${L('옵션 색상 안내','Modifier colours')}">${it.map(([c,t])=>`<li><i style="background:${c}"></i>${esc(t)}</li>`).join('')}</ul>`;
 }
@@ -1196,6 +1216,7 @@ $('#bq').addEventListener('input', e=>{
 });
 $('#bsearch').addEventListener('click', async e=>{ const b=e.target.closest('[data-bi]'); if(!b) return; await loadClass(b.dataset.cls); newItem(+b.dataset.bi); $('#bq').value=''; $('#bq').dispatchEvent(new Event('input')); openDrawer(false); });
 $('#ilvl').addEventListener('change', e=>{ S.item.ilvl = Math.max(base().dl||1, Math.min(86, +e.target.value||maxModLvl())); render(); });
+$('#skill').addEventListener('change', e=>{ S.item.skill=+e.target.value; render(); });
 $('#exc').addEventListener('change', e=>{ const v=e.target.value||null, it=S.item; it.exc=v;
   if(v==='qual' && it.quality<=20) it.quality=25;
   if(v!=='qual' && it.quality>20 && !it.infused) it.quality=20;

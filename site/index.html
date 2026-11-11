@@ -405,7 +405,7 @@ function resetItem(base){
   S.pick = {};
   if(base!=null) S.base = base;
   S.ilvl = S.ilvlBy[S.cls+'/'+S.base] ?? maxModLvl(); S.infused = false; S.quality = 20;
-  S.slots = emptySlots(); S.mult = emptyMult(); S.meta = emptyMeta(); S.corr = 0; S.exc = ''; S.sac = false; S.imp = []; S.catalyst = ''; S.sub.affix = 'all';
+  S.slots = emptySlots(); S.mult = emptyMult(); S.meta = emptyMeta(); S.corr = 0; S.exc = ''; S.skill = 0; S.sac = false; S.imp = []; S.catalyst = ''; S.sub.affix = 'all';
   syncIlvl();
   const f = firstEmpty(); setActive(f.g, f.i);
 }
@@ -441,6 +441,7 @@ function selectBase(i){
   if(curBase().rk!==prevRk) S.slots.k=[null,null,null,null];
   if(S.corr===2 && !baseSockets()) S.corr=-1;
   if(!baseSockets()) S.exc='';
+  S.skill = 0; S.imp = [];
   trimSockets();
   if(S.active.i>=maxOf(S.active.g)) goNext();
   if(S.active.i>=maxOf(S.active.g)) setActive('p',0);
@@ -584,7 +585,13 @@ function reqLevel(){
 // roll an implicit line at a slider position (0–100) or the global roll mode
 function rollAt(t,pos){ const f = pos==null ? ROLLF[S.roll] : pos/100;
   return t.replace(/\((\d+(?:\.\d+)?)—(\d+(?:\.\d+)?)\)/g,(m,a,b)=>{ const v=+a+(+b-+a)*f; return (a.includes('.')||b.includes('.')) ? (+v.toFixed(2)).toString() : String(Math.round(v)); }); }
-const implicits = lang => (curBase().imp[lang]||[]).filter(x=>!/hidden|\[\d+\]/i.test(x));
+// skill-granting bases (Lament·Portent·Absent …) roll one skill from a list: keep only the chosen one (사용자 확정 2026-11-11)
+const SKILL_RE = /^(Grants Skill|스킬 부여)/;
+const skillIdx = () => (curBase().imp[0]||[]).map((x,i)=>SKILL_RE.test(x)?i:-1).filter(i=>i>=0);
+const implicits = lang => { const sk=skillIdx(), keep=sk.length>1 ? sk[Math.min(S.skill||0, sk.length-1)] : -1;
+  return (curBase().imp[lang]||[]).filter((x,i)=>!/hidden|\[\d+\]/i.test(x) && (keep<0 || !sk.includes(i) || i===keep)); };
+// a base with fewer prefix/suffix slots also has fewer magic slots (Absent: none → normal goes straight to rare)
+const magicCap = g => Math.max(0, Math.min(1, 1 + (g==='p'?curBase().pd:curBase().sd)));
 // on wands/staves/sceptres quality raises the quality of the granted spell skill
 const skillQ = x => qualityKind()==='caster' && S.quality>0 && /^(스킬 부여|Grants Skill)/.test(x) ? ` (${KR()?'스킬 퀄리티':'Skill Quality'} +${S.quality}%)` : '';
 const SAC_ORB = () => { const g=S.cat; if(g==='jewellery') return ['카마사의 희생의 오브',"Kamasa's Orb of Sacrifice"]; if(g==='jewel') return ['유굴의 희생의 오브',"Yugul's Orb of Sacrifice"];
@@ -689,7 +696,7 @@ function hash(str){ let h=2166136261; for(const c of str){ h^=c.charCodeAt(0); h
 function rarity(){
   const p=S.slots.p.slice(0,maxOf('p')).filter(Boolean), s=S.slots.s.slice(0,maxOf('s')).filter(Boolean);
   if(!p.length && !s.length) return 'normal';
-  if(p.length<=1 && s.length<=1 && ![...p,...s].some(v=>S.data.groups[v.gi].s!=='n')) return 'magic';
+  if(p.length<=magicCap('p') && s.length<=magicCap('s') && ![...p,...s].some(v=>S.data.groups[v.gi].s!=='n')) return 'magic';
   return 'rare';
 }
 function rareName(){
@@ -815,6 +822,7 @@ function renderCard(){
       <div class="item-sub"><span class="rar ${rarity()}" style="margin:0 6px 0 0">${{normal:'일반',magic:'마법',rare:'희귀'}[rarity()]}</span>${S.exc?'<span class="rar exc" style="margin:0 6px 0 0">특출난</span>':''}${esc(KR()?S.data.kr:S.data.en)} · 아이템 레벨 ${S.ilvl}${b.sp?' · 특수 베이스('+KIND[b.sp][0]+')':''}${b.rk?' · 소켓 효과: '+({gloves:'장갑',helmet:'투구',boots:'장화'}[b.rk])+' 기준':''}</div>
       ${S.corr?'<div class="corr-badge">타락됨</div>':''}</div></div>
     ${props.length||imps.length?`<div class="props">${props.join('')}${imps.join('')}</div>`:''}
+    ${skillIdx().length>1?`<div class="qrow"><label for="skill">부여 스킬</label><select id="skill">${skillIdx().map((ii,k)=>`<option value="${k}" ${(S.skill||0)===k?'selected':''}>${esc((curBase().imp[LB()][ii]||'').replace(/^(스킬 부여|Grants Skill): /,''))}</option>`).join('')}</select></div>`:''}
     ${base?`<div class="qrow"><label for="exc">특출난 베이스</label><select id="exc"><option value="">아니요</option><option value="sock" ${S.exc==='sock'?'selected':''}>룬 소켓 +1</option></select></div>`:''}
     <div class="qrow"><label for="ilvl">아이템 레벨</label><input id="ilvl" type="number" min="${baseDL()}" max="${ILVL_MAX}" value="${S.ilvl}"><span>${baseDL()}~${ILVL_MAX} · 모든 티어 ${maxModLvl()}+</span></div>
     ${qualityKind()?`<div class="qrow"><label for="qual">퀄리티</label><input id="qual" type="number" min="0" max="${maxQuality()}" value="${S.quality}"><span>% (최대 ${maxQuality()}%)</span>
@@ -922,7 +930,7 @@ function code(){
     p:S.slots.p.map(v=>v?[v.gi,v.ti]:0), s:S.slots.s.map(v=>v?[v.gi,v.ti]:0),
     k:S.slots.k.map(v=>v?[v.ri,v.ti]:0), i:S.slots.c[0]?[S.slots.c[0].gi,S.slots.c[0].ti]:0,
     f:S.slots.f.map(v=>v?[v.gi,v.ti]:0), m:0,
-    q:S.quality, e:S.exc||0, inf:S.infused?1:0, ct:S.catalyst, im:S.imp, sc:S.sac?1:0,
+    q:S.quality, e:S.exc||0, sk:S.skill||0, inf:S.infused?1:0, ct:S.catalyst, im:S.imp, sc:S.sac?1:0,
     mt:['p','s'].map(g=>S.meta[g].map(x=>[x.fr?1:0,x.need?1:0,x.tmin??-1]))};
   return 'P2B' + btoa(unescape(encodeURIComponent(JSON.stringify(st))));
 }
@@ -973,7 +981,7 @@ async function loadCode(str){
     S.mult = st.m ? {p:pad(st.m.slice(0,h)).map(x=>x||100), s:pad(st.m.slice(h)).map(x=>x||100), f:[100,100,100]} : emptyMult();
     S.bkind = curBase().sp ? 'special' : 'normal';
     S.meta = emptyMeta(); if(st.mt) ['p','s'].forEach((g,gi)=>st.mt[gi].forEach((x,i)=>{ if(S.meta[g][i]){ S.meta[g][i]={fr:!!x[0],need:!!x[1],tmin:null}; if(x[2]>=0 && S.slots[g][i]) S.slots[g][i].ti=x[2]; } }));
-    S.exc = st.e==='sock' ? 'sock' : ''; S.infused = !!st.inf; S.quality = st.q ?? 20; S.catalyst = st.ct || ''; S.imp = st.im || []; S.sac = !!st.sc; syncIlvl();
+    S.exc = st.e==='sock' ? 'sock' : ''; S.skill = st.sk||0; S.infused = !!st.inf; S.quality = st.q ?? 20; S.catalyst = st.ct || ''; S.imp = st.im || []; S.sac = !!st.sc; syncIlvl();
     const f = firstEmpty(); if(f) setActive(f.g,f.i); else setActive('p',0);
     renderBases(); render(); toast('조합 불러옴');
   }catch(e){ console.error(e); toast('코드 읽기 실패 · 전체를 정확히 붙여 넣었는지 확인'); }
@@ -1035,6 +1043,7 @@ $('#card').addEventListener('keydown', e=>{ if((e.key==='Enter'||e.key===' ') &&
 $('#card').addEventListener('change', e=>{
   if(e.target.id==='ilvl'){ S.ilvl = Math.max(baseDL(), Math.min(ILVL_MAX, +e.target.value||maxModLvl())); S.ilvlBy[baseKey()] = S.ilvl; render(); return; }
   if(e.target.id==='infuse'){ S.infused = e.target.checked; if(!S.infused && S.quality>maxQuality()) S.quality=maxQuality(); else if(S.infused) S.quality=maxQuality(); render(); return; }
+  if(e.target.id==='skill'){ S.skill=+e.target.value; S.imp=[]; render(); return; }
   if(e.target.id==='exc'){ S.exc=e.target.value; trimSockets(); render(); return; }
   if(e.target.id==='qual'){ S.quality=Math.max(0,Math.min(maxQuality(),+e.target.value||0)); render(); return; }
   if(e.target.id==='catalyst'){ S.catalyst=e.target.value; render(); return; }

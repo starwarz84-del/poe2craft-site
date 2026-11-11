@@ -93,3 +93,4 @@ EN.update({'모든 티어':'all tiers'})
 EN.update({'접두 옵션':'Prefixes', '접미 옵션':'Suffixes', '모두':'All', '기타':'Other', '필수 옵션':'Required', '유효 옵션':'Nice to have',
  '바알 오브 타락 고정 옵션 (1개)':'Vaal Orb corruption implicit (one)', ' · 타락 고정 옵션 강화 + 무작위 옵션 1개 제거':' · empowers the corruption implicit, removes one random modifier',
  '이 아이템에는 타락 옵션 없음':'No corruption modifiers for this item', '(필수 옵션)':'(required)', '(유효 옵션)':'(nice to have)'})
+EN.update({'부여 스킬':'Granted skill', '마법 불가 · 제왕의 오브 사용':'Cannot be magic · use a Regal Orb'})
