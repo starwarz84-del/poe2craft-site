@@ -71,6 +71,10 @@ Playwright는 세션에 이미 설치돼 있어요(`require('playwright')`, 재�
 
 ## 빌드 · 테스트 · 게시
 
+**한 번에**(2026-11-11): `bash tools/release.sh` — 빌드 → 검사(리버스 검산·공유·등급 비교·리버스 6개 빠른 점검·건너뛴 과정·에센스 등급) → 크래프팅 점수 → 배포 폴더 → 배포 폴더 검수. 끝의 '문제 0'을 확인하고 커밋. `--full`은 제작 옵션 한도 점검과 리버스 전체 점수(약 15분)까지. 아래는 단계별로 따로 돌릴 때.
+
+`site/*.html`은 한 줄에 문장이 여러 개라 **줄 끝 `//` 주석을 코드 중간에 넣지 않아요**(뒤 코드가 가려짐 — 2026-11-11 사고). `/* */`를 써요.
+
 ```
 cd /home/claude/poe2data/scripts && python3 build_prices.py && python3 build_tips.py && python3 build_recipes.py && python3 build_special.py && python3 ../i18n/build.py
 ```

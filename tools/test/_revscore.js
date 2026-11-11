@@ -66,7 +66,7 @@ const rows=out.map(x=>{ if(x.skip) return {id:x.id, skip:x.skip}; const o=orig(b
   const wn=(x.warn||[]).length; pts.pol = Math.max(0, 10-3*wn); if(wn) why.push(`검산 경고 ${wn}`);
   const score=Object.values(pts).reduce((s,v)=>s+v,0);
   return {id:x.id, bad:x.bad, score, pts, k:k==null?null:+k.toFixed(2), div:x.div, orig:o?.div??null, om:x.om, top:x.top, pick:x.pick, knowhow:x.knowhow, why, ms:x.ms}; });
-fs.writeFileSync(__dirname+'/revscore'+(process.env.V==='old'?'-old':'')+'.json', JSON.stringify(rows));
+if(!process.env.NOSAVE) fs.writeFileSync(__dirname+'/revscore'+(process.env.V==='old'?'-old':'')+'.json', JSON.stringify(rows));   // NOSAVE=1: 일부만 돌려 보는 빠른 점검(tools/release.sh)
 const ok=rows.filter(r=>r.score!=null), ks=ok.map(r=>r.k).filter(v=>v!=null).sort((a,b)=>a-b);
 console.log(`초안 ${ok.length}개 · 평균 ${(ok.reduce((s,r)=>s+r.score,0)/ok.length).toFixed(1)}점 · 70점 미만 ${ok.filter(r=>r.score<70).length}개 · 비용 배수 중앙값 ${ks[Math.floor(ks.length/2)]} · 1.5배 안 ${ks.filter(k=>k<=1.5).length} · 5배 넘음 ${ks.filter(k=>k>5).length} · 검산 오류 ${ok.filter(r=>!r.pts.ver).length} · 시뮬 문제 ${ok.filter(r=>r.pts.sim<20).length}`);
 })();
