@@ -105,6 +105,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 @keyframes flashy{0%,100%{box-shadow:none}30%,70%{box-shadow:0 0 0 3px var(--warn,#e0a050)}}
 .flash{animation:flashy 1.2s ease 2;border-radius:8px}
 .need{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.need .tsel{font-size:14px;padding:7px 10px;border-radius:8px;min-width:110px;border-color:var(--ok)}.need .tshare{flex-direction:row;font-size:13px;color:var(--muted);font-weight:600}
+.rns{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.rchip{position:relative;display:inline-block;padding:2px 9px;border:1px solid var(--line);border-radius:999px;color:var(--rune,#9fb4ff);cursor:help}.rchip .rtip{display:none;position:absolute;left:0;top:calc(100% + 6px);z-index:20;min-width:220px;max-width:320px;padding:8px 10px;background:var(--bg,#111);border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.5);color:var(--text);font-size:12.5px;line-height:1.5;white-space:normal}.rchip:hover .rtip,.rchip:focus .rtip{display:flex;flex-direction:column;gap:2px}.rtip b{color:var(--rune,#9fb4ff);margin-bottom:2px}.rtip em{font-style:normal;color:var(--muted);margin-top:4px}
 .simrec{margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel,transparent)}.simrec .ch-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}.simrec .ch-h span{font-size:12px;color:var(--muted)}
 .simr{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 0;border-top:1px solid var(--line);font-size:13px}.simr .sk{flex:none;font-size:11.5px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}.simr.same .sk{color:var(--ok);border-color:var(--ok)}.simr .st{flex:1 1 220px;color:var(--text)}.simr .sm{color:var(--muted);font-size:12px}.simr .sgo{padding:3px 10px;font-size:12px}
 .lvhelp{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px 14px;margin:0 0 10px;font-size:12.5px;color:var(--muted)}.lvhelp div{display:flex;gap:8px}.lvhelp dt{flex:none;min-width:34px;font-weight:700;color:var(--gold,#e2c27a)}.lvhelp dd{margin:0;line-height:1.5}
@@ -259,6 +260,52 @@ function findBase(lines){ let best=null;
 async function loadCls(id){ if(!S.cache[id]) S.cache[id] = await fetch(`data/c/${encodeURIComponent(id)}.json`).then(r=>r.json()); return S.cache[id]; }
 
 /* ---------- parse ---------- */
+/* 합쳐진 옵션 줄 풀기(사용자 2026-11-12): 같은 스탯을 주는 옵션이 여럿이면 게임은 한 줄로 합쳐 보여 줌(예: 회피 % 단일 + 회피·회피 % 하이브리드).
+   줄 하나씩 맞추다 범위를 넘거나 남는 줄이 생기면, 모든 옵션 줄을 다시 풀어 '어떤 옵션 묶음이 이 줄들을 정확히 만드는지' 찾음.
+   하이브리드 옵션은 두 줄을 같은 티어로 동시에 채우고, 한 줄은 옵션 둘까지 합산. 훼손 표시 줄은 훼손 옵션 하나만. 옵션 수가 가장 적은 답 */
+function solveLines(D, items, ilvl, cap){
+  const MX = matcher(D), G = D.groups;
+  const okT = (g,t) => t[0]<=ilvl && (t[1]>0 || g.s!=='n');
+  const byG = new Map();   /* gi -> {K, lines:[[{idx, vals}]] per k, tiers:Set} */
+  items.forEach((it2, idx)=>{ for(const c of MX){ const g=G[c.gi]; if(!['n','d','e','x'].includes(g.s) || !okT(g, g.t[c.ti])) continue;
+    if(it2.tag==='desecrated' ? !['n','d'].includes(g.s) : g.s==='d') continue;
+    if(it2.tag==='crafted' && g.s!=='e') continue;
+    c.lines.forEach((ln,k)=>{ const m=it2.l.match(ln.re); if(!m) return; let e=byG.get(c.gi); if(!e){ e={K:c.lines.length, lines:Array.from({length:c.lines.length},()=>[]), tiers:new Set()}; byG.set(c.gi,e); }
+      if(e.K!==c.lines.length) return; e.tiers.add(c.ti); if(!e.lines[k].some(x=>x.idx===idx)) e.lines[k].push({idx, vals:m.slice(1).map(Number)}); }); } });
+  /* placements: each group line k on a distinct item; desecrated groups take only desecrated items, others never; fractured items take one group alone */
+  const opts = [];
+  for(const [gi,e] of byG){ if(e.lines.some(l=>!l.length)) continue; const g=G[gi];
+    const rec=(k,acc)=>{ if(k===e.K){ const tg=acc.map(i=>items[i].tag); const des=tg.includes('desecrated');
+        if(des && !tg.every(t=>t==='desecrated')) return; const fr=tg.includes('fractured'); if(fr && !tg.every(t=>t==='fractured')) return;
+        opts.push({gi, side:g.g, f:g.f, idx:acc.slice(), des, fr}); return; }
+      for(const x of e.lines[k]) if(!acc.includes(x.idx)) rec(k+1, [...acc, x.idx]); };
+    rec(0, []); }
+  const best = {n:Infinity, sol:null}; const cover = items.map(()=>[]), side={p:0,s:0}, fams=new Set(); let nDes=0, steps=0;
+  const ranges = (gi, ti, k) => tplRe(G[gi].t[ti][5].split('\n')[k] || G[gi].t[ti][5]).ranges;
+  function feasible(chosen){ /* tiers: shared items get joint enumeration */
+    const tierList = chosen.map(o=>[...byG.get(o.gi).tiers].filter(ti=>okT(G[o.gi], G[o.gi].t[ti])));
+    const sum = (asg) => { let bad=0; for(let idx=0; idx<items.length; idx++){ const cs=cover[idx]; if(!cs.length) continue; const v=items[idx].vals; if(!v) continue;
+        for(let q=0;q<v.length;q++){ let lo=0, hi=0; for(const {o,k} of cs){ const r=ranges(o.gi, asg[chosen.indexOf(o)], k)[q]; if(!r){ lo=1e9; break; } lo+=Math.min(...r); hi+=Math.max(...r); }
+          const x=Math.abs(v[q]); if(x<lo-0.51) bad+= (lo-x)/(lo||1); else if(x>hi+0.51) bad+=(x-hi)/(hi||1); } } return bad; };
+    let bestA=null, bestBad=Infinity, n=0;
+    const rec=(j,asg)=>{ if(++n>20000) return; if(j===chosen.length){ const b=sum(asg); if(b<bestBad){ bestBad=b; bestA=asg.slice(); } return; }
+      for(const ti of tierList[j]){ asg[j]=ti; rec(j+1, asg); if(bestBad===0 && chosen.length>3) return; } };
+    rec(0, []); return bestBad===0 ? bestA : null; }
+  /* 줄을 차례로 봄: 아직 아무 옵션도 안 맡은 줄은 옵션 하나를 붙이고, 이미 맡은 줄은 '그대로' 또는 '옵션 하나 더(합산)' 두 갈래 */
+  function dfs(chosen, pos=0){ if(++steps>300000 || chosen.length>=best.n) return;
+    if(pos>=items.length){ const asg=feasible(chosen); if(asg){ best.n=chosen.length; best.sol=chosen.map((o,j)=>({...o, ti:asg[j]})); } return; }
+    const idx = pos;
+    if(cover[idx].length) dfs(chosen, pos+1);
+    if(cover[idx].length>=2) return;
+    for(const o of opts){ if(!o.idx.includes(idx) || chosen.includes(o) || o.f.some(f=>fams.has(f))) continue;
+      if(side[o.side]+1 > cap[o.side]) continue; if(o.des && nDes) continue;
+      if(o.idx.some(i=>cover[i].length>=2 || (cover[i].length && (items[i].tag==='fractured' || items[i].tag==='desecrated' || o.fr || o.des)))) continue;
+      chosen.push(o); side[o.side]++; o.f.forEach(f=>fams.add(f)); if(o.des) nDes++; o.idx.forEach((i,k)=>cover[i].push({o,k}));
+      dfs(chosen, pos+1);
+      o.idx.forEach(i=>cover[i].pop()); if(o.des) nDes--; o.f.forEach(f=>fams.delete(f)); side[o.side]--; chosen.pop(); } }
+  dfs([]);
+  return best.sol;
+}
 async function parse(txt){
   const raw = txt.replace(/\r/g,'').split('\n').map(x=>x.trim());
   const secs=[[]]; raw.forEach(l=>{ if(/^-{4,}$/.test(l)) secs.push([]); else if(l) secs[secs.length-1].push(l); });
@@ -340,6 +387,25 @@ async function parse(txt){
     mods.push({gi:c.gi, ti:c.ti, side:D.groups[c.gi].g, q:boost>1, fr: tag==='fractured' || !!hint?.fr, desTag: tag==='desecrated' || !!hint?.des, crafted: tag==='crafted', roll, out, l:text, hintTier:hint?.tier||null});
     i += c.lines.length-1; hint=null;
   }
+  /* 줄 하나씩 맞춘 결과에 범위 초과(퀄리티 영향 아님)·인식 못 한 옵션 줄·자리 초과가 있으면 합쳐진 줄로 보고 전체를 다시 풂 (고급 복사는 옵션마다 따로 나와 해당 없음) */
+  { const advanced = lines.some(l=>l.startsWith('{')), unk = other.filter(o=>o.k==='?'), capS = {p:Math.max(0,(D.groups.length?3:3)+(b.pd||0)), s:Math.max(0,3+(b.sd||0))};
+    const catJ = S.index.groups.find(g=>g.classes.some(c=>c.id===hit.cls))?.id==='jewel'; if(catJ){ capS.p=2+(b.pd||0); capS.s=2+(b.sd||0); }
+    const over = ['p','s'].some(sd=>mods.filter(m=>!m.unrev && m.side===sd).length > capS[sd]+1);
+    if(!advanced && (unk.length || mods.some(m=>m.out && !m.q) || over)){
+      const items = []; for(const l0 of lines){ const tag=tagOf(l0); if(['implicit','rune','enchant'].includes(tag) || /unrevealed|공개되지 않은|미공개/i.test(l0) || l0.startsWith('{')) continue;
+        const l=cleanLine(l0); if(!l) continue; items.push({l, raw:l0, tag, vals:(l.match(/\d+(?:\.\d+)?/g)||[]).map(Number)}); }
+      const fx = items.filter(x=>x.tag==='fractured').length;   /* 분열 옵션은 한 줄 = 한 옵션 */
+      let sol = null; try{ sol = solveLines(D, items, ilvl, {p:capS.p+(fx?0:0), s:capS.s}); }catch(e){ console.warn('solveLines', e); }
+      if(sol && sol.length){
+        const share = items.map((_,i)=>sol.filter(o=>o.idx.includes(i)).length);
+        const keep = mods.filter(m=>m.unrev);
+        const out = sol.map(o=>{ const g=D.groups[o.gi], t=g.t[o.ti], tl=t[5].split('\n');
+          const txt = o.idx.map((i,k)=>{ if(share[i]<2) return items[i].l; const r=tplRe(tl[k]).ranges[0], v=items[i].vals[0]; const mid=Math.round((Math.min(...r)+Math.max(...r))/2); return items[i].l.replace(/\d+(?:\.\d+)?/, String(Math.min(Math.max(...r), Math.max(Math.min(...r), mid)))); }).join('\n');
+          const sharedV = o.idx.filter(i=>share[i]>1).map(i=>items[i].l)[0] || null;
+          return {gi:o.gi, ti:o.ti, side:g.g, q:false, fr:o.fr, desTag:o.des, crafted:items[o.idx[0]].tag==='crafted', roll:null, out:false, l:txt, hintTier:null, ...(sharedV?{split:sharedV, merged:true}:{})}; });
+        mods.length=0; mods.push(...out, ...keep);
+        for(let k=other.length-1;k>=0;k--) if(other[k].k==='?' && items.some(x=>x.raw===other[k].l)) other.splice(k,1);
+      } } }
   return {sockets, qTag, cls:hit.cls, bi:hit.bi, cat:S.index.groups.find(g=>g.classes.some(c=>c.id===hit.cls))?.id, clsName:hit.c, D, b, rarity, ilvl, qual, qualType, corrupted, sanctified, exceptional, name: rarity==='rare' && nameLines.length>=2 ? nameLines[0] : null, mods, other};
 }
 
@@ -661,12 +727,8 @@ function makeDraft(it, an, opt){
   const augNames = augAll.filter(en=>!augLate.includes(en));
   const augPre = augNames.filter(en=>rows.some(r=>r.m.fr && r.core && r.g.sub[1]===en));   // already in the bought base
   // plain runes on the pasted item: "(rune)" lines, a "Bonded:" line belongs to the rune above it; the name comes from the class rune data
-  const plainRunes = []; { const RL = (it.other||[]).filter(o=>o.k==='rune').map(o=>o.l), BD = /^(Bonded|결속)\s*:\s*/i, skip = [...augAll, ...(an.cap.serle?["Serle's Triumph"]:[])];
-    for(let i=0;i<RL.length;i++){ const l=RL[i]; if(BD.test(l)) continue; const bond = BD.test(RL[i+1]||'') ? RL[i+1].replace(BD,'') : null; let best=null;
-      for(const x of it.D.runes||[]) for(const t of x.t){ const eff=[t[3],t[2]].map(e=>(e||'').split('\n')), bo=[t[5],t[4]].map(e=>(e||'').split('\n')[0]);
-        const e = eff.find(e=>e[0]===l); if(!e) continue; const sc = bond && bo.includes(bond) ? 2 : 1; if(!best || sc>best.sc) best={sc, kr:t[0], en:t[1], more:e.length-1}; }
-      if(!best) continue; i += best.more; if(bond && best.sc===2) i++;
-      const k = skip.indexOf(best.en); if(k>=0){ skip.splice(k,1); continue; } plainRunes.push({kr:best.kr, en:best.en}); } }
+  const plainRunes = []; { const skip = [...augAll, ...(an.cap.serle?["Serle's Triumph"]:[])];   /* 합쳐진 룬 줄도 풀어서(runesOf) 룬마다 장착 */
+    for(const r of runesOf(it)){ if(!r.kr) continue; for(let q=0;q<(r.n||1);q++){ const k=skip.indexOf(r.en); if(k>=0){ skip.splice(k,1); continue; } plainRunes.push({kr:r.kr, en:r.en}); } } }
   // random lines (regular pool + augment-unlocked), hardest first; guaranteed lines (essences) are left for last
   let rnd = rows.filter(r=>(r.how==='n' || r.how==='sc') && !r.m.fr).sort((a,b)=>(a.unknown?1:a.pOmen)-(b.unknown?1:b.pOmen));
   const mqGi = it.cat==='jewellery' && it.qual>20+impMaxQ(it.b) ? it.D.groups.findIndex(g=>g.s==='e' && g.f.includes('LocalMaximumQuality')) : -1;
@@ -1256,6 +1318,24 @@ function verifyDraft(it, an, d){
 }
 
 /* ---------- render ---------- */
+/* 붙여 넣은 아이템의 룬 이름 찾기(사용자 2026-11-12: 어떤 룬인지 표시 + 마우스를 올리면 룬 정보). 효과 줄 + 결속 줄로 클래스 룬 데이터에서 찾음 */
+function runesOf(it){ const RL=(it.other||[]).filter(o=>o.k==='rune').map(o=>o.l), BD=/^(Bonded|결속(됨)?)\s*:\s*/i;
+  /* 같은 스탯 룬 효과는 게임이 한 줄로 합침(완벽한 철 룬 ×2 = 40%) → 소켓 수 안에서 효과·결속 줄 합이 정확히 같은 룬 묶음을 찾음 */
+  const key = l => tplRe(l).re.source, nums = l => (l.match(/\d+(?:\.\d+)?/g)||[]).map(Number);
+  const want = new Map(); for(const l of RL){ const b=BD.test(l), x=l.replace(BD,''), k=(b?'B:':'E:')+key(x); const v=nums(x), o=want.get(k); want.set(k, o ? o.map((y,q)=>y+(v[q]||0)) : v); }
+  const all = [], seen=new Set(); for(const x of [...(it.D.runes||[]), ...Object.values(it.D.runesBy||{}).flat()]) for(const t of x.t){ if(seen.has(t[1])) continue; seen.add(t[1]);
+    const eff=(t[3]||'').split('\n').filter(Boolean), bo=(t[5]||'').split('\n').filter(Boolean); if(!eff.length) continue;
+    const parts=[...eff.map(l=>['E:'+key(l), nums(l)]), ...bo.map(l=>['B:'+key(l), nums(l)])]; if(parts.some(([k])=>!want.has(k))) continue; all.push({t, parts}); }
+  const N = Math.max(1, it.sockets || 3); let found=null;
+  const rec=(start, pick, acc)=>{ if(found) return; if(pick.length){ let ok = acc.size===want.size; if(ok) for(const [k,v] of want){ const a=acc.get(k); if(!a || a.length!==v.length || a.some((y,q)=>Math.abs(y-v[q])>1e-6)){ ok=false; break; } } if(ok){ found=pick.slice(); return; } }
+    if(pick.length>=N) return;
+    for(let r=start;r<all.length;r++){ const n=new Map(acc); for(const [k,v] of all[r].parts){ const o=n.get(k); n.set(k, o ? o.map((y,q)=>y+(v[q]||0)) : v.slice()); }
+      let over=false; for(const [k,v] of n){ const w=want.get(k); if(v.some((y,q)=>y>(w[q]??0)+1e-6)){ over=true; break; } } if(over) continue;
+      pick.push(all[r]); rec(r, pick, n); pick.pop(); if(found) return; } };
+  rec(0, [], new Map());
+  if(!found) return RL.filter(l=>!BD.test(l)).map(l=>({kr:null, en:null, eff:[l], n:1}));
+  const grp=[]; for(const x of found){ const g=grp.find(y=>y.t===x.t); if(g) g.n++; else grp.push({t:x.t, n:1}); }
+  return grp.map(({t,n})=>({kr:t[0], en:t[1], n, effKr:(t[2]||'').split('\n').filter(Boolean), effEn:(t[3]||'').split('\n').filter(Boolean), bondKr:(t[4]||'').split('\n').filter(Boolean), bondEn:(t[5]||'').split('\n').filter(Boolean)})); }
 function renderStatic(){
   document.documentElement.lang = KR()?'ko':'en';
   $('#h1').textContent = L('리버스 크래프팅','Reverse crafting');
@@ -1333,7 +1413,7 @@ function render(){
     <div class="slots"><span class="slot">${L('접두','Prefix')} <span class="pips">${pips('p')}</span> ${an.cnt.p}/${an.cap.p}</span><span class="slot">${L('접미','Suffix')} <span class="pips">${pips('s')}</span> ${an.cnt.s}/${an.cap.s}</span></div>${(()=>{ const QK={attack:['공격','Attack'],caster:['시전','Caster'],life:['생명력','Life'],mana:['마나','Mana'],defences:['방어','Defence'],physical:['물리','Physical'],fire:['화염','Fire'],cold:['냉기','Cold'],lightning:['번개','Lightning'],chaos:['카오스','Chaos'],speed:['속도','Speed'],attribute:['능력치','Attribute'],minion:['소환수','Minion']};
       const rn = it.other.filter(o=>o.k==='rune'), q = it.qual||0;
       const cat = it.qTag ? L(`${QK[it.qTag]?.[0]||esc(it.qualType)} 기폭제 : ${q}%`,`${QK[it.qTag]?.[1]||esc(it.qualType)} catalyst: ${q}%`) : it.qualType ? `${esc(it.qualType)} : ${q}%` : q ? L(`퀄리티 : ${q}%`,`Quality: ${q}%`) : '';
-      return (cat||rn.length) ? `<div class="sumx">${cat?`<span class="sx"><b>${cat}</b></span>`:''}${rn.length?`<span class="sx">${L('룬','Runes')} : ${rn.map(o=>esc(o.l)).join(' · ')}</span>`:''}</div>` : ''; })()}
+      return (cat||rn.length) ? `<div class="sumx">${cat?`<span class="sx"><b>${cat}</b></span>`:''}${rn.length?`<span class="sx rns">${L('룬','Runes')} : ${runesOf(it).map(r=>{ const nm = r.kr ? (KR()?r.kr:r.en) : r.eff[0], cnt = r.n>1 ? ` ×${r.n}` : ''; const ef=(KR()?r.effKr:r.effEn)||r.eff||[], bd=(KR()?r.bondKr:r.bondEn)||[]; return `<span class="rchip" tabindex="0">${esc(nm)}${cnt}${r.kr?`<span class="rtip" role="tooltip"><b>${esc(nm)}${r.n>1?L(` (${r.n}개, 효과는 1개 기준)`,` (${r.n}, values per rune)`):''}</b>${ef.map(x=>`<span>${esc(x)}</span>`).join('')}${bd.length?`<em>${L('결속','Bonded')}</em>${bd.map(x=>`<span>${esc(x)}</span>`).join('')}`:''}</span>`:''}</span>`; }).join('')}</span>`:''}</div>` : ''; })()}
     <div class="traces"><h3>${L('제작 흔적','WHAT THE ITEM TELLS US')}</h3>${an.tr.length ? an.tr.map(t=>`<div class="trace"><span class="dot" style="background:${t.c}"></span><span>${t.t}</span></div>`).join('') : `<div class="trace"><span class="dot"></span><span>${L('일반 옵션만 있음 · 진화·확장·제왕·엑잘/카오스로 만들 수 있는 구성','Regular modifiers only: transmute, augment, regal and exalt/chaos can make this.')}</span></div>`}</div>`;
   const rowsHTML = an.rows.map(r=>{
     const m=r.m, side=m.side;
@@ -1343,7 +1423,7 @@ function render(){
       `<span class="tag ${how[0]}">${how[1]}</span>`,
       m.fr && r.g.s!=='n' ? `<span class="tag ${r.g.s}">${SRC[r.g.s][KR()?0:1]}</span>` : '',
       r.lord ? `<span class="tag d">${L(LORDS[r.lord][0]+' 전용', LORDS[r.lord][1]+' only')}</span>` : '',
-      m.out ? `<span class="tag q">${L('범위 초과','Above range')}</span>` : '', m.split ? `<span class="tag q" title="${esc(L(`게임에선 한 줄(${m.split})로 보이는 접두·접미 합계`,`Shown in game as one summed line (${m.split})`))}">${L('접두+접미 합산','Prefix+suffix sum')}</span>` : '', m.q ? `<span class="tag q">${L('퀄리티 적용','Quality applied')}</span>` : '',
+      m.out ? `<span class="tag q">${L('범위 초과','Above range')}</span>` : '', m.split ? `<span class="tag q" title="${esc(L(`게임에선 여러 옵션이 한 줄(${m.split})로 합쳐 보임`,`Shown in game as one summed line (${m.split})`))}">${m.merged?L('합쳐진 줄','Summed line'):L('접두+접미 합산','Prefix+suffix sum')}</span>` : '', m.q ? `<span class="tag q">${L('퀄리티 적용','Quality applied')}</span>` : '',
       `<span class="tag">${esc(r.t[KR()?2:3])}</span>`].join('');
     const tierT = r.g.s==='n' ? L(`T${r.tierNo} · Lv ${r.t[0]}`,`T${r.tierNo} · lvl ${r.t[0]}`) : L(`Lv ${r.t[0]}`,`lvl ${r.t[0]}`);
     const ri = an.rows.indexOf(r), soft = !m.fr && S.soft?.has(ri), on = m.fr || S.need.has(ri) || soft;
@@ -1586,6 +1666,6 @@ $('#mods').addEventListener('change', e=>{
   if(e.target.dataset?.tier!=null){ S.tsel[+e.target.dataset.tier]=+e.target.value; if(!S.soft.has(+e.target.dataset.tier)) S.need.add(+e.target.dataset.tier); S.draft=null; S.sent=false; render(); return; }
   if(e.target.id==='qin' && S.last?.it){ const v=Math.max(0, Math.min(75, Math.round(+e.target.value||0))); S.last.it.qual=v; S.last.an=analyse(S.last.it); S.draft=null; S.okQR=true; render(); }   // quality changes the tier read
 });
-window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost, needAn, essSwap, desSwap, bestDraft, bestDraftAsync});
+window.__rev = Object.assign(S, {solveLines, matcher, tplRe, cleanLine, tagOf, parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost, needAn, essSwap, desSwap, bestDraft, bestDraftAsync});
 render();
 </script>
