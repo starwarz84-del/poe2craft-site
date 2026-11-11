@@ -1,0 +1,1247 @@
+{
+ "id": "banzino-mirror-staff-v2",
+ "recipe": "banzino-mirror-staff-v2",
+ "cls": "Staves",
+ "base": "Voltaic Staff",
+ "ilvl": 82,
+ "note": "반지깎는노인 미러 지팡이(vT482uJFESs, 0.4 영상 → 0.5.5 응용) — 주문 피해 % 분열(옵션 6개 찬 상태) → 카오스 오브 모든 번개 주문 +7 → 절사 카오스 시전 속도·주문 치명타 → 좌측 결정화 + 심연의 에센스 → 징표 훼손 공개 → 완벽한 엑잘·절사 카오스로 접두 2개.",
+ "params": {
+  "sT": {
+   "kr": "주문 치명타",
+   "en": "Spell crit",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "pT": {
+   "kr": "번개 피해 %·추가 번개",
+   "en": "Lightning % / extra lightning",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "sT": 1,
+    "pT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "sT": 2,
+    "pT": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "sT": 2,
+    "pT": 2
+   },
+   "desc": {
+    "kr": "주문 치명타·접두 2개 1~2티어 (시전 속도는 1티어 — 레벨 80이라 절사에 안 지워짐)",
+    "en": "Spell crit and the two prefixes at T1–2 (cast speed stays T1: level 80 keeps it safe from Whittling)"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "sT": 1,
+    "pT": 1
+   },
+   "desc": {
+    "kr": "모든 옵션 1티어 (영상)",
+    "en": "Every line tier 1 (video)"
+   }
+  }
+ ],
+ "tags": {
+  "spd": {
+   "gi": 3,
+   "tmax": 1
+  },
+  "l7": {
+   "gi": 16,
+   "tmax": 1
+  },
+  "cast": {
+   "gi": 25,
+   "tmax": 1
+  },
+  "crit": {
+   "gi": 26,
+   "tmax": "$sT"
+  },
+  "light": {
+   "gi": 7,
+   "tmax": "$pT"
+  },
+  "xl": {
+   "gi": 34,
+   "tmax": "$pT"
+  },
+  "markP": {
+   "gi": 56
+  },
+  "pg": {
+   "anyOf": [
+    "light",
+    "xl"
+   ]
+  },
+  "keepS": {
+   "anyOf": [
+    "l7",
+    "cast",
+    "crit"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "spd"
+   },
+   {
+    "has": "l7"
+   },
+   {
+    "has": "cast"
+   },
+   {
+    "has": "crit"
+   },
+   {
+    "count": {
+     "tag": "pg",
+     "min": 2
+    }
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "p1",
+    "p2",
+    "p3",
+    "p4",
+    "p5"
+   ],
+   "kr": "접두 징표 훼손",
+   "en": "Prefix mark desecration"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "spd",
+     "fr": true
+    },
+    {
+     "tag": "light",
+     "tmax": 1
+    },
+    {
+     "tag": "xl",
+     "tmax": 1
+    },
+    {
+     "tag": "l7",
+     "tmax": 1
+    },
+    {
+     "tag": "cast",
+     "tmax": 1
+    },
+    {
+     "tag": "crit",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "spd",
+     "fr": true
+    },
+    {
+     "tag": "light",
+     "tmax": 2
+    },
+    {
+     "tag": "xl",
+     "tmax": 2
+    },
+    {
+     "tag": "l7",
+     "tmax": 1
+    },
+    {
+     "tag": "cast",
+     "tmax": 1
+    },
+    {
+     "tag": "crit",
+     "tmax": 2
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "spd",
+      "fr": true
+     },
+     {
+      "junk": "p"
+     },
+     {
+      "junk": "p"
+     },
+     {
+      "junk": "s"
+     },
+     {
+      "junk": "s"
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "주문 피해 % 1티어 분열 전도성 지팡이 (옵션 6개 모두 찬 상태)",
+    "en": "Voltaic Staff with fractured T1 spell damage (all six slots filled)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Spell Damage",
+     "m": "f",
+     "tags": [
+      "spd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "s1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Spell Damage",
+     "m": "f",
+     "tags": [
+      "spd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "s1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 첫번째 옵션",
+    "en": "First suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "l7"
+     },
+     "to": "s2",
+     "res": "ok"
+    },
+    {
+     "to": "s1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Spell Damage",
+     "m": "f",
+     "tags": [
+      "spd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +7",
+     "en": "+7 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l7"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "l7"
+   ]
+  },
+  {
+   "id": "s2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "removed": "l7"
+     },
+     "to": "s1",
+     "res": "fail",
+     "lost": "l7",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "cast"
+     },
+     "to": "s3",
+     "res": "ok"
+    },
+    {
+     "to": "s2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Spell Damage",
+     "m": "f",
+     "tags": [
+      "spd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +7",
+     "en": "+7 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l7"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (50—52)% 증가",
+     "en": "(50—52)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "cast"
+   ],
+   "trim": {
+    "side": "s",
+    "keep": "keepS"
+   },
+   "skipIf": {
+    "has": "cast"
+   },
+   "skipTo": "s3"
+  },
+  {
+   "id": "s3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "removed": "l7"
+     },
+     "to": "s1",
+     "res": "fail",
+     "lost": "l7",
+     "hide": true
+    },
+    {
+     "if": {
+      "removed": "cast"
+     },
+     "to": "s2",
+     "res": "fail",
+     "lost": "cast",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "crit"
+       },
+       {
+        "count": {
+         "tag": "pg",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "crit"
+       },
+       {
+        "count": {
+         "tag": "pg",
+         "min": 1
+        }
+       },
+       {
+        "full": "p"
+       }
+      ]
+     },
+     "to": "pT",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "crit"
+     },
+     "to": "p1",
+     "res": "ok"
+    },
+    {
+     "to": "s3",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Spell Damage",
+     "m": "f",
+     "tags": [
+      "spd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +7",
+     "en": "+7 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l7"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (50—52)% 증가",
+     "en": "(50—52)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (90—109)% 증가",
+     "en": "(90—109)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "crit"
+   ],
+   "trim": {
+    "side": "s",
+    "keep": "keepS"
+   }
+  },
+  {
+   "id": "p1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접두 잡옵 하나를 징표로",
+    "en": "Turn one junk prefix into a mark"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "if": {
+      "removed": "l7"
+     },
+     "to": "s1",
+     "res": "fail",
+     "lost": "l7",
+     "hide": true
+    },
+    {
+     "if": {
+      "removed": "cast"
+     },
+     "to": "s2",
+     "res": "fail",
+     "lost": "cast",
+     "hide": true
+    },
+    {
+     "to": "p2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Spell Damage",
+     "m": "f",
+     "tags": [
+      "spd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "markP"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +7",
+     "en": "+7 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l7"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (50—52)% 증가",
+     "en": "(50—52)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (90—109)% 증가",
+     "en": "(90—109)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Abyss",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표 (제작 옵션)",
+     "en": "Mark of the Abyssal Lord (crafted)"
+    }
+   ],
+   "ess": "markP",
+   "mark": true,
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "p2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 두번째 옵션(징표 훼손)",
+    "en": "Second prefix (desecrate the mark)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "p3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Spell Damage",
+     "m": "f",
+     "tags": [
+      "spd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +7",
+     "en": "+7 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l7"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (50—52)% 증가",
+     "en": "(50—52)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (90—109)% 증가",
+     "en": "(90—109)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "fromMark": true
+  },
+  {
+   "id": "p3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pg",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pg",
+       "min": 1
+      }
+     },
+     "to": "p5",
+     "res": "ok"
+    },
+    {
+     "to": "p4",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Spell Damage",
+     "m": "f",
+     "tags": [
+      "spd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Lightning Damage",
+     "m": "n",
+     "tags": [
+      "light"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +7",
+     "en": "+7 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l7"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (50—52)% 증가",
+     "en": "(50—52)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (90—109)% 증가",
+     "en": "(90—109)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "want": "pg",
+   "show": [
+    "light",
+    "xl"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "p4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "p5",
+     "res": "ok",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "p5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pg",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pg",
+       "min": 1
+      }
+     },
+     "to": "pT",
+     "res": "fail"
+    },
+    {
+     "to": "p1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Spell Damage",
+     "m": "f",
+     "tags": [
+      "spd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해의 (55—60)%를 추가 번개 피해로 획득",
+     "en": "Gain (55—60)% of Damage as Extra Lightning Damage",
+     "m": "n",
+     "tags": [
+      "xl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해 (209—238)% 증가",
+     "en": "(209—238)% increased Lightning Damage",
+     "m": "n",
+     "tags": [
+      "light"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +7",
+     "en": "+7 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l7"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (50—52)% 증가",
+     "en": "(50—52)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (90—109)% 증가",
+     "en": "(90—109)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "light",
+    "xl"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "skipIf": {
+    "full": "p"
+   },
+   "skipTo": "pT"
+  },
+  {
+   "id": "pT",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 남은 옵션 찾기",
+    "en": "Find the remaining prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "removed": "l7"
+     },
+     "to": "s1",
+     "res": "fail",
+     "lost": "l7",
+     "hide": true
+    },
+    {
+     "if": {
+      "removed": "cast"
+     },
+     "to": "s2",
+     "res": "fail",
+     "lost": "cast",
+     "hide": true
+    },
+    {
+     "if": {
+      "removed": "crit"
+     },
+     "to": "s3",
+     "res": "fail",
+     "lost": "crit",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pg",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "not": {
+       "count": {
+        "tag": "pg",
+        "min": 1
+       }
+      }
+     },
+     "to": "p1",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "to": "pT",
+     "res": "fail"
+    }
+   ],
+   "item": null,
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "light",
+    "xl"
+   ],
+   "trim": {
+    "side": "p",
+    "keep": "pg",
+    "keepDes": true
+   }
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}
