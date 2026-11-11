@@ -1081,7 +1081,7 @@ function overviewHTML(r){
   // both cards get the same rows (final item's slots and quality line) so they line up
   // the start card shows the base itself: junk or hidden slots it came with stay empty
   const tip = (o, isStart) => { const st = isStart ? o.state.filter(m=>m.gi!=null) : o.state;
-    return itemTipHTML(r,{...o, state:st, pre:st, cap:{...fin.cap}, sockets:fin.sockets}, {showQual:!!fin.qual?.v}); };
+    return itemTipHTML(r,{...o, state:st, pre:st, cap:{...fin.cap}, sockets:fin.sockets}, {showQual:!!fin.qual?.v, final:!isStart}); };
   return `<section class="ovw"><div class="otags">${infoTags(r)}</div>
     <div class="ostart" data-pair><div><p class="olab"><i class="dot"></i>${L('시작 아이템','Starting item')}</p>${tip(st,true)}</div>
       <div class="oarrow" aria-hidden="true">→</div>
@@ -1387,7 +1387,7 @@ function itemTipHTML(r, o, opt={}){
   const line = (m, cls='') => {
     const sl=`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>`;
     if(m.unrev) return `<div class="tt-mod des-u ${cls}">${sl}${L('훼손 옵션 (미공개)','Desecrated (unrevealed)')}</div>`;
-    if(m.gi==null) return `<div class="tt-mod junk ${m.des?'desm':''} ${cls}">${sl}${m.label?esc(tx(m.label)):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
+    if(m.gi==null) return `<div class="tt-mod junk ${m.des?'desm':''} ${cls}">${sl}${m.label?esc(tx(m.label)):opt.final?L('랜덤 옵션','Random modifier'):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
     if(m.mark) return `<div class="tt-mod markm ${cls}"><span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>${esc(KR()?grp(r,m.gi).t[0][4]:grp(r,m.gi).t[0][5])}</div>`;
     const l=modLine(r,m.gi,m.tmax,m.max,m.tmin), qv=o.qual?.v, qt=o.qual?.type, shown=(o.vals||{})[m.gi];
     let txt=l.txt, sub='';
@@ -1657,11 +1657,13 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
     const ds=S2?.res?.desStat;
     const state=F.lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side, label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}, des:!!l.des, rnd:!!l.random}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
       return {gi:T.gi, side:T.s, tmax:l.tmax||null, tmin:l.tmin||null, fr:!!l.fr, des:!!l.des || (ds ? false : (T.sec==='d' || revOnly(l.tag))), dsf:ds ? (ds.tag?.[l.tag]||0) : 0, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
-    if(ds) for(const sd of ['p','s']){ let need=Math.round(ds.side?.[sd]||0)-state.filter(m=>m.side===sd && m.des).length;
-      for(const m of state.filter(m=>m.side===sd && m.gi!=null && !m.des && m.dsf>=0.5).sort((a,b)=>b.dsf-a.dsf)){ if(need<=0) break; m.des=true; need--; }
-      for(const m of [...state.filter(m=>m.side===sd && m.gi==null && !m.rnd && !m.des), ...state.filter(m=>m.side===sd && m.gi==null && m.rnd && !m.des)]){ if(need<=0) break; m.des=true; need--; } }
+    // 훼손 옵션은 아이템당 하나(사용자 확정 2026-11-11): 강제 표시(des:true) → 훼손 비율이 가장 높은 옵션(0.5 이상) → 훼손이 더 자주 붙는 면의 이름표·랜덤 옵션
+    if(ds){ if(!state.some(m=>m.des)){ const t=state.filter(m=>m.gi!=null && m.dsf>=0.5).sort((a,b)=>b.dsf-a.dsf)[0];
+        if(t) t.des=true; else { const sd=['p','s'].filter(x=>(ds.side?.[x]||0)>=0.5).sort((a,b)=>(ds.side[b]||0)-(ds.side[a]||0))[0];
+          const c=sd && (state.find(m=>m.side===sd && m.gi==null && !m.rnd) || state.find(m=>m.side===sd && m.gi==null && m.rnd)); if(c) c.des=true; } } }
+    { let one=false; for(const m of state) if(m.des){ if(one) m.des=false; one=true; } }
     const go=r.tierGroup && tierSibs(r).find(x=>x.tier===(F.tier||F.id));   // 완성품 카드 → 그 등급 레시피 탭 (사용자 확정 2026-11-11)
-    return `<div class="fcfin ${on?'on':''} ${go?'go':''}" ${go?`data-rtab="${esc(go.id)}" role="button" tabindex="0" title="${esc(L('이 완성품의 제작 과정 보기','Open the crafting steps for this item'))}"`:''}><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');
+    return `<div class="fcfin ${on?'on':''} ${go?'go':''}" ${go?`data-rtab="${esc(go.id)}" role="button" tabindex="0" title="${esc(L('이 완성품의 제작 과정 보기','Open the crafting steps for this item'))}"`:''}><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]}, {final:true})}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
 function fcOver(g, params){ return {...g, nodes:g.nodes.map(n=>{ const o=(n.over||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); return o ? {...n, ...o.set} : n; })}; }   // per-version node fields (same rule as sim.js)
 function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=fcPrune(fcOver(d.graph, s.params), res), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
@@ -1788,7 +1790,7 @@ function syncStep(force){
   const o=a.nodes[i];
   nodes.forEach(el=>el.classList.toggle('cur', el.dataset.node===id));
   document.querySelectorAll('#detail .dnav [data-go-node]').forEach(el=>el.classList.toggle('on', el.dataset.goNode===id));
-  $('#detail [data-tip]').innerHTML=itemTipHTML(r,o);
+  $('#detail [data-tip]').innerHTML=itemTipHTML(r,o,{final:i===a.nodes.length-1});
   $('#detail [data-dihead]').innerHTML=`<span class="k">${L(`${i+1}번 단계 후`,`After step ${i+1}`)}</span><b>${esc(shortTitle(o.n))}</b>`;
   // progress: every phase segment fills up to the current step
   let seen=0; r.phases.forEach(ph=>{ const items=a.nodes.filter(x=>x.n.phase===ph.id); if(!items.length) return; const seg=document.querySelector(`#detail [data-seg="${CSS.escape(ph.id)}"] .fill`);
