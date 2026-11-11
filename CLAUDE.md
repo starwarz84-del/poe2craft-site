@@ -119,7 +119,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 
 ## 로드맵 (사용자 확정 2026-11-10 22:09 — 이 순서대로 진행)
 
-- **검색 공개**(사용자 확정 2026-11-12, 구글·네이버 등록): `scripts/build_web.py` `INDEX = True` → robots.txt 전체 허용 + 맨 아래 `Sitemap:` 줄, noindex·`X-Robots-Tag` 없음, `/sitemap.xml`(PAGES: `/`·`/recipes`·`/discover`·`/emulator`·`/builder`·`/bases`), 도구 페이지마다 canonical. **주소 = 경로**: 껍데기(`site/shell.html`)가 `location.pathname`으로 탭을 고르고 탭 클릭은 `history.pushState`(옛 `#탭`·`#r-<id>` 링크도 동작, 레시피는 `/recipes#r-<id>`). Worker(`worker/index.js` `TABS`)가 그 경로에 index.html + canonical·og:url, `www.` → `poe2craft.xyz` 301, `/recipes/` → `/recipes` 301. `wrangler.jsonc` `html_handling: none`(자동 .html 이동 끔) + `run_worker_first`에 페이지·robots·sitemap 경로. 다시 숨기려면 INDEX = False.
+- **검색 공개**(사용자 확정 2026-11-12, 구글·네이버 등록): `scripts/build_web.py` `INDEX = True` → robots.txt 전체 허용 + 맨 아래 `Sitemap:` 줄, noindex·`X-Robots-Tag` 없음, `/sitemap.xml`(PAGES: `/`·`/recipes`·`/discover`·`/emulator`·`/builder`·`/bases`), 도구 페이지마다 canonical. **주소 = 경로**: 껍데기(`site/shell.html`)가 `location.pathname`으로 탭을 고르고 탭 클릭은 `history.pushState`(옛 `#탭`·`#r-<id>` 링크도 동작, 레시피는 `/recipes#r-<id>`). Worker(`worker/index.js` `TABS`)가 그 경로에 index.html + canonical·og:url, `www.` → `poe2craft.xyz` 301, `/recipes/` → `/recipes` 301. `wrangler.jsonc` `html_handling: none`(자동 .html 이동 끔) + `run_worker_first`에 페이지·robots·sitemap 경로. 다시 숨기려면 INDEX = False. 네이버 서치어드바이저 소유 확인 태그는 `build_web.py` `VERIFY`(공개일 때 모든 페이지 head에 들어감, 2026-11-12).
 - **로그인 = POE 계정(pathofexile.com OAuth)**(사용자 확정): 공유 레시피·직접 작성 레시피 올리기에 씀. GGG 개발자 앱 신청이 필요해 시간이 걸림 — 아래 1-⑤ 때 같이 진행.
 
 1. **크래프팅 기능 고도화**(지금 레시피 탭)

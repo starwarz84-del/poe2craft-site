@@ -52,6 +52,8 @@ INDEX = True
 PAGES = ['', 'recipes', 'discover', 'emulator', 'builder', 'bases']
 CANON = {'recipes.html': 'recipes', 'discover.html': 'discover', 'emulator.html': 'emulator', 'builder.html': 'builder', 'bases.html': 'bases', 'about.html': ''}
 NOINDEX_META = '<meta name="robots" content="noindex, nofollow">\n'
+# 검색 엔진 소유 확인 태그(네이버 서치어드바이저, 2026-11-12) — 공개(INDEX)일 때 모든 페이지 head에 넣음
+VERIFY = '<meta name="naver-site-verification" content="734d0a611a989cfa7f828aa3d6a821f3a15cf57a" />\n'
 FONTS = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&display=swap">\n'
 THEME = '<link rel="stylesheet" href="theme.css">\n'
 # 페이지 스크립트가 시작할 때 바로 받는 데이터는 HTML을 읽는 동안 미리 받기 시작
@@ -67,8 +69,8 @@ def main():
         s = open(os.path.join(SITE, src), encoding='utf-8').read()
         if not INDEX:
             s = s.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n' + NOINDEX_META, 1)
-        elif dst in CANON:
-            s = s.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n<link rel="canonical" href="https://%s/%s">\n' % (DOMAIN, CANON[dst]), 1)
+        else:
+            s = s.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n' + VERIFY + (('<link rel="canonical" href="https://%s/%s">\n' % (DOMAIN, CANON[dst])) if dst in CANON else ''), 1)
         open(os.path.join(WEB, dst), 'w', encoding='utf-8').write(s)
     for d in ['data', 'lib', 'img', 'fonts']:
         shutil.copytree(os.path.join(SITE, d), os.path.join(WEB, d))
@@ -81,7 +83,7 @@ def main():
         s = re.sub(r'<link rel="(?:preconnect|stylesheet)" href="https://fonts\.(?:googleapis|gstatic)\.com[^>]*>\n?', '', s)
         # theme goes right after the document head the i18n build added; its :root:root rules win over the page's own tokens
         i = s.find('</style>')
-        head = THEME + (('<link rel="canonical" href="https://%s/%s">\n' % (DOMAIN, CANON[f])) if INDEX and f in CANON else '' if INDEX else NOINDEX_META)
+        head = THEME + (VERIFY if INDEX else '') + (('<link rel="canonical" href="https://%s/%s">\n' % (DOMAIN, CANON[f])) if INDEX and f in CANON else '' if INDEX else NOINDEX_META)
         head += ''.join('<link rel="preload" href="data/%s.json" as="fetch" crossorigin="anonymous">\n' % d for d in PRELOAD.get(f, []))
         s = s[:i + 8] + '\n' + head + s[i + 8:] if i >= 0 else head + s
         open(os.path.join(WEB, f), 'w', encoding='utf-8').write(s)
