@@ -10,6 +10,6 @@ ln -sfn $ROOT/site/data data
 for f in recipes discover emulator builder bases; do cp $ROOT/site/pub/$f.html .; done
 cp $ROOT/site/sim.js $ROOT/site/graphify.js .
 # expose engine internals to the Playwright scripts
-sed -i "s/if(location.search.includes('debug')) window.__rec/window.__rec/; s/window.__rec = Object.assign(S, {renderBoard:()=>renderBoard()});/window.__rec = Object.assign(S, {renderBoard:()=>renderBoard(), analyse, prepRecipe});/" recipes.html
+sed -i "s/if(location.search.includes('debug')) window.__rec/window.__rec/; s/window.__rec = Object.assign(S, {renderBoard:()=>renderBoard()\(, [^}]*\)\?});/window.__rec = Object.assign(S, {renderBoard:()=>renderBoard()\1, analyse, prepRecipe});/" recipes.html
 python3 -m http.server 8779 >/dev/null 2>&1 & echo $! > .pid
 sleep 1; echo "serving $T on http://localhost:8779"
