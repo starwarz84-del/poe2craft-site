@@ -7,7 +7,7 @@ def _spear(r, t):
 for _t in ('bal','ess'): _grade8('diztoh-as-spear','diztoh-as-spear-v2',_t,_spear)
 def _sgloves(r, t):
     d11=_node(r,'d11'); _asIs(d11, d11['target']['anyOf'], 'p')
-    d11['br']=K('결과 그대로 (좌측 소멸의 징조 반복은 평균 약 650 div라 뺌)','Keep it (the Sinistral Annulment loop averages about 650 div)')
+    d11['br']=K('결과 그대로. 좌측 소멸의 징조 반복은 평균 약 650 div라 뺌','Keep it (the Sinistral Annulment loop averages about 650 div)')
     for nid in ('dm1','dm2'):
         n=_node(r,nid); _asIs(n, n['target']['anyOf'], 'p')
         if t=='ess': n['cur']='Greater_Exalted_Orb'

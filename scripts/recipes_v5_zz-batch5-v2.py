@@ -50,7 +50,7 @@ def _boots(r, t):
         r['start']['mods'][0]['tmax']=2; r['start']['mods'][1]['tmax']=3; lt=4
     # 사용자 확정 2026-11-10: the reveal also stops on a chaos dual resist (3 kinds) or T1–3 chaos res — far likelier, cheaper
     b5=_node(r,'b5'); b5['target']['reveal']={'anyOf':[{'gi':3,'tmax':lt},{'gi':23},{'gi':24},{'gi':33},{'gi':4,'tmax':3}]}
-    b5['br']=K('번개 저항·카오스 듀얼 저항·카오스 저항(1~3티어) 중 하나 → 완성, 실패: 빛의 징조 + 소멸의 오브로 다시 훼손','Lightning res, a chaos dual res or T1–3 chaos res → done; miss: Light + Annulment and desecrate again')
+    b5['br']=K('번개 저항·카오스 듀얼 저항·카오스 저항 1~3티어 중 하나 → 완성, 실패: 빛의 징조 + 소멸의 오브로 다시 훼손','Lightning res, a chaos dual res or T1–3 chaos res → done; miss: Light + Annulment and desecrate again')
 for _t in ('bal','ess'): _grade('lilbotq-budget-boots','lilbotq-budget-boots-v2',_t,_boots)
 
 # 5. Icesly 가성비 완드 — 2026-11-10 다시 작성(영상 다시 확인, 사용자: 가성비엔 비싼 오브 없이). 그래프 scripts/graphs/gen_batch5.py와 같은 흐름.
@@ -62,7 +62,7 @@ def _wand(r, t):
     pre=[{'gi':ic_lin,'tmax':yT},{'gi':ic_spell,'tmax':yT},{'gi':ic_xL,'tmax':xT},{'gi':ic_xC,'tmax':xT},{'gi':ic_xF,'tmax':xT}]
     i1=_node(r,'i1'); i3=_node(r,'i3'); i7=_node(r,'i7')
     i1['note']=K('모든 번개 주문 스킬 레벨 +5 매직 완드(접두 잡옵 1개, 아이템 레벨 81). 화염·냉기 등 다른 원소 +5도 같은 방법.','A magic wand with +5 to all lightning spell skills (one junk prefix, item level 81). Other elements work the same way.')
-    miss=K('번개·주문·추가 피해 획득이면 다음, 빗나가면 그대로 두고 {#i8}에서 좌측 결정화의 징조 + 천공의 합금으로 그 옵션을 지움(소멸의 오브 안 씀)',
+    miss=K('번개·주문·추가 피해 획득이면 다음, 빗나가면 그대로 두고 {#i8}에서 좌측 결정화의 징조 + 천공의 합금으로 그 옵션을 지움. 소멸의 오브는 안 씀',
            'Lightning, spell or extra damage → next; a miss stays and the Celestial Alloy eats it at {#i8} (Sinistral Crystallisation) — no Annulment')
     nodes=[i1,
       {'id':'i2','phase':'base','do':'regal','cur':'Perfect_Regal_Orb','omens':['Omen_of_Dextral_Coronation'],'target':{'junk':'s'},'ts':'1:41'},
@@ -80,6 +80,6 @@ def _wand(r, t):
         nodes[-1]['fail']={'goto':'self','via':dict(IC_LIGHT, also=[{'cur':'Preserved_Jawbone'},{'cur':'Omen_of_Abyssal_Echoes'}])}
         nodes[-1]['br']=K('좋은 옵션 → 완성, 빗나감: 빛의 징조 + 소멸의 오브 → 보존된 턱뼈로 다시 훼손','Hit → done; miss: Light + Annulment, desecrate again with a Preserved Jawbone')
     else:
-        nodes[-1]['br']=K('결과 그대로 완성(빛의 징조 안 씀)','Keep whatever comes (no Light)')
+        nodes[-1]['br']=K('결과 그대로 완성, 빛의 징조 안 씀','Keep whatever comes (no Light)')
     r['nodes']=nodes
 for _t in ('bal','ess'): _grade('icesly-budget-wand','icesly-budget-wand-v2',_t,_wand)

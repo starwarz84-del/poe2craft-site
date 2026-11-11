@@ -20,7 +20,7 @@ R.append({
   {'id':'l2','phase':'pre','do':'chaos','cur':'Chaos_Orb','target':{'gi':lq_pct,'tmax':1},'fail':{'goto':'self'},'ts':'5:49'},
   {'id':'l3','phase':'pre','do':'desecrate','cur':'Ancient_Rib','omens':['Omen_of_Sinistral_Necromancy'],'target':{'unrev':'p'},'ts':'7:28'},
   {'id':'l4','phase':'pre','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':lq_hyb,'tmax':1},'side':'p','bone':'Ancient_Rib'},'fail':{'goto':'l3','via':LIGHT},'ts':'7:37',
-   'br':K('대박 → 다음, 실패: 빛의 징조 + 소멸의 오브로 지우고 다시 훼손 (팔 용도면 낮은 티어로 타협)','hit → next; miss: Omen of Light + Annulment and desecrate again (settle for a lower tier when selling)')},
+   'br':K('대박 → 다음, 실패: 빛의 징조 + 소멸의 오브로 지우고 다시 훼손. 팔 용도면 낮은 티어로 타협','hit → next; miss: Omen of Light + Annulment and desecrate again (settle for a lower tier when selling)')},
   {'id':'l5','phase':'rune','do':'manual','target':{'rune':LQ_IRON},'label':K('완벽한 철 룬 장착','Socket a Perfect Iron Rune'),'ts':'8:37'},
   {'id':'l6','phase':'rune','do':'manual','target':{'rune':LQ_IRON},'label':K('완벽한 철 룬 장착','Socket a Perfect Iron Rune'),'ts':'8:43'},
   {'id':'l7','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],'target':{'junk':['s','s']},'ts':'9:44',

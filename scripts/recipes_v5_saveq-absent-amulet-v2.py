@@ -37,7 +37,7 @@ def sv_amulet(tier):
   {'id':'v2','phase':'suf','do':'chaos','cur':'Chaos_Orb','target':{'anyOf':[{'gi':s2_melee,'tmax':1},{'gi':s2_proj,'tmax':1}]},'fail':{'goto':'self'},'ts':'9:55'},
   {'id':'v3','phase':'quality','do':'exalt','cur':'Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'junk':'p'},'ts':'12:05'},
   {'id':'v4','phase':'quality','do':'essence','cur':'Essence_of_the_Breach','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':s2_maxQ},'ts':'12:13'},
-  {'id':'v5','phase':'quality','do':'quality','cur':'Reaver_Catalyst','target':{'quality':40},'ts':'12:25','br':K('투사체 +3이면 갑각 기폭제(영상)','Projectile +3: Carapace Catalysts (as in the video)')},
+  {'id':'v5','phase':'quality','do':'quality','cur':'Reaver_Catalyst','target':{'quality':40},'ts':'12:25','br':K('투사체 +3이면 영상처럼 갑각 기폭제','Projectile +3: Carapace Catalysts (as in the video)')},
   {'id':'v6','phase':'pre','do':'chaos','cur':'Chaos_Orb','omens':['Omen_of_Whittling'],'target':{'removeGi':s2_maxQ,'junk':'p'},'ts':'12:36'},
   {'id':'v7','phase':'pre','do':'essence','cur':'Perfect_Essence_of_Enhancement','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':s2_def},'ts':'12:44'},
   {'id':'v8','phase':'pre','do':'desecrate','cur':bone,'target':{'unrev':'p'},'ts':'13:44'},

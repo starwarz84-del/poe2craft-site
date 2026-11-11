@@ -30,7 +30,7 @@ R.append({
   {'id':'vr2','phase':'rev','branch':{'of':'v2','when':'miss'},'do':'desecrate','cur':'Ancient_Rib','omens':['Omen_of_Sinistral_Necromancy'],'target':{'unrev':'p'},'ts':'7:58'},
   {'id':'vr3','phase':'rev','branch':{'of':'v2','when':'miss'},'do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':SA_REV},'side':'p','bone':'Ancient_Rib'},'fail':{'goto':'vr2','via':SA_LIGHT},'ts':'8:05'},
   {'id':'v4','phase':'alloy','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'junk':'p'},'ts':'9:45',
-   'br':K('합금이 지울 접두 (에너지 보호막·마나가 뜨면 그대로 써도 됨)','The prefix for the alloy to remove (keep it if energy shield or mana lands)')},
+   'br':K('합금이 지울 접두. 에너지 보호막·마나가 뜨면 그대로 써도 됨','The prefix for the alloy to remove (keep it if energy shield or mana lands)')},
   {'id':'v3','phase':'alloy','do':'manual','target':{'rune':K('아스트리드의 창의성',"Astrid's Creativity")},'label':K('아스트리드의 창의성 룬 장착',"Socket Astrid's Creativity"),'ts':'9:50'},
   {'id':'v5','phase':'alloy','do':'essence','cur':'Transcendent_Alloy','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':sa_alloy,'chance':1/3,'missDrop':sa_spell},'ts':'10:05',
    'br':K('방금 엑잘한 옵션이 지워지면 → 계속, 주문 피해·공개 옵션이 지워지면 → 그 자리 엑잘','The exalted line goes → continue; spell damage or the revealed line goes → exalt that slot')},

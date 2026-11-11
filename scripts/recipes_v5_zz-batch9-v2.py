@@ -28,8 +28,8 @@ def _contFail(nid, back, first, kr, en):
     def f(r):
         n=_node(r,nid); n['fail']={'goto':back,'via':{'cur':'Orb_of_Annulment'},'lost':first}; n['br']=K(kr,en)
     return f
-_emF=_contFail('e4','e2','e1','실패: 공격 치명타 피해가 지워지면 새 베이스, 공격 속도가 지워지면 소멸의 오브로 +1 접두 허용 제거(접두는 잡옵뿐) → 2번부터','Miss: crit damage gone → new base; attack speed gone → plain Annulment until +1 prefix allowed goes (prefixes are junk), then step 2')
-_saF=_contFail('j4','j1','j1','실패: 소멸의 오브로 모두 지우고 1번(카오스 오브)부터 다시 (영상)','Miss: annul everything and start again at step 1 (Chaos), as the video')
+_emF=_contFail('e4','e2','e1','실패: 공격 치명타 피해가 지워지면 새 베이스, 공격 속도가 지워지면 접두가 잡옵뿐이라 소멸의 오브로 +1 접두 허용 제거 → 2번부터','Miss: crit damage gone → new base; attack speed gone → plain Annulment until +1 prefix allowed goes (prefixes are junk), then step 2')
+_saF=_contFail('j4','j1','j1','실패: 영상처럼 소멸의 오브로 모두 지우고 1번 카오스 오브부터 다시','Miss: annul everything and start again at step 1 (Chaos), as the video')
 for _t in ('bal','ess'): _grade8('diztoh-5mod-emerald','diztoh-5mod-emerald-v2',_t,_then(_jewel('e6',('e7','e8','e9'),'e10',reveal_any=[7,55]),_emF))
 for _t in ('bal','ess'): _grade8('diztoh-5mod-sapphire','diztoh-5mod-sapphire-v2',_t,_then(_jewel('j6',('j7','j8','j9'),'j10'),_saF))
 def _zenm(r, t):
@@ -37,5 +37,5 @@ def _zenm(r, t):
     if t=='ess': z5.pop('fail',None); z5['br']=KEEP
     else:   # Zen_M 영상 6:17: 빛의 징조 없이 징조 없는 소멸의 오브 — 1/2로 훼손 옵션, 좋은 접미가 지워지면 카오스 오브부터
         z5['fail']={'goto':'z4','via':{'cur':'Orb_of_Annulment'},'lost':'z3'}
-        z5['br']=K('빗나가면 징조 없는 소멸의 오브 (1/2로 훼손 옵션, 좋은 접미가 지워지면 카오스 오브부터)','Miss: a plain Annulment (1/2 the desecrated line; the good suffix gone: Chaos again)')
+        z5['br']=K('빗나가면 징조 없는 소멸의 오브. 1/2로 훼손 옵션이 지워지고, 좋은 접미가 지워지면 카오스 오브부터','Miss: a plain Annulment (1/2 the desecrated line; the good suffix gone: Chaos again)')
 for _t in ('bal','ess'): _grade8('zenm-timelost-sapphire','zenm-timelost-sapphire-v2',_t,_zenm)

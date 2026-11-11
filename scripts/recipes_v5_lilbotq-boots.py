@@ -21,7 +21,7 @@ R.append({
  'nodes':[
   {'id':'b1','phase':'suf','do':'base','cost':'base','ts':'0:12','note':K('이동 속도 + 저항이 붙은 매직 장화(낮은 티어도 됨).','A magic pair with movement speed and a resistance (lower tiers are fine).')},
   {'id':'b2','phase':'suf','do':'essence','cur':'Greater_Essence_of_Insulation','target':{'gi':lb_fireE},'ts':'1:50',
-   'br':K('없는 원소의 상위 에센스(또는 상위 풍요의 에센스로 희귀도)','The greater essence of the missing element (or Greater Essence of Opulence for rarity)')},
+   'br':K('없는 원소의 상위 에센스, 또는 상위 풍요의 에센스로 희귀도','The greater essence of the missing element (or Greater Essence of Opulence for rarity)')},
   {'id':'b3','phase':'suf','do':'desecrate','cur':'Preserved_Rib','omens':['Omen_of_Dextral_Necromancy'],'target':{'unrev':'s'},'ts':'2:16'},
   {'id':'b4','phase':'pre','do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],'target':{'junk':['p','p']},'ts':'2:35',
    'note':K('접두 아무거나(영상: 에너지 보호막 % + 최대 생명력).','Any prefixes (% energy shield and maximum life in the video).')},
@@ -52,7 +52,7 @@ R.append({
   {'id':'h2','phase':'suf','do':'manual','target':{'rune':LH_ASTRID},'label':K('아스트리드의 창의성 장착',"Socket Astrid's Creativity"),'ts':'10:52'},
   {'id':'h3','phase':'suf','do':'essence','cur':'Mystic_Alloy','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':lh_spirit},'ts':'11:09'},
   {'id':'h4','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':LH_PRE},'fail':{'goto':'h4b'},'ts':'11:39',
-   'br':K('실패: 그대로 진행(영상 추천) / 좌측 말소의 징조 + 카오스 오브','Miss: keep it (the video\'s pick) / Sinistral Erasure + Chaos')},
+   'br':K('실패: 영상 추천대로 그대로 진행 / 좌측 말소의 징조 + 카오스 오브','Miss: keep it (the video\'s pick) / Sinistral Erasure + Chaos')},
   {'id':'h4b','phase':'pre','do':'chaos','cur':'Chaos_Orb','omens':['Omen_of_Sinistral_Erasure'],'target':{'anyOf':LH_PRE,'replace':'p'},'fallbackFor':'h4','fail':{'goto':'self'},'ts':'11:58'},
   {'id':'h5','phase':'pre','do':'desecrate','cur':'Ancient_Rib','target':{'unrev':'p'},'ts':'12:16'},
   {'id':'h6','phase':'pre','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':lh_dodge,'tmax':2},'side':'p','bone':'Ancient_Rib'},'fail':{'goto':'h5','via':LBB_LIGHT},'ts':'12:20',

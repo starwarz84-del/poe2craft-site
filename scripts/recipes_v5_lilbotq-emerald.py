@@ -23,7 +23,7 @@ R.append({
   {'id':'l3','phase':'des','do':'desecrate','cur':'Preserved_Cranium','target':{'unrev':'s'},'ts':'15:20'},
   {'id':'l4','phase':'des','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':[{'gi':lq_cc},{'gi':lq_as}]},'side':'s','bone':'Preserved_Cranium'},'fail':{'goto':'l3','via':LIGHT},'ts':'15:31'},
   {'id':'l5','phase':'pre','do':'remove','cur':'Orb_of_Annulment','omens':['Omen_of_Sinistral_Annulment'],'target':{'dropGi':lq_plus},'ts':'19:03',
-   'br':K('성공 → 다음, 실패(잡옵이 지워짐) → 좌측 말소의 징조 + 카오스 오브','Hit → next; miss (junk went) → Sinistral Erasure + Chaos')},
+   'br':K('성공 → 다음, 잡옵이 지워지면 좌측 말소의 징조 + 카오스 오브','Hit → next; miss (junk went) → Sinistral Erasure + Chaos')},
   {'id':'l5b','phase':'pre','do':'chaos','cur':'Chaos_Orb','omens':['Omen_of_Sinistral_Erasure'],'fallbackFor':'l5','target':{'removeGi':lq_plus,'junk':'p'},'ts':'19:20'},
   {'id':'l6','phase':'pre','do':'exalt','cur':'Exalted_Orb','target':{'junk':'p'},'ts':'19:28'},
   {'id':'l7','phase':'pre','do':'chaos','cur':'Chaos_Orb','target':{'gi':lq_adm,'replace':'p'},'fail':{'goto':'self'},'ts':'19:50'},

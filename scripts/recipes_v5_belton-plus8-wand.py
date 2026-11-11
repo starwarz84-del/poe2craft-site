@@ -29,7 +29,7 @@ R.append({
   {'id':'b1','phase':'base','do':'base','cost':'base','ts':'1:54',
    'note':K('퀄리티 21%. 아스트리드의 창의성 장착 상태로 초월의 합금(시전 속도) 분열 + 모든 주문 +4 + 천공의 합금 + 미공개 훼손 접두(군왕의 징조).',"21% quality. Astrid's Creativity socketed: fractured Transcendent Alloy (cast speed), all spells +4, Celestial Alloy and an unrevealed desecrated prefix (Omen of the Liege).")},
   {'id':'b2','phase':'pre','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':bt_ele},'side':'p','lord':'amanamu','bone':'Preserved_Jawbone'},'fail':{'goto':'self','via':BT_LIGHT},'ts':'2:49',
-   'br':K('원소 피해 % 증가로 화염·냉기·번개 % 계열을 막아 둠(나중에 지움).','Elemental damage blocks the fire, cold and lightning % families (removed later).')},
+   'br':K('원소 피해 % 증가로 화염·냉기·번개 % 계열을 막아 두고 나중에 지움.','Elemental damage blocks the fire, cold and lightning % families (removed later).')},
   {'id':'b3','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'anyOf':BT_PRE},'fail':{'goto':'self','via':BT_ANN},'ts':'3:49',
    'br':K('실패: 좌측 소멸의 징조 + 소멸의 오브. 천공의 합금이 지워지면 좌측 결정화의 징조 + 천공의 합금으로 다시.','Miss: Sinistral Annulment + Annulment; if the Celestial Alloy goes, Sinistral Crystallisation + Celestial Alloy again.')},
   {'id':'b4','phase':'pre','do':'remove','cur':'Orb_of_Annulment','omens':['Omen_of_Light'],'target':{'removeDes':True},'ts':'4:45'},

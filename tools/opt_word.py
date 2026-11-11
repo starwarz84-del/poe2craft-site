@@ -37,7 +37,9 @@ def fix(s):
         prev = m.group(1)
         if prev and prev[-1] in AUX: return m.group(0)
         if m.string[max(0,m.start()-3):m.start()+1].strip().endswith(KEEPW): return m.group(0)
-        return (prev or '') + m.group(2) + '옵션' + m.group(3)
+        part = m.group(3)
+        if part.startswith('로'): part = '으' + part   # 줄로 → 옵션으로 (옵션 ends in a consonant)
+        return (prev or '') + m.group(2) + '옵션' + part
     s = re.sub(r'(%s?)( ?)줄(%s)(?!%s)' % (H, PART, H), lambda m: m.group(0) if (m.group(1) and not m.group(2)) else word(m), s)
     return s
 if __name__=='__main__':

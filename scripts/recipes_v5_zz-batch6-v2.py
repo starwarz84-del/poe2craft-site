@@ -10,9 +10,9 @@ def _esh(r, t):
     pT,rT=(3,1) if t=='bal' else (4,2)
     pre=[{'gi':de_esp,'tmax':pT},{'gi':de_rarP,'tmax':rT}]
     e3=_node(r,'e3'); e3.pop('fail',None); e3['target']={'anyOf':pre,'asIs':True,'side':'p'}
-    e3['br']=K('에너지 보호막 % 또는 희귀도. 안 나와도 그대로(소멸의 오브 반복 없음).','% energy shield or rarity; a miss stays (no Annulment loop).')
+    e3['br']=K('에너지 보호막 % 또는 희귀도. 안 나와도 그대로 두고 소멸의 오브로 다시 하지 않음.','% energy shield or rarity; a miss stays (no Annulment loop).')
     e4=_node(r,'e4'); e4['target']['reveal']={'anyOf':pre}
-    if t=='bal': e4['br']=K('좋은 옵션 → 완성, 빗나감: 빛의 징조 + 소멸의 오브 → 고대 갈비뼈로 다시 (엑잘이 맞았을 때만)','Hit → done; miss: Light + Annulment, Ancient Rib again (only when the exalt hit)')
+    if t=='bal': e4['br']=K('좋은 옵션 → 완성, 빗나감: 빛의 징조 + 소멸의 오브 → 고대 갈비뼈로 다시. 엑잘이 맞았을 때만','Hit → done; miss: Light + Annulment, Ancient Rib again (only when the exalt hit)')
     else: e4.pop('fail',None); e4['br']=KEEP
     _drop(r,'e5','e6','e7')   # idols and runes are taste (정책 23); the corruption is optional
     r['nodes'].append({'id':'e8','phase':'fin','do':'note','ts':'4:00','note':K('완성. 퀄리티 20%, 소켓은 취향대로.','Done. 20% quality; sockets to taste.')})
@@ -26,7 +26,7 @@ def _belton(r, t):
     b3=_node(r,'b3'); b6=_node(r,'b6'); b7=_node(r,'b7')
     b3['target']['anyOf']=pre; b6['target']['reveal']={'anyOf':suf}
     b7.pop('fail',None); b7['target']={'anyOf':pre,'asIs':True,'side':'p'}
-    b7['br']=K('안 나와도 그대로(영상: 카오스 피해 3티어로 타협)','A miss stays (the video kept tier 3 chaos damage)')
+    b7['br']=K('안 나와도 그대로. 영상은 카오스 피해 3티어로 타협','A miss stays (the video kept tier 3 chaos damage)')
     if t=='ess':
         b3.pop('fail',None); b3['target']['asIs']=True; b3['br']=KEEP
         b6.pop('fail',None); b6['br']=KEEP; b7['cur']='Greater_Exalted_Orb'
@@ -39,7 +39,7 @@ def _shield(r, t):
     l4=_node(r,'l4'); l4['target']['reveal']['tmax']=hT
     _drop(r,'l5','l6')   # Perfect Iron Runes are taste (정책 23)
     if t=='ess':
-        l4.pop('fail',None); l4['br']=K('나온 티어로 타협(판매용)','Settle for the tier you get (to sell)')
+        l4.pop('fail',None); l4['br']=K('판매용은 나온 티어로 타협','Settle for the tier you get (to sell)')
         for nid in ('l7','l8'): _node(r,nid)['cur']='Greater_Exalted_Orb'
 for _t in ('bal','ess'): _grade('lilbotq-armour-shield','lilbotq-armour-shield-v2',_t,_shield)
 
@@ -57,7 +57,7 @@ def _robe(r, t):
     i=[n['id'] for n in r['nodes']].index('v3')
     r['nodes'].insert(i,{'id':'v2b','phase':'pre','do':'remove','cur':'Orb_of_Annulment','target':{'removeJunk':'p'},'knownP':0.5,'fail':{'goto':'v2','lost':'v2'},'ts':v2.get('ts')})
     if t=='bal':
-        _node(r,'v8')['br']=K('가장 낮은 옵션이 버릴 옵션일 때만. 정신력 점유 효율(레벨 65)이 가장 낮아지면 그대로 타협.','Only while the lowest line is junk; once the reservation line (level 65) is lowest, settle.')
+        _node(r,'v8')['br']=K('가장 낮은 옵션이 버릴 옵션일 때만. 레벨 65인 정신력 점유 효율이 가장 낮아지면 그대로 타협.','Only while the lowest line is junk; once the reservation line (level 65) is lowest, settle.')
     else:
         _drop(r,'v8'); _node(r,'v7')['cur']='Greater_Exalted_Orb'; _node(r,'v7')['br']=KEEP
 for _t in ('bal','ess'): _grade('diztoh-vile-robe','diztoh-vile-robe-v2',_t,_robe)
@@ -67,7 +67,7 @@ def _tal(r, t):
     r['start']['mods'][1]['tmax']=3 if t=='bal' else 5
     t5=_node(r,'t5'); t5['target']={'anyOf':TL_PRE,'asIs':True,'side':'p'}; t5['br']=KEEP
     t9=_node(r,'t9'); t9.pop('fail',None); t9['target']={'gi':tl_cdmg,'tmax':2,'asIs':True,'side':'s'}
-    t9['br']=K('안 나와도 그대로(영상: 정확도 + 빛 반경)','A miss stays (accuracy + light radius in the video)')
+    t9['br']=K('안 나와도 그대로. 영상 결과는 정확도 + 빛 반경','A miss stays (accuracy + light radius in the video)')
     _drop(r,'t5b','t7','t10')   # t10 = Divine for values (not crafting); the Sinistral Annulment fork (expensive) and the Iron Rune (taste, 정책 23)
     if t=='ess': t5['cur']='Greater_Exalted_Orb'; t9['cur']='Greater_Exalted_Orb'
     _node(r,'t4')['br']=K('아마나무 접미 3개가 전부 나와서 공격 속도 확정.','All three Amanamu suffixes show, so attack speed is sure.')

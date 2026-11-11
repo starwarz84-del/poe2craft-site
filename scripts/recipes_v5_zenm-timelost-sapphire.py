@@ -29,7 +29,7 @@ R.append({
   {'id':'z5','phase':'suf','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':ZM_SUF},'side':'s','bone':'Preserved_Cranium'},'fail':{'goto':'z4','via':{'cur':'Orb_of_Annulment'},'lost':'z3'},'ts':'4:42',
    'br':K('실패: 소멸의 오브(1/2로 훼손 옵션), 치명타 옵션이 지워지면 카오스 오브부터','Miss: Annulment (1 in 2 takes the desecrated line); if the crit line goes, chaos again')},
   {'id':'z6','phase':'pre','do':'exalt','cur':'Exalted_Orb','target':{'junk':'p','count':2},'ts':'9:15',
-   'br':K('중형 반경이 뜨면 소멸의 오브(치명타 옵션이 지워지면 카오스 오브부터) / 대형 반경은 그대로 판매','Medium radius → Annulment (if a crit line goes, chaos again) / Large radius: sell as is')},
+   'br':K('중형 반경이 뜨면 소멸의 오브, 치명타 옵션이 지워지면 카오스 오브부터 / 대형 반경은 그대로 판매','Medium radius → Annulment (if a crit line goes, chaos again) / Large radius: sell as is')},
   {'id':'z7','phase':'pre','do':'essence','cur':'Ancient_Potent_Liquid_Melancholy','knownP':True,'target':{'gi':zm_mel},'ts':'9:43',
    'note':K('접두가 꽉 차 있어 접두 하나가 지워짐. 완성.','Prefixes are full, so a prefix is replaced. Done.')},
  ]})

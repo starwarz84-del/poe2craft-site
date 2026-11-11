@@ -19,7 +19,7 @@ def _brp(t):
        {'id':'b8','phase':'pre','do':'chaos','cur':'Chaos_Orb','omens':['Omen_of_Whittling'],'target':{'removeGi':71,'junk':'p'},
         'br':K('새 옵션이 접미로 가면 → 다음 단계로 접미 자리 비우기','The new line lands on the suffixes → free a suffix slot next')},
        {'id':'b8s','phase':'pre','do':'chaos','cur':'Greater_Chaos_Orb','omens':['Omen_of_Whittling','Omen_of_Dextral_Erasure'],'optional':True,
-        'label':K('접미 자리 비우기 (새 옵션이 접미로 갔을 때)','Free a suffix slot (when the new line went to the suffixes)'),'target':{'junk':'p','chance':0.5},'knownP':True,'fail':{'goto':'self'}},
+        'label':K('새 옵션이 접미로 가면 접미 자리 비우기','Free a suffix slot (when the new line went to the suffixes)'),'target':{'junk':'p','chance':0.5},'knownP':True,'fail':{'goto':'self'}},
        {'id':'b9a','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'junk':'p'}},
        {'id':'b9','phase':'pre','do':'essence','cur':'Swift_Alloy','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':73},
         'br':K('남은 접두가 공격 시 원소 피해면 → 바로 훼손' if bal else '남은 접두가 무엇이든 빈자리에 훼손','The remaining prefix is elemental → desecrate next' if bal else 'Whatever prefix is left, desecrate the open slot')}]

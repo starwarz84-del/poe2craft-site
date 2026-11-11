@@ -23,7 +23,7 @@ for _t in ('bal','ess'): _grade('diztoh-budget-crossbow','diztoh-budget-crossbow
 def _mace1(r, t):
     r['start']={'rar':'magic','quality':20,'mods':[{'gi':om_crit,'tmax':2 if t=='bal' else 3}]}
     _node(r,'m1')['note']=K('치명타 확률 매직 둔기 구입(특출난 베이스, 퀄리티 20%).','Buy a magic exceptional mace with crit chance (20% quality).')
-    m7=_node(r,'m7'); m7['target']={'anyOf':OM_PHYS,'asIs':True,'side':'p'}; m7['br']=K('안 나와도 그대로(좌측 말소의 징조 반복은 뺌)','A miss stays (the Sinistral Erasure loop is left out)')
+    m7=_node(r,'m7'); m7['target']={'anyOf':OM_PHYS,'asIs':True,'side':'p'}; m7['br']=K('안 나와도 그대로, 좌측 말소의 징조 반복은 뺌','A miss stays (the Sinistral Erasure loop is left out)')
     _drop(r,'m2','m7b','m12','m13')
     if t=='ess':
         _drop(r,'m11'); m9=_node(r,'m9'); m9['target']={'anyOf':OM_FLAT,'asIs':True,'side':'p'}; m9['br']=KEEP

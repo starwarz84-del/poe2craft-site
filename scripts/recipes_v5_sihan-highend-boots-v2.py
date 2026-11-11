@@ -35,7 +35,7 @@ def sh_boots(tier):
   {'id':'s2','phase':'suffix','do':'exalt',**DEX,'target':{'gi':sb_str,'tmax':1},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s1'},'ts':'11:57'},
     ]
     if ess:
-        nodes.append({'id':'s3','phase':'suffix','do':'exalt',**DEX,'target':{'junk':'s'},'label':K('접미 세번째 옵션 (나오는 대로)','Third suffix (whatever comes)'),'ts':'10:17'})
+        nodes.append({'id':'s3','phase':'suffix','do':'exalt',**DEX,'target':{'junk':'s'},'label':K('접미 세번째 옵션, 나오는 대로','Third suffix (whatever comes)'),'ts':'10:17'})
     else:
         nodes.append({'id':'s3','phase':'suffix','do':'exalt',**DEX,'target':{'anyOf':RES},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s2'},'ts':'10:17'})
     nodes+=[

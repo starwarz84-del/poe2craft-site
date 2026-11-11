@@ -113,25 +113,25 @@ for _r in R:
 # Short branch lines for steps whose currency and target are already on screen but whose outcome forks (대박/실패 갈림길).
 BRANCH = {
  ('mirror-bow-video','b4'): ('없으면: 빛의 징조 + 소멸의 오브 → 고대 턱뼈 + 좌측 강령술의 징조 → 다시 공개.','None: Light + Annulment, Ancient Jawbone + Sinistral Necromancy, then reveal again.'),
- ('absent-amulet-video','a11'): ('좋은 옵션 → 완성. 아니면 갈림길(아래 두 방법).','A good mod → done. Otherwise the fork below.'),
- ('absent-amulet-video','a16'): ('에너지 보호막 → 완성. 아니면 갈림길(아래 두 방법).','Energy shield → done. Otherwise the fork below.'),
+ ('absent-amulet-video','a11'): ('좋은 옵션 → 완성. 아니면 아래 두 방법 중 하나.','A good mod → done. Otherwise the fork below.'),
+ ('absent-amulet-video','a16'): ('에너지 보호막 → 완성. 아니면 아래 두 방법 중 하나.','Energy shield → done. Otherwise the fork below.'),
  ('breach-ring-video','c13'): ('너무 안 뜨면 2티어로 타협.','If it drags on, settle for T2.'),
- ('ragna-spell4-amulet','g6'): ('시전 속도 → 완성. 아니면 갈림길: ① 우측 소멸의 징조 + 소멸의 오브 후 기폭제 다시 채우고 재도전 ② 타협(아래).','Cast speed → done. Otherwise: ① Dextral Annulment + Annulment, refill quality, retry ② settle (below).'),
+ ('ragna-spell4-amulet','g6'): ('시전 속도 → 완성. 아니면 갈림길: ① 우측 소멸의 징조 + 소멸의 오브 후 기폭제 다시 채우고 재도전 ② 아래의 타협.','Cast speed → done. Otherwise: ① Dextral Annulment + Annulment, refill quality, retry ② settle (below).'),
  ('mazbro-proj-gloves','g10'): ('실패: 우측 결정화의 징조 + 군왕의 합금·발작의 에센스로 잡옵을 바꿔 두 번 더, 다 실패하면 소멸의 오브.','Miss: Dextral Crystallisation + alloy/essence to swap the junk twice more, then annul.'),
  ('mazbro-sceptre','z13'): ('한 번만 봄: 성공 → 마지막 접미, 실패 → 그대로 두고 마지막 접미 먼저, 훼손은 마지막에 다시.','One look: hit → last suffix; miss → leave it, do the last suffix first, redo the desecration last.'),
  ('mazbro-sceptre','z14'): ('빗나가서 지운 옵션이 장착 증강 효과면 합금 단계부터.','If the annul takes the augment-effect line, redo the alloy step.'),
  ('diztoh-socket-gloves','d8'): ('훼손 옵션이 지워지면 → 아래 성공 경로, 에너지 보호막이 지워지면 → 빈 접두 2자리를 엑잘로 채우고 남은 훼손은 마지막에 공개.','Desecration removed → success path; energy shield removed → exalt the two free prefixes, reveal the old desecration last.'),
  ('diztoh-socket-gloves','dm3'): ('남아 있던 훼손을 공개. 안 나오면 빛의 징조 + 소멸의 오브 → 고대 갈비뼈 → 다시 공개.','Reveal the old desecration; on a miss, Light + Annulment, Ancient Rib, reveal again.'),
  ('diztoh-socket-gloves','d11'): ('실패: 좌측 소멸의 징조 + 소멸의 오브 → 다시. 에너지 보호막이 지워지면 그 자리도 엑잘로(에너지 보호막 최대치 포함), 공개한 훼손이 지워지면 {#d9}번부터.','Miss: Sinistral Annulment + Annulment, retry. If energy shield goes, exalt that slot too (flat ES counts); if the revealed desecration goes, back to step {#d9}.'),
- ('sl-flamewave-staff','s3'): ('합금이 화염 속성 부여 규모를 지우면(1/2): 합금 옵션은 남으니 절사 단계만 다시.','If the alloy takes the fire magnitude line (1/2): the alloy line stays, so only redo the Whittling step.'),
- ('diztoh-iceshot-bow','w12'): ('실패: 우측 결정화의 징조 + 완벽한 가속의 에센스 → 심연의 에센스(징표) → 다시 훼손.','Miss: Dextral Crystallisation + Perfect Essence of Haste, Essence of the Abyss (Mark), desecrate again.'),
+ ('sl-flamewave-staff','s3'): ('합금이 1/2로 화염 속성 부여 규모를 지우면 합금 옵션은 남으니 절사 단계만 다시.','If the alloy takes the fire magnitude line (1/2): the alloy line stays, so only redo the Whittling step.'),
+ ('diztoh-iceshot-bow','w12'): ('실패: 우측 결정화의 징조 + 완벽한 가속의 에센스 → 심연의 에센스로 징표 → 다시 훼손.','Miss: Dextral Crystallisation + Perfect Essence of Haste, Essence of the Abyss (Mark), desecrate again.'),
  ('diztoh-iceshot-bow','w15'): ('공격 속도·치명타 피해·초과 화살 → 대박.','Attack speed, crit damage or extra arrows → jackpot.'),
- ('diztoh-vile-robe','v6'): ('실패: 우측 결정화의 징조 + 완벽한 추구의 에센스 → 우측 결정화의 징조 + 심연의 에센스(징표) → 다시 공개.','Miss: Dextral Crystallisation + Perfect Essence, then Dextral Crystallisation + Essence of the Abyss (Mark), reveal again.'),
+ ('diztoh-vile-robe','v6'): ('실패: 우측 결정화의 징조 + 완벽한 추구의 에센스 → 우측 결정화의 징조 + 심연의 에센스로 징표 → 다시 공개.','Miss: Dextral Crystallisation + Perfect Essence, then Dextral Crystallisation + Essence of the Abyss (Mark), reveal again.'),
  ('diztoh-5mod-sapphire','j4'): ('"+1 접미 허용" → 성공, "+1 접두 허용" → 소멸의 오브로 비우고 처음부터.','"+1 suffix allowed" → success; "+1 prefix allowed" → annul and start over.'),
  ('diztoh-5mod-emerald','e4'): ('"+1 접미 허용" → 성공, 아니면 처음부터.','"+1 suffix allowed" → success, otherwise start over.'),
- ('diztoh-5mod-emerald','e9'): ('중간에 소멸의 오브 금지(접미가 상한 초과).','No Annulment in between (suffixes are over the cap).'),
+ ('diztoh-5mod-emerald','e9'): ('접미가 상한을 넘은 상태라 중간에 소멸의 오브 금지.','No Annulment in between (suffixes are over the cap).'),
  ('ragna-ashot-bow','w3'): ('물리 % + 정확도 복합 → 대박.','% physical + accuracy hybrid → jackpot.'),
- ('sl-proj7-gloves','v5'): ('접미 잡옵이 지워지면 성공(1/2), 치명타 확률이 지워지면 접미 작업 처음부터.','Junk suffix removed → success (1/2); crit chance removed → redo the suffixes.'),
+ ('sl-proj7-gloves','v5'): ('접미 잡옵이 지워지면 성공, 1/2. 치명타 확률이 지워지면 접미 작업 처음부터.','Junk suffix removed → success (1/2); crit chance removed → redo the suffixes.'),
 }
 for _r in R:
     for _n in _r['nodes']:

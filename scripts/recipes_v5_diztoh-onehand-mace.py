@@ -34,7 +34,7 @@ R.append({
    'br':K('실패: 절사의 징조 + 상위 카오스 오브','Miss: Whittling + Greater Chaos')},
   {'id':'m10','phase':'pre','do':'reveal','target':{'reveal':{'gi':om_kpct},'side':'p','lord':'kurgal','bone':'Preserved_Jawbone'},'fail':{'goto':'m8','via':LIGHT},'ts':'4:46'},
   {'id':'m11','phase':'pre','do':'chaos','cur':'Greater_Chaos_Orb','omens':['Omen_of_Whittling'],'target':{'anyOf':OM_FLAT,'replace':'p'},'fallbackFor':'m9','fail':{'goto':'self'},'ts':'4:55',
-   'br':K('버릴 옵션이 공격 속도 에센스(레벨 60)보다 낮을 때만','Only while the junk line is below the attack speed essence (level 60)')},
+   'br':K('버릴 옵션이 레벨 60인 공격 속도 에센스보다 낮을 때만','Only while the junk line is below the attack speed essence (level 60)')},
   {'id':'m12','phase':'fin','do':'divine','cur':'Divine_Orb','target':{'roll':{'gi':om_kpct}},'fail':{'goto':'self'},'ts':'5:12'},
   {'id':'m13','phase':'fin','do':'note','target':{'runeSwap':[OM_ASTRID,K('완벽한 철 룬','Perfect Iron Rune')]},'ts':'5:40'},
   {'id':'m14','phase':'fin','do':'note','ts':'6:17','note':K('선택: 타락(소켓 3개 노림). 건축가의 오브 2차 타락은 아이템이 바뀌거나 사라질 수 있음.','Optional: corrupt for a third socket. A second corruption with an Architect\'s Orb can transform or destroy the item.')},

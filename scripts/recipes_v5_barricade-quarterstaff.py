@@ -29,7 +29,7 @@ R.append({
   {'id':'p4','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':BQ_PRE[2:]},'fail':{'goto':'p5'},'ts':'17:05',
    'br':K('1티어 → 완성, 실패 → 다음 단계','T1 → done; miss → next step')},
   {'id':'p5','phase':'pre','do':'chaos','cur':'Perfect_Chaos_Orb','omens':BQ_WH,'target':{'anyOf':BQ_PRE[2:],'replace':'p'},'fallbackFor':'p4','fail':{'goto':'self'},'ts':'17:20',
-   'br':K('버릴 옵션이 레벨 77 이상(예: 물리 피해 + 정확도 1티어)이면 → 다음 갈림길','Junk at level 77+ (e.g. T1 physical + accuracy) → next fork')},
+   'br':K('물리 피해 + 정확도 1티어처럼 버릴 옵션이 레벨 77 이상이면 → 다음 갈림길','Junk at level 77+ (e.g. T1 physical + accuracy) → next fork')},
   {'id':'p6','phase':'pre','do':'note','fallbackFor':'p5','label':K('갈림길: 좌측 소멸의 징조 + 소멸의 오브','Fork: Sinistral Annulment + Annulment'),'ts':'18:00',
    'note':K('접두 옵션 3개 중 하나 제거(1/3로 버릴 옵션). 좋은 옵션이 지워지면 완벽한 엑잘티드 오브부터 다시.','Removes one of the three prefixes (1 in 3 it is the junk). If a good line goes, Perfect Exalt again.')},
   {'id':'f1','phase':'fin','do':'note','optional':True,'ts':'23:40','note':K('선택: 히네코라의 머리카락 + 바알 오브로 소켓 4개.',"Optional: Hinekora's Lock + Vaal Orb for a fourth socket.")},

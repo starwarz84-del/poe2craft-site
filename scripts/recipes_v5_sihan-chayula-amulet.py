@@ -22,6 +22,6 @@ R.append({
   {'id':'a2','phase':'fin','do':'essence','cur':'Perfect_Essence_of_the_Infinite','target':{'gi':ca_strp},'ts':'3:20'},
   {'id':'a3','phase':'fin','do':'desecrate','cur':'Preserved_Collarbone','omens':['Omen_of_Dextral_Necromancy','Omen_of_the_Sovereign'],'target':{'unrev':'s','dropGi':ca_strp},'ts':'3:35'},
   {'id':'a4','phase':'fin','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':ca_skill},'side':'s','lord':'ulaman','bone':'Preserved_Collarbone'},'fail':{'goto':'a2'},'ts':'3:47',
-   'br':K('실패: 완벽한 무한의 에센스로 훼손 옵션을 지우고 다시(빛의 징조 없이)','Miss: Perfect Essence of the Infinite clears the desecrated line, then again (no Omen of Light)')},
+   'br':K('실패: 완벽한 무한의 에센스로 훼손 옵션을 지우고 빛의 징조 없이 다시','Miss: Perfect Essence of the Infinite clears the desecrated line, then again (no Omen of Light)')},
   {'id':'a5','phase':'fin','do':'note','ts':'5:52','note':K('완성.','Done.')},
  ]})

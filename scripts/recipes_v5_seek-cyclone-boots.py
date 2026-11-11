@@ -33,5 +33,5 @@ R.append({
   {'id':'k9','phase':'suf','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':[{'gi':sk_dur,'tmax':2}]+SK_RES},'side':'s','bone':'Preserved_Rib'},'fail':{'goto':'k8','via':SK_LIGHT},'ts':'9:20'},
   {'id':'k10','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation','Omen_of_Greater_Exaltation'],'target':{'anyOf':SK_PRE},
    'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment','omens':['Omen_of_Sinistral_Annulment']}},'ts':'10:58',
-   'br':K('실패: 그대로 마무리(추천) / 좌측 소멸의 징조 + 소멸의 오브로 지우고 다시','Miss: keep it (recommended) / Sinistral Annulment + Annulment and again')},
+   'br':K('실패: 그대로 마무리가 추천 / 좌측 소멸의 징조 + 소멸의 오브로 지우고 다시','Miss: keep it (recommended) / Sinistral Annulment + Annulment and again')},
  ]})

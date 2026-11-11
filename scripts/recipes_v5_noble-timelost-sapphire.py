@@ -32,7 +32,7 @@ R.append({
    'note':K('반경 옵션(중형·대형)이 있을 때만.','Only while a radius line (Medium/Large) is there.')},
   {'id':'n9','phase':'pre','do':'essence','cur':'Ancient_Potent_Liquid_Melancholy','knownP':True,'target':{'gi':nb_mel},'ts':'9:20'},
   {'id':'n10','phase':'pre','do':'desecrate','cur':'Preserved_Cranium','target':{'unrev':'p','chance':1},'ts':'9:24',
-   'br':K('우울 옵션이 지워져도 공개 먼저 → 최대 마나가 뜨면 액체 우울 다시(1/2)','If the Melancholy line goes, reveal first; on max mana, Melancholy again (1 in 2)')},
+   'br':K('우울 옵션이 지워져도 공개 먼저 → 최대 마나가 뜨면 액체 우울 다시, 1/2','If the Melancholy line goes, reveal first; on max mana, Melancholy again (1 in 2)')},
   {'id':'n11','phase':'pre','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':nb_mana},'side':'p','bone':'Preserved_Cranium'},'fail':{'goto':'n8','via':{'cur':'Chaos_Orb'}},'ts':'9:57',
    'br':K('실패: 카오스 오브로 훼손 옵션 교체 → 반경 정리부터','Miss: Chaos Orb off the desecrated line, then from the radius step')},
   {'id':'n12','phase':'pre','do':'note','optional':True,'label':K('우울 옵션이 지워졌을 때: 액체 우울 다시','If Melancholy went: Melancholy again'),'ts':'11:53',
