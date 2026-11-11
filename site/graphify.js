@@ -40,6 +40,14 @@ function fromDraft(d, D, opt={}){
   for(const gi of Object.keys(tags).map(k=>+k.slice(1))) if(tags['g'+gi].tmax==null && tmaxOf[gi]==null) delete tags['g'+gi].tmax;
   let anyN=0; const anyMemo={}; const anyTag = list => { const ks=[...new Set(list.map(x=>tagOf(x.gi)))]; if(ks.length===1) return ks[0]; const key=ks.slice().sort().join('|'); if(anyMemo[key]) return anyMemo[key]; const k='a'+(++anyN); tags[k]={anyOf:ks}; return anyMemo[key]=k; };
   const targetTag = t => !t ? null : t.anyOf ? anyTag(t.anyOf) : t.gi!=null ? tagOf(t.gi) : t.reveal ? (t.reveal.anyOf ? anyTag(t.reveal.anyOf) : tagOf(t.reveal.gi)) : t.mark ? tagOf(t.mark.gi) : null;
+  // 여러 옵션을 차례로 노리는 묶음(2026-11-11 고침): '원하는 옵션 중 하나'(anyOf) 단계 뒤에 그 나머지를 노리는 단계들이 이어지면 한 묶음.
+  // 예전엔 첫 단계에서 둘째 옵션이 먼저 붙으면 다음 단계가 '이미 있음'으로 건너뛰어 첫째 옵션 없이 완성으로 셌음 → 묶음 단계는 '묶음 옵션이 k개 이상이면 건너뜀', 완성 조건은 '묶음 옵션 n개'
+  const chainOf={}, chainN={}; { const ROLL=['exalt','chaos','regal','transmute','augment'], setOf = n => { const t=n.target||{}; return t.junk ? [] : t.anyOf ? t.anyOf.map(x=>x.gi) : t.gi!=null ? [t.gi] : []; };
+    const cand = N.filter(n=>ROLL.includes(n.do) && !n.fallbackFor && !n.onLost && !n.optional && setOf(n).length);
+    cand.forEach((S,i)=>{ if(chainOf[S.id] || !S.target.anyOf || S.target.anyOf.length<2) return; const L=new Set(setOf(S)), root=anyTag(S.target.anyOf); let k=1;
+      for(const T of cand.slice(i+1)){ if(chainOf[T.id] || (T.branch?.of||'')!==(S.branch?.of||'')) continue; const st=setOf(T); if(st.length<L.size && st.every(g=>L.has(g))){ if(k===1) chainOf[S.id]={tag:root, idx:0}; chainOf[T.id]={tag:root, idx:k++}; } }
+      if(k>1) chainN[root]=Math.min(k, L.size); }); }
+  const tgOf = n => chainOf[n.id]?.tag || targetTag(n.target);
 
   // ---------- roles: fallbacks, branch blocks, the main lane
   const fb={}; N.forEach(n=>{ if(n.fallbackFor){ (fb[n.fallbackFor]=fb[n.fallbackFor]||[]).push(n); } });
@@ -57,7 +65,7 @@ function fromDraft(d, D, opt={}){
   const startKeep = (d.start.mods||[]).filter(m=>m.gi!=null && !m.fr).map(m=>tagOf(m.gi));
   const dropped=new Set(); N.forEach(n=>{ const t=n.target||{}; if(t.removeGi!=null) dropped.add(tagOf(t.removeGi)); if(t.dropGi!=null) dropped.add(tagOf(t.dropGi)); });   // lines a later step removes on purpose (maximum quality) are not kept
   function keepBefore(n){ const out=startKeep.map(t=>({tag:t, maker:'h1'})), i=N.indexOf(n), L=lane(n);
-    for(let j=0;j<i;j++){ const m=N[j]; if(!isMainish(m)) continue; if(m.branch && lane(m)!==L) continue; const t=m.target||{}; const tg=targetTag(t);
+    for(let j=0;j<i;j++){ const m=N[j]; if(!isMainish(m)) continue; if(m.branch && lane(m)!==L) continue; const t=m.target||{}; const tg=tgOf(m);
       if(t.removeGi!=null){ const k=tagOf(t.removeGi); const x=out.findIndex(o=>o.tag===k); if(x>=0) out.splice(x,1); }
       if(t.dropGi!=null){ const k=tagOf(t.dropGi); const x=out.findIndex(o=>o.tag===k); if(x>=0) out.splice(x,1); }
       if(tg && !t.junk && !out.some(o=>o.tag===tg) && !dropped.has(tg)) out.push({tag:tg, maker:m.id}); }
@@ -65,7 +73,7 @@ function fromDraft(d, D, opt={}){
 
   // ---------- item lines along the main lane (left column of the chart)
   const lineOf = (gi, m, extra, tag) => { const g=G[gi], tm=tmaxOf[gi]||1, t=g.t[Math.min(g.t.length-1, Math.max(0,tm-1))]; const kr=(t?.[4]||'').replace(/\n/g,' / '), en=(t?.[5]||'').replace(/\n/g,' / ');
-    return {s:g.g, kr: kr + (extra?' ('+extra.kr+')':''), en: en + (extra?' ('+extra.en+')':''), m, tags:[tag||tagOf(gi)]}; };
+    return {s:g.g, kr: kr + (extra?' ('+extra.kr+')':''), en: en + (extra?' ('+extra.en+')':''), m, tags:[tag||tagOf(gi)], rep:tagOf(gi)}; };
   const J = s => ({s, kr:'잡옵', en:'Junk', m:'j'}), UN = s => ({s, kr:'훼손 옵션(미공개)', en:'Desecrated (unrevealed)', m:'u'});
   const RND = s => ({s, kr:'랜덤 옵션 1개', en:'One random line', m:'j'});
   let cur = (d.start.mods||[]).map(m=> m.junk ? J(m.junk) : m.unrev ? UN(m.unrev) : lineOf(m.gi, m.fr?'f':'n'));
@@ -108,7 +116,7 @@ function fromDraft(d, D, opt={}){
   const retry0 = n => n.fail || n.compromise || (fb[n.id]||[]).length || N.some(x=>x.branch?.of===n.id);
   const emit = (n, r, col) => {
     const a = DO2ACT[n.do]; if(!a) return null;
-    const t=n.target||{}, tg=targetTag(t), keep=keepBefore(n);
+    const t=n.target||{}, ch=chainOf[n.id], tg=ch ? ch.tag : targetTag(t), keep=keepBefore(n);
     const o={id:n.id, kind:'act', group:'main', act:a, label:LABEL[a], goal:goalOf(n,a), edges:[]};
     if(n.cur) o.cur=n.cur; if(n.omens?.length) o.omens=[...n.omens];
     const sh=showOf(n); if(sh) o.show=sh;
@@ -140,7 +148,8 @@ function fromDraft(d, D, opt={}){
       else if(retry) o.edges.push({to:retry, res:'fail'});
       else o.edges.push({to:nxt, res:'fail'}); }
     // already done (a line that came back after a loss): skip the step
-    if(tg && !t.junk && !t.anyOf && a!=='reveal' && (okIf || a==='essence')) { o.skipIf={has:tg}; o.skipTo=nxt; }   // anyOf (policy 6: any single resistance) may already be met by another line
+    if(ch){ o.skipIf={count:{tag:ch.tag, min:ch.idx+1}}; o.skipTo=nxt; }
+    else if(tg && !t.junk && !t.anyOf && a!=='reveal' && (okIf || a==='essence')) { o.skipIf={has:tg}; o.skipTo=nxt; }   // anyOf (policy 6: any single resistance) may already be met by another line
     else if(t.junk && ['exalt','chaos'].includes(a)){ const s=typeof t.junk==='string' ? t.junk : omSide(n.omens,/Exaltation/); if(s && a==='exalt'){ o.skipIf={full:s}; o.skipTo=nxt; } }
     else if(a==='desecrate' && !t.fromMark){ const rv=N.slice(N.indexOf(n)+1).find(x=>x.do==='reveal'); const rt=rv && targetTag(rv.target); o.skipIf = rt ? {any:[{unrev:true},{has:rt}]} : {unrev:true}; o.skipTo=nxt; }
     o._row=r; o._col=col;
@@ -156,9 +165,9 @@ function fromDraft(d, D, opt={}){
     const t=n.target||{}, a=o.act, sdOm=omSide(n.omens, /Erasure|Crystallisation|Necromancy|Annulment/);
     if(t.removeGi!=null) dropOne(l=>l.tags?.includes(tagOf(t.removeGi)));
     if(t.dropGi!=null) dropOne(l=>l.tags?.includes(tagOf(t.dropGi)));
-    if(a==='chaos'){ if(t.removeGi==null) (dropJunk(sdOm)||dropJunk(null)); if(t.gi!=null) cur.push(lineOf(t.gi,'n')); else if(t.anyOf) cur.push(lineOf(t.anyOf[0].gi,'n',null,anyTag(t.anyOf))); else cur.push(RND(sdOm||'p')); }
+    if(a==='chaos'){ if(t.removeGi==null) (dropJunk(sdOm)||dropJunk(null)); if(t.gi!=null) cur.push(lineOf(t.gi,'n',null,chainOf[n.id]?.tag)); else if(t.anyOf) cur.push(lineOf(t.anyOf[0].gi,'n',null,chainOf[n.id]?.tag || anyTag(t.anyOf))); else cur.push(RND(sdOm||'p')); }
     else if(['transmute','augment','regal','exalt'].includes(a)){ const sd=omSide(n.omens,/Exaltation|Coronation/); const k=(n.omens||[]).includes('Omen_of_Greater_Exaltation')?2:1;
-      for(let i=0;i<k;i++){ if(i===0 && (t.gi!=null || t.anyOf)) cur.push(lineOf(t.gi??t.anyOf[0].gi,'n',null,t.anyOf?anyTag(t.anyOf):null)); else cur.push(t.junk ? J(typeof t.junk==='string'?t.junk:(sd||'p')) : RND(sd||'p')); } }
+      for(let i=0;i<k;i++){ if(i===0 && (t.gi!=null || t.anyOf)) cur.push(lineOf(t.gi??t.anyOf[0].gi,'n',null,chainOf[n.id]?.tag || (t.anyOf?anyTag(t.anyOf):null))); else cur.push(t.junk ? J(typeof t.junk==='string'?t.junk:(sd||'p')) : RND(sd||'p')); } }
     else if(a==='essence'){ if(t.removeGi==null){ const s=omSide(n.omens,/Crystallisation/); if(s) dropJunk(s); }
       const gi=t.mark ? t.mark.gi : t.gi; if(gi!=null) cur.push(lineOf(gi, t.mark?'c':'c', K(t.mark?'징표':'제작 옵션', t.mark?'mark':'crafted'))); }
     else if(a==='desecrate'){ const s=t.unrev||sdOm||'s'; if(t.fromMark) dropOne(l=>/징표/.test(l.kr)); cur.push(UN(s)); }
@@ -192,12 +201,13 @@ function fromDraft(d, D, opt={}){
   const cmpTags = new Set(mainOut.filter(o=>o.edges.some(e=>e.if?.param?.cmp)).flatMap(o=>[...(o.show||[]), targetTag(byId[o.id]?.target)].filter(Boolean)));
   const finalTags = cur.filter(l=>l.tags).map(l=>l.tags[0]);
   const reqHas = [...new Set(finalTags)].filter(t=>!softTags.has(t) && !(tags[t]?.gi!=null && G[tags[t].gi].f.includes('ItemMaxQuality')));
-  const require = {all: reqHas.map(t=> cmpTags.has(t) ? {any:[{has:t},{param:{cmp:'settle'}}]} : {has:t})};
+  const need1 = t => chainN[t] ? {count:{tag:t, min:chainN[t]}} : {has:t};
+  const require = {all: reqHas.map(t=> cmpTags.has(t) ? {any:[need1(t),{param:{cmp:'settle'}}]} : need1(t))};
   const desc = v => { const p=P[v], ws=[...loopGi].filter(gi=>p['t'+gi]!=='1'); const parts=[];
     if(ws.length) parts.push(K(`반복으로 찾는 옵션 ${ws.length}개를 넓은 티어로`, `${ws.length} looped line(s) at wider tiers`)); else parts.push(K('고른 티어 그대로','The tiers you picked'));
     if(p.cmp==='settle') parts.push(K('빗나가면 결과 그대로','keep a miss as it comes'));
     return K(parts.map(x=>x.kr).join(' · '), parts.map(x=>x.en).join(' · ')); };
-  const finals = grades.map(v=>({id:v, kr:VN[v].kr+' 옵션', en:VN[v].en, lines: cur.map(l=> l.tags ? {tag:l.tags[0], tmax: tags[l.tags[0]].tmax && String(tags[l.tags[0]].tmax)[0]==='$' ? +P[v][String(tags[l.tags[0]].tmax).slice(1)] : tags[l.tags[0]].tmax, ...(l.m==='f'?{fr:true}:{}), ...(l.m==='d'?{des:true}:{})} : l.m==='r' ? null : {side:l.s, random:true}).filter(Boolean)}));
+  const finals = grades.map(v=>({id:v, kr:VN[v].kr+' 옵션', en:VN[v].en, lines: cur.map(l=>{ if(!l.tags) return l; const k = chainN[l.tags[0]] && l.rep ? l.rep : l.tags[0]; return {...l, _k:k}; }).map(l=> l.tags ? {tag:l._k, tmax: tags[l._k].tmax && String(tags[l._k].tmax)[0]==='$' ? +P[v][String(tags[l._k].tmax).slice(1)] : tags[l._k].tmax, ...(l.m==='f'?{fr:true}:{}), ...(l.m==='d'?{des:true}:{})} : l.m==='r' ? null : {side:l.s, random:true}).filter(Boolean)}));
   const g={id:d.id, recipe:d.id, cls:d.cls, base:base.en||d.base, ilvl:d.ilvl, note:'리버스 크래프팅 초안에서 만든 플로우차트', params,
     strategies:grades.map(v=>({id:v, params:P[v]})), versions:[...grades].reverse().map(v=>({id:v, kr:VN[v].kr, en:VN[v].en, params:P[v], desc:desc(v)})),
     tags, require, groups:[{id:'prep',kr:'베이스템 완성',en:'Finished base',cols:[0,1]},{id:'main',kr:'옵션 추가 작업',en:'Adding modifiers',cols:[0,1]}],
