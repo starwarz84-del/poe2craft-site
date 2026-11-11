@@ -104,6 +104,11 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .mkrun{margin-top:8px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;color:var(--text);font-size:13.5px}
 @keyframes flashy{0%,100%{box-shadow:none}30%,70%{box-shadow:0 0 0 3px var(--warn,#e0a050)}}
 .flash{animation:flashy 1.2s ease 2;border-radius:8px}
+.need{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.need .tsel{font-size:14px;padding:7px 10px;border-radius:8px;min-width:110px;border-color:var(--ok)}.need .tshare{flex-direction:row;font-size:13px;color:var(--muted);font-weight:600}
+.simrec{margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel,transparent)}.simrec .ch-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}.simrec .ch-h span{font-size:12px;color:var(--muted)}
+.simr{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 0;border-top:1px solid var(--line);font-size:13px}.simr .sk{flex:none;font-size:11.5px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}.simr.same .sk{color:var(--ok);border-color:var(--ok)}.simr .st{flex:1 1 220px;color:var(--text)}.simr .sm{color:var(--muted);font-size:12px}.simr .sgo{padding:3px 10px;font-size:12px}
+.lvhelp{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px 14px;margin:0 0 10px;font-size:12.5px;color:var(--muted)}.lvhelp div{display:flex;gap:8px}.lvhelp dt{flex:none;min-width:34px;font-weight:700;color:var(--gold,#e2c27a)}.lvhelp dd{margin:0;line-height:1.5}
+.tshare{display:inline-flex;flex-direction:column;align-items:flex-end;margin-left:8px;font-weight:700;font-size:14px;color:var(--text);line-height:1.1}.tshare small{font-weight:400;font-size:11px;color:var(--muted)}
 .needguide{font-size:13px;color:var(--text);background:color-mix(in srgb,var(--gold,#c8a95a) 10%,transparent);border:1px solid color-mix(in srgb,var(--gold,#c8a95a) 40%,transparent);border-radius:8px;padding:6px 10px;flex-basis:100%}
 .legend{font-size:12px;color:var(--faint)}
 .mod{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,2fr);gap:6px 16px}
@@ -538,7 +543,7 @@ const diff3 = an => !an.rows.some(r=>r.m.fr) && !an.putrid;   // a bought magic 
 function buySet(an){ const b=new Set([...S.buy].filter(i=>S.need.has(i)).map(i=>an.rows[i]?.m).filter(Boolean)); return b.size ? b : null; }
 // 사용자 확정 2026-11-11: 옵션마다 필수 / 유효 / 잡옵 — 유효 옵션은 노리되 한 번만 시도하고 빗나가면 그대로(반복·비싼 징조 없음)
 function needAn(an, floor, it){ const a = {...an, rows: an.rows.flatMap((r,i)=>{ if(r.m.fr) return [r]; if(r.unrev || !(S.need.has(i) || S.soft?.has(i))) return [];
-  const t = Math.max(r.tierNo, S.tsel[i]||r.tierNo, floor ? Math.min(floor, r.tierCnt) : 0), soft = !S.need.has(i);
+  const t = Math.max(S.tsel[i] || r.tierNo, floor ? Math.min(floor, r.tierCnt) : 0), soft = !S.need.has(i);
   return [t===r.tierNo && !soft ? r : {...r, tierNo:t, ...(soft?{soft:true}:{})}]; })};
   return a; }
 // 상황에 맞는 노하우 고르기: 기본 초안과 노하우를 적용한 초안(K5 완벽한 에센스·K6 훼손 공개)을 모두 만들어 검산을 통과한 것 중
@@ -797,7 +802,9 @@ function makeDraft(it, an, opt){
   }
   for(const {r,e} of magicEss) push({phase:'ess', do:'manual', label:{kr:'에센스 옵션',en:'Essence line'}, note:note(`${lk(r)}: ${e.kr}(매직 단계).`, `${le(r)}: ${e.en} (magic stage).`)});
   // 3. junk beyond what the essences will replace goes now, while that side holds nothing worth keeping
-  for(const sd of ['p','s']) while(junk[sd] > resv[sd]){ const good = rows.some(r=>!r.m.fr && r.m.side===sd && nodes.some(n=>n.target?.gi===r.m.gi || (n.target?.anyOf||[]).some(x=>x.gi===r.m.gi)));
+  /* 블록 B6 시범(2026-11-12): 남은 자리로 필요한 옵션을 다 붙일 수 있으면 잡옵은 지우지 않고 랜덤 옵션으로 둠(정리 비용 0) */
+  const roomFor = sd => cap[sd] - cnt[sd] >= rnd.filter(r=>r.m.side===sd).length + desNeed[sd];
+  for(const sd of ['p','s']) while(junk[sd] > resv[sd] && !roomFor(sd)){ const good = rows.some(r=>!r.m.fr && r.m.side===sd && nodes.some(n=>n.target?.gi===r.m.gi || (n.target?.anyOf||[]).some(x=>x.gi===r.m.gi)));
     // every removable line is junk (and the other side keeps none for an essence): a plain Orb of Annulment is safe (policy 13)
     if(cnt.p+cnt.s-frs.length === junk.p+junk.s && (junk[other(sd)]===0 || resv.p+resv.s===0)){
       push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', target:{removeJunk:'any'}, note: frs.length ? note('소멸의 오브로 잡옵 제거 (분열 옵션은 안 지워지고 나머지는 전부 잡옵이라 징조 없이 안전).','Orb of Annulment removes a junk line (the fractured line stays and the rest is junk, so no omen).') : note('소멸의 오브로 잡옵 제거 (옵션이 전부 잡옵이라 징조 없이 안전).','Orb of Annulment removes a junk line (every line is junk, so no omen).')});
@@ -887,7 +894,14 @@ function makeDraft(it, an, opt){
     const omTxt = exOm.map(nk).join(' + '), omEn = exOm.map(ne).join(' + ');
     // a wanted line already on this side can be the one an annulment takes: then go back to the step that made it
     // 정책 4장(C2): 실패 정리는 고정 순서가 아니라 기대 비용이 싼 쪽 — opt.rec==='plain'이면 반대쪽에 좋은 옵션이 있어도 징조 없는 소멸의 오브(지워진 좋은 옵션은 만든 단계부터 다시)
-    const plain0 = cnt[oth] - frs.filter(x=>x.m.side===oth).length === 0, risk = !plain0 && opt?.rec==='plain' && !(it.cat==='jewellery' && qCap>0 && !mqGone);
+    const plain0 = cnt[oth] - frs.filter(x=>x.m.side===oth).length === 0;
+    /* 블록 B6 시범(사용자 확정 2026-11-12): 정리 방법을 시세로 고름 — 징조 없는 소멸(좋은 옵션을 지울 위험 × 다시 만드는 비용) vs 좌측·우측 소멸의 징조. opt.rec로 강제 가능('plain'·'omen') */
+    const autoRisk = (()=>{ if(plain0 || opt?.rec==='omen' || !S.prices) return false;
+      const keep = made.filter(x=>!x.r.m.fr), removable = cnt.p + cnt.s - frs.length + 1; if(!keep.length || removable<=1) return false;
+      const pLose = keep.length / removable, rebuild = keep.map(x=>{ const n=nodes.find(y=>y.id===x.id); if(!n || n.do==='base') return Infinity; const pr=[n.cur, ...(n.omens||[])].reduce((a2,id)=>a2+(exP(id)??0),0); const pp=estChance(it, an, n); return pp>0 ? pr/pp : Infinity; });
+      const avg = rebuild.reduce((a2,v)=>a2+v,0)/rebuild.length, omenC = exP(SIDE_OMEN.annul[sd]) ?? Infinity;
+      return isFinite(avg) && pLose*avg < omenC; })();
+    const risk = !plain0 && (opt?.rec==='plain' || autoRisk) && !(it.cat==='jewellery' && qCap>0 && !mqGone);
     const atRisk = [...made].reverse().find(x=>risk || x.r.m.side===sd), lost = atRisk ? {id:atRisk.id} : null;
     const one = r => cOm.length && (r.g.tg||[]).includes(qType), lkW = r => one(r) ? lk(r) : lkA(r), leW = r => one(r) ? le(r) : leA(r);   // a catalysed element is aimed at alone
     const tgtK = want.length>1?`원하는 옵션 중 하나(${names(want, x=>lkW(x))})`:`${lkW(want[0])} (T${want[0].tierNo} 이상)`, tgtE = want.length>1?`any of ${names(want, x=>leW(x))}`:`${leW(want[0])} (tier ${want[0].tierNo}+)`;
@@ -1266,7 +1280,7 @@ function renderStatic(){
   $('#fb-txt').placeholder = L('예: 3번 단계는 절사의 징조보다 좌측 말소의 징조가 쌈','e.g. step 3 is cheaper with a Sinistral Erasure than a Whittling omen');
   $('#fb-go').textContent = L('보내기','Send');
   $('#lead').textContent = L('완성 아이템에서 거꾸로 제작 순서 찾기 · 영상·제작글, 경매장 아이템, 옵션 조합 중 하나로 시작','Work backwards from a finished item to its crafting order. Start from a video or post, a trade item, or the modifier set you want.');
-  $('#i-help').textContent = L('게임에서 아이템 위에 마우스를 올리고 Ctrl+C(가능하면 Ctrl+Alt+C 상세 복사)로 복사해 붙여 넣으세요. 각 옵션이 어디서 왔는지(일반·분열·훼손·에센스)와 티어를 읽고, 제작 순서(레시피 초안) 생성','Hover the item in game, press Ctrl+C (Ctrl+Alt+C for the advanced copy) and paste it here. Each modifier is matched to its source (regular, fractured, desecrated, essence) and tier, then turned into a crafting order (recipe draft).');
+  $('#i-help').textContent = L('게임 아이템에 마우스를 올리고 Ctrl+Alt+C → 붙여 넣기','Hover the item in game, press Ctrl+Alt+C, paste here');
   $('#txt').placeholder = L('아이템 텍스트를 여기에 붙여 넣기','Paste item text here');
   $('#go').textContent = L('분석','Analyse'); $('#clr').textContent = L('지우기','Clear');
   $('#hint').textContent = L('붙여 넣으면 바로 분석','Analyses as soon as you paste');
@@ -1274,6 +1288,39 @@ function renderStatic(){
   $('#samples').innerHTML = `<span class="hint" style="align-self:center">${L('예시','Samples')}:</span>` + SAMPLES.map((s,i)=>`<button type="button" class="chip" data-sample="${i}">${esc(s.n[KR()?0:1])}</button>`).join('')
     + (S.recSamples?.length ? `<select id="recs" aria-label="${L('등록된 레시피의 완성템','Finished item of a registered recipe')}"><option value="">${L('등록된 레시피 완성템 불러오기…','Load a registered recipe\'s finished item…')}</option>${S.recSamples.map((x,i)=>`<option value="${i}"${S.recIdx===i?' selected':''}>${esc(KR()?x.base.kr:x.base.en)} | ${esc(KR()?x.title.kr:x.title.en)}</option>`).join('')}</select>` : '');
 }
+/* 속성부여 tierShare와 같은 계산: 같은 쪽 일반 옵션 가중치 합 중 이 그룹의 1~k티어 몫 */
+function tierShareR(it, r, k){ if(!r.g || r.g.s!=='n') return null; const G=it.D.groups, side=r.g.g, il=it.ilvl||82; let tot=0, w=0;
+  G.forEach(g=>{ if(g.s==='n' && g.g===side) g.t.forEach(t=>{ if(t[0]<=il) tot+=t[1]; }); });
+  r.g.t.forEach((t,j)=>{ if(j<k && t[0]<=il) w+=t[1]; }); if(!tot || !w) return null; const v=w/tot; return (v*100).toFixed(v<0.001?2:1)+'%'; }
+/* 비슷한 등록 레시피(사용자 확정 2026-11-12): 같은 부위 등록 레시피를 찾아, 구조가 같으면 그 플로우차트를 따르고 다르면 가장 싼 길을 찾음.
+   같은 구조 = 같은 클래스 + 분열 옵션 계열이 같음 + 필수 옵션이 모두 그 레시피 완성품에 같은 티어 이상으로 있음. 비용은 그 레시피 플로우차트 시뮬 평균 */
+const GRADE_N = () => ({high:L('하이엔드','High-end'), bal:L('밸런스','Balance'), ess:L('에센셜','Essential')});
+const DIFF_N = () => [L('입문','Starter'),L('쉬움','Easy'),L('보통','Normal'),L('어려움','Hard'),L('전문가','Expert'),L('극한','Extreme')];
+async function loadBoard(){ if(S.boardR!==undefined) return S.boardR; try{ const b=await fetch('data/board.json').then(r=>r.ok?r.json():null); S.boardR=b?.r||null; }catch(_){ S.boardR=null; } return S.boardR; }
+async function simMean(g, tr){ S.simC=S.simC||{}; const k=g+'|'+tr; if(k in S.simC) return S.simC[k]; S.simC[k]=null;
+  try{ const d=await fetch(`data/sim/${encodeURIComponent(g)}.json`).then(r=>r.ok?r.json():null); const st=d && (d.strategies.find(x=>x.id===tr && !x.hidden) || d.strategies.find(x=>!x.hidden)); S.simC[k]=st?.res?.mean ?? null; }catch(_){} return S.simC[k]; }
+function similarRecipes(it, an){ const B=S.boardR; if(!B) return [];
+  const famK = gi => { const g=it.D.groups[gi]; return g ? g.f.join('+') : null; };
+  const rows = an.rows.map((r,i)=>({r,i})).filter(({r})=>!r.unrev && r.g);
+  const marked = S.need.size || S.soft?.size;
+  const want = rows.filter(({r,i})=>r.m.fr || !marked || S.need.has(i) || S.soft?.has(i)), must = rows.filter(({r,i})=>r.m.fr || S.need.has(i));
+  const W = new Set(want.map(({r})=>r.g.f.join('+'))), FR = new Set(rows.filter(({r})=>r.m.fr).map(({r})=>r.g.f.join('+')));
+  const out=[];
+  for(const [id,b] of Object.entries(B)){ if(b.c!==it.cls || !b.f) continue;
+    const lines = b.f.filter(x=>x.gi!=null), R = new Map(); lines.forEach(x=>{ const k=famK(x.gi); if(k) R.set(k, x); });
+    const inter=[...W].filter(k=>R.has(k)).length, uni=new Set([...W, ...R.keys()]).size, sc = uni ? inter/uni : 0;
+    const rFR = new Set(lines.filter(x=>x.fr).map(x=>famK(x.gi)));
+    const sameFr = FR.size===rFR.size && [...FR].every(k=>rFR.has(k));
+    const same = must.length>0 && sameFr && must.every(({r,i})=>{ const x=R.get(r.g.f.join('+')); if(!x) return false; const want=Math.max(r.tierNo, S.tsel[i]||r.tierNo), tm = x.tm ?? r.g.t.length; return x.fr || tm <= want; });
+    if(same || sc>=0.4) out.push({id, b, sc, same}); }
+  out.sort((a,c)=>(c.same-a.same) || (c.sc-a.sc) || (a.b.d-c.b.d));
+  return out.slice(0,4); }
+function similarHTML(it, an){ const list=similarRecipes(it, an); if(!list.length) return '';
+  const fd = v => v==null ? '…' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
+  let need=false; const rows = list.map(x=>{ const m=S.simC?.[x.b.g+'|'+x.b.tr]; if(m===undefined){ need=true; simMean(x.b.g, x.b.tr).then(()=>{ if(S.last?.it===it) render(); }); }
+    return `<div class="simr ${x.same?'same':''}"><span class="sk">${x.same?L('같은 구조','Same structure'):L(`비슷함 ${Math.round(x.sc*100)}%`,`${Math.round(x.sc*100)}% alike`)}</span><span class="st">${esc(x.b.ti?.[KR()?'kr':'en']||x.id)}</span><span class="sm">${GRADE_N()[x.b.tr]||''} · ${DIFF_N()[x.b.d]||''} · ${L('평균','avg')} ${fd(m)} div</span><button type="button" class="btn sgo" data-goto="${esc(x.id)}">${L('레시피 보기','Open recipe')}</button></div>`; }).join('');
+  const same = list.find(x=>x.same);
+  return `<div class="simrec"><div class="ch-h"><b>${L('비슷한 등록 레시피','Similar registered recipes')}</b><span>${same ? L('같은 구조가 있으면 그 레시피의 플로우차트를 먼저 따름. 아래 초안과 비용 비교','A same-structure recipe comes first; compare it with the draft below') : L('구조가 달라 초안은 가장 싼 길을 따로 찾음','Different structure: the draft searches its own cheapest path')}</span></div>${rows}</div>`; }
 function render(){
   renderStatic();
   const a=S.last;
@@ -1302,8 +1349,14 @@ function render(){
     const ri = an.rows.indexOf(r), soft = !m.fr && S.soft?.has(ri), on = m.fr || S.need.has(ri) || soft;
     const nOrd = [...S.need].indexOf(ri)+1;
     const needH = m.fr ? `<div class="need"><span class="tsel big tfix">${L(`T${r.tierNo} 고정`,`T${r.tierNo} fixed`)}</span><span class="needb lock" aria-pressed="true">${L('✓ 필수 · 분열','✓ Must-have · fractured')}</span></div>`
-      : `<div class="need">${on ? (()=>{ const cur=S.tsel[ri]||r.tierNo, opts=[]; for(let k=r.tierNo;k<=r.tierCnt;k++) opts.push(k);
-          return `<select class="tsel big" title="${esc(L('티어 범위','Tier range'))}" data-tier="${ri}">${opts.map(k=>`<option value="${k}" ${k===cur?'selected':''}>${k===r.tierCnt && k>r.tierNo ? L('아무 티어','Any tier') : k===1 ? L('1티어만','Tier 1 only') : L(`1~${k}티어`,`Tier 1–${k}`)}${k===r.tierNo?L(' (붙여 넣은 값)',' (as pasted)'):''}</option>`).join('')}</select>${r.how==='n' && S.last?.an && !S.last.an.putrid ? `<label class="buyl"><input type="checkbox" data-buy="${ri}" ${S.buy.has(ri)?'checked':''}> ${diff3(S.last.an) ? L('매직 베이스로 구입','On the bought magic base') : L('베이스에 포함','On the base')}</label>` : ''}`; })() : ''}<span class="lvg" role="group" aria-label="${esc(L('옵션 구분','Modifier level'))}"><button type="button" class="needb lv" data-lv="${ri}:must" aria-pressed="${S.need.has(ri)}">${S.need.has(ri)?L(`✓ 필수 ${nOrd}`,`✓ Must ${nOrd}`):L('필수','Must')}</button><button type="button" class="needb lv" data-lv="${ri}:soft" aria-pressed="${soft}" title="${esc(L('노리되 한 번만 시도, 빗나가면 그대로','Aimed for once; a miss is kept'))}">${soft?L('✓ 유효','✓ Useful'):L('유효','Useful')}</button><button type="button" class="needb lv" data-lv="${ri}:junk" aria-pressed="${!on}">${L('잡옵','Junk')}</button></span></div>`;
+      : (()=>{ /* 사용자 확정 2026-11-12: 필수·유효 버튼 바로 옆에 티어 선택, 잡옵 버튼 없음(아무것도 안 고르면 잡옵), 베이스에 포함 체크 없음.
+          필수 = T1·T2 이상, 유효 = T1~T4 이상. 일반 옵션이 아니면(에센스 등) 티어 선택 없음 */
+          const isN = r.g.s==='n', maxK = Math.min(r.tierCnt, S.need.has(ri) ? 2 : 4), opts=[]; for(let k=1;k<=maxK;k++) opts.push(k);
+          const cur = Math.min(maxK, S.tsel[ri] || Math.min(r.tierNo, maxK));
+          const tl = k => k===1 ? 'T1' : L(`T${k} 이상`,`T${k}+`);
+          const sh = on && isN ? tierShareR(it, r, cur) : null;
+          const sel = on && isN && opts.length>1 ? `<select class="tsel" title="${esc(L('이 티어나 더 좋은 티어면 성공','This tier or better counts'))}" data-tier="${ri}">${opts.map(k=>`<option value="${k}" ${k===cur?'selected':''}>${tl(k)}</option>`).join('')}</select>${sh!=null?`<span class="tshare" title="${esc(L('새 옵션 하나가 이 옵션의 이 티어 이상일 확률','Chance one new line is this modifier at this tier or better'))}">${sh}</span>`:''}` : '';
+          return `<div class="need"><span class="lvg" role="group" aria-label="${esc(L('옵션 구분','Modifier level'))}"><button type="button" class="needb lv" data-lv="${ri}:must" aria-pressed="${S.need.has(ri)}">${S.need.has(ri)?L(`✓ 필수 ${nOrd}`,`✓ Must ${nOrd}`):L('필수','Must')}</button><button type="button" class="needb lv" data-lv="${ri}:soft" aria-pressed="${soft}">${soft?L('✓ 유효','✓ Useful'):L('유효','Useful')}</button></span>${sel}</div>`; })();
     return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml">${esc(m.l)}</div><div class="tags">${tags}<span class="tag">${tierT}</span></div></div>${needH}</div>`;
   }).join('');
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
@@ -1317,11 +1370,15 @@ function render(){
     <label class="cr"><input type="checkbox" id="qrok" ${S.okQR?'checked':''}> ${L('퀄리티와 룬 확인 완료','I checked the quality and runes')}</label>
     ${nNeed && S.prices ? (()=>{ const fd=v=>v==null?'—':v>=100?Math.round(v).toLocaleString():v>=10?v.toFixed(0):v.toFixed(1);
         // compared with no compromise (사용자 2026-11-11 테스트): with compromises a wider tier range could look dearer
-        const c = f => { try{ const b=bestDraft(it, needAn(an, f, it), {buy:buySet(an), market:1e9, quick:true}); return b.d ? draftCost(it, b.an, b.d) : null; }catch(_){ return null; } };
+        let bought = null;
+        const c = f => { try{ const b=bestDraft(it, needAn(an, f, it), {buy:buySet(an), market:1e9, quick:true}); if(!b.d) return null;
+          if(f===0 && b.d.start && b.d.start.rar==='magic'){ const ms=(b.d.start.mods||[]).map(x=>x.gi!=null?x.gi:x.anyOf?.[0]?.gi).filter(x=>x!=null).map(gi=>{ const g=it.D.groups[gi], t=g.t[0]; return KR()?t[4]:t[5]; }); bought = ms.map(x=>String(x).replace(/\n/g,' / ')); }
+          return draftCost(it, b.an, b.d); }catch(_){ return null; } };
         const v0=c(0), v2=c(2), v3=c(3);
-        return `<div class="cr">${L('예상 비용 (필수 옵션을 모두 맞출 때, 매직 베이스 구입비 제외)','Est. cost (all must-haves hit, magic base not included)')}: <b>${L('지금 선택','As chosen')} ${fd(v0)} div</b> · ${L('모두 1~2티어','All tier 1–2')} ${fd(v2)} div · ${L('모두 1~3티어','All tier 1–3')} ${fd(v3)} div</div>`; })() : ''}
+        /* 매직 베이스로 시작하면 그 베이스 값이 비용에서 빠져 0에 가깝게 보임 → 무엇을 사야 하는지 같이 보여 줌 (2026-11-12) */
+        return `<div class="cr">${L('예상 비용 (필수 옵션을 모두 맞출 때)','Est. cost (all must-haves hit)')}: <b>${L('지금 선택','As chosen')} ${fd(v0)} div</b> · ${L('모두 T2 이상','All T2+')} ${fd(v2)} div · ${L('모두 T3 이상','All T3+')} ${fd(v3)} div${bought&&bought.length?`<br><span class="hint">${L('+ 매직 베이스 구입비 별도','+ the magic base, bought separately')}: ${esc(bought.join(' · '))}</span>`:''}</div>`; })() : ''}
     ${ready?'':`<span class="hint">${L('필수 옵션 1개 이상 선택 + 퀄리티·룬 확인 → 초안 만들기','Mark at least one must-have and confirm quality and runes to make the draft.')}</span>`}</div>` : '';
-  $('#mods').innerHTML = `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3>${canDraft?`<span class="needguide">${L('① 옵션마다 <b>필수</b>(끝까지 맞춤, 중요한 것부터) · <b>유효</b>(한 번만 노리고 빗나가면 그대로) · <b>잡옵</b> 선택 → ② 티어 범위 → ③ 아래에서 퀄리티·룬 확인 → ④ 초안 만들기. 분열 옵션은 항상 필수(티어 고정).','① Mark each line <b>Must</b> (hit it, most important first) · <b>Useful</b> (one try, keep a miss) · <b>Junk</b> → ② a tier range → ③ confirm quality and runes below → ④ make the draft. Fractured lines are always must-have (tier fixed).')}</span>`:''}</div>${rowsHTML}${otherHTML}` + (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올림: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산함.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary ${ready?'':'soft'}" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '');
+  $('#mods').innerHTML = `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3>${canDraft?`<span class="needguide">${L('<b>필수</b> 끝까지 맞춤 · <b>유효</b> 한 번만 노리고 빗나가면 그대로 · 고르지 않으면 잡옵','<b>Must</b> hit it · <b>Useful</b> one try, keep a miss · unmarked = junk')}</span>`:''}</div>${rowsHTML}${otherHTML}${canDraft?similarHTML(it, an):''}` + (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올림: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산함.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary ${ready?'':'soft'}" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '');
 }
 
 async function run(){
@@ -1330,6 +1387,7 @@ async function run(){
   if(!S.index) [S.index, S.craft] = await Promise.all([fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json())]);
   if(!S.priority) S.priority = await fetch('data/priority.json').then(r=>r.json()).catch(()=>null);
   S.txt = txt;
+  loadBoard().then(()=>{ if(S.last?.it) render(); });
   try{ const it = await parse(txt); S.last = it.err ? {err:it.err} : {it, an:analyse(it)}; }
   catch(e){ S.last = {err:L('분석 중 오류가 났어요: ','Analysis failed: ')+e.message}; console.error(e); }
   render();
@@ -1394,7 +1452,8 @@ $('#mods').addEventListener('click', e=>{
       S.busy=false; if(btn) btn.disabled=false; if(S.last?.it!==it) return;
       const r=bd.d; S.draft=r; S.check = r ? verifyDraft(it, bd.an, r) : []; S.flow={wait:true}; showCheck();
       setTimeout(()=>{ if(S.draft!==r) return; S.flow = runFlow(it, r); showCheck(); }, 40); })(); return; }
-  const lb=e.target.closest('[data-lv]'); if(lb && S.last?.an){ const [i0,lv]=lb.dataset.lv.split(':'), i=+i0; S.need.delete(i); S.soft.delete(i); if(lv==='must') S.need.add(i); else if(lv==='soft') S.soft.add(i); S.draft=null; S.sent=false; render(); return; }
+  const lb=e.target.closest('[data-lv]'); if(lb && S.last?.an){ const [i0,lv]=lb.dataset.lv.split(':'), i=+i0, was = lv==='must' ? S.need.has(i) : lv==='soft' ? S.soft.has(i) : false; S.need.delete(i); S.soft.delete(i); delete S.tsel[i]; if(!was){ if(lv==='must') S.need.add(i); else if(lv==='soft') S.soft.add(i); } S.draft=null; S.sent=false; render(); return; }
+  const sg=e.target.closest('[data-goto]'); if(sg){ parent.postMessage({type:'poe2-goto', id:sg.dataset.goto}, '*'); return; }
   const nb=e.target.closest('[data-need]'); if(nb && S.last?.an){ const i=+nb.dataset.need; if(S.need.has(i)) S.need.delete(i); else S.need.add(i); S.draft=null; S.sent=false; render(); return; }
   if(e.target.closest('#send') && S.draft && !S.sent){ if(!S.flow?.group) return; const r=S.flow.group;
     try{ const k='poe2r:drafts', a=JSON.parse(localStorage.getItem(k)||'[]').filter(x=>x.id!==r.id); a.unshift(r); localStorage.setItem(k, JSON.stringify(a.slice(0,12))); }catch(_){}
@@ -1431,7 +1490,10 @@ function flowHTML(F){ const VN={high:L('하이엔드','High-end'), bal:L('밸런
   const rows = F.res.map(x=> x.res ? `<tr><td>${VN[x.id]||x.id}</td><td>${fd(x.res.mean)}</td><td>${fd(x.res.median)}</td><td>${fd(x.res.p90)}</td><td>${x.res.bases.toFixed(1)}</td><td>${x.res.reqOk>=0.98?'✓':Math.round(x.res.reqOk*100)+'%'}</td></tr>` : `<tr><td>${VN[x.id]||x.id}</td><td colspan="5">${L('진행 불가','No way through')}</td></tr>`).join('');
   return `<div class="flow ${F.issues.length?'bad':''}"><div class="ch-h"><b>${L('플로우차트 검사','Flowchart check')}</b><span>${F.issues.length ? L('통과 실패 · 아래 문제를 고쳐야 레시피 생성 가능','Not passed — these need fixing before a recipe is made') : L(`단계 ${F.g.nodes.filter(n=>n.kind==='act').length}개를 실제 확률로 ${(F.res[0]?.res?.N||0).toLocaleString()}번씩 끝까지 진행해 봤어요. 막힘 없음`,`Ran the ${F.g.nodes.filter(n=>n.kind==='act').length} steps to the end ${(F.res[0]?.res?.N||0).toLocaleString()} times each with real odds. No dead ends`)}</span></div>
     <table><thead><tr><th>${L('등급','Grade')}</th><th>${L('평균','Mean')}</th><th>${L('중앙값','Median')}</th><th>${L('운 나쁠 때(90%)','Unlucky (90%)')}</th><th>${L('베이스','Bases')}</th><th>${L('필수 옵션','Must-haves')}</th></tr></thead><tbody>${rows}</tbody></table>
-    <span class="hint">${L('완성 1개당 div, 베이스 구입비 제외','div per finished item, base purchase not included')}</span>
+    <span class="hint">${L('완성 1개당 div, 베이스 구입비 제외','div per finished item, base purchase not included')}</span>${(()=>{ const a0=S.last; if(!a0?.it) return ''; const same=similarRecipes(a0.it, a0.an).filter(x=>x.same); const mine=F.res?.find(x=>x.res)?.res?.mean;
+      const best=same.map(x=>({x, m:S.simC?.[x.b.g+'|'+x.b.tr]})).filter(y=>y.m!=null).sort((p,q)=>p.m-q.m)[0]; if(!best || mine==null) return '';
+      const r=mine/best.m, nm=esc(best.x.b.ti?.[KR()?'kr':'en']||best.x.id);
+      return r>1.1 ? `<p class="iss">${L(`같은 구조 등록 레시피 「${nm}」가 이 초안보다 ${r.toFixed(1)}배 쌈 → 그 레시피를 따르는 것을 권장`,`The same-structure recipe "${nm}" is ${r.toFixed(1)}× cheaper than this draft; follow it instead.`)}</p>` : `<p class="hint">${L(`같은 구조 등록 레시피 「${nm}」와 비용 비슷하거나 더 쌈`,`About as cheap as or cheaper than "${nm}"`)}</p>`; })()}
     ${F.issues.length?`<ul class="iss">${F.issues.map(x=>`<li>${esc(KR()?x.kr:x.en)}</li>`).join('')}</ul>`:''}</div>`; }
 function showCheck(){
   const c=S.check||[], nE=c.filter(x=>x.lv==='err').length, nW=c.filter(x=>x.lv==='warn').length;

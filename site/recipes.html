@@ -644,7 +644,7 @@ const baseOf = r => S.cls[r.cls] ? C(r).bases[r.base] : S.board[r.id].b;
 // 목록 카드는 빌드 때 만든 요약(data/board.json)으로 그림 → 클래스 파일은 레시피를 열 때만 받음 (첫 로딩 빠르게, 2026-11-11)
 const lite = r => !S.cls[r.cls] && S.board?.[r.id];
 function liteA(r){ const b=S.board[r.id], k=KR()?0:1; if(b._a?.[k]) return b._a[k];
-  const final=b.f.map(m=>({gi:m.gi, txt:m.x[k], tag:m.tag, fr:m.fr, des:m.des, ess:m.ess, max:m.max, g:{g:m.g, s:m.s, tg:m.tg, t:[[0,0,0,0,m.t[0],m.t[1]]]}}));
+  const final=b.f.map(m=>({gi:m.gi, txt:m.x[k], tag:m.tag, tmax:m.tm, fr:m.fr, des:m.des, ess:m.ess, max:m.max, g:{g:m.g, s:m.s, tg:m.tg, t:[[0,0,0,0,m.t[0],m.t[1]]]}}));
   const finalX=(b.fx||[]).map(m=>({txt:m.x[k], side:m.s, des:m.des, rnd:m.rnd}));
   return (b._a=b._a||[])[k] = {final, finalX, qual:b.q, tot:b.tot, totAll:b.totAll, manual:b.manual, bases:b.bases, nodes:[], keys:Object.keys(b.tot)}; }
 const A = r => lite(r) ? liteA(r) : analyse(r);
@@ -988,7 +988,7 @@ function analyse(r){
     if(out[0]) out[0].passes = bases;
     const c=uc2.base; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+(+c.v)*bases; } else if(+r.basePrice>0) manual.Divine_Orb=(+r.basePrice)*bases; }
   const fcState = r.fc ? fcCardState(r.fc.tags, r.fc.lines, r.fc.ds) : null;   // 플로우차트의 그 등급 완성품 카드가 기준
-  const final = (fcState || mods).filter(m=>m.gi!=null).map(m=>({...modLine(r,m.gi,m.tmax,m.max,m.tmin), fr:m.fr, des:m.des, ess:m.ess}))
+  const final = (fcState || mods).filter(m=>m.gi!=null).map(m=>({...modLine(r,m.gi,m.tmax,m.max,m.tmin), tmax:m.tmax, fr:m.fr, des:m.des, ess:m.ess}))
     .sort((a,c)=>(a.g.g==='p'?0:1)-(c.g.g==='p'?0:1));
   /* 등급 카드 구분(2026-11-12, 정책 10장 C17): 플로우차트 완성품의 '랜덤 옵션'·범위 줄(옵션 이름 대신 설명)도 목록 카드에 보임 */
   const finalX = (fcState||[]).filter(m=>m.gi==null && (m.label||m.rnd)).map(m=>({txt:m.rnd?L('랜덤 옵션','Random modifier'):tx(m.label), side:m.side||'p', des:!!m.des, rnd:!!m.rnd}))
