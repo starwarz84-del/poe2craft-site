@@ -5,6 +5,7 @@ import os, json
 H=os.path.dirname(os.path.abspath(__file__))
 _src=open(f'{H}/gen_batch18.py').read(); exec(_src[:_src.index('# ---------- 1. SL 투사체')])
 PT={'high':{'pT':1},'bal':{'pT':2}}
+PG={'high':{'pT':1,'g':1},'bal':{'pT':2,'g':0}}
 JK=lambda s,t: {'junk':{'side':s,'tag':t}}
 
 # ---------- 1. 반지깎는노인 탐욕스러운 사슬옷 (y5Ch3AJpl5c) ----------
@@ -12,6 +13,8 @@ JK=lambda s,t: {'junk':{'side':s,'tag':t}}
 # → 접미: 주문 치명타 피해 보너스 · 시전 속도 (영상은 방법을 안 보여 줌 — 카오스 오브 → 우측 찬미 + 완벽한 엑잘 → 빗나가면 절사로 가정)
 # → 접두: 좌측 결정화 + 섬망의 에센스(주요 패시브 할당, 영상은 지배) → 접두 잡옵 → 아스트리드의 창의성 → 좌측 결정화 + 룬 합금(룬 수호 %, 1/2 — 영상은 한 번에)
 # → 남은 접두 훼손(고대 갈비뼈) → 주문 피해 공개(빛의 징조로 다시). 기원의 나무 옵션은 가중치가 없어 일반 티어 평균으로 추정(xroll).
+# 2026-11-12 영상 전체 대조(자막 0:00~12:40 + 화면 10:00~12:00, 메인 세션): 접미 두 옵션을 만드는 과정은 영상이 건너뜀(7:00 '2 hours later'), 11:00 '할당을 붙이고 접두 한 자리 추가 → 50:50으로 룬 합금'과 마지막 훼손 주문 피해는 그래프와 같음.
+#   등급 C17: 밸런스 = 접미 하나 1~2티어, 마지막 접두(훼손)·접미는 랜덤 옵션.
 tags={'spell':{'gi':140},'csd':{'gi':138,'tmax':'$pT'},'cs':{'gi':126,'tmax':'$pT'},'sd':{'gi':134,'tmax':'$pT'},'nt':{'gi':51},'rw':{'gi':57},
       'suf':{'anyOf':['csd','cs']},'keepS':{'anyOf':['csd','cs','spell']},'keepP':{'anyOf':['nt','rw','sd']}}
 SPL=it('s','모든 주문 스킬 레벨 +1 (분열)','+1 to Level of all Spell Skills (fractured)',['spell'])
@@ -20,8 +23,8 @@ NT=it('p','무작위 주요 패시브 스킬 할당 (섬망의 에센스)','Allo
 RW=it('p','룬 수호 (24—30)% 증가 (룬 합금)','(24—30)% increased Runic Ward (Runic Alloy)',['rw'],'c')
 SD=it('p','주문 피해 (35—39)% 증가','(35—39)% increased Spell Damage',['sd'],'d'); AS=it('r','아스트리드의 창의성','Astrid’s Creativity',None,'r')
 def RGM(vis):   # every step re-checks the item
-    two={'count':{'tag':'suf','min':2}}
-    return ROUTE_([{'if':{'all':[{'not':two},{'not':{'has':'suf'}}]},'to':'c1'},
+    two={'any':[{'count':{'tag':'suf','min':2}},{'all':[{'param':{'g':0}},{'has':'suf'},{'full':'s'}]}]}
+    return ROUTE_([{'if':{'all':[{'param':{'g':0}},two,{'has':'nt'},{'has':'rw'},{'full':'p'},{'not':{'unrev':True}}]},'to':'ok'},{'if':{'all':[{'not':two},{'not':{'has':'suf'}}]},'to':'c1'},
        {'if':{'all':[{'not':two},{'sideLt':{'side':'s','n':3}}]},'to':'s1'},{'if':{'not':two},'to':'w1'},
        {'if':{'unrevSide':'p'},'to':'rv'},{'if':{'all':[{'has':'nt'},{'has':'rw'},{'has':'sd'}]},'to':'ok'},
        {'if':{'des':True},'to':'rvx'},
@@ -50,11 +53,12 @@ nodes[0]['start']['quality']=30
 GEN=['Genesis Tree Caster','Genesis Tree Minion']
 graph11('grasping-mail-spell1-v2','Grasping_Mail_ring',"Runefather's Grasping Mail",82,
   '반지깎는노인 탐욕스러운 사슬옷(y5Ch3AJpl5c) — 모든 주문 스킬 +1 분열 + 잡옵(카오스 오브 약 22만 개 + 히네코라의 머리카락 4개, 베이스) → 접미 주문 치명타 피해 보너스 · 시전 속도(영상은 방법 생략: 카오스 오브 → 우측 찬미 + 완벽한 엑잘 → 절사로 가정) → 좌측 결정화 + 섬망의 에센스(주요 패시브 할당) → 접두 잡옵 → 아스트리드의 창의성 → 좌측 결정화 + 룬 합금(1/2) → 고대 갈비뼈 → 주문 피해 공개(빛의 징조로 다시). 기원의 나무 옵션 가중치는 추정.',
-  {'pT':{'kr':'목표 티어','en':'Target tier','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},PT,
-  {'high':K('영상: 주문 치명타 피해 · 시전 속도 · 주문 피해 1티어','Video: T1 spell crit damage, cast speed and spell damage'),'bal':K('세 옵션 모두 1~2티어','All three T1–2')},tags,nodes,
+  {'pT':{'kr':'목표 티어','en':'Target tier','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'g':{'kr':'마지막 접두·접미','en':'Last prefix and suffix','values':TV({'1':('목표 옵션까지 반복','Repeat until the wanted line'),'0':('랜덤 옵션','Random line')})}},PG,
+  {'high':K('영상: 주문 치명타 피해 · 시전 속도 · 주문 피해 1티어','Video: T1 spell crit damage, cast speed and spell damage'),'bal':K('접미 하나 1~2티어, 마지막 접두(훼손)·접미는 랜덤 옵션','One suffix T1–2, the last prefix (desecrated) and suffix random')},tags,nodes,
   [{'id':'L1','nodes':['d1','rv','rvx'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'nt','ess':True},{'tag':'rw','ess':True},{'tag':'sd','tmax':1 if v=='high' else 2,'des':True},{'tag':'spell','fr':True},{'tag':'csd','tmax':1 if v=='high' else 2},{'tag':'cs','tmax':1 if v=='high' else 2}]),
-  {'quality':30,'sockets':2},{'all':[{'count':{'tag':'suf','min':2}},{'has':'nt'},{'has':'rw'},{'has':'sd'}]},('high','bal'),xsub=GEN,xroll=True)
+  FIN(('high','bal'),lambda v:[{'tag':'nt','ess':True},{'tag':'rw','ess':True},{'tag':'sd','tmax':1,'des':True},{'tag':'spell','fr':True},{'tag':'csd','tmax':1},{'tag':'cs','tmax':1}] if v=='high' else
+      [{'tag':'nt','ess':True},{'tag':'rw','ess':True},{'side':'p','random':True},{'tag':'spell','fr':True},{'side':'s','label':K('주문 치명타 피해·시전 속도 1~2티어','T1–2 spell crit damage or cast speed')},{'side':'s','random':True}]),
+  {'quality':30,'sockets':2},{'all':[{'has':'nt'},{'has':'rw'},{'any':[{'all':[{'count':{'tag':'suf','min':2}},{'has':'sd'}]},{'all':[{'param':{'g':0}},{'has':'suf'},{'full':'s'},{'full':'p'}]}]}]},('high','bal'),xsub=GEN,xroll=True)
 
 # ---------- 2. MazBro BiS 갑옷 (LUB59xlkNtk) ----------
 # 영상: 요술사 외투 정신력 1티어 분열 + 잡옵 → 메드베드의 보살핌(영혼 핵) → 카오스 오브(정신력 % 또는 마나 %) → 좌측 찬미 + 엑잘(남은 하나, 빗나가면 소멸의 오브 50/50 — 영상 뒷부분: 완벽한 엑잘 권장)

@@ -19,19 +19,35 @@
      "en": "T1–2"
     }
    }
+  },
+  "g": {
+   "kr": "마지막 접두·접미",
+   "en": "Last prefix and suffix",
+   "values": {
+    "1": {
+     "kr": "목표 옵션까지 반복",
+     "en": "Repeat until the wanted line"
+    },
+    "0": {
+     "kr": "랜덤 옵션",
+     "en": "Random line"
+    }
+   }
   }
  },
  "strategies": [
   {
    "id": "high",
    "params": {
-    "pT": 1
+    "pT": 1,
+    "g": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "pT": 2
+    "pT": 2,
+    "g": 0
    }
   }
  ],
@@ -41,11 +57,12 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "pT": 2
+    "pT": 2,
+    "g": 0
    },
    "desc": {
-    "kr": "세 옵션 모두 1~2티어",
-    "en": "All three T1–2"
+    "kr": "접미 하나 1~2티어, 마지막 접두(훼손)·접미는 랜덤 옵션",
+    "en": "One suffix T1–2, the last prefix (desecrated) and suffix random"
    }
   },
   {
@@ -53,7 +70,8 @@
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "pT": 1
+    "pT": 1,
+    "g": 1
    },
    "desc": {
     "kr": "영상: 주문 치명타 피해 · 시전 속도 · 주문 피해 1티어",
@@ -107,19 +125,45 @@
  "require": {
   "all": [
    {
-    "count": {
-     "tag": "suf",
-     "min": 2
-    }
-   },
-   {
     "has": "nt"
    },
    {
     "has": "rw"
    },
    {
-    "has": "sd"
+    "any": [
+     {
+      "all": [
+       {
+        "count": {
+         "tag": "suf",
+         "min": 2
+        }
+       },
+       {
+        "has": "sd"
+       }
+      ]
+     },
+     {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "suf"
+       },
+       {
+        "full": "s"
+       },
+       {
+        "full": "p"
+       }
+      ]
+     }
+    ]
    }
   ]
  },
@@ -203,21 +247,23 @@
      "ess": true
     },
     {
-     "tag": "sd",
-     "tmax": 2,
-     "des": true
+     "side": "p",
+     "random": true
     },
     {
      "tag": "spell",
      "fr": true
     },
     {
-     "tag": "csd",
-     "tmax": 2
+     "side": "s",
+     "label": {
+      "kr": "주문 치명타 피해·시전 속도 1~2티어",
+      "en": "T1–2 spell crit damage or cast speed"
+     }
     },
     {
-     "tag": "cs",
-     "tmax": 2
+     "side": "s",
+     "random": true
     }
    ]
   }
@@ -380,11 +426,82 @@
      "if": {
       "all": [
        {
-        "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "any": [
+         {
+          "count": {
+           "tag": "suf",
+           "min": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "has": "suf"
+           },
+           {
+            "full": "s"
+           }
+          ]
          }
+        ]
+       },
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -402,10 +519,29 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -422,10 +558,29 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "suf",
-        "min": 2
-       }
+       "any": [
+        {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        },
+        {
+         "all": [
+          {
+           "param": {
+            "g": 0
+           }
+          },
+          {
+           "has": "suf"
+          },
+          {
+           "full": "s"
+          }
+         ]
+        }
+       ]
       }
      },
      "to": "w1",
@@ -584,11 +739,82 @@
      "if": {
       "all": [
        {
-        "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "any": [
+         {
+          "count": {
+           "tag": "suf",
+           "min": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "has": "suf"
+           },
+           {
+            "full": "s"
+           }
+          ]
          }
+        ]
+       },
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -606,10 +832,29 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -626,10 +871,29 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "suf",
-        "min": 2
-       }
+       "any": [
+        {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        },
+        {
+         "all": [
+          {
+           "param": {
+            "g": 0
+           }
+          },
+          {
+           "has": "suf"
+          },
+          {
+           "full": "s"
+          }
+         ]
+        }
+       ]
       }
      },
      "to": "w1",
@@ -788,11 +1052,82 @@
      "if": {
       "all": [
        {
-        "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "any": [
+         {
+          "count": {
+           "tag": "suf",
+           "min": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "has": "suf"
+           },
+           {
+            "full": "s"
+           }
+          ]
          }
+        ]
+       },
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -810,10 +1145,29 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -830,10 +1184,29 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "suf",
-        "min": 2
-       }
+       "any": [
+        {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        },
+        {
+         "all": [
+          {
+           "param": {
+            "g": 0
+           }
+          },
+          {
+           "has": "suf"
+          },
+          {
+           "full": "s"
+          }
+         ]
+        }
+       ]
       }
      },
      "to": "w1",
@@ -1007,11 +1380,82 @@
      "if": {
       "all": [
        {
-        "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "any": [
+         {
+          "count": {
+           "tag": "suf",
+           "min": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "has": "suf"
+           },
+           {
+            "full": "s"
+           }
+          ]
          }
+        ]
+       },
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -1029,10 +1473,29 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -1049,10 +1512,29 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "suf",
-        "min": 2
-       }
+       "any": [
+        {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        },
+        {
+         "all": [
+          {
+           "param": {
+            "g": 0
+           }
+          },
+          {
+           "has": "suf"
+          },
+          {
+           "full": "s"
+          }
+         ]
+        }
+       ]
       }
      },
      "to": "w1",
@@ -1231,11 +1713,82 @@
      "if": {
       "all": [
        {
-        "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "any": [
+         {
+          "count": {
+           "tag": "suf",
+           "min": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "has": "suf"
+           },
+           {
+            "full": "s"
+           }
+          ]
          }
+        ]
+       },
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -1253,10 +1806,29 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -1273,10 +1845,29 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "suf",
-        "min": 2
-       }
+       "any": [
+        {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        },
+        {
+         "all": [
+          {
+           "param": {
+            "g": 0
+           }
+          },
+          {
+           "has": "suf"
+          },
+          {
+           "full": "s"
+          }
+         ]
+        }
+       ]
       }
      },
      "to": "w1",
@@ -1535,11 +2126,82 @@
      "if": {
       "all": [
        {
-        "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "any": [
+         {
+          "count": {
+           "tag": "suf",
+           "min": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "has": "suf"
+           },
+           {
+            "full": "s"
+           }
+          ]
          }
+        ]
+       },
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -1557,10 +2219,29 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -1577,10 +2258,29 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "suf",
-        "min": 2
-       }
+       "any": [
+        {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        },
+        {
+         "all": [
+          {
+           "param": {
+            "g": 0
+           }
+          },
+          {
+           "has": "suf"
+          },
+          {
+           "full": "s"
+          }
+         ]
+        }
+       ]
       }
      },
      "to": "w1",
@@ -1767,11 +2467,82 @@
      "if": {
       "all": [
        {
-        "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "any": [
+         {
+          "count": {
+           "tag": "suf",
+           "min": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "has": "suf"
+           },
+           {
+            "full": "s"
+           }
+          ]
          }
+        ]
+       },
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -1789,10 +2560,29 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -1809,10 +2599,29 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "suf",
-        "min": 2
-       }
+       "any": [
+        {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        },
+        {
+         "all": [
+          {
+           "param": {
+            "g": 0
+           }
+          },
+          {
+           "has": "suf"
+          },
+          {
+           "full": "s"
+          }
+         ]
+        }
+       ]
       }
      },
      "to": "w1",
@@ -2002,11 +2811,82 @@
      "if": {
       "all": [
        {
-        "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "any": [
+         {
+          "count": {
+           "tag": "suf",
+           "min": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "has": "suf"
+           },
+           {
+            "full": "s"
+           }
+          ]
          }
+        ]
+       },
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -2024,10 +2904,29 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -2044,10 +2943,29 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "suf",
-        "min": 2
-       }
+       "any": [
+        {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        },
+        {
+         "all": [
+          {
+           "param": {
+            "g": 0
+           }
+          },
+          {
+           "has": "suf"
+          },
+          {
+           "full": "s"
+          }
+         ]
+        }
+       ]
       }
      },
      "to": "w1",
@@ -2075,7 +2993,7 @@
       ]
      },
      "to": "ok",
-     "res": "ok"
+     "hide": true
     },
     {
      "if": {
@@ -2246,11 +3164,82 @@
      "if": {
       "all": [
        {
-        "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "any": [
+         {
+          "count": {
+           "tag": "suf",
+           "min": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "has": "suf"
+           },
+           {
+            "full": "s"
+           }
+          ]
          }
+        ]
+       },
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "unrev": true
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -2268,10 +3257,29 @@
       "all": [
        {
         "not": {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
+         "any": [
+          {
+           "count": {
+            "tag": "suf",
+            "min": 2
+           }
+          },
+          {
+           "all": [
+            {
+             "param": {
+              "g": 0
+             }
+            },
+            {
+             "has": "suf"
+            },
+            {
+             "full": "s"
+            }
+           ]
+          }
+         ]
         }
        },
        {
@@ -2288,10 +3296,29 @@
     {
      "if": {
       "not": {
-       "count": {
-        "tag": "suf",
-        "min": 2
-       }
+       "any": [
+        {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        },
+        {
+         "all": [
+          {
+           "param": {
+            "g": 0
+           }
+          },
+          {
+           "has": "suf"
+          },
+          {
+           "full": "s"
+          }
+         ]
+        }
+       ]
       }
      },
      "to": "w1",

@@ -28,9 +28,9 @@
 | sl-flamewave-staff-v2 | 6EzSVUItzsg | high 1,296, bal 178 | 3 | 완료 11-12 | A(Opus) | 자막 전체(0:00~15:13) 대조, 단계 일치(기록 tools/notes/sl-6EzSVUItzsg.md). 1,296/178 → 1,296/40(밸런스 마지막 접두·접미 랜덤) |
 | mazbro-caster-amulet-v2 | 4PazhuHwdL8 | high 1,154, bal 428 | 5 | 완료 11-12 | A(Opus) | 자동 번역 자막 전체(0:00~39:40) 대조, 영상 가이드 1~11단계와 일치(기록 tools/notes/mazbro-4PazhuHwdL8.md). 1,154/428 → 1,154/410 |
 | sihan-highend-boots-v2 | dlrD21AcCUE | high 1,147, bal 650, ess 314 | 2 | 완료 11-12 | A(Opus) | 자막 전체(0:00~17:50) 대조(기록 tools/notes/sihan-dlrD21AcCUE.md). 접두를 영상 순서로 다시 만듦: 징표를 둔 채 엑잘 → 징표에 고대 갈비뼈. 1,143/656/314 → 1,119/265(에센셜 뺌) |
-| grasping-mail-spell1-v2 | y5Ch3AJpl5c | high 1,140, bal 613 | 11 | 진행 중 | A(Opus) |  |
+| grasping-mail-spell1-v2 | y5Ch3AJpl5c | high 1,140, bal 613 | 11 | 완료 11-12 | A(Opus) | 자막 전체 + 화면 10:00~12:00(기록 tools/notes/banzino-y5Ch3AJpl5c.md). 할당 → 접두 추가 → 룬 합금 50:50 → 훼손 주문 피해가 그래프와 같음, 접미 과정은 영상이 건너뜀(가정 유지). 1,140/613 → 1,134/12 |
 | sl-proj7-gloves-v2 | XMYJh3CnXuY | high 1,104, bal 785 | 7 | 완료 11-11 | B(Fable) | 자막 전체 대조. 합금 실패 뒤 길을 보이는 선 + 규칙에 맞게(우측 소멸의 징조로 접미 비우기). 1,104·785 |
-| saveq-absent-amulet-v2 | S4sflKbsA8A | high 935, bal 797, ess 729 | 4 | 진행 중 | A(Opus) |  |
+| saveq-absent-amulet-v2 | S4sflKbsA8A | high 935, bal 797, ess 729 | 4 | 완료 11-12 | A(Opus) | 자동 번역 자막 전체(기록 tools/notes/saveq-S4sflKbsA8A.md), 단계 일치. 935/797/729 → 935/797/688 |
 | unstoppable-vile-robe-v2 | swF5mwXmZ0k | high 739, bal 689 | 4 | 완료 11-11 | A(Opus) | 영상 5:45~24:15 대조. 접미는 엑잘+소멸(비싼 징조는 마지막 한 옵션만), 접두 막기·결정화+심연. 하이엔드 739→809, 밸런스(1티어 + 마지막 접미 랜덤) 689→163 |
 | helmet-armour-sl-v2 | p0fChSu91uI | high 723, bal 718, ess 75 | 5 | 대기 |  |  |
 | diztoh-endgame-quarterstaff-v2 | YfGJyBrObxI | high 712, bal 36 | 3 | 대기 |  |  |
@@ -128,7 +128,7 @@
 | fubgun-phys-bow-v2 | ess·bal | - | 대기 |  |  |
 | fubgun-proj-amulet-v2 | ess·bal | - | 대기 |  |  |
 | fubgun-quiver-v2 | ess·bal | ess 물리 피해 추가 1~2티어; bal 물리 피해 추가 1티어 | 대기 |  |  |
-| grasping-mail-spell1-v2 | bal·high | - | 대기 |  |  |
+| grasping-mail-spell1-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 접미 하나 1~2티어, 마지막 접두·접미 랜덤 — 613 → 12(분열 베이스 비용 제외) |
 | helmet-armour-sl-v2 | ess·bal·high | ess 접두 목표 1~2티어; ess 저항 목표 1~3티어; ess 희귀도 목표 1~2티어; bal 접두 목표 1티어; bal 저항 목표 1~3티어 | 대기 |  |  |
 | icesly-budget-wand-v2 | ess·bal | ess 번개 주문 레벨 1~2티어; ess 번개·주문 피해 1~5티어; bal 번개 주문 레벨 1티어; bal 번개·주문 피해 1~3티어 | 대기 |  |  |
 | lilbotq-armour-shield-v2 | ess·bal | ess 방어도 % 1~2티어; ess 방어도 % + 기절 한계치 1~3티어; bal 방어도 % 1티어; bal 방어도 % + 기절 한계치 1티어 | 대기 |  |  |
@@ -148,7 +148,7 @@
 | ragna-ashot-bow-v2 | ess·bal | ess 물리 피해 % 1~3티어; bal 물리 피해 % 1티어 | 대기 |  |  |
 | ragna-spell4-amulet-v2 | ess·bal | ess 정신력 (분열) 1~3티어; bal 정신력 (분열) 1티어 | 대기 |  |  |
 | sane-resist-belt-v2 | ess·bal | ess 생명력 1~3티어; ess 번개 저항 1~3티어; bal 생명력 1티어 | 대기 |  |  |
-| saveq-absent-amulet-v2 | ess·bal·high | - | 대기 |  |  |
+| saveq-absent-amulet-v2 | ess·bal·high | - | 완료 11-12 | A(Opus) | 에센셜 빛의 징조 없이 공개 한 번(랜덤 옵션) — 729 → 688 |
 | saveq-alloy-focus-v2 | ess·bal | ess 공개 목표 1~3티어; bal 공개 목표 1티어 | 대기 |  |  |
 | saveq-focus-v2 | bal·high | - | 대기 |  |  |
 | seek-cyclone-boots-v2 | ess·bal | - | 대기 |  |  |
