@@ -123,6 +123,15 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .tt.normal .tt-head::before,.tt.normal .tt-head::after,.tt.magic .tt-head::before,.tt.magic .tt-head::after{background:linear-gradient(90deg,transparent,var(--tt-edge) 20%,var(--tt-edge) 80%,transparent)}
 .tt-name{font-family:var(--f-display);font-weight:700;font-size:19px;line-height:1.3;color:var(--tt-name)}
 .tt-base{font-family:var(--f-display);font-weight:700;font-size:15px;color:var(--tt-name);opacity:.92}
+/* item card header art (사용자 확정 2026-11-11) */
+.tt-head{border-style:solid;border-width:0 46px;border-image:url(img/tt/rare.webp) 0 132 fill / 0 46px stretch;background:none;padding:10px 0 9px;min-height:44px;display:flex;flex-direction:column;justify-content:center;border-bottom:none}
+.tt.magic .tt-head{border-image-source:url(img/tt/magic.webp)}
+.tt.normal .tt-head{border-image-source:url(img/tt/normal.webp)}
+.tt-head::before,.tt-head::after{display:none!important}
+.tt-name,.tt-base{text-shadow:0 1px 2px #000,0 0 6px rgba(0,0,0,.7)}
+.tt.magic{--tt-name:#a6a6ff}
+.tt-excl{color:#d8b46a}
+
 .tt-body{padding:12px 14px 14px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:14px;line-height:1.55}
 .tt-img{max-height:100px;max-width:110px;object-fit:contain;margin:2px 0 8px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.6))}
 .tt-prop{color:var(--tt-label)} .tt-prop b{color:var(--tt-val);font-weight:500} .tt-prop b.chg{color:#8f8fff}
@@ -988,7 +997,7 @@ function reqLine(){
   return `<div class="tt-prop">${L('요구 사항','Requires')}: ${parts.join(', ')}</div>`;
 }
 function renderItem(){
-  const b=base(), it=S.item, r=it.rarity, bn=KR()?b.kr:b.en, aff=affected();
+  const b=base(), it=S.item, r=it.rarity, bn=(it.exc?L('특출난 ','Exceptional '):'')+(KR()?b.kr:b.en), aff=affected();
   // flash the modifiers a currency just added once — later re-renders (picking an orb or omen) must not flash them again
   const flash = S.last && !S.last.flashed ? S.last.added : new Set(); if(S.last) S.last.flashed = true;
   let title = `<div class="tt-name">${esc(bn)}</div>`;
@@ -996,7 +1005,7 @@ function renderItem(){
   if(r==='magic'){ const p=it.mods.find(m=>genOf(m)==='p'), s=it.mods.find(m=>genOf(m)==='s'); title=`<div class="tt-name">${esc([p&&tName(grp(p).t[p.ti]),bn,s&&tName(grp(s).t[s.ti])].filter(Boolean).join(' '))}</div>`; }
   const cl = catOf(S.cls).classes.find(c=>c.id===S.cls), clName = KR() ? cl.kr.replace(/\s*\(.*\)\s*$/,'') : cl.en.replace(/\s*\(.*\)\s*$/,'');
   const lp = localProps();
-  const props = `<div class="tt-prop">${esc(clName)}</div>` + lp.out.map(p=>`<div class="tt-prop">${esc(p.l)}: <b class="${p.c?'chg':''}">${esc(p.v)}</b></div>`).join('');
+  const props = `<div class="tt-prop">${esc(clName)}</div>` + lp.out.map(p=>`<div class="tt-prop">${esc(p.l)}: <b class="${p.c?'chg':''}">${esc(p.v)}</b></div>`).join('') + (it.exc?`<div class="tt-prop tt-excl">${L('룬 소켓 +1','+1 rune socket')}</div>`:'');
   // runes (+ bonded line), enchant, base implicits
   const rtag = `<span class="tt-tier tr">${L('룬','Rune')}</span>`;
   const runeOn = (it.runes||[]).slice(0,it.sockets).map(r=>r&&runeAt(r)).filter(Boolean);
@@ -1029,7 +1038,7 @@ function renderItem(){
     it.mirrored?`<div class="tt-state mir">${L('복제된','Mirrored')}</div>`:'', it.sanctified?`<div class="tt-state san">${L('축성된','Sanctified')}</div>`:'', it.corrupted?`<div class="tt-state cor">${L('타락','Corrupted')}</div>`:''].filter(Boolean);
   const dps = lp.isW && (lp.dps||lp.edps) ? `<div class="dpsbar"><span>DPS: <b>${(lp.dps+lp.edps).toFixed(1)}</b></span><span>${L('물리 DPS','Physical DPS')}: <b>${lp.dps.toFixed(1)}</b></span>${lp.edps?`<span>${L('원소·카오스 DPS','Ele/Chaos DPS')}: <b>${lp.edps.toFixed(1)}</b></span>`:''}</div>` : '';
   $('#item').innerHTML = `<div class="itemwrap">
-    <div class="ttcol"><div class="tt ${r}"><div class="tt-head">${title}${it.exc?`<div class="tt-exc">${L('특출난','Exceptional')} · ${L('룬 소켓 +1','+1 rune socket')}</div>`:''}</div><div class="tt-body">${secs.join('<div class="tt-sep"></div>')}${status.map(x=>'<div class="tt-sep"></div>'+x).join('')}</div></div>${dps}${legendHTML()}</div></div>`;
+    <div class="ttcol"><div class="tt ${r}"><div class="tt-head">${title}</div><div class="tt-body">${secs.join('<div class="tt-sep"></div>')}${status.map(x=>'<div class="tt-sep"></div>'+x).join('')}</div></div>${dps}${legendHTML()}</div></div>`;
 }
 // colour guide under the tooltip (same idea as the recipe page)
 function legendHTML(){

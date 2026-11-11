@@ -116,6 +116,15 @@ button,input,select,textarea{font:inherit;color:inherit}
 .tt.normal{--tt-name:#d6d3cc;--tt-head:#26262a;--tt-edge:#55555b;--tt-gold:#8a8a90}
 .tt.magic{--tt-name:#8f8fff;--tt-head:#1b1c33;--tt-edge:#3b3d77;--tt-gold:#6a6cc0}
 .tt-name{font-family:var(--f-display);font-weight:700;font-size:16px;line-height:1.3;color:var(--tt-name);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+/* item card header art (사용자 확정 2026-11-11) */
+.tt-head{border-style:solid;border-width:0 46px;border-image:url(img/tt/rare.webp) 0 132 fill / 0 46px stretch;background:none;padding:10px 0 9px;min-height:44px;display:flex;flex-direction:column;justify-content:center;border-bottom:none}
+.tt.magic .tt-head{border-image-source:url(img/tt/magic.webp)}
+.tt.normal .tt-head{border-image-source:url(img/tt/normal.webp)}
+.tt-head::before,.tt-head::after{display:none!important}
+.tt-name,.tt-base{text-shadow:0 1px 2px #000,0 0 6px rgba(0,0,0,.7)}
+.tt.magic{--tt-name:#a6a6ff}
+.tt-excl{color:#d8b46a}
+
 .tt-body{padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:13px;line-height:1.5}
 .tt-art{display:flex;justify-content:center;min-height:70px;margin:0 0 6px}
 .tt-art img{max-height:110px;max-width:96px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.7))}
@@ -1418,11 +1427,11 @@ function itemTipHTML(r, o, opt={}){
   const cnt=`<div class="tt-cnt"><span class="p">P ${np}/${o.cap.p}</span><span class="s">S ${ns}/${o.cap.s}</span>${o.sockets?`<span class="r">${L('룬','Rune')} ${o.runes.length}/${o.sockets}</span>`:''}</div>`;
   const QT = {attack:['공격','attack'], caster:['시전','caster'], life:['생명력','life'], mana:['마나','mana'], defences:['방어','defences'], physical:['물리','physical'], fire:['화염','fire'], cold:['냉기','cold'], lightning:['번개','lightning'], chaos:['카오스','chaos'], speed:['속도','speed'], attribute:['능력치','attribute'], minion:['소환수','minion']};
   const q = (o.qual?.v || opt.showQual) ? `<div class="tt-prop">${L('퀄리티','Quality')}${o.qual.type&&QT[o.qual.type]?` (${L(QT[o.qual.type][0]+' 속성 부여',QT[o.qual.type][1]+' modifiers')})`:''}: <b>+${o.qual?.v||0}%</b></div>` : '';
-  const ru = o.sockets ? `<div class="tt-sep"></div>${o.runes.map(id=>{ const ls=runeLines(r,id); return ls.length ? ls.map((x,i)=>`<div class="tt-mod rune" title="${esc(runeName(id))}"><span class="tier r"${i?' style="visibility:hidden"':''}>${L('룬','Rune')}</span>${esc(tx(x))}</div>`).join('') : `<div class="tt-mod rune"><span class="tier r">Rune</span>${esc(runeName(id))}</div>`; }).join('')}${`<div class="tt-mod slot0"><span class="tier r">${L('룬','Rune')}</span></div>`.repeat(Math.max(0,o.sockets-o.runes.length))}` : '';
+  const ru = o.sockets ? `<div class="tt-sep"></div>${o.runes.map(id=>{ const ls=runeLines(r,id); return ls.length ? ls.map((x,i)=>`<div class="tt-mod rune" title="${esc(runeName(id))}"><span class="tier r"${i?' style="visibility:hidden"':''}>${L('룬','Rune')}</span>${esc(tx(x))}</div>`).join('') : `<div class="tt-mod rune"><span class="tier r">${L('룬','Rune')}</span>${esc(runeName(id))}</div>`; }).join('')}${`<div class="tt-mod slot0"><span class="tier r">${L('룬','Rune')}</span></div>`.repeat(Math.max(0,o.sockets-o.runes.length))}` : '';
   const ench = (o.anoint||(o.imp||[]).length) ? `<div class="tt-ench"><div class="tt-sep"></div>${o.anoint?`<div class="tt-mod ench"><span class="tier e">${L('성유','Anoint')}</span>${esc(L('할당 ','Allocates ')+tx(o.anoint))}</div>`:''}${(o.imp||[]).map(x=>`<div class="tt-mod imp">${esc(tx(x))}</div>`).join('')}</div>` : '';
   const va = o.vaal ? `<div class="tt-sep"></div><div class="tt-mod vaal"><span class="tier v">Vaal</span>${esc(tx(o.vaal))}</div>` : '';
-  return `<div class="tt ${['normal','magic'].includes(o.rar)?o.rar:'rare'}"><div class="tt-head"><div class="tt-name">${esc(itemName(r))}</div>${r.exceptional?`<div class="tt-exc" title="${esc(excText(r))}">${esc(excText(r))}</div>`:''}</div><div class="tt-body">
-    ${b.img?`<div class="tt-art"><img src="${b.img}" alt=""></div>`:''}<div class="tt-props"><div class="tt-prop">${esc(clsName(r))}</div>${basePropsHTML(r,o)}${q}<div class="tt-prop">${L('아이템 레벨','Item Level')}: <b>${r.ilvl}</b></div></div>
+  return `<div class="tt ${['normal','magic'].includes(o.rar)?o.rar:'rare'}"><div class="tt-head"><div class="tt-name">${esc(itemName(r))}</div></div><div class="tt-body">
+    ${b.img?`<div class="tt-art"><img src="${b.img}" alt=""></div>`:''}<div class="tt-props"><div class="tt-prop">${esc(clsName(r))}</div>${basePropsHTML(r,o)}${q}<div class="tt-prop">${L('아이템 레벨','Item Level')}: <b>${r.ilvl}</b></div>${r.exceptional?`<div class="tt-prop tt-excl">${esc(excText(r))}</div>`:''}</div>
     ${ru}${va}${cnt}${ench}<div class="tt-sep"></div>${side('p')}<div class="tt-gap"></div>${side('s')}${o.sanct?`<div class="tt-sep"></div><div class="tt-sanct">${L('축성','Sanctified')}</div>`:''}</div></div>`;
 }
 // grade tabs (사용자 확정 2026-11-09 23:35): 레시피(하이엔드) / 레시피(밸런스) / 레시피(에센셜) / 플로우 차트 — header and progress bar shared
