@@ -59,4 +59,4 @@ def sh_boots(tier):
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'magic','kr':'매직 만들기','en':'Make it magic'},{'id':'rare','kr':'레어 전환','en':'To rare'},
            {'id':'fracture','kr':'분열','en':'Fracture'},{'id':'suffix','kr':'접미 첫번째~세번째 옵션','en':'Suffix options 1–3'},{'id':'prefix','kr':'접두 두번째·세번째 옵션','en':'Prefix options 2–3'}],
  'nodes':nodes})
-for _t in ('high','bal','ess'): sh_boots(_t)
+for _t in ('high','bal'): sh_boots(_t)   # 에센셜은 밸런스와 같은 결과라 뺌(정책 10장 C17, 2026-11-12)

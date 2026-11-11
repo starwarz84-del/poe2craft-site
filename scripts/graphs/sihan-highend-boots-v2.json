@@ -5,7 +5,7 @@
  "base": "Tasalian Greaves",
  "ilvl": 82,
  "basePrice": {},
- "note": "시한 하이엔드 장화 2차 초안(2026-11-10 사용자 피드백 반영): 레어 전환 = 완벽한 제왕의 오브(잡옵이 붙어도 분열 진행, 잡옵이 분열되면 새 베이스), 접미 = 영상 순서(방어도 원소 적용 카오스 → 힘 → 저항, 우측 찬미 엑잘 + 소멸의 오브), 접두 엑잘 실패 = 좌측 결정화의 징조 + 심연의 에센스로 징표 → 징표 훼손 → 공개.",
+ "note": "시한 하이엔드 장화(dlrD21AcCUE) — 2026-11-12 영상 전체 대조: 방어도 % 분열 → 카오스(방어도 원소 적용) → 우측 찬미 엑잘(힘·저항) → 완벽한 엑잘(접두) → 빗나가면 좌측 결정화 + 심연의 에센스(징표) → 징표를 둔 채 엑잘(빗나가면 징표에 보존된 갈비뼈 + 빛의 징조) → 접두 2개면 징표에 고대 갈비뼈 + 메아리(한 티어 높게, 영상 14:30~16:30), 징표가 없으면 빈자리에 고대 갈비뼈. 공허 유동체(저항 → 카오스 저항)는 뺌.",
  "params": {
   "resT": {
    "kr": "저항 목표",
@@ -52,6 +52,34 @@
      "en": "Random"
     }
    }
+  },
+  "pT": {
+   "kr": "접두 엑잘 목표",
+   "en": "Prefix exalt target",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "g": {
+   "kr": "마지막 접두·접미",
+   "en": "Last prefix and suffix",
+   "values": {
+    "1": {
+     "kr": "목표 옵션까지 반복",
+     "en": "Repeat until the wanted line"
+    },
+    "0": {
+     "kr": "랜덤 옵션",
+     "en": "Random line"
+    }
+   }
   }
  },
  "strategies": [
@@ -60,7 +88,9 @@
    "params": {
     "resT": 1,
     "desT": 1,
-    "last": "res"
+    "last": "res",
+    "pT": 1,
+    "g": 1
    }
   },
   {
@@ -68,33 +98,13 @@
    "params": {
     "resT": 2,
     "desT": 2,
-    "last": "res"
-   }
-  },
-  {
-   "id": "ess",
-   "params": {
-    "resT": 2,
-    "desT": 3,
-    "last": "none"
+    "last": "none",
+    "pT": 2,
+    "g": 0
    }
   }
  ],
  "versions": [
-  {
-   "id": "ess",
-   "kr": "에센셜",
-   "en": "Essential",
-   "params": {
-    "resT": 2,
-    "desT": 3,
-    "last": "none"
-   },
-   "desc": {
-    "kr": "훼손 접두 1~3티어 · 접미 세번째 랜덤",
-    "en": "Desecrated prefix T1–3, third suffix random"
-   }
-  },
   {
    "id": "bal",
    "kr": "밸런스",
@@ -102,11 +112,13 @@
    "params": {
     "resT": 2,
     "desT": 2,
-    "last": "res"
+    "last": "none",
+    "pT": 2,
+    "g": 0
    },
    "desc": {
-    "kr": "저항 1~2티어 · 훼손 접두 1~2티어",
-    "en": "Resist T1–2, desecrated prefix T1–2"
+    "kr": "접두 엑잘 1~2티어, 마지막 접두(훼손)·접미는 랜덤 옵션",
+    "en": "T1–2 prefix exalt, the last prefix (desecrated) and suffix random"
    }
   },
   {
@@ -116,11 +128,13 @@
    "params": {
     "resT": 1,
     "desT": 1,
-    "last": "res"
+    "last": "res",
+    "pT": 1,
+    "g": 1
    },
    "desc": {
-    "kr": "모두 1티어",
-    "en": "All T1"
+    "kr": "영상: 모두 1티어, 마지막 접두는 징표에 고대 갈비뼈",
+    "en": "Video: all T1, the last prefix via Ancient Rib on the Mark"
    }
   }
  ],
@@ -165,12 +179,12 @@
   "ms": {
    "fam": "MovementVelocity",
    "sec": "n",
-   "tmax": 1
+   "tmax": "$pT"
   },
   "life": {
    "fam": "IncreasedLife",
    "sec": "n",
-   "tmax": 1
+   "tmax": "$pT"
   },
   "PRE": {
    "anyOf": [
@@ -320,10 +334,22 @@
     "has": "PRE"
    },
    {
-    "has": "PRED"
+    "full": "p"
    },
    {
-    "full": "p"
+    "any": [
+     {
+      "count": {
+       "tag": "PRE",
+       "min": 2
+      }
+     },
+     {
+      "param": {
+       "g": 0
+      }
+     }
+    ]
    }
   ]
  },
@@ -377,6 +403,18 @@
   {
    "id": "L4",
    "nodes": [
+    "q1",
+    "q4",
+    "q4b",
+    "q4l"
+   ],
+   "kr": "징표로 접두 다시",
+   "en": "Prefix again with the Mark"
+  },
+  {
+   "id": "L5",
+   "nodes": [
+    "p8m",
     "p2",
     "p3",
     "p3x"
@@ -402,7 +440,8 @@
     },
     {
      "tag": "life",
-     "tmax": 1
+     "tmax": 1,
+     "des": true
     },
     {
      "tag": "armEle",
@@ -413,8 +452,11 @@
      "tmax": 1
     },
     {
-     "tag": "fire",
-     "tmax": 1
+     "side": "s",
+     "label": {
+      "kr": "저항 1티어",
+      "en": "T1 resistance"
+     }
     }
    ]
   },
@@ -429,44 +471,15 @@
      "fr": true
     },
     {
-     "tag": "ms",
-     "tmax": 1
+     "side": "p",
+     "label": {
+      "kr": "이동 속도·최대 생명력 1~2티어",
+      "en": "T1–2 movement speed or maximum life"
+     }
     },
     {
-     "tag": "life",
-     "tmax": 2
-    },
-    {
-     "tag": "armEle",
-     "tmax": 1
-    },
-    {
-     "tag": "str",
-     "tmax": 1
-    },
-    {
-     "tag": "fire",
-     "tmax": 2
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "tag": "armP",
-     "tmax": 1,
-     "fr": true
-    },
-    {
-     "tag": "ms",
-     "tmax": 1
-    },
-    {
-     "tag": "life",
-     "tmax": 3
+     "side": "p",
+     "random": true
     },
     {
      "tag": "armEle",
@@ -1433,32 +1446,162 @@
    "edges": [
     {
      "if": {
+      "unrevSide": "p"
+     },
+     "to": "p3",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "PRE",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
       "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "PRE"
+       },
        {
         "full": "p"
        },
        {
-        "sideAll": {
-         "side": "p",
-         "tag": "PRE"
+        "not": {
+         "has": "mark"
         }
        }
       ]
      },
      "to": "ok",
-     "res": "ok",
      "hide": true
     },
     {
      "if": {
-      "added": "PRE"
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "has": "mark"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "p2",
      "res": "ok"
     },
     {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "desSide": "p"
+       }
+      ]
+     },
+     "to": "p3x",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "PRE"
+     },
      "to": "q1",
-     "res": "fail"
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mark"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q4",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "q4b",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "junk": {
+         "side": "p",
+         "tag": "PRE"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p1",
+     "hide": true
+    },
+    {
+     "to": "p1x",
+     "hide": true
     }
    ],
    "item": [
@@ -1514,125 +1657,16 @@
    "skipHide": true
   },
   {
-   "id": "q1",
+   "id": "p1x",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
     11
    ],
-   "act": "essence",
-   "ess": "mark",
-   "mark": true,
-   "cur": "Essence_of_the_Abyss",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
-   ],
-   "goal": {
-    "kr": "빗나간 접두를 징표로 바꾸기",
-    "en": "Turn the missed prefix into the Mark"
-   },
-   "showText": [
-    {
-     "s": "p",
-     "kr": "심연 군주의 징표",
-     "en": "Mark of the Abyssal Lord"
-    }
-   ],
-   "label": {
-    "kr": "심연",
-    "en": "Abyss"
-   },
-   "edges": [
-    {
-     "to": "q2"
-    }
-   ]
-  },
-  {
-   "id": "q2",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    12
-   ],
-   "act": "desecrate",
-   "fromMark": true,
-   "cur": "Ancient_Rib",
-   "goal": {
-    "kr": "징표 훼손",
-    "en": "Desecrate the Mark"
-   },
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "edges": [
-    {
-     "to": "q3"
-    }
-   ]
-  },
-  {
-   "id": "q3",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    13
-   ],
-   "act": "reveal",
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
-   ],
-   "want": "PRED",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
-   "show": [
-    "msD",
-    "lifeD"
-   ],
-   "label": {
-    "kr": "공개",
-    "en": "Reveal"
-   },
-   "edges": [
-    {
-     "if": {
-      "added": "PRED"
-     },
-     "to": "q4",
-     "res": "ok"
-    },
-    {
-     "to": "q3x",
-     "res": "fail"
-    }
-   ]
-  },
-  {
-   "id": "q3x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    2,
-    13
-   ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
+   "omens": [],
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -1642,13 +1676,406 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "접두 잡옵 지우기",
+    "en": "Remove a junk prefix"
    },
    "edges": [
     {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p3",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "PRE",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "PRE"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mark"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "has": "mark"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "desSide": "p"
+       }
+      ]
+     },
+     "to": "p3x",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "PRE"
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mark"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q4",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "q4b",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "junk": {
+         "side": "p",
+         "tag": "PRE"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
      "to": "p1",
      "port": "right"
+    },
+    {
+     "to": "p1x",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "q1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    12
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "빗나간 접두를 징표로",
+    "en": "The missed prefix becomes the Mark"
+   },
+   "label": {
+    "kr": "심연",
+    "en": "Abyss"
+   },
+   "edges": [
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p3",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "PRE",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "PRE"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mark"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "has": "mark"
+       }
+      ]
+     },
+     "to": "p8m",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "desSide": "p"
+       }
+      ]
+     },
+     "to": "p3x",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "PRE"
+     },
+     "to": "q1",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mark"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q4",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "q4b",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "junk": {
+         "side": "p",
+         "tag": "PRE"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p1",
+     "hide": true
+    },
+    {
+     "to": "p1x",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도·최대 생명력 중 하나",
+     "en": "Movement speed / maximum life",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "심연 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c"
+    },
+    {
+     "s": "s",
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "힘 1티어",
+     "en": "Strength T1",
+     "m": "n",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Abyss",
+   "ess": "mark",
+   "mark": true,
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
+   "showText": [
+    {
+     "s": "p",
+     "kr": "심연 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
     }
    ]
   },
@@ -1658,39 +2085,312 @@
    "group": "main",
    "pos": [
     1,
-    14
+    13
    ],
    "act": "exalt",
-   "cur": "Perfect_Exalted_Orb",
    "goal": {
-    "kr": "접두 세번째 옵션",
-    "en": "Third prefix option"
+    "kr": "징표를 둔 채 접두 두번째 옵션",
+    "en": "Second prefix with the Mark kept"
    },
-   "show": [
-    "ms",
-    "life"
-   ],
    "label": {
-    "kr": "접두 3",
-    "en": "Prefix 3"
+    "kr": "엑잘",
+    "en": "Exalt"
    },
    "edges": [
     {
      "if": {
-      "added": "PRE"
+      "unrevSide": "p"
      },
-     "to": "ok",
-     "res": "ok",
-     "port": "bottom"
+     "to": "p3",
+     "hide": true
     },
     {
-     "to": "q4x",
-     "res": "fail"
+     "if": {
+      "count": {
+       "tag": "PRE",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "PRE"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mark"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "has": "mark"
+       }
+      ]
+     },
+     "to": "p8m",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "desSide": "p"
+       }
+      ]
+     },
+     "to": "p3x",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "PRE"
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mark"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q4",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "q4b",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "junk": {
+         "side": "p",
+         "tag": "PRE"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p1",
+     "hide": true
+    },
+    {
+     "to": "p1x",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도·최대 생명력 중 하나",
+     "en": "Movement speed / maximum life",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "심연 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c"
+    },
+    {
+     "s": "s",
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "힘 1티어",
+     "en": "Strength T1",
+     "m": "n",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "ms",
+    "life"
+   ]
+  },
+  {
+   "id": "q4b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    13
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "징표 훼손 (지울 준비)",
+    "en": "Desecrate the Mark (to clear it)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "q4l"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated modifier (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "힘 1티어",
+     "en": "Strength T1",
+     "m": "n",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    }
+   ],
+   "cur": "Preserved_Rib",
+   "fromMark": true,
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
     }
    ]
   },
   {
-   "id": "q4x",
+   "id": "q4l",
    "kind": "act",
    "group": "main",
    "pos": [
@@ -1711,13 +2411,247 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "징표 훼손 옵션 제거",
+    "en": "Remove the desecrated Mark"
    },
    "edges": [
     {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p3",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "PRE",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "PRE"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mark"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "has": "mark"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "desSide": "p"
+       }
+      ]
+     },
+     "to": "p3x",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "PRE"
+     },
      "to": "q1",
      "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mark"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q4",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "q4b",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "junk": {
+         "side": "p",
+         "tag": "PRE"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p1",
+     "hide": true
+    },
+    {
+     "to": "p1x",
+     "res": "fail",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "p8m",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    14
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "징표에 훼손 (한 티어 높게)",
+    "en": "Desecrate the Mark (one tier higher)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "p3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 % 증가 1티어",
+     "en": "Armour % T1",
+     "m": "f",
+     "tags": [
+      "armP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도·최대 생명력 중 하나",
+     "en": "Movement speed / maximum life",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated modifier (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "화염·냉기·번개 저항 중 하나",
+     "en": "Fire / cold / lightning resist",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "힘 1티어",
+     "en": "Strength T1",
+     "m": "n",
+     "tags": [
+      "str"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 원소 피해 적용 1티어",
+     "en": "Armour to elemental T1",
+     "m": "n",
+     "tags": [
+      "armEle"
+     ]
+    }
+   ],
+   "cur": "Ancient_Rib",
+   "fromMark": true,
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
     }
    ]
   },
@@ -1726,7 +2660,7 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    0,
+    1,
     15
    ],
    "act": "desecrate",
@@ -1827,14 +2761,162 @@
    "edges": [
     {
      "if": {
-      "added": "PRED"
+      "unrevSide": "p"
+     },
+     "to": "p3",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "PRE",
+       "min": 2
+      }
      },
      "to": "ok",
      "res": "ok"
     },
     {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "PRE"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mark"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "has": "mark"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p2",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "desSide": "p"
+       }
+      ]
+     },
      "to": "p3x",
-     "res": "fail"
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "has": "PRE"
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mark"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q4",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "q4b",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "junk": {
+         "side": "p",
+         "tag": "PRE"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p1",
+     "hide": true
+    },
+    {
+     "to": "p1x",
+     "hide": true
     }
    ],
    "item": [
@@ -1883,6 +2965,20 @@
       "armEle"
      ]
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "omens": [],
+      "goal": {
+       "kr": "훼손 옵션 확인 (나오는 대로)",
+       "en": "Reveal (keep what comes)"
+      }
+     }
+    }
    ]
   },
   {
@@ -1912,7 +3008,162 @@
    },
    "edges": [
     {
-     "to": "p2"
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p3",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "PRE",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "PRE"
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mark"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "has": "mark"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p2",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "PRE"
+       },
+       {
+        "desSide": "p"
+       }
+      ]
+     },
+     "to": "p3x",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "PRE"
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mark"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q4",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "q4b",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "mark"
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "junk": {
+         "side": "p",
+         "tag": "PRE"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "q1",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p1",
+     "hide": true
+    },
+    {
+     "to": "p1x",
+     "hide": true
     }
    ]
   },

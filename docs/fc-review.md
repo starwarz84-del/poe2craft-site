@@ -27,7 +27,7 @@
 | absent-amulet-spell6-v2 | Yi1u0LhJztI | high 1,330, bal 756 | 10 | 완료 11-12 | A(Opus) | 자막 전체(0:00~42:38) + 화면 27:00~34:00(기록 tools/notes/banzino-Yi1u0LhJztI.md). 균열의 에센스에 좌측 결정화 추가, 접미 훼손을 막기로 먼저 공개, 엑잘 빗나감 = 빛의 징조 + 심연 징표 → 고대 빗장뼈 공개(영상 29:30~31:20), 시전 속도는 고대 빗장뼈. 마나가 엑잘·징표 중 어디서 붙었는지는 화면으로 확인 못 함. 1,330/756 → 2,515/216 |
 | sl-flamewave-staff-v2 | 6EzSVUItzsg | high 1,296, bal 178 | 3 | 완료 11-12 | A(Opus) | 자막 전체(0:00~15:13) 대조, 단계 일치(기록 tools/notes/sl-6EzSVUItzsg.md). 1,296/178 → 1,296/40(밸런스 마지막 접두·접미 랜덤) |
 | mazbro-caster-amulet-v2 | 4PazhuHwdL8 | high 1,154, bal 428 | 5 | 완료 11-12 | A(Opus) | 자동 번역 자막 전체(0:00~39:40) 대조, 영상 가이드 1~11단계와 일치(기록 tools/notes/mazbro-4PazhuHwdL8.md). 1,154/428 → 1,154/410 |
-| sihan-highend-boots-v2 | dlrD21AcCUE | high 1,147, bal 650, ess 314 | 2 | 진행 중 | A(Opus) |  |
+| sihan-highend-boots-v2 | dlrD21AcCUE | high 1,147, bal 650, ess 314 | 2 | 완료 11-12 | A(Opus) | 자막 전체(0:00~17:50) 대조(기록 tools/notes/sihan-dlrD21AcCUE.md). 접두를 영상 순서로 다시 만듦: 징표를 둔 채 엑잘 → 징표에 고대 갈비뼈. 1,143/656/314 → 1,119/265(에센셜 뺌) |
 | grasping-mail-spell1-v2 | y5Ch3AJpl5c | high 1,140, bal 613 | 11 | 대기 |  |  |
 | sl-proj7-gloves-v2 | XMYJh3CnXuY | high 1,104, bal 785 | 7 | 완료 11-11 | B(Fable) | 자막 전체 대조. 합금 실패 뒤 길을 보이는 선 + 규칙에 맞게(우측 소멸의 징조로 접미 비우기). 1,104·785 |
 | saveq-absent-amulet-v2 | S4sflKbsA8A | high 935, bal 797, ess 729 | 4 | 대기 |  |  |
@@ -159,7 +159,7 @@
 | sihan-chayula-ring-v2 | bal·high | - | 대기 |  |  |
 | sihan-chayula-sceptre-v2 | ess·bal | ess 접근 효과 범위 1~2티어; ess 정신력 % + 마나 1~6티어; bal 접근 효과 범위 1티어; bal 정신력 % + 마나 1~4티어 | 대기 |  |  |
 | sihan-chayula-wand-v2 | ess·bal | ess 주문 치명타 명중 확률 1~3티어 | 대기 |  |  |
-| sihan-highend-boots-v2 | ess·bal·high | ess 저항 목표 1~2티어; ess 훼손 접두 목표 1~3티어 | 대기 |  |  |
+| sihan-highend-boots-v2 | ess·bal·high | ess 저항 목표 1~2티어; ess 훼손 접두 목표 1~3티어 | 완료 11-12 | A(Opus) | 밸런스 접두 1~2티어, 마지막 접두·접미 랜덤. 에센셜은 밸런스와 같아(265/266) 뺌 — 레시피는 난이도 3이라 밸런스만 |
 | sihan-highend-helmet-v2 | bal·high | high 저항 1~3티어 (상위 카오스) | 완료 11-12 | A(Opus) | 밸런스 방어도 1~2티어, 마지막 접미(저항) 랜덤 — 181 → 202 |
 | sihan-proj-gloves-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 1~2티어, 마지막 훼손 접두 랜덤 — 327 → 282 |
 | sl-5mod-jewel-v2 | ess·bal | - | 대기 |  |  |
