@@ -8,6 +8,7 @@ mkdir -p $T && cd $T
 ln -sfn $ROOT/site/data data
 (echo '<meta charset="utf-8">'; cat $ROOT/site/app.html) > app.html
 for f in recipes discover emulator builder bases; do cp $ROOT/site/pub/$f.html .; done
+cp $ROOT/site/sim.js $ROOT/site/graphify.js .
 # expose engine internals to the Playwright scripts
 sed -i "s/if(location.search.includes('debug')) window.__rec/window.__rec/; s/window.__rec = Object.assign(S, {renderBoard:()=>renderBoard()});/window.__rec = Object.assign(S, {renderBoard:()=>renderBoard(), analyse, prepRecipe});/" recipes.html
 python3 -m http.server 8779 >/dev/null 2>&1 & echo $! > .pid

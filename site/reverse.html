@@ -148,6 +148,10 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .ch-h{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}.ch-h span{color:var(--muted);font-size:12.5px}
 .check ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
 .check li{display:flex;gap:8px;font-size:13px;line-height:1.45}.check li .ic{flex:none;width:16px;text-align:center;font-weight:700}
+.flow{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.flow.bad{border-color:var(--warn)}
+.flow table{border-collapse:collapse;font-size:12.5px;width:100%;max-width:640px}.flow th,.flow td{padding:4px 8px;text-align:right;border-bottom:1px solid var(--line)}.flow th:first-child,.flow td:first-child{text-align:left}
+.flow th{color:var(--muted);font-weight:500}.flow .iss{color:var(--warn);font-size:13px;margin:0;padding-left:18px}.flow .wait{color:var(--muted);font-size:13px}
 .check li.err .ic{color:var(--warn)}.check li.warn .ic,.wn{color:var(--rare)}.check li.ok .ic{color:var(--ok)}
 </style>
 
@@ -195,6 +199,8 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
   </section>
 </div>
 
+<script src="sim.js"></script>
+<script src="graphify.js"></script>
 <script>
 const S = { lang:'en', index:null, cache:{}, last:null, txt:'', itab:'item', need:new Set(), okQR:false, tsel:{}, buy:new Set() };
 try{ const u=new URLSearchParams(location.search).get('lang'); S.lang = u || localStorage.getItem('poe2lang') || 'en'; }catch(e){}
@@ -1270,30 +1276,61 @@ $('#mods').addEventListener('click', e=>{
   if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const an=S.last.an, nNeed=an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length; if(!nNeed || !S.okQR){ const m=$('#mkmsg'); if(m) m.innerHTML=`<div class="mkwarn">${!nNeed?L('먼저 위 옵션에서 \'필수 옵션\'을 1개 이상 고르세요.','Pick at least one must-have line above first.'):L('\'퀄리티와 룬을 확인했어요\'에 체크해 주세요.','Tick “I checked the quality and runes”.')}</div>`;
     const tgt = !nNeed ? document.querySelector('[data-need]') : document.getElementById('qrok'); if(tgt){ tgt.scrollIntoView({block:'center', behavior:'smooth'}); const box=tgt.closest('label,.need')||tgt; box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash'); } return; }
     const an2 = needAn(an);   // only the must-haves (at their tier range) are targets; the rest is junk (사용자 확정 2026-11-11)
-    const mp=+($('#mp')?.value||0); const r = makeDraft(S.last.it, an2, {market: mp>0?mp:0, buy:buySet(an)}); S.draft = r; S.check = verifyDraft(S.last.it, an2, r); showCheck(); return; }
+    const mp=+($('#mp')?.value||0); const r = makeDraft(S.last.it, an2, {market: mp>0?mp:0, buy:buySet(an)}); S.draft = r; S.check = verifyDraft(S.last.it, an2, r); S.flow = {wait:true}; showCheck();
+    // 사용자 확정 2026-11-11: 플로우차트를 먼저 만들고 시뮬레이션으로 순서대로 진행해 막힘·완성 조건·비용을 확인한 뒤, 그 플로우차트 기준으로 등급별 레시피
+    const it=S.last.it; setTimeout(()=>{ if(S.draft!==r) return; S.flow = runFlow(it, r); showCheck(); }, 40); return; }
   const nb=e.target.closest('[data-need]'); if(nb && S.last?.an){ const i=+nb.dataset.need; if(S.need.has(i)) S.need.delete(i); else S.need.add(i); S.draft=null; S.sent=false; render(); return; }
-  if(e.target.closest('#send') && S.draft && !S.sent){ const r=S.draft;
+  if(e.target.closest('#send') && S.draft && !S.sent){ if(!S.flow?.group) return; const r=S.flow.group;
     try{ const k='poe2r:drafts', a=JSON.parse(localStorage.getItem(k)||'[]').filter(x=>x.id!==r.id); a.unshift(r); localStorage.setItem(k, JSON.stringify(a.slice(0,12))); }catch(_){}
     const inShell = window.parent && window.parent!==window;
     if(inShell){ try{ window.parent.postMessage({type:'poe2-draft', recipe:r, stay:true}, '*'); }catch(_){} }   // stay here; the list picks it up (사용자 확정 2026-11-11)
     S.sent=true; $('#fb').hidden=false; renderStatic();
     $('#pvact').innerHTML = `<span class="ok">${L('크래프팅 목록에 올렸어요.','Added to the Crafting list.')}</span>${inShell?`<button type="button" class="btn" id="pvgo">${L('크래프팅에서 보기 →','Open in Crafting →')}</button>`:''}`; return; }
   if(e.target.closest('#pvgo') && S.draft){ try{ window.parent.postMessage({type:'poe2-goto', id:S.draft.id}, '*'); }catch(_){} return; }
-  if(e.target.closest('#discard') && S.draft){ S.draft=null; S.check=null; S.sent=false; renderStatic();
+  if(e.target.closest('#discard') && S.draft){ S.draft=null; S.check=null; S.flow=null; S.sent=false; renderStatic();
     $('#mkmsg').innerHTML = `<span class="ok">${L('초안을 지웠어요. 아쉬운 점을 아래에 남겨 주시면 다음 초안에 반영할게요.','Draft deleted. Tell us what was off below so the next one is better.')}</span>`; $('#fb').hidden=false; return; }
 });
+// ---------- flowchart first (사용자 확정 2026-11-11) ----------
+// the draft → a graph (graphify.js) → every grade simulated (sim.js) → issues (a step with no way on, too many repeats, finished items missing a must-have)
+// → only then the grade recipes: the draft is the top grade, lower grades widen the looped lines' tiers (정책 32) with the same step ids
+const slimRes = r => ({mean:r.mean, median:r.median, p90:r.p90, p10:r.p10, bases:r.bases, baseDiv:r.baseDiv, use:r.use, useDiv:r.useDiv, reqOk:r.reqOk, missing:r.missing,
+  nodes:Object.fromEntries(Object.entries(r.nodes).map(([k,v])=>[k,{reach:v.reach, visits:v.visits, use:v.use, skips:v.skips, byCur:v.byCur, div:v.div}])), edges:r.edges});
+function runFlow(it, d){ try{
+  if(!window.POE2GRAPH || !window.POE2SIM || !S.prices) return {err:L('시뮬레이터를 불러오지 못했어요.','The simulator did not load.')};
+  const g = POE2GRAPH.fromDraft(d, it.D, {craft:S.craft, grades:['high','bal','ess']});   // all three grades: the picked tiers, one step wider, two steps wider + keep a miss (사용자 2026-11-11: 티어를 넓히면 얼마나 싸지는지)
+  let t=performance.now(), c = POE2GRAPH.check(g, it.D, S.craft, S.prices, POE2SIM, 150);
+  const dt=performance.now()-t; if(!c.issues.length && dt<600) c = POE2GRAPH.check(g, it.D, S.craft, S.prices, POE2SIM, Math.min(3000, Math.max(300, Math.round(150*1500/Math.max(dt,1)))));
+  const strategies = c.strategies.filter(x=>x.res).map(x=>({id:x.id, params:x.params, hidden:false, res:slimRes(x.res)}));
+  const sim = {id:d.id, recipe:d.id, runs:c.strategies[0]?.res?.N||0, generated:new Date().toISOString().slice(0,10), graph:POE2GRAPH.view(g, it.D), strategies};
+  const out = {g, res:c.strategies, issues:c.issues};
+  if(strategies.length) { const lead = {...d, tierGroup:d.id, tier:g.strategies[0].id, sim:1}; out.lead = {...lead, simInline: strategies.length===c.strategies.length ? sim : {...sim, graph:{...sim.graph, versions:sim.graph.versions.filter(v=>strategies.some(s=>s.id===v.id)), finals:sim.graph.finals.filter(f=>strategies.some(s=>s.id===f.id))}}}; }
+  if(!c.issues.length && out.lead) out.group = {...out.lead, grades: g.strategies.slice(1).map(st=>gradeRecipe(d, g, st))};
+  return out; }catch(e){ return {err:String(e.message||e)}; } }
+function gradeRecipe(d, g, st){ const p=st.params, w = x => { if(!x || x.gi==null) return x; const v=p['t'+x.gi]; return v!=null ? {...x, tmax:+v} : x; };
+  const nodes = d.nodes.map(n=>{ if(!n.target) return n; const t={...n.target}; if(t.gi!=null){ const v=p['t'+t.gi]; if(v!=null && n.do!=='essence') t.tmax=+v; }
+    if(t.anyOf) t.anyOf=t.anyOf.map(w); if(t.reveal) t.reveal = t.reveal.anyOf ? {...t.reveal, anyOf:t.reveal.anyOf.map(w)} : w(t.reveal); return {...n, target:t}; });
+  return {...d, id:d.id+st.id, tierGroup:d.id, tier:st.id, sim:1, nodes}; }
+function flowHTML(F){ const VN={high:L('하이엔드','High-end'), bal:L('밸런스','Balance'), ess:L('에센셜','Essential')}, fd = v => v==null ? '—' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
+  if(F.err) return `<div class="flow bad"><b>${L('플로우차트','Flowchart')}</b><p class="iss">${esc(F.err)}</p></div>`;
+  const rows = F.res.map(x=> x.res ? `<tr><td>${VN[x.id]||x.id}</td><td>${fd(x.res.mean)}</td><td>${fd(x.res.median)}</td><td>${fd(x.res.p90)}</td><td>${x.res.bases.toFixed(1)}</td><td>${x.res.reqOk>=0.98?'✓':Math.round(x.res.reqOk*100)+'%'}</td></tr>` : `<tr><td>${VN[x.id]||x.id}</td><td colspan="5">${L('진행 불가','No way through')}</td></tr>`).join('');
+  return `<div class="flow ${F.issues.length?'bad':''}"><div class="ch-h"><b>${L('플로우차트 검사','Flowchart check')}</b><span>${F.issues.length ? L('통과하지 못했어요 — 아래 문제를 고쳐야 레시피를 만들 수 있어요','Not passed — these need fixing before a recipe is made') : L(`단계 ${F.g.nodes.filter(n=>n.kind==='act').length}개를 실제 확률로 ${(F.res[0]?.res?.N||0).toLocaleString()}번씩 끝까지 진행해 봤어요. 막힘 없음`,`Ran the ${F.g.nodes.filter(n=>n.kind==='act').length} steps to the end ${(F.res[0]?.res?.N||0).toLocaleString()} times each with real odds. No dead ends`)}</span></div>
+    <table><thead><tr><th>${L('등급','Grade')}</th><th>${L('평균','Mean')}</th><th>${L('중앙값','Median')}</th><th>${L('운 나쁠 때(90%)','Unlucky (90%)')}</th><th>${L('베이스','Bases')}</th><th>${L('필수 옵션','Must-haves')}</th></tr></thead><tbody>${rows}</tbody></table>
+    <span class="hint">${L('완성 1개당 div, 베이스 구입비 제외','div per finished item, base purchase not included')}</span>
+    ${F.issues.length?`<ul class="iss">${F.issues.map(x=>`<li>${esc(KR()?x.kr:x.en)}</li>`).join('')}</ul>`:''}</div>`; }
 function showCheck(){
   const c=S.check||[], nE=c.filter(x=>x.lv==='err').length, nW=c.filter(x=>x.lv==='warn').length;
   const ic = {err:'✗', warn:'!', ok:'✓'};
   const dc = S.last?.it ? draftCost(S.last.it, S.last.an, S.draft) : null, mp = S.draft.marketPrice, fd = v => v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
   const costL = dc==null ? '' : `<p class="costl ${mp && dc>mp ? 'over' : ''}">${L('예상 비용','Est. cost')} ${L('약','≈')} ${fd(dc)} div${mp?` / ${L('시세','market')} ${fd(mp)} div${dc>mp?` — ${L('시세보다 비쌈, 구입 권장','dearer than buying it')}`:''}`:''}${S.draft.compromises?` · ${L(`타협 갈림길 ${S.draft.compromises}곳`,`${S.draft.compromises} settle fork(s)`)}`:''}</p>`;
-  $('#mkmsg').innerHTML = `${costL}<div class="check"><div class="ch-h"><b>${L('검산','Verification')}</b><span>${L(`초안 ${S.draft.nodes.length}단계를 처음부터 다시 따라가며 확인했어요`,`Replayed the ${S.draft.nodes.length}-step draft from the start`)} · <span class="bad">${L('오류','errors')} ${nE}</span> · <span class="wn">${L('주의','warnings')} ${nW}</span></span></div>
+  const F=S.flow||{}, fl = F.wait ? `<div class="flow"><b>${L('플로우차트','Flowchart')}</b><span class="wait">${L('초안으로 플로우차트를 만들고 시뮬레이션으로 끝까지 진행해 보는 중…','Building the flowchart from the draft and running it to the end…')}</span></div>` : (F.res || F.err) ? flowHTML(F) : '';
+  const okFlow = !!F.group, label = F.wait ? L('플로우차트 확인 중…','Checking the flowchart…') : !okFlow ? L('플로우차트 검사를 통과하지 못해 올릴 수 없어요','The flowchart did not pass, so it cannot be added') : nE ? L('오류가 있어도 만족 — 크래프팅 목록에 올리기','Add to Crafting anyway') : L('만족 — 크래프팅 목록에 올리기','Looks good — add to Crafting');
+  $('#mkmsg').innerHTML = `${fl}${F.res || F.wait ? '' : costL}<div class="check"><div class="ch-h"><b>${L('검산','Verification')}</b><span>${L(`초안 ${S.draft.nodes.length}단계를 처음부터 다시 따라가며 확인했어요`,`Replayed the ${S.draft.nodes.length}-step draft from the start`)} · <span class="bad">${L('오류','errors')} ${nE}</span> · <span class="wn">${L('주의','warnings')} ${nW}</span></span></div>
     <ul>${c.map(x=>`<li class="${x.lv}"><span class="ic">${ic[x.lv]}</span>${esc(KR()?x.kr:x.en)}</li>`).join('')}</ul>
   </div>
     <div class="pv"><div class="pv-h"><b>${L('레시피 미리보기','Recipe preview')}</b><span>${L('잘 만들어졌는지 확인한 뒤 올리거나 지우세요','Check it, then add it or delete it')}</span></div>
       <iframe id="pvf" title="${esc(L('레시피 미리보기','Recipe preview'))}" src="recipes.html?preview=1&lang=${S.lang}"></iframe>
-      <div class="row" id="pvact"><button type="button" class="btn ${nE?'':'primary'}" id="send">${nE ? L('오류가 있어도 만족 — 크래프팅 목록에 올리기','Add to Crafting anyway') : L('만족 — 크래프팅 목록에 올리기','Looks good — add to Crafting')}</button><button type="button" class="btn" id="discard">${L('삭제','Delete')}</button></div></div>`;
-  const f=$('#pvf'), send=()=>{ try{ f.contentWindow.postMessage({type:'poe2-preview', recipe:S.draft}, '*'); }catch(_){} };
+      <div class="row" id="pvact"><button type="button" class="btn ${nE||!okFlow?'':'primary'}" id="send" ${okFlow?'':'disabled'}>${label}</button><button type="button" class="btn" id="discard">${L('삭제','Delete')}</button></div></div>`;
+  const f=$('#pvf'), send=()=>{ try{ f.contentWindow.postMessage({type:'poe2-preview', recipe:F.group || F.lead || S.draft}, '*'); }catch(_){} };
   f.addEventListener('load', send, {once:true});
 }
 $('#clr').addEventListener('click', ()=>{ $('#txt').value=''; S.last=null; render(); $('#txt').focus(); });

@@ -6,7 +6,7 @@ Run after the normal build (build_recipes.py ... i18n/build.py):
 web/ is what the host serves (Cloudflare Pages output directory = web, no build command).
 - index.html  = site/shell.html (trade-style banner + tab bar)
 - tool pages  = site/pub/*.html with site/theme.css injected (colors/fonts only)
-- about.html, favicon.svg, sim.js, lib/, data/ copied as they are
+- about.html, favicon.svg, sim.js, graphify.js, lib/, data/ copied as they are
 """
 import os, shutil
 
@@ -24,7 +24,7 @@ def main():
     if os.path.isdir(WEB):
         shutil.rmtree(WEB)
     os.makedirs(WEB)
-    for f in ['favicon.svg', 'theme.css', 'sim.js']:
+    for f in ['favicon.svg', 'theme.css', 'sim.js', 'graphify.js']:
         shutil.copy(os.path.join(SITE, f), os.path.join(WEB, f))
     for src, dst in [('shell.html', 'index.html'), ('about.html', 'about.html')]:
         s = open(os.path.join(SITE, src), encoding='utf-8').read()
