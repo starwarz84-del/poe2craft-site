@@ -20,9 +20,9 @@
 | noble-visceral-quiver-v2 | 2PUEwoePtRs | high 2,240, bal 110 | 3 | 진행 중 | A(Opus) |  |
 | diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 대기 | | 제작 옵션 한도 위반(l1·l2) 남음 |
 | breach-ring-video-v2 | RiJixgqBnBY | high 1,956, bal 934 | 4 | 진행 중 | A(Opus) |  |
-| sihan-proj-gloves-v2 | DH4jiORLg10 | high 1,659, bal 327 | 2 | 대기 |  |  |
-| sl-blacksteel-gauntlets-v2 | J7J8Jo7ibvE | high 1,649, bal 140 | 4 | 대기 |  |  |
-| sl-flamewave-ring-v2 | UAF91gEFRkM | high 1,423, bal 371 | 2 | 대기 |  |  |
+| sihan-proj-gloves-v2 | DH4jiORLg10 | high 1,659, bal 327 | 2 | 진행 중 | A(Opus) |  |
+| sl-blacksteel-gauntlets-v2 | J7J8Jo7ibvE | high 1,649, bal 140 | 4 | 진행 중 | A(Opus) |  |
+| sl-flamewave-ring-v2 | UAF91gEFRkM | high 1,423, bal 371 | 2 | 진행 중 | A(Opus) |  |
 | absent-amulet-spell6-v2 | Yi1u0LhJztI | high 1,330, bal 756 | 10 | 대기 |  |  |
 | sl-flamewave-staff-v2 | 6EzSVUItzsg | high 1,296, bal 178 | 3 | 대기 |  |  |
 | mazbro-caster-amulet-v2 | 4PazhuHwdL8 | high 1,154, bal 428 | 5 | 대기 |  |  |
