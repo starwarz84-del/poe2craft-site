@@ -52,6 +52,10 @@ def _robe(r, t):
     v2=_node(r,'v2'); v2.update({'do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'fail':{'goto':'self','via':ANN}})
     v2['target']={'gi':vr_flat,'tmax':1 if t=='bal' else 2}
     v3=_node(r,'v3'); v3['target']['tmax']=2 if t=='bal' else 3; v3['cur']='Greater_Exalted_Orb'
+    # 접두가 분열 + 잡옵 + 첫 옵션으로 꽉 차서 두 번째 엑잘 전에 잡옵을 지움(징조 없는 소멸의 오브 — 잡옵·첫 옵션 중 하나, 그래프 v2x와 같음).
+    # 건너뛴 과정 점검(2026-11-11)에서 찾음: 이 단계가 없어 두 번째 엑잘이 확률 0이었음
+    i=[n['id'] for n in r['nodes']].index('v3')
+    r['nodes'].insert(i,{'id':'v2b','phase':'pre','do':'remove','cur':'Orb_of_Annulment','target':{'removeJunk':'p'},'knownP':0.5,'fail':{'goto':'v2','lost':'v2'},'ts':v2.get('ts')})
     if t=='bal':
         _node(r,'v8')['br']=K('가장 낮은 옵션이 버릴 옵션일 때만. 정신력 점유 효율(레벨 65)이 가장 낮아지면 그대로 타협.','Only while the lowest line is junk; once the reservation line (level 65) is lowest, settle.')
     else:
