@@ -111,3 +111,6 @@ exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"patch_essence
 
 # SL 게임연구소 실험 가중치(주얼 6종·콜르의 사냥 장갑) (patch_sl_weights.py, 2026-11-11)
 exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"patch_sl_weights.py")).read())
+
+# poe2db 내부 능력치 줄 정리 (patch_raw_stats.py, 2026-11-11)
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"patch_raw_stats.py")).read())
