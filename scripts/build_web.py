@@ -80,6 +80,13 @@ def main():
         s = s[:i + 8] + '\n' + head + s[i + 8:] if i >= 0 else head + s
         open(os.path.join(WEB, f), 'w', encoding='utf-8').write(s)
     subset_font(WEB)
+    # 줄인 글꼴은 배포마다 내용이 바뀌는데 한 달 캐시라, 예전 글꼴을 가진 방문자에게 새 레시피 글자가 기기 글꼴로 보였음 → 내용 해시를 파일 이름에 넣음(2026-11-11)
+    fp = os.path.join(WEB, 'fonts', 'SUIT-Variable.woff2'); fh = hashlib.md5(open(fp, 'rb').read()).hexdigest()[:10]; fn = 'SUIT-Variable.%s.woff2' % fh
+    os.rename(fp, os.path.join(WEB, 'fonts', fn))
+    for f in glob.glob(os.path.join(WEB, '*.html')) + glob.glob(os.path.join(WEB, '*.css')):
+        t = open(f, encoding='utf-8').read()
+        if 'SUIT-Variable.woff2' in t:
+            open(f, 'w', encoding='utf-8').write(t.replace('SUIT-Variable.woff2', fn))
     open(os.path.join(WEB, 'CNAME'), 'w').write(DOMAIN + '\n')
     if INDEX:
         open(os.path.join(WEB, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\nSitemap: https://%s/sitemap.xml\n' % DOMAIN)
@@ -91,7 +98,10 @@ def main():
     # cache: pages always fresh, big data files cached for an hour; while testing, every response says noindex
     noindex = '' if INDEX else '/*\n  X-Robots-Tag: noindex, nofollow\n'
     open(os.path.join(WEB, '_headers'), 'w').write(noindex +
-        '/*.html\n  Cache-Control: no-cache\n/\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: public, max-age=3600\n/fonts/*\n  Cache-Control: public, max-age=2592000\n/img/*\n  Cache-Control: public, max-age=604800\n')
+        '/*.html\n  Cache-Control: no-cache\n/\n  Cache-Control: no-cache\n'
+        # 데이터는 5분만(배포 직후 새 화면이 옛 데이터를 한 시간 쓰던 것 방지), 이름에 내용 해시가 든 파일은 1년
+        '/data/*\n  Cache-Control: public, max-age=300\n/data/bimg/*\n  Cache-Control: public, max-age=31536000, immutable\n'
+        '/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n/img/*\n  Cache-Control: public, max-age=604800\n/img/d/*\n  Cache-Control: public, max-age=31536000, immutable\n')
     n = sum(len(fs) for _, _, fs in os.walk(WEB))
     print('web/ built:', n, 'files')
 

@@ -684,7 +684,7 @@ function makeDraft(it, an, opt){
   const start = {rar:'normal', mods:[], ...(baseQ?{quality:it.qual}:{})}; const junk = {p:0, s:0};
   // 사용자 확정 2026-11-11: 분열 베이스에도 '베이스에 포함' — 고른 옵션은 분열과 함께 이미 붙어 있는 베이스를 사는 것으로 보고 단계에 넣지 않음(분열 과정은 설명하지 않음)
   const boughtFr = frs.length && opt?.buy ? rnd.filter(r=>opt.buy.has(r.m) && cnt[r.m.side] + frs.filter(x=>x.m.side===r.m.side).length < cap[r.m.side]) : [];
-  if(frs.length){ start.rar='rare'; start.mods = frs.map(r=>({...tm(r), fr:true, ...(r.g?.s==='e'?{crafted:true}:{})}));   // 분열된 제작 옵션도 제작 옵션(사용자 확정 2026-11-11): 한도 1개에 포함 frs.forEach(r=>cnt[r.m.side]++); rar='rare';
+  if(frs.length){ start.rar='rare'; start.mods = frs.map(r=>({...tm(r), fr:true, ...(r.g?.s==='e'?{crafted:true}:{})})); /* 분열된 제작 옵션도 제작 옵션(사용자 확정 2026-11-11): 한도 1개에 포함 */ frs.forEach(r=>cnt[r.m.side]++); rar='rare';
     boughtFr.forEach(r=>{ start.mods.push(one(tm(r))); cnt[r.m.side]++; rnd.splice(rnd.indexOf(r),1); });
     const need = {p:rows.filter(r=>!r.m.fr && r.m.side==='p').length, s:rows.filter(r=>!r.m.fr && r.m.side==='s').length};
     // prepared base: fractured line + one junk line (the rest was annulled after the fracture)
