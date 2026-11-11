@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>About PoE 2 Craft</title>
+<title>PoE 2 Craft</title>
 <style>
 /* Fontin SmallCaps by Jos Buivenga, exljbris Font Foundry - https://www.exljbris.com (free font, embedded under the exljbris EULA) */
 @font-face{font-family:"Fontin SmallCaps";src:url("fonts/fontin-sc.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
@@ -11,72 +11,259 @@
 html{font-variant-ligatures:none}
 /* SUIT by SUNN (sun.fo/suit) - SIL Open Font License 1.1, see fonts/SUIT-OFL.txt */
 @font-face{font-family:"SUIT Variable";src:url("fonts/SUIT-Variable.woff2") format("woff2-variations"),url("fonts/SUIT-Variable.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
-/* About page in the trade-site style: centered column, gradient titles, bordered cards. Text lives in data-en / data-kr. */
-:root{--text:#a38d6d;--hi:#e9cf9f;--white:#e2e2e2;--edge:#2c2317;--f-title:"Fontin SmallCaps",Verdana,Arial,"SUIT Variable","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;--f-body:Verdana,Arial,Helvetica,"SUIT Variable","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;color-scheme:dark}
+/* Main page (사용자 확정 2026-11-11): 목표 4개 · 메뉴 안내 · 사용기·요청·오류 · 푸터. poe2filter.com 안내 화면처럼 가운데 열 + 금빛 제목 + 테두리 카드 */
+:root{--text:#a38d6d;--hi:#e9cf9f;--white:#e2e2e2;--edge:#2c2317;--edge2:#4a3a22;--bg2:rgba(10,8,5,.62);
+  --f-title:"Fontin SmallCaps",Verdana,Arial,"SUIT Variable","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;
+  --f-body:Verdana,Arial,Helvetica,"SUIT Variable","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:linear-gradient(#0e0b06 50%,#000) fixed;color:var(--text);font-family:var(--f-body);font-size:13.5px;line-height:1.65}
-.col{max-width:820px;margin:0 auto;padding:30px 20px 48px}
+.col{max-width:1120px;margin:0 auto;padding:30px 20px 0}
 h1,h2{font-family:var(--f-title);font-weight:400;text-align:center;margin:0 0 6px;
   background:linear-gradient(180deg,#fff,#8f7859);-webkit-background-clip:text;background-clip:text;color:transparent}
-h1{font-size:24px} h2{font-size:21px;margin-top:38px}
+h1{font-size:28px;letter-spacing:.02em} h2{font-size:22px;margin-top:46px}
 :lang(ko) h1,:lang(ko) h2{font-weight:700}
 .sub{text-align:center;margin:0 0 4px}
-hr{border:0;height:1px;margin:30px auto 0;width:70%;background:linear-gradient(90deg,transparent,#5a4528,transparent)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:16px}
-.card{border:1px solid var(--edge);padding:13px 15px 12px;background:rgba(10,8,5,.6)}
-.card h3{margin:0 0 4px;font-size:15px;font-weight:600;color:var(--white);font-family:var(--f-title)}
-.card p{margin:0}
+.sub2{text-align:center;margin:0 auto;max-width:640px;color:#8a7658;font-size:12.5px}
+hr{border:0;height:1px;margin:34px auto 0;width:70%;background:linear-gradient(90deg,transparent,#5a4528,transparent)}
 b{color:var(--hi);font-weight:600}
-ol{margin:16px 0 0;padding-left:20px}
-ol li{margin:0 0 8px}
-ol li strong{color:var(--white);font-weight:600}
-button.go{background:none;border:0;padding:0;font:inherit;color:var(--hi);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
-.foot{margin-top:40px;text-align:center;font-size:12px;color:#6f604a}
+a{color:var(--hi)}
+.cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.btn{font:inherit;font-family:var(--f-title);font-size:15px;cursor:pointer;padding:8px 18px;border:1px solid var(--edge2);background:#1a140b;color:var(--hi)}
+.btn:hover{border-color:#c8a85a;background:#241a0d}
+.btn.main{background:#5a3806;border-color:#8a5b14;color:#fff1d2}
+.btn.main:hover{background:#6c440a}
+:lang(ko) .btn{font-weight:700;font-size:14px}
+
+/* 목표 4개: 위 = 커런시 그림 판, 아래 = 글 */
+.goals{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.goal{border:1px solid var(--edge);background:var(--bg2);display:flex;flex-direction:column}
+.art{position:relative;height:132px;border-bottom:1px solid var(--edge);overflow:hidden;display:flex;align-items:center;justify-content:center;gap:6px;
+  background:radial-gradient(ellipse at 50% 60%,var(--glow,rgba(200,140,60,.28)),transparent 62%),linear-gradient(180deg,#120d07,#060403)}
+.art::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(0,0,0,.6),transparent 60%);pointer-events:none}
+.art img{width:52px;height:52px;image-rendering:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.85))}
+.art img.big{width:68px;height:68px;margin:0 2px}
+.art img:nth-child(odd){transform:translateY(6px)}
+.goal .t{padding:13px 15px 15px}
+.goal h3{margin:0 0 6px;font-size:16px;font-weight:400;color:var(--white);font-family:var(--f-title)}
+:lang(ko) .goal h3{font-weight:700;font-size:15px}
+.goal p{margin:0;font-size:13px}
+
+/* 메뉴 안내 */
+.menus{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:18px}
+.menu{border:1px solid var(--edge);background:var(--bg2);padding:14px 16px 14px;display:flex;flex-direction:column}
+.menu .hd{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.menu .hd svg{width:22px;height:22px;stroke:var(--hi);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.menu h3{margin:0;font-size:17px;font-weight:400;color:var(--white);font-family:var(--f-title)}
+:lang(ko) .menu h3{font-weight:700;font-size:15.5px}
+.menu .d{margin:0 0 8px}
+.menu ol{margin:0 0 10px;padding-left:20px;font-size:12.8px}
+.menu ol li{margin:0 0 3px}
+.menu .go{margin-top:auto;align-self:flex-start;background:none;border:0;padding:0;font:inherit;color:var(--hi);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* 사용기·요청·오류 */
+.fb{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;margin-top:18px;align-items:start}
+.fbinfo{border:1px solid var(--edge);background:var(--bg2);padding:14px 16px}
+.fbinfo p{margin:0 0 8px}
+.fbinfo ul{margin:0;padding-left:18px;font-size:12.8px}
+.fbinfo li{margin-bottom:4px}
+form.fbf{border:1px solid var(--edge);background:var(--bg2);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.seg{display:flex;gap:0;border:1px solid var(--edge2);align-self:flex-start}
+.seg button{font:inherit;font-size:13px;padding:6px 14px;background:transparent;color:var(--text);border:0;cursor:pointer}
+.seg button+button{border-left:1px solid var(--edge2)}
+.seg button[aria-pressed="true"]{background:#5a3806;color:#fff1d2}
+.fbf label{display:flex;flex-direction:column;gap:4px;font-size:12px}
+.fbf textarea,.fbf input{font:inherit;font-size:13px;color:var(--white);background:#0b0805;border:1px solid var(--edge2);padding:8px 10px;resize:vertical}
+.fbf textarea{min-height:130px}
+.fbf textarea:focus,.fbf input:focus{outline:1px solid #8a5b14}
+.fbrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.fbmsg{font-size:12.5px}
+.fbmsg.err{color:#e08a8a}.fbmsg.ok{color:#8fd19e}
+
+/* 푸터 */
+footer{margin-top:56px;border-top:1px solid #2a2014;background:rgba(0,0,0,.55)}
+.fin{max-width:1120px;margin:0 auto;padding:20px 20px 26px;display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;align-items:flex-start;font-size:12px;color:#6f604a}
+.fin .brand{font-family:var(--f-title);font-size:18px;color:var(--hi)}
+.fin nav{display:flex;flex-wrap:wrap;gap:6px 16px}
+.fin nav button{background:none;border:0;padding:0;font:inherit;color:#8a7658;cursor:pointer}
+.fin nav button:hover{color:var(--hi)}
+.fin p{margin:2px 0}
+.fin a{color:inherit}
+
+@media (max-width:980px){.goals{grid-template-columns:repeat(2,1fr)}.fb{grid-template-columns:1fr}}
+@media (max-width:520px){.goals{grid-template-columns:1fr}.art{height:112px}.col{padding:22px 14px 0}h1{font-size:24px}}
 </style>
 </head>
 <body>
 <div class="col">
-  <h1 data-en="Welcome to PoE 2 Craft" data-kr="PoE 2 Craft">Welcome to PoE 2 Craft</h1>
-  <p class="sub" data-en="Step-by-step crafting recipes and a crafting emulator for Path of Exile 2." data-kr="패스 오브 엑자일 2 단계별 제작 레시피 · 제작 에뮬레이터">Step-by-step crafting recipes and a crafting emulator for Path of Exile 2.</p>
-  <hr>
-
-  <h2 data-en="Why you can trust the numbers" data-kr="확률을 믿을 수 있는 이유">Why you can trust the numbers</h2>
-  <div class="grid">
-    <div class="card"><h3 data-en="Calculated, not guessed" data-kr="추측이 아닌 계산">Calculated, not guessed</h3>
-      <p data-en="Every probability comes from the game's own modifier weights. No AI or human picks a number." data-kr="모든 확률은 게임 데이터의 옵션 가중치로 계산 · 사람이나 AI가 숫자를 정하지 않음">Every probability comes from the game's own modifier weights. No AI or human picks a number.</p></div>
-    <div class="card"><h3 data-en="Unknown stays unknown" data-kr="모르는 건 모른다고 표시">Unknown stays unknown</h3>
-      <p data-en="When a weight isn't public, the step says so (weight unknown or estimated) instead of showing a made-up chance." data-kr="가중치가 공개되지 않은 옵션은 '가중치 미확인'·'가중치 추정'으로 표시">When a weight isn't public, the step says so (weight unknown or estimated) instead of showing a made-up chance.</p></div>
-    <div class="card"><h3 data-en="Checked by simulation" data-kr="시뮬레이션으로 검산">Checked by simulation</h3>
-      <p data-en="Recipe flowcharts are rolled tens of thousands of times with the same weights, so averages and worst cases are real outcomes." data-kr="레시피 플로우차트는 같은 가중치로 수만 번 굴린 결과 · 평균과 운이 나쁜 경우 모두 실제 결과">Recipe flowcharts are rolled tens of thousands of times with the same weights, so averages and worst cases are real outcomes.</p></div>
-    <div class="card"><h3 data-en="Official wording" data-kr="공식 문구 그대로">Official wording</h3>
-      <p data-en="Item and modifier text is the game's own — English client text and Kakao Games' official Korean translation." data-kr="아이템·옵션 문구는 게임 원문 · 영문 클라이언트와 카카오게임즈 공식 한글 번역 그대로">Item and modifier text is the game's own — English client text and Kakao Games' official Korean translation.</p></div>
-    <div class="card"><h3 data-en="Recipes from real crafts" data-kr="실제 제작에서 온 레시피">Recipes from real crafts</h3>
-      <p data-en="Each recipe follows a crafter's actual video, step by step, then gets its odds and cost calculated." data-kr="실제 제작 영상을 단계별로 옮긴 뒤 확률과 비용 계산">Each recipe follows a crafter's actual video, step by step, then gets its odds and cost calculated.</p></div>
-    <div class="card"><h3 data-en="Cheap first" data-kr="비싼 커런시는 최소로">Cheap first</h3>
-      <p data-en="Recipes are ordered to spend as few expensive omens as possible, and say when to stop because a roll is already good enough." data-kr="비싼 징조를 덜 쓰는 순서 · 충분히 좋은 결과면 멈출 지점 표시">Recipes are ordered to spend as few expensive omens as possible, and say when to stop because a roll is already good enough.</p></div>
+  <h1 data-en="PoE 2 Craft" data-kr="PoE 2 Craft">PoE 2 Craft</h1>
+  <p class="sub" data-en="Path of Exile 2 crafting recipes, flowcharts and a crafting emulator" data-kr="패스 오브 엑자일 2 제작 레시피 · 플로우차트 · 제작 에뮬레이터">Path of Exile 2 crafting recipes, flowcharts and a crafting emulator</p>
+  <p class="sub2" data-en="A service that grows with Path of Exile 2 players. Every recipe, reverse craft and report sharpens the numbers." data-kr="POE2 유저와 함께 자라는 서비스 · 레시피·리버스 결과·제보가 쌓일수록 정교해지는 확률과 순서">A service that grows with Path of Exile 2 players. Every recipe, reverse craft and report sharpens the numbers.</p>
+  <div class="cta">
+    <button class="btn main" data-go="recipes" data-en="Browse crafting recipes" data-kr="크래프팅 레시피 보기">Browse crafting recipes</button>
+    <button class="btn" data-go="emulator" data-en="Open the emulator" data-kr="에뮬레이터 열기">Open the emulator</button>
   </div>
   <hr>
 
-  <h2 data-en="How to use this website" data-kr="사용 방법">How to use this website</h2>
-  <ol>
-    <li><strong><button class="go" data-go="recipes" data-en="Crafting" data-kr="크래프팅">Crafting</button></strong> — <span data-en="follow a proven craft step by step, with the chance and cost of every step." data-kr="검증된 제작 순서를 단계별 확률·비용과 함께">follow a proven craft step by step, with the chance and cost of every step.</span></li>
-    <li><strong><button class="go" data-go="discover" data-en="Reverse Crafting" data-kr="리버스 크래프팅">Reverse Crafting</button></strong> — <span data-en="paste an item&#39;s text (Ctrl+C in game) to get a draft recipe for it." data-kr="Ctrl+C로 복사한 아이템 텍스트 → 레시피 초안">paste an item&#39;s text (Ctrl+C in game) to get a draft recipe for it.</span></li>
-    <li><strong><button class="go" data-go="emulator" data-en="Emulator" data-kr="에뮬레이터">Emulator</button></strong> — <span data-en="pick a base and use currency on it exactly like in game. The odds of the next result are listed before you click." data-kr="베이스 선택 → 게임처럼 커런시 사용 · 다음 결과 확률 미리 표시">pick a base and use currency on it exactly like in game. The odds of the next result are listed before you click.</span></li>
-    <li><strong><button class="go" data-go="builder" data-en="Modifiers" data-kr="속성부여">Modifiers</button></strong> — <span data-en="pick the modifiers you want and see how rare each tier is." data-kr="원하는 옵션 선택 · 티어별 확률 확인">pick the modifiers you want and see how rare each tier is.</span></li>
-    <li><strong><button class="go" data-go="bases" data-en="Data" data-kr="데이터">Data</button></strong> — <span data-en="special bases and crafting data, and which recipes use them." data-kr="특수 베이스 등 제작 데이터와 관련 레시피">special bases and crafting data, and which recipes use them.</span></li>
-  </ol>
-  <p data-en="Tabs keep your work while you switch between them. Language can be switched at the top right at any time." data-kr="탭을 옮겨도 작업 내용 유지 · 언어는 오른쪽 위에서 변경">Tabs keep your work while you switch between them. Language can be switched at the top right at any time.</p>
+  <h2 data-en="What we're building" data-kr="poe2craft가 지향하는 것">What we're building</h2>
+  <div class="goals">
+    <div class="goal">
+      <div class="art" style="--glow:rgba(160,110,220,.30)"><img src="img/main/omen-of-light.webp" alt=""><img class="big" src="img/main/omen-of-sinistral-exaltation.webp" alt=""><img src="img/main/omen-of-whittling.webp" alt=""></div>
+      <div class="t"><h3 data-en="Built with players" data-kr="유저와 함께 만드는 서비스">Built with players</h3>
+        <p data-en="Reviews, requests and bug reports from players go straight into the next recipes and features." data-kr="유저의 사용기·요청·오류 제보가 다음 레시피와 기능에 바로 반영">Reviews, requests and bug reports from players go straight into the next recipes and features.</p></div>
+    </div>
+    <div class="goal">
+      <div class="art" style="--glow:rgba(90,170,200,.26)"><img src="img/main/essence-of-abrasion.webp" alt=""><img class="big" src="img/main/perfect-essence-of-haste.webp" alt=""><img src="img/main/essence-of-the-abyss.webp" alt=""></div>
+      <div class="t"><h3 data-en="Sharper as data grows" data-kr="쌓일수록 정교해지는 데이터">Sharper as data grows</h3>
+        <p data-en="Each new recipe, reverse craft and correction refines the odds, costs and step order for everyone." data-kr="새 레시피·리버스 결과·수정 하나하나가 모두의 확률·비용·순서를 다듬는 구조">Each new recipe, reverse craft and correction refines the odds, costs and step order for everyone.</p></div>
+    </div>
+    <div class="goal">
+      <div class="art" style="--glow:rgba(220,170,80,.30)"><img src="img/main/chaos-orb.webp" alt=""><img class="big" src="img/main/divine-orb.webp" alt=""><img src="img/main/exalted-orb.webp" alt=""></div>
+      <div class="t"><h3 data-en="Calculated, not guessed" data-kr="추측이 아닌 계산">Calculated, not guessed</h3>
+        <p data-en="Odds come from the game's modifier weights and tens of thousands of simulated runs. Unknown weights are marked as unknown." data-kr="게임 데이터의 옵션 가중치와 수만 번의 시뮬레이션으로 계산한 확률 · 모르는 가중치는 '미확인' 표시">Odds come from the game's modifier weights and tens of thousands of simulated runs. Unknown weights are marked as unknown.</p></div>
+    </div>
+    <div class="goal">
+      <div class="art" style="--glow:rgba(200,80,60,.28)"><img src="img/main/ancient-jawbone.webp" alt=""><img class="big" src="img/main/fracturing-orb.webp" alt=""><img src="img/main/preserved-rib.webp" alt=""></div>
+      <div class="t"><h3 data-en="Proven crafts for everyone" data-kr="검증된 제작 순서를 누구나">Proven crafts for everyone</h3>
+        <p data-en="Real crafts from videos and posts, split into high-end, balanced and essential grades so every budget has a path." data-kr="실제 제작 영상·글 기반 · 하이엔드·밸런스·에센셜 등급으로 예산에 맞는 길 제시">Real crafts from videos and posts, split into high-end, balanced and essential grades so every budget has a path.</p></div>
+    </div>
+  </div>
+  <hr>
 
-  <p class="foot" data-en="This website is in no way affiliated with Grinding Gear Games or Kakao Games. © 2026 poe2craft.xyz" data-kr="Grinding Gear Games·카카오게임즈와 무관 · © 2026 poe2craft.xyz">This website is in no way affiliated with Grinding Gear Games or Kakao Games. © 2026 poe2craft.xyz</p>
-  <p class="foot"><span data-kr="글꼴:" data-en="Font:">글꼴:</span> <a href="https://www.exljbris.com" target="_blank" rel="noopener" style="color:inherit">Fontin by exljbris Font Foundry</a> · <a href="https://sun.fo/suit" target="_blank" rel="noopener" style="color:inherit">SUIT by SUNN</a> (SIL OFL)</p>
+  <h2 data-en="Menus and how to use them" data-kr="메뉴 안내 · 사용 방법">Menus and how to use them</h2>
+  <div class="menus">
+    <div class="menu">
+      <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h12l-2 4H7z"/><path d="M15 9h3a3 3 0 0 1 3 3"/><path d="M9 13v4M7 21h6l-1-4H8z"/></svg><h3 data-en="Crafting" data-kr="크래프팅">Crafting</h3></div>
+      <p class="d" data-en="Proven crafting recipes with the chance and cost of every step." data-kr="검증된 제작 레시피 · 단계마다 확률과 비용">Proven crafting recipes with the chance and cost of every step.</p>
+      <ol>
+        <li data-en="Find an item with the filters or the modifier search." data-kr="필터·옵션 검색으로 아이템 찾기">Find an item with the filters or the modifier search.</li>
+        <li data-en="Pick a grade tab: high-end, balanced or essential." data-kr="등급 탭 선택: 하이엔드·밸런스·에센셜">Pick a grade tab: high-end, balanced or essential.</li>
+        <li data-en="Check branches and average cost in the flowchart." data-kr="플로우 차트로 갈림길·평균 비용 확인">Check branches and average cost in the flowchart.</li>
+        <li data-en="Buy the base with the trade-site link." data-kr="'베이스템 구입 ↗'으로 거래소에서 베이스 검색">Buy the base with the trade-site link.</li>
+      </ol>
+      <button class="go" data-go="recipes" data-en="Open Crafting →" data-kr="크래프팅 열기 →">Open Crafting →</button>
+    </div>
+    <div class="menu">
+      <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/><path d="M12 8v4l3 2"/></svg><h3 data-en="Reverse Crafting" data-kr="리버스 크래프팅">Reverse Crafting</h3></div>
+      <p class="d" data-en="Work backwards from a finished item to a crafting order." data-kr="완성 아이템에서 거꾸로 제작 순서 찾기">Work backwards from a finished item to a crafting order.</p>
+      <ol>
+        <li data-en="Copy an item in game with Ctrl+C and paste it." data-kr="게임에서 아이템 Ctrl+C → 붙여넣기">Copy an item in game with Ctrl+C and paste it.</li>
+        <li data-en="Mark the must-have modifiers and their tier range." data-kr="필수 옵션·티어 범위 선택">Mark the must-have modifiers and their tier range.</li>
+        <li data-en="Build the draft and check its flowchart." data-kr="레시피 초안 만들기 → 플로우차트 검사">Build the draft and check its flowchart.</li>
+        <li data-en="Happy with it? Add it to the Crafting list." data-kr="만족하면 크래프팅 목록에 올리기">Happy with it? Add it to the Crafting list.</li>
+      </ol>
+      <button class="go" data-go="discover" data-en="Open Reverse Crafting →" data-kr="리버스 크래프팅 열기 →">Open Reverse Crafting →</button>
+    </div>
+    <div class="menu">
+      <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/><circle cx="12" cy="12" r="2"/></svg><h3 data-en="Emulator" data-kr="에뮬레이터">Emulator</h3></div>
+      <p class="d" data-en="Use currency on an item exactly like in game, for free." data-kr="게임과 같은 규칙으로 커런시를 써 보는 시뮬레이터">Use currency on an item exactly like in game, for free.</p>
+      <ol>
+        <li data-en="Choose a base, item level and quality." data-kr="베이스·아이템 레벨·퀄리티 선택">Choose a base, item level and quality.</li>
+        <li data-en="Click currency and omens to use them." data-kr="커런시·징조를 눌러 사용">Click currency and omens to use them.</li>
+        <li data-en="See the odds of the next result before you click." data-kr="'다음 결과 확률'로 누르기 전에 결과 확인">See the odds of the next result before you click.</li>
+      </ol>
+      <button class="go" data-go="emulator" data-en="Open the Emulator →" data-kr="에뮬레이터 열기 →">Open the Emulator →</button>
+    </div>
+    <div class="menu">
+      <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><h3 data-en="Modifiers" data-kr="속성부여">Modifiers</h3></div>
+      <p class="d" data-en="Plan the modifiers you want and see how rare each tier is." data-kr="원하는 옵션 조합 설계 · 티어별 확률 확인">Plan the modifiers you want and see how rare each tier is.</p>
+      <ol>
+        <li data-en="Choose a base." data-kr="베이스 선택">Choose a base.</li>
+        <li data-en="Select prefixes and suffixes and their minimum tier." data-kr="접두·접미 옵션과 최소 티어 선택">Select prefixes and suffixes and their minimum tier.</li>
+        <li data-en="Send it to Reverse Crafting to find a crafting order." data-kr="리버스 크래프팅으로 보내 제작 순서 찾기">Send it to Reverse Crafting to find a crafting order.</li>
+      </ol>
+      <button class="go" data-go="builder" data-en="Open Modifiers →" data-kr="속성부여 열기 →">Open Modifiers →</button>
+    </div>
+    <div class="menu">
+      <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg><h3 data-en="Data" data-kr="데이터">Data</h3></div>
+      <p class="d" data-en="Special bases and crafting data, with the recipes that use them." data-kr="특수 베이스 등 제작 데이터와 관련 레시피">Special bases and crafting data, with the recipes that use them.</p>
+      <ol>
+        <li data-en="Search a base or a granted skill." data-kr="베이스·부여 스킬 검색">Search a base or a granted skill.</li>
+        <li data-en="Check implicits and prefix/suffix limits." data-kr="고정 옵션·접두·접미 개수 확인">Check implicits and prefix/suffix limits.</li>
+        <li data-en="Jump to a recipe that uses the base." data-kr="그 베이스를 쓰는 레시피로 이동">Jump to a recipe that uses the base.</li>
+      </ol>
+      <button class="go" data-go="bases" data-en="Open Data →" data-kr="데이터 열기 →">Open Data →</button>
+    </div>
+  </div>
+  <hr>
+
+  <h2 id="feedback" data-en="Reviews, requests & bug reports" data-kr="사용기 · 요청사항 · 오류 제보">Reviews, requests &amp; bug reports</h2>
+  <div class="fb">
+    <div class="fbinfo">
+      <p data-en="Every message is read and fed into the next update." data-kr="보낸 내용은 모두 읽고 다음 업데이트에 반영">Every message is read and fed into the next update.</p>
+      <ul>
+        <li data-en="Review: what helped, what felt awkward." data-kr="사용기: 도움이 된 점·불편한 점">Review: what helped, what felt awkward.</li>
+        <li data-en="Request: an item, video or feature you want." data-kr="요청사항: 원하는 아이템·영상·기능">Request: an item, video or feature you want.</li>
+        <li data-en="Bug: the menu, the recipe or item, and what happened. Paste the item text (Ctrl+C in game) if it's about an item." data-kr="오류: 메뉴·레시피(아이템)·증상 · 아이템 관련이면 게임에서 Ctrl+C 한 아이템 텍스트 첨부">Bug: the menu, the recipe or item, and what happened. Paste the item text (Ctrl+C in game) if it's about an item.</li>
+        <li data-en="Messages are visible to the operator only." data-kr="보낸 내용은 운영자만 확인">Messages are visible to the operator only.</li>
+      </ul>
+    </div>
+    <form class="fbf" id="fbf" autocomplete="off">
+      <div class="seg" role="group" aria-label="type">
+        <button type="button" data-t="review" aria-pressed="true" data-en="Review" data-kr="사용기">Review</button>
+        <button type="button" data-t="request" aria-pressed="false" data-en="Request" data-kr="요청사항">Request</button>
+        <button type="button" data-t="bug" aria-pressed="false" data-en="Bug" data-kr="오류">Bug</button>
+      </div>
+      <label><span data-en="Message" data-kr="내용">Message</span><textarea id="fbtxt" maxlength="3000" data-ph-en="At least 5 characters" data-ph-kr="5자 이상"></textarea></label>
+      <label><span data-en="Name or contact (optional)" data-kr="닉네임·연락처 (선택)">Name or contact (optional)</span><input id="fbname" maxlength="80" data-ph-en="Only if you'd like a reply" data-ph-kr="답장이 필요할 때만"></label>
+      <div class="fbrow"><button type="submit" class="btn main" id="fbgo" data-en="Send" data-kr="보내기">Send</button><span class="fbmsg" id="fbmsg" role="status"></span></div>
+    </form>
+  </div>
 </div>
+
+<footer>
+  <div class="fin">
+    <div>
+      <div class="brand">PoE 2 Craft</div>
+      <p data-en="This website is in no way affiliated with Grinding Gear Games or Kakao Games." data-kr="Grinding Gear Games·카카오게임즈와 무관">This website is in no way affiliated with Grinding Gear Games or Kakao Games.</p>
+      <p>© 2026 poe2craft.xyz</p>
+    </div>
+    <div>
+      <nav>
+        <button data-go="recipes" data-en="Crafting" data-kr="크래프팅">Crafting</button>
+        <button data-go="discover" data-en="Reverse Crafting" data-kr="리버스 크래프팅">Reverse Crafting</button>
+        <button data-go="emulator" data-en="Emulator" data-kr="에뮬레이터">Emulator</button>
+        <button data-go="builder" data-en="Modifiers" data-kr="속성부여">Modifiers</button>
+        <button data-go="bases" data-en="Data" data-kr="데이터">Data</button>
+        <button data-fb data-en="Feedback" data-kr="사용기·제보">Feedback</button>
+      </nav>
+      <p style="margin-top:8px"><span data-kr="글꼴:" data-en="Font:">Font:</span> <a href="https://www.exljbris.com" target="_blank" rel="noopener">Fontin by exljbris Font Foundry</a> · <a href="https://sun.fo/suit" target="_blank" rel="noopener">SUIT by SUNN</a> (SIL OFL)</p>
+    </div>
+  </div>
+</footer>
+
 <script>
 (() => {
   let lang = 'en';
   try{ lang = new URLSearchParams(location.search).get('lang') || localStorage.getItem('poe2lang') || 'en'; }catch(e){}
-  function setLang(l){ lang=l; document.documentElement.lang = l==='en'?'en':'ko'; document.querySelectorAll('[data-kr]').forEach(el=>el.textContent = el.dataset[l]); }
+  const KR = () => lang==='kr', L = (kr,en) => KR()?kr:en;
+  function setLang(l){
+    lang=l; document.documentElement.lang = l==='en'?'en':'ko';
+    document.querySelectorAll('[data-kr]').forEach(el=>el.textContent = el.dataset[l]);
+    document.querySelectorAll('[data-ph-kr]').forEach(el=>el.placeholder = l==='kr'?el.dataset.phKr:el.dataset.phEn);
+    if(msg.dataset.k) say(msg.dataset.k, msg.className.includes('err'));
+  }
   window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr')) setLang(d.lang); });
   document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click', ()=>{ try{ parent.postMessage({type:'poe2-goto', id:b.dataset.go}, '*'); }catch(e){} }));
+  document.querySelectorAll('[data-fb]').forEach(b=>b.addEventListener('click', ()=>document.getElementById('feedback').scrollIntoView({behavior:'smooth'})));
+
+  /* 사용기·요청·오류 → worker /api/feedback */
+  const form=document.getElementById('fbf'), txt=document.getElementById('fbtxt'), nm=document.getElementById('fbname'), go=document.getElementById('fbgo'), msg=document.getElementById('fbmsg');
+  let type='review', busy=false;
+  const M = {short:['5자 이상 입력','At least 5 characters'], sending:['보내는 중','Sending'], ok:['보냄 · 고맙습니다','Sent · thank you'], limit:['오늘 보낼 수 있는 횟수 초과','Daily limit reached'], unavailable:['서버 연결 불가 · poe2craft.xyz에서 사용','Server unavailable · use poe2craft.xyz'], fail:['보내기 실패','Could not send']};
+  function say(k, err){ msg.dataset.k=k; msg.textContent = (M[k]||M.fail)[KR()?0:1]; msg.className='fbmsg'+(err?' err':k==='ok'?' ok':''); }
+  form.querySelectorAll('[data-t]').forEach(b=>b.addEventListener('click', ()=>{ type=b.dataset.t; form.querySelectorAll('[data-t]').forEach(x=>x.setAttribute('aria-pressed', x===b)); }));
+  form.addEventListener('submit', async e=>{
+    e.preventDefault(); if(busy) return;
+    const text=txt.value.trim(); if(text.length<5){ say('short', true); return; }
+    busy=true; go.disabled=true; say('sending');
+    try{
+      const r=await fetch('/api/feedback', {method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({type, text, name:nm.value.trim(), lang, ua:navigator.userAgent.slice(0,160)})});
+      let d={}; try{ d=await r.json(); }catch(_){ d={error:'unavailable'}; }
+      if(r.ok && d.ok){ say('ok'); txt.value=''; }
+      else say(d.error==='limit'?'limit':d.error==='unavailable'||r.status===404?'unavailable':'fail', true);
+    }catch(_){ say('unavailable', true); }
+    busy=false; go.disabled=false;
+  });
   setLang(lang);
 })();
 </script>

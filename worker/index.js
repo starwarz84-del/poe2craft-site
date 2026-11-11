@@ -121,6 +121,39 @@ async function queue(req, env) {
   return json({ queue: all });
 }
 
+// 사용기·요청·오류 (메인 화면). 저장 = KV fb:<id>, 운영자만 읽음(접근 코드).
+async function feedback(req, env) {
+  let b;
+  try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
+  const type = ['review', 'request', 'bug'].includes(b.type) ? b.type : 'review';
+  const text = String(b.text || '').trim().slice(0, 3000);
+  if (text.length < 5) return json({ error: 'short' }, 400);
+  const ip = req.headers.get('cf-connecting-ip') || 'x';
+  const day = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+  const rk = `fbrate:${(await sha256(ip)).slice(0, 12)}:${day}`;
+  const used = +(await env.REQ.get(rk) || 0);
+  if (used >= 10) return json({ error: 'limit' }, 429);
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const it = { id, type, text, name: String(b.name || '').trim().slice(0, 80), lang: b.lang === 'kr' ? 'kr' : 'en', ua: String(b.ua || '').slice(0, 160), at: new Date().toISOString() };
+  await env.REQ.put('fb:' + id, JSON.stringify(it));
+  await env.REQ.put(rk, String(used + 1), { expirationTtl: 3 * 86400 });
+  return json({ ok: true, id });
+}
+
+async function feedbackList(req, env) {
+  const code = new URL(req.url).searchParams.get('code') || '';
+  if (!CODE_HASHES[await sha256(code)]) return json({ error: 'bad_code' }, 403);
+  const out = [];
+  let cursor;
+  do {
+    const r = await env.REQ.list({ prefix: 'fb:', cursor });
+    for (const k of r.keys) { const it = await env.REQ.get(k.name, 'json'); if (it) out.push(it); }
+    cursor = r.list_complete ? null : r.cursor;
+  } while (cursor);
+  out.sort((a, b) => a.at < b.at ? 1 : -1);
+  return json({ feedback: out });
+}
+
 export default {
   async fetch(req, env) {
     const u = new URL(req.url);
@@ -129,6 +162,8 @@ export default {
       if (u.pathname === '/api/req' && req.method === 'POST') return create(req, env);
       if (u.pathname === '/api/req' && req.method === 'GET') return status(req, env);
       if (u.pathname === '/api/queue' && req.method === 'GET') return queue(req, env);
+      if (u.pathname === '/api/feedback' && req.method === 'POST') return feedback(req, env);
+      if (u.pathname === '/api/feedback' && req.method === 'GET') return feedbackList(req, env);
       return json({ error: 'not_found' }, 404);
     }
     return env.ASSETS.fetch(req);
