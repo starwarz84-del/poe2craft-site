@@ -613,5 +613,8 @@ for _r in R:
                 try: _rd=_g2r.read_recipe(_r, _sd, json.load(open(f"/home/claude/poe2data/scripts/graphs/{_sid}.json")), _tiers)
                 except Exception as _e: print('flowchart read failed', _r['id'], _e); _rd=None
                 if _rd: _r['nodes']=_rd['nodes']; _r['phases']=_rd['phases']; _r['start']=_rd['start']; _r['fcRead']=_rd['fcRead']
+# 사용자 요청으로 내린 레시피(2026-11-11 22:21: 금 목걸이 6옵션 — 플로우차트 옵션이 영상이 만든 목걸이와 다름. 영상 전체 기준으로 다시 만들 때까지 등록하지 않음)
+REMOVED={'gold-amulet-6line'}
+R[:]=[x for x in R if _re.sub(r'-(bal|ess)$','',_re.sub(r'-v2(?=$|-)','',x['id'])) not in REMOVED and _re.sub(r'-v2$','',x.get('simId') or x.get('tierGroup') or '') not in REMOVED]
 json.dump({'v':2,'recipes':R},open(D+'recipes.json','w'),ensure_ascii=False)
 print(len(R),'recipes')

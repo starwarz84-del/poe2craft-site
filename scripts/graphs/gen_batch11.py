@@ -5,6 +5,7 @@ import os, json
 H=os.path.dirname(os.path.abspath(__file__))
 _src=open(f'{H}/gen_batch10.py').read(); exec(_src[:_src.index('# ---------- 1. SL')])
 def graph11(*a, xroll=False, **k):
+    if a[0] in ('gold-amulet-6line-v2',): return   # 내린 플로우차트(2026-11-11, build_recipes.py REMOVED)
     graph10(*a, **k)
     if xroll:
         g=json.load(open(f'{H}/{a[0]}.json')); g['xroll']=True; json.dump(g,open(f'{H}/{a[0]}.json','w'),ensure_ascii=False,indent=1)

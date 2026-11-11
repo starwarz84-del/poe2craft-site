@@ -435,5 +435,6 @@ T+=[
   'body':K('분열이 접두에 있으면 접두를 먼저, 접미에 있으면 우측 찬미 + 상위 찬미 + 엑잘로 저항부터 채움. 옵션이 하나만 모자랄 때까지는 소멸의 오브·카오스 오브처럼 싼 것만 쓰고, 절사의 징조나 말소의 징조 + 완벽한 카오스 오브(한 번에 약 25~30 div)는 마지막 옵션에만 씀. 덜 끝난 아이템에 절사를 쓰면 엉뚱한 옵션이 지워지거나 접미 자리가 접두로 넘어감.','With the fracture on a prefix, finish the prefixes first; with it on a suffix, fill the resistances first with Dextral + Greater Exaltation and an Exalt. Until a single line is missing, use only cheap Annulment and Chaos Orbs; keep Whittling or Erasure with a Perfect Chaos Orb, about 25–30 div a click, for the last line. Whittling an unfinished item removes the wrong line or moves a suffix slot to the prefixes.'),
   'source':{'url':'https://www.youtube.com/watch?v=swF5mwXmZ0k','title':'How to Craft the Best Body Armours and Sell Them for Big Profit in Path of Exile 2','channel':'Unstoppable BTW'},'recipes':['unstoppable-vile-robe','unstoppable-slipstrike-vest']},
 ]
+for t in T: t['recipes']=[r for r in t.get('recipes',[]) if r not in ('gold-amulet-6line',)]   # 내린 레시피(build_recipes.py REMOVED)
 json.dump({'v':1,'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
 print(len(T),'tips')

@@ -42,7 +42,7 @@
 | noble-timelost-sapphire-v2 | zEV8kWwveYQ | high 468, bal 418 | 3 | 대기 |  |  |
 | tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 대기 |  |  |
 | absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 대기 |  |  |
-| gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 다시 해야 함 | B(Fable) | 사용자 지적 11-11 22:13: 영상이 만든 목걸이(정신력 +50 분열 · 에너지 보호막 · 강화의 에센스 / 모든 소환수 스킬 레벨 · 번개 저항 · 재사용 대기시간 회복 속도 훼손)와 플로우차트 옵션(주문 +3 · 주문 피해 · 마나 · 희귀도 · 시전 속도)이 다름. 분열 옵션 표기(+50), 1.A 위치·들어오는 선도 틀림. 앞의 "완료"는 제작 방법 설명 구간만 보고 적은 것이라 취소 |
+| gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 삭제 11-11 | B(Fable) | 사용자 요청으로 내림(22:21). 플로우차트 옵션이 영상이 만든 목걸이와 달랐음. 다시 올리려면 영상 전체 기준으로 새로 만들고 build_recipes.py REMOVED·build_tips.py·gen_batch11.py의 막아 둔 줄을 지움 |
 | saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 대기 |  |  |
 | mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 대기 |  |  |
 | diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 대기 |  |  |
