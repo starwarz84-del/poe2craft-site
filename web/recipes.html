@@ -322,6 +322,7 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .tt-mod.removed::before{content:"−";position:absolute;right:8px;top:1px;color:var(--warn);font-weight:700}
 .tt-mod.junk{color:#8d877b;font-style:italic}
 .tt-mod.des-u{color:#9be86a;font-style:italic}
+.tt-mod.junk.desm{color:#9be86a}
 .tt-mod.markm{color:#c58bff}
 .tt-mod.rune{color:#9fb4ff;padding-left:8px}
 @media (max-width:1180px){ .dgrid{grid-template-columns:minmax(0,1fr) 300px} .dnav{display:none} }
@@ -1392,7 +1393,7 @@ function itemTipHTML(r, o, opt={}){
   const line = (m, cls='') => {
     const sl=`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>`;
     if(m.unrev) return `<div class="tt-mod des-u ${cls}">${sl}${L('훼손 옵션 (미공개)','Desecrated (unrevealed)')}</div>`;
-    if(m.gi==null) return `<div class="tt-mod junk ${cls}">${sl}${m.label?esc(tx(m.label)):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
+    if(m.gi==null) return `<div class="tt-mod junk ${m.des?'desm':''} ${cls}">${sl}${m.label?esc(tx(m.label)):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
     if(m.mark) return `<div class="tt-mod markm ${cls}"><span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>${esc(KR()?grp(r,m.gi).t[0][4]:grp(r,m.gi).t[0][5])}</div>`;
     const l=modLine(r,m.gi,m.tmax,m.max,m.tmin), qv=o.qual?.v, qt=o.qual?.type, shown=(o.vals||{})[m.gi];
     let txt=l.txt, sub='';
@@ -1656,9 +1657,15 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
   const leaves=(t,seen=[])=>{ const T=g.tags?.[t]; if(!T?.anyOf) return [t]; return [t, ...T.anyOf.filter(x=>typeof x==='string' && !seen.includes(x)).flatMap(x=>leaves(x,[...seen,t]))]; };
   const revT=new Set(), othT=new Set(); (g.nodes||[]).forEach(n=>{ const sh=[...(n.show||[]), ...(n.want?[n.want]:[])].filter(x=>typeof x==='string').flatMap(x=>leaves(x)); sh.forEach(t=>(n.act==='reveal'?revT:othT).add(t)); });
   const revOnly=t=>revT.has(t) && !othT.has(t);
-  const cards=g.finals.map(F=>{ const state=F.lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side, label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
-      return {gi:T.gi, side:T.s, tmax:l.tmax||null, tmin:l.tmin||null, fr:!!l.fr, des:!!l.des || T.sec==='d' || revOnly(l.tag), ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);   // 훼손 전용 그룹은 훼손 옵션 색으로 (사용자 지적 2026-11-11)
+  const cards=g.finals.map(F=>{
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
+    // 훼손 여부 = 제작 과정에서 훼손으로 얻었는지(사용자 확정 2026-11-11): 시뮬 완성품 통계 desStat — 태그별 훼손 비율, 면별 훼손 옵션 수(잡옵도 훼손일 수 있음). 통계가 없을 때만 옵션 종류로 추정
+    const ds=S2?.res?.desStat;
+    const state=F.lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side, label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}, des:!!l.des, rnd:!!l.random}; const T=g.tags?.[l.tag]; if(!T || T.gi==null) return null;
+      return {gi:T.gi, side:T.s, tmax:l.tmax||null, tmin:l.tmin||null, fr:!!l.fr, des:!!l.des || (ds ? false : (T.sec==='d' || revOnly(l.tag))), dsf:ds ? (ds.tag?.[l.tag]||0) : 0, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
+    if(ds) for(const sd of ['p','s']){ let need=Math.round(ds.side?.[sd]||0)-state.filter(m=>m.side===sd && m.des).length;
+      for(const m of state.filter(m=>m.side===sd && m.gi!=null && !m.des && m.dsf>=0.5).sort((a,b)=>b.dsf-a.dsf)){ if(need<=0) break; m.des=true; need--; }
+      for(const m of [...state.filter(m=>m.side===sd && m.gi==null && !m.rnd && !m.des), ...state.filter(m=>m.side===sd && m.gi==null && m.rnd && !m.des)]){ if(need<=0) break; m.des=true; need--; } }
     const go=r.tierGroup && tierSibs(r).find(x=>x.tier===(F.tier||F.id));   // 완성품 카드 → 그 등급 레시피 탭 (사용자 확정 2026-11-11)
     return `<div class="fcfin ${on?'on':''} ${go?'go':''}" ${go?`data-rtab="${esc(go.id)}" role="button" tabindex="0" title="${esc(L('이 완성품의 제작 과정 보기','Open the crafting steps for this item'))}"`:''}><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]})}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }

@@ -180,11 +180,16 @@ function simulate(graph, D, craft, prices, params, N=20000, seed=1){
   const div = use => { let v=0; for(const k in use){ const e=ex(k); if(e==null) missing.add(k); else v+=use[k]*e; } return v/prices.divine; };
   const baseDiv = div(graph.basePrice||{});
   const tot={}, nodeUse={}, visits={}, skips={}, byCur={}, reach={}, edges={}, costs=[]; let bases=0, ok=0, okReq=0;
+  // 완성품의 어느 옵션이 훼손으로 얻은 것인지(사용자 확정 2026-11-11: 옵션 종류가 아니라 제작 과정으로 판단) — 태그별 훼손 비율, 면별 훼손 옵션 평균 개수
+  const leafT=Object.entries(graph.tags||{}).filter(([k,t])=>t && t.gi!=null).map(([k,t])=>[k,t.gi]);
+  const dsT={}, dsSide={p:0,s:0};
   for(let r=0;r<N;r++){ const seen=new Set(), runUse={}; let runBases=0;
     const tally={ visit:id=>{ visits[id]=(visits[id]||0)+1; seen.add(id); },
       use:(id,u)=>{ const x=nodeUse[id]=nodeUse[id]||{}; for(const k in u){ x[k]=(x[k]||0)+u[k]; runUse[k]=(runUse[k]||0)+u[k]; } },
       base:()=>{ runBases++; }, skip:id=>{ skips[id]=(skips[id]||0)+1; }, byCur:(id,k,ok)=>{ const b=(byCur[id]=byCur[id]||{})[k]=byCur[id]?.[k]||{t:0,ok:0}; b.t++; if(ok) b.ok++; }, edge:(a,b)=>{ const k=a+'>'+b; edges[k]=(edges[k]||0)+1; },
-      done:(it, cond)=>{ ok++; if(!graph.require || cond(graph.require)) okReq++; } };
+      done:(it, cond)=>{ ok++; if(!graph.require || cond(graph.require)) okReq++;
+        for(const m of it.mods){ if(m.unrev || m.fr) continue; if(m.des) dsSide[m.side]=(dsSide[m.side]||0)+1;
+          for(const [k,gi] of leafT) if(gi===m.gi){ const x=dsT[k]=dsT[k]||{n:0,d:0}; x.n++; if(m.des) x.d++; } } } };
     run(rnd, {tally});
     seen.forEach(id=>reach[id]=(reach[id]||0)+1);
     for(const k in runUse) tot[k]=(tot[k]||0)+runUse[k]; bases+=runBases;
@@ -194,7 +199,7 @@ function simulate(graph, D, craft, prices, params, N=20000, seed=1){
   const avg = o => { const x={}; for(const k in o) x[k]=o[k]/N; return x; };
   const nodes={}; for(const id in visits){ const u=avg(nodeUse[id]||{}); nodes[id]={reach:reach[id]/N, visits:visits[id]/N, use:u, skips:(skips[id]||0)/N, byCur:byCur[id], div:div(u) + (graph.nodes.find(n=>n.id===id)?.kind==='base' ? visits[id]/N*baseDiv : 0)}; }
   const e2={}; for(const k in edges) e2[k]=edges[k]/N;
-  return {N, seed, mean:costs.reduce((s,x)=>s+x,0)/N, median:q(0.5), p90:q(0.9), p10:q(0.1), bases:bases/N, baseDiv, use:avg(tot), useDiv:div(avg(tot)), nodes, edges:e2, reqOk:okReq/Math.max(1,ok), missing:[...missing]};
+  return {N, seed, mean:costs.reduce((s,x)=>s+x,0)/N, median:q(0.5), p90:q(0.9), p10:q(0.1), bases:bases/N, baseDiv, use:avg(tot), useDiv:div(avg(tot)), nodes, edges:e2, reqOk:okReq/Math.max(1,ok), missing:[...missing], desStat:{tag:Object.fromEntries(Object.entries(dsT).map(([k,x])=>[k,x.d/x.n])), side:{p:dsSide.p/Math.max(1,ok), s:dsSide.s/Math.max(1,ok)}}};
 }
 const api={rng, make, simulate};
 if(typeof module!=='undefined' && module.exports) module.exports=api; else root.POE2SIM=api;
