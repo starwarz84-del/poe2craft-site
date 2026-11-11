@@ -1563,10 +1563,10 @@ function fcModel(g, params={}){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   return {byId, E, dec, multi, loopOf, loopHead}; }
 // what a step is after: tag → "side : text - Tn" (tiers merged into one range when the step accepts several)
 function fcTagText(g, tag, params){ if(typeof tag==='string' && tag[0]==='$') return fcTagText(g, params[tag.slice(1)], params); const T=g.tags?.[tag]; if(T && T.label) return {s:T.s, txt:tx(T.label), tier:''}; if(T && T.anyOf && !T.tiers){ const v=T.anyOf.map(x=>typeof x==='string'?fcTagText(g,x,params):null).filter(Boolean); return v.length ? {s:v[0].s, txt:v.map(x=>x.txt+(x.tier?' - '+x.tier:'')).join(L(' 또는 ',' or ')), tier:''} : null; } if(!T || !T.tiers) return null; let tm=T.tmax; if(typeof tm==='string' && tm[0]==='$') tm=+params[tm.slice(1)]||1;
-  const t1=tx({kr:T.tiers[0][0], en:T.tiers[0][1]}); let txt=t1;
-  if(tm>1 && T.tiers[tm-1]){ const lo=[...tx({kr:T.tiers[tm-1][0], en:T.tiers[tm-1][1]}).matchAll(/\((\d+)—(\d+)\)/g)]; let i=0;
-    const merged=t1.replace(/\((\d+)—(\d+)\)/g, (m,a,b)=>{ const q=lo[i++]; return q?`(${q[1]}—${b})`:m; }); if(i===lo.length) txt=merged; }
-  return {s:T.s, txt:txt.replace(/\n/g,' · '), tier: tm ? (tm>1?`T1~T${tm}`:'T1') : '', sec:T.sec}; }
+  const lo=T.lo||1, t1=tx({kr:T.tiers[lo-1][0], en:T.tiers[lo-1][1]}); let txt=t1;   /* lo = 아이템 레벨로 붙을 수 있는 가장 좋은 티어 */
+  if(tm>lo && T.tiers[tm-1]){ const lq=[...tx({kr:T.tiers[tm-1][0], en:T.tiers[tm-1][1]}).matchAll(/\((\d+)—(\d+)\)/g)]; let i=0;
+    const merged=t1.replace(/\((\d+)—(\d+)\)/g, (m,a,b)=>{ const q=lq[i++]; return q?`(${q[1]}—${b})`:m; }); if(i===lq.length) txt=merged; }
+  return {s:T.s, txt:txt.replace(/\n/g,' · '), tier: tm ? (tm>lo?`T${lo}~T${tm}`:`T${lo}`) : '', sec:T.sec}; }
 function fcWant(g, n, params){ const out=[]; const ov=(n.showIf||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); if(ov) n={...n, show:ov.show, showText:ov.showText};   // per-version wording
   if(n.show){ const flat=n.show.map(t=>typeof t==='string'&&t[0]==='$'?params[t.slice(1)]:t).flatMap(t=>g.tags?.[t]?.anyOf || [t]), bySide={};
     flat.forEach(t=>{ const v=fcTagText(g,t,params); if(!v) return; (bySide[v.s]=bySide[v.s]||[]).push(v); });

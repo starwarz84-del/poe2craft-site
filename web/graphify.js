@@ -200,7 +200,7 @@ function fromDraft(d, D, opt={}){
   // the start lines' tiers are fixed (cheap: bought or fractured)
   // ---------- versions, strategies, finals, require
   const params={}; for(const gi of loopGi) params['t'+gi]={kr:'티어', en:'Tier', values:{}};
-  grades.forEach(v=>{ for(const gi of loopGi){ const x=P[v]['t'+gi]; params['t'+gi].values[x]=K(x==='1'?'1티어':`1~${x}티어`, x==='1'?'T1':`T1–${x}`); } });
+  grades.forEach(v=>{ for(const gi of loopGi){ const x=P[v]['t'+gi]; const lo=Math.max(1, G[gi].t.findIndex(t=>t[0]<=d.ilvl)+1), n=+x; params['t'+gi].values[x]=K(n<=lo?`${lo}티어`:`${lo}~${n}티어`, n<=lo?`T${lo}`:`T${lo}–${n}`); } });
   if(hasCmp){ params.cmp={kr:'빗나가면', en:'On a miss', values:{retry:K('다시 작업','Rework'), settle:K('타협 (그대로)','Settle (keep it)')}};
     grades.forEach((v,i)=>{ P[v].cmp = i===grades.length-1 && grades.length>1 ? 'settle' : 'retry'; }); if(grades.length===1) P[grades[0]].cmp='retry'; }
   const cmpTags = new Set(mainOut.filter(o=>o.edges.some(e=>e.if?.param?.cmp)).flatMap(o=>[...(o.show||[]), targetTag(byId[o.id]?.target)].filter(Boolean)));
@@ -228,7 +228,7 @@ function fromDraft(d, D, opt={}){
   return g; }
 
 // the drawing data the flowchart view reads (same fields as tools/sim/run.js writes)
-function view(graph, D){ const tv={}; for(const [k,t] of Object.entries(graph.tags||{})){ if(t.anyOf){ tv[k]={anyOf:t.anyOf}; continue; } const g=D.groups[t.gi]; if(!g) continue; tv[k]={s:g.g, sec:g.s, tmax:t.tmax, gi:t.gi, tiers:g.t.slice(0,5).map(x=>[x[4],x[5]])}; }
+function view(graph, D){ const tv={}; for(const [k,t] of Object.entries(graph.tags||{})){ if(t.anyOf){ tv[k]={anyOf:t.anyOf}; continue; } const g=D.groups[t.gi]; if(!g) continue; const lo = graph.ilvl ? Math.max(1, g.t.findIndex(x=>x[0]<=graph.ilvl)+1) : 1; tv[k]={s:g.g, sec:g.s, tmax:t.tmax, gi:t.gi, tiers:g.t.slice(0,Math.max(5,lo+4)).map(x=>[x[4],x[5]]), ...(lo>1?{lo}:{})}; }   /* lo: 아이템 레벨로 붙을 수 있는 가장 좋은 티어(레벨 81 저항 = 2티어, 사용자 2026-11-12) */
   const pOnly=c=>{ if(!c) return; if(c.param) return c.param; if(c.all){ const o={}; c.all.forEach(x=>x.param&&Object.assign(o,x.param)); return Object.keys(o).length?o:undefined; } };
   return {tags:tv, finals:graph.finals, finalItem:graph.finalItem, basePrice:graph.basePrice, params:graph.params, groups:graph.groups, start:graph.start, loops:graph.loops, versions:graph.versions,
     nodes:graph.nodes.map(n=>({id:n.id, kind:n.kind, act:n.act, cur:n.cur, omens:n.omens, group:n.group, pos:n.pos, label:n.label, item:n.item, goal:n.goal, show:n.show, rune:n.rune, next:n.next, start:n.start,
