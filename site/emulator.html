@@ -311,6 +311,12 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .panes{display:flex;border-bottom:1px solid var(--line);padding:0 14px}
 .pane-t{background:none;border:0;border-bottom:2px solid transparent;padding:9px 12px 8px;cursor:pointer;color:var(--muted);font-weight:600;font-size:13.5px}
 .pane-t[aria-pressed="true"]{color:var(--fg);border-bottom-color:var(--rare)}
+/* result panes start folded (사용자 확정 2026-11-11): clicking a tab or the toggle opens them */
+.pane-fold{margin-left:auto;background:none;border:0;padding:9px 6px 8px;cursor:pointer;color:var(--muted);font-size:12.5px;white-space:nowrap}
+.pane-fold:hover{color:var(--fg)}
+.info.closed .pane{display:none}
+.info.closed .panes{border-bottom:0}
+.info.closed .pane-t[aria-pressed="true"]{border-bottom-color:transparent}
 .pane{padding:10px 14px 14px;max-height:520px;overflow:auto}
 .hist{display:flex;flex-direction:column;gap:6px}
 .hrow{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:start;font-size:12.5px;padding:6px 0;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent)}
@@ -402,11 +408,12 @@ footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
         <div class="imp-res" id="imp-res" aria-live="polite"></div>
       </div>
       <div class="startnote" id="startnote"></div>
-    <section class="info" aria-label="정보">
+    <section class="info closed" aria-label="정보">
       <div class="panes" role="group" aria-label="정보">
         <button type="button" class="pane-t" data-pane="odds" aria-pressed="true">다음 결과 확률</button>
         <button type="button" class="pane-t" data-pane="hist" aria-pressed="false">기록</button>
         <button type="button" class="pane-t" data-pane="spend" aria-pressed="false">사용량</button>
+        <button type="button" class="pane-fold" id="pane-fold" aria-expanded="false">펼치기 ▾</button>
       </div>
       <div class="pane" id="pane"></div>
     </section>
@@ -1534,7 +1541,12 @@ $('#reveal').addEventListener('click', e=>{
   const p = e.target.closest('[data-pick]'); if(p){ S.reveal.sel=+p.dataset.pick; renderReveal(); return; }
   if(e.target.id==='well-ok' && S.reveal && S.reveal.sel!=null) chooseReveal(S.reveal.sel);
 });
-document.querySelector('.panes').addEventListener('click', e=>{ const b=e.target.closest('[data-pane]'); if(b){ S.pane=b.dataset.pane; renderPane(); } });
+function setFold(open){ const i=document.querySelector('.info'); i.classList.toggle('closed', !open); const f=$('#pane-fold'); f.setAttribute('aria-expanded', open); f.textContent = open ? L('접기 ▴','Fold ▴') : L('펼치기 ▾','Unfold ▾'); fitCol(); }
+document.querySelector('.panes').addEventListener('click', e=>{
+  if(e.target.closest('#pane-fold')){ setFold(document.querySelector('.info').classList.contains('closed')); return; }
+  const b=e.target.closest('[data-pane]'); if(b){ const closed=document.querySelector('.info').classList.contains('closed');
+    if(!closed && S.pane===b.dataset.pane){ setFold(false); return; }   // clicking the open tab again folds it
+    S.pane=b.dataset.pane; renderPane(); if(closed) setFold(true); } });
 $('#pane').addEventListener('change', e=>{ if(e.target.id==='odds-min'){ S.oddsMin=+e.target.value; renderPane(); } if(e.target.dataset.otier){ S.oddsTier[e.target.dataset.otier]=+e.target.value; renderPane(); } });
 // odds list → put the chosen tier on the item (same as "옵션 직접 붙이기")
 $('#pane').addEventListener('click', e=>{ const b=e.target.closest('[data-oadd]'); if(!b) return; const gi=+b.dataset.oadd, ti=+b.dataset.ot-1, it=S.item, g=S.data.groups[gi];
