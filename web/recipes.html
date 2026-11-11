@@ -1421,7 +1421,7 @@ function detailHTML(r){
   return `<div class="dhead" data-dhead><div class="dtop">
       <button type="button" class="btn back" data-act="back" aria-label="${esc(L('목록으로','Back to list'))}" title="${esc(L('목록으로','Back to list'))}"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="dtitle"><div class="h1row"><h1><span class="tbase">${esc(itemName(r))}</span></h1><button type="button" class="btn sm lnk" data-act="link"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>${L('링크 복사','Copy link')}</button></div>
-        <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan?`<button type="button" class="btn" data-share="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>`:''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${budgetTag(r)}${leagueBadge(r, old)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
+        <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan ? (shareable(r) ? `<button type="button" class="btn" data-share="${esc(tierLead(r).id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>` : `<span class="hint" style="font-size:12px">${L('플로우차트가 있는 초안만 공유할 수 있어요 — 리버스 크래프팅에서 다시 만들어 주세요','Only drafts with a flowchart can be shared — make it again in Reverse Crafting')}</span>`) : ''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.tierGroup||r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${budgetTag(r)}${leagueBadge(r, old)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
       <div class="dtabs">${tabsHTML(r) || (r.sim?`<div class="rtabs" role="tablist"><button type="button" role="tab" class="rtab ${S.simOpen?'':'on'}" data-act="sim" data-simoff="1" aria-selected="${!S.simOpen}">${L('레시피','Recipe')}</button><button type="button" role="tab" class="rtab ${S.simOpen?'on':''}" data-act="sim" aria-selected="${!!S.simOpen}">${L('플로우 차트','Flowchart')}</button></div>`:'')}</div></div>
     <div class="prog"><button type="button" class="pend" data-pend="start" data-go-node="${esc(a.nodes[0]?.n.id||'')}">${L('시작','Start')}</button><div class="segs">${segs}</div><button type="button" class="pend" data-pend="end" data-go-node="${esc(a.nodes[a.nodes.length-1]?.n.id||'')}">${L('완성','Finish')}</button><span class="plabel" data-plabel hidden></span></div></div>
     <div class="dgrid">
@@ -2164,8 +2164,20 @@ function scrub(v, d=0){
   return null;
 }
 const knownCls = id => S.index.groups.some(g=>g.classes.some(c=>c.id===id));
+// one shared group: the lead with its flowchart (simInline) and the other grades — anything without a flowchart, or a grade the flowchart does not cover, is dropped
 async function cleanShared(x){
-  const r=scrub(x.recipe);
+  const r0=scrub(x.recipe); if(!r0 || typeof r0!=='object') return null;
+  const sim=r0.simInline, grades=Array.isArray(r0.grades)?r0.grades:[]; delete r0.grades;
+  if(!sim || typeof sim!=='object' || !sim.graph || !Array.isArray(sim.graph.nodes) || !sim.graph.nodes.length || !Array.isArray(sim.strategies) || !sim.strategies.length) return null;
+  const sids=new Set(sim.strategies.map(s=>s && s.id).filter(id=>GRADES.includes(id)));
+  const lead=await cleanOne({...x, recipe:r0}); if(!lead || !GRADES.includes(lead.tier) || !sids.has(lead.tier)) return null;
+  lead.tierGroup=lead.id; lead.sim=1; lead.simInline=sim;
+  const out=[lead];
+  for(const g of grades.slice(0,2)){ const r=await cleanOne({...x, recipe:g}); if(!r || !GRADES.includes(r.tier) || !sids.has(r.tier) || r.id!==lead.id+r.tier || out.some(y=>y.tier===r.tier)) continue; r.tierGroup=lead.id; r.sim=1; delete r.simInline; out.push(r); }
+  out.sort((a,b)=>GRADES.indexOf(a.tier)-GRADES.indexOf(b.tier)); if(out[0]!==lead) return null;   // the lead is the top grade
+  return out; }
+async function cleanOne(x){
+  const r=x.recipe;
   if(!r || !/^s-[a-z0-9]+$/.test(r.id||'') || !knownCls(r.cls) || !Array.isArray(r.nodes) || !Array.isArray(r.phases)) return null;
   for(const k of ['base','ilvl','sockets','cap']) if(k in r && typeof r[k]!=='number') r[k]=parseInt(r[k])||0;
   if('marketPrice' in r){ r.marketPrice=+r.marketPrice; if(!(r.marketPrice>0) || !isFinite(r.marketPrice)) delete r.marketPrice; }
@@ -2182,7 +2194,7 @@ async function cleanShared(x){
 }
 async function applyShared(d){
   S.shareCan = !!d.can;
-  const list=[]; for(const x of d.items){ const r=await cleanShared(x); if(r && !list.some(y=>y.id===r.id)) list.push(r); }
+  const list=[]; for(const x of d.items){ const g=await cleanShared(x); if(g) for(const r of g) if(!list.some(y=>y.id===r.id)) list.push(r); }
   const keep = S.recipes.filter(r=>!r.shared);
   const drafts = keep.filter(r=>r.draft), rest = keep.filter(r=>!r.draft);
   S.recipes = drafts.concat(list, rest);
@@ -2196,10 +2208,15 @@ async function applyShared(d){
 function armed(btn, label){ if(btn.dataset.armed==='1'){ delete btn.dataset.armed; clearTimeout(btn._armT); return true; }
   btn.dataset.armed='1'; btn.dataset.orig=btn.textContent; btn.textContent=label; btn.classList.add('arm');
   btn._armT=setTimeout(()=>{ delete btn.dataset.armed; btn.textContent=btn.dataset.orig; btn.classList.remove('arm'); }, 4000); return false; }
+// 사용자 확정 2026-11-11: 공유 레시피는 플로우차트가 필수이고, 레시피 등급(하이엔드·밸런스·에센셜)이 묶음으로 올라감
+const GRADES=['high','bal','ess'];
+function shareable(r){ const lead=tierLead(r), sim=lead.simInline; return !!(r.draft && lead.draft && lead.sim && sim?.graph?.nodes?.length && sim.strategies?.length && tierSibs(lead).every(x=>sim.strategies.some(s=>s.id===x.tier))); }
 function shareDraft(id, btn){
-  const r=S.recipes.find(x=>x.id===id && x.draft); if(!r) return;
-  const out={...r, id:'s-'+id.replace(/^draft-/,'')}; for(const k of ['draft','_an','_prep','likes','success','shared','mine','isNew','sharedAt']) delete out[k];
-  out.created = new Date().toISOString().slice(0,10);
+  const r=S.recipes.find(x=>x.id===id && x.draft); if(!r || !shareable(r)) return;
+  const lead=tierLead(r), sid='s-'+lead.id.replace(/^draft-/,''), strip=x=>{ const o={...x}; for(const k of ['draft','_an','_prep','likes','success','shared','mine','isNew','sharedAt','simInline','grades']) delete o[k]; return o; };
+  const out={...strip(lead), id:sid, tierGroup:sid, simInline:lead.simInline, created:new Date().toISOString().slice(0,10),
+    grades: tierSibs(lead).filter(x=>x.id!==lead.id).map(x=>({...strip(x), id:sid+x.tier, tierGroup:sid}))};
+  id=lead.id;
   btn.disabled=true; S.sharing={from:id, to:out.id};
   try{ parent.postMessage({type:'poe2-share', recipe:JSON.parse(JSON.stringify(out))}, '*'); }catch(e){ btn.disabled=false; }
 }
