@@ -954,7 +954,7 @@ function makeDraft(it, an, opt){
               `Whittling swaps the lowest required level: ${Math.round(q*100)}% it is the junk${tie.length>1?` (${tie.length} good lines tie at level ${m})`:''}. ${lostE && !rec && lostTo!==lost.id ? 'If it takes the essence line, that cannot go back on a rare: start a new base.' : 'If a good line goes, redo the step that made it.'}`)}).id;
           if(rec){ const rid = push({phase:'opt', optional:true, onLost:optFrom, do:'essence', cur:rec.e.id, omens:[SIDE_OMEN.cryst[rec.sd]], knownP:true, target:{gi:rec.gi, tmax:rec.ti+1, ...(rec.p<1?{chance:+rec.p.toFixed(3)}:{})},
               label:{kr:`${lk(lost.r)} 복구`, en:`Restore ${le(lost.r)}`}, ...(rec.p<1?{br:note('실패: 지워진 옵션을 만든 단계부터','Miss: redo the step that made the removed line')}:{}),
-              note:note(`${lk(lost.r)}${josa(lk(lost.r),'이','가')} 바뀌면 ${nk(SIDE_OMEN.cryst[rec.sd])} + ${rec.e.kr}${josa(rec.e.kr,'으로','로')} 다시 확정(${sideKr(rec.sd)}가 꽉 차서 그 면의 옵션 하나가 지워짐, 새로 붙은 옵션이 지워질 확률 ${Math.round(rec.p*100)}%).`,
+              note:note(`${lk(lost.r)}${josa(lk(lost.r),'이','가')} 바뀌면 ${nk(SIDE_OMEN.cryst[rec.sd])} + ${rec.e.kr}${josa(rec.e.kr,'으로','로')} 다시 확정(${sideKr(rec.sd)}가 꽉 차서 그쪽 옵션 하나가 지워짐, 새로 붙은 옵션이 지워질 확률 ${Math.round(rec.p*100)}%).`,
                 `If ${le(lost.r)} goes, ${ne(SIDE_OMEN.cryst[rec.sd])} + ${rec.e.en} puts it back (the ${sideEn(rec.sd)} side is full, so one of its lines goes: ${Math.round(rec.p*100)}% it is the new one).`)}).id;
             nodes.find(x=>x.id===optFrom).fail.lost = rid; }
           made.push({r:rest[0], id:optFrom}); }
@@ -1188,7 +1188,7 @@ function verifyDraft(it, an, d){
         if(sd && sd!==tSide) add('err',`${tSide==='p'?'접두':'접미'}가 꽉 차 있어서 반대쪽 결정화의 징조가 소용없음. ${tSide==='p'?'접두':'접미'} 중 하나가 지워짐.`,'The target side is full, so an opposite Crystallisation does nothing: a line on the target side goes.',st);
         else if(sd) add('warn',`${tSide==='p'?'접두':'접미'}가 꽉 차 있어서 결정화의 징조가 필요 없음`,'The target side is full, so the Crystallisation omen is not needed.',st);
         sd = tSide; }
-      if(t.removeGi!=null){ const k=mods.findIndex(m=>m.gi===t.removeGi); if(k<0) add('err',`지울 ${nameOf(t.removeGi)} 옵션이 없음`,'The line to remove is not there.',st); else if(sd && mods[k].side!==sd) add('err','결정화 면과 지울 옵션의 면이 다름','The crystallised side does not hold the line to remove.',st);
+      if(t.removeGi!=null){ const k=mods.findIndex(m=>m.gi===t.removeGi); if(k<0) add('err',`지울 ${nameOf(t.removeGi)} 옵션이 없음`,'The line to remove is not there.',st); else if(sd && mods[k].side!==sd) add('err','결정화의 징조 방향(좌측·우측)과 지울 옵션 위치(접두·접미)가 다름','The crystallised side does not hold the line to remove.',st);
         else { const others = mods.filter(m=>!m.fr && m.side===mods[k].side && m!==mods[k]); if(others.length) add('warn','결정화 쪽에 다른 옵션도 있어서 그 옵션이 지워질 수 있음','Other lines on the crystallised side could go instead.',st); mods.splice(k,1); addLine(t, L('에센스','Essence')); mark(); return; } }
       const cand = mods.filter(m=>!m.fr && (!sd || m.side===sd));
       if(!cand.length) add('err','에센스가 지울 옵션이 없음','Nothing for the essence to remove.',st);

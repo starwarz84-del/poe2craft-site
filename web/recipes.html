@@ -871,7 +871,7 @@ function analyse(r){
         else if(count(t.unrev) >= cap[t.unrev]){   // a full side: the bone replaces a random removable line there (Necromancy only picks the side)
           const cand = mods.filter(m=>!m.fr && m.side===t.unrev), jn = cand.filter(m=>m.junk).length;
           if(!cand.length) o.warn=L('지울 수 있는 옵션이 없음','Nothing to replace');
-          else { o.p = t.chance ?? (jn ? jn/cand.length : 1); if(!jn && t.chance==null) o.warn=L('꽉 찬 면이라 좋은 옵션 하나가 지워짐','Full side: a wanted line will be replaced');
+          else { o.p = t.chance ?? (jn ? jn/cand.length : 1); if(!jn && t.chance==null) o.warn=L('접두·접미가 꽉 차서 좋은 옵션 하나가 지워짐','Full side: a wanted line will be replaced');
             const k = t.dropGi!=null ? mods.findIndex(m=>m.gi===t.dropGi) : mods.findIndex(m=>m.junk && m.side===t.unrev); mods.splice(k>=0 ? k : mods.indexOf(cand[0]), 1); } }
         mods.push({unrev:true, junk:true, side:t.unrev}); }
     } else if(n.do==='reveal'){

@@ -32,7 +32,7 @@ R.append({
             'Greater + Sinistral Exaltation + Perfect Exalt for two prefixes: the other tier 1 projectile line plus tier 1 mana, energy shield or flat physical. Two junk: Annul (the only suffix is fractured); one junk: Whittling + Chaos only if it is the lowest level (it was not in the video, so Annul again). The hardest part.')},
   {'id':'v4','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],'target':{'gi':sg_crit,'tmax':1},
    'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment','omens':['Omen_of_Dextral_Annulment']}},'ts':'4:01',
-   'note':K('상위 찬미의 징조 + 완벽한 엑잘티드 오브로 접미 옵션 2개(접두가 꽉 차서 면 징조 없음): 치명타 확률 1티어 + 잡옵. 잡옵만 옵션 2개이면 우측 소멸의 징조 대신 우측 결정화의 징조 + 심연의 에센스 → 뼈로 징표 훼손 → 빛의 징조 + 소멸의 오브로 지우는 게 더 쌈.',
+   'note':K('상위 찬미의 징조 + 완벽한 엑잘티드 오브로 접미 옵션 2개(접두가 꽉 차서 좌측·우측 징조 없음): 치명타 확률 1티어 + 잡옵. 잡옵만 옵션 2개이면 우측 소멸의 징조 대신 우측 결정화의 징조 + 심연의 에센스 → 뼈로 징표 훼손 → 빛의 징조 + 소멸의 오브로 지우는 게 더 쌈.',
             'Greater Exaltation + Perfect Exalt for two suffixes (prefixes are full, so no side omen): tier 1 crit chance plus junk. If both are junk, Dextral Crystallisation + Essence of the Abyss, desecrate the Mark with a bone, then Light + Annulment is cheaper than Dextral Annulment.')},
   {'id':'v5','phase':'suf','do':'essence','cur':'Expansive_Alloy','omens':['Omen_of_Dextral_Crystallisation'],'target':{'gi':sg_rem,'chance':0.5},'fail':{'goto':'v4'},'ts':'15:42',
    'note':K('우측 결정화의 징조 + 팽창하는 합금: 접미 잡옵이 지워지면 성공(1/2, 치명타 확률이 지워지면 접미 작업 처음부터). 접두에 마나 최대치 1티어가 있을 때 매물들이 쓰는 합금(아니면 원하는 에센스).',
