@@ -807,7 +807,7 @@ function analyse(r){
         : pr.pre.map(m=>m.unrev && m.side===pr.n.target.side ? {junk:true, des:true, side:m.side} : {...m}); }   // miss branch: the revealed junk is still there   // Light + Annulment took the miss off
     const sides = sideOfOmens(n.omens);
     const cid = n.target?.bone || n.cur; const ci = S.byId[cid];
-    if(ci && ci.maxilvl && r.ilvl>+ci.maxilvl) o.warn = L(`${ci.kr}는 아이템 레벨 ${ci.maxilvl} 이하에만 쓸 수 있어요.`,`${ci.en} only works up to item level ${ci.maxilvl}.`);
+    if(ci && ci.maxilvl && r.ilvl>+ci.maxilvl) o.warn = L(`${ci.kr}는 아이템 레벨 ${ci.maxilvl} 이하 전용`,`${ci.en} only works up to item level ${ci.maxilvl}.`);
     // a fallback node runs only when its primary missed, from the primary's starting state
     let saved=null; if(n.fallbackFor && byId[n.fallbackFor]){ const pr=byId[n.fallbackFor]; saved=mods; mods=(pr.missState||pr.pre).map(m=>({...m})); }
     else if(n.onLost && byId[n.onLost]){ const pr=byId[n.onLost], fam=t.gi!=null ? grp(r,t.gi).f.join('+') : null; saved=mods;   // the state where that step took the wanted line: it is junk now
@@ -831,7 +831,7 @@ function analyse(r){
           const p=addChance(sp, null, rar, minOf(n.cur)); tries += p>0?1/p:Infinity; pushSpec(sp, rar); }
         o.p = 1/tries; o.multi = t.all.length;
       } else if(specList(t).some(x=>mods.some(m=>m.gi===x.gi && (!x.tmax || m.ti<x.tmax)))){
-        o.p=1; o.done=true; o.warn=L('이 옵션은 이미 앞 단계에서 붙어 있어서 이 단계는 건너뛴 것으로 계산했어요.','This modifier is already on the item from an earlier step, so this step is counted as skipped.');
+        o.p=1; o.done=true; o.warn=L('이 옵션은 이미 앞 단계에서 붙어 있어서 이 단계는 건너뛴 것으로 계산','This modifier is already on the item from an earlier step, so this step is counted as skipped.');
       } else {
         if(t.removeGi!=null) dropGi();
         else if(!removeJunk(t.replace||sides) && !removeJunk(null)) o.warn=L('지울 잡옵이 없다고 가정됨','No junk modifier to remove');
@@ -1185,11 +1185,11 @@ function nodeHTML(r, o, i, idx){
   const costIn = n.cost ? (()=>{ const v=uc[n.cost]||{}; const units=['Divine_Orb','Exalted_Orb','Chaos_Orb'];
     return `<div class="costin"><label>${L(n.cost==='base'?'베이스 가격':'들어간 비용','Cost')} <input type="number" min="0" step="any" inputmode="decimal" data-cost="${esc(n.cost)}" value="${v.v??''}" placeholder="${n.cost==='base' && +r.basePrice>0 ? +r.basePrice : 0}"></label>
       <select data-unit="${esc(n.cost)}" aria-label="${esc(L('단위','Unit'))}">${units.map(u=>`<option value="${u}" ${(v.u||'Divine_Orb')===u?'selected':''}>${esc(nm(cur(u)))}</option>`).join('')}</select>
-      ${o.passes>1.01?`<small>× ${fmt(o.passes)} ${L('(분열 실패로 다시 하는 횟수 포함)','(includes redoing after fracture misses)')}</small>`:''}${n.cost==='base' ? (()=>{ const t=tradeURL(r); return t ? `<a class="tradeb" href="${esc(t.url)}" target="_blank" rel="noopener" title="${esc(L('거래소에서 이 베이스 조건으로 검색해요. 로그인 화면이 뜨면 로그인 뒤 조건이 그대로 들어가요.','Searches the trade site with this base. If a login page appears, the conditions come back after you log in.'))}">${L('베이스템 구입 ↗','Buy this base ↗')}</a>${t.miss||!t.typeOK?`<small>${L('일부 조건은 거래소에서 직접 입력해 주세요','Some conditions need entering on the trade site')}</small>`:''}` : ''; })() : ''}</div>`; })() : '';
-  const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : n.compromise && !o.pUnknown && o.p<0.995 ? `<div class="pr">${L('타협 가능','Can settle')}<small>${L('1회 시도','1 attempt')} · ${pct(o.p)}</small>${o.settleK?`<small>${L('다시 하면 평균','retry avg')} ${fmt(o.settleK)}${L('회','×')}${(()=>{ const d=divOf(o.settleUse); return d && d.v>=0.005 ? ` · ${L('약','≈')} ${fmtDiv(d.v)} div` : ''; })()}</small>`:''}</div>` : o.pUnknown ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산해요. 일반 옵션은 원래 가중치 그대로예요.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
+      ${o.passes>1.01?`<small>× ${fmt(o.passes)} ${L('(분열 실패로 다시 하는 횟수 포함)','(includes redoing after fracture misses)')}</small>`:''}${n.cost==='base' ? (()=>{ const t=tradeURL(r); return t ? `<a class="tradeb" href="${esc(t.url)}" target="_blank" rel="noopener" title="${esc(L('거래소에서 이 베이스 조건으로 검색 · 로그인 뒤에도 조건 유지','Searches the trade site with this base. If a login page appears, the conditions come back after you log in.'))}">${L('베이스템 구입 ↗','Buy this base ↗')}</a>${t.miss||!t.typeOK?`<small>${L('일부 조건은 거래소에서 직접 입력','Some conditions need entering on the trade site')}</small>`:''}` : ''; })() : ''}</div>`; })() : '';
+  const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : n.compromise && !o.pUnknown && o.p<0.995 ? `<div class="pr">${L('타협 가능','Can settle')}<small>${L('1회 시도','1 attempt')} · ${pct(o.p)}</small>${o.settleK?`<small>${L('다시 하면 평균','retry avg')} ${fmt(o.settleK)}${L('회','×')}${(()=>{ const d=divOf(o.settleUse); return d && d.v>=0.005 ? ` · ${L('약','≈')} ${fmtDiv(d.v)} div` : ''; })()}</small>`:''}</div>` : o.pUnknown ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산함. 일반 옵션은 원래 가중치 그대로.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
   const dn = doneSet(r).has(n.id);
   return `<li class="node ${n.optional?'opt':''} ${dn?'done':''}" data-node="${esc(n.id)}"><div class="nbody"><span class="n"><button type="button" class="tick" data-done="${esc(n.id)}" aria-pressed="${dn}" title="${esc(L('완료 표시','Mark done'))}">${dn?'✓':idx}</button></span><div class="what">${head}${n.optional?`<span class="optl">${L('선택','optional')}</span>`:''}${ts}</div>${pr}
-    ${tgt?`<div class="tgt">${tgt}</div>`:''}${fail}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${(n.tips||[]).filter(id=>!_tipSeen || (!_tipSeen.has(id) && _tipSeen.add(id))).map(id=>{ const k=S.tips.findIndex(t=>t.id===id); return k<0?'':`<div class="tipref" data-tipid="${esc(id)}" tabindex="0">💡 ${L('제작 꿀팁','Tip')} #${k+1}</div>`; }).join('')}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 옵션 하나뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산했어요.','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}${divHTML(divOf(o.use))}</div>`:''}</div>
+    ${tgt?`<div class="tgt">${tgt}</div>`:''}${fail}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${(n.tips||[]).filter(id=>!_tipSeen || (!_tipSeen.has(id) && _tipSeen.add(id))).map(id=>{ const k=S.tips.findIndex(t=>t.id===id); return k<0?'':`<div class="tipref" data-tipid="${esc(id)}" tabindex="0">💡 ${L('제작 꿀팁','Tip')} #${k+1}</div>`; }).join('')}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 옵션 하나뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}${divHTML(divOf(o.use))}</div>`:''}</div>
 </li>`;
 }
 // ---------- flow layout: success / miss routes as chips, side paths as indented boxes (no free-floating arrows) ----------
@@ -1439,22 +1439,22 @@ function detailHTML(r){
   return `<div class="dhead" data-dhead><div class="dtop">
       <button type="button" class="btn back" data-act="back" aria-label="${esc(L('목록으로','Back to list'))}" title="${esc(L('목록으로','Back to list'))}"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="dtitle"><div class="h1row"><h1><span class="tbase">${esc(itemName(r))}</span></h1><button type="button" class="btn sm lnk" data-act="link"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>${L('링크 복사','Copy link')}</button></div>
-        <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan ? (shareable(r) ? `<button type="button" class="btn" data-share="${esc(tierLead(r).id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>` : `<span class="hint" style="font-size:12px">${L('플로우차트가 있는 초안만 공유할 수 있어요 — 리버스 크래프팅에서 다시 만들어 주세요','Only drafts with a flowchart can be shared — make it again in Reverse Crafting')}</span>`) : ''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.tierGroup||r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${budgetTag(r)}${leagueBadge(r, old)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
+        <div class="meta">${r.draft?`<span class="tag draftb">${L('역산 초안','Draft')}</span><button type="button" class="btn" data-deldraft="${esc(r.id)}" style="padding:1px 8px;font-size:12px">${L('초안 삭제','Delete draft')}</button>${S.shareCan ? (shareable(r) ? `<button type="button" class="btn" data-share="${esc(tierLead(r).id)}" style="padding:1px 8px;font-size:12px">${L('공유 레시피로 등록','Share recipe')}</button>` : `<span class="hint" style="font-size:12px">${L('플로우차트가 있는 초안만 공유 가능 · 리버스 크래프팅에서 다시 생성','Only drafts with a flowchart can be shared — make it again in Reverse Crafting')}</span>`) : ''}`:''}${sharedTag(r)}${r.shared&&r.mine?`<button type="button" class="btn" data-unshare="${esc(r.tierGroup||r.id)}" style="padding:1px 8px;font-size:12px">${L('공유 취소','Unshare')}</button>`:''}<span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span>${diffTag(r)}${budgetTag(r)}${leagueBadge(r, old)}${r.source?`<a href="${esc(r.source.url)}" target="_blank" rel="noopener">${/youtu/.test(r.source.url)?L('원본 영상','Source video'):L('원본 가이드','Source guide')} ↗</a>`:''}</div></div>
       <div class="dtabs">${tabsHTML(r) || (r.sim?`<div class="rtabs" role="tablist"><button type="button" role="tab" class="rtab ${S.simOpen?'':'on'}" data-act="sim" data-simoff="1" aria-selected="${!S.simOpen}">${L('레시피','Recipe')}</button><button type="button" role="tab" class="rtab ${S.simOpen?'on':''}" data-act="sim" aria-selected="${!!S.simOpen}">${L('플로우 차트','Flowchart')}</button></div>`:'')}</div></div>
     <div class="prog"><button type="button" class="pend" data-pend="start" data-go-node="${esc(a.nodes[0]?.n.id||'')}">${L('시작','Start')}</button><div class="segs">${segs}</div><button type="button" class="pend" data-pend="end" data-go-node="${esc(a.nodes[a.nodes.length-1]?.n.id||'')}">${L('완성','Finish')}</button><span class="plabel" data-plabel hidden></span></div></div>
     <div class="dgrid">
       <nav class="dnav" aria-label="${esc(L('단계','Steps'))}">${nav}
         <div class="navx"><button type="button" class="btn sm" data-act="reset-done">${L('완료 표시 지우기','Clear ticks')}</button></div></nav>
       <div class="dmain">
-        ${estNote(r)}${old?`<div class="warnbox">${L(`이 레시피는 패치 ${r.patch} 기준이에요. 현재 패치(${S.index.patch})에서 옵션 가중치나 규칙이 바뀌었을 수 있어요.`,`Written for patch ${r.patch}; weights or rules may have changed in ${S.index.patch}.`)}</div>`:''}
+        ${estNote(r)}${old?`<div class="warnbox">${L(`이 레시피는 패치 ${r.patch} 기준. 현재 패치(${S.index.patch})에서 옵션 가중치나 규칙이 바뀌었을 수 있음.`,`Written for patch ${r.patch}; weights or rules may have changed in ${S.index.patch}.`)}</div>`:''}
 
         ${overviewHTML(r)}${budgetLine(r)}${simHTML(r)}
-        <p class="sec flowsec">${L('제작 흐름','Crafting flow')} <small>${L('· 숫자를 누르면 완료 표시, 스크롤하면 오른쪽 아이템이 그 단계 상태로 바뀌어요','· tap a number to tick it off; the item on the right follows your scroll')}</small></p>
+        <p class="sec flowsec">${L('제작 흐름','Crafting flow')} <small>${L('· 숫자 클릭 = 완료 표시 · 스크롤하면 오른쪽 아이템이 그 단계 상태로 바뀜','· tap a number to tick it off; the item on the right follows your scroll')}</small></p>
         ${flowHTML(r)}
-        <p class="legend">${L('시도당 성공 = 한 번 시도했을 때 목표가 붙을 확률(실제 가중치 기준). 반복 단계의 숫자는 평균 사용량이고, ↺ 처음부터·↩ 되돌아가기가 있으면 그 구간 사용량에 평균 반복 횟수를 곱했어요. 디바인(div) 값은 시세로 환산한 예상치예요.','Per try = chance one attempt lands the target, from real weights. Loop numbers are averages; a restart or jump back multiplies that span by the expected passes. Divine (div) values are estimates from market prices.')}</p>
+        <p class="legend">${L('시도당 성공 = 한 번 시도했을 때 목표가 붙을 확률(실제 가중치 기준). 반복 단계의 숫자는 평균 사용량이고, ↺ 처음부터·↩ 되돌아가기가 있으면 그 구간 사용량에 평균 반복 횟수를 곱함. 디바인(div) 값은 시세로 환산한 예상치.','Per try = chance one attempt lands the target, from real weights. Loop numbers are averages; a restart or jump back multiplies that span by the expected passes. Divine (div) values are estimates from market prices.')}</p>
         ${S.tips.some(t=>(t.recipes||[]).includes(r.id))?`<section class="rtips"><p class="sec">${L('이 레시피에 쓰인 제작 꿀팁','Tips used in this recipe')}</p><div class="tips">${S.tips.filter(t=>(t.recipes||[]).includes(r.id)).map(t=>tipCard(t,true)).join('')}</div></section>`:''}
         <details class="totbox" data-totbox ${store.get('totOpen',false)?'open':''}><summary>${L('총 소모품 (평균, 분석값)','Total cost (average, analytic)')}</summary>
-        <div class="tot">${(()=>{ const c=recipeCost(r); return c ? `<p class="optsum">${a.optMore?L('확정까지','Guaranteed part'):L('예상 비용','Est. cost')}: <span class="ci dv">${v0(c.v)}${noPrice(c.miss)}</span>${a.manual && Object.keys(a.manual).length?` <small>${L('(베이스 가격 포함)','(base price included)')}</small>`:''}</p>${a.optMore?`<p class="optsum">${L('추가 포함','With extras')}: <span class="ci dv">${v0(c.all)}${noPrice(c.missAll)}</span></p>`:''}` : ''; })()}${a.optMore?`<p class="optsum">${L('선택 단계 포함 시','With optional steps')}: ${sortKeys(Object.keys(a.totAll)).filter(k=>a.totAll[k]>=0.05).map(k=>`<span class="ci">${icon(k,r)}${fmt(a.totAll[k])}</span>`).join('')}${a.basesAll>a.bases+0.05?`<span class="ci dim">${L('베이스','base')} ×${fmt(a.basesAll)}</span>`:''}</p>`:''}<table><thead><tr><th>${L('재료','Item')}</th><th>${L('평균','Avg')}</th></tr></thead><tbody>${rows}
+        <div class="tot">${(()=>{ const c=recipeCost(r); return c ? `<p class="optsum">${a.optMore?L('확정까지','Guaranteed part'):L('예상 비용','Est. cost')}: <span class="ci dv">${v0(c.v)}${noPrice(c.miss)}</span>${a.manual && Object.keys(a.manual).length?` <small>${L('(베이스 가격 포함)','(base price included)')}</small>`:''}</p>${a.optMore?`<p class="optsum">${L('추가 포함','With extras')}: <span class="ci dv">${v0(c.all)}${noPrice(c.missAll)}</span></p>`:''}` : ''; })()}${a.optMore?`<p class="optsum">${L('선택 단계 포함 시','With optional steps')}: ${sortKeys(Object.keys(a.totAll)).filter(k=>a.totAll[k]>=0.05).map(k=>`<span class="ci">${icon(k,r)}${fmt(a.totAll[k])}</span>`).join('')}${a.basesAll>a.bases+0.05?`<span class="ci dim">${L('베이스','base')} ×${fmt(a.basesAll)}</span>`:''}</p>`:''}<table><thead><tr><th>${L('커런시','Item')}</th><th>${L('평균','Avg')}</th></tr></thead><tbody>${rows}
           <tr><td>${L('베이스 아이템','Base items')}</td><td class="num">${fmt(a.bases)}</td></tr>
           ${Object.entries(a.manual).map(([u,v])=>`<tr><td>${icon(u,r)}${esc(nm(cur(u)))} <small>${L('(직접 입력)','(entered)')}</small></td><td class="num">${fmt(v)}</td></tr>`).join('')}</tbody></table>
 </div>
@@ -1464,7 +1464,7 @@ function detailHTML(r){
           <button type="button" class="btn" data-act="success">✓ ${L('성공 보고','Report success')} ${reports(r)}</button></div></div>
         <div><p class="sec">${L('댓글','Comments')} · ${so.comments.length}</p><div class="comments">${so.comments.map(c=>`<div class="cm"><small>${esc(c.t)}</small>${esc(c.m)}</div>`).join('')}
           <form class="cform" data-form="c"><input name="m" maxlength="400" placeholder="${esc(L('댓글 쓰기','Write a comment'))}" aria-label="${esc(L('댓글','Comment'))}"><button class="btn" type="submit">${L('등록','Post')}</button></form>
-          <span class="local">${L('로그인·서버 연결 전이라 이 브라우저에만 저장돼요.','Saved in this browser only until login and a server are connected.')}</span></div></div></div>
+          <span class="local">${L('로그인·서버 연결 전 · 이 브라우저에만 저장','Saved in this browser only until login and a server are connected.')}</span></div></div></div>
       </div>
       <aside class="ditem"><div class="dihead" data-dihead></div><div data-tip></div>
         <ul class="olegend" aria-label="${esc(L('옵션 색상 안내','Modifier colours'))}">${[
@@ -1762,7 +1762,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=
   </section>`; }
 function simHTML(r, force){ if(!r.sim || !(S.simOpen||force)) return ''; if(!S.simData[r.id]) loadSim(r); const d=S.simData[r.id];   // an inline (reverse draft) flowchart is ready at once
   if(!d || d==='loading'){ loadSim(r); return `<section class="simbox"><p class="simnote">${L('불러오는 중…','Loading…')}</p></section>`; }
-  if(d==='none') return `<section class="simbox"><p class="simnote">${L('시뮬레이션 데이터가 없어요.','No simulation data.')}</p></section>`;
+  if(d==='none') return `<section class="simbox"><p class="simnote">${L('시뮬레이션 데이터가 없음','No simulation data.')}</p></section>`;
   return flowchartHTML(r, d); }
 function renderDetail(){
   const r=S.recipes.find(x=>x.id===S.open); if(!r) return;
@@ -1848,10 +1848,10 @@ async function makePDF(r, btn){
     }
     const blob=pdf.output('blob'), filename=`${fullTitle(r).replace(' | ',' - ').replace(/[\\/:*?"<>|]+/g,' ').slice(0,90)}.pdf`;
     const res=await saveViaShell(filename, blob);
-    if(res==='saved') toast(L('PDF를 저장했어요','PDF saved'));
-    else if(res==='declined') toast(L('저장을 취소했어요','Save cancelled'));
-    else toast(L('이 화면에서는 다운로드를 쓸 수 없어요','Downloads are not available here'));
-  }catch(e){ toast(L('PDF를 만들지 못했어요','Could not build the PDF')); }
+    if(res==='saved') toast(L('PDF 저장됨','PDF saved'));
+    else if(res==='declined') toast(L('저장 취소됨','Save cancelled'));
+    else toast(L('이 화면에서는 다운로드 불가','Downloads are not available here'));
+  }catch(e){ toast(L('PDF 생성 실패','Could not build the PDF')); }
   finally{ btn.disabled=false; btn.textContent=label; }
 }
 // the recipes page runs inside the app shell; the shell owns the download capability
@@ -1913,7 +1913,7 @@ function renderBoard(){
   const rb=$('#freset'); rb.textContent=L('↺ 필터 초기화','↺ Reset filters'); rb.disabled=!busy;
   const total=S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r)).length;
   $('#count').textContent = L0.length===total ? L(`전체 ${total}개 레시피`, `${total} recipes`) : L(`${L0.length}개 / 전체 ${total}개 레시피`, `${L0.length} of ${total} recipes`);
-  board.innerHTML = L0.length ? '' : `<div class="empty">${L('조건에 맞는 레시피가 없어요.','No recipes match these filters.')}</div>`;
+  board.innerHTML = L0.length ? '' : `<div class="empty">${L('조건에 맞는 레시피가 없음','No recipes match these filters.')}</div>`;
   cards = L0.map(r=>{ const el=document.createElement('article'); el.className='card'+(S.open===r.id?' open':''); el.dataset.id=r.id; el.tabIndex=0; el.setAttribute('role','button'); el.setAttribute('aria-expanded', S.open===r.id);
     el.innerHTML=cardHTML(r); board.appendChild(el);
     el.querySelectorAll('img').forEach(im=>{ if(!im.complete) im.addEventListener('load', relayout, {once:true}); });   // card heights change once images arrive
@@ -1974,7 +1974,7 @@ function renderBar(){
   { const n=S.recipes.filter(r=>r.draft).length, b=$('#clrdrafts'); b.hidden=!n; b.textContent=L(`역산 초안 모두 지우기 (${n})`,`Delete all drafts (${n})`); }
   const have=new Set(); S.recipes.forEach(r=>{ try{ tagsOf(r).forEach(t=>have.add(t)); }catch(e){} });
   $('#tags').innerHTML=TAGS.filter(([k])=>have.has(k)||S.tags.has(k)||!have.size).map(([k,[kr,en]])=>`<button type="button" class="chip" data-tag="${k}" aria-pressed="${S.tags.has(k)}">${esc(L(kr,en))}</button>`).join('');
-  $('#demo').textContent=L('레시피 등록 기능은 준비 중이에요. 지금은 공개 영상을 해석해 만든 레시피만 있어요. 확률과 비용은 에뮬레이터와 같은 옵션 가중치로 계산한 값이에요.','Recipe submission is coming. For now the board holds recipes interpreted from public videos. Odds and costs use the same modifier weights as the emulator.');
+  $('#demo').textContent=L('레시피 등록 준비 중 · 공개 영상 기반 레시피 · 확률과 비용은 에뮬레이터와 같은 옵션 가중치로 계산','Recipe submission is coming. For now the board holds recipes interpreted from public videos. Odds and costs use the same modifier weights as the emulator.');
 }
 const CAT_EN = {weapon:'One-Handed', weapon2:'Two-Handed', offhand:'Off-hand', helmet:'Helmets', body:'Body Armour', gloves:'Gloves', boots:'Boots', jewellery:'Jewellery', jewel:'Jewels', flask:'Flasks'};
 const catEn = g => CAT_EN[g.id] || g.id;
@@ -1993,7 +1993,7 @@ function tipCard(t, compact){
     <div class="tfoot">${tipSrc(t)}${!compact&&recs.length?`<span class="trec">${L('사용한 레시피','Used in')}: ${recs.map(r=>`<a href="#r-${esc(r.id)}" data-open="${esc(r.id)}">${esc(baseName(r))}</a>`).join(', ')}</span>`:''}</div></article>`;
 }
 function renderTips(){
-  $('#tipsView').innerHTML = `<p class="tipnote">${L('특정 아이템과 상관없이 두루 쓰이는 제작 팁이에요. 레시피 영상에서 나온 팁은 여기로 모아요.','Tips that apply beyond a single item, collected from the recipe videos.')}</p><div class="tips">${S.tips.map(t=>tipCard(t)).join('')}</div>`;
+  $('#tipsView').innerHTML = `<p class="tipnote">${L('아이템과 상관없이 두루 쓰이는 제작 팁 모음','Tips that apply beyond a single item, collected from the recipe videos.')}</p><div class="tips">${S.tips.map(t=>tipCard(t)).join('')}</div>`;
 }
 
 // ---------- routing / sharing ----------
@@ -2012,7 +2012,7 @@ function setOpen(id){ id=liveId(id);
 function shareURL(id){ let u; try{ u=parent.location.href.split('#')[0]; }catch(e){ u=location.href.split('#')[0]; } return u+'#r-'+id; }
 async function copy(text, ok){
   try{ await navigator.clipboard.writeText(text); toast(ok); }
-  catch(e){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); toast(ok); }catch(_){ toast(L('복사하지 못했어요','Could not copy')); } ta.remove(); }
+  catch(e){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); toast(ok); }catch(_){ toast(L('복사 실패','Could not copy')); } ta.remove(); }
 }
 function recipeText(r){
   const an=analyse(r); CUR_R=r;
@@ -2035,7 +2035,7 @@ async function analyze(){
   const txt=$('#d-txt').value; const lines=txt.split(/\r?\n/).map(s=>s.replace(/\s*\((?:fractured|crafted|desecrated|rune|implicit|enchant|분열|룬|암시|인챈트)\)\s*$/i,'').trim()).filter(Boolean);
   let cls=null, bname=null;
   outer: for(const g of S.index.groups) for(const c of g.classes) for(const [en,kr] of c.names||[]) if(lines.some(l=>l===en||l===kr)){ cls=c.id; bname=KR()?kr:en; break outer; }
-  if(!cls){ parsed=null; $('#d-res').innerHTML=`<div class="ml">${L('베이스 아이템을 찾지 못했어요. 게임에서 Ctrl+C로 복사한 텍스트 전체를 붙여 넣어 주세요.','Could not find the base item. Paste the full text copied with Ctrl+C in game.')}</div>`; $('#d-req').disabled=true; return; }
+  if(!cls){ parsed=null; $('#d-res').innerHTML=`<div class="ml">${L('베이스 아이템 없음 · 게임에서 Ctrl+C로 복사한 텍스트 전체 필요','Could not find the base item. Paste the full text copied with Ctrl+C in game.')}</div>`; $('#d-req').disabled=true; return; }
   await loadCls(cls); const D=S.cls[cls]; const found=[];
   // one match per pasted line; normal modifier groups first, essence-only groups as a fallback
   const order=[...D.groups.keys()].filter(gi=>['n','e'].includes(D.groups[gi].s)).sort((a,b)=>(D.groups[a].s==='n'?0:1)-(D.groups[b].s==='n'?0:1));
@@ -2046,12 +2046,12 @@ async function analyze(){
     const ov=tg.filter(g=>found.some(f=>f.g.f.some(x=>g.f.includes(x)))).length; return {r, ov, n:tg.length}; }).sort((a,b)=>b.ov-a.ov);
   $('#d-res').innerHTML = `<div class="ml"><b>${esc(bname)}</b> · ${L('인식한 옵션','Recognised modifiers')} ${found.length}</div><div class="ml">${found.map(f=>`<span class="ok">✓ ${esc(f.txt)}</span>`).join('')||'—'}</div>`
     + (hits.length ? hits.map(h=>`<button type="button" class="hit" data-go="${h.r.id}"><span>${esc(baseName(h.r))} · ${esc(tx(h.r.author))}</span><span class="ml">${L(`겹치는 목표 ${h.ov}/${h.n}`,`${h.ov}/${h.n} targets match`)}</span></button>`).join('')
-       : `<div class="ml">${L('이 종류의 레시피가 아직 없어요. 레시피를 요청할 수 있어요.','No recipes for this item type yet. You can request one.')}</div>`);
+       : `<div class="ml">${L('이 종류의 레시피 없음 · 레시피 요청 가능','No recipes for this item type yet. You can request one.')}</div>`);
   $('#d-req').disabled = !found.length;
 }
 function renderDlg(){
   $('#d-h').textContent=L('아이템으로 레시피 찾기·요청','Find or request a recipe from an item');
-  $('#d-p').textContent=L('원하는 완성 아이템의 텍스트(게임에서 Ctrl+C)를 붙여 넣으면 비슷한 레시피를 찾고, 없으면 분석을 요청할 수 있어요.','Paste the text of the finished item you want (Ctrl+C in game). We look for similar recipes; if none fits, request an analysis.');
+  $('#d-p').textContent=L('완성 아이템 텍스트(Ctrl+C) 붙여넣기 → 비슷한 레시피 찾기 · 없으면 분석 요청','Paste the text of the finished item you want (Ctrl+C in game). We look for similar recipes; if none fits, request an analysis.');
   $('#d-txt').placeholder=L('아이템 클래스: 반지\n희귀도: 희귀\n…','Item Class: Rings\nRarity: Rare\n…');
   $('#d-close').textContent=L('닫기','Close'); $('#d-find').textContent=L('비슷한 레시피 찾기','Find similar'); $('#d-req').textContent=L('레시피 요청','Request recipe');
 }
@@ -2083,15 +2083,15 @@ $('#detail').addEventListener('click', e=>{
   const zb=e.target.closest('[data-zoom]'); if(zb){ zoomFc(+zb.dataset.zoom); return; }
   const a=e.target.closest('[data-act]'); if(!a) return; const so=social(r.id);
   if(a.dataset.act==='back') setOpen(null);
-  if(a.dataset.act==='link') copy(shareURL(r.id), L('링크를 복사했어요','Link copied'));
-  if(a.dataset.act==='copy') copy(recipeText(r), L('레시피를 복사했어요','Recipe copied'));
+  if(a.dataset.act==='link') copy(shareURL(r.id), L('링크 복사됨','Link copied'));
+  if(a.dataset.act==='copy') copy(recipeText(r), L('레시피 복사됨','Recipe copied'));
   if(a.dataset.act==='pdf'){ makePDF(r, a); return; }
   if(a.dataset.act==='fcitems'){ S.fcItems = S.fcItems===false; store.set('fcItems', S.fcItems); keepY(renderDetail); return; }
   if(a.dataset.act==='simfull'){ setSimFull(!S.simFull); return; }
   if(a.dataset.act==='sim'){ if(!!a.dataset.simoff === !S.simOpen) return; if(S.simOpen) setSimFull(false, true); S.simOpen=!S.simOpen; keepY(renderDetail); if(S.simOpen) document.querySelector('#detail [data-simbox]')?.scrollIntoView({block:'nearest'}); return; }
   if(a.dataset.act==='reset-done'){ store.set('done:'+r.id,[]); keepY(renderDetail); }
   if(a.dataset.act==='like'){ so.liked=!so.liked; setSocial(r.id,so); keepY(renderDetail); }
-  if(a.dataset.act==='success'){ so.success++; setSocial(r.id,so); keepY(renderDetail); toast(L('성공 보고를 남겼어요','Success reported')); }
+  if(a.dataset.act==='success'){ so.success++; setSocial(r.id,so); keepY(renderDetail); toast(L('성공 보고 저장됨','Success reported')); }
 });
 $('#detail').addEventListener('toggle', e=>{ if(e.target.matches?.('.simopts')) S.simOpts=e.target.open; }, true);
 $('#detail').addEventListener('change', e=>{ const el=e.target.closest('[data-cost],[data-unit]'); if(!el) return; const r=S.recipes.find(x=>x.id===S.open); if(!r) return;
@@ -2128,7 +2128,7 @@ function statShow(inp){ const i=+inp.dataset.stat, box=inp.parentNode.querySelec
   const pool=S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r) && S.stats.slice(0,i).every(k=>!k || statsOf(r).has(k))), cnt=new Map();
   pool.forEach(r=>statsOf(r).forEach(k=>cnt.set(k,(cnt.get(k)||0)+1)));
   const rows=S.statList.filter(([k,o])=>cnt.has(k) && !S.stats.some((x,j)=>j!==i && x===k) && statMatch(o.l+' '+roleBadges(k).replace(/<[^>]+>/g,' '), q)).slice(0,300).map(([k,o])=>[k,{...o, n:{size:cnt.get(k)}}]);
-  box.innerHTML=`<div class="hint">${L('~ 뒤 단어는 순서와 상관없이 모두 포함 (예: ~공격 치명타)','After ~ every word must appear, any order (e.g. ~attack critical)')}</div>`+(rows.length?rows.map(([k,o],n)=>`<button type="button" data-spick="${esc(k)}" class="${n===0?'hi':''}">${roleBadges(k)}<span>${esc(o.l)}</span><span class="n">${o.n.size}</span></button>`).join(''):`<div class="empty">${L('맞는 옵션이 없어요','No matching modifiers')}</div>`);
+  box.innerHTML=`<div class="hint">${L('~ 뒤 단어는 순서와 상관없이 모두 포함 (예: ~공격 치명타)','After ~ every word must appear, any order (e.g. ~attack critical)')}</div>`+(rows.length?rows.map(([k,o],n)=>`<button type="button" data-spick="${esc(k)}" class="${n===0?'hi':''}">${roleBadges(k)}<span>${esc(o.l)}</span><span class="n">${o.n.size}</span></button>`).join(''):`<div class="empty">${L('맞는 옵션이 없음','No matching modifiers')}</div>`);
   box.hidden=false; }
 function statPick(i, k){ S.stats[i]=k; for(let j=i+1;j<S.stats.length;j++) if(S.stats[j] && !S.recipes.some(r=>S.stats.slice(0,j+1).every(x=>!x||statsOf(r).has(x)))) S.stats[j]=''; const b=document.querySelector(`#stats [data-sbox="${i}"]`); b?.querySelector('input')?.blur(); renderBar(); renderBoard(); }
 $('#stats').addEventListener('focusin', e=>{ const inp=e.target.closest('input[data-stat]'); if(inp){ inp.select(); statShow(inp); } });
@@ -2155,7 +2155,7 @@ $('#d-close').addEventListener('click', ()=>$('#dlg').close());
 $('#d-find').addEventListener('click', analyze);
 $('#d-res').addEventListener('click', e=>{ const h=e.target.closest('[data-go]'); if(h){ $('#dlg').close(); setOpen(h.dataset.go); } });
 $('#d-req').addEventListener('click', ()=>{ if(!parsed) return; const q=store.get('requests',[]); q.push({at:Date.now(), cls:parsed.cls, base:parsed.base, mods:parsed.mods.map(m=>m.gi), text:parsed.text}); store.set('requests',q);
-  $('#dlg').close(); toast(L('요청을 저장했어요. 서버 연결 후 전송돼요.','Request saved. It will be sent once a server is connected.')); });
+  $('#dlg').close(); toast(L('요청 저장됨 · 서버 연결 후 전송','Request saved. It will be sent once a server is connected.')); });
 let rl; function relayout(){ clearTimeout(rl); rl=setTimeout(()=>{ layout(); }, 30); }
 let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if(!S.open) layout(); else { setHeadH(); pairRows($('#detail')); } }, 60); });
 window.addEventListener('message', e=>{ const d=e.data||{};
@@ -2241,16 +2241,16 @@ function shareDraft(id, btn){
   try{ parent.postMessage({type:'poe2-share', recipe:JSON.parse(JSON.stringify(out))}, '*'); }catch(e){ btn.disabled=false; }
 }
 function unshare(id, btn){
-  if(!armed(btn, L('한 번 더 누르면 공유 취소 (모두에게서 사라져요)','Press again to unshare (removed for everyone)'))) return;
+  if(!armed(btn, L('한 번 더 누르면 공유 취소 (모두에게서 사라짐)','Press again to unshare (removed for everyone)'))) return;
   btn.disabled=true; try{ parent.postMessage({type:'poe2-unshare', id}, '*'); }catch(e){ btn.disabled=false; }
 }
 function shareResult(d){
-  const why = c => c==='quota_exceeded' ? L('저장 공간이 가득 찼어요.','Storage is full.') : c==='too_big' ? L('레시피가 너무 커요.','The recipe is too large.')
-    : c==='unavailable' ? L('지금은 공유 저장소에 연결할 수 없어요.','The shared store is not reachable right now.') : L('권한이 없거나 저장하지 못했어요.','You cannot save here, or saving failed.');
+  const why = c => c==='quota_exceeded' ? L('저장 공간 가득 참','Storage is full.') : c==='too_big' ? L('레시피가 너무 큼','The recipe is too large.')
+    : c==='unavailable' ? L('지금은 공유 저장소에 연결 불가','The shared store is not reachable right now.') : L('권한이 없거나 저장 실패','You cannot save here, or saving failed.');
   if(d.op==='poe2-share'){
-    if(d.ok && S.sharing){ const {from,to}=S.sharing; S.sharing=null; S.pendingOpen=to; removeDraft(from); toast(L('공유 레시피로 등록했어요','Recipe shared')); }
+    if(d.ok && S.sharing){ const {from,to}=S.sharing; S.sharing=null; S.pendingOpen=to; removeDraft(from); toast(L('공유 레시피로 등록됨','Recipe shared')); }
     else { S.sharing=null; render(); toast(why(d.code)); }
-  } else { if(d.ok){ toast(L('공유를 취소했어요','Unshared')); } else { render(); toast(why(d.code)); } }
+  } else { if(d.ok){ toast(L('공유 취소됨','Unshared')); } else { render(); toast(why(d.code)); } }
 }
 // drafts made on the Discover tab: kept in this browser, shown first with a draft badge
 // a reverse draft group: the lead (top grade) carries the other grades in r.grades (same steps, wider tiers — 정책 30·32)
@@ -2277,7 +2277,7 @@ async function addDraft(r, open){
 document.addEventListener('click', e=>{ if(!e.target.closest('#clrdrafts')) return; const n=S.recipes.filter(r=>r.draft).length; if(!n) return;
   if(!armed(e.target.closest('#clrdrafts'), L(`한 번 더 누르면 초안 ${n}개 삭제`,`Press again to delete ${n} drafts`))) return;
   store.set('drafts', []); const open=S.open && S.recipes.some(r=>r.draft && r.id===S.open); S.recipes=S.recipes.filter(r=>!r.draft); if(open) setOpen(null); render();
-  toast(L('역산 초안을 모두 지웠어요','All drafts deleted')); });
+  toast(L('역산 초안 모두 삭제됨','All drafts deleted')); });
 function removeDraft(id){ const g=S.recipes.find(x=>x.id===id)?.tierGroup || id; store.set('drafts', store.get('drafts',[]).filter(x=>x.id!==id && x.id!==g)); const gone=x=>x.id===id || x.id===g || x.tierGroup===g; const wasOpen=S.recipes.some(x=>gone(x) && x.id===S.open); S.recipes=S.recipes.filter(x=>!gone(x)); if(wasOpen) setOpen(null); render(); }
 
 // ---------- boot ----------
