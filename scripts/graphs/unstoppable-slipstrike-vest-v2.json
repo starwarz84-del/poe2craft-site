@@ -46,13 +46,31 @@
    "kr": "굴절",
    "en": "Deflection",
    "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
     "3": {
      "kr": "1~3티어",
      "en": "T1–3"
+    }
+   }
+  },
+  "g": {
+   "kr": "마지막 접미가 잡옵일 때",
+   "en": "Junk last suffix",
+   "values": {
+    "1": {
+     "kr": "바꾸는 도박",
+     "en": "Gamble to replace"
     },
-    "4": {
-     "kr": "1~4티어",
-     "en": "T1–4"
+    "0": {
+     "kr": "랜덤 옵션으로 둠",
+     "en": "Keep as a random line"
     }
    }
   }
@@ -63,7 +81,8 @@
    "params": {
     "pT": 1,
     "rT": 1,
-    "dT": 3
+    "dT": 1,
+    "g": 1
    }
   },
   {
@@ -71,7 +90,8 @@
    "params": {
     "pT": 2,
     "rT": 2,
-    "dT": 4
+    "dT": 2,
+    "g": 0
    }
   }
  ],
@@ -83,11 +103,12 @@
    "params": {
     "pT": 2,
     "rT": 2,
-    "dT": 4
+    "dT": 2,
+    "g": 0
    },
    "desc": {
-    "kr": "접두·저항·굴절 1~2티어 (영상: 회피 복합 2티어도 괜찮음)",
-    "en": "Prefixes, resistances and deflection at T1–2 (video: a T2 hybrid is fine)"
+    "kr": "접두·저항·굴절 1~2티어, 마지막 접미는 랜덤 옵션 (영상: 회피 복합 2티어도 괜찮음)",
+    "en": "Prefixes, resistances and deflection at T1–2, the last suffix random (video: a T2 hybrid is fine)"
    }
   },
   {
@@ -97,7 +118,8 @@
    "params": {
     "pT": 1,
     "rT": 1,
-    "dT": 3
+    "dT": 1,
+    "g": 1
    },
    "desc": {
     "kr": "모든 옵션 1티어 (영상: 회피 3,646)",
@@ -174,10 +196,32 @@
     }
    },
    {
-    "count": {
-     "tag": "goodS",
-     "min": 3
-    }
+    "any": [
+     {
+      "count": {
+       "tag": "goodS",
+       "min": 3
+      }
+     },
+     {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "count": {
+         "tag": "goodS",
+         "min": 2
+        }
+       },
+       {
+        "full": "s"
+       }
+      ]
+     }
+    ]
    }
   ]
  },
@@ -263,7 +307,7 @@
     },
     {
      "tag": "dfl",
-     "tmax": 3
+     "tmax": 1
     }
    ]
   },
@@ -285,16 +329,22 @@
      "tmax": 2
     },
     {
-     "tag": "fr",
-     "tmax": 2
+     "side": "s",
+     "label": {
+      "kr": "저항 또는 굴절 1~2티어",
+      "en": "Resistance or deflection T1–2"
+     }
     },
     {
-     "tag": "cr",
-     "tmax": 2
+     "side": "s",
+     "label": {
+      "kr": "저항 또는 굴절 1~2티어",
+      "en": "Resistance or deflection T1–2"
+     }
     },
     {
-     "tag": "dfl",
-     "tmax": 4
+     "side": "s",
+     "random": true
     }
    ]
   }
@@ -459,10 +509,32 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "goodS",
-         "min": 3
-        }
+        "any": [
+         {
+          "count": {
+           "tag": "goodS",
+           "min": 3
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "count": {
+             "tag": "goodS",
+             "min": 2
+            }
+           },
+           {
+            "full": "s"
+           }
+          ]
+         }
+        ]
        },
        {
         "not": {
@@ -483,10 +555,32 @@
     },
     {
      "if": {
-      "count": {
-       "tag": "goodS",
-       "min": 3
-      }
+      "any": [
+       {
+        "count": {
+         "tag": "goodS",
+         "min": 3
+        }
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "g": 0
+          }
+         },
+         {
+          "count": {
+           "tag": "goodS",
+           "min": 2
+          }
+         },
+         {
+          "full": "s"
+         }
+        ]
+       }
+      ]
      },
      "to": "e3",
      "res": "ok"
@@ -557,10 +651,32 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "goodS",
-         "min": 3
-        }
+        "any": [
+         {
+          "count": {
+           "tag": "goodS",
+           "min": 3
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "count": {
+             "tag": "goodS",
+             "min": 2
+            }
+           },
+           {
+            "full": "s"
+           }
+          ]
+         }
+        ]
        },
        {
         "not": {
@@ -581,10 +697,32 @@
     },
     {
      "if": {
-      "count": {
-       "tag": "goodS",
-       "min": 3
-      }
+      "any": [
+       {
+        "count": {
+         "tag": "goodS",
+         "min": 3
+        }
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "g": 0
+          }
+         },
+         {
+          "count": {
+           "tag": "goodS",
+           "min": 2
+          }
+         },
+         {
+          "full": "s"
+         }
+        ]
+       }
+      ]
      },
      "to": "e3",
      "res": "ok"
@@ -674,10 +812,32 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "goodS",
-         "min": 3
-        }
+        "any": [
+         {
+          "count": {
+           "tag": "goodS",
+           "min": 3
+          }
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "count": {
+             "tag": "goodS",
+             "min": 2
+            }
+           },
+           {
+            "full": "s"
+           }
+          ]
+         }
+        ]
        },
        {
         "not": {
@@ -698,10 +858,32 @@
     },
     {
      "if": {
-      "count": {
-       "tag": "goodS",
-       "min": 3
-      }
+      "any": [
+       {
+        "count": {
+         "tag": "goodS",
+         "min": 3
+        }
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "g": 0
+          }
+         },
+         {
+          "count": {
+           "tag": "goodS",
+           "min": 2
+          }
+         },
+         {
+          "full": "s"
+         }
+        ]
+       }
+      ]
      },
      "to": "e3",
      "res": "ok"

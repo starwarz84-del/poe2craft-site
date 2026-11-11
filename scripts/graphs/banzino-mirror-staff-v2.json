@@ -33,6 +33,34 @@
      "en": "T1–2"
     }
    }
+  },
+  "cT": {
+   "kr": "시전 속도",
+   "en": "Cast speed",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "g": {
+   "kr": "마지막 옵션이 잡옵일 때",
+   "en": "Junk last line",
+   "values": {
+    "1": {
+     "kr": "바꾸는 도박",
+     "en": "Gamble to replace"
+    },
+    "0": {
+     "kr": "랜덤 옵션으로 둠",
+     "en": "Keep as a random line"
+    }
+   }
   }
  },
  "strategies": [
@@ -40,14 +68,18 @@
    "id": "high",
    "params": {
     "sT": 1,
-    "pT": 1
+    "pT": 1,
+    "cT": 1,
+    "g": 1
    }
   },
   {
    "id": "bal",
    "params": {
     "sT": 2,
-    "pT": 2
+    "pT": 2,
+    "cT": 2,
+    "g": 0
    }
   }
  ],
@@ -58,11 +90,13 @@
    "en": "Balance",
    "params": {
     "sT": 2,
-    "pT": 2
+    "pT": 2,
+    "cT": 2,
+    "g": 0
    },
    "desc": {
-    "kr": "주문 치명타·접두 2개 1~2티어 (시전 속도는 1티어 — 레벨 80이라 절사에 안 지워짐)",
-    "en": "Spell crit and the two prefixes at T1–2 (cast speed stays T1: level 80 keeps it safe from Whittling)"
+    "kr": "시전 속도·훼손 접두 1~2티어, 접미·접두 마지막 옵션은 랜덤 옵션",
+    "en": "Cast speed and the desecrated prefix at T1–2; the last suffix and prefix are random lines"
    }
   },
   {
@@ -71,7 +105,9 @@
    "en": "High-end",
    "params": {
     "sT": 1,
-    "pT": 1
+    "pT": 1,
+    "cT": 1,
+    "g": 1
    },
    "desc": {
     "kr": "모든 옵션 1티어 (영상)",
@@ -90,7 +126,7 @@
   },
   "cast": {
    "gi": 25,
-   "tmax": 1
+   "tmax": "$cT"
   },
   "crit": {
    "gi": 26,
@@ -122,24 +158,57 @@
   }
  },
  "require": {
-  "all": [
+  "any": [
    {
-    "has": "spd"
+    "all": [
+     {
+      "param": {
+       "g": 1
+      }
+     },
+     {
+      "has": "spd"
+     },
+     {
+      "has": "l7"
+     },
+     {
+      "has": "cast"
+     },
+     {
+      "has": "crit"
+     },
+     {
+      "count": {
+       "tag": "pg",
+       "min": 2
+      }
+     }
+    ]
    },
    {
-    "has": "l7"
-   },
-   {
-    "has": "cast"
-   },
-   {
-    "has": "crit"
-   },
-   {
-    "count": {
-     "tag": "pg",
-     "min": 2
-    }
+    "all": [
+     {
+      "param": {
+       "g": 0
+      }
+     },
+     {
+      "has": "spd"
+     },
+     {
+      "has": "l7"
+     },
+     {
+      "has": "cast"
+     },
+     {
+      "count": {
+       "tag": "pg",
+       "min": 1
+      }
+     }
+    ]
    }
   ]
  },
@@ -220,12 +289,15 @@
      "fr": true
     },
     {
-     "tag": "light",
-     "tmax": 2
+     "side": "p",
+     "label": {
+      "kr": "번개 피해 % 또는 추가 번개 1~2티어 (훼손)",
+      "en": "Lightning % or extra lightning T1–2 (desecrated)"
+     }
     },
     {
-     "tag": "xl",
-     "tmax": 2
+     "side": "p",
+     "random": true
     },
     {
      "tag": "l7",
@@ -233,11 +305,11 @@
     },
     {
      "tag": "cast",
-     "tmax": 1
+     "tmax": 2
     },
     {
-     "tag": "crit",
-     "tmax": 2
+     "side": "s",
+     "random": true
     }
    ]
   }
@@ -489,6 +561,22 @@
     },
     {
      "if": {
+      "all": [
+       {
+        "has": "cast"
+       },
+       {
+        "param": {
+         "g": 0
+        }
+       }
+      ]
+     },
+     "to": "p1",
+     "res": "ok"
+    },
+    {
+     "if": {
       "has": "cast"
      },
      "to": "s3",
@@ -556,7 +644,17 @@
    "skipIf": {
     "has": "cast"
    },
-   "skipTo": "s3"
+   "skipTo": "s3",
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "skipTo": "p1"
+     }
+    }
+   ]
   },
   {
    "id": "s3",
@@ -923,6 +1021,25 @@
     },
     {
      "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pg",
+         "min": 1
+        }
+       },
+       {
+        "param": {
+         "g": 0
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
       "count": {
        "tag": "pg",
        "min": 1
@@ -1055,6 +1172,25 @@
        "tag": "pg",
        "min": 2
       }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pg",
+         "min": 1
+        }
+       },
+       {
+        "param": {
+         "g": 0
+        }
+       }
+      ]
      },
      "to": "ok",
      "res": "ok"

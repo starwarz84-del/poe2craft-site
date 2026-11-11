@@ -11,6 +11,7 @@ const out=await p.evaluate(async()=>{const R=__rec; const raw=(await fetch('data
       R.lang=lg; delete r._an; const a=by.kr, ae=by.en, bs=R.baseOf(r);
       res[r.id]={h:R.recHash(r0), d:R.difficulty(r), b:{kr:bs.kr, en:bs.en, img:bs.img},
         f:a.final.map((m,i)=>({gi:m.gi, x:[m.txt, ae.final[i].txt], tag:m.tag, fr:m.fr, des:m.des, ess:m.ess, max:m.max, g:m.g.g, s:m.g.s, tg:m.g.tg, t:[m.g.t[0][4], m.g.t[0][5]]})),
+        fx:(a.finalX||[]).map((m,i)=>({x:[m.txt, (ae.finalX||[])[i]?.txt||m.txt], s:m.side, des:m.des, rnd:m.rnd})),
         q:a.qual, tot:a.tot, totAll:a.totAll, manual:a.manual, bases:a.bases};
     }catch(e){ bad++; console.log('skip', r.id, e.message); } }
   return {res, bad};});

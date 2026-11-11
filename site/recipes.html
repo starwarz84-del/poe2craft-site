@@ -254,6 +254,7 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .rnote{font-size:13px;color:var(--muted);margin:0 0 12px}
 .meta a{color:var(--muted)}
 .tt-mod.desm{color:#9be86a}
+.tt-mod.rndm{color:#8f8a80;font-style:italic}
 
 /* detail page: progress on top, step nav left, flow centre, item fixed on the right */
 .dwrap{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:12px 48px;max-width:1560px;margin:0 auto}
@@ -644,7 +645,8 @@ const baseOf = r => S.cls[r.cls] ? C(r).bases[r.base] : S.board[r.id].b;
 const lite = r => !S.cls[r.cls] && S.board?.[r.id];
 function liteA(r){ const b=S.board[r.id], k=KR()?0:1; if(b._a?.[k]) return b._a[k];
   const final=b.f.map(m=>({gi:m.gi, txt:m.x[k], tag:m.tag, fr:m.fr, des:m.des, ess:m.ess, max:m.max, g:{g:m.g, s:m.s, tg:m.tg, t:[[0,0,0,0,m.t[0],m.t[1]]]}}));
-  return (b._a=b._a||[])[k] = {final, qual:b.q, tot:b.tot, totAll:b.totAll, manual:b.manual, bases:b.bases, nodes:[], keys:Object.keys(b.tot)}; }
+  const finalX=(b.fx||[]).map(m=>({txt:m.x[k], side:m.s, des:m.des, rnd:m.rnd}));
+  return (b._a=b._a||[])[k] = {final, finalX, qual:b.q, tot:b.tot, totAll:b.totAll, manual:b.manual, bases:b.bases, nodes:[], keys:Object.keys(b.tot)}; }
 const A = r => lite(r) ? liteA(r) : analyse(r);
 const tx = o => o ? (o[S.lang] || o.en || o.kr || '') : '';
 const clsName = r => { for(const g of S.index.groups) for(const c of g.classes) if(c.id===(r.clsAs||r.cls)) return (KR()?c.kr:c.en).replace(/\s*\(.*\)\s*$/,''); return r.cls; };
@@ -988,6 +990,9 @@ function analyse(r){
   const fcState = r.fc ? fcCardState(r.fc.tags, r.fc.lines, r.fc.ds) : null;   // 플로우차트의 그 등급 완성품 카드가 기준
   const final = (fcState || mods).filter(m=>m.gi!=null).map(m=>({...modLine(r,m.gi,m.tmax,m.max,m.tmin), fr:m.fr, des:m.des, ess:m.ess}))
     .sort((a,c)=>(a.g.g==='p'?0:1)-(c.g.g==='p'?0:1));
+  /* 등급 카드 구분(2026-11-12, 정책 10장 C17): 플로우차트 완성품의 '랜덤 옵션'·범위 줄(옵션 이름 대신 설명)도 목록 카드에 보임 */
+  const finalX = (fcState||[]).filter(m=>m.gi==null && (m.label||m.rnd)).map(m=>({txt:m.rnd?L('랜덤 옵션','Random modifier'):tx(m.label), side:m.side||'p', des:!!m.des, rnd:!!m.rnd}))
+    .sort((a,c)=>(a.side==='p'?0:1)-(c.side==='p'?0:1));
   CUR_R=null;
   const basesAll = r.fcRead ? bases : passes[0] + (out[0]?.extraOpt||0), optMore = !r.fcRead && (basesAll > passes[0]+0.05 || Object.keys(totAll).some(k=>totAll[k]-(tot[k]||0) >= 0.01));
   // per phase: the chance one pass gets to its end (restarts, jumps back out of it, lost lines) and the starting items it uses
@@ -1000,7 +1005,7 @@ function analyse(r){
       else if(o.lose>0) reach *= o.p/(o.p+(1-o.p)*o.lose); });
     phaseSum[ph.id]={reach, bases: keep>0 ? 1/keep : Infinity}; });
   if(r.fcRead) for(const k in phaseSum) delete phaseSum[k];
-  return r._an = {nodes:out, tot, totAll, optMore, manual, bases:r.fcRead?bases:passes[0], final, keys:Object.keys(tot), qual, runes, sockets, sanct, phaseSum, basesAll, finalState:fcState};
+  return r._an = {nodes:out, tot, totAll, optMore, manual, bases:r.fcRead?bases:passes[0], final, finalX, keys:Object.keys(tot), qual, runes, sockets, sanct, phaseSum, basesAll, finalState:fcState};
 }
 // modifier search (사용자 2026-11-11): up to 3 dropdowns, a recipe must have every chosen modifier on its finished item
 const statKey = g => (g.t[0][5]||'').replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d+(?:\.\d+)?)?\)?/g,'#').replace(/\s+/g,' ').trim();
@@ -1146,7 +1151,9 @@ function cardHTML(r){
   const MT={fire:'fire',cold:'cold',lightning:'lightning',chaos:'chaos',physical:'physical','elemental damage':'elemental',mana:'mana',speed:'speed',critical:'critical'}, mg={};
   a.final.forEach(m=>{ const k=(m.g.t[0][5]||'').match(/Explicit (.+?) Modifier magnitudes/i); const v=(m.txt.match(/(\d+)(?:—(\d+))?\)?%/)||[]); if(k && MT[k[1].toLowerCase()] && (v[2]||v[1])) mg[MT[k[1].toLowerCase()]]={v:+(v[2]||v[1]), gi:m.gi}; });
   const boosted = m => { const t=Object.keys(mg).find(t=>m.g.tg.includes(t) && mg[t].gi!==m.gi && m.g.s!=='x'); return t ? qualBoost(m.txt, mg[t].v) : m.txt; };
-  const ml = a.final.map(m=>`<div class="tt-mod ${m.fr?'fr':''} ${m.des?'desm':''} ${m.ess?'essm':''}"><span class="tier ${m.g.g}">${esc(m.tag)}</span>${esc(boosted(m))}</div>`).join('');
+  const row = m => `<div class="tt-mod ${m.fr?'fr':''} ${m.des?'desm':''} ${m.ess?'essm':''}"><span class="tier ${m.g.g}">${esc(m.tag)}</span>${esc(boosted(m))}</div>`;
+  const rowX = m => `<div class="tt-mod xline ${m.rnd?'rndm':''} ${m.des?'desm':''}"><span class="tier ${m.side}">${m.side==='s'?'S':'P'}</span>${esc(m.txt)}</div>`;
+  const X=a.finalX||[], ml = a.final.filter(m=>m.g.g==='p').map(row).join('') + X.filter(m=>m.side==='p').map(rowX).join('') + a.final.filter(m=>m.g.g!=='p').map(row).join('') + X.filter(m=>m.side!=='p').map(rowX).join('');
   return `<div class="tt"><div class="tt-head"><div class="tt-name">${esc(itemName(r))}</div></div><div class="tt-body">
       ${b.img?`<div class="tt-art"><img src="${b.img}" alt=""></div>`:''}
       <div class="tt-prop">${esc(clsName(r))}</div>${a.qual?.v?`<div class="tt-prop">${L('퀄리티','Quality')}: <b>+${a.qual.v}%</b></div>`:''}<div class="tt-prop">${L('아이템 레벨','Item Level')}: <b>${r.ilvl}</b></div>

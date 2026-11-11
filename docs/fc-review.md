@@ -98,8 +98,8 @@
 |---|---|---|---|---|---|
 | absent-amulet-spell6-v2 | bal·high | - | 대기 |  |  |
 | absent-amulet-video-v2 | bal·high | - | 대기 |  |  |
-| banzino-mirror-staff-v2 | bal·high | - | 진행 중 | A(Opus) |  |
-| barricade-quarterstaff-v2 | bal·high | - | 진행 중 | A(Opus) |  |
+| banzino-mirror-staff-v2 | bal·high | - | 완료 11-12 | A(Opus) 하이엔드만 레시피(극한). 플로우차트 밸런스: 시전 속도·훼손 접두 1~2티어, 마지막 접두·접미 랜덤 — 3,325 → 664 |
+| barricade-quarterstaff-v2 | bal·high | - | 완료 11-12 | A(Opus) 밸런스 원소 피해 접두 2개 1~2티어(전엔 1개), 세번째 랜덤 — 346 → 619. 하이엔드 2,617 그대로 |
 | belton-plus8-wand-v2 | ess·bal | ess 주문 피해 1~5티어; ess 마나 재생 1~3티어; bal 주문 피해 1~3티어; bal 마나 재생 1티어 | 대기 |  |  |
 | bigdaddy-lightning-wand-v2 | ess·bal | - | 대기 |  |  |
 | breach-ring-phys-v2 | ess·bal | ess 화염 저항 1~3티어; bal 공격 시 원소 피해 1~3티어 | 대기 |  |  |
@@ -141,7 +141,7 @@
 | mazbro-proj-gloves-v2 | bal·high | - | 대기 |  |  |
 | mazbro-sceptre-v2 | high | - | 대기 |  |  |
 | mazbro-spell5-amulet-v2 | bal·high | - | 대기 |  |  |
-| mirror-bow-video-v2 | high | - | 진행 중 | A(Opus) |  |
+| mirror-bow-video-v2 | high | - | 완료 11-12 | A(Opus) 하이엔드만(극한), 바꿀 것 없음 |
 | noble-timelost-sapphire-v2 | bal·high | - | 대기 |  |  |
 | noble-visceral-quiver-v2 | bal·high | bal 치명타 피해 1~3티어; high 치명타 피해 1~2티어 | 대기 |  |  |
 | ragna-ashot-bow-v2 | ess·bal | ess 물리 피해 % 1~3티어; bal 물리 피해 % 1티어 | 대기 |  |  |
@@ -167,8 +167,8 @@
 | sl-flamewave-staff-v2 | bal·high | - | 대기 |  |  |
 | sl-proj7-gloves-v2 | bal·high | - | 대기 |  |  |
 | tankjung-kitava-shield-v2 | ess·bal | ess 최대 저항 1~3티어; bal 최대 저항 1티어; bal 방어도 접두 1티어 옵션 3개 (절사) | 대기 |  |  |
-| unstoppable-slipstrike-vest-v2 | bal·high | bal 굴절 1~4티어; high 굴절 1~3티어 | 진행 중 | A(Opus) |  |
-| unstoppable-vile-robe-v2 | bal·high | bal 접두 에너지 보호막·정신력 1티어; bal 저항 1티어 | 진행 중 | A(Opus) |  |
+| unstoppable-slipstrike-vest-v2 | bal·high | bal 굴절 1~4티어; high 굴절 1~3티어 | 완료 11-12 | A(Opus) 하이엔드 굴절 1~3 → 1티어(651 → 1,368), 밸런스 1~2티어 + 마지막 접미 랜덤(176 → 74) |
+| unstoppable-vile-robe-v2 | bal·high | bal 접두 에너지 보호막·정신력 1티어; bal 저항 1티어 | 완료 11-12 | A(Opus) 밸런스 접두(엑잘·훼손 반복) 1 → 1~2티어(163 → 99), 저항은 싼 반복이라 1티어 유지 |
 | vodnarg-timelost-emerald-v2 | ess·bal | - | 대기 |  |  |
-| xeno-phys-crossbow-v2 | high | - | 진행 중 | A(Opus) |  |
+| xeno-phys-crossbow-v2 | high | - | 완료 11-12 | A(Opus) 하이엔드만(극한), 바꿀 것 없음 |
 | zenm-timelost-sapphire-v2 | ess·bal | - | 대기 |  |  |

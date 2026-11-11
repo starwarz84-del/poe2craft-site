@@ -17,7 +17,7 @@ RES3=lambda c: [{'gi':1,'tmax':'$rT'},{'gi':2,'tmax':'$rT'},{'gi':3,'tmax':'$rT'
 #   → 빛의 징조로 막기 제거(16:00) → 고대 갈비뼈 공개로 마지막 접두, 낮으면 빛의 징조 + 소멸로 다시(16:15~18:15)
 #   → 마지막 접미 잡옵은 절사의 징조 + 카오스(레벨 82 저항이 접미를 잠가서 2~4번, 18:45~19:45). "저항 3티어라도 괜찮다"(22:00)
 c='Body_Armours_int'
-P={'high':{'pT':1,'rT':1,'last':'res'},'bal':{'pT':1,'rT':1,'last':'any'}}
+P={'high':{'pT':1,'rT':1,'last':'res'},'bal':{'pT':2,'rT':1,'last':'any'}}   # 2026-11-12 C17: 밸런스 접두(엑잘·훼손 반복으로 찾음) 1~2티어, 저항은 카오스·엑잘 + 소멸의 오브(싼 반복)라 모든 등급 1티어
 tags={'pes':{'gi':7,'tmax':1},'esf':{'gi':6,'tmax':'$pT'},'hyb':{'gi':9,'tmax':'$pT'},'sp':{'gi':14,'tmax':'$pT'},
       'gp':{'anyOf':['esf','hyb','sp']},'fr':{'gi':1,'tmax':'$rT'},'cr':{'gi':2,'tmax':'$rT'},'lr':{'gi':3,'tmax':'$rT'},
       'goodS':{'anyOf':['fr','cr','lr']},'blk':{'anyOf':[{'gi':5},{'gi':12}]},'mkP':{'gi':44}}
@@ -63,7 +63,7 @@ g22('unstoppable-vile-robe-v2',c,'Vile Robe',82,
 #   → 42:20 엑잘 한 번, 빗나가면 좌측 결정화의 징조 + 심연의 에센스(접두 하나 → 징표) → 갈비뼈 → 우물에서 공개해 생명력·가시로 자리 막기 → 다시 엑잘
 #   → 45:30 막아 둔 옵션을 지우고 마지막 접두는 훼손 공개(생명력 없는 복합·정신력 1티어, 약한 건 넘김)
 c='Body_Armours_dex'
-P2={'high':{'pT':1,'rT':1,'dT':3},'bal':{'pT':2,'rT':2,'dT':4}}
+P2={'high':{'pT':1,'rT':1,'dT':1,'g':1},'bal':{'pT':2,'rT':2,'dT':2,'g':0}}   # 2026-11-12 C17: 반복으로 찾는 옵션 하이엔드 1티어·밸런스 1~2티어, 밸런스는 마지막 접미가 잡옵이어도 랜덤 옵션으로 둠(g)
 tags={'pev':{'gi':7,'tmax':1},'evf':{'gi':6,'tmax':'$pT'},'hyb':{'gi':9,'tmax':'$pT'},'gpE':{'anyOf':['evf','hyb']},
       'fr':{'gi':1,'tmax':'$rT'},'cr':{'gi':2,'tmax':'$rT'},'lr':{'gi':3,'tmax':'$rT'},'dfl':{'gi':18,'tmax':'$dT'},
       'goodS':{'anyOf':['fr','cr','lr','dfl']},'blk':{'anyOf':[{'gi':5},{'gi':12}]},'mkP':{'gi':45}}
@@ -73,7 +73,7 @@ GS=it('s','저항 또는 굴절 1개','One resistance or deflection',['goodS'],'
 BL=it('p','생명력 최대치 또는 가시 피해 (훼손, 자리 막기)','Max life or thorns (desecrated, slot blocker)',['blk'],'d')
 S0=[PV,J('s')]; S0b=[PV,GS]; S1=S0b+[it('s','랜덤 옵션 2개','Two random lines',None,'j')]; S2=[PV,RF,RC,DF]
 S5=S2+[EV]; S7=S5+[UN('p')]; S8=S5+[HY]
-G3={'count':{'tag':'goodS','min':3}}
+G3={'any':[{'count':{'tag':'goodS','min':3}},{'all':[{'param':{'g':0}},{'count':{'tag':'goodS','min':2}},{'full':'s'}]}]}
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pev','fr':True},{'junk':'s'}]},K('회피 증가 1티어 분열 Slipstrike Vest (아이템 레벨 82, 분열 + 잡옵 1개만 남김)','Slipstrike Vest with fractured T1 % evasion (item level 82, fracture + one junk line)'),S0),
  mark([0,0.6],'c0',S0),
  act('c0','main',[0,1],'chaos','Chaos_Orb',K('접미 첫번째 옵션','First suffix'),None,K('카오스','Chaos'),[{'if':{'has':'goodS'},'to':'e1','res':'ok'},{'to':'c0','res':'fail'}],S0b,show=['fr','cr','lr','dfl']),
@@ -98,8 +98,9 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pev','fr':True},{'junk':'s'}]},K(
  done([0,9])]
 g22('unstoppable-slipstrike-vest-v2',c,'Slipstrike Vest',82,
   'Unstoppable BTW 회피 갑옷(swF5mwXmZ0k 40:45~46:30, 영상 대조 2026-11-11) — 회피 증가 1티어 분열에 옵션 1개만 남김 → 카오스 오브로 그 잡옵을 저항으로 → 상위 찬미 + 우측 찬미 + 완벽한 엑잘로 접미 2개 → 잡옵 접미는 상위 카오스 오브 반복(영상 41:50 “카오스로 막 돌리기” — 일반 카오스 오브보다 시뮬이 싸서 상위로 바꿈: 밸런스 224 → 176 div, 하이엔드 940 → 651 div, 정책 0장 3번. 영상 41:55의 절사의 징조 + 완벽한 카오스 오브 한 번은 운이 좋았던 경우. 새 옵션이 접두로 가면 우측 찬미 + 엑잘티드 오브) → 좌측 찬미 + 완벽한 엑잘로 접두, 빗나가면 좌측 결정화의 징조 + 심연의 에센스로 징표 → 고대 갈비뼈 → 공개해 생명력·가시로 자리 막기 → 다시 엑잘 → 빛의 징조로 막기 제거 → 고대 갈비뼈 → 마지막 접두 공개(빛의 징조로 다시). 디바인·바알 주입기·바알 오브는 뺌(정책 33).',
-  {'pT':{'kr':'접두 회피','en':'Evasion prefixes','values':TS},'rT':{'kr':'저항','en':'Resistances','values':TS},'dT':{'kr':'굴절','en':'Deflection','values':TV({'3':('1~3티어','T1–3'),'4':('1~4티어','T1–4')})}},P2,
-  {'high':K('모든 옵션 1티어 (영상: 회피 3,646)','Every line tier 1 (video: 3,646 evasion)'),'bal':K('접두·저항·굴절 1~2티어 (영상: 회피 복합 2티어도 괜찮음)','Prefixes, resistances and deflection at T1–2 (video: a T2 hybrid is fine)')},
+  {'pT':{'kr':'접두 회피','en':'Evasion prefixes','values':TS},'rT':{'kr':'저항','en':'Resistances','values':TS},'dT':{'kr':'굴절','en':'Deflection','values':TS},'g':{'kr':'마지막 접미가 잡옵일 때','en':'Junk last suffix','values':TV({'1':('바꾸는 도박','Gamble to replace'),'0':('랜덤 옵션으로 둠','Keep as a random line')})}},P2,
+  {'high':K('모든 옵션 1티어 (영상: 회피 3,646)','Every line tier 1 (video: 3,646 evasion)'),'bal':K('접두·저항·굴절 1~2티어, 마지막 접미는 랜덤 옵션 (영상: 회피 복합 2티어도 괜찮음)','Prefixes, resistances and deflection at T1–2, the last suffix random (video: a T2 hybrid is fine)')},
   tags,nodes,[{'id':'L0','nodes':['t1','e2'],'kr':'접미 잡옵 바꾸기','en':'Junk suffix swap'},{'id':'L1','nodes':['e3','cx','w0','db','rb'],'kr':'접두 두번째 옵션','en':'Second prefix'},{'id':'L2','nodes':['d3','d4','d4x'],'kr':'접두 세번째 옵션(훼손)','en':'Third prefix (desecrated)'}],
-  FIN(('high','bal'),lambda v:[{'tag':'pev','fr':True},{'tag':'evf','tmax':1 if v=='high' else 2},{'tag':'hyb','tmax':1 if v=='high' else 2},{'tag':'fr','tmax':1 if v=='high' else 2},{'tag':'cr','tmax':1 if v=='high' else 2},{'tag':'dfl','tmax':3 if v=='high' else 4}]),
-  {'quality':20,'sockets':3,'exceptional':True},{'all':[{'has':'pev'},{'count':{'tag':'gpE','min':2}},{'count':{'tag':'goodS','min':3}}]},('high','bal'))
+  FIN(('high','bal'),lambda v:[{'tag':'pev','fr':True},{'tag':'evf','tmax':1},{'tag':'hyb','tmax':1},{'tag':'fr','tmax':1},{'tag':'cr','tmax':1},{'tag':'dfl','tmax':1}] if v=='high' else
+      [{'tag':'pev','fr':True},{'tag':'evf','tmax':2},{'tag':'hyb','tmax':2},{'side':'s','label':K('저항 또는 굴절 1~2티어','Resistance or deflection T1–2')},{'side':'s','label':K('저항 또는 굴절 1~2티어','Resistance or deflection T1–2')},{'side':'s','random':True}]),
+  {'quality':20,'sockets':3,'exceptional':True},{'all':[{'has':'pev'},{'count':{'tag':'gpE','min':2}},G3]},('high','bal'))

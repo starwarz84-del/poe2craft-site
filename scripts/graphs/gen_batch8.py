@@ -150,7 +150,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'crit','fr':True},{'junk':'s'}]},K
  LIGHTX('q4x',[1,3],'q3'),
  act('p1','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),[{'if':{'count':{'tag':'ele','min':2}},'to':'p4','res':'ok'},{'to':'p2','res':'fail'}],I4,omens=['Omen_of_Greater_Exaltation']),
  act('p2','main',[0,5],'chaos','Perfect_Chaos_Orb',K('가장 낮은 옵션을 원소 피해로','The lowest line into elemental damage'),[st('p','원소 피해 접두 옵션 2개','Two elemental damage prefixes')],K('카오스','Chaos'),
-     [{'if':{'count':{'tag':'ele','min':2}},'to':'p4','res':'ok'},{'if':{'all':[{'param':{'eT':2}},{'count':{'tag':'ele','min':1}}]},'to':'p4','res':'ok'},{'to':'p2','res':'fail'}],I5,trim={'side':'p','keep':'keep'},
+     [{'if':{'count':{'tag':'ele','min':2}},'to':'p4','res':'ok'},{'to':'p2','res':'fail'}],I5,trim={'side':'p','keep':'keep'},
      over=[{'param':{'eT':2},'set':{'cur':'Greater_Chaos_Orb'}}]),
  act('p4','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),None,K('엑잘','Exalt'),
      [{'if':{'count':{'tag':'ele','min':3}},'to':'ok','res':'ok'},{'if':{'all':[{'param':{'eT':1}},{'whittleSafe':{'tag':'keep','side':'p'}}]},'to':'p5','res':'fail'},{'if':{'param':{'eT':1}},'to':'p5x','res':'fail'},{'to':'ok','res':'fail'}],I6,show=['fire','cold','lflat']),
@@ -159,11 +159,11 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'crit','fr':True},{'junk':'s'}]},K
  annul('p5x',[1,7],[{'to':'p4','port':'right'}],omens=('Omen_of_Sinistral_Annulment',),target=K('접두 옵션 하나 지우기','Remove one prefix')),
  done([0,8])]
 graph8('barricade-quarterstaff-v2','Quarterstaves','Sinister Quarterstaff',81,
-  'Barricade 험악한 육척봉(원본 레시피 기록) — 치명타 확률 5% 분열 + 잡옵(퀄리티 30%) → 카오스 오브(근접 스킬 +5) → 우측 강령술 + 보존된 턱뼈 → 공개(공격 속도·치명타 피해, 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 원소 피해 접두 옵션 2개 → 완벽한 엑잘(세번째, 하이엔드는 빗나가면 절사 카오스 — 가장 낮은 옵션이 버릴 옵션일 때만). 하이엔드 = 영상(1티어), 밸런스 = 1~2티어 원소 피해 접두 옵션 1개까지 절사 + 상위 카오스 오브, 나머지 접두는 결과 그대로.',
-  {'rT':{'kr':'공격 속도·치명타 피해','en':'Attack speed or crit damage','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'eT':{'kr':'원소 피해 접두','en':'Elemental prefixes','values':TV({'1':('1티어 옵션 3개 (완벽한 카오스)','Three T1 lines (Perfect Chaos)'),'2':('1~2티어 옵션 1개 이상 (상위 카오스)','At least one T1–2 line (Greater Chaos)')})}},P,
+  'Barricade 험악한 육척봉(원본 레시피 기록) — 치명타 확률 5% 분열 + 잡옵(퀄리티 30%) → 카오스 오브(근접 스킬 +5) → 우측 강령술 + 보존된 턱뼈 → 공개(공격 속도·치명타 피해, 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 원소 피해 접두 옵션 2개 → 완벽한 엑잘(세번째, 하이엔드는 빗나가면 절사 카오스 — 가장 낮은 옵션이 버릴 옵션일 때만). 하이엔드 = 영상(1티어), 밸런스 = 원소 피해 접두 2개를 1~2티어까지 절사 + 상위 카오스 오브, 세번째 접두는 랜덤 옵션(2026-11-12 등급 기준 C17).',
+  {'rT':{'kr':'공격 속도·치명타 피해','en':'Attack speed or crit damage','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'eT':{'kr':'원소 피해 접두','en':'Elemental prefixes','values':TV({'1':('1티어 옵션 3개 (완벽한 카오스)','Three T1 lines (Perfect Chaos)'),'2':('1~2티어 옵션 2개 (상위 카오스), 세번째는 랜덤','Two T1–2 lines (Greater Chaos), the third random')})}},P,
   {'high':K('영상: 원소 피해 1티어 옵션 3개','Video: three T1 elemental prefixes'),'bal':K('1~2티어 옵션 2개, 세번째는 결과 그대로','Two T1–2 lines, the third as it comes')},
   tags,nodes,[{'id':'L1','nodes':['q3','q4','q4x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'side':'p','label':K('원소 피해 접두','Elemental damage prefix')}]+([{'side':'p','label':K('원소 피해 접두','Elemental damage prefix')},{'side':'p','label':K('원소 피해 접두','Elemental damage prefix')}] if v=='high' else [{'side':'p','random':True},{'side':'p','random':True}])+[{'tag':'crit','tmax':1,'fr':True},{'tag':'melee','tmax':1},{'side':'s','label':K('공격 속도·치명타 피해','Attack speed or crit damage')}]),
+  FIN(('high','bal'),lambda v:([{'side':'p','label':K('원소 피해 접두 1티어','Elemental damage prefix T1')}]*3 if v=='high' else [{'side':'p','label':K('원소 피해 접두 1~2티어','Elemental damage prefix T1–2')}]*2+[{'side':'p','random':True}])+[{'tag':'crit','tmax':1,'fr':True},{'tag':'melee','tmax':1},{'side':'s','des':True,'label':K('공격 속도·치명타 피해 1티어','Attack speed or crit damage T1') if v=='high' else K('공격 속도·치명타 피해 1~2티어','Attack speed or crit damage T1–2')}]),
   {'quality':30,'sockets':3},{'all':[{'has':'melee'},{'has':'rev'},{'has':'ele'},{'full':'p'}]},('high','bal'))
 
 # ---------- 5. Diztoh 엔드게임 육척봉 (YfGJyBrObxI) ----------
