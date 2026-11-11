@@ -201,7 +201,11 @@ graph8('barricade-quarterstaff-v2','Quarterstaves','Sinister Quarterstaff',81,
 # ---------- 5. Diztoh 엔드게임 육척봉 (YfGJyBrObxI) ----------
 # 원본: 근접 스킬 +5 분열 + 잡옵(퀄리티 20%) → 상위 카오스 오브(물리 피해 추가·물리 %·복합) → 좌측 찬미 + 완벽한 엑잘(다른 물리 %, 빗나가면 좌측 소멸의 징조)
 # → 좌측 찬미 + 완벽한 엑잘(복합·화염 추가, 빗나가면 절사 + 좌측 말소 + 완벽한 카오스) → 완벽한 엑잘(접미, 빗나가면 우측 말소 + 카오스) → 우측 강령술 + 고대 턱뼈 → 공개(치명타, 빗나가면 우측 소멸의 징조).
-P={'high':{'xT':2,'sT':2},'bal':{'xT':3,'sT':3}}
+# 2026-11-12 영상 전체 대조(자동 번역 자막 0:00~17:40, 메인 세션): 단계 일치. 영상은 접두 둘을 상위 찬미로 한 번에도 하지만 '하나씩 해도 된다'(6:00)고 해서 하나씩 둠.
+#   훼손 공개 빗나감: 영상은 우측 소멸의 징조 50:50(13:00, '빛의 징조보다 싸서'). 지금 시세는 빛의 징조(2,587)가 우측 소멸(3,708)보다 싸고 공격 속도를 잃지 않아 빛의 징조로 둠
+#   (시뮬 1,000회: 하이엔드 우측 소멸 8,130 → 빛 1,232).
+#   등급 C17: 하이엔드 1티어, 밸런스 1~2티어, 밸런스는 마지막 접두·접미(훼손)를 랜덤 옵션으로. 영상은 2·3티어로 타협했지만 등급 기준을 따름.
+P={'high':{'xT':1,'sT':1,'g':1},'bal':{'xT':2,'sT':2,'g':0}}
 tags={'melee':{'gi':10,'tmax':1},'pflat':{'gi':3,'tmax':3},'ppct':{'gi':8,'tmax':'$xT'},'hyb':{'gi':9,'tmax':'$xT'},'fire':{'gi':4,'tmax':4},
       'p1':{'anyOf':['pflat','ppct','hyb'],'label':K('물리 피해 접두','Physical damage prefix')},'pp':{'anyOf':['ppct','hyb'],'label':K('물리 % · 복합','% physical or hybrid')},'p3':{'anyOf':['hyb','fire'],'label':K('복합·화염 피해 추가','Hybrid or flat fire')},
       'pre':{'anyOf':['pflat','ppct','hyb','fire'],'label':K('물리·화염 피해 접두','Physical or fire prefix')},
@@ -213,27 +217,28 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'melee','fr':True},{'junk':'s'}]},
  mark([0,0.6],'s2',I0),
  act('s2','main',[0,1],'chaos','Greater_Chaos_Orb',K('접두 첫번째 옵션','First prefix option'),None,K('카오스','Chaos'),[{'if':{'has':'p1'},'to':'s3','res':'ok'},{'to':'s2','res':'fail'}],I1,show=['pflat','ppct','hyb']),
  act('s3','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),
-     [{'if':{'count':{'tag':'pre','min':2}},'to':'s4','res':'ok'},{'if':{'param':{'xT':2}},'to':'s3x','res':'fail'},{'to':'s4','res':'fail'}],I2,show=['ppct','hyb'],omens=['Omen_of_Sinistral_Exaltation']),
+     [{'if':{'count':{'tag':'pre','min':2}},'to':'s4','res':'ok'},{'to':'s3x','res':'fail'}],I2,show=['ppct','hyb'],omens=['Omen_of_Sinistral_Exaltation']),
  cleanup('s3x',[1,2],['pre'],[{'lost':'pre','to':'s2','port':'right'},{'to':'s3','port':'bottom'}],K('빗나간 접두 지우기 (첫번째 접두는 유지)','Remove the missed prefix (keep the first)'),side='p'),
  act('s4','main',[0,3],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),None,K('엑잘','Exalt'),
-     [{'if':{'count':{'tag':'pre','min':3}},'to':'s5','res':'ok'},{'if':{'all':[{'param':{'xT':2}},{'whittleSafe':{'tag':'keepP','side':'p'}}]},'to':'s4b','res':'fail'},{'to':'s5','res':'fail'}],I3,show=['hyb','fire'],omens=['Omen_of_Sinistral_Exaltation'],
-     over=[{'param':{'xT':3},'set':{'cur':'Greater_Exalted_Orb'}}]),
+     [{'if':{'count':{'tag':'pre','min':3}},'to':'s5','res':'ok'},{'if':{'all':[{'param':{'g':1}},{'whittleSafe':{'tag':'keepP','side':'p'}}]},'to':'s4b','res':'fail'},{'to':'s5','res':'fail'}],I3,show=['hyb','fire'],omens=['Omen_of_Sinistral_Exaltation'],
+     over=[{'param':{'g':0},'set':{'cur':'Greater_Exalted_Orb'}}]),
  act('s4b','main',[1,3],'chaos','Perfect_Chaos_Orb',K('가장 낮은 접두를 다시 (버릴 옵션일 때만)','Reroll the lowest prefix (only while it is junk)'),None,K('카오스','Chaos'),
      [{'if':{'count':{'tag':'pre','min':3}},'to':'s5','res':'ok'},{'if':{'sideLt':{'side':'p','n':3}},'to':'s4','res':'fail','hide':True},{'if':{'whittleSafe':{'tag':'keepP','side':'p'}},'to':'s4b','res':'fail'},{'to':'s5','res':'fail'}],I3,show=['hyb','fire'],omens=['Omen_of_Whittling','Omen_of_Sinistral_Erasure']),
  act('s5','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접미 두번째 옵션','Second suffix'),None,K('엑잘','Exalt'),
-     [{'if':{'has':'suf'},'to':'s6','res':'ok'},{'if':{'param':{'xT':2}},'to':'s5b','res':'fail'},{'to':'s6','res':'fail'}],I4,show=['as','crit','cdmg'],
-     over=[{'param':{'xT':3},'set':{'cur':'Greater_Exalted_Orb'}}]),
+     [{'if':{'has':'suf'},'to':'s6','res':'ok'},{'to':'s5b','res':'fail'}],I4,show=['as','crit','cdmg'],
+     over=[{'param':{'g':0},'set':{'cur':'Greater_Exalted_Orb'}}]),
  act('s5b','main',[1,4],'chaos','Chaos_Orb',K('접미를 다시','Reroll a suffix'),None,K('카오스','Chaos'),[{'if':{'has':'suf'},'to':'s6','res':'ok'},{'to':'s5b','res':'fail'}],I4,show=['as','crit','cdmg'],omens=['Omen_of_Dextral_Erasure']),
  act('s6','main',[0,5],'desecrate','Ancient_Jawbone',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'s7'}],I5,omens=['Omen_of_Dextral_Necromancy']),
  act('s7','main',[0,6],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),
-     [{'if':{'added':'cr'},'to':'ok','res':'ok'},{'to':'s7y','res':'fail'}],I6,want='cr',show=['crit','cdmg'],omens=['Omen_of_Abyssal_Echoes']),
+     [{'if':{'added':'cr'},'to':'ok','res':'ok'},{'if':{'param':{'g':0}},'to':'ok','res':'ok'},{'to':'s7y','res':'fail'}],I6,want='cr',show=['crit','cdmg'],omens=['Omen_of_Abyssal_Echoes'],
+     over=[{'param':{'g':0},'set':{'omens':[],'goal':K('훼손 옵션 확인 (나오는 대로)','Reveal (keep what comes)')}}]),
  LIGHTX('s7y',[1,6],'s6'),
  done([0,7])]
 graph8('diztoh-endgame-quarterstaff-v2','Quarterstaves','Sinister Quarterstaff',82,
   'Diztoh 엔드게임 육척봉(원본 레시피 기록) — 근접 스킬 +5 분열 + 잡옵 → 상위 카오스 오브(물리 접두) → 좌측 찬미 + 완벽한 엑잘(물리 %·복합, 하이엔드는 빗나가면 좌측 소멸의 징조) → 좌측 찬미 + 완벽한 엑잘(복합·화염 추가, 하이엔드는 빗나가면 절사 + 좌측 말소 + 완벽한 카오스) → 완벽한 엑잘(접미, 하이엔드는 빗나가면 우측 말소 + 카오스) → 우측 강령술 + 고대 턱뼈 → 공개(치명타, 빗나가면 빛의 징조 — 영상의 우측 소멸의 징조는 접미 좋은 옵션도 지울 수 있어 바꿈). 밸런스 = 물리 % 1~3티어, 상위 엑잘, 빗나가도 그대로.',
-  {'xT':{'kr':'물리 %·복합','en':'% physical / hybrid','values':TV({'2':('1~2티어 (다시 도전)','T1–2 (retry)'),'3':('1~3티어 (결과 그대로)','T1–3 (as it comes)')})},'sT':{'kr':'치명타 확률·피해','en':'Crit chance / damage','values':TV({'2':('1~2티어','T1–2'),'3':('1~3티어','T1–3')})}},P,
-  {'high':K('영상: 빗나가면 소멸·말소 징조로 다시','Video: Annulment/Erasure omens on misses'),'bal':K('상위 엑잘, 빗나가도 그대로, 공개는 빛의 징조로','Greater Exalts, misses stay, Light on the reveal')},
+  {'xT':{'kr':'물리 %·복합','en':'% physical / hybrid','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'sT':{'kr':'치명타 확률·피해','en':'Crit chance / damage','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'g':{'kr':'마지막 접두·접미','en':'Last prefix and suffix','values':TV({'1':('목표 옵션까지 반복','Repeat until the wanted line'),'0':('랜덤 옵션','Random line')})}},P,
+  {'high':K('1티어까지, 빗나가면 소멸·말소 징조로 다시','To T1, Annulment/Erasure omens on misses'),'bal':K('1~2티어, 상위 엑잘, 마지막 접두·접미는 랜덤 옵션','T1–2, Greater Exalts, the last prefix and suffix random')},
   tags,nodes,[{'id':'L1','nodes':['s6','s7','s7y'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'ppct','tmax':P[v]['xT']},{'tag':'hyb','tmax':P[v]['xT']},{'side':'p','label':K('물리·화염 피해 추가','Flat physical or fire')} if v=='high' else {'side':'p','random':True},{'tag':'melee','tmax':1,'fr':True},{'side':'s','label':K('공격 속도·치명타','Attack speed or crit')} if v=='high' else {'side':'s','random':True},{'side':'s','label':K('치명타 확률·피해','Crit chance or damage')}]),
-  {'quality':20,'sockets':2},{'all':[{'has':'melee'},{'has':'p1'},{'has':'cr'},{'full':'p'},{'full':'s'}]},('high','bal'))
+  FIN(('high','bal'),lambda v:[{'side':'p','label':K('물리 피해 접두 1티어','T1 physical damage prefix') if v=='high' else K('물리 피해 접두 1~2티어','T1–2 physical damage prefix')},{'side':'p','label':K('물리 %·복합 1티어','T1 % physical or hybrid') if v=='high' else K('물리 %·복합 1~2티어','T1–2 % physical or hybrid')},{'side':'p','label':K('복합·화염 피해 추가','Hybrid or flat fire')} if v=='high' else {'side':'p','random':True},{'tag':'melee','tmax':1,'fr':True},{'side':'s','label':K('공격 속도·치명타','Attack speed or crit')},{'side':'s','label':K('치명타 확률·피해 1티어','T1 crit chance or damage')} if v=='high' else {'side':'s','random':True}]),
+  {'quality':20,'sockets':2},{'all':[{'has':'melee'},{'has':'p1'},{'any':[{'has':'cr'},{'param':{'g':0}}]},{'full':'p'},{'full':'s'}]},('high','bal'))
 print('wrote 5 graphs (batch 8)')

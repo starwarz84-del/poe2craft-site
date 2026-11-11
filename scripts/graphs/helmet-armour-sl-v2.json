@@ -5,7 +5,7 @@
  "base": "Imperial Greathelm",
  "ilvl": 82,
  "basePrice": {},
- "note": "SL 게임연구소 #2 종결급 투구(화염파용) 흐름을 투구 양식(정책 24)으로 그린 1차 초안 — 사용자 검토 전. 분열이 방어도의 원소 적용이 아닌 다른 유효 옵션이면 같은 흐름을 그 옵션 기준으로 진행한다고 보고 비용은 같다고 가정.",
+ "note": "SL #2 종결급 투구(p0fChSu91uI) — 2026-11-12 영상 전체 대조(자막 0:00~11:10, 메인 세션): 단계·커런시 일치(매직 완벽 확장 + 소멸 → 상위 풍요의 에센스 → 보존된 갈비뼈 + 분열 → 카오스 → 좌측 찬미 엑잘 → 좌측 강령술 + 고대 갈비뼈 + 메아리 → 상위 찬미 엑잘 저항 → 절사(필요하면 말소) 완벽한 카오스). 등급 C17: 밸런스 1~2티어, 에센셜 1~4티어·빛의 징조 없음, 마지막 접두·접미는 랜덤 옵션.",
  "params": {
   "pT": {
    "kr": "접두 목표",
@@ -18,6 +18,10 @@
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
     }
    }
   },
@@ -32,6 +36,14 @@
     "3": {
      "kr": "1~3티어",
      "en": "T1–3"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
     }
    }
   },
@@ -62,6 +74,20 @@
      "en": "T1–2"
     }
    }
+  },
+  "g": {
+   "kr": "마지막 접두·접미",
+   "en": "Last prefix and suffix",
+   "values": {
+    "1": {
+     "kr": "목표 옵션까지 반복",
+     "en": "Repeat until the wanted line"
+    },
+    "0": {
+     "kr": "랜덤 옵션",
+     "en": "Random line"
+    }
+   }
   }
  },
  "strategies": [
@@ -71,25 +97,28 @@
     "pT": 1,
     "resT": 1,
     "last": "rar",
-    "rarT": 1
+    "rarT": 1,
+    "g": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "pT": 1,
-    "resT": 3,
-    "last": "rar",
-    "rarT": 2
+    "pT": 2,
+    "resT": 2,
+    "last": "none",
+    "rarT": 2,
+    "g": 0
    }
   },
   {
    "id": "ess",
    "params": {
-    "pT": 2,
-    "resT": 3,
+    "pT": 4,
+    "resT": 4,
     "last": "none",
-    "rarT": 2
+    "rarT": 2,
+    "g": 0
    }
   }
  ],
@@ -99,14 +128,15 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "pT": 2,
-    "resT": 3,
+    "pT": 4,
+    "resT": 4,
     "last": "none",
-    "rarT": 2
+    "rarT": 2,
+    "g": 0
    },
    "desc": {
-    "kr": "접두 1~2티어 · 저항 1~3티어 · 마지막 접미 랜덤",
-    "en": "Prefixes T1–2, resists T1–3, last suffix random"
+    "kr": "접두·저항 1~4티어, 빛의 징조 없음, 마지막 접두·접미는 랜덤 옵션",
+    "en": "T1–4 prefixes and resistance, no Omen of Light, the last prefix and suffix random"
    }
   },
   {
@@ -114,14 +144,15 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "pT": 1,
-    "resT": 3,
-    "last": "rar",
-    "rarT": 2
+    "pT": 2,
+    "resT": 2,
+    "last": "none",
+    "rarT": 2,
+    "g": 0
    },
    "desc": {
-    "kr": "접두 1티어 · 저항 1~3티어 · 희귀도 1~2티어(상위 카오스 오브)",
-    "en": "Prefixes T1, resists T1–3, rarity T1–2 (Greater Chaos)"
+    "kr": "접두·저항 1~2티어, 마지막 접두(훼손)·접미는 랜덤 옵션",
+    "en": "T1–2 prefixes and resistance, the last prefix (desecrated) and suffix random"
    }
   },
   {
@@ -132,11 +163,12 @@
     "pT": 1,
     "resT": 1,
     "last": "rar",
-    "rarT": 1
+    "rarT": 1,
+    "g": 1
    },
    "desc": {
-    "kr": "접두 1티어 · 저항 1티어 · 희귀도 1티어(완벽한 카오스 오브)",
-    "en": "All T1 (Perfect Chaos for rarity)"
+    "kr": "영상: 모두 1티어, 마지막 접미 희귀도 1티어까지 절사",
+    "en": "Video: all T1, Whittling to T1 rarity on the last suffix"
    }
   }
  ],
@@ -237,10 +269,26 @@
     "full": "p"
    },
    {
-    "sideAll": {
-     "side": "p",
-     "tag": "P3"
-    }
+    "any": [
+     {
+      "sideAll": {
+       "side": "p",
+       "tag": "P3"
+      }
+     },
+     {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "P3"
+       }
+      ]
+     }
+    ]
    }
   ]
  },
@@ -353,24 +401,26 @@
      "fr": true
     },
     {
-     "tag": "life",
-     "tmax": 1
+     "side": "p",
+     "label": {
+      "kr": "생명력·방어도 1~2티어",
+      "en": "T1–2 life or armour"
+     }
     },
     {
-     "tag": "armF",
-     "tmax": 1
+     "side": "p",
+     "random": true
     },
     {
-     "tag": "armP2",
-     "tmax": 1
+     "side": "s",
+     "label": {
+      "kr": "저항 1~2티어",
+      "en": "T1–2 resistance"
+     }
     },
     {
-     "tag": "fire",
-     "tmax": 3
-    },
-    {
-     "tag": "rarS",
-     "tmax": 2
+     "side": "s",
+     "random": true
     }
    ]
   },
@@ -385,20 +435,22 @@
      "fr": true
     },
     {
-     "tag": "life",
-     "tmax": 2
+     "side": "p",
+     "label": {
+      "kr": "생명력·방어도 1~4티어",
+      "en": "T1–4 life or armour"
+     }
     },
     {
-     "tag": "armF",
-     "tmax": 2
+     "side": "p",
+     "random": true
     },
     {
-     "tag": "armP2",
-     "tmax": 2
-    },
-    {
-     "tag": "fire",
-     "tmax": 3
+     "side": "s",
+     "label": {
+      "kr": "저항 1~4티어",
+      "en": "T1–4 resistance"
+     }
     },
     {
      "side": "s",
@@ -1256,6 +1308,15 @@
      "res": "ok"
     },
     {
+     "if": {
+      "param": {
+       "g": 0
+      }
+     },
+     "to": "s1",
+     "res": "ok"
+    },
+    {
      "to": "b4x",
      "res": "fail"
     }
@@ -1287,6 +1348,20 @@
      "tags": [
       "armEle"
      ]
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "omens": [],
+      "goal": {
+       "kr": "훼손 옵션 확인 (나오는 대로)",
+       "en": "Reveal (keep what comes)"
+      }
+     }
     }
    ]
   },

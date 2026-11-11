@@ -32,8 +32,8 @@
 | sl-proj7-gloves-v2 | XMYJh3CnXuY | high 1,104, bal 785 | 7 | 완료 11-11 | B(Fable) | 자막 전체 대조. 합금 실패 뒤 길을 보이는 선 + 규칙에 맞게(우측 소멸의 징조로 접미 비우기). 1,104·785 |
 | saveq-absent-amulet-v2 | S4sflKbsA8A | high 935, bal 797, ess 729 | 4 | 완료 11-12 | A(Opus) | 자동 번역 자막 전체(기록 tools/notes/saveq-S4sflKbsA8A.md), 단계 일치. 935/797/729 → 935/797/688 |
 | unstoppable-vile-robe-v2 | swF5mwXmZ0k | high 739, bal 689 | 4 | 완료 11-11 | A(Opus) | 영상 5:45~24:15 대조. 접미는 엑잘+소멸(비싼 징조는 마지막 한 옵션만), 접두 막기·결정화+심연. 하이엔드 739→809, 밸런스(1티어 + 마지막 접미 랜덤) 689→163 |
-| helmet-armour-sl-v2 | p0fChSu91uI | high 723, bal 718, ess 75 | 5 | 진행 중 | A(Opus) |  |
-| diztoh-endgame-quarterstaff-v2 | YfGJyBrObxI | high 712, bal 36 | 3 | 진행 중 | A(Opus) |  |
+| helmet-armour-sl-v2 | p0fChSu91uI | high 723, bal 718, ess 75 | 5 | 완료 11-12 | A(Opus) | 자막 전체(0:00~11:10) 대조, 단계 일치(기록 tools/notes/sl-p0fChSu91uI.md). 723/718/75 → 723/83/60(밸런스·에센셜 마지막 접두·접미 랜덤) |
+| diztoh-endgame-quarterstaff-v2 | YfGJyBrObxI | high 712, bal 36 | 3 | 완료 11-12 | A(Opus) | 자동 번역 자막 전체(0:00~17:40) 대조, 단계 일치(기록 tools/notes/diztoh-YfGJyBrObxI.md). 공개 빗나감은 영상의 우측 소멸 대신 빛의 징조(지금 시세가 더 쌈). 712/36 → 1,043/577(등급 1티어 / 1~2티어) |
 | unstoppable-slipstrike-vest-v2 | swF5mwXmZ0k | high 651, bal 176 | 1 | 완료 11-11 | A(Opus) | 영상 40:45~46:30 대조. 첫 카오스 추가, 반복은 상위 카오스, 접두 결정화+심연. 하이엔드 870→651, 밸런스 540→176 |
 | breach-ring-phys-v2 |  | bal 535, ess 89 | 2 | 대기 |  |  |
 | diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 512, bal 340, ess 278 | 1 | 대기 |  |  |
@@ -112,7 +112,7 @@
 | diztoh-budget-crossbow-v2 | ess·bal | ess 물리 피해 % 1~3티어; ess 원소 피해 추가 1~5티어; bal 원소 피해 추가 1~3티어 | 대기 |  |  |
 | diztoh-budget-mace-v2 | ess·bal | - | 대기 |  |  |
 | diztoh-crit-helmet-v2 | budget·settle·best | - | 대기 |  |  |
-| diztoh-endgame-quarterstaff-v2 | bal·high | bal 물리 %·복합 1~3티어 (결과 그대로); bal 치명타 확률·피해 1~3티어; high 물리 %·복합 1~2티어 (다시 도전); high 치명타 확률·피해 1~2티어 | 대기 |  |  |
+| diztoh-endgame-quarterstaff-v2 | bal·high | high 1티어, bal 1~2티어 + 마지막 접두·접미 랜덤 | 완료 11-12 | A(Opus) | 1,043/577 |
 | diztoh-es-helmet-v2 | ess·bal | ess 접두 희귀도 1~2티어; bal 에너지 보호막 % 1~3티어; bal 접두 희귀도 1티어 | 대기 |  |  |
 | diztoh-iceshot-bow-v2 | bal·high | bal 원소 피해 추가 1~3티어; bal 물리 피해 추가 1~3티어; bal 치명타 확률 1~3티어; high 원소 피해 추가 1~2티어; high 치명타 확률 1~3티어 | 대기 |  |  |
 | diztoh-onehand-mace-v2 | ess·bal | ess 치명타 확률 1~3티어 | 대기 |  |  |
@@ -129,7 +129,7 @@
 | fubgun-proj-amulet-v2 | ess·bal | - | 대기 |  |  |
 | fubgun-quiver-v2 | ess·bal | ess 물리 피해 추가 1~2티어; bal 물리 피해 추가 1티어 | 대기 |  |  |
 | grasping-mail-spell1-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 접미 하나 1~2티어, 마지막 접두·접미 랜덤 — 613 → 24,496(분열 베이스 카오스 22만 개 포함) |
-| helmet-armour-sl-v2 | ess·bal·high | ess 접두 목표 1~2티어; ess 저항 목표 1~3티어; ess 희귀도 목표 1~2티어; bal 접두 목표 1티어; bal 저항 목표 1~3티어 | 대기 |  |  |
+| helmet-armour-sl-v2 | ess·bal·high | high 1티어, bal 1~2티어, ess 1~4티어(빛의 징조 없음), bal·ess 마지막 접두·접미 랜덤 | 완료 11-12 | A(Opus) | 723/83/60 |
 | icesly-budget-wand-v2 | ess·bal | ess 번개 주문 레벨 1~2티어; ess 번개·주문 피해 1~5티어; bal 번개 주문 레벨 1티어; bal 번개·주문 피해 1~3티어 | 대기 |  |  |
 | lilbotq-armour-shield-v2 | ess·bal | ess 방어도 % 1~2티어; ess 방어도 % + 기절 한계치 1~3티어; bal 방어도 % 1티어; bal 방어도 % + 기절 한계치 1티어 | 대기 |  |  |
 | lilbotq-boots-v2 | ess·bal | - | 대기 |  |  |

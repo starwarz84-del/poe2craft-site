@@ -10,13 +10,13 @@
    "kr": "물리 %·복합",
    "en": "% physical / hybrid",
    "values": {
-    "2": {
-     "kr": "1~2티어 (다시 도전)",
-     "en": "T1–2 (retry)"
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
     },
-    "3": {
-     "kr": "1~3티어 (결과 그대로)",
-     "en": "T1–3 (as it comes)"
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
     }
    }
   },
@@ -24,13 +24,27 @@
    "kr": "치명타 확률·피해",
    "en": "Crit chance / damage",
    "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
+    }
+   }
+  },
+  "g": {
+   "kr": "마지막 접두·접미",
+   "en": "Last prefix and suffix",
+   "values": {
+    "1": {
+     "kr": "목표 옵션까지 반복",
+     "en": "Repeat until the wanted line"
     },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
+    "0": {
+     "kr": "랜덤 옵션",
+     "en": "Random line"
     }
    }
   }
@@ -39,15 +53,17 @@
   {
    "id": "high",
    "params": {
-    "xT": 2,
-    "sT": 2
+    "xT": 1,
+    "sT": 1,
+    "g": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "xT": 3,
-    "sT": 3
+    "xT": 2,
+    "sT": 2,
+    "g": 0
    }
   }
  ],
@@ -57,12 +73,13 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "xT": 3,
-    "sT": 3
+    "xT": 2,
+    "sT": 2,
+    "g": 0
    },
    "desc": {
-    "kr": "상위 엑잘, 빗나가도 그대로, 공개는 빛의 징조로",
-    "en": "Greater Exalts, misses stay, Light on the reveal"
+    "kr": "1~2티어, 상위 엑잘, 마지막 접두·접미는 랜덤 옵션",
+    "en": "T1–2, Greater Exalts, the last prefix and suffix random"
    }
   },
   {
@@ -70,12 +87,13 @@
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "xT": 2,
-    "sT": 2
+    "xT": 1,
+    "sT": 1,
+    "g": 1
    },
    "desc": {
-    "kr": "영상: 빗나가면 소멸·말소 징조로 다시",
-    "en": "Video: Annulment/Erasure omens on misses"
+    "kr": "1티어까지, 빗나가면 소멸·말소 징조로 다시",
+    "en": "To T1, Annulment/Erasure omens on misses"
    }
   }
  ],
@@ -193,7 +211,16 @@
     "has": "p1"
    },
    {
-    "has": "cr"
+    "any": [
+     {
+      "has": "cr"
+     },
+     {
+      "param": {
+       "g": 0
+      }
+     }
+    ]
    },
    {
     "full": "p"
@@ -243,18 +270,24 @@
    "en": "High-end",
    "lines": [
     {
-     "tag": "ppct",
-     "tmax": 2
-    },
-    {
-     "tag": "hyb",
-     "tmax": 2
+     "side": "p",
+     "label": {
+      "kr": "물리 피해 접두 1티어",
+      "en": "T1 physical damage prefix"
+     }
     },
     {
      "side": "p",
      "label": {
-      "kr": "물리·화염 피해 추가",
-      "en": "Flat physical or fire"
+      "kr": "물리 %·복합 1티어",
+      "en": "T1 % physical or hybrid"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "복합·화염 피해 추가",
+      "en": "Hybrid or flat fire"
      }
     },
     {
@@ -272,8 +305,8 @@
     {
      "side": "s",
      "label": {
-      "kr": "치명타 확률·피해",
-      "en": "Crit chance or damage"
+      "kr": "치명타 확률·피해 1티어",
+      "en": "T1 crit chance or damage"
      }
     }
    ]
@@ -284,12 +317,18 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "ppct",
-     "tmax": 3
+     "side": "p",
+     "label": {
+      "kr": "물리 피해 접두 1~2티어",
+      "en": "T1–2 physical damage prefix"
+     }
     },
     {
-     "tag": "hyb",
-     "tmax": 3
+     "side": "p",
+     "label": {
+      "kr": "물리 %·복합 1~2티어",
+      "en": "T1–2 % physical or hybrid"
+     }
     },
     {
      "side": "p",
@@ -302,14 +341,14 @@
     },
     {
      "side": "s",
-     "random": true
+     "label": {
+      "kr": "공격 속도·치명타",
+      "en": "Attack speed or crit"
+     }
     },
     {
      "side": "s",
-     "label": {
-      "kr": "치명타 확률·피해",
-      "en": "Crit chance or damage"
-     }
+     "random": true
     }
    ]
   }
@@ -479,16 +518,7 @@
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "xT": 2
-      }
-     },
      "to": "s3x",
-     "res": "fail"
-    },
-    {
-     "to": "s4",
      "res": "fail"
     }
    ],
@@ -600,7 +630,7 @@
       "all": [
        {
         "param": {
-         "xT": 2
+         "g": 1
         }
        },
        {
@@ -668,7 +698,7 @@
    "over": [
     {
      "param": {
-      "xT": 3
+      "g": 0
      },
      "set": {
       "cur": "Greater_Exalted_Orb"
@@ -804,16 +834,7 @@
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "xT": 2
-      }
-     },
      "to": "s5b",
-     "res": "fail"
-    },
-    {
-     "to": "s6",
      "res": "fail"
     }
    ],
@@ -873,7 +894,7 @@
    "over": [
     {
      "param": {
-      "xT": 3
+      "g": 0
      },
      "set": {
       "cur": "Greater_Exalted_Orb"
@@ -1081,6 +1102,15 @@
      "res": "ok"
     },
     {
+     "if": {
+      "param": {
+       "g": 0
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
      "to": "s7y",
      "res": "fail"
     }
@@ -1148,6 +1178,20 @@
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "omens": [],
+      "goal": {
+       "kr": "훼손 옵션 확인 (나오는 대로)",
+       "en": "Reveal (keep what comes)"
+      }
+     }
+    }
    ]
   },
   {
