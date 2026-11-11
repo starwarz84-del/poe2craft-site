@@ -475,6 +475,7 @@ const shuffle = a => { for(let i=a.length-1;i>0;i--){ const j=Math.floor(rnd()*(
 // ---------- data ----------
 async function boot(){
   [S.index, S.craft] = await Promise.all([fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json())]);
+  /* 덫(Traps)은 새로 나온 스킬이라 아직 숨김 (사용자 확정 2026-11-11 23:03) */ const HIDE_CLS=new Set(['Traps']); S.index.groups.forEach(g=>g.classes=g.classes.filter(c=>!HIDE_CLS.has(c.id))); S.index.groups=S.index.groups.filter(g=>g.classes.length);
   S.byId = {}; for(const k of ['special','cats','liquids','qual','sac','orbs','bones','essences','omens']) for(const x of S.craft[k]){ S.byId[x.id] = x; if(x.min!=null) x.min=+x.min; if(x.maxilvl!=null) x.maxilvl=+x.maxilvl; }
   await loadClass('Body_Armours_str');
   openDrawer(true);
