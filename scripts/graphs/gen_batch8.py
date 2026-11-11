@@ -133,6 +133,8 @@ graph8('sihan-highend-helmet-v2','Helmets_str','Imperial Greathelm',82,
 # ---------- 4. Barricade 험악한 육척봉 (B4yShuKydt0) ----------
 # 원본: 퀄리티 30%, 치명타 확률 5% 분열 + 잡옵 → 카오스 오브(근접 스킬 +5) → 우측 강령술 + 보존된 턱뼈 → 공개(공격 속도·치명타 피해 1티어, 빛의 징조로 다시)
 # → 상위 찬미 + 완벽한 엑잘(접두 옵션 2개) → 절사의 징조 + 완벽한 카오스 오브로 원소 피해 접두 옵션 2개 → 완벽한 엑잘(세번째, 빗나가면 절사 카오스).
+# 2026-11-11 영상 대조(A2, 자막 B4yShuKydt0): 세번째 접두 반복(p5)은 영상대로 절사의 징조 + 완벽한 카오스 오브만(15:02·17:36). 잡옵이 가장 낮은 옵션이 아니면(물리 + 정확도 1티어처럼 레벨 81, 17:46)
+#   좌측 말소의 징조 대신 영상의 좌측 소멸의 징조 + 소멸의 오브(1/3로 잡옵, 18:39~19:35) → 완벽한 엑잘(p4)로 다시 — 영상이 말소는 비싸다고 말함(18:50).
 P={'high':{'rT':1,'eT':1},'bal':{'rT':2,'eT':2}}
 tags={'crit':{'gi':18,'tmax':1},'melee':{'gi':10,'tmax':1},'as':{'gi':16,'tmax':'$rT'},'cdmg':{'gi':19,'tmax':'$rT'},'rev':{'anyOf':['as','cdmg'],'label':K('공격 속도·치명타 피해','Attack speed or crit damage')},
       'eatk':{'gi':23,'tmax':'$eT'},'fire':{'gi':4,'tmax':'$eT'},'cold':{'gi':5,'tmax':'$eT'},'lflat':{'gi':7,'tmax':'$eT'},
@@ -151,9 +153,10 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'crit','fr':True},{'junk':'s'}]},K
      [{'if':{'count':{'tag':'ele','min':2}},'to':'p4','res':'ok'},{'if':{'all':[{'param':{'eT':2}},{'count':{'tag':'ele','min':1}}]},'to':'p4','res':'ok'},{'to':'p2','res':'fail'}],I5,trim={'side':'p','keep':'keep'},
      over=[{'param':{'eT':2},'set':{'cur':'Greater_Chaos_Orb'}}]),
  act('p4','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),None,K('엑잘','Exalt'),
-     [{'if':{'count':{'tag':'ele','min':3}},'to':'ok','res':'ok'},{'if':{'param':{'eT':1}},'to':'p5','res':'fail'},{'to':'ok','res':'fail'}],I6,show=['fire','cold','lflat']),
+     [{'if':{'count':{'tag':'ele','min':3}},'to':'ok','res':'ok'},{'if':{'all':[{'param':{'eT':1}},{'whittleSafe':{'tag':'keep','side':'p'}}]},'to':'p5','res':'fail'},{'if':{'param':{'eT':1}},'to':'p5x','res':'fail'},{'to':'ok','res':'fail'}],I6,show=['fire','cold','lflat']),
  act('p5','main',[0,7],'chaos','Perfect_Chaos_Orb',K('버릴 옵션을 원소 피해로','The junk line into elemental damage'),None,K('카오스','Chaos'),
-     [{'if':{'count':{'tag':'ele','min':3}},'to':'ok','res':'ok'},{'to':'p5','res':'fail'}],I6,show=['fire','cold','lflat'],trim={'side':'p','keep':'keep'}),
+     [{'if':{'count':{'tag':'ele','min':3}},'to':'ok','res':'ok'},{'if':{'whittleSafe':{'tag':'keep','side':'p'}},'to':'p5','res':'fail'},{'to':'p5x','res':'fail'}],I6,show=['fire','cold','lflat'],trim={'side':'p','keep':'keep'}),
+ annul('p5x',[1,7],[{'to':'p4','port':'right'}],omens=('Omen_of_Sinistral_Annulment',),target=K('접두 옵션 하나 지우기','Remove one prefix')),
  done([0,8])]
 graph8('barricade-quarterstaff-v2','Quarterstaves','Sinister Quarterstaff',81,
   'Barricade 험악한 육척봉(원본 레시피 기록) — 치명타 확률 5% 분열 + 잡옵(퀄리티 30%) → 카오스 오브(근접 스킬 +5) → 우측 강령술 + 보존된 턱뼈 → 공개(공격 속도·치명타 피해, 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 원소 피해 접두 옵션 2개 → 완벽한 엑잘(세번째, 하이엔드는 빗나가면 절사 카오스 — 가장 낮은 옵션이 버릴 옵션일 때만). 하이엔드 = 영상(1티어), 밸런스 = 1~2티어 원소 피해 접두 옵션 1개까지 절사 + 상위 카오스 오브, 나머지 접두는 결과 그대로.',

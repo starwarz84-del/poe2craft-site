@@ -215,6 +215,7 @@ class Walk:
         self.nodes = _over(sim['graph']['nodes'], self.P)
         self.by = {n['id']: n for n in self.nodes}
         self.E = self.res.get('edges') or {}
+        self.EI = self.res.get('edgesI') or {}   # 선마다 센 값(a#순번, 2026-11-11) — 같은 상자로 가는 성공·실패 선을 따로 셈
 
     def st(self, nid): return (self.res.get('nodes') or {}).get(nid)
 
@@ -228,25 +229,31 @@ class Walk:
     def outs(self, n):
         """나가는 선(등급 조건을 푼 것) → [(선, 도착 id, 선 이름, 결과, 시뮬 집계용 도착 id)]"""
         res = []
-        for e in n.get('edges') or []:
+        for i, e in enumerate(n.get('edges') or []):
             if not _when(e, self.P): continue
             to = e['to']; lab = _strip(e.get('label')); cls = e.get('res')
             T = self.by.get(to)
             if T and T.get('kind') == 'choice':
                 opt = str(self.P.get(T['param'])); to2 = (T.get('options') or {}).get(opt)
                 if not to2: continue
-                res.append((e, to2, (T.get('edgeLabels') or {}).get(opt) or lab, ((T.get('optStyle') or {}).get(opt) or {}).get('res') or cls, to))
+                res.append((e, to2, (T.get('edgeLabels') or {}).get(opt) or lab, ((T.get('optStyle') or {}).get(opt) or {}).get('res') or cls, to, i))
                 continue
-            res.append((e, to, lab, cls, to))
+            res.append((e, to, lab, cls, to, i))
         return res
 
     def cnt(self, a, b): return self.E.get(f'{a}>{b}', 0) or 0
+
+    def ec(self, nid, x, outs):
+        """선 하나(outs의 한 줄)를 지난 횟수. 선마다 센 값이 있으면 그것, 없으면 도착 상자 기준(같은 상자로 가는 선이 여럿이면 첫 선에만 — 두 번 세지 않음)"""
+        if any(k.startswith(nid + '#') for k in self.EI): return self.EI.get(f'{nid}#{x[5]}', 0) or 0
+        first = next(y for y in outs if y[4] == x[4])
+        return self.cnt(nid, x[4]) if first is x else 0
 
 
 def _routes(W, n, valid):
     """단계 칩: 성공·실패·되돌아감, 비율은 시뮬에서 그 선을 지난 횟수"""
     t = W.st(n['id']) or {}
-    outs = W.outs(n); tot = sum(W.cnt(n['id'], x[4]) for x in outs) or 1
+    outs = W.outs(n); tot = sum(W.ec(n['id'], x, outs) for x in outs) or 1
     out = []
     def dest(to):
         T = W.by.get(to) or {}
@@ -257,19 +264,21 @@ def _routes(W, n, valid):
     other = {'n': 0, 'share': 0}
     def ok_dest(d): return d in ('self', 'done', 'restart') or d in valid
     def hidden_many(es, frm):
-        return len({x[1] for x in es if x[0].get('hide') and W.cnt(frm, x[4]) > 0 and x[1] != frm}) >= 2
+        return len({x[1] for x in es if x[0].get('hide') and W.ec(frm, x, es) > 0 and x[1] != frm}) >= 2
     hm = hidden_many(outs, n['id'])
-    for e, to, lab, cls, raw in outs:
-        c = W.cnt(n['id'], raw)
+    for x0 in outs:
+        e, to, lab, cls, raw = x0[:5]
+        c = W.ec(n['id'], x0, outs)
         if c <= 0 and (e.get('hide') or len(outs) > 1): continue
         share = c / tot
         if hm and e.get('hide') and to != n['id']: other['n'] += c; other['share'] += share; continue
         if W.via(to):
-            V = W.by[to]; vo = W.outs(V); vt = sum(W.cnt(to, x[4]) for x in vo) or 1
+            V = W.by[to]; vo = W.outs(V); vt = sum(W.ec(to, x, vo) for x in vo) or 1
             via = {'cur': V.get('cur') or 'Orb_of_Annulment', **({'omens': V['omens']} if V.get('omens') else {})}
             vhm = hidden_many(vo, to); vother = 0; k0 = len(out)
-            for e2, to2, lab2, cls2, raw2 in vo:
-                c2 = W.cnt(to, raw2)
+            for y0 in vo:
+                e2, to2, lab2, cls2, raw2 = y0[:5]
+                c2 = W.ec(to, y0, vo)
                 if c2 <= 0 and len(vo) > 1: continue
                 d2 = dest(to2)
                 if (vhm and e2.get('hide')) or not ok_dest(d2): vother += c2; continue
@@ -305,11 +314,11 @@ def _fcs(W, n):
     tries = (t.get('visits') or 0) - (0 if n.get('kind') == 'cleanup' else (t.get('skips') or 0))
     outs = W.outs(n)
     has_res = any(x[3] for x in outs)
-    ok = {x[4] for x in outs if x[3] == 'ok' and (n.get('pAll') or not x[0].get('dash'))}
-    if has_res and not any(x[3] == 'ok' for x in outs): ok = {x[4] for x in outs if not x[3] and x[1] != n['id']}   # 실패선만 표시된 상자: 나머지 선이 성공
-    okc = sum(W.cnt(n['id'], to) for to in ok)
+    ok = [x for x in outs if x[3] == 'ok' and (n.get('pAll') or not x[0].get('dash'))]
+    if has_res and not any(x[3] == 'ok' for x in outs): ok = [x for x in outs if not x[3] and x[1] != n['id']]   # 실패선만 표시된 상자: 나머지 선이 성공
+    okc = sum(W.ec(n['id'], x, outs) for x in ok)
     if has_res and okc <= 0 and tries > 0:   # 상태마다 다른 단계로 보내는 상자: 표시된 성공선을 안 거치고 숨은 선으로 나아감 → 실패·반복이 아닌 선 모두
-        okc = sum(W.cnt(n['id'], x[4]) for x in outs if x[3] != 'fail' and x[1] != n['id'])
+        okc = sum(W.ec(n['id'], x, outs) for x in outs if x[3] != 'fail' and x[1] != n['id'])
     p = min(1.0, okc / tries) if has_res and tries > 0 else 1.0
     rows = None
     if n.get('curRows') and t.get('byCur'):
@@ -325,8 +334,8 @@ def _fcs(W, n):
 
 def _miss(W, n):
     """등급을 가르는 갈래: 빗나갈 때 가는 선(1% 넘게 지나는 것)과 분기 상자를 거치는 선"""
-    outs = W.outs(n); tot = sum(W.cnt(n['id'], x[4]) for x in outs) or 1
-    return [x for x in outs if (x[3] != 'ok' or x[4] != x[1]) and W.cnt(n['id'], x[4]) / tot >= 0.01]
+    outs = W.outs(n); tot = sum(W.ec(n['id'], x, outs) for x in outs) or 1
+    return [x for x in outs if (x[3] != 'ok' or x[4] != x[1]) and W.ec(n['id'], x, outs) / tot >= 0.01]
 
 
 def _sig(W, n, G_):
@@ -367,9 +376,10 @@ def _grade_note(sim, src, nid, tiers):
                 fl = _miss(W, n)
                 if not fl: kr.append('결과 그대로 다음'); en.append('keep the result')
                 else:
-                    e, to, lab, cls, raw = fl[0]; T = W.by.get(to) or {}
+                    e, to, lab, cls, raw = fl[0][:5]; T = W.by.get(to) or {}
                     if lab: kr.append('빗나가면 ' + lab['kr']); en.append('on a miss: ' + lab['en'].lower())
                     elif to == n['id']: kr.append('빗나가면 다시'); en.append('retry on a miss')
+                    elif T.get('kind') == 'done': kr.append('빗나가도 그대로 완성'); en.append('finish as it is on a miss')
                     elif W.via(to): kr.append('빗나가면 지우고 다시'); en.append('remove and retry on a miss')
                     elif T.get('kind') in ('base', 'exit'): kr.append('빗나가면 처음부터'); en.append('start over on a miss')
                     elif T.get('cur'): kr.append(f"빗나가면 @{T['cur']}로"); en.append(f"on a miss: @{T['cur']}")

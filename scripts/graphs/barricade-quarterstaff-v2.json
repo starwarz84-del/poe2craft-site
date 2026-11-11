@@ -807,11 +807,30 @@
     },
     {
      "if": {
+      "all": [
+       {
+        "param": {
+         "eT": 1
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keep",
+         "side": "p"
+        }
+       }
+      ]
+     },
+     "to": "p5",
+     "res": "fail"
+    },
+    {
+     "if": {
       "param": {
        "eT": 1
       }
      },
-     "to": "p5",
+     "to": "p5x",
      "res": "fail"
     },
     {
@@ -911,7 +930,17 @@
      "res": "ok"
     },
     {
+     "if": {
+      "whittleSafe": {
+       "tag": "keep",
+       "side": "p"
+      }
+     },
      "to": "p5",
+     "res": "fail"
+    },
+    {
+     "to": "p5x",
      "res": "fail"
     }
    ],
@@ -981,6 +1010,38 @@
     "side": "p",
     "keep": "keep"
    }
+  },
+  {
+   "id": "p5x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Sinistral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접두 옵션 하나 지우기",
+    "en": "Remove one prefix"
+   },
+   "edges": [
+    {
+     "to": "p4",
+     "port": "right"
+    }
+   ]
   },
   {
    "id": "ok",
