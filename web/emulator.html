@@ -982,6 +982,8 @@ function reqLine(){
 }
 function renderItem(){
   const b=base(), it=S.item, r=it.rarity, bn=KR()?b.kr:b.en, aff=affected();
+  // flash the modifiers a currency just added once — later re-renders (picking an orb or omen) must not flash them again
+  const flash = S.last && !S.last.flashed ? S.last.added : new Set(); if(S.last) S.last.flashed = true;
   let title = `<div class="tt-name">${esc(bn)}</div>`;
   if(r==='rare'){ const LL=KR()?RN.kr:RN.en; const h=(it.base*7919+S.cls.length*31)%997; title=`<div class="tt-name">${esc(it.name || (KR()?`${LL.a[h%LL.a.length]}의 ${LL.b[(h>>3)%LL.b.length]}`:`${LL.a[h%LL.a.length]} ${LL.b[(h>>3)%LL.b.length]}`))}</div><div class="tt-name">${esc(bn)}</div>`; }
   if(r==='magic'){ const p=it.mods.find(m=>genOf(m)==='p'), s=it.mods.find(m=>genOf(m)==='s'); title=`<div class="tt-name">${esc([p&&tName(grp(p).t[p.ti]),bn,s&&tName(grp(s).t[s.ti])].filter(Boolean).join(' '))}</div>`; }
@@ -1002,8 +1004,8 @@ function renderItem(){
   const capOf = g => r==='magic' ? magicCap(g) : r==='rare' ? rareCap(g) : 0;
   const tag = (m,txt) => `<span class="tt-tier ${genOf(m)==='p'?'tp':'ts'}">${esc(txt)}</span>`;
   const mods = order.map(m=>m.unrev
-    ? `<div class="tt-mod unrev des ${S.last?.added.has(m)?'new':''}" aria-label="${esc(modText(m))}">${tag(m, m.unrev==='p'?'P?':'S?')}<span class="glyph" aria-hidden="true">${glyphs(m)}</span></div>`
-    : `<div class="tt-mod ${modKind(m)} ${aff.set.has(m)?'aff':''} ${S.last?.added.has(m)?'new':''}">${tag(m, tierTag(m))}${esc(modText(m))}</div>`);
+    ? `<div class="tt-mod unrev des ${flash.has(m)?'new':''}" aria-label="${esc(modText(m))}">${tag(m, m.unrev==='p'?'P?':'S?')}<span class="glyph" aria-hidden="true">${glyphs(m)}</span></div>`
+    : `<div class="tt-mod ${modKind(m)} ${aff.set.has(m)?'aff':''} ${flash.has(m)?'new':''}">${tag(m, tierTag(m))}${esc(modText(m))}</div>`);
   // empty slots: just the side label, at the end of each side
   ['p','s'].forEach(g=>{ const n=Math.max(0, capOf(g)-it.mods.filter(m=>genOf(m)===g).length); if(!n) return;
     const at = g==='p' ? mods.length - order.filter(m=>genOf(m)==='s').length : mods.length;
