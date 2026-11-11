@@ -156,9 +156,25 @@ async function feedbackList(req, env) {
   return json({ feedback: out });
 }
 
+// 공개 주소(검색 등록 2026-11-12): 경로마다 같은 껍데기(index.html)를 주고 canonical·og:url을 그 경로로. scripts/build_web.py PAGES와 같게
+const HOST = 'poe2craft.xyz';
+const TABS = new Set(['/', '/recipes', '/discover', '/emulator', '/builder', '/bases']);
+async function shell(req, env, path) {
+  const r = await env.ASSETS.fetch(new Request(new URL('/index.html', req.url), req));
+  const url = `https://${HOST}${path === '/' ? '/' : path}`;
+  return new HTMLRewriter()
+    .on('head', { element(e) { e.append(`<link rel="canonical" href="${url}">`, { html: true }); } })
+    .on('meta[property="og:url"]', { element(e) { e.setAttribute('content', url); } })
+    .transform(r);
+}
+
 export default {
   async fetch(req, env) {
     const u = new URL(req.url);
+    // www → 주소 하나로(301)
+    if (u.hostname === 'www.' + HOST) return Response.redirect(`https://${HOST}${u.pathname}${u.search}`, 301);
+    if (u.pathname.length > 1 && u.pathname.endsWith('/') && TABS.has(u.pathname.slice(0, -1))) return Response.redirect(`https://${HOST}${u.pathname.slice(0, -1)}${u.search}`, 301);
+    if (TABS.has(u.pathname) && (req.method === 'GET' || req.method === 'HEAD')) return shell(req, env, u.pathname);
     if (u.pathname.startsWith('/api/')) {
       if (!env.REQ) return json({ error: 'unavailable' }, 503);
       if (u.pathname === '/api/req' && req.method === 'POST') return create(req, env);

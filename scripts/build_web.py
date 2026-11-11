@@ -8,6 +8,7 @@ web/ is what the host serves (Cloudflare Pages output directory = web, no build 
 - tool pages  = site/pub/*.html with site/theme.css injected (colors/fonts only)
 - about.html, favicon.svg, sim.js, graphify.js, lib/, data/ copied as they are
 """
+import datetime
 import os, shutil, re, base64, hashlib, glob
 
 # 데이터 파일 안의 그림(data URI, 클래스 파일·crafting.json 크기의 85~90%)은 파일로 빼고 주소만 남김 — 화면에 보이는 그림만 받고 탭끼리 캐시를 같이 씀 (2026-11-11)
@@ -45,8 +46,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.path.join(ROOT, 'site')
 WEB = os.path.join(ROOT, 'web')
 DOMAIN = 'poe2craft.xyz'
-# Test phase (user decision 2026-11-10): keep the site out of search engines. Set True when it goes public.
-INDEX = False
+# 검색 등록(사용자 확정 2026-11-12): 구글·네이버에 공개. False로 바꾸면 다시 전체 차단
+INDEX = True
+# 공개 주소(경로) — 껍데기가 경로로 탭을 고르고, Worker가 이 경로에 index.html을 줌(worker/index.js TABS와 같게)
+PAGES = ['', 'recipes', 'discover', 'emulator', 'builder', 'bases']
+CANON = {'recipes.html': 'recipes', 'discover.html': 'discover', 'emulator.html': 'emulator', 'builder.html': 'builder', 'bases.html': 'bases', 'about.html': ''}
 NOINDEX_META = '<meta name="robots" content="noindex, nofollow">\n'
 FONTS = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&display=swap">\n'
 THEME = '<link rel="stylesheet" href="theme.css">\n'
@@ -63,6 +67,8 @@ def main():
         s = open(os.path.join(SITE, src), encoding='utf-8').read()
         if not INDEX:
             s = s.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n' + NOINDEX_META, 1)
+        elif dst in CANON:
+            s = s.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n<link rel="canonical" href="https://%s/%s">\n' % (DOMAIN, CANON[dst]), 1)
         open(os.path.join(WEB, dst), 'w', encoding='utf-8').write(s)
     for d in ['data', 'lib', 'img', 'fonts']:
         shutil.copytree(os.path.join(SITE, d), os.path.join(WEB, d))
@@ -75,7 +81,7 @@ def main():
         s = re.sub(r'<link rel="(?:preconnect|stylesheet)" href="https://fonts\.(?:googleapis|gstatic)\.com[^>]*>\n?', '', s)
         # theme goes right after the document head the i18n build added; its :root:root rules win over the page's own tokens
         i = s.find('</style>')
-        head = THEME + ('' if INDEX else NOINDEX_META)
+        head = THEME + (('<link rel="canonical" href="https://%s/%s">\n' % (DOMAIN, CANON[f])) if INDEX and f in CANON else '' if INDEX else NOINDEX_META)
         head += ''.join('<link rel="preload" href="data/%s.json" as="fetch" crossorigin="anonymous">\n' % d for d in PRELOAD.get(f, []))
         s = s[:i + 8] + '\n' + head + s[i + 8:] if i >= 0 else head + s
         open(os.path.join(WEB, f), 'w', encoding='utf-8').write(s)
@@ -89,10 +95,12 @@ def main():
             open(f, 'w', encoding='utf-8').write(t.replace('SUIT-Variable.woff2', fn))
     open(os.path.join(WEB, 'CNAME'), 'w').write(DOMAIN + '\n')
     if INDEX:
-        open(os.path.join(WEB, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\nSitemap: https://%s/sitemap.xml\n' % DOMAIN)
+        open(os.path.join(WEB, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\n\nSitemap: https://%s/sitemap.xml\n' % DOMAIN)
+        today = datetime.date.today().isoformat()
         open(os.path.join(WEB, 'sitemap.xml'), 'w').write(
             '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-            '<url><loc>https://%s/</loc></url>\n</urlset>\n' % DOMAIN)
+            + ''.join('  <url><loc>https://%s/%s</loc><lastmod>%s</lastmod></url>\n' % (DOMAIN, pg, today) for pg in PAGES)
+            + '</urlset>\n')
     else:
         open(os.path.join(WEB, 'robots.txt'), 'w').write('User-agent: *\nDisallow: /\n')
     # cache: pages always fresh, big data files cached for an hour; while testing, every response says noindex
