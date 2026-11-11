@@ -564,6 +564,8 @@ body.simfull{overflow:hidden}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--ink);border-radius:8px;padding:7px 14px;font-size:13px;z-index:50}
 /* preview: the reverse-crafting tab shows one draft here before it goes to the list (사용자 확정 2026-11-11) */
 body.preview .btn.back, body.preview [data-act="link"], body.preview [data-act="like"], body.preview [data-act="success"], body.preview [data-deldraft], body.preview [data-share], body.preview .tag.draftb{display:none !important}
+.tradeb{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:999px;border:1px solid var(--gold,#c9a227);color:var(--gold,#c9a227);text-decoration:none;font-size:12.5px;font-weight:600;white-space:nowrap}
+.tradeb:hover{background:color-mix(in srgb,var(--gold,#c9a227) 14%,transparent)}
 </style>
 
 <div class="wrap" id="listView">
@@ -989,6 +991,27 @@ const costChips = (r, max=6) => { const a=analyse(r); CUR_R=r; return sortKeys(a
 // prices (site/data/prices.json, poe2scout snapshot in Exalted Orbs): every cost shown as Divine Orbs. A currency without a price is left out
 // and flagged next to the sum ("시세 없음"), never counted as 0. The snapshot date stays in the data only (policy: a lean screen)
 S.prices = null; S.budget = null;
+// 베이스템 구입 → trade site with the base's conditions filled in (사용자 확정 2026-11-11). Korean = Kakao trade, others = pathofexile.com
+// (China: pathofexile.com for now). site/data/trade.json maps our modifier groups to trade stat ids (scripts/build_trade.py).
+// The login page keeps the search in its redirect, so the conditions survive logging in.
+function tradeURL(r){ const T=S.trade, c=C(r); if(!T || !c) return null; const st=r.start||{}, b=c.bases[r.base]; if(!b) return null;
+  const lows = txt => (txt.match(/\(([\d.]+)[—–-][\d.]+\)|[\d.]+/g)||[]).map(x=>parseFloat(x.replace('(','')));
+  const filters=[], miss=[];
+  for(const m of (st.mods||[])){ if(m.gi==null) continue; const g=c.groups[m.gi], map=T.st[r.cls]?.[m.gi];
+    if(!g || !map){ miss.push(m.gi); continue; }
+    const tier=g.t[Math.min(g.t.length, Math.max(1, m.tmax||1))-1], lines=(tier?.[5]||'').split('\n');
+    map.forEach(([id,neg,hasFr],k)=>{ const v=lows(lines[k]||''), lo=v.length>1 && /Adds/.test(lines[k]) ? (v[0]+v[1])/2 : v[0];
+      const val = lo==null ? {} : neg ? {max:-lo} : {min:+lo.toFixed(2)};
+      filters.push({id:(m.fr && hasFr?'fractured':'explicit')+'.stat_'+id, value:val}); }); }
+  const fr=(st.mods||[]).some(m=>m.fr), rar = fr ? 'rare' : st.rar==='magic' ? 'magic' : st.rar==='rare' ? 'rare' : 'normal';
+  const typeOK = !(T.noType[r.cls]||[]).includes(r.base);
+  const misc={corrupted:{option:'false'}, mirrored:{option:'false'}, sanctified:{option:'false'}, desecrated:{option:'false'}, ...(fr?{fractured_item:{option:'true'}}:{})};
+  const f={type_filters:{filters:{...(T.cat[r.cls]?{category:{option:T.cat[r.cls]}}:{}), rarity:{option:rar}, ...(r.ilvl?{ilvl:{min:r.ilvl}}:{})}}, misc_filters:{filters:misc}};
+  if(r.exceptional && c.sockets!=null) f.equipment_filters={filters:{rune_sockets:{min:(+c.sockets||0)+(r.exceptional.sockets||1)}}};
+  const q={query:{status:{option:'online'}, ...(typeOK?{type:KR()?b.kr:b.en}:{}), stats:[{type:'and', filters}], filters:f}, sort:{price:'asc'}};
+  const host = KR() ? 'https://poe.kakaogames.com' : 'https://www.pathofexile.com';
+  return {url:`${host}/trade2/search/poe2/${encodeURIComponent(T.league)}?q=${encodeURIComponent(JSON.stringify(q))}`, miss:miss.length, typeOK}; }
+
 const exOf = id => { const P=S.prices; if(!P) return null; if(id==='Exalted_Orb') return 1; const v=P.p[id]; return v==null ? null : +v; };
 function divOf(use){ if(!S.prices) return null; let v=0; const miss=[];
   for(const k in use||{}){ const x=use[k]; if(!(x>0)) continue; const p=exOf(k); if(p==null){ if(!miss.includes(k)) miss.push(k); } else v+=x*p; }
@@ -1136,7 +1159,7 @@ function nodeHTML(r, o, i, idx){
   const costIn = n.cost ? (()=>{ const v=uc[n.cost]||{}; const units=['Divine_Orb','Exalted_Orb','Chaos_Orb'];
     return `<div class="costin"><label>${L(n.cost==='base'?'베이스 가격':'들어간 비용','Cost')} <input type="number" min="0" step="any" inputmode="decimal" data-cost="${esc(n.cost)}" value="${v.v??''}" placeholder="${n.cost==='base' && +r.basePrice>0 ? +r.basePrice : 0}"></label>
       <select data-unit="${esc(n.cost)}" aria-label="${esc(L('단위','Unit'))}">${units.map(u=>`<option value="${u}" ${(v.u||'Divine_Orb')===u?'selected':''}>${esc(nm(cur(u)))}</option>`).join('')}</select>
-      ${o.passes>1.01?`<small>× ${fmt(o.passes)} ${L('(분열 실패로 다시 하는 횟수 포함)','(includes redoing after fracture misses)')}</small>`:''}</div>`; })() : '';
+      ${o.passes>1.01?`<small>× ${fmt(o.passes)} ${L('(분열 실패로 다시 하는 횟수 포함)','(includes redoing after fracture misses)')}</small>`:''}${n.cost==='base' ? (()=>{ const t=tradeURL(r); return t ? `<a class="tradeb" href="${esc(t.url)}" target="_blank" rel="noopener" title="${esc(L('거래소에서 이 베이스 조건으로 검색해요. 로그인 화면이 뜨면 로그인 뒤 조건이 그대로 들어가요.','Searches the trade site with this base. If a login page appears, the conditions come back after you log in.'))}">${L('베이스템 구입 ↗','Buy this base ↗')}</a>${t.miss||!t.typeOK?`<small>${L('일부 조건은 거래소에서 직접 입력해 주세요','Some conditions need entering on the trade site')}</small>`:''}` : ''; })() : ''}</div>`; })() : '';
   const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : n.compromise && !o.pUnknown && o.p<0.995 ? `<div class="pr">${L('타협 가능','Can settle')}<small>${L('1회 시도','1 attempt')} · ${pct(o.p)}</small>${o.settleK?`<small>${L('다시 하면 평균','retry avg')} ${fmt(o.settleK)}${L('회','×')}${(()=>{ const d=divOf(o.settleUse); return d && d.v>=0.005 ? ` · ${L('약','≈')} ${fmtDiv(d.v)} div` : ''; })()}</small>`:''}</div>` : o.pUnknown ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산해요. 일반 옵션은 원래 가중치 그대로예요.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
   const dn = doneSet(r).has(n.id);
   return `<li class="node ${n.optional?'opt':''} ${dn?'done':''}" data-node="${esc(n.id)}"><div class="nbody"><span class="n"><button type="button" class="tick" data-done="${esc(n.id)}" aria-pressed="${dn}" title="${esc(L('완료 표시','Mark done'))}">${dn?'✓':idx}</button></span><div class="what">${head}${n.optional?`<span class="optl">${L('선택','optional')}</span>`:''}${ts}</div>${pr}
@@ -2211,7 +2234,7 @@ function removeDraft(id){ store.set('drafts', store.get('drafts',[]).filter(x=>x
 async function loadCls(id){ if(!S.cls[id]) S.cls[id] = await fetch(`data/c/${id}.json`).then(r=>r.json()); }
 async function boot(){
   const [rec, idx, craft, tips] = await Promise.all([fetch('data/recipes.json').then(r=>r.json()), fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json()), fetch('data/tips.json').then(r=>r.ok?r.json():{tips:[]}).catch(()=>({tips:[]}))]);
-  [S.prices, S.budget] = await Promise.all(['prices','budget'].map(f=>fetch(`data/${f}.json`).then(r=>r.ok?r.json():null).catch(()=>null)));
+  [S.prices, S.budget, S.trade] = await Promise.all(['prices','budget','trade'].map(f=>fetch(`data/${f}.json`).then(r=>r.ok?r.json():null).catch(()=>null)));
   S.tips = tips.tips||[];
   S.index=idx; S.craft=craft; for(const k in craft) for(const x of craft[k]) S.byId[x.id]=x;
   S.recipes = rec.recipes.map(r=>({likes:0, success:0, ...r}));
