@@ -381,7 +381,12 @@ function runeFx(){
 const gateNames = () => new Set(runesList().flatMap(r=>r.t.map(t=>t[1])));
 const gated = g => g.s==='x' && gateNames().has(g.sub[1]) && !runeFx().names.has(g.sub[1]);
 const maxOf = g => { if(g==='k') return sockets(); if(g==='c') return S.corr===1 ? 1 : 0; const fx=runeFx();
-  return g==='p' ? Math.max(0,3+curBase().pd+fx.p) : g==='s' ? Math.max(0,3+curBase().sd+fx.s) : 0; };   // extra crafted modifiers raise a limit instead of adding slots
+  const b0 = S.cat==='jewel' ? 2 : 3, lq = liqSlots();   /* jewels 2/2 · Potent Liquid Contempt +1 (game-rules.md) */
+  return g==='p' ? Math.max(0,b0+curBase().pd+fx.p+lq.p) : g==='s' ? Math.max(0,b0+curBase().sd+fx.s+lq.s) : 0; };
+const isLiq = g => g.sub && g.sub[1]==='Liquid Emotions';
+/* slots a liquid line opens (Potent Liquid Contempt: "+1 Suffix Modifier allowed"), read from every slot so maxOf does not recurse */
+function liqSlots(){ const o={p:0,s:0}; for(const g of ['p','s']) (S.slots?.[g]||[]).forEach(v=>{ if(!v) return; const gr=S.data.groups[v.gi]; if(!isLiq(gr)) return;
+  for(const m of String(gr.t[v.ti][5]).matchAll(/([+-]\d+) (Prefix|Suffix) Modifiers? allowed/g)) o[m[2]==='Prefix'?'p':'s'] += +m[1]; }); return o; }   // extra crafted modifiers raise a limit instead of adding slots
 const KIND = {rune:['룬벼림·룬숙련','Runeforged / Runemastered'], mod:['접두·접미 개수 변경','Modifier count'], breach:['균열','Breach'], unique:['고유 전용·스킬 생성','Unique-only / skill']};
 // exceptional base = one more rune socket (사용자 확정 2026-11-11: quality is not an exceptional option)
 const excSock = () => S.exc==='sock' && baseSockets() ? 1 : 0;
@@ -474,7 +479,8 @@ function reason(gi, ti){
   const g = S.data.groups[gi];
   if(g.g==='i') return '';
   if(gated(g)) return `${subLabel(g)} 룬 필요`;
-  if(g.cr && craftedCount() >= craftedLimit()) return `제작 옵션 한도 ${craftedLimit()}개`;
+  if(g.cr && !isLiq(g) && craftedCount() >= craftedLimit()) return `제작 옵션 한도 ${craftedLimit()}개`;
+  if(g.s==='d' && ['p','s'].some(x=>S.slots[x].slice(0,maxOf(x)).some(v=>v && S.data.groups[v.gi].s==='d'))) return '훼손 옵션은 아이템당 1개';
   const tgt = targetFor(g);
   if(!tgt) return `${GEN_KR[g.g]} 자리 없음`;
   const used = usedFamilies(tgt);
@@ -537,8 +543,24 @@ function assignRune(ri, ti){
   if(!n){ toast('룬 소켓 없음'); return; }
   const i = S.slots.k.slice(0,n).findIndex(v=>!v);
   if(i<0){ toast('빈 룬 소켓 없음'); return; }
+  const nt = runesList()[ri]?.t[ti]; if(!nt) return;
+  const others = S.slots.k.slice(0,n).map(v=>v && runesList()[v.ri]?.t[v.ti]).filter(Boolean);
+  const why = runeLimit(nt, others); if(why){ toast(why); return; }
   S.slots.k[i] = {ri, ti};
   render();
+}
+/* rune limits, same as the emulator: Limited to 1 · one Ancient augment · one Legacy rune · Aldur's Legacy is unique-only */
+const LIMITED_ONE = new Set(["Soul Core of Puhuarte","Soul Core of Jiquani","Soul Core of Opiloti","Soul Core of Ticaba","Soul Core of Topotante","Soul Core of Vizoma","Soul Core of Tzamoto","Soul Core of Xopec","Soul Core of Zalatl",
+  "Fox Idol","Hawk Idol","Panther Idol","Rabbit Idol","Stag Idol","Stoat Idol",
+  "Warding Rune of Annihilation","Warding Rune of Armature","Warding Rune of Bodyguards","Warding Rune of Nourishment","Warding Rune of Symbiosis","Warding Rune of Equinox","Warding Rune of Heart","Warding Rune of Hollowing","Warding Rune of Obsession","Warding Rune of Protection","Warding Rune of Salvaging"]);
+const runeAncient = t => /'s Gaze$|'s Thesis$|^Emergent |^Carved /.test(t[1]);
+const runeOnePer = t => LIMITED_ONE.has(t[1]) || /^(Ancient )?Rune of |^Idol of |'s |' /.test(t[1]) && !/^(Lesser |Greater |Perfect )/.test(t[1]);
+function runeLimit(nt, others){
+  if(nt[1]==="Aldur's Legacy") return '알두르의 유산: 칼구르·에조미어 고유 아이템 전용';
+  if(runeAncient(nt) && others.some(runeAncient)) return '고대 증강물 1개까지';
+  if(/^Legacy of /.test(nt[1]) && others.some(t=>/^Legacy of /.test(t[1]))) return '유산 룬 1개까지';
+  if(runeOnePer(nt) && !runeAncient(nt) && others.some(t=>t[1]===nt[1])) return '같은 증강물 1개까지';
+  return '';
 }
 function trimSockets(){ const n=sockets(); for(let i=n;i<4;i++) S.slots.k[i]=null; if(S.active.g==='k' && S.active.i>=n) goNext(); }
 function setCorr(v){
@@ -574,6 +596,7 @@ function qualityKind(){
 function maxQuality(){
   let q = 20 + (S.infused && infuser() ? 10 : 0); const imp=(curBase().imp[0]||[]).join(' ');
   const m = imp.match(/\+(\d+)% to Maximum Quality/); if(m) q += +m[1];
+  for(const g of ['p','s']) S.slots[g].slice(0,maxOf(g)).forEach(v=>{ const r=v && String(S.data.groups[v.gi].t[v.ti][5]).match(/\+(\d+)% to Maximum Quality/); if(r) q += +r[1]; });
   S.slots.k.slice(0,sockets()).forEach(v=>{ const t=v&&runesList()[v.ri]?.t[v.ti]; const r=t&&t[3].match(/Maximum Quality is (\d+)%/); if(r) q=Math.max(q,+r[1]); });
   return q;
 }
@@ -585,7 +608,7 @@ const curCatalyst = () => catalysts().find(c=>c.id===S.catalyst);
 function catFactor(grp){ const c=curCatalyst(); return c && grp.tg && grp.tg.includes(c.tag) ? 1+S.quality/100 : 1; }
 // final % multiplier for an affix: corruption ③ slider × catalyst quality
 function modPct(g,i,grp){ return 100 * catFactor(grp); }
-function craftedCount(except){ let n=0; for(const g of ['p','s']) S.slots[g].slice(0,maxOf(g)).forEach((v,i)=>{ if(v && S.data.groups[v.gi].cr && !(except&&except.g===g&&except.i===i)) n++; }); return n; }
+function craftedCount(except){ let n=0; for(const g of ['p','s']) S.slots[g].slice(0,maxOf(g)).forEach((v,i)=>{ if(v && S.data.groups[v.gi].cr && !isLiq(S.data.groups[v.gi]) && !(except&&except.g===g&&except.i===i)) n++; }); return n; }
 const craftedLimit = () => 1 + runeFx().craft;
 function reqLevel(){
   let top = 0; for(const g of ['p','s']) S.slots[g].slice(0,maxOf(g)).forEach(v=>{ if(v) top=Math.max(top, S.data.groups[v.gi].t[v.ti][0]); });

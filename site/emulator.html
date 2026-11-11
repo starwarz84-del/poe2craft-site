@@ -542,9 +542,13 @@ const SKILL_RE = /^(Grants Skill|스킬 부여)/;
 const skillIdx = b => (b.imp[0]||[]).map((x,i)=>SKILL_RE.test(x)?i:-1).filter(i=>i>=0);
 const impOf = (b, lang) => { const sk=skillIdx(b), keep=sk.length>1 ? sk[Math.min(S.item?.skill||0, sk.length-1)] : -1;
   return (b.imp[lang]||[]).filter((x,i)=>keep<0 || !sk.includes(i) || i===keep); };
-const rareCap = g => { const fx=runeFx(); return Math.max(0, 3 + (g==='p'?base().pd+fx.p:base().sd+fx.s)); };
+/* jewels have 2 prefixes · 2 suffixes; Potent Liquid Contempt adds one slot that stays after its line is removed (it.extra, game-rules.md) */
+const rareCap = g => { const fx=runeFx(); return Math.max(0, (S.cat==='jewel'?2:3) + (g==='p'?base().pd+fx.p:base().sd+fx.s) + ((S.item.extra||{})[g]||0)); };
+const isLiq = g => g.sub && g.sub[1]==='Liquid Emotions';
+const slotFx = g => { const o={p:0,s:0}; for(const m of String((g.t[0]||[])[5]||'').matchAll(/([+-]\d+) (Prefix|Suffix) Modifiers? allowed/g)) o[m[2]==='Prefix'?'p':'s'] += +m[1]; return o; };
+function addSlotFx(it, m){ if(m.unrev) return; const g=grp(m); if(!isLiq(g)) return; const o=slotFx(g); if(!o.p && !o.s) return; it.extra=it.extra||{p:0,s:0}; it.extra.p+=o.p; it.extra.s+=o.s; }
 const craftedLimit = () => 1 + runeFx().craft;
-const craftedCount = () => S.item.mods.filter(m=>!m.unrev && grp(m).cr).length;
+const craftedCount = () => S.item.mods.filter(m=>!m.unrev && grp(m).cr && !isLiq(grp(m))).length;   /* liquid emotions are not counted (policies.md 5) */
 function maxAff(g){ const it=S.item; if(it.rarity==='normal') return 0; if(it.rarity==='magic') return magicCap(g); return rareCap(g); }
 const countGen = g => S.item.mods.filter(m=>genOf(m)===g).length;
 const freeGen = g => countGen(g) < maxAff(g);
@@ -681,7 +685,7 @@ const isMark = m => !m.unrev && grp(m).f.includes('EssenceAbyss');
 function perfectRemoveFilter(g){
   const side = omen('sin_crystal') ? 'p' : omen('dex_crystal') ? 's' : null;
   const full = S.item.mods.filter(m=>genOf(m)===g.g).length >= rareCap(g.g);
-  if(full) return m => genOf(m)===g.g && (!side || side===g.g);
+  if(full) return m => genOf(m)===g.g;   /* 결정화와 상관없이 그 면에서 지워짐 (policies.md 5) */
   return side ? (m => genOf(m)===side) : (()=>true);
 }
 function essCheck(c){
@@ -696,7 +700,7 @@ function essWhy(c, hit){
     const rf = perfectRemoveFilter(g); if(!it.mods.some(m=>!m.fr && !m.unrev && rf(m))) return L(`${g.g==='p'?'접두':'접미'} 자리 없음 · 제거할 옵션 없음`,`${g.g==='p'?'Prefixes':'Suffixes'} are full and none can be removed`); }
   else { if(it.rarity!=='magic') return it.rarity==='normal' ? '마법 아이템 전용' : '마법 아이템 전용 · 희귀는 완벽한 에센스'; }
   if(g.f.some(x=>fams.has(x))) return '같은 계열 옵션 있음';
-  if(g.cr && craftedCount() >= craftedLimit()) return `제작 옵션 최대 ${craftedLimit()}개` + (craftedLimit()===1?' · 아스트리드의 창의성으로 +1':'');
+  if(g.cr && !isLiq(g) && craftedCount() >= craftedLimit()) return `제작 옵션 최대 ${craftedLimit()}개` + (craftedLimit()===1?' · 아스트리드의 창의성으로 +1':'');
   if(!perfect && it.mods.filter(m=>genOf(m)===g.g).length >= rareCap(g.g)) return '옵션 자리 없음';
   return '';
 }
@@ -797,12 +801,19 @@ function apply(c){
       break; }
     case 'liquid':
     case 'essence': {
-      const hit = essPick(c), perfect = c.mode==='rare';
-      if(perfect){
+      let hit = essPick(c); const perfect = c.mode==='rare';
+      const all2 = c.act==='liquid' ? essTiersFor(c) : [];
+      if(all2.length>1){ const rm=removeRandom(m=>!m.unrev); removed.push(rm);
+        /* 접두가 지워지면 접두용만, 접미가 지워지면 자리 있는 면(둘 다면 50/50) — game-rules.md 두 결과 액체 */
+        const room = h => it.mods.filter(m=>genOf(m)===S.data.groups[h.gi].g).length < rareCap(S.data.groups[h.gi].g);
+        const okp = rm && genOf(rm)==='p' ? all2.filter(h=>S.data.groups[h.gi].g==='p' && room(h)) : [];
+        const ok = okp.length ? okp : all2.filter(room);
+        hit = (ok.length?ok:all2)[Math.floor(rnd()*(ok.length||all2.length))]; }
+      else if(perfect){
         const rf = perfectRemoveFilter(S.data.groups[hit.gi]); if(omen('sin_crystal')) take('sin_crystal'); else if(omen('dex_crystal')) take('dex_crystal');
         removed.push(removeRandom(m=>!m.unrev && rf(m)));
       } else it.rarity='rare';
-      const m={gi:hit.gi, ti:hit.ti, roll:rolls(), m:1}; it.mods.push(m); added.push(m); break; }
+      const m={gi:hit.gi, ti:hit.ti, roll:rolls(), m:1}; it.mods.push(m); addSlotFx(it, m); added.push(m); break; }
     case 'hinekora': it.hinekora=true; S.fore={}; note=L('다음 커런시 결과 미리 보기','Next currency result will be foreseen'); break;
     case 'mirror': it.mirrored=true; note=L('복제 완료 · 이후 룬 교체만 가능','Mirrored copy created'); break;
     case 'catalyst': { const b0=it.quality, prev=it.catalyst; it.catalyst=c.tag; it.quality=Math.max(it.quality, Math.min(qmax(), it.quality+qualStep()));
@@ -1379,7 +1390,7 @@ async function importText(txt){
       if(ri===first && (v<a||v>b)){ mult = v/((a+b)/2); q=.5; }
       roll.push(Math.max(0,Math.min(.999,q))); });
     if(c.s==='c'){ it.corrImp={gi:c.gi,ti:c.ti,roll}; }
-    else { used.add(c.gi); it.mods.push({gi:c.gi, ti:c.ti, roll, m:+mult.toFixed(3), fr: tag==='fractured' || (hint||'').endsWith('!')}); }
+    else { used.add(c.gi); it.mods.push({gi:c.gi, ti:c.ti, roll, m:+mult.toFixed(3), fr: tag==='fractured' || (hint||'').endsWith('!')}); addSlotFx(it, it.mods[it.mods.length-1]); }
     i += c.lines.length-1; hint=null;
   }
   if(runeLs.length){ const sol = solveRunes(runeLs.map(cleanLine), Math.max(it.sockets||0, 3));
@@ -1496,7 +1507,8 @@ function manualWhy(gi){
   if(gated(g)) return L(`${g.sub[0]} 룬 필요`,`Needs ${g.sub[1]}`);
   if(n >= rareCap(g.g)) return L(`${g.g==='p'?'접두':'접미'} 자리 없음`,'No free slot');
   if(it.mods.some(m=>!m.unrev && grp(m).f.some(f=>g.f.includes(f)))) return L('같은 계열 있음','Same family');
-  if(g.cr && craftedCount() >= craftedLimit()) return L(`제작 옵션 ${craftedLimit()}개 제한`,'Crafted limit');
+  if(g.cr && !isLiq(g) && craftedCount() >= craftedLimit()) return L(`제작 옵션 ${craftedLimit()}개 제한`,'Crafted limit');
+  if(g.s==='d' && it.mods.some(m=>m.unrev || isDes(m))) return L('훼손 옵션은 아이템당 1개','One desecrated modifier per item');
   return '';
 }
 function renderOptPicker(){
@@ -1558,7 +1570,7 @@ $('#shelves').addEventListener('click', e=>{
     S.hist.unshift({c:MANUAL_RM, before, added:[], removed:[modText(m)], note:'', omens:[]}); S.last=null; return render(); }
   const gi=+t.dataset.add, g=S.data.groups[gi]; if(manualWhy(gi)) return;
   const sel=t.closest('.orow').querySelector('select'); const ti=+sel.value;
-  const m={gi, ti, roll:S.opt.roll==='max'?1:rolls(), m:1}; it.mods.push(m);
+  const m={gi, ti, roll:S.opt.roll==='max'?1:rolls(), m:1}; it.mods.push(m); addSlotFx(it, m);
   const pc=it.mods.filter(x=>genOf(x)==='p').length, sc=it.mods.filter(x=>genOf(x)==='s').length;
   if(it.rarity!=='rare') it.rarity = (pc>1||sc>1||g.s!=='n') ? 'rare' : 'magic';
   S.hist.unshift({c:MANUAL, before, added:[modText(m)], removed:[], note:'', omens:[]}); S.last={added:new Set([m])}; render();

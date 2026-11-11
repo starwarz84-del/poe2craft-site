@@ -99,3 +99,4 @@ EN.update({'고정 옵션의 부여 스킬이 핵심 · 목록 중 하나만 붙
 EN.update({'룬 소켓 · ':'Rune sockets · ', '추가 제작 옵션 · ':'Extra crafted · ', '글꼴:':'Font:'})
 EN.update({'공개할 옵션 없음':'Nothing can be revealed'})
 EN.update({'리버스 크래프팅으로 →':'To Reverse Crafting →', '완성한 아이템의 실제 제작 순서 찾기':'Find the real crafting order for this item'})
+EN.update({'훼손 옵션은 아이템당 1개':'Only one desecrated modifier per item', '고대 증강물 1개까지':'Only one Ancient augment at a time', '유산 룬 1개까지':'Only one Legacy rune', '같은 증강물 1개까지':'Limited to 1 — this one is already socketed', '알두르의 유산: 칼구르·에조미어 고유 아이템 전용':"Aldur's Legacy: Kalguuran/Ezomyte uniques only"})
