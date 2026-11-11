@@ -597,5 +597,13 @@ for _r in R:
     if os.path.exists(f"{D}sim/{_sid}.json"):
         _r['sim'] = 1
         if _sid!=_r['id']: _r['simId'] = _sid
+        # 완성품 = 플로우차트의 그 등급 완성품 카드(사용자 확정 2026-11-11: 플로우차트 → 등급별 카드 3장 → 그 흐름을 따른 레시피, 같은 등급은 같은 카드)
+        _sd=json.load(open(f"{D}sim/{_sid}.json")); _g=_sd.get('graph',{}); _tier=_r.get('tier') or 'high'
+        _F=next((f for f in (_g.get('finals') or []) if (f.get('tier') or f['id'])==_tier), None)
+        if _F:
+            _V=next((v for v in (_g.get('versions') or []) if v['id']==_F['id']), None)
+            _S=_V and next((x for x in _sd.get('strategies',[]) if not x.get('hidden') and all(str(x['params'].get(k))==str(v) for k,v in _V['params'].items())), None)
+            _tags={l['tag']:{k:_g['tags'][l['tag']].get(k) for k in ('gi','s','sec','tmax')} for l in _F['lines'] if l.get('tag') in (_g.get('tags') or {})}
+            _r['fc']={'lines':_F['lines'],'tags':_tags,'ds':(_S or {}).get('res',{}).get('desStat')}
 json.dump({'v':2,'recipes':R},open(D+'recipes.json','w'),ensure_ascii=False)
 print(len(R),'recipes')
