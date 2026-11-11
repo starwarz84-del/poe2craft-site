@@ -51,7 +51,7 @@ def sh_boots(tier):
   {'id':'fz','phase':'prefix','do':'note','note':K('완성. 룬 소켓 2개는 비워 둠(취향껏).','Done. Both rune sockets are left empty (your choice).')}]
     R.append({
  'id':rid,'tierGroup':'sihan-highend-boots-v2','tier':tier,'tierLabel':{'high':K('하이엔드','High-end'),'bal':K('밸런스','Balance'),'ess':K('에센셜','Essential')}[tier],
- 'cls':c,'base':base(c,'Tasalian Greaves'),'ilvl':82,'sockets':2,'exceptional':{'sockets':1},'difficulty':3,'budget':'medium',
+ 'cls':c,'base':base(c,'Tasalian Greaves'),'ilvl':82,'sockets':2,'exceptional':{'sockets':1},'difficulty':4,'budget':'medium',
  'buildTags':[K('방어도','Armour'),K('이동 속도','Movement speed'),K('생명력','Life')],'patch':'0.5.5','created':'2026-11-09','author':K('시한 영상 기반','Based on 시한'),
  'source':{'url':VSB,'title':'[POE2 0.5.5] 하이엔드 장화 제작 방법｜범용 적용 가능｜실전 제작 포함','channel':'시한'},
  'title':K('방어도 % 분열 + 이동 속도·생명력 + 방어도 원소 적용','fractured % armour + movement speed, life, armour applies to elemental'),
@@ -59,4 +59,4 @@ def sh_boots(tier):
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'magic','kr':'매직 만들기','en':'Make it magic'},{'id':'rare','kr':'레어 전환','en':'To rare'},
            {'id':'fracture','kr':'분열','en':'Fracture'},{'id':'suffix','kr':'접미 첫번째~세번째 옵션','en':'Suffix options 1–3'},{'id':'prefix','kr':'접두 두번째·세번째 옵션','en':'Prefix options 2–3'}],
  'nodes':nodes})
-for _t in ('high','bal'): sh_boots(_t)   # 에센셜은 밸런스와 같은 결과라 뺌(정책 10장 C17, 2026-11-12)
+for _t in ('high','bal'): sh_boots(_t)   # 난이도 4 = 하이엔드 + 밸런스(사용자 확정 2026-11-12), 에센셜은 밸런스와 같은 결과라 뺌(정책 10장 C17)
