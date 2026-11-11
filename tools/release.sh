@@ -35,6 +35,9 @@ if [ $FULL = 1 ]; then
   step "2-2. 리버스 점수 (오래 걸림)"; ( cd tools/test && node _revscore.js | tail -1 ) && python3 tools/test/revscore_md.py >/dev/null
 fi
 
+step "2-3. 플로우차트 전수 검사 (tools/test/fcaudit.txt)"
+python3 tools/test/fcaudit.py
+
 step "3. 크래프팅 점수"
 python3 scripts/score_recipes.py | head -1 | tee /tmp/poe2-score.log
 grep -q "<70: 0" /tmp/poe2-score.log || fail "70점 미만 레시피 있음 — docs/recipe-notes.md 점수표 확인"
