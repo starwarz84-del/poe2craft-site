@@ -418,6 +418,18 @@ T+=[
   'title':K('세를의 승리를 +2로: 접미 5개 마법봉','Serle’s Triumph at +2: five wand suffixes'),
   'body':K('세를의 승리의 접미 +1도 장착 룬 옵션이라 장착 효과 증가를 받음. 마법봉에 군왕의 합금으로 장착 효과 증가 20~30%를 붙이고 룬 탐구자의 소명의 유산(장착된 룬의 효과 75% 증가)을 끼워 100%를 넘기면 접미 +2가 되어 접미가 5개까지 붙음. 군왕의 합금 옵션을 절사로 지우면 다시 +1로 돌아가니, 접두를 먼저 끝내거나 레벨 높은 옵션을 접두에 두고 접미를 절사함.','Serle’s Triumph’s extra suffix is a socketed rune line, so socketed effect increases scale it. On a wand, add 20–30% socketed effect with a Regal Alloy and socket Legacy of Runeseeker’s Call (75% increased effect of socketed runes); past 100% the rune gives +2 suffixes, five in all. Whittling away the alloy line drops it back to +1, so finish the prefixes first or keep high-level lines there before Whittling the suffixes.'),
   'source':{'url':'https://www.youtube.com/watch?v=TmfCxzXrNK8','title':'8옵션 마법봉 제작법 [POE2] How to make +8 option wand.','channel':'반지깎는노인','ts':'0:37'},'recipes':[]},
+{'id':'coronation-fix-side','tags':[K('징조','Omens'),K('화살통','Quiver')],'patch':'0.5.5',
+  'title':K('제왕 결과를 대관식의 징조로 한쪽에 고정','Pin the Regal result to one side with a Coronation omen'),
+  'body':K('화살통처럼 접미 훼손을 노리는 아이템에서 제왕의 오브 옵션이 접미에 붙으면 접미가 꽉 차서, 다음 턱뼈가 빈자리 대신 이미 있는 접미 하나를 무작위로 지움. 좌측 대관식의 징조를 같이 쓰면 제왕 옵션이 접두로 가서 접미 한 자리가 훼손용으로 남음.','On a quiver that will take a suffix desecration, a Regal Orb line landing on the suffixes fills them, and the next jawbone then deletes one existing suffix at random instead of using an open slot. With an Omen of Sinistral Coronation the Regal line goes to the prefixes and one suffix stays open for the desecration.'),
+  'source':{'url':'https://mobalytics.gg/poe-2/builds/ice-shot-deadeye','title':'0.5.5 Fubgun Ice Shot Deadeye — Crafting Guide','channel':'Fubgun (Mobalytics)'},'recipes':['fubgun-quiver']},
+{'id':'sell-fracture-bases','tags':[K('판매','Selling'),K('분열','Fracture')],'patch':'0.5.5',
+  'title':K('완성품 대신 중간 단계로 팔기','Sell the intermediate step instead of the finished item'),
+  'body':K('완성품만 팔리는 게 아님. 정신력 1티어 부재 목걸이, 그 옵션이 분열된 베이스, 분열 + 주문 +3까지 붙인 목걸이처럼 단계마다 사는 사람이 있음. 가진 커런시가 적으면 한 단계만 하고 팔아 다음 단계 비용을 모으는 쪽이 완성까지 밀어붙이는 것보다 덜 위험함. 분열 베이스를 직접 만드는 비용(베이스 + 분열의 오브 × 약 3번)이 매물보다 비싸면 사서 시작함.','Finished items are not the only thing that sells. A T1 spirit Absent Amulet, the same line fractured, or that base with +3 spells added each have buyers. With little currency, doing one step and selling funds the next one with less risk than pushing to a finished item. If making the fractured base yourself costs more than the listing, roughly base plus three Fracturing Orbs, buy it.'),
+  'source':{'url':'https://gall.dcinside.com/mgallery/board/view/?id=poe2&no=439265','title':'제작으로 돈 버는 방법 알려줌.','channel':'POE2 마이너 갤러리'},'recipes':[]},
+{'id':'buy-common-first-line','tags':[K('베이스','Base'),K('분열','Fracture')],'patch':'0.5.5',
+  'title':K('흔한 첫 옵션은 붙이지 말고 사기','Buy a common first line instead of rolling it'),
+  'body':K('황금 목걸이 아이템 레벨 80 이상에 정신력 1티어는 드롭으로 자주 나와 5~15 div에 거래됨. 카오스 오브로 붙이는 것보다 이 베이스를 여러 개 사서 미공개 훼손으로 네 번째 옵션을 채우고 분열을 치는 게 쌈. 접두를 지키려면 우측 결정화의 징조 + 심연의 에센스 → 보존된 빗장뼈로 훼손 자리를 만듦.','A Gold Amulet at item level 80+ with T1 spirit drops often and trades for 5–15 div. Buying several and filling a fourth line with an unrevealed desecration before fracturing beats rolling spirit with Chaos Orbs. To keep the prefixes safe, make the desecration slot with Omen of Dextral Crystallisation + Essence of the Abyss, then a Preserved Collarbone.'),
+  'source':{'url':'https://gall.dcinside.com/mgallery/board/view/?id=poe2&no=439507','title':'죄송합니다. 황금 목걸이 크래프팅 보여드리겠습니다.','channel':'POE2 마이너 갤러리'},'recipes':['gold-amulet-6line']},
 ]
 json.dump({'v':1,'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
 print(len(T),'tips')

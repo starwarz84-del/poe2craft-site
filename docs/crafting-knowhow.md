@@ -50,16 +50,24 @@
 | K22 | 분열 전 수치 잡기 | 디바인은 핵심 옵션 하나에만, 저항은 유동체로 같은 티어 안에서 다시 굴림(분열된 옵션은 유동체가 안 먹음) | 디바인 오브 | 반지깎는노인 유동체, 꿀팁 liquid-instead-of-divine | 제안 |
 | K23 | 마법봉 접미를 5개로 | 세를의 승리 + 군왕의 합금(장착 효과 증가) + 룬 탐구자의 소명의 유산 → 접미 +2. 군왕의 합금 옵션은 절사로 지우지 않음 | — | 반지깎는노인 8옵션 마법봉(TmfCxzXrNK8), 꿀팁 serle-plus-two | 미적용(엔진·시뮬에 장착 효과 배율 없음) |
 | K24 | 지난 리그 기능: 재조합기(두 아이템에서 옵션을 골라 합침, 재조합의 징조 = 실패 시 한 번 더) | 비싼 징조 대신 재조합기로 원하는 조합 살리기 | 절사·소멸의 징조 | 반지깎는노인 제작 비법(zwcDKnD_4QI, 0.4 무렵) | 미적용(지금 게임 데이터에 없음) |
+| K25 | 매직 → 레어 제왕 결과가 다음 훼손 면에 붙을 수 있음 | 대관식의 징조로 제왕 옵션 면을 고정해 훼손 면에 빈자리를 남김 | 좋은 옵션이 지워지는 위험 | Fubgun 화살통 글, 꿀팁 coronation-fix-side | 제안 |
+| K26 | 접두 엑잘에 흔한 옵션(마나 최대치)이 자꾸 붙음 | 훼손 공개로 그 계열을 먼저 접두에 막아 두고 엑잘 → 빛의 징조로 막기 제거 → 마지막 자리는 다시 훼손 | 엑잘 반복 | BigDaddyGaming 0.5 마법봉 글, 꿀팁 block-prefix-with-desecration | 선택 |
+| K27 | 첫 옵션이 드롭으로 흔한 베이스(황금 목걸이 정신력 1티어 등) | 카오스로 붙이지 말고 여러 개 사서 미공개 훼손으로 4번째 옵션 → 분열 | 카오스 오브 수백 개 | 디시 POE2 갤러리 439507, 꿀팁 buy-common-first-line | 제안 |
+| K28 | 커런시가 적음 | 완성품 대신 중간 단계(1티어 한 줄, 분열 베이스, 분열 + 한 줄)로 팔고 다음 단계 비용을 모음 | 실패 위험 | 디시 POE2 갤러리 439265, 꿀팁 sell-fracture-bases | 미적용(판매 전략) |
+| K29 | 접두·접미에 합금이 나뉜 미러급 집중구 | 1티어 하나를 카오스로 잡은 뒤 좌·우측 찬미 엑잘 + 결정화 합금 + 소멸을 반복(소멸이 잡아 둔 옵션을 지울 확률 약 1/5) | 말소 완벽한 카오스 반복(약 2,100~2,900 div 기댓값) | 디시 POE2 갤러리 439265 | 미적용(레시피 없음) |
 
 ## 출처
 
 - [Isolation crafting (Mobalytics, sirgog)](https://mobalytics.gg/poe-2/profile/sirgog/guides/isolation-crafting-the-most-important-advanced-crafting-trick-to-learn)
 - [Omen crafting (Mobalytics)](https://mobalytics.gg/poe-2/guides/omen-crafting)
 - [Abyss crafting (Mobalytics, 0.3)](https://mobalytics.gg/poe-2/guides/abyss-crafting)
+- [0.5.5 Fubgun Ice Shot Deadeye — Crafting Guide (Mobalytics)](https://mobalytics.gg/poe-2/builds/ice-shot-deadeye)
+- [제작으로 돈 버는 방법 (디시 POE2 갤러리)](https://gall.dcinside.com/mgallery/board/view/?id=poe2&no=439265) · [황금 목걸이 크래프팅 (디시 POE2 갤러리)](https://gall.dcinside.com/mgallery/board/view/?id=poe2&no=439507)
 - [0.5 wand crafting guide (Mobalytics, 2026-06)](https://mobalytics.gg/poe-2/profile/bigdaddygaming/guides/0-5-7-wand-crafting-guide)
 - [PoE2 0.5 crafting guide (timesaver)](https://timesaver.gg/blog/poe2-0-5-crafting-guide)
 - [PoE2 crafting cost guide (timesaver, 0.5.4)](https://timesaver.gg/blog/poe2-crafting-cost-guide)
 - [League starter weapon for cheap 0.5.5 (영상 요약)](https://sozai.app/transcript/craft-league-starter-weapon-poe2/index.md)
 - [심연의 에센스 (poe2db)](https://poe2db.tw/kr/Essence_of_the_Abyss)
 - 반지깎는노인 영상 10개 기록(2026-11-11): `tools/notes/banzino-*.md`
+- 웹 글 기록(2026-11-11): `tools/notes/web-*.md` — Fubgun 0.5.5 빌드 글, BigDaddyGaming 0.5 마법봉 글, 디시 POE2 갤러리 제작 글
 - 우리 영상 레시피에서 모은 제작 꿀팁 #1~#84 (`scripts/build_tips.py`)

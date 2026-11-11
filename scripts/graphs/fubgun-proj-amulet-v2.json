@@ -1,0 +1,1145 @@
+{
+ "id": "fubgun-proj-amulet-v2",
+ "recipe": "fubgun-proj-amulet-v2",
+ "cls": "Amulets",
+ "base": "Gold Amulet",
+ "ilvl": 82,
+ "note": "Fubgun 투사체 +3 목걸이(0.5.5 빌드 글) — 투사체 +3 분열 + 잡옵 → 카오스 오브로 정신력 1~2티어 → 우측 찬미 + 엑잘(접미 잡옵) → 우측 결정화 + 완벽한 강화의 에센스 → 조프의 기폭제 20% + 촉진 + 우측 찬미 + 완벽한 엑잘로 저항 2개(치명타·희귀도도 받음, 빗나가면 우측 소멸의 징조 + 소멸의 오브) → 보존된 빗장뼈 → 공개(생명력·에너지 보호막). 글의 빗나감 처리(빗장뼈로 덮고 빛의 징조)는 접미에 빈자리가 있으면 안 먹어서 우측 소멸의 징조로 바꿈. 촉진 효과는 퀄리티 %만큼 미는 추정값.",
+ "params": {
+  "L": {
+   "kr": "훼손 공개",
+   "en": "Desecration reveal",
+   "values": {
+    "1": {
+     "kr": "빛의 징조로 다시",
+     "en": "Retry with Omen of Light"
+    },
+    "0": {
+     "kr": "결과 그대로",
+     "en": "Keep whatever comes"
+    }
+   }
+  },
+  "pT": {
+   "kr": "마지막 접두",
+   "en": "Last prefix",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "L": 1,
+    "pT": 2
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "L": 0,
+    "pT": 4
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "L": 0,
+    "pT": 4
+   },
+   "desc": {
+    "kr": "마지막 접두는 공개 결과 그대로",
+    "en": "Keep the last reveal"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "L": 1,
+    "pT": 2
+   },
+   "desc": {
+    "kr": "마지막 접두를 1~2티어까지 빛의 징조로 다시",
+    "en": "Retry the last prefix with Light until T1–2"
+   }
+  }
+ ],
+ "tags": {
+  "pj": {
+   "gi": 20,
+   "tmax": 1
+  },
+  "sp": {
+   "gi": 28,
+   "tmax": 2
+  },
+  "enh": {
+   "gi": 74
+  },
+  "catR": {
+   "anyOf": [
+    {
+     "gi": 4
+    },
+    {
+     "gi": 7
+    }
+   ]
+  },
+  "gs": {
+   "anyOf": [
+    {
+     "gi": 4
+    },
+    {
+     "gi": 5
+    },
+    {
+     "gi": 6
+    },
+    {
+     "gi": 7
+    },
+    {
+     "gi": 8
+    },
+    {
+     "gi": 24
+    },
+    {
+     "gi": 26
+    }
+   ]
+  },
+  "gp": {
+   "anyOf": [
+    {
+     "gi": 9,
+     "tmax": "$pT"
+    },
+    {
+     "gi": 13,
+     "tmax": "$pT"
+    },
+    {
+     "gi": 16,
+     "tmax": "$pT"
+    }
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "pj"
+   },
+   {
+    "has": "sp"
+   },
+   {
+    "has": "enh"
+   },
+   {
+    "count": {
+     "tag": "gs",
+     "min": 2
+    }
+   },
+   {
+    "full": "p"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "a4",
+    "a5",
+    "a5x"
+   ],
+   "kr": "접미 두번째 옵션",
+   "en": "Second suffix"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "a8",
+    "a9",
+    "a9x"
+   ],
+   "kr": "접두 세번째 옵션(훼손)",
+   "en": "Third prefix (desecrated)"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "sp",
+     "tmax": 2
+    },
+    {
+     "tag": "enh",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "생명력·에너지 보호막",
+      "en": "Life or energy shield"
+     }
+    },
+    {
+     "tag": "pj",
+     "fr": true
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "저항",
+      "en": "Resistance"
+     }
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "저항",
+      "en": "Resistance"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "sp",
+     "tmax": 2
+    },
+    {
+     "tag": "enh",
+     "tmax": 1
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "공개 결과 그대로",
+      "en": "Reveal as it comes"
+     }
+    },
+    {
+     "tag": "pj",
+     "fr": true
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "저항",
+      "en": "Resistance"
+     }
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "저항",
+      "en": "Resistance"
+     }
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "pj",
+      "fr": true
+     },
+     {
+      "junk": "p"
+     }
+    ]
+   },
+   "label": {
+    "kr": "모든 투사체 스킬 레벨 +3 분열 황금 목걸이 (잡옵 1개)",
+    "en": "Gold Amulet with fractured +3 projectile skills (one junk line)"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "a1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "a1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "sp"
+     },
+     "to": "a2",
+     "res": "ok"
+    },
+    {
+     "to": "a1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "sp"
+   ]
+  },
+  {
+   "id": "a2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미에 잡옵 1개",
+    "en": "A junk suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "a3"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "잡옵 (아무 옵션)",
+     "en": "Junk (any line)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ]
+  },
+  {
+   "id": "a3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접미 잡옵을 지우고 접두 두번째 옵션",
+    "en": "Remove the junk suffix, second prefix"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "a4"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "일반 방어도, 회피, 에너지 보호막 (20—30)% 증가 (제작 옵션)",
+     "en": "(20—30)% increased Global Armour, Evasion and Energy Shield (crafted)",
+     "m": "c",
+     "tags": [
+      "enh"
+     ]
+    }
+   ],
+   "cur": "Perfect_Essence_of_Enhancement",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "방어도·회피·에너지 보호막 증가 (제작 옵션)",
+     "en": "% armour, evasion and energy shield (crafted)"
+    }
+   ],
+   "ess": "enh",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ]
+  },
+  {
+   "id": "a4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "quality",
+   "goal": {
+    "kr": "화염 퀄리티 20%",
+    "en": "Fire quality 20%"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "edges": [
+    {
+     "to": "a5"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "일반 방어도, 회피, 에너지 보호막 (20—30)% 증가 (제작 옵션)",
+     "en": "(20—30)% increased Global Armour, Evasion and Energy Shield (crafted)",
+     "m": "c",
+     "tags": [
+      "enh"
+     ]
+    }
+   ],
+   "cur": "Xophs_Catalyst",
+   "count": 20
+  },
+  {
+   "id": "a5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "gs"
+     },
+     "to": "a6",
+     "res": "ok"
+    },
+    {
+     "to": "a5x",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "일반 방어도, 회피, 에너지 보호막 (20—30)% 증가 (제작 옵션)",
+     "en": "(20—30)% increased Global Armour, Evasion and Energy Shield (crafted)",
+     "m": "c",
+     "tags": [
+      "enh"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저항 (치명타·희귀도도 됨)",
+     "en": "A resistance (crit or rarity also fine)",
+     "m": "n",
+     "tags": [
+      "gs"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "gs"
+   ],
+   "omens": [
+    "Omen_of_Catalysing_Exaltation",
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "cat": "catR"
+  },
+  {
+   "id": "a5x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접미 지우기",
+    "en": "Remove the missed suffix"
+   },
+   "edges": [
+    {
+     "to": "a4",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "a6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "quality",
+   "goal": {
+    "kr": "화염 퀄리티 20%",
+    "en": "Fire quality 20%"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "edges": [
+    {
+     "to": "a7"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "일반 방어도, 회피, 에너지 보호막 (20—30)% 증가 (제작 옵션)",
+     "en": "(20—30)% increased Global Armour, Evasion and Energy Shield (crafted)",
+     "m": "c",
+     "tags": [
+      "enh"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저항 (치명타·희귀도도 됨)",
+     "en": "A resistance (crit or rarity also fine)",
+     "m": "n",
+     "tags": [
+      "gs"
+     ]
+    }
+   ],
+   "cur": "Xophs_Catalyst",
+   "count": 20
+  },
+  {
+   "id": "a7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "gs"
+     },
+     "to": "a8",
+     "res": "ok"
+    },
+    {
+     "to": "a7x",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "일반 방어도, 회피, 에너지 보호막 (20—30)% 증가 (제작 옵션)",
+     "en": "(20—30)% increased Global Armour, Evasion and Energy Shield (crafted)",
+     "m": "c",
+     "tags": [
+      "enh"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저항 (치명타·희귀도도 됨)",
+     "en": "A resistance (crit or rarity also fine)",
+     "m": "n",
+     "tags": [
+      "gs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저항 (치명타·희귀도도 됨)",
+     "en": "A resistance (crit or rarity also fine)",
+     "m": "n",
+     "tags": [
+      "gs"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "gs"
+   ],
+   "omens": [
+    "Omen_of_Catalysing_Exaltation",
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "cat": "catR"
+  },
+  {
+   "id": "a7x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접미 지우기",
+    "en": "Remove the missed suffix"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "gs",
+       "min": 1
+      }
+     },
+     "to": "a6",
+     "port": "right"
+    },
+    {
+     "to": "a4",
+     "res": "fail",
+     "lost": "gs",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "a8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "a9"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "일반 방어도, 회피, 에너지 보호막 (20—30)% 증가 (제작 옵션)",
+     "en": "(20—30)% increased Global Armour, Evasion and Energy Shield (crafted)",
+     "m": "c",
+     "tags": [
+      "enh"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저항 (치명타·희귀도도 됨)",
+     "en": "A resistance (crit or rarity also fine)",
+     "m": "n",
+     "tags": [
+      "gs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저항 (치명타·희귀도도 됨)",
+     "en": "A resistance (crit or rarity also fine)",
+     "m": "n",
+     "tags": [
+      "gs"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Collarbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ]
+  },
+  {
+   "id": "a9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "gp"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "L": 1
+      }
+     },
+     "to": "a9x",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +3",
+     "en": "+3 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "pj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "일반 방어도, 회피, 에너지 보호막 (20—30)% 증가 (제작 옵션)",
+     "en": "(20—30)% increased Global Armour, Evasion and Energy Shield (crafted)",
+     "m": "c",
+     "tags": [
+      "enh"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저항 (치명타·희귀도도 됨)",
+     "en": "A resistance (crit or rarity also fine)",
+     "m": "n",
+     "tags": [
+      "gs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저항 (치명타·희귀도도 됨)",
+     "en": "A resistance (crit or rarity also fine)",
+     "m": "n",
+     "tags": [
+      "gs"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 / 에너지 보호막 최대치 / 에너지 보호막 증가",
+     "en": "Max life / max energy shield / % energy shield",
+     "m": "n",
+     "tags": [
+      "gp"
+     ]
+    }
+   ],
+   "want": "gp",
+   "show": [
+    "gp"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "a9x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    9
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "a8",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}
