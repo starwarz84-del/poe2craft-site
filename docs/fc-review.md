@@ -30,10 +30,10 @@
 | grasping-mail-spell1-v2 | y5Ch3AJpl5c | high 1,140, bal 613 | 11 | 대기 |  |  |
 | sl-proj7-gloves-v2 | XMYJh3CnXuY | high 1,104, bal 785 | 7 | 완료 | B(Fable) | 영상 대조 |
 | saveq-absent-amulet-v2 | S4sflKbsA8A | high 935, bal 797, ess 729 | 4 | 대기 |  |  |
-| unstoppable-vile-robe-v2 | swF5mwXmZ0k | high 739, bal 689 | 4 | 진행 중 | A(Opus) |  |
+| unstoppable-vile-robe-v2 | swF5mwXmZ0k | high 739, bal 689 | 4 | 완료 11-11 | A(Opus) | 영상 5:45~24:15 대조. 접미는 엑잘+소멸(비싼 징조는 마지막 한 옵션만), 접두 막기·결정화+심연. 하이엔드 739→809, 밸런스(1티어 + 마지막 접미 랜덤) 689→163 |
 | helmet-armour-sl-v2 | p0fChSu91uI | high 723, bal 718, ess 75 | 5 | 대기 |  |  |
 | diztoh-endgame-quarterstaff-v2 | YfGJyBrObxI | high 712, bal 36 | 3 | 대기 |  |  |
-| unstoppable-slipstrike-vest-v2 | swF5mwXmZ0k | high 651, bal 176 | 1 | 완료 | A(Opus) | 영상 대조·다시 짬 |
+| unstoppable-slipstrike-vest-v2 | swF5mwXmZ0k | high 651, bal 176 | 1 | 완료 11-11 | A(Opus) | 영상 40:45~46:30 대조. 첫 카오스 추가, 반복은 상위 카오스, 접두 결정화+심연. 하이엔드 870→651, 밸런스 540→176 |
 | breach-ring-phys-v2 |  | bal 535, ess 89 | 2 | 대기 |  |  |
 | diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 512, bal 340, ess 278 | 1 | 대기 |  |  |
 | mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 대기 |  |  |

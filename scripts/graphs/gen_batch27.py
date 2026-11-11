@@ -8,38 +8,53 @@
 import os, json
 H=os.path.dirname(os.path.abspath(__file__))
 _src=open(f'{H}/gen_batch22.py').read(); exec(_src[:_src.index('# ---------- 1. 시한')])
-TS=TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})
+TS=TV({'1':('1티어','T1'),'2':('1~2티어','T1–2'),'3':('1~3티어','T1–3')})
 RES3=lambda c: [{'gi':1,'tmax':'$rT'},{'gi':2,'tmax':'$rT'},{'gi':3,'tmax':'$rT'}]
 
 # ---------- 1. Vile Robe (에너지 보호막) ----------
+# 영상 대조(2026-11-11, swF5mwXmZ0k 5:45~24:15): 분열 뒤 소멸로 옵션 2개만 → 카오스로 저항(11:15) → 우측 찬미 + 엑잘로 접미(12:00)
+#   → 저항 2개 + 잡옵이면 비싼 징조 대신 소멸의 오브(12:30, "징조는 마지막 한 옵션에만") → 생명력·가시를 우물에서 막고 엑잘로 접두(14:45~15:45)
+#   → 빛의 징조로 막기 제거(16:00) → 고대 갈비뼈 공개로 마지막 접두, 낮으면 빛의 징조 + 소멸로 다시(16:15~18:15)
+#   → 마지막 접미 잡옵은 절사의 징조 + 카오스(레벨 82 저항이 접미를 잠가서 2~4번, 18:45~19:45). "저항 3티어라도 괜찮다"(22:00)
 c='Body_Armours_int'
-P={'high':{'pT':1,'rT':1},'bal':{'pT':2,'rT':2}}
+P={'high':{'pT':1,'rT':1,'last':'res'},'bal':{'pT':1,'rT':1,'last':'any'}}
 tags={'pes':{'gi':7,'tmax':1},'esf':{'gi':6,'tmax':'$pT'},'hyb':{'gi':9,'tmax':'$pT'},'sp':{'gi':14,'tmax':'$pT'},
       'gp':{'anyOf':['esf','hyb','sp']},'fr':{'gi':1,'tmax':'$rT'},'cr':{'gi':2,'tmax':'$rT'},'lr':{'gi':3,'tmax':'$rT'},
-      'goodS':{'anyOf':['fr','cr','lr']}}
+      'goodS':{'anyOf':['fr','cr','lr']},'blk':{'anyOf':[{'gi':5},{'gi':12}]},'mkP':{'gi':44}}
 PE=itg('p',c,7,['pes'],'f'); EF=itg('p',c,6,['esf']); EF2=itg('p',c,14,['sp'])
 RF=itg('s',c,1,['fr']); RC=itg('s',c,2,['cr']); RL=itg('s',c,3,['lr'])
-I0=[PE,J('s')]; I1=[PE,EF]; 
-V2=I1+[UN('p')]; V3=I1+[EF2]; V4=V3+[it('s','랜덤 옵션 2개','Two random lines',None,'j')]; V5=V3+[RF,RC,RL]
-L1={'if':{'removed':'gp'},'to':'c1','res':'fail','lost':'gp','hide':True}
-nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pes','fr':True},{'junk':'s'}]},K('에너지 보호막 증가 1티어 분열 Vile Robe (아이템 레벨 82, 잡옵 1개)','Vile Robe with fractured T1 % energy shield (item level 82, one junk line)'),I0),
+GSv=it('s','저항 1개','One resistance',['goodS'],'n')
+I0=[PE,J('s')]; I1=[PE,GSv]; I2=[PE,RF,RC]; I3=I2+[EF]; I4=I3+[UN('p')]; I5=I3+[EF2]; I6=I5+[RL]
+G2={'count':{'tag':'goodS','min':2}}; G3={'count':{'tag':'goodS','min':3}}; PJ={'not':{'sideLt':{'side':'p','n':2}}}
+nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pes','fr':True},{'junk':'s'}]},K('에너지 보호막 증가 1티어 분열 Vile Robe (아이템 레벨 82, 분열 + 잡옵 1개만 남김)','Vile Robe with fractured T1 % energy shield (item level 82, fracture + one junk line)'),I0),
  mark([0,0.6],'c1',I0),
- act('c1','main',[0,1],'chaos','Chaos_Orb',K('접두 두번째 옵션','Second prefix'),None,K('카오스','Chaos'),[{'if':{'has':'gp'},'to':'d1','res':'ok'},{'to':'c1','res':'fail'}],I1,show=['esf','hyb','sp']),
- act('d1','main',[0,2],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],V2,omens=['Omen_of_Sinistral_Necromancy']),
- act('d2','main',[0,3],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'count':{'tag':'gp','min':2}},'to':'e1','res':'ok'},{'to':'d2x','res':'fail'}],V3,want='gp',show=['esf','hyb','sp'],omens=['Omen_of_Abyssal_Echoes']),
- annul('d2x',[1,3],[{'to':'d1','port':'right'}]),
- act('e1','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접미 옵션 2개','Two suffixes'),[st('s','랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),[{'to':'e2'}],V4,omens=['Omen_of_Greater_Exaltation','Omen_of_Dextral_Exaltation'],skipIf={'full':'s'},skipTo='t1'),
- act('e2','main',[1,5],'exalt','Perfect_Exalted_Orb',K('빈 접미 채우기','Fill the empty suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'t1'}],None,omens=['Omen_of_Dextral_Exaltation'],skipIf={'full':'s'},skipTo='t1'),
- act('t1','main',[0,6],'chaos','Perfect_Chaos_Orb',K('접미 저항 3개','Three suffix resistances'),None,K('카오스','Chaos'),
-     [{'if':{'removed':'gp'},'to':'d1','res':'fail','lost':'gp','hide':True},{'if':{'count':{'tag':'goodS','min':3}},'to':'ok','res':'ok'},{'if':{'not':{'full':'s'}},'to':'e2','res':'fail','hide':True},{'to':'t1','res':'fail'}],V5,show=['fr','cr','lr'],trim={'side':'s','keep':'goodS'},skipIf={'count':{'tag':'goodS','min':3}},skipTo='ok'),
- done([0,7])]
+ act('c1','main',[0,1],'chaos','Chaos_Orb',K('접미 첫번째 옵션','First suffix'),None,K('카오스','Chaos'),[{'if':{'has':'goodS'},'to':'e1','res':'ok'},{'to':'c1','res':'fail'}],I1,show=['fr','cr','lr']),
+ act('e1','main',[0,2],'exalt','Exalted_Orb',K('접미 두번째 옵션','Second suffix'),None,K('엑잘','Exalt'),
+     [{'if':{'all':[G2,PJ]},'to':'cx','res':'ok','label':K('접두 잡옵 있음','Junk prefix there')},{'if':G2,'to':'e3','res':'ok'},{'if':{'full':'s'},'to':'ax','res':'fail'},{'to':'e1','res':'fail'}],I2,show=['fr','cr','lr'],omens=['Omen_of_Dextral_Exaltation']),
+ annul('ax',[1,2],[{'if':{'has':'goodS'},'to':'e1','res':'ok'},{'to':'c1','res':'fail','label':K('저항이 지워짐','Resistance removed')}],omens=(),target=K('잡옵 지우기 (저항이 지워질 수도 있음)','Remove a junk line (a resistance may go)')),
+ act('e3','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),
+     [{'if':{'all':[{'added':'gp'},{'has':'blk'}]},'to':'w1','res':'ok'},{'if':{'added':'gp'},'to':'d3','res':'ok'},{'to':'cx','res':'fail'}],I3,show=['esf','hyb','sp'],omens=['Omen_of_Sinistral_Exaltation']),
+ act('cx','main',[1,4],'essence','Essence_of_the_Abyss',K('빗나간 접두를 징표로','The missed prefix goes for the Mark'),[st('p','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),
+     [{'if':{'has':'blk'},'to':'w0','label':K('막기가 남음','Blocker still there')},{'to':'db'}],None,ess='mkP',mark=True,omens=['Omen_of_Sinistral_Crystallisation']),
+ annul('w0',[2,4],[{'to':'db'}],target=K('남은 막기 훼손 옵션 제거 (훼손 옵션은 하나만)','Remove the old blocker (one desecrated line per item)')),
+ act('db','main',[1,5],'desecrate','Ancient_Rib',K('징표 훼손','Desecrate the Mark'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'rb'}],None,fromMark=True),
+ act('rb','main',[1,6],'reveal',None,K('생명력·가시로 자리 막기','Block with life or thorns'),None,K('공개','Reveal'),
+     [{'if':{'full':'p'},'to':'cx','res':'fail','port':'right'},{'to':'e3','res':'ok'}],None,want='blk',show=['blk'],omens=['Omen_of_Abyssal_Echoes']),
+ annul('w1',[0,5],[{'to':'d3'}],target=K('자리 막기 훼손 옵션 제거','Remove the blocking desecrated line')),
+ act('d3','main',[0,6],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d4'}],I4,omens=['Omen_of_Sinistral_Necromancy']),
+ act('d4','main',[0,7],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'all':[{'count':{'tag':'gp','min':2}},{'any':[G3,{'all':[{'param':{'last':'any'}},{'full':'s'}]}]}]},'to':'ok','res':'ok'},{'if':{'count':{'tag':'gp','min':2}},'to':'f1','res':'ok'},{'to':'d4x','res':'fail'}],I5,want='gp',show=['esf','hyb','sp'],omens=['Omen_of_Abyssal_Echoes']),
+ annul('d4x',[1,7],[{'to':'d3','port':'right'}]),
+ act('f1','main',[0,8],'exalt','Exalted_Orb',K('접미 세번째 옵션','Third suffix'),None,K('엑잘','Exalt'),[{'if':{'any':[G3,{'param':{'last':'any'}}]},'to':'ok','res':'ok'},{'to':'t1','res':'fail'}],I6,show=['fr','cr','lr'],omens=['Omen_of_Dextral_Exaltation'],skipIf={'full':'s'},skipTo='t1',skipHide=True),
+ act('t1','main',[0,9],'chaos','Perfect_Chaos_Orb',K('마지막 접미 잡옵 바꾸기','Reroll the last junk suffix'),None,K('카오스','Chaos'),
+     [{'if':G3,'to':'ok','res':'ok'},{'if':{'not':{'full':'s'}},'to':'f1','res':'fail','label':K('새 옵션이 접두로','New line went to a prefix')},{'to':'t1','res':'fail'}],I6,show=['fr','cr','lr'],omens=['Omen_of_Whittling','Omen_of_Dextral_Erasure']),
+ done([0,10])]
 g22('unstoppable-vile-robe-v2',c,'Vile Robe',82,
-  'Unstoppable BTW 에너지 보호막 갑옷(swF5mwXmZ0k, 0.5.5 리그) — 에너지 보호막 증가 1티어 분열(영상: 확장의 오브·소멸의 오브 반복 → 완벽한 제왕의 오브 → 훼손으로 4옵션 → 분열) → 카오스 오브로 두번째 접두(에너지 보호막 최대치·복합·정신력) → 좌측 강령술 + 고대 갈비뼈 → 세번째 접두 공개(빛의 징조로 다시, 영상: 접두를 먼저 끝냄) → 우측 찬미 + 상위 찬미 + 완벽한 엑잘로 접미 → 절사의 징조(말소) + 완벽한 카오스 오브로 저항 3개(저항 1티어는 레벨 82라 절사가 잡옵만 침). 영상의 유동체 수치 조정·디바인·바알 주입기는 뺌(정책 33).',
-  {'pT':{'kr':'접두 에너지 보호막·정신력','en':'Energy shield / spirit prefixes','values':TS},'rT':{'kr':'저항','en':'Resistances','values':TS}},P,
-  {'high':K('모든 옵션 1티어 (영상: 저항 133%)','Every line tier 1 (video: 133% total resistance)'),'bal':K('접두·저항 1~2티어','Prefixes and resistances at T1–2')},
-  tags,nodes,[{'id':'L1','nodes':['d1','d2','d2x'],'kr':'접두 세번째 옵션(훼손)','en':'Third prefix (desecrated)'}],
-  FIN(('high','bal'),lambda v:[{'tag':'pes','fr':True},{'tag':'esf','tmax':1 if v=='high' else 2},{'tag':'sp','tmax':1 if v=='high' else 2},{'tag':'fr','tmax':1 if v=='high' else 2},{'tag':'cr','tmax':1 if v=='high' else 2},{'tag':'lr','tmax':1 if v=='high' else 2}]),
-  {'quality':20,'sockets':3,'exceptional':True},{'all':[{'has':'pes'},{'count':{'tag':'gp','min':2}},{'count':{'tag':'goodS','min':3}}]},('high','bal'))
+  'Unstoppable BTW 에너지 보호막 갑옷(swF5mwXmZ0k 5:45~24:15, 영상 대조 2026-11-11) — 에너지 보호막 증가 1티어 분열에 옵션 1개만 남김 → 카오스 오브로 저항 → 우측 찬미 + 엑잘티드 오브로 두번째 저항(꽉 차면 소멸의 오브, 영상 12:30 비싼 징조는 마지막 한 옵션에만) → 좌측 찬미 + 완벽한 엑잘로 접두, 빗나가면 좌측 결정화의 징조 + 심연의 에센스 → 고대 갈비뼈 → 생명력·가시로 자리 막기 → 빛의 징조로 막기 제거 → 고대 갈비뼈 공개로 마지막 접두(빛의 징조로 다시) → 우측 찬미 + 엑잘로 마지막 접미, 잡옵이면 절사의 징조 + 우측 말소의 징조 + 완벽한 카오스 오브(영상 21:00 “접미만 노리는 징조 두 개”, 레벨 82 저항이 접미를 잠금 18:45). 디바인·바알 오브는 뺌(정책 33).',
+  {'pT':{'kr':'접두 에너지 보호막·정신력','en':'Energy shield / spirit prefixes','values':TS},'rT':{'kr':'저항','en':'Resistances','values':TS},'last':{'kr':'마지막 접미','en':'Last suffix','values':{'res':{'kr':'세번째 저항','en':'Third resistance'},'any':{'kr':'랜덤 옵션','en':'Random modifier'}}}},P,
+  {'high':K('모든 옵션 1티어, 마지막 저항은 절사 + 우측 말소 카오스 반복 (영상: 저항 133%)','Every line tier 1, the last resistance by Whittling + Dextral Erasure Chaos (video: 133% total resistance)'),'bal':K('1티어 접두·저항 2개, 마지막 접미는 랜덤 옵션 (영상 비용 180~200 div와 비슷)','T1 prefixes and two T1 resistances, last suffix as it comes (close to the video’s 180–200 div)')},
+  tags,nodes,[{'id':'L0','nodes':['e1','ax'],'kr':'접미 저항 2개','en':'Two resistances'},{'id':'L1','nodes':['e3','cx','w0','db','rb'],'kr':'접두 두번째 옵션','en':'Second prefix'},{'id':'L2','nodes':['d3','d4','d4x'],'kr':'접두 세번째 옵션(훼손)','en':'Third prefix (desecrated)'},{'id':'L3','nodes':['f1','t1'],'kr':'마지막 접미','en':'Last suffix'}],
+  FIN(('high','bal'),lambda v:[{'tag':'pes','fr':True},{'tag':'esf','tmax':1},{'tag':'sp','tmax':1},{'tag':'fr','tmax':1},{'tag':'cr','tmax':1}]+([{'tag':'lr','tmax':1}] if v=='high' else [{'side':'s','random':True}])+[]),
+  {'quality':20,'sockets':3,'exceptional':True},{'all':[{'has':'pes'},{'count':{'tag':'gp','min':2}},{'any':[{'count':{'tag':'goodS','min':3}},{'all':[{'param':{'last':'any'}},{'count':{'tag':'goodS','min':2}},{'full':'s'}]}]}]},('high','bal'))
 
 # ---------- 2. Slipstrike Vest (회피) ----------
 # 영상 대조(2026-11-11, swF5mwXmZ0k 40:45~46:30, 사용자: 영상에 맞춰 플로우차트를 만들고 적정 가격 100~200 div):
