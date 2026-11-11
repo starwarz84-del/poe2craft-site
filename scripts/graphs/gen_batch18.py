@@ -29,7 +29,7 @@ def RG(vis):   # every step re-checks the item
        {'if':{'all':[{'has':'cr'},{'has':'rem'},{'sideLt':{'side':'s','n':4}}]},'to':'d1'},{'if':{'all':[{'has':'cr'},{'has':'rem'}]},'to':'sA'},
        {'if':{'all':[{'has':'cr'},{'not':{'has':'rem'}},{'sideLt':{'side':'s','n':3}}]},'to':'s1'},
        {'if':{'all':[{'has':'cr'},{'not':{'has':'rem'}}]},'to':'a1'},
-       {'if':{'sideLt':{'side':'s','n':2}},'to':'s1'},{'to':'mA'}],vis)
+       {'if':{'sideLt':{'side':'s','n':2}},'to':'s1'},{'if':{'has':'rem'},'to':'mX'},{'to':'mA'}],vis)
 G0=[PR,J('p'),KO]; G1=[PR,J('p'),KO,SE]; G2=[PS,PR,KO,SE]; G3=[PS,PD,MF,PR,KO,SE]; G4=G3[:3]+[PR,CR,J('s'),KO,SE]; G5=G3[:3]+[PR,CR,RM,KO,SE]; G6=G5[:-2]+[UN('s'),KO,SE]; G7=G3[:3]+[PR,CR,RM,PI,KO,SE]
 GM=G3[:3]+[PR,J('s'),MS,KO,SE]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'proj','fr':True},{'junk':'p'}]},K('콜르의 사냥 장착 · 모든 투사체 스킬 레벨 +2 분열 + 잡옵 1개 (퀄리티 25%)','Kolr’s Hunt socketed · fractured +2 projectile skills + one junk line (25% quality)'),G0),
@@ -42,7 +42,8 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'proj','fr':True},{'junk':'p'}]},K
  act('mA','main',[1,4],'essence','Essence_of_the_Abyss',K('잡옵을 지우고 심연의 군주의 징표','The junk goes for the Mark of the Abyssal Lord'),[st('s','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),RG({'mB':{}}),GM,ess='mkS',mark=True,omens=['Omen_of_Dextral_Crystallisation']),
  act('mB','main',[2,4],'desecrate','Ancient_Rib',K('접미 징표 훼손','Desecrate the suffix Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RG({'mL':{}}),GM,fromMark=True),
  annul('mL',[2,5],RG({'s1':{},'mA':{}})),
- act('a1','main',[0,6],'essence','Expansive_Alloy',K('잡옵을 지우고 잔류물을 (35—50)% 더 먼 곳에서 획득 가능','The junk goes for Remnants collected (35—50)% further away'),[st('s','잔류물을 (35—50)% 더 먼 곳에서 획득 가능 (제작 옵션)','Remnants can be collected from (35—50)% further away (crafted)')],K('합금','Alloy'),RG({'d1':'ok','s1':F}),G5,ess='rem',omens=['Omen_of_Dextral_Crystallisation']),
+ act('mX','main',[1,6],'annul','Orb_of_Annulment',K('소멸의 오브 사용','Use an Orb of Annulment'),None,K('소멸','Annul'),RG({'s1':{},'a1':{}}),G5,omens=['Omen_of_Dextral_Annulment']),
+ act('a1','main',[0,6],'essence','Expansive_Alloy',K('잡옵을 지우고 잔류물을 (35—50)% 더 먼 곳에서 획득 가능','The junk goes for Remnants collected (35—50)% further away'),[st('s','잔류물을 (35—50)% 더 먼 곳에서 획득 가능 (제작 옵션)','Remnants can be collected from (35—50)% further away (crafted)')],K('합금','Alloy'),RG({'d1':'ok','s1':F,'mX':F}),G5,ess='rem',omens=['Omen_of_Dextral_Crystallisation']),
  annul('sA',[1,6],RG({'d1':{}}),omens=('Omen_of_Dextral_Annulment',),target=K('접미 잡옵 지우기','Remove the junk suffix')),
  act('d1','main',[0,7],'desecrate','Ancient_Rib',K('접미 네번째 옵션(훼손)','Fourth suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],G6),
  act('d2','main',[0,8],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'pie'},'to':'ok','res':'ok'},{'if':V1,'to':'d2x',**F},{'to':'ok','res':'fail'}],G7,want='pie',show=['pie']),
@@ -81,7 +82,8 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pp','fr':True},{'junk':'s'}]},K('
  act('r2','main',[0,4],'rune',None,K('아스트리드의 창의성 장착','Socket Astrid’s Creativity'),[st(None,'제작 옵션 하나 더','One more crafted modifier')],K('룬','Rune'),[{'to':'d1'}],W4,rune=K('아스트리드의 창의성','Astrid’s Creativity')),
  act('d1','main',[0,5],'desecrate','Ancient_Jawbone',K('접미 첫번째 옵션(훼손)','First suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],W5,omens=['Omen_of_Dextral_Necromancy']),
  act('d2','main',[0,6],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'proj'},'to':'x1','res':'ok'},{'to':'l1',**F}],W6,want='proj',show=['proj'],omens=['Omen_of_Abyssal_Echoes']),
- act('l1','main',[1,6],'essence','Perfect_Essence_of_Haste',K('훼손 옵션을 지우고 맹공','The desecration goes for Onslaught'),[st('s','맹공 획득 (제작 옵션)','Onslaught (crafted)')],K('에센스','Essence'),[{'to':'l2'}],W7,ess='ons',omens=['Omen_of_Dextral_Crystallisation']),
+ act('l1','main',[1,6],'essence','Perfect_Essence_of_Haste',K('훼손 옵션을 지우고 맹공','The desecration goes for Onslaught'),[st('s','맹공 획득 (제작 옵션)','Onslaught (crafted)')],K('에센스','Essence'),[{'if':{'des':True},'to':'lx','hide':True},{'to':'l2'}],W7,ess='ons',omens=['Omen_of_Dextral_Crystallisation'],skipIf={'has':'ons'},skipTo='lx'),
+ act('lx','main',[2,6],'annul','Orb_of_Annulment',K('훼손 옵션 제거','Remove the desecrated modifier'),None,K('소멸','Annul'),[{'to':'l2'}],W7,omens=['Omen_of_Light'],skipIf={'des':False},skipTo='l2'),
  act('l2','main',[1,7],'essence','Essence_of_the_Abyss',K('맹공을 지우고 심연의 군주의 징표','Onslaught goes for the Mark of the Abyssal Lord'),[st('s','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),[{'to':'l3'}],W8,ess='mk',mark=True,omens=['Omen_of_Dextral_Crystallisation']),
  act('l3','main',[1,8],'desecrate','Ancient_Jawbone',K('접미 징표 훼손','Desecrate the suffix Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],W5,fromMark=True),
  act('x1','main',[0,9],'exalt','Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'x2'}],W9,omens=['Omen_of_Dextral_Exaltation']),

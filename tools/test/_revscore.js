@@ -13,6 +13,7 @@ const add=(d,t,soft)=>{ if(!t||typeof t!=='object') return; if(Number.isInteger(
   for(const k of ['anyOf','all']) (t[k]||[]).forEach(x=>add(d,x,soft)); if(t.reveal&&typeof t.reveal==='object') add(d,t.reveal,soft); };
 for(const r of R){ if(!SAMP.has(r.id)) continue; const d={must:[],soft:[],tmax:{}};
   ((r.start||{}).mods||[]).forEach(m=>{ if(m.gi!=null && !m.fr) add(d,m,false); });
+  d.buy=((r.start||{}).mods||[]).some(m=>m.fr) ? ((r.start||{}).mods||[]).filter(m=>m.gi!=null && !m.fr && !m.crafted).map(m=>m.gi) : [];   // 분열 베이스에 붙여 사는 옵션 = '베이스에 포함'
   // 실패 처리(다시 하기)가 없는 확률 단계 = 결과 그대로 받는 옵션 → 유효
   const fbk=new Set(r.nodes.filter(n=>n.fallbackFor && n.do!=='note').map(n=>n.fallbackFor));
   r.nodes.forEach(n=>{ const t=n.target||{}, roll=['exalt','reveal','regal','transmute','augment','chaos'].includes(n.do);
@@ -34,10 +35,10 @@ const out=[];
 for(const id of IDS){ const lv=LV[id]; if(!lv) continue;
   const r=await Promise.race([p.evaluate(async([id,lv,EXP,OLD])=>{ const S=__rev; const x=S.recSamples.find(s=>s.id===id); if(!x) return {id,skip:'no sample'}; const it=await S.parse(x.text); if(it.err) return {id,skip:'parse'}; const an=S.analyse(it); if(an.putrid) return {id,skip:'putrid'};
     S.need=new Set(); S.soft=new Set(); S.tsel={}; S.buy=new Set(); S.noVariants=!!OLD;
-    an.rows.forEach((r,i)=>{ if(r.unrev||r.m.fr) return; if(lv.tmax[r.m.gi]) S.tsel[i]=Math.max(r.tierNo, Math.min(lv.tmax[r.m.gi], r.tierCnt)); if(lv.must.includes(r.m.gi)) S.need.add(i); else if(lv.soft.includes(r.m.gi)) S.soft.add(i); });
+    an.rows.forEach((r,i)=>{ if(r.unrev||r.m.fr) return; if(lv.tmax[r.m.gi]) S.tsel[i]=Math.max(r.tierNo, Math.min(lv.tmax[r.m.gi], r.tierCnt)); if(lv.must.includes(r.m.gi)) S.need.add(i); else if(lv.soft.includes(r.m.gi)) S.soft.add(i); if((lv.buy||[]).includes(r.m.gi) && r.how==='n') S.buy.add(i); });
     if(!S.need.size) an.rows.forEach((r,i)=>{ if(!r.unrev && !r.m.fr && !S.soft.has(i)) S.need.add(i); });
     let a2=S.needAn(an,0,it), d=null; const t0=performance.now();
-    try{ const bd=S.bestDraft(it,a2,{market:1e9}); d=bd.d; a2=bd.an; }catch(e){ return {id,err:['초안 실패: '+e.message]}; }
+    try{ const bs=new Set([...S.buy].filter(i=>S.need.has(i)).map(i=>an.rows[i]?.m).filter(Boolean)); const o={market:1e9, ...(bs.size?{buy:bs}:{})}; const bd = OLD ? S.bestDraft(it,a2,o) : await S.bestDraftAsync(it,a2,o,null,0); /* 화면과 같은 후보 계산(최소 대기 없이) */ d=bd.d; a2=bd.an; }catch(e){ return {id,err:['초안 실패: '+e.message]}; }
     if(!d) return {id,err:['초안 없음']};
     const c=S.verifyDraft(it,a2,d), err=c.filter(z=>z.lv==='err').map(z=>z.kr), warn=c.filter(z=>z.lv==='warn').map(z=>z.kr);
     const g=POE2GRAPH.fromDraft(d, it.D, {craft:S.craft, grades:['high']}); let t1=performance.now(), ck=POE2GRAPH.check(g, it.D, S.craft, S.prices, POE2SIM, 40, 2e6);   // 긴 반복(카오스 오브 수천 번)도 끝까지: 먼저 적게 돌리고, 빠르면 300번
