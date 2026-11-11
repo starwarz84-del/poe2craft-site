@@ -71,6 +71,8 @@ function make(graph, D, craft, params){
       if(c.sideAll){ const xs=it.mods.filter(m=>m.side===c.sideAll.side && !m.fr); return xs.every(m=>match(m,c.sideAll.tag)); }
       if(c.whittleSafe){ const ws=c.whittleSafe.tag!=null ? c.whittleSafe : {tag:c.whittleSafe}, cs=it.mods.filter(m=>!m.fr && !m.unrev && (!ws.side || m.side===ws.side)); if(!cs.length) return false; const lo=Math.min(...cs.map(lvl)); return cs.filter(m=>lvl(m)===lo).every(m=>!match(m,P(ws.tag)) && !(ws.keepDes && m.des)); }   // keepDes: a revealed desecrated line counts as kept (MazBro BiS 갑옷: the blocker)
       if(c.junk){ const j=c.junk; return it.mods.some(m=>m.side===j.side && !m.fr && !m.unrev && !m.des && !match(m,P(j.tag))); }   // a plain junk line on that side (not fractured, not desecrated, outside the tag)   // Whittling would hit only lines outside this tag ({tag, side}: with a side Erasure omen, that side only)
+      if(c.famBlock){ const t=tags[P(c.famBlock)], gis=(t.anyOf ? t.anyOf.map(x=>typeof x==='string'?tags[x]:x) : [t]).filter(x=>x.gi!=null);   // every wanted group's family is taken by another line: the step can never hit (리버스 초안 2026-11-11)
+        return gis.length>0 && gis.every(x=>it.mods.some(m=>!m.unrev && !match(m,x) && G[m.gi].f.some(f=>G[x.gi].f.includes(f)))); }
       if(c.param) return Object.entries(c.param).every(([k,v])=>params[k]===v);
       throw new Error('bad condition '+JSON.stringify(c)); }
     const pickEdge = n => (n.edges||[]).find(e=>cond(e.if));
@@ -112,7 +114,7 @@ function make(graph, D, craft, params){
         const rf = n.liquid && n.alt && it.rar==='rare' && !n.anyRemove;
         if(rf){ takeRandom(null); const room=[n.ess,n.alt].filter(x=>count(G[tags[x].gi].g)<maxA(G[tags[x].gi].g)); tn = room.length ? room[Math.floor(rnd()*room.length)] : n.ess; }
         const t=tags[tn], sd=G[t.gi].g, cr=sideOm(oms,/Sinistral_Crystallisation/,/Dextral_Crystallisation/);   // magic → rare + the essence line (top tier); on a rare one line goes first (Crystallisation picks its side)
-        if(it.rar==='rare' && !rf) takeRandom(cr ? (m=>m.side===cr) : n.anyRemove ? null : count(sd)>=maxA(sd) ? (m=>m.side===sd) : null);   // anyRemove: a liquid that takes any line (SL 5-mod jewel: 1/3); its own side full: a line of that side makes way (발굴 규칙 6)
+        if(it.rar==='rare' && !rf) takeRandom(n.anyRemove ? null : count(sd)>=maxA(sd) ? (m=>m.side===sd) : cr ? (m=>m.side===cr) : null);   // its own side full: a line of that side makes way even with a Crystallisation omen on the other side (발굴 규칙 6, 2026-11-11)   // anyRemove: a liquid that takes any line (SL 5-mod jewel: 1/3); its own side full: a line of that side makes way (발굴 규칙 6)
         it.rar='rare';   // magic → rare (2026-11-11 고침: 이 줄이 주석 안에 들어가 매직 베이스 에센스 뒤에도 매직으로 남아 있었음)
         const m={gi:t.gi, ti:0, side:sd, ess:!n.liquid, mark:!!n.mark}; if(t.slot) m.slot=t.slot; it.mods.push(m); last.added.push(m); }
       else if(a==='annul'){ const sd=sideOm(oms,/Sinistral_Annulment/,/Dextral_Annulment/);
@@ -131,7 +133,7 @@ function make(graph, D, craft, params){
           while(out.length<3 && gs.length){ const x=pickW(rnd, gs); gs=gs.filter(y=>y!==x); out.push(pickW(rnd, x.g.ts)); } return out; };
         const wt=P(n.want), want = o => wt && match({gi:o.gi, ti:o.ti}, wt);
         let os=draw(); if(!os.some(want) && oms.includes('Omen_of_Abyssal_Echoes')) os=draw();
-        const o=os.find(want)||os[0]; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true}; it.mods.push(nm); last.added.push(nm); } }
+        const o=os.find(want)||os[0]; if(!o) return use; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true}; it.mods.push(nm); last.added.push(nm); } }
       else if(a==='fracture'){ const c=it.mods.filter(m=>!m.unrev && !m.fr); const m=c[Math.floor(rnd()*c.length)]; if(m){ m.fr=true; last.fr=m; } }
       else if(a==='rune'){ for(const k in (n.slots||{})) capR[k]+=n.slots[k]; }   // a socketed rune that opens a slot (Serle's Triumph: one more suffix)
       else if(a==='quality'){ it.cq = n.q || n.count || 0; }   // catalyst quality % (count = catalysts ≈ %), used up by Catalysing Exaltation
@@ -141,7 +143,7 @@ function make(graph, D, craft, params){
 
     // walk
     const tally = hooks.tally; let id=graph.start, steps=0;
-    while(true){ if(++steps>2e6) throw new Error('runaway at '+id);
+    while(true){ if(++steps>(graph.maxSteps||2e6)) throw new Error('runaway at '+id);
       const n=nodes[id]; if(!n) throw new Error('no node '+id);
       last={added:[], removed:[], fr:null}; tally.visit(id); if(hooks.enter) hooks.enter(id, it);
       if(n.kind==='done'){ tally.done(it, cond); return it; }

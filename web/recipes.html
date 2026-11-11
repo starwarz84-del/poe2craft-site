@@ -1460,6 +1460,8 @@ function detailHTML(r){
 // data/sim/<id>.json is made at build time (tools/sim/run.js: real rolls, 20,000 finished items per strategy); the page only draws it
 S.simData={}; S.simOpen=false; S.fcItems=store.get('fcItems', true); S.simSel=store.get('simSel',{});
 function loadSim(r){ if(S.simData[r.id]) return;
+  const own = r.simInline || (r.tierGroup && S.recipes.find(x=>x.id===r.tierGroup)?.simInline);   // a reverse draft carries its simulated flowchart (리버스 크래프팅: 플로우차트 먼저, 2026-11-11)
+  if(own){ S.simData[r.id] = r.tierGroup ? simTrim(own, tierSibs(r).map(x=>x.tier)) : own; return; }
   S.simData[r.id]='loading'; fetch(`data/sim/${r.simId||r.id}.json`).then(x=>x.ok?x.json():null).catch(()=>null).then(d=>{ if(d && r.tierGroup) d=simTrim(d, tierSibs(r).map(x=>x.tier)); S.simData[r.id]=d||'none'; const o=S.recipes.find(x=>x.id===S.open); if(o && (o.id===r.id || tierLead(o)===r)) keepY(renderDetail); }); }
 // a grade the item does not keep (rule 2026-11-10): its version, strategy and final card leave the flowchart
 function simTrim(d, tiers){ const keep=id=>!['high','bal','ess'].includes(id) || tiers.includes(id); const g={...d.graph, versions:(d.graph.versions||[]).filter(v=>keep(v.tier||v.id)), finals:(d.graph.finals||[]).filter(F=>keep(F.tier||F.id))};
@@ -1740,7 +1742,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g=
       <table class="simtab"><thead><tr><th>${L('단계','Step')}</th><th class="num">${L('도달','Reached')}</th><th>${L('사용','Used')}</th><th class="num">div</th></tr></thead><tbody>${rows}</tbody></table></details>
     <p class="simnote">${L(`시뮬레이션 ${d.runs.toLocaleString()}회 · 모든 수치는 완성 1개당 평균 · 도달 = 완성품 중 그 단계를 거친 비율 · 접미 분열은 같은 비용으로 가정`,`${d.runs.toLocaleString()} simulated items · all numbers are averages per finished item · reached = share of items that went through the step · suffix fracture assumed to cost the same`)}</p>
   </section>`; }
-function simHTML(r, force){ if(!r.sim || !(S.simOpen||force)) return ''; const d=S.simData[r.id];
+function simHTML(r, force){ if(!r.sim || !(S.simOpen||force)) return ''; if(!S.simData[r.id]) loadSim(r); const d=S.simData[r.id];   // an inline (reverse draft) flowchart is ready at once
   if(!d || d==='loading'){ loadSim(r); return `<section class="simbox"><p class="simnote">${L('불러오는 중…','Loading…')}</p></section>`; }
   if(d==='none') return `<section class="simbox"><p class="simnote">${L('시뮬레이션 데이터가 없어요.','No simulation data.')}</p></section>`;
   return flowchartHTML(r, d); }
@@ -2214,20 +2216,23 @@ function shareResult(d){
   } else { if(d.ok){ toast(L('공유를 취소했어요','Unshared')); } else { render(); toast(why(d.code)); } }
 }
 // drafts made on the Discover tab: kept in this browser, shown first with a draft badge
+// a reverse draft group: the lead (top grade) carries the other grades in r.grades (same steps, wider tiers — 정책 30·32)
+function unpackDraft(r){ const sibs=(r.grades||[]).filter(x=>x && /^draft-[a-z0-9]+$/.test(x.id) && Array.isArray(x.nodes)).map(x=>({likes:0, success:0, ...x, draft:true, tierGroup:r.id}));
+  const lead={likes:0, success:0, ...r, draft:true}; delete lead.grades; delete lead._an; delete lead._prep; return [lead, ...sibs]; }
 async function showPreview(r){
   if(!r || !/^draft-[a-z0-9]+$/.test(r.id) || !Array.isArray(r.nodes)) return;
-  r = {likes:0, success:0, ...r, draft:true}; delete r._an; delete r._prep;
-  S.recipes = S.recipes.filter(x=>!x.draft); S.recipes.unshift(r);
-  await loadCls(r.cls); S.open=r.id; render(); scrollTo(0,0);
+  const grp=unpackDraft(r); r=grp[0];
+  S.recipes = S.recipes.filter(x=>!x.draft); S.recipes.unshift(...grp); S.simData={};
+  await loadCls(r.cls); S.open=r.id; S.fcTab = !!(r.sim && r.tierGroup); render(); scrollTo(0,0);   // flowchart first
 }
 if(PREVIEW){ document.body.classList.add('preview');
   const post=()=>{ try{ parent.postMessage({type:'poe2-preview-h', h:document.documentElement.scrollHeight}, '*'); }catch(_){} };
   try{ new ResizeObserver(post).observe(document.body); }catch(_){} setInterval(post, 1500); }
 async function addDraft(r, open){
   if(!/^draft-[a-z0-9]+$/.test(r.id) || !Array.isArray(r.nodes)) return;
-  r = {likes:0, success:0, ...r, draft:true}; delete r._an; delete r._prep;
-  S.recipes = S.recipes.filter(x=>x.id!==r.id); S.recipes.unshift(r);
-  const all = store.get('drafts',[]).filter(x=>x.id!==r.id); all.unshift(r); store.set('drafts', all.slice(0,12));
+  const packed=r, grp=unpackDraft(r); r=grp[0]; const ids=new Set(grp.map(x=>x.id));
+  S.recipes = S.recipes.filter(x=>!ids.has(x.id)); S.recipes.unshift(...grp); grp.forEach(x=>{ delete S.simData[x.id]; });
+  const all = store.get('drafts',[]).filter(x=>x.id!==packed.id); all.unshift(packed); store.set('drafts', all.slice(0,12));
   await loadCls(r.cls);
   if(open){ S.open=null; render(); setOpen(r.id); } else render();
 }
@@ -2236,7 +2241,7 @@ document.addEventListener('click', e=>{ if(!e.target.closest('#clrdrafts')) retu
   if(!armed(e.target.closest('#clrdrafts'), L(`한 번 더 누르면 초안 ${n}개 삭제`,`Press again to delete ${n} drafts`))) return;
   store.set('drafts', []); const open=S.open && S.recipes.some(r=>r.draft && r.id===S.open); S.recipes=S.recipes.filter(r=>!r.draft); if(open) setOpen(null); render();
   toast(L('역산 초안을 모두 지웠어요','All drafts deleted')); });
-function removeDraft(id){ store.set('drafts', store.get('drafts',[]).filter(x=>x.id!==id)); S.recipes=S.recipes.filter(x=>x.id!==id); if(S.open===id) setOpen(null); render(); }
+function removeDraft(id){ const g=S.recipes.find(x=>x.id===id)?.tierGroup || id; store.set('drafts', store.get('drafts',[]).filter(x=>x.id!==id && x.id!==g)); const gone=x=>x.id===id || x.id===g || x.tierGroup===g; const wasOpen=S.recipes.some(x=>gone(x) && x.id===S.open); S.recipes=S.recipes.filter(x=>!gone(x)); if(wasOpen) setOpen(null); render(); }
 
 // ---------- boot ----------
 async function loadCls(id){ if(!S.cls[id]) S.cls[id] = await fetch(`data/c/${id}.json`).then(r=>r.json()); }
@@ -2246,7 +2251,7 @@ async function boot(){
   S.tips = tips.tips||[];
   S.index=idx; S.craft=craft; for(const k in craft) for(const x of craft[k]) S.byId[x.id]=x;
   S.recipes = rec.recipes.map(r=>({likes:0, success:0, ...r}));
-  const drafts = PREVIEW ? [] : store.get('drafts',[]).filter(r=>r && /^draft-/.test(r.id) && Array.isArray(r.nodes)).map(r=>({likes:0, success:0, ...r, draft:true}));
+  const drafts = PREVIEW ? [] : store.get('drafts',[]).filter(r=>r && /^draft-/.test(r.id) && Array.isArray(r.nodes)).flatMap(unpackDraft);
   S.recipes = drafts.concat(S.recipes);
   await Promise.all([...new Set(S.recipes.map(r=>r.cls))].map(loadCls));
   const h=location.hash.match(/^#r-(.+)$/); if(h && S.recipes.some(r=>r.id===liveId(h[1]))) S.open=liveId(h[1]);
