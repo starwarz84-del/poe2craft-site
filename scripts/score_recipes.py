@@ -81,7 +81,7 @@ for r in R:
     if unk: why.append(f'B 가중치 모름 {len(unk)}단계')
     if gs: why.append(f'B 가중치 추정 {len(gs)}단계')
     nodes = {n['id']: n for n in r['nodes']}
-    nf = [i for i in e.get('noFail', []) if not (nodes.get(i, {}).get('br') or nodes.get(i, {}).get('knownP'))]
+    nf = [i for i in e.get('noFail', []) if not (nodes.get(i, {}).get('br') or nodes.get(i, {}).get('knownP') or nodes.get(i, {}).get('routes'))]   # 플로우차트 읽기 단계는 갈래(routes)가 실패 처리
     pts['C'] = max(0, 10 - 5 * len(nf))
     if nf: why.append(f'C 실패 처리 없음 {",".join(nf)}')
     em = e.get('main') if e.get('main') is not None else e.get('all')

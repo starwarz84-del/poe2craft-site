@@ -189,6 +189,11 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .loopg{margin-left:0;border:1px solid color-mix(in srgb,var(--ok) 40%,var(--line))}
 .loopg .gh{color:var(--ok)}
 .routes{grid-column:2/4;display:flex;flex-wrap:wrap;gap:6px}
+.fcrows{grid-column:2/4;display:grid;gap:3px;font-size:12.5px;color:var(--muted)}
+.fcrows>div{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.fcrows .rw{color:#c9c2b2;margin-right:2px}.fcrows small{margin-left:6px;color:var(--muted);font-variant-numeric:tabular-nums}
+.fcrows img{width:18px;height:18px}
+.grd{grid-column:2/4;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font-size:12.5px;color:var(--muted);border-left:2px solid #6b5b3a;padding:2px 0 2px 9px}
+.grd .gk{color:#d8b25a;font-weight:600}.grd b{font-weight:600;color:#c9c2b2}.grd .me{color:#ece4d2}.grd .me b{color:#f0cf7a}
 .rt{font-size:12px;border-radius:999px;padding:1px 9px;border:1px solid var(--line);color:var(--muted)}
 .rt b{font-weight:600}
 .rt.ok b{color:var(--ok)} .rt.no b{color:var(--warn)}
@@ -812,6 +817,7 @@ function analyse(r){
   const blockKey = n => n.retryFor ? 'r:'+n.retryFor : n.branch?.when==='miss' ? 'm:'+n.branch.of : null;   // block = a retry block (runs only when its reveal missed) and the main state saved around it
   for(let ni=0; ni<r.nodes.length; ni++){ const n=r.nodes[ni];
     const t=n.target||{}, o={n, p:1, warn:null}; byId[n.id]=o; liq=false;
+    try {   /* 플로우차트 읽기 레시피는 엔진이 목표 글·상태만 쓰니 계산이 막혀도 계속(확률·사용량은 시뮬 값) */
     if(blockKey(n) && !block){ const pr=byId[n.retryFor || n.branch.of]; block={main:mods, pr, key:blockKey(n)};
       mods = !n.retryFor && pr.n.do!=='reveal' && pr.missState ? pr.missState.map(m=>({...m}))   // e.g. an essence that took the other line
         : n.retryFor ? pr.pre.filter(m=>!(m.unrev && m.side===pr.n.target.side)).map(m=>({...m}))   // retry: Light + Annulment already took the miss off
@@ -930,6 +936,7 @@ function analyse(r){
     o.state = clone(); o.rar=rar; o.cap={...cap}; o.qual={...qual}; o.runes=[...runes]; o.sockets=sockets; o.imp=imp; o.anoint=anoint; o.sanct=sanct; o.vals=vals;
     if(saved){ mods=saved; }
     out.push(o);
+    } catch(e){ if(!r.fcRead) throw e; o.state=clone(); o.pre=o.pre||clone(); o.rar=rar; o.cap={...cap}; o.qual={...qual}; o.runes=[...runes]; o.sockets=sockets; o.tries=1; out.push(o); continue; }
     if(block && blockKey(r.nodes[ni+1]||{})!==block.key && !(r.nodes[ni+1] && block.key.startsWith('m:') && r.nodes[ni+1].branch?.of===block.pr.n.id && r.nodes[ni+1].branch?.when==='miss')){
       if(block.key.startsWith('m:')){ mods=block.main; block=null; continue; }
       // end of the retry block: the reveal is tried again with the retry bone
@@ -975,11 +982,20 @@ function analyse(r){
     if(n.cost){ const c=uc[n.cost]; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+ (+c.v)*passes[i]; }
       else if(n.cost==='base' && +r.basePrice>0 && !(c && c.v!=null && c.v!=='')) manual.Divine_Orb=(manual.Divine_Orb||0)+ (+r.basePrice)*passes[i]; }   // policy 22: the recipe's base price unless the viewer typed one
     o.use=u; o.passes=passes[i]; o.useTries=tries; });
+  /* 레시피 = 그 등급 플로우차트를 순서대로 읽은 것(사용자 확정 2026-11-11): 확률·사용량은 시뮬 값, 단계 뒤 아이템은 플로우차트 옵션 칸 */
+  let bases = passes[0];
+  if(r.fcRead){ const F=r.fcRead, uc2=userCost(r);
+    out.forEach((o,i)=>{ const s=o.n.fcs; if(o.n.fst){ o.pre = i>0 ? out[i-1].state : o.pre; o.state=o.n.fst.map(m=>({...m})); } else if(i>0 && o.n.do==='note'){ o.pre=out[i-1].state; o.state=out[i-1].state.map(m=>({...m})); }
+      if(!s) return; o.p=s.p??1; o.tries=s.p>0?1/s.p:1; o.R=null; o.p2=null; o.lose=0; o.lostRedo=null; o.pUnknown=false; o.pDep=s.p==null; if(s.p==null) o.pWhy=L('결과에 따라 갈림','depends on the result'); o.warn=null; if(o.fixedTries!=null) o.fixedTries=s.tries; o.use={...s.use}; o.passes=1; o.useTries=s.tries; o.settleK=null; });
+    for(const k in tot) delete tot[k]; for(const k in totAll) delete totAll[k]; for(const k in manual) delete manual[k];
+    Object.assign(tot, F.use||{}); Object.assign(totAll, F.use||{}); bases = F.bases||1;
+    if(out[0]) out[0].passes = bases;
+    const c=uc2.base; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+(+c.v)*bases; } else if(+r.basePrice>0) manual.Divine_Orb=(+r.basePrice)*bases; }
   const fcState = r.fc ? fcCardState(r.fc.tags, r.fc.lines, r.fc.ds) : null;   // 플로우차트의 그 등급 완성품 카드가 기준
   const final = (fcState || mods).filter(m=>m.gi!=null).map(m=>({...modLine(r,m.gi,m.tmax,m.max,m.tmin), fr:m.fr, des:m.des, ess:m.ess}))
     .sort((a,c)=>(a.g.g==='p'?0:1)-(c.g.g==='p'?0:1));
   CUR_R=null;
-  const basesAll = passes[0] + (out[0]?.extraOpt||0), optMore = basesAll > passes[0]+0.05 || Object.keys(totAll).some(k=>totAll[k]-(tot[k]||0) >= 0.01);
+  const basesAll = r.fcRead ? bases : passes[0] + (out[0]?.extraOpt||0), optMore = !r.fcRead && (basesAll > passes[0]+0.05 || Object.keys(totAll).some(k=>totAll[k]-(tot[k]||0) >= 0.01));
   // per phase: the chance one pass gets to its end (restarts, jumps back out of it, lost lines) and the starting items it uses
   const phaseSum={};
   (r.phases||[]).forEach(ph=>{ const xs=out.filter(o=>o.n.phase===ph.id); if(!xs.length) return; const first=out.indexOf(xs[0]); let reach=1, keep=1;
@@ -989,7 +1005,8 @@ function analyse(r){
       else if(gi>=0 && gi<first) reach*=o.p;
       else if(o.lose>0) reach *= o.p/(o.p+(1-o.p)*o.lose); });
     phaseSum[ph.id]={reach, bases: keep>0 ? 1/keep : Infinity}; });
-  return r._an = {nodes:out, tot, totAll, optMore, manual, bases:passes[0], final, keys:Object.keys(tot), qual, runes, sockets, sanct, phaseSum, basesAll, finalState:fcState};
+  if(r.fcRead) for(const k in phaseSum) delete phaseSum[k];
+  return r._an = {nodes:out, tot, totAll, optMore, manual, bases:r.fcRead?bases:passes[0], final, keys:Object.keys(tot), qual, runes, sockets, sanct, phaseSum, basesAll, finalState:fcState};
 }
 // modifier search (사용자 2026-11-11): up to 3 dropdowns, a recipe must have every chosen modifier on its finished item
 const statKey = g => (g.t[0][5]||'').replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d+(?:\.\d+)?)?\)?/g,'#').replace(/\s+/g,' ').trim();
@@ -1190,6 +1207,12 @@ function nodeHTML(r, o, i, idx){
   if(t.quality) tgt=L(`퀄리티 ${t.quality}%까지 (평균 ${fmt(o.fixedTries)}개, 레어는 1개당 +1${r.ilvl>=82?' · 20% 확률로 +2':''})`,`Quality to ${t.quality}% (avg ${fmt(o.fixedTries)}; +1 each on a rare${r.ilvl>=82?', 20% chance of +2':''})`);
   if(t.removeGi!=null && t.junk) tgt=L(`${esc(modLine(r,t.removeGi).txt)} 제거 (접두엔 아무 옵션)`,`Removes ${esc(modLine(r,t.removeGi).txt)} (any prefix lands)`);
   if(t.lord && tgt){ const LN={kurgal:['쿠르갈','Kurgal'],amanamu:['아마나무','Amanamu'],ulaman:['울라만','Ulaman']}[t.lord]||[t.lord,t.lord]; tgt += ` <small>(${L('공개 옵션 모두 '+LN[0],'all revealed options are '+LN[1]+'’s')})</small>`; }
+  if(n.trimFc) tgt=L(`${n.trimFc==='s'?'접미':'접두'} 잡옵을 지우고 새 옵션 굴림`,`Remove the junk ${n.trimFc==='s'?'suffix':'prefix'} and roll a new modifier`);
+  /* 플로우차트 읽기: 커런시를 경우마다 고르는 상자(curRows)와 등급이 갈리는 곳 */
+  const fcRows = n.fcs?.rows ? `<div class="fcrows">${n.fcs.rows.map(w=>`<div><span class="rw">${esc(tx(w))} →</span>${w.ids.map(x=>`${icon(x,r)}`).join('')}<span>${esc(w.ids.map(x=>nm(cur(x))).join(' + '))}</span>${w.p!=null?`<small>${pct(w.p)} · ${L('평균','avg')} ${fmt(1/w.p)}${L('회','×')}</small>`:''}</div>`).join('')}</div>` : '';
+  const TN={high:L('하이엔드','High-end'), bal:L('밸런스','Balance'), ess:L('에센셜','Essential')};
+  const gtx = s => esc(s).replace(/@([A-Za-z_]+)/g, (m,id)=>nm(cur(id)));
+  const grade = n.grade ? `<div class="grd"><span class="gk">${L('등급 갈림','Grades split')}</span>${n.grade.map(g=>`<span class="${g.tiers.includes(r.tier||'high')?'me':''}"><b>${g.tiers.map(t=>TN[t]).join('·')}</b> ${gtx(tx(g))}</span>`).join('')}</div>` : '';
   const showP = o.p<0.995 && !t.reroll;
   const ts = n.ts && r.source?.url ? `<a class="ts" href="${esc(r.source.url)}&t=${n.ts.split(':').reduce((s,x)=>s*60+(+x),0)}s" target="_blank" rel="noopener">▶ ${esc(n.ts)}</a>` : '';
   const viaOne = v => `${icon(v.cur,r)}${esc(nm(cur(v.cur)))}${(v.omens||[]).map(x=>` + ${icon(x,r)}${esc(nm(cur(x)))}`).join('')}`;
@@ -1200,17 +1223,17 @@ function nodeHTML(r, o, i, idx){
     return `<div class="costin"><label>${L(n.cost==='base'?'베이스 가격':'들어간 비용','Cost')} <input type="number" min="0" step="any" inputmode="decimal" data-cost="${esc(n.cost)}" value="${v.v??''}" placeholder="${n.cost==='base' && +r.basePrice>0 ? +r.basePrice : 0}"></label>
       <select data-unit="${esc(n.cost)}" aria-label="${esc(L('단위','Unit'))}">${units.map(u=>`<option value="${u}" ${(v.u||'Divine_Orb')===u?'selected':''}>${esc(nm(cur(u)))}</option>`).join('')}</select>
       ${o.passes>1.01?`<small>× ${fmt(o.passes)} ${L('(분열 실패로 다시 하는 횟수 포함)','(includes redoing after fracture misses)')}</small>`:''}${n.cost==='base' ? (()=>{ const t=tradeURL(r); return t ? `<a class="tradeb" href="${esc(t.url)}" target="_blank" rel="noopener" title="${esc(L('거래소에서 이 베이스 조건으로 검색 · 로그인 뒤에도 조건 유지','Searches the trade site with this base. If a login page appears, the conditions come back after you log in.'))}">${L('베이스템 구입 ↗','Buy this base ↗')}</a>${t.miss||!t.typeOK?`<small>${L('일부 조건은 거래소에서 직접 입력','Some conditions need entering on the trade site')}</small>`:''}` : ''; })() : ''}</div>`; })() : '';
-  const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : n.compromise && !o.pUnknown && o.p<0.995 ? `<div class="pr">${L('타협 가능','Can settle')}<small>${L('1회 시도','1 attempt')} · ${pct(o.p)}</small>${o.settleK?`<small>${L('다시 하면 평균','retry avg')} ${fmt(o.settleK)}${L('회','×')}${(()=>{ const d=divOf(o.settleUse); return d && d.v>=0.005 ? ` · ${L('약','≈')} ${fmtDiv(d.v)} div` : ''; })()}</small>`:''}</div>` : o.pUnknown ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산함. 일반 옵션은 원래 가중치 그대로.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
+  const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : n.compromise && !o.pUnknown && o.p<0.995 ? `<div class="pr">${L('타협 가능','Can settle')}<small>${L('1회 시도','1 attempt')} · ${pct(o.p)}</small>${o.settleK?`<small>${L('다시 하면 평균','retry avg')} ${fmt(o.settleK)}${L('회','×')}${(()=>{ const d=divOf(o.settleUse); return d && d.v>=0.005 ? ` · ${L('약','≈')} ${fmtDiv(d.v)} div` : ''; })()}</small>`:''}</div>` : o.pUnknown||o.pDep ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산함. 일반 옵션은 원래 가중치 그대로.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
   const dn = doneSet(r).has(n.id);
   return `<li class="node ${n.optional?'opt':''} ${dn?'done':''}" data-node="${esc(n.id)}"><div class="nbody"><span class="n"><button type="button" class="tick" data-done="${esc(n.id)}" aria-pressed="${dn}" title="${esc(L('완료 표시','Mark done'))}">${dn?'✓':idx}</button></span><div class="what">${head}${n.optional?`<span class="optl">${L('선택','optional')}</span>`:''}${ts}</div>${pr}
-    ${tgt?`<div class="tgt">${tgt}</div>`:''}${fail}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${(n.tips||[]).filter(id=>!_tipSeen || (!_tipSeen.has(id) && _tipSeen.add(id))).map(id=>{ const k=S.tips.findIndex(t=>t.id===id); return k<0?'':`<div class="tipref" data-tipid="${esc(id)}" tabindex="0">💡 ${L('제작 꿀팁','Tip')} #${k+1}</div>`; }).join('')}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 옵션 하나뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}${divHTML(divOf(o.use))}</div>`:''}</div>
+    ${tgt?`<div class="tgt">${tgt}</div>`:''}${fcRows}${fail}${grade}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${(n.tips||[]).filter(id=>!_tipSeen || (!_tipSeen.has(id) && _tipSeen.add(id))).map(id=>{ const k=S.tips.findIndex(t=>t.id===id); return k<0?'':`<div class="tipref" data-tipid="${esc(id)}" tabindex="0">💡 ${L('제작 꿀팁','Tip')} #${k+1}</div>`; }).join('')}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 옵션 하나뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}${divHTML(divOf(o.use))}</div>`:''}</div>
 </li>`;
 }
 // ---------- flow layout: success / miss routes as chips, side paths as indented boxes (no free-floating arrows) ----------
 const stepNo = (r,id) => r.nodes.findIndex(x=>x.id===id)+1;
 const sidePath = (n, of) => n.retryFor===of || n.fallbackFor===of || n.onLost===of || n.branch?.of===of;
 // a step whose miss hands over to a single fallback is tried once
-const singleTry = (r,n) => { const g=n.fail?.goto; if(!g || g==='self' || g==='restart') return false; const j=r.nodes.findIndex(x=>x.id===g), i=r.nodes.indexOf(n); return j>i; };
+const singleTry = (r,n) => { if(n.fcs) return !!n.fcs.once || n.fcs.tries<=1.001; const g=n.fail?.goto; if(!g || g==='self' || g==='restart') return false; const j=r.nodes.findIndex(x=>x.id===g), i=r.nodes.indexOf(n); return j>i; };
 function nextOnSuccess(r, n){
   if(n.fail?.label==='reveal') return n.fail.goto;
   const i=r.nodes.indexOf(n);
@@ -1244,6 +1267,18 @@ function routeHTML(r, o, i, via){
   const n=o.n; if(n.do==='note') return '';
   const chip = (cls, label, to, extra='') => `<span class="rt ${cls}"><b>${label}</b> → ${to}${extra}</span>`;
   const out=[];
+  if(n.routes){   /* 플로우차트 읽기: 상자에서 나가는 선 그대로, 비율은 시뮬 */
+    const dst = to => to==='state' ? L('아이템 상태에 맞는 단계','the step that fits the item') : to==='self' ? L('이 단계 반복','repeat this step') : to==='done' ? L('완성','done') : to==='restart' ? L('버리고 처음부터','discard, start over') : L(`${stepNo(r,to)}번`,`step ${stepNo(r,to)}`);
+    const viaT = v => [v.cur, ...(v.omens||[])].map(x=>`${icon(x,r)}${esc(nm(cur(x)))}`).join(' + ');
+    const rs=n.routes, oks=rs.filter(x=>x.cls==='ok' && !x.skip);
+    if(rs.length===1 && rs[0].cls==='ok' && (rs[0].to==='done' ? i===r.nodes.length-2 : stepNo(r,rs[0].to)===i+2)) return '';
+    rs.forEach(x=>{ const lab = x.to==='self' && x.cls==='no' && !x.via ? L('실패','Miss') : x.lab ? esc(tx(x.lab).replace(/^[a-z]/,c=>c.toUpperCase())) : x.cls==='ok' ? L('성공','Success') : L('실패','Miss');
+      const sh = x.share!=null && x.share<0.995 && x.to!=='self' && !(x.cls==='ok' && !x.skip && oks.length===1) ? ` (${pct(x.share)})` : '';
+      const back = !['self','done','restart','state'].includes(x.to) && stepNo(r,x.to)<i+1, lostS = x.lost || (x.vo && back && x.alt);
+      const lab2 = x.vo && back && x.alt && (!x.lab || x.plab) ? L('원하는 옵션이 지워지면','Wanted mod removed') : lab;
+      if(lostS) out.push(chip('no', lab2+sh, L(`${dst(x.to)}으로`,dst(x.to)), (x.n?` <small>(${L('평균','avg')} ${fmt(x.n)}${L('회','×')})</small>`:'')));
+      else out.push(chip(x.cls, lab+sh, dst(x.to), x.via?` <small>(${x.to==='self'?L('지우기','remove with'):L('먼저','first')}: ${viaT(x.via)})</small>`:'')); });
+    return out.length ? `<div class="routes">${out.join('')}</div>` : ''; }
   const nx = nextOnSuccess(r, n), plainNext = nx && stepNo(r,nx)===i+2;
   if(n.exit) out.push(chip('ok jack', L('대박','Jackpot'), esc(tx(n.exit))));   // an optional gamble that can end the craft early
   const g = n.fail?.goto;

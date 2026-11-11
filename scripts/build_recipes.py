@@ -591,6 +591,8 @@ exec(open('/home/claude/poe2data/scripts/base_prices.py').read())
 for _r in R:
     if BASEPRICE.get(_r['id']): _r['basePrice'] = BASEPRICE[_r['id']]
 print('base price missing:', sum(1 for _r in R if not _r.get('basePrice')), 'of', len(R))
+import sys as _sys; _sys.path.insert(0,'/home/claude/poe2data/scripts'); import graph2recipe as _g2r
+FCREAD_OFF=set()   # 플로우차트 읽기를 끈 레시피(문제가 있을 때만)
 # flowchart + simulation (tools/sim/run.js → site/data/sim/<id>.json): the recipe tab shows its button only when the file exists
 for _r in R:
     _sid=_r.get('tierGroup') or _r['id']
@@ -605,5 +607,11 @@ for _r in R:
             _S=_V and next((x for x in _sd.get('strategies',[]) if not x.get('hidden') and all(str(x['params'].get(k))==str(v) for k,v in _V['params'].items())), None)
             _tags={l['tag']:{k:_g['tags'][l['tag']].get(k) for k in ('gi','s','sec','tmax')} for l in _F['lines'] if l.get('tag') in (_g.get('tags') or {})}
             _r['fc']={'lines':_F['lines'],'tags':_tags,'ds':(_S or {}).get('res',{}).get('desStat')}
+            # 레시피 = 그 등급 플로우차트를 순서대로 읽은 것(사용자 확정 2026-11-11, scripts/graph2recipe.py): 단계·확률·사용량·갈래 모두 플로우차트·시뮬 값
+            if _S and _r['id'] not in FCREAD_OFF and os.path.exists(f"/home/claude/poe2data/scripts/graphs/{_sid}.json"):
+                _tiers=[x.get('tier') or 'high' for x in R if (x.get('tierGroup') or x['id'])==_sid]
+                try: _rd=_g2r.read_recipe(_r, _sd, json.load(open(f"/home/claude/poe2data/scripts/graphs/{_sid}.json")), _tiers)
+                except Exception as _e: print('flowchart read failed', _r['id'], _e); _rd=None
+                if _rd: _r['nodes']=_rd['nodes']; _r['phases']=_rd['phases']; _r['start']=_rd['start']; _r['fcRead']=_rd['fcRead']
 json.dump({'v':2,'recipes':R},open(D+'recipes.json','w'),ensure_ascii=False)
 print(len(R),'recipes')
