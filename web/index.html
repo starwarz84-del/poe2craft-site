@@ -113,7 +113,7 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
     <div class="corner l"><span class="ver" data-kr="POE2 크래프팅 시뮬레이터 · 레시피" data-en="PoE 2 crafting simulator · recipes">PoE 2 crafting simulator · recipes</span></div>
     <a class="brand" href="#recipes" aria-label="PoE 2 Craft">
       <img class="main" src="img/logo.webp" alt="PoE 2 Craft" width="640" height="345">
-      <img class="ext" src="img/logo-extreme.webp" alt="" width="782" height="429">
+      <img class="ext" data-src="img/logo-extreme.webp" alt="" width="782" height="429">
     </a>
     <div class="corner r lang" role="group" aria-label="Language">
       <button type="button" id="l-en" aria-pressed="true">English</button><span>·</span><button type="button" id="l-kr" aria-pressed="false">한국어</button>
@@ -169,6 +169,10 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
   // ---------- banner: fire logo on extreme recipes, folds away while a tool page is scrolled ----------
   const FOLD = true;
   let extreme = false;
+  // 불꽃 로고는 극한 레시피에서만 보이니 첫 로딩이 끝난 뒤에 받음(열면 바로 받음)
+  const extImg=document.querySelector('.brand .ext'), loadExt=()=>{ if(extImg && !extImg.src) extImg.src=extImg.dataset.src; };
+  addEventListener('load', ()=>setTimeout(loadExt, 3000));
+  new MutationObserver(()=>{ if(document.body.classList.contains('extreme')) loadExt(); }).observe(document.body,{attributes:true, attributeFilter:['class']});
   function setCompact(on){ document.body.classList.toggle('compact', !!on); }
   function watchScroll(f){
     let doc; try{ doc = f.contentDocument; }catch(e){ return; } if(!doc) return;
