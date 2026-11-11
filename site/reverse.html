@@ -1007,7 +1007,7 @@ function makeDraft(it, an, opt){
   // 7. desecrated lines
   function desPass(only){ for(const r of desRows){ if(desDone.has(r) || (only && r.m.side!==only)) continue; desDone.add(r); const sd=r.m.side; openSlot(sd); const om=[]; if(r.lord && LORD_OMEN[r.lord] && !['helmet','gloves','boots','body'].includes(it.cat)) om.push(LORD_OMEN[r.lord]); if(cnt[other(sd)] < cap[other(sd)]) om.push(SIDE_OMEN.necro[sd]);
     const b2 = r.g.s==='x' && r.g.sub?.[1]==='Otherworldly' && bone==='Preserved_Collarbone' ? 'Altered_Collarbone'   // 이계 옵션은 뒤바뀐 빗장뼈로만 공개됨
-      : (r.g.s==='n' || r.g.s==='x') && r.t[0]>=40 ? bone.replace('Preserved_','Ancient_').replace('Ancient_Cranium','Preserved_Cranium') : bone;
+      : (r.g.s==='n' || r.g.s==='x') && r.t[0]>=40 && (r.g.t[Math.min(r.g.t.length, r.tierNo)-1]?.[0] ?? r.t[0])>=40 ? bone.replace('Preserved_','Ancient_').replace('Ancient_Cranium','Preserved_Cranium') : bone;   /* 고른 티어 범위에 레벨 40 미만 티어가 들어 있으면 보존된 뼈로 충분(2026-11-11 비교에서 찾음: 고대 뼈는 약 20배 비쌈) */
     const d = push({phase:'des', do:'desecrate', cur:b2, ...(om.length?{omens:om}:{}), target:{unrev:sd}, note: b2!==bone ? note(`${sideKr(sd)}에 훼손. ${nk(b2)}${josa(nk(b2),'은','는')} 레벨 40 미만 옵션이 안 나와서 높은 티어 확률이 올라감.`, `Desecrate a ${sideEn(sd)}. Ancient bones skip modifiers below level 40, which lifts high tiers.`) : note(`${sideKr(sd)}에 훼손.`, `Desecrate a ${sideEn(sd)}.`)}); cnt[sd]++;
     made.push({r, id:d.id});
     push({phase:'des', do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{reveal:tm(r), side:sd, bone:b2, ...(r.lord?{lord:r.lord}:{})}, fail:{goto:d.id, via:{cur:'Orb_of_Annulment', omens:['Omen_of_Light']}},
