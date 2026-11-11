@@ -1247,10 +1247,10 @@ function renderStatic(){
   const ST=[[L('입력','Input'),L('영상·글 주소, 경매장 아이템, 또는 옵션 조합','Video/post link, a trade item, or a modifier set')],[L('리버스 엔지니어링','Reverse engineering'),L('옵션 출처·티어 분석 → 제작 순서 초안 → 검산','Sources & tiers → draft order → verification')],[L('크래프팅 목록에 올리기','Add to Crafting'),L('결과 확인 후 올리기 결정','Decide whether to publish it')],[L('아쉬운 점 남기기','Leave feedback'),L('틀린 단계·더 나은 방법 제보','Tell us what was off')]];
   const stage = S.sent ? 3 : S.draft ? 2 : S.last && !S.last.err ? 1 : 0;
   $('#rsteps').innerHTML = ST.map(([t,d],i)=>`<li class="${i<stage?'done':i===stage?'on':''}"><span><b>${esc(t)}</b>${esc(d)}</span></li>`).join('');
-  const TABS=[['url',L('영상·제작글 주소','Video / post link'),''],['item',L('경매장 아이템','Trade item'),''],['build',L('옵션으로 만들기','From modifiers'),'']];
+  const TABS=[['url',L('영상·제작글 주소','Video / post link'),L('준비 중','soon')],['item',L('경매장 아이템','Trade item'),''],['build',L('옵션으로 만들기','From modifiers'),'']];
   $('#itabs').innerHTML = TABS.map(([k,t,b])=>`<button type="button" role="tab" data-itab="${k}" aria-selected="${S.itab===k}">${esc(t)}${b?`<small>${esc(b)}</small>`:''}</button>`).join('');
   document.querySelectorAll('[data-ipane]').forEach(p=>p.hidden = p.dataset.ipane!==S.itab);
-  $('#u-help').textContent = L('유튜브 영상·커뮤니티 제작글 주소 → 자막·글 분석 → 플로우차트·등급 레시피 → 크래프팅 목록. 처리 하루 3번(오전·오후·밤), 제작자 = 영상·글 작성자','YouTube video or community post → captions/text analysis → flowchart and graded recipes → Crafting list. Processed 3 times a day; credited to the original creator');
+  $('#u-help').textContent = L('유튜브 영상·커뮤니티 제작글 주소 → 자막·글 분석 → 플로우차트·등급 레시피 → 크래프팅 목록'+(REQ_OPEN?'. 처리 하루 3번(오전·오후·밤), 제작자 = 영상·글 작성자':''),'YouTube video or community post → captions/text analysis → flowchart and graded recipes → Crafting list'+(REQ_OPEN?'. Processed 3 times a day; credited to the original creator':''));
   $('#u-l').textContent = L('영상·글 주소','Video or post link'); $('#u-nl').textContent = L('메모 (선택) — 아이템, 시작 시간','Note (optional) — item, start time');
   $('#u-cl').textContent = L('접근 코드','Access code'); $('#u-code').placeholder = L('로그인 전 테스트 기간 전용','Test period only, before login');
   $('#u-go').textContent = L('분석 요청','Request analysis');
@@ -1454,12 +1454,14 @@ fetch('data/samples.json').then(r=>r.ok?r.json():{samples:[]}).then(d=>{ S.recSa
 $('#samples').addEventListener('click', e=>{ const b=e.target.closest('[data-sample]'); if(!b) return; $('#txt').value=SAMPLES[+b.dataset.sample].t; run(); });
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-reverse-in' && typeof d.text==='string'){ S.itab='build'; $('#txt').value=d.text; $('#b-from').hidden=false; $('#b-from').textContent=L('속성부여에서 받은 옵션 조합 분석 완료 · 오른쪽 요약과 아래 초안 확인','Analysed the modifier set from the Modifiers tab — see the summary and draft below.'); run(); } });
 /* 영상·제작글 분석 요청 (worker/index.js /api/req) */
+const REQ_OPEN=false; /* 영상·제작글 분석 요청: 사용자 확정 2026-11-11 닫아 둠(운영자가 직접 작업) — true면 다시 열림 */
 const RQK='poe2r:reqs';
 const rqIds=()=>{ try{ return JSON.parse(localStorage.getItem(RQK)||'[]'); }catch(_){ return []; } };
 const rqSave=a=>{ try{ localStorage.setItem(RQK, JSON.stringify(a.slice(0,30))); }catch(_){} };
 S.reqs = S.reqs || []; S.reqMsg = S.reqMsg || '';
 function urlForm(){
   const u=$('#u-url').value.trim(), c=$('#u-code').value.trim();
+  if(!REQ_OPEN){ $('#u-go').disabled=true; $('#u-hint').textContent=L('준비 중','Coming soon'); ['#u-code','#u-url','#u-note'].forEach(q=>$(q).disabled=true); $('#u-code').closest('label').hidden=true; $('.uq').hidden=true; return; }
   $('#u-go').disabled = !/^https?:\/\/\S+\.\S+/i.test(u) || !c || S.reqBusy;
   $('#u-hint').innerHTML = S.reqMsg;
 }
@@ -1510,7 +1512,7 @@ try{ $('#u-code').value = localStorage.getItem('poe2r:code')||''; }catch(_){}
 ['#u-url','#u-code'].forEach(q=>$(q).addEventListener('input', urlForm));
 $('#u-go').addEventListener('click', sendReq);
 document.addEventListener('click', e=>{ const a=e.target.closest('[data-rgo]'); if(!a) return; e.preventDefault(); try{ window.parent.postMessage({type:'poe2-goto', id:a.dataset.rgo}, '*'); }catch(_){} });
-loadReqs();
+if(REQ_OPEN) loadReqs(); else urlForm();
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
 window.addEventListener('message', e=>{ const d=e.data, f=document.getElementById('pvf'); /* preview keeps a window-sized frame and scrolls inside it, so its sticky header, progress bar and step tracking work (2026-11-11) */ });
 $('#mods').addEventListener('change', e=>{

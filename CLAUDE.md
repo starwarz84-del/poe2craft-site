@@ -113,7 +113,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 - 메뉴: 크래프팅(recipes) / 리버스 크래프팅(discover) / 에뮬레이터 / 속성부여(builder) / 데이터(bases) / 정보(about).
 - 화면 문구는 명사형·짧게, '~요' 금지(전문가 이상 비용 안내만 '~습니다'). 영문은 `i18n/en.py` 끝 `EN.update`.
 - 글꼴·로고·배너·필터·에뮬레이터·속성부여·리버스 화면·거래소 검색 등 확정된 화면 결정 전체는 `docs/site-ui.md`.
-- **영상·제작글 분석 요청**(사용자 확정 2026-11-11): 리버스 ① 탭 → `worker/index.js`(`/api/req`·`/api/queue`, KV `REQ`, 첫 배포 때 자동 생성) → 예약 작업 하루 3번(사용자 컴퓨터 내장 브라우저로 자막) → `tools/req/mark.py`가 `site/data/reqdone.json`에 완료·실패 기록 → 배포되면 '내 요청'에 표시. 로그인 전엔 접근 코드(해시만 저장소, 코드마다 하루 3회). 처리 순서·점검은 `docs/request-pipeline.md`.
+- **영상·제작글 분석 요청**(사용자 확정 2026-11-11): 리버스 ① 탭 → `worker/index.js`(`/api/req`·`/api/queue`, KV `REQ`, 첫 배포 때 자동 생성) → 예약 작업 하루 3번(사용자 컴퓨터 내장 브라우저로 자막) → `tools/req/mark.py`가 `site/data/reqdone.json`에 완료·실패 기록 → 배포되면 '내 요청'에 표시. 로그인 전엔 접근 코드(해시만 저장소, 코드마다 하루 3회). 처리 순서·점검은 `docs/request-pipeline.md`. **지금은 닫아 둠**(사용자 확정 2026-11-11 20:50: 접근 코드로만 쓸 거면 운영자가 직접 작업) — 화면은 '준비 중'(reverse.html `REQ_OPEN=false`), 예약 작업은 꺼 둠(삭제 안 함, id `trig_01Kx2fpA7SoVB1VMLt6zcsgN`). 다시 열려면 `REQ_OPEN=true` + 예약 작업 켜기. 로그인은 공개 전에 디스코드·구글 등으로 다시 검토.
 
 ## 로드맵 (사용자 확정 2026-11-10 22:09 — 이 순서대로 진행)
 
