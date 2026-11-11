@@ -639,7 +639,7 @@ function simCost(it, d, N){ try{ const g=POE2GRAPH.fromDraft(d, it.D, {craft:S.c
 // 남는 시간에는 상위 후보를 더 많이 돌려 값을 다듬음. 무거운 아이템은 1차 계산만으로 그 시간을 넘김. 후보 = 노하우(K5·K6) × 복구 방법·면 순서·반복 생략 × 엑잘 등급
 async function bestDraftAsync(it, an, opt, tick, minMs){ const t0=performance.now(), nap = ms => new Promise(r=>setTimeout(r, ms||0)), el = () => performance.now()-t0;
   const kn=[{k:[], a:an}]; { const e=essSwap(it, an), d=desSwap(it, an); if(e!==an) kn.push({k:['K5'], a:e}); if(d!==an) kn.push({k:['K6'], a:d}); if(e!==an){ const ed=desSwap(it, e); if(ed!==e) kn.push({k:['K5','K6'], a:ed}); } }
-  const RV=[{k:'', o:{}}, ...REC_VARIANTS, {k:'flip+plain', o:{flip:1, rec:'plain'}}, {k:'flip+noloop', o:{flip:1, noLoop:1}}], EX=[{k:'', o:{}}, {k:'gex', o:{ex:'Greater_Exalted_Orb'}}];
+  const RV=[{k:'', o:{}}, ...REC_VARIANTS, {k:'flip+plain', o:{flip:1, rec:'plain'}}, {k:'flip+noloop', o:{flip:1, noLoop:1}}, {k:'noloop-p', o:{noLoop:'p'}}, {k:'noloop-s', o:{noLoop:'s'}}], EX=[{k:'', o:{}}, {k:'gex', o:{ex:'Greater_Exalted_Orb'}}];
   const sig = d => JSON.stringify(d.nodes.map(n=>[n.do,n.cur,n.omens,n.target,n.fail])), seen=new Set(), C=[]; let runs=0;
   const say = ph => tick && tick({phase:ph, n:C.length, runs, ms:el()});
   for(const K of kn) for(const v of RV) for(const x of EX){ try{ const o={...v.o, ...x.o}, d=makeDraft(it, K.a, {...(opt||{}), ...o, market:1e9}); if(!d) continue; const sg=sig(d); if(seen.has(sg)) continue; seen.add(sg);
@@ -730,6 +730,11 @@ function makeDraft(it, an, opt){
     for(const r of runesOf(it)){ if(!r.kr) continue; for(let q=0;q<(r.n||1);q++){ const k=skip.indexOf(r.en); if(k>=0){ skip.splice(k,1); continue; } plainRunes.push({kr:r.kr, en:r.en}); } } }
   // random lines (regular pool + augment-unlocked), hardest first; guaranteed lines (essences) are left for last
   let rnd = rows.filter(r=>(r.how==='n' || r.how==='sc') && !r.m.fr).sort((a,b)=>(a.unknown?1:a.pOmen)-(b.unknown?1:b.pOmen));
+  /* K39(사용자 2026-11-12): 같은 쪽 필수 옵션 여럿이 확률·레벨이 비슷하면(예: 회피 하이브리드·회피 %·회피 고정치 1티어, 모두 약 1.9%) 하나씩 노리지 않고
+     '셋 중 먼저 뜨는 것'으로 — 카오스·엑잘·훼손 공개 단계가 모두 그 묶음 중 아무거나를 노림(이미 붙은 계열은 다시 안 나와 남은 것만 뜸) */
+  const POOL = {}; for(const sd of ['p','s']){ const c = rows.filter(r=>!r.m.fr && !r.soft && r.m.side===sd && r.g?.s==='n' && (r.how==='n' || r.how==='d') && r.pAny>0);
+    if(c.length<2) continue; const ps=c.map(r=>r.pAny); if(Math.max(...ps)/Math.min(...ps) > 3) continue; POOL[sd]=c; }
+  const inPool = r => !!(r && POOL[r.m.side]?.includes(r));
   const mqGi = it.cat==='jewellery' && it.qual>20+impMaxQ(it.b) ? it.D.groups.findIndex(g=>g.s==='e' && g.f.includes('LocalMaximumQuality')) : -1;
   let R0 = null; if(mqGi>=0){ const ps = rnd.filter(r=>r.m.side==='p' && r.how==='n' && !r.unknown); R0 = ps.length ? ps[ps.length-1] : null; if(R0) rnd.splice(rnd.indexOf(R0),1); }
   const take = pred => { const i=rnd.findIndex(pred); return i<0 ? null : rnd.splice(i,1)[0]; };
@@ -804,7 +809,7 @@ function makeDraft(it, an, opt){
       for(const sd of ['s','p']) while(junk[sd] > (sd===keepSd?1:0)){
         push({phase:'fr', do:'remove', cur:'Orb_of_Annulment', target:{removeJunk:'any'}, note:note(`소멸의 오브로 잡옵 하나 제거 (분열 옵션은 안 지워지고 나머지는 전부 잡옵이라 징조 없이 안전). 분열 옵션 + 잡옵 1개가 남을 때까지.`, `Orb of Annulment removes a junk line (the fractured line cannot go and the rest is junk, so no omen needed). Repeat until only the fractured line + one junk line remain.`)});
         junk[sd]--; cnt[sd]--; } }
-    let hardOf=false; if(wantC.length>1){ const hard = [...wantC].filter(r=>r.pAny!=null).sort((a,b)=>a.pAny-b.pAny)[0]; if(hard){ wantC.length=0; wantC.push(hard); hardOf=true; } }   // the rarest line first: it is the hardest to get later
+    let hardOf=false; if(wantC.length>1){ const hard = [...wantC].filter(r=>r.pAny!=null).sort((a,b)=>a.pAny-b.pAny)[0]; if(hard){ const keepP = inPool(hard) ? wantC.filter(inPool) : [hard]; wantC.length=0; wantC.push(...keepP); hardOf=true; } }   // the rarest line first: it is the hardest to get later
     if(wantC.length){ const A=wantC[0], sd=A.m.side, rp = junk[sd] ? sd : other(sd);
       push({phase:'fr', do:'chaos', cur:'Chaos_Orb', target:{...anyOf(wantC), ...(junk.p+junk.s>1?{replace:rp}:{})}, fail:{goto:'self'}, note:note(`분열 옵션 + 잡옵 1개 상태라 카오스 오브는 항상 그 잡옵을 바꿈. 잃을 게 없고, 뜨면 정리할 잡옵도 없음. ${wantC.length>1?`원하는 옵션 중 하나(${names(wantC, x=>lkA(x))})가`:`${lkA(A)}${josa(lkA(A),'이','가')}`} 뜰 때까지.${hardOf ? ' 원하는 옵션 중 가중치가 가장 낮아 뒤에서 엑잘로 뽑기 어려운 옵션이라 여기서 먼저 확보.' : ''}${wantC.length>1?` 다른 옵션이 먼저 뜨면 뒤 단계의 엑잘 대상이 그만큼 바뀜(계산은 ${lk(A)}${josa(lk(A),'이','가')} 뜬 경우 기준).`:''}`, `With only the fractured line + one junk line, Chaos always swaps that junk line: nothing to lose and nothing to clean up afterwards. Roll until ${wantC.length>1?`one of ${names(wantC, x=>le(x))}`:le(A)} lands.`)});
       made.push({r:A, id:nodes[nodes.length-1].id}); rnd.splice(rnd.indexOf(A),1); junk[rp]--; cnt[rp]--; cnt[sd]++; }
@@ -906,8 +911,12 @@ function makeDraft(it, an, opt){
   const whittleTarget = (sd, want) => { if(want.length<1) return null; const low = [...want].sort((a,b)=>lvlOf(a)-lvlOf(b))[0];
     if(lvlOf(low) < 35 && low.tierNo!==1) return null;   // policy 19: Greater Chaos (level 35+, a family's top tier always in the pool)
     const keep = [...made.filter(x=>x.r.m.side===sd).map(x=>x.r), ...want.filter(r=>r!==low)], top = maxRoll(sd);
-    if(!keep.length || keep.some(r=>lvlOf(r) < top || lvlOf(r) <= lvlOf(low))) return null;
+    if(!keep.length || keep.some(r=>lvlOf(r) <= lvlOf(low) && !inPool(r))) return null;
+    /* K40(사용자 2026-11-12): 지킬 옵션이 그쪽 최고 레벨보다 낮아도, 그보다 높은 잡옵이 뜰 확률이 작으면 절사 + 상위 카오스로 다시 굴림(뜨면 상위 카오스로 1/2, 지킬 옵션이 지워지면 처음부터 — 시뮬이 그대로 셈) */
+    const mk = Math.min(...keep.map(lvlOf)); if(keep.some(r=>lvlOf(r) < top)){ let hi=0, all=0; it.D.groups.forEach(g=>{ if(g.s!=='n' || g.g!==sd || (g.f||[]).some(f=>allFam.has(f))) return; g.t.forEach(t=>{ if(t[0]<=it.ilvl && t[1]>0){ all+=t[1]; if(t[0]>=mk) hi+=t[1]; } }); });
+      if(!all || hi/all > 0.35) return null; }
     return low; };
+  const noL = sd => opt?.noLoop===1 || opt?.noLoop===true || opt?.noLoop===sd;   /* 쪽마다 따로: 접두는 절사 반복, 접미는 소멸 같은 섞인 경우도 비교 */
   const exaltPass = only => { for(let guard=0; rnd.length && guard<12; guard++){
     const sd = ['p','s'].map(x=>({x, free:cap[x]-cnt[x]-resv[x]+junk[x]-desNeed[x], n:rnd.filter(r=>r.m.side===x).length})).filter(o=>o.free>0 && o.n>0 && (!only || o.x===only)).sort((a,b)=>opt?.flip ? a.n-b.n : b.n-a.n)[0]?.x;
     if(!sd) break;
@@ -915,7 +924,7 @@ function makeDraft(it, an, opt){
     let want = rnd.filter(r=>r.m.side===sd); const oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
     const wl = it.cat==='jewellery' && qCap>0 ? null : whittleTarget(sd, want);
     const keepR = made.filter(x=>x.r.m.side===sd).map(x=>x.r);
-    if(wl && !opt?.noLoop && !(want.length===1 && !keepR.length)){
+    if(wl && !noL(sd) && !(want.length===1 && !keepR.length)){
       // policy 14/17: every line already on this side is at the top level, so a missed exalt is just the filler for Whittling.
       // One exalt at the lines (no retry), then Whittling + Chaos swaps that filler until one lands; the higher-level lines go first, the lowest last
       const list = want.length>1 ? want.filter(r=>r!==wl) : [wl], top = maxRoll(sd), frO = frs.filter(x=>x.m.side===oth).length;
@@ -924,11 +933,11 @@ function makeDraft(it, an, opt){
       const exC0 = it.cat==='jewel' ? 'Exalted_Orb' : cheapest(EXS, {do:'exalt', omens:om, target:anyOf(list)}, loopEx(cc, ['Omen_of_Whittling', ...eOm], {...anyOf(list), replace:sd}), true), tK = list.length>1 ? `원하는 옵션 중 하나(${names(list, x=>lkA(x))})` : `${lkA(list[0])} (T${list[0].tierNo} 이상)`, tE = list.length>1 ? `any of ${names(list, x=>leA(x))}` : `${leA(list[0])} (tier ${list[0].tierNo}+)`;
       const ex = push({phase:'ex', do:'exalt', cur:exC0, ...(om.length?{omens:om}:{}), target:anyOf(list), br:note(`실패: ${['Omen_of_Whittling',...eOm].map(nk).join(' + ')} + ${nk(cc)}`, `Miss: ${['Omen_of_Whittling',...eOm].map(ne).join(' + ')} + ${ne(cc)}`),
         note:note(`${sideKr(sd)}에 ${tK}.`, `A ${sideEn(sd)}: ${tE}.`)}); cnt[sd]++;
-      push({phase:'ex', do:'chaos', cur:cc, omens:['Omen_of_Whittling', ...eOm], fallbackFor:ex.id, target:{...anyOf(list), replace:sd}, fail:{goto:'self'},
+      push({phase:'ex', do:'chaos', cur:cc, omens:['Omen_of_Whittling', ...eOm], fallbackFor:ex.id, target:{...anyOf(list), replace:sd}, fail:{goto:'self'}, trim:{side:sd, keep:[...keepR, ...list].map(r=>({gi:r.m.gi}))},
         note:note(`빗나간 옵션을 ${['Omen_of_Whittling',...eOm].map(nk).join(' + ')} + ${nk(cc)}로 ${tK}${josa('나','이','가')} 뜰 때까지.${keepR.length?` ${names(keepR, x=>lk(x))}${josa(lk(keepR.at(-1)),'은','는')} 레벨이 더 높아 안 지워짐.`:''}`,
           `Whittling${eOm.length?' + '+ne(eOm[0]):''} + ${ne(cc)} rerolls the missed line until ${tE} lands${keepR.length?'; the higher-level lines stay':''}.`)});
       made.push({r:list[0], id:ex.id}); rnd.splice(rnd.indexOf(list[0]),1); continue; }
-    if(!opt?.noLoop && !keepR.length && cnt[oth] >= cap[oth] && !(it.cat==='jewellery' && qCap>0 && !mqGone)){
+    if(!noL(sd) && !keepR.length && cnt[oth] >= cap[oth] && !(it.cat==='jewellery' && qCap>0 && !mqGone)){
       // nothing worth keeping on this side and the other side is full: one exalt, then on a miss Erasure + Chaos rerolls just that line
       // (the new line can only land here), cheaper than annulment omen + annulment + another exalt each time
       const top = maxRoll(sd), cc = loopChaos(want, sd, [ERASE[sd]]);
@@ -1196,6 +1205,11 @@ function makeDraft(it, an, opt){
   const td = tryDiff(it, an, nodes, start), diff2 = Math.max(diff, td.d);
   const market = +(opt?.market ?? S.market ?? 0) || 0, tier = S.prices ? tierOf(market>0 ? market : draftCost(it, an, {nodes}, true)) : null, nSoft = softPass(an, nodes), nComp = budgetPass(it, an, nodes, diff2, market, tier) + nSoft;
   const day = new Date(); const ymd = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
+  for(const sd of ['p','s']){ const P=POOL[sd]; if(!P) continue; const gis=new Set(P.map(r=>r.m.gi)), all=anyOf(P);
+    const hit = t => t && ((t.gi!=null && gis.has(t.gi)) || (t.anyOf||[]).some(x=>gis.has(x.gi)));
+    for(const n of nodes){ const t=n.target; if(!t) continue;
+      if(hit(t)){ const {gi, tmax, anyOf:_a, ...rest} = t; n.target = {...rest, ...all}; n.pool=P.length; }
+      if(t.reveal && hit(t.reveal)){ n.target = {...n.target, reveal: all}; n.pool=P.length; } } }
   return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff2, ...(tier?{priceTier:tier.id}:{}), ...(market>0?{marketPrice:market}:{}), ...(nComp?{compromises:nComp}:{}),
     author:{kr:'아이템 역산 초안', en:'Reverse-engineered draft'}, title:{kr:featK.join(' + ')||'역산 초안', en:featE.join(' + ')||'Draft'},
     buildTags:[], start, phases, nodes, ...(prep?{prep}:{}), src:{text:S.txt||''} };

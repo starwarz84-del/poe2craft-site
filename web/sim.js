@@ -85,9 +85,9 @@ function make(graph, D, craft, params){
       if(!junk.length) return [sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure'];   // 2026-11-11: this line sat inside the comment above
       // several junk lines (SL 화염파 지팡이: two junk suffixes): the lowest junk line decides — Whittling hits a junk line whenever every other line is higher
       const lj=Math.min(...junk.map(lvl)), others=it.mods.filter(m=>!m.fr && !m.unrev && !junk.includes(m)), same=others.filter(m=>m.side===sd);
-      const er = sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure';
-      if(same.some(m=>lvl(m)<=lj)) return [er];
-      if(others.every(m=>lvl(m)>lj)) return ['Omen_of_Whittling'];
+      const er = sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure', solo = !others.some(m=>m.side!==sd);   // 반대쪽에 지워질 옵션이 없으면 말소의 징조는 필요 없음(사용자 2026-11-12: 높은 잡옵이 뜨면 상위 카오스만으로 1/2)
+      if(same.some(m=>lvl(m)<=lj)) return solo ? [] : [er];
+      if(solo || others.every(m=>lvl(m)>lj)) return ['Omen_of_Whittling'];
       return ['Omen_of_Whittling', er]; }
     function act(n){ const a=n.act, oms=[...(n.omens||[])]; let cur=n.cur;
       for(const c of (n.curIf||[])) if(cond(c.if)){ cur=c.cur; break; }

@@ -45,7 +45,7 @@ function fromDraft(d, D, opt={}){
   const chainOf={}, chainN={}; { const ROLL=['exalt','chaos','regal','transmute','augment'], setOf = n => { const t=n.target||{}; return t.junk ? [] : t.anyOf ? t.anyOf.map(x=>x.gi) : t.gi!=null ? [t.gi] : []; };
     const cand = N.filter(n=>ROLL.includes(n.do) && !n.fallbackFor && !n.onLost && !n.optional && setOf(n).length);
     cand.forEach((S,i)=>{ if(chainOf[S.id] || !S.target.anyOf || S.target.anyOf.length<2) return; const L=new Set(setOf(S)), root=anyTag(S.target.anyOf); let k=1;
-      for(const T of cand.slice(i+1)){ if(chainOf[T.id] || (T.branch?.of||'')!==(S.branch?.of||'')) continue; const st=setOf(T); if(st.length<L.size && st.every(g=>L.has(g))){ if(k===1) chainOf[S.id]={tag:root, idx:0}; chainOf[T.id]={tag:root, idx:k++}; } }
+      for(const T of cand.slice(i+1)){ if(chainOf[T.id] || (T.branch?.of||'')!==(S.branch?.of||'')) continue; const st=setOf(T); if((st.length<L.size || (S.pool && T.pool && st.length===L.size)) && st.every(g=>L.has(g))){ if(k===1) chainOf[S.id]={tag:root, idx:0}; chainOf[T.id]={tag:root, idx:k++}; } }
       if(k>1) chainN[root]=Math.min(k, L.size); }); }
   const tgOf = n => chainOf[n.id]?.tag || targetTag(n.target);
 
@@ -130,8 +130,10 @@ function fromDraft(d, D, opt={}){
     if(a==='quality'){ o.count=t.quality||20; o.q=t.quality||20; }
     if(a==='rune'){ const rn=t.rune || (t.runeSwap||[])[0]; if(rn) o.rune=rn; if(t.slots) o.slots=t.slots; if(n.label) o.goal=n.label; }
     if(n.extra) o.extraUse=n.extra;
+    /* K40(2026-11-12): 절사 반복 — 시뮬이 그때그때 절사·절사 + 말소·말소만(1/2)을 고름(잡옵이 지킬 옵션보다 높으면 말소만) */
+    if(n.trim && a==='chaos'){ const kp = n.trim.keep?.length ? anyTag(n.trim.keep) : null; o.trim = {side:n.trim.side, ...(kp?{keep:kp}:{})}; o.omens=(o.omens||[]).filter(x=>!/Whittling|Erasure/.test(x)); if(!o.omens.length) delete o.omens; }
     // success condition
-    const okIf = tg && !t.junk && ['transmute','augment','regal','exalt','chaos','reveal'].includes(a) ? (a==='reveal' ? {any:[{added:tg},{has:tg}]} : {added:tg}) : (a==='essence' && o.liquid && o.alt ? {added:tg} : null);   // a reveal: the wanted line may already be on the item
+    const okIf = tg && !t.junk && ['transmute','augment','regal','exalt','chaos','reveal'].includes(a) ? (a==='reveal' && !n.pool ? {any:[{added:tg},{has:tg}]} : {added:tg}) : (a==='essence' && o.liquid && o.alt ? {added:tg} : null);   // a reveal: the wanted line may already be on the item
     const nxt = n.branch==null && N.some(x=>x.branch?.of===n.id) ? (branchFirst(n.id,'ok')||nextMain(n)) : nextMain(n);
     const missTo = N.some(x=>x.branch?.of===n.id) ? branchFirst(n.id,'miss') : null;
     o.edges.push(...lostEdges(n, keep));
@@ -151,7 +153,7 @@ function fromDraft(d, D, opt={}){
     if(ch){ o.skipIf={count:{tag:ch.tag, min:ch.idx+1}}; o.skipTo=nxt; }
     else if(tg && !t.junk && !t.anyOf && a!=='reveal' && (okIf || a==='essence')) { o.skipIf={has:tg}; o.skipTo=nxt; }   // anyOf (policy 6: any single resistance) may already be met by another line
     else if(t.junk && ['exalt','chaos'].includes(a)){ const s=typeof t.junk==='string' ? t.junk : omSide(n.omens,/Exaltation/); if(s && a==='exalt'){ o.skipIf={full:s}; o.skipTo=nxt; } }
-    else if(a==='desecrate' && !t.fromMark){ const rv=N.slice(N.indexOf(n)+1).find(x=>x.do==='reveal'); const rt=rv && targetTag(rv.target); o.skipIf = rt ? {any:[{unrev:true},{has:rt}]} : {unrev:true}; o.skipTo=nxt; }
+    else if(a==='desecrate' && !t.fromMark){ const rv=N.slice(N.indexOf(n)+1).find(x=>x.do==='reveal'); const rt=rv && targetTag(rv.target); o.skipIf = rt ? {any:[{unrev:true}, rv.pool ? {count:{tag:rt, min:rv.pool}} : {has:rt}]} : {unrev:true}; o.skipTo=nxt; }
     o._row=r; o._col=col;
     return o; };
 
