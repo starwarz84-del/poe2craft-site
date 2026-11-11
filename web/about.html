@@ -38,12 +38,10 @@ a{color:var(--hi)}
 /* 목표 4개: 위 = 커런시 그림 판, 아래 = 글 */
 .goals{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
 .goal{border:1px solid var(--edge);background:var(--bg2);display:flex;flex-direction:column}
-.art{position:relative;height:132px;border-bottom:1px solid var(--edge);overflow:hidden;display:flex;align-items:center;justify-content:center;gap:6px;
-  background:radial-gradient(ellipse at 50% 60%,var(--glow,rgba(200,140,60,.28)),transparent 62%),linear-gradient(180deg,#120d07,#060403)}
-.art::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(0,0,0,.6),transparent 60%);pointer-events:none}
-.art img{width:52px;height:52px;image-rendering:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.85))}
-.art img.big{width:68px;height:68px;margin:0 2px}
-.art img:nth-child(odd){transform:translateY(6px)}
+.art{position:relative;aspect-ratio:16/9;border-bottom:1px solid var(--edge);overflow:hidden;background:#090604}
+.art img.ph{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.85) brightness(.82);transition:transform .5s ease,filter .5s ease}
+.art::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.05) 40%,rgba(10,8,5,.85)),radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(0,0,0,.45))}
+.goal:hover .art img.ph{transform:scale(1.04);filter:saturate(1) brightness(.95)}
 .goal .t{padding:13px 15px 15px}
 .goal h3{margin:0 0 6px;font-size:16px;font-weight:400;color:var(--white);font-family:var(--f-title)}
 :lang(ko) .goal h3{font-weight:700;font-size:15px}
@@ -91,7 +89,7 @@ footer{margin-top:56px;border-top:1px solid #2a2014;background:rgba(0,0,0,.55)}
 .fin a{color:inherit}
 
 @media (max-width:980px){.goals{grid-template-columns:repeat(2,1fr)}.fb{grid-template-columns:1fr}}
-@media (max-width:520px){.goals{grid-template-columns:1fr}.art{height:112px}.col{padding:22px 14px 0}h1{font-size:24px}}
+@media (max-width:520px){.goals{grid-template-columns:1fr}.col{padding:22px 14px 0}h1{font-size:24px}}
 </style>
 </head>
 <body>
@@ -108,22 +106,22 @@ footer{margin-top:56px;border-top:1px solid #2a2014;background:rgba(0,0,0,.55)}
   <h2 data-en="What we're building" data-kr="poe2craft가 지향하는 것">What we're building</h2>
   <div class="goals">
     <div class="goal">
-      <div class="art" style="--glow:rgba(160,110,220,.30)"><img src="img/main/omen-of-light.webp" alt=""><img class="big" src="img/main/omen-of-sinistral-exaltation.webp" alt=""><img src="img/main/omen-of-whittling.webp" alt=""></div>
+      <div class="art"><img class="ph" src="img/main/g-together.webp" alt="" loading="lazy" width="640" height="360"></div>
       <div class="t"><h3 data-en="Built with players" data-kr="유저와 함께 만드는 서비스">Built with players</h3>
         <p data-en="Reviews, requests and bug reports from players go straight into the next recipes and features." data-kr="유저의 사용기·요청·오류 제보가 다음 레시피와 기능에 바로 반영">Reviews, requests and bug reports from players go straight into the next recipes and features.</p></div>
     </div>
     <div class="goal">
-      <div class="art" style="--glow:rgba(90,170,200,.26)"><img src="img/main/essence-of-abrasion.webp" alt=""><img class="big" src="img/main/perfect-essence-of-haste.webp" alt=""><img src="img/main/essence-of-the-abyss.webp" alt=""></div>
+      <div class="art"><img class="ph" src="img/main/g-data.webp" alt="" loading="lazy" width="640" height="360"></div>
       <div class="t"><h3 data-en="Sharper as data grows" data-kr="쌓일수록 정교해지는 데이터">Sharper as data grows</h3>
         <p data-en="Each new recipe, reverse craft and correction refines the odds, costs and step order for everyone." data-kr="새 레시피·리버스 결과·수정 하나하나가 모두의 확률·비용·순서를 다듬는 구조">Each new recipe, reverse craft and correction refines the odds, costs and step order for everyone.</p></div>
     </div>
     <div class="goal">
-      <div class="art" style="--glow:rgba(220,170,80,.30)"><img src="img/main/chaos-orb.webp" alt=""><img class="big" src="img/main/divine-orb.webp" alt=""><img src="img/main/exalted-orb.webp" alt=""></div>
+      <div class="art"><img class="ph" src="img/main/g-calc.webp" alt="" loading="lazy" width="640" height="360"></div>
       <div class="t"><h3 data-en="Calculated, not guessed" data-kr="추측이 아닌 계산">Calculated, not guessed</h3>
         <p data-en="Odds come from the game's modifier weights and tens of thousands of simulated runs. Unknown weights are marked as unknown." data-kr="게임 데이터의 옵션 가중치와 수만 번의 시뮬레이션으로 계산한 확률 · 모르는 가중치는 '미확인' 표시">Odds come from the game's modifier weights and tens of thousands of simulated runs. Unknown weights are marked as unknown.</p></div>
     </div>
     <div class="goal">
-      <div class="art" style="--glow:rgba(200,80,60,.28)"><img src="img/main/ancient-jawbone.webp" alt=""><img class="big" src="img/main/fracturing-orb.webp" alt=""><img src="img/main/preserved-rib.webp" alt=""></div>
+      <div class="art"><img class="ph" src="img/main/g-proven.webp" alt="" loading="lazy" width="640" height="360"></div>
       <div class="t"><h3 data-en="Proven crafts for everyone" data-kr="검증된 제작 순서를 누구나">Proven crafts for everyone</h3>
         <p data-en="Real crafts from videos and posts, split into high-end, balanced and essential grades so every budget has a path." data-kr="실제 제작 영상·글 기반 · 하이엔드·밸런스·에센셜 등급으로 예산에 맞는 길 제시">Real crafts from videos and posts, split into high-end, balanced and essential grades so every budget has a path.</p></div>
     </div>
