@@ -64,7 +64,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pev','fr':True},{'junk':'s'}]},K(
  act('c0','main',[0,1],'chaos','Chaos_Orb',K('접미 첫번째 옵션','First suffix'),None,K('카오스','Chaos'),[{'if':{'has':'goodS'},'to':'e1','res':'ok'},{'to':'c0','res':'fail'}],S0b,show=['fr','cr','lr','dfl']),
  act('e1','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접미 옵션 2개','Two suffixes'),[st('s','랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),
      [{'if':{'all':[G3,{'not':{'sideLt':{'side':'p','n':2}}}]},'to':'cx','res':'ok','label':K('접두 잡옵 있음','Junk prefix there')},{'if':G3,'to':'e3','res':'ok'},{'to':'t1','res':'fail'}],S1,omens=['Omen_of_Greater_Exaltation','Omen_of_Dextral_Exaltation']),
- act('t1','main',[0,3],'chaos','Chaos_Orb',K('접미 잡옵 바꾸기','Reroll the junk suffix'),None,K('카오스','Chaos'),
+ act('t1','main',[0,3],'chaos','Greater_Chaos_Orb',K('접미 잡옵 바꾸기','Reroll the junk suffix'),None,K('카오스','Chaos'),
      [{'if':{'all':[G3,{'not':{'sideLt':{'side':'p','n':2}}}]},'to':'cx','res':'ok','label':K('접두 잡옵 있음','Junk prefix there')},{'if':G3,'to':'e3','res':'ok'},{'if':{'not':{'full':'s'}},'to':'e2','label':K('새 옵션이 접두로','New line went to a prefix')},{'to':'t1','res':'fail'}],S2,show=['fr','cr','lr','dfl']),
  act('e2','main',[1,3],'exalt','Exalted_Orb',K('빈 접미 채우기','Fill the empty suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),
      [{'if':{'all':[G3,{'not':{'sideLt':{'side':'p','n':2}}}]},'to':'cx','res':'ok','label':K('접두 잡옵 있음','Junk prefix there')},{'if':G3,'to':'e3','res':'ok'},{'to':'t1','res':'fail','port':'right'}],None,omens=['Omen_of_Dextral_Exaltation']),
@@ -82,7 +82,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pev','fr':True},{'junk':'s'}]},K(
  annul('d4x',[1,8],[{'to':'d3','port':'right'}]),
  done([0,9])]
 g22('unstoppable-slipstrike-vest-v2',c,'Slipstrike Vest',82,
-  'Unstoppable BTW 회피 갑옷(swF5mwXmZ0k 40:45~46:30, 영상 대조 2026-11-11) — 회피 증가 1티어 분열에 옵션 1개만 남김 → 카오스 오브로 그 잡옵을 저항으로 → 상위 찬미 + 우측 찬미 + 완벽한 엑잘로 접미 2개 → 잡옵 접미는 절사의 징조 + 완벽한 카오스 오브(새 옵션이 접두로 가면 우측 찬미 + 엑잘티드 오브) → 좌측 찬미 + 완벽한 엑잘로 접두, 빗나가면 좌측 결정화의 징조 + 심연의 에센스로 징표 → 고대 갈비뼈 → 공개해 생명력·가시로 자리 막기 → 다시 엑잘 → 빛의 징조로 막기 제거 → 고대 갈비뼈 → 마지막 접두 공개(빛의 징조로 다시). 디바인·바알 주입기·바알 오브는 뺌(정책 33).',
+  'Unstoppable BTW 회피 갑옷(swF5mwXmZ0k 40:45~46:30, 영상 대조 2026-11-11) — 회피 증가 1티어 분열에 옵션 1개만 남김 → 카오스 오브로 그 잡옵을 저항으로 → 상위 찬미 + 우측 찬미 + 완벽한 엑잘로 접미 2개 → 잡옵 접미는 상위 카오스 오브 반복(영상 41:50 “카오스로 막 돌리기” — 일반 카오스 오브보다 시뮬이 싸서 상위로 바꿈: 밸런스 224 → 176 div, 하이엔드 940 → 651 div, 정책 0장 3번. 영상 41:55의 절사의 징조 + 완벽한 카오스 오브 한 번은 운이 좋았던 경우. 새 옵션이 접두로 가면 우측 찬미 + 엑잘티드 오브) → 좌측 찬미 + 완벽한 엑잘로 접두, 빗나가면 좌측 결정화의 징조 + 심연의 에센스로 징표 → 고대 갈비뼈 → 공개해 생명력·가시로 자리 막기 → 다시 엑잘 → 빛의 징조로 막기 제거 → 고대 갈비뼈 → 마지막 접두 공개(빛의 징조로 다시). 디바인·바알 주입기·바알 오브는 뺌(정책 33).',
   {'pT':{'kr':'접두 회피','en':'Evasion prefixes','values':TS},'rT':{'kr':'저항','en':'Resistances','values':TS},'dT':{'kr':'굴절','en':'Deflection','values':TV({'3':('1~3티어','T1–3'),'4':('1~4티어','T1–4')})}},P2,
   {'high':K('모든 옵션 1티어 (영상: 회피 3,646)','Every line tier 1 (video: 3,646 evasion)'),'bal':K('접두·저항·굴절 1~2티어 (영상: 회피 복합 2티어도 괜찮음)','Prefixes, resistances and deflection at T1–2 (video: a T2 hybrid is fine)')},
   tags,nodes,[{'id':'L0','nodes':['t1','e2'],'kr':'접미 잡옵 바꾸기','en':'Junk suffix swap'},{'id':'L1','nodes':['e3','cx','w0','db','rb'],'kr':'접두 두번째 옵션','en':'Second prefix'},{'id':'L2','nodes':['d3','d4','d4x'],'kr':'접두 세번째 옵션(훼손)','en':'Third prefix (desecrated)'}],
