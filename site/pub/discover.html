@@ -336,7 +336,8 @@ function analyse(it){
     if(m.fr) row.how = 'fr'; else if(m.desTag || g.s==='d') row.how='d'; else if(g.s==='e') row.how='e'; else if(g.s==='x') row.how = /Otherworldly/.test(g.sub[1]) ? 'x' : /Liquid Emotions/.test(g.sub[1]) ? 'lq' : 'sc'; else row.how='n';
     row.core = g.s==='x' && !/Otherworldly|Liquid Emotions/.test(g.sub[1]) ? g.sub : null;   // runes and soul cores only: liquids are used on the item, never socketed
     row.lord = Object.keys(LORDS).find(k=>g.tg.includes(k+'_mod')) || null;
-    if(g.s!=='n'){ row.unknown = g.s==='x' ? 'x' : null; return row; }
+    // a liquid is used on the item and always gives its modifier: no weight needed
+    if(g.s!=='n'){ row.unknown = g.s==='x' && row.how!=='lq' ? 'x' : null; return row; }
     if(flat){ row.unknown='flat'; return row; }
     if(g.t.every(x=>!(x[1]>1))){ row.unknown='w1'; }
     // weights: tier vs group, group vs its side (other modifiers' families taken out, as if this one were added last)
@@ -1205,9 +1206,10 @@ function render(){
     <div class="cr">${L('③ 룬','③ Runes')}: ${runes.length ? runes.map(o=>esc(o.l)).join(' · ') : L('없음','none')}</div>
     <label class="cr"><input type="checkbox" id="qrok" ${S.okQR?'checked':''}> ${L('퀄리티와 룬을 확인했어요','I checked the quality and runes')}</label>
     ${nNeed && S.prices ? (()=>{ const fd=v=>v==null?'—':v>=100?Math.round(v).toLocaleString():v>=10?v.toFixed(0):v.toFixed(1);
-        const c = f => { try{ const a2=needAn(an, f), d=makeDraft(it, a2, {buy:buySet(an)}); return d ? draftCost(it, a2, d) : null; }catch(_){ return null; } };
+        // compared with no compromise (사용자 2026-11-11 테스트): with compromises a wider tier range could look dearer
+        const c = f => { try{ const a2=needAn(an, f), d=makeDraft(it, a2, {buy:buySet(an), market:1e9}); return d ? draftCost(it, a2, d) : null; }catch(_){ return null; } };
         const v0=c(0), v2=c(2), v3=c(3);
-        return `<div class="cr">${L('예상 비용 (대략, 매직 베이스 구입비 제외)','Est. cost (rough, magic base not included)')}: <b>${L('지금 선택','As chosen')} ${fd(v0)} div</b> · ${L('모두 1~2티어','All tier 1–2')} ${fd(v2)} div · ${L('모두 1~3티어','All tier 1–3')} ${fd(v3)} div</div>`; })() : ''}
+        return `<div class="cr">${L('예상 비용 (필수 옵션을 모두 맞출 때, 매직 베이스 구입비 제외)','Est. cost (all must-haves hit, magic base not included)')}: <b>${L('지금 선택','As chosen')} ${fd(v0)} div</b> · ${L('모두 1~2티어','All tier 1–2')} ${fd(v2)} div · ${L('모두 1~3티어','All tier 1–3')} ${fd(v3)} div</div>`; })() : ''}
     ${ready?'':`<span class="hint">${L('필수 옵션을 1개 이상 선택하고 퀄리티·룬을 확인하면 초안을 만들 수 있어요.','Mark at least one must-have and confirm quality and runes to make the draft.')}</span>`}</div>` : '';
   $('#mods').innerHTML = `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3>${canDraft?`<span class="needguide">${L('① 꼭 있어야 하는 옵션을 <b>중요한 것부터</b> 오른쪽 \'필수 옵션\' 버튼으로 고르세요 → ② 필수 옵션마다 티어 범위 → ③ 아래에서 퀄리티·룬 확인 → ④ 초안 만들기. 분열 옵션은 항상 필수(티어 고정), 고르지 않은 옵션은 잡옵이에요.','① Pick the lines you must have, <b>most important first</b>, with \'Make must-have\' on the right → ② a tier range for each → ③ confirm quality and runes below → ④ make the draft. Fractured lines are always must-have (tier fixed); unpicked lines are junk.')}</span>`:''}</div>${rowsHTML}${otherHTML}` + (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary ${ready?'':'soft'}" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '');
 }

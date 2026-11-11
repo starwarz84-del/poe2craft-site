@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+const IDS=process.argv.slice(2); const NEED=process.env.NEED?JSON.parse(require('fs').readFileSync(process.env.NEED)):null;
+(async()=>{const b=await chromium.launch();const p=await b.newPage(); p.on('pageerror',e=>console.error('E',e.message));
+await p.goto('http://localhost:8779/discover.html?lang=kr'); await p.waitForFunction(()=>window.__rev && __rev.recSamples && __rev.recSamples.length);
+const drafts=await p.evaluate(async([IDS,NEED])=>{ const S=__rev; [S.index,S.craft]=await Promise.all([fetch('data/index.json').then(r=>r.json()),fetch('data/crafting.json').then(r=>r.json())]); S.priority=await fetch('data/priority.json').then(r=>r.json()); await S.ready;
+ const o=[]; for(const id of IDS){ const x=S.recSamples.find(s=>s.id===id); const it=await S.parse(x.text); const an=S.analyse(it); const nd=NEED&&NEED[id]; const an2={...an,rows:an.rows.filter(r=>!r.unrev && (!nd || r.m.fr || nd.includes(r.m.gi)))}; const d=S.makeDraft(it,an2,{}); if(!d) continue; d.id='draft-'+id.replace(/[^a-z0-9]/g,''); d.src=id; d._keep=an2.rows.length+'/'+an.rows.length; d._steps=d.nodes.map(n=>n.id+' '+n.do+' '+(n.cur||'')+' '+(n.omens||[]).join('+')+(n.optional?' (opt)':'')+(n.compromise?' (타협)':'')+' :: '+((n.note&&n.note.kr)||'').slice(0,70)); o.push(d);} return o;},[IDS,NEED]);
+await p.goto('http://localhost:8779/recipes.html?lang=kr&debug=1'); await p.waitForFunction(()=>window.__rec&&__rec.booted);
+const res=await p.evaluate(async(ds)=>{ const R=__rec; for(const d of ds){ d.likes=0; d.success=0; R.recipes.unshift(d);} await new Promise(r=>setTimeout(r,300));
+ const cost=r=>{ try{ return R.recipeCost(r); }catch(e){return 'E '+e.message;} };
+ return ds.map(d=>{ const orig=R.recipes.find(r=>r.id===d.src); const a=R.analyse(d); return {id:d.src, keep:d._keep, steps:d._steps, draft:cost(d), orig:orig?cost(orig):null, unk:a.nodes.filter(n=>n.pUnknown).map(n=>n.n.id), p:a.nodes.map(n=>n.n.id+':'+(n.pUnknown?'?':(n.p*100).toFixed(1))).join(' ')}; }); }, drafts);
+res.forEach(r=>console.log(JSON.stringify(r)));
+await b.close();})();
