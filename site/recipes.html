@@ -707,7 +707,7 @@ function specUnknown(r, t){
   // it is a placeholder only when the whole class is flat 1
   // jewels: every modifier weighs the same (사용자 확정 2026-11-10), so flat jewel weights are real
   const flat = !/Emerald|Sapphire|Ruby|Diamond/.test(r.cls) && C(r).groups.filter(g=>g.s==='n').every(g=>g.t.every(x=>!(x[1]>1)));
-  if(gis.some(gi=>{ const g=grp(r,gi); return g.s==='x' || (flat && g.s==='n'); })) return true;
+  if(gis.some(gi=>{ const g=grp(r,gi); return (g.s==='x' && g.wsrc!=='sl') || (flat && g.s==='n'); })) return true;   // SL-measured augment lines are known
   // a lone mod listed at weight 1 among real weights (cast speed on rings/amulets): poe2db shows 1, but the market says it is far more common
   if(gis.some(gi=>{ const g=grp(r,gi); return g.s==='n' && g.t.every(x=>!(x[1]>1)); })) return 'w1';
   return false;
@@ -737,7 +737,9 @@ function analyse(r){
   function addChance(spec, sides, R, minLvl){
     spec=liquidSpec(spec);
     const F=fams(), G=(sides||['p','s']).filter(s=>count(s)<maxA(s,R)); let W=0, T=0;
-    D.groups.forEach((g,gi)=>{ if(g.s!=='n' || !G.includes(g.g) || g.f.some(f=>F.has(f))) return;
+    // a socketed augment rune's lines with measured weights (SL 실험, wsrc 'sl') roll on exalts and chaos too (site/sim.js graph.xroll)
+    const xs = new Set(runes.map(x=>x?.en||x));
+    D.groups.forEach((g,gi)=>{ if(!(g.s==='n' || (g.s==='x' && g.wsrc==='sl' && xs.has(g.sub?.[1]))) || !G.includes(g.g) || g.f.some(f=>F.has(f))) return;
       const top=g.t.findIndex(t=>t[0]<=r.ilvl && t[1]>0);   // a family's highest allowed tier always stays in, whatever the minimum level
       g.t.forEach((t,ti)=>{ if(t[0]<=r.ilvl && (t[0]>=minLvl || ti===top) && t[1]>0){ W+=t[1]; if(specHit(spec,gi,ti)) T+=t[1]; } }); });
     return W? T/W : 0;
@@ -885,7 +887,9 @@ function analyse(r){
     if(catBoost && !n.knownP && o.p<0.995){ o.pUnknown=true; o.pWhy=L('촉진 효과로 확률 상승 (수치 비공개)','raised by Catalysing (not published)'); o.p = n.expect ? 1/n.expect : 1; o.warn=null; }
     if((n.omens||[]).includes('Omen_of_Catalysing_Exaltation')){ if(!qual.v) o.warn=L('퀄리티가 0%라 촉진하는 찬미의 징조가 효과 없음','No quality left: Catalysing Exaltation does nothing'); qual={...qual, v:0}; }   // the omen uses up all the quality
     const su=specUnknown(r,t);
-    if((n.unknownW || su) && !n.knownP && o.p<0.995 && !['note','base','manual','quality','fracture','socket'].includes(n.do)){ o.pUnknown=true; if(su==='w1') o.pWhy=L('가중치 미정','weight not set'); o.p = n.expect ? 1/n.expect : 1; o.warn=null; }
+    // a step the author marked 'weights unknown' whose targets now all have measured weights (SL 실험 augment lines): computed
+    const slAll = (()=>{ const g=specList(t).filter(x=>x.gi!=null); return g.length>0 && g.every(x=>grp(r,x.gi).wsrc==='sl'); })();
+    if(((n.unknownW && !slAll) || su) && !n.knownP && o.p<0.995 && !['note','base','manual','quality','fracture','socket'].includes(n.do)){ o.pUnknown=true; if(su==='w1') o.pWhy=L('가중치 미정','weight not set'); o.p = n.expect ? 1/n.expect : 1; o.warn=null; }
     o.tries = o.p>0 ? 1/o.p : Infinity;
     o.state = clone(); o.rar=rar; o.cap={...cap}; o.qual={...qual}; o.runes=[...runes]; o.sockets=sockets; o.imp=imp; o.anoint=anoint; o.sanct=sanct; o.vals=vals;
     if(saved){ mods=saved; }
@@ -2271,6 +2275,6 @@ async function boot(){
   try{ if(parent!==window) parent.postMessage({type:'poe2-share-ready'}, '*'); }catch(_){}
 }
 boot();
-if(location.search.includes('debug')) window.__rec = Object.assign(S, {renderBoard:()=>renderBoard(), recipeCost, analyse});
+if(location.search.includes('debug')) window.__rec = Object.assign(S, {renderBoard:()=>renderBoard(), recipeCost, analyse, divOf});
 })();
 </script>

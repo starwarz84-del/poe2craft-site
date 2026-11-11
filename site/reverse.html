@@ -127,6 +127,9 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .needb{border:1px solid var(--gold,#c8a95a);background:transparent;color:var(--gold,#e2c27a);border-radius:8px;padding:7px 16px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-width:132px}
 .needb:hover{background:color-mix(in srgb,var(--gold,#c8a95a) 14%,transparent)}
 .needb.lock{cursor:default;text-align:center}
+.lvg{display:inline-flex;gap:0}.lvg .needb{min-width:64px;padding:7px 10px;border-radius:0;margin-left:-1px}.lvg .needb:first-child{border-radius:8px 0 0 8px}.lvg .needb:last-child{border-radius:0 8px 8px 0}
+.lvg .needb[data-lv$=":soft"][aria-pressed="true"]{background:color-mix(in srgb,var(--gold,#c8a95a) 22%,transparent);border-color:var(--gold,#c8a95a)}
+.lvg .needb[data-lv$=":junk"][aria-pressed="true"]{background:color-mix(in srgb,var(--mute,#888) 18%,transparent);border-color:var(--mute,#888);color:var(--mute,#aaa)}
 .tsel{padding:2px 6px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;font:inherit;font-size:12px}
 .buyl{display:inline-flex;gap:4px;align-items:center;cursor:pointer}
 .needb[aria-pressed="true"]{background:color-mix(in srgb,var(--ok) 26%,transparent);border-color:var(--ok);color:var(--text)}
@@ -202,7 +205,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 <script src="sim.js"></script>
 <script src="graphify.js"></script>
 <script>
-const S = { lang:'en', index:null, cache:{}, last:null, txt:'', itab:'item', need:new Set(), okQR:false, tsel:{}, buy:new Set() };
+const S = { lang:'en', index:null, cache:{}, last:null, txt:'', itab:'item', need:new Set(), soft:new Set(), okQR:false, tsel:{}, buy:new Set() };
 try{ const u=new URLSearchParams(location.search).get('lang'); S.lang = u || localStorage.getItem('poe2lang') || 'en'; }catch(e){}
 if(S.lang!=='kr') S.lang='en';
 const KR = () => S.lang==='kr', L = (kr,en) => KR()?kr:en;
@@ -462,6 +465,17 @@ const mirrorDiv = () => S.prices ? (S.prices.p.Mirror_of_Kalandra||0)/(S.prices.
 const tierMax = t => t.max==='mirror' ? mirrorDiv() : t.max;
 const tierOf = v => { const ts=TIERS(); return ts.find(t=>tierMax(t)==null || v < tierMax(t)) || ts[ts.length-1]; };
 // A main step keeps its old retry in n.compromise (the Recipes tab prices it into "with the extra steps" only); a fallback loop becomes optional
+// 유효 옵션(soft)만 노리는 단계 = 한 번만 시도, 빗나가면 그대로(반복·실패 처리 없음). 그 단계의 실패 뒤 반복 루프는 선택으로
+const tgis = t => { const o=[]; const add=x=>{ if(!x||typeof x!=='object') return; if(x.gi!=null) o.push(x.gi); (x.anyOf||[]).forEach(add); (x.all||[]).forEach(add); if(x.reveal) add(x.reveal); }; add(t); return o; };
+function softPass(an, nodes){ const soft = new Set(an.rows.filter(r=>r.soft).map(r=>r.m.gi)), must = new Set(an.rows.filter(r=>!r.soft).map(r=>r.m.gi)); if(!soft.size) return 0; let n0=0;
+  for(const n of [...nodes]){ if(n.branch || n.optional || n.compromise || n.onLost || n.do==='note' || n.fallbackFor) continue; const g = tgis(n.target); if(!g.length || !g.every(x=>soft.has(x) && !must.has(x)) || !n.fail) continue;
+    n.compromise = {fail:n.fail, soft:true}; delete n.fail; n0++;
+    if(n.note) n.note = {kr:n.note.kr.replace(/\s*(안 나오면|실패하면|안 뜨면)[^]*$/,''), en:n.note.en.replace(/[;.]\s*(otherwise|on a miss)[^]*$/i,'.')};
+    n.br = {kr:'유효 옵션: 빗나가면 그대로', en:'Useful line: keep a miss'};
+    nodes.filter(x=>x.fallbackFor===n.id && x.do!=='note').forEach(x=>{ x.optional=true; });
+    if(!nodes.some(x=>x.fallbackFor===n.id && x.do==='note')){ const i=nodes.indexOf(n); let j=i+1; while(nodes[j] && (nodes[j].fallbackFor===n.id || nodes[j].retryFor===n.id)) j++;
+      nodes.splice(j, 0, {id:n.id+'c', phase:n.phase, do:'note', fallbackFor:n.id, compromise:true, label:{kr:'유효 옵션: 그대로 진행', en:'Useful line: keep going'}, note:{kr:'빗나간 옵션은 그대로 두고 진행. 다시 하지 않음.', en:'Keep the missed line and move on; no retry.'}}); } }
+  return n0; }
 function budgetPass(it, an, nodes, diff, market, tier){
   if(tier?.id==='mirror') return 0;
   const lv = S.budget?.levels?.[diff], limD = market>0 ? market : (tier ? tierMax(tier) : null), limO = lv?.omens ?? null;
@@ -503,8 +517,36 @@ function tryDiff(it, an, nodes, start){ const exp=new Set(EXP_OM()); let maxU=1,
 const diff3 = an => !an.rows.some(r=>r.m.fr) && !an.putrid;   // a bought magic base only applies without a fracture
 // must-haves only, each at the tier range the user picked (사용자 확정 2026-11-11: 필수 옵션 + 티어 범위)
 function buySet(an){ const b=new Set([...S.buy].filter(i=>S.need.has(i)).map(i=>an.rows[i]?.m).filter(Boolean)); return b.size ? b : null; }
-function needAn(an, floor){ return {...an, rows: an.rows.flatMap((r,i)=>{ if(r.m.fr) return [r]; if(r.unrev || !S.need.has(i)) return [];
-  const t = Math.max(r.tierNo, S.tsel[i]||r.tierNo, floor ? Math.min(floor, r.tierCnt) : 0); return [t===r.tierNo ? r : {...r, tierNo:t}]; })}; }
+// 사용자 확정 2026-11-11: 옵션마다 필수 / 유효 / 잡옵 — 유효 옵션은 노리되 한 번만 시도하고 빗나가면 그대로(반복·비싼 징조 없음)
+function needAn(an, floor, it){ const a = {...an, rows: an.rows.flatMap((r,i)=>{ if(r.m.fr) return [r]; if(r.unrev || !(S.need.has(i) || S.soft?.has(i))) return [];
+  const t = Math.max(r.tierNo, S.tsel[i]||r.tierNo, floor ? Math.min(floor, r.tierCnt) : 0), soft = !S.need.has(i);
+  return [t===r.tierNo && !soft ? r : {...r, tierNo:t, ...(soft?{soft:true}:{})}]; })};
+  return a; }
+// 상황에 맞는 노하우 고르기: 기본 초안과 노하우를 적용한 초안(K5 완벽한 에센스·K6 훼손 공개)을 모두 만들어 검산을 통과한 것 중
+// 끝까지 맞출 때 비용(타협 없이)이 가장 싼 것. 기본보다 5% 넘게 싸야 바꿈
+function bestDraft(it, an, opt){ const vs=[{k:[], a:an}];
+  if(!S.noSwap){ const e=essSwap(it, an), d=desSwap(it, an); if(e!==an) vs.push({k:['K5'], a:e}); if(d!==an) vs.push({k:['K6'], a:d}); if(e!==an){ const ed=desSwap(it, e); if(ed!==e) vs.push({k:['K5','K6'], a:ed}); } }
+  let best=null;
+  for(const v of vs){ try{ const full=makeDraft(it, v.a, {...(opt||{}), market:1e9}); if(!full) continue; if(verifyDraft(it, v.a, full).some(z=>z.lv==='err')) continue;
+      v.c = draftCost(it, v.a, full) ?? Infinity; if(!best || v.c < best.c*0.95) best=v; }catch(_){ } }
+  best = best || vs[0]; const d = makeDraft(it, best.a, opt); if(d && best.k.length){ d.knowhow = best.k; d.knowhowWhy = {...(best.a.swap?{K5:best.a.swap}:{}), ...(best.a.dswap?{K6:best.a.dswap}:{})}; }
+  return {d, an:best.a}; }
+// 노하우 K6(어려운 옵션은 엑잘 대신 훼손 공개로): 아이템에 훼손 옵션이 없으면, 면 징조 엑잘로 뜨기 가장 어려운 일반 옵션 하나를
+// 뼈 + 면 강령술의 징조 + 심연의 메아리 공개로 노림 — 공개는 3개(메아리로 한 번 더) 중에서 고르고, 다시 할 때 빛의 징조(약 7 div)가 면 소멸의 징조(10~20 div)보다 쌈
+function desSwap(it, an){ const rows = an.rows; if(rows.some(r=>r.how==='d' || r.unrev) || it.mods.some(m=>m.unrev || m.desTag)) return an;
+  const c = rows.map((r,ri)=>({r,ri})).filter(({r})=>r.how==='n' && !r.m.fr && !r.unknown && r.pOmen>0 && r.pOmen<0.08);
+  if(!c.length) return an; const best = c.sort((a,b)=>(a.r.soft?1:0)-(b.r.soft?1:0) || a.r.pOmen-b.r.pOmen)[0];
+  return {...an, rows: rows.map((x,i)=>i===best.ri ? {...x, how:'d', desSwap:true} : x), dswap:{kr:best.r.t[4]||best.r.t[2], en:best.r.t[5]||best.r.t[3]}}; }
+// 노하우 K5(완벽한 에센스로 확정): 고른 티어 범위 안에 같은 값을 주는 완벽한 에센스가 있으면, 가장 뜨기 어려운 옵션 하나를 결정화 + 그 에센스로 바꿈.
+// 제작 옵션 자리가 비어 있을 때만(이미 에센스·합금 옵션이 있으면 그대로)
+function essSwap(it, an){ const rows = an.rows; if(rows.some(r=>r.how==='e' || r.how==='x' && !r.m.fr)) return an; const c=[];
+  rows.forEach((r,ri)=>{ if(r.how!=='n' || r.m.fr || !r.g?.t) return; const ok = new Set(r.g.t.slice(0, r.tierNo).map(t=>t[4]));
+    it.D.groups.forEach((g,gi)=>{ if(g.s!=='e' || g.g!==r.m.side || (g.f||[]).join('+')!==(r.g.f||[]).join('+')) return;
+      g.t.forEach((t,ti)=>{ const e = S.craft.essences.find(x=>x.en===t[3]); if(e && e.mode!=='magic' && /^Perfect/.test(e.id) && t[0]<=it.ilvl && ok.has(t[4])) c.push({ri, r, g, gi, t, ti, e}); }); }); });
+  if(!c.length) return an;
+  const best = c.sort((a,b)=>(a.r.soft?1:0)-(b.r.soft?1:0) || (a.r.pOmen??1)-(b.r.pOmen??1))[0], r=best.r;
+  const nr = {...r, m:{...r.m, gi:best.gi, ti:best.ti}, g:best.g, t:best.t, tierNo:best.ti+1, tierCnt:best.g.t.length, how:'e', src:'e', unknown:null, swapped:{from:r.t[2], fromEn:r.t[3], ess:best.e.kr, essEn:best.e.en}};
+  return {...an, rows: rows.map((x,i)=>i===best.ri ? nr : x), swap:nr.swapped}; }
 function draftCost(it, an, d, once){ if(!S.prices) return null; const dv=S.prices.divine||363, exp=new Set(EXP_OM()); let ex=0;
   for(const n of d.nodes){ if(n.optional || n.onLost || n.do==='note' || n.branch?.when==='miss') continue; const f=n.fail;
     const expRep = once && [...(n.omens||[]), f?.via?.cur, ...(f?.via?.omens||[])].some(id=>exp.has(id));
@@ -1011,7 +1053,7 @@ function makeDraft(it, an, opt){
         ...(baseQ ? [{id:'q1', phase:'prep', do:'manual', label:{kr:`퀄리티 ${it.qual}%`, en:`Quality ${it.qual}%`}, note:note(baseQ.kr, baseQ.en)}] : []),
         {id:'q2', phase:'prep', do:'fracture', cur:'Fracturing_Orb', target:tm(F), fail:{goto:'restart'}, note:note(`훼손 옵션은 분열되지 않아 나머지 옵션 3개 중 ${lk(F)}${josa(lk(F),'이','가')} 분열될 확률 1/3.`, `The desecrated line cannot fracture: ${le(F)} is 1 in 3.`)}]}; }
   const td = tryDiff(it, an, nodes, start), diff2 = Math.max(diff, td.d);
-  const market = +(opt?.market ?? S.market ?? 0) || 0, tier = S.prices ? tierOf(market>0 ? market : draftCost(it, an, {nodes}, true)) : null, nComp = budgetPass(it, an, nodes, diff2, market, tier);
+  const market = +(opt?.market ?? S.market ?? 0) || 0, tier = S.prices ? tierOf(market>0 ? market : draftCost(it, an, {nodes}, true)) : null, nSoft = softPass(an, nodes), nComp = budgetPass(it, an, nodes, diff2, market, tier) + nSoft;
   const day = new Date(); const ymd = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
   return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff2, ...(tier?{priceTier:tier.id}:{}), ...(market>0?{marketPrice:market}:{}), ...(nComp?{compromises:nComp}:{}),
     author:{kr:'아이템 역산 초안', en:'Reverse-engineered draft'}, title:{kr:featK.join(' + ')||'역산 초안', en:featE.join(' + ')||'Draft'},
@@ -1189,11 +1231,11 @@ function render(){
       m.out ? `<span class="tag q">${L('범위 초과','Above range')}</span>` : '', m.split ? `<span class="tag q" title="${esc(L(`게임에선 한 줄(${m.split})로 보이는 접두·접미 합계`,`Shown in game as one summed line (${m.split})`))}">${L('접두+접미 합산','Prefix+suffix sum')}</span>` : '', m.q ? `<span class="tag q">${L('퀄리티 적용','Quality applied')}</span>` : '',
       `<span class="tag">${esc(r.t[KR()?2:3])}</span>`].join('');
     const tierT = r.g.s==='n' ? L(`T${r.tierNo} · Lv ${r.t[0]}`,`T${r.tierNo} · lvl ${r.t[0]}`) : L(`Lv ${r.t[0]}`,`lvl ${r.t[0]}`);
-    const ri = an.rows.indexOf(r), on = m.fr || S.need.has(ri);
+    const ri = an.rows.indexOf(r), soft = !m.fr && S.soft?.has(ri), on = m.fr || S.need.has(ri) || soft;
     const nOrd = [...S.need].indexOf(ri)+1;
     const needH = m.fr ? `<div class="need"><span class="tsel big tfix">${L(`T${r.tierNo} 고정`,`T${r.tierNo} fixed`)}</span><span class="needb lock" aria-pressed="true">${L('✓ 필수 · 분열','✓ Must-have · fractured')}</span></div>`
       : `<div class="need">${on ? (()=>{ const cur=S.tsel[ri]||r.tierNo, opts=[]; for(let k=r.tierNo;k<=r.tierCnt;k++) opts.push(k);
-          return `<select class="tsel big" title="${esc(L('티어 범위','Tier range'))}" data-tier="${ri}">${opts.map(k=>`<option value="${k}" ${k===cur?'selected':''}>${k===r.tierCnt && k>r.tierNo ? L('아무 티어','Any tier') : k===1 ? L('1티어만','Tier 1 only') : L(`1~${k}티어`,`Tier 1–${k}`)}${k===r.tierNo?L(' (붙여 넣은 값)',' (as pasted)'):''}</option>`).join('')}</select>${r.how==='n' && S.last?.an && diff3(S.last.an) ? `<label class="buyl"><input type="checkbox" data-buy="${ri}" ${S.buy.has(ri)?'checked':''}> ${L('매직 베이스로 구입','On the bought magic base')}</label>` : ''}`; })() : ''}<button type="button" class="needb" data-need="${ri}" aria-pressed="${on}">${on?L(`✓ 필수 ${nOrd}`,`✓ Must-have ${nOrd}`):L('필수 옵션','Must-have')}</button></div>`;
+          return `<select class="tsel big" title="${esc(L('티어 범위','Tier range'))}" data-tier="${ri}">${opts.map(k=>`<option value="${k}" ${k===cur?'selected':''}>${k===r.tierCnt && k>r.tierNo ? L('아무 티어','Any tier') : k===1 ? L('1티어만','Tier 1 only') : L(`1~${k}티어`,`Tier 1–${k}`)}${k===r.tierNo?L(' (붙여 넣은 값)',' (as pasted)'):''}</option>`).join('')}</select>${r.how==='n' && S.last?.an && diff3(S.last.an) ? `<label class="buyl"><input type="checkbox" data-buy="${ri}" ${S.buy.has(ri)?'checked':''}> ${L('매직 베이스로 구입','On the bought magic base')}</label>` : ''}`; })() : ''}<span class="lvg" role="group" aria-label="${esc(L('옵션 구분','Modifier level'))}"><button type="button" class="needb lv" data-lv="${ri}:must" aria-pressed="${S.need.has(ri)}">${S.need.has(ri)?L(`✓ 필수 ${nOrd}`,`✓ Must ${nOrd}`):L('필수','Must')}</button><button type="button" class="needb lv" data-lv="${ri}:soft" aria-pressed="${soft}" title="${esc(L('노리되 한 번만 시도, 빗나가면 그대로','Aimed for once; a miss is kept'))}">${soft?L('✓ 유효','✓ Useful'):L('유효','Useful')}</button><button type="button" class="needb lv" data-lv="${ri}:junk" aria-pressed="${!on}">${L('잡옵','Junk')}</button></span></div>`;
     return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml">${esc(m.l)}</div><div class="tags">${tags}<span class="tag">${tierT}</span></div></div>${needH}</div>`;
   }).join('');
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
@@ -1201,21 +1243,21 @@ function render(){
   const canDraft = it.rarity!=='normal' && an.rows.some(r=>!r.unrev) && !an.putrid;
   const runes = it.other.filter(o=>o.k==='rune'), nNeed = an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length, ready = nNeed>0 && S.okQR;
   const confirmH = canDraft ? `<div class="confirm"><b>${L('리버스 전에 확인해 주세요','Before reverse-engineering')}</b>
-    <div class="cr">${L('① 필수 옵션','① Must-have modifiers')}: <b>${nNeed}${L('개','')}</b> <span class="hint">${L('— 위 옵션 오른쪽 "필수 옵션" 버튼으로 고르고 티어 범위를 정하세요. 나머지는 잡옵(결과 그대로)으로 처리해요.','— use "Make must-have" on the right of the lines above and set a tier range; the rest are treated as junk (whatever rolls).')}</span></div>
+    <div class="cr">${L('① 필수 옵션','① Must-have modifiers')}: <b>${nNeed}${L('개','')}</b> <span class="hint">${L('— 위 옵션 오른쪽에서 필수·유효·잡옵을 고르고 티어 범위를 정하세요.','— mark each line above Must, Useful or Junk and set a tier range.')}</span></div>
     <div class="cr">${L('② 퀄리티','② Quality')} <input type="number" id="qin" min="0" max="75" value="${it.qual||0}">%${it.qualType?` (${esc(it.qualType)})`:''} <span class="hint">${L('— 기폭제 퀄리티는 옵션 값을 올려서 티어 판단이 달라져요.','— catalyst quality raises modifier values, which changes the tier read.')}</span></div>
     <div class="cr">${L('③ 룬','③ Runes')}: ${runes.length ? runes.map(o=>esc(o.l)).join(' · ') : L('없음','none')}</div>
     <label class="cr"><input type="checkbox" id="qrok" ${S.okQR?'checked':''}> ${L('퀄리티와 룬을 확인했어요','I checked the quality and runes')}</label>
     ${nNeed && S.prices ? (()=>{ const fd=v=>v==null?'—':v>=100?Math.round(v).toLocaleString():v>=10?v.toFixed(0):v.toFixed(1);
         // compared with no compromise (사용자 2026-11-11 테스트): with compromises a wider tier range could look dearer
-        const c = f => { try{ const a2=needAn(an, f), d=makeDraft(it, a2, {buy:buySet(an), market:1e9}); return d ? draftCost(it, a2, d) : null; }catch(_){ return null; } };
+        const c = f => { try{ const b=bestDraft(it, needAn(an, f, it), {buy:buySet(an), market:1e9}); return b.d ? draftCost(it, b.an, b.d) : null; }catch(_){ return null; } };
         const v0=c(0), v2=c(2), v3=c(3);
         return `<div class="cr">${L('예상 비용 (필수 옵션을 모두 맞출 때, 매직 베이스 구입비 제외)','Est. cost (all must-haves hit, magic base not included)')}: <b>${L('지금 선택','As chosen')} ${fd(v0)} div</b> · ${L('모두 1~2티어','All tier 1–2')} ${fd(v2)} div · ${L('모두 1~3티어','All tier 1–3')} ${fd(v3)} div</div>`; })() : ''}
     ${ready?'':`<span class="hint">${L('필수 옵션을 1개 이상 선택하고 퀄리티·룬을 확인하면 초안을 만들 수 있어요.','Mark at least one must-have and confirm quality and runes to make the draft.')}</span>`}</div>` : '';
-  $('#mods').innerHTML = `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3>${canDraft?`<span class="needguide">${L('① 꼭 있어야 하는 옵션을 <b>중요한 것부터</b> 오른쪽 \'필수 옵션\' 버튼으로 고르세요 → ② 필수 옵션마다 티어 범위 → ③ 아래에서 퀄리티·룬 확인 → ④ 초안 만들기. 분열 옵션은 항상 필수(티어 고정), 고르지 않은 옵션은 잡옵이에요.','① Pick the lines you must have, <b>most important first</b>, with \'Make must-have\' on the right → ② a tier range for each → ③ confirm quality and runes below → ④ make the draft. Fractured lines are always must-have (tier fixed); unpicked lines are junk.')}</span>`:''}</div>${rowsHTML}${otherHTML}` + (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary ${ready?'':'soft'}" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '');
+  $('#mods').innerHTML = `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3>${canDraft?`<span class="needguide">${L('① 옵션마다 <b>필수</b>(끝까지 맞춤, 중요한 것부터) · <b>유효</b>(한 번만 노리고 빗나가면 그대로) · <b>잡옵</b>을 고르세요 → ② 티어 범위 → ③ 아래에서 퀄리티·룬 확인 → ④ 초안 만들기. 분열 옵션은 항상 필수(티어 고정)예요.','① Mark each line <b>Must</b> (hit it, most important first) · <b>Useful</b> (one try, keep a miss) · <b>Junk</b> → ② a tier range → ③ confirm quality and runes below → ④ make the draft. Fractured lines are always must-have (tier fixed).')}</span>`:''}</div>${rowsHTML}${otherHTML}` + (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올려요: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산해요.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary ${ready?'':'soft'}" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '');
 }
 
 async function run(){
-  await S.ready; S.draft=null; S.sent=false; S.need=new Set(); S.okQR=false; S.tsel={}; S.buy=new Set(); $('#fb').hidden=true;
+  await S.ready; S.draft=null; S.sent=false; S.need=new Set(); S.soft=new Set(); S.okQR=false; S.tsel={}; S.buy=new Set(); $('#fb').hidden=true;
   const txt = $('#txt').value; if(!txt.trim()){ S.last=null; render(); return; }
   if(!S.index) [S.index, S.craft] = await Promise.all([fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json())]);
   if(!S.priority) S.priority = await fetch('data/priority.json').then(r=>r.json()).catch(()=>null);
@@ -1275,10 +1317,11 @@ $('#fb-go').addEventListener('click', ()=>{ const t=$('#fb-txt').value.trim(); i
 $('#mods').addEventListener('click', e=>{
   if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const an=S.last.an, nNeed=an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length; if(!nNeed || !S.okQR){ const m=$('#mkmsg'); if(m) m.innerHTML=`<div class="mkwarn">${!nNeed?L('먼저 위 옵션에서 \'필수 옵션\'을 1개 이상 고르세요.','Pick at least one must-have line above first.'):L('\'퀄리티와 룬을 확인했어요\'에 체크해 주세요.','Tick “I checked the quality and runes”.')}</div>`;
     const tgt = !nNeed ? document.querySelector('[data-need]') : document.getElementById('qrok'); if(tgt){ tgt.scrollIntoView({block:'center', behavior:'smooth'}); const box=tgt.closest('label,.need')||tgt; box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash'); } return; }
-    const an2 = needAn(an);   // only the must-haves (at their tier range) are targets; the rest is junk (사용자 확정 2026-11-11)
-    const mp=+($('#mp')?.value||0); const r = makeDraft(S.last.it, an2, {market: mp>0?mp:0, buy:buySet(an)}); S.draft = r; S.check = verifyDraft(S.last.it, an2, r); S.flow = {wait:true}; showCheck();
+    const an2 = needAn(an, 0, S.last.it);   // must-haves and useful lines (at their tier range) are targets; the rest is junk (사용자 확정 2026-11-11)
+    const mp=+($('#mp')?.value||0); const bd = bestDraft(S.last.it, an2, {market: mp>0?mp:0, buy:buySet(an)}), r = bd.d; S.draft = r; S.check = verifyDraft(S.last.it, bd.an, r); S.flow = {wait:true}; showCheck();
     // 사용자 확정 2026-11-11: 플로우차트를 먼저 만들고 시뮬레이션으로 순서대로 진행해 막힘·완성 조건·비용을 확인한 뒤, 그 플로우차트 기준으로 등급별 레시피
     const it=S.last.it; setTimeout(()=>{ if(S.draft!==r) return; S.flow = runFlow(it, r); showCheck(); }, 40); return; }
+  const lb=e.target.closest('[data-lv]'); if(lb && S.last?.an){ const [i0,lv]=lb.dataset.lv.split(':'), i=+i0; S.need.delete(i); S.soft.delete(i); if(lv==='must') S.need.add(i); else if(lv==='soft') S.soft.add(i); S.draft=null; S.sent=false; render(); return; }
   const nb=e.target.closest('[data-need]'); if(nb && S.last?.an){ const i=+nb.dataset.need; if(S.need.has(i)) S.need.delete(i); else S.need.add(i); S.draft=null; S.sent=false; render(); return; }
   if(e.target.closest('#send') && S.draft && !S.sent){ if(!S.flow?.group) return; const r=S.flow.group;
     try{ const k='poe2r:drafts', a=JSON.parse(localStorage.getItem(k)||'[]').filter(x=>x.id!==r.id); a.unshift(r); localStorage.setItem(k, JSON.stringify(a.slice(0,12))); }catch(_){}
@@ -1345,9 +1388,9 @@ $('#mods').addEventListener('change', e=>{
   if(e.target.id==='qrok'){ S.okQR=e.target.checked; render(); return; }
   if(e.target.dataset?.buy!=null && S.last?.an){ const i=+e.target.dataset.buy, sd=S.last.an.rows[i].m.side;
     if(e.target.checked){ [...S.buy].forEach(j=>{ if(S.last.an.rows[j]?.m.side===sd) S.buy.delete(j); }); S.buy.add(i); } else S.buy.delete(i); S.draft=null; S.sent=false; render(); return; }   // one prefix + one suffix
-  if(e.target.dataset?.tier!=null){ S.tsel[+e.target.dataset.tier]=+e.target.value; S.need.add(+e.target.dataset.tier); S.draft=null; S.sent=false; render(); return; }
+  if(e.target.dataset?.tier!=null){ S.tsel[+e.target.dataset.tier]=+e.target.value; if(!S.soft.has(+e.target.dataset.tier)) S.need.add(+e.target.dataset.tier); S.draft=null; S.sent=false; render(); return; }
   if(e.target.id==='qin' && S.last?.it){ const v=Math.max(0, Math.min(75, Math.round(+e.target.value||0))); S.last.it.qual=v; S.last.an=analyse(S.last.it); S.draft=null; S.okQR=true; render(); }   // quality changes the tier read
 });
-window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost});
+window.__rev = Object.assign(S, {parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost, needAn, essSwap, desSwap, bestDraft});
 render();
 </script>
