@@ -13,20 +13,20 @@
 | 빛의 징조 + 소멸의 오브로 훼손 옵션 지우기 | 66 |
 | 분열된 베이스로 시작 | 52 (그중 42개가 '분열 + 잡옵 1개') |
 | 징조 없는 카오스 오브 | 52 |
-| 면 찬미의 징조 + 엑잘 | 50 |
-| 면 강령술의 징조 + 뼈 | 48 |
+| 좌측·우측 찬미의 징조 + 엑잘 | 50 |
+| 좌측·우측 강령술의 징조 + 뼈 | 48 |
 | 상위 찬미의 징조 | 36 |
 | 결정화의 징조 + 에센스·합금(심연 제외) | 33 |
 | 절사의 징조 | 27 |
 | 말소의 징조 | 25 |
 | 아스트리드의 창의성 | 19 |
 | 징조 없는 소멸의 오브 | 18 |
-| 면 소멸의 징조 | 16 |
+| 좌측·우측 소멸의 징조 | 16 |
 | 결정화의 징조 + 심연의 에센스(징표) | 13 |
 | 균열의 에센스 | 13 |
 | 군주 징조(검은 피·군주) | 11 |
 
-거의 모든 레시피가 같은 뼈대를 따라요. 베이스를 고르고 핵심 옵션 하나를 분열로 고정한 다음, 그 옵션만 남긴 채 카오스 오브로 두 번째 옵션을 잡아요. 반대쪽 면을 찬미 엑잘로 채우고 같은 면 남은 자리는 절사나 결정화로 다듬은 뒤, 마지막 자리를 훼손 공개로 메우고 퀄리티·룬으로 끝내요. 아래 구간은 이 순서예요.
+거의 모든 레시피가 같은 뼈대를 따라요. 베이스를 고르고 핵심 옵션 하나를 분열로 고정한 다음, 그 옵션만 남긴 채 카오스 오브로 두 번째 옵션을 잡아요. 반대쪽을 찬미 엑잘로 채우고 같은 쪽 남은 자리는 절사나 결정화로 다듬은 뒤, 마지막 자리를 훼손 공개로 메우고 퀄리티·룬으로 끝내요. 아래 구간은 이 순서예요.
 
 ## 1. 베이스 고르기
 
@@ -48,9 +48,9 @@
 | 단계 | 방법 | 예 |
 |---|---|---|
 | 매직 | 흰 베이스 + 완벽한 진화·확장의 오브. 레벨 70 이상 옵션만 붙어서, 1티어 레벨이 75 이하인 옵션은 붙기만 하면 1티어 | diztoh-crit-helmet, sihan-highend-boots, helmet-armour-sl (white-base-perfect-orb) |
-| 매직 → 레어 | 완벽한 제왕의 오브. 다음 훼손을 받을 면이 막히지 않게 대관식의 징조로 제왕 옵션 면을 고정하기도 함 | fubgun-quiver (coronation-fix-side) |
+| 매직 → 레어 | 완벽한 제왕의 오브. 다음 훼손을 받을 쪽이 막히지 않게 대관식의 징조로 제왕 옵션 쪽을 고정하기도 함 | fubgun-quiver (coronation-fix-side) |
 | 확정 옵션이 필요하면 | 상위 에센스로 매직 → 레어(방어 %·마모 등). 분열이 빗나가도 그 옵션이 남아 아이템이 통째로 망가지지 않음 | lilbotq-armour-shield, diztoh-budget-mace (fracture-safety-line) |
-| 4번째 옵션 | 보존된 뼈(면 강령술의 징조로 빈 면 지정)로 미공개 훼손 | diztoh-crit-helmet, saveq-absent-amulet |
+| 4번째 옵션 | 보존된 뼈(좌측·우측 강령술의 징조로 빈 쪽 지정)로 미공개 훼손 | diztoh-crit-helmet, saveq-absent-amulet |
 | 수치 | 분열할 옵션은 신성한 오브로 최대 근처까지, 저항은 유동체로 같은 티어 안에서 다시 굴림 | (fracture-two-good-lines, liquid-instead-of-divine, crit-five) |
 | 분열 | 분열의 오브. 실패작도 원하는 옵션이 남은 매직·레어로 되팔 수 있음 | |
 
@@ -76,7 +76,7 @@
 
 ## 3. 분열 직후: 두 번째 옵션 잡기
 
-42개 플로우차트가 '분열 + 잡옵 1개'에서 시작해요. 분열 옵션과 아무 옵션 하나만 남기고 소멸의 오브로 지우면 카오스 오브가 바꿀 수 있는 옵션이 그 하나뿐이라, 면 징조 없이 그 자리만 계속 돌릴 수 있어요(고립 제작, K1).
+42개 플로우차트가 '분열 + 잡옵 1개'에서 시작해요. 분열 옵션과 아무 옵션 하나만 남기고 소멸의 오브로 지우면 카오스 오브가 바꿀 수 있는 옵션이 그 하나뿐이라, 좌측·우측 징조 없이 그 자리만 계속 돌릴 수 있어요(고립 제작, K1).
 
 | 상황 | 방법 | 예 |
 |---|---|---|
@@ -87,20 +87,20 @@
 | 목표 밖 고가 옵션이 뜸 | 그대로 팔고 다시 시작하는 편이 나을 때가 많음 | (sell-offtarget, base-flipping) |
 | 분열 직후 한 번의 도박 | 상위 찬미의 징조 + 완벽한 엑잘 한 번. 1티어 두 개면 팔 만한 장비, 꽝이면 소멸 | helmet-armour-sl (greater-exalt-gamble) |
 
-## 4. 분열 반대쪽 면 채우기
+## 4. 분열 반대쪽 채우기
 
-분열이 있는 면은 나중에, 비어 있는 반대쪽 면을 먼저 채우는 레시피가 많아요. 반대쪽에 분열 옵션밖에 없을 때 엑잘이 빗나가면 지워질 옵션이 빗나간 그 옵션뿐이라 징조 없는 소멸의 오브로 끝나요(K2).
+분열이 있는 쪽은 나중에, 비어 있는 반대쪽을 먼저 채우는 레시피가 많아요. 반대쪽에 분열 옵션밖에 없을 때 엑잘이 빗나가면 지워질 옵션이 빗나간 그 옵션뿐이라 징조 없는 소멸의 오브로 끝나요(K2).
 
 | 상황 | 방법 | 예 |
 |---|---|---|
-| 빈 면에 옵션 하나 | 면 찬미의 징조 + 엑잘(50개). 빗나가면 징조 없는 소멸 | diztoh-iceshot-bow, mazbro-sceptre |
-| 빈 면에 옵션 둘 | 상위 찬미의 징조 + 면 찬미 + 엑잘 한 번에 둘(36개). 징조 값이 그 엑잘 값의 절반 이하일 때만 이득 | (greater-exalt-omen-price) |
+| 빈 쪽에 옵션 하나 | 좌측·우측 찬미의 징조 + 엑잘(50개). 빗나가면 징조 없는 소멸 | diztoh-iceshot-bow, mazbro-sceptre |
+| 빈 쪽에 옵션 둘 | 상위 찬미의 징조 + 좌측·우측 찬미 + 엑잘 한 번에 둘(36개). 징조 값이 그 엑잘 값의 절반 이하일 때만 이득 | (greater-exalt-omen-price) |
 | 비싼 옵션 둘 | 상위 찬미보다 옵션 하나씩, 빗나간 것만 지움 | diztoh-endgame-quarterstaff (one-exalt-at-a-time) |
 | 엑잘 등급 고르기 | 1티어 레벨이 35인 옵션(활 공격 속도)은 최소 레벨 35인 상위 엑잘로 뜨는 순간 1티어 확정. 1티어가 레벨 82인 옵션은 상위·완벽이 거의 같으니 싼 쪽 | ragna-ashot-bow, sl-flamewave-ring (min-level-lock-tier) |
-| 한 면이 꽉 참 | 엑잘·뼈는 남은 면으로만 가서 면 징조가 필요 없음 | (side-omen-save, K10) |
-| 확정 옵션이 있음 | 결정화의 징조 + 에센스·합금(33개). 그 면에 잡옵을 하나 붙여 두고 쓰면 잡옵이 지워지며 제작 옵션이 붙어 정리와 제작이 한 번에 끝남 | sihan-chayula-sceptre, saveq-alloy-focus (crystallise-alloy-clears-junk) |
-| 장신구 특정 속성 | 균열의 에센스(최대 퀄리티 +20%) → 그 속성 기폭제 → 촉진하는 찬미의 징조 + 면 찬미 엑잘. 엑잘마다 퀄리티가 0이 되니 다시 채우는데, 종류를 바꿔 방향을 정할 수 있음 | mazbro-caster-amulet, breach-ring-phys (catalyst-steer, single-res-catalyst) |
-| 같은 면 빈자리를 미공개 훼손으로 채움 | 그 면이 꽉 찬 것으로 취급돼 엑잘은 반대쪽으로, 합금·에센스는 그 면에서만 지움 | saveq-focus, icesly-budget-wand (unrevealed-filler) |
+| 한 쪽이 꽉 참 | 엑잘·뼈는 남은 면으로만 가서 좌측·우측 징조가 필요 없음 | (side-omen-save, K10) |
+| 확정 옵션이 있음 | 결정화의 징조 + 에센스·합금(33개). 그쪽에 잡옵을 하나 붙여 두고 쓰면 잡옵이 지워지며 제작 옵션이 붙어 정리와 제작이 한 번에 끝남 | sihan-chayula-sceptre, saveq-alloy-focus (crystallise-alloy-clears-junk) |
+| 장신구 특정 속성 | 균열의 에센스(최대 퀄리티 +20%) → 그 속성 기폭제 → 촉진하는 찬미의 징조 + 좌측·우측 찬미 엑잘. 엑잘마다 퀄리티가 0이 되니 다시 채우는데, 종류를 바꿔 방향을 정할 수 있음 | mazbro-caster-amulet, breach-ring-phys (catalyst-steer, single-res-catalyst) |
+| 같은 쪽 빈자리를 미공개 훼손으로 채움 | 그쪽이 꽉 찬 것으로 취급돼 엑잘은 반대쪽으로, 합금·에센스는 그쪽에서만 지움 | saveq-focus, icesly-budget-wand (unrevealed-filler) |
 | 갑옷(분열이 접미) | 우측 찬미 + 상위 찬미 + 엑잘로 저항부터. 비싼 징조는 옵션 하나만 남았을 때 | unstoppable-vile-robe, unstoppable-slipstrike-vest (omens-for-last-line) |
 
 ## 5. 절사의 징조를 쓸 수 있게 만들기
@@ -110,35 +110,35 @@
 | 준비 | 방법 | 예 |
 |---|---|---|
 | 찾는 순서 | 레벨 높은 옵션부터 찾음. 먼저 찾은 옵션이 다음 절사에 안 걸림(번개 주문 +7 레벨 81 → 시전 속도 80 → 주문 치명타) | banzino-mirror-staff (fill-slots-before-chaos) |
-| 목표가 그 면 최고 레벨 | 방패 접두 최고 레벨이 75이고 방어도 1티어도 75라 절사가 항상 잡옵만 침 | tankjung-kitava-shield (whittle-safe-top-level) |
-| 반대쪽 막기 | 반대쪽 면을 레벨 높은 옵션으로 채움. 석궁은 쓸모는 적어도 레벨 81인 공격 원소 피해 훼손으로 접두를 막고, 레벨 75라 걸리기 쉬운 진짜 목표(물리 피해 추가)는 절사를 다 쓴 뒤 다시 공개 | xeno-phys-crossbow (block-prefix-with-desecration) |
-| 반대쪽에 빈자리 | 그 면 말소의 징조를 같이 씀. 안 쓰면 새 옵션이 빈 반대쪽으로 가서 이 면 자리 하나를 그냥 잃음 | diztoh-endgame-quarterstaff, tankjung-kitava-shield (whittle-needs-erasure) |
-| 지울 옵션이 너무 높음 | 먼저 면 말소 + 카오스로 낮은 옵션으로 바꾼 뒤 절사(볼트 2개 장전 82 → 민첩 66) | xeno-phys-crossbow (erasure-before-whittle) |
+| 목표가 그쪽 최고 레벨 | 방패 접두 최고 레벨이 75이고 방어도 1티어도 75라 절사가 항상 잡옵만 침 | tankjung-kitava-shield (whittle-safe-top-level) |
+| 반대쪽 막기 | 반대쪽을 레벨 높은 옵션으로 채움. 석궁은 쓸모는 적어도 레벨 81인 공격 원소 피해 훼손으로 접두를 막고, 레벨 75라 걸리기 쉬운 진짜 목표(물리 피해 추가)는 절사를 다 쓴 뒤 다시 공개 | xeno-phys-crossbow (block-prefix-with-desecration) |
+| 반대쪽에 빈자리 | 그쪽 말소의 징조(좌측·우측)를 같이 씀. 안 쓰면 새 옵션이 빈 반대쪽으로 가서 이쪽 자리 하나를 그냥 잃음 | diztoh-endgame-quarterstaff, tankjung-kitava-shield (whittle-needs-erasure) |
+| 지울 옵션이 너무 높음 | 먼저 좌측·우측 말소 + 카오스로 낮은 옵션으로 바꾼 뒤 절사(볼트 2개 장전 82 → 민첩 66) | xeno-phys-crossbow (erasure-before-whittle) |
 | 대상 정하기 | 훼손을 버릴 옵션보다 레벨 높은 옵션으로 공개해 두면 말소 없이 그 버릴 옵션만 돌림 | noble-visceral-quiver (reveal-high-to-steer-whittle) |
 | 세 옵션이 모두 82 | 카오스 유동체로 저항 1티어(82)를 카오스 저항 1티어(81)로 바꾸면 절사가 다시 그 옵션을 침 | (chaos-liquid-unlocks-whittle) |
-| 굴리던 면이 막힘 | 그 면에 엑잘로 옵션을 하나 더 붙여 절사 대상으로 삼음. 그 옵션도 높으면 면 소멸로 넘어감(1/3) | barricade-quarterstaff (whittle-stuck) |
-| 언제 쓰나 | 절사로 굴릴 면을 먼저 끝내고 나머지에 투자. 덜 끝난 아이템에 쓰면 엉뚱한 옵션이 지워짐. 한 번에 약 25~30 div라 마지막 옵션에만 | gold-amulet-6line, unstoppable-vile-robe (whittle-side-first, omens-for-last-line) |
+| 굴리던 쪽이 막힘 | 그쪽에 엑잘로 옵션을 하나 더 붙여 절사 대상으로 삼음. 그 옵션도 높으면 좌측·우측 소멸로 넘어감(1/3) | barricade-quarterstaff (whittle-stuck) |
+| 언제 쓰나 | 절사로 굴릴 쪽을 먼저 끝내고 나머지에 투자. 덜 끝난 아이템에 쓰면 엉뚱한 옵션이 지워짐. 한 번에 약 25~30 div라 마지막 옵션에만 | gold-amulet-6line, unstoppable-vile-robe (whittle-side-first, omens-for-last-line) |
 | 준 미러급 무기 | 레벨 높은 옵션부터 만들고 절사의 징조 + 카오스 오브 위주로 쌓는 게 기본(K36) | 사용자 2026-11-11 23:53 |
 | 오브 | 미러급은 완벽한 카오스 오브. 목표가 1티어 저항처럼 레벨 높은 옵션이면 최소 레벨 35인 상위 카오스 오브와 50인 완벽한 카오스 오브의 확률이 거의 같아 상위가 쌈 | (erasure-chaos-cheaper) |
 
 ## 6. 비싼 징조 없이 잡옵 지우기
 
-면 소멸·말소의 징조(10~20 div), 절사의 징조(약 11 div), 빛의 징조(약 7 div)가 비용 대부분이에요. 레시피들은 아래처럼 싼 방법부터 써요. 위쪽일수록 쌈.
+좌측·우측 소멸·말소의 징조(10~20 div), 절사의 징조(약 11 div), 빛의 징조(약 7 div)가 비용 대부분이에요. 레시피들은 아래처럼 싼 방법부터 써요. 위쪽일수록 쌈.
 
 | 상황 | 방법 | 대략 비용 | 예 |
 |---|---|---|---|
 | 지울 수 있는 옵션이 잡옵 하나뿐(나머지는 분열) | 징조 없는 소멸의 오브 | 0.4 div | 18개 (K2) |
 | 좋은 옵션 하나 + 잡옵 | 소멸 대신 카오스 오브. 같은 1/2 위험에 새 옵션까지 붙고 더 쌈 | 카오스 1개 | noble-timelost-sapphire (chaos-instead-of-annul) |
 | 균열의 에센스 최대 퀄리티 옵션 | 퀄리티를 채운 뒤 그 옵션을 카오스 자리로 씀. 지워져도 퀄리티는 남고 제작 옵션 자리가 빔 | 카오스 1개 | sl-flamewave-ring, breach-ring-video (maxq-chaos-slot, breach-quality-stays) |
-| 확정 옵션도 필요함 | 결정화의 징조 + 합금·완벽한 에센스로 잡옵을 지우며 붙임. 그 면이 분열 + 잡옵뿐이면 확정 | 합금 값 | sihan-chayula-sceptre (crystallise-alloy-clears-junk) |
-| 한쪽 면 잡옵 하나, 제작 옵션 자리가 빔 | 결정화의 징조 + 심연의 에센스 → 징표 → 싼 보존된 뼈로 훼손 → 공개(또는 빛 + 소멸). 면을 고를 수 있음 | 약 1 div (MazBro 기준) | mazbro-bis-chest, sl-proj7-gloves, gold-amulet-6line (cheap-junk-removal, K3) |
-| 징표가 엉뚱한 면에 붙음 | 싼 뼈로 그 징표를 훼손한 뒤 다시 결정화 + 심연의 에센스. 그 훼손 옵션이 다음 지울 자리가 됨 | 뼈 + 에센스 | mirror-bow-video (mark-wrong-side) |
+| 확정 옵션도 필요함 | 결정화의 징조 + 합금·완벽한 에센스로 잡옵을 지우며 붙임. 그쪽이 분열 + 잡옵뿐이면 확정 | 합금 값 | sihan-chayula-sceptre (crystallise-alloy-clears-junk) |
+| 한쪽 잡옵 하나, 제작 옵션 자리가 빔 | 결정화의 징조 + 심연의 에센스 → 징표 → 싼 보존된 뼈로 훼손 → 공개(또는 빛 + 소멸). 접두·접미를 고를 수 있음 | 약 1 div (MazBro 기준) | mazbro-bis-chest, sl-proj7-gloves, gold-amulet-6line (cheap-junk-removal, K3) |
+| 징표가 엉뚱한 쪽에 붙음 | 싼 뼈로 그 징표를 훼손한 뒤 다시 결정화 + 심연의 에센스. 그 훼손 옵션이 다음 지울 자리가 됨 | 뼈 + 에센스 | mirror-bow-video (mark-wrong-side) |
 | 접두·접미가 다 빗나감 | 빛 + 소멸 → 결정화 + 심연의 에센스로 한 바퀴에 접두 기회와 훼손 기회를 같이 봄 | 영상 기준 11~12 div 절약 | absent-amulet-video (abyss-mark-cheap-loop) |
-| 미공개 훼손이 있는 면 | 공개하지 않은 채 결정화 + 합금이면 그 훼손 옵션이 지워지며 합금 확정 | 합금 값 | sihan-chayula-wand (alloy-wipes-unrevealed) |
-| 한 자리를 여러 번 바꿔야 함 | 면 소멸 + 소멸 + 완벽한 엑잘 대신 면 말소 + 상위 카오스 | 반복당 차이 | sl-flamewave-ring (erasure-chaos-cheaper) |
+| 미공개 훼손이 있는 쪽 | 공개하지 않은 채 결정화 + 합금이면 그 훼손 옵션이 지워지며 합금 확정 | 합금 값 | sihan-chayula-wand (alloy-wipes-unrevealed) |
+| 한 자리를 여러 번 바꿔야 함 | 좌측·우측 소멸 + 소멸 + 완벽한 엑잘 대신 좌측·우측 말소 + 상위 카오스 | 반복당 차이 | sl-flamewave-ring (erasure-chaos-cheaper) |
 | 훼손 공개가 빗나감 | 그 옵션을 둔 채 남은 자리를 엑잘로 먼저, 다시 훼손은 마지막에. 엑잘 실패 소멸이 빗나간 훼손을 지워도 손해가 없음 | 빛의 징조 횟수 | mazbro-sceptre, diztoh-socket-gloves (reveal-miss-exalt-first) |
-| 공개 빗나감 + 그 면 다른 옵션이 싼 저티어 | 빛 대신 면 소멸의 징조로 1/2 도박 | 빛의 절반쯤 | diztoh-endgame-quarterstaff (reveal-miss-side-annul) |
-| 면에 지울 옵션이 훼손뿐 | 결정화 + 완벽한 에센스로 훼손을 지우고 → 결정화 + 심연의 에센스로 징표 → 뼈. 제작 옵션 2개가 잠깐 겹쳐 아스트리드의 창의성이 필요 | 에센스 2개 | diztoh-vile-robe, diztoh-iceshot-bow (desecrate-reroll-no-light) |
+| 공개 빗나감 + 그쪽 다른 옵션이 싼 저티어 | 빛 대신 좌측·우측 소멸의 징조로 1/2 도박 | 빛의 절반쯤 | diztoh-endgame-quarterstaff (reveal-miss-side-annul) |
+| 그쪽에 지울 옵션이 훼손뿐 | 결정화 + 완벽한 에센스로 훼손을 지우고 → 결정화 + 심연의 에센스로 징표 → 뼈. 제작 옵션 2개가 잠깐 겹쳐 아스트리드의 창의성이 필요 | 에센스 2개 | diztoh-vile-robe, diztoh-iceshot-bow (desecrate-reroll-no-light) |
 
 주의할 점이 둘 있어요. 심연의 에센스도 제작 옵션이라 다른 제작 옵션(에센스·합금·균열 최대 퀄리티)이나 훼손 옵션이 이미 있으면 못 써요. 그래서 막기 훼손을 붙이기 전에 끝내요(abyss-before-crafted). 그리고 빛의 징조가 떨어졌는데 소멸의 오브가 남아 있으면 실수로 좋은 옵션을 지우니 두 개수를 맞춰 다녀요(light-annul-count).
 
@@ -148,10 +148,10 @@
 
 | 상황 | 방법 | 예 |
 |---|---|---|
-| 기본 | 면 강령술의 징조 + 뼈(빈 면이 하나면 징조 없이) → 메아리로 공개 한 번 더 | 68개 |
+| 기본 | 좌측·우측 강령술의 징조 + 뼈(빈 쪽이 하나면 징조 없이) → 메아리로 공개 한 번 더 | 68개 |
 | 가중치 높은 잡옵이 엑잘 자리를 뺏음 | 그 계열을 훼손 공개로 먼저 붙여 막고 엑잘, 끝나면 빛의 징조로 지우고 진짜 훼손 | mazbro-caster-amulet, mazbro-bis-chest (block-high-weight, K7) |
 | 공개에 원하는 접두가 없음 | 가장 흔한 접두(마나 최대치)를 받아 두면 남은 엑잘 후보가 줄어 확률이 오름 | banzino-mirror-staff (mana-before-exalt) |
-| 군주 옵션을 노림 | 무기·장신구에서 군주 징조 + 뼈. 그 면에 그 군주 옵션이 하나뿐이면 공개 100% | sane-resist-belt, sihan-chayula-wand (liege-omen-resist-jewellery) |
+| 군주 옵션을 노림 | 무기·장신구에서 군주 징조 + 뼈. 그쪽에 그 군주 옵션이 하나뿐이면 공개 100% | sane-resist-belt, sihan-chayula-wand (liege-omen-resist-jewellery) |
 | 투구 | 접미엔 훼손 전용 옵션이 많아 수십 번 걸림. 접두에서 훼손 | sihan-highend-helmet, diztoh-es-helmet (helmet-prefix-desecration) |
 | 직접 안 쓸 아이템 | 마지막 훼손은 적당한 옵션에서 멈춤. 나중에 언제든 다시 붙일 수 있음 | (desecration-later) |
 | 고대 뼈 | 레벨 40 이상만 공개돼 저티어가 빠짐. 보존된 뼈보다 비싸니 마지막 자리에 | unstoppable-slipstrike-vest |
@@ -162,7 +162,7 @@
 |---|---|---|
 | 합금 + 징표처럼 제작 옵션이 둘 필요 | 아스트리드의 창의성을 끼우고 둘째 제작 옵션, 끝나면 원하는 룬으로 교체(19개). 빼낼 수 없는 룬(스루드의 완력)은 반드시 마지막 | mazbro-sceptre, diztoh-as-spear (thrud-last, K4) |
 | 증강물 옵션을 키움 | 군왕의 합금·경악의 에센스 '장착 효과 증가'로 룬 옵션을 키워 접미 한 자리를 아낌 | mazbro-sceptre, diztoh-socket-gloves (augment-effect-alloy) |
-| 한쪽 면 3개 완성 뒤 반대쪽 마무리(K37) | 아스트리드 + 완벽한 엑잘(반대쪽으로만) → 유효면 훼손 마무리 또는 엑잘 + 절사, 잡옵이면 결정화 + 완벽한 에센스 → 결정화 + 심연의 에센스 → 징표 훼손(빛 없이) → 남은 두 자리 제작 옵션 2개 | 사용자 2026-11-11 23:53 |
+| 한쪽 3개 완성 뒤 반대쪽 마무리(K37) | 아스트리드 + 완벽한 엑잘(반대쪽으로만) → 유효면 훼손 마무리 또는 엑잘 + 절사, 잡옵이면 결정화 + 완벽한 에센스 → 결정화 + 심연의 에센스 → 징표 훼손(빛 없이) → 남은 두 자리 제작 옵션 2개 | 사용자 2026-11-11 23:53 |
 | 활 접미 마무리(K38) | 접두를 싸게 뽑았으면 훼손(치명타 확률) + 완벽한 전투의 에센스(공격 스킬 +2) + 완벽한 가속의 에센스(처치 시 맹공) | 사용자 2026-11-11 23:53 |
 
 ## 9. 마무리
@@ -180,9 +180,9 @@
 
 | 상황 | 방법 | 예 |
 |---|---|---|
-| 한쪽 옵션 3개 | 반대쪽을 버릴 옵션으로 채운 뒤 경멸(1/2), 세 번째 옵션을 채우고 '+1 허용'을 면 소멸로 지움. 한도를 넘은 동안엔 카오스가 반대쪽만 바꾸니 소멸을 쓰지 않음 | diztoh-5mod-sapphire, mastert-timelost-emerald (jewel-five-mods, contempt-junk-first) |
+| 한쪽 옵션 3개 | 반대쪽을 버릴 옵션으로 채운 뒤 경멸(1/2), 세 번째 옵션을 채우고 '+1 허용'을 좌측·우측 소멸로 지움. 한도를 넘은 동안엔 카오스가 반대쪽만 바꾸니 소멸을 쓰지 않음 | diztoh-5mod-sapphire, mastert-timelost-emerald (jewel-five-mods, contempt-junk-first) |
 | 경멸 성공률 올리기 | 접두 잡옵 2개를 채우면 1/2에서 2/3 | noble-timelost-sapphire (contempt-fill-prefixes) |
-| '+1 허용' 정리 | 면 소멸이나 면 말소 + 카오스 중 그때 싼 쪽 | (plus-one-erasure) |
+| '+1 허용' 정리 | 좌측·우측 소멸이나 좌측·우측 말소 + 카오스 중 그때 싼 쪽 | (plus-one-erasure) |
 | 수익용 | 싼 매직 베이스 10~20개를 한꺼번에, 좋은 옵션 3개 매물에 액체 감정 50/50 | zenm-timelost-sapphire, lilbotq-emerald (timelost-profit-batch, cheap-jewel-liquid-gamble) |
 
 ## 10-1. 분열 없는 가성비 경로 (K31, 사용자 2026-11-11 23:30)
@@ -193,7 +193,7 @@
 |---|---|
 | 베이스 | 필수 옵션 2개(접두 1·접미 1)가 붙은 매직 베이스를 삼 |
 | 레어 전환 | 그 아이템에 맞는 상위 에센스로 세 번째 옵션을 확정하며 레어로 |
-| 네 번째 | 훼손(면 강령술 + 뼈 + 메아리)으로 옵션 하나 |
+| 네 번째 | 훼손(좌측·우측 강령술 + 뼈 + 메아리)으로 옵션 하나 |
 | 나머지 | 완벽한 에센스나 엑잘로 나오는 대로. 상위 에센스 옵션이 이미 제작 옵션이라 완벽한 에센스를 더 쓰려면 아스트리드의 창의성이 필요하고, 장신구는 엑잘로 |
 
 부위마다 다르게 써요(사용자 2026-11-11 23:36). 목걸이는 스킬 레벨 +3과 정신력을 같이 붙여야 해서 거의 다 분열 경로예요(K32). 반지는 가성비라면 분열 없이 만드는 경우가 많고 촉진하는 찬미의 징조를 써요. 고급 아이템(어려움 이상)은 반지도 대부분 분열부터 해요(K33, 23:38). 마나 계열 반지는 상위 에센스 없이 최대 마나 + 시전 속도 레어를 사서 균열의 에센스·심연의 에센스·완벽한 정신의 에센스로 잡옵을 지우며 채우고, 베이스 옵션이 지워지면 베이스가 싸니 버리고 새로 사요(K34).
