@@ -35,7 +35,7 @@ graph('diztoh-es-helmet-v2','Helmets_int','Kamasan Tiara',81,
   {'pT':{'kr':'에너지 보호막 %','en':'% energy shield','values':TV({'3':('1~3티어','T1–3'),'4':('1~4티어','T1–4')})},'rT':{'kr':'접두 희귀도','en':'Prefix rarity','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},P,
   {'bal':K('영상 목표, 남은 훼손이 빗나가면 빛의 징조로 다시','Video targets; Light on a missed reveal'),'ess':K('목표 넓힘, 결과 그대로','Looser targets, keep whatever comes')},
   tags,nodes,[{'id':'L1','nodes':['e4','e4x','e4d'],'kr':'훼손 공개','en':'Reveal'}],
-  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'esf','tmax':1},{'side':'p','label':K('에너지 보호막 % 또는 희귀도','% energy shield or rarity')},{'side':'p','label':K('에너지 보호막 % 또는 희귀도','% energy shield or rarity')},{'tag':'rarS','tmax':1},{'tag':'int','tmax':1},{'side':'s','random':True}]} for v,kr,en in (('bal','밸런스 옵션','Balance'),('ess','에센셜 옵션','Essential'))],
+  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'esf','tmax':1},{'side':'p','label':K(f'에너지 보호막 % 또는 희귀도 1~{t}티어',f'% energy shield or rarity T1–{t}')},{'side':'p','label':K(f'에너지 보호막 % 또는 희귀도 1~{t}티어',f'% energy shield or rarity T1–{t}')},{'tag':'rarS','tmax':1},{'tag':'int','tmax':1},{'side':'s','random':True}]} for v,kr,en,t in (('bal','밸런스 옵션','Balance',3),('ess','에센셜 옵션','Essential',4))],
   {'quality':20,'sockets':2},{'all':[{'has':'esf'},{'full':'p'},{'full':'s'}]})
 
 # ---------- 2. Belton +8 완드 (j0FeuX0NZQI, 자막 확인) ----------
@@ -74,7 +74,7 @@ graph('belton-plus8-wand-v2','Wands','Dueling Wand',82,
    'sT':{'kr':'마나 재생','en':'Mana regen','values':TV({'1':('1티어','T1'),'3':('1~3티어','T1–3')})},'cT':{'kr':'주문 치명타','en':'Spell crit','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})}},P,
   {'bal':K('영상 목표, 빗나가면 다시','Video targets, redo misses'),'ess':K('목표 넓힘, 결과 그대로','Looser targets, keep whatever comes')},
   tags,nodes,[{'id':'L1','nodes':['b3','b3x'],'kr':'접두 엑잘','en':'Prefix exalt'},{'id':'L2','nodes':['b6','b6x','b6d'],'kr':'접미 훼손 공개','en':'Suffix reveal'}],
-  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'cel','tmax':1},{'side':'p','label':K('추가 피해 획득·주문 피해','Extra damage or spell damage')},{'side':'p','random':True},{'tag':'l4','tmax':1},{'tag':'trans','tmax':1},{'side':'s','label':K('마나 재생·주문 치명타·주문 치명타 피해','Mana regen or spell crit')}]} for v,kr,en in (('bal','밸런스 옵션','Balance'),('ess','에센셜 옵션','Essential'))],
+  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'cel','tmax':1},{'side':'p','label':K(f'추가 피해 획득 1~{x}티어·주문 피해 1~{y}티어',f'Extra damage T1–{x} or spell damage T1–{y}')},{'side':'p','random':True},{'tag':'l4','tmax':1},{'tag':'trans','tmax':1},{'side':'s','label':K(f'마나 재생 1~{r}티어·주문 치명타 1~{c}티어'.replace('1~1티어','1티어'),f'Mana regen T1–{r} or spell crit T1–{c}')}]} for v,kr,en,x,y,r,c in (('bal','밸런스 옵션','Balance',2,3,1,2),('ess','에센셜 옵션','Essential',4,5,3,4))],
   {'quality':20,'sockets':2},{'all':[{'has':'cel'},{'has':'l4'},{'full':'p'},{'full':'s'}]})
 
 # ---------- 3. LilBotQ 방어도 2000 방패 (4YOSSAa53UU, 자막 확인) ----------

@@ -826,9 +826,10 @@ function analyse(r){
     } else if(n.do==='reveal'){
       if(t.swapDes){ const i=mods.findIndex(m=>m.des); if(i>=0) mods.splice(i,1); }
       const i=mods.findIndex(m=>m.unrev && m.side===t.side); if(i>=0) mods.splice(i,1);
-      const q=revealChance(t.reveal, t.side, minOf(t.bone), t.lord);
+      if(t.anyReveal){ o.p=1; mods.push({junk:true, side:t.side, des:true}); }   // 정책 32: 티어가 하나뿐인 옵션(주얼)은 낮은 등급에서 공개 결과를 그대로 받음 → 카드엔 안 보임
+      else { const q=revealChance(t.reveal, t.side, minOf(t.bone), t.lord);
       o.p = (n.omens||[]).includes('Omen_of_Abyssal_Echoes') ? 1-(1-q)*(1-q) : q; o.q=q; o.pEst=revealEst;
-      const F=fams(); const x=specList(t.reveal).find(x=>!grp(r,x.gi).f.some(f=>F.has(f))) || specList(t.reveal)[0]; mods.push({gi:x.gi, ti:0, side:t.side, des:true, tmax:x.tmax});
+      const F=fams(); const x=specList(t.reveal).find(x=>!grp(r,x.gi).f.some(f=>F.has(f))) || specList(t.reveal)[0]; mods.push({gi:x.gi, ti:0, side:t.side, des:true, tmax:x.tmax}); }
     } else if(n.do==='fracture'){
       const live = mods.filter(m=>!m.fr && !m.unrev);   // desecrated slots can't be fractured
       const hit = s => live.filter(m=>m.gi!=null && specList(s).some(a=>a.gi===m.gi)).length;

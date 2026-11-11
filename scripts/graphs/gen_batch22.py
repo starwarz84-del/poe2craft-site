@@ -73,7 +73,7 @@ g22('sihan-chayula-gloves-v2',c,'Secured Wraps',82,
   {'v':{'kr':'엑잘','en':'Exalt','values':TV({'1':('완벽한 엑잘티드 오브','Perfect Exalted Orb'),'2':('상위 엑잘티드 오브','Greater Exalted Orb')})}},P,
   {'bal':K('영상: 완벽한 엑잘티드 오브','Video: Perfect Exalted Orbs'),'ess':K('상위 엑잘티드 오브','Greater Exalted Orbs')},
   tags,nodes,[],
-  FIN(VBE,lambda v:[{'tag':'pois','fr':True},{'tag':'fast'},{'side':'p','random':True},{'tag':'curse'},{'tag':'with'},{'side':'s','random':True}]),
+  FIN(VBE,lambda v:[{'tag':'pois','fr':True},{'tag':'fast','tmax':1 if v=='bal' else 2},{'side':'p','random':True},{'tag':'curse'},{'tag':'with','tmax':1 if v=='bal' else 2},{'side':'s','random':True}]),   # 정책 32
   {'quality':20,'sockets':2},{'all':[{'has':'pois'},{'has':'curse'},{'full':'p'},{'full':'s'}]},VBE,xsub=["Katla's Gloom"],xroll=True)
 
 # ---------- 3. 시한 차율라 투구 (z_r1uAYIusk) ----------

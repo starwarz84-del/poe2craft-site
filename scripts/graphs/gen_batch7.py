@@ -138,7 +138,7 @@ graph('saveq-alloy-focus-v2','Foci','Tasalian Focus',81,
   {'rT':{'kr':'공개 목표','en':'Reveal target','values':TV({'1':('1티어','T1'),'3':('1~3티어','T1–3')})},'gT':{'kr':'마지막 접두','en':'Last prefix','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})}},P,
   {'bal':K('영상: 1티어까지 빛의 징조, 빗나간 엑잘은 좌측 소멸의 징조','Video: Light until T1, Sinistral Annulment on a miss'),'ess':K('목표 넓힘, 결과 그대로','Looser targets, keep whatever comes')},
   tags,nodes,[{'id':'L1','nodes':['v2','v2x','v2d'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['v6','v6x'],'kr':'빈 접두','en':'Free prefix'}],
-  [{'id':v,'kr':kr,'en':en,'lines':[{'side':'p','label':K('주문 피해·에너지 보호막·마나','Spell damage, ES or mana')},{'side':'p','label':K('주문 피해·에너지 보호막·마나','Spell damage, ES or mana')},{'side':'p','label':K('주문 피해·에너지 보호막·마나','Spell damage, ES or mana')},{'tag':'lvl','tmax':1},{'tag':'critE','tmax':1},{'tag':'alloy','tmax':1}]} for v,kr,en in (('bal','밸런스 옵션','Balance'),('ess','에센셜 옵션','Essential'))],
+  [{'id':v,'kr':kr,'en':en,'lines':[{'side':'p','label':K(f'주문 피해·에너지 보호막·마나 1~{t}티어',f'Spell damage, ES or mana T1–{t}')},{'side':'p','label':K(f'주문 피해·에너지 보호막·마나 1~{t}티어',f'Spell damage, ES or mana T1–{t}')},{'side':'p','label':K(f'주문 피해·에너지 보호막·마나 1~{t}티어',f'Spell damage, ES or mana T1–{t}')},{'tag':'lvl','tmax':1},{'tag':'critE','tmax':1},{'tag':'alloy','tmax':1}]} for v,kr,en,t in (('bal','밸런스 옵션','Balance',2),('ess','에센셜 옵션','Essential',4))],
   {'quality':20,'sockets':1},{'all':[{'has':'lvl'},{'has':'alloy'},{'full':'p'},{'full':'s'}]})
 
 # ---------- 5. 탱정 키타바 방패 (gQa51XOS98s, 방패 부분) ----------
