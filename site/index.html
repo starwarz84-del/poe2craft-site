@@ -54,7 +54,19 @@ header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .pickrow{display:flex;gap:6px;padding:10px 12px 0}
 .pickrow select{flex:1 1 0;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:6px 8px;font-size:13px;font-weight:600;cursor:pointer}
 .pickrow[hidden],.pickrow select[hidden]{display:none}
-.pickrow #toptabs{flex-grow:1.4}
+.ftabs{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:10px 12px 0}
+.ftabs .fg{display:flex;align-items:center;gap:6px}
+.ftabs .fl{font-size:12.5px;font-weight:600;color:var(--fg);white-space:nowrap}
+.ftabs .fg.p .fl{color:var(--prefix)} .ftabs .fg.s .fl{color:var(--suffix)}
+.ftabs .seg button{padding:4px 9px;font-size:12.5px}
+.ftabs .seg button:disabled{opacity:.35;cursor:not-allowed}
+.ftabs .xt{display:flex;gap:6px}
+.ftabs .xt button{background:transparent;border:1px solid var(--line);border-radius:6px;padding:4px 10px;font-size:12.5px;color:var(--muted);cursor:pointer}
+.ftabs .xt button[aria-pressed="true"]{background:var(--panel-2);color:var(--fg)}
+.row.k,.row.i{grid-template-columns:4px minmax(0,1fr) auto}
+.slot .l2{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:3px}
+.slot .l2 .meta{margin-top:0}
+.slot .l2 .ctl{margin-top:0;flex:none}
 .bkind{padding:10px 12px 8px}
 .bkind .seg{display:flex;flex-wrap:nowrap}
 .bkind .seg button{flex:1;white-space:nowrap;padding:6px 4px;min-width:0}
@@ -266,12 +278,11 @@ footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
     <section class="col card" aria-label="아이템" id="card"></section>
 
     <section class="col pool" aria-label="옵션 목록">
-      <div class="pickrow"><select id="toptabs" aria-label="옵션 분류"></select><select id="subtabs" aria-label="세부 분류"></select></div>
+      <div class="ftabs" id="ftabs" role="group" aria-label="옵션 분류"></div>
       <div class="pool-bar">
         <input type="search" id="q" placeholder="옵션 검색 (예: 생명력, 저항, 치명)">
         <label class="chk" for="onlyok"><input type="checkbox" id="onlyok"> 선택 가능한 것만</label>
       </div>
-      <div class="hint" id="hint"></div>
       <div class="list" id="list"><div class="empty-state">불러오는 중…</div></div>
     </section>
   </div>
@@ -312,7 +323,7 @@ footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
 const $ = s => document.querySelector(s);
 // corr: 0 none · -1 corrupted, outcome not picked yet · 1 implicit added · 2 extra rune socket · 3 affix values rerolled (78–122%)
 const S = { ilvlBy:{}, infused:false, quality:20, catalyst:'', imp:[], meta:null, sac:false, sumOpen:false, roll:'avg', view:'edit', showTier:true, nameSeed:0, lang:'kr', index:null, cat:null, cls:null, data:null, base:0, bkind:'normal', ilvl:82, corr:0, exc:'',
-  slots:null, mult:null, active:{g:'k',i:0}, top:'affix', sub:{affix:'all', rune:'all', corrupt:'c'}, q:'', onlyok:false, pick:{} };
+  slots:null, mult:null, active:{g:'k',i:0}, top:'affix', sub:{affix:'all', rune:'all', corrupt:'c'}, q:'', onlyok:false, pick:{}, side:'p' };
 const cache = {};
 const LB = () => S.lang==='kr' ? 1 : 0;           // base data stores [english, korean]
 const KR = () => S.lang==='kr';
@@ -370,7 +381,7 @@ function emptySlots(){ return {p:Array(7).fill(null), s:Array(7).fill(null), f:[
 function emptyMeta(){ const m=()=>({fr:false,need:true,tmin:null}); return {p:Array.from({length:7},m), s:Array.from({length:7},m), f:Array.from({length:3},m)}; }
 function emptyMult(){ return {p:Array(7).fill(100), s:Array(7).fill(100), f:[100,100,100]}; }
 function topFor(g){ return g==='k' ? 'rune' : g==='c' ? 'corrupt' : 'affix'; }
-function setActive(g,i){ S.active={g,i}; S.top=topFor(g); if(g==='c') S.sub.corrupt = S.sub.corrupt||'c'; if(g==='f') S.sub.affix='x'; }
+function setActive(g,i){ S.active={g,i}; S.top=topFor(g); if(g==='c') S.sub.corrupt = S.sub.corrupt||'c'; if(g==='f') S.sub.affix='etc'; }
 const SLOT_KR = g => g==='f' ? '추가 제작 옵션' : GEN_KR[g];
 function firstEmpty(){
   for(const g of ORDER){ const n = maxOf(g); const i = S.slots[g].slice(0,n).findIndex(v=>!v); if(i>=0) return {g,i}; }
@@ -763,9 +774,9 @@ function affixInner(g,i){
   const tl = (grp.s==='e'||grp.s==='x') ? esc(tName(t)) : all ? (KR()?'모든 티어':'All tiers') : `${tierLbl(grp,v.ti)} · ${esc(tName(t))}`;
   const useM = false, cf = catFactor(grp), mt = S.meta[g][i];
   const text = (useM||cf!==1) ? `<span class="${(useM&&m!==100)||cf!==1?'scaled':''}" data-scaled="${g}${i}">${nl(scaleText(tText(t),modPct(g,i,grp)))}</span>` : nl(tText(t));
-  const ctl = `<span class="ctl"><button type="button" class="${mt.need?'':'opt'}" data-need="${g}${i}" aria-pressed="${mt.need}">${mt.need?'필수':'있으면 좋음'}</button><button type="button" class="fr" data-fr="${g}${i}" aria-pressed="${mt.fr}">${mt.fr?'분열됨':'분열'}</button></span>`;
+  const ctl = `<span class="ctl"><button type="button" class="${mt.need?'':'opt'}" data-need="${g}${i}" aria-pressed="${mt.need}">${mt.need?'필수 옵션':'유효 옵션'}</button><button type="button" class="fr" data-fr="${g}${i}" aria-pressed="${mt.fr}">${mt.fr?'분열됨':'분열'}</button></span>`;
   const slider = useM ? `<span class="mult"><input type="range" min="78" max="122" step="1" value="${m}" data-mult="${g}${i}" id="mult-${g}${i}" aria-label="${GEN_KR[g]} ${i+1} 수치 배율"><output data-out="${g}${i}">${m}%</output></span>` : '';
-  return `<span class="txt">${tag}${text}<span class="meta">${tl}${all?'':` · 아이템 레벨 ${t[0]}`}${cf!==1?` · 기폭제 적용 · 원래 ${esc(tText(t)).replace(/\n/g,' / ')}`:''}</span>${slider}${ctl}</span>`;
+  return `<span class="txt">${tag}${text}<span class="l2"><span class="meta">${tl}${all?'':` · 아이템 레벨 ${t[0]}`}${cf!==1?` · 기폭제 적용 · 원래 ${esc(tText(t)).replace(/\n/g,' / ')}`:''}</span>${ctl}</span>${slider}</span>`;
 }
 function renderCard(){
   const viewbar = `<div class="viewbar"><div class="seg" role="group" aria-label="보기 방식"><button type="button" data-view="edit" aria-pressed="${S.view==='edit'}">편집</button><button type="button" data-view="preview" aria-pressed="${S.view==='preview'}">완성 미리보기</button></div><div class="seg" role="group" aria-label="수치 기준" title="옵션 수치를 최소·평균·최대 중 어느 값으로 계산할지">${[['min','최소'],['avg','평균'],['max','최대']].map(([k,t])=>`<button type="button" data-roll="${k}" aria-pressed="${S.roll===k}">${t}</button>`).join('')}</div></div>`;
@@ -834,28 +845,29 @@ function subCount(top, code){
   if(top==='rune') return code==='all' ? runesList().length : runesList().filter(r=>runeKind(r)===code).length;
   return G.filter(g=>g.s===code).length;
 }
+// filter tabs: prefix / suffix × all·normal·desecrated·essence·other, then runes and corruption (사용자 확정 2026-11-11)
+const FSUB = [['all','모두'],['n','일반'],['d','훼손'],['e','에센스'],['etc','기타']];
+const subOk = (g,code) => code==='all' || (code==='etc' ? !['n','d','e'].includes(g.s) : g.s===code);
 function renderTabs(){
-  $('#toptabs').innerHTML = TOP.map(([id,label,color])=>{
-    const n = id==='affix' ? subCount('affix','all') : id==='rune' ? (baseSockets()?subCount('rune','all'):0) : subCount('corrupt','c')+subCount('corrupt','u');
-    return `<option value="${id}" ${S.top===id?'selected':''} ${n?'':'disabled'}>${label}</option>`;
-  }).join('');
-  $('#subtabs').innerHTML = SUB[S.top].map(([id,label])=>{
-    const n = subCount(S.top,id);
-    return `<option value="${id}" ${S.sub[S.top]===id?'selected':''} ${n?'':'disabled'}>${label} (${n})</option>`;
-  }).join('');
+  const G = S.data.groups;
+  const grp = (side,label) => `<div class="fg ${side}"><span class="fl">${label}</span><div class="seg">${FSUB.map(([c,l])=>{
+    const n = G.filter(g=>g.g===side && subOk(g,c) && g.t.some(t=>t[0]<=S.ilvl)).length;
+    return `<button type="button" data-side="${side}" data-f="${c}" aria-pressed="${S.top==='affix'&&S.side===side&&S.sub.affix===c}" ${n||c==='all'?'':'disabled'}>${l}</button>`; }).join('')}</div></div>`;
+  const xt = [baseSockets()?['rune','룬']:null, ['corrupt','타락']].filter(Boolean)
+    .map(([t,l])=>`<button type="button" data-top="${t}" aria-pressed="${S.top===t}">${l}</button>`).join('');
+  $('#ftabs').innerHTML = grp('p','접두 옵션') + grp('s','접미 옵션') + `<div class="xt">${xt}</div>`;
 }
 function matchQ(...xs){ const q=S.q.trim().toLowerCase(); return !q || xs.some(x=>String(x).toLowerCase().includes(q)); }
 
 function renderPool(){
-  $('#hint').innerHTML = S.top==='affix' ? '<b>선택</b> = 빈 접두·접미 자리에 위에서부터 추가 · <b>취소</b> = 빼기 · 티어 = 그 티어 이상'
-    : S.top==='rune' ? '룬 선택 = 빈 소켓에 위에서부터 장착' : '선택 = 타락 결과 ① 고정 옵션 추가';
+  if(S.top==='rune' && !baseSockets()) S.top='affix';
   if(S.top==='rune') return renderRunes();
-  if(S.top==='corrupt') return renderCorrupt(S.sub.corrupt);
+  if(S.top==='corrupt'){ const h=renderCorrupt('c')+renderCorrupt('u'); $('#list').innerHTML = h || '<div class="empty-state">이 아이템에는 타락 옵션 없음</div>'; return; }
   const sub = S.sub.affix, sh = shares();
   const rows = {p:[], s:[]};
   S.data.groups.forEach((g,gi)=>{
-    if(g.g==='i' || !rows[g.g]) return;
-    if(sub!=='all' && g.s!==sub) return;
+    if(g.g!==S.side) return;
+    if(!subOk(g,sub)) return;
     if(!g.t.some(t=>matchQ(t[2],t[3],t[4],t[5]))) return;
     if(!g.t.some(t=>t[0]<=S.ilvl)) return;                 // no tier can roll at this item level
     const at = findSel(gi), on = !!at;
@@ -872,20 +884,20 @@ function renderPool(){
       <div class="main"><span class="t">${tag}${nl(tText(shown))}${mtags(g)}</span>${why?`<span class="why">${esc(why)}</span>`:''}
       ${tsel?`<div>${tsel}</div>`:''}</div><div class="share">${share}</div></div>`});
   });
-  const html = ['p','s'].map(g=>{ const r=rows[g].sort((x,y)=>y.w-x.w); return r.length?`<div class="sec-h"><span>${GEN_KR[g]} ${g==='p'?'PREFIX':'SUFFIX'} · ${r.length}</span><span>아이템 레벨 ${S.ilvl} 기준</span></div>${r.map(x=>x.html).join('')}`:''; }).join('');
+  const html = [S.side].map(g=>{ const r=rows[g].sort((x,y)=>y.w-x.w); return r.length?`<div class="sec-h"><span>${GEN_KR[g]} ${g==='p'?'PREFIX':'SUFFIX'} · ${r.length}</span><span>아이템 레벨 ${S.ilvl} 기준</span></div>${r.map(x=>x.html).join('')}`:''; }).join('');
   $('#list').innerHTML = html || '<div class="empty-state">조건에 맞는 옵션 없음</div>';
 }
 function renderCorrupt(sub){
   const v = S.slots.c[0];
   const rows = S.data.groups.map((g,gi)=>({g,gi})).filter(({g})=>g.s===sub && g.t.some(t=>matchQ(t[4],t[5])));
   const orb = SAC_ORB();
-  const head = sub==='c' ? '바알 오브 타락 시 붙을 수 있는 고정 옵션 (하나만)' : `${KR()?orb[0]:orb[1]}: 희귀 아이템의 타락 고정 옵션을 강화하고 무작위 옵션 1개를 제거함`;
+  const head = sub==='c' ? '바알 오브 타락 고정 옵션 (1개)' : `${KR()?orb[0]:orb[1]} · 타락 고정 옵션 강화 + 무작위 옵션 1개 제거`;
   const orig = g => { const o = S.data.groups.find(x=>x.s==='c' && x.f.join()===g.f.join()); return o ? tText(o.t[0]) : ''; };
-  $('#list').innerHTML = rows.length ? `<div class="sec-h"><span>${head}</span><span>${rows.length}</span></div>` + rows.map(({g,gi})=>{
+  return rows.length ? `<div class="sec-h"><span>${head}</span><span>${rows.length}</span></div>` + rows.map(({g,gi})=>{
     const t = g.t[0], on = v && v.gi===gi;
     return `<div class="row i ok"><span class="bar"></span><div class="main"><button type="button" class="t" data-g="${gi}"><span class="tag ${g.s}">${esc(subLabel(g))}</span>${nl(tText(t))}</button>
       ${sub==='u'&&orig(g)?`<span class="sub">강화 전: ${esc(orig(g))}</span>`:''}${on?'<span class="sub" style="color:var(--corrupt)">선택됨</span>':''}</div><div class="share"></div></div>`;
-  }).join('') : '<div class="empty-state">이 아이템에는 해당 옵션이 없음</div>';
+  }).join('') : '';
 }
 function renderRunes(){
   const n = sockets(), sub = S.sub.rune;
@@ -933,7 +945,7 @@ function requestText(){
     const mt = S.meta[g][i];
     const tl = grp.s==='n' ? (!v.ti ? 'T1' : v.ti===lowTier(grp) ? '모든 티어' : `T${v.ti+1} 이상`) : `${grp.sub[0]}: ${t[2]}`;
     const txt = t[4];
-    return `- ${SLOT_KR(g)} ${i+1}: ${txt.replace(/\n/g,' / ')} [${tl}] ${mt.need?'(필수)':'(있으면 좋음)'}${mt.fr?' (분열)':''}`; };
+    return `- ${SLOT_KR(g)} ${i+1}: ${txt.replace(/\n/g,' / ')} [${tl}] ${mt.need?'(필수 옵션)':'(유효 옵션)'}${mt.fr?' (분열)':''}`; };
   const cat = curCatalyst(), qk = qualityKind();
   const bud = $('#budget').value ? `${$('#budget').value} ${$('#budget-unit').value}` : '미정';
   const out = [`[레시피 요청] ${b.kr} (${b.en})`, `종류: ${S.data.kr} · 아이템 레벨 ${S.ilvl} · 등급: ${{normal:'일반',magic:'마법',rare:'희귀'}[rarity()]}${corrName}`,
@@ -977,12 +989,10 @@ $('#clss').addEventListener('change', e=>loadClass(e.target.value));
 $('#bases').addEventListener('click', e=>{ const b=e.target.closest('.base'); if(b) selectBase(+b.dataset.i); });
 $('#bkind').addEventListener('click', e=>{ const b=e.target.closest('[data-k]'); if(!b||b.disabled) return; S.bkind=b.dataset.k; renderBases(); });
 for(const id of ['kr','en']) $('#lang-'+id).addEventListener('click', ()=>{ S.lang=id; $('#lang-kr').setAttribute('aria-pressed',id==='kr'); $('#lang-en').setAttribute('aria-pressed',id==='en'); renderCats(); renderBases(); render(); });
-$('#toptabs').addEventListener('change', e=>{ const top=e.target.value;
-  if(top==='rune'){ const n=sockets(); const i=S.slots.k.slice(0,n).findIndex(v=>!v); S.active={g:'k',i:i<0?0:i}; }
-  else if(top==='affix' && (S.active.g==='k'||S.active.g==='c')){ const f=firstEmpty(); S.active = f && (f.g==='p'||f.g==='s') ? f : {g:'p',i:Math.max(0,S.slots.p.findIndex(v=>!v))}; }
-  else if(top==='corrupt' && S.corr===1) S.active={g:'c',i:0};
-  S.top=top; render(); });
-$('#subtabs').addEventListener('change', e=>{ S.sub[S.top]=e.target.value; renderTabs(); renderPool(); });
+$('#ftabs').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b||b.disabled) return;
+  if(b.dataset.side){ S.top='affix'; S.side=b.dataset.side; S.sub.affix=b.dataset.f; }
+  else if(b.dataset.top){ S.top=b.dataset.top; if(S.top==='corrupt' && S.corr===1) S.active={g:'c',i:0}; }
+  renderTabs(); renderPool(); });
 $('#q').addEventListener('input', e=>{ S.q=e.target.value; renderPool(); });
 $('#onlyok').addEventListener('change', e=>{ S.onlyok=e.target.checked; renderPool(); });
 $('#list').addEventListener('click', e=>{
