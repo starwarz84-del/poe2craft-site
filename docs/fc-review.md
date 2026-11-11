@@ -15,10 +15,10 @@
 | banzino-mirror-staff-v2 | vT482uJFESs | high 7,754, bal 4,686 | 5 | 진행 중 | A(Opus) |  |
 | xeno-phys-crossbow-v2 | 1TP4aGqxU7Q | high 7,227 | 7 | 진행 중 | A(Opus) |  |
 | barricade-quarterstaff-v2 | B4yShuKydt0 | high 4,068, bal 387 | 2 | 진행 중 | A(Opus) |  |
-| mazbro-bis-chest-v2 | LUB59xlkNtk | high 3,023, bal 960 | 15 | 대기 |  |  |
+| mazbro-bis-chest-v2 | LUB59xlkNtk | high 3,023, bal 960 | 15 | 진행 중 | B(Fable) |  |
 | sihan-highend-helmet-v2 | CTrIbhQVU8U | high 2,616, bal 180 | 1 | 대기 |  |  |
 | noble-visceral-quiver-v2 | 2PUEwoePtRs | high 2,240, bal 110 | 3 | 대기 |  |  |
-| diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 완료 | B(Fable) | 영상에 없는 단계 되돌림 |
+| diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 진행 중 | B(Fable) | 제작 옵션 한도 위반(l1·l2)이 남아 다시 봄 |
 | breach-ring-video-v2 | RiJixgqBnBY | high 1,956, bal 934 | 4 | 대기 |  |  |
 | sihan-proj-gloves-v2 | DH4jiORLg10 | high 1,659, bal 327 | 2 | 대기 |  |  |
 | sl-blacksteel-gauntlets-v2 | J7J8Jo7ibvE | high 1,649, bal 140 | 4 | 대기 |  |  |
@@ -28,7 +28,7 @@
 | mazbro-caster-amulet-v2 | 4PazhuHwdL8 | high 1,154, bal 428 | 5 | 대기 |  |  |
 | sihan-highend-boots-v2 | dlrD21AcCUE | high 1,147, bal 650, ess 314 | 2 | 대기 |  |  |
 | grasping-mail-spell1-v2 | y5Ch3AJpl5c | high 1,140, bal 613 | 11 | 대기 |  |  |
-| sl-proj7-gloves-v2 | XMYJh3CnXuY | high 1,104, bal 785 | 7 | 완료 | B(Fable) | 영상 대조 |
+| sl-proj7-gloves-v2 | XMYJh3CnXuY | high 1,104, bal 785 | 7 | 완료 11-11 | B(Fable) | 자막 전체 대조. 합금 실패 뒤 길을 보이는 선 + 규칙에 맞게(우측 소멸의 징조로 접미 비우기). 1,104·785 |
 | saveq-absent-amulet-v2 | S4sflKbsA8A | high 935, bal 797, ess 729 | 4 | 대기 |  |  |
 | unstoppable-vile-robe-v2 | swF5mwXmZ0k | high 739, bal 689 | 4 | 완료 11-11 | A(Opus) | 영상 5:45~24:15 대조. 접미는 엑잘+소멸(비싼 징조는 마지막 한 옵션만), 접두 막기·결정화+심연. 하이엔드 739→809, 밸런스(1티어 + 마지막 접미 랜덤) 689→163 |
 | helmet-armour-sl-v2 | p0fChSu91uI | high 723, bal 718, ess 75 | 5 | 대기 |  |  |
@@ -36,13 +36,13 @@
 | unstoppable-slipstrike-vest-v2 | swF5mwXmZ0k | high 651, bal 176 | 1 | 완료 11-11 | A(Opus) | 영상 40:45~46:30 대조. 첫 카오스 추가, 반복은 상위 카오스, 접두 결정화+심연. 하이엔드 870→651, 밸런스 540→176 |
 | breach-ring-phys-v2 |  | bal 535, ess 89 | 2 | 대기 |  |  |
 | diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 512, bal 340, ess 278 | 1 | 대기 |  |  |
-| mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 대기 |  |  |
+| mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 완료 11-11 | B(Fable) | 영상 설명란 + 14:06~21:32·41:30~58:00 대조. 단계는 실제 진행과 같음, 숨긴 선 4갈래를 보이게. 504 그대로 |
 | sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 대기 |  |  |
 | mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 대기 |  |  |
 | noble-timelost-sapphire-v2 | zEV8kWwveYQ | high 468, bal 418 | 3 | 대기 |  |  |
 | tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 대기 |  |  |
 | absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 대기 |  |  |
-| gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 대기 |  |  |
+| gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 완료 11-11 | B(Fable) | 영상 1:54~11:02 대조. 단계는 영상의 경우 나누기와 같음, 숨긴 선 5갈래를 보이게. 354·345 그대로 |
 | saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 대기 |  |  |
 | mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 대기 |  |  |
 | diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 대기 |  |  |
