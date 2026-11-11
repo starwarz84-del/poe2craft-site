@@ -66,8 +66,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .sortseg .ar{color:var(--rare);margin-left:3px}
 /* masonry */
 .board{position:relative;min-height:200px}
-.card{position:absolute;transition:top .18s ease,border-color .12s;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer}
-.card:hover{border-color:#4a505d}
+.card{position:absolute;transition:top .18s ease,border-color .15s,transform .15s ease,box-shadow .15s ease;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer}
+/* hover: lift slightly toward the viewer with a clear gold edge (사용자 확정 2026-11-11) */
+.card:hover{border-color:#c8a85a;transform:translateY(-4px) scale(1.015);box-shadow:0 10px 24px rgba(0,0,0,.55),0 0 0 1px #c8a85a,0 0 14px rgba(200,168,90,.25);z-index:3}
+@media (prefers-reduced-motion:reduce){.card:hover{transform:none}}
 .card.open{border-color:var(--rare)}
 .card .grow{flex:1 1 auto}
 .foot{padding:10px 12px 11px;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line)}
