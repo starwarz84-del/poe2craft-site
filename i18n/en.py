@@ -89,3 +89,4 @@ EN.update({'<b>선택</b> = 빈 접두·접미 자리에 위에서부터 추가 
  '조건에 맞는 옵션 없음':'No matching modifiers', '취소':'Cancel', '선택':'Select', '특출난 베이스: 룬 소켓 +1':'Exceptional base: +1 rune socket'})
 EN.update({'베이스 선택 → 옵션 선택 → 리버스 크래프팅으로 보내기':'Pick a base → pick modifiers → send to Reverse Crafting', '바알 오브 타락 결과':'Vaal Orb corruption outcome',
  '추가 제작 옵션 CRAFTED':'Extra crafted CRAFTED', '공유 코드로 불러오기':'Load from share code', '복사해서 커뮤니티에 올리기':'Copy and post to a community', '모든 티어 ':'all tiers '})
+EN.update({'모든 티어':'all tiers'})

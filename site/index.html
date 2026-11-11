@@ -474,7 +474,9 @@ function tierShare(gi, ti){ const g=S.data.groups[gi]; if(g.s!=='n') return null
   g.t.forEach((t,j)=>{ if(j<=ti && t[0]<=S.ilvl) w+=t[1]; }); return tot ? w/tot : 0; }
 const pctTxt = v => (v*100).toFixed(v<0.001?2:1)+'%';
 // "Tn 이상" = that tier or better (T1 is the best, 사용자 확정 2026-11-11)
-const tierLbl = (g,ti) => ti===0 ? 'T1' : (KR()?`T${ti+1} 이상`:`T${ti+1}+`);
+// lowest tier that can roll at this item level = "모두" (any tier, default — 사용자 확정 2026-11-11)
+const lowTier = g => { let k=-1; g.t.forEach((t,j)=>{ if(t[0]<=S.ilvl) k=j; }); return k; };
+const tierLbl = (g,ti) => ti===0 ? 'T1' : ti===lowTier(g) ? (KR()?'모두':'All') : (KR()?`T${ti+1} 이상`:`T${ti+1}+`);
 function goNext(){ const f=firstEmpty(); if(f) setActive(f.g,f.i); }
 const blankMeta = () => ({fr:false,need:true,tmin:null});
 // move empty slots to the bottom so filled ones stay in order from the top
@@ -489,7 +491,7 @@ function removeAt(g,i){
   if(g==='c'){ S.slots.c=[null]; S.sac=false; return; }
   S.slots[g][i]=null; compact(g);
 }
-const pickTier = gi => { const g=S.data.groups[gi], t=S.pick[gi]; return t!=null && g.t[t] && g.t[t][0]<=S.ilvl ? t : bestTier(gi); };
+const pickTier = gi => { const g=S.data.groups[gi], t=S.pick[gi]; return t!=null && g.t[t] && g.t[t][0]<=S.ilvl ? t : (lowTier(g)<0 ? null : lowTier(g)); };
 function toggleAffix(gi){
   const at=findSel(gi); if(at){ removeAt(at.g,at.i); render(); return; }
   assignAffix(gi, pickTier(gi));
@@ -757,12 +759,13 @@ function emptyTxt(label){ return `<span class="txt"><span class="empty">${label}
 function affixInner(g,i){
   const v=S.slots[g][i], grp=S.data.groups[v.gi], t=grp.t[v.ti], m=S.mult[g][i] ?? 100;
   const tag = grp.s!=='n' ? `<span class="tag ${grp.s}">${esc(subLabel(grp))}</span>` : '';
-  const tl = (grp.s==='e'||grp.s==='x') ? esc(tName(t)) : `${tierLbl(grp,v.ti)} · ${esc(tName(t))}`;
+  const all = grp.s!=='e' && grp.s!=='x' && v.ti>0 && v.ti===lowTier(grp);
+  const tl = (grp.s==='e'||grp.s==='x') ? esc(tName(t)) : all ? (KR()?'모든 티어':'All tiers') : `${tierLbl(grp,v.ti)} · ${esc(tName(t))}`;
   const useM = false, cf = catFactor(grp), mt = S.meta[g][i];
   const text = (useM||cf!==1) ? `<span class="${(useM&&m!==100)||cf!==1?'scaled':''}" data-scaled="${g}${i}">${nl(scaleText(tText(t),modPct(g,i,grp)))}</span>` : nl(tText(t));
   const ctl = `<span class="ctl"><button type="button" class="${mt.need?'':'opt'}" data-need="${g}${i}" aria-pressed="${mt.need}">${mt.need?'필수':'있으면 좋음'}</button><button type="button" class="fr" data-fr="${g}${i}" aria-pressed="${mt.fr}">${mt.fr?'분열됨':'분열'}</button></span>`;
   const slider = useM ? `<span class="mult"><input type="range" min="78" max="122" step="1" value="${m}" data-mult="${g}${i}" id="mult-${g}${i}" aria-label="${GEN_KR[g]} ${i+1} 수치 배율"><output data-out="${g}${i}">${m}%</output></span>` : '';
-  return `<span class="txt">${tag}${text}<span class="meta">${tl} · 아이템 레벨 ${t[0]}${cf!==1?` · 기폭제 적용 · 원래 ${esc(tText(t)).replace(/\n/g,' / ')}`:''}</span>${slider}${ctl}</span>`;
+  return `<span class="txt">${tag}${text}<span class="meta">${tl}${all?'':` · 아이템 레벨 ${t[0]}`}${cf!==1?` · 기폭제 적용 · 원래 ${esc(tText(t)).replace(/\n/g,' / ')}`:''}</span>${slider}${ctl}</span>`;
 }
 function renderCard(){
   const viewbar = `<div class="viewbar"><div class="seg" role="group" aria-label="보기 방식"><button type="button" data-view="edit" aria-pressed="${S.view==='edit'}">편집</button><button type="button" data-view="preview" aria-pressed="${S.view==='preview'}">완성 미리보기</button></div><div class="seg" role="group" aria-label="수치 기준" title="옵션 수치를 최소·평균·최대 중 어느 값으로 계산할지">${[['min','최소'],['avg','평균'],['max','최대']].map(([k,t])=>`<button type="button" data-roll="${k}" aria-pressed="${S.roll===k}">${t}</button>`).join('')}</div></div>`;
@@ -860,8 +863,8 @@ function renderPool(){
     const why = on ? '' : reason(gi, ti); if(S.onlyok && why) return;
     const shown = g.t[ti ?? g.t.length-1];
     const tag = g.s!=='n' ? `<span class="tag ${g.s}">${esc(subLabel(g))}</span>` : '';
-    const avail = g.t.map((t,k)=>({t,k})).filter(({t})=>t[0]<=S.ilvl);
-    const optLbl = ({t,k}) => g.s==='e' ? esc(tName(t)) : `${tierLbl(g,k)} · ${esc(tName(t))} · 아이템 레벨 ${t[0]}`;
+    const avail = g.t.map((t,k)=>({t,k})).filter(({t})=>t[0]<=S.ilvl); if(avail.length>1) avail.unshift(avail.pop());
+    const optLbl = ({t,k}) => g.s==='e' ? esc(tName(t)) : k===lowTier(g) && k>0 ? tierLbl(g,k) : `${tierLbl(g,k)} · ${esc(tName(t))} · 아이템 레벨 ${t[0]}`;
     const tsel = avail.length>1 ? `<select class="tsel" data-tsel="${gi}" aria-label="티어">${avail.map(o=>`<option value="${o.k}" ${o.k===ti?'selected':''}>${optLbl(o)}</option>`).join('')}</select>` : '';
     const share = g.s==='n' && ti!=null ? `${pctTxt(tierShare(gi,ti))}<small>${tierLbl(g,ti)}</small>` : `<small>아이템 레벨 ${Math.min(...g.t.map(t=>t[0]))}+</small>`;
     rows[g.g].push({w: g.s==='n'?sh[gi]:-1-(g.t[0][0]/1000), html:`<div class="row ${g.g} ${why?'off':'ok'} ${on?'on':''}"><span class="bar"></span>
@@ -928,7 +931,7 @@ function requestText(){
   const corrName = {'-1':' · 타락(결과 미정)', 0:'', 1:' · 타락(① 고정 옵션 추가)', 2:' · 타락(② 룬 소켓 +1)', 3:' · 타락(③ 옵션 1~3개 변경)', 4:' · 타락(④ 변화 없음)'}[S.corr];
   const line = (g,v,i) => { if(!v) return `- ${SLOT_KR(g)} ${i+1}: (상관없음)`; const grp=S.data.groups[v.gi], t=grp.t[v.ti], m=g==='f'?100:S.mult[g][i];
     const mt = S.meta[g][i];
-    const tl = grp.s==='n' ? (v.ti ? `T${v.ti+1} 이상` : 'T1') : `${grp.sub[0]}: ${t[2]}`;
+    const tl = grp.s==='n' ? (!v.ti ? 'T1' : v.ti===lowTier(grp) ? '모든 티어' : `T${v.ti+1} 이상`) : `${grp.sub[0]}: ${t[2]}`;
     const txt = t[4];
     return `- ${SLOT_KR(g)} ${i+1}: ${txt.replace(/\n/g,' / ')} [${tl}] ${mt.need?'(필수)':'(있으면 좋음)'}${mt.fr?' (분열)':''}`; };
   const cat = curCatalyst(), qk = qualityKind();
