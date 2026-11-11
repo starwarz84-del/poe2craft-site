@@ -45,6 +45,15 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .ufield input{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:8px 10px;color:var(--fg);font:inherit;font-size:13px}
 .uq{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;font-size:12.5px;display:flex;flex-direction:column;gap:6px}
 .uq .empty{color:var(--faint)}
+.ureq{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}
+.ureq:first-child{border-top:0}
+.ureq .st{font-size:11px;padding:2px 7px;border-radius:9px;border:1px solid var(--line);white-space:nowrap}
+.ureq .st.queued{color:#d8b46a;border-color:#6b5a2e}.ureq .st.done{color:#8fd19e;border-color:#2f6b3d}.ureq .st.fail{color:#e08a8a;border-color:#6b2f2f}
+.ureq .u{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.ureq .u a{color:var(--fg)}
+.ureq .m{grid-column:2/4;color:var(--muted);font-size:11.5px}
+.ureq .go{font-size:12px;white-space:nowrap}
+.uerr{color:#e08a8a}
 .bsteps{margin:0;padding-left:20px;font-size:13px;line-height:1.7;color:var(--fg)}
 .bfrom{font-size:12.5px;color:var(--ok)}
 .fb{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
@@ -175,9 +184,10 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
       <section class="ipane" data-ipane="url" hidden>
         <p class="ihelp" id="u-help"></p>
         <label class="ufield"><span id="u-l"></span><input type="url" id="u-url" placeholder="https://www.youtube.com/watch?v=…  /  https://…" autocomplete="off"></label>
-        <label class="ufield"><span id="u-nl"></span><input type="text" id="u-note" autocomplete="off"></label>
+        <label class="ufield"><span id="u-nl"></span><input type="text" id="u-note" autocomplete="off" maxlength="300"></label>
+        <label class="ufield"><span id="u-cl"></span><input type="password" id="u-code" autocomplete="off"></label>
         <div class="row"><button type="button" class="btn primary" id="u-go" disabled></button><span class="hint" id="u-hint"></span></div>
-        <div class="uq"><b id="u-qh"></b><div class="empty" id="u-qe"></div></div>
+        <div class="uq"><b id="u-qh"></b><div id="u-list"></div><div class="empty" id="u-qe"></div></div>
       </section>
       <section class="ipane" data-ipane="build" hidden>
         <p class="ihelp" id="b-help"></p>
@@ -1237,13 +1247,15 @@ function renderStatic(){
   const ST=[[L('입력','Input'),L('영상·글 주소, 경매장 아이템, 또는 옵션 조합','Video/post link, a trade item, or a modifier set')],[L('리버스 엔지니어링','Reverse engineering'),L('옵션 출처·티어 분석 → 제작 순서 초안 → 검산','Sources & tiers → draft order → verification')],[L('크래프팅 목록에 올리기','Add to Crafting'),L('결과 확인 후 올리기 결정','Decide whether to publish it')],[L('아쉬운 점 남기기','Leave feedback'),L('틀린 단계·더 나은 방법 제보','Tell us what was off')]];
   const stage = S.sent ? 3 : S.draft ? 2 : S.last && !S.last.err ? 1 : 0;
   $('#rsteps').innerHTML = ST.map(([t,d],i)=>`<li class="${i<stage?'done':i===stage?'on':''}"><span><b>${esc(t)}</b>${esc(d)}</span></li>`).join('');
-  const TABS=[['url',L('영상·제작글 주소','Video / post link'),L('준비 중','soon')],['item',L('경매장 아이템','Trade item'),''],['build',L('옵션으로 만들기','From modifiers'),'']];
+  const TABS=[['url',L('영상·제작글 주소','Video / post link'),''],['item',L('경매장 아이템','Trade item'),''],['build',L('옵션으로 만들기','From modifiers'),'']];
   $('#itabs').innerHTML = TABS.map(([k,t,b])=>`<button type="button" role="tab" data-itab="${k}" aria-selected="${S.itab===k}">${esc(t)}${b?`<small>${esc(b)}</small>`:''}</button>`).join('');
   document.querySelectorAll('[data-ipane]').forEach(p=>p.hidden = p.dataset.ipane!==S.itab);
-  $('#u-help').textContent = L('유튜브 영상이나 커뮤니티 제작글 주소를 넣으면 자막·글을 읽어 레시피로 만들어요(1~5분). 완성되면 크래프팅 목록에 올릴지 고르고, 제작자는 영상·글 작성자로 표시돼요. 회원 전용 · 하루 3회.','Paste a YouTube video or a community crafting post. Its captions or text are turned into a recipe (1–5 min). You then decide whether to publish it; the video or post author is credited. Members only · 3 per day.');
-  $('#u-l').textContent = L('영상·글 주소','Video or post link'); $('#u-nl').textContent = L('메모 (선택) — 어떤 아이템인지, 몇 분부터인지','Note (optional) — which item, from what minute');
-  $('#u-go').textContent = L('분석 요청','Request analysis'); $('#u-hint').textContent = L('로그인·서버가 준비되면 열려요 (먼저 텔레그램 봇으로 운영)','Opens once login and the server are ready (Telegram bot first)');
-  $('#u-qh').textContent = L('내 요청','My requests'); $('#u-qe').textContent = L('로그인하면 요청한 주소와 진행 상태 표시','After logging in, your requests and their status appear here.');
+  $('#u-help').textContent = L('유튜브 영상·커뮤니티 제작글 주소 → 자막·글 분석 → 플로우차트·등급 레시피 → 크래프팅 목록. 처리 하루 3번(오전·오후·밤), 제작자 = 영상·글 작성자','YouTube video or community post → captions/text analysis → flowchart and graded recipes → Crafting list. Processed 3 times a day; credited to the original creator');
+  $('#u-l').textContent = L('영상·글 주소','Video or post link'); $('#u-nl').textContent = L('메모 (선택) — 아이템, 시작 시간','Note (optional) — item, start time');
+  $('#u-cl').textContent = L('접근 코드','Access code'); $('#u-code').placeholder = L('로그인 전 테스트 기간 전용','Test period only, before login');
+  $('#u-go').textContent = L('분석 요청','Request analysis');
+  $('#u-qh').textContent = L('내 요청','My requests');
+  urlForm(); renderReqs();
   $('#b-help').textContent = L('속성부여에서 베이스·옵션 선택 → 이 화면으로 보내기 → 제작 순서 찾기','Pick a base and the modifiers you want in the Modifiers tab, send them here, and we work out how to make that item.');
   $('#b-steps').innerHTML = [L('속성부여 탭에서 베이스 고르기','Pick a base in the Modifiers tab'),L('접두·접미 옵션과 티어 고르기','Choose prefixes, suffixes and tiers'),L('"리버스 크래프팅으로 보내기" 누르기','Press "Send to reverse crafting"')].map(x=>`<li>${esc(x)}</li>`).join('');
   $('#b-go').textContent = L('속성부여에서 옵션 고르기 →','Choose modifiers in the Modifiers tab →');
@@ -1441,6 +1453,64 @@ $('#samples').addEventListener('change', e=>{ if(e.target.id!=='recs' || e.targe
 fetch('data/samples.json').then(r=>r.ok?r.json():{samples:[]}).then(d=>{ S.recSamples=d.samples||[]; renderStatic(); }).catch(()=>{});
 $('#samples').addEventListener('click', e=>{ const b=e.target.closest('[data-sample]'); if(!b) return; $('#txt').value=SAMPLES[+b.dataset.sample].t; run(); });
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-reverse-in' && typeof d.text==='string'){ S.itab='build'; $('#txt').value=d.text; $('#b-from').hidden=false; $('#b-from').textContent=L('속성부여에서 받은 옵션 조합 분석 완료 · 오른쪽 요약과 아래 초안 확인','Analysed the modifier set from the Modifiers tab — see the summary and draft below.'); run(); } });
+/* 영상·제작글 분석 요청 (worker/index.js /api/req) */
+const RQK='poe2r:reqs';
+const rqIds=()=>{ try{ return JSON.parse(localStorage.getItem(RQK)||'[]'); }catch(_){ return []; } };
+const rqSave=a=>{ try{ localStorage.setItem(RQK, JSON.stringify(a.slice(0,30))); }catch(_){} };
+S.reqs = S.reqs || []; S.reqMsg = S.reqMsg || '';
+function urlForm(){
+  const u=$('#u-url').value.trim(), c=$('#u-code').value.trim();
+  $('#u-go').disabled = !/^https?:\/\/\S+\.\S+/i.test(u) || !c || S.reqBusy;
+  $('#u-hint').innerHTML = S.reqMsg;
+}
+const RQERR = e=>({bad_url:L('주소 확인 필요','Check the link'), bad_code:L('접근 코드 틀림','Wrong access code'), limit:L('오늘 요청 횟수 초과 · 하루 3회','Daily limit reached · 3 per day'), unavailable:L('서버 연결 불가 · poe2craft.xyz에서 사용','Server unavailable · use poe2craft.xyz'), exists:L('이미 등록된 레시피','Recipe already exists')})[e] || L('요청 실패','Request failed');
+function renderReqs(){
+  const by={}; S.reqs.forEach(r=>by[r.id]=r);
+  const ids=rqIds();
+  const rows=ids.map(id=>by[id]).filter(Boolean);
+  const ST={queued:L('대기 중','Queued'), done:L('완료','Done'), fail:L('실패','Failed')};
+  $('#u-list').innerHTML = rows.map(r=>{
+    const d=new Date(r.at), when=`${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    const go = r.st==='done' && r.recipe ? `<a href="#" class="go" data-rgo="${esc(r.recipe)}">${esc(L('크래프팅에서 보기 →','View in Crafting →'))}</a>` : `<span class="go hint">${esc(when)}</span>`;
+    const m = [r.memo, r.st==='fail'&&r.why ? r.why : ''].filter(Boolean).join(' · ');
+    return `<div class="ureq"><span class="st ${esc(r.st)}">${esc(ST[r.st]||r.st)}</span><span class="u"><a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">${esc(r.url.replace(/^https?:\/\/(www\.)?/,''))}</a></span>${go}${m?`<span class="m">${esc(m)}</span>`:''}</div>`;
+  }).join('');
+  $('#u-qe').textContent = rows.length ? '' : (ids.length ? L('불러오는 중','Loading') : L('요청 없음','No requests'));
+}
+async function loadReqs(){
+  const ids=rqIds(); if(!ids.length){ renderReqs(); return; }
+  try{
+    const r=await fetch('/api/req?ids='+ids.join(','), {cache:'no-store'});
+    const d=await r.json(); if(!r.ok) throw new Error(d.error||'x');
+    S.reqs=d.reqs||[];
+    const live=new Set(S.reqs.map(x=>x.id)); rqSave(ids.filter(x=>live.has(x)));
+  }catch(_){ S.reqMsg=`<span class="uerr">${esc(RQERR('unavailable'))}</span>`; }
+  renderReqs(); urlForm();
+}
+async function sendReq(){
+  const url=$('#u-url').value.trim(), memo=$('#u-note').value.trim(), code=$('#u-code').value.trim();
+  S.reqBusy=true; S.reqMsg=esc(L('보내는 중','Sending')); urlForm();
+  try{ localStorage.setItem('poe2r:code', code); }catch(_){}
+  try{
+    const r=await fetch('/api/req', {method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({url, memo, code})});
+    let d={}; try{ d=await r.json(); }catch(_){ d={error:'unavailable'}; }
+    if(d.error==='exists' && d.recipe){
+      S.reqMsg = `${esc(RQERR('exists'))} · <a href="#" data-rgo="${esc(d.recipe)}">${esc(L('크래프팅에서 보기 →','View in Crafting →'))}</a>`;
+    }else if(!r.ok || !d.ok){ S.reqMsg=`<span class="uerr">${esc(RQERR(d.error))}</span>`; }
+    else{
+      rqSave([d.req.id, ...rqIds().filter(x=>x!==d.req.id)]);
+      S.reqs=[d.req, ...S.reqs.filter(x=>x.id!==d.req.id)];
+      S.reqMsg = esc(d.dup ? L('이미 대기 중인 주소','Already queued') : L('요청 완료','Requested') + (d.left!=null?` · ${L('오늘 남은 횟수','left today')} ${d.left}`:''));
+      $('#u-url').value=''; $('#u-note').value='';
+    }
+  }catch(_){ S.reqMsg=`<span class="uerr">${esc(RQERR('unavailable'))}</span>`; }
+  S.reqBusy=false; renderReqs(); urlForm();
+}
+try{ $('#u-code').value = localStorage.getItem('poe2r:code')||''; }catch(_){}
+['#u-url','#u-code'].forEach(q=>$(q).addEventListener('input', urlForm));
+$('#u-go').addEventListener('click', sendReq);
+document.addEventListener('click', e=>{ const a=e.target.closest('[data-rgo]'); if(!a) return; e.preventDefault(); try{ window.parent.postMessage({type:'poe2-goto', id:a.dataset.rgo}, '*'); }catch(_){} });
+loadReqs();
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
 window.addEventListener('message', e=>{ const d=e.data, f=document.getElementById('pvf'); /* preview keeps a window-sized frame and scrolls inside it, so its sticky header, progress bar and step tracking work (2026-11-11) */ });
 $('#mods').addEventListener('change', e=>{

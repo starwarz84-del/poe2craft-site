@@ -1,8 +1,15 @@
-// Cloudflare Workers deploy: serves the web/ folder as a static site (built by scripts/build_web.py).
+// Cloudflare Workers deploy: serves the web/ folder as a static site (built by scripts/build_web.py)
+// and the request API under /api/ (worker/index.js, KV binding REQ — created automatically on first deploy).
 {
   "name": "poe2craft",
+  "main": "worker/index.js",
   "compatibility_date": "2026-11-01",
   "assets": {
-    "directory": "./web"
-  }
+    "directory": "./web",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "kv_namespaces": [
+    { "binding": "REQ" }
+  ]
 }
