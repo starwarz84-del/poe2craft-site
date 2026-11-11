@@ -450,6 +450,9 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 /* flowchart + whole-process simulation (data/sim/<id>.json, tools/sim/run.js) */
 .simbox{margin:6px 0 18px;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 12px 10px}
 .simbox .simtop{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:8px}
+/* 플로우차트 도구 줄(버전·확대·전체화면)은 머리 아래에 고정(사용자 2026-11-12: 스크롤하면 위로 말려 올라감) */
+.simbox > .simtop{position:sticky;top:calc(var(--dh,0px) - 1px);z-index:5;background:var(--panel,var(--bg));padding:6px 0;margin-top:-6px}
+.simbox.full > .simtop{top:0}
 .simbox .simtop .simgrp{display:inline-flex;gap:4px;align-items:center;font-size:12px;color:var(--muted)}
 .simbox .simsum{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;margin:2px 0 8px}
 .simbox .simsum b{color:var(--rare);font-weight:600}
@@ -540,6 +543,8 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcfins{margin:14px 0 4px}.fcfinrow{display:flex;flex-wrap:wrap;gap:14px}
 .fcfin{flex:1 1 280px;max-width:360px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel)}
 .fcfin.on{border-color:var(--rare)}
+/* 완성품 카드: 옵션 줄 좌우 여백을 줄여 한 줄로(사용자 2026-11-12) */
+.fcfin .tt-mod{padding:1px 4px 1px 36px}.fcfin .tt-body{padding-left:4px;padding-right:4px}
 .fcfin.go{cursor:pointer;transition:border-color .15s,transform .15s}.fcfin.go:hover,.fcfin.go:focus-visible{border-color:var(--rare);transform:translateY(-2px);outline:none}
 .fcgo{margin:8px 0 0;text-align:right;font-size:12.5px;color:var(--rare);font-weight:600}
 .fcfh{margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;align-items:baseline;font-size:13.5px}

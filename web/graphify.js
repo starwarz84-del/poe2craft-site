@@ -47,7 +47,9 @@ function fromDraft(d, D, opt={}){
     cand.forEach((S,i)=>{ if(chainOf[S.id] || !S.target.anyOf || S.target.anyOf.length<2) return; const L=new Set(setOf(S)), root=anyTag(S.target.anyOf); let k=1;
       for(const T of cand.slice(i+1)){ if(chainOf[T.id] || (T.branch?.of||'')!==(S.branch?.of||'')) continue; const st=setOf(T); if((st.length<L.size || (S.pool && T.pool && st.length===L.size)) && st.every(g=>L.has(g))){ if(k===1) chainOf[S.id]={tag:root, idx:0}; chainOf[T.id]={tag:root, idx:k++}; } }
       if(k>1) chainN[root]=Math.min(k, L.size); });
-    N.forEach(n=>{ if(n.do==='reveal' && n.pool && n.target?.reveal?.anyOf){ const tg=anyTag(n.target.reveal.anyOf); if(chainN[tg]) chainN[tg]=Math.min(chainN[tg]+1, n.target.reveal.anyOf.length); } }); }
+    /* 묶음(K39): 묶음을 노리는 단계(굴림 + 훼손 공개) 수만큼 세어 완성 조건·완성품 칸에 씀 */
+    const pc={}; N.forEach(n=>{ if(!n.pool || n.fallbackFor || n.onLost || n.optional || n.branch) return; const L=n.do==='reveal' ? n.target?.reveal?.anyOf : ROLL.includes(n.do) ? n.target?.anyOf : null; if(!L) return; const tg=anyTag(L); pc[tg]={k:(pc[tg]?.k||0)+1, n:L.length}; });
+    for(const tg in pc) if(pc[tg].k>1) chainN[tg]=Math.min(pc[tg].k, pc[tg].n); }
   const tgOf = n => chainOf[n.id]?.tag || targetTag(n.target);
 
   // ---------- roles: fallbacks, branch blocks, the main lane
@@ -103,13 +105,19 @@ function fromDraft(d, D, opt={}){
     if(tg) return K(`${w.kr} 옵션`.trim(), `${w.en} modifier`.trim());
     return n.label || LABEL[a]; }
   const showOf = n => { const t=n.target||{}; const list = t.anyOf || t.reveal?.anyOf || (t.gi!=null ? [t] : t.reveal ? [t.reveal] : t.mark ? [t.mark] : []); return list.length ? [...new Set(list.map(x=>tagOf(x.gi)))] : null; };
+  /* 2026-11-12(균열 반지 하이엔드가 끝나지 않던 원인): 분열 베이스의 첫 카오스가 만든 옵션을 잃으면, 잡옵이 여럿 쌓인 채 카오스로 돌아가지 않고
+     소멸의 오브로 분열 옵션 + 잡옵 1개만 남긴 뒤 다시(정책 3장: 잡옵이 여러 개인 채로 카오스를 돌리지 않음) */
+  const firstChaos = (()=>{ if(!(d.start.mods||[]).some(m=>m.fr)) return null; const m=N.find(x=>x.do!=='base' && x.do!=='note' && !x.fallbackFor && !x.branch); return m && m.do==='chaos' && m.fail?.goto==='self' ? m.id : null; })();
+  const cleanTo = maker => { if(maker!==firstChaos) return maker; const id='cl'+maker;
+    if(!extra.some(x=>x.id===id)) extra.push({id, kind:'cleanup', group:'main', keep:[], maxJunk:1, label:K('소멸의 오브 사용','Use an Orb of Annulment'), goal:K('잡옵 정리','Clear the junk'), target:K('분열 옵션 + 잡옵 1개만 남기고 다시 카오스','Keep the fracture and one junk line, then Chaos again'), edges:[{to:maker}], _row:2, _col:3});
+    return id; };
   function lostEdges(n, keep){ // a kept line removed by this step → back to the step that made it
-    return keep.filter(k=>k.maker!==n.id).map(k=>({if:{removed:k.tag}, to:k.maker, res:'fail', lost:k.tag, hide:true})); }
+    return keep.filter(k=>k.maker!==n.id).map(k=>({if:{removed:k.tag}, to:cleanTo(k.maker), res:'fail', lost:k.tag, hide:true})); }
   let vN=0;
   function failPath(n, F, keep, r){ if(!F) return null; const go = F.goto==='self' ? n.id : (F.goto==='restart' || byId[F.goto]?.do==='base') ? 'h1' : F.goto;
     if(!F.via) return go;
     const id='v'+(++vN)+n.id, v=F.via, a = v.cur==='Orb_of_Annulment' ? 'annul' : /Bone|Jawbone|Rib|Collarbone|Cranium/.test(v.cur||'') ? 'desecrate' : 'annul';
-    const lostTo = F.lost ? (byId[F.lost]?.do==='base' ? 'h1' : F.lost) : null, lostTag = F.lost ? (keep.find(k=>k.maker===F.lost)?.tag || targetTag(byId[F.lost]?.target)) : null;
+    const lostTo = F.lost ? (byId[F.lost]?.do==='base' ? 'h1' : cleanTo(F.lost)) : null, lostTag = F.lost ? (keep.find(k=>k.maker===F.lost)?.tag || targetTag(byId[F.lost]?.target)) : null;
     const edges=[...(lostTo && lostTag ? [{if:{removed:lostTag}, to:lostTo, res:'fail', lost:lostTag}] : []), ...lostEdges({id}, keep).filter(e=>e.if.removed!==lostTag), {to:go}];
     extra.push({id, kind:'act', group:'main', act:a, cur:v.cur, omens:v.omens, label: a==='annul' ? K('소멸의 오브 사용','Use an Orb of Annulment') : LABEL[a],
       goal: (v.omens||[]).includes('Omen_of_Light') ? K('훼손 옵션 제거','Remove the desecrated modifier') : K('소멸의 오브 사용','Use an Orb of Annulment'), edges, _row:r, _col:2});

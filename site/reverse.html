@@ -1199,7 +1199,13 @@ function makeDraft(it, an, opt){
   const td = tryDiff(it, an, nodes, start), diff2 = Math.max(diff, td.d);
   const market = +(opt?.market ?? S.market ?? 0) || 0, tier = S.prices ? tierOf(market>0 ? market : draftCost(it, an, {nodes}, true)) : null, nSoft = softPass(an, nodes), nComp = budgetPass(it, an, nodes, diff2, market, tier) + nSoft;
   const day = new Date(); const ymd = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
-  for(const sd of ['p','s']){ const P=POOL[sd]; if(!P) continue; const gis=new Set(P.map(r=>r.m.gi)), all=anyOf(P);
+  /* K41(사용자 2026-11-12, 균열 반지): 묶음이 모두 '공격에 ~ 피해 추가'면 같은 쪽의 다른 공격 피해 추가 옵션(물리·화염·냉기·번개)도 받음 — 이미 있는 계열(분열 냉기 등)은 빼고, 티어는 묶음에서 가장 넓은 순위까지 */
+  const ATK = /^Adds .* (Physical|Fire|Cold|Lightning) [Dd]amage to Attacks$/;
+  const atkExtra = (P, sd) => { if(!P.every(r=>ATK.test((r.t[5]||'').split('\n')[0]))) return []; const used=new Set(rows.flatMap(r=>r.g.f||[])), tm=Math.max(...P.map(r=>r.tierNo||1));
+    return it.D.groups.map((g,gi)=>({g,gi})).filter(({g,gi})=>g.s==='n' && g.g===sd && !P.some(r=>r.m.gi===gi) && ATK.test((g.t[0]?.[5]||'').split('\n')[0]) && !(g.f||[]).some(f=>used.has(f)) && g.t.some(t=>t[0]<=it.ilvl && t[1]>0))
+      .filter(({g},_,A)=>!A.some(o=>o.g!==g && (o.g.f||[]).some(f=>(g.f||[]).includes(f)) && (o.g.t[0]?.[0]||0)>(g.t[0]?.[0]||0)))   /* 같은 계열의 낮은 레벨 그룹(Adds (1—2) to 3 …)은 빼고 본 그룹만 */
+      .map(({g,gi})=>{ const lo=Math.max(0, g.t.findIndex(t=>t[0]<=it.ilvl)); return {gi, tmax:Math.min(g.t.length, lo+tm)}; }); };
+  for(const sd of ['p','s']){ const P=POOL[sd]; if(!P) continue; const ext=atkExtra(P, sd), gis=new Set(P.map(r=>r.m.gi)), all0=anyOf(P), all = ext.length ? {anyOf:[...(all0.anyOf||[all0]), ...ext]} : all0;
     const hit = t => t && ((t.gi!=null && gis.has(t.gi)) || (t.anyOf||[]).some(x=>gis.has(x.gi)));
     for(const n of nodes){ const t=n.target; if(!t) continue;
       if(hit(t)){ const {gi, tmax, anyOf:_a, ...rest} = t; n.target = {...rest, ...all}; n.pool=P.length; }
@@ -1563,11 +1569,14 @@ function runFlow(it, d){ try{
   const g = POE2GRAPH.fromDraft(d, it.D, {craft:S.craft, grades:['high','bal','ess']});   // all three grades: the picked tiers, one step wider, two steps wider + keep a miss (사용자 2026-11-11: 티어를 넓히면 얼마나 싸지는지)
   let t=performance.now(), c = POE2GRAPH.check(g, it.D, S.craft, S.prices, POE2SIM, 150);
   const dt=performance.now()-t; if(!c.issues.length && dt<600) c = POE2GRAPH.check(g, it.D, S.craft, S.prices, POE2SIM, Math.min(3000, Math.max(300, Math.round(150*1500/Math.max(dt,1)))));
-  const strategies = c.strategies.filter(x=>x.res).map(x=>({id:x.id, params:x.params, hidden:false, res:slimRes(x.res)}));
+  const bad = new Set(c.issues.map(x=>x.v).filter(Boolean));
+  const strategies = c.strategies.filter(x=>x.res && !bad.has(x.id)).map(x=>({id:x.id, params:x.params, hidden:false, res:slimRes(x.res)}));
   const sim = {id:d.id, recipe:d.id, runs:c.strategies[0]?.res?.N||0, generated:new Date().toISOString().slice(0,10), graph:POE2GRAPH.view(g, it.D), strategies};
   const out = {g, res:c.strategies, issues:c.issues};
-  if(strategies.length) { const lead = {...d, tierGroup:d.id, tier:g.strategies[0].id, sim:1}; out.lead = {...lead, simInline: strategies.length===c.strategies.length ? sim : {...sim, graph:{...sim.graph, versions:sim.graph.versions.filter(v=>strategies.some(s=>s.id===v.id)), finals:sim.graph.finals.filter(f=>strategies.some(s=>s.id===f.id))}}}; }
-  if(!c.issues.length && out.lead) out.group = {...out.lead, grades: g.strategies.slice(1).map(st=>gradeRecipe(d, g, st))};
+  /* 2026-11-12(사용자: 균열 반지 — 하이엔드가 사실상 불가능하면 밸런스·에센셜도 안 나오고 올리기 버튼도 없었음): 계산이 된 등급만으로 레시피를 만듦 */
+  const okSt = g.strategies.filter(st=>strategies.some(x=>x.id===st.id) && !bad.has(st.id));
+  if(okSt.length) { const st0 = okSt[0], lead = st0.id===g.strategies[0].id ? {...d, tierGroup:d.id, tier:st0.id, sim:1} : {...gradeRecipe(d, g, st0), id:d.id}; out.lead = {...lead, simInline: strategies.length===c.strategies.length ? sim : {...sim, graph:{...sim.graph, versions:sim.graph.versions.filter(v=>strategies.some(s=>s.id===v.id)), finals:sim.graph.finals.filter(f=>strategies.some(s=>s.id===f.id))}}}; }
+  if(out.lead && c.issues.every(x=>x.v)) out.group = {...out.lead, grades: okSt.slice(1).map(st=>gradeRecipe(d, g, st))};
   return out; }catch(e){ return {err:String(e.message||e)}; } }
 function gradeRecipe(d, g, st){ const p=st.params, w = x => { if(!x || x.gi==null) return x; const v=p['t'+x.gi]; return v!=null ? {...x, tmax:+v} : x; };
   const nodes = d.nodes.map(n=>{ if(!n.target) return n; const t={...n.target}; if(t.gi!=null){ const v=p['t'+t.gi]; if(v!=null && n.do!=='essence') t.tmax=+v; }
