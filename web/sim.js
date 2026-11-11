@@ -63,7 +63,8 @@ function make(graph, D, craft, params){
       if(c.removed) return last.removed.some(m=>match(m,c.removed));
       if(c.unrevSide) return it.mods.some(m=>m.unrev && m.side===c.unrevSide);   // an unrevealed desecration on that side (SL 부재 목걸이: a prefix one is wiped, a suffix one revealed)
       if(c.unrev!=null) return it.mods.some(m=>m.unrev)===!!c.unrev;
-      if(c.des!=null) return it.mods.some(m=>m.des)===!!c.des;   // a revealed desecrated line is on the item (MazBro 캐스터 목걸이: the blocker)
+      if(c.des!=null) return it.mods.some(m=>m.des)===!!c.des;
+      if(c.desSide) return it.mods.some(m=>m.des && m.side===c.desSide);   /* a revealed desecrated line on that side (주문 +6 부재 목걸이 — 2026-11-12) */   // a revealed desecrated line is on the item (MazBro 캐스터 목걸이: the blocker)
       if(c.fractured) return !!last.fr && match(last.fr, c.fractured);
       if(c.full) return count(c.full)>=maxA(c.full);
       if(c.sideLt) return count(c.sideLt.side) < c.sideLt.n;
@@ -133,10 +134,12 @@ function make(graph, D, craft, params){
         const gs0=pool([m.side], m.min, ['n','d','x'], [...(graph.xsub||[]), ...(/^Altered_/.test(m.bone||'')?['Otherworldly']:[])]);   // x lines have no published weight: counted like desecrated-only lines (dW)   // reveal: 3 groups without repeats, desecrated-only groups weigh 1000 (recipes.html revealChance, emulator revealOptions)
         const draw = () => { let gs=gs0.map(g=>({g, w:g.d?dW:g.w})), out=[];
           if(m.lord){ const lg=gs.filter(x=>x.g.d && (G[x.g.gi].tg||[]).includes(m.lord+'_mod')); if(lg.length) gs=lg; }   // an Abyssal lord omen: every option is that lord's (영상 확인 2026-11-10) — recipes.html revealChance
-          while(out.length<3 && gs.length){ const x=pickW(rnd, gs); gs=gs.filter(y=>y!==x); out.push(pickW(rnd, x.g.ts)); } return out; };
+          while(out.length<3 && gs.length){ const x=pickW(rnd, gs); gs=gs.filter(y=>y!==x); let t=pickW(rnd, x.g.ts);
+            if(m.marked){ const up=x.g.ts.filter(y=>y.ti<t.ti).sort((a,c)=>c.ti-a.ti)[0]; if(up) t=up; }   /* 징표를 훼손한 옵션은 한 티어 높게(poe2db Mark of the Abyssal Lord: 'Unrevealed Desecrated modifier of a higher tier', 시한 투구 영상 22:20) — 2026-11-12 */
+            out.push(t); } return out; };
         const wt=P(n.want), want = o => wt && match({gi:o.gi, ti:o.ti}, wt);
         let os=draw(); if(!os.some(want) && oms.includes('Omen_of_Abyssal_Echoes')) os=draw();
-        const o=os.find(want)||os[0]; if(!o) return use; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true}; it.mods.push(nm); last.added.push(nm); } }
+        const o=os.find(want)||(n.missPick==='lvl' ? os.slice().sort((x,y)=>G[y.gi].t[y.ti][0]-G[x.gi].t[x.ti][0])[0] : os[0]); if(!o) return use; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true};   /* missPick 'lvl': a miss keeps the highest-level option (자리 막기, 노블 화살통 영상 8:20 — 2026-11-12) */ it.mods.push(nm); last.added.push(nm); } }
       else if(a==='fracture'){ const c=it.mods.filter(m=>!m.unrev && !m.fr); const m=c[Math.floor(rnd()*c.length)]; if(m){ m.fr=true; last.fr=m; } }
       else if(a==='rune'){ for(const k in (n.slots||{})) capR[k]+=n.slots[k]; if(/Astrid/.test(n.rune?.en||'')) astrid=true; else if(n.rune && n.swapAstrid) astrid=false; }   // a socketed rune that opens a slot (Serle's Triumph: one more suffix)
       else if(a==='quality'){ it.cq = n.q || n.count || 0; }   // catalyst quality % (count = catalysts ≈ %), used up by Catalysing Exaltation

@@ -194,40 +194,63 @@ g22('sihan-chayula-ring-v2',c,'Breach Ring',81,
 
 # ---------- 7. 시한 하이엔드 투사체 장갑 (DH4jiORLg10) ----------
 # 거대한 미트 + 콜르의 사냥, 투사체 +2 분열 + 잡옵 → 카오스 오브(투사체 추가 발사) → 좌측 찬미 + 엑잘(잡옵) → 좌측 결정화 + 발작의 에센스(치명타 피해 보너스) → 아스트리드의 창의성
-# → 좌측 찬미 + 완벽한 엑잘(물리 추가·투사체 피해·투사체 속도). 첫 접두가 빗나가면 징조 없는 소멸의 오브(지워진 게 접미면 그 단계부터),
-# 두 번째가 빗나가면 좌측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈 → 빛의 징조 + 소멸의 오브 → 다시. 마지막 접두 = 고대 갈비뼈 공개(빛의 징조로 다시).
-c='Gloves_str'; P={'high':{'pT':1,'aT':1},'bal':{'pT':2,'aT':2}}
+# → 완벽한 엑잘(접미가 차 있어 징조 없이 접두로). 첫 접두가 빗나가면 징조 없는 소멸의 오브(지워진 게 접미면 분열부터 다시),
+# 두 번째가 빗나가면 좌측 결정화 + 심연의 에센스(1/2로 잡옵이 징표로, 좋은 옵션이 지워지면 소멸의 오브) → 징표를 둔 채 완벽한 엑잘
+# → 접두 2개가 되면 징표에 고대 갈비뼈 + 메아리(한 티어 높게) → 공개(빛의 징조로 다시). 징표가 있는데 엑잘이 빗나가면 징표에 보존된 갈비뼈 → 빛의 징조로 지우고 다시.
+# 2026-11-12 영상 전체 대조(자막 0:00~27:40, 메인 세션): 접두 엑잘에 좌측 찬미를 쓰지 않음(접미가 이미 3개), 마지막 접두는 영상 추천대로 징표에 고대 갈비뼈(25:50~26:20).
+#   등급 C17: 밸런스 = 1~2티어, 마지막 접두는 한 번 공개하고 랜덤 옵션(메아리 없음).
+c='Gloves_str'; P={'high':{'pT':1,'aT':1,'g':1},'bal':{'pT':2,'aT':2,'g':0}}
 tags={'lvl':{'gi':78},'add':{'gi':72,'tmax':'$aT'},'pdmg':{'gi':67,'tmax':'$pT'},'pspd':{'gi':69,'tmax':'$pT'},'phys':{'gi':13,'tmax':'$pT'},'pre':{'anyOf':['phys','pdmg','pspd']},
       'cdb':{'gi':54},'mk':{'gi':56}}
 LV=itg('s',c,78,['lvl'],'f'); AD=itg('s',c,72,['add']); CD=itg('s',c,54,['cdb'],'c',suffix=('발작의 에센스','Essence of Hysteria'))
 PHY=itg('p',c,13,['phys']); PS=itg('p',c,69,['pspd']); PD=itg('p',c,67,['pdmg'],'d'); MK=it('p','심연의 군주의 징표','Mark of the Abyssal Lord',['mk'],'c')
 KOL=it('r','콜르의 사냥','Kolr’s Hunt',None,'r')
 I0=[KOL,LV,J('p')]; I1=[KOL,LV,AD]; I2=I1+[J('p')]; I3=I1+[CD]; I4=I3+[AST]; I5=I4+[PHY]; I6=I5+[PS]; I7=I6+[UN('p')]; I8=I6+[PD]
+IM=I5+[MK]; IMJ=I5+[MK,J('p')]; IJ=I5+[J('p')]; IMP=I6+[MK]
 G1={'all':[{'has':'add'},{'has':'cdb'}]}   # suffixes done
-def RT(first):   # after an annulment: a lost suffix → clear back to the fracture and rebuild (cheap — the point of fracturing +2 projectiles)
-    return [{'if':{'all':[{'has':'add'},{'has':'cdb'}]},'to':first,'port':'right','res':'ok'},{'to':'pc','res':'fail'}]
+F={'res':'fail','port':'right'}
+def ROUTE_(E, vis):
+    out=[]
+    for e in E:
+        e=dict(e); v=vis.get(e['to'])
+        if v is not None and not any(o['to']==e['to'] and not o.get('hide') for o in out): e.update(v if isinstance(v,dict) else {'res':v})
+        else: e['hide']=True
+        out.append(e)
+    return out
+C2={'count':{'tag':'pre','min':2}}; C1={'has':'pre'}; MKH={'has':'mk'}; JP={'junk':{'side':'p','tag':'pre'}}; FREE={'sideLt':{'side':'p','n':3}}
+def RG(vis):   # every step re-checks the item (the order follows the video's rules)
+    return ROUTE_([{'if':{'not':G1},'to':'pc'},{'if':{'unrevSide':'p'},'to':'p9'},
+       {'if':{'count':{'tag':'pre','min':3}},'to':'ok'},{'if':{'all':[{'param':{'g':0}},C2,{'full':'p'},{'not':MKH}]},'to':'ok'},
+       {'if':{'all':[C2,MKH]},'to':'p8m'},{'if':{'all':[C2,FREE]},'to':'p8'},{'if':{'all':[C2,{'des':True}]},'to':'p9x'},{'if':C2,'to':'p7m'},
+       {'if':{'all':[C1,MKH,FREE]},'to':'p7e'},{'if':{'all':[C1,MKH]},'to':'p7b'},{'if':{'all':[C1,JP,FREE]},'to':'p7m'},{'if':{'all':[C1,FREE]},'to':'p7'},{'if':C1,'to':'p6x'},
+       {'if':{'all':[MKH,JP]},'to':'p6x'},{'if':FREE,'to':'p6'},{'to':'p6x'}],vis)
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'lvl','fr':True},{'junk':'p'}]},K('거대한 미트(룬 소켓 2), 콜르의 사냥 장착 상태로 투사체 +2 분열 + 잡옵 1개','Massive Mitts (two sockets) with Kolr’s Hunt: fractured +2 projectile skills + one junk line'),I0),
  mark([0,0.6],'p2',I0),
  act('p2','main',[0,1],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),[{'if':{'has':'add'},'to':'p3','res':'ok'},{'to':'p2','res':'fail'}],I1,show=['add']),
  act('p3','main',[0,2],'exalt','Exalted_Orb',K('에센스가 지울 접두','The prefix for the essence to remove'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'p4'}],I2,omens=['Omen_of_Sinistral_Exaltation']),
  act('p4','main',[0,3],'essence','Essence_of_Hysteria',K('접두 잡옵을 지우고 치명타 피해 보너스','Swap the junk prefix for critical damage bonus'),[st('s','치명타 피해 보너스 (25—29)% 증가 (제작 옵션)','(25—29)% increased Critical Damage Bonus (crafted)')],K('에센스','Essence'),[{'to':'p5'}],I3,ess='cdb',omens=['Omen_of_Sinistral_Crystallisation']),
  RUNE22('p5',[0,4],'p6',I4),
- act('p6','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접두 첫번째 옵션','First prefix'),None,K('엑잘','Exalt'),[{'if':{'has':'pre'},'to':'p7','res':'ok'},{'to':'p6x','res':'fail'}],I5,show=['phys','pdmg','pspd'],omens=['Omen_of_Sinistral_Exaltation']),
- annul('p6x',[1,5],RT('p6'),omens=(),target=K('빗나간 접두 지우기','Remove the missed prefix')),
+ act('p6','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접두 첫번째 옵션','First prefix'),None,K('엑잘','Exalt'),RG({'p7':'ok','p6x':F}),I5,show=['phys','pdmg','pspd']),
+ annul('p6x',[1,5],RG({'p6':{'port':'right'},'pc':{'res':'fail'}}),omens=(),target=K('빗나간 접두 지우기 (좋은 옵션이 하나뿐일 때는 징조 없이)','Remove the missed prefix (no omen while only one good line)')),
  {'id':'pc','kind':'cleanup','group':'main','pos':[2,5],'keep':['lvl'],'maxJunk':1,'label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),
   'target':K('분열 + 옵션 1개만 남기기','Leave the fracture and one line'),'edges':[{'to':'p2','res':'fail'}]},
- act('p7','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'pre','min':3}},'to':'ok','res':'ok'},{'if':{'all':[{'count':{'tag':'pre','min':2}},{'not':{'full':'p'}}]},'to':'p8','res':'ok'},{'to':'p7m','res':'fail'}],I6,show=['phys','pdmg','pspd'],omens=['Omen_of_Sinistral_Exaltation']),
- act('p7m','main',[1,6],'essence','Essence_of_the_Abyss',K('접두 하나를 지우고 징표','A prefix goes for the Mark'),[st('p','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),[{'to':'p7b'}],I6,ess='mk',mark=True,omens=['Omen_of_Sinistral_Crystallisation']),
- act('p7b','main',[1,7],'desecrate','Preserved_Rib',K('징표 훼손','Desecrate the Mark'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'p7l'}],I6,fromMark=True),
- annul('p7l',[1,8],[{'if':{'all':[{'count':{'tag':'pre','min':2}},{'has':'add'},{'has':'cdb'}]},'to':'p8','res':'ok'},{'if':{'all':[{'has':'pre'},{'has':'add'},{'has':'cdb'}]},'to':'p7','port':'right','res':'ok'},{'if':{'all':[{'has':'add'},{'has':'cdb'}]},'to':'p6','res':'fail'},{'to':'pc','res':'fail'}]),
- act('p8','main',[0,7],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'p9'}],I7,omens=['Omen_of_Sinistral_Necromancy']),
- act('p9','main',[0,8],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'pre'},'to':'ok','res':'ok'},{'to':'p9x','res':'fail'}],I8,want='pre',show=['phys','pdmg','pspd'],omens=['Omen_of_Abyssal_Echoes']),
- annul('p9x',[2,8],[{'to':'p8','port':'right'}]),
+ act('p7','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),RG({'p8':'ok','p7m':F}),I6,show=['phys','pdmg','pspd']),
+ act('p7m','main',[1,6],'essence','Essence_of_the_Abyss',K('접두 하나를 징표로 (잡옵이면 성공)','A prefix becomes the Mark (good when it is the junk)'),[st('p','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),RG({'p7e':'ok','p6x':F}),IM,ess='mk',mark=True,omens=['Omen_of_Sinistral_Crystallisation']),
+ act('p7e','main',[1,7],'exalt','Perfect_Exalted_Orb',K('징표를 둔 채 접두 두번째 옵션','Second prefix with the Mark kept'),None,K('엑잘','Exalt'),RG({'p8m':'ok','p7b':F}),IMP,show=['phys','pdmg','pspd']),
+ act('p7b','main',[2,7],'desecrate','Preserved_Rib',K('징표 훼손 (지울 준비)','Desecrate the Mark (to clear it)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'p7l'}],IMJ,fromMark=True),
+ annul('p7l',[2,8],RG({'p7m':{'port':'right'}})),
+ act('p8m','main',[0,7],'desecrate','Ancient_Rib',K('징표에 훼손 (한 티어 높게)','Desecrate the Mark (one tier higher)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'p9'}],I7,fromMark=True),
+ act('p8','main',[1,8],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'p9'}],I7,omens=['Omen_of_Sinistral_Necromancy']),
+ act('p9','main',[0,8],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),RG({'ok':'ok','p9x':F}),I8,want='pre',show=['phys','pdmg','pspd'],omens=['Omen_of_Abyssal_Echoes'],
+     over=[{'param':{'g':0},'set':{'omens':[],'goal':K('훼손 옵션 확인 (나오는 대로)','Reveal (keep what comes)')}}]),
+ annul('p9x',[2,9],RG({'p8':{'port':'right'}})),
  done([0,9])]
 g22('sihan-proj-gloves-v2',c,'Massive Mitts',80,
   '시한 하이엔드 투사체 장갑(DH4jiORLg10) — 콜르의 사냥 + 투사체 +2 분열 → 카오스 오브(추가 발사) → 좌측 찬미 잡옵 + 좌측 결정화 + 발작의 에센스 → 아스트리드 → 좌측 찬미 + 완벽한 엑잘 접두 2개(첫째 빗나가면 소멸의 오브, 둘째 빗나가면 심연의 에센스 징표 → 보존된 갈비뼈 → 빛의 징조) → 고대 갈비뼈 공개. 하이엔드 = 1티어(영상), 밸런스 = 1~2티어(영상: 2티어는 금방). 콜르 옵션 가중치는 추정.',
-  {'pT':{'kr':'접두 3개','en':'Three prefixes','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'aT':{'kr':'투사체 추가 발사','en':'Additional projectile','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},P,
-  {'high':K('영상: 접두 1티어 3개','Video: three tier 1 prefixes'),'bal':K('접두 1~2티어','T1–2 prefixes')},
-  tags,nodes,[{'id':'L1','nodes':['p7m','p7b','p7l'],'kr':'접두 하나만 지우기','en':'Remove one prefix'},{'id':'L2','nodes':['p8','p9','p9x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(VHB,lambda v:[{'tag':'phys','tmax':1 if v=='high' else 2},{'tag':'pspd','tmax':1 if v=='high' else 2},{'tag':'pdmg','tmax':1 if v=='high' else 2,'des':True},{'tag':'lvl','fr':True},{'tag':'add','tmax':1 if v=='high' else 2},{'tag':'cdb','ess':True}]),
-  {'quality':20,'sockets':2},{'all':[{'has':'lvl'},{'has':'add'},{'has':'cdb'},{'count':{'tag':'pre','min':3}}]},VHB,xsub=["Kolr's Hunt"],xroll=True)
+  {'pT':{'kr':'접두','en':'Prefixes','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'aT':{'kr':'투사체 추가 발사','en':'Additional projectile','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},
+   'g':{'kr':'마지막 접두(훼손)','en':'Last prefix (desecrated)','values':TV({'1':('목표 옵션까지 반복','Repeat until a wanted line'),'0':('랜덤 옵션','Random line')})}},P,
+  {'high':K('영상: 접두 1티어 3개','Video: three tier 1 prefixes'),'bal':K('1~2티어, 마지막 훼손 접두는 랜덤 옵션','T1–2, the last desecrated prefix random')},
+  tags,nodes,[{'id':'L1','nodes':['p7m','p7e','p7b','p7l'],'kr':'징표로 접두 하나 지우기','en':'Clear a prefix with the Mark'},{'id':'L2','nodes':['p8m','p8','p9','p9x'],'kr':'훼손 공개','en':'Reveal'}],
+  FIN(VHB,lambda v:[{'tag':'phys','tmax':1},{'tag':'pspd','tmax':1},{'tag':'pdmg','tmax':1,'des':True},{'tag':'lvl','fr':True},{'tag':'add','tmax':1},{'tag':'cdb','ess':True}] if v=='high' else
+      [{'side':'p','label':K('물리 피해 추가·투사체 속도·투사체 피해 1~2티어','T1–2 flat physical, projectile speed or projectile damage')},{'side':'p','label':K('물리 피해 추가·투사체 속도·투사체 피해 1~2티어','T1–2 flat physical, projectile speed or projectile damage')},{'side':'p','random':True},{'tag':'lvl','fr':True},{'tag':'add','tmax':2},{'tag':'cdb','ess':True}]),
+  {'quality':20,'sockets':2},{'all':[{'has':'lvl'},{'has':'add'},{'has':'cdb'},{'any':[{'count':{'tag':'pre','min':3}},{'all':[{'param':{'g':0}},{'count':{'tag':'pre','min':2}},{'full':'p'}]}]}]},VHB,xsub=["Kolr's Hunt"],xroll=True)

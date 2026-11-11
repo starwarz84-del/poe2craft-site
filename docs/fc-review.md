@@ -8,6 +8,7 @@
 - 끝나면 '완료' + 날짜 + 한 줄 결과(바꾼 곳, 시뮬 비용 전·후). 자세한 기록은 `docs/recipe-notes.md`.
 - 점검 순서: 영상(자막 + 화면) → 플로우차트 단계마다 영상 시점 확인 → 영상에 없는 단계 정리(영상대로가 원칙, 더 싼 길은 기록만 — 정책 0장 3번, 11-12) → 들어오는 선·숨긴 선 → 등급(정책 10장 C17: 반복 목표 티어 1 / 1~2 / 1~4, 마지막 옵션 잡옵 도박은 하이엔드만, 에센셜은 빛의 징조 없음, 같으면 높은 등급만) → 시뮬 → 레시피 화면 확인.
 - 검사 도구: `python3 tools/test/fcaudit.py`(전수), `python3 tools/test/fc_noinput.py`(들어오는 선).
+- 알림(A, 11-12): `site/sim.js`가 바뀜 — 징표를 훼손한 공개는 한 티어 높게, 선 번호별 통과 수(`edgesI`), 공개 빗나감에 가장 높은 레벨 옵션 고르기(`missPick:'lvl'`), 조건 `desSide`. B가 맡은 mazbro-bis-chest-v2·diztoh-iceshot-bow-v2 시뮬은 다시 돌려야 새 규칙이 반영됨. `recipes.html` 준비 구간 계산이 플로우차트 합계를 같이 쓰던 문제도 고침(엔진 비교값이 두 배로 나오던 것).
 
 | 플로우차트 | 영상 | 등급 비용(div, 점검 전) | 검사 문제 | 상태 | 세션 | 메모 |
 |---|---|---|---|---|---|---|
@@ -16,16 +17,16 @@
 | xeno-phys-crossbow-v2 | 1TP4aGqxU7Q | high 7,227 | 7 | 완료 11-11 | A(Opus) | 자막 없음 → 화면 직접 확인(4:45~9:55, 기록 tools/notes/xeno-1TP4aGqxU7Q.md). 그래프가 영상과 맞아 그대로(순서만 사용자 확정 11-09). 7,227 그대로. 영상에 없는 더 싼 투사체 길(우측 소멸 + 상위 찬미 엑잘, 약 5,840)은 사용자 확인 대기 |
 | barricade-quarterstaff-v2 | B4yShuKydt0 | high 4,068, bal 387 | 2 | 완료 11-11 | A(Opus) | 자막 전체 확인. 81 동률 잡옵만 영상대로 좌측 소멸 1/3 → 엑잘. 근접 +5 과정은 영상에 없어 추정. 2,617 / 346(4,068은 옛 시뮬값, 원래 그래프도 지금 2,636) |
 | mazbro-bis-chest-v2 | LUB59xlkNtk | high 3,023, bal 960 | 15 | 대조만 끝남 | B(Fable) | 영상 기록 tools/notes/mazbro-LUB59xlkNtk.md. 접두 엑잘·절사 카오스를 상위로 바꾸면 조금 쌈(시뮬 확인) — 아직 안 고침 |
-| sihan-highend-helmet-v2 | CTrIbhQVU8U | high 2,616, bal 180 | 1 | 진행 중 | A(Opus) |  |
-| noble-visceral-quiver-v2 | 2PUEwoePtRs | high 2,240, bal 110 | 3 | 진행 중 | A(Opus) |  |
+| sihan-highend-helmet-v2 | CTrIbhQVU8U | high 2,616, bal 180 | 1 | 완료 11-12 | A(Opus) | 자막 전체(0:00~27:20) 대조, 단계 일치. 기록 tools/notes/sihan-CTrIbhQVU8U.md. 징표 훼손 한 티어 높게(시뮬 규칙 추가). 2,642/181 → 2,613/202 |
+| noble-visceral-quiver-v2 | 2PUEwoePtRs | high 2,240, bal 110 | 3 | 완료 11-12 | A(Opus) | 자막 없음 → 화면 자막 0:00~11:47 전체(기록 tools/notes/noble-2PUEwoePtRs.md). 영상대로 다시 만듦: 남은 접미 훼손을 먼저 공개해 가장 높은 레벨 옵션으로 자리 막기 → 접두 엑잘 → 절사 카오스(막기가 가장 낮으면 빛의 징조로 다시 훼손) → 막기 지우고 보존된 턱뼈로 투사체. 2,240/110 → 1,416/110 |
 | diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 대기 | | 제작 옵션 한도 위반(l1·l2) 남음 |
-| breach-ring-video-v2 | RiJixgqBnBY | high 1,956, bal 934 | 4 | 진행 중 | A(Opus) |  |
-| sihan-proj-gloves-v2 | DH4jiORLg10 | high 1,659, bal 327 | 2 | 진행 중 | A(Opus) |  |
-| sl-blacksteel-gauntlets-v2 | J7J8Jo7ibvE | high 1,649, bal 140 | 4 | 진행 중 | A(Opus) |  |
-| sl-flamewave-ring-v2 | UAF91gEFRkM | high 1,423, bal 371 | 2 | 진행 중 | A(Opus) |  |
-| absent-amulet-spell6-v2 | Yi1u0LhJztI | high 1,330, bal 756 | 10 | 진행 중 | A(Opus) |  |
-| sl-flamewave-staff-v2 | 6EzSVUItzsg | high 1,296, bal 178 | 3 | 진행 중 | A(Opus) |  |
-| mazbro-caster-amulet-v2 | 4PazhuHwdL8 | high 1,154, bal 428 | 5 | 진행 중 | A(Opus) |  |
+| breach-ring-video-v2 | RiJixgqBnBY | high 1,956, bal 934 | 4 | 완료 11-12 | A(Opus) | 자막 전체(0:00~31:50) 대조, 권장 순서와 일치(기록 tools/notes/sl-breach-RiJixgqBnBY.md). 1,956/934 → 1,956/651(밸런스 마지막 훼손 접두 랜덤) |
+| sihan-proj-gloves-v2 | DH4jiORLg10 | high 1,659, bal 327 | 2 | 완료 11-12 | A(Opus) | 자막 전체(0:00~27:40) 대조(기록 tools/notes/sihan-DH4jiORLg10.md). 접두 엑잘의 좌측 찬미 뺌(접미가 이미 3개), 두 번째 접두 실패 = 심연 징표를 둔 채 엑잘 → 징표에 고대 갈비뼈(영상 추천). 1,659/327 → 1,619/282 |
+| sl-blacksteel-gauntlets-v2 | J7J8Jo7ibvE | high 1,649, bal 140 | 4 | 완료 11-12 | A(Opus) | 자막엔 제작 설명 없음 → 6:12 슬라이드 직접 확대 확인(14단계 일치). 슬라이드에 없는 메아리 뺌. 1,649/140 → 1,794/874(밸런스 두번째 접미도 1~2티어까지 반복, 상위 오브) |
+| sl-flamewave-ring-v2 | UAF91gEFRkM | high 1,423, bal 371 | 2 | 완료 11-12 | A(Opus) | 자막 전체(0:00~11:20) 대조, 단계·커런시 일치로 바꾸지 않음(기록 tools/notes/sl-UAF91gEFRkM.md). 1,423/371 그대로 |
+| absent-amulet-spell6-v2 | Yi1u0LhJztI | high 1,330, bal 756 | 10 | 완료 11-12 | A(Opus) | 자막 전체(0:00~42:38) + 화면 27:00~34:00(기록 tools/notes/banzino-Yi1u0LhJztI.md). 균열의 에센스에 좌측 결정화 추가, 접미 훼손을 막기로 먼저 공개, 엑잘 빗나감 = 빛의 징조 + 심연 징표 → 고대 빗장뼈 공개(영상 29:30~31:20), 시전 속도는 고대 빗장뼈. 마나가 엑잘·징표 중 어디서 붙었는지는 화면으로 확인 못 함. 1,330/756 → 2,515/216 |
+| sl-flamewave-staff-v2 | 6EzSVUItzsg | high 1,296, bal 178 | 3 | 완료 11-12 | A(Opus) | 자막 전체(0:00~15:13) 대조, 단계 일치(기록 tools/notes/sl-6EzSVUItzsg.md). 1,296/178 → 1,296/40(밸런스 마지막 접두·접미 랜덤) |
+| mazbro-caster-amulet-v2 | 4PazhuHwdL8 | high 1,154, bal 428 | 5 | 완료 11-12 | A(Opus) | 자동 번역 자막 전체(0:00~39:40) 대조, 영상 가이드 1~11단계와 일치(기록 tools/notes/mazbro-4PazhuHwdL8.md). 1,154/428 → 1,154/410 |
 | sihan-highend-boots-v2 | dlrD21AcCUE | high 1,147, bal 650, ess 314 | 2 | 대기 |  |  |
 | grasping-mail-spell1-v2 | y5Ch3AJpl5c | high 1,140, bal 613 | 11 | 대기 |  |  |
 | sl-proj7-gloves-v2 | XMYJh3CnXuY | high 1,104, bal 785 | 7 | 완료 11-11 | B(Fable) | 자막 전체 대조. 합금 실패 뒤 길을 보이는 선 + 규칙에 맞게(우측 소멸의 징조로 접미 비우기). 1,104·785 |
@@ -96,14 +97,14 @@
 
 | 플로우차트 | 등급 | 기준과 다른 티어 범위(자동 검사) | 상태 | 세션 | 메모 |
 |---|---|---|---|---|---|
-| absent-amulet-spell6-v2 | bal·high | - | 대기 |  |  |
+| absent-amulet-spell6-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 = 주문 +3까지, 마지막 접두·접미 랜덤 — 756 → 216 |
 | absent-amulet-video-v2 | bal·high | - | 대기 |  |  |
 | banzino-mirror-staff-v2 | bal·high | - | 완료 11-12 | A(Opus) 하이엔드만 레시피(극한). 플로우차트 밸런스: 시전 속도·훼손 접두 1~2티어, 마지막 접두·접미 랜덤 — 3,325 → 664 |
 | barricade-quarterstaff-v2 | bal·high | - | 완료 11-12 | A(Opus) 밸런스 원소 피해 접두 2개 1~2티어(전엔 1개), 세번째 랜덤 — 346 → 619. 하이엔드 2,617 그대로 |
 | belton-plus8-wand-v2 | ess·bal | ess 주문 피해 1~5티어; ess 마나 재생 1~3티어; bal 주문 피해 1~3티어; bal 마나 재생 1티어 | 대기 |  |  |
 | bigdaddy-lightning-wand-v2 | ess·bal | - | 대기 |  |  |
 | breach-ring-phys-v2 | ess·bal | ess 화염 저항 1~3티어; bal 공격 시 원소 피해 1~3티어 | 대기 |  |  |
-| breach-ring-video-v2 | bal·high | - | 대기 |  |  |
+| breach-ring-video-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 접미 1~2티어, 마지막 훼손 접두 랜덤(메아리 없음) — 934 → 651 |
 | chiba-timelost-emerald-v2 | bal·high | - | 대기 |  |  |
 | diztoh-5mod-emerald-v2 | ess·bal | - | 대기 |  |  |
 | diztoh-5mod-sapphire-v2 | ess·bal | - | 대기 |  |  |
@@ -136,14 +137,14 @@
 | lilbotq-emerald-v2 | bal | - | 대기 |  |  |
 | mastert-timelost-emerald-v2 | bal·high | - | 대기 |  |  |
 | mazbro-bis-chest-v2 | bal·high | - | 대기 |  |  |
-| mazbro-caster-amulet-v2 | bal·high | - | 대기 |  |  |
+| mazbro-caster-amulet-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 시전 속도·마나 1~2티어, 마지막 접두·접미 랜덤 — 428 → 410 |
 | mazbro-caster-ring-v2 | ess·bal | ess 옵션 티어 1~3티어 | 대기 |  |  |
 | mazbro-proj-gloves-v2 | bal·high | - | 대기 |  |  |
 | mazbro-sceptre-v2 | high | - | 대기 |  |  |
 | mazbro-spell5-amulet-v2 | bal·high | - | 대기 |  |  |
 | mirror-bow-video-v2 | high | - | 완료 11-12 | A(Opus) 하이엔드만(극한), 바꿀 것 없음 |
 | noble-timelost-sapphire-v2 | bal·high | - | 대기 |  |  |
-| noble-visceral-quiver-v2 | bal·high | bal 치명타 피해 1~3티어; high 치명타 피해 1~2티어 | 대기 |  |  |
+| noble-visceral-quiver-v2 | bal·high | bal 치명타 피해 1~3티어; high 치명타 피해 1~2티어 | 완료 11-12 | A(Opus) | 하이엔드 모두 1티어(영상 '치피 1티'), 밸런스 1~2티어·마지막 접두·접미 랜덤 — 110 → 110 |
 | ragna-ashot-bow-v2 | ess·bal | ess 물리 피해 % 1~3티어; bal 물리 피해 % 1티어 | 대기 |  |  |
 | ragna-spell4-amulet-v2 | ess·bal | ess 정신력 (분열) 1~3티어; bal 정신력 (분열) 1티어 | 대기 |  |  |
 | sane-resist-belt-v2 | ess·bal | ess 생명력 1~3티어; ess 번개 저항 1~3티어; bal 생명력 1티어 | 대기 |  |  |
@@ -159,12 +160,12 @@
 | sihan-chayula-sceptre-v2 | ess·bal | ess 접근 효과 범위 1~2티어; ess 정신력 % + 마나 1~6티어; bal 접근 효과 범위 1티어; bal 정신력 % + 마나 1~4티어 | 대기 |  |  |
 | sihan-chayula-wand-v2 | ess·bal | ess 주문 치명타 명중 확률 1~3티어 | 대기 |  |  |
 | sihan-highend-boots-v2 | ess·bal·high | ess 저항 목표 1~2티어; ess 훼손 접두 목표 1~3티어 | 대기 |  |  |
-| sihan-highend-helmet-v2 | bal·high | high 저항 1~3티어 (상위 카오스) | 대기 |  |  |
-| sihan-proj-gloves-v2 | bal·high | - | 대기 |  |  |
+| sihan-highend-helmet-v2 | bal·high | high 저항 1~3티어 (상위 카오스) | 완료 11-12 | A(Opus) | 밸런스 방어도 1~2티어, 마지막 접미(저항) 랜덤 — 181 → 202 |
+| sihan-proj-gloves-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 1~2티어, 마지막 훼손 접두 랜덤 — 327 → 282 |
 | sl-5mod-jewel-v2 | ess·bal | - | 대기 |  |  |
-| sl-blacksteel-gauntlets-v2 | bal·high | - | 대기 |  |  |
-| sl-flamewave-ring-v2 | bal·high | - | 대기 |  |  |
-| sl-flamewave-staff-v2 | bal·high | - | 대기 |  |  |
+| sl-blacksteel-gauntlets-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 두번째 접미도 1~2티어 반복(상위 카오스), 마지막 접두·접미 랜덤 — 140 → 874 |
+| sl-flamewave-ring-v2 | bal·high | - | 완료 11-12 | A(Opus) | 이미 기준대로(저항 1~2티어, 마지막 접미 랜덤, 훼손 핵심 옵션은 반복) — 371 그대로 |
+| sl-flamewave-staff-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 접두 반복 1~2티어, 마지막 접두·접미 랜덤 — 178 → 40 |
 | sl-proj7-gloves-v2 | bal·high | - | 대기 |  |  |
 | tankjung-kitava-shield-v2 | ess·bal | ess 최대 저항 1~3티어; bal 최대 저항 1티어; bal 방어도 접두 1티어 옵션 3개 (절사) | 대기 |  |  |
 | unstoppable-slipstrike-vest-v2 | bal·high | bal 굴절 1~4티어; high 굴절 1~3티어 | 완료 11-12 | A(Opus) 하이엔드 굴절 1~3 → 1티어(651 → 1,368), 밸런스 1~2티어 + 마지막 접미 랜덤(176 → 74) |

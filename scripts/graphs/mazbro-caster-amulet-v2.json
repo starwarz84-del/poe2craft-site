@@ -19,19 +19,35 @@
      "en": "As it comes"
     }
    }
+  },
+  "pT": {
+   "kr": "시전 속도·마나 등",
+   "en": "Cast speed, mana etc.",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
   }
  },
  "strategies": [
   {
    "id": "high",
    "params": {
-    "v": 1
+    "v": 1,
+    "pT": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "v": 2
+    "v": 2,
+    "pT": 2
    }
   }
  ],
@@ -41,11 +57,12 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "v": 2
+    "v": 2,
+    "pT": 2
    },
    "desc": {
-    "kr": "절사 카오스 한 번(결과 그대로), 공개 결과 그대로",
-    "en": "One Whittling chaos, reveal kept"
+    "kr": "1~2티어, 절사 카오스 한 번(랜덤 옵션), 공개 결과 그대로",
+    "en": "T1–2, one Whittling chaos (random line), reveal kept"
    }
   },
   {
@@ -53,7 +70,8 @@
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "v": 1
+    "v": 1,
+    "pT": 1
    },
    "desc": {
     "kr": "영상: 절사 카오스로 좋은 접두 2개, 쿠르갈 공개는 빛의 징조로 다시",
@@ -75,15 +93,15 @@
   },
   "cs": {
    "gi": 32,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "cr": {
    "gi": 24,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "cd": {
    "gi": 25,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "gs": {
    "anyOf": [
@@ -94,15 +112,15 @@
   },
   "mp": {
    "gi": 12,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "mf": {
    "gi": 11,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "sd": {
    "gi": 31,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "gp": {
    "anyOf": [
@@ -231,8 +249,11 @@
      "fr": true
     },
     {
-     "tag": "mf",
-     "tmax": 1
+     "side": "p",
+     "label": {
+      "kr": "마나 %·마나 최대치·주문 피해 1~2티어",
+      "en": "T1–2 % mana, maximum mana or spell damage"
+     }
     },
     {
      "side": "p",
@@ -243,8 +264,11 @@
      "tmax": 1
     },
     {
-     "tag": "cs",
-     "tmax": 1
+     "side": "s",
+     "label": {
+      "kr": "시전 속도·치명타 확률·치명타 피해 1~2티어",
+      "en": "T1–2 cast speed, crit chance or crit damage"
+     }
     },
     {
      "side": "s",

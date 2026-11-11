@@ -1361,7 +1361,7 @@ const phaseSumHTML = (x, c) => { if(!x && !c) return ''; const b = x && isFinite
   return `<small class="phsum">${x?`${L('목표 도달','Reaches the goal')} ${pct(x.reach)}`:''}${b}${x?cs:cs.replace(/^ · /,'')}</small>`; };
 // the steps cut into the starting state (the fractured base): folded under the base step, with their own cost, not in the totals
 function prepRecipe(r){ if(!r.prep) return null; if(r._prep) return r._prep;
-  const P={...r, id:r.id+'~prep', start:r.prep.start, nodes:r.prep.nodes, phases:r.prep.phases?.length ? r.prep.phases : [{id:'prep', kr:'준비', en:'Prep'}], quality:r.prep.quality, sockets:r.sockets, prep:null, _an:null, _prep:null};
+  const P={...r, id:r.id+'~prep', start:r.prep.start, nodes:r.prep.nodes, phases:r.prep.phases?.length ? r.prep.phases : [{id:'prep', kr:'준비', en:'Prep'}], quality:r.prep.quality, sockets:r.sockets, prep:null, _an:null, _prep:null, fcRead:null, fc:null};   /* 준비 구간은 플로우차트 읽기 값(본 공정 합계)을 쓰지 않음 — 2026-11-12 */
   P.nodes.forEach(n=>{ if(!P.phases.some(ph=>ph.id===n.phase)) n.phase=P.phases[0].id; });
   return r._prep=P; }
 function prepHTML(r){

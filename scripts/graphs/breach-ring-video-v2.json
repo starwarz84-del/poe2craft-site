@@ -6,20 +6,6 @@
  "ilvl": 80,
  "note": "SL 원소 3플랫 재련된 균열 반지(RiJixgqBnBY) — 원소 플랫 1티어 분열 + 잡옵 → 균열의 에센스 → 강탈자 기폭제 65% → 바알 촉진시키는 주입기 1번 → 카오스 오브(접미) → 우측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브 뒤 다시) → 좌측 찬미 + 엑잘 → 좌측 결정화 + 재빠른 합금 → 완벽한 엑잘(빗나가면 좌측 소멸의 징조 + 완벽한 엑잘 반복) → 고대 빗장뼈 + 심연의 메아리(빛의 징조로 다시). 하이엔드 = 영상(원소 플랫 1티어), 밸런스 = 원소 플랫 1~2티어.",
  "params": {
-  "v": {
-   "kr": "진행",
-   "en": "Route",
-   "values": {
-    "1": {
-     "kr": "영상",
-     "en": "Video"
-    },
-    "2": {
-     "kr": "결과 그대로",
-     "en": "As it comes"
-    }
-   }
-  },
   "pT": {
    "kr": "원소 플랫",
    "en": "Elemental flats",
@@ -33,21 +19,51 @@
      "en": "T1–2"
     }
    }
+  },
+  "sT": {
+   "kr": "접미 (저항·희귀도)",
+   "en": "Suffixes",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "g": {
+   "kr": "마지막 접두(훼손)",
+   "en": "Last prefix (desecrated)",
+   "values": {
+    "1": {
+     "kr": "원소 플랫까지 반복",
+     "en": "Repeat until a flat"
+    },
+    "0": {
+     "kr": "랜덤 옵션",
+     "en": "Random line"
+    }
+   }
   }
  },
  "strategies": [
   {
    "id": "high",
    "params": {
-    "v": 1,
-    "pT": 1
+    "pT": 1,
+    "sT": 1,
+    "g": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "v": 2,
-    "pT": 2
+    "pT": 2,
+    "sT": 2,
+    "g": 0
    }
   }
  ],
@@ -57,12 +73,13 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "v": 2,
-    "pT": 2
+    "pT": 2,
+    "sT": 2,
+    "g": 0
    },
    "desc": {
-    "kr": "원소 플랫 1~2티어 (영상: 너무 안 뜨면 2티어로 타협)",
-    "en": "T1–2 elemental flats (video: settle for T2 if it drags)"
+    "kr": "1~2티어 (영상: 너무 안 뜨면 2티어로 타협), 마지막 훼손 접두는 랜덤 옵션",
+    "en": "T1–2 (video: settle for T2 if it drags), the last desecrated prefix random"
    }
   },
   {
@@ -70,8 +87,9 @@
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "v": 1,
-    "pT": 1
+    "pT": 1,
+    "sT": 1,
+    "g": 1
    },
    "desc": {
     "kr": "영상: 원소 플랫 모두 1티어",
@@ -101,11 +119,11 @@
   },
   "ar": {
    "gi": 7,
-   "tmax": 1
+   "tmax": "$sT"
   },
   "rs": {
    "gi": 27,
-   "tmax": 1
+   "tmax": "$sT"
   },
   "as": {
    "gi": 73
@@ -127,10 +145,32 @@
  "require": {
   "all": [
    {
-    "count": {
-     "tag": "fl",
-     "min": 3
-    }
+    "any": [
+     {
+      "count": {
+       "tag": "fl",
+       "min": 3
+      }
+     },
+     {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "count": {
+         "tag": "fl",
+         "min": 2
+        }
+       },
+       {
+        "full": "p"
+       }
+      ]
+     }
+    ]
    },
    {
     "has": "ar"
@@ -234,17 +274,16 @@
      "tmax": 2
     },
     {
-     "tag": "lf",
-     "tmax": 2,
-     "des": true
+     "side": "p",
+     "random": true
     },
     {
      "tag": "ar",
-     "tmax": 1
+     "tmax": 2
     },
     {
      "tag": "rs",
-     "tmax": 1
+     "tmax": 2
     },
     {
      "tag": "as",
@@ -1029,6 +1068,15 @@
      "res": "ok"
     },
     {
+     "if": {
+      "param": {
+       "g": 0
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
      "to": "d2x",
      "res": "fail",
      "port": "right"
@@ -1097,6 +1145,20 @@
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "omens": [],
+      "goal": {
+       "kr": "훼손 옵션 확인 (나오는 대로)",
+       "en": "Reveal (keep what comes)"
+      }
+     }
+    }
    ]
   },
   {

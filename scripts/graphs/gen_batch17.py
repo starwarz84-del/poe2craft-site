@@ -10,8 +10,10 @@ _src=open(f'{H}/gen_batch16.py').read(); exec(_src[:_src.index('# ---------- 1. 
 # → 좌측 찬미 + 엑잘(접두 잡옵) → 좌측 결정화 + 재빠른 합금(공격 속도) → 완벽한 엑잘 1번(상위 찬미 없이) → 빗나가면 좌측 소멸의 징조 + 완벽한 엑잘 반복(평균 약 50번, 영상 59번, "2티어 타협도 좋음")
 # → 마지막 접두는 고대 빗장뼈 + 심연의 메아리(영상 17개). 75% 퀄리티 본편과 디바인·축성·타락은 뺌.
 # 하이엔드 = 영상(원소 플랫 모두 1티어), 밸런스 = 원소 플랫 1~2티어(영상: 너무 안 뜨면 2티어로 타협).
+# 2026-11-12 영상 전체 대조(자막 0:00~31:50, 메인 세션) — 권장 순서(3:00~4:20)와 본편(27:00~29:20: 우측 찬미 완벽한 엑잘 6번째 성공, 좌측 소멸 59개, 고대 빗장뼈 + 메아리 17개) 모두 일치.
+#   등급 C17: 밸런스 = 접미 1~2티어, 마지막 접두(훼손)는 한 번 공개하고 랜덤 옵션(메아리 없음). 빗나간 공개를 지우는 빛의 징조는 영상에 말이 없어 내부 결정.
 FLS=[('ff',15),('cf',17),('lf',19)]
-tags={**{n:{'gi':g,'tmax':'$pT'} for n,g in FLS},'fr':{'gi':15,'tmax':1},'mq':{'gi':71},'ar':{'gi':7,'tmax':1},'rs':{'gi':27,'tmax':1},'as':{'gi':73},
+tags={**{n:{'gi':g,'tmax':'$pT'} for n,g in FLS},'fr':{'gi':15,'tmax':1},'mq':{'gi':71},'ar':{'gi':7,'tmax':'$sT'},'rs':{'gi':27,'tmax':'$sT'},'as':{'gi':73},
       'fl':{'anyOf':[n for n,_ in FLS]},'gs':{'anyOf':['ar','rs']}}
 FF=it('p','공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)','Adds (25—29) to (37—45) Fire damage to Attacks (fractured)',['fr'])
 CF=it('p','공격 시 냉기 피해 (21—24)~(32—37) 추가','Adds (21—24) to (32—37) Cold damage to Attacks',['cf'])
@@ -34,16 +36,18 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'fr','fr':True},{'junk':'s'}]},K('
  act('p1','main',[0,8],'exalt','Perfect_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'fl','min':2}},'to':'d1','res':'ok'},{'to':'p1x',**F}],B6,show=['cf','lf']),
  annul('p1x',[1,8],[{'to':'p1'}],omens=('Omen_of_Sinistral_Annulment',),target=K('접두 잡옵 지우기','Remove the junk prefix')),
  act('d1','main',[0,9],'desecrate','Ancient_Collarbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],B7),
- act('d2','main',[0,10],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'count':{'tag':'fl','min':3}},'to':'ok','res':'ok'},{'to':'d2x',**F}],B8,want='fl',show=['cf','lf'],omens=['Omen_of_Abyssal_Echoes']),
+ act('d2','main',[0,10],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'count':{'tag':'fl','min':3}},'to':'ok','res':'ok'},{'if':{'param':{'g':0}},'to':'ok','res':'ok'},{'to':'d2x',**F}],B8,want='fl',show=['cf','lf'],omens=['Omen_of_Abyssal_Echoes'],
+     over=[{'param':{'g':0},'set':{'omens':[],'goal':K('훼손 옵션 확인 (나오는 대로)','Reveal (keep what comes)')}}]),
  LIGHTX('d2x',[1,10],'d1'),
  done([0,11])]
 graph11('breach-ring-video-v2','Rings','Refined Breach Ring',80,
   'SL 원소 3플랫 재련된 균열 반지(RiJixgqBnBY) — 원소 플랫 1티어 분열 + 잡옵 → 균열의 에센스 → 강탈자 기폭제 65% → 바알 촉진시키는 주입기 1번 → 카오스 오브(접미) → 우측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브 뒤 다시) → 좌측 찬미 + 엑잘 → 좌측 결정화 + 재빠른 합금 → 완벽한 엑잘(빗나가면 좌측 소멸의 징조 + 완벽한 엑잘 반복) → 고대 빗장뼈 + 심연의 메아리(빛의 징조로 다시). 하이엔드 = 영상(원소 플랫 1티어), 밸런스 = 원소 플랫 1~2티어.',
-  {**ROUTE,'pT':{'kr':'원소 플랫','en':'Elemental flats','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},PT,
-  {'high':K('영상: 원소 플랫 모두 1티어','Video: every elemental flat T1'),'bal':K('원소 플랫 1~2티어 (영상: 너무 안 뜨면 2티어로 타협)','T1–2 elemental flats (video: settle for T2 if it drags)')},tags,nodes,
+  {'pT':{'kr':'원소 플랫','en':'Elemental flats','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'sT':{'kr':'접미 (저항·희귀도)','en':'Suffixes','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},
+   'g':{'kr':'마지막 접두(훼손)','en':'Last prefix (desecrated)','values':TV({'1':('원소 플랫까지 반복','Repeat until a flat'),'0':('랜덤 옵션','Random line')})}},{'high':{'pT':1,'sT':1,'g':1},'bal':{'pT':2,'sT':2,'g':0}},
+  {'high':K('영상: 원소 플랫 모두 1티어','Video: every elemental flat T1'),'bal':K('1~2티어 (영상: 너무 안 뜨면 2티어로 타협), 마지막 훼손 접두는 랜덤 옵션','T1–2 (video: settle for T2 if it drags), the last desecrated prefix random')},tags,nodes,
   [{'id':'L1','nodes':['p1','p1x'],'kr':'접두 원소 플랫','en':'Prefix flat'},{'id':'L2','nodes':['d1','d2','d2x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'fr','tmax':1,'fr':True},{'tag':'cf','tmax':1 if v=='high' else 2},{'tag':'lf','tmax':1 if v=='high' else 2,'des':True},{'tag':'ar','tmax':1},{'tag':'rs','tmax':1},{'tag':'as','ess':True}]),
-  {'quality':66,'sockets':0},{'all':[{'count':{'tag':'fl','min':3}},{'has':'ar'},{'has':'rs'},{'has':'as'}]},('high','bal'))
+  FIN(('high','bal'),lambda v:[{'tag':'fr','tmax':1,'fr':True},{'tag':'cf','tmax':1 if v=='high' else 2}]+([{'tag':'lf','tmax':1,'des':True}] if v=='high' else [{'side':'p','random':True}])+[{'tag':'ar','tmax':1 if v=='high' else 2},{'tag':'rs','tmax':1 if v=='high' else 2},{'tag':'as','ess':True}]),
+  {'quality':66,'sockets':0},{'all':[{'any':[{'count':{'tag':'fl','min':3}},{'all':[{'param':{'g':0}},{'count':{'tag':'fl','min':2}},{'full':'p'}]}]},{'has':'ar'},{'has':'rs'},{'has':'as'}]},('high','bal'))
 
 # ---------- 2. SaVeQ 집중구 (R43FVay8_XI) ----------
 # 영상(첫 번째 집중구): 퀄리티 22% · 상위 마술의 에센스 주문 피해 분열 · 에너지 보호막 1티어 · 모든 주문 스킬 +2 · 접두 잡옵(훼손 공개 "아무거나")

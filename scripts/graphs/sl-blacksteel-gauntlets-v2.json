@@ -35,16 +35,16 @@
    }
   },
   "v": {
-   "kr": "진행",
-   "en": "Route",
+   "kr": "마지막 접두·접미",
+   "en": "Last prefix and suffix",
    "values": {
     "1": {
-     "kr": "영상 (다시 도전)",
-     "en": "Video (retry)"
+     "kr": "목표 옵션까지 반복",
+     "en": "Repeat until a wanted line"
     },
     "2": {
-     "kr": "결과 그대로",
-     "en": "As it comes"
+     "kr": "랜덤 옵션",
+     "en": "Random line"
     }
    }
   }
@@ -78,8 +78,8 @@
     "v": 2
    },
    "desc": {
-    "kr": "1~2티어, 결과 그대로",
-    "en": "T1–2, keep what lands"
+    "kr": "1~2티어, 마지막 접두·접미는 랜덤 옵션",
+    "en": "T1–2, the last prefix and suffix random"
    }
   },
   {
@@ -225,20 +225,29 @@
      "fr": true
     },
     {
-     "tag": "ig",
-     "tmax": 2
+     "side": "p",
+     "label": {
+      "kr": "점화 강도·피해 가속 1~2티어",
+      "en": "T1–2 ignite magnitude or ailment acceleration"
+     }
     },
     {
-     "tag": "fa",
-     "tmax": 2
+     "side": "p",
+     "random": true
     },
     {
-     "tag": "cu",
-     "tmax": 2
+     "side": "s",
+     "label": {
+      "kr": "저주 강도·위축 강도·화염 저항 1~2티어",
+      "en": "T1–2 curse magnitude, wither magnitude or fire resistance"
+     }
     },
     {
-     "tag": "wi",
-     "tmax": 2
+     "side": "s",
+     "label": {
+      "kr": "저주 강도·위축 강도·화염 저항 1~2티어",
+      "en": "T1–2 curse magnitude, wither magnitude or fire resistance"
+     }
     },
     {
      "side": "s",
@@ -485,6 +494,16 @@
    ],
    "omens": [
     "Omen_of_Sinistral_Exaltation"
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
    ]
   },
   {
@@ -621,6 +640,16 @@
    ],
    "omens": [
     "Omen_of_Greater_Exaltation"
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
    ]
   },
   {
@@ -696,15 +725,6 @@
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "v": 2
-      }
-     },
-     "to": "k5",
-     "res": "fail"
-    },
-    {
      "to": "k4",
      "res": "fail"
     }
@@ -771,7 +791,17 @@
    "trim": {
     "side": "s",
     "keep": "sg"
-   }
+   },
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "cur": "Greater_Chaos_Orb"
+     }
+    }
+   ]
   },
   {
    "id": "k5",
@@ -969,9 +999,6 @@
     "fr",
     "cu",
     "wi"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {

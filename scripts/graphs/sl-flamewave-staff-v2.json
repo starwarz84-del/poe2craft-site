@@ -19,19 +19,35 @@
      "en": "As it comes"
     }
    }
+  },
+  "pT": {
+   "kr": "접두 (카오스·엑잘)",
+   "en": "Prefixes (chaos, exalt)",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
   }
  },
  "strategies": [
   {
    "id": "high",
    "params": {
-    "v": 1
+    "v": 1,
+    "pT": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "v": 2
+    "v": 2,
+    "pT": 2
    }
   }
  ],
@@ -41,11 +57,12 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "v": 2
+    "v": 2,
+    "pT": 2
    },
    "desc": {
-    "kr": "영상의 가성비 마무리: 엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로",
-    "en": "Video budget finish: two exalted suffixes + Transcendent Alloy, reveal kept"
+    "kr": "영상의 가성비 마무리: 접두 1~2티어, 엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로",
+    "en": "Video budget finish: T1–2 prefixes, two exalted suffixes + Transcendent Alloy, reveal kept"
    }
   },
   {
@@ -53,7 +70,8 @@
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "v": 1
+    "v": 1,
+    "pT": 1
    },
    "desc": {
     "kr": "영상: 스루드의 완력으로 화염 규모, 공개는 빛의 징조로 다시",
@@ -67,35 +85,35 @@
   },
   "dsp": {
    "gi": 3,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "dfi": {
    "gi": 5,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "dco": {
    "gi": 6,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "dli": {
    "gi": 7,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "dch": {
    "gi": 8,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "xfi": {
    "gi": 32,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "xco": {
    "gi": 33,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "xli": {
    "gi": 34,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "pd": {
    "anyOf": [
@@ -223,12 +241,18 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "dsp",
-     "tmax": 1
+     "side": "p",
+     "label": {
+      "kr": "피해 증가·추가 피해 1~2티어",
+      "en": "T1–2 increased or extra damage"
+     }
     },
     {
-     "tag": "dfi",
-     "tmax": 1
+     "side": "p",
+     "label": {
+      "kr": "피해 증가·추가 피해 1~2티어",
+      "en": "T1–2 increased or extra damage"
+     }
     },
     {
      "side": "p",

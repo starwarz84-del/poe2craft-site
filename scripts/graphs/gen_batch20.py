@@ -74,35 +74,54 @@ _g=json.load(open(f'{H}/mirror-bow-video-v2.json')); _g['strategies'].append({'i
 # 시작: 정신력 +50 분열 + 잡옵(시전 퀄리티 48%) → 카오스 오브(모든 주문 스킬 +3) → 좌측 찬미 + 엑잘(접두 잡옵) → 균열의 에센스(최대 퀄리티, 접두가 꽉 차 있어 징조 없음)
 # → 히네코라의 머리카락 + 바알 촉진시키는 주입기로 50% → 좌측 강령술 + 보존된 빗장뼈(최대 퀄리티 자리를 날림) → 빛의 징조 + 소멸의 오브 → 우측 강령술 + 보존된 빗장뼈(훼손을 접미로)
 # → 좌측 찬미 + 상위 엑잘(마나 최대치 1티어, 빗나가면 좌측 소멸의 징조 + 소멸의 오브) → 시전 속도 공개(빛의 징조로 다시). 성유·유동체·신성한 오브·축성은 레시피 하이엔드에만.
+# 2026-11-12 영상 전체 대조(자막 0:00~42:38 + 화면 27:00~34:00, 메인 세션): 균열의 에센스는 좌측 결정화와 함께(21:40), 최대 퀄리티는 좌측 강령술 + 뼈로 밀어냄(27:00),
+#   접미 훼손으로 막아 두고 상위 엑잘을 접두로(28:40), 빗나가면 빛의 징조로 막기를 지우고 심연의 에센스로 잡옵을 징표로 → 징표 훼손 공개(29:30~30:40, 방어도 → 다시),
+#   시전 속도는 고대 빗장뼈 훼손 + 빛의 징조 반복(32:00~33:50). 훼손은 한 번에 하나라 징표 훼손 전에 접미 막기를 지움. 징표 공개로 마나가 붙으면 시전 속도는 엑잘(영상엔 없는 경우, 내부 결정).
 tags={'spirit':{'gi':28,'tmax':1},'spell':{'gi':17,'tmax':1},'mq':{'gi':81},'mana':{'gi':11,'tmax':'$pT'},'cs':{'gi':32,'tmax':'$pT'}}
 SP=it('p','정신력 +(47—50) (분열)','+(47—50) to Spirit (fractured)',['spirit']); SL=it('s','모든 주문 스킬 레벨 +3','+3 to Level of all Spell Skills',['spell'])
 MQ=it('p','최대 퀄리티 +20% (균열의 에센스)','+20% to Maximum Quality (Essence of the Breach)',['mq'],'c'); MA=it('p','마나 최대치 +(180—189)','+(180—189) to maximum Mana',['mana'])
 CS=it('s','시전 속도 (25—28)% 증가','(25—28)% increased Cast Speed',['cs'],'d')
-def RA(vis):
-    return ROUTE_([{'if':{'not':{'has':'spell'}},'to':'k1'},{'if':{'has':'mq'},'to':'m1'},{'if':{'unrevSide':'p'},'to':'m1x'},
-       {'if':{'all':[{'not':{'des':True}},{'not':{'unrev':True}},{'sideLt':{'side':'s','n':2}}]},'to':'m1b'},
-       {'if':{'all':[{'not':{'has':'mana'}},{'sideLt':{'side':'p','n':2}}]},'to':'m2'},{'if':{'not':{'has':'mana'}},'to':'m2x'},
-       {'if':{'all':[{'not':{'des':True}},{'not':{'unrev':True}}]},'to':'m1b'},{'if':{'unrevSide':'s'},'to':'c1'},{'if':{'has':'cs'},'to':'ok'},{'to':'c1x'}],vis)
+MKP=it('p','심연의 군주의 징표','Mark of the Abyssal Lord',['mkp'],'c'); AJ=it('p','잡옵 (엑잘 빗나감)','Junk (missed exalt)',None,'j')
+tags.update({'mkp':{'gi':79},'mks':{'gi':80},'keepS':{'anyOf':['spell','cs']}})
+def RA(vis):   # every step re-checks the item — order follows the video (27:00~33:50)
+    MN={'has':'mana'}; CS_={'has':'cs'}
+    return ROUTE_([{'if':{'not':{'has':'spell'}},'to':'k1'},{'if':{'has':'mq'},'to':'m1'},{'if':{'unrevSide':'p'},'to':'m2r'},{'if':{'unrevSide':'s'},'to':'c1'},
+       {'if':{'all':[{'param':{'g':0}},{'full':'p'},{'full':'s'}]},'to':'ok'},
+       {'if':{'all':[{'any':[{'has':'mkp'},{'has':'mks'}]},{'desSide':'s'}]},'to':'m2l'},{'if':{'any':[{'has':'mkp'},{'has':'mks'}]},'to':'m2d'},
+       {'if':{'all':[{'not':MN},{'junk':{'side':'p','tag':'mana'}},CS_]},'to':'m2x'},{'if':{'all':[{'not':MN},{'junk':{'side':'p','tag':'mana'}}]},'to':'m2m'},
+       {'if':{'all':[{'not':MN},{'desSide':'p'}]},'to':'m2y'},
+       {'if':{'all':[{'not':MN},{'sideLt':{'side':'s','n':2}}]},'to':'m1b'},{'if':{'not':MN},'to':'m2'},
+       {'if':CS_,'to':'ok'},{'if':{'all':[{'junk':{'side':'s','tag':'cs'}},{'whittleSafe':{'tag':'keepS','side':'s'}}]},'to':'m3x'},{'if':{'junk':{'side':'s','tag':'cs'}},'to':'m3y'},{'if':{'all':[{'desSide':'p'},{'sideLt':{'side':'s','n':2}}]},'to':'m3'},
+       {'if':{'desSide':'s'},'to':'c1x'},{'if':{'sideLt':{'side':'s','n':2}},'to':'m1b'},{'to':'c1x'}],vis)
 A0=[SP,J('s')]; A1=[SP,SL]; A2=[SP,J('p'),SL]; A3=[SP,MQ,SL]; A4=[SP,UN('p'),SL]; A5=[SP,SL]; A6=[SP,SL,UN('s')]; A7=[SP,MA,SL,UN('s')]; A8=[SP,MA,SL,CS]
+B1=[SP,AJ,SL,UN('s')]; B2=[SP,MKP,SL]; B3=[SP,UN('p'),SL]; B4=[SP,MA,SL]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'s'}]},K('정신력 +50 분열 + 잡옵 1개 (시전 퀄리티 48%)','Fractured +50 Spirit + one junk line (48% caster quality)'),A0),
  mark([0,0.6],'k1',A0),
  act('k1','main',[0,1],'chaos','Chaos_Orb',K('접미 첫번째 옵션','First suffix'),None,K('카오스','Chaos'),[{'if':{'has':'spell'},'to':'q1','res':'ok'},{'to':'k1','res':'fail'}],A1,show=['spell']),
  act('q1','main',[0,2],'exalt','Exalted_Orb',K('접두 잡옵','A junk prefix'),[st('p','잡옵','Junk')],K('엑잘','Exalt'),[{'to':'q2'}],A2,omens=['Omen_of_Sinistral_Exaltation']),
- act('q2','main',[0,3],'essence','Essence_of_the_Breach',K('잡옵을 지우고 최대 퀄리티 +20%','The junk goes for +20% Maximum Quality'),[st('p','최대 퀄리티 +20% (제작 옵션)','+20% to Maximum Quality (crafted)')],K('에센스','Essence'),[{'to':'q3'}],A3,ess='mq'),
+ act('q2','main',[0,3],'essence','Essence_of_the_Breach',K('잡옵을 지우고 최대 퀄리티 +20%','The junk goes for +20% Maximum Quality'),[st('p','최대 퀄리티 +20% (제작 옵션)','+20% to Maximum Quality (crafted)')],K('에센스','Essence'),[{'to':'q3'}],A3,ess='mq',omens=['Omen_of_Sinistral_Crystallisation']),
  act('q3','main',[0,4],'quality','Vaal_Catalysing_Infuser',K('퀄리티 50%','Quality to 50%'),[st(None,'히네코라의 머리카락으로 미리 보고 50%','Preview with Hinekora’s Lock, then 50%')],K('퀄리티','Quality'),[{'to':'m1'}],A3,count=2),
- act('m1','main',[0,5],'desecrate','Preserved_Collarbone',K('접두 두번째 옵션(훼손)','Second prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RA({'m1x':{}}),A4,omens=['Omen_of_Sinistral_Necromancy']),
+ act('m1','main',[0,5],'desecrate','Preserved_Collarbone',K('최대 퀄리티를 훼손으로 밀어내기','Push out Maximum Quality with a desecration'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'m1x'}],A4,omens=['Omen_of_Sinistral_Necromancy']),
  annul('m1x',[0,6],RA({'m1b':{}}),target=K('접두 훼손 옵션 제거','Remove the prefix desecration')),
- act('m1b','main',[0,7],'desecrate','Preserved_Collarbone',K('접미 두번째 옵션(훼손)','Second suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RA({'m2':{}}),A6,omens=['Omen_of_Dextral_Necromancy']),
- act('m2','main',[0,8],'exalt','Greater_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),RA({'c1':'ok','m2x':F}),A7,show=['mana'],omens=['Omen_of_Sinistral_Exaltation']),
- annul('m2x',[1,8],RA({'m2':{'res':'ok','port':'right'}}),omens=('Omen_of_Sinistral_Annulment',),target=K('접두 잡옵 지우기','Remove the junk prefix')),
- act('c1','main',[0,9],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),RA({'ok':'ok','c1x':F}),A8,want='cs',show=['cs']),
- annul('c1x',[1,9],RA({'m1b':{'port':'right'}})),
- done([0,10])]
+ act('m1b','main',[0,7],'desecrate','Ancient_Collarbone',K('접미 두번째 옵션(훼손)','Second suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'c1'}],A6,omens=['Omen_of_Dextral_Necromancy']),
+ act('c1','main',[0,8],'reveal',None,K('훼손 옵션 확인 (빗나가도 접미 막기로 둠)','Reveal (a miss stays as the suffix blocker)'),None,K('공개','Reveal'),RA({'m2':'ok','ok':'ok','c1x':F}),A8,want='cs',show=['cs']),
+ act('m2','main',[1,8],'exalt','Greater_Exalted_Orb',K('접두 두번째 옵션 (접미가 막혀 접두로)','Second prefix (the suffix is blocked)'),None,K('엑잘','Exalt'),RA({'c1x':'ok','m2m':F,'m2x':F}),A7,show=['mana']),
+ act('m2m','main',[1,9],'essence','Essence_of_the_Abyss',K('빗나간 접두를 징표로','The missed prefix becomes the Mark'),[st('p','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),RA({'m2l':{}}),B2,ess='mkp',mark=True,omens=['Omen_of_Sinistral_Crystallisation']),
+ annul('m2l',[2,9],RA({'m2d':{}}),target=K('접미 막기 훼손 제거 (훼손은 하나만)','Remove the suffix blocker (one desecration at a time)')),
+ act('m2d','main',[2,10],'desecrate','Ancient_Collarbone',K('징표 훼손 (한 티어 높게)','Desecrate the Mark (one tier higher)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'m2r'}],B3,fromMark=True),
+ act('m2r','main',[1,10],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),RA({'m3':'ok','m2y':F}),B4,want='mana',show=['mana']),
+ annul('m2y',[2,11],RA({'m1b':{'port':'right'}}),target=K('빗나간 접두 훼손 제거','Remove the missed prefix desecration')),
+ annul('m2x',[2,8],RA({'m2':{'port':'right'}}),omens=('Omen_of_Sinistral_Annulment',),target=K('접두 잡옵 지우기 (시전 속도가 이미 훼손으로 붙어 징표를 못 쓸 때)','Remove the junk prefix (when cast speed already holds the desecration)')),
+ act('m3','main',[0,11],'exalt','Perfect_Exalted_Orb',K('접미 시전 속도 (마나가 훼손이라 엑잘로)','Cast speed suffix (Mana holds the desecration, so exalt)'),None,K('엑잘','Exalt'),RA({'ok':'ok','m3x':F}),A8,show=['cs'],omens=['Omen_of_Dextral_Exaltation']),
+ act('m3x','main',[1,11],'chaos','Perfect_Chaos_Orb',K('접미 잡옵을 다시 (절사, 잡옵이 가장 낮을 때)','Reroll the junk suffix (Whittling, while it is the lowest)'),None,K('카오스','Chaos'),RA({'ok':'ok','m3x':F,'m3y':F}),A8,show=['cs'],omens=['Omen_of_Whittling']),
+ annul('m3y',[2,12],RA({'m3':{'port':'right'}}),omens=('Omen_of_Dextral_Annulment',),target=K('접미 잡옵 지우기 (절사가 주문 줄을 칠 때)','Remove the junk suffix (when Whittling would hit the spell line)')),
+ annul('c1x',[1,7],RA({'m1b':{'port':'right'}})),
+ done([0,12])]
 nodes[0]['start']['quality']=48
 graph11('absent-amulet-spell6-v2','Amulets','Absent Amulet',82,
   '반지깎는노인 주문 +6 부재 목걸이(Yi1u0LhJztI) — 정신력 +50 분열 + 잡옵(시전 퀄리티 48%) → 카오스 오브(모든 주문 스킬 +3) → 좌측 찬미 + 엑잘(접두 잡옵) → 균열의 에센스 → 히네코라의 머리카락 + 바알 촉진시키는 주입기로 50% → 좌측 강령술 + 보존된 빗장뼈(최대 퀄리티 자리) → 빛의 징조로 지우고 우측 강령술 + 보존된 빗장뼈(접미) → 좌측 찬미 + 상위 엑잘(마나 최대치, 빗나가면 좌측 소멸의 징조) → 시전 속도 공개(빛의 징조로 다시). 성유·유동체·신성한 오브·축성은 레시피 하이엔드에만.',
-  {'pT':{'kr':'목표 티어','en':'Target tier','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},PT,
-  {'high':K('영상: 마나 최대치·시전 속도 1티어','Video: T1 maximum Mana and cast speed'),'bal':K('마나 최대치·시전 속도 1~2티어','T1–2 maximum Mana and cast speed')},tags,nodes,
-  [{'id':'L1','nodes':['m1b','c1','c1x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'spirit','fr':True},{'tag':'mana','tmax':1 if v=='high' else 2},{'tag':'spell'},{'tag':'cs','tmax':1 if v=='high' else 2,'des':True}]),
-  {'quality':50,'sockets':0},{'all':[{'has':'spell'},{'has':'mana'},{'has':'cs'}]},('high','bal'))
+  {'pT':{'kr':'목표 티어','en':'Target tier','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'g':{'kr':'마지막 접두·접미','en':'Last prefix and suffix','values':TV({'1':('목표 옵션까지 반복','Repeat until the wanted line'),'0':('랜덤 옵션','Random line')})}},{'high':{'v':1,'pT':1,'g':1},'bal':{'v':2,'pT':2,'g':0}},
+  {'high':K('영상: 마나 최대치·시전 속도 1티어','Video: T1 maximum Mana and cast speed'),'bal':K('주문 +3까지, 마지막 접두·접미는 랜덤 옵션 (훼손 공개·상위 엑잘 한 번)','Up to +3 spells, the last prefix and suffix random (one reveal, one Greater Exalt)')},tags,nodes,
+  [{'id':'L1','nodes':['m1b','c1','c1x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['m2m','m2l','m2d','m2r','m2y'],'kr':'징표로 접두 다시','en':'Prefix again with the Mark'}],
+  FIN(('high','bal'),lambda v:[{'tag':'spirit','fr':True},{'tag':'mana','tmax':1},{'tag':'spell'},{'tag':'cs','tmax':1,'des':True}] if v=='high' else [{'tag':'spirit','fr':True},{'side':'p','random':True},{'tag':'spell'},{'side':'s','random':True}]),
+  {'quality':50,'sockets':0},{'all':[{'has':'spell'},{'any':[{'all':[{'has':'mana'},{'has':'cs'}]},{'all':[{'param':{'g':0}},{'full':'p'},{'full':'s'}]}]}]},('high','bal'))

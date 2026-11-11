@@ -7,8 +7,8 @@
  "note": "시한 하이엔드 투사체 장갑(DH4jiORLg10) — 콜르의 사냥 + 투사체 +2 분열 → 카오스 오브(추가 발사) → 좌측 찬미 잡옵 + 좌측 결정화 + 발작의 에센스 → 아스트리드 → 좌측 찬미 + 완벽한 엑잘 접두 2개(첫째 빗나가면 소멸의 오브, 둘째 빗나가면 심연의 에센스 징표 → 보존된 갈비뼈 → 빛의 징조) → 고대 갈비뼈 공개. 하이엔드 = 1티어(영상), 밸런스 = 1~2티어(영상: 2티어는 금방). 콜르 옵션 가중치는 추정.",
  "params": {
   "pT": {
-   "kr": "접두 3개",
-   "en": "Three prefixes",
+   "kr": "접두",
+   "en": "Prefixes",
    "values": {
     "1": {
      "kr": "1티어",
@@ -33,6 +33,20 @@
      "en": "T1–2"
     }
    }
+  },
+  "g": {
+   "kr": "마지막 접두(훼손)",
+   "en": "Last prefix (desecrated)",
+   "values": {
+    "1": {
+     "kr": "목표 옵션까지 반복",
+     "en": "Repeat until a wanted line"
+    },
+    "0": {
+     "kr": "랜덤 옵션",
+     "en": "Random line"
+    }
+   }
   }
  },
  "strategies": [
@@ -40,14 +54,16 @@
    "id": "high",
    "params": {
     "pT": 1,
-    "aT": 1
+    "aT": 1,
+    "g": 1
    }
   },
   {
    "id": "bal",
    "params": {
     "pT": 2,
-    "aT": 2
+    "aT": 2,
+    "g": 0
    }
   }
  ],
@@ -58,11 +74,12 @@
    "en": "Balance",
    "params": {
     "pT": 2,
-    "aT": 2
+    "aT": 2,
+    "g": 0
    },
    "desc": {
-    "kr": "접두 1~2티어",
-    "en": "T1–2 prefixes"
+    "kr": "1~2티어, 마지막 훼손 접두는 랜덤 옵션",
+    "en": "T1–2, the last desecrated prefix random"
    }
   },
   {
@@ -71,7 +88,8 @@
    "en": "High-end",
    "params": {
     "pT": 1,
-    "aT": 1
+    "aT": 1,
+    "g": 1
    },
    "desc": {
     "kr": "영상: 접두 1티어 3개",
@@ -125,10 +143,32 @@
     "has": "cdb"
    },
    {
-    "count": {
-     "tag": "pre",
-     "min": 3
-    }
+    "any": [
+     {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
+     },
+     {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "full": "p"
+       }
+      ]
+     }
+    ]
    }
   ]
  },
@@ -158,15 +198,17 @@
    "id": "L1",
    "nodes": [
     "p7m",
+    "p7e",
     "p7b",
     "p7l"
    ],
-   "kr": "접두 하나만 지우기",
-   "en": "Remove one prefix"
+   "kr": "징표로 접두 하나 지우기",
+   "en": "Clear a prefix with the Mark"
   },
   {
    "id": "L2",
    "nodes": [
+    "p8m",
     "p8",
     "p9",
     "p9x"
@@ -214,17 +256,22 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "phys",
-     "tmax": 2
+     "side": "p",
+     "label": {
+      "kr": "물리 피해 추가·투사체 속도·투사체 피해 1~2티어",
+      "en": "T1–2 flat physical, projectile speed or projectile damage"
+     }
     },
     {
-     "tag": "pspd",
-     "tmax": 2
+     "side": "p",
+     "label": {
+      "kr": "물리 피해 추가·투사체 속도·투사체 피해 1~2티어",
+      "en": "T1–2 flat physical, projectile speed or projectile damage"
+     }
     },
     {
-     "tag": "pdmg",
-     "tmax": 2,
-     "des": true
+     "side": "p",
+     "random": true
     },
     {
      "tag": "lvl",
@@ -623,14 +670,240 @@
    "edges": [
     {
      "if": {
-      "has": "pre"
+      "not": {
+       "all": [
+        {
+         "has": "add"
+        },
+        {
+         "has": "cdb"
+        }
+       ]
+      }
+     },
+     "to": "pc",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p9",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mk"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p8",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "p9x",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7e",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p7b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "p7",
      "res": "ok"
     },
     {
+     "if": {
+      "has": "pre"
+     },
      "to": "p6x",
-     "res": "fail"
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mk"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       }
+      ]
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p6",
+     "hide": true
+    },
+    {
+     "to": "p6x",
+     "hide": true
     }
    ],
    "item": [
@@ -688,9 +961,6 @@
     "phys",
     "pdmg",
     "pspd"
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
@@ -713,28 +983,245 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접두 지우기",
-    "en": "Remove the missed prefix"
+    "kr": "빗나간 접두 지우기 (좋은 옵션이 하나뿐일 때는 징조 없이)",
+    "en": "Remove the missed prefix (no omen while only one good line)"
    },
    "edges": [
     {
      "if": {
+      "not": {
+       "all": [
+        {
+         "has": "add"
+        },
+        {
+         "has": "cdb"
+        }
+       ]
+      }
+     },
+     "to": "pc",
+     "res": "fail"
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p9",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
       "all": [
        {
-        "has": "add"
+        "param": {
+         "g": 0
+        }
        },
        {
-        "has": "cdb"
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mk"
+        }
        }
       ]
      },
-     "to": "p6",
-     "port": "right",
-     "res": "ok"
+     "to": "ok",
+     "hide": true
     },
     {
-     "to": "pc",
-     "res": "fail"
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p8",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "p9x",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7e",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p7b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mk"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       }
+      ]
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p6",
+     "port": "right"
+    },
+    {
+     "to": "p6x",
+     "hide": true
     }
    ]
   },
@@ -789,12 +1276,99 @@
    "edges": [
     {
      "if": {
+      "not": {
+       "all": [
+        {
+         "has": "add"
+        },
+        {
+         "has": "cdb"
+        }
+       ]
+      }
+     },
+     "to": "pc",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p9",
+     "hide": true
+    },
+    {
+     "if": {
       "count": {
        "tag": "pre",
        "min": 3
       }
      },
      "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mk"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p8",
      "res": "ok"
     },
     {
@@ -807,18 +1381,135 @@
         }
        },
        {
-        "not": {
-         "full": "p"
+        "des": true
+       }
+      ]
+     },
+     "to": "p9x",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "p7m",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
         }
        }
       ]
      },
-     "to": "p8",
-     "res": "ok"
+     "to": "p7e",
+     "hide": true
     },
     {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p7b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
      "to": "p7m",
-     "res": "fail"
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mk"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       }
+      ]
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p6",
+     "hide": true
+    },
+    {
+     "to": "p6x",
+     "hide": true
     }
    ],
    "item": [
@@ -885,9 +1576,6 @@
     "phys",
     "pdmg",
     "pspd"
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
@@ -900,8 +1588,8 @@
    ],
    "act": "essence",
    "goal": {
-    "kr": "접두 하나를 지우고 징표",
-    "en": "A prefix goes for the Mark"
+    "kr": "접두 하나를 징표로 (잡옵이면 성공)",
+    "en": "A prefix becomes the Mark (good when it is the junk)"
    },
    "label": {
     "kr": "심연",
@@ -909,7 +1597,570 @@
    },
    "edges": [
     {
-     "to": "p7b"
+     "if": {
+      "not": {
+       "all": [
+        {
+         "has": "add"
+        },
+        {
+         "has": "cdb"
+        }
+       ]
+      }
+     },
+     "to": "pc",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p9",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mk"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p8",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "p9x",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7e",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p7b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "p6x",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mk"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       }
+      ]
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p6",
+     "hide": true
+    },
+    {
+     "to": "p6x",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "mk"
+     ]
+    }
+   ],
+   "cur": "Essence_of_the_Abyss",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
+    }
+   ],
+   "ess": "mk",
+   "mark": true,
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "p7e",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "징표를 둔 채 접두 두번째 옵션",
+    "en": "Second prefix with the Mark kept"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "all": [
+        {
+         "has": "add"
+        },
+        {
+         "has": "cdb"
+        }
+       ]
+      }
+     },
+     "to": "pc",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p9",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mk"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p8m",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p8",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "p9x",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7e",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p7b",
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mk"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       }
+      ]
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p6",
+     "hide": true
+    },
+    {
+     "to": "p6x",
+     "hide": true
     }
    ],
    "item": [
@@ -969,20 +2220,22 @@
      "tags": [
       "pspd"
      ]
-    }
-   ],
-   "cur": "Essence_of_the_Abyss",
-   "showText": [
+    },
     {
      "s": "p",
      "kr": "심연의 군주의 징표",
-     "en": "Mark of the Abyssal Lord"
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "mk"
+     ]
     }
    ],
-   "ess": "mk",
-   "mark": true,
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "phys",
+    "pdmg",
+    "pspd"
    ]
   },
   {
@@ -990,13 +2243,13 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    1,
+    2,
     7
    ],
    "act": "desecrate",
    "goal": {
-    "kr": "징표 훼손",
-    "en": "Desecrate the Mark"
+    "kr": "징표 훼손 (지울 준비)",
+    "en": "Desecrate the Mark (to clear it)"
    },
    "label": {
     "kr": "훼손",
@@ -1058,12 +2311,18 @@
     },
     {
      "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
-     "m": "n",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
      "tags": [
-      "pspd"
+      "mk"
      ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ],
    "cur": "Preserved_Rib",
@@ -1081,7 +2340,7 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    1,
+    2,
     8
    ],
    "act": "annul",
@@ -1104,6 +2363,66 @@
    "edges": [
     {
      "if": {
+      "not": {
+       "all": [
+        {
+         "has": "add"
+        },
+        {
+         "has": "cdb"
+        }
+       ]
+      }
+     },
+     "to": "pc",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p9",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mk"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
       "all": [
        {
         "count": {
@@ -1112,15 +2431,59 @@
         }
        },
        {
-        "has": "add"
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
        },
        {
-        "has": "cdb"
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
        }
       ]
      },
      "to": "p8",
-     "res": "ok"
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "p9x",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "p7m",
+     "port": "right"
     },
     {
      "if": {
@@ -1129,44 +2492,217 @@
         "has": "pre"
        },
        {
-        "has": "add"
+        "has": "mk"
        },
        {
-        "has": "cdb"
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
        }
       ]
      },
-     "to": "p7",
-     "port": "right",
-     "res": "ok"
+     "to": "p7e",
+     "hide": true
     },
     {
      "if": {
       "all": [
        {
-        "has": "add"
+        "has": "pre"
        },
        {
-        "has": "cdb"
+        "has": "mk"
        }
       ]
      },
-     "to": "p6",
-     "res": "fail"
+     "to": "p7b",
+     "hide": true
     },
     {
-     "to": "pc",
-     "res": "fail"
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mk"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       }
+      ]
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p6",
+     "hide": true
+    },
+    {
+     "to": "p6x",
+     "hide": true
     }
    ]
+  },
+  {
+   "id": "p8m",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "징표에 훼손 (한 티어 높게)",
+    "en": "Desecrate the Mark (one tier higher)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "p9"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "pspd"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Rib",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "fromMark": true
   },
   {
    "id": "p8",
    "kind": "act",
    "group": "main",
    "pos": [
-    0,
-    7
+    1,
+    8
    ],
    "act": "desecrate",
    "goal": {
@@ -1279,14 +2815,240 @@
    "edges": [
     {
      "if": {
-      "added": "pre"
+      "not": {
+       "all": [
+        {
+         "has": "add"
+        },
+        {
+         "has": "cdb"
+        }
+       ]
+      }
+     },
+     "to": "pc",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p9",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
      },
      "to": "ok",
      "res": "ok"
     },
     {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mk"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p8",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "des": true
+       }
+      ]
+     },
      "to": "p9x",
-     "res": "fail"
+     "res": "fail",
+     "port": "right"
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7e",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p7b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mk"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       }
+      ]
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p6",
+     "hide": true
+    },
+    {
+     "to": "p6x",
+     "hide": true
     }
    ],
    "item": [
@@ -1365,6 +3127,20 @@
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "omens": [],
+      "goal": {
+       "kr": "훼손 옵션 확인 (나오는 대로)",
+       "en": "Reveal (keep what comes)"
+      }
+     }
+    }
    ]
   },
   {
@@ -1373,7 +3149,7 @@
    "group": "main",
    "pos": [
     2,
-    8
+    9
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1394,8 +3170,240 @@
    },
    "edges": [
     {
+     "if": {
+      "not": {
+       "all": [
+        {
+         "has": "add"
+        },
+        {
+         "has": "cdb"
+        }
+       ]
+      }
+     },
+     "to": "pc",
+     "hide": true
+    },
+    {
+     "if": {
+      "unrevSide": "p"
+     },
+     "to": "p9",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "mk"
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p8m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
      "to": "p8",
      "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "p9x",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7e",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "mk"
+       }
+      ]
+     },
+     "to": "p7b",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7m",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "p7",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "mk"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "pre"
+        }
+       }
+      ]
+     },
+     "to": "p6x",
+     "hide": true
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "p6",
+     "hide": true
+    },
+    {
+     "to": "p6x",
+     "hide": true
     }
    ]
   },

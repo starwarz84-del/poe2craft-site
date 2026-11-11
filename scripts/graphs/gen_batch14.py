@@ -14,8 +14,9 @@ V1={'param':{'v':1}}; V2={'param':{'v':2}}
 # → 좌측 강령술 + 고대 턱뼈 → 공개(빛의 징조로 다시). 가성비 마무리 = 엑잘 접미 2개 + 초월의 합금.
 # 하이엔드 = 스루드의 완력 → 상위 찬미 + 완벽한 엑잘(잡옵 2개) → 절사의 징조 + 완벽한 카오스 오브(비고정 화염 속성 부여 규모 — 가중치 비공개, 영상 경험상 절사 20~30번)
 # → 초월의 합금(접미 하나가 지워짐, 화염 규모가 지워지면 절사 카오스 다시). 알두르의 배신·아산드라 룬·영혼 핵·바알 오브는 취향이라 뺌(정책 23).
-tags={'fire7':{'gi':12},'dsp':{'gi':3,'tmax':1},'dfi':{'gi':5,'tmax':1},'dco':{'gi':6,'tmax':1},'dli':{'gi':7,'tmax':1},'dch':{'gi':8,'tmax':1},
-      'xfi':{'gi':32,'tmax':1},'xco':{'gi':33,'tmax':1},'xli':{'gi':34,'tmax':1},
+# 2026-11-12 영상 전체 대조(자막 0:00~15:13, 메인 세션): 단계·커런시 일치. 등급 C17: 밸런스 = 접두 반복 목표 1~2티어(카오스·엑잘), 마지막 접두(훼손)·접미는 랜덤 옵션.
+tags={'fire7':{'gi':12},'dsp':{'gi':3,'tmax':'$pT'},'dfi':{'gi':5,'tmax':'$pT'},'dco':{'gi':6,'tmax':'$pT'},'dli':{'gi':7,'tmax':'$pT'},'dch':{'gi':8,'tmax':'$pT'},
+      'xfi':{'gi':32,'tmax':'$pT'},'xco':{'gi':33,'tmax':'$pT'},'xli':{'gi':34,'tmax':'$pT'},
       'pd':{'anyOf':['dsp','dfi','dco','dli','dch']},'px':{'anyOf':['xfi','xco','xli']},'pre':{'anyOf':['pd','px']},
       'fm':{'gi':68},'alloy':{'gi':65},'keep':{'anyOf':['fm','alloy']}}
 F7=it('s','모든 화염 주문 스킬 레벨 +7 (분열)','+7 fire spell skills (fractured)',['fire7'])
@@ -48,9 +49,9 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'fire7','fr':True},{'junk':'p'}]},
  done([0,9])]
 graph11('sl-flamewave-staff-v2','Staves','Chiming Staff',81,
   'SL 화염파 지팡이(6EzSVUItzsg) — 화염 주문 +7 분열 + 잡옵 → 카오스 오브(피해 % 증가 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) → 좌측 강령술 + 고대 턱뼈 → 공개(빛의 징조로 다시). 하이엔드 = 스루드의 완력 → 상위 찬미 + 완벽한 엑잘 → 절사 + 완벽한 카오스 오브(화염 규모, 가중치 비공개: 영상 경험 절사 20~30번으로 맞춤) → 초월의 합금. 밸런스 = 영상의 가성비 마무리(엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로).',
-  ROUTE,P2,{'high':K('영상: 스루드의 완력으로 화염 규모, 공개는 빛의 징조로 다시','Video: Thrud’s Might fire magnitudes, Light retries the reveal'),'bal':K('영상의 가성비 마무리: 엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로','Video budget finish: two exalted suffixes + Transcendent Alloy, reveal kept')},tags,nodes,
+  {**ROUTE,'pT':{'kr':'접두 (카오스·엑잘)','en':'Prefixes (chaos, exalt)','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},{'high':{'v':1,'pT':1},'bal':{'v':2,'pT':2}},{'high':K('영상: 스루드의 완력으로 화염 규모, 공개는 빛의 징조로 다시','Video: Thrud’s Might fire magnitudes, Light retries the reveal'),'bal':K('영상의 가성비 마무리: 접두 1~2티어, 엑잘 접미 2개 + 초월의 합금, 공개 결과 그대로','Video budget finish: T1–2 prefixes, two exalted suffixes + Transcendent Alloy, reveal kept')},tags,nodes,
   [{'id':'L1','nodes':['p3','p4','p4x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['s3','s3m'],'kr':'초월의 합금','en':'Transcendent Alloy'}],
-  FIN(('high','bal'),lambda v:[{'tag':'dsp','tmax':1},{'tag':'dfi','tmax':1},{'tag':'xfi','tmax':1,'des':True} if v=='high' else {'side':'p','random':True},
+  FIN(('high','bal'),lambda v:([{'tag':'dsp','tmax':1},{'tag':'dfi','tmax':1},{'tag':'xfi','tmax':1,'des':True}] if v=='high' else [{'side':'p','label':K('피해 증가·추가 피해 1~2티어','T1–2 increased or extra damage')},{'side':'p','label':K('피해 증가·추가 피해 1~2티어','T1–2 increased or extra damage')},{'side':'p','random':True}])+[
       {'tag':'fire7','tmax':1,'fr':True},{'tag':'fm'} if v=='high' else {'side':'s','random':True},{'tag':'alloy','ess':True}]),
   {'quality':20,'sockets':3},{'all':[{'has':'pd'},{'has':'alloy'}]},('high','bal'),xsub=["Thrud's Might"],xroll=True)
 
@@ -60,9 +61,11 @@ graph11('sl-flamewave-staff-v2','Staves','Chiming Staff',81,
 # → 좌측 소멸의 징조 + 소멸의 오브(최대 퀄리티가 지워지면 좌측 결정화 + 균열의 에센스) → 신경 기폭제 40% → 촉진 + 완벽한 엑잘(마나 % · 마나 · 주문 피해)
 # → 쇳소리 기폭제 → 절사의 징조 + 완벽한 카오스 오브(최대 퀄리티를 지우며 접두, 필요하면 좌측 말소의 징조) → 빛의 징조 + 소멸의 오브(막아 둔 옵션) → 검은 피의 징조 + 고대 빗장뼈 → 공개(모든 스킬 퀄리티, 빛의 징조로 다시).
 # 빗나간 접미는 우측 소멸의 징조(영상 두 번째 목걸이: 주문 +3을 지킬 확률을 올림). 신성한 오브·축복받은 자의 징조는 뺌(정책 23).
+# 2026-11-12 영상 전체 대조(자동 번역 자막 0:00~39:40, 메인 세션): 영상의 1~11단계와 일치. 빗나간 접미는 영상 가이드(6B)대로 징조 없는 소멸의 오브.
+#   등급 C17: 밸런스 = 시전 속도·치명타와 마나·주문 피해 1~2티어, 마지막 접두(절사 카오스)·접미(쿠르갈 공개)는 랜덤 옵션.
 tags={'spirit':{'gi':28,'tmax':1},'spell':{'gi':17,'tmax':1},'mq':{'gi':81},
-      'cs':{'gi':32,'tmax':1},'cr':{'gi':24,'tmax':1},'cd':{'gi':25,'tmax':1},'gs':{'anyOf':['cs','cr','cd']},
-      'mp':{'gi':12,'tmax':1},'mf':{'gi':11,'tmax':1},'sd':{'gi':31,'tmax':1},'gp':{'anyOf':['mp','mf','sd']},
+      'cs':{'gi':32,'tmax':'$pT'},'cr':{'gi':24,'tmax':'$pT'},'cd':{'gi':25,'tmax':'$pT'},'gs':{'anyOf':['cs','cr','cd']},
+      'mp':{'gi':12,'tmax':'$pT'},'mf':{'gi':11,'tmax':'$pT'},'sd':{'gi':31,'tmax':'$pT'},'gp':{'anyOf':['mp','mf','sd']},
       'kq':{'gi':46},'keep':{'anyOf':['gp']}}
 SP=it('p','정신력 +50 (분열)','+50 Spirit (fractured)',['spirit']); SL=it('s','모든 주문 스킬 레벨 +3','+3 spell skills',['spell']); MQ=it('p','최대 퀄리티 +20% (균열의 에센스)','+20% max quality (Essence of the Breach)',['mq'],'c')
 BK=it('s','훼손 공개 옵션 (자리 막기)','Revealed desecrated line (blocker)',None,'d'); GS=it('s','시전 속도','Cast speed',['cs'])
@@ -106,9 +109,10 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'s'}]}
  done([0,16])]
 graph11('mazbro-caster-amulet-v2','Amulets','Solar Amulet',82,
   'MazBro 캐스터 목걸이(4PazhuHwdL8) — 정신력 50 분열 + 잡옵 → 카오스 오브(주문 +3) → 좌측 찬미 + 상위 엑잘 2번 → 좌측 결정화 + 균열의 에센스 → 우측 강령술 + 보존된 빗장뼈 → 공개(자리 막기) → 달리는 기폭제 + 촉진 + 우측 찬미 + 완벽한 엑잘(시전 속도·치명타, 빗나가면 우측 소멸의 징조) → 좌측 소멸의 징조(최대 퀄리티가 지워지면 균열의 에센스 다시) → 신경 기폭제 + 촉진 + 완벽한 엑잘(마나·주문 피해) → 쇳소리 기폭제 → 절사 + 완벽한 카오스 오브 → 빛의 징조 + 소멸의 오브 → 검은 피 + 고대 빗장뼈 → 공개(모든 스킬 퀄리티). 하이엔드 = 영상(절사 카오스로 좋은 접두 2개, 쿠르갈 공개는 빛의 징조로 다시), 밸런스 = 절사 카오스 한 번·공개 결과 그대로. 촉진하는 찬미의 징조 효과는 시뮬에 없음.',
-  ROUTE,P2,{'high':K('영상: 절사 카오스로 좋은 접두 2개, 쿠르갈 공개는 빛의 징조로 다시','Video: Whittling chaos for two good prefixes, Light retries the Kurgal reveal'),
-            'bal':K('절사 카오스 한 번(결과 그대로), 공개 결과 그대로','One Whittling chaos, reveal kept')},tags,nodes,
+  {**ROUTE,'pT':{'kr':'시전 속도·마나 등','en':'Cast speed, mana etc.','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},{'high':{'v':1,'pT':1},'bal':{'v':2,'pT':2}},{'high':K('영상: 절사 카오스로 좋은 접두 2개, 쿠르갈 공개는 빛의 징조로 다시','Video: Whittling chaos for two good prefixes, Light retries the Kurgal reveal'),
+            'bal':K('1~2티어, 절사 카오스 한 번(랜덤 옵션), 공개 결과 그대로','T1–2, one Whittling chaos (random line), reveal kept')},tags,nodes,
   [{'id':'L1','nodes':['a6','a7','a7x'],'kr':'접미 엑잘','en':'Suffix exalt'},{'id':'L2','nodes':['a8','a8e','a9','a10'],'kr':'접두 엑잘','en':'Prefix exalt'},{'id':'L3','nodes':['a14','a15','a15x'],'kr':'쿠르갈 공개','en':'Kurgal reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'spirit','tmax':1,'fr':True},{'tag':'mf','tmax':1},{'tag':'mp','tmax':1} if v=='high' else {'side':'p','random':True},
-      {'tag':'spell','tmax':1},{'tag':'cs','tmax':1},{'tag':'kq','des':True} if v=='high' else {'side':'s','random':True}]),
+  FIN(('high','bal'),lambda v:[{'tag':'spirit','tmax':1,'fr':True},{'tag':'mf','tmax':1},{'tag':'mp','tmax':1},{'tag':'spell','tmax':1},{'tag':'cs','tmax':1},{'tag':'kq','des':True}] if v=='high' else
+      [{'tag':'spirit','tmax':1,'fr':True},{'side':'p','label':K('마나 %·마나 최대치·주문 피해 1~2티어','T1–2 % mana, maximum mana or spell damage')},{'side':'p','random':True},
+       {'tag':'spell','tmax':1},{'side':'s','label':K('시전 속도·치명타 확률·치명타 피해 1~2티어','T1–2 cast speed, crit chance or crit damage')},{'side':'s','random':True}]),
   {'quality':40,'sockets':0},{'all':[{'has':'spell'},{'has':'gs'},{'has':'gp'}]},('high','bal'))

@@ -55,40 +55,72 @@ graph8('ragna-spell4-amulet-v2','Amulets','Solar Amulet',81,
   {'quality':40,'sockets':0},{'all':[{'has':'spirit'},{'has':'spell'},{'full':'p'},{'full':'s'}]},('bal','ess'))
 
 # ---------- 2. 노블이 본능적인 화살통 (2PUEwoePtRs, 0.4 영상 → 0.5.5 응용) ----------
-# 원본: 번개 피해 추가 1티어 분열 + 잡옵 → 카오스 오브(공격 치명타 확률·치명타 피해·투사체 스킬 +1) → 우측 찬미 + 완벽한 엑잘(다른 하나, 빗나가면 소멸의 오브)
-# → 우측 강령술 + 보존된 턱뼈 → 완벽한 엑잘 2번(투사체 속도·활 피해 1티어, 빗나가면 좌측 소멸의 징조 + 소멸의 오브) → 공개(남은 하나, 빛의 징조로 다시).
-P={'high':{'cT':1,'dT':2,'pT':1},'bal':{'cT':2,'dT':3,'pT':2}}
+# 2026-11-12 영상 전체 대조(2PUEwoePtRs 0:00~11:47, 자막 없음·화면 자막으로 확인, 메인 세션) — tools/notes/noble-2PUEwoePtRs.md.
+# 영상: 번개 피해 추가 분열(0:35~5:00, 시작 상태로 둠) → 소멸의 오브로 한 자리만 남기고 카오스 오브(접미 치명타 확률·치명타 피해·투사체 중 하나) → 완벽한 엑잘(우측 찬미는 필수 아님, 5:22)
+#   → 접미 잡옵이면 소멸의 오브, 잡옵이 지워지면 훼손(5:42) → 남은 접미 한 자리에 훼손(6:35~7:50, 투사체가 안 나오면 '그나마 높은 레벨' 옵션으로 자리 막기 8:00~8:20)
+#   → 접두: 투사체 속도(8:20) → 마지막 접두는 절사 카오스. 막기 옵션이 잡옵과 레벨이 같으면(65) 좌측 말소 대신 빛의 징조로 막기를 지우고 다시 훼손(9:00~10:20, 민첩 66)
+#   → 막기 옵션을 지우고 보존된 턱뼈로 훼손 → 공개(투사체, 10:50).
+# 0.5 데이터: 영상의 '모든 투사체 +2'(훼손, 레벨 41)는 없어서 일반 옵션 '모든 투사체 +1'(레벨 5)을 공개로 찾음. 훼손 전용 옵션은 모두 레벨 65.
+# 등급 C17: 하이엔드 = 영상(모두 1티어, 마지막 접두·접미까지 반복), 밸런스 = 1~2티어, 마지막 접두와 마지막 접미(막기 자리)는 랜덤 옵션.
+# 내부 결정(영상에서 확인 못 함): 엑잘·카오스는 완벽한 오브, 공개에 메아리 징조 없음, '소멸빵'은 일반 소멸의 오브.
+F={'res':'fail','port':'right'}
+def ROUTE_(E, vis):
+    out=[]
+    for e in E:
+        e=dict(e); v=vis.get(e['to'])
+        if v is not None and not any(o['to']==e['to'] and not o.get('hide') for o in out): e.update(v if isinstance(v,dict) else {'res':v})
+        else: e['hide']=True
+        out.append(e)
+    return out
+P={'high':{'cT':1,'dT':1,'pT':1,'g':1},'bal':{'cT':2,'dT':2,'pT':2,'g':0}}
 tags={'light':{'gi':8,'tmax':1},'critA':{'gi':14,'tmax':'$cT'},'critD':{'gi':15,'tmax':'$dT'},'proj':{'gi':9},
       'suf':{'anyOf':['critA','critD','proj'],'label':K('공격 치명타 확률·치명타 피해·투사체 스킬 +1','Attack crit chance, crit damage or +1 projectile skills')},
-      'pspd':{'gi':18,'tmax':'$pT'},'bow':{'gi':19,'tmax':'$pT'},'pre':{'anyOf':['pspd','bow'],'label':K('투사체 속도·활 스킬 피해','Projectile speed or bow damage')}}
-LF=it('p','번개 피해 추가 (분열)','Flat lightning (fractured)',['light']); SU=lambda: it('s','치명타·투사체 접미','Crit or projectile suffix',['suf']); PR=lambda: it('p','투사체 속도·활 피해','Projectile speed or bow damage',['pre'])
-I0=[LF,J('s')]; I1=[LF,SU()]; I2=I1+[SU()]; I3=I2+[UN('s')]; I4=[LF,PR()]+I3[1:]; I5=[LF,PR(),PR()]+I3[1:]; I6=[LF,PR(),PR(),SU(),SU(),SU()]
+      'pspd':{'gi':18,'tmax':'$pT'},'bow':{'gi':19,'tmax':'$pT'},'pre':{'anyOf':['pspd','bow'],'label':K('투사체 속도·활 스킬 피해','Projectile speed or bow damage')},
+      'keep':{'anyOf':['critA','critD','proj','pspd','bow']}}
+G1={'param':{'g':1}}; G0={'param':{'g':0}}
+S1={'count':{'tag':'suf','min':1}}; S2={'count':{'tag':'suf','min':2}}; S3={'count':{'tag':'suf','min':3}}
+PD={'any':[{'all':[G1,{'count':{'tag':'pre','min':2}}]},{'all':[G0,{'has':'pre'},{'full':'p'}]}]}
+def RN(vis):   # every step re-checks the item
+    return ROUTE_([{'if':{'not':S1},'to':'q2'},
+       {'if':{'all':[{'not':S2},{'sideLt':{'side':'s','n':3}},{'not':{'junk':{'side':'s','tag':'suf'}}}]},'to':'q3'},{'if':{'not':S2},'to':'q3x'},
+       {'if':{'all':[G1,{'not':S3},{'junk':{'side':'s','tag':'suf'}}]},'to':'q3x'},
+       {'if':{'all':[{'not':S3},{'sideLt':{'side':'s','n':3}},{'des':True}]},'to':'q3'},
+       {'if':{'all':[{'not':S3},{'sideLt':{'side':'s','n':3}}]},'to':'q4'},
+       {'if':{'all':[{'not':PD},{'sideLt':{'side':'p','n':3}}]},'to':'p1'},
+       {'if':{'all':[{'not':PD},{'whittleSafe':{'tag':'keep','keepDes':True}}]},'to':'w1'},
+       {'if':{'all':[{'not':PD},{'not':S3},{'des':True},{'whittleSafe':{'tag':'keep'}}]},'to':'r1'},
+       {'if':{'not':PD},'to':'w1'},
+       {'if':{'any':[S3,{'all':[G0,{'full':'s'}]}]},'to':'ok'},
+       {'if':{'des':True},'to':'r1'},{'to':'q4'}],vis)
+LF=it('p','번개 피해 추가 1티어 (분열)','T1 flat lightning (fractured)',['light']); SU=lambda: it('s','치명타·투사체 접미','Crit or projectile suffix',['suf']); PR=lambda: it('p','투사체 속도·활 피해','Projectile speed or bow damage',['pre'])
+SL2=K('공격 치명타 확률·치명타 피해 1~2티어 또는 투사체 +1','T1–2 attack crit chance or crit damage, or +1 projectile skills')
+BL=it('s','자리 막기 (공개된 훼손 옵션)','Blocker (revealed desecration)',None,'d')
+I0=[LF,J('s')]; I1=[LF,SU()]; I2=I1+[SU()]; I3=I2+[UN('s')]; I4=I2+[BL]; I5=[LF,PR()]+I4[1:]; I6=[LF,PR(),PR()]+I4[1:]; I7=[LF,PR(),PR(),SU(),SU(),UN('s')]; I8=[LF,PR(),PR(),SU(),SU(),SU()]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'light','fr':True},{'junk':'s'}]},K('번개 피해 추가 1티어 분열 + 잡옵 1개','Fractured T1 flat lightning + one junk line'),I0),
  mark([0,0.6],'q2',I0),
- act('q2','main',[0,1],'chaos','Chaos_Orb',K('접미 첫번째 옵션','First suffix option'),None,K('카오스','Chaos'),[{'if':{'has':'suf'},'to':'q3','res':'ok'},{'to':'q2','res':'fail'}],I1,show=['critA','critD','proj']),
- act('q3','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접미 두번째 옵션','Second suffix option'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'suf','min':2}},'to':'q4','res':'ok'},{'to':'q3x','res':'fail'}],I2,show=['critA','critD','proj'],omens=['Omen_of_Dextral_Exaltation']),
- cleanup('q3x',[1,2],['suf'],[{'lost':'suf','to':'q2','port':'right'},{'to':'q3','port':'bottom'}],K('빗나간 접미 지우기 (첫번째 접미는 유지)','Remove the missed suffix (keep the first)')),
- act('q4','main',[0,3],'desecrate','Preserved_Jawbone',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'q5'}],I3,omens=['Omen_of_Dextral_Necromancy']),
- act('q5','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),
-     [{'if':{'has':'pre'},'to':'q6','res':'ok'},{'if':{'param':{'pT':1}},'to':'q5x','res':'fail'},{'to':'q6','res':'fail'}],I4,show=['pspd','bow']),
- cleanup('q5x',[1,4],['pre'],[{'to':'q5','port':'bottom'}],K('빗나간 접두 지우기','Remove the missed prefix'),side='p'),
- act('q6','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),None,K('엑잘','Exalt'),
-     [{'if':{'count':{'tag':'pre','min':2}},'to':'q7','res':'ok'},{'if':{'param':{'pT':1}},'to':'q6x','res':'fail'},{'to':'q7','res':'fail'}],I5,show=['pspd','bow']),
- cleanup('q6x',[1,5],['pre'],[{'lost':'pre','to':'q5','port':'right'},{'to':'q6','port':'bottom'}],K('빗나간 접두 지우기 (앞의 접두는 유지)','Remove the missed prefix (keep the first)'),side='p'),
- act('q7','main',[0,6],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'suf'},'to':'ok','res':'ok'},{'to':'q7x','res':'fail'}],I6,want='suf',show=['critA','critD','proj'],omens=['Omen_of_Abyssal_Echoes']),
- LIGHTX('q7x',[1,6],'q7d'),
- act('q7d','main',[1,6.6],'desecrate','Preserved_Jawbone',K('다시 훼손','Desecrate again'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'q7','port':'right'}],I5),
+ act('q2','main',[0,1],'chaos','Chaos_Orb',K('접미 첫번째 옵션','First suffix option'),None,K('카오스','Chaos'),RN({'q3':'ok','q2':F}),I1,show=['critA','critD','proj']),
+ act('q3','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접미 두번째 옵션','Second suffix option'),None,K('엑잘','Exalt'),RN({'q4':'ok','q3x':F}),I2,show=['critA','critD','proj']),
+ annul('q3x',[1,2],[{'if':{'all':[S1,{'not':S2},{'not':{'junk':{'side':'s','tag':'suf'}}},{'sideLt':{'side':'s','n':3}},{'not':{'des':True}}]},'to':'q4','res':'ok'}]+RN({'q2':{'port':'right'}}),omens=(),target=K('접미 잡옵 지우기 (잡옵이 지워지면 훼손)','Remove the junk suffix (desecrate once it is gone)')),
+ act('q4','main',[0,3],'desecrate','Preserved_Jawbone',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'q4r'}],I3,omens=['Omen_of_Dextral_Necromancy']),
+ act('q4r','main',[0,4],'reveal',None,K('훼손 옵션 확인 (없으면 가장 높은 레벨로 자리 막기)','Reveal (on a miss, keep the highest-level option as a blocker)'),None,K('공개','Reveal'),RN({'ok':'ok','p1':F}),I4,want='suf',show=['critA','critD','proj'],missPick='lvl'),
+ act('p1','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접두 옵션','Prefix option'),None,K('엑잘','Exalt'),RN({'w1':{'port':'right'},'ok':{}}),I5,show=['pspd','bow']),
+ act('w1','main',[1,5],'chaos','Perfect_Chaos_Orb',K('접두 잡옵을 다시','Reroll the junk prefix'),None,K('카오스','Chaos'),RN({'p1':'ok','r1':F}),I6,show=['pspd','bow'],trim={'side':'p','keep':'keep','keepDes':True}),
+ annul('r1',[2,4],RN({'q4':{'port':'right'}}),target=K('자리 막기 훼손 옵션 제거','Remove the blocking desecration')),
  done([0,7])]
 graph8('noble-visceral-quiver-v2','Quivers','Visceral Quiver',82,
-  '노블이 본능적인 화살통(원본 레시피 기록, 0.4 영상을 0.5.5 방식으로 응용) — 번개 피해 추가 분열 + 잡옵 → 카오스 오브(치명타·투사체 접미) → 우측 찬미 + 완벽한 엑잘(다른 하나, 빗나가면 소멸의 오브) → 우측 강령술 + 보존된 턱뼈 → 완벽한 엑잘 2번(투사체 속도·활 피해) → 공개(남은 접미, 빛의 징조로 다시). 하이엔드 = 영상(접두 1티어, 빗나가면 좌측 소멸의 징조), 밸런스 = 1~2티어 목표, 접두 엑잘은 결과 그대로.',
-  {'cT':{'kr':'공격 치명타 확률','en':'Attack crit chance','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'dT':{'kr':'치명타 피해','en':'Crit damage','values':TV({'2':('1~2티어','T1–2'),'3':('1~3티어','T1–3')})},'pT':{'kr':'접두 (투사체 속도·활 피해)','en':'Prefixes','values':TV({'1':('1티어 (좌측 소멸의 징조로 다시)','T1 (Sinistral Annulment retry)'),'2':('결과 그대로','As they come')})}},P,
-  {'high':K('영상: 1티어까지 좌측 소멸의 징조로 다시','Video: Sinistral Annulment until T1'),'bal':K('1~2티어 목표, 접두는 결과 그대로','T1–2 targets, prefixes as they come')},
-  tags,nodes,[{'id':'L1','nodes':['q7','q7x','q7d'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'light','tmax':1,'fr':True}]+([{'tag':'pspd','tmax':1},{'tag':'bow','tmax':1}] if v=='high' else [{'side':'p','label':K('투사체 속도·활 피해 (나오는 대로)','Projectile speed or bow damage (as it comes)')},{'side':'p','random':True}])+[{'tag':'critA','tmax':P[v]['cT']},{'tag':'critD','tmax':P[v]['dT']},{'tag':'proj','tmax':1}]),
-  {'quality':20,'sockets':0},{'all':[{'has':'light'},{'count':{'tag':'suf','min':3}},{'full':'p'}]},('high','bal'))
+  '노블이 본능적인 화살통(2PUEwoePtRs, 0.4 영상을 0.5 데이터로) — 번개 피해 추가 분열 → 카오스 오브(접미 치명타·투사체 하나) → 완벽한 엑잘(접미 잡옵이면 소멸의 오브, 잡옵이 지워지면 훼손) → 우측 강령술 + 보존된 턱뼈로 남은 접미 훼손(투사체가 아니면 가장 높은 레벨 옵션으로 자리 막기) → 완벽한 엑잘(접두) → 절사 카오스(마지막 접두, 막기 옵션이 잡옵보다 낮으면 빛의 징조로 지우고 다시 훼손) → 막기 옵션을 지우고 다시 훼손 → 공개(투사체). 하이엔드 = 영상(모두 1티어), 밸런스 = 1~2티어, 마지막 접두·접미는 랜덤 옵션.',
+  {'cT':{'kr':'공격 치명타 확률','en':'Attack crit chance','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'dT':{'kr':'치명타 피해','en':'Crit damage','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},
+   'pT':{'kr':'접두 (투사체 속도·활 피해)','en':'Prefixes','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},
+   'g':{'kr':'마지막 접두·접미','en':'Last prefix and suffix','values':TV({'1':('목표 옵션까지 반복','Repeat until the wanted line'),'0':('랜덤 옵션','Random line')})}},P,
+  {'high':K('영상: 모두 1티어, 마지막 접두·접미까지 반복','Video: all T1, repeat for the last prefix and suffix'),'bal':K('1~2티어, 마지막 접두·접미는 랜덤 옵션','T1–2, the last prefix and suffix random')},
+  tags,nodes,[{'id':'L1','nodes':['q4','q4r','r1'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['p1','w1'],'kr':'접두','en':'Prefixes'}],
+  FIN(('high','bal'),lambda v:[{'tag':'light','tmax':1,'fr':True}]+([{'tag':'pspd','tmax':1},{'tag':'bow','tmax':1}] if v=='high' else [{'side':'p','label':K('투사체 속도·활 피해 1~2티어','T1–2 projectile speed or bow damage')},{'side':'p','random':True}])+([{'tag':'critA','tmax':1},{'tag':'critD','tmax':1},{'tag':'proj','des':True}] if v=='high' else [{'side':'s','label':SL2},{'side':'s','label':SL2},{'side':'s','random':True}])),
+  {'quality':20,'sockets':0},{'all':[{'has':'light'},{'count':{'tag':'suf','min':2}},{'full':'s'},{'any':[{'all':[G1,{'count':{'tag':'suf','min':3}},{'count':{'tag':'pre','min':2}}]},{'all':[G0,{'has':'pre'},{'full':'p'}]}]}]},('high','bal'))
 
 # ---------- 3. 시한 하이엔드 투구 (CTrIbhQVU8U) ----------
 # 원본: 생명력 최대치 1티어 분열 + 잡옵 → 카오스 오브(방어도 원소 적용 1티어·치명타 확률 1~2티어) → 우측 찬미 + 상위 찬미 + 완벽한 엑잘(다른 하나, 빗나가면 소멸의 오브)
+# 2026-11-12 영상 전체 대조(CTrIbhQVU8U 0:00~27:20, 메인 세션) — 단계 일치. 등급 기준 C17: 밸런스도 접두 엑잘이 빗나가면 징표 반복(1~2티어), 마지막 접미(저항)는 랜덤.
+#   영상 18:20의 번개 저항 → 카오스 저항 유동체는 뺌(정책 2·33). 징표 훼손 공개는 한 티어 높게(시뮬 2026-11-12).
 # → 상위 카오스 오브(남은 잡옵을 저항으로) → 완벽한 엑잘(방어도 1티어) → 맞으면 고대 갈비뼈 → 공개(다른 방어도, 빛의 징조로 다시) / 빗나가면 좌측 결정화 + 심연의 에센스(징표) → 완벽한 엑잘 → 징표에 고대 갈비뼈 → 공개.
 P={'high':{'aT':1,'rT':3},'bal':{'aT':2,'rT':4}}
 tags={'life':{'gi':6,'tmax':1},'ele':{'gi':20,'tmax':1},'crit':{'gi':16,'tmax':2},'sGood':{'anyOf':['ele','crit'],'label':K('방어도 원소 적용·치명타 확률','Armour to elemental or crit chance')},
@@ -109,7 +141,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'life','fr':True},{'junk':'s'}]},K
      over=[{'param':{'aT':2},'set':{'act':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Dextral_Exaltation'],'goal':K('접미 세번째 옵션 (저항이면 좋음, 결과 그대로)','Third suffix (a resistance is good, keep it)'),'edges':[{'to':'p1'}]}}],
      ),
  act('p1','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),
-     [{'if':{'added':'arm'},'to':'p2','res':'ok'},{'if':{'param':{'aT':1}},'to':'m1','res':'fail'},{'to':'p2','res':'fail'}],I4,show=['flat','pct']),
+     [{'if':{'added':'arm'},'to':'p2','res':'ok'},{'to':'m1','res':'fail'}],I4,show=['flat','pct']),
  act('p2','main',[0,5],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'p3'}],I5),
  act('p3','main',[0,6],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'arm'},'to':'ok','res':'ok'},{'to':'p3x','res':'fail'}],I6,want='arm',show=['flat','pct'],omens=['Omen_of_Abyssal_Echoes']),
  LIGHTX('p3x',[1,6],'p2'),
@@ -124,8 +156,8 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'life','fr':True},{'junk':'s'}]},K
  done([0,8])]
 graph8('sihan-highend-helmet-v2','Helmets_str','Imperial Greathelm',82,
   '시한 하이엔드 투구(원본 레시피 기록) — 생명력 1티어 분열 + 잡옵 → 카오스 오브(방어도 원소 적용·치명타 확률) → 우측 찬미 + 상위 찬미 + 완벽한 엑잘(다른 하나, 빗나가면 소멸의 오브) → 상위 카오스 오브(남은 잡옵을 저항으로) → 완벽한 엑잘(방어도) → 맞으면 고대 갈비뼈 훼손·공개, 빗나가면 좌측 결정화 + 심연의 에센스(징표) → 완벽한 엑잘 → 징표에 고대 갈비뼈 → 공개. 하이엔드 = 영상, 밸런스 = 상위 찬미 없이 상위 엑잘로 접미 하나씩(치명타 2티어 레벨 44도 후보)·저항은 엑잘 결과 그대로, 방어도 1~2티어, 접두 엑잘 빗나감은 그대로 두고 훼손 공개.',
-  {'aT':{'kr':'방어도 접두','en':'Armour prefixes','values':TV({'1':('1티어 (징표로 다시)','T1 (Abyssal mark retry)'),'2':('1~2티어','T1–2')})},'rT':{'kr':'저항','en':'Resistance','values':TV({'3':('1~3티어 (상위 카오스)','T1–3 (Greater Chaos)'),'4':('엑잘 결과 그대로','Exalt, as it comes')})}},P,
-  {'high':K('영상: 상위 찬미·상위 카오스·심연 징표','Video: Greater Exaltation, Greater Chaos, Abyssal mark'),'bal':K('접미 하나씩, 저항은 결과 그대로, 방어도 1~2티어','One suffix at a time, resistance as it comes, T1–2 armour')},
+  {'aT':{'kr':'방어도 접두','en':'Armour prefixes','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'rT':{'kr':'저항','en':'Resistance','values':TV({'3':('1~3티어 (상위 카오스)','T1–3 (Greater Chaos)'),'4':('엑잘 결과 그대로','Exalt, as it comes')})}},P,
+  {'high':K('영상: 상위 찬미·상위 카오스·심연 징표','Video: Greater Exaltation, Greater Chaos, Abyssal mark'),'bal':K('접미 하나씩, 저항은 랜덤 옵션, 방어도 1~2티어(징표·훼손 반복은 하이엔드와 같음)','One suffix at a time, the resistance random, T1–2 armour (same mark and reveal loops as high-end)')},
   tags,nodes,[{'id':'L1','nodes':['p2','p3','p3x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['m1','m2','m2x','m2y'],'kr':'심연 징표','en':'Abyssal mark'}],
   FIN(('high','bal'),lambda v:[{'tag':'life','tmax':1,'fr':True},{'tag':'flat','tmax':P[v]['aT']},{'tag':'pct','tmax':P[v]['aT']},{'tag':'ele','tmax':1},{'tag':'crit','tmax':2},{'side':'s','label':K('저항 1~3티어','T1–3 resistance')} if v=='high' else {'side':'s','random':True}]),
   {'quality':20,'sockets':2},{'all':[{'has':'life'},{'count':{'tag':'sGood','min':2}},{'has':'arm'},{'full':'p'},{'full':'s'}]},('high','bal'))
