@@ -628,7 +628,13 @@ const nm = x => KR()?x.kr:x.en;
 const C = r => S.cls[r.cls];
 const grp = (r,gi) => C(r).groups[gi];
 const tText = t => KR()?t[4]:t[5];
-const baseOf = r => C(r).bases[r.base];
+const baseOf = r => S.cls[r.cls] ? C(r).bases[r.base] : S.board[r.id].b;
+// 목록 카드는 빌드 때 만든 요약(data/board.json)으로 그림 → 클래스 파일은 레시피를 열 때만 받음 (첫 로딩 빠르게, 2026-11-11)
+const lite = r => !S.cls[r.cls] && S.board?.[r.id];
+function liteA(r){ const b=S.board[r.id], k=KR()?0:1; if(b._a?.[k]) return b._a[k];
+  const final=b.f.map(m=>({gi:m.gi, txt:m.x[k], tag:m.tag, fr:m.fr, des:m.des, ess:m.ess, max:m.max, g:{g:m.g, s:m.s, tg:m.tg, t:[[0,0,0,0,m.t[0],m.t[1]]]}}));
+  return (b._a=b._a||[])[k] = {final, qual:b.q, tot:b.tot, totAll:b.totAll, manual:b.manual, bases:b.bases, nodes:[], keys:Object.keys(b.tot)}; }
+const A = r => lite(r) ? liteA(r) : analyse(r);
 const tx = o => o ? (o[S.lang] || o.en || o.kr || '') : '';
 const clsName = r => { for(const g of S.index.groups) for(const c of g.classes) if(c.id===(r.clsAs||r.cls)) return (KR()?c.kr:c.en).replace(/\s*\(.*\)\s*$/,''); return r.cls; };
 const catOf = r => S.index.groups.find(g=>g.classes.some(c=>c.id===r.cls));
@@ -648,6 +654,7 @@ const DIFF = [['입문','Beginner'],['쉬움','Easy'],['보통','Medium'],['어�
 const BUDGET = {low:['저예산','Budget'], medium:['중간 예산','Mid budget'], high:['고예산','High budget']};
 function difficulty(r){
   if(r.difficulty!=null) return Math.max(0,Math.min(5,r.difficulty));
+  if(lite(r)) return S.board[r.id].d;
   const a=analyse(r), ds=new Set(r.nodes.map(n=>n.do)); let sc=0;
   if(r.nodes.length>15) sc++;
   if(ds.has('fracture')) sc++;
@@ -969,12 +976,12 @@ const statKey = g => (g.t[0][5]||'').replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d
 const statLbl = g => { const t=g.t[0][KR()?4:5]||''; return t.replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d+(?:\.\d+)?)?\)?/g,'#').replace(/\s*\n\s*/g,' / ').trim(); };
 // modifier search keys: wording + prefix/suffix only (사용자 2026-11-11 — 훼손·제작 등은 따로 나누지 않음, 고정 옵션은 목록에서 뺌)
 const statId = m => (m.g.g==='p'||m.g.g==='s') ? statKey(m.g)+'|'+m.g.g : null;
-const statsOf = r => { if(r._sk) return r._sk; const s=new Set(); try{ analyse(r).final.forEach(m=>{ const k=statId(m); if(k) s.add(k); }); }catch(e){} return r._sk=s; };
+const statsOf = r => { if(r._sk) return r._sk; const s=new Set(); try{ A(r).final.forEach(m=>{ const k=statId(m); if(k) s.add(k); }); }catch(e){} return r._sk=s; };
 const ROLE = {p:['접두','Prefix'], s:['접미','Suffix'], i:['고정','Implicit'], fr:['분열','Fractured'], des:['훼손','Desecrated'], cr:['제작','Crafted']};
 const roleBadges = id => { const [, side]=id.split('|'); return [side].filter(Boolean).map(k=>`<span class="rb ${k}">${esc(L(...ROLE[k]))}</span>`).join(''); };
 // '~단어 단어' = every word anywhere (trade-site style), otherwise the text as typed
 const statMatch = (hay, q) => { q=q.trim().toLowerCase(); if(!q) return true; hay=hay.toLowerCase(); if(q.startsWith('~')) return q.slice(1).split(/\s+/).filter(Boolean).every(w=>hay.includes(w)); return hay.includes(q); };
-const tagsOf = r => { const s=new Set(); analyse(r).final.forEach(m=>m.g.tg.forEach(t=>s.add(t))); return s; };
+const tagsOf = r => { const s=new Set(); A(r).final.forEach(m=>m.g.tg.forEach(t=>s.add(t))); return s; };
 
 const fmt = v => !isFinite(v) ? '∞' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v>=1 ? v.toFixed(1) : v.toFixed(2);
 const pct = p => p>=0.995 ? '100%' : p>=0.1 ? (p*100).toFixed(0)+'%' : p>=0.01 ? (p*100).toFixed(1)+'%' : (p*100).toFixed(3)+'%';
@@ -1032,7 +1039,7 @@ function divOf(use){ if(!S.prices) return null; let v=0; const miss=[];
 const manualDiv = man => { let v=0; for(const [u,x] of Object.entries(man||{})){ if(u==='Divine_Orb') v+=x; else { const p=exOf(u); if(p!=null) v+=x*p/S.prices.divine; } } return v; };
 const addDiv = (a,b) => !a ? b : !b ? a : {v:a.v+b.v, miss:[...new Set([...a.miss,...b.miss])]};
 // whole recipe: main path + entered costs (base price), and with the optional steps
-function recipeCost(r){ if(!S.prices) return null; const a=analyse(r), m=manualDiv(a.manual), d=divOf(a.tot), all=divOf(a.totAll);
+function recipeCost(r){ if(!S.prices) return null; const a=A(r), m=manualDiv(a.manual), d=divOf(a.tot), all=divOf(a.totAll);
   return {v:d.v+m, miss:d.miss, all:all.v+m, missAll:all.miss}; }
 const fmtDiv = v => v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v>=1 ? v.toFixed(1) : v>=0.01 ? v.toFixed(2) : '0.01';
 const noPrice = miss => miss?.length ? `<small class="nopr" title="${esc(L('시세 없음: ','No price: ')+miss.map(k=>nm(cur(k))).join(', '))}">${L('시세 없음','no price')} ${miss.length}</small>` : '';
@@ -1103,7 +1110,7 @@ const reports = r => (r.success||0) + social(r.id).success;
 
 // ---------- rendering ----------
 function cardHTML(r){
-  const b=baseOf(r), a=analyse(r), old=isOld(r);
+  const b=baseOf(r), a=A(r), old=isOld(r);
   // explicit-magnitude lines (Thrud's Might) raise matching lines, as on the detail card
   const MT={fire:'fire',cold:'cold',lightning:'lightning',chaos:'chaos',physical:'physical','elemental damage':'elemental',mana:'mana',speed:'speed',critical:'critical'}, mg={};
   a.final.forEach(m=>{ const k=(m.g.t[0][5]||'').match(/Explicit (.+?) Modifier magnitudes/i); const v=(m.txt.match(/(\d+)(?:—(\d+))?\)?%/)||[]); if(k && MT[k[1].toLowerCase()] && (v[2]||v[1])) mg[MT[k[1].toLowerCase()]]={v:+(v[2]||v[1]), gi:m.gi}; });
@@ -1882,7 +1889,7 @@ function list(){
     for(const k of S.stats) if(k && !statsOf(r).has(k)) return false;
     if(S.curOnly && isOld(r)) return false;
     if(S.tags.size){ const t=tagsOf(r); for(const x of S.tags) if(!t.has(x)) return false; }
-    if(q){ const hay=[r.title.kr,r.title.en,tx(r.author),baseOf(r).kr,baseOf(r).en,clsName(r),...analyse(r).final.map(m=>m.txt)].join(' ').toLowerCase(); if(!hay.includes(q)) return false; }
+    if(q){ const hay=[r.title.kr,r.title.en,tx(r.author),baseOf(r).kr,baseOf(r).en,clsName(r),...A(r).final.map(m=>m.txt)].join(' ').toLowerCase(); if(!hay.includes(q)) return false; }
     return true; });
   // newest: the shared time when there is one, else the date; recipes added later on the same date count as newer
   const order = new Map(S.recipes.map((r,i)=>[r,i]));
@@ -1951,7 +1958,7 @@ function renderBar(){
   if(S.sub && !subs.some(c=>c.id===S.sub)) S.sub='';
   $('#fsub').innerHTML=`<option value="">${L('모든 세부 종류','All types')}</option>`+subs.map(c=>`<option value="${c.id}" ${S.sub===c.id?'selected':''}>${esc(KR()?c.kr:c.en)}</option>`).join('');
   $('#fsub').disabled=!subs.length;
-  S.statOpts=new Map(); S.recipes.forEach(r=>{ if(r.tierGroup && tierLead(r)!==r) return; try{ analyse(r).final.forEach(m=>{ const k=statId(m); if(!k || S.statOpts.has(k)) return; S.statOpts.set(k,{l:statLbl(m.g)}); }); }catch(e){} });
+  S.statOpts=new Map(); S.recipes.forEach(r=>{ if(r.tierGroup && tierLead(r)!==r) return; try{ A(r).final.forEach(m=>{ const k=statId(m); if(!k || S.statOpts.has(k)) return; S.statOpts.set(k,{l:statLbl(m.g)}); }); }catch(e){} });
   S.statList=[...S.statOpts.entries()].sort((a,b)=>(a[0].endsWith('|p')?0:1)-(b[0].endsWith('|p')?0:1) || a[1].l.localeCompare(b[1].l, KR()?'ko':'en'));   // prefixes first
   if(!document.querySelector('#stats .sbox:focus-within')) $('#stats').innerHTML=S.stats.map((v,i)=>`<div class="sbox ${v?'on':''}" data-sbox="${i}"><input type="text" data-stat="${i}" autocomplete="off" spellcheck="false" placeholder="${esc(L(`+ 옵션 ${i+1} — 입력해서 찾기 (~단어 단어)`,`+ Modifier ${i+1} — type to search (~word word)`))}" value="${esc(v?S.statOpts.get(v)?.l||'':'')}" aria-label="${esc(L('옵션','Modifier'))} ${i+1}">${v?`<button type="button" class="sx" data-sclear="${i}" aria-label="${esc(L('지우기','Clear'))}">✕</button>`:''}<div class="slist" hidden></div></div>`).join('');
   $('#sort').innerHTML=SORTS.map(([k,[kr,en]])=>`<button type="button" data-sort="${k}" aria-pressed="${S.sort===k}">${esc(L(kr,en))}${S.sort===k?`<span class="ar">${S.sortDir>0?'↑':'↓'}</span>`:''}</button>`).join('');
@@ -1987,6 +1994,7 @@ function renderTips(){
 // an old link to a grade this item no longer keeps opens the item's lead grade
 function liveId(id){ if(!id || S.recipes.some(r=>r.id===id)) return id; const g=S.recipes.find(r=>r.tierGroup===id || r.tierGroup && id.startsWith(r.tierGroup+'-')); return g ? tierLead(g).id : id; }
 function setOpen(id){ id=liveId(id);
+  { const rr=id && S.recipes.find(x=>x.id===id); if(rr && !S.cls[rr.cls]){ document.body.style.cursor='progress'; loadCls(rr.cls).then(()=>{ document.body.style.cursor=''; setOpen(id); }); return; } }   // 목록은 요약으로 그려서 클래스 파일은 열 때 받음
   if(!S.open) S.listY=scrollY;
   if(S.simFull){ S.simFull=false; document.body.classList.remove('simfull'); try{ parent.postMessage({type:'poe2-full', on:false}, '*'); }catch(e){} }
   if(!id || !S.recipes.find(x=>x.id===id)?.tierGroup) S.fcTab=false;
@@ -2043,6 +2051,7 @@ function renderDlg(){
 }
 
 // ---------- events ----------
+$('#board').addEventListener('pointerover', e=>{ const c=e.target.closest('.card'), r=c && S.recipes.find(x=>x.id===c.dataset.id); if(r) loadCls(r.cls).catch(()=>{}); });   // 마우스를 올리면 미리 받아 둠
 $('#board').addEventListener('click', e=>{ const c=e.target.closest('.card'); if(c) setOpen(c.dataset.id); });
 $('#board').addEventListener('keydown', e=>{ const c=e.target.closest('.card'); if(c && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); setOpen(c.dataset.id); } });
 const keepY = fn => { const y=scrollY; fn(); scrollTo(0,y); };
@@ -2266,17 +2275,22 @@ document.addEventListener('click', e=>{ if(!e.target.closest('#clrdrafts')) retu
 function removeDraft(id){ const g=S.recipes.find(x=>x.id===id)?.tierGroup || id; store.set('drafts', store.get('drafts',[]).filter(x=>x.id!==id && x.id!==g)); const gone=x=>x.id===id || x.id===g || x.tierGroup===g; const wasOpen=S.recipes.some(x=>gone(x) && x.id===S.open); S.recipes=S.recipes.filter(x=>!gone(x)); if(wasOpen) setOpen(null); render(); }
 
 // ---------- boot ----------
-async function loadCls(id){ if(!S.cls[id]) S.cls[id] = await fetch(`data/c/${id}.json`).then(r=>r.json()); }
+function recHash(r){ const s=JSON.stringify(r); let h=2166136261; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return (h>>>0).toString(36); }
+const clsP={};
+async function loadCls(id){ if(!S.cls[id]) S.cls[id] = await (clsP[id] = clsP[id] || fetch(`data/c/${id}.json`).then(r=>r.json()).catch(e=>{ delete clsP[id]; throw e; })); }
 async function boot(){
   const [rec, idx, craft, tips] = await Promise.all([fetch('data/recipes.json').then(r=>r.json()), fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json()), fetch('data/tips.json').then(r=>r.ok?r.json():{tips:[]}).catch(()=>({tips:[]}))]);
-  [S.prices, S.budget, S.trade] = await Promise.all(['prices','budget','trade'].map(f=>fetch(`data/${f}.json`).then(r=>r.ok?r.json():null).catch(()=>null)));
+  [S.prices, S.budget, S.trade, S.boardRaw] = await Promise.all(['prices','budget','trade','board'].map(f=>fetch(`data/${f}.json`).then(r=>r.ok?r.json():null).catch(()=>null)));
+  // 요약이 지금 레시피와 같을 때만 씀(레시피 내용 해시 비교), 사용자가 비용을 바꾼 레시피는 원래 계산
+  S.board={}; if(S.boardRaw?.r) for(const r of rec.recipes){ const b=S.boardRaw.r[r.id]; if(b && b.h===recHash(r) && !store.get('cost:'+r.id,null)) S.board[r.id]=b; }
   S.tips = tips.tips||[];
   S.index=idx; S.craft=craft; for(const k in craft) for(const x of craft[k]) S.byId[x.id]=x;
   S.recipes = rec.recipes.map(r=>({likes:0, success:0, ...r}));
   const drafts = PREVIEW ? [] : store.get('drafts',[]).filter(r=>r && /^draft-/.test(r.id) && Array.isArray(r.nodes)).flatMap(unpackDraft);
   S.recipes = drafts.concat(S.recipes);
-  await Promise.all([...new Set(S.recipes.map(r=>r.cls))].map(loadCls));
+  await Promise.all([...new Set(S.recipes.filter(r=>!S.board[r.id]).map(r=>r.cls))].map(loadCls));
   const h=location.hash.match(/^#r-(.+)$/); if(h && S.recipes.some(r=>r.id===liveId(h[1]))) S.open=liveId(h[1]);
+  if(S.open) await loadCls(S.recipes.find(r=>r.id===S.open).cls);
   S.booted=true; render();
   if(S.open){ const ro=S.recipes.find(x=>x.id===S.open); try{ parent.postMessage({type:'poe2-route', hash:'r-'+S.open, extreme: !!ro && difficulty(ro)>=5}, '*'); }catch(_){} }
   if(S.pendingDraft){ const d=S.pendingDraft; S.pendingDraft=null; addDraft(d, true); }
@@ -2285,6 +2299,6 @@ async function boot(){
   try{ if(parent!==window) parent.postMessage({type:'poe2-share-ready'}, '*'); }catch(_){}
 }
 boot();
-if(location.search.includes('debug')) window.__rec = Object.assign(S, {renderBoard:()=>renderBoard(), recipeCost, analyse, divOf});
+if(location.search.includes('debug')) window.__rec = Object.assign(S, {renderBoard:()=>renderBoard(), recipeCost, analyse, divOf, recHash, loadCls, difficulty, baseOf});
 })();
 </script>

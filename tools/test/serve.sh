@@ -11,5 +11,8 @@ for f in recipes discover emulator builder bases; do cp $ROOT/site/pub/$f.html .
 cp $ROOT/site/sim.js $ROOT/site/graphify.js .
 # expose engine internals to the Playwright scripts
 sed -i "s/if(location.search.includes('debug')) window.__rec/window.__rec/; s/window.__rec = Object.assign(S, {renderBoard:()=>renderBoard()\(, [^}]*\)\?});/window.__rec = Object.assign(S, {renderBoard:()=>renderBoard()\1, analyse, prepRecipe});/" recipes.html
+# 검사 스크립트는 모든 레시피를 엔진으로 계산하니 클래스 파일을 처음에 다 받음(실제 사이트는 목록 요약만, ?lite 로 실제와 같게)
+sed -i "s/S.recipes.filter(r=>!S.board\[r.id\])/S.recipes.filter(r=>!S.board[r.id] || !location.search.includes('lite'))/" recipes.html
+grep -q "includes('lite')" recipes.html || { echo 'serve.sh: lite sed failed'; exit 1; }
 python3 -m http.server 8779 >/dev/null 2>&1 & echo $! > .pid
 sleep 1; echo "serving $T on http://localhost:8779"

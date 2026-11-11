@@ -53,7 +53,7 @@ def main():
     # cache: pages always fresh, big data files cached for an hour; while testing, every response says noindex
     noindex = '' if INDEX else '/*\n  X-Robots-Tag: noindex, nofollow\n'
     open(os.path.join(WEB, '_headers'), 'w').write(noindex +
-        '/*.html\n  Cache-Control: no-cache\n/\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: public, max-age=3600\n')
+        '/*.html\n  Cache-Control: no-cache\n/\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: public, max-age=3600\n/fonts/*\n  Cache-Control: public, max-age=2592000\n/img/*\n  Cache-Control: public, max-age=604800\n')
     n = sum(len(fs) for _, _, fs in os.walk(WEB))
     print('web/ built:', n, 'files')
 

@@ -88,10 +88,12 @@ cd /home/claude/poe2data/scripts && python3 build_prices.py && python3 build_tip
 cd /home/claude/poe2data && bash tools/test/serve.sh start
 cd tools/test && node audit.js && node ver.js && node eng.js && node share.js
 node build_samples.js      # 레시피를 바꿨으면 samples.json 재생성
+node build_board.js        # 레시피를 바꿨으면 board.json(목록 카드 요약) + data/bimg/ 재생성 — 빼먹어도 바뀐 레시피만 원래 계산으로 그림
 node _shots_sim.js         # 플로우차트 화면 스크린샷 → shots/sim-<id>-*.png (kr·en·full·erase·mobile)
 cd /home/claude/poe2data && bash tools/test/serve.sh stop
 ```
 
+- **크래프팅 첫 로딩**(2026-11-11, 사용자: 처음 들어갈 때 로딩이 심함): 목록 카드는 `data/board.json`(빌드 때 만든 요약: 완성 옵션 줄 kr/en·소모량·난이도·베이스, 레시피 내용 해시 `recHash`가 같을 때만 씀) + `data/bimg/`(베이스 그림 파일)로 그리고, 클래스 파일(`data/c/*.json`, 모두 합쳐 약 17MB)은 레시피를 열 때(카드에 마우스를 올리면 미리) 받음 — recipes.html `A(r)`·`liteA`·`lite`. 사용자가 비용을 바꾼 레시피·초안·공유 레시피는 원래 계산. 테스트 서버(serve.sh)는 검사 스크립트를 위해 클래스 파일을 다 받고, `?lite`를 붙이면 실제 사이트와 같음. 점검 `node tools/test/_boardcheck.js`(요약 카드 = 원래 카드, 목록에서 클래스 파일 0개)·`_boardopen.js`(모든 카드 열기·주소로 열기)·`_loadtime.js`(배포 폴더 첫 로딩: 3.0초 17.9MB → 0.6초 4.1MB). 아티팩트판에 올릴 땐 `data/board.json`·`data/bimg/*`도 `files`에.
 - **영문 넘침 점검**(2026-11-11, 사용자: 번역으로 영역을 벗어나는 곳 수정): `node tools/test/_overflow.js [탭…]`(배포 폴더 서버 8790, 영문 1600·1280·1024·390px에서 글자 넘침·짧은 이름표 줄바꿈·가로 스크롤 → overflow.txt), 긴 스크린샷 `_ovshots.js [탭,…] [폭,…]` → shots/ovs-*, 플로우차트·리버스 분석 결과 `_ovextra.js` → shots/ovx-*. 줄인 Fontin 글꼴엔 ffi 합자 글자가 없어 'affix'가 'a  x'로 보였음 → theme.css·shell.html·about.html `html{font-variant-ligatures:none}`. CSS `content:` 글은 번역이 안 되니 `html[lang="en"]` 규칙을 따로 둠.
 - **배포 전 검수**(2026-11-11): `cd web && python3 -m http.server 8790 &` → `node tools/test/_web.js`(배포 폴더 그대로 탭 6개·레시피·플로우차트·영문·모바일, 오류·404·가로 스크롤 → shots/web-*.png), 배포 뒤엔 내장 브라우저로 poe2craft.xyz의 `/data/recipes.json`을 받아 최신 커밋 내용인지 확인(사이트는 robots 차단이라 WebFetch는 안 됨)
 - `_rev10e.js <레시피id…>`(2026-11-11 리버스 10개 시험): 등록 레시피 완성품으로 초안 → 레시피 엔진으로 초안·원본 비용(확정 / 추가 포함) 비교, `NEED=<json>`이면 그 그룹만 필수. `_rev10.js`(초안 단계·검산), `_rev10f.js`(티어 범위별 비용, 타협 있음|없음). 찾은 것: 타협이 들어가면 '확정' 비용이 너무 작아 보이고 티어 범위를 넓혀도 비용이 오르기도 함 → 리버스 화면의 티어 범위 비교는 타협 없이(필수 옵션을 모두 맞출 때, `market:1e9`) 계산, 액체 옵션은 '가중치 모름'에서 뺌, 콜르 등 증강물 옵션은 리버스·엔진에서 아직 가중치 모름(시뮬만 SL 추정값 사용)
