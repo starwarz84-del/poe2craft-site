@@ -19,7 +19,7 @@
 | mazbro-bis-chest-v2 | LUB59xlkNtk | high 3,023, bal 960 | 15 | 대조만 끝남 | B(Fable) | 영상 기록 tools/notes/mazbro-LUB59xlkNtk.md. 접두 엑잘·절사 카오스를 상위로 바꾸면 조금 쌈(시뮬 확인) — 아직 안 고침 |
 | sihan-highend-helmet-v2 | CTrIbhQVU8U | high 2,616, bal 180 | 1 | 완료 11-12 | A(Opus) | 자막 전체(0:00~27:20) 대조, 단계 일치. 기록 tools/notes/sihan-CTrIbhQVU8U.md. 징표 훼손 한 티어 높게(시뮬 규칙 추가). 2,642/181 → 2,613/202 |
 | noble-visceral-quiver-v2 | 2PUEwoePtRs | high 2,240, bal 110 | 3 | 완료 11-12 | A(Opus) | 자막 없음 → 화면 자막 0:00~11:47 전체(기록 tools/notes/noble-2PUEwoePtRs.md). 영상대로 다시 만듦: 남은 접미 훼손을 먼저 공개해 가장 높은 레벨 옵션으로 자리 막기 → 접두 엑잘 → 절사 카오스(막기가 가장 낮으면 빛의 징조로 다시 훼손) → 막기 지우고 보존된 턱뼈로 투사체. 2,240/110 → 1,416/110 |
-| diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 대기 | | 제작 옵션 한도 위반(l1·l2) 남음 |
+| diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 진행 중 | A(Opus) | 제작 옵션 한도 위반(l1·l2) 남음 |
 | breach-ring-video-v2 | RiJixgqBnBY | high 1,956, bal 934 | 4 | 완료 11-12 | A(Opus) | 자막 전체(0:00~31:50) 대조, 권장 순서와 일치(기록 tools/notes/sl-breach-RiJixgqBnBY.md). 1,956/934 → 1,956/651(밸런스 마지막 훼손 접두 랜덤) |
 | sihan-proj-gloves-v2 | DH4jiORLg10 | high 1,659, bal 327 | 2 | 완료 11-12 | A(Opus) | 자막 전체(0:00~27:40) 대조(기록 tools/notes/sihan-DH4jiORLg10.md). 접두 엑잘의 좌측 찬미 뺌(접미가 이미 3개), 두 번째 접두 실패 = 심연 징표를 둔 채 엑잘 → 징표에 고대 갈비뼈(영상 추천). 1,659/327 → 1,619/282 |
 | sl-blacksteel-gauntlets-v2 | J7J8Jo7ibvE | high 1,649, bal 140 | 4 | 완료 11-12 | A(Opus) | 자막엔 제작 설명 없음 → 6:12 슬라이드 직접 확대 확인(14단계 일치). 슬라이드에 없는 메아리 뺌. 1,649/140 → 1,794/874(밸런스 두번째 접미도 1~2티어까지 반복, 상위 오브) |
@@ -36,7 +36,7 @@
 | diztoh-endgame-quarterstaff-v2 | YfGJyBrObxI | high 712, bal 36 | 3 | 완료 11-12 | A(Opus) | 자동 번역 자막 전체(0:00~17:40) 대조, 단계 일치(기록 tools/notes/diztoh-YfGJyBrObxI.md). 공개 빗나감은 영상의 우측 소멸 대신 빛의 징조(지금 시세가 더 쌈). 712/36 → 1,043/577(등급 1티어 / 1~2티어) |
 | unstoppable-slipstrike-vest-v2 | swF5mwXmZ0k | high 651, bal 176 | 1 | 완료 11-11 | A(Opus) | 영상 40:45~46:30 대조. 첫 카오스 추가, 반복은 상위 카오스, 접두 결정화+심연. 하이엔드 870→651, 밸런스 540→176 |
 | breach-ring-phys-v2 |  | bal 535, ess 89 | 2 | 대기 |  |  |
-| diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 512, bal 340, ess 278 | 1 | 대기 |  |  |
+| diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 512, bal 340, ess 278 | 1 | 진행 중 | A(Opus) |  |
 | mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 완료 11-11(그림만 확인 안 됨) | B(Fable) | 단계 대조는 함. 화면 캡처가 오른쪽이 잘린 채였음 — 선은 다시 볼 것 |
 | sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 대기 |  |  |
 | mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 대기 |  |  |
