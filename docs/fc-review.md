@@ -23,9 +23,9 @@
 | sihan-proj-gloves-v2 | DH4jiORLg10 | high 1,659, bal 327 | 2 | 진행 중 | A(Opus) |  |
 | sl-blacksteel-gauntlets-v2 | J7J8Jo7ibvE | high 1,649, bal 140 | 4 | 진행 중 | A(Opus) |  |
 | sl-flamewave-ring-v2 | UAF91gEFRkM | high 1,423, bal 371 | 2 | 진행 중 | A(Opus) |  |
-| absent-amulet-spell6-v2 | Yi1u0LhJztI | high 1,330, bal 756 | 10 | 대기 |  |  |
-| sl-flamewave-staff-v2 | 6EzSVUItzsg | high 1,296, bal 178 | 3 | 대기 |  |  |
-| mazbro-caster-amulet-v2 | 4PazhuHwdL8 | high 1,154, bal 428 | 5 | 대기 |  |  |
+| absent-amulet-spell6-v2 | Yi1u0LhJztI | high 1,330, bal 756 | 10 | 진행 중 | A(Opus) |  |
+| sl-flamewave-staff-v2 | 6EzSVUItzsg | high 1,296, bal 178 | 3 | 진행 중 | A(Opus) |  |
+| mazbro-caster-amulet-v2 | 4PazhuHwdL8 | high 1,154, bal 428 | 5 | 진행 중 | A(Opus) |  |
 | sihan-highend-boots-v2 | dlrD21AcCUE | high 1,147, bal 650, ess 314 | 2 | 대기 |  |  |
 | grasping-mail-spell1-v2 | y5Ch3AJpl5c | high 1,140, bal 613 | 11 | 대기 |  |  |
 | sl-proj7-gloves-v2 | XMYJh3CnXuY | high 1,104, bal 785 | 7 | 완료 11-11 | B(Fable) | 자막 전체 대조. 합금 실패 뒤 길을 보이는 선 + 규칙에 맞게(우측 소멸의 징조로 접미 비우기). 1,104·785 |
