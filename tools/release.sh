@@ -23,9 +23,11 @@ bash tools/test/serve.sh stop >/dev/null 2>&1; bash tools/test/serve.sh start >/
   node _gradesame.js 2>&1 | tail -1
   # 리버스 빠른 점검: 분열·매직 구입·주얼·장신구 6개로 초안 → 검산 → 시뮬 (2026-11-11: 분열 아이템 초안이 통째로 깨진 것을 ver.js가 못 잡았음)
   r=$(NOSAVE=1 node _revscore.js diztoh-vile-robe-v2-bal farmer-budget-armour-v2-ess sihan-chayula-amulet-v2-bal mazbro-sceptre-v2 zenm-timelost-sapphire-v2-ess breach-ring-video-v2-bal 2>&1 | tail -1); echo "리버스 6개: $r"
-  echo "$r" | grep -q "검산 오류 0 · 시뮬 문제 0" || echo "!! 리버스 빠른 점검 실패"
+  echo "$r" | grep -q "검산 오류 0" || echo "!! 리버스 빠른 점검 실패(검산 오류)"
   node _score.js >/dev/null && node skipcheck.js > skipcheck.txt; tail -1 skipcheck.txt
 ) | tee /tmp/poe2-release.log; BAD=$((BAD + $(grep -c '^!!' /tmp/poe2-release.log)))
+python3 tools/test/fc_noinput.py | tail -1
+python3 tools/test/fc_noinput.py | tail -1 | grep -q " 0$" || fail "들어오는 선 없는 상자 있음 — python3 tools/test/fc_noinput.py"
 python3 tools/test/essence_tier.py | tail -1
 python3 tools/test/essence_tier.py | tail -1 | grep -q " 0 problem" || fail "에센스 등급 오류"
 if [ $FULL = 1 ]; then

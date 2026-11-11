@@ -680,13 +680,6 @@
      "hide": true
     },
     {
-     "if": {
-      "has": "rem"
-     },
-     "to": "mX",
-     "hide": true
-    },
-    {
      "to": "mA",
      "hide": true
     }
@@ -935,13 +928,6 @@
      "hide": true
     },
     {
-     "if": {
-      "has": "rem"
-     },
-     "to": "mX",
-     "hide": true
-    },
-    {
      "to": "mA",
      "hide": true
     }
@@ -1116,13 +1102,6 @@
       }
      },
      "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "mX",
      "hide": true
     },
     {
@@ -1372,13 +1351,6 @@
       }
      },
      "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "mX",
      "hide": true
     },
     {
@@ -1633,13 +1605,6 @@
       }
      },
      "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "mX",
      "hide": true
     },
     {
@@ -1901,269 +1866,8 @@
      "hide": true
     },
     {
-     "if": {
-      "has": "rem"
-     },
-     "to": "mX",
-     "hide": true
-    },
-    {
      "to": "mA"
     }
-   ]
-  },
-  {
-   "id": "mX",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    6
-   ],
-   "act": "annul",
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "label": {
-    "kr": "소멸",
-    "en": "Annul"
-   },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "pp"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "mL",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "mB",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "all": [
-          {
-           "count": {
-            "tag": "pp",
-            "min": 2
-           }
-          },
-          {
-           "has": "third"
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "count": {
-          "tag": "pp",
-          "min": 2
-         }
-        },
-        {
-         "has": "third"
-        }
-       ]
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "has": "rem"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 4
-        }
-       }
-      ]
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "has": "rem"
-       }
-      ]
-     },
-     "to": "sA",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       }
-      ]
-     },
-     "to": "a1"
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 2
-      }
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "mX",
-     "hide": true
-    },
-    {
-     "to": "mA",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
-     "m": "n",
-     "tags": [
-      "ps"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "투사체 피해 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Damage",
-     "m": "n",
-     "tags": [
-      "pd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(105—124)",
-     "en": "+(105—124) to maximum Mana",
-     "m": "n",
-     "tags": [
-      "mf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 확률 (28—34)% 증가",
-     "en": "(28—34)% increased Critical Hit Chance",
-     "m": "n",
-     "tags": [
-      "cr"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잔류물을 (35—50)% 더 먼 곳에서 획득 가능 (팽창하는 합금)",
-     "en": "Remnants can be collected from (35—50)% further away (Expansive Alloy)",
-     "m": "c",
-     "tags": [
-      "rem"
-     ]
-    },
-    {
-     "s": "r",
-     "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
-     "m": "r"
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
-    }
-   ],
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Dextral_Annulment"
    ]
   },
   {
@@ -2337,14 +2041,6 @@
      },
      "to": "s1",
      "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "mX",
-     "res": "fail",
-     "port": "right"
     },
     {
      "to": "mA",
@@ -2608,13 +2304,6 @@
       }
      },
      "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "mX",
      "hide": true
     },
     {
