@@ -1007,7 +1007,7 @@ function analyse(r){
     for(const k in tot) delete tot[k]; for(const k in totAll) delete totAll[k]; for(const k in manual) delete manual[k];
     Object.assign(tot, F.use||{}); Object.assign(totAll, F.use||{}); bases = F.bases||1;
     if(out[0]) out[0].passes = bases;
-    const c=uc2.base; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+(+c.v)*bases; } else if(+r.basePrice>0) manual.Divine_Orb=(+r.basePrice)*bases; }
+    const c=uc2.base; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+(+c.v)*bases; } else if(+r.basePrice>0) manual.Divine_Orb=(+r.basePrice)*bases; else if(+F.baseDiv>0) manual.Divine_Orb=(+F.baseDiv)*bases; /* 플로우차트 베이스 가격(그래프 basePrice, 예: 사슬옷 분열 베이스 카오스 22만 개) — 2026-11-12 */ }
   const fcState = r.fc ? fcCardState(r.fc.tags, r.fc.lines, r.fc.ds) : null;   // 플로우차트의 그 등급 완성품 카드가 기준
   const final = (fcState || mods).filter(m=>m.gi!=null).map(m=>({...modLine(r,m.gi,m.tmax,m.max,m.tmin), tmax:m.tmax, fr:m.fr, des:m.des, ess:m.ess}))
     .sort((a,c)=>(a.g.g==='p'?0:1)-(c.g.g==='p'?0:1));

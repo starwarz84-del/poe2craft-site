@@ -59,6 +59,7 @@ graph11('grasping-mail-spell1-v2','Grasping_Mail_ring',"Runefather's Grasping Ma
   FIN(('high','bal'),lambda v:[{'tag':'nt','ess':True},{'tag':'rw','ess':True},{'tag':'sd','tmax':1,'des':True},{'tag':'spell','fr':True},{'tag':'csd','tmax':1},{'tag':'cs','tmax':1}] if v=='high' else
       [{'tag':'nt','ess':True},{'tag':'rw','ess':True},{'side':'p','random':True},{'tag':'spell','fr':True},{'side':'s','label':K('주문 치명타 피해·시전 속도 1~2티어','T1–2 spell crit damage or cast speed')},{'side':'s','random':True}]),
   {'quality':30,'sockets':2},{'all':[{'has':'nt'},{'has':'rw'},{'any':[{'all':[{'count':{'tag':'suf','min':2}},{'has':'sd'}]},{'all':[{'param':{'g':0}},{'has':'suf'},{'full':'s'},{'full':'p'}]}]}]},('high','bal'),xsub=GEN,xroll=True)
+_g=json.load(open(f'{H}/grasping-mail-spell1-v2.json')); _g['basePrice']={'Chaos_Orb':220000}; json.dump(_g,open(f'{H}/grasping-mail-spell1-v2.json','w'),ensure_ascii=False,indent=1)   # 분열 베이스 = 영상의 카오스 약 22만 개(사용자 확정 2026-11-12: 비싸게 보여도 포함)
 
 # ---------- 2. MazBro BiS 갑옷 (LUB59xlkNtk) ----------
 # 영상: 요술사 외투 정신력 1티어 분열 + 잡옵 → 메드베드의 보살핌(영혼 핵) → 카오스 오브(정신력 % 또는 마나 %) → 좌측 찬미 + 엑잘(남은 하나, 빗나가면 소멸의 오브 50/50 — 영상 뒷부분: 완벽한 엑잘 권장)
