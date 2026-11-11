@@ -46,7 +46,8 @@ function fromDraft(d, D, opt={}){
     const cand = N.filter(n=>ROLL.includes(n.do) && !n.fallbackFor && !n.onLost && !n.optional && setOf(n).length);
     cand.forEach((S,i)=>{ if(chainOf[S.id] || !S.target.anyOf || S.target.anyOf.length<2) return; const L=new Set(setOf(S)), root=anyTag(S.target.anyOf); let k=1;
       for(const T of cand.slice(i+1)){ if(chainOf[T.id] || (T.branch?.of||'')!==(S.branch?.of||'')) continue; const st=setOf(T); if((st.length<L.size || (S.pool && T.pool && st.length===L.size)) && st.every(g=>L.has(g))){ if(k===1) chainOf[S.id]={tag:root, idx:0}; chainOf[T.id]={tag:root, idx:k++}; } }
-      if(k>1) chainN[root]=Math.min(k, L.size); }); }
+      if(k>1) chainN[root]=Math.min(k, L.size); });
+    N.forEach(n=>{ if(n.do==='reveal' && n.pool && n.target?.reveal?.anyOf){ const tg=anyTag(n.target.reveal.anyOf); if(chainN[tg]) chainN[tg]=Math.min(chainN[tg]+1, n.target.reveal.anyOf.length); } }); }
   const tgOf = n => chainOf[n.id]?.tag || targetTag(n.target);
 
   // ---------- roles: fallbacks, branch blocks, the main lane
@@ -74,6 +75,8 @@ function fromDraft(d, D, opt={}){
   // ---------- item lines along the main lane (left column of the chart)
   const lineOf = (gi, m, extra, tag) => { const g=G[gi], tm=tmaxOf[gi]||1, t=g.t[Math.min(g.t.length-1, Math.max(0,tm-1))]; const kr=(t?.[4]||'').replace(/\n/g,' / '), en=(t?.[5]||'').replace(/\n/g,' / ');
     return {s:g.g, kr: kr + (extra?' ('+extra.kr+')':''), en: en + (extra?' ('+extra.en+')':''), m, tags:[tag||tagOf(gi)], rep:tagOf(gi)}; };
+  /* 묶음(anyOf) 목표: 아이템 칸에는 아직 없는 옵션을 차례로 보여 줌(사용자 2026-11-12: 같은 옵션 3개로 보였음) */
+  const pickGi = list => { const have=new Set(cur.map(l=>l.rep).filter(Boolean)); return (list.find(x=>!have.has(tagOf(x.gi)))||list[0]).gi; };
   const J = s => ({s, kr:'잡옵', en:'Junk', m:'j'}), UN = s => ({s, kr:'훼손 옵션(미공개)', en:'Desecrated (unrevealed)', m:'u'});
   const RND = s => ({s, kr:'랜덤 옵션 1개', en:'One random line', m:'j'});
   let cur = (d.start.mods||[]).map(m=> m.junk ? J(m.junk) : m.unrev ? UN(m.unrev) : lineOf(m.gi, m.fr?'f':'n'));
@@ -167,13 +170,13 @@ function fromDraft(d, D, opt={}){
     const t=n.target||{}, a=o.act, sdOm=omSide(n.omens, /Erasure|Crystallisation|Necromancy|Annulment/);
     if(t.removeGi!=null) dropOne(l=>l.tags?.includes(tagOf(t.removeGi)));
     if(t.dropGi!=null) dropOne(l=>l.tags?.includes(tagOf(t.dropGi)));
-    if(a==='chaos'){ if(t.removeGi==null) (dropJunk(sdOm)||dropJunk(null)); if(t.gi!=null) cur.push(lineOf(t.gi,'n',null,chainOf[n.id]?.tag)); else if(t.anyOf) cur.push(lineOf(t.anyOf[0].gi,'n',null,chainOf[n.id]?.tag || anyTag(t.anyOf))); else cur.push(RND(sdOm||'p')); }
+    if(a==='chaos'){ if(t.removeGi==null) (dropJunk(sdOm)||dropJunk(null)); if(t.gi!=null) cur.push(lineOf(t.gi,'n',null,chainOf[n.id]?.tag)); else if(t.anyOf) cur.push(lineOf(pickGi(t.anyOf),'n',null,chainOf[n.id]?.tag || anyTag(t.anyOf))); else cur.push(RND(sdOm||'p')); }
     else if(['transmute','augment','regal','exalt'].includes(a)){ const sd=omSide(n.omens,/Exaltation|Coronation/); const k=(n.omens||[]).includes('Omen_of_Greater_Exaltation')?2:1;
-      for(let i=0;i<k;i++){ if(i===0 && (t.gi!=null || t.anyOf)) cur.push(lineOf(t.gi??t.anyOf[0].gi,'n',null,chainOf[n.id]?.tag || (t.anyOf?anyTag(t.anyOf):null))); else cur.push(t.junk ? J(typeof t.junk==='string'?t.junk:(sd||'p')) : RND(sd||'p')); } }
+      for(let i=0;i<k;i++){ if(i===0 && (t.gi!=null || t.anyOf)) cur.push(lineOf(t.gi??pickGi(t.anyOf),'n',null,chainOf[n.id]?.tag || (t.anyOf?anyTag(t.anyOf):null))); else cur.push(t.junk ? J(typeof t.junk==='string'?t.junk:(sd||'p')) : RND(sd||'p')); } }
     else if(a==='essence'){ if(t.removeGi==null){ const s=omSide(n.omens,/Crystallisation/); if(s) dropJunk(s); }
       const gi=t.mark ? t.mark.gi : t.gi; if(gi!=null) cur.push(lineOf(gi, t.mark?'c':'c', K(t.mark?'징표':'제작 옵션', t.mark?'mark':'crafted'))); }
     else if(a==='desecrate'){ const s=t.unrev||sdOm||'s'; if(t.fromMark) dropOne(l=>/징표/.test(l.kr)); cur.push(UN(s)); }
-    else if(a==='reveal'){ const i=cur.findIndex(l=>l.m==='u'); const gi=t.reveal?.gi ?? t.reveal?.anyOf?.[0]?.gi; if(i>=0) cur.splice(i,1, gi!=null ? lineOf(gi,'d',null,targetTag(t)) : {...UN(cur[i].s), m:'d'}); }
+    else if(a==='reveal'){ const i=cur.findIndex(l=>l.m==='u'); const gi=t.reveal?.gi ?? (t.reveal?.anyOf ? pickGi(t.reveal.anyOf) : null); if(i>=0) cur.splice(i,1, gi!=null ? lineOf(gi,'d',null,targetTag(t)) : {...UN(cur[i].s), m:'d'}); }
     else if(a==='annul'){ if(t.removeDes) dropOne(l=>l.m==='d'||l.m==='u'); else if(t.dropGi==null) dropJunk(sdOm); }
     else if(a==='rune' && o.rune) cur.push({s:'r', kr:o.rune.kr, en:o.rune.en, m:'r'});
     o.item = cur.map(x=>({...x}));

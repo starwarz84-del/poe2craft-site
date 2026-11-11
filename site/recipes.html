@@ -1254,7 +1254,8 @@ const runeName = id => typeof id==='object' ? tx(id) : nm(cur(id));
 const runeRec = (r, id) => { const en = typeof id==='object' ? (id.en||'') : String(id).replace(/^rune:/,''), kr = typeof id==='object' ? (id.kr||'') : '';
   for(const x of C(r).runes||[]) for(const t of x.t) if(t[1]===en || (kr && t[0]===kr)) return t; return null; };
 const runeLines = (r, id) => { const t=runeRec(r,id); if(!t) return [];
-  const kr=[t[2],t[4]].filter(Boolean).join('\n').split('\n'), en=[t[3],t[5]].filter(Boolean).join('\n').split('\n');
+  /* 결합 옵션(t[4]·t[5])은 샤먼만 받으니 보이지 않음(사용자 2026-11-12) */
+  const kr=(t[2]||'').split('\n').filter(Boolean), en=(t[3]||'').split('\n').filter(Boolean);
   return en.map((e,i)=>({en:e.trim(), kr:(kr[i]||e).trim()})).filter(x=>x.en && !/^local /i.test(x.en) && !/^local /i.test(x.kr)); };   // a socketed rune: an id from our data, or a named one from the recipe
 function sideLbl(n, o, sd){
   const kr=sd==='p'?'접두':'접미', en=sd==='p'?'prefix':'suffix';
