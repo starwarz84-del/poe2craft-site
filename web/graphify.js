@@ -104,7 +104,7 @@ function fromDraft(d, D, opt={}){
       goal: (v.omens||[]).includes('Omen_of_Light') ? K('훼손 옵션 제거','Remove the desecrated modifier') : K('소멸의 오브 사용','Use an Orb of Annulment'), edges, _row:r, _col:2});
     return id; }
 
-  let hasCmp=false;
+  let hasCmp=false; const softTags=new Set();
   const retry0 = n => n.fail || n.compromise || (fb[n.id]||[]).length || N.some(x=>x.branch?.of===n.id);
   const emit = (n, r, col) => {
     const a = DO2ACT[n.do]; if(!a) return null;
@@ -112,14 +112,18 @@ function fromDraft(d, D, opt={}){
     const o={id:n.id, kind:'act', group:'main', act:a, label:LABEL[a], goal:goalOf(n,a), edges:[]};
     if(n.cur) o.cur=n.cur; if(n.omens?.length) o.omens=[...n.omens];
     const sh=showOf(n); if(sh) o.show=sh;
-    if(a==='essence'){ o.ess = tg || tagOf(t.gi); if(t.mark){ o.mark=true; if(t.mark.alt!=null) o.alt=tagOf(t.mark.alt); } }
+    if(a==='essence'){ o.ess = tg || tagOf(t.gi); if(t.mark){ o.mark=true; if(t.mark.alt!=null) o.alt=tagOf(t.mark.alt); }
+      // 액체(주얼): 먼저 무작위 옵션 하나를 지우고 붙음, 제작 옵션 아님. 경멸은 결과가 둘(+1 접미 허용 / +1 접두 허용) — 원하는 쪽이 붙어야 성공
+      if((opt.craft?.liquids||[]).some(x=>x.id===n.cur)){ o.liquid=true;
+        if(t.slots && t.gi!=null){ tags[tagOf(t.gi)].slot=t.slots; const nm=G[t.gi].t[0][3], ag=G.findIndex((x,i)=>i!==t.gi && x.s===G[t.gi].s && x.g!==G[t.gi].g && x.t[0]?.[3]===nm);
+          if(ag>=0){ const sd=Object.keys(t.slots)[0]; o.alt=tagOf(ag); tags[o.alt].slot={[sd==='p'?'s':'p']:1}; } } } }
     if(a==='desecrate' && t.fromMark) o.fromMark=true;
     if(a==='reveal'){ o.want=tg; }
     if(a==='quality'){ o.count=t.quality||20; o.q=t.quality||20; }
     if(a==='rune'){ const rn=t.rune || (t.runeSwap||[])[0]; if(rn) o.rune=rn; if(t.slots) o.slots=t.slots; if(n.label) o.goal=n.label; }
     if(n.extra) o.extraUse=n.extra;
     // success condition
-    const okIf = tg && !t.junk && ['transmute','augment','regal','exalt','chaos','reveal'].includes(a) ? (a==='reveal' ? {any:[{added:tg},{has:tg}]} : {added:tg}) : null;   // a reveal: the wanted line may already be on the item
+    const okIf = tg && !t.junk && ['transmute','augment','regal','exalt','chaos','reveal'].includes(a) ? (a==='reveal' ? {any:[{added:tg},{has:tg}]} : {added:tg}) : (a==='essence' && o.liquid && o.alt ? {added:tg} : null);   // a reveal: the wanted line may already be on the item
     const nxt = n.branch==null && N.some(x=>x.branch?.of===n.id) ? (branchFirst(n.id,'ok')||nextMain(n)) : nextMain(n);
     const missTo = N.some(x=>x.branch?.of===n.id) ? branchFirst(n.id,'miss') : null;
     o.edges.push(...lostEdges(n, keep));
@@ -131,7 +135,8 @@ function fromDraft(d, D, opt={}){
     const F = n.fail || n.compromise?.fail;
     const retry = missTo || (reals.length ? reals[0].id : failPath(n, F, keep, r));
     if(okIf || missTo){
-      if((n.compromise || notes.length) && retry && !missTo){ hasCmp=true; o.edges.push({if:{param:{cmp:'retry'}}, to:retry, res:'fail'}, {to:nxt, res:'fail'}); }
+      if(n.compromise?.soft && !missTo){ softTags.add(tg); o.edges.push({to:nxt, res:'fail'}); }   // 유효 옵션(사용자 확정 2026-11-11): 한 번만 시도하고 빗나가면 모든 등급에서 그대로
+      else if((n.compromise || notes.length) && retry && !missTo){ hasCmp=true; o.edges.push({if:{param:{cmp:'retry'}}, to:retry, res:'fail'}, {to:nxt, res:'fail'}); }
       else if(retry) o.edges.push({to:retry, res:'fail'});
       else o.edges.push({to:nxt, res:'fail'}); }
     // already done (a line that came back after a loss): skip the step
@@ -186,7 +191,7 @@ function fromDraft(d, D, opt={}){
     grades.forEach((v,i)=>{ P[v].cmp = i===grades.length-1 && grades.length>1 ? 'settle' : 'retry'; }); if(grades.length===1) P[grades[0]].cmp='retry'; }
   const cmpTags = new Set(mainOut.filter(o=>o.edges.some(e=>e.if?.param?.cmp)).flatMap(o=>[...(o.show||[]), targetTag(byId[o.id]?.target)].filter(Boolean)));
   const finalTags = cur.filter(l=>l.tags).map(l=>l.tags[0]);
-  const reqHas = [...new Set(finalTags)].filter(t=>!(tags[t]?.gi!=null && G[tags[t].gi].f.includes('ItemMaxQuality')));
+  const reqHas = [...new Set(finalTags)].filter(t=>!softTags.has(t) && !(tags[t]?.gi!=null && G[tags[t].gi].f.includes('ItemMaxQuality')));
   const require = {all: reqHas.map(t=> cmpTags.has(t) ? {any:[{has:t},{param:{cmp:'settle'}}]} : {has:t})};
   const desc = v => { const p=P[v], ws=[...loopGi].filter(gi=>p['t'+gi]!=='1'); const parts=[];
     if(ws.length) parts.push(K(`반복으로 찾는 옵션 ${ws.length}개를 넓은 티어로`, `${ws.length} looped line(s) at wider tiers`)); else parts.push(K('고른 티어 그대로','The tiers you picked'));
@@ -198,6 +203,13 @@ function fromDraft(d, D, opt={}){
     tags, require, groups:[{id:'prep',kr:'베이스템 완성',en:'Finished base',cols:[0,1]},{id:'main',kr:'옵션 추가 작업',en:'Adding modifiers',cols:[0,1]}],
     start:'h1', loops:[], finals, finalItem:{quality:d.start.quality||20, sockets:0}, nodes};
   if(d.cap) g.cap=d.cap;
+  // 장착한 증강물(룬·영혼 핵)의 전용 옵션: 그 룬이 있어야 풀에 들어감(sim.js xsub). 엑잘·카오스로 노리는 단계가 있으면 그 풀에도(xroll)
+  const xs=new Set(); (d.start.runes||[]).forEach(r=>r?.en && xs.add(r.en)); N.forEach(n=>{ const rn=n.target?.rune; if(rn?.en) xs.add(rn.en); });
+  Object.values(tags).forEach(t=>{ const x=t.gi!=null && G[t.gi]; if(x && x.s==='x' && x.sub?.[1] && x.sub[1]!=='Otherworldly') xs.add(x.sub[1]); });
+  const xsub=[...xs].filter(en=>G.some(x=>x.s==='x' && x.sub?.[1]===en));
+  if(xsub.length){ g.xsub=xsub; const isX = t => !!t && [t.gi, ...(t.anyOf||[]).map(x=>x.gi)].some(gi=>gi!=null && G[gi].s==='x');
+    if(N.some(n=>['exalt','chaos','regal','transmute','augment'].includes(n.do) && isX(n.target))) g.xroll=true; }
+  if(/Astrid/.test(JSON.stringify([d.start.runes||[], N.map(n=>n.target?.rune||null)]))) g.astrid = !N.some(n=>/Astrid/.test(n.target?.rune?.en||''));   // 시작부터 장착돼 있으면 표시(정책 5장 C1 집계용)
   return g; }
 
 // the drawing data the flowchart view reads (same fields as tools/sim/run.js writes)

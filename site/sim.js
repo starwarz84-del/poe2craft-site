@@ -34,6 +34,7 @@ function make(graph, D, craft, params){
     const side = m => m.side, lvl = m => G[m.gi].t[m.ti][0];
     const count = s => it.mods.filter(m=>m.side===s).length;
     let capR={...cap};   // slots this run (a rune such as Serle's Triumph adds one)
+    let astrid=!!graph.astrid;   // 아스트리드의 창의성 장착 여부(정책 5장 C1: 제작 옵션이 있을 때 에센스·합금은 이 룬이 있어야 씀)
     const maxA = s => it.rar==='normal'?0 : it.rar==='magic'?1 : capR[s] + it.mods.reduce((a,m)=>a+(m.slot?.[s]||0),0);
     const over = () => ['p','s'].filter(s=>count(s)>maxA(s));   // a side above its limit (contempt line removed): Chaos then only rerolls the other side (Diztoh 5-mod jewel)
     const fams = () => { const f=new Set(); it.mods.forEach(m=>{ if(!m.unrev) G[m.gi].f.forEach(x=>f.add(x)); }); return f; };
@@ -109,6 +110,8 @@ function make(graph, D, craft, params){
         else { const ov=over(), other=ov.length && it.mods.some(m=>!m.fr && !ov.includes(m.side)); takeRandom(er ? (m=>m.side===er) : other ? (m=>!ov.includes(m.side)) : null); }   // nothing removable on the other side (노블이 사파이어: prefix empty) → any line
         add(null, mn); }
       else if(a==='essence'){ let tn = n.alt && rnd()<0.5 ? n.alt : n.ess;
+        // C1(사용자 확정 2026-11-11): 에센스·합금은 붙인 뒤 지움 → 제작 옵션이 이미 있으면 아스트리드의 창의성이 있어야 하고, 그때도 2개까지. 액체는 지운 뒤 붙여서 해당 없음. 어긴 사용은 세기만 함(res.c1)
+        if(!n.liquid && it.rar==='rare'){ const cr0=it.mods.filter(m=>m.ess).length; if(cr0>=(astrid?2:1)) hooks.tally.c1?.(id); }
         // two-outcome liquid (Contempt: +1 suffix allowed is a prefix, +1 prefix allowed a suffix) — 사용자 확정 2026-11-10: it first takes a random line,
         // then lands where there is room: a removed prefix → the prefix outcome only, a removed suffix → the suffix outcome, or 50/50 when both sides have room
         const rf = n.liquid && n.alt && it.rar==='rare' && !n.anyRemove;
@@ -135,7 +138,7 @@ function make(graph, D, craft, params){
         let os=draw(); if(!os.some(want) && oms.includes('Omen_of_Abyssal_Echoes')) os=draw();
         const o=os.find(want)||os[0]; if(!o) return use; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true}; it.mods.push(nm); last.added.push(nm); } }
       else if(a==='fracture'){ const c=it.mods.filter(m=>!m.unrev && !m.fr); const m=c[Math.floor(rnd()*c.length)]; if(m){ m.fr=true; last.fr=m; } }
-      else if(a==='rune'){ for(const k in (n.slots||{})) capR[k]+=n.slots[k]; }   // a socketed rune that opens a slot (Serle's Triumph: one more suffix)
+      else if(a==='rune'){ for(const k in (n.slots||{})) capR[k]+=n.slots[k]; if(/Astrid/.test(n.rune?.en||'')) astrid=true; else if(n.rune && n.swapAstrid) astrid=false; }   // a socketed rune that opens a slot (Serle's Triumph: one more suffix)
       else if(a==='quality'){ it.cq = n.q || n.count || 0; }   // catalyst quality % (count = catalysts ≈ %), used up by Catalysing Exaltation
       else if(a==='divine'){ /* values only */ }
       else throw new Error('unknown act '+a);
@@ -179,14 +182,14 @@ function simulate(graph, D, craft, prices, params, N=20000, seed=1){
   const ex = id => id==='Exalted_Orb' ? 1 : prices.p[id]!=null ? +prices.p[id] : null, missing=new Set();
   const div = use => { let v=0; for(const k in use){ const e=ex(k); if(e==null) missing.add(k); else v+=use[k]*e; } return v/prices.divine; };
   const baseDiv = div(graph.basePrice||{});
-  const tot={}, nodeUse={}, visits={}, skips={}, byCur={}, reach={}, edges={}, costs=[]; let bases=0, ok=0, okReq=0;
+  const tot={}, nodeUse={}, visits={}, skips={}, byCur={}, reach={}, edges={}, costs=[], c1={}; let bases=0, ok=0, okReq=0;
   // 완성품의 어느 옵션이 훼손으로 얻은 것인지(사용자 확정 2026-11-11: 옵션 종류가 아니라 제작 과정으로 판단) — 태그별 훼손 비율, 면별 훼손 옵션 평균 개수
   const leafT=Object.entries(graph.tags||{}).filter(([k,t])=>t && t.gi!=null).map(([k,t])=>[k,t.gi]);
   const dsT={}, dsSide={p:0,s:0};
   for(let r=0;r<N;r++){ const seen=new Set(), runUse={}; let runBases=0;
     const tally={ visit:id=>{ visits[id]=(visits[id]||0)+1; seen.add(id); },
       use:(id,u)=>{ const x=nodeUse[id]=nodeUse[id]||{}; for(const k in u){ x[k]=(x[k]||0)+u[k]; runUse[k]=(runUse[k]||0)+u[k]; } },
-      base:()=>{ runBases++; }, skip:id=>{ skips[id]=(skips[id]||0)+1; }, byCur:(id,k,ok)=>{ const b=(byCur[id]=byCur[id]||{})[k]=byCur[id]?.[k]||{t:0,ok:0}; b.t++; if(ok) b.ok++; }, edge:(a,b)=>{ const k=a+'>'+b; edges[k]=(edges[k]||0)+1; },
+      base:()=>{ runBases++; }, c1:id=>{ c1[id]=(c1[id]||0)+1; }, skip:id=>{ skips[id]=(skips[id]||0)+1; }, byCur:(id,k,ok)=>{ const b=(byCur[id]=byCur[id]||{})[k]=byCur[id]?.[k]||{t:0,ok:0}; b.t++; if(ok) b.ok++; }, edge:(a,b)=>{ const k=a+'>'+b; edges[k]=(edges[k]||0)+1; },
       done:(it, cond)=>{ ok++; if(!graph.require || cond(graph.require)) okReq++;
         for(const m of it.mods){ if(m.unrev || m.fr) continue; if(m.des) dsSide[m.side]=(dsSide[m.side]||0)+1;
           for(const [k,gi] of leafT) if(gi===m.gi){ const x=dsT[k]=dsT[k]||{n:0,d:0}; x.n++; if(m.des) x.d++; } } } };
@@ -199,7 +202,7 @@ function simulate(graph, D, craft, prices, params, N=20000, seed=1){
   const avg = o => { const x={}; for(const k in o) x[k]=o[k]/N; return x; };
   const nodes={}; for(const id in visits){ const u=avg(nodeUse[id]||{}); nodes[id]={reach:reach[id]/N, visits:visits[id]/N, use:u, skips:(skips[id]||0)/N, byCur:byCur[id], div:div(u) + (graph.nodes.find(n=>n.id===id)?.kind==='base' ? visits[id]/N*baseDiv : 0)}; }
   const e2={}; for(const k in edges) e2[k]=edges[k]/N;
-  return {N, seed, mean:costs.reduce((s,x)=>s+x,0)/N, median:q(0.5), p90:q(0.9), p10:q(0.1), bases:bases/N, baseDiv, use:avg(tot), useDiv:div(avg(tot)), nodes, edges:e2, reqOk:okReq/Math.max(1,ok), missing:[...missing], desStat:{tag:Object.fromEntries(Object.entries(dsT).map(([k,x])=>[k,x.d/x.n])), side:{p:dsSide.p/Math.max(1,ok), s:dsSide.s/Math.max(1,ok)}}};
+  return {N, seed, mean:costs.reduce((s,x)=>s+x,0)/N, median:q(0.5), p90:q(0.9), p10:q(0.1), bases:bases/N, baseDiv, use:avg(tot), useDiv:div(avg(tot)), nodes, edges:e2, reqOk:okReq/Math.max(1,ok), c1:Object.fromEntries(Object.entries(c1).map(([k,v])=>[k,v/N])), missing:[...missing], desStat:{tag:Object.fromEntries(Object.entries(dsT).map(([k,x])=>[k,x.d/x.n])), side:{p:dsSide.p/Math.max(1,ok), s:dsSide.s/Math.max(1,ok)}}};
 }
 const api={rng, make, simulate};
 if(typeof module!=='undefined' && module.exports) module.exports=api; else root.POE2SIM=api;

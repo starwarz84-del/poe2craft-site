@@ -535,10 +535,23 @@ function bestDraft(it, an, opt){ const vs=[{k:[], a:an}];
   let best=null;
   for(const v of vs){ try{ const full=makeDraft(it, v.a, {...(opt||{}), market:1e9}); if(!full) continue; if(verifyDraft(it, v.a, full).some(z=>z.lv==='err')) continue;
       v.c = draftCost(it, v.a, full) ?? Infinity; if(!best || v.c < best.c*0.95) best=v; }catch(_){ } }
-  best = best || vs[0]; const d = makeDraft(it, best.a, opt); if(d && best.k.length){ d.knowhow = best.k; d.knowhowWhy = {...(best.a.swap?{K5:best.a.swap}:{}), ...(best.a.dswap?{K6:best.a.dswap}:{})}; }
+  best = best || vs[0];
+  // 복구 후보 비교(정책 4장 C2, 16장): 실패 정리 방법·면 순서를 바꾼 초안들을 플로우차트 시뮬로 돌려 완성 1개당 비용이 가장 싼 것. 기본보다 15% 넘게 싸야 바꿈
+  let ro=null, pick=null;
+  if(!S.noSwap && !S.noVariants && window.POE2GRAPH && window.POE2SIM && S.prices){ const sig = d => JSON.stringify(d.nodes.map(n=>[n.do,n.cur,n.omens,n.target,n.fail]));
+    const d0 = (()=>{ try{ return makeDraft(it, best.a, {...(opt||{}), market:1e9}); }catch(_){ return null; } })(), seen = new Set(d0 ? [sig(d0)] : []); let c0 = d0 ? simCost(it, d0) : Infinity, cb=c0;
+    const tryV = v => { try{ const dv=makeDraft(it, best.a, {...(opt||{}), ...v.o, market:1e9}); if(!dv) return; const sg=sig(dv); if(seen.has(sg)) return; seen.add(sg);
+        if(verifyDraft(it, best.a, dv).some(z=>z.lv==='err')) return; const c=simCost(it, dv); if(c < cb*0.85){ cb=c; ro=v.o; pick=v.k; } }catch(_){ } };
+    REC_VARIANTS.forEach(tryV);
+    tryV({k:[pick,'gex'].filter(Boolean).join('+'), o:{...(ro||{}), ex:'Greater_Exalted_Orb'}});   // 엑잘 등급은 고른 복구 방법 위에서 한 번 더 비교
+    if(pick) pick={k:pick, from:isFinite(c0)?+c0.toFixed(1):null, to:+cb.toFixed(1)}; }
+  const d = makeDraft(it, best.a, {...(opt||{}), ...(ro||{})}); if(d && pick) d.pick=pick; if(d && best.k.length){ d.knowhow = best.k; d.knowhowWhy = {...(best.a.swap?{K5:best.a.swap}:{}), ...(best.a.dswap?{K6:best.a.dswap}:{})}; }
   return {d, an:best.a}; }
 // 노하우 K6(어려운 옵션은 엑잘 대신 훼손 공개로): 아이템에 훼손 옵션이 없으면, 면 징조 엑잘로 뜨기 가장 어려운 일반 옵션 하나를
 // 뼈 + 면 강령술의 징조 + 심연의 메아리 공개로 노림 — 공개는 3개(메아리로 한 번 더) 중에서 고르고, 다시 할 때 빛의 징조(약 7 div)가 면 소멸의 징조(10~20 div)보다 쌈
+const REC_VARIANTS = [{k:'plain', o:{rec:'plain'}}, {k:'noloop', o:{noLoop:1}}, {k:'plain+noloop', o:{rec:'plain', noLoop:1}}, {k:'flip', o:{flip:1}}, {k:'flip+plain+noloop', o:{flip:1, rec:'plain', noLoop:1}}];
+function simCost(it, d, N){ try{ const g=POE2GRAPH.fromDraft(d, it.D, {craft:S.craft, grades:['high']}), c=POE2GRAPH.check(g, it.D, S.craft, S.prices, POE2SIM, N||50, 1e5);
+  return c.issues.length || !c.strategies[0]?.res ? Infinity : c.strategies[0].res.mean; }catch(_){ return Infinity; } }
 function desSwap(it, an){ const rows = an.rows; if(rows.some(r=>r.how==='d' || r.unrev) || it.mods.some(m=>m.unrev || m.desTag)) return an;
   const c = rows.map((r,ri)=>({r,ri})).filter(({r})=>r.how==='n' && !r.m.fr && !r.unknown && r.pOmen>0 && r.pOmen<0.08);
   if(!c.length) return an; const best = c.sort((a,b)=>(a.r.soft?1:0)-(b.r.soft?1:0) || a.r.pOmen-b.r.pOmen)[0];
@@ -576,7 +589,11 @@ function makeDraft(it, an, opt){
   const tm = r => { const a = alts(r); return a.length>1 ? {anyOf:a} : a[0]; };
   const anyOf = list => { const a = list.flatMap(alts).filter((x,i,all)=>all.findIndex(y=>y.gi===x.gi)===i); return a.length===1 ? a[0] : {anyOf:a}; };
   const lkA = r => lk(r) + (alts(r).length>1 ? ' (원소 무관)' : ''), leA = r => le(r) + (alts(r).length>1 ? ' (any element)' : '');
-  const push = n => { nodes.push({id:id(), ...n}); return nodes[nodes.length-1]; };
+  // 정책 3장(C4·23②): 오브 등급은 완성품 가치로 — opt.ex가 있으면 엑잘은 그 등급(촉진 엑잘은 그대로). bestDraft가 시뮬 비용으로 고름
+  const exSwap = n => { if(!opt?.ex || n.do!=='exalt' || n.cur!=='Perfect_Exalted_Orb' || it.cat==='jewel' || (n.omens||[]).includes('Omen_of_Catalysing_Exaltation')) return n;
+    const kr=nk(opt.ex), en=ne(opt.ex), f = o => o && {kr:(o.kr||'').split('완벽한 엑잘티드 오브').join(kr), en:(o.en||'').split('Perfect Exalted Orb').join(en)};
+    return {...n, cur:opt.ex, ...(n.note?{note:f(n.note)}:{}), ...(n.br?{br:f(n.br)}:{})}; };
+  const push = n => { nodes.push({id:id(), ...exSwap(n)}); return nodes[nodes.length-1]; };
   const made = [];   // wanted lines actually placed so far ({r, id}); an annulment can take these
   // with prices: of orbs that do the same job, the one with the lowest expected cost per hit ((orb + omens + clean-up per miss) / chance);
   // the policy's default comes first and keeps a tie. No prices: the default
@@ -784,13 +801,13 @@ function makeDraft(it, an, opt){
     if(!keep.length || keep.some(r=>lvlOf(r) < top || lvlOf(r) <= lvlOf(low))) return null;
     return low; };
   const exaltPass = only => { for(let guard=0; rnd.length && guard<12; guard++){
-    const sd = ['p','s'].map(x=>({x, free:cap[x]-cnt[x]-resv[x]+junk[x]-desNeed[x], n:rnd.filter(r=>r.m.side===x).length})).filter(o=>o.free>0 && o.n>0 && (!only || o.x===only)).sort((a,b)=>b.n-a.n)[0]?.x;
+    const sd = ['p','s'].map(x=>({x, free:cap[x]-cnt[x]-resv[x]+junk[x]-desNeed[x], n:rnd.filter(r=>r.m.side===x).length})).filter(o=>o.free>0 && o.n>0 && (!only || o.x===only)).sort((a,b)=>opt?.flip ? a.n-b.n : b.n-a.n)[0]?.x;
     if(!sd) break;
     openSlot(sd);
     let want = rnd.filter(r=>r.m.side===sd); const oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
     const wl = it.cat==='jewellery' && qCap>0 ? null : whittleTarget(sd, want);
     const keepR = made.filter(x=>x.r.m.side===sd).map(x=>x.r);
-    if(wl && !(want.length===1 && !keepR.length)){
+    if(wl && !opt?.noLoop && !(want.length===1 && !keepR.length)){
       // policy 14/17: every line already on this side is at the top level, so a missed exalt is just the filler for Whittling.
       // One exalt at the lines (no retry), then Whittling + Chaos swaps that filler until one lands; the higher-level lines go first, the lowest last
       const list = want.length>1 ? want.filter(r=>r!==wl) : [wl], top = maxRoll(sd), frO = frs.filter(x=>x.m.side===oth).length;
@@ -803,7 +820,7 @@ function makeDraft(it, an, opt){
         note:note(`빗나간 옵션을 ${['Omen_of_Whittling',...eOm].map(nk).join(' + ')} + ${nk(cc)}로 ${tK}${josa('나','이','가')} 뜰 때까지.${keepR.length?` ${names(keepR, x=>lk(x))}${josa(lk(keepR.at(-1)),'은','는')} 레벨이 더 높아 안 지워짐.`:''}`,
           `Whittling${eOm.length?' + '+ne(eOm[0]):''} + ${ne(cc)} rerolls the missed line until ${tE} lands${keepR.length?'; the higher-level lines stay':''}.`)});
       made.push({r:list[0], id:ex.id}); rnd.splice(rnd.indexOf(list[0]),1); continue; }
-    if(!keepR.length && cnt[oth] >= cap[oth] && !(it.cat==='jewellery' && qCap>0 && !mqGone)){
+    if(!opt?.noLoop && !keepR.length && cnt[oth] >= cap[oth] && !(it.cat==='jewellery' && qCap>0 && !mqGone)){
       // nothing worth keeping on this side and the other side is full: one exalt, then on a miss Erasure + Chaos rerolls just that line
       // (the new line can only land here), cheaper than annulment omen + annulment + another exalt each time
       const top = maxRoll(sd), cc = loopChaos(want, sd, [ERASE[sd]]);
@@ -829,13 +846,15 @@ function makeDraft(it, an, opt){
     const exOm = [...cOm, ...om], tries = cOm.length && free-want.length>=1 && an.cnt[sd] >= an.cap[sd] ? 2 : 1;   // a draft ends at the pasted item: a first-try junk line on a side it leaves open would stay
     const omTxt = exOm.map(nk).join(' + '), omEn = exOm.map(ne).join(' + ');
     // a wanted line already on this side can be the one an annulment takes: then go back to the step that made it
-    const atRisk = [...made].reverse().find(x=>x.r.m.side===sd), lost = atRisk ? {id:atRisk.id} : null;
+    // 정책 4장(C2): 실패 정리는 고정 순서가 아니라 기대 비용이 싼 쪽 — opt.rec==='plain'이면 반대쪽에 좋은 옵션이 있어도 징조 없는 소멸의 오브(지워진 좋은 옵션은 만든 단계부터 다시)
+    const plain0 = cnt[oth] - frs.filter(x=>x.m.side===oth).length === 0, risk = !plain0 && opt?.rec==='plain' && !(it.cat==='jewellery' && qCap>0 && !mqGone);
+    const atRisk = [...made].reverse().find(x=>risk || x.r.m.side===sd), lost = atRisk ? {id:atRisk.id} : null;
     const one = r => cOm.length && (r.g.tg||[]).includes(qType), lkW = r => one(r) ? lk(r) : lkA(r), leW = r => one(r) ? le(r) : leA(r);   // a catalysed element is aimed at alone
     const tgtK = want.length>1?`원하는 옵션 중 하나(${names(want, x=>lkW(x))})`:`${lkW(want[0])} (T${want[0].tierNo} 이상)`, tgtE = want.length>1?`any of ${names(want, x=>leW(x))}`:`${leW(want[0])} (tier ${want[0].tierNo}+)`;
     // the omen-free clean-up: the other side holds only its fractured line (or nothing), so a plain annulment can only take a line from this side
     const plain = cnt[oth] - frs.filter(x=>x.m.side===oth).length === 0;
-    const annVia = plain ? {cur:'Orb_of_Annulment'} : {cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]]};
-    const annK = plain ? `소멸의 오브(${sideKr(oth)}엔 ${frs.some(x=>x.m.side===oth)?'분열 옵션뿐이라':'아무것도 없어서'} 징조 없이 ${sideKr(sd)}만 지워짐)` : `${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브`, annE = plain ? `a plain Orb of Annulment (the ${sideEn(oth)} side holds nothing removable)` : `${ne(SIDE_OMEN.annul[sd])} + Orb of Annulment`;
+    const annVia = plain ? {cur:'Orb_of_Annulment'} : risk ? {cur:'Orb_of_Annulment', risk:true} : {cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[sd]]};
+    const annK = risk ? '징조 없는 소멸의 오브' : plain ? `소멸의 오브(${sideKr(oth)}엔 ${frs.some(x=>x.m.side===oth)?'분열 옵션뿐이라':'아무것도 없어서'} 징조 없이 ${sideKr(sd)}만 지워짐)` : `${nk(SIDE_OMEN.annul[sd])} + 소멸의 오브`, annE = risk ? 'a plain Orb of Annulment' : plain ? `a plain Orb of Annulment (the ${sideEn(oth)} side holds nothing removable)` : `${ne(SIDE_OMEN.annul[sd])} + Orb of Annulment`;
     // Omen of Catalysing Exaltation uses up all the quality: every catalysed exalt needs the catalyst filled again first
     const qCat = cOm.length ? craft.cats.find(c=>!/^Refined/.test(c.id) && c.tag===qType) : null;
     const refill = () => push({phase:'ex', do:'quality', cur:qCat.id, target:{quality:qCap}, note:note(`촉진하는 찬미의 징조가 퀄리티를 다 써서 0%. ${qCat.kr}로 다시 ${qCap}%.`, `Catalysing Exaltation used up the quality; ${qCat.en} back to ${qCap}%.`)});
@@ -955,7 +974,8 @@ function makeDraft(it, an, opt){
     else push({phase:'des', do:'manual', target:{rune:{kr:r.g.sub[0], en}}, label:{kr:`「${r.g.sub[0]}」 장착`, en:`Socket ${en}`}, note:note(`훼손 공개에서 전용 옵션이 나오도록 「${r.g.sub[0]}」 장착.`, `Socket ${en} so the reveal can roll its modifiers.`)}); });
   // 7. desecrated lines
   function desPass(only){ for(const r of desRows){ if(desDone.has(r) || (only && r.m.side!==only)) continue; desDone.add(r); const sd=r.m.side; openSlot(sd); const om=[]; if(r.lord && LORD_OMEN[r.lord] && !['helmet','gloves','boots','body'].includes(it.cat)) om.push(LORD_OMEN[r.lord]); if(cnt[other(sd)] < cap[other(sd)]) om.push(SIDE_OMEN.necro[sd]);
-    const b2 = (r.g.s==='n' || r.g.s==='x') && r.t[0]>=40 ? bone.replace('Preserved_','Ancient_').replace('Ancient_Cranium','Preserved_Cranium') : bone;
+    const b2 = r.g.s==='x' && r.g.sub?.[1]==='Otherworldly' && bone==='Preserved_Collarbone' ? 'Altered_Collarbone'   // 이계 옵션은 뒤바뀐 빗장뼈로만 공개됨
+      : (r.g.s==='n' || r.g.s==='x') && r.t[0]>=40 ? bone.replace('Preserved_','Ancient_').replace('Ancient_Cranium','Preserved_Cranium') : bone;
     const d = push({phase:'des', do:'desecrate', cur:b2, ...(om.length?{omens:om}:{}), target:{unrev:sd}, note: b2!==bone ? note(`${sideKr(sd)}에 훼손. ${nk(b2)}${josa(nk(b2),'은','는')} 레벨 40 미만 옵션이 안 나와서 높은 티어 확률이 올라감.`, `Desecrate a ${sideEn(sd)}. Ancient bones skip modifiers below level 40, which lifts high tiers.`) : note(`${sideKr(sd)}에 훼손.`, `Desecrate a ${sideEn(sd)}.`)}); cnt[sd]++;
     made.push({r, id:d.id});
     push({phase:'des', do:'reveal', omens:['Omen_of_Abyssal_Echoes'], target:{reveal:tm(r), side:sd, bone:b2, ...(r.lord?{lord:r.lord}:{})}, fail:{goto:d.id, via:{cur:'Orb_of_Annulment', omens:['Omen_of_Light']}},
