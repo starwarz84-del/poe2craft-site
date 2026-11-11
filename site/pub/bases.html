@@ -69,9 +69,9 @@ const S = {lang:(()=>{try{const q=new URLSearchParams(location.search).get('lang
 const L = (kr,en) => S.lang==='kr' ? kr : en, tx = o => o ? (S.lang==='kr' ? (o.kr||o.en) : (o.en||o.kr)) : '';
 const esc = s => String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const SEC = [
-  {id:'skill', kr:'스킬 부여 목걸이', en:'Granted-skill amulets', sub:['고정 옵션의 부여 스킬이 핵심. 스킬은 아래 중 하나가 붙어요.','The granted skill on the implicit is what matters. One of the skills below rolls.']},
+  {id:'skill', kr:'스킬 부여 목걸이', en:'Granted-skill amulets', sub:['고정 옵션의 부여 스킬이 핵심 · 스킬은 아래 중 하나','The granted skill on the implicit is what matters. One of the skills below rolls.']},
   {id:'slots', kr:'접두·접미 개수가 바뀌는 장신구', en:'Jewellery with shifted affix slots', sub:['접두 P · 접미 S 최대 개수','Max prefixes P · suffixes S']},
-  {id:'breach', kr:'최대 퀄리티가 높은 반지', en:'Rings with higher maximum quality', sub:['기폭제 퀄리티 상한이 그만큼 올라가요.','Catalyst quality can go that much higher.']},
+  {id:'breach', kr:'최대 퀄리티가 높은 반지', en:'Rings with higher maximum quality', sub:['기폭제 퀄리티 상한이 그만큼 올라감','Catalyst quality can go that much higher.']},
   {id:'asif', kr:'다른 부위처럼 쓰는 베이스', en:'Bases that act as another slot', sub:null},
 ];
 const match = it => { if(!S.q) return true; const h=[it.kr,it.en,...(it.imp||[]).flatMap(x=>[x.kr,x.en]),...(it.skills||[]).flatMap(x=>[x.kr,x.en]),it.clsName&&it.clsName.kr,it.clsName&&it.clsName.en].join(' ').toLowerCase(); return S.q.split(/\s+/).every(w=>h.includes(w)); };
@@ -108,7 +108,7 @@ function render(){
       ${g.items.map(it=>`<tr><td>${esc(tx(it))}${it.recipes.length?recLinks(it.recipes):''}</td><td class="lv">${esc(it.lv)}</td><td class="im">${esc(it.imp.map(tx).join('\n'))}</td></tr>`).join('')}
       </tbody></table></section>`;
   }
-  if(!/<section/.test(h)) h+=`<p class="empty">${L('검색 결과가 없어요.','No matches.')}</p>`;
+  if(!/<section/.test(h)) h+=`<p class="empty">${L('검색 결과가 없음','No matches.')}</p>`;
   // keep the search box itself (Korean IME composition breaks if it is rebuilt while typing)
   const app=document.getElementById('app'), q0=document.getElementById('q');
   if(q0 && app.contains(q0)){ const i=h.indexOf('</div>')+6; let body=app.querySelector('#body'); if(!body){ app.innerHTML=h.slice(0,i)+'<div id="body"></div>'; body=app.querySelector('#body'); app.querySelector('#q').replaceWith(q0); } body.innerHTML=h.slice(i); }
@@ -121,6 +121,6 @@ document.addEventListener('click', e=>{
 });
 window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
 fetch('data/special.json').then(r=>r.json()).then(d=>{ S.data=d; render(); window.__bases={booted:true}; })
-  .catch(()=>{ document.getElementById('app').innerHTML=`<p class="empty">${L('데이터를 불러오지 못했어요.','Could not load the data.')}</p>`; });
+  .catch(()=>{ document.getElementById('app').innerHTML=`<p class="empty">${L('데이터 불러오기 실패','Could not load the data.')}</p>`; });
 })();
 </script>

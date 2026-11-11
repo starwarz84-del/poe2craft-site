@@ -22,6 +22,14 @@ const {chromium}=require('playwright');
   const mq=S.item.mods.find(m=>/Maximum Quality/.test(E.grp(m).t[m.ti][5]));
   S.item.mods.splice(S.item.mods.indexOf(mq),1); E.render();
   ok('옵션을 지워도 퀄리티 60% 유지', S.item.quality===60 && E.qmax()===40, `${S.item.quality}% / max ${E.qmax()}`);
+  // 촉진하는 찬미의 징조: 퀄리티 0%, 최대 퀄리티 옵션은 남고, 다시 채우면 옵션이 있을 때만 60%까지
+  pick('Breach Ring'); makeRare(); use('Essence of the Breach'); for(let i=0;i<200 && !E.check(cat);i++) E.apply(cat); warnOff();
+  omen('Omen of Catalysing Exaltation'); const cw=use('Exalted Orb');
+  ok('촉진 엑잘: 퀄리티 0%, 최대 퀄리티 옵션 유지', !cw && S.item.quality===0 && E.qmax()===60, cw||`${S.item.quality}% / max ${E.qmax()}`);
+  for(let i=0;i<200 && !E.check(cat);i++) E.apply(cat); warnOff(); ok('다시 채우면 60%', S.item.quality===60, S.item.quality);
+  omen('Omen of Catalysing Exaltation'); use('Exalted Orb'); const mq2=S.item.mods.find(m=>/Maximum Quality/.test(E.grp(m).t[m.ti][5])); S.item.mods.splice(S.item.mods.indexOf(mq2),1); E.render();
+  for(let i=0;i<200 && !E.check(cat);i++) E.apply(cat); warnOff(); ok('옵션이 지워진 뒤엔 40%까지만', S.item.quality===40, S.item.quality);
+  pick('Iron Ring'); makeRare(); omen('Omen of Catalysing Exaltation'); ok('퀄리티 없으면 촉진 엑잘 막힘', !!E.check(cur('Exalted Orb'))); S.omens.clear();
   pick('Refined Breach Ring'); ok('제련된 균열 반지 최대 45%', E.qmax()===45, E.qmax());
   makeRare(); use('Essence of the Breach'); ok('제련된 + 균열의 에센스 65%', E.qmax()===65, E.qmax());
   pick('Iron Ring'); ok('일반 반지 20%', E.qmax()===20, E.qmax());
@@ -50,7 +58,7 @@ const {chromium}=require('playwright');
     await E.loadClass(cls);
     for(let run=0;run<6;run++){ E.newItem(Math.floor(Math.random()*S.data.bases.length));
       for(let step=0;step<60;step++){
-        if(S.reveal){ E.chooseReveal(Math.floor(Math.random()*S.reveal.opts.length)); continue; }
+        if(S.reveal){ if(!S.reveal.opts.length){ const um=S.item.mods.find(m=>m.unrev); bad.push(`${cls}: 공개할 옵션 없음 (${um.unrev}${um.lord?' '+um.lord:''}, 뼈 ${um.bone})`); S.reveal=null; S.item.mods.splice(S.item.mods.indexOf(um),1); continue; } E.chooseReveal(Math.floor(Math.random()*S.reveal.opts.length)); continue; }
         if(S.item.mods.some(m=>m.unrev)){ E.startReveal(); continue; }
         if(Math.random()<0.3){ const o=OM[Math.floor(Math.random()*OM.length)]; S.omens.add(o.omen); }
         const ok2=C.filter(c=>!E.check(c)); if(!ok2.length) break; const c=ok2[Math.floor(Math.random()*ok2.length)];

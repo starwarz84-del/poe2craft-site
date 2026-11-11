@@ -613,6 +613,7 @@ function addCheck(act, c){
   if(free < need) return need>1
     ? L(`${sideKr(who)} 빈자리 ${free}개 · 2개 추가 불가`, `Not enough room on ${sideKr(who)} for 2 modifiers (${free} free).`)
     : L(`${sideKr(who)} 빈자리 없음`, `No room left on ${sideKr(who)}.`);
+  if(act==='exalt' && omen('catalysing') && !(it.catalyst && it.quality)) return L('촉진하는 찬미의 징조: 기폭제 퀄리티 필요','Omen of Catalysing Exaltation needs catalyst quality');
   const homo = (act==='exalt' && omen('homo_exaltation')) || (act==='regal' && omen('homo_coronation'));
   const cand = pool({gens, minLvl:+c.min||0, tagsAny: homo ? existingTags() : null, rarity:R});
   const groups = new Set(cand.map(x=>x.gi)).size;
@@ -682,7 +683,8 @@ function boneCheck(c){
   const mk = it.mods.find(isMark);
   const gens = mk ? [genOf(mk)] : sideOmen('sin_necro','dex_necro') || ['p','s'];
   if(!mk && !gens.some(g=>freeGen(g) || it.mods.some(m=>genOf(m)===g && !m.fr)) && !omen('putrefaction')) return L(`${sideKr(gens.length===1?gens[0]:null)} 바꿀 옵션 없음`,`No room left on ${sideKr(gens.length===1?gens[0]:null)}.`);
-  if(lord && !gens.some(g=>S.data.groups.some(x=>x.s==='d' && x.g===g && x.tg.includes(lord+'_mod')))) return L('이 자리에 붙을 군주 훼손 옵션 없음','No desecrated modifier of that lord can roll here.');
+  const fams=famSet(); const lordOk = g => S.data.groups.some(x=>x.s==='d' && x.g===g && x.tg.includes(lord+'_mod') && !x.f.some(f=>fams.has(f)) && x.t.some(t=>t[0]<=it.ilvl && t[0]>=(+c.min||0)));
+  if(lord && !gens.some(lordOk)) return L('이 자리에 붙을 군주 훼손 옵션 없음','No desecrated modifier of that lord can roll here.');
   if(!S.data.groups.some(g=>g.s==='d')) return '훼손 옵션 없는 아이템';
   return '';
 }
@@ -718,7 +720,10 @@ function apply(c){
       let gens = sideOmen('sin_exaltation','dex_exaltation'); if(gens) take(gens[0]==='p'?'sin_exaltation':'dex_exaltation');
       let tags=null; if(omen('homo_exaltation')){ tags=existingTags(); take('homo_exaltation'); }
       const times = omen('greater_exaltation') ? 2 : 1; if(times===2) take('greater_exaltation');
-      for(let i=0;i<times;i++) added.push(addRandom({gens, minLvl:c.min, tagsAny:tags})); break; }
+      // 촉진하는 찬미의 징조: 기폭제 퀄리티 %의 확률로 그 속성 옵션이 붙고 퀄리티는 0% (사용자 경험값 2026-11-10, 수치 비공개 — 추정).
+      // 최대 퀄리티 옵션은 그대로 남고, 다시 채울 땐 그 옵션이 있을 때만 높은 상한까지 (qmax)
+      let cq=0; if(omen('catalysing') && it.catalyst && it.quality){ take('catalysing'); cq=it.quality; const b0=it.quality; it.quality=0; note=L(`촉진: 퀄리티 ${b0}% → 0%`,`Catalysing: quality ${b0}% → 0%`); }
+      for(let i=0;i<times;i++){ const push = cq && rnd()<cq/100 && pool({gens, minLvl:c.min, tagsAny:new Set([it.catalyst])}).length; added.push(addRandom({gens, minLvl:c.min, tagsAny: push ? new Set([it.catalyst]) : tags})); } break; }
     case 'chaos': {
       let f = null;
       if(omen('whittling')){ take('whittling'); const c2=it.mods.filter(m=>!m.fr && !m.unrev); const low=Math.min(...c2.map(m=>grp(m).t[m.ti][0])); const pick=c2.filter(m=>grp(m).t[m.ti][0]===low); const m=pick[Math.floor(rnd()*pick.length)]; it.mods.splice(it.mods.indexOf(m),1); removed.push(m); }

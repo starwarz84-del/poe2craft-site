@@ -267,7 +267,7 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
   function toast(item){
     document.querySelector('.toast')?.remove(); clearTimeout(toastT);
     const t=document.createElement('button'); t.type='button'; t.className='toast';
-    const s=document.createElement('small'); s.textContent = lang==='kr'?'새 레시피가 등록됐어요':'New recipe shared';
+    const s=document.createElement('small'); s.textContent = lang==='kr'?'새 레시피 등록':'New recipe shared';
     const r=item.recipe, name=(r.title && (r.title[lang]||r.title.en||r.title.kr)) || r.id;
     t.append(s, document.createTextNode(name));
     t.addEventListener('click', ()=>{ t.remove(); location.hash='r-'+r.id; });
