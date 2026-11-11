@@ -44,7 +44,8 @@
    "params": {
     "pT": 1,
     "bw": "blk"
-   }
+   },
+   "hidden": true
   }
  ],
  "versions": [
@@ -263,34 +264,30 @@
       "fr": true
      },
      {
-      "tag": "pp"
+      "junk": "p"
      },
      {
-      "unrev": "p",
-      "bone": "Preserved_Jawbone"
+      "junk": "p"
      }
     ],
     "quality": 30
    },
    "label": {
-    "kr": "치명타 확률 1티어 분열 + 물리 피해 % 1티어 + 미공개 접두 훼손 (퀄리티 30%)",
-    "en": "Fractured T1 crit chance + T1 % physical + an unrevealed desecrated prefix (30% quality)"
+    "kr": "치명타 확률 1티어 분열 활 (퀄리티 30%, 옵션 2개 + 빈자리 3개)",
+    "en": "Bow with fractured T1 crit chance (30% quality, two lines and three open slots)"
    },
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
-     "m": "n",
-     "tags": [
-      "pp"
-     ]
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     },
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     },
     {
      "s": "s",
@@ -309,13 +306,120 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    0.4
    ],
-   "next": "rv",
+   "next": "c00",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
    },
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c00",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pp"
+     },
+     "to": "d0",
+     "res": "ok"
+    },
+    {
+     "to": "c00",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)% (분열)",
+     "en": "+(4.41—5)% to Critical Hit Chance (fractured)",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "pp"
+   ]
+  },
+  {
+   "id": "d0",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    0.8
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "자리 막기 훼손",
+    "en": "Desecrate for a blocker"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "rv"
+    }
+   ],
    "item": [
     {
      "s": "p",
@@ -341,6 +445,17 @@
       "crit"
      ]
     }
+   ],
+   "cur": "Preserved_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {

@@ -5,7 +5,9 @@ H=os.path.dirname(os.path.abspath(__file__))
 _src=open(f'{H}/gen_batch19.py').read(); exec(_src[:_src.index('# ---------- 1. 반지깎는노인')])
 
 # ---------- 1. 미러 활 (J0LF3MRssh0, 사용자 단계 목록 기반) ----------
-# 시작: 치명타 확률 1티어 분열 + 물리 피해 % 1티어 + 미공개 접두 훼손(퀄리티 30%, 특출난 베이스)
+# 영상 대조 2026-11-11(사용자: 영상과 다시 확인): 물리 피해 % 1티어는 분열 뒤 카오스 오브로 찾음(15:00~16:00, 빈자리 3개, 약 4,000개 예상) → 시작에서 빼고 단계로.
+#   타협(공격 원소 피해로 막기, 영상이 실제로 쓴 길 19:15~21:30)은 정확도가 절사로 들어오면 물리 % 를 잃는 위험이 커 시뮬 평균이 높음 → 숨긴 비교용 전략.
+# 시작: 치명타 확률 1티어 분열(퀄리티 30%) → 카오스 오브(물리 피해 % 1티어) → 보존된 턱뼈 + 좌측 강령술(미공개 접두 훼손)
 # → 접두 훼손 공개(자리 막기: 공격 원소 피해 1티어 또는 정확도 1티어, 빛의 징조 + 소멸의 오브 → 고대 턱뼈 + 좌측 강령술로 다시)
 # → 좌측 찬미 + 완벽한 엑잘(물리 % + 정확도 1티어 또는 물리 피해 추가 1티어, 빗나가면 절사 카오스)
 # → 완벽한 엑잘(접미 잡옵) → 우측 말소의 징조 + 카오스 오브(투사체 +4 또는 화살 초과 1티어) → 완벽한 엑잘 → 세를의 승리(접미 +1) → 완벽한 엑잘
@@ -33,8 +35,11 @@ def RB(vis):   # every step re-checks the item
        {'if':JK('p','keepP'),'to':'w1'},{'if':{'des':True},'to':'f1'},{'if':{'count':{'tag':'p3','min':2}},'to':'ok'},{'to':'f2'}],vis)
 I0=[PP,UN('p'),CR]; I1=[PP,BK,CR]; I2=[PP,BK,HY,CR]; I3=I2+[J('s')]; I4=I2+[PJ]; I5=I4+[J('s')]; I6=I4+[AR]; I7=I6+[SE]; I8=I6+[J('s'),SE]; I9=I6+[CD,SE]
 I10=[PP,HY,UN('p'),CR,PJ,AR,CD,SE]; I11=[PP,HY,FL,CR,PJ,AR,CD,SE]
-nodes=[base('ms',{'rar':'rare','mods':[{'tag':'crit','fr':True},{'tag':'pp'},{'unrev':'p','bone':'Preserved_Jawbone'}]},K('치명타 확률 1티어 분열 + 물리 피해 % 1티어 + 미공개 접두 훼손 (퀄리티 30%)','Fractured T1 crit chance + T1 % physical + an unrevealed desecrated prefix (30% quality)'),I0),
- mark([0,0.6],'rv',I0),
+IS=[J('p'),J('p'),CR]; IP=[PP,J('p'),CR]
+nodes=[base('ms',{'rar':'rare','mods':[{'tag':'crit','fr':True},{'junk':'p'},{'junk':'p'}]},K('치명타 확률 1티어 분열 활 (퀄리티 30%, 옵션 2개 + 빈자리 3개)','Bow with fractured T1 crit chance (30% quality, two lines and three open slots)'),IS),
+ mark([0,0.4],'c00',IS),
+ act('c00','main',[0,0.6],'chaos','Chaos_Orb',K('접두 첫번째 옵션','First prefix'),None,K('카오스','Chaos'),[{'if':{'has':'pp'},'to':'d0','res':'ok'},{'to':'c00','res':'fail'}],IP,show=['pp']),
+ act('d0','main',[0,0.8],'desecrate','Preserved_Jawbone',K('자리 막기 훼손','Desecrate for a blocker'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'rv'}],I0,omens=['Omen_of_Sinistral_Necromancy']),
  act('rv','main',[0,1],'reveal',None,K('자리 막기 옵션 확인','Reveal the blocker'),None,K('공개','Reveal'),
      [{'if':{'added':'$bw'},'to':'e1','res':'ok'},{'to':'rvx',**F}],I1,want='$bw',show=['acc','eatk'],omens=['Omen_of_Abyssal_Echoes'],showIf=[{'param':{'bw':'acc'},'show':['acc']}]),
  annul('rvx',[1,1],RB({'d1':{'port':'right'}})),
@@ -63,7 +68,7 @@ graph11('mirror-bow-video-v2','Bows','Warmonger Bow',82,
   [{'id':'L1','nodes':['f2','f3','f3x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['rv','rvx','d1'],'kr':'자리 막기','en':'Block'}],
   FIN(('high',),lambda v:[{'tag':'pp'},{'tag':'hyb'},{'tag':'flat','des':True},{'tag':'crit','fr':True},{'tag':'proj'},{'tag':'arr'},{'tag':'cdm'}]),
   {'quality':30,'sockets':3},{'all':[{'has':'pp'},{'count':{'tag':'p3','min':2}},{'count':{'tag':'sx','min':2}},{'has':'cdm'}]},('high',))
-_g=json.load(open(f'{H}/mirror-bow-video-v2.json')); _g['strategies'].append({'id':'high-settle','params':{'pT':1,'bw':'blk'}}); json.dump(_g,open(f'{H}/mirror-bow-video-v2.json','w'),ensure_ascii=False,indent=1)
+_g=json.load(open(f'{H}/mirror-bow-video-v2.json')); _g['strategies'].append({'id':'high-settle','params':{'pT':1,'bw':'blk'},'hidden':True}); json.dump(_g,open(f'{H}/mirror-bow-video-v2.json','w'),ensure_ascii=False,indent=1)
 
 # ---------- 2. 반지깎는노인 주문 +6 부재 목걸이 (Yi1u0LhJztI) ----------
 # 시작: 정신력 +50 분열 + 잡옵(시전 퀄리티 48%) → 카오스 오브(모든 주문 스킬 +3) → 좌측 찬미 + 엑잘(접두 잡옵) → 균열의 에센스(최대 퀄리티, 접두가 꽉 차 있어 징조 없음)

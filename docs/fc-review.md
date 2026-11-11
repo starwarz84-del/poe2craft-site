@@ -11,10 +11,10 @@
 
 | 플로우차트 | 영상 | 등급 비용(div, 점검 전) | 검사 문제 | 상태 | 세션 | 메모 |
 |---|---|---|---|---|---|---|
-| mirror-bow-video-v2 | J0LF3MRssh0 | high 9,035 | 6 | 진행 중 | A(Opus) |  |
-| banzino-mirror-staff-v2 | vT482uJFESs | high 7,754, bal 4,686 | 5 | 진행 중 | A(Opus) |  |
-| xeno-phys-crossbow-v2 | 1TP4aGqxU7Q | high 7,227 | 7 | 진행 중 | A(Opus) |  |
-| barricade-quarterstaff-v2 | B4yShuKydt0 | high 4,068, bal 387 | 2 | 진행 중 | A(Opus) |  |
+| mirror-bow-video-v2 | J0LF3MRssh0 | high 9,035 | 6 | 완료 11-11 | A2(서브) | 영상 15:00~16:00대로 물리 피해 % 1티어를 시작에서 빼고 첫 카오스 단계(약 387 div, 영상 예상 카오스 4,000개)로. 공격 원소 피해 타협 길은 숨김. 하이엔드 9,035→9,677(첫 카오스 비용이 들어간 값) |
+| banzino-mirror-staff-v2 | vT482uJFESs | high 7,754, bal 4,686 | 5 | 완료 11-11 | A2(서브) | 접미 두·세번째는 영상대로 절사의 징조만(말소 빼기). 마지막 접두 pT는 말소 포함 절사 유지(치명타 1티어 레벨 76이라 절사만으로는 끝나지 않음). 하이엔드 7,754→5,415, 밸런스 4,686→3,325 |
+| xeno-phys-crossbow-v2 | 1TP4aGqxU7Q | high 7,227 | 7 | 진행 중 | A2(서브) |  |
+| barricade-quarterstaff-v2 | B4yShuKydt0 | high 4,068, bal 387 | 2 | 진행 중 | A2(서브) |  |
 | mazbro-bis-chest-v2 | LUB59xlkNtk | high 3,023, bal 960 | 15 | 진행 중 | B(Fable) |  |
 | sihan-highend-helmet-v2 | CTrIbhQVU8U | high 2,616, bal 180 | 1 | 대기 |  |  |
 | noble-visceral-quiver-v2 | 2PUEwoePtRs | high 2,240, bal 110 | 3 | 대기 |  |  |

@@ -4,6 +4,7 @@
 #   → 절사로 시전 속도 1티어 → 절사로 주문 치명타 1티어(번개 주문 +7 레벨 81·시전 속도 80이라 절사에 안 지워짐)
 #   → 접두: 좌측 결정화 + 심연의 에센스(접두 둘 중 하나) → 징표 훼손 → 공개(번개 피해 % 1티어 / 추가 번개 1티어)
 #   → 빗나가면 빛의 징조 + 소멸의 오브 → 완벽한 엑잘로 남은 접두 → 하나만 맞으면 절사·말소 카오스로 나머지.
+# 2026-11-11 영상 대조: 접미 두·세번째 옵션은 영상대로 절사의 징조만(말소 없이) — 번개 주문 +7(81)·시전 속도(80)·분열·접두 잡옵(80 이상)보다 낮은 접미 잡옵을 절사가 지움. 하이엔드 7,754 → 5,415, 밸런스 4,686 → 3,325 div(pT는 말소 포함 절사 유지 — 치명타 1티어가 레벨 76이라 절사만으로는 접두 잡옵(80)을 못 지워 끝나지 않음).
 # 바꾼 점(정책 15): 영상의 지팡이 베이스 제한(전도성 지팡이 = 번개 계열만)은 우리 데이터(클래스 단위 가중치)에 없어 비용이 실제보다 큼(추정).
 #   영상의 '마나 최대치를 먼저 공개해 두고 엑잘' 요령은 꿀팁으로만(시뮬은 공개 실패 = 빛의 징조).
 # 미러급이라 카오스는 완벽한 카오스 오브(정책 23 ②). 하이엔드 = 모두 1티어, 밸런스 = 주문 치명타·접두 2개 1~2티어(정책 32 — 카오스 오브로 찾는 번개 주문 +7은 1티어, 시전 속도도 1티어: 2티어(레벨 70)면 다음 절사에서 말소의 징조 1/3로 번개 주문 +7이 지워져 오히려 비쌈 — 시뮬 확인).
@@ -27,10 +28,10 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spd','fr':True},{'junk':'p'},{'ju
  mark([0,0.6],'s1',I0),
  act('s1','main',[0,1],'chaos','Chaos_Orb',K('접미 첫번째 옵션','First suffix'),None,K('카오스','Chaos'),[{'if':{'has':'l7'},'to':'s2','res':'ok'},{'to':'s1','res':'fail'}],I1,show=['l7']),
  act('s2','main',[0,2],'chaos','Perfect_Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),
-     [L1,{'if':{'has':'cast'},'to':'s3','res':'ok'},{'to':'s2','res':'fail'}],I2,show=['cast'],trim={'side':'s','keep':'keepS'},skipIf={'has':'cast'},skipTo='s3'),
+     [L1,{'if':{'has':'cast'},'to':'s3','res':'ok'},{'to':'s2','res':'fail'}],I2,show=['cast'],omens=['Omen_of_Whittling'],skipIf={'has':'cast'},skipTo='s3'),
  act('s3','main',[0,3],'chaos','Perfect_Chaos_Orb',K('접미 세번째 옵션','Third suffix'),None,K('카오스','Chaos'),
      [L1,L2,{'if':{'all':[{'has':'crit'},TWO]},'to':'ok','res':'ok','hide':True},{'if':{'all':[{'has':'crit'},ONE,{'full':'p'}]},'to':'pT','res':'ok','hide':True},{'if':{'has':'crit'},'to':'p1','res':'ok'},{'to':'s3','res':'fail'}],
-     I3,show=['crit'],trim={'side':'s','keep':'keepS'}),
+     I3,show=['crit'],omens=['Omen_of_Whittling']),
  act('p1','main',[0,4],'essence','Essence_of_the_Abyss',K('접두 잡옵 하나를 징표로','Turn one junk prefix into a mark'),[st('p','심연의 군주의 징표 (제작 옵션)','Mark of the Abyssal Lord (crafted)')],K('에센스','Essence'),
      [L1,L2,{'to':'p2'}],I4,ess='markP',mark=True,omens=['Omen_of_Sinistral_Crystallisation']),
  act('p2','main',[0,5],'desecrate','Ancient_Jawbone',K('접두 두번째 옵션(징표 훼손)','Second prefix (desecrate the mark)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'p3'}],I5,fromMark=True),
