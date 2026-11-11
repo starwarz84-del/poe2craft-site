@@ -822,7 +822,7 @@ function analyse(r){
     if(['transmute','augment','regal','exalt'].includes(n.do)){
       const R = n.do==='transmute'?'magic' : n.do==='regal'?'rare' : rar;
       if(t.junk){ if(Array.isArray(t.junk)) t.junk.forEach(sd=>mods.push({junk:true, side:sd})); else for(let k=0;k<(t.count||1);k++) mods.push({junk:true, side:t.junk}); }
-      else if(t.asIs){ pushSpec(t, R); o.p=1; if(n.do==='exalt' && (n.omens||[]).includes('Omen_of_Greater_Exaltation')) mods.push({junk:true, side:t.side||sides||'p'}); }   // aims at these lines but keeps whatever comes (a miss is handled later, e.g. an alloy eats it)
+      else if(t.asIs){ if(t.rand){ const sp=specList(t)[0]; mods.push({junk:true, side:t.side||sides||(sp?grp(r,sp.gi).g:'p')}); } else pushSpec(t, R); o.p=1; if(n.do==='exalt' && (n.omens||[]).includes('Omen_of_Greater_Exaltation')) mods.push({junk:true, side:t.side||sides||'p'}); }   // aims at these lines but keeps whatever comes (a miss is handled later, e.g. an alloy eats it)
       else { if(t.replace) removeJunk(t.replace);
         o.p=addChance(t, sides?[sides]:null, R, minOf(n.cur)); o.missState=[...clone(), {junk:true, side:sides||grp(r,specList(t)[0].gi).g}]; pushSpec(t, R);
         // Greater Exaltation adds two modifiers: two chances at the target, and the other one is junk
