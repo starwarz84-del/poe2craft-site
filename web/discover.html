@@ -1454,7 +1454,7 @@ $('#txt').addEventListener('paste', ()=>{ S.recIdx=null; setTimeout(run, 0); });
 $('#samples').addEventListener('change', e=>{ if(e.target.id!=='recs' || e.target.value==='') return; const x=S.recSamples[+e.target.value]; S.recIdx=+e.target.value; S.fromRecipe=x.id; $('#txt').value=x.text; run(); });
 fetch('data/samples.json').then(r=>r.ok?r.json():{samples:[]}).then(d=>{ S.recSamples=d.samples||[]; renderStatic(); }).catch(()=>{});
 $('#samples').addEventListener('click', e=>{ const b=e.target.closest('[data-sample]'); if(!b) return; $('#txt').value=SAMPLES[+b.dataset.sample].t; run(); });
-window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-reverse-in' && typeof d.text==='string'){ S.itab='build'; $('#txt').value=d.text; $('#b-from').hidden=false; $('#b-from').textContent=L('속성부여에서 받은 옵션 조합 분석 완료 · 오른쪽 요약과 아래 초안 확인','Analysed the modifier set from the Modifiers tab — see the summary and draft below.'); run(); } });
+window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-reverse-in' && typeof d.text==='string'){ S.itab='build'; $('#txt').value=d.text; $('#b-from').hidden=false; $('#b-from').textContent= d.from==='emulator' ? L('에뮬레이터에서 만든 아이템 분석 완료 · 필수 옵션을 골라 실제 제작 순서 찾기','Analysed the item you made in the Emulator — pick the must-have modifiers to find a real crafting order') : L('속성부여에서 받은 옵션 조합 분석 완료 · 오른쪽 요약과 아래 초안 확인','Analysed the modifier set from the Modifiers tab — see the summary and draft below'); run(); } });
 /* 영상·제작글 분석 요청 (worker/index.js /api/req) */
 const REQ_OPEN=false; /* 영상·제작글 분석 요청: 사용자 확정 2026-11-11 닫아 둠(운영자가 직접 작업) — true면 다시 열림 */
 const RQK='poe2r:reqs';

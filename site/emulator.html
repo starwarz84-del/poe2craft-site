@@ -400,6 +400,7 @@ footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
         <button type="button" class="tbtn" id="restart">처음부터</button>
         <button type="button" class="tbtn" id="to-import" hidden>가져온 상태로</button>
         <button type="button" class="tbtn" id="imp-open" aria-expanded="false" aria-controls="imp">아이템 가져오기</button>
+        <button type="button" class="tbtn" id="to-reverse" title="완성한 아이템의 실제 제작 순서 찾기">리버스 크래프팅으로 →</button>
       </div>
       <div id="omenbar"></div>
       <div id="item"></div>
@@ -900,6 +901,22 @@ function tierTag(m){
   return (g.s==='n' ? `${ps}${m.ti+1}` : `${ps}·${({d:L('훼손','D'),e:L('에센스','E'),x:L('특수','X')})[g.s]||''}`) + pct;
 }
 
+// ---------- 게임 아이템 텍스트(영문, Ctrl+C 형식) → 리버스 크래프팅 ----------
+function gameText(){
+  const b=base(), it=S.item, R={normal:'Normal',magic:'Magic',rare:'Rare'}[it.rarity]||'Normal';
+  const out=[`Item Class: ${(S.data.en||'').replace(/\s*\(.*\)$/,'')}`, `Rarity: ${R}`]; if(it.rarity==='rare') out.push('Built Item');
+  out.push(b.en, '--------');
+  if(it.quality) out.push(`Quality: +${it.quality}% (augmented)`, '--------');
+  out.push(`Item Level: ${it.ilvl}`, '--------');
+  impOf(b,0).forEach(x=>rollText(x,it.impRoll).split('\n').forEach(y=>out.push(y.trim()+' (implicit)')));
+  const mods=it.mods.filter(m=>!m.unrev).slice().sort((a,b)=>(grp(a).g==='p'?0:1)-(grp(b).g==='p'?0:1));
+  mods.forEach(m=>{ const g=grp(m), t=g.t[m.ti]; const kind=[m.fr?'Fractured':'', isDes(m)?'Desecrated':''].filter(Boolean).join(' ');
+    out.push(`{ ${kind?kind+' ':''}${g.g==='p'?'Prefix':'Suffix'} Modifier "${t[3]||''}" (Tier: ${m.ti+1}) }`);
+    rollText(t[5], m.roll, (m.m||1)*catFactor(m)).split('\n').forEach(l=>out.push(l.trim())); });
+  if(it.corrupted) out.push('--------','Corrupted');
+  return out.join('\n');
+}
+
 // ---------- local stats (subset of builder) ----------
 function localProps(){
   const b=base(), en=b.props[0]||[], loc=b.props[KR()?1:0]||[], it=S.item;
@@ -958,7 +975,7 @@ function render(){ renderItem(); renderReveal(); renderShelves(); renderPane(); 
     $('#skill').innerHTML = sk.length<2 ? '' : sk.map((ii,k)=>`<option value="${k}" ${(S.item.skill||0)===k?'selected':''}>${esc((base().imp[KR()?1:0][ii]||'').replace(/^(스킬 부여|Grants Skill): /,''))}</option>`).join(''); }
   $('#exc').innerHTML = [['',L('아니요','No')],['sock',L('룬 소켓 +1','+1 socket'),!base().sock]]   // quality is raised separately while crafting (사용자 2026-11-11)
     .map(([v,t,off])=>`<option value="${v}" ${off?'disabled':''} ${(S.item.exc||'')===v?'selected':''}>${t}</option>`).join('');
-  $('#undo').disabled = !S.hist.length;
+  $('#undo').disabled = !S.hist.length; $('#to-reverse').disabled = !S.item.mods.some(m=>!m.unrev);
   $('#to-import').hidden = !S.start;
   $('#startnote').innerHTML = S.start ? L('<b>가져온 아이템</b> 저장됨 · ‘가져온 상태로’로 복원','Started from <b>imported item</b>') : ''; }
 // which modifiers the active omen will touch on the next matching currency (shown orange, like the game)
@@ -1244,6 +1261,7 @@ $('#exc').addEventListener('change', e=>{ const v=e.target.value||null, it=S.ite
   if(it.sockets>maxSockets()){ it.sockets=maxSockets(); it.runes=(it.runes||[]).slice(0,it.sockets); }
   render(); });
 $('#qual').addEventListener('change', e=>{ S.item.quality = Math.max(0, Math.min(qmax()+10, +e.target.value||0)); render(); });
+$('#to-reverse').addEventListener('click', ()=>{ try{ parent!==window && parent.postMessage({type:'poe2-reverse', text:gameText()}, '*'); }catch(_){} });
 $('#undo').addEventListener('click', ()=>{ const h=S.hist.shift(); if(!h) return; S.item=h.before; S.fore=S.item.hinekora?{}:null; S.foreKey=null; if(S.byId[h.c.id]) S.spend[h.c.id]=Math.max(0,(S.spend[h.c.id]||1)-1); h.omens.forEach(o=>{ S.omens.add(o); S.spend['omen:'+o]=Math.max(0,(S.spend['omen:'+o]||1)-1); }); S.reveal=null; S.last=null; render(); });
 $('#restart').addEventListener('click', ()=>{
   if(typeof setHeld==='function') setHeld(null);

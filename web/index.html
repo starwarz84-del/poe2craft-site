@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
-<link rel="preload" href="fonts/SUIT-Variable.d2bef91d81.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/SUIT-Variable.d8311d7b5f.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PoE 2 Craft - Path of Exile 2 Crafting Simulator &amp; Recipes</title>
 <meta name="description" content="Path of Exile 2 crafting emulator, option builder and step-by-step crafting recipes with probabilities calculated from game data. English and Korean.">
@@ -19,7 +19,7 @@
 /* 줄인 Fontin 글꼴엔 ffi·fi 합자 글자가 없어 "affix"가 "a  x"로 보임 → 합자 끔 */
 html{font-variant-ligatures:none}
 /* SUIT by SUNN (sun.fo/suit) - SIL Open Font License 1.1, see fonts/SUIT-OFL.txt */
-@font-face{font-family:"SUIT Variable";src:url("fonts/SUIT-Variable.d2bef91d81.woff2") format("woff2-variations"),url("fonts/SUIT-Variable.d2bef91d81.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"SUIT Variable";src:url("fonts/SUIT-Variable.d8311d7b5f.woff2") format("woff2-variations"),url("fonts/SUIT-Variable.d8311d7b5f.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 /* Shell for poe2craft.xyz — trade-site layout: banner with wordmark, icon tab bar, one framed tool panel below.
    Each tool is its own page in an iframe and stays loaded while you switch tabs. */
 :root{
@@ -230,9 +230,9 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
     prevHash = d.hash; } });
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-goto' || !Object.values(frames).some(f=>f.contentWindow===e.source) || !/^[A-Za-z0-9-]+$/.test(d.id||'')) return;
     location.hash = SRC[d.id] ? d.id : 'r-'+d.id; });
-  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-reverse' || !frames.builder || e.source!==frames.builder.contentWindow || typeof d.text!=='string') return;   // 속성부여 → 리버스 크래프팅
+  window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-reverse' || ![frames.builder, frames.emulator].some(f=>f && e.source===f.contentWindow) || typeof d.text!=='string') return;   // 속성부여 → 리버스 크래프팅
     const had = !!frames.discover; location.hash = 'discover'; show();
-    const send = ()=>{ try{ frames.discover.contentWindow.postMessage({type:'poe2-reverse-in', text:d.text.slice(0,8000)}, '*'); }catch(_){} };
+    const send = ()=>{ try{ frames.discover.contentWindow.postMessage({type:'poe2-reverse-in', text:d.text.slice(0,8000), from:(frames.emulator && e.source===frames.emulator.contentWindow)?'emulator':'builder'}, '*'); }catch(_){} };
     if(had) send(); else frames.discover.addEventListener('load', send, {once:true}); });
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-draft' || !frames.discover || e.source!==frames.discover.contentWindow) return;
     if(d.stay){ if(frames.recipes) try{ frames.recipes.contentWindow.postMessage({type:'poe2-draft', recipe:d.recipe, stay:true}, '*'); }catch(_){} return; }   // reverse tab keeps its place (사용자 확정 2026-11-11)

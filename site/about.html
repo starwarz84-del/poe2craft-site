@@ -23,7 +23,7 @@ h1,h2{font-family:var(--f-title);font-weight:400;text-align:center;margin:0 0 6p
 h1{font-size:28px;letter-spacing:.02em} h2{font-size:22px;margin-top:46px}
 :lang(ko) h1,:lang(ko) h2{font-weight:700}
 .sub{text-align:center;margin:0 0 4px}
-.sub2{text-align:center;margin:0 auto;max-width:640px;color:#8a7658;font-size:12.5px}
+.sub2{text-align:center;margin:6px auto 0;max-width:700px;color:#a38d6d;font-size:13px}
 hr{border:0;height:1px;margin:34px auto 0;width:70%;background:linear-gradient(90deg,transparent,#5a4528,transparent)}
 b{color:var(--hi);font-weight:600}
 a{color:var(--hi)}
@@ -56,14 +56,25 @@ a{color:var(--hi)}
 .menu .d{margin:0 0 8px}
 .menu ol{margin:0 0 10px;padding-left:20px;font-size:12.8px}
 .menu ol li{margin:0 0 3px}
+.menus.main2{grid-template-columns:repeat(2,1fr)}
+.menus+.menus{margin-top:12px}
+.menu.main{border-color:#4a3a22;background:linear-gradient(180deg,rgba(40,28,12,.55),rgba(10,8,5,.62))}
+.menu .d{color:#c9b28a;margin:2px 0 12px;line-height:1.75}
+.menu .d b,.menu li b{color:var(--hi)}
+.menu .w{margin:0 0 8px;font-size:12.8px;display:flex;gap:8px;align-items:baseline}
+.menu .lb{font-size:11px;letter-spacing:.04em;color:#c8a85a;white-space:nowrap;margin:0 0 3px}
+.menu .w .lb{flex:none;border:1px solid #4a3a22;padding:0 6px}
 .menu .go{margin-top:auto;align-self:flex-start;background:none;border:0;padding:0;font:inherit;color:var(--hi);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 
 /* 사용기·요청·오류 */
 .fb{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;margin-top:18px;align-items:start}
 .fbinfo{border:1px solid var(--edge);background:var(--bg2);padding:14px 16px}
 .fbinfo p{margin:0 0 8px}
-.fbinfo ul{margin:0;padding-left:18px;font-size:12.8px}
-.fbinfo li{margin-bottom:4px}
+.fbh{margin:0 0 8px;font-size:15px;color:var(--white);font-weight:600;line-height:1.45}
+.fbinfo dl{margin:12px 0 0;display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:12.8px}
+.fbinfo dt{color:var(--hi);white-space:nowrap}
+.fbinfo dd{margin:0}
+.fbnote{margin:12px 0 0 !important;font-size:12px;color:#7d6a4e}
 form.fbf{border:1px solid var(--edge);background:var(--bg2);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
 .seg{display:flex;gap:0;border:1px solid var(--edge2);align-self:flex-start}
 .seg button{font:inherit;font-size:13px;padding:6px 14px;background:transparent;color:var(--text);border:0;cursor:pointer}
@@ -87,7 +98,7 @@ footer{margin-top:56px;border-top:1px solid #2a2014;background:rgba(0,0,0,.55)}
 .fin p{margin:2px 0}
 .fin a{color:inherit}
 
-@media (max-width:980px){.goals{grid-template-columns:repeat(2,1fr)}.fb{grid-template-columns:1fr}}
+@media (max-width:980px){.menus.main2{grid-template-columns:1fr}.goals{grid-template-columns:repeat(2,1fr)}.fb{grid-template-columns:1fr}}
 @media (max-width:520px){.goals{grid-template-columns:1fr}.col{padding:22px 14px 0}h1{font-size:24px}}
 </style>
 </head>
@@ -95,7 +106,7 @@ footer{margin-top:56px;border-top:1px solid #2a2014;background:rgba(0,0,0,.55)}
 <div class="col">
   <h1 data-en="PoE 2 Craft" data-kr="PoE 2 Craft">PoE 2 Craft</h1>
   <p class="sub" data-en="Path of Exile 2 crafting recipes, flowcharts and a crafting emulator" data-kr="패스 오브 엑자일 2 제작 레시피 · 플로우차트 · 제작 에뮬레이터">Path of Exile 2 crafting recipes, flowcharts and a crafting emulator</p>
-  <p class="sub2" data-en="A service that grows with Path of Exile 2 players. Every recipe, reverse craft and report sharpens the numbers." data-kr="POE2 유저와 함께 자라는 서비스 · 레시피·리버스 결과·제보가 쌓일수록 정교해지는 확률과 순서">A service that grows with Path of Exile 2 players. Every recipe, reverse craft and report sharpens the numbers.</p>
+  <p class="sub2" data-en="A Path of Exile 2 crafting service built together with its players. The more recipes, reverse crafts and reports accumulate, the more precise the odds and crafting orders become." data-kr="POE2 유저와 함께 만들어 가는 제작 서비스입니다. 레시피와 리버스 결과, 유저의 제보가 쌓일수록 확률과 제작 순서가 더 정교해집니다.">A Path of Exile 2 crafting service built together with its players. The more recipes, reverse crafts and reports accumulate, the more precise the odds and crafting orders become.</p>
   <div class="cta">
     <button class="btn main" data-go="recipes" data-en="Browse crafting recipes" data-kr="크래프팅 레시피 보기">Browse crafting recipes</button>
     <button class="btn" data-go="emulator" data-en="Open the emulator" data-kr="에뮬레이터 열기">Open the emulator</button>
@@ -107,77 +118,81 @@ footer{margin-top:56px;border-top:1px solid #2a2014;background:rgba(0,0,0,.55)}
     <div class="goal">
       <div class="art"><img class="ph" src="img/main/g-together.webp" alt="" loading="lazy" width="640" height="360"></div>
       <div class="t"><h3 data-en="Built with players" data-kr="유저와 함께 만드는 서비스">Built with players</h3>
-        <p data-en="Reviews, requests and bug reports from players go straight into the next recipes and features." data-kr="유저의 사용기·요청·오류 제보가 다음 레시피와 기능에 바로 반영">Reviews, requests and bug reports from players go straight into the next recipes and features.</p></div>
+        <p data-en="Reviews, requests and bug reports decide what gets built next. <b>The experience of players who actually craft</b> is the standard." data-kr="사용기·요청사항·오류 제보가 다음 레시피와 기능의 우선순위를 정합니다. 기준은 <b>실제로 제작하는 유저의 경험</b>입니다.">Reviews, requests and bug reports decide what gets built next. <b>The experience of players who actually craft</b> is the standard.</p></div>
     </div>
     <div class="goal">
       <div class="art"><img class="ph" src="img/main/g-data.webp" alt="" loading="lazy" width="640" height="360"></div>
       <div class="t"><h3 data-en="Sharper as data grows" data-kr="쌓일수록 정교해지는 데이터">Sharper as data grows</h3>
-        <p data-en="Each new recipe, reverse craft and correction refines the odds, costs and step order for everyone." data-kr="새 레시피·리버스 결과·수정 하나하나가 모두의 확률·비용·순서를 다듬는 구조">Each new recipe, reverse craft and correction refines the odds, costs and step order for everyone.</p></div>
+        <p data-en="Every new recipe, reverse craft and correction <b>refines the odds, costs and step order together</b>." data-kr="새 레시피와 리버스 결과, 수정 내역이 쌓일 때마다 <b>확률·비용·제작 순서가 함께 다듬어지는 구조</b>입니다.">Every new recipe, reverse craft and correction <b>refines the odds, costs and step order together</b>.</p></div>
     </div>
     <div class="goal">
       <div class="art"><img class="ph" src="img/main/g-calc.webp" alt="" loading="lazy" width="640" height="360"></div>
       <div class="t"><h3 data-en="Calculated, not guessed" data-kr="추측이 아닌 계산">Calculated, not guessed</h3>
-        <p data-en="Odds come from the game's modifier weights and tens of thousands of simulated runs. Unknown weights are marked as unknown." data-kr="게임 데이터의 옵션 가중치와 수만 번의 시뮬레이션으로 계산한 확률 · 모르는 가중치는 '미확인' 표시">Odds come from the game's modifier weights and tens of thousands of simulated runs. Unknown weights are marked as unknown.</p></div>
+        <p data-en="Odds come from the game's modifier weights and <b>tens of thousands of simulated runs</b>. Weights that aren't public are marked as unknown." data-kr="확률은 게임 데이터의 옵션 가중치와 <b>수만 번의 시뮬레이션</b>으로 계산합니다. 가중치가 공개되지 않은 옵션은 '미확인'으로 표시합니다.">Odds come from the game's modifier weights and <b>tens of thousands of simulated runs</b>. Weights that aren't public are marked as unknown.</p></div>
     </div>
     <div class="goal">
       <div class="art"><img class="ph" src="img/main/g-proven.webp" alt="" loading="lazy" width="640" height="360"></div>
       <div class="t"><h3 data-en="Proven crafts for everyone" data-kr="검증된 제작 순서를 누구나">Proven crafts for everyone</h3>
-        <p data-en="Real crafts from videos and posts, split into high-end, balanced and essential grades so every budget has a path." data-kr="실제 제작 영상·글 기반 · 하이엔드·밸런스·에센셜 등급으로 예산에 맞는 길 제시">Real crafts from videos and posts, split into high-end, balanced and essential grades so every budget has a path.</p></div>
+        <p data-en="Based on real crafting videos and posts, split into high-end, balanced and essential grades to offer <b>a path for every budget</b>." data-kr="실제 제작 영상과 글을 기반으로 하며, 하이엔드·밸런스·에센셜 등급으로 나눠 <b>예산에 맞는 제작 경로</b>를 제시합니다.">Based on real crafting videos and posts, split into high-end, balanced and essential grades to offer <b>a path for every budget</b>.</p></div>
     </div>
   </div>
   <hr>
 
-  <h2 data-en="Menus and how to use them" data-kr="메뉴 안내 · 사용 방법">Menus and how to use them</h2>
-  <div class="menus">
-    <div class="menu">
+  <h2 data-en="What each menu is for" data-kr="메뉴별 목적과 사용 방법">What each menu is for</h2>
+  <div class="menus main2">
+    <div class="menu main">
       <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h12l-2 4H7z"/><path d="M15 9h3a3 3 0 0 1 3 3"/><path d="M9 13v4M7 21h6l-1-4H8z"/></svg><h3 data-en="Crafting" data-kr="크래프팅">Crafting</h3></div>
-      <p class="d" data-en="Follow a proven recipe step by step and craft the same item yourself." data-kr="검증된 레시피를 보고 나도 그대로 따라 하는 제작">Follow a proven recipe step by step and craft the same item yourself.</p>
+      <p class="d" data-en="Real crafters' videos and posts turned into step-by-step recipes, so <b>anyone can make the same item themselves</b>. Every recipe comes in high-end, balanced and essential grades, so you can pick <b>a path that fits your budget</b>, and each step shows its success chance, average uses and expected cost in divines." data-kr="실제 제작자들의 영상과 제작글을 단계별 레시피로 옮겨, <b>누구나 같은 아이템을 직접 만들 수 있도록</b> 정리한 메뉴입니다. 레시피는 하이엔드·밸런스·에센셜 등급으로 나뉘어 <b>예산에 맞는 제작 경로</b>를 고를 수 있으며, 단계마다 성공 확률과 평균 사용량, 예상 비용(div)이 표시됩니다.">Real crafters' videos and posts turned into step-by-step recipes, so <b>anyone can make the same item themselves</b>. Every recipe comes in high-end, balanced and essential grades, so you can pick <b>a path that fits your budget</b>, and each step shows its success chance, average uses and expected cost in divines.</p>
+      <p class="lb" data-en="How to use" data-kr="사용 방법">How to use</p>
       <ol>
-        <li data-en="Find an item with the filters or the modifier search." data-kr="필터·옵션 검색으로 아이템 찾기">Find an item with the filters or the modifier search.</li>
-        <li data-en="Pick a grade tab: high-end, balanced or essential." data-kr="등급 탭 선택: 하이엔드·밸런스·에센셜">Pick a grade tab: high-end, balanced or essential.</li>
-        <li data-en="Check branches and average cost in the flowchart." data-kr="플로우 차트로 갈림길·평균 비용 확인">Check branches and average cost in the flowchart.</li>
-        <li data-en="Buy the base with the trade-site link." data-kr="'베이스템 구입 ↗'으로 거래소에서 베이스 검색">Buy the base with the trade-site link.</li>
+          <li data-en="Find the item you want with the filters or the modifier search." data-kr="필터나 옵션 검색으로 만들고 싶은 아이템의 레시피를 찾습니다.">Find the item you want with the filters or the modifier search.</li>
+          <li data-en="Choose a grade, then check the <b>flowchart</b> to see where a step can fail and how each failure is recovered." data-kr="등급을 고른 뒤 <b>플로우 차트</b>에서 실패할 수 있는 단계와 실패했을 때의 복구 경로를 확인합니다.">Choose a grade, then check the <b>flowchart</b> to see where a step can fail and how each failure is recovered.</li>
+          <li data-en="Buy the base with the trade-search link and craft the steps in order." data-kr="'베이스템 구입' 링크로 거래소에서 베이스를 구입하고, 단계 순서대로 제작합니다.">Buy the base with the trade-search link and craft the steps in order.</li>
       </ol>
       <button class="go" data-go="recipes" data-en="Open Crafting →" data-kr="크래프팅 열기 →">Open Crafting →</button>
     </div>
-    <div class="menu">
+    <div class="menu main">
       <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/><path d="M12 8v4l3 2"/></svg><h3 data-en="Reverse Crafting" data-kr="리버스 크래프팅">Reverse Crafting</h3></div>
-      <p class="d" data-en="Work backwards from a finished item to a crafting order." data-kr="완성 아이템에서 거꾸로 제작 순서 찾기">Work backwards from a finished item to a crafting order.</p>
+      <p class="d" data-en="Starts from a finished item and works backwards to <b>the cheapest order that makes it</b>. Use it to decide whether to buy a listing or craft it yourself: mark only the modifiers you need and it compares <b>the cost of each tier range</b>. It is about 60% complete and gets more accurate as recipes and reports accumulate." data-kr="완성된 아이템에서 거꾸로 출발해 <b>그 아이템을 가장 싸게 만드는 순서</b>를 찾는 메뉴입니다. 경매장 매물을 살지 직접 만들지 판단할 때 쓰며, 꼭 필요한 옵션만 지정하면 <b>티어 범위에 따른 비용 차이</b>까지 비교해 줍니다. 현재 완성도는 약 60%이며, 레시피와 제보가 쌓일수록 정확해집니다.">Starts from a finished item and works backwards to <b>the cheapest order that makes it</b>. Use it to decide whether to buy a listing or craft it yourself: mark only the modifiers you need and it compares <b>the cost of each tier range</b>. It is about 60% complete and gets more accurate as recipes and reports accumulate.</p>
+      <p class="lb" data-en="How to use" data-kr="사용 방법">How to use</p>
       <ol>
-        <li data-en="Copy an item in game with Ctrl+C and paste it." data-kr="게임에서 아이템 Ctrl+C → 붙여넣기">Copy an item in game with Ctrl+C and paste it.</li>
-        <li data-en="Mark the must-have modifiers and their tier range." data-kr="필수 옵션·티어 범위 선택">Mark the must-have modifiers and their tier range.</li>
-        <li data-en="Build the draft and check its flowchart." data-kr="레시피 초안 만들기 → 플로우차트 검사">Build the draft and check its flowchart.</li>
-        <li data-en="Happy with it? Add it to the Crafting list." data-kr="만족하면 크래프팅 목록에 올리기">Happy with it? Add it to the Crafting list.</li>
+          <li data-en="Paste an item copied in game with Ctrl+C, or send one from Modifiers or the Emulator." data-kr="게임에서 Ctrl+C로 복사한 아이템을 붙여 넣거나, 속성부여·에뮬레이터에서 아이템을 보냅니다.">Paste an item copied in game with Ctrl+C, or send one from Modifiers or the Emulator.</li>
+          <li data-en="Mark only the modifiers the item must have as <b>must-have</b>, and set their tier range." data-kr="반드시 있어야 하는 옵션만 <b>필수</b>로 지정하고 티어 범위를 정합니다.">Mark only the modifiers the item must have as <b>must-have</b>, and set their tier range.</li>
+          <li data-en="The draft is checked as a flowchart. Once it passes, you can add it to the Crafting list." data-kr="만들어진 초안은 플로우차트 검산을 거치며, 통과하면 크래프팅 목록에 올릴 수 있습니다.">The draft is checked as a flowchart. Once it passes, you can add it to the Crafting list.</li>
       </ol>
       <button class="go" data-go="discover" data-en="Open Reverse Crafting →" data-kr="리버스 크래프팅 열기 →">Open Reverse Crafting →</button>
     </div>
+  </div>
+  <div class="menus">
     <div class="menu">
       <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/><circle cx="12" cy="12" r="2"/></svg><h3 data-en="Emulator" data-kr="에뮬레이터">Emulator</h3></div>
-      <p class="d" data-en="Craft the item you want the same way as in game, without spending real currency." data-kr="게임과 같은 방법으로 원하는 아이템을 만들어 보는 시뮬레이터">Craft the item you want the same way as in game, without spending real currency.</p>
+      <p class="d" data-en="A simulator for <b>crafting the item you want without spending real currency</b>. Prefix and suffix slots, modifier families and the crafted-modifier limit work exactly as in game, so you can rehearse a recipe or test your own idea before committing currency." data-kr="게임과 같은 규칙으로 <b>실제 커런시를 쓰지 않고 원하는 아이템을 만들어 보는</b> 시뮬레이터입니다. 접두·접미 자리, 같은 계열 제한, 제작 옵션 한도가 게임과 똑같이 적용되어, 실제로 제작하기 전에 레시피를 연습하거나 내 아이디어를 시험해 볼 수 있습니다.">A simulator for <b>crafting the item you want without spending real currency</b>. Prefix and suffix slots, modifier families and the crafted-modifier limit work exactly as in game, so you can rehearse a recipe or test your own idea before committing currency.</p>
+      <p class="lb" data-en="How to use" data-kr="사용 방법">How to use</p>
       <ol>
-        <li data-en="Choose a base, item level and quality." data-kr="베이스·아이템 레벨·퀄리티 선택">Choose a base, item level and quality.</li>
-        <li data-en="Use currency and omens to craft an item with the modifiers you want." data-kr="커런시·징조를 사용하여 원하는 옵션의 아이템을 제작">Use currency and omens to craft an item with the modifiers you want.</li>
-        <li data-en="See the odds of the next result before you click." data-kr="'다음 결과 확률'로 누르기 전에 결과 확인">See the odds of the next result before you click.</li>
+          <li data-en="Choose a base and item level." data-kr="베이스와 아이템 레벨을 고릅니다.">Choose a base and item level.</li>
+          <li data-en="Use currency and omens to craft the modifiers you want. <b>Next-result odds</b> show what can happen before you click." data-kr="커런시·징조를 사용해 원하는 옵션의 아이템을 만듭니다. 사용 전에 <b>다음 결과 확률</b>로 나올 수 있는 결과를 확인할 수 있습니다.">Use currency and omens to craft the modifiers you want. <b>Next-result odds</b> show what can happen before you click.</li>
+          <li data-en="When the item is done, send it to Reverse Crafting to find how to make it for real." data-kr="완성한 아이템은 '리버스 크래프팅으로'를 눌러 실제 제작 순서와 비용을 찾습니다.">When the item is done, send it to Reverse Crafting to find how to make it for real.</li>
       </ol>
       <button class="go" data-go="emulator" data-en="Open the Emulator →" data-kr="에뮬레이터 열기 →">Open the Emulator →</button>
     </div>
     <div class="menu">
       <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><h3 data-en="Modifiers" data-kr="속성부여">Modifiers</h3></div>
-      <p class="d" data-en="Plan the modifiers you want and see how rare each tier is." data-kr="원하는 옵션 조합 설계 · 티어별 확률 확인">Plan the modifiers you want and see how rare each tier is.</p>
+      <p class="d" data-en="Design the item you want <b>modifier by modifier and see how rare each one is</b>. It tells you early whether the set your build needs is realistic, and which modifiers will need a fracture or a guaranteed method." data-kr="원하는 옵션 조합을 <b>옵션 단위로 설계하고 각 옵션이 얼마나 귀한지</b> 확인하는 메뉴입니다. 빌드에 필요한 조합이 현실적인지, 어떤 옵션에 분열이나 확정 수단이 필요한지 미리 판단할 수 있습니다.">Design the item you want <b>modifier by modifier and see how rare each one is</b>. It tells you early whether the set your build needs is realistic, and which modifiers will need a fracture or a guaranteed method.</p>
+      <p class="lb" data-en="How to use" data-kr="사용 방법">How to use</p>
       <ol>
-        <li data-en="Choose a base." data-kr="베이스 선택">Choose a base.</li>
-        <li data-en="Select prefixes and suffixes and their minimum tier." data-kr="접두·접미 옵션과 최소 티어 선택">Select prefixes and suffixes and their minimum tier.</li>
-        <li data-en="Send it to Reverse Crafting to find a crafting order." data-kr="리버스 크래프팅으로 보내 제작 순서 찾기">Send it to Reverse Crafting to find a crafting order.</li>
+          <li data-en="Choose a base, then the prefixes, suffixes and minimum tier for each." data-kr="베이스를 고르고 접두·접미 옵션과 옵션별 최소 티어를 지정합니다.">Choose a base, then the prefixes, suffixes and minimum tier for each.</li>
+          <li data-en="The chance next to each modifier shows which ones are rare." data-kr="옵션 옆에 표시되는 확률로 희귀한 옵션을 확인합니다.">The chance next to each modifier shows which ones are rare.</li>
+          <li data-en="Send the design to Reverse Crafting to get a crafting order." data-kr="설계한 조합을 리버스 크래프팅으로 보내 제작 순서를 찾습니다.">Send the design to Reverse Crafting to get a crafting order.</li>
       </ol>
       <button class="go" data-go="builder" data-en="Open Modifiers →" data-kr="속성부여 열기 →">Open Modifiers →</button>
     </div>
     <div class="menu">
       <div class="hd"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg><h3 data-en="Data" data-kr="데이터">Data</h3></div>
-      <p class="d" data-en="Special bases and crafting data, with the recipes that use them." data-kr="특수 베이스 등 제작 데이터와 관련 레시피">Special bases and crafting data, with the recipes that use them.</p>
+      <p class="d" data-en="Collects <b>special bases whose crafting rules differ</b>, such as amulets that cannot be magic, along with their implicits. Check prefix/suffix limits and granted skills, then jump to the recipes that use the base." data-kr="부재 목걸이처럼 <b>제작 규칙 자체가 다른 특수 베이스</b>와 고정 옵션 정보를 모은 메뉴입니다. 접두·접미 개수 증감, 매직 가능 여부, 부여 스킬을 확인하고 그 베이스를 쓰는 레시피로 바로 이동할 수 있습니다.">Collects <b>special bases whose crafting rules differ</b>, such as amulets that cannot be magic, along with their implicits. Check prefix/suffix limits and granted skills, then jump to the recipes that use the base.</p>
+      <p class="lb" data-en="How to use" data-kr="사용 방법">How to use</p>
       <ol>
-        <li data-en="Search a base or a granted skill." data-kr="베이스·부여 스킬 검색">Search a base or a granted skill.</li>
-        <li data-en="Check implicits and prefix/suffix limits." data-kr="고정 옵션·접두·접미 개수 확인">Check implicits and prefix/suffix limits.</li>
-        <li data-en="Jump to a recipe that uses the base." data-kr="그 베이스를 쓰는 레시피로 이동">Jump to a recipe that uses the base.</li>
+          <li data-en="Search by base name or granted skill." data-kr="베이스 이름이나 부여 스킬로 검색합니다.">Search by base name or granted skill.</li>
+          <li data-en="Check the crafting limits and implicits, then open a related recipe." data-kr="제작 제약과 고정 옵션을 확인하고 관련 레시피로 이동합니다.">Check the crafting limits and implicits, then open a related recipe.</li>
       </ol>
       <button class="go" data-go="bases" data-en="Open Data →" data-kr="데이터 열기 →">Open Data →</button>
     </div>
@@ -187,19 +202,20 @@ footer{margin-top:56px;border-top:1px solid #2a2014;background:rgba(0,0,0,.55)}
   <h2 id="feedback" data-en="Reviews, requests & bug reports" data-kr="사용기 · 요청사항 · 오류 제보">Reviews, requests &amp; bug reports</h2>
   <div class="fb">
     <div class="fbinfo">
-      <p data-en="Every message is read and fed into the next update." data-kr="보낸 내용은 모두 읽고 다음 업데이트에 반영">Every message is read and fed into the next update.</p>
-      <ul>
-        <li data-en="Review: what helped, what felt awkward." data-kr="사용기: 도움이 된 점·불편한 점">Review: what helped, what felt awkward.</li>
-        <li data-en="Request: an item, video or feature you want." data-kr="요청사항: 원하는 아이템·영상·기능">Request: an item, video or feature you want.</li>
-        <li data-en="Bug: the menu, the recipe or item, and what happened. Paste the item text (Ctrl+C in game) if it's about an item." data-kr="오류: 메뉴·레시피(아이템)·증상 · 아이템 관련이면 게임에서 Ctrl+C 한 아이템 텍스트 첨부">Bug: the menu, the recipe or item, and what happened. Paste the item text (Ctrl+C in game) if it's about an item.</li>
-        <li data-en="Messages are visible to the operator only." data-kr="보낸 내용은 운영자만 확인">Messages are visible to the operator only.</li>
-      </ul>
+      <h3 class="fbh" data-en="Every recipe here is refined by players' reports" data-kr="레시피의 정확도는 실제로 제작한 유저의 제보로 다듬어집니다">Every recipe here is refined by players' reports</h3>
+      <p data-en="If a recipe behaved differently in game, or there is an item or feature you need, tell us. Reports are reviewed and reflected in the next update." data-kr="레시피가 게임 결과와 다르게 나왔거나 필요한 아이템·기능이 있다면 알려 주시기 바랍니다. 보내 주신 내용은 검토를 거쳐 다음 업데이트에 반영합니다.">If a recipe behaved differently in game, or there is an item or feature you need, tell us. Reports are reviewed and reflected in the next update.</p>
+      <dl>
+        <dt data-en="Review" data-kr="사용기">Review</dt><dd data-en="How a recipe went when you followed it, how the real cost compared with the estimate, and which screens were hard to use." data-kr="레시피를 따라 해 본 결과, 예상 비용과 실제 비용의 차이, 사용하기 불편했던 화면">How a recipe went when you followed it, how the real cost compared with the estimate, and which screens were hard to use.</dd>
+        <dt data-en="Request" data-kr="요청사항">Request</dt><dd data-en="Items, videos or crafting posts you'd like turned into recipes, and features you'd like added." data-kr="레시피로 정리했으면 하는 아이템·영상·제작글, 추가했으면 하는 기능">Items, videos or crafting posts you'd like turned into recipes, and features you'd like added.</dd>
+        <dt data-en="Bug report" data-kr="오류 제보">Bug report</dt><dd data-en="The menu and recipe where it happened and how to reproduce it. For item problems, include the item text copied in game with Ctrl+C." data-kr="문제가 생긴 메뉴·레시피와 재현 방법. 아이템 관련 오류는 게임에서 Ctrl+C로 복사한 아이템 텍스트를 함께 보내면 원인 확인이 빨라집니다.">The menu and recipe where it happened and how to reproduce it. For item problems, include the item text copied in game with Ctrl+C.</dd>
+      </dl>
+      <p class="fbnote" data-en="Messages are not published and are read by the operator only." data-kr="보내 주신 내용은 공개되지 않으며 운영자만 확인합니다.">Messages are not published and are read by the operator only.</p>
     </div>
     <form class="fbf" id="fbf" autocomplete="off">
       <div class="seg" role="group" aria-label="type">
         <button type="button" data-t="review" aria-pressed="true" data-en="Review" data-kr="사용기">Review</button>
         <button type="button" data-t="request" aria-pressed="false" data-en="Request" data-kr="요청사항">Request</button>
-        <button type="button" data-t="bug" aria-pressed="false" data-en="Bug" data-kr="오류">Bug</button>
+        <button type="button" data-t="bug" aria-pressed="false" data-en="Bug report" data-kr="오류 제보">Bug report</button>
       </div>
       <label><span data-en="Message" data-kr="내용">Message</span><textarea id="fbtxt" maxlength="3000" data-ph-en="At least 5 characters" data-ph-kr="5자 이상"></textarea></label>
       <label><span data-en="Name or contact (optional)" data-kr="닉네임·연락처 (선택)">Name or contact (optional)</span><input id="fbname" maxlength="80" data-ph-en="Only if you'd like a reply" data-ph-kr="답장이 필요할 때만"></label>
@@ -236,7 +252,7 @@ footer{margin-top:56px;border-top:1px solid #2a2014;background:rgba(0,0,0,.55)}
   const KR = () => lang==='kr', L = (kr,en) => KR()?kr:en;
   function setLang(l){
     lang=l; document.documentElement.lang = l==='en'?'en':'ko';
-    document.querySelectorAll('[data-kr]').forEach(el=>el.textContent = el.dataset[l]);
+    document.querySelectorAll('[data-kr]').forEach(el=>el.innerHTML = el.dataset[l]);   /* 우리 문구만(굵은 글씨 <b> 포함) */
     document.querySelectorAll('[data-ph-kr]').forEach(el=>el.placeholder = l==='kr'?el.dataset.phKr:el.dataset.phEn);
     if(msg.dataset.k) say(msg.dataset.k, msg.className.includes('err'));
   }
