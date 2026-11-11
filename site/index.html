@@ -424,7 +424,7 @@ function resetItem(base){
   const f = firstEmpty(); setActive(f.g, f.i);
 }
 function orderedBases(){
-  const b = S.data.bases.map((x,i)=>({...x,i}));
+  const b = S.data.bases.map((x,i)=>({...x,i})).filter(x=>x.sp!=='unique');   /* 고유 전용·스킬 생성 베이스(황금 고리·에너지 칼날 등)는 제작 불가라 목록에서 뺌 (사용자 확정 2026-11-11) */
   const by = (a,c)=> c.lv-a.lv || a.i-c.i;
   return { normal:b.filter(x=>!x.sp).sort(by), special:b.filter(x=>x.sp).sort(by) };
 }

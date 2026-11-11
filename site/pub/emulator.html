@@ -486,7 +486,7 @@ async function loadClass(id){
   const o = orderedBases(); newItem((o.normal[0]||o.special[0]).i);
 }
 function orderedBases(){
-  const b = S.data.bases.map((x,i)=>({...x,i})), by=(a,c)=>c.lv-a.lv||a.i-c.i;
+  const b = S.data.bases.map((x,i)=>({...x,i})).filter(x=>x.sp!=='unique'), by=(a,c)=>c.lv-a.lv||a.i-c.i;   /* 고유 전용·스킬 생성 베이스(황금 고리·에너지 칼날 등)는 제작 불가라 목록에서 뺌 (사용자 확정 2026-11-11) */
   return {normal:b.filter(x=>!x.sp).sort(by), special:b.filter(x=>x.sp).sort(by)};
 }
 const base = () => S.data.bases[S.item.base];
