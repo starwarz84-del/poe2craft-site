@@ -16,10 +16,10 @@
 | xeno-phys-crossbow-v2 | 1TP4aGqxU7Q | high 7,227 | 7 | 완료 11-11 | A(Opus) | 자막 없음 → 화면 직접 확인(4:45~9:55, 기록 tools/notes/xeno-1TP4aGqxU7Q.md). 그래프가 영상과 맞아 그대로(순서만 사용자 확정 11-09). 7,227 그대로. 영상에 없는 더 싼 투사체 길(우측 소멸 + 상위 찬미 엑잘, 약 5,840)은 사용자 확인 대기 |
 | barricade-quarterstaff-v2 | B4yShuKydt0 | high 4,068, bal 387 | 2 | 완료 11-11 | A(Opus) | 자막 전체 확인. 81 동률 잡옵만 영상대로 좌측 소멸 1/3 → 엑잘. 근접 +5 과정은 영상에 없어 추정. 2,617 / 346(4,068은 옛 시뮬값, 원래 그래프도 지금 2,636) |
 | mazbro-bis-chest-v2 | LUB59xlkNtk | high 3,023, bal 960 | 15 | 대조만 끝남 | B(Fable) | 영상 기록 tools/notes/mazbro-LUB59xlkNtk.md. 접두 엑잘·절사 카오스를 상위로 바꾸면 조금 쌈(시뮬 확인) — 아직 안 고침 |
-| sihan-highend-helmet-v2 | CTrIbhQVU8U | high 2,616, bal 180 | 1 | 대기 |  |  |
-| noble-visceral-quiver-v2 | 2PUEwoePtRs | high 2,240, bal 110 | 3 | 대기 |  |  |
+| sihan-highend-helmet-v2 | CTrIbhQVU8U | high 2,616, bal 180 | 1 | 진행 중 | A(Opus) |  |
+| noble-visceral-quiver-v2 | 2PUEwoePtRs | high 2,240, bal 110 | 3 | 진행 중 | A(Opus) |  |
 | diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 대기 | | 제작 옵션 한도 위반(l1·l2) 남음 |
-| breach-ring-video-v2 | RiJixgqBnBY | high 1,956, bal 934 | 4 | 대기 |  |  |
+| breach-ring-video-v2 | RiJixgqBnBY | high 1,956, bal 934 | 4 | 진행 중 | A(Opus) |  |
 | sihan-proj-gloves-v2 | DH4jiORLg10 | high 1,659, bal 327 | 2 | 대기 |  |  |
 | sl-blacksteel-gauntlets-v2 | J7J8Jo7ibvE | high 1,649, bal 140 | 4 | 대기 |  |  |
 | sl-flamewave-ring-v2 | UAF91gEFRkM | high 1,423, bal 371 | 2 | 대기 |  |  |
