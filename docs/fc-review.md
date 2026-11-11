@@ -27,7 +27,7 @@
 | absent-amulet-spell6-v2 | Yi1u0LhJztI | high 1,330, bal 756 | 10 | 완료 11-12 | A(Opus) | 자막 전체(0:00~42:38) + 화면 27:00~34:00(기록 tools/notes/banzino-Yi1u0LhJztI.md). 균열의 에센스에 좌측 결정화 추가, 접미 훼손을 막기로 먼저 공개, 엑잘 빗나감 = 빛의 징조 + 심연 징표 → 고대 빗장뼈 공개(영상 29:30~31:20), 시전 속도는 고대 빗장뼈. 마나가 엑잘·징표 중 어디서 붙었는지는 화면으로 확인 못 함. 1,330/756 → 2,515/216 |
 | sl-flamewave-staff-v2 | 6EzSVUItzsg | high 1,296, bal 178 | 3 | 완료 11-12 | A(Opus) | 자막 전체(0:00~15:13) 대조, 단계 일치(기록 tools/notes/sl-6EzSVUItzsg.md). 1,296/178 → 1,296/40(밸런스 마지막 접두·접미 랜덤) |
 | mazbro-caster-amulet-v2 | 4PazhuHwdL8 | high 1,154, bal 428 | 5 | 완료 11-12 | A(Opus) | 자동 번역 자막 전체(0:00~39:40) 대조, 영상 가이드 1~11단계와 일치(기록 tools/notes/mazbro-4PazhuHwdL8.md). 1,154/428 → 1,154/410 |
-| sihan-highend-boots-v2 | dlrD21AcCUE | high 1,147, bal 650, ess 314 | 2 | 대기 |  |  |
+| sihan-highend-boots-v2 | dlrD21AcCUE | high 1,147, bal 650, ess 314 | 2 | 진행 중 | A(Opus) |  |
 | grasping-mail-spell1-v2 | y5Ch3AJpl5c | high 1,140, bal 613 | 11 | 대기 |  |  |
 | sl-proj7-gloves-v2 | XMYJh3CnXuY | high 1,104, bal 785 | 7 | 완료 11-11 | B(Fable) | 자막 전체 대조. 합금 실패 뒤 길을 보이는 선 + 규칙에 맞게(우측 소멸의 징조로 접미 비우기). 1,104·785 |
 | saveq-absent-amulet-v2 | S4sflKbsA8A | high 935, bal 797, ess 729 | 4 | 대기 |  |  |
