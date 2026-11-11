@@ -209,16 +209,16 @@ footer{margin-top:56px;border-top:1px solid #2a2014;background:rgba(0,0,0,.55)}
         <dt data-en="Request" data-kr="요청사항">Request</dt><dd data-en="Items, videos or crafting posts you'd like turned into recipes, and features you'd like added." data-kr="레시피로 정리했으면 하는 아이템·영상·제작글, 추가했으면 하는 기능">Items, videos or crafting posts you'd like turned into recipes, and features you'd like added.</dd>
         <dt data-en="Bug report" data-kr="오류 제보">Bug report</dt><dd data-en="The menu and recipe where it happened and how to reproduce it. For item problems, include the item text copied in game with Ctrl+C." data-kr="문제가 생긴 메뉴·레시피와 재현 방법. 아이템 관련 오류는 게임에서 Ctrl+C로 복사한 아이템 텍스트를 함께 보내면 원인 확인이 빨라집니다.">The menu and recipe where it happened and how to reproduce it. For item problems, include the item text copied in game with Ctrl+C.</dd>
       </dl>
-      <p class="fbnote" data-en="Messages are not published and are read by the operator only." data-kr="보내 주신 내용은 공개되지 않으며 운영자만 확인합니다.">Messages are not published and are read by the operator only.</p>
+      <p class="fbnote" data-en="Messages are not published and are read by the operator only. Your email is used only to reply." data-kr="보내 주신 내용은 공개되지 않으며 운영자만 확인합니다. 이메일은 답장에만 사용합니다.">Messages are not published and are read by the operator only. Your email is used only to reply.</p>
     </div>
-    <form class="fbf" id="fbf" autocomplete="off">
+    <form class="fbf" id="fbf" autocomplete="off" novalidate>
       <div class="seg" role="group" aria-label="type">
         <button type="button" data-t="review" aria-pressed="true" data-en="Review" data-kr="사용기">Review</button>
         <button type="button" data-t="request" aria-pressed="false" data-en="Request" data-kr="요청사항">Request</button>
         <button type="button" data-t="bug" aria-pressed="false" data-en="Bug report" data-kr="오류 제보">Bug report</button>
       </div>
       <label><span data-en="Message" data-kr="내용">Message</span><textarea id="fbtxt" maxlength="3000" data-ph-en="At least 5 characters" data-ph-kr="5자 이상"></textarea></label>
-      <label><span data-en="Name or contact (optional)" data-kr="닉네임·연락처 (선택)">Name or contact (optional)</span><input id="fbname" maxlength="80" data-ph-en="Only if you'd like a reply" data-ph-kr="답장이 필요할 때만"></label>
+      <label><span data-en="Email (optional, only if you'd like a reply)" data-kr="이메일 (선택 · 답장이 필요할 때만)">Email (optional, only if you'd like a reply)</span><input id="fbname" type="email" maxlength="120" autocomplete="email" data-ph-en="you@example.com" data-ph-kr="you@example.com"></label>
       <div class="fbrow"><button type="submit" class="btn main" id="fbgo" data-en="Send" data-kr="보내기">Send</button><span class="fbmsg" id="fbmsg" role="status"></span></div>
     </form>
   </div>
@@ -263,15 +263,16 @@ footer{margin-top:56px;border-top:1px solid #2a2014;background:rgba(0,0,0,.55)}
   /* 사용기·요청·오류 → worker /api/feedback */
   const form=document.getElementById('fbf'), txt=document.getElementById('fbtxt'), nm=document.getElementById('fbname'), go=document.getElementById('fbgo'), msg=document.getElementById('fbmsg');
   let type='review', busy=false;
-  const M = {short:['5자 이상 입력','At least 5 characters'], sending:['보내는 중','Sending'], ok:['보냄 · 고맙습니다','Sent · thank you'], limit:['오늘 보낼 수 있는 횟수 초과','Daily limit reached'], unavailable:['서버 연결 불가 · poe2craft.xyz에서 사용','Server unavailable · use poe2craft.xyz'], fail:['보내기 실패','Could not send']};
+  const M = {short:['5자 이상 입력','At least 5 characters'], sending:['보내는 중','Sending'], ok:['보냄 · 고맙습니다','Sent · thank you'], limit:['오늘 보낼 수 있는 횟수 초과','Daily limit reached'], unavailable:['서버 연결 불가 · poe2craft.xyz에서 사용','Server unavailable · use poe2craft.xyz'], fail:['보내기 실패','Could not send'], email:['이메일 형식 확인','Check the email address']};
   function say(k, err){ msg.dataset.k=k; msg.textContent = (M[k]||M.fail)[KR()?0:1]; msg.className='fbmsg'+(err?' err':k==='ok'?' ok':''); }
   form.querySelectorAll('[data-t]').forEach(b=>b.addEventListener('click', ()=>{ type=b.dataset.t; form.querySelectorAll('[data-t]').forEach(x=>x.setAttribute('aria-pressed', x===b)); }));
   form.addEventListener('submit', async e=>{
     e.preventDefault(); if(busy) return;
     const text=txt.value.trim(); if(text.length<5){ say('short', true); return; }
+    const em=nm.value.trim(); if(em && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ say('email', true); return; }
     busy=true; go.disabled=true; say('sending');
     try{
-      const r=await fetch('/api/feedback', {method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({type, text, name:nm.value.trim(), lang, ua:navigator.userAgent.slice(0,160)})});
+      const r=await fetch('/api/feedback', {method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({type, text, email:nm.value.trim(), lang})});
       let d={}; try{ d=await r.json(); }catch(_){ d={error:'unavailable'}; }
       if(r.ok && d.ok){ say('ok'); txt.value=''; }
       else say(d.error==='limit'?'limit':d.error==='unavailable'||r.status===404?'unavailable':'fail', true);

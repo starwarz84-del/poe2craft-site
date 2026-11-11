@@ -134,7 +134,9 @@ async function feedback(req, env) {
   const used = +(await env.REQ.get(rk) || 0);
   if (used >= 10) return json({ error: 'limit' }, 429);
   const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-  const it = { id, type, text, name: String(b.name || '').trim().slice(0, 80), lang: b.lang === 'kr' ? 'kr' : 'en', ua: String(b.ua || '').slice(0, 160), at: new Date().toISOString() };
+  const em = String(b.email || '').trim().slice(0, 120);
+  if (em && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return json({ error: 'email' }, 400);
+  const it = { id, type, text, email: em, lang: b.lang === 'kr' ? 'kr' : 'en', at: new Date().toISOString() };
   await env.REQ.put('fb:' + id, JSON.stringify(it));
   await env.REQ.put(rk, String(used + 1), { expirationTtl: 3 * 86400 });
   return json({ ok: true, id });
