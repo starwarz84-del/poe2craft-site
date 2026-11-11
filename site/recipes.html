@@ -454,7 +454,7 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .simbox .simsum{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;margin:2px 0 8px}
 .simbox .simsum b{color:var(--rare);font-weight:600}
 .simbox .simsum small,.simbox .simnote{color:var(--faint);font-size:11.5px}
-.fc{overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg);max-height:72vh}
+.fc.panning{cursor:grabbing;user-select:none}.fc{cursor:grab;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg);max-height:72vh}
 .fcin{position:relative}
 .fcsvg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .simopts{margin:-2px 0 6px}.simopts .simtop{margin:6px 0 0}
@@ -2199,6 +2199,14 @@ function statPick(i, k){ S.stats[i]=k; for(let j=i+1;j<S.stats.length;j++) if(S.
 $('#stats').addEventListener('focusin', e=>{ const inp=e.target.closest('input[data-stat]'); if(inp){ inp.select(); statShow(inp); } });
 $('#stats').addEventListener('input', e=>{ const inp=e.target.closest('input[data-stat]'); if(inp) statShow(inp); });
 $('#stats').addEventListener('mousedown', e=>{ if(e.target.closest('.slist')) e.preventDefault(); });
+/* 플로우차트 끌어서 움직이기(사용자 2026-11-12: 좌우 스크롤이 안 됨): 빈 곳을 누른 채 끌면 상하좌우로 이동, 버튼·링크·선택 상자는 그대로 */
+{ let pan=null;
+  document.addEventListener('pointerdown', e=>{ const fc=e.target.closest('.fc'); if(!fc || e.button!==0 || e.target.closest('button,a,select,input,textarea,[data-act],[data-rtab]')) return;
+    if(fc.scrollWidth<=fc.clientWidth && fc.scrollHeight<=fc.clientHeight) return; pan={fc, x:e.clientX, y:e.clientY, l:fc.scrollLeft, t:fc.scrollTop, moved:false}; });
+  document.addEventListener('pointermove', e=>{ if(!pan) return; const dx=e.clientX-pan.x, dy=e.clientY-pan.y; if(!pan.moved && Math.hypot(dx,dy)<4) return;
+    pan.moved=true; pan.fc.classList.add('panning'); pan.fc.scrollLeft=pan.l-dx; pan.fc.scrollTop=pan.t-dy; e.preventDefault(); });
+  const end=()=>{ if(pan){ pan.fc.classList.remove('panning'); if(pan.moved){ const stop=ev=>{ ev.stopPropagation(); ev.preventDefault(); }; pan.fc.addEventListener('click', stop, {capture:true, once:true}); setTimeout(()=>pan&&0,0); } } pan=null; };
+  document.addEventListener('pointerup', end); document.addEventListener('pointercancel', end); }
 $('#stats').addEventListener('click', e=>{ const p=e.target.closest('[data-spick]'); if(p){ statPick(+p.closest('[data-sbox]').dataset.sbox, p.dataset.spick); return; }
   const c=e.target.closest('[data-sclear]'); if(c){ S.stats[+c.dataset.sclear]=''; renderBar(); renderBoard(); } });
 $('#stats').addEventListener('keydown', e=>{ const inp=e.target.closest('input[data-stat]'); if(!inp) return; const box=inp.parentNode.querySelector('.slist'); const items=[...box.querySelectorAll('[data-spick]')]; let h=items.findIndex(x=>x.classList.contains('hi'));

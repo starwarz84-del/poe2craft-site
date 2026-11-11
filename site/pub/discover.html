@@ -167,6 +167,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 #mkmsg .ok{color:var(--ok)}
 .pv{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 12px;display:flex;flex-direction:column;gap:8px}
 .pv-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.pv-h span{font-size:12px;color:var(--muted)}
+#pvf.pvfull{position:fixed;inset:0;width:100vw;height:100vh;z-index:2000;border:0;border-radius:0}body.pvfull-on{overflow:hidden}
 #pvf{width:100%;height:max(520px, calc(100vh - 32px));border:1px solid var(--line);border-radius:8px;background:var(--bg)}
 #pvact{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .check{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
@@ -1656,7 +1657,9 @@ $('#u-go').addEventListener('click', sendReq);
 document.addEventListener('click', e=>{ const a=e.target.closest('[data-rgo]'); if(!a) return; e.preventDefault(); try{ window.parent.postMessage({type:'poe2-goto', id:a.dataset.rgo}, '*'); }catch(_){} });
 if(REQ_OPEN) loadReqs(); else urlForm();
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
-window.addEventListener('message', e=>{ const d=e.data, f=document.getElementById('pvf'); /* preview keeps a window-sized frame and scrolls inside it, so its sticky header, progress bar and step tracking work (2026-11-11) */ });
+window.addEventListener('message', e=>{ const d=e.data||{}, f=document.getElementById('pvf'); /* preview keeps a window-sized frame and scrolls inside it, so its sticky header, progress bar and step tracking work (2026-11-11) */
+  /* 미리보기 플로우차트 전체화면(사용자 2026-11-12: 초안 안 창에서 좌우 스크롤·전체화면이 안 됨): 미리보기 창을 화면 전체로 키우고 사이트 껍데기에도 알림 */
+  if(d.type==='poe2-full' && f && e.source===f.contentWindow){ f.classList.toggle('pvfull', !!d.on); document.body.classList.toggle('pvfull-on', !!d.on); try{ parent!==window && parent.postMessage({type:'poe2-full', on:!!d.on}, '*'); }catch(_){} } });
 $('#mods').addEventListener('change', e=>{
   if(e.target.id==='qrok'){ S.okQR=e.target.checked; render(); return; }
   if(e.target.dataset?.buy!=null && S.last?.an){ const i=+e.target.dataset.buy, sd=S.last.an.rows[i].m.side;
