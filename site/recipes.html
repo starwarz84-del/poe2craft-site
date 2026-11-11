@@ -1002,7 +1002,7 @@ function tradeURL(r){ const T=S.trade, c=C(r); if(!T || !c) return null; const s
   const misc={corrupted:{option:'false'}, mirrored:{option:'false'}, sanctified:{option:'false'}, desecrated:{option:'false'}, ...(fr?{fractured_item:{option:'true'}}:{})};
   const f={type_filters:{filters:{...(T.cat[r.cls]?{category:{option:T.cat[r.cls]}}:{}), rarity:{option:rar}, ...(r.ilvl?{ilvl:{min:r.ilvl}}:{})}}, misc_filters:{filters:misc}};
   if(r.exceptional && c.sockets!=null) f.equipment_filters={filters:{rune_sockets:{min:(+c.sockets||0)+(r.exceptional.sockets||1)}}};
-  const q={query:{status:{option:'online'}, ...(typeOK?{type:KR()?b.kr:b.en}:{}), stats:[{type:'and', filters}], filters:f}, sort:{price:'asc'}};
+  const q={query:{status:{option:'available'}, ...(typeOK?{type:KR()?b.kr:b.en}:{}), stats:[{type:'and', filters}], filters:f}, sort:{price:'asc'}};
   const host = KR() ? 'https://poe.kakaogames.com' : 'https://www.pathofexile.com';
   return {url:`${host}/trade2/search/poe2/${encodeURIComponent(T.league)}?q=${encodeURIComponent(JSON.stringify(q))}`, miss:miss.length, typeOK}; }
 
