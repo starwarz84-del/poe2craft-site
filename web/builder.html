@@ -741,7 +741,7 @@ function renderPreview(){
   const lab = (cls,t) => `<span class="tt-tier ${cls}">${esc(t)}</span>`;
   const imps = implicits(l).map((x,ii)=>`<div class="tt-mod imp">${esc(rollAt(x,S.imp[ii])+skillQ(x))}</div>`);
   if(S.corr===1 && S.slots.c[0]){ const v=S.slots.c[0]; imps.push(`<div class="tt-mod imp vaal">${lab('tv','Vaal')}${esc(tText(S.data.groups[v.gi].t[v.ti]))}</div>`); }
-  const runes = S.slots.k.slice(0,n).map(v=>v ? `<div class="tt-mod rune">${lab('tr',KR()?'룬':'Rune')}${esc(rText(runesList()[v.ri].t[v.ti]))}</div>` : `<div class="tt-mod slot0">${lab('tr',KR()?'룬':'Rune')}</div>`);
+  const runes = S.slots.k.slice(0,n).map(v=>v ? `<div class="tt-mod rune">${lab('tr','R')}${esc(rText(runesList()[v.ri].t[v.ti]))}</div>` : `<div class="tt-mod slot0">${lab('tr','R')}</div>`);
   const mods = [];
   for(const g of ['p','s','f']) S.slots[g].slice(0,maxOf(g)).forEach((v,i)=>{
     if(!v){ if(g!=='f') mods.push(`<div class="tt-mod slot0">${lab(g==='p'?'tp':'ts', g==='p'?'P':'S')}</div>`); return; }
@@ -751,7 +751,7 @@ function renderPreview(){
     mods.push(`<div class="tt-mod ${fr?'fr':''} ${grp.s==='d'?'desm':''} ${grp.s==='e'||g==='f'?'essm':''}">${lab(ps==='P'?'tp':'ts', S.showTier?tier:ps)}${esc(scaleText(tText(t),m))}</div>`);
   });
   const np=S.slots.p.slice(0,maxOf('p')).filter(Boolean).length, ns=S.slots.s.slice(0,maxOf('s')).filter(Boolean).length, nk=S.slots.k.slice(0,n).filter(Boolean).length;
-  const cnt = `<div class="tt-cnt"><span class="p">P ${np}/${maxOf('p')}</span><span class="s">S ${ns}/${maxOf('s')}</span>${n?`<span class="r">${KR()?'룬':'Rune'} ${nk}/${n}</span>`:''}</div>`;
+  const cnt = `<div class="tt-cnt"><span class="p">P ${np}/${maxOf('p')}</span><span class="s">S ${ns}/${maxOf('s')}</span>${n?`<span class="r">${'R'} ${nk}/${n}</span>`:''}</div>`;
   const sock = n ? `<div class="tt-sock" aria-label="룬 소켓 ${n}개">${Array.from({length:n},(_,i)=>`<span class="${S.slots.k[i]?'on':''} ${i>=base+excSock()?'x':''}"></span>`).join('')}</div>` : '';
   const sections = [
     `${b.img?`<img class="tt-img" src="${b.img}" alt="">`:''}<div class="tt-cls">${esc(KR()?S.data.kr:S.data.en)}</div>${props}<div class="tt-prop">${KR()?'아이템 레벨':'Item Level'}: <b>${S.ilvl}</b></div>${S.exc?`<div class="tt-prop tt-excl">${KR()?'룬 소켓 +1':'+1 rune socket'}</div>`:''}${sock}${cnt}`,

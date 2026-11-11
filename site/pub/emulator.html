@@ -1007,7 +1007,7 @@ function renderItem(){
   const lp = localProps();
   const props = `<div class="tt-prop">${esc(clName)}</div>` + lp.out.map(p=>`<div class="tt-prop">${esc(p.l)}: <b class="${p.c?'chg':''}">${esc(p.v)}</b></div>`).join('') + (it.exc?`<div class="tt-prop tt-excl">${L('룬 소켓 +1','+1 rune socket')}</div>`:'');
   // runes (+ bonded line), enchant, base implicits
-  const rtag = `<span class="tt-tier tr">${L('룬','Rune')}</span>`;
+  const rtag = `<span class="tt-tier tr">${'R'}</span>`;
   const runeOn = (it.runes||[]).slice(0,it.sockets).map(r=>r&&runeAt(r)).filter(Boolean);
   const runeLines = runeOn.map(t=>{ const bd=KR()?t[4]:t[5]; return `<div class="tt-mod rune">${rtag}${esc(runeTxt(t))}${bd?`<button type="button" class="bond-tg" data-bond aria-pressed="${!!S.showBond}" title="${L('결속 효과 보기','Show bonded effect')}">${L('결속','Bond')}</button>`:''}</div>${bd&&S.showBond?`<div class="tt-mod rune bond">${L('결속됨','Bonded')}: ${esc(bd)}</div>`:''}`; });
   for(let i=runeOn.length;i<(it.sockets||0);i++) runeLines.push(`<div class="tt-mod slot0">${rtag}</div>`);
@@ -1031,7 +1031,7 @@ function renderItem(){
   const sockets = it.sockets ? `<div class="side-socks">${Array.from({length:it.sockets},(_,i)=>{ const t=it.runes&&it.runes[i]&&runeAt(it.runes[i]); return `<span class="ss ${t?'on':''} ${t&&runeLocked(t)?'lk':''}" title="${t?esc(KR()?t[0]:t[1]):L('빈 소켓','Empty socket')}"></span>`; }).join('')}</div>` : '';
   const art = b.img ? `<div class="tt-art"><img src="${b.img}" alt="">${sockets}</div>` : '';
   const np=it.mods.filter(m=>genOf(m)==='p').length, ns=it.mods.filter(m=>genOf(m)==='s').length;
-  const cnt = (r!=='normal'||it.sockets) ? `<div class="tt-cnt">${r!=='normal'?`<span class="p">P ${np}/${capOf('p')}</span><span class="s">S ${ns}/${capOf('s')}</span>`:''}${it.sockets?`<span class="r">${L('룬','Rune')} ${runeOn.length}/${it.sockets}</span>`:''}</div>` : '';
+  const cnt = (r!=='normal'||it.sockets) ? `<div class="tt-cnt">${r!=='normal'?`<span class="p">P ${np}/${capOf('p')}</span><span class="s">S ${ns}/${capOf('s')}</span>`:''}${it.sockets?`<span class="r">${'R'} ${runeOn.length}/${it.sockets}</span>`:''}</div>` : '';
   const secs = [art+props, `<div class="tt-prop">${L('아이템 레벨','Item Level')}: <b>${it.ilvl}</b></div>${reqLine()}${cnt}`,
     runeLines.join(''), ench, imps.join(''), mods.length?mods.join(''):`<div class="tt-mod dim">${L('옵션 없음','No modifiers')}</div>`].filter(Boolean);
   const status = [it.hinekora?`<div class="tt-prop" style="color:#9fd7ff">${L('히네코라의 머리카락 — 다음 결과를 내다봄','Foreseeing next result')}</div>`:'',
