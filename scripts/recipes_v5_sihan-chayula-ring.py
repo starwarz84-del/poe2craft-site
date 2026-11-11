@@ -19,7 +19,7 @@ R.append({
   {'id':'r2','phase':'q','do':'essence','cur':'Essence_of_the_Breach','target':{'gi':cr_maxq},'ts':'1:30'},
   {'id':'r3','phase':'q','do':'quality','cur':'Chayulas_Catalyst','target':{'quality':60},'ts':'1:43'},
   {'id':'r4','phase':'core','do':'chaos','cur':'Chaos_Orb','target':{'gi':cr_res,'tmax':2},'fail':{'goto':'self'},'ts':'0:20'},
-  {'id':'r5','phase':'core','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'target':{'gi':cr_chaos,'tmax':2},
+  {'id':'r5','phase':'core','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Greater_Exaltation','Omen_of_Sinistral_Exaltation'],'target':{'gi':cr_chaos,'tmax':2},
    'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'r4'},'ts':'3:27'},
   {'id':'r6','phase':'fin','do':'desecrate','cur':'Preserved_Collarbone','omens':['Omen_of_Sinistral_Necromancy','Omen_of_the_Liege'],'target':{'unrev':'p'},'ts':'3:40'},
   {'id':'r7','phase':'fin','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':cr_eff},'side':'p','lord':'amanamu','bone':'Preserved_Collarbone'},'fail':{'goto':'r6','via':LIGHT},'ts':'4:20'},

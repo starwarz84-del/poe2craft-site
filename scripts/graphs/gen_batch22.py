@@ -167,25 +167,25 @@ g22('sihan-attack-flat-ring-v2',c,'Unset Ring',75,
 
 # ---------- 6. 시한 차율라 반지 (GgD_vxKgNsw) ----------
 # 균열 반지, 잔류물 거리 분열(카오스로 안 나오는 옵션) + 잡옵 → 균열의 에센스 → 차율라의 기폭제 60% → 카오스 오브(모든 원소 저항 — 최대 퀄리티 옵션이 바뀜)
-# → 좌측 찬미 + 완벽한 엑잘(카오스 피해, 빗나가면 소멸의 오브) → 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈 → 공개(잔류물 효과, 빛의 징조로 다시) → 완벽한 엑잘(마지막 옵션 결과 그대로).
+# → 상위 + 좌측 찬미 + 완벽한 엑잘(접두 2개 중 카오스 피해, 빗나가면 소멸의 오브 — 2026-11-11 영상 재확인: 완성품 접두 = 카오스 피해·생명력·잔류물 효과, 3:29) → 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈 → 공개(잔류물 효과, 빛의 징조로 다시) → 완벽한 엑잘(마지막 옵션 결과 그대로).
 c='Rings'; P={'high':{'rT':1,'cT':1},'bal':{'rT':2,'cT':2}}
 tags={'far':{'gi':106},'res':{'gi':7,'tmax':'$rT'},'chaos':{'gi':33,'tmax':'$cT'},'eff':{'gi':37},'maxq':{'gi':71}}
 FR=itg('s',c,106,['far'],'f'); MQ=itg('p',c,71,['maxq'],'c',suffix=('균열의 에센스','Essence of the Breach')); RS=itg('s',c,7,['res']); CHD=itg('p',c,33,['chaos']); EF=itg('p',c,37,['eff'],'d')
-I0=[FR,J('s')]; I1=[MQ,FR]; I2=[FR,RS]; I3=[CHD]+I2; I4=I3+[UN('p')]; I5=I3+[EF]; I6=I5+[R1('s')]
+I0=[FR,J('s')]; I1=[MQ,FR]; I2=[FR,RS]; I3=[CHD,R1('p')]+I2; I4=I3+[UN('p')]; I5=I3+[EF]; I6=I5+[R1('s')]
 nodes=[base('r2',{'rar':'rare','mods':[{'tag':'far','fr':True},{'junk':'s'}]},K('균열 반지, 잔류물 거리 분열 + 잡옵 1개','Breach Ring: fractured remnant pickup range + one junk line'),I0),
  act('r2','prep',[0,1],'essence','Essence_of_the_Breach',K('최대 퀄리티 +20%','+20% maximum quality'),[st('p','장신구 최대 퀄리티 +20% (제작 옵션)','+20% to maximum quality (crafted)')],K('에센스','Essence'),[{'to':'r3'}],I1,ess='maxq'),
  act('r3','prep',[0,2],'quality','Chayulas_Catalyst',K('카오스 퀄리티 60%','60% chaos quality'),None,K('퀄리티','Quality'),[{'to':'ms'}],I1,count=40),
  mark([0,2.5],'r4',I1),
- act('r4','main',[0,3],'chaos','Chaos_Orb',K('접미 두번째 옵션 (최대 퀄리티 옵션이 바뀜)','Second suffix (replaces the max-quality line)'),None,K('카오스','Chaos'),[{'if':{'has':'res'},'to':'r5','res':'ok'},{'to':'r4','res':'fail'}],I2,show=['res']),
- act('r5','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 첫번째 옵션','First prefix'),None,K('엑잘','Exalt'),[{'if':{'has':'chaos'},'to':'r6','res':'ok'},{'to':'r5x','res':'fail'}],I3,show=['chaos'],omens=['Omen_of_Sinistral_Exaltation']),
- annul('r5x',[1,4],[{'if':{'has':'res'},'to':'r5','port':'right','res':'ok'},{'to':'r4','res':'fail'}],omens=(),target=K('빗나간 접두 지우기 (저항이 지워지면 카오스부터)','Remove the missed prefix (resistance lost → back to Chaos)')),
+ act('r4','main',[0,3],'chaos','Chaos_Orb',K('접미 두번째 옵션 (최대 퀄리티 옵션이 바뀜)','Second suffix (replaces the max-quality line)'),None,K('카오스','Chaos'),[{'if':{'all':[{'has':'res'},{'sideLt':{'side':'p','n':1}}]},'to':'r5','res':'ok'},{'if':{'has':'res'},'to':'r5x','res':'ok','hide':True},{'to':'r4','res':'fail'}],I2,show=['res']),
+ act('r5','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 첫번째·두번째 옵션','First and second prefixes'),[st('p','랜덤 옵션 1개 더','One more random line')],K('엑잘','Exalt'),[{'if':{'has':'chaos'},'to':'r6','res':'ok'},{'to':'r5x','res':'fail'}],I3,show=['chaos'],omens=['Omen_of_Greater_Exaltation','Omen_of_Sinistral_Exaltation']),
+ annul('r5x',[1,4],[{'if':{'all':[{'has':'res'},{'sideLt':{'side':'p','n':1}}]},'to':'r5','port':'right','res':'ok'},{'if':{'has':'res'},'to':'r5x','res':'ok','hide':True},{'to':'r4','res':'fail'}],omens=(),target=K('빗나간 접두 지우기','Remove the missed prefixes')),
  act('r6','main',[0,5],'desecrate','Preserved_Collarbone',K('접두 두번째 옵션(아마나무 훼손)','Second prefix (Amanamu desecration)'),[st('p','아마나무 훼손 옵션(미공개)','Amanamu desecration (unrevealed)')],K('훼손','Desecrate'),[{'to':'r7'}],I4,omens=['Omen_of_Sinistral_Necromancy','Omen_of_the_Liege']),
  act('r7','main',[0,6],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'eff'},'to':'r8','res':'ok'},{'to':'r7x','res':'fail'}],I5,want='eff',show=['eff'],omens=['Omen_of_Abyssal_Echoes']),
  annul('r7x',[1,6],[{'to':'r6','port':'right'}]),
  act('r8','main',[0,7],'exalt','Perfect_Exalted_Orb',K('마지막 옵션','Last line'),[st(None,'랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'ok'}],I6),
  done([0,8])]
 g22('sihan-chayula-ring-v2',c,'Breach Ring',81,
-  '시한 차율라 반지(GgD_vxKgNsw) — 잔류물 거리 분열 → 균열의 에센스 → 차율라의 기폭제 60% → 카오스 오브(모든 원소 저항) → 좌측 찬미 + 완벽한 엑잘(카오스 피해, 빗나가면 소멸의 오브) → 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈 → 공개(잔류물 효과) → 완벽한 엑잘. 하이엔드 = 저항·카오스 피해 1티어(영상 완성품), 밸런스 = 1~2티어(영상: 저항 12% 이상이면 충분).',
+  '시한 차율라 반지(GgD_vxKgNsw) — 잔류물 거리 분열 → 균열의 에센스 → 차율라의 기폭제 60% → 카오스 오브(모든 원소 저항) → 상위 + 좌측 찬미 + 완벽한 엑잘(접두 2개 중 카오스 피해, 빗나가면 소멸의 오브) → 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈 → 공개(잔류물 효과) → 완벽한 엑잘. 하이엔드 = 저항·카오스 피해 1티어(영상 완성품), 밸런스 = 1~2티어(영상: 저항 12% 이상이면 충분).',
   {'rT':{'kr':'모든 원소 저항','en':'All resistances','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'cT':{'kr':'카오스 피해','en':'Chaos damage','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},P,
   {'high':K('영상 완성품: 1티어','Video item: tier 1'),'bal':K('영상 기준: 1~2티어','Video bar: T1–2')},
   tags,nodes,[{'id':'L1','nodes':['r6','r7','r7x'],'kr':'아마나무 공개','en':'Amanamu reveal'}],

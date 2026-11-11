@@ -4,7 +4,7 @@
  "cls": "Rings",
  "base": "Breach Ring",
  "ilvl": 81,
- "note": "시한 차율라 반지(GgD_vxKgNsw) — 잔류물 거리 분열 → 균열의 에센스 → 차율라의 기폭제 60% → 카오스 오브(모든 원소 저항) → 좌측 찬미 + 완벽한 엑잘(카오스 피해, 빗나가면 소멸의 오브) → 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈 → 공개(잔류물 효과) → 완벽한 엑잘. 하이엔드 = 저항·카오스 피해 1티어(영상 완성품), 밸런스 = 1~2티어(영상: 저항 12% 이상이면 충분).",
+ "note": "시한 차율라 반지(GgD_vxKgNsw) — 잔류물 거리 분열 → 균열의 에센스 → 차율라의 기폭제 60% → 카오스 오브(모든 원소 저항) → 상위 + 좌측 찬미 + 완벽한 엑잘(접두 2개 중 카오스 피해, 빗나가면 소멸의 오브) → 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈 → 공개(잔류물 효과) → 완벽한 엑잘. 하이엔드 = 저항·카오스 피해 1티어(영상 완성품), 밸런스 = 1~2티어(영상: 저항 12% 이상이면 충분).",
  "params": {
   "rT": {
    "kr": "모든 원소 저항",
@@ -410,10 +410,28 @@
    "edges": [
     {
      "if": {
-      "has": "res"
+      "all": [
+       {
+        "has": "res"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 1
+        }
+       }
+      ]
      },
      "to": "r5",
      "res": "ok"
+    },
+    {
+     "if": {
+      "has": "res"
+     },
+     "to": "r5x",
+     "res": "ok",
+     "hide": true
     },
     {
      "to": "r4",
@@ -455,8 +473,8 @@
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 첫번째 옵션",
-    "en": "First prefix"
+    "kr": "접두 첫번째·두번째 옵션",
+    "en": "First and second prefixes"
    },
    "label": {
     "kr": "엑잘",
@@ -486,6 +504,12 @@
      ]
     },
     {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
      "s": "s",
      "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능",
      "en": "Remnants can be collected from (44—51)% further away",
@@ -505,10 +529,18 @@
     }
    ],
    "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개 더",
+     "en": "One more random line"
+    }
+   ],
    "show": [
     "chaos"
    ],
    "omens": [
+    "Omen_of_Greater_Exaltation",
     "Omen_of_Sinistral_Exaltation"
    ]
   },
@@ -532,17 +564,35 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접두 지우기 (저항이 지워지면 카오스부터)",
-    "en": "Remove the missed prefix (resistance lost → back to Chaos)"
+    "kr": "빗나간 접두 지우기",
+    "en": "Remove the missed prefixes"
    },
    "edges": [
     {
      "if": {
-      "has": "res"
+      "all": [
+       {
+        "has": "res"
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 1
+        }
+       }
+      ]
      },
      "to": "r5",
      "port": "right",
      "res": "ok"
+    },
+    {
+     "if": {
+      "has": "res"
+     },
+     "to": "r5x",
+     "res": "ok",
+     "hide": true
     },
     {
      "to": "r4",
@@ -581,6 +631,12 @@
      "tags": [
       "chaos"
      ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
     },
     {
      "s": "s",
@@ -659,6 +715,12 @@
      "tags": [
       "chaos"
      ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
     },
     {
      "s": "s",
@@ -759,6 +821,12 @@
      "tags": [
       "chaos"
      ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
     },
     {
      "s": "s",
