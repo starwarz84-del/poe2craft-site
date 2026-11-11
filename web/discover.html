@@ -1173,6 +1173,10 @@ function makeDraft(it, an, opt){
         note:note(`완벽한 엑잘티드 오브로 접두에 ${lk(R0)} (T${R0.tierNo} 이상). 공개도 성공했고 이것만 안 뜨면 갈림길.`, `Perfect Exalted Orb for ${le(R0)} on the prefix (tier ${R0.tierNo}+). If the reveal landed and only this missed, choose a fork.`)});
       forks(ex, MS); }
   }
+  /* 사용자 2026-11-12(균열 반지): 붙여 넣은 아이템엔 있지만 고르지 않은 옵션(잡옵) 자리가 비어 있으면 마지막에 완벽한 엑잘로 랜덤 옵션을 채움 */
+  for(const sd of ['s','p']){ const want = Math.min(cap[sd], an.cnt?.[sd] ?? 0); while(cnt[sd] < want){ const oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
+      push({phase:'fin', do:'exalt', cur:'Perfect_Exalted_Orb', ...(om.length?{omens:om}:{}), target:{junk:sd}, label:{kr:`${sideKr(sd)} 랜덤 옵션`, en:`Random ${sideEn(sd)}`},
+        note:note(`${om.length?nk(om[0])+' + ':''}완벽한 엑잘티드 오브로 남은 ${sideKr(sd)} 자리에 랜덤 옵션.`, `${om.length?ne(om[0])+' + ':''}Perfect Exalted Orb fills the free ${sideEn(sd)} with a random line.`)}); cnt[sd]++; } }
   if(!qDone && (it.qTag || (it.cat==='jewellery' && it.qual>20) || an.rows.some(r=>r.m.out))){ const tg = new Set(an.rows.filter(r=>r.m.out && r.g).flatMap(r=>r.g.tg)); const cat = craft.cats.find(c=>(it.cat==='jewel' ? /^Refined/.test(c.id) : !/^Refined/.test(c.id)) && (it.qTag ? c.tag===it.qTag : tg.has(c.tag)));
     const q0 = Math.min(it.qual||20, 20 + impMaxQ(it.b)); if(cat) push({phase:'q', do:'quality', cur:cat.id, target:{quality:q0}, note:note(`${cat.kr}로 퀄리티 ${q0}%.`, `${cat.en} to ${q0}% quality.`)}); }
   // a corrupted item with more rune sockets than its base: the extra socket came from the Vaal Orb, so the runes go in after it
@@ -1331,7 +1335,8 @@ function verifyDraft(it, an, d){
     if(it.corrupted && ci<0) add('err','붙여 넣은 아이템은 타락했는데 초안에 바알 오브(타락) 단계가 없음','The pasted item is corrupted but the draft has no Vaal Orb step.');
     else if(ci>=0 && !it.corrupted) add('err','붙여 넣은 아이템은 타락하지 않았는데 초안에 타락 단계가 있음','The draft corrupts an item that is not corrupted.');
     else if(ci>=0 && d.nodes.slice(ci+1).some(n=>!(n.target?.rune || n.target?.runeSwap))) add('err','타락 뒤에는 룬 장착 말고는 제작 불가','Nothing but socketing runes can follow the corruption.'); }
-  const jl = mods.filter(m=>m.junk && !m.unrev).length; if(jl) add('warn',`완성 상태에 잡옵 ${jl}개이 남음`,`${jl} junk line(s) remain at the end.`);
+  /* 붙여 넣은 아이템에도 고르지 않은 옵션이 있던 자리(랜덤 옵션)는 잡옵이 남아도 됨(2026-11-12) */
+  const jl = ['p','s'].reduce((t,sd)=>t+Math.max(0, mods.filter(m=>m.junk && !m.unrev && m.side===sd).length - Math.max(0, (an.cnt?.[sd]??0) - an.rows.filter(r=>r.m.side===sd).length)), 0); if(jl) add('warn',`완성 상태에 잡옵 ${jl}개가 남음`,`${jl} junk line(s) remain at the end.`);
   ['p','s'].forEach(sd=>{ if(count(sd)>cap[sd]) add('err',`${sd==='p'?'접두':'접미'} 옵션 ${count(sd)}개로 최대 옵션 ${cap[sd]}개을 넘음`,'Too many lines on one side.'); });
   if(it.sockets!=null && it.sockets < (d.sockets||0)) add('warn',`붙여 넣은 아이템은 룬 소켓 ${it.sockets}개인데 초안은 ${d.sockets}개가 필요`,`The pasted item has ${it.sockets} socket(s); the draft needs ${d.sockets}.`);
   const unk = an.rows.filter(r=>r.unknown && !r.m.fr); if(unk.length) add('warn',`가중치를 모르는 옵션 ${unk.length}개(${unk.map(r=>lk(r).slice(0,18)).join(', ')}) — 해당 단계 확률 계산 불가`,`${unk.length} line(s) with unknown weights; those steps have no odds.`);
