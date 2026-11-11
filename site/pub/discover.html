@@ -1553,7 +1553,8 @@ $('#mods').addEventListener('click', e=>{
     const inShell = window.parent && window.parent!==window;
     if(inShell){ try{ window.parent.postMessage({type:'poe2-draft', recipe:r, stay:true}, '*'); }catch(_){} }   // stay here; the list picks it up (사용자 확정 2026-11-11)
     S.sent=true; $('#fb').hidden=false; renderStatic();
-    $('#pvact').innerHTML = `<span class="ok">${L('크래프팅 목록에 등록됨','Added to the Crafting list.')}</span>${inShell?`<button type="button" class="btn" id="pvgo">${L('크래프팅에서 보기 →','Open in Crafting →')}</button>`:''}`; return; }
+    $('#pvact').innerHTML = `<span class="ok">${L('크래프팅 목록에 등록됨','Added to the Crafting list.')}</span>${inShell?`<button type="button" class="btn" id="pvgo">${L('크래프팅에서 보기 →','Open in Crafting →')}</button>`:''}<button type="button" class="btn" id="pvdone">${L('완료','Done')}</button>`; return; }
+  if(e.target.closest('#pvdone')){ /* 완료(사용자 2026-11-12): 전송 뒤 처음 상태로 */ S.draft=null; S.check=null; S.flow=null; S.sent=false; S.need=new Set(); S.soft=new Set(); S.okQR=false; S.tsel={}; S.buy=new Set(); S.last=null; $('#txt').value=''; $('#fb').hidden=true; const m=$('#mkmsg'); if(m) m.innerHTML=''; render(); window.scrollTo({top:0, behavior:'smooth'}); $('#txt').focus({preventScroll:true}); return; }
   if(e.target.closest('#pvgo') && S.draft){ try{ window.parent.postMessage({type:'poe2-goto', id:S.draft.id}, '*'); }catch(_){} return; }
   if(e.target.closest('#discard') && S.draft){ S.draft=null; S.check=null; S.flow=null; S.sent=false; renderStatic();
     $('#mkmsg').innerHTML = `<span class="ok">${L('초안 삭제됨 · 아쉬운 점을 아래에 남기면 다음 초안에 반영','Draft deleted. Tell us what was off below so the next one is better.')}</span>`; $('#fb').hidden=false; return; }
