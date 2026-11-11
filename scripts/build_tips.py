@@ -430,6 +430,10 @@ T+=[
   'title':K('흔한 첫 옵션은 붙이지 말고 사기','Buy a common first line instead of rolling it'),
   'body':K('황금 목걸이 아이템 레벨 80 이상에 정신력 1티어는 드롭으로 자주 나와 5~15 div에 거래됨. 카오스 오브로 붙이는 것보다 이 베이스를 여러 개 사서 미공개 훼손으로 네 번째 옵션을 채우고 분열을 치는 게 쌈. 접두를 지키려면 우측 결정화의 징조 + 심연의 에센스 → 보존된 빗장뼈로 훼손 자리를 만듦.','A Gold Amulet at item level 80+ with T1 spirit drops often and trades for 5–15 div. Buying several and filling a fourth line with an unrevealed desecration before fracturing beats rolling spirit with Chaos Orbs. To keep the prefixes safe, make the desecration slot with Omen of Dextral Crystallisation + Essence of the Abyss, then a Preserved Collarbone.'),
   'source':{'url':'https://gall.dcinside.com/mgallery/board/view/?id=poe2&no=439507','title':'죄송합니다. 황금 목걸이 크래프팅 보여드리겠습니다.','channel':'POE2 마이너 갤러리'},'recipes':['gold-amulet-6line']},
+{'id':'omens-for-last-line','tags':[K('징조','Omens'),K('갑옷','Body armour')],'patch':'0.5.5',
+  'title':K('비싼 징조는 마지막 옵션 하나에만','Save expensive omens for the last missing line'),
+  'body':K('분열이 접두에 있으면 접두를 먼저, 접미에 있으면 우측 찬미 + 상위 찬미 + 엑잘로 저항부터 채움. 옵션이 하나만 모자랄 때까지는 소멸의 오브·카오스 오브처럼 싼 것만 쓰고, 절사의 징조나 말소의 징조 + 완벽한 카오스 오브(한 번에 약 25~30 div)는 마지막 옵션에만 씀. 덜 끝난 아이템에 절사를 쓰면 엉뚱한 옵션이 지워지거나 접미 자리가 접두로 넘어감.','With the fracture on a prefix, finish the prefixes first; with it on a suffix, fill the resistances first with Dextral + Greater Exaltation and an Exalt. Until a single line is missing, use only cheap Annulment and Chaos Orbs; keep Whittling or Erasure with a Perfect Chaos Orb, about 25–30 div a click, for the last line. Whittling an unfinished item removes the wrong line or moves a suffix slot to the prefixes.'),
+  'source':{'url':'https://www.youtube.com/watch?v=swF5mwXmZ0k','title':'How to Craft the Best Body Armours and Sell Them for Big Profit in Path of Exile 2','channel':'Unstoppable BTW'},'recipes':['unstoppable-vile-robe','unstoppable-slipstrike-vest']},
 ]
 json.dump({'v':1,'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
 print(len(T),'tips')

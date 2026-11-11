@@ -1,0 +1,796 @@
+{
+ "id": "unstoppable-vile-robe-v2",
+ "recipe": "unstoppable-vile-robe-v2",
+ "cls": "Body_Armours_int",
+ "base": "Vile Robe",
+ "ilvl": 82,
+ "note": "Unstoppable BTW 에너지 보호막 갑옷(swF5mwXmZ0k, 0.5.5 리그) — 에너지 보호막 증가 1티어 분열(영상: 확장의 오브·소멸의 오브 반복 → 완벽한 제왕의 오브 → 훼손으로 4옵션 → 분열) → 카오스 오브로 두번째 접두(에너지 보호막 최대치·복합·정신력) → 좌측 강령술 + 고대 갈비뼈 → 세번째 접두 공개(빛의 징조로 다시, 영상: 접두를 먼저 끝냄) → 우측 찬미 + 상위 찬미 + 완벽한 엑잘로 접미 → 절사의 징조(말소) + 완벽한 카오스 오브로 저항 3개(저항 1티어는 레벨 82라 절사가 잡옵만 침). 영상의 유동체 수치 조정·디바인·바알 주입기는 뺌(정책 33).",
+ "params": {
+  "pT": {
+   "kr": "접두 에너지 보호막·정신력",
+   "en": "Energy shield / spirit prefixes",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "rT": {
+   "kr": "저항",
+   "en": "Resistances",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "pT": 1,
+    "rT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "pT": 2,
+    "rT": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "pT": 2,
+    "rT": 2
+   },
+   "desc": {
+    "kr": "접두·저항 1~2티어",
+    "en": "Prefixes and resistances at T1–2"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "pT": 1,
+    "rT": 1
+   },
+   "desc": {
+    "kr": "모든 옵션 1티어 (영상: 저항 133%)",
+    "en": "Every line tier 1 (video: 133% total resistance)"
+   }
+  }
+ ],
+ "tags": {
+  "pes": {
+   "gi": 7,
+   "tmax": 1
+  },
+  "esf": {
+   "gi": 6,
+   "tmax": "$pT"
+  },
+  "hyb": {
+   "gi": 9,
+   "tmax": "$pT"
+  },
+  "sp": {
+   "gi": 14,
+   "tmax": "$pT"
+  },
+  "gp": {
+   "anyOf": [
+    "esf",
+    "hyb",
+    "sp"
+   ]
+  },
+  "fr": {
+   "gi": 1,
+   "tmax": "$rT"
+  },
+  "cr": {
+   "gi": 2,
+   "tmax": "$rT"
+  },
+  "lr": {
+   "gi": 3,
+   "tmax": "$rT"
+  },
+  "goodS": {
+   "anyOf": [
+    "fr",
+    "cr",
+    "lr"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "pes"
+   },
+   {
+    "count": {
+     "tag": "gp",
+     "min": 2
+    }
+   },
+   {
+    "count": {
+     "tag": "goodS",
+     "min": 3
+    }
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "d1",
+    "d2",
+    "d2x"
+   ],
+   "kr": "접두 세번째 옵션(훼손)",
+   "en": "Third prefix (desecrated)"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "pes",
+     "fr": true
+    },
+    {
+     "tag": "esf",
+     "tmax": 1
+    },
+    {
+     "tag": "sp",
+     "tmax": 1
+    },
+    {
+     "tag": "fr",
+     "tmax": 1
+    },
+    {
+     "tag": "cr",
+     "tmax": 1
+    },
+    {
+     "tag": "lr",
+     "tmax": 1
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "pes",
+     "fr": true
+    },
+    {
+     "tag": "esf",
+     "tmax": 2
+    },
+    {
+     "tag": "sp",
+     "tmax": 2
+    },
+    {
+     "tag": "fr",
+     "tmax": 2
+    },
+    {
+     "tag": "cr",
+     "tmax": 2
+    },
+    {
+     "tag": "lr",
+     "tmax": 2
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 3,
+  "exceptional": true
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "pes",
+      "fr": true
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "에너지 보호막 증가 1티어 분열 Vile Robe (아이템 레벨 82, 잡옵 1개)",
+    "en": "Vile Robe with fractured T1 % energy shield (item level 82, one junk line)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (101—110)% 증가",
+     "en": "(101—110)% increased Energy Shield",
+     "m": "f",
+     "tags": [
+      "pes"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "c1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (101—110)% 증가",
+     "en": "(101—110)% increased Energy Shield",
+     "m": "f",
+     "tags": [
+      "pes"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "gp"
+     },
+     "to": "d1",
+     "res": "ok"
+    },
+    {
+     "to": "c1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (101—110)% 증가",
+     "en": "(101—110)% increased Energy Shield",
+     "m": "f",
+     "tags": [
+      "pes"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(91—96)",
+     "en": "+(91—96) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "esf",
+    "hyb",
+    "sp"
+   ]
+  },
+  {
+   "id": "d1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "d2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (101—110)% 증가",
+     "en": "(101—110)% increased Energy Shield",
+     "m": "f",
+     "tags": [
+      "pes"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(91—96)",
+     "en": "+(91—96) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Rib",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ]
+  },
+  {
+   "id": "d2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "gp",
+       "min": 2
+      }
+     },
+     "to": "e1",
+     "res": "ok"
+    },
+    {
+     "to": "d2x",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (101—110)% 증가",
+     "en": "(101—110)% increased Energy Shield",
+     "m": "f",
+     "tags": [
+      "pes"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(91—96)",
+     "en": "+(91—96) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61)",
+     "en": "+(57—61) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    }
+   ],
+   "want": "gp",
+   "show": [
+    "esf",
+    "hyb",
+    "sp"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "d2x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    3
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "d1",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 옵션 2개",
+    "en": "Two suffixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "e2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (101—110)% 증가",
+     "en": "(101—110)% increased Energy Shield",
+     "m": "f",
+     "tags": [
+      "pes"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(91—96)",
+     "en": "+(91—96) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61)",
+     "en": "+(57—61) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines"
+    }
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation",
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "skipIf": {
+    "full": "s"
+   },
+   "skipTo": "t1"
+  },
+  {
+   "id": "e2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "빈 접미 채우기",
+    "en": "Fill the empty suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "t1"
+    }
+   ],
+   "item": null,
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ],
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "skipIf": {
+    "full": "s"
+   },
+   "skipTo": "t1"
+  },
+  {
+   "id": "t1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접미 저항 3개",
+    "en": "Three suffix resistances"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "removed": "gp"
+     },
+     "to": "d1",
+     "res": "fail",
+     "lost": "gp",
+     "hide": true
+    },
+    {
+     "if": {
+      "count": {
+       "tag": "goodS",
+       "min": 3
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "not": {
+       "full": "s"
+      }
+     },
+     "to": "e2",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "to": "t1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (101—110)% 증가",
+     "en": "(101—110)% increased Energy Shield",
+     "m": "f",
+     "tags": [
+      "pes"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(91—96)",
+     "en": "+(91—96) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 +(57—61)",
+     "en": "+(57—61) to Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 +(41—45)%",
+     "en": "+(41—45)% to Fire Resistance",
+     "m": "n",
+     "tags": [
+      "fr"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "냉기 저항 +(41—45)%",
+     "en": "+(41—45)% to Cold Resistance",
+     "m": "n",
+     "tags": [
+      "cr"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "lr"
+     ]
+    }
+   ],
+   "cur": "Perfect_Chaos_Orb",
+   "show": [
+    "fr",
+    "cr",
+    "lr"
+   ],
+   "trim": {
+    "side": "s",
+    "keep": "goodS"
+   },
+   "skipIf": {
+    "count": {
+     "tag": "goodS",
+     "min": 3
+    }
+   },
+   "skipTo": "ok"
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

@@ -55,6 +55,7 @@
 | K27 | 첫 옵션이 드롭으로 흔한 베이스(황금 목걸이 정신력 1티어 등) | 카오스로 붙이지 말고 여러 개 사서 미공개 훼손으로 4번째 옵션 → 분열 | 카오스 오브 수백 개 | 디시 POE2 갤러리 439507, 꿀팁 buy-common-first-line | 제안 |
 | K28 | 커런시가 적음 | 완성품 대신 중간 단계(1티어 한 줄, 분열 베이스, 분열 + 한 줄)로 팔고 다음 단계 비용을 모음 | 실패 위험 | 디시 POE2 갤러리 439265, 꿀팁 sell-fracture-bases | 미적용(판매 전략) |
 | K29 | 접두·접미에 합금이 나뉜 미러급 집중구 | 1티어 하나를 카오스로 잡은 뒤 좌·우측 찬미 엑잘 + 결정화 합금 + 소멸을 반복(소멸이 잡아 둔 옵션을 지울 확률 약 1/5) | 말소 완벽한 카오스 반복(약 2,100~2,900 div 기댓값) | 디시 POE2 갤러리 439265 | 미적용(레시피 없음) |
+| K30 | 분열을 어느 면에 잡았나 | 분열이 접두면 접두부터(엑잘 + 막기 훼손), 접미면 우측 찬미 + 상위 찬미 + 엑잘로 저항부터. 비싼 징조는 옵션 하나만 모자랄 때 | 절사·말소 징조 | Unstoppable BTW 갑옷(swF5mwXmZ0k), 꿀팁 omens-for-last-line | 선택 |
 
 ## 출처
 
@@ -69,5 +70,5 @@
 - [League starter weapon for cheap 0.5.5 (영상 요약)](https://sozai.app/transcript/craft-league-starter-weapon-poe2/index.md)
 - [심연의 에센스 (poe2db)](https://poe2db.tw/kr/Essence_of_the_Abyss)
 - 반지깎는노인 영상 10개 기록(2026-11-11): `tools/notes/banzino-*.md`
-- 웹 글 기록(2026-11-11): `tools/notes/web-*.md` — Fubgun 0.5.5 빌드 글, BigDaddyGaming 0.5 마법봉 글, 디시 POE2 갤러리 제작 글
+- 웹 글 기록(2026-11-11): `tools/notes/web-*.md` (Unstoppable BTW 갑옷 영상 정리본 포함 — 레딧은 접속 차단으로 못 봄) — Fubgun 0.5.5 빌드 글, BigDaddyGaming 0.5 마법봉 글, 디시 POE2 갤러리 제작 글
 - 우리 영상 레시피에서 모은 제작 꿀팁 #1~#84 (`scripts/build_tips.py`)
