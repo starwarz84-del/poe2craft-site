@@ -110,7 +110,7 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 
 - 운영 주소 https://poe2craft.xyz (Cloudflare Workers `poe2craft`, GitHub main 푸시마다 자동 배포, `wrangler.jsonc`가 `web/`를 서빙). 배포 폴더: 빌드 뒤 `python3 scripts/build_web.py` → `web/`(커밋해요).
 - 원본: `site/shell.html`(껍데기) · `site/theme.css` · `site/about.html`. 아티팩트판 `site/app.html`도 같이 유지해요.
-- 메뉴: **메인**(main = `site/about.html`, 맨 앞·첫 화면, 옛 `#about` 링크도 메인으로) / 크래프팅(recipes) / 리버스 크래프팅(discover) / 에뮬레이터 / 속성부여(builder) / 데이터(bases).
+- 메뉴: **메인**(main = `site/about.html`, 맨 앞·첫 화면, 옛 `#about` 링크도 메인으로) / 크래프팅(recipes) / 리버스 크래프팅(discover) / 에뮬레이터 / 속성부여(builder) / 데이터(bases). 탭 바는 데이터까지만, 그 뒤는 빈칸(사용자 확정 2026-11-11 21:35). **나중에 탭 바 오른쪽 끝에 버전 정보 + 수정 로그**(게임 1.0 이후 변경분만 꾸준히 정리 — 아직 만들지 않음).
 - **메인 화면**(사용자 확정 2026-11-11 21:11): 목표 4개(유저와 함께·쌓일수록 정교·계산된 확률·검증된 제작 순서, 그림 = POE2 스팀 상점 공식 스크린샷 4장을 잘라 줄인 `site/img/main/g-*.webp`, 사용자 확정 2026-11-11 21:32: 인게임 이미지 사용 — 하단 HUD는 잘라냄) → 메뉴 안내·사용 방법 → 사용기·요청사항·오류 제보(`POST /api/feedback`, KV `fb:`, IP당 하루 10건, 운영자만 읽음: `GET /api/feedback?code=<접근 코드>`) → 푸터(무관 문구·글꼴 출처·메뉴).
 - 화면 문구는 명사형·짧게, '~요' 금지(전문가 이상 비용 안내만 '~습니다'). 영문은 `i18n/en.py` 끝 `EN.update`.
 - 글꼴·로고·배너·필터·에뮬레이터·속성부여·리버스 화면·거래소 검색 등 확정된 화면 결정 전체는 `docs/site-ui.md`.
