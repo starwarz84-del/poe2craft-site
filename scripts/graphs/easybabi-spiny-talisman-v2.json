@@ -1,0 +1,1244 @@
+{
+ "id": "easybabi-spiny-talisman-v2",
+ "recipe": "easybabi-spiny-talisman-v2",
+ "cls": "Talismans",
+ "base": "Spiny Talisman",
+ "ilvl": 82,
+ "note": "EasyBabi 가시투성이 부적(fabBIuR6yhw, 0.5 아스트리드의 창의성) — 치명타 확률 1티어 매직 구입 → 아스트리드의 창의성 → 상위 가속의 에센스(공격 속도) → 좌측 결정화 + 완벽한 전투의 에센스(공격 스킬 +3) → 고대 턱뼈로 정확도 막기 → 상위 찬미 + 완벽한 엑잘(접두 2개, 하이엔드는 절사 카오스) → 빛의 징조 + 소멸의 오브 → 고대 턱뼈 → 공개(원소 피해 접두). 하이엔드 = 영상(원소 피해 1~2티어), 밸런스 = 1~3티어, 엑잘·공개 결과 그대로.",
+ "params": {
+  "pT": {
+   "kr": "원소 피해 접두",
+   "en": "Elemental prefixes",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "영상 (다시 도전)",
+     "en": "Video (retry)"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "pT": 2,
+    "v": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "pT": 3,
+    "v": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "pT": 3,
+    "v": 2
+   },
+   "desc": {
+    "kr": "엑잘·공개 결과 그대로",
+    "en": "Keep the exalts and the reveal"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "pT": 2,
+    "v": 1
+   },
+   "desc": {
+    "kr": "영상: 정확도 막기·절사 카오스·공개를 원하는 옵션까지",
+    "en": "Video: accuracy blocker, whittling chaos and reveals until they land"
+   }
+  }
+ ],
+ "tags": {
+  "crit": {
+   "gi": 18,
+   "tmax": 1
+  },
+  "as": {
+   "gi": 47
+  },
+  "battle": {
+   "gi": 56
+  },
+  "acc": {
+   "gi": 17
+  },
+  "eatk": {
+   "gi": 23,
+   "tmax": "$pT"
+  },
+  "cold": {
+   "gi": 5,
+   "tmax": "$pT"
+  },
+  "light": {
+   "gi": 7,
+   "tmax": "$pT"
+  },
+  "fire": {
+   "gi": 4,
+   "tmax": "$pT"
+  },
+  "pgood": {
+   "anyOf": [
+    "eatk",
+    "cold",
+    "light",
+    "fire"
+   ]
+  },
+  "keep": {
+   "anyOf": [
+    "eatk",
+    "cold",
+    "light",
+    "fire",
+    "crit",
+    "as",
+    "battle"
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "crit"
+   },
+   {
+    "has": "as"
+   },
+   {
+    "has": "battle"
+   },
+   {
+    "full": "p"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "h1",
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "t7",
+    "t8",
+    "t9",
+    "t9x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "eatk",
+     "tmax": 2
+    },
+    {
+     "tag": "cold",
+     "tmax": 2
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "원소 피해 접두 (훼손)",
+      "en": "Elemental prefix (desecrated)"
+     }
+    },
+    {
+     "tag": "crit"
+    },
+    {
+     "tag": "as"
+    },
+    {
+     "tag": "battle"
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "eatk",
+     "tmax": 3
+    },
+    {
+     "tag": "cold",
+     "tmax": 3
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "crit"
+    },
+    {
+     "tag": "as"
+    },
+    {
+     "tag": "battle"
+    }
+   ]
+  }
+ ],
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
+ "nodes": [
+  {
+   "id": "h1",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "magic",
+    "mods": [
+     {
+      "tag": "crit"
+     },
+     {
+      "junk": "p"
+     }
+    ]
+   },
+   "label": {
+    "kr": "치명타 확률 1티어 매직 가시투성이 부적 구입 (아이템 레벨 82)",
+    "en": "Buy a magic Spiny Talisman with T1 crit chance (item level 82)"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    0.6
+   ],
+   "next": "t1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "t1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "t2"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
+   }
+  },
+  {
+   "id": "t2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "희귀 전환 + 접미 두번째 옵션",
+    "en": "To rare + second suffix"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "t3"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    }
+   ],
+   "cur": "Greater_Essence_of_Haste",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (제작 옵션)",
+     "en": "(23—25)% increased Attack Speed (crafted)"
+    }
+   ],
+   "ess": "as"
+  },
+  {
+   "id": "t3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "t4"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (완벽한 전투의 에센스)",
+     "en": "+3 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "battle"
+     ]
+    }
+   ],
+   "cur": "Perfect_Essence_of_Battle",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 to Level of all Attack Skills (crafted)"
+    }
+   ],
+   "ess": "battle",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ]
+  },
+  {
+   "id": "t4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 첫번째 옵션(막기 훼손)",
+    "en": "First prefix (blocker desecration)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "t5"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (완벽한 전투의 에센스)",
+     "en": "+3 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ]
+  },
+  {
+   "id": "t5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "acc"
+     },
+     "to": "t6",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "t5x",
+     "res": "fail"
+    },
+    {
+     "to": "t6",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (완벽한 전투의 에센스)",
+     "en": "+3 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(451—550)",
+     "en": "+(451—550) to Accuracy Rating",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    }
+   ],
+   "want": "acc",
+   "show": [
+    "acc"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "t5x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    5
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "t4",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "t6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째·세번째 옵션",
+    "en": "Second and third prefixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pgood",
+       "min": 2
+      }
+     },
+     "to": "t7",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "v": 1
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keep",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "t6b",
+     "res": "fail"
+    },
+    {
+     "to": "t7",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (완벽한 전투의 에센스)",
+     "en": "+3 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(451—550)",
+     "en": "+(451—550) to Accuracy Rating",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 스킬의 원소 피해 (100—119)% 증가",
+     "en": "(100—119)% increased Elemental Damage with Attacks",
+     "m": "n",
+     "tags": [
+      "eatk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (84—107)~(126—161) 추가",
+     "en": "Adds (84—107) to (126—161) Cold Damage",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines"
+    }
+   ],
+   "show": [
+    "eatk",
+    "cold",
+    "light",
+    "fire"
+   ],
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ]
+  },
+  {
+   "id": "t6b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "가장 낮은 접두를 원소 피해로",
+    "en": "The lowest prefix into elemental damage"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "pgood",
+       "min": 2
+      }
+     },
+     "to": "t7",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "t6",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keep",
+       "keepDes": true
+      }
+     },
+     "to": "t6b",
+     "res": "fail"
+    },
+    {
+     "to": "t7",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (완벽한 전투의 에센스)",
+     "en": "+3 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정확도 +(451—550)",
+     "en": "+(451—550) to Accuracy Rating",
+     "m": "d",
+     "tags": [
+      "acc"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 스킬의 원소 피해 (100—119)% 증가",
+     "en": "(100—119)% increased Elemental Damage with Attacks",
+     "m": "n",
+     "tags": [
+      "eatk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (84—107)~(126—161) 추가",
+     "en": "Adds (84—107) to (126—161) Cold Damage",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "eatk",
+    "cold",
+    "light",
+    "fire"
+   ],
+   "omens": [
+    "Omen_of_Whittling"
+   ]
+  },
+  {
+   "id": "t7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "t8"
+    }
+   ]
+  },
+  {
+   "id": "t8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "접두 첫번째 옵션(훼손)",
+    "en": "First prefix (desecrated)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "t9"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (완벽한 전투의 에센스)",
+     "en": "+3 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 스킬의 원소 피해 (100—119)% 증가",
+     "en": "(100—119)% increased Elemental Damage with Attacks",
+     "m": "n",
+     "tags": [
+      "eatk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (84—107)~(126—161) 추가",
+     "en": "Adds (84—107) to (126—161) Cold Damage",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Ancient_Jawbone",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ]
+  },
+  {
+   "id": "t9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "reveal",
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "pgood"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "t9x",
+     "res": "fail"
+    },
+    {
+     "to": "ok",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (완벽한 전투의 에센스)",
+     "en": "+3 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 스킬의 원소 피해 (100—119)% 증가",
+     "en": "(100—119)% increased Elemental Damage with Attacks",
+     "m": "n",
+     "tags": [
+      "eatk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "냉기 피해 (84—107)~(126—161) 추가",
+     "en": "Adds (84—107) to (126—161) Cold Damage",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해 (1—6)~(93—122) 추가",
+     "en": "Adds (1—6) to (93—122) Lightning Damage",
+     "m": "n",
+     "tags": [
+      "light"
+     ]
+    }
+   ],
+   "want": "pgood",
+   "show": [
+    "eatk",
+    "cold",
+    "light",
+    "fire"
+   ],
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ]
+  },
+  {
+   "id": "t9x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    9
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "t8",
+     "port": "right"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ]
+}

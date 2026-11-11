@@ -108,3 +108,6 @@ exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"patch_aldur_r
 
 # 무한의 에센스 문구를 능력치별로 (patch_essence_text.py, 2026-11-11)
 exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"patch_essence_text.py")).read())
+
+# SL 게임연구소 실험 가중치(주얼 6종·콜르의 사냥 장갑) (patch_sl_weights.py, 2026-11-11)
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"patch_sl_weights.py")).read())

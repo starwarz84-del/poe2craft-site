@@ -803,7 +803,7 @@ function apply(c){
 function revealOptions(m){
   // normal pool + desecration-only mods; a lord omen restricts to that lord's desecrated mods
   const opts = pool({gens:[m.unrev], minLvl:m.minLvl||0, sections: m.lord?['d']:['n','d'], lord:m.lord, rarity:'rare'});
-  function dWeightE(){ const ns=S.data.groups.filter(g=>g.s==='n'), ws=new Set(ns.flatMap(g=>g.t.map(t=>t[1]))); if(ws.size!==1) return 1000; const il=S.item?.ilvl||82; const tot=ns.map(g=>g.t.filter(t=>t[0]<=il).reduce((a,t)=>a+t[1],0)).filter(x=>x>0); return tot.reduce((a,x)=>a+x,0)/Math.max(1,tot.length); }   // jewels: every modifier weighs the same (recipes.html dWeight)
+  function dWeightE(){ const ns=S.data.groups.filter(g=>g.s==='n'), ws=new Set(ns.flatMap(g=>g.t.map(t=>t[1]))); if(ws.size!==1 && !ns.some(g=>g.wsrc==='sl')) return 1000; const il=S.item?.ilvl||82; const tot=ns.map(g=>g.t.filter(t=>t[0]<=il).reduce((a,t)=>a+t[1],0)).filter(x=>x>0); return tot.reduce((a,x)=>a+x,0)/Math.max(1,tot.length); }   // jewels: every modifier weighs the same (recipes.html dWeight)
   const byG = new Map(); opts.forEach(o=>{ const r=byG.get(o.gi)||{gi:o.gi,w:0,list:[]}; r.w += S.data.groups[o.gi].s==='d'?dWeightE():o.w; r.list.push(o); byG.set(o.gi,r); });
   let groups=[...byG.values()], out=[];
   for(let k=0;k<3 && groups.length;k++){ const g=pickW(groups); groups=groups.filter(x=>x!==g); const t=pickW(g.list.map(o=>({...o,w:S.data.groups[o.gi].s==='d'?1:o.w}))); out.push(t); }

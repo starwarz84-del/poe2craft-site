@@ -17,7 +17,7 @@ function make(graph, D, craft, params){
   const G = D.groups;
   // desecrated-only groups weigh 1000 on the game's scale; in a flat-weight class (jewels: every modifier weighs the same) they weigh what an average normal group does (recipes.html dWeight)
   const xTW = (()=>{ const ws=G.filter(g=>g.s==='n').flatMap(g=>g.t.map(t=>t[1])).filter(w=>w>0); return ws.reduce((a,w)=>a+w,0)/Math.max(1,ws.length); })();   // graph.xroll: a socketed rune's lines roll on exalts/chaos too, each tier at the average normal tier weight (estimate)
-  const dW = (()=>{ const ns=G.filter(g=>g.s==='n'), ws=new Set(ns.flatMap(g=>g.t.map(t=>t[1]))); if(ws.size!==1) return 1000; const tot=ns.map(g=>g.t.filter(t=>t[0]<=graph.ilvl).reduce((a,t)=>a+t[1],0)).filter(x=>x>0); return tot.reduce((a,x)=>a+x,0)/Math.max(1,tot.length); })();
+  const dW = (()=>{ const ns=G.filter(g=>g.s==='n'), ws=new Set(ns.flatMap(g=>g.t.map(t=>t[1]))); if(ws.size!==1 && !ns.some(g=>g.wsrc==='sl')) return 1000; const tot=ns.map(g=>g.t.filter(t=>t[0]<=graph.ilvl).reduce((a,t)=>a+t[1],0)).filter(x=>x>0); return tot.reduce((a,x)=>a+x,0)/Math.max(1,tot.length); })();
   const P = v => typeof v==='string' && v[0]==='$' ? params[v.slice(1)] : v;
   // tags: named modifier specs, resolved to group indexes once
   const tags={};
@@ -41,8 +41,8 @@ function make(graph, D, craft, params){
     const gcache={};
     const groupsFor = (minLvl, sec, xs=[]) => { const k=minLvl+'|'+sec+'|'+xs.join(','); if(gcache[k]) return gcache[k];
       const out=[]; G.forEach((g,gi)=>{ if(!sec.includes(g.s)) return; if(g.s==='x' && !xs.includes(g.sub?.[1])) return; const top=g.t.findIndex(t=>t[0]<=ilvl && (t[1]>0 || g.s==='d'));
-        const ts=[]; g.t.forEach((t,ti)=>{ if(t[0]<=ilvl && (t[0]>=minLvl || ti===top) && (t[1]>0 || g.s==='d')) ts.push({gi, ti, w:g.s==='d'?1:g.s==='x'?xTW:t[1]}); });
-        if(ts.length) out.push({gi, side:g.g, f:g.f, ts, w:ts.reduce((a,x)=>a+x.w,0), d:g.s==='d'||g.s==='x'}); });
+        const ts=[]; g.t.forEach((t,ti)=>{ if(t[0]<=ilvl && (t[0]>=minLvl || ti===top) && (t[1]>0 || g.s==='d')) ts.push({gi, ti, w:g.s==='d'?1:g.s==='x'&&g.wsrc!=='sl'?xTW:t[1]}); });
+        if(ts.length) out.push({gi, side:g.g, f:g.f, ts, w:ts.reduce((a,x)=>a+x.w,0), d:g.s==='d'||(g.s==='x'&&g.wsrc!=='sl')}); });
       return gcache[k]=out; };
     // x (augment / Otherworldly) lines join only for the socketed rune (graph.xsub) or an Altered bone, weighted like desecrated-only lines
     // candidate groups now: free side, family not on the item
@@ -77,7 +77,8 @@ function make(graph, D, craft, params){
     // Whittling / Erasure choice (policy 23 ④): the junk line is the lowest → Whittling; lowest of its side only → Whittling + that side's Erasure;
     // a wanted line of that side is lower → Erasure alone (1/2)
     function trimOmens(n){ const sd=n.trim.side, keep=n.trim.keep;
-      const junk=it.mods.filter(m=>m.side===sd && !m.fr && !m.unrev && !(n.trim.keepDes && m.des) && !match(m,keep));   // keepDes: a revealed desecrated line (the blocker) is never the junk if(!junk.length) return [sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure'];
+      const junk=it.mods.filter(m=>m.side===sd && !m.fr && !m.unrev && !(n.trim.keepDes && m.des) && !match(m,keep));   // keepDes: a revealed desecrated line (the blocker) is never the junk
+      if(!junk.length) return [sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure'];   // 2026-11-11: this line sat inside the comment above
       // several junk lines (SL 화염파 지팡이: two junk suffixes): the lowest junk line decides — Whittling hits a junk line whenever every other line is higher
       const lj=Math.min(...junk.map(lvl)), others=it.mods.filter(m=>!m.fr && !m.unrev && !junk.includes(m)), same=others.filter(m=>m.side===sd);
       const er = sd==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure';
@@ -111,7 +112,8 @@ function make(graph, D, craft, params){
         const rf = n.liquid && n.alt && it.rar==='rare' && !n.anyRemove;
         if(rf){ takeRandom(null); const room=[n.ess,n.alt].filter(x=>count(G[tags[x].gi].g)<maxA(G[tags[x].gi].g)); tn = room.length ? room[Math.floor(rnd()*room.length)] : n.ess; }
         const t=tags[tn], sd=G[t.gi].g, cr=sideOm(oms,/Sinistral_Crystallisation/,/Dextral_Crystallisation/);   // magic → rare + the essence line (top tier); on a rare one line goes first (Crystallisation picks its side)
-        if(it.rar==='rare' && !rf) takeRandom(cr ? (m=>m.side===cr) : n.anyRemove ? null : count(sd)>=maxA(sd) ? (m=>m.side===sd) : null);   // anyRemove: a liquid that takes any line (SL 5-mod jewel: 1/3) it.rar='rare';   // its own side full: a line of that side makes way (발굴 규칙 6)
+        if(it.rar==='rare' && !rf) takeRandom(cr ? (m=>m.side===cr) : n.anyRemove ? null : count(sd)>=maxA(sd) ? (m=>m.side===sd) : null);   // anyRemove: a liquid that takes any line (SL 5-mod jewel: 1/3); its own side full: a line of that side makes way (발굴 규칙 6)
+        it.rar='rare';   // magic → rare (2026-11-11 고침: 이 줄이 주석 안에 들어가 매직 베이스 에센스 뒤에도 매직으로 남아 있었음)
         const m={gi:t.gi, ti:0, side:sd, ess:!n.liquid, mark:!!n.mark}; if(t.slot) m.slot=t.slot; it.mods.push(m); last.added.push(m); }
       else if(a==='annul'){ const sd=sideOm(oms,/Sinistral_Annulment/,/Dextral_Annulment/);
         takeRandom(oms.includes('Omen_of_Light') ? (m=>m.unrev||m.des||G[m.gi]?.s==='d') : sd ? (m=>m.side===sd) : null); }

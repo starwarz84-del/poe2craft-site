@@ -747,7 +747,7 @@ function analyse(r){
   // desecrated reveal: 3 options drawn without replacement by group (desecrated-only groups weigh 1000), like the emulator's Well of Souls
   let revealEst=false;
   // desecrated-only groups weigh 1000; in a flat-weight class (jewels: every modifier weighs the same) the average normal group's weight (site/sim.js dW)
-  function dWeight(ilvl){ const ns=D.groups.filter(g=>g.s==='n'), ws=new Set(ns.flatMap(g=>g.t.map(t=>t[1]))); if(ws.size!==1) return 1000;
+  function dWeight(ilvl){ const ns=D.groups.filter(g=>g.s==='n'), ws=new Set(ns.flatMap(g=>g.t.map(t=>t[1]))); if(ws.size!==1 && !ns.some(g=>g.wsrc==='sl')) return 1000;
     const tot=ns.map(g=>g.t.filter(t=>t[0]<=ilvl).reduce((a,t)=>a+t[1],0)).filter(x=>x>0); return tot.reduce((a,x)=>a+x,0)/Math.max(1,tot.length); }
   function revealChance(spec, side, minLvl, lord){
     spec=liquidSpec(spec);
