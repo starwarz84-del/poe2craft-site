@@ -88,3 +88,87 @@
 | sane-resist-belt-v2 | Zop328DR50Q | bal 1, ess 1 | 0 | 대기 |  |  |
 | ragna-ashot-bow-v2 | m0eHw6nq24Q | bal ?, ess ? | 0 | 대기 |  |  |
 | sihan-chayula-amulet-v2 | 2vyq26ZFgOk | bal ?, ess ? | 0 | 대기 |  |  |
+
+## 등급 기준 C17 점검 (사용자 확정 2026-11-12 00:09)
+
+기준(policies.md 10장): 비싼 반복으로 찾는 옵션은 하이엔드 1티어 · 밸런스 1~2티어 · 에센셜 1~4티어, 접두어·접미어 마지막 옵션이 잡옵이면 하이엔드만 바꾸는 도박(밸런스·에센셜은 랜덤 옵션), 훼손 공개 빗나감에 빛의 징조는 하이엔드·밸런스만(빛 없이 다시 할 수 있으면 에센셜도 반복), 다 적용해도 같으면 높은 등급만 남김. 싸게 한 번에 붙이는 옵션(분열 뒤 카오스, 매직 단계)은 모든 등급 1티어, 티어 수가 적은 옵션은 있는 만큼만.
+시작 전 그 줄을 '진행 중 + 세션'으로 바꿔 푸시. 영상 대조 표의 같은 아이템을 맡은 세션이 같이 해도 됨.
+
+| 플로우차트 | 등급 | 기준과 다른 티어 범위(자동 검사) | 상태 | 세션 | 메모 |
+|---|---|---|---|---|---|
+| absent-amulet-spell6-v2 | bal·high | - | 대기 |  |  |
+| absent-amulet-video-v2 | bal·high | - | 대기 |  |  |
+| banzino-mirror-staff-v2 | bal·high | - | 진행 중 | A(Opus) |  |
+| barricade-quarterstaff-v2 | bal·high | - | 진행 중 | A(Opus) |  |
+| belton-plus8-wand-v2 | ess·bal | ess 주문 피해 1~5티어; ess 마나 재생 1~3티어; bal 주문 피해 1~3티어; bal 마나 재생 1티어 | 대기 |  |  |
+| bigdaddy-lightning-wand-v2 | ess·bal | - | 대기 |  |  |
+| breach-ring-phys-v2 | ess·bal | ess 화염 저항 1~3티어; bal 공격 시 원소 피해 1~3티어 | 대기 |  |  |
+| breach-ring-video-v2 | bal·high | - | 대기 |  |  |
+| chiba-timelost-emerald-v2 | bal·high | - | 대기 |  |  |
+| diztoh-5mod-emerald-v2 | ess·bal | - | 대기 |  |  |
+| diztoh-5mod-sapphire-v2 | ess·bal | - | 대기 |  |  |
+| diztoh-as-spear-v2 | ess·bal | - | 대기 |  |  |
+| diztoh-budget-crossbow-v2 | ess·bal | ess 물리 피해 % 1~3티어; ess 원소 피해 추가 1~5티어; bal 원소 피해 추가 1~3티어 | 대기 |  |  |
+| diztoh-budget-mace-v2 | ess·bal | - | 대기 |  |  |
+| diztoh-crit-helmet-v2 | budget·settle·best | - | 대기 |  |  |
+| diztoh-endgame-quarterstaff-v2 | bal·high | bal 물리 %·복합 1~3티어 (결과 그대로); bal 치명타 확률·피해 1~3티어; high 물리 %·복합 1~2티어 (다시 도전); high 치명타 확률·피해 1~2티어 | 대기 |  |  |
+| diztoh-es-helmet-v2 | ess·bal | ess 접두 희귀도 1~2티어; bal 에너지 보호막 % 1~3티어; bal 접두 희귀도 1티어 | 대기 |  |  |
+| diztoh-iceshot-bow-v2 | bal·high | bal 원소 피해 추가 1~3티어; bal 물리 피해 추가 1~3티어; bal 치명타 확률 1~3티어; high 원소 피해 추가 1~2티어; high 치명타 확률 1~3티어 | 대기 |  |  |
+| diztoh-onehand-mace-v2 | ess·bal | ess 치명타 확률 1~3티어 | 대기 |  |  |
+| diztoh-rarity-ring-v2 | ess·bal·high | ess 접두 희귀도 1~3티어; ess 냉기 저항 1~2티어; bal 모든 원소 저항 목표 1~3티어; bal 접두 희귀도 1~3티어 | 대기 |  |  |
+| diztoh-socket-gloves-v2 | ess·bal | - | 대기 |  |  |
+| diztoh-talisman-v2 | ess·bal | ess 화염 피해 추가 1~5티어; bal 화염 피해 추가 1~3티어 | 대기 |  |  |
+| diztoh-vile-robe-v2 | ess·bal | ess 정신력 (분열) 1~6티어; ess 에너지 보호막 최대치 1~2티어; ess 에너지 보호막 % 1~3티어; bal 정신력 (분열) 1~4티어; bal 에너지 보호막 최대치 1티어 | 대기 |  |  |
+| easybabi-spiny-talisman-v2 | bal·high | bal 원소 피해 접두 1~3티어; high 원소 피해 접두 1~2티어 | 대기 |  |  |
+| farmer-budget-armour-v2 | ess·bal·high | ess 에너지 보호막 최대치 1~3티어 | 대기 |  |  |
+| farmer-starter-staff-v2 | ess·bal·high | ess 추가 화염 피해 1~2티어 | 대기 |  |  |
+| fubgun-crit-bow-v2 | ess·bal | - | 대기 |  |  |
+| fubgun-es-helmet-v2 | ess·bal | - | 대기 |  |  |
+| fubgun-phys-bow-v2 | ess·bal | - | 대기 |  |  |
+| fubgun-proj-amulet-v2 | ess·bal | - | 대기 |  |  |
+| fubgun-quiver-v2 | ess·bal | ess 물리 피해 추가 1~2티어; bal 물리 피해 추가 1티어 | 대기 |  |  |
+| grasping-mail-spell1-v2 | bal·high | - | 대기 |  |  |
+| helmet-armour-sl-v2 | ess·bal·high | ess 접두 목표 1~2티어; ess 저항 목표 1~3티어; ess 희귀도 목표 1~2티어; bal 접두 목표 1티어; bal 저항 목표 1~3티어 | 대기 |  |  |
+| icesly-budget-wand-v2 | ess·bal | ess 번개 주문 레벨 1~2티어; ess 번개·주문 피해 1~5티어; bal 번개 주문 레벨 1티어; bal 번개·주문 피해 1~3티어 | 대기 |  |  |
+| lilbotq-armour-shield-v2 | ess·bal | ess 방어도 % 1~2티어; ess 방어도 % + 기절 한계치 1~3티어; bal 방어도 % 1티어; bal 방어도 % + 기절 한계치 1티어 | 대기 |  |  |
+| lilbotq-boots-v2 | ess·bal | - | 대기 |  |  |
+| lilbotq-budget-boots-v2 | ess·bal | ess 이동 속도 1~2티어; ess 냉기 저항 1~3티어; bal 이동 속도 1티어; bal 냉기 저항 1티어 | 대기 |  |  |
+| lilbotq-emerald-v2 | bal | - | 대기 |  |  |
+| mastert-timelost-emerald-v2 | bal·high | - | 대기 |  |  |
+| mazbro-bis-chest-v2 | bal·high | - | 대기 |  |  |
+| mazbro-caster-amulet-v2 | bal·high | - | 대기 |  |  |
+| mazbro-caster-ring-v2 | ess·bal | ess 옵션 티어 1~3티어 | 대기 |  |  |
+| mazbro-proj-gloves-v2 | bal·high | - | 대기 |  |  |
+| mazbro-sceptre-v2 | high | - | 대기 |  |  |
+| mazbro-spell5-amulet-v2 | bal·high | - | 대기 |  |  |
+| mirror-bow-video-v2 | high | - | 진행 중 | A(Opus) |  |
+| noble-timelost-sapphire-v2 | bal·high | - | 대기 |  |  |
+| noble-visceral-quiver-v2 | bal·high | bal 치명타 피해 1~3티어; high 치명타 피해 1~2티어 | 대기 |  |  |
+| ragna-ashot-bow-v2 | ess·bal | ess 물리 피해 % 1~3티어; bal 물리 피해 % 1티어 | 대기 |  |  |
+| ragna-spell4-amulet-v2 | ess·bal | ess 정신력 (분열) 1~3티어; bal 정신력 (분열) 1티어 | 대기 |  |  |
+| sane-resist-belt-v2 | ess·bal | ess 생명력 1~3티어; ess 번개 저항 1~3티어; bal 생명력 1티어 | 대기 |  |  |
+| saveq-absent-amulet-v2 | ess·bal·high | - | 대기 |  |  |
+| saveq-alloy-focus-v2 | ess·bal | ess 공개 목표 1~3티어; bal 공개 목표 1티어 | 대기 |  |  |
+| saveq-focus-v2 | bal·high | - | 대기 |  |  |
+| seek-cyclone-boots-v2 | ess·bal | - | 대기 |  |  |
+| sihan-attack-flat-ring-v2 | ess·bal | ess 원소 공격 추가 피해 1~3티어 | 대기 |  |  |
+| sihan-chayula-amulet-v2 | ess·bal | ess 정신력 1~2티어; bal 정신력 1티어 | 대기 |  |  |
+| sihan-chayula-gloves-v2 | ess·bal | - | 대기 |  |  |
+| sihan-chayula-helmet-v2 | ess·bal | ess 튕겨내기 평점 1~3티어; ess 방어 접두 1~3티어; bal 방어 접두 1~3티어 | 대기 |  |  |
+| sihan-chayula-ring-v2 | bal·high | - | 대기 |  |  |
+| sihan-chayula-sceptre-v2 | ess·bal | ess 접근 효과 범위 1~2티어; ess 정신력 % + 마나 1~6티어; bal 접근 효과 범위 1티어; bal 정신력 % + 마나 1~4티어 | 대기 |  |  |
+| sihan-chayula-wand-v2 | ess·bal | ess 주문 치명타 명중 확률 1~3티어 | 대기 |  |  |
+| sihan-highend-boots-v2 | ess·bal·high | ess 저항 목표 1~2티어; ess 훼손 접두 목표 1~3티어 | 대기 |  |  |
+| sihan-highend-helmet-v2 | bal·high | high 저항 1~3티어 (상위 카오스) | 대기 |  |  |
+| sihan-proj-gloves-v2 | bal·high | - | 대기 |  |  |
+| sl-5mod-jewel-v2 | ess·bal | - | 대기 |  |  |
+| sl-blacksteel-gauntlets-v2 | bal·high | - | 대기 |  |  |
+| sl-flamewave-ring-v2 | bal·high | - | 대기 |  |  |
+| sl-flamewave-staff-v2 | bal·high | - | 대기 |  |  |
+| sl-proj7-gloves-v2 | bal·high | - | 대기 |  |  |
+| tankjung-kitava-shield-v2 | ess·bal | ess 최대 저항 1~3티어; bal 최대 저항 1티어; bal 방어도 접두 1티어 옵션 3개 (절사) | 대기 |  |  |
+| unstoppable-slipstrike-vest-v2 | bal·high | bal 굴절 1~4티어; high 굴절 1~3티어 | 진행 중 | A(Opus) |  |
+| unstoppable-vile-robe-v2 | bal·high | bal 접두 에너지 보호막·정신력 1티어; bal 저항 1티어 | 진행 중 | A(Opus) |  |
+| vodnarg-timelost-emerald-v2 | ess·bal | - | 대기 |  |  |
+| xeno-phys-crossbow-v2 | high | - | 진행 중 | A(Opus) |  |
+| zenm-timelost-sapphire-v2 | ess·bal | - | 대기 |  |  |
