@@ -95,3 +95,4 @@ EN.update({'접두 옵션':'Prefixes', '접미 옵션':'Suffixes', '모두':'All
  '이 아이템에는 타락 옵션 없음':'No corruption modifiers for this item', '(필수 옵션)':'(required)', '(유효 옵션)':'(nice to have)'})
 EN.update({'부여 스킬':'Granted skill', '마법 불가 · 제왕의 오브 사용':'Cannot be magic · use a Regal Orb'})
 EN.update({'펼치기 ▾':'Unfold ▾', '접기 ▴':'Fold ▴'})
+EN.update({'고정 옵션의 부여 스킬이 핵심 · 목록 중 하나만 붙음':'The granted skill on the implicit is what matters. Only one from the list rolls.'})

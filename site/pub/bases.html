@@ -43,9 +43,9 @@ h2 small{font-family:var(--f-body);font-size:12px;color:var(--faint);font-weight
 .ps.up{border-color:var(--ok)}
 .imp{grid-column:1/-1;list-style:none;margin:6px 0 0;padding:8px 0 0;border-top:1px solid var(--line);font-size:13px;color:var(--magic)}
 .imp li{white-space:pre-line}
-.sk{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-.sk span{font-size:12px;border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:1px 8px}
-.sk span i{font-style:normal;color:var(--rare);margin-right:4px}
+.sk{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-top:8px}
+.sk .skl{font-size:12px;color:var(--muted);white-space:nowrap}
+.sk select{flex:1;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:4px 6px;font-size:13px}
 .rec{grid-column:1/-1;margin-top:8px;display:flex;flex-wrap:wrap;gap:4px 8px;font-size:12.5px}
 .rec a{color:var(--rare);text-decoration:none;border-bottom:1px dotted var(--rare)}
 .rec a:hover{color:var(--focus)}
@@ -69,7 +69,7 @@ const S = {lang:(()=>{try{const q=new URLSearchParams(location.search).get('lang
 const L = (kr,en) => S.lang==='kr' ? kr : en, tx = o => o ? (S.lang==='kr' ? (o.kr||o.en) : (o.en||o.kr)) : '';
 const esc = s => String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const SEC = [
-  {id:'skill', kr:'스킬 부여 목걸이', en:'Granted-skill amulets', sub:['고정 옵션의 부여 스킬이 핵심 · 스킬은 아래 중 하나','The granted skill on the implicit is what matters. One of the skills below rolls.']},
+  {id:'skill', kr:'스킬 부여 목걸이', en:'Granted-skill amulets', sub:['고정 옵션의 부여 스킬이 핵심 · 목록 중 하나만 붙음','The granted skill on the implicit is what matters. Only one from the list rolls.']},
   {id:'slots', kr:'접두·접미 개수가 바뀌는 장신구', en:'Jewellery with shifted affix slots', sub:['접두 P · 접미 S 최대 개수','Max prefixes P · suffixes S']},
   {id:'breach', kr:'최대 퀄리티가 높은 반지', en:'Rings with higher maximum quality', sub:['기폭제 퀄리티 상한이 그만큼 올라감','Catalyst quality can go that much higher.']},
   {id:'asif', kr:'다른 부위처럼 쓰는 베이스', en:'Bases that act as another slot', sub:null},
@@ -77,12 +77,17 @@ const SEC = [
 const match = it => { if(!S.q) return true; const h=[it.kr,it.en,...(it.imp||[]).flatMap(x=>[x.kr,x.en]),...(it.skills||[]).flatMap(x=>[x.kr,x.en]),it.clsName&&it.clsName.kr,it.clsName&&it.clsName.en].join(' ').toLowerCase(); return S.q.split(/\s+/).every(w=>h.includes(w)); };
 function recLinks(rs){ if(!rs || !rs.length) return ''; return `<div class="rec"><em>${L('레시피','Recipes')}</em>${rs.map(r=>`<a href="#" data-rid="${esc(r.id)}">${esc(tx(r.title))}</a>`).join('')}</div>`; }
 function ps(it){ const up = it.p!==3 || it.s!==3; return `<span class="ps ${up?'up':''}"><b class="p">P ${it.p}</b> · <b class="s">S ${it.s}</b></span>`; }
+// granted skill = one of a list → dropdown (사용자 확정 2026-11-11); a search that names a skill picks it
+function skillSel(it){
+  const q=(S.q||'').toLowerCase(), hit=q ? it.skills.findIndex(s=>[s.kr,s.en].join(' ').toLowerCase().includes(q)) : -1;
+  return `<label class="sk"><span class="skl">${L('부여 스킬','Granted skill')} · ${it.skills.length}${L('종','')}</span><select aria-label="${L('부여 스킬','Granted skill')}">${it.skills.map((s,i)=>`<option ${i===hit?'selected':''}>${L('레벨','Lv')} ${s.lv} ${esc(tx(s))}</option>`).join('')}</select></label>`;
+}
 function card(it, sec){
   const imp = (it.imp||[]).filter(x=>!(sec==='skill' && /최대 개수/.test(x.kr)));   // slot changes already shown as P/S
   return `<article class="card">${it.img?`<img class="b" src="${it.img}" alt="">`:'<span></span>'}
     <div class="nm">${esc(tx(it))}</div>
     <div class="meta"><span>${esc(tx(it.clsName))}</span><span>${L('드롭 레벨','Drop level')} ${esc(it.lv)}</span>${ps(it)}</div>
-    ${it.skills?`<div class="sk">${it.skills.map(s=>`<span><i>${L('레벨','Lv')} ${s.lv}</i>${esc(tx(s))}</span>`).join('')}</div>`:''}
+    ${it.skills?skillSel(it):''}
     ${imp.length && sec!=='slots'?`<ul class="imp">${imp.map(x=>`<li>${esc(tx(x))}</li>`).join('')}</ul>`:''}
     ${it.note?`<p class="note">${esc(tx(it.note))}</p>`:''}
     ${recLinks(it.recipes)}</article>`;
