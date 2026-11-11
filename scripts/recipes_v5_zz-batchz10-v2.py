@@ -22,4 +22,8 @@ def _mzring(r, t):
     r9.pop('fail',None); r9['br']=K('안 나오면 마지막에 고대 빗장뼈로 마나 최대치','A miss: go for flat mana with an Ancient Collarbone at the end')
     _drop(r,'r14')
     if t=='ess': r13=_node(r,'r13'); r13.pop('fail',None); r13['br']=KEEP
+    tm=2 if t=='bal' else 3   # 밸런스 1~2티어 · 에센셜 1~3티어 (사용자 2026-11-11: 같은 옵션이면 티어로 가격 차이)
+    for x in _node(r,'r8')['target']['anyOf']: x['tmax']=tm
+    for x in _node(r,'r9')['target']['anyOf']: x['tmax']=tm
+    r9['note']=K(f'좌측 찬미의 징조 + 상위 엑잘티드 오브로 접두에 마나 최대치 1~{tm}티어.',f'Sinistral Exaltation + Greater Exalted Orb for T1–{tm} flat mana.')
 for _t in ('bal','ess'): _grade8('mazbro-caster-ring','mazbro-caster-ring-v2',_t,_mzring)

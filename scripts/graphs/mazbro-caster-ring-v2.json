@@ -19,19 +19,35 @@
      "en": "As it comes"
     }
    }
+  },
+  "gT": {
+   "kr": "옵션 티어",
+   "en": "Modifier tier",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
   }
  },
  "strategies": [
   {
    "id": "bal",
    "params": {
-    "v": 1
+    "v": 1,
+    "gT": 2
    }
   },
   {
    "id": "ess",
    "params": {
-    "v": 2
+    "v": 2,
+    "gT": 3
    }
   }
  ],
@@ -41,11 +57,12 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "v": 2
+    "v": 2,
+    "gT": 3
    },
    "desc": {
-    "kr": "공개 결과 그대로",
-    "en": "Keep the reveal"
+    "kr": "공개 결과 그대로 · 접미·마나 1~3티어",
+    "en": "Keep the reveal · T1–3 suffix and mana"
    }
   },
   {
@@ -53,11 +70,12 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "v": 1
+    "v": 1,
+    "gT": 2
    },
    "desc": {
-    "kr": "영상: 빛의 징조로 다시 공개",
-    "en": "Video: Light retries on the reveal"
+    "kr": "영상: 빛의 징조로 다시 공개 · 접미·마나 1~2티어",
+    "en": "Video: Light retries on the reveal · T1–2 suffix and mana"
    }
   }
  ],
@@ -71,15 +89,15 @@
   },
   "regen": {
    "gi": 21,
-   "tmax": 1
+   "tmax": "$gT"
   },
   "rar": {
    "gi": 27,
-   "tmax": 1
+   "tmax": "$gT"
   },
   "res": {
    "gi": 7,
-   "tmax": 1
+   "tmax": "$gT"
   },
   "good": {
    "anyOf": [
@@ -88,8 +106,8 @@
     "res"
    ],
    "label": {
-    "kr": "마나 재생·희귀도·모든 원소 저항 1티어",
-    "en": "T1 mana regen, rarity or all res"
+    "kr": "마나 재생·희귀도·모든 원소 저항",
+    "en": "Mana regen, rarity or all res"
    }
   },
   "pmana": {
@@ -97,7 +115,7 @@
   },
   "mana": {
    "gi": 10,
-   "tmax": 1
+   "tmax": "$gT"
   },
   "manaAny": {
    "gi": 10
@@ -180,7 +198,7 @@
     },
     {
      "tag": "mana",
-     "tmax": 1
+     "tmax": 2
     },
     {
      "side": "p",
@@ -197,8 +215,8 @@
     {
      "side": "s",
      "label": {
-      "kr": "마나 재생·희귀도·모든 원소 저항 1티어",
-      "en": "T1 mana regen, rarity or all res"
+      "kr": "마나 재생·희귀도·모든 원소 저항 1~2티어",
+      "en": "T1–2 mana regen, rarity or all res"
      }
     },
     {
@@ -218,7 +236,7 @@
     },
     {
      "tag": "mana",
-     "tmax": 1
+     "tmax": 3
     },
     {
      "side": "p",
@@ -232,8 +250,8 @@
     {
      "side": "s",
      "label": {
-      "kr": "마나 재생·희귀도·모든 원소 저항 1티어",
-      "en": "T1 mana regen, rarity or all res"
+      "kr": "마나 재생·희귀도·모든 원소 저항 1~3티어",
+      "en": "T1–3 mana regen, rarity or all res"
      }
     },
     {
@@ -619,8 +637,8 @@
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 두번째 옵션 (마나 최대치 1티어)",
-    "en": "Second prefix (T1 maximum mana)"
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
    },
    "label": {
     "kr": "엑잘",
@@ -669,8 +687,8 @@
     },
     {
      "s": "p",
-     "kr": "마나 최대치 1티어",
-     "en": "T1 maximum mana",
+     "kr": "마나 최대치",
+     "en": "Maximum mana",
      "m": "n",
      "tags": [
       "mana"
@@ -745,8 +763,8 @@
     },
     {
      "s": "p",
-     "kr": "마나 최대치 1티어",
-     "en": "T1 maximum mana",
+     "kr": "마나 최대치",
+     "en": "Maximum mana",
      "m": "n",
      "tags": [
       "mana"
@@ -823,8 +841,8 @@
     },
     {
      "s": "p",
-     "kr": "마나 최대치 1티어",
-     "en": "T1 maximum mana",
+     "kr": "마나 최대치",
+     "en": "Maximum mana",
      "m": "n",
      "tags": [
       "mana"
@@ -927,8 +945,8 @@
     },
     {
      "s": "p",
-     "kr": "마나 최대치 1티어",
-     "en": "T1 maximum mana",
+     "kr": "마나 최대치",
+     "en": "Maximum mana",
      "m": "n",
      "tags": [
       "mana"
@@ -1036,8 +1054,8 @@
     },
     {
      "s": "p",
-     "kr": "마나 최대치 1티어",
-     "en": "T1 maximum mana",
+     "kr": "마나 최대치",
+     "en": "Maximum mana",
      "m": "n",
      "tags": [
       "mana"
@@ -1140,8 +1158,8 @@
     },
     {
      "s": "p",
-     "kr": "마나 최대치 1티어",
-     "en": "T1 maximum mana",
+     "kr": "마나 최대치",
+     "en": "Maximum mana",
      "m": "n",
      "tags": [
       "mana"

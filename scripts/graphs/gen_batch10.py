@@ -108,10 +108,10 @@ graph10('lilbotq-boots-v2','Boots_str','Tasalian Greaves',82,
 # 원본: 시전 속도 1티어 분열 + 잡옵 → 좌측 결정화 + 균열의 에센스 → 신경 기폭제 40% (+ 주입기 1회 41%) → 카오스 오브(마나 재생·희귀도·모든 원소 저항 1티어, 최대 퀄리티가 바뀜)
 # → 좌측 찬미 + 엑잘 → 좌측 결정화 + 정신의 에센스(마나 %) → 좌측 찬미 + 상위 엑잘(마나 최대치 1티어) → 우측 찬미 + 엑잘(접미)
 # → 마나 1티어면 뒤바뀐 빗장뼈 → 공개(받는 피해를 마나로, 이계 옵션), 아니면 고대 빗장뼈 → 공개(마나 1티어). 순서는 정신의 에센스가 마나 옵션을 지우지 않게 바꿈(영상은 마나 엑잘 먼저).
-tags={'cast':{'gi':34,'tmax':1},'maxQ':{'gi':71},'regen':{'gi':21,'tmax':1},'rar':{'gi':27,'tmax':1},'res':{'gi':7,'tmax':1},'good':{'anyOf':['regen','rar','res'],'label':K('마나 재생·희귀도·모든 원소 저항 1티어','T1 mana regen, rarity or all res')},
-      'pmana':{'gi':67},'mana':{'gi':10,'tmax':1},'manaAny':{'gi':10},'mom':{'gi':87}}
+tags={'cast':{'gi':34,'tmax':1},'maxQ':{'gi':71},'regen':{'gi':21,'tmax':'$gT'},'rar':{'gi':27,'tmax':'$gT'},'res':{'gi':7,'tmax':'$gT'},'good':{'anyOf':['regen','rar','res'],'label':K('마나 재생·희귀도·모든 원소 저항','Mana regen, rarity or all res')},
+      'pmana':{'gi':67},'mana':{'gi':10,'tmax':'$gT'},'manaAny':{'gi':10},'mom':{'gi':87}}   # 밸런스 1~2티어 · 에센셜 1~3티어 (사용자 2026-11-11: 같은 옵션이면 티어로 가격 차이)
 CA=it('s','시전 속도 1티어 (분열)','T1 cast speed (fractured)',['cast']); MQ=it('p','최대 퀄리티 +20% (제작 옵션)','+20% maximum quality (crafted)',['maxQ']); GD=it('s','마나 재생·희귀도·저항','Mana regen, rarity or res',['good'])
-PM=it('p','마나 최대치 % (제작 옵션)','% maximum mana (crafted)',['pmana']); MA=it('p','마나 최대치 1티어','T1 maximum mana',['mana']); MO=it('p','받는 피해를 마나로 (이계)','Damage taken from mana (Otherworldly)',['mom'])
+PM=it('p','마나 최대치 % (제작 옵션)','% maximum mana (crafted)',['pmana']); MA=it('p','마나 최대치','Maximum mana',['mana']); MO=it('p','받는 피해를 마나로 (이계)','Damage taken from mana (Otherworldly)',['mom'])
 I0=[CA,J('p')]; I1=[CA,MQ]; I2=[CA,GD]; I3=I2+[J('p')]; I4=I2+[PM]; I5=I4+[MA]; I6=I5+[J('s')]; I7=I6+[UN('p')]; I8=[CA,GD,J('s'),PM,MA,MO]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cast','fr':True},{'junk':'p'}]},K('시전 속도 1티어 분열 + 잡옵 1개 기억 반지','Mnemonic Ring: fractured T1 cast speed + one junk line'),I0),
  mark([0,0.6],'r5',I0),
@@ -120,7 +120,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cast','fr':True},{'junk':'p'}]},K
  act('r8','main',[0,3],'chaos','Chaos_Orb',K('최대 퀄리티 옵션을 좋은 접미로','Replace maximum quality with a good suffix'),None,K('카오스','Chaos'),[{'if':{'has':'good'},'to':'r10','res':'ok'},{'to':'r8','res':'fail'}],I2,show=['regen','rar','res']),
  act('r10','main',[0,4],'exalt','Exalted_Orb',K('에센스가 지울 접두','The prefix for the essence to remove'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'r10b'}],I3,omens=['Omen_of_Sinistral_Exaltation']),
  act('r10b','main',[0,5],'essence','Perfect_Essence_of_the_Mind',K('접두 잡옵을 마나 %로','Swap the junk prefix for % mana'),[st('p','마나 최대치 % (제작 옵션)','% maximum mana (crafted)')],K('에센스','Essence'),[{'to':'r9'}],I4,ess='pmana',omens=['Omen_of_Sinistral_Crystallisation']),
- act('r9','main',[0,6],'exalt','Greater_Exalted_Orb',K('접두 두번째 옵션 (마나 최대치 1티어)','Second prefix (T1 maximum mana)'),None,K('엑잘','Exalt'),[{'if':{'has':'mana'},'to':'r11','res':'ok'},{'to':'r11','res':'fail'}],I5,show=['mana'],omens=['Omen_of_Sinistral_Exaltation']),
+ act('r9','main',[0,6],'exalt','Greater_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),[{'if':{'has':'mana'},'to':'r11','res':'ok'},{'to':'r11','res':'fail'}],I5,show=['mana'],omens=['Omen_of_Sinistral_Exaltation']),
  act('r11','main',[0,7],'exalt','Exalted_Orb',K('남은 접미','The last suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'if':{'has':'manaAny'},'to':'r12','res':'ok'},{'to':'r12b','res':'fail'}],I6,omens=['Omen_of_Dextral_Exaltation']),
  act('r12','main',[0,8],'desecrate','Altered_Collarbone',K('접두 세번째 옵션(훼손, 이계)','Third prefix (desecrated, Otherworldly)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'r13'}],I7),
  REVEAL('r13',[0,9],'mom',['mom'],'ok','r13x',I8),
@@ -131,8 +131,8 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cast','fr':True},{'junk':'p'}]},K
  done([0,10])]
 graph10('mazbro-caster-ring-v2','Rings','Mnemonic Ring',82,
   'MazBro 캐스터 반지(원본 레시피 기록) — 시전 속도 분열 + 잡옵 → 좌측 결정화 + 균열의 에센스 → 신경 기폭제 → 카오스 오브(마나 재생·희귀도·모든 원소 저항 1티어) → 좌측 찬미 + 엑잘 → 좌측 결정화 + 정신의 에센스 → 좌측 찬미 + 상위 엑잘(마나 1티어) → 우측 찬미 + 엑잘 → 마나 최대치가 붙었으면 뒤바뀐 빗장뼈(받는 피해를 마나로), 아니면 고대 빗장뼈(마나 1티어). 밸런스 = 빛의 징조로 다시. 이계 옵션은 공개 가중치가 없어 추정. 신성한 오브·주입기는 뺌.',
-  ROUTE,PV,{'bal':K('영상: 빛의 징조로 다시 공개','Video: Light retries on the reveal'),'ess':K('공개 결과 그대로','Keep the reveal')},tags,nodes,
+  {**ROUTE,'gT':{'kr':'옵션 티어','en':'Modifier tier','values':TV({'2':('1~2티어','T1–2'),'3':('1~3티어','T1–3')})}},{'bal':{'v':1,'gT':2},'ess':{'v':2,'gT':3}},{'bal':K('영상: 빛의 징조로 다시 공개 · 접미·마나 1~2티어','Video: Light retries on the reveal · T1–2 suffix and mana'),'ess':K('공개 결과 그대로 · 접미·마나 1~3티어','Keep the reveal · T1–3 suffix and mana')},tags,nodes,
   [{'id':'L1','nodes':['r12','r13','r13x'],'kr':'이계 공개','en':'Otherworldly reveal'},{'id':'L2','nodes':['r12b','r13b','r13bx'],'kr':'마나 공개','en':'Mana reveal'}],
-  FIN(('bal','ess'),lambda v:[{'tag':'pmana','tmax':1},{'tag':'mana','tmax':1},{'side':'p','label':K('받는 피해를 마나로 또는 마나 1티어','Damage from mana or T1 mana')} if v=='bal' else {'side':'p','random':True},{'tag':'cast','tmax':1,'fr':True},{'side':'s','label':K('마나 재생·희귀도·모든 원소 저항 1티어','T1 mana regen, rarity or all res')},{'side':'s','random':True}]),
+  FIN(('bal','ess'),lambda v:[{'tag':'pmana','tmax':1},{'tag':'mana','tmax':2 if v=='bal' else 3},{'side':'p','label':K('받는 피해를 마나로 또는 마나 1티어','Damage from mana or T1 mana')} if v=='bal' else {'side':'p','random':True},{'tag':'cast','tmax':1,'fr':True},{'side':'s','label':K('마나 재생·희귀도·모든 원소 저항 1~2티어','T1–2 mana regen, rarity or all res') if v=='bal' else K('마나 재생·희귀도·모든 원소 저항 1~3티어','T1–3 mana regen, rarity or all res')},{'side':'s','random':True}]),
   {'quality':41,'sockets':0},{'all':[{'has':'cast'},{'has':'pmana'},{'has':'good'},{'full':'p'},{'full':'s'}]},('bal','ess'))
 print('wrote 4 graphs (batch 10)')
