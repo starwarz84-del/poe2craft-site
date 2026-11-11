@@ -1688,7 +1688,7 @@ try{ $('#u-code').value = localStorage.getItem('poe2r:code')||''; }catch(_){}
 $('#u-go').addEventListener('click', sendReq);
 document.addEventListener('click', e=>{ const a=e.target.closest('[data-rgo]'); if(!a) return; e.preventDefault(); try{ window.parent.postMessage({type:'poe2-goto', id:a.dataset.rgo}, '*'); }catch(_){} });
 if(REQ_OPEN) loadReqs(); else urlForm();
-window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} render(); } });
+window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} /* 분석 글(제작 흔적 등)은 분석할 때 언어로 만들어지니 다시 분석(사용자 2026-11-12) */ if(S.last?.it && !S.last.err){ try{ S.last.an=analyse(S.last.it); }catch(_){} } render(); } });
 window.addEventListener('message', e=>{ const d=e.data||{}, f=document.getElementById('pvf'); /* preview keeps a window-sized frame and scrolls inside it, so its sticky header, progress bar and step tracking work (2026-11-11) */
   /* 미리보기 플로우차트 전체화면(사용자 2026-11-12: 초안 안 창에서 좌우 스크롤·전체화면이 안 됨): 미리보기 창을 화면 전체로 키우고 사이트 껍데기에도 알림 */
   if(d.type==='poe2-full' && f && e.source===f.contentWindow){ f.classList.toggle('pvfull', !!d.on); document.body.classList.toggle('pvfull-on', !!d.on); try{ parent!==window && parent.postMessage({type:'poe2-full', on:!!d.on}, '*'); }catch(_){} } });
