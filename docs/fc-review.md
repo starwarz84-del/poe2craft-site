@@ -19,7 +19,7 @@
 | mazbro-bis-chest-v2 | LUB59xlkNtk | high 3,023, bal 960 | 15 | 대조만 끝남 | B(Fable) | 영상 기록 tools/notes/mazbro-LUB59xlkNtk.md. 접두 엑잘·절사 카오스를 상위로 바꾸면 조금 쌈(시뮬 확인) — 아직 안 고침 |
 | sihan-highend-helmet-v2 | CTrIbhQVU8U | high 2,616, bal 180 | 1 | 재확인 필요 | A(Opus) | 자막 전체(0:00~27:20) 대조, 단계 일치. 기록 tools/notes/sihan-CTrIbhQVU8U.md. 징표 훼손 한 티어 높게(시뮬 규칙 추가). 2,642/181 → 2,613/202 |
 | noble-visceral-quiver-v2 | 2PUEwoePtRs | high 2,240, bal 110 | 3 | 재확인 필요 | A(Opus) | 자막 없음 → 화면 자막 0:00~11:47 전체(기록 tools/notes/noble-2PUEwoePtRs.md). 영상대로 다시 만듦: 남은 접미 훼손을 먼저 공개해 가장 높은 레벨 옵션으로 자리 막기 → 접두 엑잘 → 절사 카오스(막기가 가장 낮으면 빛의 징조로 다시 훼손) → 막기 지우고 보존된 턱뼈로 투사체. 2,240/110 → 1,416/110 |
-| diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 재확인 필요 | A(Opus) | 자막 전체 + 화면 9:25 대조(기록 tools/notes/diztoh-29vO0mMUoME.md). 단계 일치. 접두 단계에서 접미 잡옵이 쌓여 제작 옵션 한도를 넘던 것을 고침(훼손 전에 접미 비우기, 매 단계 아이템 다시 보기). 1,999/1,058 → 4,091/1,321(치명타 확률 1티어 / 1~2티어) |
+| diztoh-iceshot-bow-v2 | 29vO0mMUoME | high 1,999, bal 1,058 | 5 | 진행 중 | A(Opus) 작업자 | 자막 전체 + 화면 9:25 대조(기록 tools/notes/diztoh-29vO0mMUoME.md). 단계 일치. 접두 단계에서 접미 잡옵이 쌓여 제작 옵션 한도를 넘던 것을 고침(훼손 전에 접미 비우기, 매 단계 아이템 다시 보기). 1,999/1,058 → 4,091/1,321(치명타 확률 1티어 / 1~2티어) |
 | breach-ring-video-v2 | RiJixgqBnBY | high 1,956, bal 934 | 4 | 재확인 필요 | A(Opus) | 자막 전체(0:00~31:50) 대조, 권장 순서와 일치(기록 tools/notes/sl-breach-RiJixgqBnBY.md). 1,956/934 → 1,956/651(밸런스 마지막 훼손 접두 랜덤) |
 | sihan-proj-gloves-v2 | DH4jiORLg10 | high 1,659, bal 327 | 2 | 재확인 필요 | A(Opus) | 자막 전체(0:00~27:40) 대조(기록 tools/notes/sihan-DH4jiORLg10.md). 접두 엑잘의 좌측 찬미 뺌(접미가 이미 3개), 두 번째 접두 실패 = 심연 징표를 둔 채 엑잘 → 징표에 고대 갈비뼈(영상 추천). 1,659/327 → 1,619/282 |
 | sl-blacksteel-gauntlets-v2 | J7J8Jo7ibvE | high 1,649, bal 140 | 4 | 재확인 필요 | A(Opus) | 자막엔 제작 설명 없음 → 6:12 슬라이드 직접 확대 확인(14단계 일치). 슬라이드에 없는 메아리 뺌. 1,649/140 → 1,794/874(밸런스 두번째 접미도 1~2티어까지 반복, 상위 오브) |
@@ -36,12 +36,12 @@
 | diztoh-endgame-quarterstaff-v2 | YfGJyBrObxI | high 712, bal 36 | 3 | 재확인 필요 | A(Opus) | 자동 번역 자막 전체(0:00~17:40) 대조, 단계 일치(기록 tools/notes/diztoh-YfGJyBrObxI.md). 공개 빗나감은 영상의 우측 소멸 대신 빛의 징조(지금 시세가 더 쌈). 712/36 → 1,043/577(등급 1티어 / 1~2티어) |
 | unstoppable-slipstrike-vest-v2 | swF5mwXmZ0k | high 651, bal 176 | 1 | 완료 11-11 | A(Opus) | 영상 40:45~46:30 대조. 첫 카오스 추가, 반복은 상위 카오스, 접두 결정화+심연. 하이엔드 870→651, 밸런스 540→176 |
 | breach-ring-phys-v2 |  | bal 535, ess 89 | 2 | 대기 |  |  |
-| diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 512, bal 340, ess 278 | 1 | 재확인 필요 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-QuW8BOSpPpo.md). 등급 C17 적용. 512/340/278 → 1,287/278/219 |  |
+| diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 512, bal 340, ess 278 | 1 | 진행 중 | A(Opus) 작업자 | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-QuW8BOSpPpo.md). 등급 C17 적용. 512/340/278 → 1,287/278/219 |  |
 | mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 완료 11-11(그림만 확인 안 됨) | B(Fable) | 단계 대조는 함. 화면 캡처가 오른쪽이 잘린 채였음 — 선은 다시 볼 것 |
 | sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 재확인 필요 | A(Opus) | 자막 전체 + 화면 2:30~3:45 대조(기록 tools/notes/sihan-GgD_vxKgNsw.md). 카오스는 저항 또는 카오스 피해, 완벽한 엑잘에서 좌측 찬미 뺌(영상에서 접미에도 붙음). 478/144 → 356/130 |
 | mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 재확인 필요 | A(Opus) | 자막 0:00~24:00 대조(기록 tools/notes/mastert-GNNkhSENp6Q.md). 경멸 전 엑잘 2번 → 영상대로 1번, 경멸 옵션을 지운 뒤 엑잘 1번 추가. 469/88 → 459/78 |
 | noble-timelost-sapphire-v2 | zEV8kWwveYQ | high 468, bal 418 | 3 | 재확인 필요 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/noble-zEV8kWwveYQ.md). 경멸 전 엑잘 2번은 사용자 확정이라 그대로. 변경 없음 |
-| tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 재확인 필요 | A(Opus) | 자막 12:00~21:30 대조, 단계 일치(기록 tools/notes/tankjung-gQa51XOS98s.md). 첫 절사 전 확인 추가(에센셜 완성 조건 99% → 100%). 영상(1티어)은 하이엔드로: 358/125/58, 난이도 3 → 4(사용자 확정) |
+| tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 진행 중 | A(Opus) 작업자 | 자막 12:00~21:30 대조, 단계 일치(기록 tools/notes/tankjung-gQa51XOS98s.md). 첫 절사 전 확인 추가(에센셜 완성 조건 99% → 100%). 영상(1티어)은 하이엔드로: 358/125/58, 난이도 3 → 4(사용자 확정) |
 | absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 재확인 필요 | A(Opus) | 자막 전체 대조, 단계·분기 일치(기록 tools/notes/sl-jr6-YLMJsC8.md). 등급 C17도 이미 맞음. 변경 없음 |
 | gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 삭제 11-11 | B(Fable) | 사용자 요청으로 내림(22:21). 플로우차트 옵션이 영상이 만든 목걸이와 달랐음. 다시 올리려면 영상 전체 기준으로 새로 만들고 build_recipes.py REMOVED·build_tips.py·gen_batch11.py의 막아 둔 줄을 지움 |
 | saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 재확인 필요 | A(Opus) | 자막 전체 대조, 첫 번째 집중구 단계 일치(기록 tools/notes/saveq-R43FVay8_XI.md). 하이엔드 에너지 보호막 접두도 1티어(C17). 343/208 → 504/208 |
@@ -49,10 +49,10 @@
 | diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 재확인 필요 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-GDLDxn6yxEs.md). C17: 에센셜은 공개 나오는 대로(영상과 같음). 149/24/3 |
 | bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 재확인 필요 | A(Opus) | 글 다시 확인(6/22판), 가성비 길 단계 일치(기록 tools/notes/web-bigdaddy-wand.md). 완성품 임의 문구를 태그로. 비용 그대로 |
 | ragna-spell4-amulet-v2 | Tzpdm8M-Pkk | bal 118, ess 27 | 0 | 재확인 필요 | A(Opus) | 자막 전체(3:34) 대조, 단계 일치(기록 tools/notes/ragna-Tzpdm8M-Pkk.md). C17도 맞음. 변경 없음 |
-| mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 재확인 필요 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/mazbro-BIxlixCKPO0.md). 완성품 줄을 DB 태그로. 값 그대로 |
+| mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 진행 중 | A(Opus) 작업자 | 자막 전체 대조, 단계 일치(기록 tools/notes/mazbro-BIxlixCKPO0.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 재확인 필요 | A(Opus) | 글 목걸이 부분 다시 대조, 일치(기록 tools/notes/web-fubgun-iceshot.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 재확인 필요 | A(Opus) | 자막 전체(31:47) 대조, 단계 일치(기록 tools/notes/diztoh-s70CV_nvjXg.md). 완성품 줄을 DB 태그로. 값 그대로 |
-| diztoh-vile-robe-v2 | n97yEuKSWyM | bal 105, ess 51 | 0 | 재확인 필요 | A(Opus) | 자막 전체(20:33) 대조, 단계 일치(기록 tools/notes/diztoh-n97yEuKSWyM.md). C17 티어(밸런스 1~2, 에센셜 1~4). 105/51 → 76/39 |
+| diztoh-vile-robe-v2 | n97yEuKSWyM | bal 105, ess 51 | 0 | 진행 중 | A(Opus) 작업자 | 자막 전체(20:33) 대조, 단계 일치(기록 tools/notes/diztoh-n97yEuKSWyM.md). C17 티어(밸런스 1~2, 에센셜 1~4). 105/51 → 76/39 |
 | sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 재확인 필요 | A(Opus) | 자막 전체(13:10) 대조, 단계 일치(기록 tools/notes/sl-VKMT7tuSIYk.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 98, ess 26 | 0 | 대기 |  |  |
 | sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 97, ess 23 | 1 | 대기 |  |  |
