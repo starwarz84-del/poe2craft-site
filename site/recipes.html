@@ -1619,14 +1619,14 @@ const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?
 function fcPrune(g, res){ if(!res?.nodes) return g; const gone=new Set(g.nodes.filter(n=>(n.kind==='act'||n.kind==='cleanup'||n.kind==='mark') && !res.nodes[n.id]).map(n=>n.id)); if(!gone.size) return g;   // a version that never passes a step (or the start mark) leaves it out
   return {...g, nodes: g.nodes.filter(n=>!gone.has(n.id)).map(n=>({...n, ...(gone.has(n.next)?{next:undefined}:{}), edges:(n.edges||[]).filter(e=>!gone.has(e.to))})), loops:(g.loops||[]).map(L=>({...L, nodes:L.nodes.filter(id=>!gone.has(id))})).filter(L=>L.nodes.length>=2 && L.nodes.some((id,i)=>(g.nodes.find(n=>n.id===id)?.edges||[]).some(e=>{ const j=L.nodes.indexOf(e.to); return j>=0 && j<=i; })))}; }   // keep a loop only while a step this version takes still goes back into it
 function fcModel(g, params={}){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
-  const E=[], seen=new Set(), add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(seen.has(k)) return; seen.add(k); E.push({a,b,label,...x}); };
+  const E=[], seen=new Set(), selfE={}, add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(a===b || seen.has(k)) return;   /* 자기 자신으로 돌아오는 선은 그리지 않음 — 커런시 반복은 상자의 평균 개수로(사용자 2026-11-12, 11장 카오스 자기 반복선과 같은 규칙) */ seen.add(k); E.push({a,b,label,...x}); };
   g.nodes.forEach(n=>{ if(n.next) add(n.id, n.next);
-    (n.edges||[]).filter(e=>!e.hide && !(e.to===n.id && n.act==='chaos') && !(e.when && Object.entries(e.when).some(([k,v])=>String(params[k])!==String(v)))).forEach(e=>add(n.id, e.to, e.label, {res:e.res, port:e.port, enter:e.enter, lane:e.lane, turn:e.turn}));
+    (n.edges||[]).filter(e=>!e.hide && !(e.when && Object.entries(e.when).some(([k,v])=>String(params[k])!==String(v)))).filter(e=>{ if(e.to!==n.id) return true; if(n.act!=='chaos') selfE[n.id]=true; return false; }).forEach(e=>add(n.id, e.to, e.label, {res:e.res, port:e.port, enter:e.enter, lane:e.lane, turn:e.turn}));
     if(n.options) for(const [v,to] of Object.entries(n.options)) add(n.id, to, n.edgeLabels?.[v] || g.params?.[n.param]?.values?.[v], {opt:[n.param, v], ...(n.optStyle?.[v]||{})});
     if(n.skipTo && !n.skipNote && !n.skipHide) add(n.id, n.skipTo, n.skipLabel || {kr:'건너뜀',en:'skip'}, {skip:true}); });
   const dec={}, multi={}; g.nodes.forEach(n=>{ if(n.kind!=='act' && n.kind!=='cleanup') return; if(new Set(E.filter(e=>e.a===n.id && !e.skip).map(e=>e.b)).size>=3) multi[n.id]=true; });   // simple two-way outcomes are just two coloured lines
   const loopOf={}, loopHead={}; (g.loops||[]).forEach((Lp,i)=>{ Lp.no=i+1; Lp.nodes.forEach(id=>{ if(!loopOf[id]) loopOf[id]=Lp; }); loopHead[Lp.nodes[0]]=Lp; });
-  return {byId, E, dec, multi, loopOf, loopHead}; }
+  return {byId, E, dec, multi, loopOf, loopHead, selfE}; }
 // what a step is after: tag → "side : text - Tn" (tiers merged into one range when the step accepts several)
 function fcTagText(g, tag, params){ if(typeof tag==='string' && tag[0]==='$') return fcTagText(g, params[tag.slice(1)], params); const T=g.tags?.[tag]; if(T && T.label) return {s:T.s, txt:tx(T.label), tier:''}; if(T && T.anyOf && !T.tiers){ const v=T.anyOf.map(x=>typeof x==='string'?fcTagText(g,x,params):null).filter(Boolean); return v.length ? {s:v[0].s, txt:v.map(x=>x.txt+(x.tier?' - '+x.tier:'')).join(L(' 또는 ',' or ')), tier:''} : null; } if(!T || !T.tiers) return null; let tm=T.tmax; if(typeof tm==='string' && tm[0]==='$') tm=+params[tm.slice(1)]||1;
   const lo=T.lo||1, t1=tx({kr:T.tiers[lo-1][0], en:T.tiers[lo-1][1]}); let txt=t1;   /* lo = 아이템 레벨로 붙을 수 있는 가장 좋은 티어 */
@@ -1699,21 +1699,21 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
   const rank = st => /^ok/.test(st)?0:/^fwd/.test(st)?1:2;
   Object.values(slots).forEach(L2=>L2.sort((a,b)=>(b.up-a.up)||(rank(a.st)-rank(b.st))));
   const joinFor = e => { const T=e.dst, L2=slots[T.id]||[], i=Math.max(0,L2.findIndex(x=>x.st===style(e))), gap=Math.min(gapAbove(T), 160); return Math.round(T.y - gap + gap*(i+1)/(Math.max(1,L2.length)+1)); };
-  const routeOne = e=>{ const S=e.src, T=e.dst, hard = e.port && (e.turn || e.lane), sp = hard ? [e.port] : ['bottom','right'], jy = joinFor(e);   // a set exit side is a wish (worth less than one crossing) unless the line also has a set turn or lane   // main-line boxes take lines only from the top (사용자 확정 2026-11-10)
+  const routeOne = e=>{ const S=e.src, T=e.dst, hard = e.port && (e.turn || e.lane), sp = hard ? [e.port] : ['bottom','right'], jy = joinFor(e), jyAlt = S.col!==T.col && T.y > S.y+S.h+FX.STUB*2+12 && jy < S.y+S.h+FX.STUB+10 ? Math.min(S.y+S.h+FX.STUB+10, T.y-FX.STUB-8) : null;   /* 합류 높이가 출발 상자 바닥보다 위면 아래 출구는 길이 없음 → 바닥 아래 합류 높이도 후보로 두고 점수로 고름(사용자 2026-11-12, 장갑 11.A — 출구를 일괄로 정하지 않음) */   // a set exit side is a wish (worth less than one crossing) unless the line also has a set turn or lane   // main-line boxes take lines only from the top (사용자 확정 2026-11-10)
     const tryRoute = tp => {
     let best=null;
     const cand=[];   // cheap part first (length, bends, fixed penalties); collisions and crossings only for candidates that can still win
     for(const s of sp) for(const t of tp){ const P0=port(S,s), P1=port(T,t), A=[P0[0]+P0[2]*FX.STUB, P0[1]+P0[3]*FX.STUB], B=[P1[0]-(t==='top'?0:(t==='left'?FX.STUB:-FX.STUB)), P1[1]-(t==='top'?FX.STUB:0)];
-      const mids=[[A,B],[A,[B[0],A[1]],B],[A,[A[0],B[1]],B]]; cxs.forEach(cx=>mids.push([A,[cx,A[1]],[cx,B[1]],B])); [...cys, jy].forEach(cy=>{ mids.push([A,[A[0],cy],[B[0],cy],B]); if(t==='top') cxs.forEach(cx=>mids.push([A,[cx,A[1]],[cx,cy],[B[0],cy],B])); });
+      const mids=[[A,B],[A,[B[0],A[1]],B],[A,[A[0],B[1]],B]]; cxs.forEach(cx=>mids.push([A,[cx,A[1]],[cx,B[1]],B])); [...cys, jy, ...(jyAlt!=null?[jyAlt]:[])].forEach(cy=>{ mids.push([A,[A[0],cy],[B[0],cy],B]); if(t==='top') cxs.forEach(cx=>mids.push([A,[cx,A[1]],[cx,cy],[B[0],cy],B])); });
       // out of the bottom, sideways into a channel, along it, then across into the target's top (a line going back up without cutting through the boxes in between)
-      if(s==='bottom' && t==='top'){ const below=cys.filter(cy=>cy>A[1]).slice(0,3); for(const c1 of below) for(const cx of cxs) for(const c2 of [...cys, jy]) if(Math.abs(c2-c1)>1) mids.push([A,[A[0],c1],[cx,c1],[cx,c2],[B[0],c2],B]); }
+      if(s==='bottom' && t==='top'){ const below=cys.filter(cy=>cy>A[1]).slice(0,3); for(const c1 of below) for(const cx of cxs) for(const c2 of [...cys, jy, ...(jyAlt!=null?[jyAlt]:[])]) if(Math.abs(c2-c1)>1) mids.push([A,[A[0],c1],[cx,c1],[cx,c2],[B[0],c2],B]); }
       for(const m of mids){ if(m.length===2 && A[0]!==B[0] && A[1]!==B[1]) continue;
         const pts=clean([[P0[0],P0[1]], ...m, [P1[0],P1[1]]]); if(!pts || pts.length<2) continue;
         // first segment must leave along the port, the last must enter along the port
         const d0=[Math.sign(pts[1][0]-pts[0][0]), Math.sign(pts[1][1]-pts[0][1])]; if(d0[0]!==P0[2] || d0[1]!==P0[3]) continue;
         const k=pts.length, dl=[Math.sign(pts[k-1][0]-pts[k-2][0]), Math.sign(pts[k-1][1]-pts[k-2][1])], want={top:[0,1],left:[1,0]}[t]; if(dl[0]!==want[0]||dl[1]!==want[1]) continue;
         let len=0; for(let i=0;i<k-1;i++) len+=Math.abs(pts[i][0]-pts[i+1][0])+Math.abs(pts[i][1]-pts[i+1][1]);
-        const up = T.y < S.y + S.h/2, lastH = k>=3 && pts[k-2][0]===pts[k-1][0] && pts[k-3][1]===pts[k-2][1] ? pts[k-2][1] : null, offJoin = t==='top' && lastH!=null && Math.abs(lastH-jy)>1 && pts[k-3][0]!==pts[k-1][0] ? 3000 : 0;
+        const up = T.y < S.y + S.h/2, lastH = k>=3 && pts[k-2][0]===pts[k-1][0] && pts[k-3][1]===pts[k-2][1] ? pts[k-2][1] : null, offJoin = t==='top' && lastH!=null && Math.abs(lastH-jy)>1 && !(jyAlt!=null && Math.abs(lastH-jyAlt)<=1) && pts[k-3][0]!==pts[k-1][0] ? 3000 : 0;
         const td=e.turn==='right'?1:e.turn==='left'?-1:0, tw = td && (k<3 || Math.sign(pts[2][0]-pts[1][0])!==td) ? 5000 : 0;   // turn: after leaving the port the line bends this way (사용자 확정 2026-11-10)
         const fixed=(k-2)*28 + offJoin + (t==='left' && S.x > T.x+T.w ? 2000 : 0) + (t==='top'?0:24) + (S.dia && s==='bottom' && T.col!==S.col ? 400 : 0) + (up && s==='bottom' ? (S.col>0 ? 1500 : 260) : 0) + (e.port && s!==e.port ? 600 : 0) + tw;
         cand.push({pts, k, d0, dl, len, fixed, lb: fixed + len*0.6}); } }   // a shared stretch can take off at most 0.4 per pixel, so lb never overestimates
@@ -1739,14 +1739,18 @@ function fcD(pts, sharp){ let d=`M${pts[0][0]},${pts[0][1]}`;
     const u=[Math.sign(p[0]-a[0]),Math.sign(p[1]-a[1])], v=[Math.sign(c[0]-p[0]),Math.sign(c[1]-p[1])];
     d+=` L${p[0]-u[0]*r},${p[1]-u[1]*r} Q${p[0]},${p[1]} ${p[0]+v[0]*r},${p[1]+v[1]*r}`; }
   return d; }
-function fcLabels(list, rects){ // list: [{pts, w, ...}] → x,y per label: near the source, clear of boxes and other labels
+function fcLabels(list, rects, lines=[]){ // list: [{pts, w, ...}] → x,y per label: near the source, clear of boxes, other labels and other lines
   const placed=[], H=21, ov=(a,b)=>Math.max(0,Math.min(a[2],b[2])-Math.max(a[0],b[0]))*Math.max(0,Math.min(a[3],b[3])-Math.max(a[1],b[1]));
+  /* 다른 선을 가리는 자리(그 선과 겹쳐 지나는 줄기는 빼고)는 피함 — 이름표 밑으로 선이 사라지지 않게(사용자 2026-11-12, 모든 그래프) */
+  const segs=[]; lines.forEach(e=>{ for(let i=0;i<(e.pts||[]).length-1;i++) segs.push([e.pts[i], e.pts[i+1], e]); });
+  const hide=(R, x, y, horiz, own)=>{ let n=0; for(const [a,b,e] of segs){ if(e===own) continue; const h2=a[1]===b[1]; if(h2===horiz && (h2 ? Math.abs(a[1]-y)<1 : Math.abs(a[0]-x)<1)) continue;
+      if(Math.max(a[0],b[0])>=R[0]-1 && Math.min(a[0],b[0])<=R[2]+1 && Math.max(a[1],b[1])>=R[1]-1 && Math.min(a[1],b[1])<=R[3]+1) n++; } return n; };
   list.forEach(L0=>{ const pts=L0.pts, w=L0.w; let best=null;
     for(let i=0;i<pts.length-1;i++){ const a=pts[i], b=pts[i+1], horiz=a[1]===b[1], len=Math.abs(b[0]-a[0])+Math.abs(b[1]-a[1]), dir=horiz?Math.sign(b[0]-a[0]):Math.sign(b[1]-a[1]);
       const need=horiz?w/2+10:H/2+8; if(len<need*2-4 && pts.length>2) continue;
-      const offs=[need, len/2, len-need, need+30, need+60].filter(o=>o>=Math.min(need,len/2) && o<=Math.max(len-need,len/2));
+      const lo=Math.min(need,len/2), hi=Math.max(len-need,len/2), offs=[need, len/2, len-need, need+30, need+60].filter(o=>o>=lo && o<=hi); for(let o=lo; o<=hi; o+=16) offs.push(o);   /* 선 끝 쪽까지 촘촘히 — 가리는 곳을 피해 옮길 자리 */
       for(const o of offs){ const x=horiz?a[0]+dir*o:a[0], y=horiz?a[1]:a[1]+dir*o, R=[x-w/2,y-H/2,x+w/2,y+H/2];
-        let sc=-len*0.6 + Math.abs(o-len/2)*0.8;
+        let sc=-len*0.6 + Math.abs(o-len/2)*0.8 + hide(R, x, y, horiz, L0.e)*4000;
         placed.forEach(q=>sc+=ov(R,q)*50); rects.forEach(r=>sc+=ov(R,[r.x,r.y,r.x+r.w,r.y+r.h])*8);
         if(!best || sc<best.sc) best={sc,x,y,R}; } }
     if(!best){ const a=pts[0]; best={x:a[0],y:a[1],R:[a[0]-w/2,a[1]-H/2,a[0]+w/2,a[1]+H/2]}; }
@@ -1824,7 +1828,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g0
   // edges with endpoints
   const edges=M.E.map(e=>{ const A=M.byId[e.a], B=M.byId[e.b]; if(!A||!B) return null;
     const src = M.dec[e.a] && !e.skip ? Lay.dia[e.a] : Lay.box[e.a], dst=Lay.box[e.b];
-    const out=M.E.filter(x=>x.a===e.a && !x.skip).reduce((t,x)=>t+ecount(x.a,x.b),0), f=ecount(e.a,e.b);
+    const out=M.E.filter(x=>x.a===e.a && !x.skip).reduce((t,x)=>t+ecount(x.a,x.b),0) + (M.selfE[e.a] ? ecount(e.a,e.a) : 0), f=ecount(e.a,e.b);   /* 그리지 않는 자기 반복선도 비율 분모에는 넣음(카오스는 예전처럼 뺌) */
     const on = e.opt ? !!stAny(e.a) : e.skip ? (stAny(e.a)?.skips||0)>0 : eAny(e.a,e.b)>0;
     const kind = e.res==='fail' || B.kind==='base' ? 'fail' : e.res==='ok' ? 'ok' : 'fwd';
     return {...e, dash: e.dash ?? (A.edges||[]).find(x=>x.to===e.b)?.dash, src, dst, on, kind, share: (A.edges||[]).find(x=>x.to===e.b)?.p ?? (M.multi[e.a] && !e.skip && out ? f/out : null), d0:Math.abs(src.x-dst.x)+Math.abs(src.y-dst.y) + (kind==='fwd'?0:5000)}; }).filter(Boolean);
@@ -1836,7 +1840,8 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g0
   const zo=e=>!e.on?0:(e.dash||e.skip)?1:e.kind==='fwd'?2:e.kind==='fail'?3:4;
   const svgE=[...edges].sort((a,b)=>zo(a)-zo(b)).map(e=>`<path class="fce k-${e.kind}${e.on?'':' off'}${e.skip||e.dash?' skip':''}" d="${fcD(e.pts, e.sharp)}" marker-end="url(#fcm-${e.on?e.kind:'off'})"/>`).join('');
   const lab=edges.filter(e=>e.label && (e.on || e.opt) && (M.multi[e.a] || M.byId[e.a].kind==='choice' || e.skip)).sort((a,b)=>(b.on-a.on)||(a.d0-b.d0)).map(e=>{ const t=tx(e.label)+(e.share!=null && e.share<0.995 && e.on ? ` · ${pct1(e.share)}` : ''); return {e, t, pts:e.pts, w:fcLen(t)+18}; });
-  fcLabels(lab, [...Object.values(Lay.box), ...Object.values(Lay.dia)]);
+  fcLabels(lab, [...Object.values(Lay.box), ...Object.values(Lay.dia)], edges.filter(e=>e.on||e.opt));
+  window.__fcLast.labels=lab.map(L0=>({a:L0.e.a, b:L0.e.b, t:L0.t, x:L0.x, y:L0.y, w:L0.w}));   /* tools/test 이름표 점검용 */
   const labels=lab.map(({e,t,x,y})=>`<span class="fcl k-${e.kind}${e.on?'':' off'}" style="left:${x.toFixed(0)}px;top:${y.toFixed(0)}px">${esc(t)}</span>`).join('');
   // regions
   const regions=(g.groups||[]).map((gr,i)=>{ const R=Lay.grp[gr.id]; if(!R) return ''; const ns=g.nodes.filter(n=>n.group===gr.id);

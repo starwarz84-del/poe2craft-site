@@ -83,21 +83,21 @@ F={'res':'fail','port':'right'}
 # 12번(상위 엑잘) 뒤: 성공이면 13, 빗나가면 영상 순서대로 합금(12.A) → 발작의 에센스(12.B) → 소멸(12.C). 영상 노트 4A 마지막 줄 '맞으면 남은 접미를 치명타 에센스로'(12.D~F)는 첫 엑잘에 맞았을 때만
 # 12번 엑잘 뒤 상태로 다음 상자: 합금·발작 옵션보다 먼저 맞으면 그 상자에서 엑잘을 한 번 더(세 번째 접미) 하고 빗나간 접미를 합금·발작의 에센스로 바꿈 — 따로 상자를 그리지 않음
 E12=[{'if':{'all':ALL},'to':'k13','res':'ok',**L_('치명타 확률·관통 성공','Crit chance or pierce hit')},
-     {'if':{'all':[{'has':'ss'},{'not':{'full':'s'}}]},'to':'k12','res':'ok','hide':True},
-     {'if':{'not':{'has':'ward'}},'to':'ka',**F,**L_('빗나감 — 합금','Miss: alloy')},
-     {'if':{'not':{'any':[{'has':'hyst'},{'has':'cdAny'}]}},'to':'kb',**F,**L_('또 빗나감 — 발작의 에센스','Miss again: Essence of Hysteria')},
-     {'to':'kc',**F,**L_('세 번째도 빗나감 — 소멸','Third miss: annul')}]
+     {'if':{'all':[{'has':'ss'},{'not':{'full':'s'}}]},'to':'k12','res':'ok','hide':True,**L_('합금·발작 전에 맞음, 접미 자리 남음 — 한 번 더 엑잘','Hit before the alloy and essence, a suffix slot left: exalt once more')},
+     {'if':{'not':{'has':'ward'}},'to':'ka',**F,**L_('1번째 빗나감 — 합금','1st miss: alloy')},
+     {'if':{'not':{'any':[{'has':'hyst'},{'has':'cdAny'}]}},'to':'kb',**F,**L_('2번째 빗나감 — 발작의 에센스','2nd miss: Essence of Hysteria')},
+     {'to':'kc',**F,**L_('3번째 빗나감 — 소멸','3rd miss: annul')}]
 nodes=[
  mark([0,0.6],'k11',G0),
  act('k11','main',[0,2],'chaos','Chaos_Orb',K('접두 투사체 속도 1티어','T1 projectile speed prefix'),None,K('카오스','Chaos'),
      [{'if':{'has':'pspd1'},'to':'k12','res':'ok'},{'to':'k11','res':'fail'}],G1,show=['pspd1']),   # 15:56 성공 회차(사용자 확정 2026-11-12)
  cleanup('kz',[1,1.5],[],[{'to':'k11','port':'right'}],K('분열 + 옵션 1개만 남기기','Keep the fracture + one line'),maxJunk=1),   # 13:40 '투사체 속도가 지워짐 — 처음부터 카오스'
- act('k12','main',[0,3],'exalt','Greater_Exalted_Orb',K('접미 치명타 확률·관통','Crit chance or pierce suffix'),None,K('엑잘','Exalt'),E12,G2,show=['crit','pierce'],omens=['Omen_of_Dextral_Exaltation'],skipIf={'all':ALL},skipTo='k13',skipHide=True),   # 소멸 뒤 이미 완성된 상태면 엑잘 없이 13으로(영상 경로에는 없음, 그림에 안 보임)
+ act('k12','main',[0,3],'exalt','Greater_Exalted_Orb',K('접미 치명타 확률·관통','Crit chance or pierce suffix'),None,K('엑잘','Exalt'),E12,G2,show=['crit','pierce'],showText=[K('합금·발작 전에 맞으면 한 번 더 엑잘','A hit before the alloy and essence: exalt once more')],omens=['Omen_of_Dextral_Exaltation'],skipIf={'all':ALL},skipTo='k13',skipHide=True),   # 소멸 뒤 이미 완성된 상태면 엑잘 없이 13으로(영상 경로에는 없음, 그림에 안 보임)
  act('ka','main',[1,3],'essence','Sovereign_Alloy',K('빗나간 접미를 지우고 룬 수호','The missed suffix goes, runic ward comes'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],K('합금','Alloy'),[{'to':'k12','port':'left',**L_('다시 엑잘','Exalt again')}],[PS,WD,PJ],ess='ward',omens=['Omen_of_Dextral_Crystallisation']),
  act('kb','main',[1,4],'essence','Essence_of_Hysteria',K('빗나간 접미를 지우고 치명타 피해','The missed suffix goes, crit damage comes'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],K('에센스','Essence'),[{'to':'k12','port':'left',**L_('다시 엑잘','Exalt again')}],[PS,PJ,HY,WD],ess='hyst',omens=['Omen_of_Dextral_Crystallisation']),
  cleanup('kc',[1,5],['pspd1','ward','hyst','ss'],[{'lost':'pspd1','to':'kz','port':'right',**L_('투사체 속도가 지워짐 — 카오스부터','Projectile speed gone: back to Chaos')},
      {'lost':'ward','to':'kc',**L_('룬 수호가 지워짐 — 하나 더','Runic ward gone: one more')},{'lost':'hyst','to':'kc',**L_('치명타 피해가 지워짐 — 하나 더','Crit damage gone: one more')},{'lost':'ss','to':'kc','hide':True},
-     {'to':'k12','port':'left',**L_('빗나간 접미가 지워짐 — 다시 엑잘','Missed suffix gone: exalt again')}],K('빗나간 접미가 지워질 때까지 하나씩','One at a time until the missed suffix goes')),
+     {'to':'k12','port':'left',**L_('빗나간 접미가 지워짐 — 다시 엑잘','Missed suffix gone: exalt again')}],K('빗나간 접미가 지워질 때까지 한 개씩, 룬 수호·치명타 피해가 지워져도 계속','One at a time until the missed suffix goes, even if runic ward or crit damage goes first')),
  act('k13','main',[0,6],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'k14'}],G4),   # 17:35 '남은 자리가 접두뿐이라 징조 필요 없음'
  act('k14','main',[0,7],'reveal',None,K('접두 투사체 피해','Projectile damage prefix'),None,K('공개','Reveal'),
      [{'if':{'added':'pdmg'},'to':'ok','res':'ok'},{'to':'k14x','res':'fail','port':'right'}],G5,want='pdmg',show=['pdmg'],omens=['Omen_of_Abyssal_Echoes']),
