@@ -3,8 +3,8 @@
  "recipe": "mazbro-spell5-amulet-v2",
  "cls": "Amulets",
  "base": "Absent Amulet",
- "ilvl": 81,
- "note": "MazBro +5 부재 목걸이(kULlZJBSec4) — 정신력 50 분열 + 잡옵 → 균열의 에센스 → 쇳소리 기폭제 40% → 카오스 오브(주문 +3) → 좌측 찬미 + 상위 엑잘 → 좌측 결정화 + 룬 합금 → 고대 빗장뼈 → 공개. 하이엔드 = 영상(공개는 빛의 징조로 다시, 이후 성유·유동체·쥬얼러·신성한 오브·축성은 레시피에만), 밸런스 = 공개 결과 그대로·축성 없이 판매.",
+ "ilvl": 80,
+ "note": "2026-11-13 W28 영상 화면 대조(제작 구간 8:00~29:40 전부, 축성 구간은 표본). 성공 회차 = 영상 가이드(화면 메모 1~4단계)를 따라 훼손 공개까지 간 Demon Choker: 노멀 부재 목걸이(아이템 레벨 80, 원소 상태 이상 시 시전, 9:20) → 제왕의 오브(9:27) → 카오스로 정신력 1티어(5,000개 묶음, 10:27) → 신성한 오브로 +50(10:33) → 상위 찬미의 징조 + 상위 엑잘로 옵션 2개(징조 3개 소모, 11:31) → 보존된 빗장뼈로 4개(11:51) → 분열(3개 중 2개 성공, 12:07) → 소멸로 옵션 1개 → 균열의 에센스(12:27) → 쇳소리 기폭제 40%(13:20) → 카오스로 주문 +3(치명타 1티어가 떴을 때 우측 찬미 + 상위 엑잘 시도 → 화염 저항, 14:24·14:26, +3은 17:32 카오스) → 좌측 찬미 + 상위 엑잘(에너지 보호막 4티어, 27:17) → 좌측 결정화 + 룬 합금(29:13 화면 룬 수호 10%) → 고대 빗장뼈(29:20) → 공개 시전 속도 1티어(29:31). 촉진 엑잘 실험(17:40~24:00)·실험 목걸이 정리(24:00~28:00)는 꿀팁 후보. 성유·완벽한 유동체·완벽한 쥬얼러·신성한 오브·축성(30:00~37:50)은 정책 14장대로 뺌.",
  "params": {
   "v": {
    "kr": "진행",
@@ -43,9 +43,10 @@
    "params": {
     "v": 2
    },
+   "tier": "bal",
    "desc": {
-    "kr": "공개 결과 그대로, 축성 없이",
-    "en": "Reveal kept, no sanctify"
+    "kr": "마지막 접미 훼손 공개 결과 그대로",
+    "en": "Last suffix: the reveal is kept as it comes"
    }
   },
   {
@@ -55,9 +56,10 @@
    "params": {
     "v": 1
    },
+   "tier": "high",
    "desc": {
-    "kr": "영상: 공개는 빛의 징조로 다시, 그다음 축성(+5 약 13%)",
-    "en": "Video: Light retries the reveal, then sanctify (+5 about 13%)"
+    "kr": "영상: 마지막 접미는 좋은 옵션 1티어, 빗나가면 빛의 징조로 다시",
+    "en": "Video: a good T1 last suffix, Light retries a miss"
    }
   }
  ],
@@ -75,9 +77,6 @@
   },
   "rw": {
    "gi": 82
-  },
-  "kq": {
-   "gi": 46
   },
   "cs": {
    "gi": 32,
@@ -99,18 +98,32 @@
    "gi": 26,
    "tmax": 1
   },
+  "kq": {
+   "gi": 46
+  },
   "fin": {
    "anyOf": [
-    "kq",
     "cs",
     "cr",
     "cd",
     "ar",
-    "rs"
+    "rs",
+    "kq"
    ],
    "label": {
-    "kr": "시전 속도·치명타·저항·희귀도·스킬 퀄리티 1티어",
-    "en": "T1 cast speed, crit, resistances, rarity or skill quality"
+    "kr": "시전 속도·치명타 확률·치명타 피해·모든 원소 저항·희귀도 1티어·모든 스킬의 퀄리티",
+    "en": "T1 cast speed, critical chance, critical damage, all elemental resistances, rarity or quality of all skills"
+   }
+  },
+  "anc": {
+   "anyOf": [
+    "cs",
+    "cr",
+    "cd"
+   ],
+   "label": {
+    "kr": "시전 속도·치명타 확률·치명타 피해 1티어",
+    "en": "T1 cast speed, critical chance or critical damage"
    }
   }
  },
@@ -144,19 +157,7 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "z12",
-    "z13",
-    "z13x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  }
- ],
+ "start": "z1",
  "finals": [
   {
    "id": "high",
@@ -165,7 +166,6 @@
    "lines": [
     {
      "tag": "spirit",
-     "tmax": 1,
      "fr": true
     },
     {
@@ -173,8 +173,7 @@
      "ess": true
     },
     {
-     "tag": "spell",
-     "tmax": 1
+     "tag": "spell"
     },
     {
      "tag": "fin",
@@ -189,7 +188,6 @@
    "lines": [
     {
      "tag": "spirit",
-     "tmax": 1,
      "fr": true
     },
     {
@@ -197,8 +195,7 @@
      "ess": true
     },
     {
-     "tag": "spell",
-     "tmax": 1
+     "tag": "spell"
     },
     {
      "side": "s",
@@ -213,42 +210,400 @@
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "z1",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "z1r",
    "start": {
-    "rar": "rare",
-    "mods": [
-     {
-      "tag": "spirit",
-      "fr": true
-     },
-     {
-      "junk": "s"
-     }
-    ]
+    "rar": "normal",
+    "mods": []
    },
    "label": {
-    "kr": "정신력 +50 분열 + 잡옵 1개 (부재 목걸이)",
-    "en": "Fractured +50 Spirit + one junk line (Absent Amulet)"
+    "kr": "부재 목걸이 구입 (노멀, 아이템 레벨 75 이상, 원하는 부여 스킬)",
+    "en": "Buy an Absent Amulet (normal, item level 75+, the granted skill you want)"
    },
+   "item": []
+  },
+  {
+   "id": "z1r",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "regal",
+   "cur": "Regal_Orb",
+   "label": {
+    "kr": "제왕",
+    "en": "Regal"
+   },
+   "goal": {
+    "kr": "레어",
+    "en": "Rare"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "z2"
+    }
+   ],
+   "item": [
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "z2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "goal": {
+    "kr": "접두 정신력 1티어",
+    "en": "T1 Spirit prefix"
+   },
+   "show": [
+    "spirit"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "spirit"
+     },
+     "to": "z3",
+     "res": "ok"
+    },
+    {
+     "to": "z2",
+     "res": "fail",
+     "hide": true
+    }
+   ],
    "item": [
     {
      "s": "p",
-     "kr": "정신력 +50 (분열)",
-     "en": "+50 Spirit (fractured)",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "z3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "divine",
+   "cur": "Divine_Orb",
+   "count": 4,
+   "label": {
+    "kr": "신성",
+    "en": "Divine"
+   },
+   "goal": {
+    "kr": "정신력 +50",
+    "en": "+50 Spirit"
+   },
+   "showText": [
+    {
+     "kr": "수치 47~50 중 50 (평균 4개)",
+     "en": "50 out of 47–50 (about four on average)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "z4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "z4",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "exalt",
+   "cur": "Greater_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "옵션 두 개 더 — 분열 조건 옵션 4개",
+    "en": "Two more options: the fracture needs four"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
+   "edges": [
+    {
+     "to": "z5"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
      "m": "n",
      "tags": [
       "spirit"
      ]
     },
     {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
      "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "z5",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Collarbone",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "네번째 옵션(훼손)",
+    "en": "Fourth option (desecrated)"
+   },
+   "showText": [
+    {
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecrated (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "z6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50)",
+     "en": "+(47—50) to Spirit",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "z6",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 (공개된 옵션 3개 중 하나)",
+    "en": "Fracture (one of the three revealed options)"
+   },
+   "showText": [
+    {
+     "kr": "정신력이 분열되면 성공",
+     "en": "Success when Spirit fractures"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "fractured": "spirit"
+     },
+     "to": "z6c",
+     "res": "ok",
+     "label": {
+      "kr": "정신력 분열",
+      "en": "Spirit fractured"
+     }
+    },
+    {
+     "to": "z6x",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "z6x",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    6
+   ],
+   "simTo": "z1",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured: new base"
+   },
+   "note": {
+    "kr": "정신력이 아닌 옵션이 분열되면 새 베이스로 처음부터",
+    "en": "Another option fractured: start over on a new base"
+   }
+  },
+  {
+   "id": "z6c",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    7
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one option"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "x",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
@@ -261,7 +616,7 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    8.4
    ],
    "next": "z7",
    "label": {
@@ -271,15 +626,15 @@
    "item": [
     {
      "s": "p",
-     "kr": "정신력 +50 (분열)",
-     "en": "+50 Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
      "tags": [
       "spirit"
      ]
     },
     {
-     "s": "s",
+     "s": "x",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
@@ -292,17 +647,26 @@
    "group": "main",
    "pos": [
     0,
-    1
+    9.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "잡옵을 지우고 최대 퀄리티",
-    "en": "The junk goes for max quality"
-   },
+   "cur": "Essence_of_the_Breach",
+   "ess": "mq",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "잡옵을 지우고 최대 퀄리티",
+    "en": "The junk goes for max quality"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% to Maximum Quality (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "z8"
@@ -311,9 +675,9 @@
    "item": [
     {
      "s": "p",
-     "kr": "정신력 +50 (분열)",
-     "en": "+50 Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -321,22 +685,13 @@
     {
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
-     "en": "+20% max quality (Essence of the Breach)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
      "m": "c",
      "tags": [
       "mq"
      ]
     }
-   ],
-   "cur": "Essence_of_the_Breach",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "최대 퀄리티 +20% (제작 옵션)",
-     "en": "+20% max quality (crafted)"
-    }
-   ],
-   "ess": "mq"
+   ]
   },
   {
    "id": "z8",
@@ -344,16 +699,18 @@
    "group": "main",
    "pos": [
     0,
-    2
+    10.4
    ],
    "act": "quality",
-   "goal": {
-    "kr": "시전 퀄리티 40%",
-    "en": "Caster quality 40%"
-   },
+   "cur": "Sibilant_Catalyst",
+   "count": 40,
    "label": {
     "kr": "퀄리티",
     "en": "Quality"
+   },
+   "goal": {
+    "kr": "시전 퀄리티 40%",
+    "en": "Caster quality 40%"
    },
    "edges": [
     {
@@ -363,9 +720,9 @@
    "item": [
     {
      "s": "p",
-     "kr": "정신력 +50 (분열)",
-     "en": "+50 Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -373,21 +730,13 @@
     {
      "s": "p",
      "kr": "최대 퀄리티 +20% (균열의 에센스)",
-     "en": "+20% max quality (Essence of the Breach)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
      "m": "c",
      "tags": [
       "mq"
      ]
     }
-   ],
-   "cur": "Sibilant_Catalyst",
-   "showText": [
-    {
-     "kr": "쇳소리 기폭제 40개",
-     "en": "40 Sibilant Catalysts"
-    }
-   ],
-   "count": 40
+   ]
   },
   {
    "id": "z9",
@@ -395,17 +744,21 @@
    "group": "main",
    "pos": [
     0,
-    3
+    11.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "접미 첫번째 옵션",
-    "en": "First suffix"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "최대 퀄리티를 지우고 접미 모든 주문 스킬 레벨 +3",
+    "en": "Max quality out, +3 to Level of all Spell Skills suffix"
+   },
+   "show": [
+    "spell"
+   ],
    "edges": [
     {
      "if": {
@@ -415,16 +768,24 @@
      "res": "ok"
     },
     {
+     "if": {
+      "has": "anc"
+     },
+     "to": "c2",
+     "res": "ok"
+    },
+    {
      "to": "z9",
-     "res": "fail"
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "정신력 +50 (분열)",
-     "en": "+50 Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -432,16 +793,85 @@
     {
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +3",
-     "en": "+3 spell skills",
+     "en": "+3 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "spell"
      ]
     }
+   ]
+  },
+  {
+   "id": "c2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    11.4
    ],
-   "cur": "Chaos_Orb",
+   "act": "exalt",
+   "cur": "Greater_Exalted_Orb",
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접미 1티어를 두고 모든 주문 스킬 레벨 +3",
+    "en": "Keep the T1 suffix, +3 Spell Skills"
+   },
    "show": [
     "spell"
+   ],
+   "edges": [
+    {
+     "if": {
+      "added": "spell"
+     },
+     "to": "z10",
+     "res": "ok"
+    },
+    {
+     "to": "c3",
+     "res": "fail"
+    }
+   ]
+  },
+  {
+   "id": "c3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    12.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접미 지우기 — 1티어가 지워지면 카오스부터",
+    "en": "Remove the missed suffix: back to Chaos if the T1 goes"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "anc"
+     },
+     "to": "c2"
+    },
+    {
+     "to": "z9"
+    }
    ]
   },
   {
@@ -450,17 +880,28 @@
    "group": "main",
    "pos": [
     0,
-    4
+    12.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 잡옵",
-    "en": "A junk prefix"
-   },
+   "cur": "Greater_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
      "to": "z11"
@@ -469,39 +910,28 @@
    "item": [
     {
      "s": "p",
-     "kr": "정신력 +50 (분열)",
-     "en": "+50 Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
      "tags": [
       "spirit"
      ]
     },
     {
      "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
+     "kr": "에너지 보호막 최대치 (26—30)% 증가",
+     "en": "(26—30)% increased maximum Energy Shield",
      "m": "j"
     },
     {
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +3",
-     "en": "+3 spell skills",
+     "en": "+3 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "spell"
      ]
     }
-   ],
-   "cur": "Greater_Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
@@ -510,17 +940,29 @@
    "group": "main",
    "pos": [
     0,
-    5
+    13.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "잡옵을 지우고 최대 룬 수호 (6—10)% 증가",
-    "en": "The junk goes for (6—10)% increased maximum Runic Ward"
-   },
+   "cur": "Runic_Alloy",
+   "ess": "rw",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
    "label": {
     "kr": "합금",
     "en": "Alloy"
    },
+   "goal": {
+    "kr": "잡옵 접두를 지우고 룬 수호 최대치 증가",
+    "en": "The junk prefix goes for increased maximum Runic Ward"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "룬 수호 최대치 (6—10)% 증가 (제작 옵션)",
+     "en": "(6—10)% increased maximum Runic Ward (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "z12"
@@ -529,17 +971,17 @@
    "item": [
     {
      "s": "p",
-     "kr": "정신력 +50 (분열)",
-     "en": "+50 Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
      "tags": [
       "spirit"
      ]
     },
     {
      "s": "p",
-     "kr": "최대 룬 수호 % (룬 합금)",
-     "en": "% max runic ward (Runic Alloy)",
+     "kr": "룬 수호 최대치 (6—10)% 증가 (룬 합금)",
+     "en": "(6—10)% increased maximum Runic Ward (Runic Alloy)",
      "m": "c",
      "tags": [
       "rw"
@@ -548,24 +990,12 @@
     {
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +3",
-     "en": "+3 spell skills",
+     "en": "+3 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "spell"
      ]
     }
-   ],
-   "cur": "Runic_Alloy",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "최대 룬 수호 (6—10)% 증가 (제작 옵션)",
-     "en": "(6—10)% increased maximum Runic Ward (crafted)"
-    }
-   ],
-   "ess": "rw",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
    ]
   },
   {
@@ -574,17 +1004,29 @@
    "group": "main",
    "pos": [
     0,
-    6
+    14.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 두번째 옵션(훼손)",
-    "en": "Second suffix (desecrated)"
-   },
+   "cur": "Ancient_Collarbone",
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접미 두번째 옵션(훼손)",
+    "en": "Second suffix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "skipIf": {
+    "full": "s"
+   },
+   "skipTo": "ok",
    "edges": [
     {
      "to": "z13"
@@ -593,17 +1035,17 @@
    "item": [
     {
      "s": "p",
-     "kr": "정신력 +50 (분열)",
-     "en": "+50 Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
      "tags": [
       "spirit"
      ]
     },
     {
      "s": "p",
-     "kr": "최대 룬 수호 % (룬 합금)",
-     "en": "% max runic ward (Runic Alloy)",
+     "kr": "룬 수호 최대치 (6—10)% 증가 (룬 합금)",
+     "en": "(6—10)% increased maximum Runic Ward (Runic Alloy)",
      "m": "c",
      "tags": [
       "rw"
@@ -612,7 +1054,7 @@
     {
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +3",
-     "en": "+3 spell skills",
+     "en": "+3 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "spell"
@@ -620,17 +1062,9 @@
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
-    }
-   ],
-   "cur": "Ancient_Collarbone",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
     }
    ]
   },
@@ -640,17 +1074,29 @@
    "group": "main",
    "pos": [
     0,
-    7
+    15.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "fin",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접미 시전 속도 1티어 — 좋은 접미 여섯 중 먼저 뜬 것",
+    "en": "T1 cast speed suffix: whichever of the six good suffixes lands first"
+   },
+   "show": [
+    "cs",
+    "cr",
+    "cd",
+    "ar",
+    "rs",
+    "kq"
+   ],
    "edges": [
     {
      "if": {
@@ -667,27 +1113,31 @@
      },
      "to": "z13x",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     },
     {
      "to": "ok",
-     "res": "fail"
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "정신력 +50 (분열)",
-     "en": "+50 Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
      "tags": [
       "spirit"
      ]
     },
     {
      "s": "p",
-     "kr": "최대 룬 수호 % (룬 합금)",
-     "en": "% max runic ward (Runic Alloy)",
+     "kr": "룬 수호 최대치 (6—10)% 증가 (룬 합금)",
+     "en": "(6—10)% increased maximum Runic Ward (Runic Alloy)",
      "m": "c",
      "tags": [
       "rw"
@@ -696,7 +1146,7 @@
     {
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +3",
-     "en": "+3 spell skills",
+     "en": "+3 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "spell"
@@ -704,20 +1154,13 @@
     },
     {
      "s": "s",
-     "kr": "시전 속도",
-     "en": "Cast speed",
+     "kr": "시전 속도 (25—28)% 증가 (훼손)",
+     "en": "(25—28)% increased Cast Speed (desecrated)",
      "m": "d",
      "tags": [
       "cs"
      ]
     }
-   ],
-   "want": "fin",
-   "show": [
-    "fin"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
@@ -726,7 +1169,7 @@
    "group": "main",
    "pos": [
     1,
-    7
+    15.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -748,7 +1191,10 @@
    "edges": [
     {
      "to": "z12",
-     "port": "right"
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
@@ -758,12 +1204,76 @@
    "group": "main",
    "pos": [
     0,
-    8
+    16.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L0",
+   "nodes": [
+    "z9",
+    "c2",
+    "c3"
+   ],
+   "kr": "카오스 스팸",
+   "en": "Chaos spam",
+   "fold": true,
+   "goal": {
+    "kr": "최대 퀄리티를 지우고 접미 모든 주문 스킬 레벨 +3",
+    "en": "Max quality out, +3 to Level of all Spell Skills suffix"
+   },
+   "steps": [
+    {
+     "kr": "카오스 오브로 모든 주문 스킬 레벨 +3",
+     "en": "Chaos Orb for +3 Spell Skills",
+     "node": "z9"
+    },
+    {
+     "kr": "접미에 시전 속도·치명타 확률·치명타 피해 1티어가 뜨면 우측 찬미 + 상위 엑잘로 +3",
+     "en": "A T1 cast speed, crit chance or crit damage suffix: Dextral Exaltation + Greater Exalt for +3",
+     "node": "c2"
+    },
+    {
+     "kr": "빗나가면 소멸의 오브, 1티어가 남으면 다시 엑잘, 지워지면 카오스부터",
+     "en": "A miss: Orb of Annulment; exalt again while the T1 stays, Chaos again once it goes",
+     "node": "c3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 +(47—50) (분열)",
+     "en": "+(47—50) to Spirit (fractured)",
+     "m": "f",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3",
+     "en": "+3 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "spell"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L1",
+   "nodes": [
+    "z12",
+    "z13",
+    "z13x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
   }
  ]
 }

@@ -26,6 +26,10 @@ ANN = K('소멸의 오브 사용', 'Use an Orb of Annulment')
 ALT = [{'s': 's', 'kr': '시전 속도 (39—47)% 증가 · 원소 피해의 (11—16)%를 추가 냉기 피해로 획득 (제작 옵션)',
         'en': '(39—47)% increased Cast Speed · Gain (11—16)% of Elemental Damage as Extra Cold Damage (crafted)'}]
 V1 = {'param': {'v': 1}}; V2 = {'param': {'v': 2}}
+PRE_T = lambda t: [{'s': 'p', 'kr': f'피해 증가·피해의 %를 추가 피해로 획득 {t[0]}', 'en': f'{t[1]} increased damage or damage gained as extra'}]
+PD_T = lambda t: [{'s': 'p', 'kr': f'주문·화염·냉기·번개·카오스 피해 증가 {t[0]}', 'en': f'{t[1]} increased spell, fire, cold, lightning or chaos damage'}]
+T1 = ('1티어', 'T1'); T12 = ('1~2티어', 'T1–2')
+OVR = lambda f: [{'param': {'v': 2}, 'set': {'showText': f(T12)}}]
 
 PDL = K('주문·화염·냉기·번개·카오스 피해 증가', 'Increased spell, fire, cold, lightning or chaos damage')
 PREL = K('피해 증가·피해의 %를 추가 피해로 획득', 'Increased damage or damage gained as extra')
@@ -108,12 +112,12 @@ A(id='pc', kind='cleanup', group='prep', pos=[0, 7], keep=[], maxJunk=1, label=A
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 8.4], next='c1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[F7, J('s')])
 A(id='c1', kind='act', group='main', pos=[0, 9.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접두 화염 피해 증가 1티어 — 주문·냉기·번개·카오스 피해 증가와 함께 먼저 뜬 것', 'T1 increased fire damage prefix: or spell, cold, lightning or chaos, whichever lands first'),
-  show=['pd'],
+  goal=K('접두 화염 피해 증가 — 주문·냉기·번개·카오스 피해 증가와 함께 먼저 뜬 것', 'Increased fire damage prefix: or spell, cold, lightning or chaos, whichever lands first'),
+  showText=PD_T(T1), over=OVR(PD_T),
   edges=[{'if': {'has': 'pd'}, 'to': 'e1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}], item=[F7, PF])
 A(id='e1', kind='act', group='main', pos=[0, 10.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'],
-  label=K('엑잘', 'Exalt'), goal=K('접두 추가 냉기 피해 1티어 — 피해 증가·추가 피해 중 먼저 뜬 것', 'T1 extra cold prefix: whichever increased or extra damage lands first'),
-  show=['pre'],
+  label=K('엑잘', 'Exalt'), goal=K('접두 추가 냉기 피해 — 피해 증가·추가 피해 중 먼저 뜬 것', 'Extra cold prefix: whichever increased or extra damage lands first'),
+  showText=PRE_T(T1), over=OVR(PRE_T),
   edges=[{'if': {'count': {'tag': 'pre', 'min': 2}}, 'to': 'd1', 'res': 'ok'}, {'to': 'e1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[F7, PF, XC])
 A(id='e1x', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
@@ -124,7 +128,7 @@ A(id='d1', kind='act', group='main', pos=[0, 11.4], act='desecrate', cur='Ancien
   label=K('훼손', 'Desecrate'), goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'd2'}], item=[UN('p'), F7, PF, XC])
 A(id='d2', kind='act', group='main', pos=[0, 12.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pre', label=K('공개', 'Reveal'),
-  goal=K('접두 추가 화염 피해 1티어 — 피해 증가·추가 피해 중 먼저 뜬 것', 'T1 extra fire prefix: whichever increased or extra damage lands first'), show=['pre'],
+  goal=K('접두 추가 화염 피해(훼손) — 피해 증가·추가 피해 중 먼저 뜬 것', 'Extra fire prefix (desecrated): whichever increased or extra damage lands first'), showText=PRE_T(T1), over=OVR(PRE_T),
   edges=[{'if': {'all': [{'added': 'pre'}, V1]}, 'to': 'r1', 'res': 'ok'},
          {'if': {'added': 'pre'}, 'to': 'b1', 'res': 'ok', 'label': K('밸런스', 'Balance')},
          {'to': 'dx', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
