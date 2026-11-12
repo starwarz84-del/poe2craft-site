@@ -55,15 +55,54 @@
    "gi": 7,
    "tmax": 1
   },
+  "es1": {
+   "gi": 8,
+   "tmax": 1
+  },
+  "esp1": {
+   "gi": 9,
+   "tmax": 1
+  },
+  "ph1": {
+   "gi": 13,
+   "tmax": 1
+  },
+  "fi1": {
+   "gi": 15,
+   "tmax": 1
+  },
+  "co1": {
+   "gi": 17,
+   "tmax": 1
+  },
+  "li1": {
+   "gi": 19,
+   "tmax": 1
+  },
+  "third": {
+   "anyOf": [
+    "ph1",
+    "fi1",
+    "co1",
+    "li1",
+    "es1",
+    "esp1",
+    "mf1"
+   ],
+   "label": {
+    "kr": "공격 시 피해 추가·에너지 보호막·마나 최대치 1티어",
+    "en": "T1 flat attack damage, energy shield or maximum mana"
+   }
+  },
   "pgood": {
    "anyOf": [
     "pd1",
     "ps1",
-    "mf1"
+    "third"
    ],
    "label": {
-    "kr": "투사체 피해·투사체 속도·마나 최대치 1티어",
-    "en": "T1 projectile damage, projectile speed or maximum mana"
+    "kr": "투사체 피해·투사체 속도·세 번째 접두 1티어",
+    "en": "T1 projectile damage, projectile speed or a third prefix"
    }
   },
   "cr1": {
@@ -86,10 +125,17 @@
  },
  "conds": {
   "pDone": {
-   "count": {
-    "tag": "pgood",
-    "min": 3
-   }
+   "all": [
+    {
+     "has": "pd1"
+    },
+    {
+     "has": "ps1"
+    },
+    {
+     "has": "third"
+    }
+   ]
   },
   "sClean": {
    "sideLt": {
@@ -110,7 +156,7 @@
     "has": "ps1"
    },
    {
-    "has": "mf1"
+    "has": "third"
    },
    {
     "has": "cr1"
@@ -207,11 +253,11 @@
    "act": "rune",
    "rune": {
     "kr": "콜르의 사냥",
-    "en": "Kolr’s Hunt"
+    "en": "Kolr's Hunt"
    },
    "goal": {
     "kr": "콜르의 사냥 장착",
-    "en": "Socket Kolr’s Hunt"
+    "en": "Socket Kolr's Hunt"
    },
    "showText": [
     {
@@ -232,7 +278,7 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     }
    ]
@@ -270,7 +316,7 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
@@ -326,7 +372,7 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
@@ -412,7 +458,7 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
@@ -471,7 +517,7 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
@@ -553,7 +599,7 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
@@ -635,7 +681,7 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
@@ -675,7 +721,7 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
@@ -709,19 +755,23 @@
    "act": "rune",
    "rune": {
     "kr": "세를의 승리",
-    "en": "Serle’s Triumph"
+    "en": "Serle's Triumph"
    },
    "slots": {
     "s": 1
    },
    "goal": {
     "kr": "세를의 승리 장착",
-    "en": "Socket Serle’s Triumph"
+    "en": "Socket Serle's Triumph"
    },
    "showText": [
     {
      "kr": "접미 옵션 4개",
      "en": "Four suffixes"
+    },
+    {
+     "kr": "영상은 분열 전 장착",
+     "en": "The video sockets it before the fracture"
     }
    ],
    "label": {
@@ -737,13 +787,13 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
      "s": "r",
      "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
+     "en": "Serle's Triumph",
      "m": "r"
     },
     {
@@ -789,8 +839,8 @@
    ],
    "showText": [
     {
-     "kr": "투사체 피해·투사체 속도·마나 최대치 1티어 중 먼저 뜬 것",
-     "en": "Whichever of T1 projectile damage, projectile speed or maximum mana lands first"
+     "kr": "투사체 피해·투사체 속도·세 번째 접두 1티어 중 먼저 뜬 것",
+     "en": "Whichever of T1 projectile damage, projectile speed or a third prefix lands first"
     }
    ],
    "skipIf": {
@@ -818,13 +868,13 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
      "s": "r",
      "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
+     "en": "Serle's Triumph",
      "m": "r"
     },
     {
@@ -900,13 +950,13 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
      "s": "r",
      "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
+     "en": "Serle's Triumph",
      "m": "r"
     },
     {
@@ -1034,8 +1084,8 @@
    ],
    "showText": [
     {
-     "kr": "남은 옵션 중 먼저 뜬 것",
-     "en": "Whichever of the rest lands first"
+     "kr": "공격 시 피해 추가·에너지 보호막·마나 최대치 1티어 중 먼저 뜬 것",
+     "en": "Whichever of T1 flat attack damage, energy shield or maximum mana lands first"
     }
    ],
    "edges": [
@@ -1135,13 +1185,13 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
      "s": "r",
      "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
+     "en": "Serle's Triumph",
      "m": "r"
     },
     {
@@ -1231,6 +1281,65 @@
     {
      "to": "mB"
     }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr's Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "세를의 승리",
+     "en": "Serle's Triumph",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "n",
+     "tags": [
+      "pd1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(105—124)",
+     "en": "+(105—124) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mf1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "n",
+     "tags": [
+      "mkS"
+     ]
+    }
    ]
   },
   {
@@ -1262,6 +1371,62 @@
    "edges": [
     {
      "to": "mL"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr's Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "세를의 승리",
+     "en": "Serle's Triumph",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "n",
+     "tags": [
+      "pd1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(105—124)",
+     "en": "+(105—124) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mf1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
     }
    ]
   },
@@ -1370,13 +1535,13 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
      "s": "r",
      "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
+     "en": "Serle's Triumph",
      "m": "r"
     },
     {
@@ -1513,13 +1678,13 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
      "s": "r",
      "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
+     "en": "Serle's Triumph",
      "m": "r"
     },
     {
@@ -1622,13 +1787,13 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
      "s": "r",
      "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
+     "en": "Serle's Triumph",
      "m": "r"
     },
     {
@@ -1766,8 +1931,8 @@
    "en": "Three T1 prefixes",
    "fold": true,
    "goal": {
-    "kr": "접두 투사체 피해·투사체 속도·마나 최대치 1티어, 남은 옵션 중 먼저 뜬 것",
-    "en": "T1 projectile damage, projectile speed and maximum mana, whichever lands first"
+    "kr": "접두 투사체 피해·투사체 속도 1티어 + 세 번째 접두(공격 시 피해 추가·에너지 보호막·마나 최대치 중 먼저 뜬 것) 1티어, 남은 옵션 중 먼저 뜬 것",
+    "en": "T1 projectile damage and speed + a T1 third prefix (flat attack damage, energy shield or maximum mana), whichever lands first"
    },
    "steps": [
     {
@@ -1795,13 +1960,13 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
      "s": "r",
      "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
+     "en": "Serle's Triumph",
      "m": "r"
     },
     {
@@ -1895,13 +2060,13 @@
     {
      "s": "r",
      "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
+     "en": "Kolr's Hunt",
      "m": "r"
     },
     {
      "s": "r",
      "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
+     "en": "Serle's Triumph",
      "m": "r"
     },
     {
@@ -1985,7 +2150,7 @@
      "tag": "ps1"
     },
     {
-     "tag": "mf1"
+     "tag": "third"
     },
     {
      "tag": "proj",

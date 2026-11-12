@@ -14,6 +14,8 @@ def L(s, kr, en, m='n', tags=None):
 SPD = L('p', '주문 피해 (209—238)% 증가', '(209—238)% increased Spell Damage', 'f', ['spd'])
 XL = L('p', '피해의 (55—60)%를 추가 번개 피해로 획득', 'Gain (55—60)% of Damage as Extra Lightning Damage', 'n', ['xl'])
 XLD = L('p', '피해의 (55—60)%를 추가 번개 피해로 획득', 'Gain (55—60)% of Damage as Extra Lightning Damage', 'd', ['xl'])   # 9:26 공개 결과(훼손)
+XLs = L('p', '피해의 (55—60)%를 추가 번개 피해로 획득', 'Gain (55—60)% of Damage as Extra Lightning Damage', 'n')                    # 표시용(목표 계산에서 빠지게 태그 없음)
+LPs = L('p', '번개 피해 (209—238)% 증가', '(209—238)% increased Lightning Damage', 'd')                                                   # 훼손으로 붙은 번개 피해 %(표시용)
 XF = L('p', '피해의 (55—60)%를 추가 화염 피해로 획득', 'Gain (55—60)% of Damage as Extra Fire Damage', 'j')                   # 6:27·7:16 절사 중 접두로 간 옵션(잡옵)
 LP = L('p', '번개 피해 (209—238)% 증가', '(209—238)% increased Lightning Damage', 'n', ['light'])
 MANA = L('p', '마나 최대치 +(159—178)', '+(159—178) to maximum Mana', 'd', ['mana'])                                        # 9:15 공개로 받은 마나(훼손, T5)
@@ -84,15 +86,15 @@ A(id='s3', kind='act', group='main', pos=[0, 3], act='chaos', cur='Perfect_Chaos
          {'if': {'all': [{'has': 'crit'}, {'has': 'light'}]}, 'to': 'pT', 'res': 'ok', 'hide': True},
          {'if': {'has': 'crit'}, 'to': 'p1', 'res': 'ok'},
          {'to': 's3', 'res': 'fail', 'hide': True}],
-  item=[SPD, XL, XF, L7, CAST, CRIT])
+  item=[SPD, XLs, XF, L7, CAST, CRIT])
 # ---- 접두 번개 피해 % 1티어 (접힌 반복, 7:13~9:20) ----
 A(id='p1', kind='act', group='main', pos=[0, 4], act='essence', cur='Essence_of_the_Abyss', ess='markP', mark=True,
   omens=['Omen_of_Sinistral_Crystallisation'], label=K('에센스', 'Essence'),
   goal=K('접두 하나를 지우고 징표', 'One prefix goes for the Mark'),
-  showText=[{'s': 'p', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=[{'to': 'p2'}], item=[SPD, XL, MK, L7, CAST, CRIT])
+  showText=[{'s': 'p', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=[{'to': 'p2'}], item=[SPD, XLs, MK, L7, CAST, CRIT])
 A(id='p2', kind='act', group='main', pos=[1, 4], act='desecrate', cur='Ancient_Jawbone', fromMark=True, label=K('훼손', 'Desecrate'),
   goal=K('징표 훼손', 'Desecrate the Mark'),
-  showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'p3'}], item=[SPD, XL, UN('p'), L7, CAST, CRIT])
+  showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'p3'}], item=[SPD, XLs, UN('p'), L7, CAST, CRIT])
 A(id='p3', kind='act', group='main', pos=[1, 5], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pg', label=K('공개', 'Reveal'),
   goal=K('접두 번개 피해 % 1티어', 'T1 lightning % prefix'), show=['light'],
   edges=[{'if': BOTH, 'to': 'ok', 'res': 'ok', 'hide': True},
@@ -116,12 +118,13 @@ A(id='p5', kind='act', group='main', pos=[2, 5], act='exalt', cur='Perfect_Exalt
 # 9:05~9:20 설명: 공개로 번개 피해 %가 붙으면 나머지 한 자리는 절사(화면 없음). 빈 접두는 절사가 채우지 못해 완벽한 엑잘을 먼저 씀(영상에 없음)
 A(id='p5x', kind='act', group='main', pos=[2, 6], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('빈 접두 채우기', 'Fill the open prefix'), show=['xl'],
-  edges=[{'if': BOTH, 'to': 'ok', 'res': 'ok', 'hide': True}, {'to': 'pT', 'res': 'fail', 'label': K('남은 접두는 절사로', 'Whittle the last prefix')}])
-A(id='pT', kind='act', group='main', pos=[1, 7], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'pg', 'keepDes': True},
+  edges=[{'if': BOTH, 'to': 'ok', 'res': 'ok', 'hide': True}, {'to': 'pT', 'res': 'fail', 'label': K('남은 접두는 절사로', 'Whittle the last prefix')}],
+  item=[SPD, LPs, XL, L7, CAST, CRIT])
+A(id='pT', kind='act', group='main', pos=[2, 6], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'pg', 'keepDes': True},
   label=K('카오스', 'Chaos'), goal=K('접두 남은 옵션', 'The remaining prefix'), show=['light', 'xl'],
   edges=[LOST('l7', 's1'), LOST('cast', 's2'), LOST('crit', 's3'),
          {'if': BOTH, 'to': 'ok', 'res': 'ok'}, {'to': 'pT', 'res': 'fail', 'hide': True}],
-  item=[SPD, LP, XL, L7, CAST, CRIT])
+  item=[SPD, LPs, XL, L7, CAST, CRIT])
 # ---- 9:20~9:39 빈 접두에 훼손 → 추가 번개 ----
 A(id='d1', kind='act', group='main', pos=[0, 7], act='desecrate', cur='Ancient_Jawbone', label=K('훼손', 'Desecrate'),
   goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),

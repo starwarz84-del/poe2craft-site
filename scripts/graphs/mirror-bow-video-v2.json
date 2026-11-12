@@ -971,6 +971,17 @@
      }
     },
     {
+     "if": {
+      "des": true
+     },
+     "to": "k4x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 레벨이 높은 옵션",
+      "en": "Miss: a high-level option"
+     }
+    },
+    {
      "to": "k1",
      "hide": true,
      "label": {
@@ -1101,44 +1112,6 @@
      }
     },
     {
-     "to": "z3x",
-     "hide": true,
-     "label": {
-      "kr": "빗나간 옵션 레벨이 높음 — 빛의 징조로 제거",
-      "en": "The miss is high level: Omen of Light removes it"
-     },
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "eatk"
-        }
-       },
-       {
-        "not": {
-         "all": [
-          {
-           "has": "hyb"
-          },
-          {
-           "has": "proj"
-          },
-          {
-           "has": "arr"
-          },
-          {
-           "has": "cdm"
-          }
-         ]
-        }
-       },
-       {
-        "des": true
-       }
-      ]
-     }
-    },
-    {
      "to": "q1",
      "hide": true,
      "label": {
@@ -1149,17 +1122,6 @@
       "not": {
        "has": "hyb"
       }
-     }
-    },
-    {
-     "to": "z3x",
-     "hide": true,
-     "label": {
-      "kr": "빗나간 훼손 옵션 제거",
-      "en": "Remove the missed desecration"
-     },
-     "if": {
-      "des": true
      }
     }
    ],
@@ -1436,7 +1398,507 @@
      }
     },
     {
+     "to": "k4x",
+     "hide": true,
+     "label": {
+      "kr": "빗나간 옵션 레벨이 높음 — 빛의 징조로 제거",
+      "en": "The miss is high level: Omen of Light removes it"
+     },
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "eatk"
+        }
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "has": "hyb"
+          },
+          {
+           "has": "proj"
+          },
+          {
+           "has": "arr"
+          },
+          {
+           "has": "cdm"
+          }
+         ]
+        }
+       },
+       {
+        "des": true
+       }
+      ]
+     }
+    },
+    {
+     "to": "k2",
+     "hide": true,
+     "label": {
+      "kr": "자리 막기가 지워짐 — 다시 징표",
+      "en": "Blocker gone: Mark again"
+     },
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "eatk"
+        }
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "has": "hyb"
+          },
+          {
+           "has": "proj"
+          },
+          {
+           "has": "arr"
+          },
+          {
+           "has": "cdm"
+          }
+         ]
+        }
+       }
+      ]
+     }
+    },
+    {
+     "to": "q1w",
+     "hide": true,
+     "label": {
+      "kr": "접두 잡옵 교체",
+      "en": "Replace the junk prefix"
+     },
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "hyb"
+        }
+       },
+       {
+        "full": "p"
+       }
+      ]
+     }
+    },
+    {
+     "to": "q1",
+     "hide": true,
+     "label": {
+      "kr": "접두 세번째 옵션",
+      "en": "Third prefix"
+     },
+     "if": {
+      "not": {
+       "has": "hyb"
+      }
+     }
+    },
+    {
+     "to": "u1",
+     "hide": true,
+     "label": {
+      "kr": "접미 잡옵",
+      "en": "A junk suffix"
+     },
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "proj"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     }
+    },
+    {
+     "to": "u2",
+     "hide": true,
+     "label": {
+      "kr": "투사체 +4가 지워짐",
+      "en": "+4 projectiles gone"
+     },
+     "if": {
+      "not": {
+       "has": "proj"
+      }
+     }
+    },
+    {
+     "to": "u3",
+     "hide": true,
+     "label": {
+      "kr": "접미 잡옵",
+      "en": "A junk suffix"
+     },
+     "if": {
+      "all": [
+       {
+        "not": {
+         "rune": "Serle"
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     }
+    },
+    {
+     "to": "u4",
+     "hide": true,
+     "label": {
+      "kr": "세를의 승리",
+      "en": "Serle’s Triumph"
+     },
+     "if": {
+      "not": {
+       "rune": "Serle"
+      }
+     }
+    },
+    {
+     "to": "u5",
+     "hide": true,
+     "label": {
+      "kr": "접미 잡옵",
+      "en": "A junk suffix"
+     },
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 4
+      }
+     }
+    },
+    {
+     "to": "u6",
+     "hide": true,
+     "label": {
+      "kr": "접미 옵션 교체",
+      "en": "Replace a suffix"
+     },
+     "if": {
+      "not": {
+       "all": [
+        {
+         "has": "arr"
+        },
+        {
+         "has": "cdm"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "to": "z1",
+     "hide": true,
+     "label": {
+      "kr": "자리 막기 제거",
+      "en": "Remove the blocker"
+     },
+     "if": {
+      "has": "eatk"
+     }
+    },
+    {
+     "to": "ok",
+     "hide": true,
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
+     "if": {
+      "has": "flat"
+     }
+    },
+    {
      "to": "z3x",
+     "hide": true,
+     "label": {
+      "kr": "빗나간 훼손 옵션 제거",
+      "en": "Remove the missed desecration"
+     },
+     "if": {
+      "des": true
+     }
+    },
+    {
+     "to": "z2",
+     "hide": true,
+     "label": {
+      "kr": "접두 세번째 옵션(훼손)",
+      "en": "Third prefix (desecrated)"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k4x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    9
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 훼손 옵션 제거",
+    "en": "Remove the missed desecration"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pp"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "has": "eatk"
+        }
+       },
+       {
+        "not": {
+         "famBlock": "eatk"
+        }
+       }
+      ]
+     },
+     "to": "k2",
+     "label": {
+      "kr": "다시 징표",
+      "en": "Mark again"
+     }
+    },
+    {
+     "to": "k1",
+     "hide": true,
+     "label": {
+      "kr": "물리 피해 % 지워짐 — 카오스부터",
+      "en": "% physical gone: back to Chaos"
+     },
+     "if": {
+      "not": {
+       "has": "pp"
+      }
+     }
+    },
+    {
+     "to": "k3",
+     "hide": true,
+     "label": {
+      "kr": "징표 훼손",
+      "en": "Desecrate the Mark"
+     },
+     "if": {
+      "any": [
+       {
+        "has": "mkp"
+       },
+       {
+        "has": "mks"
+       }
+      ]
+     }
+    },
+    {
+     "to": "z3",
+     "hide": true,
+     "label": {
+      "kr": "훼손 옵션 확인",
+      "en": "Reveal"
+     },
+     "if": {
+      "all": [
+       {
+        "unrevSide": "p"
+       },
+       {
+        "all": [
+         {
+          "has": "hyb"
+         },
+         {
+          "has": "proj"
+         },
+         {
+          "has": "arr"
+         },
+         {
+          "has": "cdm"
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "to": "k4",
+     "hide": true,
+     "label": {
+      "kr": "훼손 옵션 확인",
+      "en": "Reveal"
+     },
+     "if": {
+      "unrevSide": "p"
+     }
+    },
+    {
+     "to": "k4w",
+     "hide": true,
+     "label": {
+      "kr": "공격 스킬의 원소 피해 낮은 티어가 자리를 차지 — 절사로 교체",
+      "en": "A low tier attack elemental holds the family: Whittle it away"
+     },
+     "if": {
+      "all": [
+       {
+        "famBlock": "eatk"
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "has": "hyb"
+          },
+          {
+           "has": "proj"
+          },
+          {
+           "has": "arr"
+          },
+          {
+           "has": "cdm"
+          }
+         ]
+        }
+       }
+      ]
+     }
+    },
+    {
+     "to": "k4w",
+     "hide": true,
+     "label": {
+      "kr": "공격 스킬의 원소 피해가 일반 옵션으로 붙음 — 절사로 교체",
+      "en": "Attack elemental landed as a normal option: Whittle it away"
+     },
+     "if": {
+      "all": [
+       {
+        "has": "eatk"
+       },
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "has": "hyb"
+          },
+          {
+           "has": "proj"
+          },
+          {
+           "has": "arr"
+          },
+          {
+           "has": "cdm"
+          }
+         ]
+        }
+       }
+      ]
+     }
+    },
+    {
+     "to": "k4w",
+     "hide": true,
+     "label": {
+      "kr": "빗나간 훼손 옵션 교체",
+      "en": "Replace the missed desecration"
+     },
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "eatk"
+        }
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "has": "hyb"
+          },
+          {
+           "has": "proj"
+          },
+          {
+           "has": "arr"
+          },
+          {
+           "has": "cdm"
+          }
+         ]
+        }
+       },
+       {
+        "des": true
+       },
+       {
+        "not": {
+         "whittleSafe": {
+          "tag": "mks",
+          "keepDes": true
+         }
+        }
+       }
+      ]
+     }
+    },
+    {
+     "to": "k4x",
      "hide": true,
      "label": {
       "kr": "빗나간 옵션 레벨이 높음 — 빛의 징조로 제거",
@@ -1825,6 +2287,21 @@
      }
     },
     {
+     "if": {
+      "all": [
+       {
+        "has": "pp"
+       },
+       {
+        "has": "eatk"
+       }
+      ]
+     },
+     "to": "q1w",
+     "res": "fail",
+     "hide": true
+    },
+    {
      "to": "k1",
      "hide": true,
      "label": {
@@ -2015,7 +2492,7 @@
      }
     },
     {
-     "to": "z3x",
+     "to": "k4x",
      "hide": true,
      "label": {
       "kr": "빗나간 옵션 레벨이 높음 — 빛의 징조로 제거",
@@ -2616,7 +3093,7 @@
      }
     },
     {
-     "to": "z3x",
+     "to": "k4x",
      "hide": true,
      "label": {
       "kr": "빗나간 옵션 레벨이 높음 — 빛의 징조로 제거",
@@ -3486,7 +3963,7 @@
      }
     },
     {
-     "to": "z3x",
+     "to": "k4x",
      "hide": true,
      "label": {
       "kr": "빗나간 옵션 레벨이 높음 — 빛의 징조로 제거",
@@ -4362,7 +4839,7 @@
      }
     },
     {
-     "to": "z3x",
+     "to": "k4x",
      "hide": true,
      "label": {
       "kr": "빗나간 옵션 레벨이 높음 — 빛의 징조로 제거",
@@ -4689,7 +5166,8 @@
     "k2",
     "k3",
     "k4",
-    "k4w"
+    "k4w",
+    "k4x"
    ],
    "kr": "자리 막기",
    "en": "Blocker"

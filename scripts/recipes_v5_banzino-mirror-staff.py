@@ -6,11 +6,11 @@ bz_spd,bz_l7,bz_cast,bz_crit,bz_light,bz_xl,bz_mark=3,16,25,26,7,34,56
 BZ_PRE=[{'gi':bz_light,'tmax':1},{'gi':bz_xl,'tmax':1}]
 LIGHT_BZ={'cur':'Orb_of_Annulment','omens':['Omen_of_Light']}
 R.append({
- 'id':'banzino-mirror-staff','cls':c,'base':base(c,'Voltaic Staff'),'ilvl':82,'difficulty':5,'budget':'mirror',
+ 'id':'banzino-mirror-staff','cls':c,'base':base(c,'Voltaic Staff'),'ilvl':81,'difficulty':5,'budget':'mirror',
  'buildTags':[K('번개','Lightning'),K('주문','Spell'),K('치명타','Critical')],'patch':'0.5.5','adaptedFrom':'0.4','created':'2026-11-11','author':BZN,
  'source':{'url':'https://www.youtube.com/watch?v=vT482uJFESs','title':'[패스 오브 엑자일 2] 미러 지팡이 제작 방법','channel':'반지깎는노인'},
  'title':K('주문 피해 분열 + 번개 주문 +7 + 시전 속도 + 주문 치명타 + 번개 피해 접두 2개','fractured spell damage + lightning spells +7 + cast speed + spell crit + two lightning prefixes'),
- 'start':{'rar':'rare','mods':[{'gi':bz_spd,'tmax':1,'fr':True},{'junk':'p'},{'junk':'p'},{'junk':'s'},{'junk':'s'},{'junk':'s'}]},
+ 'start':{'rar':'rare','quality':20,'mods':[{'gi':bz_spd,'tmax':1,'fr':True},{'junk':'p'},{'junk':'p'},{'junk':'s'},{'junk':'s'},{'junk':'s'}]},
  'phases':[{'id':'suf','kr':'접미','en':'Suffixes'},{'id':'pre','kr':'접두','en':'Prefixes'}],
  'nodes':[
   {'id':'m0','phase':'suf','do':'base','cost':'base','ts':'5:38','note':K('주문 피해 % 1티어 분열 전도성 지팡이, 옵션 6개가 모두 찬 상태.','A Voltaic Staff with fractured T1 spell damage and all six slots filled.')},

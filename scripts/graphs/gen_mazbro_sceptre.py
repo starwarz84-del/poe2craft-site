@@ -31,22 +31,23 @@ g = {
           '접미는 완벽한 엑잘 하나씩, 빗나가면 우측 결정화 + 군왕의 합금·우측 결정화 + 심연의 에센스(징표 → 보존된 턱뼈 → 심연의 메아리 공개)·우측 소멸의 징조 + 소멸의 오브(48:40~57:52) → '
           '마나 재생 속도 1티어(훼손 공개 57:45)·아군 시전 속도 1티어(완벽한 엑잘 57:52)·장착 증강 효과(합금)로 완성. '
           '신성한 오브(8:40·9:30 분열 전 아군 피해 119%, 58:50 마무리)·바알 신비학자의 식각기·완벽한 유동체·완벽한 쥬얼러 오브(59:20~59:40)는 정책 14장대로 뺌. '
-          '내부 결정: 정신력은 영상 성공 회차의 정신력 증가 1티어만(영상 계획은 정신력·마나 복합 1티어도 받음), 접미는 영상 완성품의 마나 재생 속도·시전 속도만 성공으로 셈'
-          '(49:15 존재 범위 1티어는 영상에서도 결국 지워짐).'),
+          '사용자 결정 11-13: 영상 계획대로 정신력은 정신력 증가·정신력과 마나 최대치 1티어 중 먼저 뜬 것, 접미는 마나 재생 속도·시전 속도·존재 범위·치명타 확률·치명타 피해 1티어 중 둘(3:00·16:00 계획). 상자·왼쪽 칸은 성공 회차 옵션.'),
  'params': {'pT': {'kr': '목표 티어', 'en': 'Target tier', 'values': {'1': K('1티어', 'T1')}}},
  'strategies': [{'id': 'high', 'params': {'pT': 1}}],
  'versions': [{'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'pT': 1}, 'tier': 'high',
                'desc': K('영상: 접두 1티어 2개 + 접미 1티어 2개 + 장착 증강 효과', 'Video: two T1 prefixes, two T1 suffixes + socketed augment effect')}],
  'tags': {'dmg': {'gi': 10, 'tmax': 1}, 'mana': {'gi': 3, 'tmax': 1}, 'sp': {'gi': 19, 'tmax': 1},
-          'regen': {'gi': 13, 'tmax': 1}, 'cs': {'gi': 15, 'tmax': 1}, 'aug': {'gi': 34}, 'mkS': {'gi': 28},
-          'sg': {'anyOf': ['regen', 'cs'], 'label': K('마나 재생 속도·시전 속도 1티어', 'T1 mana regeneration or cast speed')},
-          'keepS': {'anyOf': ['regen', 'cs', 'aug']}},
- 'require': {'all': [{'has': 'dmg'}, {'has': 'mana'}, {'has': 'sp'}, {'has': 'aug'}, {'has': 'regen'}, {'has': 'cs'}]},
+          'hyb': {'gi': 20, 'tmax': 1}, 'regen': {'gi': 13, 'tmax': 1}, 'cs': {'gi': 15, 'tmax': 1}, 'aoe': {'gi': 21, 'tmax': 1},
+          'cr': {'gi': 16, 'tmax': 1}, 'cd': {'gi': 17, 'tmax': 1}, 'aug': {'gi': 34}, 'mkS': {'gi': 28},
+          'spi': {'anyOf': ['sp', 'hyb'], 'label': K('정신력 증가·정신력과 마나 최대치 1티어', 'T1 increased Spirit or Spirit and Mana')},
+          'sg': {'anyOf': ['regen', 'cs', 'aoe', 'cr', 'cd'], 'label': K('마나 재생 속도·시전 속도·존재 범위·치명타 확률·치명타 피해 1티어', 'T1 mana regeneration, cast speed, presence area, critical chance or critical damage')},
+          'keepS': {'anyOf': ['regen', 'cs', 'aoe', 'cr', 'cd', 'aug']}},   # 사용자 결정 11-13: 영상 계획대로 넓게, 먼저 뜬 것
+ 'require': {'all': [{'has': 'dmg'}, {'has': 'mana'}, {'has': 'spi'}, {'has': 'aug'}, {'count': {'tag': 'sg', 'min': 2}}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'h0',
  'finals': [{'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-             'lines': [{'tag': 'dmg', 'fr': True}, {'tag': 'mana'}, {'tag': 'sp'}, {'tag': 'aug', 'ess': True}, {'tag': 'regen', 'des': True}, {'tag': 'cs'}]}],
+             'lines': [{'tag': 'dmg', 'fr': True}, {'tag': 'mana'}, {'tag': 'spi'}, {'tag': 'aug', 'ess': True}, {'tag': 'sg'}, {'tag': 'sg'}]}],   # 사용자 결정 11-13: fincheck가 걸리는 줄은 anyOf label로(성공 회차는 정신력 증가·마나 재생 속도(훼손)·시전 속도)
  'finalItem': {'quality': 20, 'sockets': 2},
 }
 
@@ -67,7 +68,7 @@ def RS(vis):
     js = {'junk': {'side': 's', 'tag': 'keepS'}}
     out = []
     for e in [{'if': {'unrevSide': 's'}, 'to': 'b3'}, {'if': {'has': 'mkS'}, 'to': 'b2'},
-              {'if': {'all': [{'has': 'aug'}, {'has': 'regen'}, {'has': 'cs'}]}, 'to': 'ok'},
+              {'if': {'all': [{'has': 'aug'}, {'count': {'tag': 'sg', 'min': 2}}]}, 'to': 'ok'},
               {'if': {'all': [{'any': [js, {'full': 's'}]}, {'not': {'has': 'aug'}}]}, 'to': 'aL'},
               {'if': {'all': [js, {'des': False}]}, 'to': 'mA'},
               {'if': {'any': [js, {'full': 's'}]}, 'to': 'da'},
@@ -111,14 +112,14 @@ A(id='c1', kind='act', group='main', pos=[0, 9.4], act='chaos', cur='Chaos_Orb',
   goal=K('접두 마나 최대치 1티어', 'T1 maximum Mana prefix'), show=['mana'],
   edges=[{'if': {'has': 'mana'}, 'to': 'e1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}], item=[DM, MA, AS])
 A(id='e1', kind='act', group='main', pos=[0, 10.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'],
-  label=K('엑잘', 'Exalt'), goal=K('접두 정신력 증가 1티어', 'T1 increased Spirit prefix'), show=['sp'],
-  edges=[{'if': {'has': 'sp'}, 'to': 's1', 'res': 'ok'}, {'to': 'e1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[DM, MA, SP, AS])
+  label=K('엑잘', 'Exalt'), goal=K('접두 정신력 증가 1티어 — 정신력과 마나 최대치 1티어와 함께 먼저 뜬 것', 'T1 increased Spirit prefix: or T1 Spirit and Mana, whichever lands first'), show=['sp', 'hyb'],
+  edges=[{'if': {'has': 'spi'}, 'to': 's1', 'res': 'ok'}, {'to': 'e1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[DM, MA, SP, AS])
 A(id='e1x', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
   target=K('빗나간 접두 지우기 — 마나 최대치가 지워지면 카오스부터', 'Remove the missed prefix: back to Chaos if maximum Mana goes'),
   edges=[{'if': {'not': {'has': 'mana'}}, 'to': 'c1', 'res': 'fail', 'label': K('마나 최대치가 지워짐', 'Maximum Mana gone')},
          {'to': 'e1', 'res': 'ok', 'label': K('다시 엑잘', 'Exalt again')}])
 A(id='s1', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접미 옵션 하나 (접두가 꽉 차 징조 없음)', 'One suffix (prefixes are full, no omen)'), show=['regen', 'cs'],
+  goal=K('접미 옵션 하나 — 좋은 접미 다섯 중 먼저 뜬 것', 'One suffix: whichever of the five good suffixes lands first'), show=['regen', 'cs', 'aoe', 'cr', 'cd'],
   edges=RS({'ok': {'res': 'ok'}, 'aL': {'res': 'fail'}, 'mA': {'res': 'fail'}, 'da': {'res': 'fail'}}), item=[DM, MA, SP, CS, AS])
 A(id='aL', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Sovereign_Alloy', ess='aug', omens=['Omen_of_Dextral_Crystallisation'],
   label=K('합금', 'Alloy'), goal=K('빗나간 접미를 지우고 장착 증강 아이템 효과', 'The missed suffix goes for socketed augment effect'),
@@ -132,7 +133,7 @@ A(id='b2', kind='act', group='main', pos=[1, 13.4], act='desecrate', cur='Preser
   goal=K('접미 징표 훼손', 'Desecrate the suffix Mark'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=RS({'b3': {}}), item=[DM, MA, SP, AUG, UN('s'), AS])
 A(id='b3', kind='act', group='main', pos=[1, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='sg', label=K('공개', 'Reveal'),
-  goal=K('접미 마나 재생 속도·시전 속도 1티어 — 빗나가면 자리 막기', 'T1 mana regeneration or cast speed suffix: a miss stays as the blocker'), show=['regen', 'cs'],
+  goal=K('접미 좋은 옵션 1티어 — 빗나가면 자리 막기', 'A good T1 suffix: a miss stays as the blocker'), show=['regen', 'cs', 'aoe'],
   edges=RS({'s1': {}}), item=[DM, MA, SP, AUG, RG, AS])
 A(id='da', kind='act', group='main', pos=[2, 11.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=ANN, goal=ANN,
   target=K('접미 하나 지우기', 'Remove one suffix'), edges=RS({'s1': {'res': 'ok'}}))
@@ -141,12 +142,12 @@ g['nodes'] = N
 
 g['loops'] = [
  {'id': 'L1', 'nodes': ['s1', 'aL', 'mA', 'b2', 'b3', 'da'], 'kr': '접미 세 자리', 'en': 'Three suffixes', 'fold': True,
-  'goal': K('접미 마나 재생 속도 1티어 + 시전 속도 1티어 + 장착 증강 아이템 효과', 'Suffixes: T1 mana regeneration, T1 cast speed + socketed augment effect'),
+  'goal': K('접미 좋은 옵션 1티어 2개 + 장착 증강 아이템 효과 — 마나 재생 속도·시전 속도·존재 범위·치명타 중 먼저 뜬 것', 'Two good T1 suffixes + socketed augment effect: whichever of mana regeneration, cast speed, presence area or critical lands first'),
   'steps': [K('완벽한 엑잘로 접미 하나 — 남은 옵션 중 먼저 뜬 것', 'Perfect Exalt one suffix: whichever wanted option lands first') | {'node': 's1'},
             K('빗나감에 장착 증강 효과가 없으면 우측 결정화 + 군왕의 합금', 'On a miss without the augment effect: Dextral Crystallisation + Sovereign Alloy') | {'node': 'aL'},
             K('훼손 옵션이 없으면 우측 결정화 + 심연의 에센스로 징표', 'No desecration yet: Dextral Crystallisation + Essence of the Abyss for the Mark') | {'node': 'mA'},
             K('보존된 턱뼈로 징표 훼손', 'Preserved Jawbone on the Mark') | {'node': 'b2'},
-            K('심연의 메아리 공개 — 마나 재생 속도·시전 속도가 아니면 자리 막기', 'Reveal with Abyssal Echoes: anything else stays as the blocker') | {'node': 'b3'},
+            K('심연의 메아리 공개 — 좋은 접미가 아니면 자리 막기', 'Reveal with Abyssal Echoes: anything else stays as the blocker') | {'node': 'b3'},
             K('그 밖의 빗나감은 우측 소멸의 징조 + 소멸의 오브', 'Any other miss: Omen of Dextral Annulment + Orb of Annulment') | {'node': 'da'}],
   'item': [DM, MA, SP, AUG, RG, CS, AS]},
 ]

@@ -34,8 +34,8 @@ def DB(s, gi, tags, m='n', ti=0):   # DB 옵션 문구
     t = D['groups'][gi]['t'][ti]
     return L(s, t[4].replace('\n', ' / '), t[5].replace('\n', ' / '), m, tags)
 
-KOL = L('r', '콜르의 사냥', 'Kolr’s Hunt', 'r')
-SER = L('r', '세를의 승리', 'Serle’s Triumph', 'r')
+KOL = L('r', '콜르의 사냥', "Kolr's Hunt", 'r')
+SER = L('r', '세를의 승리', "Serle's Triumph", 'r')
 PS = DB('p', 73, ['ps1'])          # 투사체 속도 (31—40)% 증가 1티어
 PD = DB('p', 71, ['pd1'])          # 투사체 피해 (31—40)% 증가 1티어
 MF = DB('p', 7, ['mf1'])           # 마나 최대치 +(105—124) 1티어
@@ -46,8 +46,9 @@ PI = DB('s', 75, ['pie1'], 'd')    # (51—100)%의 확률로 적 관통 1티어
 RM = DB('s', 65, ['rem'])          # 잔류물을 (35—50)% 더 먼 곳에서 획득 가능(팽창하는 합금)
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')
-MK = L('s', '심연의 군주의 징표', 'Mark of the Abyssal Lord', 'n')
-FIRST = [K('투사체 피해·투사체 속도·마나 최대치 1티어 중 먼저 뜬 것', 'Whichever of T1 projectile damage, projectile speed or maximum mana lands first')]
+MK = L('s', '심연의 군주의 징표', 'Mark of the Abyssal Lord', 'n', ['mkS'])
+FIRST = [K('투사체 피해·투사체 속도·세 번째 접두 1티어 중 먼저 뜬 것', 'Whichever of T1 projectile damage, projectile speed or a third prefix lands first')]
+THIRD = K('공격 시 피해 추가·에너지 보호막·마나 최대치 1티어 중 먼저 뜬 것', 'Whichever of T1 flat attack damage, energy shield or maximum mana lands first')
 REST = [K('남은 옵션 중 먼저 뜬 것', 'Whichever of the rest lands first')]
 ANN = K('소멸의 오브 사용', 'Use an Orb of Annulment')
 
@@ -63,12 +64,14 @@ g = {
                'desc': K('영상: 접두 3개·치명타 확률·관통 모두 1티어', 'Video: three prefixes, crit chance and pierce all T1')}],
  'tags': {
    'proj': {'gi': 82}, 'pd1': {'gi': 71, 'tmax': 1}, 'ps1': {'gi': 73, 'tmax': 1}, 'mf1': {'gi': 7, 'tmax': 1},
-   'pgood': {'anyOf': ['pd1', 'ps1', 'mf1'], 'label': K('투사체 피해·투사체 속도·마나 최대치 1티어', 'T1 projectile damage, projectile speed or maximum mana')},
+   'es1': {'gi': 8, 'tmax': 1}, 'esp1': {'gi': 9, 'tmax': 1}, 'ph1': {'gi': 13, 'tmax': 1}, 'fi1': {'gi': 15, 'tmax': 1}, 'co1': {'gi': 17, 'tmax': 1}, 'li1': {'gi': 19, 'tmax': 1},
+   'third': {'anyOf': ['ph1', 'fi1', 'co1', 'li1', 'es1', 'esp1', 'mf1'], 'label': K('공격 시 피해 추가·에너지 보호막·마나 최대치 1티어', 'T1 flat attack damage, energy shield or maximum mana')},
+   'pgood': {'anyOf': ['pd1', 'ps1', 'third'], 'label': K('투사체 피해·투사체 속도·세 번째 접두 1티어', 'T1 projectile damage, projectile speed or a third prefix')},
    'cr1': {'gi': 74, 'tmax': 1}, 'pie1': {'gi': 75, 'tmax': 1}, 'pieAny': {'gi': 75},
    'rem': {'gi': 65}, 'mkS': {'gi': 61},
  },
- 'conds': {'pDone': {'count': {'tag': 'pgood', 'min': 3}}, 'sClean': {'sideLt': {'side': 's', 'n': 2}}},
- 'require': {'all': [{'has': 'proj'}, {'has': 'pd1'}, {'has': 'ps1'}, {'has': 'mf1'}, {'has': 'cr1'}, {'has': 'pie1'}, {'has': 'rem'}]},
+ 'conds': {'pDone': {'all': [{'has': 'pd1'}, {'has': 'ps1'}, {'has': 'third'}]}, 'sClean': {'sideLt': {'side': 's', 'n': 2}}},
+ 'require': {'all': [{'has': 'proj'}, {'has': 'pd1'}, {'has': 'ps1'}, {'has': 'third'}, {'has': 'cr1'}, {'has': 'pie1'}, {'has': 'rem'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]}, {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0', 'xsub': ["Kolr's Hunt"], 'xroll': True,
  'finalItem': {'quality': 25, 'sockets': 2, 'exceptional': True},
@@ -82,8 +85,8 @@ A(id='b0', kind='base', group='prep', pos=[0, 0], next='pk', start={'rar': 'norm
   label=K('특출난 사이렌비늘 장갑 구입 (노멀, 아이템 레벨 75 이상, 룬 소켓 2개)', 'Buy exceptional Sirenscale Gloves (normal, item level 75+, two sockets)'), item=[])
 A(id='hq', kind='side', group='prep', pos=[1, 0.5], attach=['b0', 'pk'], cur='Vaal_Armourers_Infuser',
   goal=K('퀄리티 25% 이상, 비용 미포함', 'Quality 25%+, not costed'), label=K('퀄리티', 'Quality'))
-A(id='pk', kind='act', group='prep', pos=[0, 1], act='rune', rune=K('콜르의 사냥', 'Kolr’s Hunt'),
-  goal=K('콜르의 사냥 장착', 'Socket Kolr’s Hunt'), showText=[K('콜르 옵션이 붙을 수 있음', 'Kolr lines can roll')], label=K('룬', 'Rune'),
+A(id='pk', kind='act', group='prep', pos=[0, 1], act='rune', rune=K('콜르의 사냥', "Kolr's Hunt"),
+  goal=K('콜르의 사냥 장착', "Socket Kolr's Hunt"), showText=[K('콜르 옵션이 붙을 수 있음', 'Kolr lines can roll')], label=K('룬', 'Rune'),
   edges=[{'to': 'm1'}], item=[KOL])
 A(id='m1', kind='act', group='prep', pos=[0, 2], act='transmute', cur='Perfect_Orb_of_Transmutation',
   label=K('매직 첫번째 옵션', 'First magic option'), goal=K('매직으로', 'Make it magic'), showText=[K('옵션 1개', 'One option')],
@@ -107,8 +110,8 @@ A(id='xj', kind='exit', group='prep', pos=[1, 6], simTo='b0', variant='fail', la
 A(id='m6', kind='cleanup', group='prep', pos=[0, 7], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'ms'}], item=I0)
 A(id='ms', kind='mark', group='main', pos=[0, 8], next='r1', label=K('아이템 제작 시작', 'Item crafting starts'), item=I0)
-A(id='r1', kind='act', group='main', pos=[0, 9], act='rune', rune=K('세를의 승리', 'Serle’s Triumph'), slots={'s': 1},
-  goal=K('세를의 승리 장착', 'Socket Serle’s Triumph'), showText=[K('접미 옵션 4개', 'Four suffixes')], label=K('룬', 'Rune'),
+A(id='r1', kind='act', group='main', pos=[0, 9], act='rune', rune=K('세를의 승리', "Serle's Triumph"), slots={'s': 1},
+  goal=K('세를의 승리 장착', "Socket Serle's Triumph"), showText=[K('접미 옵션 4개', 'Four suffixes'), K('영상은 분열 전 장착', 'The video sockets it before the fracture')], label=K('룬', 'Rune'),
   edges=[{'to': 'c1'}], item=[KOL, SER, PS, PR])
 A(id='c1', kind='act', group='main', pos=[0, 10], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'), goal=K('접두 첫번째 옵션', 'First prefix'),
   show=['ps1'], showText=FIRST, skipIf={'has': 'pgood'}, skipTo='e1',
@@ -124,7 +127,7 @@ A(id='e1x', kind='act', group='main', pos=[1, 11], act='annul', cur='Orb_of_Annu
          {'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'e1', 'res': 'ok', 'label': K('접두 빈자리 2개 — 상위 찬미 + 좌측 찬미', 'Two prefixes free: Greater + Sinistral Exaltation')},
          {'to': 'e2', 'res': 'ok', 'label': K('접두 빈자리 1개 — 좌측 찬미', 'One prefix free: Sinistral Exaltation')}])
 A(id='e2', kind='act', group='main', pos=[1, 12], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'],
-  label=K('엑잘', 'Exalt'), goal=K('접두 세번째 옵션', 'Third prefix'), show=['mf1'], showText=REST,
+  label=K('엑잘', 'Exalt'), goal=K('접두 세번째 옵션', 'Third prefix'), show=['mf1'], showText=[THIRD],
   edges=[{'if': {'ref': 'pDone'}, 'to': 's1', 'res': 'ok'}, {'to': 'e1x', 'res': 'fail', 'label': K('빗나감 — 소멸의 오브', 'Miss: Orb of Annulment')}])
 A(id='kz', kind='cleanup', group='main', pos=[2, 11], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('분열 + 옵션 1개만 남기기', 'Keep the fracture + one option'), edges=[{'to': 'c1'}])
@@ -135,10 +138,10 @@ A(id='s1', kind='act', group='main', pos=[0, 13], act='exalt', cur='Perfect_Exal
   item=I_S + [CR, J('s')])
 A(id='mA', kind='act', group='main', pos=[1, 13], act='essence', cur='Essence_of_the_Abyss', omens=['Omen_of_Dextral_Crystallisation'], ess='mkS', mark=True,
   label=K('심연', 'Abyss'), goal=K('접미 잡옵을 지우고 심연의 군주의 징표', 'A junk suffix goes for the Mark of the Abyssal Lord'),
-  showText=[{'s': 's', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=[{'to': 'mB'}])
+  showText=[{'s': 's', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=[{'to': 'mB'}], item=I_S + [MK])
 A(id='mB', kind='act', group='main', pos=[1, 14], act='desecrate', cur='Preserved_Rib', fromMark=True,
   label=K('훼손', 'Desecrate'), goal=K('접미 징표 훼손', 'Desecrate the suffix Mark'),
-  showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'mL'}])
+  showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'mL'}], item=I_S + [UN('s')])
 A(id='mL', kind='act', group='main', pos=[1, 15], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated modifier'),
   edges=[{'if': {'ref': 'sClean'}, 'to': 's1', 'res': 'ok', 'label': K('접미 정리 끝 — 다시 엑잘', 'Suffixes clear: exalt again')},
@@ -166,7 +169,7 @@ g['nodes'] = N
 g['loops'] = [
   {'id': 'L0', 'nodes': ['m2', 'm2x'], 'kr': '투사체 +2 맞추기', 'en': '+2 projectile'},
   {'id': 'L1', 'nodes': ['e1', 'e1x', 'e2'], 'kr': '접두 1티어 3개', 'en': 'Three T1 prefixes', 'fold': True,
-   'goal': K('접두 투사체 피해·투사체 속도·마나 최대치 1티어, 남은 옵션 중 먼저 뜬 것', 'T1 projectile damage, projectile speed and maximum mana, whichever lands first'),
+   'goal': K('접두 투사체 피해·투사체 속도 1티어 + 세 번째 접두(공격 시 피해 추가·에너지 보호막·마나 최대치 중 먼저 뜬 것) 1티어, 남은 옵션 중 먼저 뜬 것', 'T1 projectile damage and speed + a T1 third prefix (flat attack damage, energy shield or maximum mana), whichever lands first'),
    'steps': [K('상위 찬미 + 좌측 찬미 + 완벽한 엑잘티드 오브로 접두 2개', 'Greater + Sinistral Exaltation + Perfect Exalted Orb for two prefixes') | {'node': 'e1'},
              K('빗나간 접두는 징조 없는 소멸의 오브로 지움', 'A missed prefix goes with a plain Orb of Annulment') | {'node': 'e1x'},
              K('접두 빈자리가 1개면 좌측 찬미 + 완벽한 엑잘티드 오브', 'One prefix free: Sinistral Exaltation + Perfect Exalted Orb') | {'node': 'e2'}],
@@ -184,6 +187,6 @@ g['loops'] = [
   {'id': 'L3', 'nodes': ['d1', 'd2', 'd2x'], 'kr': '훼손 공개', 'en': 'Reveal'},
 ]
 g['finals'] = [{'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-                'lines': [{'tag': 'pd1'}, {'tag': 'ps1'}, {'tag': 'mf1'}, {'tag': 'proj', 'fr': True}, {'tag': 'cr1'}, {'tag': 'pie1', 'des': True}, {'tag': 'rem', 'ess': True}]}]
+                'lines': [{'tag': 'pd1'}, {'tag': 'ps1'}, {'tag': 'third'}, {'tag': 'proj', 'fr': True}, {'tag': 'cr1'}, {'tag': 'pie1', 'des': True}, {'tag': 'rem', 'ess': True}]}]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

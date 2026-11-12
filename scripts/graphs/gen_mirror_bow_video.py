@@ -67,7 +67,7 @@ def route(skip=()):
          ({'all': [{'famBlock': 'eatk'}, {'not': FIN}]}, 'k4w', K('공격 스킬의 원소 피해 낮은 티어가 자리를 차지 — 절사로 교체', 'A low tier attack elemental holds the family: Whittle it away')),
          ({'all': [{'has': 'eatk'}, {'not': {'des': True}}, {'not': FIN}]}, 'k4w', K('공격 스킬의 원소 피해가 일반 옵션으로 붙음 — 절사로 교체', 'Attack elemental landed as a normal option: Whittle it away')),
          ({'all': [{'not': {'has': 'eatk'}}, {'not': FIN}, {'des': True}, DESLOW]}, 'k4w', K('빗나간 훼손 옵션 교체', 'Replace the missed desecration')),
-         ({'all': [{'not': {'has': 'eatk'}}, {'not': FIN}, {'des': True}]}, 'z3x', K('빗나간 옵션 레벨이 높음 — 빛의 징조로 제거', 'The miss is high level: Omen of Light removes it')),
+         ({'all': [{'not': {'has': 'eatk'}}, {'not': FIN}, {'des': True}]}, 'k4x', K('빗나간 옵션 레벨이 높음 — 빛의 징조로 제거', 'The miss is high level: Omen of Light removes it')),
          ({'all': [{'not': {'has': 'eatk'}}, {'not': FIN}]}, 'k2', K('자리 막기가 지워짐 — 다시 징표', 'Blocker gone: Mark again')),
          ({'all': [{'not': {'has': 'hyb'}}, {'full': 'p'}]}, 'q1w', K('접두 잡옵 교체', 'Replace the junk prefix')),
          ({'not': {'has': 'hyb'}}, 'q1', K('접두 세번째 옵션', 'Third prefix')),
@@ -142,12 +142,16 @@ A(id='k3', kind='act', group='main', pos=[0, 9], act='desecrate', cur='Ancient_J
 A(id='k4', kind='act', group='main', pos=[0, 10], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='eatk', label=K('공개', 'Reveal'),
   goal=K('접두 두번째 옵션(자리 막기)', 'Second prefix (blocker)'), show=['eatk'],
   edges=[{'if': {'added': 'eatk'}, 'to': 'q1', 'res': 'ok'}, {'if': DESLOW, 'to': 'k4w', 'res': 'fail', 'label': K('빗나감', 'Miss')}]
-        + [e for e in route() if e['to'] in ('z3x', 'k4w', 'k1', 'q1')],
+        + [{'if': {'des': True}, 'to': 'k4x', 'res': 'fail', 'label': K('빗나감 — 레벨이 높은 옵션', 'Miss: a high-level option')}]
+        + [e for e in route() if e['to'] in ('k4w', 'k1', 'q1')],
   item=[PP, BLK, CR])
 A(id='k4w', kind='act', group='main', pos=[1, 10], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
   goal=K('빗나간 훼손 옵션 교체', 'Replace the missed desecration'),
   showText=[K('레벨이 가장 낮은 옵션 교체', 'The lowest-level option is replaced')],
   edges=[{'if': {'all': [{'has': 'pp'}, {'not': {'des': True}}, {'not': {'has': 'eatk'}}]}, 'to': 'k2', 'label': K('다시 징표', 'Mark again')}] + route())
+A(id='k4x', kind='act', group='main', pos=[1, 9], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
+  target=K('빗나간 훼손 옵션 제거', 'Remove the missed desecration'),
+  edges=[{'if': {'all': [{'has': 'pp'}, {'not': {'des': True}}, {'not': {'has': 'eatk'}}, {'not': {'famBlock': 'eatk'}}]}, 'to': 'k2', 'label': K('다시 징표', 'Mark again')}] + route())
 A(id='q1', kind='act', group='main', pos=[0, 11], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 세번째 옵션', 'Third prefix'), show=['hyb'],
   skipIf={'full': 'p'}, skipTo='q1w', skipNote=K('접두가 꽉 차 있으면 건너뜀', 'Skipped when the prefixes are full'),
@@ -155,7 +159,8 @@ A(id='q1', kind='act', group='main', pos=[0, 11], act='exalt', cur='Perfect_Exal
   item=[PP, BLK, HY, CR])
 A(id='q1w', kind='act', group='main', pos=[1, 11], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
   goal=K('접두 세번째 옵션', 'Third prefix'), show=['hyb'],
-  edges=[{'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}, {'has': 'hyb'}]}, 'to': 'u1', 'res': 'ok', 'label': K('물리 피해 + 정확도 1티어', 'T1 physical + accuracy')}] + route())
+  edges=[{'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}, {'has': 'hyb'}]}, 'to': 'u1', 'res': 'ok', 'label': K('물리 피해 + 정확도 1티어', 'T1 physical + accuracy')},
+         {'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}]}, 'to': 'q1w', 'res': 'fail', 'hide': True}] + route())
 A(id='u1', kind='act', group='main', pos=[0, 12], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 잡옵', 'A junk suffix'), showText=[{'s': 's', 'kr': '잡옵', 'en': 'Junk'}],
   skipIf={'not': {'sideLt': {'side': 's', 'n': 2}}}, skipTo='u2', skipNote=K('접미 잡옵이 이미 있으면 건너뜀', 'Skipped if a junk suffix is already there'),
@@ -205,7 +210,7 @@ g['loops'] = [
             K('빗나간 옵션은 소멸의 오브', 'A missed option: Orb of Annulment') | {'node': 'px'},
             K('빈자리는 완벽한 확장의 오브', 'An open slot: Perfect Orb of Augmentation') | {'node': 'pa'}],
   'item': [FLm, CRm]},
- {'id': 'L1', 'nodes': ['k2', 'k3', 'k4', 'k4w'], 'kr': '자리 막기', 'en': 'Blocker'},
+ {'id': 'L1', 'nodes': ['k2', 'k3', 'k4', 'k4w', 'k4x'], 'kr': '자리 막기', 'en': 'Blocker'},
  {'id': 'L2', 'nodes': ['z2', 'z3', 'z3x'], 'kr': '훼손 공개', 'en': 'Reveal'},
 ]
 
