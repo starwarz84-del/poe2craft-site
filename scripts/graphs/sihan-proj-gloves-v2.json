@@ -111,6 +111,17 @@
   },
   "mk": {
    "gi": 56
+  },
+  "pre": {
+   "anyOf": [
+    "phys",
+    "pdmg",
+    "pspd"
+   ],
+   "label": {
+    "kr": "물리 피해 추가·투사체 피해·투사체 속도",
+    "en": "Flat physical, projectile damage or projectile speed"
+   }
   }
  },
  "require": {
@@ -125,13 +136,10 @@
     "has": "cdb"
    },
    {
-    "has": "phys"
-   },
-   {
-    "has": "pdmg"
-   },
-   {
-    "has": "pspd"
+    "count": {
+     "tag": "pre",
+     "min": 3
+    }
    }
   ]
  },
@@ -185,8 +193,8 @@
    },
    "steps": [
     {
-     "kr": "완벽한 엑잘 + 좌측 찬미로 접두 투사체 피해",
-     "en": "Perfect Exalt + Sinistral Exaltation for projectile damage",
+     "kr": "완벽한 엑잘 + 좌측 찬미로 남은 좋은 접두 중 먼저 뜬 것",
+     "en": "Perfect Exalt + Sinistral Exaltation: whichever good prefix lands first",
      "node": "e2"
     },
     {
@@ -211,8 +219,8 @@
     }
    ],
    "worst": {
-    "kr": "물리 피해가 지워지면 소멸의 오브 단계부터",
-    "en": "Flat physical gone: back to the Annulment step",
+    "kr": "좋은 접두가 지워지면 소멸의 오브 단계부터",
+    "en": "Good prefix gone: back to the Annulment step",
     "to": "ec"
    },
    "item": [
@@ -244,15 +252,6 @@
      "m": "n",
      "tags": [
       "pdmg"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "심연의 군주의 징표",
-     "en": "Mark of the Abyssal Lord",
-     "m": "c",
-     "tags": [
-      "mk"
      ]
     },
     {
@@ -1243,7 +1242,7 @@
    "edges": [
     {
      "if": {
-      "added": "phys"
+      "added": "pre"
      },
      "to": "e2",
      "res": "ok"
@@ -1308,6 +1307,12 @@
     }
    ],
    "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "kr": "물리 피해 추가·투사체 피해·투사체 속도 중 먼저 뜬 것",
+     "en": "Whichever of flat physical, projectile damage or speed lands first"
+    }
+   ],
    "show": [
     "phys"
    ],
@@ -1325,7 +1330,8 @@
    ],
    "keep": [
     "add1",
-    "cdb"
+    "cdb",
+    "pre"
    ],
    "maxJunk": 0,
    "label": {
@@ -1386,13 +1392,13 @@
    "edges": [
     {
      "if": {
-      "added": "pdmg"
+      "added": "pre"
      },
      "to": "d1",
      "res": "ok",
      "label": {
-      "kr": "투사체 피해 성공",
-      "en": "Projectile damage hit"
+      "kr": "좋은 접두 성공",
+      "en": "Good prefix hit"
      }
     },
     {
@@ -1469,6 +1475,12 @@
     }
    ],
    "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "kr": "남은 옵션 중 먼저 뜬 것",
+     "en": "Whichever of the rest lands first"
+    }
+   ],
    "show": [
     "pdmg"
    ],
@@ -1486,8 +1498,8 @@
    ],
    "act": "desecrate",
    "goal": {
-    "kr": "징표 훼손 (지울 준비)",
-    "en": "Desecrate the Mark (to clear it)"
+    "kr": "징표 훼손 — 지울 준비",
+    "en": "Desecrate the Mark to clear it"
    },
    "label": {
     "kr": "훼손",
@@ -1621,13 +1633,15 @@
    "edges": [
     {
      "if": {
-      "removed": "phys"
+      "not": {
+       "has": "pre"
+      }
      },
      "to": "ec",
      "res": "fail",
      "label": {
-      "kr": "물리 피해가 지워짐 — 소멸의 오브부터",
-      "en": "Flat physical gone: back to Annulment"
+      "kr": "좋은 접두가 지워짐 — 소멸의 오브부터",
+      "en": "Good prefix gone: back to Annulment"
      }
     },
     {
@@ -1728,7 +1742,7 @@
    "edges": [
     {
      "if": {
-      "added": "pdmg"
+      "added": "pre"
      },
      "to": "d1",
      "res": "ok"
@@ -1807,6 +1821,12 @@
     }
    ],
    "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "kr": "남은 옵션 중 먼저 뜬 것",
+     "en": "Whichever of the rest lands first"
+    }
+   ],
    "show": [
     "pdmg"
    ],
@@ -1824,8 +1844,8 @@
    ],
    "act": "desecrate",
    "goal": {
-    "kr": "징표에 훼손 (한 티어 높게)",
-    "en": "Desecrate the Mark (one tier higher)"
+    "kr": "징표에 훼손 — 한 티어 높게",
+    "en": "Desecrate the Mark, one tier higher"
    },
    "label": {
     "kr": "훼손",
@@ -2041,7 +2061,7 @@
    "edges": [
     {
      "if": {
-      "added": "pspd"
+      "added": "pre"
      },
      "to": "ok",
      "res": "ok"
@@ -2119,7 +2139,13 @@
      ]
     }
    ],
-   "want": "pspd",
+   "showText": [
+    {
+     "kr": "남은 옵션 중 먼저 뜬 것",
+     "en": "Whichever of the rest lands first"
+    }
+   ],
+   "want": "pre",
    "show": [
     "pspd"
    ],
