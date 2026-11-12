@@ -111,7 +111,7 @@ A(id='m6', kind='cleanup', group='prep', pos=[0, 7], keep=[], maxJunk=1, label=A
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'ms'}], item=I0)
 A(id='ms', kind='mark', group='main', pos=[0, 8], next='r1', label=K('아이템 제작 시작', 'Item crafting starts'), item=I0)
 A(id='r1', kind='act', group='main', pos=[0, 9], act='rune', rune=K('세를의 승리', "Serle's Triumph"), slots={'s': 1},
-  goal=K('세를의 승리 장착', "Socket Serle's Triumph"), showText=[K('접미 옵션 4개', 'Four suffixes'), K('영상은 분열 전 장착', 'The video sockets it before the fracture')], label=K('룬', 'Rune'),
+  goal=K('세를의 승리 장착', "Socket Serle's Triumph"), showText=[K('접미 옵션 4개', 'Four suffixes')], label=K('룬', 'Rune'),
   edges=[{'to': 'c1'}], item=[KOL, SER, PS, PR])
 A(id='c1', kind='act', group='main', pos=[0, 10], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'), goal=K('접두 첫번째 옵션', 'First prefix'),
   show=['ps1'], showText=FIRST, skipIf={'has': 'pgood'}, skipTo='e1',

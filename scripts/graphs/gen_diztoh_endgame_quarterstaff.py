@@ -153,9 +153,9 @@ g['loops'] = [
   'goal': K('접미 치명타 피해 보너스 (훼손) — 치명타 확률·치명타 피해 보너스 중 먼저 뜬 것', 'Desecrated crit damage bonus suffix: crit chance or crit damage bonus, whichever lands first'),
   'goalBy': {'high': K('접미 치명타 피해 보너스 1티어 (훼손) — 치명타 확률·치명타 피해 보너스 1티어 중 먼저 뜬 것', 'T1 desecrated crit damage bonus: T1 crit chance or crit damage bonus, whichever lands first'),
              'bal': K('접미 치명타 피해 보너스 1~2티어 (훼손) — 치명타 확률·치명타 피해 보너스 1~2티어 중 먼저 뜬 것', 'T1–2 desecrated crit damage bonus: T1–2 crit chance or crit damage bonus, whichever lands first')},
-  'steps': [K('빈 접미 자리에 고대 턱뼈 + 우측 강령술의 징조로 훼손 (사용자 결정 11-13)', 'Ancient Jawbone + Dextral Necromancy into the empty suffix slot (user decision 11-13)') | {'node': 'd1'},
+  'steps': [K('빈 접미 자리에 고대 턱뼈 + 우측 강령술의 징조로 훼손', 'Ancient Jawbone + Dextral Necromancy into the empty suffix slot') | {'node': 'd1'},   # 사용자 결정 11-13 (R1 검수: 화면 글에서 결정 표기 뺌)
             K('심연의 메아리의 징조로 공개', 'Reveal with Abyssal Echoes') | {'node': 'r1'},
-            K('빗나가면 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 다시 훼손 (사용자 결정 11-13)', 'On a miss, Omen of Light + Orb of Annulment removes only the desecration; desecrate again (user decision 11-13)') | {'node': 'lx'}],
+            K('빗나가면 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 다시 훼손', 'On a miss, Omen of Light + Orb of Annulment removes only the desecration; desecrate again') | {'node': 'lx'}],
   'item': [FLAT, PCT, FIRE, ML, AS, CD]},
 ]
 g['finals'] = [
