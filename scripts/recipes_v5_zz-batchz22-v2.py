@@ -6,7 +6,7 @@
 def _amu(r, t):
     a4=_node(r,'a4')
     if t=='ess': a4.pop('fail',None); a4['br']=KEEP; r['start']['mods'][1]['tmax']=2   # 정신력 1~2티어 매물
-for _t in ('bal','ess'): _grade8('sihan-chayula-amulet','sihan-chayula-amulet-v2',_t,_amu)
+_grade8('sihan-chayula-amulet','sihan-chayula-amulet-v2','bal',_amu)   # 2026-11-13 G2: 반복이 빛의 징조 없이 되니 에센셜도 반복(C17-3) → 밸런스와 같아 밸런스만(C17-4)
 
 # 2. 차율라 장갑 — 밸런스 = 영상(완벽한 엑잘티드 오브), 에센셜 = 상위 엑잘티드 오브
 def _cglv(r, t):

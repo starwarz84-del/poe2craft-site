@@ -4,22 +4,11 @@
  "cls": "Amulets",
  "base": "Absent Amulet",
  "ilvl": 80,
- "note": "시한 차율라 목걸이(2vyq26ZFgOk, 2026-11-11 영상 재확인) — 정신력 분열에 실패한 부재 목걸이(에너지 보호막 2티어 + 정신력 1티어 / 민첩 분열 + 미공개 훼손) 구입 → 완벽한 무한의 에센스(힘 % — 훼손 줄 자리) → 우측 강령술 + 군주의 징조 + 보존된 빗장뼈(힘 % 자리) → 공개(모든 스킬 레벨 +1). 밸런스 = 영상(빗나가면 에센스로 훼손 줄을 지우고 다시, 빛의 징조 없음), 에센셜 = 정신력 1~2티어 매물, 공개 결과 그대로.",
+ "basePrice": {
+  "Divine_Orb": 15
+ },
+ "note": "2026-11-13 G2 영상 전체 화면 대조(0:00~6:18). 성공 회차 한 줄: 정신력 분열에 실패한 부재 목걸이 매물 구입(혼란 유발의 갑충석, 아이템 레벨 80, 에너지 보호막 최대치 +79 2티어·정신력 +50 1티어 / 민첩 +33 분열·미공개 훼손 접미, 15 div, 2:00~3:02 거래소) → 완벽한 무한의 에센스(접미가 꽉 차 미공개 훼손이 지워지고 힘 9% 증가, 3:22~3:29) → 우측 강령술 + 군주의 징조 + 보존된 빗장뼈(힘 %가 지워지고 울라만 훼손, 3:33~3:44) → 공개(모든 스킬 레벨 +1, 3:49 — 다시 굴림 버튼이 보여 심연의 메아리 사용으로 봄) → 완성(4:04). 빗나가면(4:35~5:14 시연) 완벽한 무한의 에센스로 훼손 옵션을 지우고(분열 민첩 말고 지울 접미가 그것뿐) 다시 — 빛의 징조 없음. 등급(정책 10장 C17-3·4): 빛의 징조 없이 다시 할 수 있는 반복이라 에센셜도 반복 → 밸런스와 같아져 밸런스만. 정신력·에너지 보호막은 매물에 있는 옵션(모든 등급 1티어, C15).",
  "params": {
-  "sT": {
-   "kr": "정신력",
-   "en": "Spirit",
-   "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    }
-   }
-  },
   "v": {
    "kr": "진행",
    "en": "Route",
@@ -27,10 +16,6 @@
     "1": {
      "kr": "영상",
      "en": "Video"
-    },
-    "2": {
-     "kr": "결과 그대로",
-     "en": "As it comes"
     }
    }
   }
@@ -39,50 +24,29 @@
   {
    "id": "bal",
    "params": {
-    "sT": 1,
     "v": 1
-   }
-  },
-  {
-   "id": "ess",
-   "params": {
-    "sT": 2,
-    "v": 2
    }
   }
  ],
  "versions": [
   {
-   "id": "ess",
-   "kr": "에센셜",
-   "en": "Essential",
-   "params": {
-    "sT": 2,
-    "v": 2
-   },
-   "desc": {
-    "kr": "더 싼 매물, 공개 결과 그대로",
-    "en": "Cheaper listing, keep the reveal"
-   }
-  },
-  {
    "id": "bal",
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "sT": 1,
     "v": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상: 모든 스킬 레벨 +1이 나올 때까지",
-    "en": "Video: until +1 to all skills shows"
+    "kr": "영상: 모든 스킬 레벨 +1이 나올 때까지 에센스·훼손 반복",
+    "en": "Video: essence and desecration until +1 to all skills shows"
    }
   }
  ],
  "tags": {
   "spirit": {
    "gi": 28,
-   "tmax": "$sT"
+   "tmax": 1
   },
   "es": {
    "gi": 13,
@@ -105,7 +69,13 @@
     "has": "spirit"
    },
    {
-    "full": "s"
+    "has": "es"
+   },
+   {
+    "has": "dex"
+   },
+   {
+    "has": "skill"
    }
   ]
  },
@@ -129,22 +99,11 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "a2",
-    "a3",
-    "a4"
-   ],
-   "kr": "울라만 공개",
-   "en": "Ulaman reveal"
-  }
- ],
+ "start": "k0",
  "finals": [
   {
    "id": "bal",
+   "tier": "bal",
    "kr": "밸런스 옵션",
    "en": "Balance",
    "lines": [
@@ -152,8 +111,7 @@
      "tag": "es"
     },
     {
-     "tag": "spirit",
-     "tmax": 1
+     "tag": "spirit"
     },
     {
      "tag": "dex",
@@ -164,44 +122,22 @@
      "des": true
     }
    ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "tag": "es"
-    },
-    {
-     "tag": "spirit",
-     "tmax": 2
-    },
-    {
-     "tag": "dex",
-     "fr": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
   }
  ],
  "finalItem": {
-  "quality": 20,
+  "quality": 0,
   "sockets": 0
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "k0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "km",
    "start": {
     "rar": "rare",
     "mods": [
@@ -221,8 +157,8 @@
     ]
    },
    "label": {
-    "kr": "정신력 분열에 실패한 부재 목걸이 구입 (약 15 div)",
-    "en": "Buy a failed Spirit-fracture Absent Amulet (about 15 div)"
+    "kr": "부재 목걸이 매물 구입 (아이템 레벨 80, 에너지 보호막·정신력 / 민첩 분열 + 미공개 훼손 접미)",
+    "en": "Buy an Absent Amulet listing (item level 80: energy shield and Spirit / fractured Dexterity + an unrevealed desecrated suffix)"
    },
    "item": [
     {
@@ -245,8 +181,8 @@
     },
     {
      "s": "s",
-     "kr": "민첩 +(31—33)",
-     "en": "+(31—33) to Dexterity",
+     "kr": "민첩 +(31—33) (분열)",
+     "en": "+(31—33) to Dexterity (fractured)",
      "m": "f",
      "tags": [
       "dex"
@@ -254,19 +190,19 @@
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
     }
    ]
   },
   {
-   "id": "ms",
+   "id": "km",
    "kind": "mark",
    "group": "main",
    "pos": [
     0,
-    0.6
+    1.4
    ],
    "next": "a2",
    "label": {
@@ -294,8 +230,8 @@
     },
     {
      "s": "s",
-     "kr": "민첩 +(31—33)",
-     "en": "+(31—33) to Dexterity",
+     "kr": "민첩 +(31—33) (분열)",
+     "en": "+(31—33) to Dexterity (fractured)",
      "m": "f",
      "tags": [
       "dex"
@@ -303,7 +239,7 @@
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
     }
@@ -315,17 +251,26 @@
    "group": "main",
    "pos": [
     0,
-    1
+    2.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "접미 두번째 옵션 바꾸기",
-    "en": "Swap the second suffix"
-   },
+   "cur": "Perfect_Essence_of_the_Infinite",
+   "ess": "strp",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "접미 두번째 옵션 — 훼손 옵션을 제작 옵션으로",
+    "en": "Second suffix: the desecrated modifier becomes a crafted one"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "힘 (7—10)% 증가 (제작 옵션)",
+     "en": "(7—10)% increased Strength (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "a3"
@@ -352,8 +297,8 @@
     },
     {
      "s": "s",
-     "kr": "민첩 +(31—33)",
-     "en": "+(31—33) to Dexterity",
+     "kr": "민첩 +(31—33) (분열)",
+     "en": "+(31—33) to Dexterity (fractured)",
      "m": "f",
      "tags": [
       "dex"
@@ -368,16 +313,7 @@
       "strp"
      ]
     }
-   ],
-   "cur": "Perfect_Essence_of_the_Infinite",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "힘 (7—10)% 증가 (제작 옵션)",
-     "en": "(7—10)% increased Strength (crafted)"
-    }
-   ],
-   "ess": "strp"
+   ]
   },
   {
    "id": "a3",
@@ -385,17 +321,29 @@
    "group": "main",
    "pos": [
     0,
-    2
+    3.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 두번째 옵션(울라만 훼손)",
-    "en": "Second suffix (Ulaman desecration)"
-   },
+   "cur": "Preserved_Collarbone",
+   "omens": [
+    "Omen_of_Dextral_Necromancy",
+    "Omen_of_the_Sovereign"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접미 두번째 옵션 — 울라만 훼손",
+    "en": "Second suffix: Ulaman desecration"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "울라만 훼손 옵션 (미공개)",
+     "en": "Ulaman desecration (unrevealed)"
+    }
+   ],
    "edges": [
     {
      "to": "a4"
@@ -422,8 +370,8 @@
     },
     {
      "s": "s",
-     "kr": "민첩 +(31—33)",
-     "en": "+(31—33) to Dexterity",
+     "kr": "민첩 +(31—33) (분열)",
+     "en": "+(31—33) to Dexterity (fractured)",
      "m": "f",
      "tags": [
       "dex"
@@ -431,22 +379,10 @@
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
     }
-   ],
-   "cur": "Preserved_Collarbone",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "울라만 훼손 옵션(미공개)",
-     "en": "Ulaman desecration (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Dextral_Necromancy",
-    "Omen_of_the_Sovereign"
    ]
   },
   {
@@ -455,17 +391,24 @@
    "group": "main",
    "pos": [
     0,
-    3
+    4.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "skill",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접미 두번째 옵션(훼손) — 모든 스킬 레벨 +1",
+    "en": "Second suffix (desecrated): +1 to Level of all Skills"
+   },
+   "show": [
+    "skill"
+   ],
    "edges": [
     {
      "if": {
@@ -475,18 +418,12 @@
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
      "to": "a2",
      "res": "fail",
-     "port": "right"
-    },
-    {
-     "to": "ok",
-     "res": "fail"
+     "label": {
+      "kr": "빗나감 — 다시 에센스",
+      "en": "Miss: essence again"
+     }
     }
    ],
    "item": [
@@ -510,8 +447,8 @@
     },
     {
      "s": "s",
-     "kr": "민첩 +(31—33)",
-     "en": "+(31—33) to Dexterity",
+     "kr": "민첩 +(31—33) (분열)",
+     "en": "+(31—33) to Dexterity (fractured)",
      "m": "f",
      "tags": [
       "dex"
@@ -519,20 +456,13 @@
     },
     {
      "s": "s",
-     "kr": "모든 스킬 레벨 +1",
-     "en": "+1 to Level of all Skills",
+     "kr": "모든 스킬 레벨 +1 (훼손)",
+     "en": "+1 to Level of all Skills (desecrated)",
      "m": "d",
      "tags": [
       "skill"
      ]
     }
-   ],
-   "want": "skill",
-   "show": [
-    "skill"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
@@ -541,7 +471,7 @@
    "group": "main",
    "pos": [
     0,
-    4
+    5.4
    ],
    "label": {
     "kr": "완성",
@@ -549,5 +479,16 @@
    }
   }
  ],
- "basePrice": 15
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "a2",
+    "a3",
+    "a4"
+   ],
+   "kr": "울라만 공개",
+   "en": "Ulaman reveal"
+  }
+ ]
 }
