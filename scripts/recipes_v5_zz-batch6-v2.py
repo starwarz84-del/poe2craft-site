@@ -43,22 +43,25 @@ def _shield(r, t):
         for nid in ('l7','l8'): _node(r,nid)['cur']='Greater_Exalted_Orb'
 for _t in ('bal','ess'): _grade('lilbotq-armour-shield','lilbotq-armour-shield-v2',_t,_shield)
 
-# 4. Diztoh 정신력 로브 — Chaos Orb for flat ES (정책 16, cheaper than the video's Greater Chaos in the sim); Balance = Perfect Exalt + Whittling for a resistance,
-#    Essential = lower tiers, Greater Exalts, resistances as they come
+# 4. Diztoh 정신력 로브 — 영상 화면·자막 전체 확인 2026-11-12(작업자3): 상위 카오스 오브로 최대치 → 좌측 찬미 + 상위 엑잘(빗나가면 소멸의 오브)로 단일 % →
+#    아스트리드의 창의성 → 갈비뼈 + 빛 없이 다시 굴리기 → 상위 찬미 + 완벽한 엑잘 → (밸런스) 우측 소멸 + 절사 카오스로 저항 → 완벽한 엑잘(접미 세번째).
+#    레시피 단계는 플로우차트(gen_batch6 §4)를 읽어서 만들고, 여기서는 같은 id 단계의 영상 시간·분기 줄만 넘겨줌.
 def _robe(r, t):
-    # 영상 자막 확인 2026-11-10: 좌측 찬미의 징조 + 상위 엑잘티드 오브로 에너지 보호막 최대치·% 옵션 두 개, 빗나가면 소멸의 오브(접미가 비어 있어 접두만 지워짐)
     r['start']['mods'][0]['tmax']=4 if t=='bal' else 6
-    ANN={'cur':'Orb_of_Annulment'}
-    v2=_node(r,'v2'); v2.update({'do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'fail':{'goto':'self','via':ANN}})
-    # C17(2026-11-12): 반복 목표 티어 밸런스 1~2, 에센셜 1~4
-    v2['target']={'gi':vr_flat,'tmax':2 if t=='bal' else 4}
-    v3=_node(r,'v3'); v3['target']['tmax']=2 if t=='bal' else 4; v3['cur']='Greater_Exalted_Orb'
-    # 접두가 분열 + 잡옵 + 첫 옵션으로 꽉 차서 두 번째 엑잘 전에 잡옵을 지움(징조 없는 소멸의 오브 — 잡옵·첫 옵션 중 하나, 그래프 v2x와 같음).
-    # 건너뛴 과정 점검(2026-11-11)에서 찾음: 이 단계가 없어 두 번째 엑잘이 확률 0이었음
-    i=[n['id'] for n in r['nodes']].index('v3')
-    r['nodes'].insert(i,{'id':'v2b','phase':'pre','do':'remove','cur':'Orb_of_Annulment','target':{'removeJunk':'p'},'knownP':0.5,'fail':{'goto':'v2','lost':'v2'},'ts':v2.get('ts')})
+    tT=2 if t=='bal' else 4   # C17(2026-11-12): 반복 목표 티어 밸런스 1~2, 에센셜 1~4
+    v2=_node(r,'v2'); v2['target']={'gi':vr_flat,'tmax':tT}; v2['ts']='3:18'
+    v2['br']=K('정신력 + 옵션 1개 상태라 상위 카오스 오브가 그 옵션만 바꿈. 영상은 6티어 다음 1티어.','With Spirit + one line, a Greater Chaos Orb only rerolls that line; the video hit T6, then T1.')
+    v3=_node(r,'v3'); v3['target']['tmax']=tT; v3['ts']='3:30'
+    v3['br']=K('복합 옵션·낮은 티어는 소멸의 오브로 지움. 영상은 5티어 단일 %도 지우고 1티어.','Hybrid lines and low tiers go with an Orb of Annulment; the video removed a T5 single % too and hit T1.')
+    _node(r,'v4')['ts']='5:31'; _node(r,'v5')['ts']='5:03'; _node(r,'v6')['ts']='8:47'; _node(r,'v7')['ts']='11:28'
     if t=='bal':
-        _node(r,'v8')['br']=K('가장 낮은 옵션이 버릴 옵션일 때만. 레벨 65인 정신력 점유 효율이 가장 낮아지면 그대로 타협.','Only while the lowest line is junk; once the reservation line (level 65) is lowest, settle.')
+        i=[n['id'] for n in r['nodes']].index('v8')
+        r['nodes'].insert(i,{'id':'v8a','phase':'suf','do':'remove','cur':'Orb_of_Annulment','omens':['Omen_of_Dextral_Annulment'],'target':{'removeJunk':'s'},'knownP':2/3,'fail':{'goto':'v5'},'ts':'12:00',
+            'br':K('접미 3개 중 하나가 지워짐. 정신력 점유 효율이 지워지면 남은 잡옵을 지우고 갈비뼈부터.','One of three suffixes goes; if it is the reservation line, clear the junk and start again from the Rib.')})
+        v8=_node(r,'v8'); v8['ts']='13:00'
+        v8['br']=K('가장 낮은 옵션이 버릴 옵션일 때만. 영상은 2번(중독 → 능력치 요구 → 냉기 저항 3티어).','Only while the lowest line is junk; twice in the video (poison → attributes → T3 cold).')
+        i=[n['id'] for n in r['nodes']].index('v8')
+        r['nodes'].insert(i+1,{'id':'v8b','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'junk':['s']},'ts':'14:30'})
     else:
         _drop(r,'v8'); _node(r,'v7')['cur']='Greater_Exalted_Orb'; _node(r,'v7')['br']=KEEP
 for _t in ('bal','ess'): _grade('diztoh-vile-robe','diztoh-vile-robe-v2',_t,_robe)

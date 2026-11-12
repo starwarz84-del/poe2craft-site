@@ -4,7 +4,7 @@
  "cls": "Bows",
  "base": "Obliterator Bow",
  "ilvl": 82,
- "note": "Diztoh 얼음 사격 활(29vO0mMUoME) — 물리 % 분열 + 잡옵 → 카오스 오브(물리 피해 추가 1티어) → 좌측 찬미 + 완벽한 엑잘(냉기·번개·화염·복합, 빗나가면 절사 + 좌측 말소 + 카오스 오브) → 번개·화염이면 알두르의 숨결 → 아스트리드의 창의성 → 우측 강령술 + 고대 턱뼈 → 공개(투사체 +4, 빗나가면 우측 결정화 + 완벽한 가속의 에센스 → 심연의 에센스 → 징표 훼손) → 우측 찬미 + 엑잘 → 절사(+ 우측 말소) + 카오스 오브(치명타 확률) → 완벽한 엑잘. 하이엔드 = 원소·투사체 +4·치명타 확률 1티어, 마지막 접미는 공격 속도·치명타 피해 1티어로 바꾸는 도박. 밸런스 = 원소·치명타 확률 1~2티어, 투사체 +3~+4, 마지막 접미 랜덤 옵션.",
+ "note": "Diztoh 얼음 사격 활(29vO0mMUoME) — 매직 물리 피해 % 2티어 → 상위 마모의 에센스 → 보존된 턱뼈 훼손 → 분열(셋 중 하나) → 소멸의 오브 → 카오스 오브(물리 피해 추가 1티어) → 좌측 찬미 + 완벽한 엑잘(냉기·번개·화염·복합, 빗나가면 절사의 징조 + 상위 카오스 오브) → 번개·화염이면 알두르의 숨결 → 아스트리드의 창의성 → 고대 턱뼈 → 공개(투사체 +4, 빗나가면 우측 결정화 + 완벽한 가속의 에센스 → 심연의 에센스 → 징표 훼손) → 완벽한 엑잘(접미 잡옵) → 절사(+ 우측 말소) + 카오스 오브(치명타 확률) → 완벽한 엑잘. 극한 → 하이엔드만: 원소·투사체 +4·치명타 확률 1티어, 마지막 접미는 공격 속도·치명타 피해·추가 화살 1티어로 바꾸는 도박.",
  "params": {
   "v": {
    "kr": "진행",
@@ -27,10 +27,6 @@
     "1": {
      "kr": "1티어",
      "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
     }
    }
   },
@@ -41,10 +37,6 @@
     "1": {
      "kr": "1티어",
      "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
     }
    }
   },
@@ -55,10 +47,6 @@
     "1": {
      "kr": "+4",
      "en": "+4"
-    },
-    "2": {
-     "kr": "+3~+4",
-     "en": "+3–+4"
     }
    }
   }
@@ -72,33 +60,9 @@
     "jT": 1,
     "cT": 1
    }
-  },
-  {
-   "id": "bal",
-   "params": {
-    "v": 2,
-    "pT": 2,
-    "jT": 2,
-    "cT": 2
-   }
   }
  ],
  "versions": [
-  {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "v": 2,
-    "pT": 2,
-    "jT": 2,
-    "cT": 2
-   },
-   "desc": {
-    "kr": "원소·치명타 확률 1~2티어 · 투사체 +3~+4 · 마지막 접미 랜덤 옵션",
-    "en": "T1–2 elemental and crit chance, +3–+4 projectiles, last suffix random"
-   }
-  },
   {
    "id": "high",
    "kr": "하이엔드",
@@ -118,6 +82,13 @@
  "tags": {
   "pp": {
    "gi": 7
+  },
+  "ppm": {
+   "gi": 7,
+   "tmax": 2
+  },
+  "fle": {
+   "gi": 2
   },
   "fl": {
    "gi": 2,
@@ -175,14 +146,19 @@
    "gi": 18,
    "tmax": 1
   },
+  "sur": {
+   "gi": 20,
+   "tmax": 1
+  },
   "last": {
    "anyOf": [
     "as",
-    "cd"
+    "cd",
+    "sur"
    ],
    "label": {
-    "kr": "공격 속도·치명타 피해 1티어",
-    "en": "T1 attack speed or crit damage"
+    "kr": "공격 속도·치명타 피해 보너스·추가 화살 1티어",
+    "en": "T1 attack speed, crit damage bonus or additional arrow"
    }
   },
   "keepP": {
@@ -238,12 +214,22 @@
    "en": "Adding modifiers",
    "cols": [
     0,
-    1
+    2
    ]
   }
  ],
- "start": "h1",
+ "start": "b0",
  "loops": [
+  {
+   "id": "L0",
+   "nodes": [
+    "m1",
+    "m2",
+    "m1x"
+   ],
+   "kr": "매직 물리 피해 %",
+   "en": "Magic % physical"
+  },
   {
    "id": "L1",
    "nodes": [
@@ -289,40 +275,6 @@
      "tag": "last"
     }
    ]
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "pp",
-     "fr": true,
-     "tmax": 2,
-     "tmin": 2
-    },
-    {
-     "tag": "fl",
-     "tmax": 1
-    },
-    {
-     "tag": "co",
-     "tmax": 2
-    },
-    {
-     "tag": "proj",
-     "tmax": 2,
-     "des": true
-    },
-    {
-     "tag": "cc",
-     "tmax": 2
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
   }
  ],
  "finalItem": {
@@ -332,38 +284,125 @@
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
-   "start": {
-    "rar": "rare",
-    "mods": [
-     {
-      "tag": "pp",
-      "fr": true
-     },
-     {
-      "junk": "s"
-     }
-    ]
+   "next": "m1",
+   "label": {
+    "kr": "특출난 절멸자 활 구입 (룬 소켓 3, 아이템 레벨 82)",
+    "en": "Buy an exceptional Obliterator Bow (three rune sockets, item level 82)"
+   },
+   "item": []
+  },
+  {
+   "id": "m1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "transmute",
+   "goal": {
+    "kr": "매직 첫 옵션",
+    "en": "First magic option"
    },
    "label": {
-    "kr": "물리 피해 % 2티어 분열 + 잡옵 1개 (특출난 절멸자 활, 룬 소켓 3, 아이템 레벨 82)",
-    "en": "Fractured T2 % physical damage + one junk line (exceptional Obliterator Bow, 3 rune sockets, item level 82)"
+    "kr": "진화",
+    "en": "Transmute"
    },
+   "edges": [
+    {
+     "if": {
+      "has": "ppm"
+     },
+     "to": "e0",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "full": "p"
+     },
+     "to": "m1x",
+     "res": "fail"
+    },
+    {
+     "to": "m2",
+     "res": "fail"
+    }
+   ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
-      "pp"
+      "ppm"
+     ]
+    }
+   ],
+   "cur": "Perfect_Orb_of_Transmutation",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가 1~2티어",
+     "en": "% physical damage, T1–2"
+    }
+   ],
+   "show": [
+    "ppm"
+   ]
+  },
+  {
+   "id": "m2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "augment",
+   "goal": {
+    "kr": "매직 접두 옵션",
+    "en": "Magic prefix option"
+   },
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "ppm"
+     },
+     "to": "e0",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "full": "p"
+     },
+     "to": "m1x",
+     "res": "fail"
+    },
+    {
+     "to": "m2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "ppm"
      ]
     },
     {
@@ -371,6 +410,332 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    }
+   ],
+   "cur": "Perfect_Orb_of_Augmentation",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 피해 % 증가 1~2티어",
+     "en": "% physical damage, T1–2"
+    }
+   ],
+   "show": [
+    "ppm"
+   ]
+  },
+  {
+   "id": "m1x",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    1,
+    2
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 지우기",
+    "en": "Remove the missed prefix"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "full": "p"
+       },
+       {
+        "not": {
+         "has": "ppm"
+        }
+       }
+      ]
+     },
+     "to": "m1x"
+    },
+    {
+     "to": "m2"
+    }
+   ]
+  },
+  {
+   "id": "e0",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "essence",
+   "goal": {
+    "kr": "레어로 업그레이드 + 물리 피해 추가",
+    "en": "Upgrade to rare + flat physical damage"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "f1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "ppm"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (16—24)~(28—42) 추가 (상위 마모의 에센스)",
+     "en": "Adds (16—24) to (28—42) Physical Damage (Greater Essence of Abrasion)",
+     "m": "c",
+     "tags": [
+      "fle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Greater_Essence_of_Abrasion",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 피해 추가 (제작 옵션)",
+     "en": "Flat physical damage (crafted)"
+    }
+   ],
+   "ess": "fle"
+  },
+  {
+   "id": "f1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "분열 확률을 높이기 위해 훼손",
+    "en": "Desecrate to raise the fracture odds"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "f2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "ppm"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (16—24)~(28—42) 추가 (상위 마모의 에센스)",
+     "en": "Adds (16—24) to (28—42) Physical Damage (Greater Essence of Abrasion)",
+     "m": "c",
+     "tags": [
+      "fle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Jawbone",
+   "showText": [
+    {
+     "kr": "훼손 옵션 1개 (미공개)",
+     "en": "One desecrated modifier (unrevealed)"
+    }
+   ]
+  },
+  {
+   "id": "fd",
+   "kind": "side",
+   "group": "prep",
+   "pos": [
+    1,
+    4.5
+   ],
+   "attach": [
+    "f1",
+    "f2"
+   ],
+   "cur": "Divine_Orb",
+   "goal": {
+    "kr": "물리 피해 % 165 이상 (선택)",
+    "en": "Physical damage % 165 or more (optional)"
+   },
+   "label": {
+    "kr": "신성",
+    "en": "Divine"
+   }
+  },
+  {
+   "id": "f2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "fracture",
+   "goal": {
+    "kr": "분열 (셋 중 하나)",
+    "en": "Fracture (one of three)"
+   },
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "edges": [
+    {
+     "if": {
+      "fractured": "ppm"
+     },
+     "to": "f4",
+     "res": "ok"
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "ppm"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (16—24)~(28—42) 추가 (상위 마모의 에센스)",
+     "en": "Adds (16—24) to (28—42) Physical Damage (Greater Essence of Abrasion)",
+     "m": "c",
+     "tags": [
+      "fle"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Fracturing_Orb",
+   "showText": [
+    {
+     "kr": "물리 피해 % 증가가 분열되면 성공",
+     "en": "Success when % physical damage fractures"
+    }
+   ],
+   "pAll": true
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    5
+   ],
+   "simTo": "b0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured — new base"
+   }
+  },
+  {
+   "id": "f4",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 옵션만 남기기",
+    "en": "Keep only the fractured modifier"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "ppm"
+     ]
     }
    ]
   },
@@ -380,7 +745,7 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    6.6
    ],
    "next": "c1",
    "label": {
@@ -390,18 +755,12 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
+     "m": "f",
      "tags": [
-      "pp"
+      "ppm"
      ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
    ]
   },
@@ -411,7 +770,7 @@
    "group": "main",
    "pos": [
     0,
-    1
+    7
    ],
    "act": "chaos",
    "goal": {
@@ -462,8 +821,7 @@
        },
        {
         "whittleSafe": {
-         "tag": "keepP",
-         "side": "p"
+         "tag": "keepP"
         }
        }
       ]
@@ -523,7 +881,7 @@
    "group": "main",
    "pos": [
     0,
-    2
+    8
    ],
    "act": "exalt",
    "goal": {
@@ -573,8 +931,7 @@
        },
        {
         "whittleSafe": {
-         "tag": "keepP",
-         "side": "p"
+         "tag": "keepP"
         }
        }
       ]
@@ -652,7 +1009,7 @@
    "group": "main",
    "pos": [
     1,
-    2
+    8
    ],
    "act": "chaos",
    "goal": {
@@ -703,8 +1060,7 @@
        },
        {
         "whittleSafe": {
-         "tag": "keepP",
-         "side": "p"
+         "tag": "keepP"
         }
        }
       ]
@@ -772,8 +1128,7 @@
     "hy"
    ],
    "omens": [
-    "Omen_of_Whittling",
-    "Omen_of_Sinistral_Erasure"
+    "Omen_of_Whittling"
    ]
   },
   {
@@ -782,7 +1137,7 @@
    "group": "main",
    "pos": [
     2,
-    2
+    8
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -841,8 +1196,7 @@
        },
        {
         "whittleSafe": {
-         "tag": "keepP",
-         "side": "p"
+         "tag": "keepP"
         }
        }
       ]
@@ -878,7 +1232,7 @@
    "group": "main",
    "pos": [
     1,
-    3
+    9
    ],
    "act": "rune",
    "goal": {
@@ -946,7 +1300,7 @@
    "group": "main",
    "pos": [
     0,
-    4
+    10
    ],
    "act": "rune",
    "goal": {
@@ -1051,16 +1405,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -1180,7 +1525,7 @@
    "group": "main",
    "pos": [
     1,
-    4
+    10
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1293,16 +1638,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -1371,7 +1707,7 @@
    "group": "main",
    "pos": [
     0,
-    5
+    11
    ],
    "act": "desecrate",
    "goal": {
@@ -1475,16 +1811,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -1603,9 +1930,6 @@
      "kr": "훼손 옵션(미공개)",
      "en": "Desecrated modifier (unrevealed)"
     }
-   ],
-   "omens": [
-    "Omen_of_Dextral_Necromancy"
    ]
   },
   {
@@ -1614,7 +1938,7 @@
    "group": "main",
    "pos": [
     0,
-    6
+    12
    ],
    "act": "reveal",
    "goal": {
@@ -1719,16 +2043,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -1858,7 +2173,7 @@
    "group": "main",
    "pos": [
     1,
-    6
+    12
    ],
    "act": "essence",
    "goal": {
@@ -1963,16 +2278,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -2105,7 +2411,7 @@
    "group": "main",
    "pos": [
     1,
-    7
+    13
    ],
    "act": "essence",
    "goal": {
@@ -2209,16 +2515,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -2353,7 +2650,7 @@
    "group": "main",
    "pos": [
     1,
-    8
+    14
    ],
    "act": "desecrate",
    "goal": {
@@ -2458,16 +2755,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -2595,7 +2883,7 @@
    "group": "main",
    "pos": [
     0,
-    9
+    15
    ],
    "act": "exalt",
    "goal": {
@@ -2700,16 +2988,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -2830,16 +3109,13 @@
      "m": "j"
     }
    ],
-   "cur": "Exalted_Orb",
+   "cur": "Perfect_Exalted_Orb",
    "showText": [
     {
      "s": "s",
      "kr": "랜덤 옵션 1개",
      "en": "One random line"
     }
-   ],
-   "omens": [
-    "Omen_of_Dextral_Exaltation"
    ]
   },
   {
@@ -2848,7 +3124,7 @@
    "group": "main",
    "pos": [
     0,
-    10
+    16
    ],
    "act": "chaos",
    "goal": {
@@ -2955,16 +3231,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -3080,15 +3347,15 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 +(3.11—3.8)%",
-     "en": "+(3.11—3.8)% to Critical Hit Chance",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
       "cc"
      ]
     }
    ],
-   "cur": "Greater_Chaos_Orb",
+   "cur": "Chaos_Orb",
    "show": [
     "cc"
    ],
@@ -3103,7 +3370,7 @@
    "group": "main",
    "pos": [
     1,
-    10
+    16
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -3215,16 +3482,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -3296,7 +3554,7 @@
    "group": "main",
    "pos": [
     0,
-    11
+    17
    ],
    "act": "exalt",
    "goal": {
@@ -3402,16 +3660,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -3528,8 +3777,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 +(3.11—3.8)%",
-     "en": "+(3.11—3.8)% to Critical Hit Chance",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
       "cc"
@@ -3552,20 +3801,8 @@
    ],
    "show": [
     "as",
-    "cd"
-   ],
-   "over": [
-    {
-     "param": {
-      "v": 2
-     },
-     "set": {
-      "goal": {
-       "kr": "접미 세번째 옵션 (나오는 대로)",
-       "en": "Third suffix (keep what comes)"
-      }
-     }
-    }
+    "cd",
+    "sur"
    ]
   },
   {
@@ -3574,7 +3811,7 @@
    "group": "main",
    "pos": [
     1,
-    11
+    17
    ],
    "act": "chaos",
    "goal": {
@@ -3680,16 +3917,7 @@
         "has": "proj"
        },
        {
-        "any": [
-         {
-          "has": "last"
-         },
-         {
-          "param": {
-           "v": 2
-          }
-         }
-        ]
+        "has": "last"
        }
       ]
      },
@@ -3806,8 +4034,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 +(3.11—3.8)%",
-     "en": "+(3.11—3.8)% to Critical Hit Chance",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
       "cc"
@@ -3820,10 +4048,11 @@
      "m": "j"
     }
    ],
-   "cur": "Greater_Chaos_Orb",
+   "cur": "Chaos_Orb",
    "show": [
     "as",
-    "cd"
+    "cd",
+    "sur"
    ],
    "trim": {
     "side": "s",
@@ -3836,7 +4065,7 @@
    "group": "main",
    "pos": [
     0,
-    12
+    18
    ],
    "label": {
     "kr": "완성",

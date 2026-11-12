@@ -107,36 +107,44 @@ graph('lilbotq-armour-shield-v2','Shields_str','Tawhoan Tower Shield',81,
   {'quality':28,'sockets':2},{'all':[{'has':'flat'},{'has':'pct'},{'full':'p'},{'full':'s'}]})
 
 # ---------- 4. Diztoh 정신력 로브 (n97yEuKSWyM) ----------
-# 원본 레시피(영상 기록): 정신력 분열 + 잡옵 → 상위 카오스 오브로 에너지 보호막 최대치 1티어 → 좌측 찬미 + 상위 엑잘(에너지 보호막 %, 빗나가면 소멸의 오브 — 접미가 비어 있어 접두만 지워짐)
-# → 아스트리드의 창의성 → 보존된 갈비뼈(접두가 꽉 차 접미로) → 공개(정신력 점유 효율, 아마나무) — 실패는 빛의 징조 없이: 우측 결정화 + 완벽한 추구의 에센스로 훼손 옵션 삭제 → 우측 결정화 + 심연의 에센스로 징표 → 보존된 갈비뼈
-# → 상위 찬미 + 완벽한 엑잘(접미 옵션 2개) → 절사의 징조 + 상위 카오스 오브로 저항(밸런스만).
+# 화면·자막 전체 확인 2026-11-12(작업자3, 근거 scratchpad/evidence/diztoh-vile-robe-v2/timeline.md):
+# 0:01 시작 = 정신력 4티어(분열) + 에너지 보호막 최대치 5티어 + 에너지 보호막 % 2티어 레어(접미 없음) → 2:17 최대치 5티어 제거 → 3:00~3:17 좌측 찬미 + 상위 엑잘로 최대치를 노리다 그만둠
+# → 3:18~3:28 상위 카오스 오브 반복(정신력 + 옵션 1개 상태)으로 최대치 1티어 → 3:30~4:33 좌측 찬미의 징조 + 상위 엑잘티드 오브, 빗나가면 소멸의 오브(5티어 단일 %도 지움) → % 1티어
+# → 5:03 보존된 갈비뼈(접미 훼손) → 6:10 아스트리드의 창의성 장착 → 8:47 공개(심연의 메아리) 빗나감 → 9:42 우측 결정화 + 완벽한 추구의 에센스 → 9:58 우측 결정화 + 심연의 에센스(징표)
+# → 10:20 보존된 갈비뼈 → 10:30 공개: 정신력 점유 효율 → 11:32 상위 찬미 + 완벽한 엑잘(능력치 요구 감소 2티어 + 중독 지속시간 3티어) → 12:28 우측 소멸의 징조 + 소멸의 오브(능력치 요구 제거)
+# → 13:15·13:46 절사의 징조 + 상위 카오스 오브 2번(중독 → 능력치 요구 → 냉기 저항 3티어) → 14:36 완벽한 엑잘(접미 세번째: 능력치 요구 감소 1티어) → 신성한 오브·룬·여우 우상·치직대는 유동체(마무리).
 P={'bal':{'sT':4,'fT':2,'eT':2,'g':1},'ess':{'sT':6,'fT':4,'eT':4,'g':0}}
 tags={'spirit':{'gi':14,'tmax':'$sT'},'esf':{'gi':6,'tmax':'$fT'},'esp':{'gi':7,'tmax':'$eT'},'res':{'gi':21},'seek':{'gi':43},'mark':{'gi':45},
       'fire':{'gi':1,'tmax':3},'cold':{'gi':2,'tmax':3},'light':{'gi':3,'tmax':3},'anyres':{'anyOf':['fire','cold','light'],'label':K('원소 저항 1~3티어','Elemental resistance T1–3')},'keepR':{'anyOf':['spirit','esf','esp','res']}}
 SP=it('p','정신력 (분열)','Spirit (fractured)',['spirit']); EF=it('p','에너지 보호막 최대치','Flat energy shield',['esf']); EP=it('p','에너지 보호막 % 증가','% energy shield',['esp'])
-RE=it('s','스킬의 정신력 점유 효율 (아마나무)','Spirit reservation efficiency (Amanamu)',['res'])
-I0=[SP,J('p')]; I1=[SP,EF]; I2=I1+[EP]; I3=I2+[UN('s')]; I4=I2+[RE]; I5=I4+[J('s'),J('s')]; I6=I4+[J('s'),it('s','원소 저항','Elemental resistance',['anyres'])]
+RE=it('s','스킬의 정신력 점유 효율 (아마나무)','Spirit reservation efficiency (Amanamu)',['res']); AR=it('s','원소 저항','Elemental resistance',['anyres'])
+I0=[SP,J('p')]; I1=[SP,EF]; I2=I1+[EP]; I3=I2+[UN('s')]; I4=I2+[RE]; I5=I4+[J('s'),J('s')]; I7=I4+[J('s')]; I6=I4+[AR]; I8=I6+[J('s')]
 IA=I2+[it('s','추구의 에센스 옵션 (제작 옵션)','Essence of Seeking line (crafted)',['seek'])]; IB=I2+[it('s','심연 군주의 징표','Mark of the Abyssal Lord',['mark'])]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'p'}]},K('정신력 분열 + 잡옵 1개 특출난 끔찍한 로브 구입','Buy an exceptional Vile Robe with fractured Spirit + one junk line'),I0),
  mark([0,0.6],'v2',I0),
- act('v2','main',[0,1],'exalt','Greater_Exalted_Orb',K('접두 두번째·세번째 옵션','Second and third prefix options'),None,K('엑잘','Exalt'),[{'if':{'all':[{'has':'esf'},{'has':'esp'}]},'to':'v5','res':'ok'},{'if':{'full':'p'},'to':'v2x','res':'fail'},{'to':'v2','res':'ok'}],I2,show=['esf','esp'],omens=['Omen_of_Sinistral_Exaltation']),
- cleanup('v2x',[1,1],['esf','esp'],[{'lost':'esf','to':'v2x'},{'lost':'esp','to':'v2x'},{'to':'v2','port':'right'}],K('빗나간 접두 제거 (접미가 비어 있어 접두만 지워짐)','Remove the missed prefix (no suffixes yet)')),
- act('v5','main',[0,3],'desecrate','Preserved_Rib',K('아스트리드의 창의성 장착 후 접미 첫번째(훼손)','Socket Astrid’s Creativity, then the first suffix (desecrated)'),[st('s','훼손 옵션(미공개) — 접두가 꽉 차 접미로','Desecrated (unrevealed) — prefixes are full')],K('훼손','Desecrate'),[{'to':'v6'}],I3),
- act('v6','main',[0,4],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'res'},'to':'v7','res':'ok'},{'to':'v6a','res':'fail'}],I4,want='res',show=['res'],omens=['Omen_of_Abyssal_Echoes']),
- act('v6a','main',[1,4],'essence','Perfect_Essence_of_Seeking',K('빗나간 훼손 옵션 삭제 (빛의 징조 없이)','Remove the missed desecration (no Omen of Light)'),[st('s','추구의 에센스 옵션 (유일한 접미가 지워짐)','Essence of Seeking line (the only suffix goes)')],K('에센스','Essence'),[{'to':'v6b'}],IA,ess='seek',omens=['Omen_of_Dextral_Crystallisation']),
- act('v6b','main',[1,5],'essence','Essence_of_the_Abyss',K('심연 군주의 징표로 바꿈','Turn it into the Abyssal Lord’s Mark'),[st('s','심연 군주의 징표','Mark of the Abyssal Lord')],K('에센스','Essence'),[{'to':'v6c'}],IB,ess='mark',mark=True,omens=['Omen_of_Dextral_Crystallisation']),
- act('v6c','main',[1,6],'desecrate','Preserved_Rib',K('징표 훼손','Desecrate the Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'v6','port':'right'}],I3,fromMark=True),
- act('v7','main',[0,7],'exalt','Perfect_Exalted_Orb',K('접미 옵션 2개','Two suffixes'),[st('s','랜덤 옵션 2개 — 저항 하나면 충분','Two random lines — one resistance is enough')],K('엑잘','Exalt'),
-     [{'if':{'any':[{'has':'anyres'},{'param':{'g':0}}]},'to':'ok'},{'if':{'whittleSafe':'keepR'},'to':'v8'},{'to':'ok'}],I5,omens=['Omen_of_Greater_Exaltation'],over=[{'param':{'g':0},'set':{'cur':'Greater_Exalted_Orb'}}]),
- act('v8','main',[0,8],'chaos','Greater_Chaos_Orb',K('가장 낮은 옵션을 저항으로','The lowest line into a resistance'),None,K('카오스','Chaos'),
-     [{'if':{'has':'anyres'},'to':'ok','res':'ok'},{'if':{'whittleSafe':'keepR'},'to':'v8','res':'fail'},{'to':'ok','res':'fail'}],I6,show=['anyres'],omens=['Omen_of_Whittling']),
- done([0,9])]
+ act('v2','main',[0,1],'chaos','Greater_Chaos_Orb',K('접두 두번째 옵션','Second prefix option'),None,K('카오스','Chaos'),[{'if':{'added':'esf'},'to':'v3','res':'ok'},{'to':'v2','res':'fail'}],I1,show=['esf']),
+ act('v3','main',[0,2],'exalt','Greater_Exalted_Orb',K('접두 세번째 옵션','Third prefix option'),None,K('엑잘','Exalt'),[{'if':{'added':'esp'},'to':'v4','res':'ok'},{'to':'v3x','res':'fail'}],I2,show=['esp'],omens=['Omen_of_Sinistral_Exaltation']),
+ cleanup('v3x',[1,2],['spirit','esf'],[{'lost':'esf','to':'v2'},{'to':'v3','port':'right'}],K('빗나간 접두 제거 (접미가 비어 있어 접두만 지워짐)','Remove the missed prefix (no suffixes yet)')),
+ act('v4','main',[0,3],'rune',None,K('아스트리드의 창의성 장착','Socket Astrid’s Creativity'),[st(None,'제작 옵션 하나 더','One more crafted modifier')],K('룬','Rune'),[{'to':'v5'}],I2,rune=K('아스트리드의 창의성','Astrid’s Creativity')),
+ act('v5','main',[0,4],'desecrate','Preserved_Rib',K('접미 첫번째 옵션(훼손)','First suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated (unrevealed)')],K('훼손','Desecrate'),[{'to':'v6'}],I3),
+ act('v6','main',[0,5],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'res'},'to':'v7','res':'ok'},{'to':'v6a','res':'fail'}],I4,want='res',show=['res'],omens=['Omen_of_Abyssal_Echoes']),
+ act('v6a','main',[1,5],'essence','Perfect_Essence_of_Seeking',K('빗나간 훼손 옵션 삭제 (빛의 징조 없이)','Remove the missed desecration (no Omen of Light)'),[st('s','추구의 에센스 옵션 (유일한 접미가 지워짐)','Essence of Seeking line (the only suffix goes)')],K('에센스','Essence'),[{'to':'v6b'}],IA,ess='seek',omens=['Omen_of_Dextral_Crystallisation']),
+ act('v6b','main',[1,6],'essence','Essence_of_the_Abyss',K('심연 군주의 징표로 바꿈','Turn it into the Abyssal Lord’s Mark'),[st('s','심연 군주의 징표','Mark of the Abyssal Lord')],K('에센스','Essence'),[{'to':'v6c'}],IB,ess='mark',mark=True,omens=['Omen_of_Dextral_Crystallisation']),
+ act('v6c','main',[1,7],'desecrate','Preserved_Rib',K('징표 훼손','Desecrate the Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'v6','port':'right'}],I3,fromMark=True),
+ act('v7','main',[0,8],'exalt','Perfect_Exalted_Orb',K('접미 옵션 2개','Two suffixes'),[st('s','랜덤 옵션 2개 — 저항 하나면 충분','Two random lines — one resistance is enough')],K('엑잘','Exalt'),
+     [{'if':{'has':'anyres'},'to':'ok','res':'ok'},{'to':'v8a','res':'fail'}],I5,omens=['Omen_of_Greater_Exaltation'],over=[{'param':{'g':0},'set':{'cur':'Greater_Exalted_Orb','edges':[{'to':'ok'}]}}]),
+ annul('v8a',[0,9],[{'if':{'removed':'res'},'to':'v8x','res':'fail'},{'to':'v8','res':'ok'}],omens=('Omen_of_Dextral_Annulment',),target=K('접미 잡옵 하나 제거','Remove one junk suffix')),
+ {**cleanup('v8x',[1,9],[],[{'to':'v5'}],K('남은 접미 잡옵 제거','Remove the remaining junk suffixes'),side='s'),'omens':['Omen_of_Dextral_Annulment']},
+ act('v8','main',[0,10],'chaos','Greater_Chaos_Orb',K('가장 낮은 옵션을 저항으로','The lowest line into a resistance'),None,K('카오스','Chaos'),
+     [{'if':{'has':'anyres'},'to':'v8b','res':'ok'},{'if':{'whittleSafe':'keepR'},'to':'v8','res':'fail'},{'to':'v8b','res':'fail'}],I6,show=['anyres'],omens=['Omen_of_Whittling'],skipIf={'not':{'whittleSafe':'keepR'}},skipTo='v8b',skipNote=K('가장 낮은 옵션이 남길 옵션이면 건너뜀','Skipped when the lowest line is one to keep')),
+ act('v8b','main',[0,11],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),[st('s','랜덤 옵션','Random modifier')],K('엑잘','Exalt'),[{'to':'ok'}],I8),
+ done([0,12])]
 nodes[0]['group']='prep'
 graph('diztoh-vile-robe-v2','Body_Armours_int','Vile Robe',81,
-  'Diztoh 정신력 로브(원본 레시피 기록) — 정신력 분열 + 잡옵 → 좌측 찬미의 징조 + 상위 엑잘티드 오브로 에너지 보호막 최대치·% 옵션 두 개, 빗나가면 징조 없는 소멸의 오브(영상 자막 확인 2026-11-10 — 접미가 비어 있어 접두만 지워짐, 6티어 최대치를 상위 카오스 오브로 바꾼 장면은 운이라 뺌) → 아스트리드의 창의성 + 보존된 갈비뼈 → 공개(정신력 점유 효율) — 실패는 빛의 징조 대신 우측 결정화 + 완벽한 추구의 에센스 → 우측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈(약 2.6 div, 빛의 징조 약 7.5 div) → 상위 찬미 + 완벽한 엑잘(접미 옵션 2개) → 저항이 없으면 절사의 징조 + 상위 카오스 오브(밸런스만, 가장 낮은 옵션이 버릴 옵션일 때만 — 레벨 65인 정신력 점유 효율이 가장 낮아지면 타협). 에센셜 = 낮은 티어 베이스·상위 엑잘·저항 결과 그대로.',
+  'Diztoh 정신력 로브(영상 화면·자막 전체 확인 2026-11-12) — 정신력 분열 + 잡옵 1개 → 상위 카오스 오브로 에너지 보호막 최대치(영상 3:18~3:28, 6티어 다음 1티어) → 좌측 찬미의 징조 + 상위 엑잘티드 오브로 단일 에너지 보호막 %, 빗나가면 징조 없는 소멸의 오브(접미가 비어 접두만 지워짐, 최대치가 지워지면 카오스부터) → 아스트리드의 창의성 + 보존된 갈비뼈 → 공개(정신력 점유 효율) — 빗나가면 빛의 징조 대신 우측 결정화 + 완벽한 추구의 에센스 → 우측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈 → 상위 찬미 + 완벽한 엑잘(접미 2개) → 저항이 없으면(밸런스) 우측 소멸의 징조 + 소멸의 오브로 접미 하나 제거 → 절사의 징조 + 상위 카오스 오브로 가장 낮은 옵션을 저항으로(영상 2번) → 완벽한 엑잘(접미 세번째). 에센셜 = 낮은 티어 베이스·상위 엑잘·저항 결과 그대로.',
   {'sT':{'kr':'정신력 (분열)','en':'Spirit (fractured)','values':TV({'4':('1~4티어','T1–4'),'6':('1~6티어','T1–6')})},'fT':{'kr':'에너지 보호막 최대치','en':'Flat energy shield','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})},'eT':{'kr':'에너지 보호막 %','en':'% energy shield','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})},'g':{'kr':'저항','en':'Resistance','values':TV({'1':('절사의 징조로 맞춤','Whittling'),'0':('결과 그대로','As it comes')})}},P,
-  {'bal':K('에너지 보호막 옵션 2개 1~2티어 + 저항(절사의 징조, 영상)','Two T1–2 energy shield lines + a resistance (Whittling, as the video)'),'ess':K('에너지 보호막 1~4티어, 상위 엑잘, 저항은 결과 그대로','T1–4 energy shield, Greater Exalts, resistances as they come')},
-  tags,nodes,[{'id':'L0','nodes':['v2','v2x'],'kr':'접두 에너지 보호막 옵션 2개','en':'Two ES prefixes'},{'id':'L1','nodes':['v6','v6a','v6b','v6c'],'kr':'정신력 점유 효율 공개','en':'Reservation efficiency reveal'}],
+  {'bal':K('에너지 보호막 옵션 2개 1~2티어 + 저항(우측 소멸·절사의 징조, 영상)','Two T1–2 energy shield lines + a resistance (Dextral Annulment and Whittling, as the video)'),'ess':K('에너지 보호막 1~4티어, 상위 엑잘, 저항은 결과 그대로','T1–4 energy shield, Greater Exalts, resistances as they come')},
+  tags,nodes,[{'id':'L0','nodes':['v3','v3x'],'kr':'접두 에너지 보호막 % 옵션','en':'% energy shield prefix'},{'id':'L1','nodes':['v6','v6a','v6b','v6c'],'kr':'정신력 점유 효율 공개','en':'Reservation efficiency reveal'}],
   [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'spirit','tmax':a},{'tag':'esf','tmax':b},{'tag':'esp','tmax':c},{'tag':'res','tmax':1},{'tag':'anyres'} if v=='bal' else {'side':'s','random':True},{'side':'s','random':True}]} for v,kr,en,a,b,c in (('bal','밸런스 옵션','Balance',4,2,2),('ess','에센셜 옵션','Essential',6,4,4))],
   {'quality':20,'sockets':3},{'all':[{'has':'spirit'},{'has':'esf'},{'has':'esp'},{'has':'res'},{'full':'s'}]})
 

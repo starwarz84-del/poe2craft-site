@@ -4,19 +4,19 @@
  "cls": "Gloves_str_dex",
  "base": "Blacksteel Gauntlets",
  "ilvl": 82,
- "note": "MazBro 투사체 +2 분열 장갑(원본 레시피 기록) — 콜르의 사냥 + 투사체 +2 분열 + 잡옵(퀄리티 30%) → 아스트리드의 창의성 → 카오스 오브(콜르 1티어 하나) → 반대쪽 상위 엑잘 + 좌측·우측 찬미(빗나가면 결정화 + 군왕의 합금 → 결정화 + 발작의 에센스로 빗나간 옵션을 제작 옵션으로 바꿈) → 남은 제작 옵션 → 고대 갈비뼈 → 공개(투사체 속도·피해 1티어, 하이엔드 = 빛의 징조로 다시). 룬 교체·신성한 오브는 뺌.",
+ "note": "MazBro 투사체 +2 분열 장갑(원본 레시피 기록, 2026-11-12 영상 전체 대조) — 특출난 검은강철 건틀릿 + 콜르의 사냥 → 완벽한 진화·확장·제왕 → 옵션 1개까지 소멸 → 카오스 오브(투사체 +2) → 완벽한 엑잘 + 좌측 찬미 + 상위 찬미(접두 2개) → 고대 갈비뼈 + 우측 강령술 → 분열(1/3, 빗나가면 새 베이스) → 분열 + 옵션 1개 → 아스트리드의 창의성 → 카오스 오브(콜르 1티어 하나) → 반대쪽 상위 엑잘 + 좌측·우측 찬미(빗나가면 결정화 + 군왕의 합금 → 결정화 + 발작의 에센스, 그래도 빗나가면 소멸) → 남은 제작 옵션 → 고대 갈비뼈 → 공개(투사체 피해·속도, 빛의 징조로 다시). 퀄리티 30%·룬벼림·룬 교체·신성한 오브는 비용에서 뺌.",
  "params": {
-  "v": {
-   "kr": "진행",
-   "en": "Route",
+  "t": {
+   "kr": "반복 목표",
+   "en": "Loop target",
    "values": {
     "1": {
-     "kr": "영상",
-     "en": "Video"
+     "kr": "1티어",
+     "en": "T1"
     },
     "2": {
-     "kr": "결과 그대로",
-     "en": "As it comes"
+     "kr": "1~2티어",
+     "en": "T1–2"
     }
    }
   }
@@ -25,13 +25,13 @@
   {
    "id": "high",
    "params": {
-    "v": 1
+    "t": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "v": 2
+    "t": 2
    }
   }
  ],
@@ -41,11 +41,11 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "v": 2
+    "t": 2
    },
    "desc": {
-    "kr": "공개 결과 그대로, 나머지는 영상대로",
-    "en": "Keep the reveal, the rest as in the video"
+    "kr": "상위 엑잘 반복과 공개를 1~2티어까지",
+    "en": "Exalt loops and the reveal accept T1–2"
    }
   },
   {
@@ -53,32 +53,66 @@
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "v": 1
+    "t": 1
    },
    "desc": {
-    "kr": "영상: 공개는 빛의 징조로 다시",
-    "en": "Video: Light retries on the reveal"
+    "kr": "영상: 반복 구간과 공개 모두 1티어",
+    "en": "Video: T1 in every loop and on the reveal"
    }
   }
  ],
  "tags": {
   "proj": {
-   "gi": 81
+   "gi": 81,
+   "tmax": 1
   },
   "pspd": {
    "gi": 72,
-   "tmax": 1
+   "tmax": "$t"
   },
   "pdmg": {
    "gi": 70,
-   "tmax": 1
+   "tmax": "$t"
   },
   "crit": {
    "gi": 73,
-   "tmax": 1
+   "tmax": "$t"
   },
   "pierce": {
-   "gi": 74
+   "gi": 74,
+   "tmax": "$t"
+  },
+  "pspd1": {
+   "gi": 72,
+   "tmax": 1
+  },
+  "pdmg1": {
+   "gi": 70,
+   "tmax": 1
+  },
+  "crit1": {
+   "gi": 73,
+   "tmax": 1
+  },
+  "pierce1": {
+   "gi": 74,
+   "tmax": 1
+  },
+  "pspd2": {
+   "gi": 72,
+   "tmax": 2
+  },
+  "pdmg2": {
+   "gi": 70,
+   "tmax": 2
+  },
+  "crit2": {
+   "gi": 73,
+   "tmax": 2
+  },
+  "pierce2": {
+   "gi": 74,
+   "tmax": 2
   },
   "ps": {
    "anyOf": [
@@ -86,8 +120,8 @@
     "pdmg"
    ],
    "label": {
-    "kr": "투사체 속도·피해 1티어",
-    "en": "T1 projectile speed or damage"
+    "kr": "투사체 속도·피해",
+    "en": "Projectile speed or damage"
    }
   },
   "ss": {
@@ -96,8 +130,48 @@
     "pierce"
    ],
    "label": {
-    "kr": "치명타 확률 1티어·관통",
+    "kr": "치명타 확률·관통",
+    "en": "Crit chance or pierce"
+   }
+  },
+  "ps1": {
+   "anyOf": [
+    "pspd1",
+    "pdmg1"
+   ],
+   "label": {
+    "kr": "투사체 속도·피해 1티어",
+    "en": "T1 projectile speed or damage"
+   }
+  },
+  "ss1": {
+   "anyOf": [
+    "crit1",
+    "pierce1"
+   ],
+   "label": {
+    "kr": "치명타 확률·관통 1티어",
     "en": "T1 crit chance or pierce"
+   }
+  },
+  "ps2": {
+   "anyOf": [
+    "pspd2",
+    "pdmg2"
+   ],
+   "label": {
+    "kr": "투사체 속도·피해 1~2티어",
+    "en": "T1–2 projectile speed or damage"
+   }
+  },
+  "ss2": {
+   "anyOf": [
+    "crit2",
+    "pierce2"
+   ],
+   "label": {
+    "kr": "치명타 확률·관통 1~2티어",
+    "en": "T1–2 crit chance or pierce"
    }
   },
   "ward": {
@@ -185,10 +259,10 @@
    "en": "High-end",
    "lines": [
     {
-     "tag": "ps"
+     "tag": "ps1"
     },
     {
-     "tag": "ps",
+     "tag": "ps1",
      "des": true
     },
     {
@@ -201,7 +275,7 @@
      "fr": true
     },
     {
-     "tag": "ss"
+     "tag": "ss1"
     },
     {
      "tag": "hyst",
@@ -215,11 +289,11 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "ps"
+     "tag": "ps2"
     },
     {
-     "side": "p",
-     "random": true
+     "tag": "ps2",
+     "des": true
     },
     {
      "tag": "ward",
@@ -231,7 +305,7 @@
      "fr": true
     },
     {
-     "tag": "ss"
+     "tag": "ss2"
     },
     {
      "tag": "hyst",
@@ -279,8 +353,8 @@
    ],
    "cur": "Vaal_Armourers_Infuser",
    "goal": {
-    "kr": "퀄리티 20% → 30% (선택, 비용 미포함 — 20%로도 제작 가능)",
-    "en": "Quality 20% → 30% (optional, not costed — 20% works too)"
+    "kr": "퀄리티 20% → 30%, 선택·비용 미포함",
+    "en": "Quality 20% → 30%, optional, not costed"
    },
    "label": {
     "kr": "퀄리티",
@@ -300,8 +374,8 @@
     "p2"
    ],
    "goal": {
-    "kr": "콜르의 사냥 장착 (영구, 투사체 +2 옵션이 붙을 수 있게 됨)",
-    "en": "Socket Kolr’s Hunt (permanent; lets +2 projectile roll)"
+    "kr": "콜르의 사냥 장착, 영구",
+    "en": "Socket Kolr’s Hunt, permanent"
    },
    "label": {
     "kr": "룬",
@@ -378,10 +452,46 @@
    },
    "edges": [
     {
-     "to": "p4"
+     "to": "p3x"
     }
    ],
    "item": []
+  },
+  {
+   "id": "p3x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "옵션 1개만 남기기",
+    "en": "Keep one line"
+   },
+   "edges": [
+    {
+     "to": "p4"
+    }
+   ],
+   "item": [
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
   },
   {
    "id": "p4",
@@ -389,7 +499,7 @@
    "group": "prep",
    "pos": [
     0,
-    4
+    5
    ],
    "act": "chaos",
    "cur": "Chaos_Orb",
@@ -409,7 +519,7 @@
      "if": {
       "has": "proj"
      },
-     "to": "p6",
+     "to": "p5",
      "res": "ok"
     },
     {
@@ -430,15 +540,75 @@
    ]
   },
   {
+   "id": "p5",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation",
+    "Omen_of_Greater_Exaltation"
+   ],
+   "goal": {
+    "kr": "접두 2개",
+    "en": "Two prefixes"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines"
+    }
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "p6"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (콜르)",
+     "en": "+2 projectile skills (Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
    "id": "p6",
    "kind": "act",
    "group": "prep",
    "pos": [
     0,
-    5
+    7
    ],
    "act": "desecrate",
-   "cur": "Preserved_Rib",
+   "cur": "Ancient_Rib",
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ],
    "goal": {
     "kr": "네번째 옵션(훼손) — 분열 조건 옵션 4개",
     "en": "Fourth line (desecrated) — fracture needs four"
@@ -469,19 +639,19 @@
      ]
     },
     {
-     "s": "x",
+     "s": "p",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
     },
     {
-     "s": "x",
+     "s": "p",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
     },
     {
-     "s": "x",
+     "s": "s",
      "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
@@ -494,7 +664,7 @@
    "group": "prep",
    "pos": [
     0,
-    6
+    8
    ],
    "act": "fracture",
    "cur": "Fracturing_Orb",
@@ -552,7 +722,7 @@
    "group": "prep",
    "pos": [
     1,
-    6
+    8
    ],
    "simTo": "h1",
    "variant": "fail",
@@ -571,7 +741,7 @@
    "group": "prep",
    "pos": [
     0,
-    7
+    9
    ],
    "keep": [],
    "maxJunk": 1,
@@ -603,7 +773,7 @@
      ]
     },
     {
-     "s": "x",
+     "s": "p",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
@@ -616,7 +786,7 @@
    "group": "main",
    "pos": [
     0,
-    8.0
+    11.0
    ],
    "next": "k8",
    "label": {
@@ -628,7 +798,7 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
@@ -647,7 +817,7 @@
    "group": "main",
    "pos": [
     0,
-    8.4
+    11.4
    ],
    "act": "rune",
    "goal": {
@@ -668,7 +838,7 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
@@ -697,7 +867,7 @@
    "group": "main",
    "pos": [
     0,
-    9.4
+    12.4
    ],
    "act": "chaos",
    "goal": {
@@ -711,14 +881,14 @@
    "edges": [
     {
      "if": {
-      "has": "ps"
+      "has": "ps1"
      },
      "to": "xs",
      "res": "ok"
     },
     {
      "if": {
-      "has": "ss"
+      "has": "ss1"
      },
      "to": "xp",
      "res": "ok"
@@ -733,15 +903,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -750,10 +920,10 @@
    ],
    "cur": "Chaos_Orb",
    "show": [
-    "pspd",
-    "pdmg",
-    "crit",
-    "pierce"
+    "pspd1",
+    "pdmg1",
+    "crit1",
+    "pierce1"
    ]
   },
   {
@@ -762,12 +932,12 @@
    "group": "main",
    "pos": [
     0,
-    10.4
+    13.4
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접미: 치명타 확률 1티어·관통",
-    "en": "Suffix: T1 crit chance or pierce"
+    "kr": "접미: 치명타 확률·관통",
+    "en": "Suffix: crit chance or pierce"
    },
    "label": {
     "kr": "엑잘",
@@ -802,7 +972,8 @@
       ]
      },
      "to": "ok",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -829,7 +1000,8 @@
       ]
      },
      "to": "apx",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -849,7 +1021,8 @@
       ]
      },
      "to": "k15",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -1029,7 +1202,8 @@
       ]
      },
      "to": "csH",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -1057,7 +1231,8 @@
       ]
      },
      "to": "jh",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -1094,11 +1269,13 @@
       ]
      },
      "to": "ja",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "to": "jp",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     }
    ],
    "item": [
@@ -1106,15 +1283,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -1122,8 +1299,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -1145,7 +1322,7 @@
    "group": "main",
    "pos": [
     1,
-    10.4
+    13.4
    ],
    "act": "essence",
    "goal": {
@@ -1486,15 +1663,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -1511,8 +1688,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -1547,7 +1724,7 @@
    "group": "main",
    "pos": [
     1,
-    11.4
+    14.4
    ],
    "act": "essence",
    "goal": {
@@ -1888,15 +2065,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -1913,8 +2090,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -1949,7 +2126,7 @@
    "group": "main",
    "pos": [
     1,
-    12.4
+    15.4
    ],
    "act": "annul",
    "goal": {
@@ -2054,7 +2231,7 @@
       ]
      },
      "to": "kz",
-     "hide": true
+     "port": "right"
     },
     {
      "if": {
@@ -2290,15 +2467,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -2306,8 +2483,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -2322,12 +2499,12 @@
    "group": "main",
    "pos": [
     0,
-    13.4
+    16.4
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두: 투사체 속도·피해 1티어",
-    "en": "Prefix: T1 projectile speed or damage"
+    "kr": "접두: 투사체 속도·피해",
+    "en": "Prefix: projectile speed or damage"
    },
    "label": {
     "kr": "엑잘",
@@ -2362,7 +2539,8 @@
       ]
      },
      "to": "ok",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -2389,8 +2567,8 @@
       ]
      },
      "to": "apx",
-     "res": "fail",
-     "port": "right"
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -2410,7 +2588,8 @@
       ]
      },
      "to": "k15",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -2558,7 +2737,8 @@
       ]
      },
      "to": "apx",
-     "hide": true
+     "res": "fail",
+     "port": "right"
     },
     {
      "if": {
@@ -2588,7 +2768,8 @@
       ]
      },
      "to": "csH",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -2616,7 +2797,8 @@
       ]
      },
      "to": "jh",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -2653,11 +2835,13 @@
       ]
      },
      "to": "ja",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "to": "jp",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     }
    ],
    "item": [
@@ -2665,15 +2849,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -2681,8 +2865,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -2704,7 +2888,7 @@
    "group": "main",
    "pos": [
     1,
-    13.4
+    16.4
    ],
    "act": "essence",
    "goal": {
@@ -3045,15 +3229,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -3070,8 +3254,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -3106,7 +3290,7 @@
    "group": "main",
    "pos": [
     1,
-    14.4
+    17.4
    ],
    "act": "annul",
    "goal": {
@@ -3211,7 +3395,7 @@
       ]
      },
      "to": "kz",
-     "hide": true
+     "port": "right"
     },
     {
      "if": {
@@ -3447,15 +3631,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -3463,8 +3647,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -3479,7 +3663,7 @@
    "group": "main",
    "pos": [
     0,
-    16.4
+    19.4
    ],
    "act": "exalt",
    "goal": {
@@ -3819,15 +4003,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -3835,8 +4019,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -3861,7 +4045,7 @@
    "group": "main",
    "pos": [
     0,
-    17.4
+    20.4
    ],
    "act": "essence",
    "goal": {
@@ -3901,7 +4085,8 @@
       ]
      },
      "to": "ok",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -3928,8 +4113,8 @@
       ]
      },
      "to": "apx",
-     "res": "fail",
-     "port": "right"
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -4097,7 +4282,8 @@
       ]
      },
      "to": "apx",
-     "hide": true
+     "res": "fail",
+     "port": "right"
     },
     {
      "if": {
@@ -4127,7 +4313,8 @@
       ]
      },
      "to": "csH",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -4155,7 +4342,8 @@
       ]
      },
      "to": "jh",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -4164,7 +4352,8 @@
       }
      },
      "to": "js",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -4204,15 +4393,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -4229,8 +4418,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -4265,7 +4454,7 @@
    "group": "main",
    "pos": [
     0,
-    18.4
+    21.4
    ],
    "act": "exalt",
    "goal": {
@@ -4605,15 +4794,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -4621,8 +4810,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -4647,7 +4836,7 @@
    "group": "main",
    "pos": [
     0,
-    19.4
+    22.4
    ],
    "act": "essence",
    "goal": {
@@ -4687,7 +4876,8 @@
       ]
      },
      "to": "ok",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -4714,8 +4904,8 @@
       ]
      },
      "to": "apx",
-     "res": "fail",
-     "port": "right"
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -4883,7 +5073,8 @@
       ]
      },
      "to": "apx",
-     "hide": true
+     "res": "fail",
+     "port": "right"
     },
     {
      "if": {
@@ -4913,7 +5104,8 @@
       ]
      },
      "to": "csH",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -4941,7 +5133,8 @@
       ]
      },
      "to": "jh",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -4950,7 +5143,8 @@
       }
      },
      "to": "js",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -4978,11 +5172,13 @@
       ]
      },
      "to": "ja",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     },
     {
      "to": "jp",
-     "hide": true
+     "hide": true,
+     "res": "ok"
     }
    ],
    "item": [
@@ -4990,15 +5186,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -5015,8 +5211,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -5051,7 +5247,7 @@
    "group": "main",
    "pos": [
     1,
-    9.4
+    12.4
    ],
    "keep": [],
    "maxJunk": 1,
@@ -5080,7 +5276,7 @@
    "group": "main",
    "pos": [
     0,
-    20.4
+    23.4
    ],
    "act": "desecrate",
    "goal": {
@@ -5101,15 +5297,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -5132,8 +5328,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -5164,7 +5360,7 @@
    "group": "main",
    "pos": [
     0,
-    21.4
+    24.4
    ],
    "act": "reveal",
    "goal": {
@@ -5210,11 +5406,6 @@
      "if": {
       "all": [
        {
-        "param": {
-         "v": 1
-        }
-       },
-       {
         "unrev": false
        },
        {
@@ -5227,36 +5418,6 @@
      "to": "k16x",
      "res": "fail",
      "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "v": 2
-        }
-       },
-       {
-        "all": [
-         {
-          "has": "ps"
-         },
-         {
-          "has": "ss"
-         },
-         {
-          "has": "ward"
-         },
-         {
-          "has": "hyst"
-         }
-        ]
-       }
-      ]
-     },
-     "to": "ok",
-     "res": "ok",
-     "hide": true
     },
     {
      "if": {
@@ -5557,15 +5718,15 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2 (분열, 콜르)",
      "en": "+2 projectile skills (fractured, Kolr)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "proj"
      ]
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -5582,8 +5743,8 @@
     },
     {
      "s": "p",
-     "kr": "투사체 속도·피해 1티어",
-     "en": "T1 projectile speed or damage",
+     "kr": "투사체 속도·피해",
+     "en": "Projectile speed or damage",
      "m": "n",
      "tags": [
       "ps"
@@ -5591,8 +5752,8 @@
     },
     {
      "s": "s",
-     "kr": "치명타 확률 1티어·관통",
-     "en": "T1 crit chance or pierce",
+     "kr": "치명타 확률·관통",
+     "en": "Crit chance or pierce",
      "m": "n",
      "tags": [
       "ss"
@@ -5615,330 +5776,6 @@
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
-   ],
-   "over": [
-    {
-     "param": {
-      "v": 2
-     },
-     "set": {
-      "edges": [
-       {
-        "if": {
-         "all": [
-          {
-           "has": "ps"
-          },
-          {
-           "has": "ss"
-          },
-          {
-           "has": "ward"
-          },
-          {
-           "has": "hyst"
-          }
-         ]
-        },
-        "to": "ok",
-        "res": "ok"
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "all": [
-            {
-             "has": "ps"
-            },
-            {
-             "has": "ss"
-            },
-            {
-             "has": "ward"
-            },
-            {
-             "has": "hyst"
-            }
-           ]
-          },
-          {
-           "full": "p"
-          }
-         ]
-        },
-        "to": "apx",
-        "hide": true
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "has": "ps"
-          },
-          {
-           "has": "ss"
-          },
-          {
-           "has": "ward"
-          },
-          {
-           "has": "hyst"
-          }
-         ]
-        },
-        "to": "k15",
-        "hide": true
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "not": {
-            "has": "ps"
-           }
-          },
-          {
-           "not": {
-            "has": "ss"
-           }
-          }
-         ]
-        },
-        "to": "kz",
-        "hide": true
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "not": {
-            "has": "ss"
-           }
-          },
-          {
-           "not": {
-            "sideAll": {
-             "side": "s",
-             "tag": "gs"
-            }
-           }
-          },
-          {
-           "not": {
-            "has": "ward"
-           }
-          }
-         ]
-        },
-        "to": "csA",
-        "hide": true
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "not": {
-            "has": "ss"
-           }
-          },
-          {
-           "not": {
-            "sideAll": {
-             "side": "s",
-             "tag": "gs"
-            }
-           }
-          },
-          {
-           "not": {
-            "has": "hyst"
-           }
-          }
-         ]
-        },
-        "to": "csH",
-        "hide": true
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "not": {
-            "has": "ss"
-           }
-          },
-          {
-           "not": {
-            "sideAll": {
-             "side": "s",
-             "tag": "gs"
-            }
-           }
-          }
-         ]
-        },
-        "to": "asx",
-        "hide": true
-       },
-       {
-        "if": {
-         "not": {
-          "has": "ss"
-         }
-        },
-        "to": "xs",
-        "hide": true
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "not": {
-            "has": "ps"
-           }
-          },
-          {
-           "not": {
-            "sideAll": {
-             "side": "p",
-             "tag": "gp"
-            }
-           }
-          },
-          {
-           "not": {
-            "has": "ward"
-           }
-          }
-         ]
-        },
-        "to": "cpA",
-        "hide": true
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "not": {
-            "has": "ps"
-           }
-          },
-          {
-           "not": {
-            "sideAll": {
-             "side": "p",
-             "tag": "gp"
-            }
-           }
-          }
-         ]
-        },
-        "to": "apx",
-        "hide": true
-       },
-       {
-        "if": {
-         "not": {
-          "has": "ps"
-         }
-        },
-        "to": "xp",
-        "hide": true
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "not": {
-            "has": "hyst"
-           }
-          },
-          {
-           "not": {
-            "sideAll": {
-             "side": "s",
-             "tag": "gs"
-            }
-           }
-          }
-         ]
-        },
-        "to": "csH",
-        "hide": true
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "not": {
-            "has": "hyst"
-           }
-          },
-          {
-           "any": [
-            {
-             "not": {
-              "sideAll": {
-               "side": "p",
-               "tag": "gp"
-              }
-             }
-            },
-            {
-             "full": "p"
-            }
-           ]
-          }
-         ]
-        },
-        "to": "jh",
-        "hide": true
-       },
-       {
-        "if": {
-         "not": {
-          "has": "hyst"
-         }
-        },
-        "to": "js",
-        "hide": true
-       },
-       {
-        "if": {
-         "all": [
-          {
-           "not": {
-            "has": "ward"
-           }
-          },
-          {
-           "any": [
-            {
-             "not": {
-              "sideAll": {
-               "side": "p",
-               "tag": "gp"
-              }
-             }
-            },
-            {
-             "full": "p"
-            }
-           ]
-          }
-         ]
-        },
-        "to": "ja",
-        "hide": true
-       },
-       {
-        "to": "jp",
-        "hide": true
-       }
-      ]
-     }
-    }
    ]
   },
   {
@@ -5947,7 +5784,7 @@
    "group": "main",
    "pos": [
     1,
-    21.4
+    24.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -6042,7 +5879,7 @@
       ]
      },
      "to": "k15",
-     "hide": true,
+     "hide": false,
      "port": "right"
     },
     {
@@ -6299,7 +6136,7 @@
    "group": "main",
    "pos": [
     0,
-    22.4
+    25.4
    ],
    "label": {
     "kr": "완성",
@@ -6310,5 +6147,8 @@
  "xsub": [
   "Kolr's Hunt"
  ],
- "xroll": true
+ "xroll": true,
+ "basePrice": {
+  "Divine_Orb": 12
+ }
 }

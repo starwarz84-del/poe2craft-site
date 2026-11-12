@@ -4,7 +4,7 @@
  "cls": "Body_Armours_int",
  "base": "Vile Robe",
  "ilvl": 81,
- "note": "Diztoh 정신력 로브(원본 레시피 기록) — 정신력 분열 + 잡옵 → 좌측 찬미의 징조 + 상위 엑잘티드 오브로 에너지 보호막 최대치·% 옵션 두 개, 빗나가면 징조 없는 소멸의 오브(영상 자막 확인 2026-11-10 — 접미가 비어 있어 접두만 지워짐, 6티어 최대치를 상위 카오스 오브로 바꾼 장면은 운이라 뺌) → 아스트리드의 창의성 + 보존된 갈비뼈 → 공개(정신력 점유 효율) — 실패는 빛의 징조 대신 우측 결정화 + 완벽한 추구의 에센스 → 우측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈(약 2.6 div, 빛의 징조 약 7.5 div) → 상위 찬미 + 완벽한 엑잘(접미 옵션 2개) → 저항이 없으면 절사의 징조 + 상위 카오스 오브(밸런스만, 가장 낮은 옵션이 버릴 옵션일 때만 — 레벨 65인 정신력 점유 효율이 가장 낮아지면 타협). 에센셜 = 낮은 티어 베이스·상위 엑잘·저항 결과 그대로.",
+ "note": "Diztoh 정신력 로브(영상 화면·자막 전체 확인 2026-11-12) — 정신력 분열 + 잡옵 1개 → 상위 카오스 오브로 에너지 보호막 최대치(영상 3:18~3:28, 6티어 다음 1티어) → 좌측 찬미의 징조 + 상위 엑잘티드 오브로 단일 에너지 보호막 %, 빗나가면 징조 없는 소멸의 오브(접미가 비어 접두만 지워짐, 최대치가 지워지면 카오스부터) → 아스트리드의 창의성 + 보존된 갈비뼈 → 공개(정신력 점유 효율) — 빗나가면 빛의 징조 대신 우측 결정화 + 완벽한 추구의 에센스 → 우측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈 → 상위 찬미 + 완벽한 엑잘(접미 2개) → 저항이 없으면(밸런스) 우측 소멸의 징조 + 소멸의 오브로 접미 하나 제거 → 절사의 징조 + 상위 카오스 오브로 가장 낮은 옵션을 저항으로(영상 2번) → 완벽한 엑잘(접미 세번째). 에센셜 = 낮은 티어 베이스·상위 엑잘·저항 결과 그대로.",
  "params": {
   "sT": {
    "kr": "정신력 (분열)",
@@ -110,8 +110,8 @@
     "g": 1
    },
    "desc": {
-    "kr": "에너지 보호막 옵션 2개 1~2티어 + 저항(절사의 징조, 영상)",
-    "en": "Two T1–2 energy shield lines + a resistance (Whittling, as the video)"
+    "kr": "에너지 보호막 옵션 2개 1~2티어 + 저항(우측 소멸·절사의 징조, 영상)",
+    "en": "Two T1–2 energy shield lines + a resistance (Dextral Annulment and Whittling, as the video)"
    }
   }
  ],
@@ -213,11 +213,11 @@
   {
    "id": "L0",
    "nodes": [
-    "v2",
-    "v2x"
+    "v3",
+    "v3x"
    ],
-   "kr": "접두 에너지 보호막 옵션 2개",
-   "en": "Two ES prefixes"
+   "kr": "접두 에너지 보호막 % 옵션",
+   "en": "% energy shield prefix"
   },
   {
    "id": "L1",
@@ -381,10 +381,65 @@
     0,
     1
    ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix option"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "added": "esf"
+     },
+     "to": "v3",
+     "res": "ok"
+    },
+    {
+     "to": "v2",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    }
+   ],
+   "cur": "Greater_Chaos_Orb",
+   "show": [
+    "esf"
+   ]
+  },
+  {
+   "id": "v3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2
+   ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 두번째·세번째 옵션",
-    "en": "Second and third prefix options"
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix option"
    },
    "label": {
     "kr": "엑잘",
@@ -393,28 +448,14 @@
    "edges": [
     {
      "if": {
-      "all": [
-       {
-        "has": "esf"
-       },
-       {
-        "has": "esp"
-       }
-      ]
+      "added": "esp"
      },
-     "to": "v5",
+     "to": "v4",
      "res": "ok"
     },
     {
-     "if": {
-      "full": "p"
-     },
-     "to": "v2x",
+     "to": "v3x",
      "res": "fail"
-    },
-    {
-     "to": "v2",
-     "res": "ok"
     }
    ],
    "item": [
@@ -448,7 +489,6 @@
    ],
    "cur": "Greater_Exalted_Orb",
    "show": [
-    "esf",
     "esp"
    ],
    "omens": [
@@ -456,16 +496,16 @@
    ]
   },
   {
-   "id": "v2x",
+   "id": "v3x",
    "kind": "cleanup",
    "group": "main",
    "pos": [
     1,
-    1
+    2
    ],
    "keep": [
-    "esf",
-    "esp"
+    "spirit",
+    "esf"
    ],
    "maxJunk": 0,
    "label": {
@@ -483,17 +523,75 @@
    "edges": [
     {
      "lost": "esf",
-     "to": "v2x"
+     "to": "v2"
     },
     {
-     "lost": "esp",
-     "to": "v2x"
-    },
-    {
-     "to": "v2",
+     "to": "v3",
      "port": "right"
     }
    ]
+  },
+  {
+   "id": "v4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "v5"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    }
+   ],
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
+   }
   },
   {
    "id": "v5",
@@ -501,12 +599,12 @@
    "group": "main",
    "pos": [
     0,
-    3
+    4
    ],
    "act": "desecrate",
    "goal": {
-    "kr": "아스트리드의 창의성 장착 후 접미 첫번째(훼손)",
-    "en": "Socket Astrid’s Creativity, then the first suffix (desecrated)"
+    "kr": "접미 첫번째 옵션(훼손)",
+    "en": "First suffix (desecrated)"
    },
    "label": {
     "kr": "훼손",
@@ -556,8 +654,8 @@
    "showText": [
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개) — 접두가 꽉 차 접미로",
-     "en": "Desecrated (unrevealed) — prefixes are full"
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)"
     }
    ]
   },
@@ -567,7 +665,7 @@
    "group": "main",
    "pos": [
     0,
-    4
+    5
    ],
    "act": "reveal",
    "goal": {
@@ -643,7 +741,7 @@
    "group": "main",
    "pos": [
     1,
-    4
+    5
    ],
    "act": "essence",
    "goal": {
@@ -716,7 +814,7 @@
    "group": "main",
    "pos": [
     1,
-    5
+    6
    ],
    "act": "essence",
    "goal": {
@@ -790,7 +888,7 @@
    "group": "main",
    "pos": [
     1,
-    6
+    7
    ],
    "act": "desecrate",
    "goal": {
@@ -858,7 +956,7 @@
    "group": "main",
    "pos": [
     0,
-    7
+    8
    ],
    "act": "exalt",
    "goal": {
@@ -872,27 +970,14 @@
    "edges": [
     {
      "if": {
-      "any": [
-       {
-        "has": "anyres"
-       },
-       {
-        "param": {
-         "g": 0
-        }
-       }
-      ]
+      "has": "anyres"
      },
-     "to": "ok"
+     "to": "ok",
+     "res": "ok"
     },
     {
-     "if": {
-      "whittleSafe": "keepR"
-     },
-     "to": "v8"
-    },
-    {
-     "to": "ok"
+     "to": "v8a",
+     "res": "fail"
     }
    ],
    "item": [
@@ -962,9 +1047,85 @@
       "g": 0
      },
      "set": {
-      "cur": "Greater_Exalted_Orb"
+      "cur": "Greater_Exalted_Orb",
+      "edges": [
+       {
+        "to": "ok"
+       }
+      ]
      }
     }
+   ]
+  },
+  {
+   "id": "v8a",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접미 잡옵 하나 제거",
+    "en": "Remove one junk suffix"
+   },
+   "edges": [
+    {
+     "if": {
+      "removed": "res"
+     },
+     "to": "v8x",
+     "res": "fail"
+    },
+    {
+     "to": "v8",
+     "res": "ok"
+    }
+   ]
+  },
+  {
+   "id": "v8x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    9
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "남은 접미 잡옵 제거",
+    "en": "Remove the remaining junk suffixes"
+   },
+   "edges": [
+    {
+     "to": "v5"
+    }
+   ],
+   "side": "s",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
    ]
   },
   {
@@ -973,7 +1134,7 @@
    "group": "main",
    "pos": [
     0,
-    8
+    10
    ],
    "act": "chaos",
    "goal": {
@@ -989,7 +1150,7 @@
      "if": {
       "has": "anyres"
      },
-     "to": "ok",
+     "to": "v8b",
      "res": "ok"
     },
     {
@@ -1000,7 +1161,7 @@
      "res": "fail"
     },
     {
-     "to": "ok",
+     "to": "v8b",
      "res": "fail"
     }
    ],
@@ -1043,12 +1204,6 @@
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "s",
      "kr": "원소 저항",
      "en": "Elemental resistance",
      "m": "n",
@@ -1063,6 +1218,100 @@
    ],
    "omens": [
     "Omen_of_Whittling"
+   ],
+   "skipIf": {
+    "not": {
+     "whittleSafe": "keepR"
+    }
+   },
+   "skipTo": "v8b",
+   "skipNote": {
+    "kr": "가장 낮은 옵션이 남길 옵션이면 건너뜀",
+    "en": "Skipped when the lowest line is one to keep"
+   }
+  },
+  {
+   "id": "v8b",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "스킬의 정신력 점유 효율 (아마나무)",
+     "en": "Spirit reservation efficiency (Amanamu)",
+     "m": "n",
+     "tags": [
+      "res"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "원소 저항",
+     "en": "Elemental resistance",
+     "m": "n",
+     "tags": [
+      "anyres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션",
+     "en": "Random modifier"
+    }
    ]
   },
   {
@@ -1071,7 +1320,7 @@
    "group": "main",
    "pos": [
     0,
-    9
+    12
    ],
    "label": {
     "kr": "완성",

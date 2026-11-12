@@ -141,39 +141,73 @@ graph('saveq-alloy-focus-v2','Foci','Tasalian Focus',81,
   [{'id':v,'kr':kr,'en':en,'lines':[{'side':'p','label':K(f'주문 피해·에너지 보호막·마나 1~{t}티어',f'Spell damage, ES or mana T1–{t}')},{'side':'p','label':K(f'주문 피해·에너지 보호막·마나 1~{t}티어',f'Spell damage, ES or mana T1–{t}')},{'side':'p','label':K(f'주문 피해·에너지 보호막·마나 1~{t}티어',f'Spell damage, ES or mana T1–{t}')},{'tag':'lvl','tmax':1},{'tag':'critE','tmax':1},{'tag':'alloy','tmax':1}]} for v,kr,en,t in (('bal','밸런스 옵션','Balance',2),('ess','에센셜 옵션','Essential',4))],
   {'quality':20,'sockets':1},{'all':[{'has':'lvl'},{'has':'alloy'},{'full':'p'},{'full':'s'}]})
 
-# ---------- 5. 탱정 키타바 방패 (gQa51XOS98s, 방패 부분) ----------
-# 원본: 받는 물리 피해 감소 분열 + 잡옵 → 카오스 오브로 최대 저항 1티어 → 우측 강령술 + 고대 갈비뼈 → 공개(최대 저항, 빛의 징조로 다시)
-# → 상위 찬미 + 완벽한 엑잘(접두 옵션 2개) → 완벽한 엑잘(접두) → 절사의 징조 + 완벽한 카오스 오브로 방어도 1티어 옵션 3개(방어도 1티어 레벨 75가 접두 최고라 절사는 늘 잡옵만 침).
-# 2026-11-12 영상 전체 대조(자막 12:00~21:30 방패 부분, 메인 세션): 단계 일치(카오스 → 우측 강령술 + 고대 갈비뼈 + 메아리, 빛의 징조로 다시 → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사 + 완벽한 카오스). 영상 = 모두 1티어 종결 방패.
-#   등급 C17: 하이엔드 = 영상(1티어), 밸런스 = 최대 저항·방어도 1~2티어, 에센셜 = 1~4티어(최대 저항은 3티어까지만 있음).
-P={'high':{'mT':1,'aT':1},'bal':{'mT':2,'aT':2},'ess':{'mT':3,'aT':4}}
-tags={'pdr':{'gi':13,'tmax':1},'mf':{'gi':14,'tmax':'$mT'},'mc':{'gi':15,'tmax':'$mT'},'ml':{'gi':16,'tmax':'$mT'},'maxres':{'anyOf':['mf','mc','ml'],'label':K('최대 저항 +%','Maximum resistance')},
+# ---------- 5. 탱정 키타바 방패 (gQa51XOS98s, 방패 부분 12:50~22:20) ----------
+# 2026-11-12 W6 영상 전체 확인(자막 0:00~47:36 전부 + 화면 슬라이드 STEP 02~14 캡처, evidence/tankjung-kitava-shield-v2/timeline.md):
+#   베이스 STEP 02(14:30): 특출난 타호아의 거대 방패 2소켓, 아이템 레벨 정확히 81, 일반 등급·미타락. 퀄리티 30%는 선택(STEP 03·14).
+#   STEP 04~05(15:25~16:00): 접미 4종(받는 물리 피해 8% 감소, 화염·냉기·번개 저항 최대치 +3%) 중 하나를 방법 B — 완벽한 진화 → (접두면) 완벽한 확장 → 빗나가면 소멸 반복.
+#   STEP 06(16:20): 냉기·번개면 맹렬한 유동체로 화염으로. STEP 07(16:55): 1옵션이면 완벽한 확장 → 완벽한 제왕, 2옵션이면 완벽한 제왕 → 보존된 갈비뼈(미공개). STEP 09(17:17): 분열, 다른 옵션이면 새 베이스.
+#   STEP 10(17:25): 소멸의 오브 2개 → 카오스 오브 반복(4종 중 하나). STEP 11(17:55): 우측 강령술 + 고대 갈비뼈 + 메아리, 물리 피해 감소가 없으면 그것, 있으면 저항 최대치, 빗나가면 빛의 징조 + 소멸.
+#   STEP 12(19:04): 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘. STEP 13(19:08~21:20): 절사의 징조 + 완벽한 카오스 오브로 방어도 1티어 3종. STEP 14(21:35): 철 룬·퀄리티(레시피에서 뺌, 정책 9).
+#   등급(난이도 4 = 하이엔드·밸런스, C17): 분열 준비·카오스 오브는 싼 단계라 두 등급 모두 1티어(C15). 하이엔드 = 영상(훼손 공개·절사 모두 1티어),
+#   밸런스 = 훼손 공개 1~2티어, 절사는 방어도 1~2티어 2개까지(마지막 접두가 잡옵이면 그대로 — C17 2번).
+#   절사 반복: 영상 20:30 '복합(74)과 가시 피해 1티어(74)가 같이 있어도 복합이 뜰 때까지 반복' → 가장 낮은 옵션이 방어도 접두여도 계속. 접미(훼손 물리 피해 감소 2티어 레벨 66 등)가 가장 낮으면 멈춤(밸런스만 생김, 내부 결정).
+P={'high':{'mT':1,'aT':1,'aN':3},'bal':{'mT':2,'aT':2,'aN':2}}
+tags={'pdr1':{'gi':13,'tmax':1},'mf1':{'gi':14,'tmax':1},'mc1':{'gi':15,'tmax':1},'ml1':{'gi':16,'tmax':1},
+      'suf1':{'anyOf':['pdr1','mf1','mc1','ml1'],'label':K('받는 물리 피해 감소 또는 저항 최대치 1티어','T1 physical damage reduction or maximum resistance')},
+      'mcl':{'anyOf':['mc1','ml1'],'label':K('냉기·번개 저항 최대치 1티어','T1 maximum cold or lightning resistance')},
+      'pdr':{'gi':13,'tmax':'$mT'},'mf':{'gi':14,'tmax':'$mT'},'mc':{'gi':15,'tmax':'$mT'},'ml':{'gi':16,'tmax':'$mT'},'maxres':{'anyOf':['mf','mc','ml'],'label':K('최대 저항 +%','Maximum resistance')},
       'flat':{'gi':6,'tmax':'$aT'},'pct':{'gi':7,'tmax':'$aT'},'hyb':{'gi':8,'tmax':'$aT'},'arm':{'anyOf':['flat','pct','hyb'],'label':K('방어도 접두','Armour prefix')},
-      'keep':{'anyOf':['pdr','maxres','arm']}}
-PD=it('s','받는 물리 피해 감소 (분열)','Physical damage reduction (fractured)',['pdr']); MR=it('s','최대 저항 +%','Maximum resistance',['maxres']); AR=lambda: it('p','방어도 접두','Armour prefix',['arm'])
-I0=[PD,J('s')]; I1=[PD,MR]; I2=I1+[UN('s')]; I3=I1+[MR]; I4=I3+[J('p'),J('p')]; I5=I4+[J('p')]; I6=I3+[AR(),AR(),AR()]
-nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pdr','fr':True},{'junk':'s'}]},K('받는 물리 피해 감소 분열 + 잡옵 1개 (퀄리티 20%)','Fractured physical damage reduction + one junk line (20% quality)'),I0),
- mark([0,0.6],'t2',I0),
- act('t2','main',[0,1],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix option'),None,K('카오스','Chaos'),[{'if':{'has':'maxres'},'to':'t3','res':'ok'},{'to':'t2','res':'fail'}],I1,show=['maxres']),
- act('t3','main',[0,2],'desecrate','Ancient_Rib',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'t4'}],I2,omens=['Omen_of_Dextral_Necromancy']),
- act('t4','main',[0,3],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'maxres'},'to':'t5','res':'ok'},{'to':'t4x','res':'fail'}],I3,want='maxres',show=['maxres'],omens=['Omen_of_Abyssal_Echoes']),
- annul('t4x',[1,3],[{'to':'t3','port':'right'}]),
- act('t5','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),[{'to':'t6'}],I4,omens=['Omen_of_Greater_Exaltation']),
- act('t6','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'if':{'count':{'tag':'arm','min':3}},'to':'ok','res':'ok','hide':True},{'if':{'whittleSafe':'keep'},'to':'t7'},{'to':'ok','res':'fail','hide':True}],I5),
- act('t7','main',[0,6],'chaos','Perfect_Chaos_Orb',K('가장 낮은 옵션을 방어도 1티어로','The lowest line into T1 armour'),[st('p','방어도 1티어 (최대치·%·복합) 옵션 3개','Three T1 armour lines (flat, %, hybrid)')],K('카오스','Chaos'),
-     [{'if':{'count':{'tag':'arm','min':3}},'to':'ok','res':'ok'},{'if':{'whittleSafe':'keep'},'to':'t7','res':'fail'},{'to':'ok','res':'fail'}],I6,omens=['Omen_of_Whittling']),
- done([0,7])]
-nodes[0]['group']='prep'
+      'sufK':{'anyOf':['pdr','maxres']}}
+ARMDONE={'any':[{'count':{'tag':'arm','min':3}},{'all':[{'param':{'aN':2}},{'count':{'tag':'arm','min':2}}]}]}
+SUF=lambda m='n': it('s','받는 물리 피해 감소 또는 저항 최대치 1티어','T1 physical damage reduction or maximum resistance',['suf1'],m)
+X=lambda: it('x','잡옵','Junk',None,'j')
+PD=it('s','받는 물리 피해 감소 (분열)','Physical damage reduction (fractured)',['pdr'],'f'); MR=it('s','최대 저항 +%','Maximum resistance',['maxres']); MRD=it('s','최대 저항 +% (훼손)','Maximum resistance (desecrated)',['maxres'],'d'); AR=lambda: it('p','방어도 접두','Armour prefix',['arm'])
+I0=[PD,J('s')]; I1=[PD,MR]; I2=I1+[UN('s')]; I3=I1+[MRD]; I4=[J('p'),J('p')]+I3; I5=[J('p')]+I4; I6=[AR(),AR(),AR()]+I3; I6B=[AR(),AR(),J('p')]+I3
+OKP=[{'if':{'added':'mcl'},'to':'fl','res':'ok'},{'if':{'added':'suf1'},'to':'r1','res':'ok'}]
+b0=base('m1',None,K('특출난 타호아의 거대 방패 구입 (소켓 2개, 아이템 레벨 81)','Buy an exceptional Tawhoan Tower Shield (two sockets, item level 81)'),[]); b0['id']='b0'; b0.pop('start',None)
+nodes=[b0,
+ {'id':'hq','kind':'side','group':'prep','pos':[1,0.5],'attach':['b0','m1'],'cur':'Vaal_Armourers_Infuser','goal':K('퀄리티 30% (선택)','30% quality (optional)'),'label':K('퀄리티','Quality')},
+ act('m1','prep',[0,1],'transmute','Perfect_Orb_of_Transmutation',K('매직 첫 옵션','First magic option'),None,K('진화','Transmute'),
+     OKP+[{'if':{'full':'s'},'to':'m2x','res':'fail'},{'to':'m2','res':'fail'}],[SUF()],show=['suf1']),
+ act('m2','prep',[0,2],'augment','Perfect_Orb_of_Augmentation',K('매직 접미 옵션','Magic suffix option'),None,K('확장','Augment'),
+     OKP+[{'if':{'not':{'full':'s'}},'to':'m2','res':'fail'},{'to':'m2x','res':'fail'}],[J('p'),SUF()],show=['suf1']),
+ {'id':'m2x','kind':'act','group':'prep','pos':[1,2],'act':'annul','cur':'Orb_of_Annulment','label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),
+  'target':K('빗나간 접미 지우기','Remove the missed suffix'),'edges':[{'if':{'full':'s'},'to':'m2x'},{'to':'m2'}]},
+ act('fl','prep',[1,3],'divine','Blazing_Flux',K('화염 저항 최대치로 바꾸기','Turn it into maximum fire resistance'),[st('s','냉기·번개 저항 최대치 → 화염','Cold or lightning maximum resistance → fire')],K('유동체','Flux'),[{'to':'r1'}],[SUF()]),
+ act('r1','prep',[0,3],'augment','Perfect_Orb_of_Augmentation',K('매직 접두 옵션','Magic prefix option'),[st('p','랜덤 옵션 1개','One random option')],K('확장','Augment'),[{'to':'r2'}],[J('p'),SUF()],skipIf={'full':'p'},skipTo='r2',skipNote=K('옵션 2개면 건너뜀','Skip with two options')),
+ act('r2','prep',[0,4],'regal','Perfect_Regal_Orb',K('레어 전환','To rare'),[st(None,'옵션 3개','Three options')],K('제왕','Regal'),[{'to':'f1'}],[J('p'),SUF(),X()]),
+ act('f1','prep',[0,5],'desecrate','Preserved_Rib',K('분열 확률을 높이기 위해 훼손','Desecrate to raise the fracture odds'),[st(None,'훼손 옵션 1개 (미공개)','One desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'f2'}],[J('p'),SUF(),X(),UN('x')]),
+ act('f2','prep',[0,6],'fracture','Fracturing_Orb',K('분열','Fracture'),[st(None,'접미 4종 중 하나가 분열되면 성공','Success when one of the four suffixes fractures')],K('분열','Fracture'),
+     [{'if':{'fractured':'suf1'},'to':'f4','res':'ok'},{'to':'xj','res':'fail','dash':True,'label':K('다른 옵션 분열','Another option fractured')}],[J('p'),PD,X(),UN('x')],pAll=True),
+ {'id':'xj','kind':'exit','group':'prep','pos':[1,6],'simTo':'b0','variant':'fail','label':K('다른 옵션 분열 — 새 베이스','Another option fractured — new base')},
+ dict(cleanup('f4',[0,7],[],[{'to':'ms'}],K('분열 + 옵션 1개만 남기기','Keep only the fracture + one option')),group='prep',maxJunk=1,item=[PD,X()]),
+ mark([0,7.6],'t2',[PD,X()]),
+ act('t2','main',[0,8],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix option'),[st('s','접미 4종 중 남은 하나','Another of the four suffixes')],K('카오스','Chaos'),
+     [{'if':{'count':{'tag':'suf1','min':2}},'to':'t3','res':'ok'},{'to':'t2','res':'fail'}],I1,show=['suf1'],skipIf={'count':{'tag':'suf1','min':2}},skipTo='t3'),
+ act('t3','main',[0,9],'desecrate','Ancient_Rib',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),
+     [{'to':'t4p'}],I2,omens=['Omen_of_Dextral_Necromancy']),
+ act('t4','main',[0,11],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'maxres'},'to':'t5','res':'ok'},{'to':'t4x','res':'fail'}],I3,want='maxres',show=['maxres'],omens=['Omen_of_Abyssal_Echoes']),
+ act('t4p','main',[0,10],'reveal',None,K('훼손 옵션 확인 (물리 피해 감소)','Reveal the desecrated modifier (damage reduction)'),None,K('공개','Reveal'),[{'if':{'added':'pdr'},'to':'t5','res':'ok','port':'right'},{'to':'t4x','res':'fail'}],I3,want='pdr',show=['pdr'],omens=['Omen_of_Abyssal_Echoes'],skipIf={'has':'pdr1'},skipTo='t4',skipNote=K('물리 피해 감소가 이미 있으면 건너뜀','Skip when damage reduction is already there')),
+ annul('t4x',[1,10.5],[{'to':'t3','port':'right'}]),
+ act('t5','main',[0,12],'exalt','Perfect_Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 2개','Two random options')],K('엑잘','Exalt'),[{'to':'t6'}],I4,omens=['Omen_of_Greater_Exaltation']),
+ act('t6','main',[0,13],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random option')],K('엑잘','Exalt'),[{'if':ARMDONE,'to':'ok','res':'ok','hide':True},{'if':{'whittleSafe':'sufK'},'to':'t7','label':K('방어도 옵션 부족','Armour options missing')},{'to':'ok','res':'fail','hide':True}],I5),
+ act('t7','main',[0,14],'chaos','Perfect_Chaos_Orb',K('가장 낮은 옵션을 방어도 1티어로','The lowest option into T1 armour'),[st('p','방어도 1티어 (최대치·%·복합) 옵션 3개','Three T1 armour options (flat, %, hybrid)')],K('카오스','Chaos'),
+     [{'if':ARMDONE,'to':'ok','res':'ok'},{'if':{'whittleSafe':'sufK'},'to':'t7','res':'fail'},{'to':'ok','res':'fail'}],I6,omens=['Omen_of_Whittling'],over=[{'param':{'aN':2},'set':{'item':I6B,'showText':[st('p','방어도 1~2티어 (최대치·%·복합) 옵션 2개','Two T1–2 armour options (flat, %, hybrid)')]}}]),
+ done([0,15])]
 graph('tankjung-kitava-shield-v2','Shields_str','Tawhoan Tower Shield',81,
-  '탱정 키타바 방패(gQa51XOS98s) — 받는 물리 피해 감소 분열 + 잡옵 → 카오스 오브(최대 저항) → 우측 강령술 + 고대 갈비뼈 → 공개(최대 저항, 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 옵션 3개. 하이엔드 = 영상(모두 1티어), 밸런스 = 1~2티어, 에센셜 = 최대 저항 1~3티어·방어도 1~4티어.',
-  {'mT':{'kr':'최대 저항','en':'Maximum resistance','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2'),'3':('1~3티어','T1–3')})},'aT':{'kr':'방어도 접두 3개 (절사)','en':'Three armour prefixes (Whittling)','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})}},P,
-  {'high':K('영상: 최대 저항·방어도 1티어','Video: T1 max res and armour'),'bal':K('최대 저항·방어도 1~2티어','T1–2 max res and armour'),'ess':K('최대 저항 1~3티어, 방어도 1~4티어','T1–3 max res, T1–4 armour')},
-  tags,nodes,[{'id':'L1','nodes':['t3','t4','t4x'],'kr':'최대 저항 공개','en':'Max res reveal'}],
-  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'arm'},{'tag':'arm'},{'tag':'arm'},{'tag':'pdr','tmax':1,'fr':True},{'tag':'maxres'},{'tag':'maxres'}]} for v,kr,en in (('high','하이엔드 옵션','High-end'),('bal','밸런스 옵션','Balance'),('ess','에센셜 옵션','Essential'))],
-  {'quality':20,'sockets':2},{'all':[{'has':'pdr'},{'count':{'tag':'maxres','min':2}},{'full':'p'},{'full':'s'}]})
-_p=f'{H}/tankjung-kitava-shield-v2.json'; _g=json.load(open(_p))   # 등급 C17: 하이엔드·밸런스·에센셜
-_D={'high':K('영상: 최대 저항·방어도 1티어','Video: T1 max res and armour'),'bal':K('최대 저항·방어도 1~2티어','T1–2 max res and armour'),'ess':K('최대 저항 1~3티어, 방어도 1~4티어','T1–3 max res, T1–4 armour')}
-_g['strategies']=[{'id':v,'params':P[v]} for v in ('high','bal','ess')]
-_g['versions']=[{'id':v,'kr':kr,'en':en,'params':P[v],'desc':_D[v]} for v,kr,en in (('ess','에센셜','Essential'),('bal','밸런스','Balance'),('high','하이엔드','High-end'))]
+  '탱정 키타바 방패(gQa51XOS98s) — 특출난 방패 → 완벽한 진화·확장 + 소멸로 접미 4종 중 하나(냉기·번개면 맹렬한 유동체) → 완벽한 제왕 + 보존된 갈비뼈 → 분열 → 소멸 2번 + 카오스 오브(접미 두번째) → 우측 강령술 + 고대 갈비뼈 → 공개(빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 옵션. 하이엔드 = 영상(모두 1티어), 밸런스 = 훼손 1~2티어·방어도 1~2티어 2개.',
+  {'mT':{'kr':'훼손 접미','en':'Desecrated suffix','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'aT':{'kr':'방어도 접두 (절사)','en':'Armour prefixes (Whittling)','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},
+   'aN':{'kr':'방어도 접두 개수','en':'Armour prefix count','values':TV({'3':('3개','Three'),'2':('2개 + 랜덤 옵션','Two + a random option')})}},dict(P,ess=P['bal']),
+  {'high':K('영상: 모두 1티어','Video: all T1'),'bal':K('훼손 1~2티어, 방어도 1~2티어 2개','T1–2 desecrated, two T1–2 armour'),'ess':None},
+  tags,nodes,[{'id':'L0','nodes':['m2','m2x'],'kr':'매직 접미 찾기','en':'Magic suffix hunt'},{'id':'L1','nodes':['t3','t4','t4p','t4x'],'kr':'훼손 공개','en':'Desecrated reveal'},{'id':'L2','nodes':['t7'],'kr':'절사','en':'Whittling'}],
+  [{'id':'high','kr':'하이엔드 옵션','en':'High-end','lines':[{'tag':'arm'},{'tag':'arm'},{'tag':'arm'},{'tag':'pdr','tmax':1,'fr':True},{'tag':'maxres','tmax':1},{'tag':'maxres'}]},
+   {'id':'bal','kr':'밸런스 옵션','en':'Balance','lines':[{'tag':'arm'},{'tag':'arm'},{'side':'p','random':True},{'tag':'pdr','tmax':1,'fr':True},{'tag':'maxres','tmax':1},{'tag':'maxres'}]}],
+  {'sockets':2},{'all':[{'count':{'tag':'suf1','min':1}},{'has':'pdr'},{'count':{'tag':'maxres','min':2}},{'full':'p'},{'full':'s'}]})
+_p=f'{H}/tankjung-kitava-shield-v2.json'; _g=json.load(open(_p))   # 등급: 난이도 4 → 하이엔드·밸런스(사용자 확정 2026-11-12)
+_D={'high':K('영상: 모두 1티어','Video: all T1'),'bal':K('훼손 1~2티어, 방어도 1~2티어 2개','T1–2 desecrated, two T1–2 armour')}
+_g['groups']=[{'id':'prep','kr':'베이스템 완성','en':'Finished base','cols':[0,1]},{'id':'main','kr':'옵션 추가 작업','en':'Adding modifiers','cols':[0,2]}]
+_g['start']='b0'
+_g['strategies']=[{'id':v,'params':P[v]} for v in ('high','bal')]
+_g['versions']=[{'id':v,'kr':kr,'en':en,'params':P[v],'desc':_D[v]} for v,kr,en in (('bal','밸런스','Balance'),('high','하이엔드','High-end'))]
 json.dump(_g,open(_p,'w'),ensure_ascii=False,indent=1)
 print('wrote 5 graphs (batch 7)')

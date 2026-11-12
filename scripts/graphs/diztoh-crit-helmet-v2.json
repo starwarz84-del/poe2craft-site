@@ -7,10 +7,10 @@
  "basePrice": {
   "Chaos_Orb": 8
  },
- "note": "사용자 확정 흐름(2026-11-09). 접미 분열·잡옵 분열은 이 아이템으로는 끝(접미 = 가성비 작업/판매, 잡옵 = 버림) — 비용 계산은 둘 다 새 베이스부터(판매 수익은 빼지 않음). 2026-11-12 영상 전체 대조(자동 번역 자막 0:00~22:40, 메인 세션): 단계 일치(치명타 확률 1티어일 때만 완벽한 엑잘 6:00, 상위 카오스 + 절사 + 좌측 말소 9:00, 고대 갈비뼈 + 메아리 + 빛의 징조 10:00, 마지막 완벽한 엑잘은 나오는 대로 11:30). 등급 C17: 하이엔드 1티어(치명타 확률·최대치·C), 밸런스 1~2티어, 에센셜 최대치 1~4티어·훼손 공개 한 번. 하이엔드 마지막 접미 도박 = 영상이 원한 희귀도·화염·카오스 저항 1티어(절사 + 상위 카오스, 잡옵이 가장 낮은 레벨일 때만 — 아니면 그대로).",
+ "note": "2026-11-12 영상 화면 전체 대조(0:00~22:39, 화면 캡처는 작업 폴더 evidence): 매직 단계 접두 목표와 분열 옵션은 회피·에너지 보호막 최대치 1티어(혼백의 +79~94/+26~29, 1:29·2:51), B·C는 회피·에너지 보호막 % 증가와 % + 생명력/마나 복합 중 먼저 뜨는 것부터(7:28 % 1티어, 9:30 % 2티어 타협, 9:40 복합(마나) 1티어). 예전 흐름(분열 = % 증가, B = 최대치, 2026-11-09 사용자 확정)은 화면과 달라 바꿈 — 검수 필요. C 빗나감: 좌측 말소의 징조 + 상위 카오스 오브(8:26~9:11, 절사는 % 증가·치명타 확률을 건드려서 안 씀) → 소멸의 오브 2번(9:19·9:27) → B부터. 등급 C17: 하이엔드 1티어, 밸런스 1~2티어·C와 마지막 접미 랜덤 옵션.",
  "params": {
   "cMiss": {
-   "kr": "C 실패 시",
+   "kr": "C 빗나감",
    "en": "If C misses",
    "values": {
     "settle": {
@@ -24,20 +24,20 @@
    }
   },
   "bTier": {
-   "kr": "B 목표",
-   "en": "B target",
+   "kr": "B·C 회피·에너지 보호막 % 증가",
+   "en": "B·C % evasion and ES",
    "values": {
     "1": {
-     "kr": "최대치 1티어",
-     "en": "Flat T1"
+     "kr": "1티어",
+     "en": "T1"
     },
     "2": {
-     "kr": "최대치 1~2티어",
-     "en": "Flat T1–2"
+     "kr": "1~2티어",
+     "en": "T1–2"
     },
     "4": {
-     "kr": "최대치 1~4티어",
-     "en": "Flat T1–4"
+     "kr": "1~4티어",
+     "en": "T1–4"
     }
    }
   },
@@ -56,16 +56,20 @@
    }
   },
   "hT": {
-   "kr": "C 회피·ES % + 생명력/마나",
-   "en": "C % eva/ES + life/mana",
+   "kr": "B·C % + 생명력/마나",
+   "en": "B·C % + life/mana",
    "values": {
     "1": {
      "kr": "1티어",
      "en": "T1"
     },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
     }
    }
   },
@@ -116,7 +120,7 @@
     "cMiss": "settle",
     "bTier": 2,
     "cT": 2,
-    "hT": 3,
+    "hT": 2,
     "L": 1,
     "g": 0
    }
@@ -127,7 +131,7 @@
     "cMiss": "settle",
     "bTier": 4,
     "cT": 2,
-    "hT": 3,
+    "hT": 4,
     "L": 0,
     "g": 0
    }
@@ -137,7 +141,7 @@
   "pct": {
    "fam": "DefencesPercent",
    "side": "p",
-   "tmax": 1
+   "tmax": "$bTier"
   },
   "critT1": {
    "fam": "CriticalStrikeChanceIncrease",
@@ -153,7 +157,8 @@
   },
   "flat": {
    "fam": "BaseLocalDefences",
-   "tmax": "$bTier"
+   "side": "p",
+   "tmax": 1
   },
   "hybL": {
    "fam": "BaseLocalDefencesAndLife",
@@ -163,10 +168,6 @@
    "fam": "BaseLocalDefencesAndMana",
    "tmax": "$hT"
   },
-  "rarP": {
-   "fam": "ItemFoundRarityIncreasePrefix",
-   "tmax": 2
-  },
   "cdmg": {
    "fam": "CriticalStrikeMultiplier",
    "sec": "d"
@@ -175,11 +176,15 @@
    "anyOf": [
     "hybL",
     "hybM"
-   ]
+   ],
+   "label": {
+    "kr": "회피·에너지 보호막 % + 생명력/마나",
+    "en": "% evasion and ES + life/mana"
+   }
   },
   "magicGood": {
    "anyOf": [
-    "pct",
+    "flatT1",
     "critT1",
     "rarS1"
    ]
@@ -192,11 +197,10 @@
   },
   "pGood": {
    "anyOf": [
-    "pct",
     "flat",
+    "pct",
     "hybL",
-    "hybM",
-    "rarP"
+    "hybM"
    ]
   },
   "fireR": {
@@ -224,13 +228,29 @@
     "cdmg",
     "lastS"
    ]
+  },
+  "flatT1": {
+   "fam": "BaseLocalDefences",
+   "side": "p",
+   "tmax": 1
+  },
+  "pB": {
+   "anyOf": [
+    "pct",
+    "hybL",
+    "hybM"
+   ],
+   "label": {
+    "kr": "회피·에너지 보호막 % 증가 또는 % + 생명력/마나",
+    "en": "% evasion and ES, or % + life/mana"
+   }
   }
  },
  "conds": {
   "magicDone": {
    "all": [
     {
-     "has": "pct"
+     "has": "flatT1"
     },
     {
      "has": "sGood"
@@ -249,35 +269,10 @@
      }
     },
     {
-     "any": [
-      {
-       "all": [
-        {
-         "has": "flat"
-        },
-        {
-         "has": "hyb"
-        }
-       ]
-      },
-      {
-       "all": [
-        {
-         "has": "rarP"
-        },
-        {
-         "any": [
-          {
-           "has": "flat"
-          },
-          {
-           "has": "hyb"
-          }
-         ]
-        }
-       ]
-      }
-     ]
+     "has": "pct"
+    },
+    {
+     "has": "hyb"
     }
    ]
   }
@@ -285,7 +280,7 @@
  "require": {
   "all": [
    {
-    "has": "pct"
+    "has": "flat"
    },
    {
     "has": "crit"
@@ -306,19 +301,24 @@
     "full": "p"
    },
    {
+    "has": "pB"
+   },
+   {
     "any": [
-     {
-      "has": "flat"
-     },
      {
       "all": [
        {
-        "has": "rarP"
+        "has": "pct"
        },
        {
         "has": "hyb"
        }
       ]
+     },
+     {
+      "param": {
+       "cMiss": "settle"
+      }
      }
     ]
    }
@@ -372,8 +372,8 @@
    "act": "transmute",
    "cur": "Perfect_Orb_of_Transmutation",
    "label": {
-    "kr": "회피·ES % 1티어 / 치명타 확률·희귀도 1티어",
-    "en": "T1 % eva/ES, or T1 crit / rarity"
+    "kr": "회피·에너지 보호막 최대치 1티어 / 치명타 확률·희귀도 1티어",
+    "en": "T1 flat eva/ES, or T1 crit / rarity"
    },
    "edges": [
     {
@@ -399,11 +399,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
+     "kr": "회피·에너지 보호막 최대치 1티어",
+     "en": "Flat eva/ES T1",
      "m": "n",
      "tags": [
-      "pct"
+      "flatT1"
      ]
     }
    ],
@@ -416,7 +416,7 @@
     "en": "One prefix / one suffix option"
    },
    "show": [
-    "pct",
+    "flatT1",
     "critT1",
     "rarS1"
    ]
@@ -437,7 +437,7 @@
    },
    "edges": [
     {
-     "to": "h2"
+     "to": "h3"
     }
    ],
    "goal": {
@@ -447,6 +447,10 @@
    "target": {
     "kr": "빗나간 옵션 지우기",
     "en": "Remove the missed modifier"
+   },
+   "note": {
+    "kr": "옵션이 없는 매직 아이템이 되어 다음은 확장의 오브",
+    "en": "The item is left magic with no modifiers, so augment next"
    }
   },
   {
@@ -487,11 +491,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
+     "kr": "회피·에너지 보호막 최대치 1티어",
+     "en": "Flat eva/ES T1",
      "m": "n",
      "tags": [
-      "pct"
+      "flatT1"
      ]
     },
     {
@@ -510,7 +514,7 @@
     "en": "Both lines?"
    },
    "show": [
-    "pct",
+    "flatT1",
     "critT1",
     "rarS1"
    ],
@@ -583,7 +587,7 @@
    },
    "edges": [
     {
-     "to": "h2"
+     "to": "h3"
     }
    ],
    "goal": {
@@ -617,11 +621,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
+     "kr": "회피·에너지 보호막 최대치 1티어",
+     "en": "Flat eva/ES T1",
      "m": "n",
      "tags": [
-      "pct"
+      "flatT1"
      ]
     },
     {
@@ -677,11 +681,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
+     "kr": "회피·에너지 보호막 최대치 1티어",
+     "en": "Flat eva/ES T1",
      "m": "n",
      "tags": [
-      "pct"
+      "flatT1"
      ]
     },
     {
@@ -764,7 +768,7 @@
    "edges": [
     {
      "if": {
-      "fractured": "pct"
+      "fractured": "flatT1"
      },
      "to": "h8",
      "res": "ok",
@@ -800,11 +804,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
+     "kr": "회피·에너지 보호막 최대치 1티어",
+     "en": "Flat eva/ES T1",
      "m": "f",
      "tags": [
-      "pct"
+      "flatT1"
      ]
     },
     {
@@ -905,11 +909,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
+     "kr": "회피·에너지 보호막 최대치 1티어",
+     "en": "Flat eva/ES T1",
      "m": "f",
      "tags": [
-      "pct"
+      "flatT1"
      ]
     },
     {
@@ -944,11 +948,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
+     "kr": "회피·에너지 보호막 최대치 1티어",
+     "en": "Flat eva/ES T1",
      "m": "f",
      "tags": [
-      "pct"
+      "flatT1"
      ]
     },
     {
@@ -1002,11 +1006,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
+     "kr": "회피·에너지 보호막 최대치 1티어",
+     "en": "Flat eva/ES T1",
      "m": "f",
      "tags": [
-      "pct"
+      "flatT1"
      ]
     },
     {
@@ -1057,13 +1061,13 @@
     "Omen_of_Sinistral_Exaltation"
    ],
    "label": {
-    "kr": "B 접두 회피·ES 최대치",
-    "en": "B flat eva/ES prefix"
+    "kr": "B 접두 회피·에너지 보호막 % 증가 또는 % + 생명력/마나",
+    "en": "B % eva/ES or % + life/mana prefix"
    },
    "edges": [
     {
      "if": {
-      "added": "flat"
+      "added": "pB"
      },
      "to": "p2",
      "res": "ok"
@@ -1076,20 +1080,22 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
+     "kr": "회피·에너지 보호막 최대치 1티어",
+     "en": "Flat eva/ES T1",
      "m": "f",
      "tags": [
-      "pct"
+      "flatT1"
      ]
     },
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 최대치 1티어",
-     "en": "Flat eva/ES T1",
+     "kr": "회피·에너지 보호막 % 증가 또는 % + 생명력/마나",
+     "en": "% eva/ES, or % + life/mana",
      "m": "n",
      "tags": [
-      "flat"
+      "pct",
+      "hybL",
+      "hybM"
      ]
     },
     {
@@ -1107,7 +1113,9 @@
     "en": "Result"
    },
    "show": [
-    "flat"
+    "pct",
+    "hybL",
+    "hybM"
    ],
    "goal": {
     "kr": "접두 두번째 옵션",
@@ -1124,7 +1132,12 @@
      "kr": "치명타 확률 T1",
      "en": "Crit chance T1"
     }
-   ]
+   ],
+   "skipIf": {
+    "has": "pB"
+   },
+   "skipTo": "p2",
+   "skipHide": true
   },
   {
    "id": "bx",
@@ -1135,7 +1148,8 @@
     10
    ],
    "keep": [
-    "crit"
+    "crit",
+    "pB"
    ],
    "maxJunk": 0,
    "label": {
@@ -1150,6 +1164,15 @@
      "label": {
       "kr": "치명타 확률 지워짐 → 7",
       "en": "crit gone → 7"
+     }
+    },
+    {
+     "lost": "pB",
+     "to": "bxy",
+     "res": "fail",
+     "label": {
+      "kr": "B 지워짐",
+      "en": "B gone"
      }
     },
     {
@@ -1170,8 +1193,52 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "잡옵 지우기 (치명타 확률은 유지)",
-    "en": "Remove the junk (keep crit chance)"
+    "kr": "잡옵 지우기 (치명타 확률·B는 유지)",
+    "en": "Remove the junk (keep crit chance and B)"
+   }
+  },
+  {
+   "id": "bxy",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    2,
+    10
+   ],
+   "keep": [
+    "crit"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "남은 잡옵 지우기 (치명타 확률은 유지)",
+    "en": "Remove the remaining junk (keep crit chance)"
+   },
+   "edges": [
+    {
+     "lost": "crit",
+     "to": "c1",
+     "res": "fail",
+     "label": {
+      "kr": "치명타 확률 지워짐 → 7",
+      "en": "crit gone → 7"
+     }
+    },
+    {
+     "to": "p1",
+     "res": "ok"
+    }
+   ],
+   "ask": {
+    "kr": "뭐가 지워짐?",
+    "en": "What was removed?"
    }
   },
   {
@@ -1188,8 +1255,8 @@
     "Omen_of_Sinistral_Exaltation"
    ],
    "label": {
-    "kr": "C 회피·ES % + 생명력/마나 1~3티어 (1회)",
-    "en": "C % eva/ES + life/mana T1–3 (one try)"
+    "kr": "C 접두 세번째 옵션 (남은 하나)",
+    "en": "C third prefix (the other one)"
    },
    "edges": [
     {
@@ -1207,28 +1274,31 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
-     "m": "f",
-     "tags": [
-      "pct"
-     ]
-    },
-    {
-     "s": "p",
      "kr": "회피·에너지 보호막 최대치 1티어",
      "en": "Flat eva/ES T1",
-     "m": "n",
+     "m": "f",
      "tags": [
-      "flat"
+      "flatT1"
      ]
     },
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % + 생명력/마나 1~3티어",
-     "en": "Eva/ES % + life/mana T1–3",
+     "kr": "회피·에너지 보호막 % 증가 또는 % + 생명력/마나",
+     "en": "% eva/ES, or % + life/mana",
      "m": "n",
      "tags": [
+      "pct",
+      "hybL",
+      "hybM"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "남은 하나 (% 증가 또는 % + 생명력/마나)",
+     "en": "The other one (% or % + life/mana)",
+     "m": "n",
+     "tags": [
+      "pct",
       "hybL",
       "hybM"
      ]
@@ -1248,6 +1318,7 @@
     "en": "Prefixes done?"
    },
    "show": [
+    "pct",
     "hybL",
     "hybM"
    ],
@@ -1331,35 +1402,42 @@
     },
     {
      "if": {
-      "removed": "flat"
+      "ref": "pDone"
      },
-     "to": "p1",
-     "res": "fail",
+     "to": "d1",
+     "res": "ok",
      "label": {
-      "kr": "유효옵 제거 → 8",
-      "en": "wanted line removed → 8"
+      "kr": "접두 완성",
+      "en": "prefixes done"
      },
-     "port": "right"
+     "hide": true
     },
     {
      "if": {
       "any": [
        {
+        "removed": "pct"
+       },
+       {
+        "removed": "hybL"
+       },
+       {
+        "removed": "hybM"
+       },
+       {
         "not": {
          "full": "p"
         }
-       },
-       {
-        "ref": "pDone"
        }
       ]
      },
-     "to": "p2",
-     "res": "ok",
+     "to": "p3x",
+     "res": "fail",
      "label": {
-      "kr": "잡옵 제거 → 9",
-      "en": "junk removed → 9"
-     }
+      "kr": "B 지워짐 또는 새 옵션이 접미로",
+      "en": "B gone or the new line went to the suffix"
+     },
+     "port": "right"
     },
     {
      "to": "p3",
@@ -1376,8 +1454,8 @@
     "en": "Remove the prefix junk"
    },
    "target": {
-    "kr": "접두에 9번에서 붙은 잡옵을 제거",
-    "en": "Remove the junk prefix added at step 9"
+    "kr": "접두에 9번에서 붙은 잡옵을 바꾸기",
+    "en": "Reroll the junk prefix added at step 9"
    },
    "curRows": [
     {
@@ -1409,6 +1487,60 @@
      "en": "A wanted prefix is lower (1/2)"
     }
    ]
+  },
+  {
+   "id": "p3x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    2,
+    12.5
+   ],
+   "keep": [
+    "crit",
+    "pB"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "잡옵 지우기 (치명타 확률·B는 유지)",
+    "en": "Remove the junk (keep crit chance and B)"
+   },
+   "edges": [
+    {
+     "lost": "crit",
+     "to": "c1",
+     "res": "fail",
+     "label": {
+      "kr": "치명타 확률 지워짐 → 7",
+      "en": "crit gone → 7"
+     }
+    },
+    {
+     "lost": "pB",
+     "to": "bxy",
+     "res": "fail"
+    },
+    {
+     "to": "p1",
+     "res": "ok",
+     "label": {
+      "kr": "잡옵 지워짐 → 8",
+      "en": "junk gone → 8"
+     }
+    }
+   ],
+   "ask": {
+    "kr": "뭐가 지워짐?",
+    "en": "What was removed?"
+   }
   },
   {
    "id": "d1",
@@ -1445,28 +1577,31 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
-     "m": "f",
-     "tags": [
-      "pct"
-     ]
-    },
-    {
-     "s": "p",
      "kr": "회피·에너지 보호막 최대치 1티어",
      "en": "Flat eva/ES T1",
-     "m": "n",
+     "m": "f",
      "tags": [
-      "flat"
+      "flatT1"
      ]
     },
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % + 생명력/마나 1~3티어",
-     "en": "Eva/ES % + life/mana T1–3",
+     "kr": "회피·에너지 보호막 % 증가 또는 % + 생명력/마나",
+     "en": "% eva/ES, or % + life/mana",
      "m": "n",
      "tags": [
+      "pct",
+      "hybL",
+      "hybM"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "남은 하나 (% 증가 또는 % + 생명력/마나)",
+     "en": "The other one (% or % + life/mana)",
+     "m": "n",
+     "tags": [
+      "pct",
       "hybL",
       "hybM"
      ]
@@ -1541,28 +1676,31 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
-     "m": "f",
-     "tags": [
-      "pct"
-     ]
-    },
-    {
-     "s": "p",
      "kr": "회피·에너지 보호막 최대치 1티어",
      "en": "Flat eva/ES T1",
-     "m": "n",
+     "m": "f",
      "tags": [
-      "flat"
+      "flatT1"
      ]
     },
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % + 생명력/마나 1~3티어",
-     "en": "Eva/ES % + life/mana T1–3",
+     "kr": "회피·에너지 보호막 % 증가 또는 % + 생명력/마나",
+     "en": "% eva/ES, or % + life/mana",
      "m": "n",
      "tags": [
+      "pct",
+      "hybL",
+      "hybM"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "남은 하나 (% 증가 또는 % + 생명력/마나)",
+     "en": "The other one (% or % + life/mana)",
+     "m": "n",
+     "tags": [
+      "pct",
       "hybL",
       "hybM"
      ]
@@ -1706,28 +1844,31 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
-     "m": "f",
-     "tags": [
-      "pct"
-     ]
-    },
-    {
-     "s": "p",
      "kr": "회피·에너지 보호막 최대치 1티어",
      "en": "Flat eva/ES T1",
-     "m": "n",
+     "m": "f",
      "tags": [
-      "flat"
+      "flatT1"
      ]
     },
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % + 생명력/마나 1~3티어",
-     "en": "Eva/ES % + life/mana T1–3",
+     "kr": "회피·에너지 보호막 % 증가 또는 % + 생명력/마나",
+     "en": "% eva/ES, or % + life/mana",
      "m": "n",
      "tags": [
+      "pct",
+      "hybL",
+      "hybM"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "남은 하나 (% 증가 또는 % + 생명력/마나)",
+     "en": "The other one (% or % + life/mana)",
+     "m": "n",
+     "tags": [
+      "pct",
       "hybL",
       "hybM"
      ]
@@ -1833,28 +1974,31 @@
    "item": [
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % 증가 1티어",
-     "en": "Eva/ES % T1",
-     "m": "f",
-     "tags": [
-      "pct"
-     ]
-    },
-    {
-     "s": "p",
      "kr": "회피·에너지 보호막 최대치 1티어",
      "en": "Flat eva/ES T1",
-     "m": "n",
+     "m": "f",
      "tags": [
-      "flat"
+      "flatT1"
      ]
     },
     {
      "s": "p",
-     "kr": "회피·에너지 보호막 % + 생명력/마나 1~3티어",
-     "en": "Eva/ES % + life/mana T1–3",
+     "kr": "회피·에너지 보호막 % 증가 또는 % + 생명력/마나",
+     "en": "% eva/ES, or % + life/mana",
      "m": "n",
      "tags": [
+      "pct",
+      "hybL",
+      "hybM"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "남은 하나 (% 증가 또는 % + 생명력/마나)",
+     "en": "The other one (% or % + life/mana)",
+     "m": "n",
+     "tags": [
+      "pct",
       "hybL",
       "hybM"
      ]
@@ -1918,17 +2062,19 @@
    "nodes": [
     "c1",
     "p1",
-    "bx"
+    "bx",
+    "bxy"
    ],
-   "kr": "A·B 접미 치명타 + 접두 최대치",
-   "en": "A·B crit suffix + flat prefix"
+   "kr": "A·B 접미 치명타 + 접두 % 증가·복합",
+   "en": "A·B crit suffix + % or hybrid prefix"
   },
   {
    "id": "L4",
    "nodes": [
     "p2",
     "pc",
-    "p3"
+    "p3",
+    "p3x"
    ],
    "kr": "C 접두 세번째 옵션",
    "en": "C third prefix"
@@ -1953,13 +2099,13 @@
     "cMiss": "settle",
     "bTier": 4,
     "cT": 2,
-    "hT": 3,
+    "hT": 4,
     "L": 0,
     "g": 0
    },
    "desc": {
-    "kr": "최대치 1~4티어, 치명타 확률 1~2티어, 훼손 공개 한 번",
-    "en": "Flat T1–4, crit chance T1–2, one reveal"
+    "kr": "B 1~4티어, 훼손 공개 한 번",
+    "en": "B at T1–4, one reveal"
    },
    "tier": "ess"
   },
@@ -1971,13 +2117,13 @@
     "cMiss": "settle",
     "bTier": 2,
     "cT": 2,
-    "hT": 3,
+    "hT": 2,
     "L": 1,
     "g": 0
    },
    "desc": {
-    "kr": "최대치·치명타 확률 1~2티어, C·마지막 접미 랜덤 옵션",
-    "en": "Flat and crit chance T1–2, C and the last suffix random"
+    "kr": "치명타 확률·B 1~2티어, C·마지막 접미 랜덤 옵션",
+    "en": "Crit chance and B at T1–2, C and the last suffix random"
    },
    "tier": "bal"
   },
@@ -1994,8 +2140,8 @@
     "g": 1
    },
    "desc": {
-    "kr": "최대치·치명타 확률·C 1티어, C 실패 시 말소 반복, 마지막 접미 도박",
-    "en": "Flat, crit chance and C at T1, erasure loop if C misses, last suffix gambled"
+    "kr": "치명타 확률·회피·에너지 보호막 %·복합 1티어, C 빗나가면 좌측 말소 반복, 마지막 접미 도박",
+    "en": "Crit chance, % evasion/ES and the hybrid at T1, erasure loop if C misses, last suffix gambled"
    },
    "tier": "high"
   }
@@ -2005,18 +2151,19 @@
    "id": "best",
    "kr": "하이엔드 옵션",
    "en": "High-end",
+   "tier": "high",
    "lines": [
     {
-     "tag": "pct",
+     "tag": "flatT1",
      "tmax": 1,
      "fr": true
     },
     {
-     "tag": "flat",
+     "tag": "pct",
      "tmax": 1
     },
     {
-     "tag": "hybL",
+     "tag": "hyb",
      "tmax": 1,
      "hybrid": true
     },
@@ -2032,21 +2179,21 @@
     {
      "tag": "lastS"
     }
-   ],
-   "tier": "high"
+   ]
   },
   {
    "id": "settle",
    "kr": "밸런스 옵션",
    "en": "Balance",
+   "tier": "bal",
    "lines": [
     {
-     "tag": "pct",
+     "tag": "flatT1",
      "tmax": 1,
      "fr": true
     },
     {
-     "tag": "flat",
+     "tag": "pB",
      "tmax": 2
     },
     {
@@ -2066,21 +2213,21 @@
      "side": "s",
      "random": true
     }
-   ],
-   "tier": "bal"
+   ]
   },
   {
    "id": "budget",
    "kr": "에센셜 옵션",
    "en": "Essential",
+   "tier": "ess",
    "lines": [
     {
-     "tag": "pct",
+     "tag": "flatT1",
      "tmax": 1,
      "fr": true
     },
     {
-     "tag": "flat",
+     "tag": "pB",
      "tmax": 4
     },
     {
@@ -2099,8 +2246,7 @@
      "side": "s",
      "random": true
     }
-   ],
-   "tier": "ess"
+   ]
   }
  ],
  "finalItem": {
