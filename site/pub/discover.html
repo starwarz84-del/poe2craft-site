@@ -1472,11 +1472,7 @@ function anyTipHTML(it, an, list){
       if(new Set(A.map(o=>fam(o.gi))).size<2) continue; const m = mine.find(r=>A.some(o=>o.gi===r.m.gi)); if(!m || seen.has(m)) continue;
       seen.add(m); hits.push({x, m, k:A.length}); } }
   if(!hits.length) return ''; hits.sort((a,c)=>c.k-a.k);
-  const nm = r => { const v = (KR() ? (r.t[4]||r.t[2]) : (r.t[5]||r.t[3])) || ''; return v.length>42 ? v.slice(0,40)+'…' : v; };
-  const by = new Map(); hits.forEach(h=>{ if(!by.has(h.x.id)) by.set(h.x.id, []); by.get(h.x.id).push(h); });
-  return [...by.values()].slice(0,2).map(hs=>{ const x=hs[0].x, kt=x.b.ti?.kr||x.id, sl = hs.slice(0,3);
-    return `<div class="anytip">${L(`팁: 「${esc(kt)}」${josa(kt,'은','는')} ${sl.map(h=>`<b>${esc(nm(h.m))}</b> 자리를 ${h.k}개 중 아무거나`).join(', ')}로 받음. 초안은 붙여 넣은 옵션 하나만 노려서 비용이 더 크게 보일 수 있음.`,
-      `Tip: "${esc(x.b.ti?.en||x.id)}" accepts ${sl.map(h=>`any of ${h.k} in the <b>${esc(nm(h.m))}</b> slot`).join(', ')}. The draft aims only at the pasted modifier, so its cost can look higher.`)}</div>`; }).join(''); }
+  return `<div class="anytip">${L('팁: 초안은 유효 옵션군 중 하나만 노리기 때문에 비용이 더 커질 수 있음.','Tip: the draft aims at just one modifier of the valid group, so its cost can come out higher.')}</div>`; }
 function render(){
   renderStatic();
   const a=S.last;
