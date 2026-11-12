@@ -34,6 +34,7 @@ function make(graph, D, craft, params){
     const side = m => m.side, lvl = m => G[m.gi].t[m.ti][0];
     const count = s => it.mods.filter(m=>m.side===s).length;
     let capR={...cap};   // slots this run (a rune such as Serle's Triumph adds one)
+    const runes=[];   /* 이번 진행에서 장착한 룬 이름(en·kr) — 조건 {rune:'이름 일부'} (2026-11-12) */
     let astrid=!!graph.astrid;   // 아스트리드의 창의성 장착 여부(정책 5장 C1: 제작 옵션이 있을 때 에센스·합금은 이 룬이 있어야 씀)
     const maxA = s => it.rar==='normal'?0 : it.rar==='magic'?1 : capR[s] + it.mods.reduce((a,m)=>a+(m.slot?.[s]||0),0);
     const over = () => ['p','s'].filter(s=>count(s)>maxA(s));   // a side above its limit (contempt line removed): Chaos then only rerolls the other side (Diztoh 5-mod jewel)
@@ -76,6 +77,7 @@ function make(graph, D, craft, params){
       if(c.famBlock){ const t=tags[P(c.famBlock)], gis=(t.anyOf ? t.anyOf.map(x=>typeof x==='string'?tags[x]:x) : [t]).filter(x=>x.gi!=null);   // every wanted group's family is taken by another line: the step can never hit (리버스 초안 2026-11-11)
         return gis.length>0 && gis.every(x=>it.mods.some(m=>!m.unrev && !match(m,x) && G[m.gi].f.some(f=>G[x.gi].f.includes(f)))); }
       if(c.param) return Object.entries(c.param).every(([k,v])=>params[k]===v);
+      if(c.rune!=null){ const k=String(c.rune).toLowerCase().replace(/[’']/g,"'"); return runes.some(x=>x.toLowerCase().replace(/[’']/g,"'").includes(k)) || (graph.astrid && /astrid|아스트리드/.test(k)); }   /* 그 룬이 이미 장착됨(영문·한글 이름 일부) — 룬 상자의 skipIf로 되돌아올 때 다시 지나지 않게(2026-11-12) */
       throw new Error('bad condition '+JSON.stringify(c)); }
     const pickEdge = n => (n.edges||[]).find(e=>cond(e.if));
     // Whittling / Erasure choice (policy 23 ④): the junk line is the lowest → Whittling; lowest of its side only → Whittling + that side's Erasure;
@@ -141,7 +143,7 @@ function make(graph, D, craft, params){
         let os=draw(); if(!os.some(want) && oms.includes('Omen_of_Abyssal_Echoes')) os=draw();
         const o=os.find(want)||(n.missPick==='lvl' ? os.slice().sort((x,y)=>G[y.gi].t[y.ti][0]-G[x.gi].t[x.ti][0])[0] : os[0]); if(!o) return use; const nm={gi:o.gi, ti:o.ti, side:m.side, des:true};   /* missPick 'lvl': a miss keeps the highest-level option (자리 막기, 노블 화살통 영상 8:20 — 2026-11-12) */ it.mods.push(nm); last.added.push(nm); } }
       else if(a==='fracture'){ const c=it.mods.filter(m=>!m.unrev && !m.fr); const m=c[Math.floor(rnd()*c.length)]; if(m){ m.fr=true; last.fr=m; } }
-      else if(a==='rune'){ for(const k in (n.slots||{})) capR[k]+=n.slots[k]; if(/Astrid/.test(n.rune?.en||'')) astrid=true; else if(n.rune && n.swapAstrid) astrid=false; }   // a socketed rune that opens a slot (Serle's Triumph: one more suffix)
+      else if(a==='rune'){ if(n.rune) runes.push(String(n.rune.en||'')+'|'+String(n.rune.kr||'')); for(const k in (n.slots||{})) capR[k]+=n.slots[k]; if(/Astrid/.test(n.rune?.en||'')) astrid=true; else if(n.rune && n.swapAstrid) astrid=false; }   // a socketed rune that opens a slot (Serle's Triumph: one more suffix)
       else if(a==='quality'){ it.cq = n.q || n.count || 0; }   // catalyst quality % (count = catalysts ≈ %), used up by Catalysing Exaltation
       else if(a==='divine'){ /* values only */ }
       else throw new Error('unknown act '+a);

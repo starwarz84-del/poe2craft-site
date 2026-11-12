@@ -125,7 +125,16 @@ graph11('mazbro-proj-gloves-v2','Gloves_str_dex','Blacksteel Gauntlets',80,
              {**K('2번째 빗나감 — 우측 결정화 + 발작의 에센스로 치명타 피해','2nd miss: Dextral Crystallisation + Essence of Hysteria for crit damage'),'node':'kb'},
              {**K('3번째 빗나감 — 빗나간 접미가 지워질 때까지 소멸의 오브 한 개씩','3rd miss: Annulment one at a time until the missed suffix goes'),'node':'kc'}],
     'worst':{**K('투사체 속도가 지워지면 카오스 단계부터','Projectile speed gone: back to the Chaos step'),'to':'kz'},
-    'item':G2},{'id':'L2','nodes':['k13','k14','k14x'],'kr':'훼손 공개','en':'Reveal'}],
+    'item':G2},{'id':'L3','nodes':['kx1','kx2','kx3','kx4'],'kr':'제작 옵션 붙이기','en':'Crafted modifiers',
+    # 사용자 결정(2026-11-12): 14~17번을 상자 하나로. 노트 4A 마지막 줄 + 10:58 자막 '접두에 하나 붙이고 좌측 결정화 + 에센스'. 성공 회차는 둘 다 이미 있어 건너뜀
+    'fold':True,'goal':K('접미 치명타 피해 + 접두 룬 수호','Crit damage suffix + runic ward prefix'),
+    'steps':[{**K('엑잘 + 좌측 찬미로 접두 잡옵, 치명타 피해가 이미 있으면 건너뜀','Exalt + Sinistral Exaltation for a junk prefix, skipped if crit damage is on'),'node':'kx1'},
+             {**K('좌측 결정화 + 발작의 에센스로 치명타 피해','Sinistral Crystallisation + Essence of Hysteria for crit damage'),'node':'kx2'},
+             {**K('엑잘 + 좌측 찬미로 접두 잡옵, 룬 수호가 이미 있으면 건너뜀','Exalt + Sinistral Exaltation for a junk prefix, skipped if runic ward is on'),'node':'kx3'},
+             {**K('좌측 결정화 + 군왕의 합금으로 룬 수호, 2번에서 룬 수호가 지워졌으면 남은 잡옵에 바로','Sinistral Crystallisation + Sovereign Alloy for runic ward, straight onto the junk left if step 2 took the ward'),'node':'kx4'}],
+    'worst':{**K('투사체 속도가 지워지면 카오스 단계부터','Projectile speed gone: back to the Chaos step'),'to':'kz'},
+    'item':G3},
+   {'id':'L2','nodes':['k13','k14','k14x'],'kr':'훼손 공개','en':'Reveal'}],
   FIN(('high','bal'),lambda v:[{'tag':'pspd1'},{'tag':'pdmg1' if v=='high' else 'pdmg2','des':True},{'tag':'ward'},{'tag':'proj','fr':True},{'tag':'ss1' if v=='high' else 'ss2'},{'tag':'hyst'}]),
   {'quality':30,'sockets':2},{'all':ALL+[{'has':'pdmg'},{'has':'proj'}]},('high','bal'),xsub=["Kolr's Hunt"],xroll=True)
 _gp=f"{H}/mazbro-proj-gloves-v2.json"; _g=json.load(open(_gp))

@@ -134,11 +134,11 @@ nodes=[b0,
  act('l2','main',[1,13],'essence','Essence_of_the_Abyss',K('맹공을 지우고 심연의 군주의 징표','Onslaught goes for the Mark of the Abyssal Lord'),[st('s','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),[{'to':'l3'}],W8,ess='mk',mark=True,omens=['Omen_of_Dextral_Crystallisation']),   # 10:05
  act('l3','main',[1,14],'desecrate','Ancient_Jawbone',K('징표 자리 훼손','Desecrate the Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2',**L_('다시 공개','Reveal again')}],W5,fromMark=True),
  act('x1','main',[0,15],'exalt','Perfect_Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','랜덤 옵션 1개 (접두가 꽉 차 접미로)','One random line (prefixes are full)')],K('엑잘','Exalt'),
-     [{'if':{'has':'cc'},'to':'x3','res':'ok','hide':True},{'to':'x2'}],W9,skipIf={'not':{'sideLt':{'side':'s','n':2}}},skipTo='x2',skipHide=True),   # 15:12 툴팁, 15:18 능력치 요구 감소
+     [{'to':'x2'}],W9,skipIf={'not':{'sideLt':{'side':'s','n':2}}},skipTo='x2',skipHide=True),   # 15:12 툴팁, 15:18 능력치 요구 감소
  act('x2','main',[0,16],'chaos','Greater_Chaos_Orb',K('접미 치명타 확률 1티어','T1 critical hit chance suffix'),None,K('카오스','Chaos'),
      [{'if':{'all':[{'has':'proj'},{'has':'cc'}]},'to':'x3','res':'ok'},{'if':{'not':{'has':'proj'}},'to':'xz',**F,**L_('투사체 +4가 지워짐','+4 projectiles gone')},{'to':'x2',**F}],
-     W10,show=['cc'],trim={'side':'s','keep':'keepS'}),   # 15:43 상위 카오스(II) 10·20개, 16:40 우측 말소 + 절사 소모, 18:15 치명타 확률
- cleanup('xz',[1,16],[],[{'to':'d1',**L_('접미를 비우고 훼손부터','Suffixes cleared: desecrate again')}],K('접미 옵션 모두 지우기','Clear every suffix'),side='s'),
+     W10,show=['cc'],trim={'side':'s','keep':'keepS'},skipIf={'all':[{'has':'proj'},{'has':'cc'}]},skipTo='x3',skipHide=True),   # 15:43 상위 카오스(II) 10·20개, 16:40 우측 말소 + 절사 소모, 18:15 치명타 확률
+ cleanup('xz',[1,16],[],[{'to':'d1',**L_('접미를 비우고 훼손부터','Suffixes cleared: desecrate again')}],K('우측 소멸의 징조로 접미 옵션 모두 지우기','Clear every suffix with Omen of Dextral Annulment'),side='s'),
  act('x3','main',[0,17],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'ok'}],W11,skipIf={'full':'s'},skipTo='ok',skipHide=True),   # 18:28 툴팁, 18:38 민첩(영상은 그대로 둠)
  done([0,18])]
 graph11('diztoh-iceshot-bow-v2','Bows','Obliterator Bow',82,
@@ -160,7 +160,7 @@ graph11('diztoh-iceshot-bow-v2','Bows','Obliterator Bow',82,
     'worst':{**K('물리 피해 추가가 지워지면 카오스 단계부터','Flat physical gone: back to the Chaos step'),'to':'c1'},
     'item':W2},
    {'id':'L1','nodes':['d2','l1','l2','l3'],'kr':'빛 없이 다시 공개','en':'Lightless reroll'}],
-  FIN(('high',),lambda v:[{'tag':'pp','fr':True},{'tag':'fl'},{'tag':'ele'},{'tag':'proj','des':True},{'tag':'cc'},{'random':True}]),
+  FIN(('high',),lambda v:[{'tag':'pp','fr':True},{'tag':'fl'},{'tag':'ele'},{'tag':'proj','des':True},{'tag':'cc'},{'side':'s','random':True}]),
   {'quality':20,'sockets':3,'exceptional':True},{'all':[{'has':'fl'},{'has':'ele'},{'has':'proj'},{'has':'cc'}]},('high',))
 _p=f'{H}/diztoh-iceshot-bow-v2.json'; _g=json.load(open(_p))   # 분열 준비를 플로우차트 안에(prep 묶음) — 비용에 베이스·준비가 들어감
 _g['start']='b0'

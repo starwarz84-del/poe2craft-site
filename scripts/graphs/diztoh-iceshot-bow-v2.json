@@ -307,6 +307,7 @@
      "tag": "cc"
     },
     {
+     "side": "s",
      "random": true
     }
    ]
@@ -1796,14 +1797,6 @@
    },
    "edges": [
     {
-     "if": {
-      "has": "cc"
-     },
-     "to": "x3",
-     "res": "ok",
-     "hide": true
-    },
-    {
      "to": "x2"
     }
    ],
@@ -1998,7 +1991,19 @@
    "trim": {
     "side": "s",
     "keep": "keepS"
-   }
+   },
+   "skipIf": {
+    "all": [
+     {
+      "has": "proj"
+     },
+     {
+      "has": "cc"
+     }
+    ]
+   },
+   "skipTo": "x3",
+   "skipHide": true
   },
   {
    "id": "xz",
@@ -2019,8 +2024,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "접미 옵션 모두 지우기",
-    "en": "Clear every suffix"
+    "kr": "우측 소멸의 징조로 접미 옵션 모두 지우기",
+    "en": "Clear every suffix with Omen of Dextral Annulment"
    },
    "edges": [
     {
