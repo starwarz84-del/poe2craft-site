@@ -15,6 +15,7 @@ def L(s, kr, en, m='n', tags=None):
 FR = L('s', '잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)', 'Remnants can be collected from (44—51)% further away (fractured)', 'f', ['far'])
 MQ = L('p', '최대 퀄리티 +20% (균열의 에센스)', '+20% to Maximum Quality (Essence of the Breach)', 'c', ['maxq'])
 RS = L('s', '모든 원소 저항 +(12—14)%', '+(12—14)% to all Elemental Resistances', 'n', ['res'])
+RS1 = L('s', '모든 원소 저항 +(15—16)%', '+(15—16)% to all Elemental Resistances', 'n', ['res'])   # 하이엔드 칸(1티어, 사용자 결정 2026-11-13)
 CHD = L('p', '카오스 피해 (27—30)% 증가', '(27—30)% increased Chaos Damage', 'n', ['chaos'])
 LIFE = L('p', '생명력 최대치 +(100—119)', '+(100—119) to maximum Life', 'n')
 EF = L('p', '플레이어가 생성하는 잔류물의 효과 (8—15)% 증가 (훼손)', 'Remnants you create have (8—15)% increased effect (desecrated)', 'd', ['eff'])
@@ -32,22 +33,22 @@ g = {
           '좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈로 접두 훼손(3:37~3:54) → 완벽한 엑잘로 마지막 옵션(처치 시 마나, 4:01) → '
           '심연의 메아리의 징조로 공개, 잔류물 효과 14%(4:27~4:34). '
           '첫 회차(2:32~3:15): 카오스 피해가 먼저 떴을 때 상위 찬미 + 우측 찬미(2:39), 빗나가면 소멸의 오브(2:48·3:03), 자리가 한쪽에 하나면 상위 찬미만(2:58). '
-          '등급(영상 4:30 기준 = 카오스 피해 1티어·모든 원소 저항 2티어 이상): 하이엔드 = 영상 기준, 밸런스 = 카오스 피해 1~2티어·모든 원소 저항 1~3티어. '
+          '등급(사용자 결정 2026-11-13, 정책 10장 C17): 하이엔드 = 반복 목표 모두 1티어(카오스 피해·모든 원소 저항), '
+          '밸런스 = 영상 4:30 기준(카오스 피해 1티어·모든 원소 저항 1~2티어 — C17 밸런스 1~2티어 안). 옛 밸런스(1~2·1~3)는 뺌. '
           '나머지 두 옵션은 영상대로 랜덤 옵션(1:10 "나머지 두 줄은 랜덤").'),
  'params': {
-  'rT': {'kr': '모든 원소 저항', 'en': 'All resistances', 'values': {'2': K('1~2티어', 'T1–2'), '3': K('1~3티어', 'T1–3')}},
-  'cT': {'kr': '카오스 피해', 'en': 'Chaos damage', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
+  'rT': {'kr': '모든 원소 저항', 'en': 'All resistances', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
  },
- 'strategies': [{'id': 'high', 'params': {'rT': 2, 'cT': 1}}, {'id': 'bal', 'params': {'rT': 3, 'cT': 2}}],
+ 'strategies': [{'id': 'high', 'params': {'rT': 1}}, {'id': 'bal', 'params': {'rT': 2}}],
  'versions': [
-  {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'rT': 3, 'cT': 2}, 'tier': 'bal',
-   'desc': K('카오스 피해 1~2티어, 모든 원소 저항 1~3티어', 'Chaos damage T1–2, all resistances T1–3')},
-  {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'rT': 2, 'cT': 1}, 'tier': 'high',
-   'desc': K('영상: 카오스 피해 1티어, 모든 원소 저항 1~2티어', 'Video: chaos damage T1, all resistances T1–2')}],
+  {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'rT': 2}, 'tier': 'bal',
+   'desc': K('영상 기준: 카오스 피해 1티어, 모든 원소 저항 1~2티어', 'Video target: chaos damage T1, all resistances T1–2')},
+  {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'rT': 1}, 'tier': 'high',
+   'desc': K('카오스 피해·모든 원소 저항 모두 1티어', 'Chaos damage and all resistances both T1')}],
  'tags': {
   'far': {'gi': 106}, 'maxq': {'gi': 71}, 'eff': {'gi': 37},
-  'res': {'gi': 7, 'tmax': '$rT'}, 'resH': {'gi': 7, 'tmax': 2}, 'resB': {'gi': 7, 'tmax': 3},
-  'chaos': {'gi': 33, 'tmax': '$cT'}, 'chaosH': {'gi': 33, 'tmax': 1}, 'chaosB': {'gi': 33, 'tmax': 2},
+  'res': {'gi': 7, 'tmax': '$rT'}, 'resH': {'gi': 7, 'tmax': 1}, 'resB': {'gi': 7, 'tmax': 2},
+  'chaos': {'gi': 33, 'tmax': 1}, 'chaosH': {'gi': 33, 'tmax': 1},
   'RC': {'anyOf': ['res', 'chaos'], 'label': K('모든 원소 저항·카오스 피해', 'All resistances or chaos damage')},
  },
  'require': {'all': [{'has': 'far'}, {'has': 'res'}, {'has': 'chaos'}, {'has': 'eff'}]},
@@ -59,13 +60,17 @@ g = {
    'lines': [{'tag': 'chaosH'}, {'side': 'p', 'random': True}, {'tag': 'eff', 'des': True},
              {'tag': 'far', 'fr': True}, {'tag': 'resH'}, {'side': 's', 'random': True}]},
   {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-   'lines': [{'tag': 'chaosB'}, {'side': 'p', 'random': True}, {'tag': 'eff', 'des': True},
+   'lines': [{'tag': 'chaosH'}, {'side': 'p', 'random': True}, {'tag': 'eff', 'des': True},
              {'tag': 'far', 'fr': True}, {'tag': 'resB'}, {'side': 's', 'random': True}]}],
  'finalItem': {'quality': 60, 'sockets': 0},
 }
 
 N = []
-A = lambda **kw: N.append(kw)
+def A(**kw):
+    # 하이엔드는 모든 원소 저항 1티어 — 왼쪽 아이템 칸을 1티어 옵션으로(밸런스는 영상의 2티어 그대로)
+    if RS in kw.get('item', []):
+        kw.setdefault('over', []).append({'param': {'rT': 1}, 'set': {'item': [RS1 if x is RS else x for x in kw['item']]}})
+    N.append(kw)
 
 # 매 단계 아이템을 다시 봄(영상 2:32~3:32): 둘 다 있고 접두 자리가 남으면 훼손, 하나만 있으면 그쪽 빈자리에 맞는 엑잘,
 # 자리가 없으면 소멸의 오브, 둘 다 없으면 분열 + 옵션 1개까지 정리한 뒤 카오스
@@ -145,16 +150,16 @@ g['nodes'] = N
 
 g['loops'] = [
  {'id': 'L1', 'nodes': ['k4', 'k4d', 'k4g', 'k5', 'k5c'], 'kr': '남은 하나', 'en': 'The other one', 'fold': True,
-  'goal': K('접두 카오스 피해 1티어 — 모든 원소 저항·카오스 피해 중 남은 것', 'T1 chaos damage prefix: whichever of all resistances or chaos damage is missing'),
-  'goalBy': {'high': K('접두 카오스 피해 1티어 — 모든 원소 저항·카오스 피해 중 남은 것', 'T1 chaos damage prefix: whichever of all resistances or chaos damage is missing'),
-             'bal': K('접두 카오스 피해 1~2티어 — 모든 원소 저항·카오스 피해 중 남은 것', 'T1–2 chaos damage prefix: whichever of all resistances or chaos damage is missing')},
+  'goal': K('카오스 피해·모든 원소 저항 중 남은 것', 'Whichever of chaos damage or all resistances is missing'),
+  'goalBy': {'high': K('카오스 피해·모든 원소 저항 1티어 중 남은 것', 'Whichever of T1 chaos damage or T1 all resistances is missing'),
+             'bal': K('카오스 피해 1티어·모든 원소 저항 1~2티어 중 남은 것', 'Whichever of T1 chaos damage or T1–2 all resistances is missing')},
   'steps': [K('상위 찬미의 징조 + 좌측 찬미의 징조 + 완벽한 엑잘티드 오브로 접두 2개', 'Omen of Greater Exaltation + Omen of Sinistral Exaltation + Perfect Exalted Orb for two prefixes') | {'node': 'k4'},
             K('카오스 피해가 먼저 떴으면 우측 찬미의 징조로 접미 2개', 'Chaos damage came first: Omen of Dextral Exaltation for two suffixes') | {'node': 'k4d'},
             K('빗나가면 소멸의 오브', 'A miss: Orb of Annulment') | {'node': 'k5'},
             K('필요한 쪽 빈자리가 하나뿐이면 상위 찬미의 징조만', 'Only one free slot on the needed side: Omen of Greater Exaltation alone') | {'node': 'k4g'},
             K('둘 다 지워지면 분열 + 옵션 1개까지 소멸의 오브', 'Both gone: annul down to the fracture + one option') | {'node': 'k5c'}],
   'worst': {'kr': '모든 원소 저항·카오스 피해가 모두 지워지면 카오스 단계부터', 'en': 'All resistances and chaos damage both gone: back to the Chaos step', 'to': 'k3'},
-  'item': [CHD, LIFE, FR, RS]},
+  'item': [CHD, LIFE, FR, RS], 'itemBy': {'high': [CHD, LIFE, FR, RS1]}},
 ]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)

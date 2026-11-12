@@ -43,6 +43,7 @@ for _t in ('bal','ess'): _grade8('sihan-attack-flat-ring','sihan-attack-flat-rin
 def _cring(r, t):
     tm=1 if t=='high' else 2
     _node(r,'r4')['target']['tmax']=tm; _node(r,'r5')['target']['tmax']=tm
+    if t=='high': _node(r,'r9')['note']=K('완성. 카오스 피해·모든 원소 저항 모두 1티어.','Done; chaos damage and all resistances both at tier 1.')   # 사용자 결정 2026-11-13(C17), 영상 기준(저항 2티어 이상)은 밸런스
 for _t in ('high','bal'): _grade8('sihan-chayula-ring','sihan-chayula-ring-v2',_t,_cring)
 
 # 7. 하이엔드 투사체 장갑 — 하이엔드 = 1티어(영상), 밸런스 = 1~2티어(영상: 2티어는 금방). 마지막 훼손은 좌측 강령술의 징조로 접두에.

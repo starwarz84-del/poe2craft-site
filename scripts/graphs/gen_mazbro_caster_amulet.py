@@ -39,14 +39,16 @@ g = {
           '촉진 + 우측 찬미 + 완벽한 엑잘(마나 재생 1티어, 영상은 개인용으로 받음 16:43) → 신경 기폭제 40%(19:35) → 좌측 소멸의 징조(최대 퀄리티가 지워짐, 20:08) → '
           '좌측 결정화 + 균열의 에센스(주문 피해 2티어를 지움) → 촉진 + 완벽한 엑잘(마나 최대치 1티어, 20:30) → 쇳소리 기폭제 40%(24:18) → '
           '절사 + 완벽한 카오스 반복, 필요할 때 좌측 말소(25:40)로 주문 피해 1티어(26:38) → 빛의 징조 + 소멸(민첩) → 검은 피 + 고대 빗장뼈 → 메아리 공개 반복 → 모든 스킬의 퀄리티(28:05). '
-          '신성한 오브·축복받은 자의 징조(28:15~29:00)는 정책 14장대로 뺌. 두 번째 목걸이(29:00~38:40)는 같은 방법, 접미는 희귀도 1티어로 타협(33:40) — 꿀팁 후보.'),
+          '신성한 오브·축복받은 자의 징조(28:15~29:00)는 정책 14장대로 뺌. 두 번째 목걸이(29:00~38:40)는 같은 방법, 접미는 희귀도 1티어로 타협(33:40) — 꿀팁 후보. '
+          '사용자 결정 2026-11-13: 세 번째 접미 목표 = 영상 메모대로 시전 속도·치명타 확률·치명타 피해 중 먼저 뜬 것(성공 회차의 마나 재생은 개인용), '
+          '밸런스도 쿠르갈 공개가 빗나가면 빛의 징조로 다시(정책 10장 C17-3).'),
  'params': {
    'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video'), '2': K('결과 그대로', 'As it comes')}},
    'pT': {'kr': '시전 속도·마나 등', 'en': 'Cast speed, mana etc.', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
  'strategies': [{'id': 'high', 'params': {'v': 1, 'pT': 1}}, {'id': 'bal', 'params': {'v': 2, 'pT': 2}}],
  'versions': [
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 2, 'pT': 2}, 'tier': 'bal',
-    'desc': K('촉진 엑잘 1~2티어, 절사 카오스 한 번(랜덤 옵션), 쿠르갈 공개 결과 그대로', 'Catalysed exalts at T1–2, one Whittling chaos (random option), Kurgal reveal kept')},
+    'desc': K('촉진 엑잘 1~2티어, 절사 카오스 한 번(랜덤 옵션), 쿠르갈 공개는 빛의 징조로 다시', 'Catalysed exalts at T1–2, one Whittling chaos (random option), Light retries the Kurgal reveal')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'v': 1, 'pT': 1}, 'tier': 'high',
     'desc': K('영상: 촉진 엑잘·절사 카오스 1티어, 쿠르갈 공개는 빛의 징조로 다시', 'Video: T1 catalysed exalts and Whittling chaos, Light retries the Kurgal reveal')}],
  'tags': {
@@ -73,7 +75,7 @@ g = {
    {'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
     'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'gp'}, {'tag': 'gp'}, {'tag': 'spell'}, {'tag': 'gs'}, {'tag': 'kq', 'des': True}]},
    {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-    'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'gp'}, {'side': 'p', 'random': True}, {'tag': 'spell'}, {'tag': 'gs'}, {'side': 's', 'random': True, 'des': True}]}],
+    'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'gp'}, {'side': 'p', 'random': True}, {'tag': 'spell'}, {'tag': 'gs'}, {'tag': 'kq', 'des': True}]}],
  'finalItem': {'quality': 40, 'sockets': 0},
 }
 
@@ -186,7 +188,7 @@ A(id='a16', kind='act', group='main', pos=[0, 13.4], act='desecrate', cur='Ancie
   edges=[{'to': 'a17'}], item=[SP, MF, SD, SL, CS, UN('s')])
 A(id='a17', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='kq', label=K('공개', 'Reveal'),
   goal=K('접미 모든 스킬의 퀄리티', 'Quality of all Skills suffix'), show=['kq'],
-  edges=[{'if': {'added': 'kq'}, 'to': 'ok', 'res': 'ok'}, {'if': V1, 'to': 'a17x', 'res': 'fail'}, {'to': 'ok', 'res': 'fail', 'hide': True}],
+  edges=[{'if': {'added': 'kq'}, 'to': 'ok', 'res': 'ok'}, {'to': 'a17x', 'res': 'fail'}],
   item=[SP, MF, SD, SL, CS, KQ])
 A(id='a17x', kind='act', group='main', pos=[1, 14.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'a16', 'label': K('다시 훼손', 'Desecrate again')}])
