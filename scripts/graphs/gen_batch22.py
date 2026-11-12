@@ -261,7 +261,7 @@ nodes=[
  cleanup('ec',[1,15],['add1','cdb','pre'],[{'lost':'add1','to':'kz',**L_('추가 발사가 지워짐 — 카오스부터','Additional projectile gone: back to Chaos')},
      {'lost':'cdb','to':'c3',**L_('치명타 피해가 지워짐 — 발작의 에센스부터','Crit damage gone: back to the Hysteria step')},     {'to':'e1',**L_('접두가 모두 지워짐 — 다시 엑잘','Prefixes cleared: exalt again')}],K('징조 없이 접두 옵션이 모두 지워질 때까지','No omen, until every prefix is gone')),
  act('e2','main',[0,16],'exalt','Perfect_Exalted_Orb',K('접두 투사체 피해','Projectile damage prefix'),REST(),K('엑잘','Exalt'),
-     [{'if':{'added':'pre'},'to':'d1','res':'ok',**L_('좋은 접두 성공','Good prefix hit')},{'to':'e2m',**F}],[KOL,AST,PHY,PD,MK,LV,AD,CD],show=['pdmg'],omens=['Omen_of_Sinistral_Exaltation']),
+     [{'if':{'added':'pre'},'to':'d1','res':'ok',**L_('좋은 접두 성공','Good prefix hit')},{'to':'e2m',**F}],[KOL,AST,PHY,PD,LV,AD,CD],show=['pdmg'],omens=['Omen_of_Sinistral_Exaltation']),
  act('e2b','main',[1,18],'desecrate','Preserved_Rib',K('징표 훼손 — 지울 준비','Desecrate the Mark to clear it'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'e2l'}],[KOL,AST,PHY,J('p'),UN('p'),LV,AD,CD],fromMark=True),
  annul('e2l',[2,18],[{'to':'e2m'}]),
  act('e2m','main',[1,16],'essence','Essence_of_the_Abyss',K('잡옵 자리에 징표 (둘 중 하나)','The Mark takes the junk spot (one of two)'),[st('p','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),
