@@ -144,7 +144,9 @@ graph('saveq-alloy-focus-v2','Foci','Tasalian Focus',81,
 # ---------- 5. 탱정 키타바 방패 (gQa51XOS98s, 방패 부분) ----------
 # 원본: 받는 물리 피해 감소 분열 + 잡옵 → 카오스 오브로 최대 저항 1티어 → 우측 강령술 + 고대 갈비뼈 → 공개(최대 저항, 빛의 징조로 다시)
 # → 상위 찬미 + 완벽한 엑잘(접두 옵션 2개) → 완벽한 엑잘(접두) → 절사의 징조 + 완벽한 카오스 오브로 방어도 1티어 옵션 3개(방어도 1티어 레벨 75가 접두 최고라 절사는 늘 잡옵만 침).
-P={'bal':{'mT':1,'aT':1},'ess':{'mT':3,'aT':3}}
+# 2026-11-12 영상 전체 대조(자막 12:00~21:30 방패 부분, 메인 세션): 단계 일치(카오스 → 우측 강령술 + 고대 갈비뼈 + 메아리, 빛의 징조로 다시 → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사 + 완벽한 카오스). 영상 = 모두 1티어 종결 방패.
+#   등급 C17: 하이엔드 = 영상(1티어), 밸런스 = 최대 저항·방어도 1~2티어, 에센셜 = 1~4티어(최대 저항은 3티어까지만 있음).
+P={'high':{'mT':1,'aT':1},'bal':{'mT':2,'aT':2},'ess':{'mT':3,'aT':4}}
 tags={'pdr':{'gi':13,'tmax':1},'mf':{'gi':14,'tmax':'$mT'},'mc':{'gi':15,'tmax':'$mT'},'ml':{'gi':16,'tmax':'$mT'},'maxres':{'anyOf':['mf','mc','ml'],'label':K('최대 저항 +%','Maximum resistance')},
       'flat':{'gi':6,'tmax':'$aT'},'pct':{'gi':7,'tmax':'$aT'},'hyb':{'gi':8,'tmax':'$aT'},'arm':{'anyOf':['flat','pct','hyb'],'label':K('방어도 접두','Armour prefix')},
       'keep':{'anyOf':['pdr','maxres','arm']}}
@@ -157,16 +159,21 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'pdr','fr':True},{'junk':'s'}]},K(
  act('t4','main',[0,3],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'maxres'},'to':'t5','res':'ok'},{'to':'t4x','res':'fail'}],I3,want='maxres',show=['maxres'],omens=['Omen_of_Abyssal_Echoes']),
  annul('t4x',[1,3],[{'to':'t3','port':'right'}]),
  act('t5','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),[{'to':'t6'}],I4,omens=['Omen_of_Greater_Exaltation']),
- act('t6','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'if':{'param':{'aT':3}},'to':'ok'},{'to':'t7'}],I5),
+ act('t6','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'if':{'count':{'tag':'arm','min':3}},'to':'ok','res':'ok','hide':True},{'if':{'whittleSafe':'keep'},'to':'t7'},{'to':'ok','res':'fail','hide':True}],I5),
  act('t7','main',[0,6],'chaos','Perfect_Chaos_Orb',K('가장 낮은 옵션을 방어도 1티어로','The lowest line into T1 armour'),[st('p','방어도 1티어 (최대치·%·복합) 옵션 3개','Three T1 armour lines (flat, %, hybrid)')],K('카오스','Chaos'),
      [{'if':{'count':{'tag':'arm','min':3}},'to':'ok','res':'ok'},{'if':{'whittleSafe':'keep'},'to':'t7','res':'fail'},{'to':'ok','res':'fail'}],I6,omens=['Omen_of_Whittling']),
  done([0,7])]
 nodes[0]['group']='prep'
 graph('tankjung-kitava-shield-v2','Shields_str','Tawhoan Tower Shield',81,
-  '탱정 키타바 방패(원본 레시피 기록) — 받는 물리 피해 감소 분열 + 잡옵 → 카오스 오브(최대 저항) → 우측 강령술 + 고대 갈비뼈 → 공개(최대 저항, 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 1티어 옵션 3개(밸런스, 영상). 에센셜 = 최대 저항 1~3티어, 접두는 엑잘 결과 그대로.',
-  {'mT':{'kr':'최대 저항','en':'Maximum resistance','values':TV({'1':('1티어','T1'),'3':('1~3티어','T1–3')})},'aT':{'kr':'방어도 접두','en':'Armour prefixes','values':TV({'1':('1티어 옵션 3개 (절사)','Three T1 lines (Whittling)'),'3':('결과 그대로','As they come')})}},P,
-  {'bal':K('영상: 절사의 징조로 방어도 1티어 옵션 3개','Video: three T1 armour lines with Whittling'),'ess':K('최대 저항 1~3티어, 접두는 결과 그대로','T1–3 max res, prefixes as they come')},
+  '탱정 키타바 방패(gQa51XOS98s) — 받는 물리 피해 감소 분열 + 잡옵 → 카오스 오브(최대 저항) → 우측 강령술 + 고대 갈비뼈 → 공개(최대 저항, 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 옵션 3개. 하이엔드 = 영상(모두 1티어), 밸런스 = 1~2티어, 에센셜 = 최대 저항 1~3티어·방어도 1~4티어.',
+  {'mT':{'kr':'최대 저항','en':'Maximum resistance','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2'),'3':('1~3티어','T1–3')})},'aT':{'kr':'방어도 접두 3개 (절사)','en':'Three armour prefixes (Whittling)','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})}},P,
+  {'high':K('영상: 최대 저항·방어도 1티어','Video: T1 max res and armour'),'bal':K('최대 저항·방어도 1~2티어','T1–2 max res and armour'),'ess':K('최대 저항 1~3티어, 방어도 1~4티어','T1–3 max res, T1–4 armour')},
   tags,nodes,[{'id':'L1','nodes':['t3','t4','t4x'],'kr':'최대 저항 공개','en':'Max res reveal'}],
-  [{'id':v,'kr':kr,'en':en,'lines':[{'side':'p','label':a},{'side':'p','label':a},{'side':'p','label':a},{'tag':'pdr','tmax':1},{'side':'s','label':K('최대 저항 +%','Maximum resistance')},{'side':'s','label':K('최대 저항 +%','Maximum resistance')}]} for v,kr,en,a,m in (('bal','밸런스 옵션','Balance',K('방어도 1티어','T1 armour'),1),('ess','에센셜 옵션','Essential',K('랜덤 옵션','Random modifier'),3))],
+  [{'id':v,'kr':kr,'en':en,'lines':[{'side':'p','label':a},{'side':'p','label':a},{'side':'p','label':a},{'tag':'pdr','tmax':1},{'side':'s','label':m},{'side':'s','label':m}]} for v,kr,en,a,m in (('high','하이엔드 옵션','High-end',K('방어도 1티어','T1 armour'),K('최대 저항 1티어','T1 maximum resistance')),('bal','밸런스 옵션','Balance',K('방어도 1~2티어','T1–2 armour'),K('최대 저항 1~2티어','T1–2 maximum resistance')),('ess','에센셜 옵션','Essential',K('방어도 1~4티어','T1–4 armour'),K('최대 저항','Maximum resistance')))],
   {'quality':20,'sockets':2},{'all':[{'has':'pdr'},{'count':{'tag':'maxres','min':2}},{'full':'p'},{'full':'s'}]})
+_p=f'{H}/tankjung-kitava-shield-v2.json'; _g=json.load(open(_p))   # 등급 C17: 하이엔드·밸런스·에센셜
+_D={'high':K('영상: 최대 저항·방어도 1티어','Video: T1 max res and armour'),'bal':K('최대 저항·방어도 1~2티어','T1–2 max res and armour'),'ess':K('최대 저항 1~3티어, 방어도 1~4티어','T1–3 max res, T1–4 armour')}
+_g['strategies']=[{'id':v,'params':P[v]} for v in ('high','bal','ess')]
+_g['versions']=[{'id':v,'kr':kr,'en':en,'params':P[v],'desc':_D[v]} for v,kr,en in (('ess','에센셜','Essential'),('bal','밸런스','Balance'),('high','하이엔드','High-end'))]
+json.dump(_g,open(_p,'w'),ensure_ascii=False,indent=1)
 print('wrote 5 graphs (batch 7)')

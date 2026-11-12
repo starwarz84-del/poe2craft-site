@@ -4,7 +4,7 @@
  "cls": "Shields_str",
  "base": "Tawhoan Tower Shield",
  "ilvl": 81,
- "note": "탱정 키타바 방패(원본 레시피 기록) — 받는 물리 피해 감소 분열 + 잡옵 → 카오스 오브(최대 저항) → 우측 강령술 + 고대 갈비뼈 → 공개(최대 저항, 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 1티어 옵션 3개(밸런스, 영상). 에센셜 = 최대 저항 1~3티어, 접두는 엑잘 결과 그대로.",
+ "note": "탱정 키타바 방패(gQa51XOS98s) — 받는 물리 피해 감소 분열 + 잡옵 → 카오스 오브(최대 저항) → 우측 강령술 + 고대 갈비뼈 → 공개(최대 저항, 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 옵션 3개. 하이엔드 = 영상(모두 1티어), 밸런스 = 1~2티어, 에센셜 = 최대 저항 1~3티어·방어도 1~4티어.",
  "params": {
   "mT": {
    "kr": "최대 저항",
@@ -14,6 +14,10 @@
      "kr": "1티어",
      "en": "T1"
     },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
     "3": {
      "kr": "1~3티어",
      "en": "T1–3"
@@ -21,33 +25,44 @@
    }
   },
   "aT": {
-   "kr": "방어도 접두",
-   "en": "Armour prefixes",
+   "kr": "방어도 접두 3개 (절사)",
+   "en": "Three armour prefixes (Whittling)",
    "values": {
     "1": {
-     "kr": "1티어 옵션 3개 (절사)",
-     "en": "Three T1 lines (Whittling)"
+     "kr": "1티어",
+     "en": "T1"
     },
-    "3": {
-     "kr": "결과 그대로",
-     "en": "As they come"
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
     }
    }
   }
  },
  "strategies": [
   {
-   "id": "bal",
+   "id": "high",
    "params": {
     "mT": 1,
     "aT": 1
    }
   },
   {
+   "id": "bal",
+   "params": {
+    "mT": 2,
+    "aT": 2
+   }
+  },
+  {
    "id": "ess",
    "params": {
     "mT": 3,
-    "aT": 3
+    "aT": 4
    }
   }
  ],
@@ -58,11 +73,11 @@
    "en": "Essential",
    "params": {
     "mT": 3,
-    "aT": 3
+    "aT": 4
    },
    "desc": {
-    "kr": "최대 저항 1~3티어, 접두는 결과 그대로",
-    "en": "T1–3 max res, prefixes as they come"
+    "kr": "최대 저항 1~3티어, 방어도 1~4티어",
+    "en": "T1–3 max res, T1–4 armour"
    }
   },
   {
@@ -70,12 +85,25 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
+    "mT": 2,
+    "aT": 2
+   },
+   "desc": {
+    "kr": "최대 저항·방어도 1~2티어",
+    "en": "T1–2 max res and armour"
+   }
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
     "mT": 1,
     "aT": 1
    },
    "desc": {
-    "kr": "영상: 절사의 징조로 방어도 1티어 옵션 3개",
-    "en": "Video: three T1 armour lines with Whittling"
+    "kr": "영상: 최대 저항·방어도 1티어",
+    "en": "Video: T1 max res and armour"
    }
   }
  ],
@@ -192,9 +220,9 @@
  ],
  "finals": [
   {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
+   "id": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
    "lines": [
     {
      "side": "p",
@@ -224,15 +252,61 @@
     {
      "side": "s",
      "label": {
-      "kr": "최대 저항 +%",
-      "en": "Maximum resistance"
+      "kr": "최대 저항 1티어",
+      "en": "T1 maximum resistance"
      }
     },
     {
      "side": "s",
      "label": {
-      "kr": "최대 저항 +%",
-      "en": "Maximum resistance"
+      "kr": "최대 저항 1티어",
+      "en": "T1 maximum resistance"
+     }
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "side": "p",
+     "label": {
+      "kr": "방어도 1~2티어",
+      "en": "T1–2 armour"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "방어도 1~2티어",
+      "en": "T1–2 armour"
+     }
+    },
+    {
+     "side": "p",
+     "label": {
+      "kr": "방어도 1~2티어",
+      "en": "T1–2 armour"
+     }
+    },
+    {
+     "tag": "pdr",
+     "tmax": 1
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "최대 저항 1~2티어",
+      "en": "T1–2 maximum resistance"
+     }
+    },
+    {
+     "side": "s",
+     "label": {
+      "kr": "최대 저항 1~2티어",
+      "en": "T1–2 maximum resistance"
      }
     }
    ]
@@ -245,22 +319,22 @@
     {
      "side": "p",
      "label": {
-      "kr": "랜덤 옵션",
-      "en": "Random modifier"
+      "kr": "방어도 1~4티어",
+      "en": "T1–4 armour"
      }
     },
     {
      "side": "p",
      "label": {
-      "kr": "랜덤 옵션",
-      "en": "Random modifier"
+      "kr": "방어도 1~4티어",
+      "en": "T1–4 armour"
      }
     },
     {
      "side": "p",
      "label": {
-      "kr": "랜덤 옵션",
-      "en": "Random modifier"
+      "kr": "방어도 1~4티어",
+      "en": "T1–4 armour"
      }
     },
     {
@@ -270,14 +344,14 @@
     {
      "side": "s",
      "label": {
-      "kr": "최대 저항 +%",
+      "kr": "최대 저항",
       "en": "Maximum resistance"
      }
     },
     {
      "side": "s",
      "label": {
-      "kr": "최대 저항 +%",
+      "kr": "최대 저항",
       "en": "Maximum resistance"
      }
     }
@@ -672,14 +746,25 @@
    "edges": [
     {
      "if": {
-      "param": {
-       "aT": 3
+      "count": {
+       "tag": "arm",
+       "min": 3
       }
      },
-     "to": "ok"
+     "to": "ok",
+     "res": "ok",
+     "hide": true
     },
     {
+     "if": {
+      "whittleSafe": "keep"
+     },
      "to": "t7"
+    },
+    {
+     "to": "ok",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
