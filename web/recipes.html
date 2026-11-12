@@ -703,9 +703,16 @@ const grp = (r,gi) => C(r).groups[gi];
 /* 유동체 변환 규칙(site/sim.js FLUX·fluxTarget과 같음): 분열·미공개는 그대로, 복합 저항은 원소 부분만 */
 const FLUX={Blazing_Flux:{to:'Fire', from:['Cold','Lightning']}, Chilling_Flux:{to:'Cold', from:['Fire','Lightning']}, Crackling_Flux:{to:'Lightning', from:['Fire','Cold']}, Void_Flux:{to:'Chaos', from:['Fire','Cold','Lightning']}};
 const resFam = f => { const m=/^(Maximum)?(Fire|Cold|Lightning|Chaos)(And(?:Fire|Cold|Lightning|Chaos))?(?:Damage)?Resist(?:ance)?$/.exec(f||''); return m ? {el:m[2], key:(m[1]||'')+'|'+(m[3]||'')} : null; };
+/* 같은 티어 번호가 아니라 '같은 수치 범위'로 바꿈: 원소끼리·저항 최대치는 범위가 같아 같은 티어, 원소 → 카오스는 POE2DB 공허 유동체 'Mod Equivalencies' 표(원소 범위 → 카오스 범위). */
+/* 영상 확인(시한 투구 18:42): 번개 저항 +35%(31—35, 3티어) → 카오스 저항 +21%(20—23, 2티어). 표에 없으면 같은 티어 번호(아래로 자름) */
+const FLUX_CHAOS={'6-10':'4-7','11-15':'8-11','16-20':'12-15','21-25':'16-19','26-30':'16-19','31-35':'20-23','36-40':'20-23','41-45':'24-27'};
+const tierRange = t => { const m=/\((\d+)\D+(\d+)\)/.exec(String(t?.[5]||'')); if(m) return m[1]+'-'+m[2]; const s=/([+-]?\d+)%/.exec(String(t?.[5]||'')); return s ? s[1] : null; };
+function fluxTier(G, g, ti, to, gi2){ const T=G[gi2].t, r=tierRange(g.t[ti]); let k = r!=null ? T.findIndex(t=>tierRange(t)===r) : -1;
+  if(k<0 && to==='Chaos' && r && FLUX_CHAOS[r]) k=T.findIndex(t=>tierRange(t)===FLUX_CHAOS[r]);
+  return k>=0 ? k : Math.min(ti||0, T.length-1); }
 function fluxTo(G, cur, m){ const F=FLUX[cur], g=G[m.gi]; if(!F || !g || m.fr || m.unrev || g.f.length!==1) return null; const q0=resFam(g.f[0]); if(!q0 || !F.from.includes(q0.el) || q0.key.endsWith('And'+F.to)) return null;
   const sub=JSON.stringify(g.sub||null); let best=-1; G.forEach((x,i)=>{ if(best>=0 && JSON.stringify(G[best].sub||null)===sub) return; if(x.f.length!==1 || x.s!==g.s || x.g!==g.g) return; const q=resFam(x.f[0]); if(q && q.el===F.to && q.key===q0.key) best=i; });
-  return best<0 ? null : {gi:best, ti:Math.min(m.ti||0, G[best].t.length-1)}; }
+  return best<0 ? null : {gi:best, ti:fluxTier(G, g, m.ti||0, F.to, best), ...(m.tmax ? {tmax:fluxTier(G, g, Math.min(m.tmax, g.t.length)-1, F.to, best)+1} : {})}; }   /* tmax(목표 티어 범위)도 같은 표로: 원소 1~3티어 → 카오스 1~2티어 */
 const tText = t => KR()?t[4]:t[5];
 const baseOf = r => S.cls[r.cls] ? C(r).bases[r.base] : S.board[r.id].b;
 // 목록 카드는 빌드 때 만든 요약(data/board.json)으로 그림 → 클래스 파일은 레시피를 열 때만 받음 (첫 로딩 빠르게, 2026-11-11)
@@ -945,7 +952,7 @@ function analyse(r){
     } else if(n.do==='divine'){
       if(t.roll){ const m=mods.find(x=>x.gi===t.roll.gi); if(m) m.max=true; const tt=grp(r,t.roll.gi).t[m?.ti||0][5]; const mm=tt.match(/\((\d+(?:\.\d+)?)—(\d+(?:\.\d+)?)\)/);
         if(mm){ const dec=(mm[1].split('.')[1]||mm[2].split('.')[1]||'').length, st=Math.pow(10,-dec); o.p = 1/(Math.round((+mm[2]-+mm[1])/st)+1); } }
-    } else if(n.do==='flux'){ /* 유동체: 그 원소 저항 옵션을 같은 티어의 목표 원소 저항으로(site/sim.js fluxTarget과 같은 규칙, 2026-11-12) */ const Gs=C(r).groups; for(const m of mods){ if(m.gi==null) continue; const x=fluxTo(Gs, n.cur, m); if(x){ m.gi=x.gi; m.ti=x.ti; } }
+    } else if(n.do==='flux'){ /* 유동체: 그 원소 저항 옵션을 같은 티어의 목표 원소 저항으로(site/sim.js fluxTarget과 같은 규칙, 2026-11-12) */ const Gs=C(r).groups; for(const m of mods){ if(m.gi==null) continue; const x=fluxTo(Gs, n.cur, m); if(x){ m.gi=x.gi; m.ti=x.ti; if(x.tmax) m.tmax=x.tmax; } }
     } else if(n.do==='socket'){ for(const s in (t.slots||{})) cap[s]+=t.slots[s]; if(n.cur?.startsWith('rune:')) runes.push(n.cur); }
     else if(n.do==='essence'){
       if(t.mark){ // Essence of the Abyss on a rare: crystallisation picks the side it removes from, the Mark lands on either side
@@ -1307,7 +1314,11 @@ function nodeHTML(r, o, i, idx){
   if(t.removeJunk) tgt = t.removeJunk==='any' ? L('잡옵 제거','Removes a junk modifier') : L(`${t.removeJunk==='p'?'접두':'접미'} 잡옵 제거`,`Removes the junk ${t.removeJunk==='p'?'prefix':'suffix'}`);
   if(t.removeMark) tgt=L('징표를 훼손한 뒤 제거','Desecrate the Mark, then remove it');
   if(n.do==='remove' && n.fcTarget && tx(n.fcTarget)) tgt=esc(tx(n.fcTarget));   /* 플로우차트 지우기 상자의 목표 글(2026-11-12) */
-  if(t.quality) tgt=L(`퀄리티 ${t.quality}%까지 (평균 ${fmt(o.fixedTries)}개, 레어는 1개당 +1${r.ilvl>=82?' · 20% 확률로 +2':''})`,`Quality to ${t.quality}% (avg ${fmt(o.fixedTries)}; +1 each on a rare${r.ilvl>=82?', 20% chance of +2':''})`);
+  if(t.quality){ /* 퀄리티 목표 글(2026-11-12 균열 반지 검수): 플로우차트 읽기 단계는 상자 사용량(시뮬 값)에서 한 번에 쓰는 개수, '레어는 1개당 +1'은 방어구·무기 퀄리티 오브만, 주입기는 개수 없이 */
+    const ak=S.byId[n.cur]?.act, fu=n.fcs?.use?.[n.cur], per = fu!=null ? fu/Math.max(1, n.fcs.tries||1) : o.fixedTries;
+    tgt = ak==='infuse' ? L(`퀄리티 ${t.quality}%까지`,`Quality to ${t.quality}%`)
+      : ak==='catalyst' || fu!=null ? L(`퀄리티 ${t.quality}%까지 (한 번에 ${fmt(per)}개)`,`Quality to ${t.quality}% (${fmt(per)} at a time)`)
+      : L(`퀄리티 ${t.quality}%까지 (평균 ${fmt(per)}개, 레어는 1개당 +1${r.ilvl>=82?' · 20% 확률로 +2':''})`,`Quality to ${t.quality}% (avg ${fmt(per)}; +1 each on a rare${r.ilvl>=82?', 20% chance of +2':''})`); }
   if(t.removeGi!=null && t.junk) tgt=L(`${esc(modLine(r,t.removeGi).txt)} 제거 (접두엔 아무 옵션)`,`Removes ${esc(modLine(r,t.removeGi).txt)} (any prefix lands)`);
   if(t.lord && tgt){ const LN={kurgal:['쿠르갈','Kurgal'],amanamu:['아마나무','Amanamu'],ulaman:['울라만','Ulaman']}[t.lord]||[t.lord,t.lord]; tgt += ` <small>(${L('공개 옵션 모두 '+LN[0],'all revealed options are '+LN[1]+'’s')})</small>`; }
   if(n.trimFc) tgt=L(`${n.trimFc==='s'?'접미':'접두'} 잡옵을 지우고 새 옵션 굴림`,`Remove the junk ${n.trimFc==='s'?'suffix':'prefix'} and roll a new modifier`);
@@ -1658,7 +1669,13 @@ const FX={W:540, WB:330, GAPX:118, LANE:330, LANEGAP:40, ROWGAP:44, GROUPGAP:110
 let _fcCtx; const fcText = (t, px) => { try{ _fcCtx=_fcCtx||document.createElement('canvas').getContext('2d'); _fcCtx.font=`${px}px ${getComputedStyle(document.body).getPropertyValue('--f-body')||'sans-serif'}`; return Math.ceil(_fcCtx.measureText(t).width); }catch(e){ return fcLen(t)*px/12; } };
 const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?12:7),0);
 // a work step this version never reaches (0 visits in its simulation) is left out of its flowchart
-function fcPrune(g, res){ if(!res?.nodes) return g; const gone=new Set(g.nodes.filter(n=>(n.kind==='act'||n.kind==='cleanup'||n.kind==='mark') && !res.nodes[n.id]).map(n=>n.id)); if(!gone.size) return g;   // a version that never passes a step (or the start mark) leaves it out
+function fcPrune(g, res){ if(!res?.nodes) return g; const gone=new Set(g.nodes.filter(n=>(n.kind==='act'||n.kind==='cleanup'||n.kind==='mark') && !res.nodes[n.id]).map(n=>n.id));
+  /* 이 등급에서 늘 건너뛰는 상자(지나간 횟수 = 건너뛴 횟수, 예: 시한 투구 밸런스의 유동체 — 2026-11-12): 그림에서 빼고 들어오는 선은 건너뛸 곳(skipTo)으로 */
+  const jump={}; g.nodes.forEach(n=>{ const t=res.nodes[n.id]; if(n.kind==='act' && n.skipTo && t && t.visits>0 && (t.skips||0)>=t.visits*0.999 && !Object.keys(t.use||{}).length){ gone.add(n.id); jump[n.id]=n.skipTo; } });
+  const to = id => { let k=id, i=0; while(jump[k] && i++<20) k=jump[k]; return k; };
+  if(Object.keys(jump).length && res.edges) for(const k of Object.keys(res.edges)){ const [a,b]=k.split('>'); if(jump[b] && !jump[a]){ const k2=a+'>'+to(b); if(res.edges[k2]==null) res.edges[k2]=res.edges[k]; } }   /* 선 통과 수도 건너뛸 곳으로(처음 한 번만 채움) */
+  if(Object.keys(jump).length) g={...g, nodes:g.nodes.map(n=>gone.has(n.id) ? n : {...n, ...(n.next && jump[n.next] ? {next:to(n.next)} : {}), ...(n.skipTo && jump[n.skipTo] ? {skipTo:to(n.skipTo)} : {}), edges:(n.edges||[]).map(e=>jump[e.to] ? {...e, to:to(e.to)} : e)})};
+  if(!gone.size) return g;   // a version that never passes a step (or the start mark) leaves it out
   return {...g, nodes: g.nodes.filter(n=>!gone.has(n.id)).map(n=>({...n, ...(gone.has(n.next)?{next:undefined}:{}), edges:(n.edges||[]).filter(e=>!gone.has(e.to))})), loops:(g.loops||[]).map(L=>({...L, nodes:L.nodes.filter(id=>!gone.has(id))})).filter(L=>L.nodes.length>=2 && L.nodes.some((id,i)=>(g.nodes.find(n=>n.id===id)?.edges||[]).some(e=>{ const j=L.nodes.indexOf(e.to); return j>=0 && j<=i; })))}; }   // keep a loop only while a step this version takes still goes back into it
 function fcModel(g, params={}){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const E=[], seen=new Set(), selfE={}, add=(a,b,label,x={})=>{ const k=a+'>'+b+(x.skip?'~':''); if(a===b || seen.has(k)) return;   /* 자기 자신으로 돌아오는 선은 그리지 않음 — 커런시 반복은 상자의 평균 개수로(사용자 2026-11-12, 11장 카오스 자기 반복선과 같은 규칙) */ seen.add(k); E.push({a,b,label,...x}); };
@@ -1890,7 +1907,7 @@ function fcFold(g, res, vid){ const Ls=(g.loops||[]).filter(L=>L.fold && L.nodes
     L.nodes.forEach(id=>(byId[id]?.edges||[]).forEach(e=>{ if(e.res!=='ok' || e.hide || mem.has(e.to) || e.to===wt) return; if(!ok.some(x=>x.to===e.to)) ok.push({...e}); }));
     ok.forEach(e=>{ if(L.nodes.some(id=>id!==h && res?.edges?.[id+'>'+e.to])){ let c=0; L.nodes.forEach(id=>{ c+=res?.edges?.[id+'>'+e.to]||0; }); edges[h+'>'+e.to]=c; } });
     const es=[...ok]; if(wt && !mem.has(wt)){ es.push({to:wt, res:'fail'});   /* 최악의 경우 글은 상자 안에 있으니 선 이름표는 없음 */ let c=0; L.nodes.forEach(id=>{ c+=res?.edges?.[id+'>'+wt]||0; }); edges[h+'>'+wt]=c; }
-    heads[h]={...H, kind:H.kind==='cleanup'?'act':H.kind, fold:{...L, goal:L.goalBy?.[vid]||L.goal}, edges:es, next:undefined, skipTo:undefined, item:L.item||H.item}; });
+    heads[h]={...H, kind:H.kind==='cleanup'?'act':H.kind, fold:{...L, goal:L.goalBy?.[vid]||L.goal}, edges:es, next:undefined, skipTo:undefined, item:L.itemBy?.[vid]||L.item||H.item}; });   /* itemBy: 등급별 왼쪽 아이템 칸(goalBy처럼, 2026-11-12 시한 투구) */
   const re=to=>gone[to]||to;
   const nodes=g.nodes.filter(n=>!gone[n.id]).map(n=>heads[n.id] || (n.edges?.some(e=>gone[e.to]) || gone[n.next] ? {...n, edges:(n.edges||[]).map(e=>gone[e.to]?{...e, to:re(e.to)}:e), next:n.next&&re(n.next)} : n));
   return {g:{...g, nodes, loops:(g.loops||[]).map(L=>L.fold && heads[L.nodes[0]] ? {...L, nodes:[L.nodes[0]], allNodes:L.nodes} : L)}, res:{...res, edges}}; }
@@ -1926,7 +1943,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
   const zo=e=>!e.on?0:(e.dash||e.skip)?1:e.kind==='fwd'?2:e.kind==='fail'?3:4;
   const svgE=[...edges].sort((a,b)=>zo(a)-zo(b)).map(e=>`<path class="fce k-${e.kind}${e.on?'':' off'}${e.skip||e.dash?' skip':''}" d="${fcD(e.pts, e.sharp)}" marker-end="url(#fcm-${e.on?e.kind:'off'})"/>`).join('');
   /* 이름표: 갈래 셋 이상·분기·건너뛰기 선, 그리고 둘뿐인 갈래라도 성공이 아닌 선(실패·되돌림·결과별, 사용자 2026-11-12, 로브 3번 '빗나감 — 소멸'·3.A '다시 엑잘') */
-  const lab=edges.filter(e=>e.label && (e.on || e.opt) && (M.multi[e.a] || M.byId[e.a].kind==='choice' || e.skip || (e.kind!=='ok' && new Set(M.E.filter(x=>x.a===e.a && !x.skip).map(x=>x.b)).size>=2))).sort((a,b)=>(b.on-a.on)||(a.d0-b.d0)).map(e=>{ const t=tx(e.label)+(e.share!=null && e.share<0.995 && e.on ? (e.pFix ? ` · ${pct1(e.share)}` : e.cnt>=0.05 ? ` · ${fmt(e.cnt)}${L('회','×')}` : '') : '');   /* 선 위 숫자 = 완성 1개당 그 선을 지나는 평균 횟수(상자의 확률과 헷갈리지 않게, 사용자 2026-11-12). 그래프에 적은 고정 확률(p)만 % */ return {e, t, pts:e.pts, w:fcLen(t)+18}; });
+  const lab=edges.filter(e=>e.label && (e.on || e.opt) && (M.multi[e.a] || M.byId[e.a].kind==='choice' || e.skip || (e.kind!=='ok' && new Set(M.E.filter(x=>x.a===e.a && !x.skip).map(x=>x.b)).size>=2) || (e.a!==e.b && (()=>{ const pa=M.byId[e.a].pos, pb=M.byId[e.b].pos; return !!(pa && pb) && (pb[1]<pa[1] || (pb[1]===pa[1] && pb[0]<pa[0])); })()))).sort((a,b)=>(b.on-a.on)||(a.d0-b.d0)).map(e=>{ const t=tx(e.label)+(e.share!=null && e.share<0.995 && e.on ? (e.pFix ? ` · ${pct1(e.share)}` : e.cnt>=0.05 ? ` · ${fmt(e.cnt)}${L('회','×')}` : '') : '');   /* 되돌림 선(위쪽 상자나 같은 줄 왼쪽 상자로 돌아감)도 글이 있으면 이름표 — 초록 되돌림 선 포함(2026-11-12 균열 반지 11.A → 11) */   /* 선 위 숫자 = 완성 1개당 그 선을 지나는 평균 횟수(상자의 확률과 헷갈리지 않게, 사용자 2026-11-12). 그래프에 적은 고정 확률(p)만 % */ return {e, t, pts:e.pts, w:fcLen(t)+18}; });
   fcLabels(lab, [...Object.values(Lay.box), ...Object.values(Lay.dia)], edges.filter(e=>e.on||e.opt));
   window.__fcLast.labels=lab.map(L0=>({a:L0.e.a, b:L0.e.b, t:L0.t, x:L0.x, y:L0.y, w:L0.w}));   /* tools/test 이름표 점검용 */
   const labels=lab.map(({e,t,x,y})=>`<span class="fcl k-${e.kind}${e.on?'':' off'}" style="left:${x.toFixed(0)}px;top:${y.toFixed(0)}px">${esc(t)}</span>`).join('');

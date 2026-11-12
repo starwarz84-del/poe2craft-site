@@ -13,11 +13,18 @@ const pickW = (rnd, xs) => { let s=0; for(const x of xs) s+=x.w; let v=rnd()*s; 
 const FLUX={Blazing_Flux:{to:'Fire', from:['Cold','Lightning']}, Chilling_Flux:{to:'Cold', from:['Fire','Lightning']}, Crackling_Flux:{to:'Lightning', from:['Fire','Cold']}, Void_Flux:{to:'Chaos', from:['Fire','Cold','Lightning']}};
 const resFam = f => { const m=/^(Maximum)?(Fire|Cold|Lightning|Chaos)(And(?:Fire|Cold|Lightning|Chaos))?(?:Damage)?Resist(?:ance)?$/.exec(f||''); return m ? {el:m[2], key:(m[1]||'')+'|'+(m[3]||'')} : null; };
 // 한 옵션 {gi,ti} → 바뀐 {gi,ti} 또는 null(해당 없음). G = 클래스 파일 groups
+// 같은 티어 번호가 아니라 '같은 수치 범위'로 바꿈: 원소끼리·저항 최대치는 범위가 같아 같은 티어, 원소 → 카오스는 POE2DB 공허 유동체 'Mod Equivalencies' 표(원소 범위 → 카오스 범위).
+// 영상 확인(시한 투구 18:42): 번개 저항 +35%(31—35, 3티어) → 카오스 저항 +21%(20—23, 2티어). 표에 없으면 같은 티어 번호(아래로 자름)
+const FLUX_CHAOS={'6-10':'4-7','11-15':'8-11','16-20':'12-15','21-25':'16-19','26-30':'16-19','31-35':'20-23','36-40':'20-23','41-45':'24-27'};
+const tierRange = t => { const m=/\((\d+)\D+(\d+)\)/.exec(String(t?.[5]||'')); if(m) return m[1]+'-'+m[2]; const s=/([+-]?\d+)%/.exec(String(t?.[5]||'')); return s ? s[1] : null; };
+function fluxTier(G, g, ti, to, gi2){ const T=G[gi2].t, r=tierRange(g.t[ti]); let k = r!=null ? T.findIndex(t=>tierRange(t)===r) : -1;
+  if(k<0 && to==='Chaos' && r && FLUX_CHAOS[r]) k=T.findIndex(t=>tierRange(t)===FLUX_CHAOS[r]);
+  return k>=0 ? k : Math.min(ti||0, T.length-1); }
 function fluxTarget(G, cur, m){ const F=FLUX[cur], g=G[m.gi]; if(!F || !g || m.fr || m.unrev || g.f.length!==1) return null;
   const r=resFam(g.f[0]); if(!r || !F.from.includes(r.el) || (r.key.endsWith('And'+F.to))) return null;
   const sub=JSON.stringify(g.sub||null); let best=-1;
   G.forEach((x,i)=>{ if(best>=0 && JSON.stringify(G[best].sub||null)===sub) return; if(x.f.length!==1 || x.s!==g.s || x.g!==g.g) return; const q=resFam(x.f[0]); if(q && q.el===F.to && q.key===r.key) best=i; });
-  if(best<0) return null; return {gi:best, ti:Math.min(m.ti||0, G[best].t.length-1)}; }
+  if(best<0) return null; return {gi:best, ti:fluxTier(G, g, m.ti||0, F.to, best)}; }
 
 // build a simulator for one graph. D = class file (site/data/c/<cls>.json), craft = crafting.json, params = strategy settings
 function make(graph, D, craft, params){
@@ -194,7 +201,7 @@ function make(graph, D, craft, params){
 }
 
 // many runs → per-success averages, cost distribution, node reach. prices: site/data/prices.json (ex), basePrice in currency units
-function simulate(graph, D, craft, prices, params, N=20000, seed=1){
+function simulate(graph, D, craft, prices, params, N=5000, seed=1){
   const run=make(graph, D, craft, params), rnd=rng(seed);
   const ex = id => id==='Exalted_Orb' ? 1 : prices.p[id]!=null ? +prices.p[id] : null, missing=new Set();
   const div = use => { let v=0; for(const k in use){ const e=ex(k); if(e==null) missing.add(k); else v+=use[k]*e; } return v/prices.divine; };
