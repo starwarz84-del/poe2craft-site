@@ -143,13 +143,13 @@ A(id='q0', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Preser
   edges=PR({'q1': {}}), item=[HY, UN('p'), FR, CR, J('s')])
 A(id='q1', kind='act', group='main', pos=[1, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='blk', label=K('공개', 'Reveal'),
   goal=K('생명력 최대치로 자리 막기 — 생명력·물리 가시 피해 중 먼저 뜬 것', 'Block with maximum life: life or thorns, whichever shows first'), show=['blk'],
-  edges=PR({'q2': {}}), item=[HY, LB, FR, CR, J('s')])
+  edges=PR({'q2': {'label': K('자리 막기 완료 — 엑잘', 'Blocker in place: exalt')}, 'q3': {'label': K('접두가 꽉 참 — 다시 징표', 'Prefixes full: Mark again')}}), item=[HY, LB, FR, CR, J('s')])
 A(id='q2', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 에너지 보호막 증가 1티어 — 에너지 보호막 증가·최대치 중 먼저 뜬 것', 'T1 increased energy shield prefix: increased or maximum energy shield, whichever lands first'),
   show=['esP', 'esF'], edges=PR({'r0': {'res': 'ok'}, 'q3': {'res': 'fail'}}), item=[HY, LB, EP, FR, CR, J('s')])
 A(id='q3', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Essence_of_the_Abyss', ess='mkP', mark=True, omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('빗나간 접두를 지우고 심연의 군주의 징표', 'The missed prefix goes for the Mark of the Abyssal Lord'),
-  showText=[{'s': 'p', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=PR({'q4': {}, 'q5': {}}))
+  showText=[{'s': 'p', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=PR({'q4': {'label': K('막기가 남음', 'Blocker still there')}, 'q5': {'label': K('막기가 지워짐', 'Blocker removed')}}))
 A(id='q4', kind='act', group='main', pos=[2, 11.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('남은 막기 훼손 옵션 제거', 'Remove the old blocker'), edges=PR({'q5': {}}))
 A(id='q5', kind='act', group='main', pos=[1, 12.4], act='desecrate', cur='Preserved_Rib', fromMark=True, label=K('훼손', 'Desecrate'),
@@ -161,18 +161,18 @@ A(id='r0', kind='act', group='main', pos=[0, 13.4], act='annul', cur='Orb_of_Ann
 A(id='r1', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancient_Rib', label=K('훼손', 'Desecrate'),
   goal=K('빈 접두 자리 훼손', 'Desecrate the empty prefix slot'), showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=PR({'r2': {}}), item=[HY, EP, UN('p'), FR, CR, J('s')])
-A(id='r2', kind='act', group='main', pos=[1, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='gp', label=K('공개', 'Reveal'),
+A(id='r2', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='gp', label=K('공개', 'Reveal'),
   goal=K('접두 에너지 보호막 최대치 1티어', 'T1 maximum energy shield prefix'), show=['esF', 'esP'],
   edges=PR({'w9': {'res': 'ok'}, 'r0': {'res': 'fail', 'label': K('빗나감', 'Miss')}}), item=[HY, EP, EF, FR, CR, J('s')])
 # 마지막 접미: 절사의 징조 + 우측 말소의 징조 + 완벽한 카오스 오브 (영상 21:00~22:04, 레벨 82 저항이 접미를 잠금 18:45)
-A(id='w9', kind='act', group='main', pos=[0, 15.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling', 'Omen_of_Dextral_Erasure'],
+A(id='w9', kind='act', group='main', pos=[0, 16.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling', 'Omen_of_Dextral_Erasure'],
   label=K('절사 + 우측 말소 + 카오스', 'Whittling + Dextral Erasure + Chaos'),
   goal=K('접미 번개 저항 1티어 — 마지막 잡옵 바꾸기', 'T1 lightning resistance suffix: reroll the last junk'), show=['fr', 'cr', 'lr'],
   skipIf={'count': {'tag': 'resT', 'min': 3}}, skipTo='ok', skipHide=True,
   edges=[{'if': {'count': {'tag': 'resT', 'min': 3}}, 'to': 'ok', 'res': 'ok'}, {'to': 'w9', 'res': 'fail', 'hide': True}],
   item=[HY, EP, EF, FR, CR, LR],
   over=[{'param': {'rT': 2}, 'set': {'goal': K('접미 번개 저항 1~2티어 — 마지막 잡옵 바꾸기', 'T1–2 lightning resistance suffix: reroll the last junk')}}])
-A(id='ok', kind='done', group='main', pos=[0, 16.4], label=K('완성', 'Finished'))
+A(id='ok', kind='done', group='main', pos=[0, 17.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [

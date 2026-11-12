@@ -66,11 +66,11 @@ PDONE = {'ref': 'pDone'}
 A(id='f0', kind='base', group='prep', pos=[0, 0], next='f1', start={'rar': 'normal', 'mods': [], 'quality': 20},
   label=K('특출난 타살리안 집중구 구입 (아이템 레벨 80, 소켓 2개, 퀄리티 20%)', 'Buy an exceptional Tasalian Focus (item level 80, two sockets, 20% quality)'), item=[])
 A(id='f1', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation',
-  label=K('매직 첫번째 옵션', 'First magic option'), goal=K('매직', 'Magic'), showText=[K('랜덤 옵션 1개', 'One random option')],
+  label=K('매직 첫번째 옵션', 'First magic option'), goal=K('접두 에너지 보호막 1티어', 'T1 Energy Shield prefix'), show=['magicES'],
   edges=[{'to': 'f2'}], item=[ESP])
 A(id='f2', kind='act', group='prep', pos=[0, 2], act='augment', cur='Perfect_Orb_of_Augmentation',
-  label=K('매직 두번째 옵션', 'Second magic option'), goal=K('접두 에너지 보호막 1티어 + 접미 모든 주문 스킬 +2', 'T1 Energy Shield prefix + all spell skills +2 suffix'),
-  show=['esp1', 'esf1', 'lvl'], ask=K('둘 다 맞음?', 'Both options?'),
+  label=K('매직 두번째 옵션', 'Second magic option'), goal=K('접미 모든 주문 스킬 +2 — 접두 에너지 보호막 1티어와 함께', 'All spell skills +2 suffix, with the T1 Energy Shield prefix'),
+  show=['lvl'], ask=K('둘 다 맞음?', 'Both options?'),
   edges=[{'if': MAGIC_DONE, 'to': 'f3', 'res': 'ok', 'label': K('성공', 'hit')},
          {'if': BOTH_FULL, 'to': 'f2x', 'res': 'fail', 'label': K('빗나감', 'miss')},
          {'to': 'f2', 'hide': True}],
@@ -113,7 +113,7 @@ A(id='a1', kind='act', group='main', pos=[0, 9.4], act='essence', cur='Transcend
          {'to': 'd1', 'res': 'ok', 'label': K('잡옵이 지워짐', 'Junk removed')}], item=[SDF, ESP, LVL, CS, AS])
 A(id='a1x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'],
   label=ANN, goal=ANN, target=K('남은 훼손 옵션 제거 — 훼손 옵션은 아이템당 하나', 'Remove the remaining desecrated option: one per item'),
-  edges=[{'to': 'd1', 'label': K('접두 두 자리는 접두 세번째 옵션 반복에서', 'Both prefixes come back in the third-prefix loop')}])
+  edges=[{'to': 'd1'}])
 A(id='d1', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Dextral_Necromancy'],
   label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손) — 다음 엑잘을 접두로 보냄', 'Third suffix (desecrated): sends the next Exalt to the prefix'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],

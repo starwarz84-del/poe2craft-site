@@ -172,7 +172,7 @@ A(id='q2', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Ex
   show=['evF', 'hyb'], edges=PR({'r0': {'res': 'ok'}, 'q3': {'res': 'fail'}}), item=[EV, FL, FR, CR, DF])
 A(id='q3', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Essence_of_the_Abyss', ess='mkP', mark=True, omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('빗나간 접두를 지우고 심연의 군주의 징표', 'The missed prefix goes for the Mark of the Abyssal Lord'),
-  showText=[{'s': 'p', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=PR({'q4': {}, 'q5': {}}))
+  showText=[{'s': 'p', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=PR({'q4': {'label': K('막기가 남음', 'Blocker still there')}, 'q5': {'label': K('막기가 지워짐', 'Blocker removed')}}))
 A(id='q4', kind='act', group='main', pos=[2, 11.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('남은 막기 훼손 옵션 제거', 'Remove the old blocker'), edges=PR({'q5': {}}))
 A(id='q5', kind='act', group='main', pos=[1, 12.4], act='desecrate', cur='Preserved_Rib', fromMark=True, label=K('훼손', 'Desecrate'),
@@ -180,17 +180,17 @@ A(id='q5', kind='act', group='main', pos=[1, 12.4], act='desecrate', cur='Preser
   edges=PR({'q1': {}}))
 A(id='q1', kind='act', group='main', pos=[2, 12.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='blk', label=K('공개', 'Reveal'),
   goal=K('생명력 최대치로 자리 막기 — 생명력·물리 가시 피해 중 먼저 뜬 것', 'Block with maximum life: life or thorns, whichever shows first'), show=['blk'],
-  edges=PR({'q2': {}}))
+  edges=PR({'q2': {'label': K('자리 막기 완료 — 엑잘', 'Blocker in place: exalt')}, 'q3': {'label': K('접두가 꽉 참 — 다시 징표', 'Prefixes full: Mark again')}}))
 # 접두 두번째 옵션: 막기 제거 → 고대 갈비뼈 → 공개 (영상 45:32~46:05)
 A(id='r0', kind='act', group='main', pos=[0, 13.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=PR({'r1': {}}), item=[EV, FL, FR, CR, DF])
 A(id='r1', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancient_Rib', label=K('훼손', 'Desecrate'),
   goal=K('빈 접두 자리 훼손', 'Desecrate the empty prefix slot'), showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=PR({'r2': {}}), item=[EV, FL, UN('p'), FR, CR, DF])
-A(id='r2', kind='act', group='main', pos=[1, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='gp', label=K('공개', 'Reveal'),
+A(id='r2', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='gp', label=K('공개', 'Reveal'),
   goal=K('접두 회피 복합 1티어', 'T1 hybrid evasion prefix'), show=['hyb', 'evF'],
   edges=PR({'ok': {'res': 'ok'}, 'r0': {'res': 'fail', 'label': K('빗나감', 'Miss')}}), item=[EV, FL, HB, FR, CR, DF])
-A(id='ok', kind='done', group='main', pos=[0, 15.4], label=K('완성', 'Finished'))
+A(id='ok', kind='done', group='main', pos=[0, 16.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [
