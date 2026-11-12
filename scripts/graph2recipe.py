@@ -454,6 +454,10 @@ def read_recipe(r, sim, src, tiers):
     if ob:
         for k in ('note', 'br', 'tips', 'ts'):
             if ob.get(k): b0[k] = ob[k]
+    # 준비 과정을 그린 그래프인데 옛 베이스 설명이 '분열해 둔 상태에서 시작'이면 플로우차트 베이스 상자 이름으로(2026-11-12)
+    bst = ((base or {}).get('start') or {}) if own_prep else {}
+    if own_prep and base and base.get('label') and '분열' in ((b0.get('note') or {}).get('kr') or '') and not any(isinstance(m, dict) and m.get('fr') for m in bst.get('mods') or []):
+        b0['note'] = {'kr': base['label']['kr'] + '.', 'en': base['label']['en'] + '.'}
     out = [b0]
     phases = [{'id': 'base', 'kr': '베이스', 'en': 'Base'}]
     prev = ((base if own_prep else mark or base) or {}).get('item') or []
