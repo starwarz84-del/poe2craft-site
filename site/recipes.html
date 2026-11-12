@@ -1683,7 +1683,7 @@ function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[..
     const lp=M.loopOf[m.id]||null; if(prevLoop!==undefined && lp!==prevLoop && (lp||prevLoop) && gid===prevG) y+=34; prevLoop=lp;
     if(gid!==prevG){ if(prevG) grp[prevG].y1=y-FX.ROWGAP+16; y+= prevG ? FX.GROUPGAP : 30;
       // the item panel under the last step of a region sits halfway to the next box: push the next region down until it clears both borders (사용자 2026-11-10)
-      if(prevG && lastIt && items && S.fcItems!==false){ const h=22+Math.max(1,lastIt.rows)*21; y=Math.max(y, lastIt.bot+h+130); }
+      if(prevG && lastIt && items && S.fcItems!==false){ const h=22+Math.max(1,lastIt.rows)*24; y=Math.max(y, lastIt.bot+h+130); }
       grp[gid]={y0:y-40}; prevG=gid; }
     const hm=size[m.id][1], anchor = M.dec[m.id] ? hm+FX.DGAP+FX.DH/2 : hm/2, rel={};
     R.forEach(n=>{ const h=size[n.id][1], top = n===m ? 0 : anchor-h/2; rel[n.id]={top, bot: top+h+(M.dec[n.id]?FX.DGAP+FX.DH:0)}; });
@@ -1909,7 +1909,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
   // item lane
   let lane='', prev=null, yLast=0;
   if(Lay.items) g.nodes.filter(n=>n.item && n.kind!=='mark' && isMain(n.id)).sort((a,b)=>a.pos[1]-b.pos[1]).forEach(n=>{ const same=prev && JSON.stringify(prev)===JSON.stringify(n.item); if(same) return;
-    const b=Lay.box[n.id], rows=Math.max(1, n.item.length + (prev||[]).filter(l=>!n.item.some(x=>x.s===l.s&&x.kr===l.kr)).length), h=16+rows*21;
+    const b=Lay.box[n.id], rows=Math.max(1, n.item.length + (prev||[]).filter(l=>!n.item.some(x=>x.s===l.s&&x.kr===l.kr)).length), h=16+rows*24;
     const D=Lay.dia[n.id], bot=D?D.y+D.h:b.y+b.h, nx=Object.values(Lay.box).filter(x=>x.col===Lay.colIds[0] && x.y>b.y).sort((p2,q)=>p2.y-q.y)[0], mid = nx ? (bot+nx.y)/2 : bot+24;
     const top=Math.max(mid-h/2, yLast+10), cy=top+h/2;
     lane+=`<div class="fcit" style="left:${FX.PAD}px;top:${top}px;width:${FX.LANE}px"><ul>${n.item.length||rows>1||prev?fcItem(g, n.item, prev, s.params):`<li class="m-n"><i>·</i><span>${L('옵션 없음 (노멀)','No modifiers (normal)')}</span></li>`}</ul></div>`

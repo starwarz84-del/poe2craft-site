@@ -601,7 +601,7 @@
      "if": {
       "added": "esp"
      },
-     "to": "v4",
+     "to": "v5",
      "res": "ok"
     },
     {
@@ -694,74 +694,12 @@
    ]
   },
   {
-   "id": "v4",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    4
-   ],
-   "act": "rune",
-   "goal": {
-    "kr": "아스트리드의 창의성 장착",
-    "en": "Socket Astrid’s Creativity"
-   },
-   "label": {
-    "kr": "룬",
-    "en": "Rune"
-   },
-   "edges": [
-    {
-     "to": "v5"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "정신력 (분열)",
-     "en": "Spirit (fractured)",
-     "m": "f",
-     "tags": [
-      "spirit"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "에너지 보호막 최대치",
-     "en": "Flat energy shield",
-     "m": "n",
-     "tags": [
-      "esf"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "에너지 보호막 % 증가",
-     "en": "% energy shield",
-     "m": "n",
-     "tags": [
-      "esp"
-     ]
-    }
-   ],
-   "showText": [
-    {
-     "kr": "제작 옵션 하나 더",
-     "en": "One more crafted modifier"
-    }
-   ],
-   "rune": {
-    "kr": "아스트리드의 창의성",
-    "en": "Astrid’s Creativity"
-   }
-  },
-  {
    "id": "v5",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    4
    ],
    "act": "desecrate",
    "goal": {
@@ -774,7 +712,7 @@
    },
    "edges": [
     {
-     "to": "v6"
+     "to": "v4"
     }
    ],
    "item": [
@@ -820,6 +758,78 @@
      "en": "Desecrated (unrevealed)"
     }
    ]
+  },
+  {
+   "id": "v4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "v6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "f",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
+   },
+   "skipNote": {
+    "kr": "이미 장착돼 있으면 건너뜀",
+    "en": "Skipped when already socketed"
+   }
   },
   {
    "id": "v6",
@@ -1138,20 +1148,7 @@
    },
    "edges": [
     {
-     "if": {
-      "has": "anyres"
-     },
-     "to": "ok",
-     "res": "ok",
-     "hide": true
-    },
-    {
-     "to": "v8a",
-     "res": "fail",
-     "label": {
-      "kr": "저항 없음",
-      "en": "No resistance"
-     }
+     "to": "v8a"
     }
    ],
    "item": [
@@ -1268,7 +1265,16 @@
      "to": "v8",
      "res": "ok"
     }
-   ]
+   ],
+   "skipIf": {
+    "has": "anyres"
+   },
+   "skipTo": "ok",
+   "skipHide": true,
+   "skipNote": {
+    "kr": "원소 저항이 이미 있으면 건너뜀",
+    "en": "Skipped when a resistance is already there"
+   }
   },
   {
    "id": "v8",

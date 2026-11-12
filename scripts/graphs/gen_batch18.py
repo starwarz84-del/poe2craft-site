@@ -136,8 +136,9 @@ nodes=[b0,
  act('x1','main',[0,15],'exalt','Perfect_Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','랜덤 옵션 1개 (접두가 꽉 차 접미로)','One random line (prefixes are full)')],K('엑잘','Exalt'),
      [{'if':{'has':'cc'},'to':'x3','res':'ok','hide':True},{'to':'x2'}],W9,skipIf={'not':{'sideLt':{'side':'s','n':2}}},skipTo='x2',skipHide=True),   # 15:12 툴팁, 15:18 능력치 요구 감소
  act('x2','main',[0,16],'chaos','Greater_Chaos_Orb',K('접미 치명타 확률 1티어','T1 critical hit chance suffix'),None,K('카오스','Chaos'),
-     [{'if':{'all':[{'has':'proj'},{'has':'cc'}]},'to':'x3','res':'ok'},{'if':{'not':{'has':'proj'}},'to':'d1',**F,**L_('투사체 +4가 지워짐 — 훼손부터','+4 projectiles gone: desecrate again')},{'to':'x2',**F}],
+     [{'if':{'all':[{'has':'proj'},{'has':'cc'}]},'to':'x3','res':'ok'},{'if':{'not':{'has':'proj'}},'to':'xz',**F,**L_('투사체 +4가 지워짐','+4 projectiles gone')},{'to':'x2',**F}],
      W10,show=['cc'],trim={'side':'s','keep':'keepS'}),   # 15:43 상위 카오스(II) 10·20개, 16:40 우측 말소 + 절사 소모, 18:15 치명타 확률
+ cleanup('xz',[1,16],[],[{'to':'d1',**L_('접미를 비우고 훼손부터','Suffixes cleared: desecrate again')}],K('접미 옵션 모두 지우기','Clear every suffix'),side='s'),
  act('x3','main',[0,17],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'ok'}],W11,skipIf={'full':'s'},skipTo='ok',skipHide=True),   # 18:28 툴팁, 18:38 민첩(영상은 그대로 둠)
  done([0,18])]
 graph11('diztoh-iceshot-bow-v2','Bows','Obliterator Bow',82,

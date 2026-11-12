@@ -52,7 +52,7 @@
 | mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 672, bal 357 | 0 | 완료 11-12(새 기준) · 검수 96점(13번 묶음 접힌 상자·11.A 아래 출구 반영 17:40) | W1-장갑(Opus 5.5) · 검수 마스터 | 새 기준 재작성: 영상 전 구간 캡처 80장·단계표(scratchpad W1-mazbro-gloves). 흐름 한 줄 — 영상 성공 회차대로 카오스 = 투사체 속도 1티어(15:56), 마지막 공개 = 투사체 피해(18:24, 사용자 확정 11-12). 아스트리드 분열 전(8:06), 룬 가격은 시뮬 비용 미포함. 388/265 → 672/357 |
 | fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 재확인 필요 | A(Opus) | 글 목걸이 부분 다시 대조, 일치(기록 tools/notes/web-fubgun-iceshot.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 재확인 필요 | A(Opus) | 자막 전체(31:47) 대조, 단계 일치(기록 tools/notes/diztoh-s70CV_nvjXg.md). 완성품 줄을 DB 태그로. 값 그대로 |
-| diztoh-vile-robe-v2 | n97yEuKSWyM | bal 152, ess 49 | 0 | 진행 중(새 기준 재작성) | W4-로브(Opus 5.5) · 검수 마스터 | 영상 전체(20:33) 화면 캡처 63장 + 단계표. 최대치는 상위 카오스 반복(3:18), % 5티어도 지움(4:17), 우측 소멸(12:28)·세번째 접미 엑잘(14:36) 추가, 아스트리드 룬 상자, 밸런스 저항 반드시(내부 결정 8.A), C17 1~2/1~4. 105/51 → 152/49 |
+| diztoh-vile-robe-v2 | n97yEuKSWyM | bal 152, ess 49 | 0 | 완료 11-12(새 기준) · 검수 94점 | W4-로브(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W4): 영상 전체 캡처 82장·단계표. 로브 한 개를 처음부터 완성까지 진행한 회차 그대로. 준비 구역에 소멸(2:23·3:18), 아스트리드는 영상대로 갈비뼈(4:55) 뒤 6:10, 8번 접미 원소 저항 다중 루프 접음(우측 소멸 → 절사 + 상위 카오스 → 빈 접미 엑잘), 7 → 8 확정 선. 원소 저항 2~3티어(아이템 레벨 81이라 1티어 불가). 확인 못 함: 베이스 가격, 3:19~3:28 상위 카오스 II 아이콘(구입·툴팁·자막으로 판단), 10:04~10:27 갈비뼈 순간(편집). 152/49 → 152/49 |
 | sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 재확인 필요 | A(Opus) | 자막 전체(13:10) 대조, 단계 일치(기록 tools/notes/sl-VKMT7tuSIYk.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 98, ess 26 | 0 | 대기 |  |  |
 | sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 97, ess 23 | 1 | 대기 |  |  |

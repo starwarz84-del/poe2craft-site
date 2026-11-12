@@ -129,6 +129,11 @@ tip('serle-after-fracture','fracture','weapon',["세를의 승리",'우측 결�
   ('접미 4개를 쓰려고 세를의 승리를 끼울 때','When socketing Serle’s Triumph for a fourth suffix'),
   [('분열을 끝낸 뒤 세를의 승리를 끼움','Socket it only after the fracture'),('접미에 잡옵 2개가 붙으면 우측 결정화의 징조 + 심연의 에센스 → 고대 갈비뼈로 징표 훼손 → 빛의 징조 + 소멸의 오브','Two junk suffixes: Dextral Crystallisation + Abyss essence → Ancient Rib on the mark → Light + Annulment')],
   [('why','매직 단계에 먼저 끼우면 제왕 뒤 옵션이 4개가 되어 분열 전에 소멸 도박이 생김(영상: 투사체 +2가 지워져 카오스 오브 260개 추가)','Socketed early, the regal makes four lines and forces an annul gamble before fracturing (the video lost +2 projectiles and 260 more Chaos)')]),
+tip('chaos-after-fracture-families','fracture','all',['카오스 오브','소멸의 오브'],
+  ('분열 뒤 같은 목표: 붙은 계열은 빠짐','After fracturing: the fractured family is out'),
+  ('분열한 옵션과 같은 목표 묶음을 카오스 오브로 다시 노릴 때','When Chaos-rolling the same target group as the fractured line'),
+  [('소멸의 오브로 분열 + 옵션 1개만 남기고 카오스 오브 반복','Annul down to the fracture plus one line, then repeat Chaos'),('분열된 옵션 계열은 다시 안 붙으니 남은 목표만 성공으로 봄','The fractured family cannot roll again, so only the other targets count')],
+  [('warn','분열 전에 유동체로 바꾼 저항이라도 원래 냉기·번개 저항은 다시 나올 수 있음','Even after a Liquid converted the resistance, the original cold or lightning can still roll')]),
 # ---------------- 첫 옵션 ----------------
 tip('fill-slots-before-chaos','first','all',['카오스 오브','절사의 징조'],
   ('첫 카오스: 자리를 다 채운 채로','First Chaos: with every slot filled'),
@@ -150,6 +155,13 @@ tip('min-level-lock-tier','first','all',['상위 엑잘티드 오브','완벽한
   ('1티어 요구 레벨이 낮은 옵션을 노릴 때','When the target’s T1 needs a low level'),
   [('1티어 레벨이 35인 옵션(활 공격 속도 등)은 최소 레벨 35인 상위 엑잘티드 오브로','For a T1 at level 35 (bow attack speed), use Greater Exalts (minimum 35)'),('1티어 레벨이 82처럼 높으면 저렴한 오브로','For a T1 at 82, use the cheaper orb')],
   [('why','최소 레벨 위의 낮은 티어가 빠져 뜨는 순간 1티어. 1티어 레벨이 높으면 오브 종류에 따라 확률이 거의 같음','Lower tiers drop out, so any hit is T1; with a high T1 level the odds barely change between orbs')]),
+tip('first-t1-side-order','first','armour',['카오스 오브','상위 엑잘티드 오브','군왕의 합금','발작의 에센스','소멸의 오브'],
+  ('카오스 첫 1티어: 반대쪽부터 엑잘','First Chaos T1: exalt the other side next'),
+  ('분열 + 옵션 1개에서 카오스 오브로 첫 1티어가 붙었을 때','When Chaos lands the first T1 on a fracture plus one line'),
+  [('접두 1티어(투사체 피해·속도): 상위 엑잘티드 오브로 접미, 빗나가면 군왕의 합금 → 발작의 에센스 → 소멸의 오브','T1 prefix (projectile damage or speed): Greater Exalt a suffix; on a miss Sovereign Alloy, then Hysteria, then Annul'),
+   ('접두 1티어로 시작했으면 마지막 훼손 공개로 남은 투사체 옵션','Started from a prefix: aim the last reveal at the missing projectile line'),
+   ('접미 1티어(관통·치명타·치명타 피해): 상위 엑잘티드 오브로 접두, 빗나가면 군왕의 합금 한 번 → 소멸의 오브','T1 suffix (pierce, crit, crit damage): Greater Exalt a prefix; on a miss one Sovereign Alloy, then Annul')],
+  [('warn','접미로 시작한 순서에서 발작의 에센스를 두 번째로 쓰면 앞서 붙인 합금 옵션이 바뀜','Starting from a suffix, a second essence (Hysteria) replaces the alloy line')], detail=('장갑','Gloves')),
 # ---------------- 옵션 채우기 ----------------
 tip('one-exalt-at-a-time','fill','all',['상위 찬미의 징조','좌측 찬미의 징조','우측 찬미의 징조','엑잘티드 오브'],
   ('빈자리 2개: 상위 찬미 vs 하나씩','Two empty slots: Greater Exaltation or one at a time'),
@@ -284,6 +296,11 @@ tip('chaos-liquid-unlocks-whittle','whittle','jewellery',['치직대는 유동�
   ('마지막 자리를 절사로 돌리다 세 옵션이 모두 레벨 82가 되었을 때','When all three lines on the side reach level 82 while Whittling the last slot'),
   [('카오스 유동체로 저항 1티어를 카오스 저항 1티어(레벨 81)로 바꿈','Turn the T1 resist into T1 chaos resist (level 81) with a chaos Liquid'),('다시 절사','Whittle again')],
   [('why','레벨이 낮아진 그 옵션을 절사가 다시 침. 일반 저항은 한 등급 높게 나옴(3티어 → 카오스 2티어)','Whittling can hit the lower line again, and a regular resist comes out a tier higher (T3 → chaos T2)')], detail=('목걸이','Amulet')),
+tip('whittle-chaos-by-price','whittle','all',['절사의 징조','완벽한 카오스 오브','상위 카오스 오브'],
+  ('절사 카오스 고르기: 징조 값과 비교','Whittling Chaos: pick the orb by the omen price'),
+  ('절사의 징조 + 카오스 오브로 한 자리를 반복할 때','When repeating one slot with Whittling + Chaos'),
+  [('절사의 징조가 완벽한 카오스 오브보다 비싸면 완벽한 카오스 오브','Whittling dearer than a Perfect Chaos Orb: use Perfect Chaos'),('더 저렴하면 상위 카오스 오브','Cheaper: use Greater Chaos')],
+  []),
 # ---------------- 훼손 ----------------
 tip('desecration-later','desecrate','all',['빛의 징조','소멸의 오브'],
   ('마지막 훼손: 무리하지 않기','Last desecration: don’t force it'),
@@ -356,6 +373,12 @@ tip('timelost-attack-tag','quality','jewel',['제련된 강탈자 기폭제'],
   ('오래된 주얼의 옵션을 고를 때','When choosing lines on a Time-Lost jewel'),
   [('같은 값이면 공격 태그 옵션을 고름','Prefer attack-tag lines at equal value'),('마무리에 제련된 강탈자 기폭제 퀄리티 20%','Finish with 20% Refined Reaver quality')],
   [('why','공격 태그 옵션만 수치가 더 오름(치명타 피해 10 → 12)','Only attack-tag lines grow (crit damage 10 → 12)')]),
+tip('quality-30-optional','quality','armour',['방어구 장인의 고철','바알 방어구 장인의 주입기'],
+  ('퀄리티 30%: 건너뛰어도 됨','Quality 30%: optional'),
+  ('방어구 퀄리티를 20%에서 30%로 올릴지 정할 때','When deciding whether to take armour quality from 20% to 30%'),
+  [('20%는 방어구 장인의 고철로','Get 20% with Armourer’s Scraps'),('30%가 꼭 필요하지 않으면 건너뜀','Skip 30% unless you need it'),('미뤘다면 옵션을 다 붙인 뒤 바알 방어구 장인의 주입기로','If postponed, use Vaal Armourer’s Infusers after every line is done')],
+  [('cost','장갑 영상 노트: 베이스 24개 × 12 div, 주입기 65개 × 2.7 div','Gloves video note: 24 bases × 12 div, 65 infusers × 2.7 div'),
+   ('warn','주입기를 쓰다 타락하면 그때 퀄리티로 완성','If an infuser corrupts the item, finish at that quality')], alias=('quality-30-optional-tk',)),
 # ---------------- 제작 옵션·룬·액체 ----------------
 tip('augment-rune-before-chaos','craft','all',['우트레드의 성좌','콜르의 사냥'],
   ('증강물 전용 옵션: 룬을 먼저 끼우고 굴리기','Augment-only lines: socket the rune first'),
@@ -497,22 +520,23 @@ tip('cheap-resist-essence','trade','armour',['절연의 에센스','풍요의 �
 # ---------- 상황으로 자동 연결(사용자 확정 2026-11-12) ----------
 # 레시피 단계마다 엔진이 아는 아이템 상태로 확인. 규칙 하나 안의 조건은 모두 맞아야 함(규칙끼리는 아무거나).
 #  do: 단계 행동 · use: 쓰는 커런시·징조 중 하나 · noUse: 이것들을 안 씀 · pre: 단계 전 상태
-#   (frJunk1 = 분열 + 다른 옵션 1개, noCrafted = 제작·훼손 옵션 없음, otherRoom = 징조 반대쪽에 빈자리, unrevPre = 공개 안 한 훼손 옵션 있음)
+#   (frJunk1 = 분열 + 다른 옵션 1개, noCrafted = 제작·훼손 옵션 없음, otherRoom = 징조 반대쪽에 빈자리, unrevPre = 공개 안 한 훼손 옵션 있음 — 플로우차트 읽기 레시피는 단계 상태에 미공개 표시가 없어 쓰지 않음)
 #  use는 단계의 커런시·징조와 함께 쓰는 것(extra, 예: 히네코라의 머리카락)도 봄
 #  failVia: 실패 처리에 그 징조 · sideOmenWaste: 꽉 찬 쪽 덕에 좌측·우측 징조가 필요 없음 · target: 목표에 그 키
 #  save: True면 '더 저렴한 방법' 알림(💰)
 AUTO = {
  'after-fracture-chaos':[{'do':['chaos'],'pre':'frJunk1','noUse':['Omen_of_Whittling']}],
- 'fracture-four-mods':[{'do':['fracture'],'pre':'unrevPre'}],
+ 'fracture-four-mods':[{'do':['fracture']}],
  'hinekora-before-big':[{'use':['Hinekoras_Lock']}],   # 분열 단계 전부에 붙던 것 → 히네코라의 머리카락을 실제로 쓰는 단계만(2026-11-12, 방패 7번)
  'whittle-side-first':[{'use':['Omen_of_Whittling']}],
+ 'whittle-chaos-by-price':[{'do':['chaos'],'use':['Omen_of_Whittling']}],
  'whittle-needs-erasure':[{'use':['Omen_of_Whittling'],'noUse':['Omen_of_Sinistral_Erasure','Omen_of_Dextral_Erasure'],'pre':'otherRoom'}],
  'erasure-chaos-cheaper':[{'do':['exalt'],'failVia':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'save':True}],
  'cheap-junk-removal':[{'use':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'pre':'noCrafted','save':True},{'failVia':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'pre':'noCrafted','save':True}],
  'side-omen-save':[{'sideOmenWaste':True,'save':True}],
  'reveal-miss-exalt-first':[{'do':['reveal'],'failVia':['Omen_of_Light']}],
  'abyss-before-crafted':[{'use':['Essence_of_the_Abyss']}],
- 'mark-wrong-side':[{'use':['Essence_of_the_Abyss'],'target':'mark'}],
+ 'mark-wrong-side':[{'use':['Essence_of_the_Abyss']}],
  'crystallise-alloy-clears-junk':[{'do':['essence'],'use':['Omen_of_Sinistral_Crystallisation','Omen_of_Dextral_Crystallisation']}],
  'catalyst-steer':[{'use':['Omen_of_Catalysing_Exaltation']}],
  'breach-quality-stays':[{'use':['Essence_of_the_Breach']}],

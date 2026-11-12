@@ -578,9 +578,16 @@ def _fcs(W, n):
 
 
 def _miss(W, n):
-    """등급을 가르는 갈래: 빗나갈 때 가는 선(1% 넘게 지나는 것)과 분기 상자를 거치는 선"""
+    """등급을 가르는 갈래: 빗나갈 때 가는 선(1% 넘게 지나는 것)과 분기 상자를 거치는 선.
+    성공 선은 빼고, 결과를 적지 않은 숨은 선은 같은 상자로 가는 보이는 선의 결과를 따름(2026-11-12: 숨은 성공 선을 빗나감으로 세던 것)"""
     outs = W.outs(n); tot = sum(W.ec(n['id'], x, outs) for x in outs) or 1
-    return [x for x in outs if (x[3] != 'ok' or x[4] != x[1]) and W.ec(n['id'], x, outs) / tot >= 0.01]
+    vres = {}
+    for x in outs:
+        if not x[0].get('hide') and x[3]: vres.setdefault(x[4], x[3])
+    def miss(x):
+        eff = x[3] or (vres.get(x[4]) if x[0].get('hide') else None)   # 선에 적은 결과가 먼저, 결과 없는 숨은 선만 보이는 선을 따름
+        return not (eff == 'ok' and x[4] == x[1])
+    return [x for x in outs if miss(x) and W.ec(n['id'], x, outs) / tot >= 0.01]
 
 
 def _sig(W, n, G_):

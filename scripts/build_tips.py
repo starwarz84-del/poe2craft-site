@@ -435,6 +435,27 @@ T+=[
   'body':K('분열이 접두에 있으면 접두를 먼저, 접미에 있으면 우측 찬미 + 상위 찬미 + 엑잘로 저항부터 채움. 옵션이 하나만 모자랄 때까지는 소멸의 오브·카오스 오브처럼 싼 것만 쓰고, 절사의 징조나 말소의 징조 + 완벽한 카오스 오브(한 번에 약 25~30 div)는 마지막 옵션에만 씀. 덜 끝난 아이템에 절사를 쓰면 엉뚱한 옵션이 지워지거나 접미 자리가 접두로 넘어감.','With the fracture on a prefix, finish the prefixes first; with it on a suffix, fill the resistances first with Dextral + Greater Exaltation and an Exalt. Until a single line is missing, use only cheap Annulment and Chaos Orbs; keep Whittling or Erasure with a Perfect Chaos Orb, about 25–30 div a click, for the last line. Whittling an unfinished item removes the wrong line or moves a suffix slot to the prefixes.'),
   'source':{'url':'https://www.youtube.com/watch?v=swF5mwXmZ0k','title':'How to Craft the Best Body Armours and Sell Them for Big Profit in Path of Exile 2','channel':'Unstoppable BTW'},'recipes':['unstoppable-vile-robe','unstoppable-slipstrike-vest']},
 ]
+# 영상 확인에서 나온 꿀팁(2026-11-12, 근거 캡처 확인: scratchpad review W1-mazbro-gloves·W5-kitava-shield frames)
+TKS={'url':'https://www.youtube.com/watch?v=gQa51XOS98s','title':'[POE2] 방패분쇄 키타바 2부 | 하이엔드 장비 제작 가이드 (워리어 방패·장갑·장화·철퇴)','channel':'탱정-탱커의정석'}
+T+=[
+ {'id':'first-t1-side-order','tags':[K('카오스 오브','Chaos'),K('장갑','Gloves')],'patch':'0.5',
+  'title':K('카오스 첫 1티어가 접두인지 접미인지로 다음 순서','The first Chaos T1 decides the next order'),
+  'body':K('영상 노트 3·4A·4B단계: 접두 1티어면 접미부터, 접미 1티어면 접두부터 채움.','Video note steps 3, 4A and 4B: a T1 prefix means suffixes next, a T1 suffix means prefixes next.'),
+  'source':{**MZG,'ts':'9:35'},'recipes':['mazbro-proj-gloves']},
+ {'id':'quality-30-optional','tags':[K('퀄리티','Quality'),K('방어구','Armour')],'patch':'0.5',
+  'title':K('방어구 퀄리티 30%는 건너뛰어도 됨','Armour quality 30% is optional'),
+  'body':K('20%는 고철로, 30%는 바알 주입기가 많이 들어 건너뛰어도 됨. 미뤘다면 마지막에 시도하고 타락하면 그 퀄리티로 완성.','20% with scraps; 30% costs many Vaal infusers and can be skipped. If postponed, try it last and keep the quality if it corrupts.'),
+  'source':{**MZG,'ts':'2:45'},'recipes':['mazbro-proj-gloves','tankjung-kitava-shield']},
+ {'id':'quality-30-optional-tk','tags':[K('퀄리티','Quality')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**TKS,'ts':'21:40'},'recipes':['tankjung-kitava-shield']},
+ {'id':'whittle-chaos-by-price','tags':[K('절사','Whittling'),K('카오스 오브','Chaos')],'patch':'0.5.5',
+  'title':K('절사와 같이 쓸 카오스 오브는 징조 값으로 고름','Pick the Chaos Orb for Whittling by the omen price'),
+  'body':K('절사의 징조가 완벽한 카오스 오브보다 비싸면 완벽한 카오스 오브, 싸면 상위 카오스 오브.','If Whittling costs more than a Perfect Chaos Orb use Perfect Chaos, otherwise Greater Chaos.'),
+  'source':{**TKS,'ts':'19:15'},'recipes':['tankjung-kitava-shield']},
+ {'id':'chaos-after-fracture-families','tags':[K('분열','Fracture'),K('카오스 오브','Chaos')],'patch':'0.5.5',
+  'title':K('분열 뒤 같은 목표 묶음: 붙은 계열은 다시 안 나옴','After fracturing: the fractured family will not roll again'),
+  'body':K('분열한 옵션과 같은 목표 4종을 카오스 오브로 다시 노릴 때 이미 붙은 계열은 빠지고, 유동체로 바꾸기 전 원래 냉기·번개 저항은 다시 나올 수 있음.','Rolling the same four targets after a fracture: the fractured family is out, but the original cold or lightning resistance can still roll.'),
+  'source':{**TKS,'ts':'17:33'},'recipes':['tankjung-kitava-shield']},
+]
 for t in T: t['recipes']=[r for r in t.get('recipes',[]) if r not in ('gold-amulet-6line',)]   # 내린 레시피(build_recipes.py REMOVED)
 # 공통 형식으로 다시 씀(사용자 확정 2026-11-12) — 글은 tips_text.py, 출처·레시피·패치는 위 T(합친 꿀팁은 모두 모음)
 import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
