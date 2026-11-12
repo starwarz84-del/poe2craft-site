@@ -428,7 +428,10 @@ def _routes(W, n, valid, G_=None, CD=None):
                                'n': round(c, 3) if N_ is n else None, 'vias': list(vias), 'lab': x[2], 'cls': x[3]})
                 continue
             nv = list(vias)
-            if W.via(to): nv.append({'cur': T.get('cur') or 'Orb_of_Annulment', **({'omens': T['omens']} if T.get('omens') else {})})
+            if W.via(to):
+                vo = list(T.get('omens') or [])
+                if T.get('kind') == 'cleanup': vo += [k for k in ('Omen_of_Sinistral_Annulment', 'Omen_of_Dextral_Annulment') if ((W.st(to) or {}).get('use') or {}).get(k) and k not in vo]
+                nv.append({'cur': T.get('cur') or 'Orb_of_Annulment', **({'omens': vo} if vo else {})})
             walk(T, sh, fx, px, nv, depth + 1, seen | {to})
     walk(n, 1.0, None, [], [], 0, {n['id']})
     multi = {}
@@ -722,6 +725,9 @@ def read_recipe(r, sim, src, tiers):
             cs = [o['cur']] + [c if isinstance(c, str) else c.get('cur') for c in n['curIf'] if (c if isinstance(c, str) else c.get('cur'))]
             top = max(cs, key=lambda c: u.get(c) or 0)
             if (u.get(top) or 0) > (u.get(o['cur']) or 0): o['cur'] = top
+        if n.get('kind') == 'cleanup':   # 좌측·우측 소멸의 징조를 같이 쓰는 정리 상자(그래프 side): 시뮬 사용량에 있는 징조를 커런시 줄에(2026-11-12, 활 14.A)
+            u = (W.st(n['id']) or {}).get('use') or {}
+            om = om + [k for k in ('Omen_of_Sinistral_Annulment', 'Omen_of_Dextral_Annulment') if (u.get(k) or 0) > 0 and k not in om]
         if om: o['omens'] = om
         if t: o['target'] = t
         if n.get('trim'): o['trimFc'] = n['trim'].get('side') if isinstance(n['trim'], dict) else 'p'

@@ -456,6 +456,20 @@ T+=[
   'body':K('분열한 옵션과 같은 목표 4종을 카오스 오브로 다시 노릴 때 이미 붙은 계열은 빠지고, 유동체로 바꾸기 전 원래 냉기·번개 저항은 다시 나올 수 있음.','Rolling the same four targets after a fracture: the fractured family is out, but the original cold or lightning resistance can still roll.'),
   'source':{**TKS,'ts':'17:33'},'recipes':['tankjung-kitava-shield']},
 ]
+# 활 영상 확인에서 나온 꿀팁(2026-11-12, 근거 캡처 확인: scratchpad review W3-iceshot-bow frames) — 겹치는 것은 기존 꿀팁에 출처·레시피만(alias 항목)
+T+=[
+ {'id':'divine-before-fracture','tags':[K('분열','Fracture'),K('신성한 오브','Divine')],'patch':'0.5.5',
+  'title':K('분열할 옵션 수치는 분열 전에 신성한 오브로','Divine the line you will fracture first'),
+  'body':K('훼손까지 옵션 4개를 만든 뒤 신성한 오브로 수치를 올리고 분열. 분열된 옵션은 수치가 고정됨.','With four lines including the desecration, Divine first, then fracture: a fractured line keeps its value.'),
+  'source':{**DZB,'ts':'1:14'},'recipes':['diztoh-iceshot-bow']},
+ {'id':'aldur-breath-to-cold','tags':[K('룬','Runes'),K('무기','Weapons')],'patch':'0.5.5',
+  'title':K('알두르의 숨결: 화염·번개 옵션을 냉기로','Breath of Aldur: fire and lightning to cold'),
+  'body':K('번개·화염 피해 1티어가 붙은 뒤 빈 소켓에 알두르의 숨결을 장착하면 같은 티어 냉기 옵션으로 바뀜. 장착 뒤 붙는 옵션은 안 바뀌고, 룬은 빼거나 바꿀 수 없음.','Socket Breath of Aldur after a T1 lightning or fire line lands: it becomes the same-tier cold line. Later lines are not converted and the rune cannot be removed.'),
+  'source':{**DZB,'ts':'5:14'},'recipes':['diztoh-iceshot-bow']},
+ {'id':'desecrate-reroll-no-light-bow','tags':[K('훼손','Desecrate')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**DZB,'ts':'8:48'},'recipes':['diztoh-iceshot-bow']},
+ {'id':'reveal-high-to-steer-whittle-bow','tags':[K('절사','Whittling')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**DZB,'ts':'12:43'},'recipes':['diztoh-iceshot-bow']},
+ {'id':'whittle-safe-top-level-bow','tags':[K('절사','Whittling')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**DZB,'ts':'15:43'},'recipes':['diztoh-iceshot-bow']},
+]
 for t in T: t['recipes']=[r for r in t.get('recipes',[]) if r not in ('gold-amulet-6line',)]   # 내린 레시피(build_recipes.py REMOVED)
 # 공통 형식으로 다시 씀(사용자 확정 2026-11-12) — 글은 tips_text.py, 출처·레시피·패치는 위 T(합친 꿀팁은 모두 모음)
 import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

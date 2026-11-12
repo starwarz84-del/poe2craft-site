@@ -63,8 +63,8 @@ graph11('sl-proj7-gloves-v2','Gloves_int','Sirenscale Gloves',80,
 #   → 1:05 보존된 턱뼈(툴팁) → 1:08 미공개 훼손(옵션 4개) → 1:14~1:17 신성한 오브 158 → 165% → 1:21 분열의 오브(툴팁) → 1:22 165% 분열 → 1:26~1:31 소멸로 분열 + 옵션 1개
 #   → 1:30~3:53 카오스 오브(창고 일반 카오스 578 → 510 → 433 → 307개) → 물리 피해 추가 1티어 → 4:34 좌측 찬미 + 완벽한 엑잘(공격 원소 피해 % — 빗나감)
 #   → 4:46 절사의 징조 + 상위 카오스 오브(창고 'II' 2 → 1개, 일반 307 그대로, 4:48 '절사의 징조 소모') → 번개 1티어 → 5:26 알두르의 숨결 → 5:33 냉기 1티어
-#   → 6:10 아스트리드의 창의성 → 7:00 고대 턱뼈 훼손(접미, 강령술 없음) → 8:20 공개 + 심연의 메아리(8:32 소모 메시지) → 빗나가면 우측 결정화 + 완벽한 가속의 에센스(9:12 맹공)
-#   → 우측 결정화 + 심연의 에센스(10:05 징표) → 징표 훼손 → 공개 … 14:50 투사체 +4 → 15:12 완벽한 엑잘(징조 없음) → 15:18 능력치 요구 35% 감소
+#   → 6:10 아스트리드의 창의성 → 7:00 고대 턱뼈 훼손(접미, 강령술 없음 — 인벤토리 초록 빛 턱뼈, 창고 흰 턱뼈 162개 그대로 6:41·7:59) → 8:20 공개 + 심연의 메아리(8:32 소모 메시지) → 빗나가면 우측 결정화 + 완벽한 가속의 에센스(9:12 맹공)
+#   → 우측 결정화 + 심연의 에센스(10:05 징표) → 징표 훼손 → 공개 … 13:20~14:00 고대 턱뼈가 떨어져 보존된 턱뼈(흰 턱뼈 10 → 6개) → 14:50 투사체 +4(보존된 턱뼈, 성공 회차) → 15:12 완벽한 엑잘(징조 없음) → 15:18 능력치 요구 35% 감소
 #   → 15:43~18:15 절사의 징조(+ 가장 낮은 옵션이 접두면 우측 말소의 징조, 16:40 소모 메시지) + 상위 카오스 오브(인벤토리 'II' 10·20개) → 치명타 확률 3티어(+3.78%)
 #   → 18:28 완벽한 엑잘 한 번(민첩, 그대로 둠) → 19:25 완벽한 철의 룬·신성한 오브·타락(망가짐) — 레시피에서 뺌.
 # 난이도 5(극한, difficulty.py) → 하이엔드만(정책 10장). 하이엔드 = 반복 목표 1티어(C17①). 마지막 접미 도박(C17②)은 넣지 않음: 치명타 확률 1티어(레벨 73)가 접미에서 가장 낮아
@@ -132,7 +132,7 @@ nodes=[b0,
      [{'if':{'has':'proj'},'to':'x1','res':'ok'},{'to':'l1',**F,**L_('빗나감 — 빛 없이 다시','Miss: lightless reroll')}],W6,want='proj',show=['proj'],omens=['Omen_of_Abyssal_Echoes']),   # 8:20 빗나감, 12:43 +3 넘김, 14:50 +4
  act('l1','main',[1,12],'essence','Perfect_Essence_of_Haste',K('공개된 접미를 지우고 맹공','The revealed suffix goes, Onslaught comes'),[st('s','맹공 획득 (제작 옵션)','Onslaught (crafted)')],K('에센스','Essence'),[{'to':'l2'}],W7,ess='ons',omens=['Omen_of_Dextral_Crystallisation']),   # 9:12
  act('l2','main',[1,13],'essence','Essence_of_the_Abyss',K('맹공을 지우고 심연의 군주의 징표','Onslaught goes for the Mark of the Abyssal Lord'),[st('s','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),[{'to':'l3'}],W8,ess='mk',mark=True,omens=['Omen_of_Dextral_Crystallisation']),   # 10:05
- act('l3','main',[1,14],'desecrate','Ancient_Jawbone',K('징표 자리 훼손','Desecrate the Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2',**L_('다시 공개','Reveal again')}],W5,fromMark=True),
+ act('l3','main',[1,14],'desecrate','Preserved_Jawbone',K('징표 자리 훼손','Desecrate the Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2',**L_('다시 공개','Reveal again')}],W5,fromMark=True),
  act('x1','main',[0,15],'exalt','Perfect_Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','랜덤 옵션 1개 (접두가 꽉 차 접미로)','One random line (prefixes are full)')],K('엑잘','Exalt'),
      [{'to':'x2'}],W9,skipIf={'not':{'sideLt':{'side':'s','n':2}}},skipTo='x2',skipHide=True),   # 15:12 툴팁, 15:18 능력치 요구 감소
  act('x2','main',[0,16],'chaos','Greater_Chaos_Orb',K('접미 치명타 확률 1티어','T1 critical hit chance suffix'),None,K('카오스','Chaos'),
@@ -142,7 +142,7 @@ nodes=[b0,
  act('x3','main',[0,17],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'ok'}],W11,skipIf={'full':'s'},skipTo='ok',skipHide=True),   # 18:28 툴팁, 18:38 민첩(영상은 그대로 둠)
  done([0,18])]
 graph11('diztoh-iceshot-bow-v2','Bows','Obliterator Bow',82,
-  'Diztoh 얼음 사격 활(29vO0mMUoME, 2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 특출난 절멸자 활 → 완벽한 진화·확장·소멸로 매직 물리 피해 % → 상위 마모의 에센스 → 보존된 턱뼈 훼손 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 카오스 오브(물리 피해 추가 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 절사의 징조 + 상위 카오스 오브) → 알두르의 숨결 → 아스트리드의 창의성 → 고대 턱뼈 → 공개(투사체 +4, 빗나가면 우측 결정화 + 완벽한 가속의 에센스 → 심연의 에센스 → 징표 훼손) → 완벽한 엑잘(접미 잡옵) → 절사(+ 우측 말소) + 상위 카오스 오브(치명타 확률) → 완벽한 엑잘. 극한 → 하이엔드만: 반복 목표 1티어, 마지막 접미는 영상처럼 랜덤. 신성한 오브·룬 교체·타락은 뺌.',
+  'Diztoh 얼음 사격 활(29vO0mMUoME, 2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 특출난 절멸자 활 → 완벽한 진화·확장·소멸로 매직 물리 피해 % → 상위 마모의 에센스 → 보존된 턱뼈 훼손 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 카오스 오브(물리 피해 추가 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 절사의 징조 + 상위 카오스 오브) → 알두르의 숨결 → 아스트리드의 창의성 → 고대 턱뼈 → 공개(투사체 +4, 빗나가면 우측 결정화 + 완벽한 가속의 에센스 → 심연의 에센스 → 보존된 턱뼈로 징표 훼손) → 완벽한 엑잘(접미 잡옵) → 절사(+ 우측 말소) + 상위 카오스 오브(치명타 확률) → 완벽한 엑잘. 극한 → 하이엔드만: 반복 목표 1티어, 마지막 접미는 영상처럼 랜덤. 신성한 오브·룬 교체·타락은 뺌.',
   {'t':{'kr':'반복 목표','en':'Loop target','values':TV({'1':('1티어','T1')})}},
   {'high':{'t':1}},
   {'high':K('원소·투사체 +4·치명타 확률 1티어, 마지막 접미 랜덤','T1 elemental, +4 projectiles, T1 crit chance, random last suffix')},tags,nodes,

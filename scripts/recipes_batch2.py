@@ -238,7 +238,7 @@ R.append({
  'start':{'rar':'normal','mods':[]},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'fr','kr':'물리 % 분열','en':'Fracture % phys'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'suf','kr':'투사체 +4 · 접미','en':'Projectile +4 and suffixes'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[
-  {'id':'w1','phase':'base','do':'base','cost':'base','ts':'0:00','note':K('아이템 레벨 82 절멸자 활(투사체 +4는 82부터).','An item level 82 Obliterator Bow (+4 projectiles needs 82).')},
+  {'id':'w1','phase':'base','do':'base','cost':'base','ts':'0:00','note':K('아이템 레벨 82 절멸자 활. 투사체 +4는 81, 물리 피해 % 1티어는 82부터','Item level 82 Obliterator Bow. +4 projectiles from 81, T1 % physical from 82')},
   {'id':'w2','phase':'fr','do':'transmute','cur':'Perfect_Orb_of_Transmutation','target':{'gi':bw_ppct,'tmax':2},'fail':{'goto':'self','via':ANNUL},'ts':'0:00','note':K('완벽한 진화의 오브 + 소멸의 오브로 물리 피해 % 2티어 이상.','Perfect Transmute and annul for tier 2+ % physical damage.')},
   {'id':'w3','phase':'fr','do':'augment','cur':'Perfect_Orb_of_Augmentation','target':{'junk':'s'},'ts':'0:00','note':K('완벽한 확장의 오브로 접미 하나.','Augment a suffix.')},
   {'id':'w4','phase':'fr','do':'essence','cur':'Greater_Essence_of_Abrasion','target':{'gi':bw_flatE},'ts':'0:45','note':K('상위 마모의 에센스로 희귀 + 물리 추가.','Greater Essence of Abrasion: rare plus flat physical.')},

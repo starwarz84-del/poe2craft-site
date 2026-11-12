@@ -1362,7 +1362,8 @@ function routeHTML(r, o, i, via){
     if(!rs.length) return '';
     if(rs.length===1 && rs[0].cls==='ok' && (rs[0].to==='done' ? i===r.nodes.length-2 : stepNo(r,rs[0].to)===i+2)) return '';
     rs.forEach(x=>{ const lab = x.lab ? esc(tx(x.lab).replace(/^[a-z]/,c=>c.toUpperCase())) : x.cls==='ok' ? L('성공','Success') : L('실패','Miss');
-      const sh = x.share!=null && x.share<0.995 && x.to!=='self' && !(x.cls==='ok' && !x.skip && oks.length===1) ? ` (${pct(x.share)})` : '';
+      const okSum=oks.reduce((t,y)=>t+(y.share||0),0), rel = x.cls==='ok' && !x.skip && oks.length>1 && okSum>0 && okSum<0.995;   /* 성공 갈래가 여럿이면 성공 중 비율(시도당 비율이 0.05%처럼 작게 보이던 것, 2026-11-12 활 9번) */
+      const sh = x.share!=null && x.share<0.995 && x.to!=='self' && !(x.cls==='ok' && !x.skip && oks.length===1) ? (rel ? ` (${L('성공의','of hits')} ${pct(x.share/okSum)})` : ` (${pct(x.share)})`) : '';
       const back = !['self','done','restart','state'].includes(x.to) && stepNo(r,x.to)<i+1, lostS = x.lost || (x.vo && back && x.alt);
       const lab2 = x.vo && back && x.alt && (!x.lab || x.plab) ? L('원하는 옵션이 지워지면','Wanted mod removed') : lab;
       if(lostS) out.push(chip('no', lab2+sh, L(`${dst(x.to,x)}으로`,dst(x.to,x)), (x.n?` <small>(${L('평균','avg')} ${fmt(x.n)}${L('회','×')})</small>`:'')));
@@ -1947,13 +1948,14 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
     if(n.kind==='side'){ const c=nodeCur(n); return `<div class="fcn k-task k-side" style="${pos}"><div class="fch"><b>${esc(tx(n.goal||n.label))}</b></div><div class="fcf"><div class="fc1"><span class="cn" title="${esc(c.title)}">${c.html}</span></div></div></div>`; }
     if(n.kind==='assume') return `<div class="fcn k-note ${t?'':'off'}" style="${pos}"><small>${L('별첨','Note')}</small><b>${esc(tx(n.label))}</b>${n.note?`<span>${esc(tx(n.note))}</span>`:''}</div>`;
     if(n.fold){ const F=n.fold;
-      const li=F.steps.map((x,i)=>{ const N=n0[x.node]||M.byId[x.node]||{}, t2=stAny(x.node), ids=[...new Set([...(N.kind==='cleanup'?['Orb_of_Annulment']:[]), N.cur, ...(N.omens||[])].filter(Boolean))], k=N.kind==='cleanup'?'Orb_of_Annulment':N.cur, v=t2 ? (t2.use?.[k] ?? (t2.visits-(t2.skips||0))) : null;
+      const li=F.steps.map((x,i)=>{ const N=n0[x.node]||M.byId[x.node]||{}, t2=stAny(x.node), ids=[...new Set([...(N.kind==='cleanup'?['Orb_of_Annulment']:[]), N.cur, ...(N.omens||[]), ...(N.kind==='cleanup' ? Object.keys(t2?.use||{}).filter(k=>/^Omen_of_(Sinistral|Dextral)_Annulment$/.test(k)) : [])].filter(Boolean))], k=N.kind==='cleanup'?'Orb_of_Annulment':N.cur, v=t2 ? (t2.use?.[k] ?? (t2.visits-(t2.skips||0))) : null;
         return `<li><span class="ft">${esc(tx(x))}</span><span class="fu" title="${esc(ids.map(id=>nm(cur(id))).join(' + '))}">${ids.map(id=>icon(id)).join('')}${v!=null?`<span class="dot">·</span>${L('평균','avg')} <b>${fmt(v)}</b>${L('개','')}`:''}</span></li>`; }).join('');
       return `<div class="fcn k-task k-fold ${t?'':'off'}" style="${pos}" title="${esc(tx(F))}">
       <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b>${esc(tx(F))}</b></div>
       ${F.goal?`<div class="fcw"><p><b class="sd">${L('목표','Goal')}</b> : ${esc(tx(F.goal))}</p></div>`:''}
       <ol class="fcfold">${li}</ol>${F.worst?`<div class="fcworst"><b>${L('최악의 경우','Worst case')}</b> : ${esc(tx(F.worst))}</div>`:''}</div>`; }
-    const c=nodeCur(n), tries=t ? (n.kind==='cleanup' ? t.visits : t.visits-(t.skips||0)) : 0;
+    const sideOm = n.kind==='cleanup' ? Object.keys(t?.use||{}).filter(k=>/^Omen_of_(Sinistral|Dextral)_Annulment$/.test(k) && !(n.omens||[]).includes(k)) : [];   /* 정리 상자의 좌측·우측 소멸의 징조(그래프 side, 시뮬 사용량에만 있음) — 2026-11-12 활 */
+    const c=nodeCur(sideOm.length ? {...n, omens:[...(n.omens||[]), ...sideOm]} : n), tries=t ? (n.kind==='cleanup' ? t.visits : t.visits-(t.skips||0)) : 0;
     const outs=M.E.filter(e=>e.a===n.id && !e.skip), okE=[...new Set((n.edges||[]).filter(x=>x.res==='ok' && (n.pAll || !x.dash)).map(x=>x.to))].map(to=>({a:n.id, b:to})), hasRes=outs.some(e=>e.res);
     /* 성공 % = 성공으로 표시된 선을 지난 횟수(선마다 센 값 edgesI) — 같은 상자로 가는 건너뜀·타협 선은 성공이 아님(2026-11-12). 옛 sim 파일은 도착 상자 기준 */
     const R2=res.nodes[n.id]?res:d.strategies.find(x=>x.res.nodes[n.id])?.res, EI=R2?.edgesI, byI=EI && Object.keys(EI).some(k=>k.startsWith(n.id+'#'));
