@@ -348,6 +348,7 @@ class Cond:
             else: a = (f'{s_[0]} 없음', f'no {s_[1]}', 'x') if m <= 1 else (f'{s_[0]} {m - 1}개 이하', f'≤{m - 1} {s_[1]}es', 'x')
         elif k == 'count':
             n_ = N(v.get('tag')); m = v.get('min')
+            if n_ and re.search(r' 1개$', n_[0]): n_ = (n_[0][:-3], re.sub(r'^(one|1) ', '', n_[1]))   # '저항 1개' 2개 → 저항 2개
             a = n_ and ((f'{n_[0]} {m}개 미만', f'fewer than {m} {n_[1]}', 'x') if neg else (f'{n_[0]} {m}개', f'{m}× {n_[1]}', 'has'))
         elif k == 'unrevSide':
             s_ = S(v); a = None if neg else (f'{s_[0]} 미공개 훼손', f'unrevealed {s_[1]}', 'x')
@@ -382,7 +383,10 @@ def _label(atoms, drop=()):
     for a in xs:
         if a[1] in seen: continue
         seen.append(a[1]); out.append(a)
+    fullS = {a[1].split(' ')[0] for a in out if a[1].endswith(' 꽉 참')}
+    out = [a for a in out if not (a[0][0] == 'sideLt' and a[1].split(' ')[0] in fullS)]   # '접미 꽉 참, 접미 3개 이하' → 꽉 참만
     out = out[:2]
+    if len(out) == 2 and len(out[0][1]) + len(out[1][1]) > 26: out = out[:1]   # 길면 첫 조건만
     return {'kr': ', '.join(a[1] for a in out), 'en': ', '.join(a[2] for a in out)}
 
 
@@ -429,11 +433,15 @@ def _routes(W, n, valid, G_=None, CD=None):
     walk(n, 1.0, None, [], [], 0, {n['id']})
     multi = {}
     for L in leaves:
-        if L['chain'] and L['to'] != 'self': multi.setdefault(L['first'][1][5], set()).add(L['to'])
+        if L['chain']: multi.setdefault(L['first'][1][5], set()).add(L['to'])
+    # 숨은 선(라우터)은 결과 표시가 없거나 확률 계산용 'ok'라서, 같은 상자로 가는 보이는 선의 결과(성공·실패)를 따름
+    vres = {}
+    for x in W.outs(n):
+        if not x[0].get('hide') and x[3]: vres.setdefault(x[4], x[3])
     ntot = sum(c for _, c in outs_of(n))
     out = []
     for L in leaves:
-        e0 = L['first'][1]; cls0 = e0[3]
+        e0 = L['first'][1]; cls0 = (vres.get(e0[4]) or e0[3]) if e0[0].get('hide') else e0[3]
         ch = L['chain']; post = ch[-1] if ch else None
         cls_post = post[1][3] if post else None
         lab_ch = next((y[1][2] for y in reversed(ch) if y[1][2]), None)
@@ -519,9 +527,11 @@ def _routes(W, n, valid, G_=None, CD=None):
                 r['lab'] = {'kr': pre[0] + lb['kr'], 'en': pre[1] + (lb['en'][:1].upper() + lb['en'][1:] if not pre[1] else lb['en'])}
             r['plab'] = False
     for r in rs:
-        if (r.get('lost') or r.get('_c')) and not r.get('lab'):
-            r['lab'] = r.get('_e0') or {'kr': '다른 옵션 지워짐', 'en': 'Another mod removed'}
-    if n.get('skipTo') and (t.get('skips') or 0) > 0.001 and ok_dest(dest(n['skipTo'])):
+        if r.get('lost') and not r.get('lab'): r['lab'] = {'kr': '다른 옵션이 지워지면', 'en': 'Another mod removed'}
+        elif r.get('_c') and not r.get('lab'):
+            if r.get('_e0') and r['to'] != 'self': r['lab'] = r['_e0']
+            r['alt'] = True; r['plab'] = True   # 지운 뒤 앞 단계로: 화면이 '원하는 옵션이 지워지면 → n번으로'
+    if n.get('skipTo') and (t.get('skips') or 0) > 0.001 and ok_dest(dest(n['skipTo'])) and t['skips'] / max(1e-9, t.get('visits') or 1) >= 0.005:
         rs.append({'cls': 'ok', 'lab': n.get('skipNote') or {'kr': '이미 있으면 건너뜀', 'en': 'Skip if already there'}, 'to': dest(n['skipTo']),
                    'share': t['skips'] / max(1e-9, t.get('visits') or 1), 'skip': True})
     # 순서: 성공(많은 것부터) → 실패(이 단계 반복 먼저) → 그 밖
