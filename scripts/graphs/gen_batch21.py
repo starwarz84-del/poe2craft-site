@@ -96,3 +96,9 @@ graph11('xeno-phys-crossbow-v2','Crossbows','Desolate Crossbow',82,
   FIN(('high',),lambda v:[{'tag':'pp'},{'tag':'hyb'},{'tag':'flat','des':True},{'tag':'crit','fr':True},{'tag':'proj'},{'tag':'as'}]),
   {'quality':20,'sockets':3},{'all':[{'has':'pp'},{'count':{'tag':'p3','min':2}},{'count':{'tag':'sg','min':2}}]},('high',))
 _g=json.load(open(f'{H}/xeno-phys-crossbow-v2.json')); _g['strategies'].append({'id':'high-settle','params':{'pT':1,'bw':'blk'}}); json.dump(_g,open(f'{H}/xeno-phys-crossbow-v2.json','w'),ensure_ascii=False,indent=1)
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_mazbro_sceptre.py'): _sp.run([_sy.executable, f'{H}/gen_mazbro_sceptre.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 이 파일의 결과를 덮어씀
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_xeno_crossbow.py'): _sp.run([_sy.executable, f'{H}/gen_xeno_crossbow.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 이 파일의 결과를 덮어씀

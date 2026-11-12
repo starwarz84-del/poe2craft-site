@@ -58,3 +58,6 @@ g22('banzino-mirror-staff-v2',c,'Voltaic Staff',82,
   FIN(VHB,lambda v:[{'tag':'spd','fr':True},{'tag':'light','tmax':1},{'tag':'xl','tmax':1},{'tag':'l7','tmax':1},{'tag':'cast','tmax':1},{'tag':'crit','tmax':1}] if v=='high' else
       [{'tag':'spd','fr':True},{'side':'p','label':K('번개 피해 % 또는 추가 번개 1~2티어 (훼손)','Lightning % or extra lightning T1–2 (desecrated)')},{'side':'p','random':True},{'tag':'l7','tmax':1},{'tag':'cast','tmax':2},{'side':'s','random':True}]),
   {'quality':20,'sockets':0},{'any':[{'all':[{'param':{'g':1}},{'has':'spd'},{'has':'l7'},{'has':'cast'},{'has':'crit'},TWO]},{'all':[{'param':{'g':0}},{'has':'spd'},{'has':'l7'},{'has':'cast'},ONE]}]},VHB)
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_banzino_mirror_staff.py'): _sp.run([_sy.executable, f'{H}/gen_banzino_mirror_staff.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 이 파일의 결과를 덮어씀

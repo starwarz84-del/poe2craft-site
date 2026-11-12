@@ -167,3 +167,6 @@ _p=f'{H}/diztoh-iceshot-bow-v2.json'; _g=json.load(open(_p))   # 분열 준비�
 _g['start']='b0'
 _g['groups']=[{'id':'prep','kr':'베이스템 완성','en':'Finished base','cols':[0,1]},{'id':'main','kr':'옵션 추가 작업','en':'Adding modifiers','cols':[0,1]}]
 json.dump(_g,open(_p,'w'),ensure_ascii=False,indent=1)
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_sl_proj7_gloves.py'): _sp.run([_sy.executable, f'{H}/gen_sl_proj7_gloves.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 이 파일의 결과를 덮어씀

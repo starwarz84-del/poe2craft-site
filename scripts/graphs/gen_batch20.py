@@ -127,3 +127,6 @@ if not _SKIP_SPELL6: graph11('absent-amulet-spell6-v2','Amulets','Absent Amulet'
   [{'id':'L1','nodes':['m1b','c1','c1x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['m2m','m2l','m2d','m2r','m2y'],'kr':'징표로 접두 다시','en':'Prefix again with the Mark'}],
   FIN(('high','bal'),lambda v:[{'tag':'spirit','fr':True},{'tag':'mana','tmax':1},{'tag':'spell'},{'tag':'cs','tmax':1,'des':True}] if v=='high' else [{'tag':'spirit','fr':True},{'side':'p','random':True},{'tag':'spell'},{'side':'s','random':True}]),
   {'quality':50,'sockets':0},{'all':[{'has':'spell'},{'any':[{'all':[{'has':'mana'},{'has':'cs'}]},{'all':[{'param':{'g':0}},{'full':'p'},{'full':'s'}]}]}]},('high','bal'))
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_mirror_bow_video.py'): _sp.run([_sy.executable, f'{H}/gen_mirror_bow_video.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 이 파일의 결과를 덮어씀
