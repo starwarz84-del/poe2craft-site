@@ -154,7 +154,7 @@ g = {
                        {'tag': 'spell', 'fr': True}, {'tag': 'csd', 'tmax': 1}, {'tag': 'cs', 'tmax': 1}]}],
  'finalItem': {'quality': 30, 'sockets': 2},
  'xsub': ['Genesis Tree Caster', 'Genesis Tree Minion'], 'xroll': True,
- 'basePrice': {'Chaos_Orb': 220000},
+ 'basePrice': {'Chaos_Orb': 220000, 'Hinekoras_Lock': 4},   # 마스터 11-13: 6행 노트대로 히네코라 4개도 베이스(W11이 빠뜨림)
  'nodes': nodes,
 }
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)

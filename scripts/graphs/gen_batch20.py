@@ -1,3 +1,4 @@
+# [W12 2026-11-13] absent-amulet-spell6-v2(부재 목걸이)는 gen_absent_amulet_spell6.py가 만듦 — 이 파일의 그 아이템 결과는 버림(아래 graph11 호출을 막음)
 # Batch 20 (사용자 2026-11-10: 남은 2가지) — 미러 활 · 주문 +6 부재 목걸이 → High-end (video) + Balance. Videos rechecked 2026-11-10 (transcripts).
 #   mirror-bow-video-v2 (반지깎는노인 J0LF3MRssh0), absent-amulet-spell6-v2 (반지깎는노인 Yi1u0LhJztI)
 import os, json
@@ -118,7 +119,8 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'s'}]}
  annul('c1x',[1,7],RA({'m1b':{'port':'right'}})),
  done([0,12])]
 nodes[0]['start']['quality']=48
-graph11('absent-amulet-spell6-v2','Amulets','Absent Amulet',82,
+_SKIP_SPELL6=True   # W12 2026-11-13: gen_absent_amulet_spell6.py가 대신 만듦
+if not _SKIP_SPELL6: graph11('absent-amulet-spell6-v2','Amulets','Absent Amulet',82,
   '반지깎는노인 주문 +6 부재 목걸이(Yi1u0LhJztI) — 정신력 +50 분열 + 잡옵(시전 퀄리티 48%) → 카오스 오브(모든 주문 스킬 +3) → 좌측 찬미 + 엑잘(접두 잡옵) → 균열의 에센스 → 히네코라의 머리카락 + 바알 촉진시키는 주입기로 50% → 좌측 강령술 + 보존된 빗장뼈(최대 퀄리티 자리) → 빛의 징조로 지우고 우측 강령술 + 보존된 빗장뼈(접미) → 좌측 찬미 + 상위 엑잘(마나 최대치, 빗나가면 좌측 소멸의 징조) → 시전 속도 공개(빛의 징조로 다시). 성유·유동체·신성한 오브·축성은 레시피 하이엔드에만.',
   {'pT':{'kr':'목표 티어','en':'Target tier','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'g':{'kr':'마지막 접두·접미','en':'Last prefix and suffix','values':TV({'1':('목표 옵션까지 반복','Repeat until the wanted line'),'0':('랜덤 옵션','Random line')})}},{'high':{'v':1,'pT':1,'g':1},'bal':{'v':2,'pT':2,'g':0}},
   {'high':K('영상: 마나 최대치·시전 속도 1티어','Video: T1 maximum Mana and cast speed'),'bal':K('주문 +3까지, 마지막 접두·접미는 랜덤 옵션 (훼손 공개·상위 엑잘 한 번)','Up to +3 spells, the last prefix and suffix random (one reveal, one Greater Exalt)')},tags,nodes,

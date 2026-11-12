@@ -60,6 +60,7 @@ graph11('grasping-mail-spell1-v2','Grasping_Mail_ring',"Runefather's Grasping Ma
       [{'tag':'nt','ess':True},{'tag':'rw','ess':True},{'side':'p','random':True},{'tag':'spell','fr':True},{'side':'s','label':K('주문 치명타 피해·시전 속도 1~2티어','T1–2 spell crit damage or cast speed')},{'side':'s','random':True}]),
   {'quality':30,'sockets':2},{'all':[{'has':'nt'},{'has':'rw'},{'any':[{'all':[{'count':{'tag':'suf','min':2}},{'has':'sd'}]},{'all':[{'param':{'g':0}},{'has':'suf'},{'full':'s'},{'full':'p'}]}]}]},('high','bal'),xsub=GEN,xroll=True)
 _g=json.load(open(f'{H}/grasping-mail-spell1-v2.json')); _g['basePrice']={'Chaos_Orb':220000}; json.dump(_g,open(f'{H}/grasping-mail-spell1-v2.json','w'),ensure_ascii=False,indent=1)   # 분열 베이스 = 영상의 카오스 약 22만 개(사용자 확정 2026-11-12: 비싸게 보여도 포함)
+import subprocess, sys as _sys; subprocess.run([_sys.executable, f'{H}/gen_grasping_mail_spell1.py'], check=True)   # 2026-11-13: 이 아이템은 gen_grasping_mail_spell1.py가 만듦 — 위 결과를 새 생성기로 덮어씀
 
 # ---------- 2. MazBro BiS 갑옷 (LUB59xlkNtk) ----------
 # 2026-11-12 W7 영상 전체 재대조(자막 0:00~34:33 + 화면 캡처 94장, 근거 scratchpad review/W7-bis-chest/timeline.md) + 새 플로우차트 기준(정책 11장 맨 위):

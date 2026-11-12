@@ -28,8 +28,8 @@ g = {
  'id': 'absent-amulet-spell6-v2', 'recipe': 'absent-amulet-spell6-v2', 'cls': 'Amulets', 'base': 'Absent Amulet', 'ilvl': 82,
  'note': ('2026-11-13 W12 영상 전체 화면 대조(0:00~42:38). 성공 회차(맹공 심장) 한 줄: 노멀 부재 목걸이(아이템 레벨 82, 2:40) → 제왕(옵션 1개, 2:30) → 균열의 에센스(3:35) → '
           '쇳소리 기폭제 40%·바알 촉진시키는 주입기 48%(7:25, 첫 목걸이는 44%에서 타락 5:20) → 카오스로 정신력 1티어(9:22) → 접미 잡옵 → 균열의 에센스(9:46) → 접미 잡옵(9:57) → '
-          '보존된 빗장뼈(10:13) → 히네코라의 머리카락으로 분열 미리 보기를 되풀이해 정신력 분열(12:00~19:00) → 분열 + 잡옵 1개(20:30) → 카오스 주문 +3(20:58) → 좌측 찬미 엑잘 접두 잡옵(21:51) → '
-          '좌측 결정화 + 균열의 에센스(21:55) → 히네코라 + 주입기 50%(25:30~26:00) → 좌측 강령술 + 보존된 빗장뼈로 최대 퀄리티 밀어내기(27:20) → 좌측 결정화 + 심연의 에센스로 징표(27:28) → '
+          '보존된 빗장뼈(10:13) → 정신력 분열(영상은 히네코라의 머리카락으로 미리 보기 12:00~19:00, 사용자 결정 11-13: 머리카락 없이 1/3, 실패하면 새 베이스) → 분열 + 잡옵 1개(20:30) → 카오스 주문 +3(20:58) → 좌측 찬미 엑잘 접두 잡옵(21:51) → '
+          '좌측 결정화 + 균열의 에센스(21:55) → 주입기 50%(25:30~26:00, 영상은 히네코라로 확인 — 사용자 결정 11-13: 주입기만) → 좌측 강령술 + 보존된 빗장뼈로 최대 퀄리티 밀어내기(27:20) → 좌측 결정화 + 심연의 에센스로 징표(27:28) → '
           '보존된 빗장뼈(28:08, 훼손이 접미로) → 메아리 공개 민첩(28:25, 자리 막기) → 상위 엑잘 접두 마나(29:15 정확도 빗나감) → 빛의 징조 → 좌측 결정화 + 심연 → 빗장뼈 → 공개를 세 바퀴(30:00 번개 저항, 30:56 카오스 저항, 31:17 화염 저항), '
           '상위 엑잘 마나 최대치 1티어(31:21) → 빛의 징조 + 고대 빗장뼈 + 메아리 공개 반복으로 시전 속도(33:50). 성유·완벽한 유동체·신성한 오브·축성(22:30~42:30)은 정책 14장대로 뺌. '
           '내부 결정: 징표 단계는 공용 시뮬이 징표 자리에 훼손을 두므로 접미 징표(mks)로 계산 — 영상은 징표가 접두에 보였지만 훼손은 매번 접미에 붙음(30:28·30:56·31:16 공개 선택지가 모두 접미 옵션). '
@@ -82,17 +82,16 @@ A(id='b9', kind='act', group='prep', pos=[0, 9], act='desecrate', cur='Preserved
   goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('접미 훼손 옵션 (미공개, 분열되지 않음)', 'Suffix desecration (unrevealed, cannot fracture)')], edges=[{'to': 'pf'}],
   item=[SPn, MQ, J('s'), UN('s')])
-A(id='pf', kind='act', group='prep', pos=[0, 10], act='fracture', cur='Fracturing_Orb', omens=['Hinekoras_Lock'], label=K('분열', 'Fracture'),
+# 사용자 결정 11-13: 히네코라의 머리카락 없이 분열(1/3), 정신력이 아닌 옵션이 분열되면 새 베이스로 처음부터 (영상은 머리카락으로 미리 보기, 10:30~19:00)
+A(id='pf', kind='act', group='prep', pos=[0, 10], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
   goal=K('분열 (공개된 옵션 3개 중 하나)', 'Fracture (one of the three revealed options)'),
-  showText=[K('히네코라의 머리카락으로 결과를 미리 보고 정신력일 때만 분열', 'Preview with Hinekora’s Lock, fracture only when Spirit comes up')],
-  ask=K('미리 본 결과가 정신력?', 'Preview shows Spirit?'),
-  edges=[{'if': {'fractured': 'spirit'}, 'to': 'b11', 'res': 'ok', 'label': K('정신력 분열', 'Spirit fractures')},
-         {'to': 'pfx', 'res': 'fail', 'label': K('다른 옵션 — 분열하지 않음', 'Another option: no fracture')}],
+  showText=[K('정신력이 분열되면 성공', 'Success when Spirit fractures')],
+  ask=K('어느 옵션이 분열?', 'Which option fractured?'),
+  edges=[{'if': {'fractured': 'spirit'}, 'to': 'b11', 'res': 'ok', 'label': K('정신력 분열', 'Spirit fractured')},
+         {'to': 'xj', 'res': 'fail', 'label': K('다른 옵션 분열', 'Another option fractured')}],
   item=[SP, MQ, J('s'), UN('s')])
-# 미리 보기에서 다른 옵션이 나오면 분열의 오브를 쓰지 않음: 시뮬에서는 방금 붙인 분열을 되돌림(swapFracture에 지금 없는 태그 'mana'를 줘서 분열 표시만 지움)
-A(id='pfx', kind='assume', group='prep', pos=[1, 10], swapFracture='mana', next='pf',
-  label=K('분열하지 않고 아이템을 바꿔 다시 미리 보기', 'Skip the fracture, change the item, preview again'),
-  note=K('아이템을 바꾸는 소모품은 계산에서 뺌', 'Currency used to change the item is not counted'))
+A(id='xj', kind='exit', group='prep', pos=[1, 10], simTo='h0', variant='fail', label=K('다른 옵션 분열 — 새 베이스', 'Another option fractured: new base'),
+  note=K('정신력이 아닌 옵션이 분열되면 새 베이스로 처음부터', 'Another option fractured: start over on a new base'))
 A(id='b11', kind='cleanup', group='prep', pos=[0, 11], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'ms'}], item=[SP, J('s')])
 # ---------------- 옵션 추가 작업 ----------------
@@ -105,9 +104,11 @@ A(id='q1', kind='act', group='main', pos=[0, 14.4], act='exalt', cur='Exalted_Or
 A(id='q2', kind='act', group='main', pos=[0, 15.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('접두 잡옵을 지우고 최대 퀄리티 +20%', 'The junk prefix goes for +20% Maximum Quality'),
   showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'q3'}], item=[SP, MQ, SL])
-A(id='q3', kind='act', group='main', pos=[0, 16.4], act='quality', cur='Vaal_Catalysing_Infuser', count=1, q=50, omens=['Hinekoras_Lock'],
+# 사용자 결정 11-13: 히네코라 없이 주입기만(영상 25:30은 머리카락으로 타락 여부를 먼저 봄). 타락 위험은 시뮬에 없음
+A(id='q3', kind='act', group='main', pos=[0, 16.4], act='quality', cur='Vaal_Catalysing_Infuser', count=1, q=50,
   label=K('퀄리티', 'Quality'), goal=K('시전 퀄리티 50%', 'Caster quality 50%'),
-  showText=[K('히네코라의 머리카락으로 타락하지 않는 것을 보고 주입기 1개', 'One Infuser after Hinekora’s Lock shows no corruption')],
+  showText=[K('바알 촉진시키는 주입기 1개 — 타락 위험', 'One Vaal Catalysing Infuser: risk of corruption')],
+  note=K('타락하면 이 목걸이는 끝 — 타락 위험은 비용 계산에 없음', 'A corruption ends this amulet; the risk is not in the cost'),
   edges=[{'to': 'm1'}], item=[SP, MQ, SL])
 A(id='m1', kind='act', group='main', pos=[0, 17.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_Sinistral_Necromancy'],
   label=K('훼손', 'Desecrate'), goal=K('최대 퀄리티를 훼손으로 밀어내기', 'Push out Maximum Quality with a desecration'),
@@ -155,7 +156,6 @@ A(id='ok', kind='done', group='main', pos=[0, 28.4], label=K('완성', 'Finished
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L0', 'nodes': ['pf', 'pfx'], 'kr': '분열 미리 보기', 'en': 'Fracture preview'},
  {'id': 'L1', 'nodes': ['m2', 'm2l', 'm2e', 'm2d', 'm2r'], 'kr': '접두 마나 최대치', 'en': 'Maximum Mana prefix', 'fold': True,
   'goal': K('접두 마나 최대치 1티어', 'T1 maximum Mana prefix'),
   'steps': [K('상위 엑잘로 접두 마나 최대치 (접미가 막혀 접두로)', 'Greater Exalt for the Mana prefix (the suffix is blocked)') | {'node': 'm2'},
