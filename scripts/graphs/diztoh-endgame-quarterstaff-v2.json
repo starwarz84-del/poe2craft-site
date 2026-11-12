@@ -906,7 +906,7 @@
      }
     }
    },
-   "skipTo": "s1",
+   "skipTo": "sz",
    "skipHide": true,
    "skipNote": {
     "kr": "접미 잡옵이 이미 있으면 건너뜀",
@@ -979,6 +979,67 @@
      "kr": "명중한 적 하나당 생명력 5 획득",
      "en": "Grants 5 Life per Enemy Hit",
      "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "sz",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접미가 꽉 차면 잡옵 하나 지우기",
+    "en": "Suffixes full: remove one junk suffix"
+   },
+   "skipIf": {
+    "sideLt": {
+     "side": "s",
+     "n": 3
+    }
+   },
+   "skipTo": "s1",
+   "skipHide": true,
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "sg"
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "d1",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "to": "s1",
+     "label": {
+      "kr": "우측 말소 + 카오스로",
+      "en": "On to Dextral Erasure + Chaos"
+     }
     }
    ]
   },
