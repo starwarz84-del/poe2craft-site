@@ -222,7 +222,10 @@ tags={'lvl':{'gi':78,'tmax':1},'add1':{'gi':72,'tmax':1},
       'phys':{'gi':13,'tmax':'$t'},'phys1':{'gi':13,'tmax':1},'phys2':{'gi':13,'tmax':2},
       'pdmg':{'gi':67,'tmax':'$t'},'pdmg1':{'gi':67,'tmax':1},'pdmg2':{'gi':67,'tmax':2},
       'pspd':{'gi':69,'tmax':'$t'},'pspd1':{'gi':69,'tmax':1},'pspd2':{'gi':69,'tmax':2},
-      'cdb':{'gi':54},'mk':{'gi':56}}
+      'cdb':{'gi':54},'mk':{'gi':56},
+      'pre':{'anyOf':['phys','pdmg','pspd'],'label':K('물리 피해 추가·투사체 피해·투사체 속도','Flat physical, projectile damage or projectile speed')}}   # 붙는 순서 예외(정책 11장, 사용자 확정 2026-11-12): 세 접두 중 먼저 뜬 것부터
+FIRST=lambda: [st(None,'물리 피해 추가·투사체 피해·투사체 속도 중 먼저 뜬 것','Whichever of flat physical, projectile damage or speed lands first')]
+REST=lambda: [st(None,'남은 옵션 중 먼저 뜬 것','Whichever of the rest lands first')]
 KOL=it('r','콜르의 사냥','Kolr’s Hunt',None,'r')
 LVm=itg('s',c,78,['lvl']); LV=itg('s',c,78,['lvl'],'f'); AD=itg('s',c,72,['add1'])
 CD=itg('s',c,54,['cdb'],'c',suffix=('발작의 에센스','Essence of Hysteria'))
@@ -253,23 +256,23 @@ nodes=[
  act('c2','main',[0,12],'exalt','Perfect_Exalted_Orb',K('발작의 에센스가 지울 접두 잡옵','A junk prefix for the essence to take'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'c3'}],[KOL,J('p'),LV,AD],omens=['Omen_of_Sinistral_Exaltation']),
  act('c3','main',[0,13],'essence','Essence_of_Hysteria',K('접두 잡옵을 지우고 접미 치명타 피해 보너스','The junk prefix goes, crit damage bonus suffix comes'),None,K('에센스','Essence'),[{'to':'c4'}],[KOL,LV,AD,CD],ess='cdb',omens=['Omen_of_Sinistral_Crystallisation']),
  dict(RUNE22('c4',[0,14],'e1',[KOL,AST,LV,AD,CD]),skipIf={'rune':'Astrid'},skipTo='ec',skipHide=True),   # 되돌아올 때(치명타 피해가 지워져 에센스를 다시 쓴 뒤)는 남은 접두 잡옵부터 소멸
- act('e1','main',[0,15],'exalt','Perfect_Exalted_Orb',K('접두 물리 피해 추가','Flat physical damage prefix'),None,K('엑잘','Exalt'),
-     [{'if':{'added':'phys'},'to':'e2','res':'ok'},{'to':'ec','res':'fail',**L_('빗나감 — 소멸의 오브','Miss: Orb of Annulment')}],[KOL,AST,PHY,LV,AD,CD],show=['phys'],omens=['Omen_of_Sinistral_Exaltation']),
- cleanup('ec',[1,15],['add1','cdb'],[{'lost':'add1','to':'kz',**L_('추가 발사가 지워짐 — 카오스부터','Additional projectile gone: back to Chaos')},
+ act('e1','main',[0,15],'exalt','Perfect_Exalted_Orb',K('접두 물리 피해 추가','Flat physical damage prefix'),FIRST(),K('엑잘','Exalt'),
+     [{'if':{'added':'pre'},'to':'e2','res':'ok'},{'to':'ec','res':'fail',**L_('빗나감 — 소멸의 오브','Miss: Orb of Annulment')}],[KOL,AST,PHY,LV,AD,CD],show=['phys'],omens=['Omen_of_Sinistral_Exaltation']),
+ cleanup('ec',[1,15],['add1','cdb','pre'],[{'lost':'add1','to':'kz',**L_('추가 발사가 지워짐 — 카오스부터','Additional projectile gone: back to Chaos')},
      {'lost':'cdb','to':'c3',**L_('치명타 피해가 지워짐 — 발작의 에센스부터','Crit damage gone: back to the Hysteria step')},     {'to':'e1',**L_('접두가 모두 지워짐 — 다시 엑잘','Prefixes cleared: exalt again')}],K('징조 없이 접두 옵션이 모두 지워질 때까지','No omen, until every prefix is gone')),
- act('e2','main',[0,16],'exalt','Perfect_Exalted_Orb',K('접두 투사체 피해','Projectile damage prefix'),None,K('엑잘','Exalt'),
-     [{'if':{'added':'pdmg'},'to':'d1','res':'ok',**L_('투사체 피해 성공','Projectile damage hit')},{'to':'e2m',**F}],[KOL,AST,PHY,PD,MK,LV,AD,CD],show=['pdmg'],omens=['Omen_of_Sinistral_Exaltation']),
+ act('e2','main',[0,16],'exalt','Perfect_Exalted_Orb',K('접두 투사체 피해','Projectile damage prefix'),REST(),K('엑잘','Exalt'),
+     [{'if':{'added':'pre'},'to':'d1','res':'ok',**L_('좋은 접두 성공','Good prefix hit')},{'to':'e2m',**F}],[KOL,AST,PHY,PD,MK,LV,AD,CD],show=['pdmg'],omens=['Omen_of_Sinistral_Exaltation']),
  act('e2b','main',[1,18],'desecrate','Preserved_Rib',K('징표 훼손 (지울 준비)','Desecrate the Mark (to clear it)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'e2l'}],[KOL,AST,PHY,J('p'),UN('p'),LV,AD,CD],fromMark=True),
  annul('e2l',[2,18],[{'to':'e2m'}]),
  act('e2m','main',[1,16],'essence','Essence_of_the_Abyss',K('잡옵 자리에 징표 (둘 중 하나)','The Mark takes the junk spot (one of two)'),[st('p','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),
-     [{'if':{'removed':'phys'},'to':'ec',**F,**L_('물리 피해가 지워짐 — 소멸의 오브부터','Flat physical gone: back to Annulment')},{'to':'e2e','res':'ok'}],[KOL,AST,PHY,MK,LV,AD,CD],ess='mk',mark=True,omens=['Omen_of_Sinistral_Crystallisation']),
- act('e2e','main',[1,17],'exalt','Perfect_Exalted_Orb',K('징표를 둔 채 접두 투사체 피해','Projectile damage prefix with the Mark kept'),None,K('엑잘','Exalt'),
-     [{'if':{'added':'pdmg'},'to':'d1','res':'ok'},{'to':'e2b',**F}],[KOL,AST,PHY,PD,MK,LV,AD,CD],show=['pdmg'],omens=['Omen_of_Sinistral_Exaltation']),
+     [{'if':{'not':{'has':'pre'}},'to':'ec',**F,**L_('좋은 접두가 지워짐 — 소멸의 오브부터','Good prefix gone: back to Annulment')},{'to':'e2e','res':'ok'}],[KOL,AST,PHY,MK,LV,AD,CD],ess='mk',mark=True,omens=['Omen_of_Sinistral_Crystallisation']),
+ act('e2e','main',[1,17],'exalt','Perfect_Exalted_Orb',K('징표를 둔 채 접두 투사체 피해','Projectile damage prefix with the Mark kept'),REST(),K('엑잘','Exalt'),
+     [{'if':{'added':'pre'},'to':'d1','res':'ok'},{'to':'e2b',**F}],[KOL,AST,PHY,PD,MK,LV,AD,CD],show=['pdmg'],omens=['Omen_of_Sinistral_Exaltation']),
  act('d1','main',[0,18],'desecrate','Ancient_Rib',K('징표에 훼손 (한 티어 높게)','Desecrate the Mark (one tier higher)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],[KOL,AST,PHY,PD,UN('p'),LV,AD,CD],
      fromMark=True,skipIf={'not':{'has':'mk'}},skipTo='d1n',skipLabel=K('징표가 없으면','No Mark'),skipNote=K('징표가 없으면 빈 접두에 훼손','No Mark: desecrate the empty prefix')),
  act('d1n','main',[1,18],'desecrate','Ancient_Rib',K('빈 접두에 훼손','Desecrate the empty prefix'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],[KOL,AST,PHY,PD,UN('p'),LV,AD,CD]),
- act('d2','main',[0,19],'reveal',None,K('접두 투사체 속도','Projectile speed prefix'),None,K('공개','Reveal'),
-     [{'if':{'added':'pspd'},'to':'ok','res':'ok'},{'to':'d2x','res':'fail'}],[KOL,AST,PHY,PD,PS,LV,AD,CD],want='pspd',show=['pspd'],omens=['Omen_of_Abyssal_Echoes']),
+ act('d2','main',[0,19],'reveal',None,K('접두 투사체 속도','Projectile speed prefix'),REST(),K('공개','Reveal'),
+     [{'if':{'added':'pre'},'to':'ok','res':'ok'},{'to':'d2x','res':'fail'}],[KOL,AST,PHY,PD,PS,LV,AD,CD],want='pre',show=['pspd'],omens=['Omen_of_Abyssal_Echoes']),
  annul('d2x',[1,19],[{'to':'d1n',**L_('다시 훼손','Desecrate again')}]),
  done([0,21])]
 g22('sihan-proj-gloves-v2',c,'Massive Mitts',80,
@@ -279,13 +282,13 @@ g22('sihan-proj-gloves-v2',c,'Massive Mitts',80,
   tags,nodes,[{'id':'L1','nodes':['e2','e2m','e2e','e2b','e2l'],'kr':'접두 투사체 피해','en':'Projectile damage prefix',
     'fold':True,'goal':K('접두 투사체 피해 1티어','T1 projectile damage prefix'),
     'goalBy':{'high':K('접두 투사체 피해 1티어','T1 projectile damage prefix'),'bal':K('접두 투사체 피해 1~2티어','T1–2 projectile damage prefix')},
-    'steps':[{**K('완벽한 엑잘 + 좌측 찬미로 접두 투사체 피해','Perfect Exalt + Sinistral Exaltation for projectile damage'),'node':'e2'},
+    'steps':[{**K('완벽한 엑잘 + 좌측 찬미로 남은 좋은 접두 중 먼저 뜬 것','Perfect Exalt + Sinistral Exaltation: whichever good prefix lands first'),'node':'e2'},
              {**K('빗나가면 좌측 결정화 + 심연의 에센스로 잡옵 자리에 징표','Miss: Sinistral Crystallisation + Essence of the Abyss puts the Mark on the junk, one of two'),'node':'e2m'},
              {**K('징표를 둔 채 완벽한 엑잘 + 좌측 찬미','Perfect Exalt + Sinistral Exaltation with the Mark kept'),'node':'e2e'},
              {**K('빗나가면 징표에 보존된 갈비뼈','Miss: Preserved Rib on the Mark'),'node':'e2b'},
              {**K('빛의 징조 + 소멸의 오브로 훼손 옵션을 지우고 2번부터','Omen of Light + Annulment clears it, back to step 2'),'node':'e2l'}],
-    'worst':{**K('물리 피해가 지워지면 소멸의 오브 단계부터','Flat physical gone: back to the Annulment step'),'to':'ec'},
-    'item':[KOL,AST,PHY,PD,MK,LV,AD,CD]},
+    'worst':{**K('좋은 접두가 지워지면 소멸의 오브 단계부터','Good prefix gone: back to the Annulment step'),'to':'ec'},
+    'item':[KOL,AST,PHY,PD,LV,AD,CD]},
    {'id':'L2','nodes':['d1','d1n','d2','d2x'],'kr':'훼손 공개','en':'Reveal'}],
   FIN(VHB,lambda v:[{'tag':'phys1' if v=='high' else 'phys2'},{'tag':'pdmg1' if v=='high' else 'pdmg2'},{'tag':'pspd1' if v=='high' else 'pspd2','des':True},{'tag':'lvl','fr':True},{'tag':'add1'},{'tag':'cdb','ess':True}]),
-  {'quality':20,'sockets':2},{'all':[{'has':'lvl'},{'has':'add1'},{'has':'cdb'},{'has':'phys'},{'has':'pdmg'},{'has':'pspd'}]},VHB,xsub=["Kolr's Hunt"],xroll=True)
+  {'quality':20,'sockets':2},{'all':[{'has':'lvl'},{'has':'add1'},{'has':'cdb'},{'count':{'tag':'pre','min':3}}]},VHB,xsub=["Kolr's Hunt"],xroll=True)
