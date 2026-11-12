@@ -42,7 +42,7 @@ def _cond_tags(c, out):
     if isinstance(c, dict):
         for k, v in c.items():
             if k == 'not': continue
-            if k in ('added', 'has') and isinstance(v, str): out.append(v)
+            if k in ('added', 'has', 'fractured') and isinstance(v, str): out.append(v)
             elif k in ('added', 'has') and isinstance(v, dict) and isinstance(v.get('tag'), str): out.append(v['tag'])
             elif k == 'count' and isinstance(v, dict) and isinstance(v.get('tag'), str): out.append(v['tag'])
             else: _cond_tags(v, out)
@@ -168,6 +168,11 @@ def _target(G_, n, prev, cur, last_bone):
         else:
             sd = _side_of_omens(om, 'Annulment') or (gone[0].get('s') if gone and gone[0].get('s') in ('p', 's') else None) or 'any'
             t = {'removeJunk': sd}
+    elif act == 'fracture':   # 분열 목표 = 이 단계 뒤 아이템 칸에서 새로 분열된 줄(없으면 성공 선 조건의 태그) — 준비 단계를 레시피에 넣으며 추가(2026-11-12)
+        fl = [l for l in cur if l.get('m') == 'f' and l.get('tags')]
+        nf = [l for l in fl if not any(_key(x) == _key(l) for x in prev)] or fl
+        sp = (G_.spec(nf[0]['tags']) if nf else None) or (G_.spec(okc) if okc else None)
+        if sp: t = dict(sp)
     elif act == 'quality':
         t = {'quality': sn.get('q') or 20}
     elif act == 'rune':
@@ -403,19 +408,33 @@ def read_recipe(r, sim, src, tiers):
     nodes = W.nodes
     base = next((n for n in nodes if n.get('kind') == 'base'), None)
     mark = next((n for n in nodes if n.get('kind') == 'mark'), None)
-    work = [n for n in nodes if n.get('kind') in ('act', 'cleanup') and n.get('group') != 'prep' and W.seen(n['id']) and not W.via(n['id'])]
+    # 준비 구역에 작업 상자가 있는 그래프(노멀 베이스부터 분열까지 그림, 2026-11-12)는 그 단계도 레시피에 넣음 — 시뮬 합계가 이미 준비 비용을 셈
+    own_prep = has_prep(sim)
+    work = [n for n in nodes if n.get('kind') in ('act', 'cleanup') and (own_prep or n.get('group') != 'prep') and W.seen(n['id']) and not W.via(n['id'])]
     main = sorted([n for n in work if n['pos'][0] == 0], key=lambda n: n['pos'][1])
     if not main: return None
     side = [n for n in work if n['pos'][0] != 0]
     parent = {}
+    def flow(a, sid):
+        """a에서 sid로 가는 시뮬 통과 수(지우기 상자를 거치는 것 포함), 선이 있으면 최소 1e-9"""
+        outs = W.outs(a); f = 0; hit = False; vis = False
+        for x in outs:
+            if x[1] == sid: hit = True; vis = vis or not x[0].get('hide'); f += W.ec(a['id'], x, outs)
+            elif W.via(x[1]):
+                V = W.by[x[1]]; vo = W.outs(V); vt = sum(W.ec(V['id'], y, vo) for y in vo) or 1
+                for y in vo:
+                    if y[1] == sid: hit = True; vis = vis or not (x[0].get('hide') or y[0].get('hide')); f += W.ec(a['id'], x, outs) * W.ec(V['id'], y, vo) / vt
+        return (1 if vis else 0, f + 1e-9) if hit else 0
     for s in side:
-        for a in sorted(work, key=lambda n: (n['pos'][1], n['pos'][0])):
-            if a is s: continue
-            dests = set()
-            for x in W.outs(a):
-                dests.add(x[1])
-                if W.via(x[1]): dests |= {y[1] for y in W.outs(W.by[x[1]])}
-            if s['id'] in dests: parent[s['id']] = a['id']; break
+        # 옆 단계의 부모 = 플로우차트에 그린 선(숨은 선 아님)으로 그 상자에 들어가는 작업 상자, 여럿이면 시뮬 통과 수가 많은 것 — 숨은 선 하나로 엉뚱한 단계 밑에 붙지 않게(2026-11-12)
+        best = None; ks = (s['pos'][1], s['pos'][0])
+        for early in (True, False):   # 위·왼쪽 상자 중에서 먼저 찾고(순서가 거꾸로 되지 않게), 없을 때만 나머지
+            for a in sorted(work, key=lambda n: (n['pos'][1], n['pos'][0])):
+                if a is s or (early and (a['pos'][1], a['pos'][0]) >= ks): continue
+                f = flow(a, s['id'])
+                if f and (best is None or f[0] > best[0][0] or (f[0] == best[0][0] and f[1] > best[0][1] * 1.000001)): best = (f, a['id'])
+            if best: break
+        if best: parent[s['id']] = best[1]
     order = []; placed = set()
     def put(n):
         if n['id'] in placed: return
@@ -437,7 +456,8 @@ def read_recipe(r, sim, src, tiers):
             if ob.get(k): b0[k] = ob[k]
     out = [b0]
     phases = [{'id': 'base', 'kr': '베이스', 'en': 'Base'}]
-    prev = (mark or base or {}).get('item') or []
+    prev = ((base if own_prep else mark or base) or {}).get('item') or []
+    groups = {x['id']: x for x in sim['graph'].get('groups') or []}
     last_bone = None; cur_ph = None; ph_of = {}
     for n in order:
         cur = n.get('item') or prev
@@ -456,20 +476,31 @@ def read_recipe(r, sim, src, tiers):
         back = max([x for x in o['routes'] if x['cls'] == 'no' and x['to'] not in ('done', 'self', 'restart', 'state')], key=lambda x: x.get('share') or 0, default=None)
         back = back and back['to']
         if back: o['fail'] = {'goto': back}
-        if parent.get(n['id']) and n['pos'][0] != 0: o['fallbackFor'] = parent[n['id']]
+        if parent.get(n['id']) and n['pos'][0] != 0:
+            pa = parent[n['id']]; po = next((x for x in out if x['id'] == pa), None)
+            into = [x for x in (po or {}).get('routes') or [] if x.get('to') == n['id'] and not x.get('skip')]
+            if po and po.get('fallbackFor') and into and all(x['cls'] == 'ok' for x in into):
+                o['fallbackFor'] = po['fallbackFor']; o['chain'] = pa   # 옆 열 단계가 이어지는 것(앞 단계 성공 다음) — 앞 단계의 실패 묶음이 아님
+                if po.get('alt'): o['alt'] = po['alt']
+            else:
+                o['fallbackFor'] = pa
+                if into and all(x['cls'] == 'ok' for x in into):   # 실패가 아닌 다른 결과로 가는 옆 단계(예: 물리 피해 감소 없음 → 다른 공개)
+                    o['alt'] = {'kr': (into[0].get('lab') or {}).get('kr') or '', 'en': (into[0].get('lab') or {}).get('en') or '', 'share': round(sum(x.get('share') or 0 for x in into), 5)}
         o['fst'] = _state(G_, cur, final_tags)
         if n.get('goal') or n.get('label'): o['goal'] = n.get('goal') or n.get('label')
         if n.get('target') and isinstance(n['target'], dict) and 'kr' in n['target']: o['fcTarget'] = n['target']
         gn = _grade_note(sim, src, n['id'], tiers)
         if gn: o['grade'] = gn
         o.update(keep(n['id']))
-        if o.get('fallbackFor'): o['phase'] = ph_of[o['fallbackFor']]
+        if o.get('fallbackFor') and o['fallbackFor'] in ph_of: o['phase'] = ph_of[o['fallbackFor']]
         else:
+            if o.get('fallbackFor'): o.pop('fallbackFor'); o.pop('chain', None); o.pop('alt', None)   # 부모가 아직 안 나온 옆 단계: 따로 단계로
             L = loop_of(n['id'])
-            key = ('L', L['id']) if L else ('g', json.dumps(n.get('goal') or n.get('label'), ensure_ascii=False))
+            gp = own_prep and n.get('group') == 'prep'
+            key = ('G', 'prep') if gp else ('L', L['id']) if L else ('g', json.dumps(n.get('goal') or n.get('label'), ensure_ascii=False))
             if key != cur_ph:
                 cur_ph = key
-                tl = L or n.get('goal') or n.get('label') or {'kr': '', 'en': ''}
+                tl = (groups.get('prep') or {'kr': '베이스 준비', 'en': 'Base preparation'}) if gp else L or n.get('goal') or n.get('label') or {'kr': '', 'en': ''}
                 phases.append({'id': f'f{len(phases)}', 'kr': tl['kr'], 'en': tl['en']})
             o['phase'] = phases[-1]['id']
         ph_of[n['id']] = o['phase']
@@ -483,10 +514,23 @@ def read_recipe(r, sim, src, tiers):
             'fcRead': {k: res.get(k) for k in ('mean', 'median', 'p90', 'bases', 'baseDiv', 'use', 'useDiv')} | {'version': V['id']}}
 
 
+def has_prep(sim):
+    """준비 구역(group prep)에 작업 상자(act·cleanup)가 있는 그래프 — 노멀 베이스부터 준비 과정을 그림"""
+    return any(n.get('group') == 'prep' and n.get('kind') in ('act', 'cleanup') for n in (sim.get('graph') or sim).get('nodes') or [])
+
+
 def start_of(r, sim, src, params=None):
     """시작 아이템 = 플로우차트 베이스 상자의 아이템(분열·잡옵·미공개 훼손)"""
     st = copy.deepcopy(r.get('start') or {})
     s0 = next((n for n in (src or {}).get('nodes') or [] if n.get('kind') == 'base'), None)
+    if has_prep(sim):   # 준비 과정을 그린 그래프: 레시피도 그 베이스(노멀)부터 — 옛 분열 시작 상태를 쓰지 않음
+        b = (s0 or {}).get('start') or {}
+        st = {'rar': b.get('rar') or 'normal', 'mods': []}
+        q = b.get('quality') if b.get('quality') is not None else None
+        if q: st['quality'] = q
+        rn = b.get('runes') or (r.get('start') or {}).get('runes')
+        if rn: st['runes'] = copy.deepcopy(rn)
+        if not b.get('mods'): return st
     if not s0 or not s0.get('start'): return st
     G_ = G(sim, src, params or {})
     mods = []

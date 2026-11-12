@@ -14,6 +14,7 @@ BASEPRICE = {
   'mazbro-caster-amulet': None,
   'mazbro-bis-chest': None,
   'mazbro-proj-gloves': None,
+  'mazbro-proj-gloves-v2': 12, 'mazbro-proj-gloves-v2-bal': 12,   # 영상 2:50 화면 노트 '24 Gloves x 12 Divs' — 특출난 검은강철 건틀릿 장당 12디바인(플로우차트는 노멀 베이스부터 준비)
   'diztoh-twister-spear': None,
   'diztoh-iceshot-bow': None,
   'diztoh-budget-mace': None,

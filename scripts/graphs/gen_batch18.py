@@ -64,7 +64,8 @@ graph11('sl-proj7-gloves-v2','Gloves_int','Sirenscale Gloves',80,
 #   → 1:30~3:52 카오스 오브 반복(물리 피해 추가 1티어) → 4:34 좌측 찬미 + 완벽한 엑잘(공격 원소 피해 %) → 4:44 상위 카오스 오브 + 절사의 징조(말소 없음, 4:48 채팅) → 번개 1티어
 #   → 5:05 알두르의 숨결(번개 → 냉기) → 6:05 아스트리드의 창의성 → 7:01 고대 턱뼈(강령술 없음 — 접두가 꽉 차 있음) → 8:20 심연의 메아리 공개
 #   → 빗나가면 우측 결정화 + 완벽한 가속의 에센스(9:12) → 우측 결정화 + 심연의 에센스(12:38 징표) → 징표 훼손 → 공개 … 15:05 투사체 +4
-#   → 15:12 완벽한 엑잘(징조 없음, 능력치 요구 감소) → 15:30~18:18 절사의 징조(+ 우측 말소) + 카오스 오브로 치명타 확률(3티어 +3.78%)
+#   → 15:12 완벽한 엑잘(징조 없음, 능력치 요구 감소) → 15:30~18:18 절사의 징조(+ 우측 말소) + 상위 카오스 오브로 치명타 확률(3티어 +3.78%)
+#     (15:43 인벤토리 상위 카오스 오브 'II' 10+20개, 18:06 12개, 창고 카오스 오브 307개는 5:30과 18:32에 같음 — 일반 카오스는 안 씀)
 #   → 18:30 완벽한 엑잘 한 번(민첩, 그대로 둠) → 19:00 물리 룬·신성·타락(벽돌) — 레시피에서 뺌.
 # 난이도 5(극한) → 하이엔드만(정책 10장). 하이엔드 = 영상 흐름 + C17(반복 목표 1티어, 마지막 접미가 잡옵이면 공격 속도·치명타 피해·추가 화살 1티어로 바꾸는 도박).
 tags={'pp':{'gi':7,'tmax':2},'ppm':{'gi':7,'tmax':2},'fle':{'gi':2},'fl':{'gi':2,'tmax':1},'co':{'gi':4,'tmax':'$pT'},'li':{'gi':6,'tmax':'$pT'},'fi':{'gi':3,'tmax':'$pT'},'hy':{'gi':8,'tmax':'$pT'},
@@ -102,7 +103,7 @@ nodes=[b0,
  act('m1','prep',[0,1],'transmute','Perfect_Orb_of_Transmutation',K('매직 첫 옵션','First magic option'),None,K('진화','Transmute'),
      [{'if':{'all':[{'has':'ppm'},{'full':'s'}]},'to':'e0','res':'ok'},{'if':{'has':'ppm'},'to':'m3','res':'ok'},{'if':{'full':'p'},'to':'m1x','res':'fail'},{'to':'m2','res':'fail'}],M0,show=['ppm']),
  act('m2','prep',[0,2],'augment','Perfect_Orb_of_Augmentation',K('매직 접두 옵션','Magic prefix option'),None,K('확장','Augment'),
-     [{'if':{'all':[{'has':'ppm'},{'full':'s'}]},'to':'e0','res':'ok'},{'if':{'has':'ppm'},'to':'m3','res':'ok'},{'if':{'full':'p'},'to':'m1x','res':'fail'},{'to':'m2','res':'fail'}],M1,show=['ppm']),
+     [{'if':{'all':[{'has':'ppm'},{'full':'s'}]},'to':'e0','res':'ok'},{'if':{'has':'ppm'},'to':'m3','res':'ok'},{'if':{'full':'p'},'to':'m1x','res':'fail'},{'to':'m2','res':'fail'}],M0,show=['ppm']),
  act('m3','prep',[0,3],'augment','Perfect_Orb_of_Augmentation',K('매직 접미 옵션','Magic suffix option'),[st('s','랜덤 옵션 1개','One random line')],K('확장','Augment'),[{'to':'e0'}],M1),
  {'id':'m1x','kind':'act','group':'prep','pos':[1,2],'act':'annul','cur':'Orb_of_Annulment','label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),
   'target':K('빗나간 접두 지우기','Remove the missed prefix'),'edges':[{'if':{'all':[{'full':'p'},{'not':{'has':'ppm'}}]},'to':'m1x'},{'to':'m2'}]},
@@ -130,10 +131,10 @@ nodes=[b0,
  act('l2','main',[1,14],'essence','Essence_of_the_Abyss',K('맹공을 지우고 심연의 군주의 징표','Onslaught goes for the Mark of the Abyssal Lord'),[st('s','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),RS({'l3':{}}),W8,ess='mk',mark=True,omens=['Omen_of_Dextral_Crystallisation']),
  act('l3','main',[1,15],'desecrate','Ancient_Jawbone',K('접미 징표 훼손','Desecrate the suffix Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RS({'d2':{'port':'right'}}),W5,fromMark=True),
  act('x1','main',[0,16],'exalt','Perfect_Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'if':{'not':{'whittleSafe':{'tag':'keepS','side':'s'}}},'to':'x2x',**F},{'to':'x2','res':'ok'}],W9),   # 접두가 꽉 차 있어 엑잘은 접미로만
- act('x2','main',[0,17.4],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),RS({'x3':'ok','x2':F,'x2x':F}),W10,show=['cc'],trim={'side':'s','keep':'keepS'}),
+ act('x2','main',[0,17.4],'chaos','Greater_Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),RS({'x3':'ok','x2':F,'x2x':F}),W10,show=['cc'],trim={'side':'s','keep':'keepS'}),
  annul('x2x',[1,17.4],RS({'x2':{'res':'ok'},'x1':{'res':'ok'},'l1':{'res':'fail'}}),omens=('Omen_of_Dextral_Annulment',),target=K('접미 하나 지우기 (잡옵이 가장 낮은 레벨이 아닐 때)','Remove one suffix (when the junk is not the lowest level)')),
  act('x3','main',[0,18.8],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),RS({'ok':'ok','x3w':F,'x2x':F}),W11,show=['as','cd','sur']),
- act('x3w','main',[1,18.8],'chaos','Chaos_Orb',K('마지막 접미를 다시 (가장 낮은 레벨일 때)','Reroll the last suffix (while it is the lowest level)'),None,K('카오스','Chaos'),RS({'ok':'ok','x3w':F,'x2x':F}),W11,show=['as','cd','sur'],trim={'side':'s','keep':'keepS3'}),
+ act('x3w','main',[1,18.8],'chaos','Greater_Chaos_Orb',K('마지막 접미를 다시 (가장 낮은 레벨일 때)','Reroll the last suffix (while it is the lowest level)'),None,K('카오스','Chaos'),RS({'ok':'ok','x3w':F,'x2x':F}),W11,show=['as','cd','sur'],trim={'side':'s','keep':'keepS3'}),
  done([0,19.8])]
 graph11('diztoh-iceshot-bow-v2','Bows','Obliterator Bow',82,
   'Diztoh 얼음 사격 활(29vO0mMUoME) — 매직 물리 피해 % 2티어 → 상위 마모의 에센스 → 보존된 턱뼈 훼손 → 분열(셋 중 하나) → 소멸의 오브 → 카오스 오브(물리 피해 추가 1티어) → 좌측 찬미 + 완벽한 엑잘(냉기·번개·화염·복합, 빗나가면 절사의 징조 + 상위 카오스 오브) → 번개·화염이면 알두르의 숨결 → 아스트리드의 창의성 → 고대 턱뼈 → 공개(투사체 +4, 빗나가면 우측 결정화 + 완벽한 가속의 에센스 → 심연의 에센스 → 징표 훼손) → 완벽한 엑잘(접미 잡옵) → 절사(+ 우측 말소) + 카오스 오브(치명타 확률) → 완벽한 엑잘. 극한 → 하이엔드만: 원소·투사체 +4·치명타 확률 1티어, 마지막 접미는 공격 속도·치명타 피해·추가 화살 1티어로 바꾸는 도박.',

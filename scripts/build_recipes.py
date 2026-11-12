@@ -516,17 +516,26 @@ FRSTART = {
  'mazbro-bis-chest': _fb(('c2','c6'), [{'gi':15,'tmax':1,'fr':True}], '정신력 분열(나머지 옵션은 정리한 상태).', 'Fractured Spirit, everything else cleared.'),
  'mazbro-proj-gloves': _fb(('g2','g7'), [{'gi':81,'fr':True},{'junk':'p'}], '콜르의 사냥을 장착한 상태로 모든 투사체 스킬 레벨 +2 분열 + 잡옵 1개.', "Kolr's Hunt socketed: fractured +2 projectile skills plus one junk line.", 30, [KOLR_]),
  'diztoh-iceshot-bow': _fb(('w2','w6'), [{'gi':7,'tmax':2,'tmin':2,'fr':True},{'junk':'p'}], '물리 피해 % 2티어 분열 + 잡옵 1개.', 'Fractured T2 % physical damage plus one junk line.'),   # 영상 완성품 = 165%(2티어) 분열
- 'diztoh-crit-helmet-v2': _fb(('h2','h7'), [{'gi':9,'tmax':1,'fr':True},{'junk':'s'}], '퀄리티 20%. 회피 및 에너지 보호막 % 1티어 분열 + 잡옵 1개.', 'Quality 20%. Fractured T1 % evasion and energy shield plus one junk line.', 20),
- 'diztoh-crit-helmet-v2-bal': _fb(('h2','h7'), [{'gi':9,'tmax':1,'fr':True},{'junk':'s'}], '퀄리티 20%. 회피 및 에너지 보호막 % 1티어 분열 + 잡옵 1개.', 'Quality 20%. Fractured T1 % evasion and energy shield plus one junk line.', 20),
- 'diztoh-crit-helmet-v2-ess': _fb(('h2','h7'), [{'gi':9,'tmax':1,'fr':True},{'junk':'s'}], '퀄리티 20%. 회피 및 에너지 보호막 % 1티어 분열 + 잡옵 1개.', 'Quality 20%. Fractured T1 % evasion and energy shield plus one junk line.', 20),
+ 'diztoh-crit-helmet-v2': _fb(('h2','h7'), [{'gi':8,'tmax':1,'fr':True},{'junk':'s'}], '퀄리티 20%. 회피·에너지 보호막 최대치 1티어 분열(회피 +(79—94), 에너지 보호막 최대치 +(26—29)) + 잡옵 1개.', 'Quality 20%. Fractured T1 flat evasion and energy shield (+(79—94) evasion, +(26—29) maximum energy shield) plus one junk line.', 20),
+ 'diztoh-crit-helmet-v2-bal': _fb(('h2','h7'), [{'gi':8,'tmax':1,'fr':True},{'junk':'s'}], '퀄리티 20%. 회피·에너지 보호막 최대치 1티어 분열(회피 +(79—94), 에너지 보호막 최대치 +(26—29)) + 잡옵 1개.', 'Quality 20%. Fractured T1 flat evasion and energy shield (+(79—94) evasion, +(26—29) maximum energy shield) plus one junk line.', 20),
+ 'diztoh-crit-helmet-v2-ess': _fb(('h2','h7'), [{'gi':8,'tmax':1,'fr':True},{'junk':'s'}], '퀄리티 20%. 회피·에너지 보호막 최대치 1티어 분열(회피 +(79—94), 에너지 보호막 최대치 +(26—29)) + 잡옵 1개.', 'Quality 20%. Fractured T1 flat evasion and energy shield (+(79—94) evasion, +(26—29) maximum energy shield) plus one junk line.', 20),
  'diztoh-socket-gloves': _fb(('d2','d6'), [{'gi':82,'fr':True},{'gi':8,'tmax':2},{'gi':57,'crafted':True},{'unrev':'p'}], '콜르의 사냥을 장착한 상태로 모든 투사체 스킬 레벨 +2 분열 + 에너지 보호막 최대치 + 희귀도(상위 풍요의 에센스) + 미공개 훼손 접두.', "Kolr's Hunt socketed: fractured +2 projectile skills, flat energy shield, rarity (Greater Essence of Opulence) and an unrevealed desecrated prefix.", None, [KOLR_]),
  'mazbro-sceptre': _fb(('z2','z6'), [{'gi':10,'tmax':1,'fr':True},{'junk':'s'}], '동료 피해 1티어 분열 + 잡옵 1개.', 'Fractured T1 ally damage plus one junk line.'),
  'mazbro-spell5-amulet': _fb(('z2','z6'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '정신력 +50 분열 + 잡옵 1개.', 'Fractured +50 Spirit plus one junk line.'),
  'sl-flamewave-ring': _fb(('g2','g4'), [{'gi':7,'tmax':1,'fr':True},{'junk':'p'}], '모든 원소 저항 1티어 분열 + 잡옵 1개.', 'Fractured T1 all elemental resistances plus one junk line.'),
 }
+def _own_prep(_r):
+    # 플로우차트가 준비 구역에 작업 상자를 가진 레시피(노멀 베이스 → 분열까지 그림)는 옛 준비 과정을 자르지도 더하지도 않음(2026-11-12) —
+    # 시뮬 합계에 준비 비용이 이미 들어 있어 r.prep을 두면 엔진 합계가 두 번 셈. 단계는 graph2recipe가 플로우차트에서 읽음
+    _f = f"{D}sim/{_r.get('tierGroup') or _r['id']}.json"
+    if not os.path.exists(_f): return False
+    import sys as _s0; _s0.path.insert(0,'/home/claude/poe2data/scripts'); import graph2recipe as _g0
+    return _g0.has_prep(json.load(open(_f)))
+FRSTART_SKIP=[]
 for _r in R:
     _c = FRSTART.get(_r['id']) or (FRSTART.get(_r['tierGroup'][:-3]) if _r.get('tierGroup','').endswith('-v2') and _r['tierGroup'] not in FRSTART else None)   # grade recipes copied from an original in this table
     if not _c: continue
+    if _own_prep(_r): FRSTART_SKIP.append(_r['id']); continue
     _ids = [n['id'] for n in _r['nodes']]; _a, _b = _ids.index(_c['cut'][0]), _ids.index(_c['cut'][1])
     _gone = set(_ids[_a:_b+1])
     # keep the cut steps as the folded "base preparation" (shown under the base step, not counted in the totals)
@@ -549,6 +558,7 @@ for _r in R:
         if _n.get('fallbackFor') in _gone or (_n.get('branch') or {}).get('of') in _gone: raise Exception((_r['id'], _n['id']))
     _used = {n.get('phase') for n in _r['nodes']}
     if _r.get('phases'): _r['phases'] = [ph for ph in _r['phases'] if ph['id'] in _used]
+print('FRSTART skipped (flowchart has its own prep):', FRSTART_SKIP)
 exec(open('/home/claude/poe2data/scripts/notes_short.py').read())
 # "{#id}" in a step's text becomes that step's number, so cutting steps never leaves stale references
 import re as _re
@@ -592,7 +602,10 @@ for _r in R:
     if BASEPRICE.get(_r['id']): _r['basePrice'] = BASEPRICE[_r['id']]
 print('base price missing:', sum(1 for _r in R if not _r.get('basePrice')), 'of', len(R))
 import sys as _sys; _sys.path.insert(0,'/home/claude/poe2data/scripts'); import graph2recipe as _g2r
-FCREAD_OFF=set()   # 플로우차트 읽기를 끈 레시피(문제가 있을 때만)
+FCREAD_OFF=set()
+PREP_DROPPED=[]
+# 플로우차트 읽기 레시피의 단계 시각은 옛 단계 레시피(같은 id 상자, 베이스는 옛 베이스 단계)에서 옴 — 틀린 곳만 여기서 고침(그래프 id → {상자 id 또는 'base': 시각})
+FC_TS={'mazbro-proj-gloves-v2': {'base':'2:00'}}   # 옛 1:30 → 영상 2:00 베이스 고르기(2026-11-12 하위 작업 영상 대조)   # 플로우차트 읽기를 끈 레시피(문제가 있을 때만)
 # flowchart + simulation (tools/sim/run.js → site/data/sim/<id>.json): the recipe tab shows its button only when the file exists
 for _r in R:
     _sid=_r.get('tierGroup') or _r['id']
@@ -628,7 +641,13 @@ for _r in R:
                 _tiers=[x.get('tier') or 'high' for x in R if (x.get('tierGroup') or x['id'])==_sid]
                 try: _rd=_g2r.read_recipe(_r, _sd, json.load(open(f"/home/claude/poe2data/scripts/graphs/{_sid}.json")), _tiers)
                 except Exception as _e: print('flowchart read failed', _r['id'], _e); _rd=None
-                if _rd: _r['nodes']=_rd['nodes']; _r['phases']=_rd['phases']; _r['start']=_rd['start']; _r['fcRead']=_rd['fcRead']
+                if _rd:
+                    _r['nodes']=_rd['nodes']; _r['phases']=_rd['phases']; _r['start']=_rd['start']; _r['fcRead']=_rd['fcRead']
+                    if _g2r.has_prep(_sd) and _r.pop('prep', None) is not None: PREP_DROPPED.append(_r['id'])   # 준비 단계는 플로우차트에서 읽음 — 옛 접힌 준비(r.prep)를 두면 엔진 합계가 두 번 셈
+                    for _k,_v in (FC_TS.get(_sid) or {}).items():   # 플로우차트 상자 → 영상 시각(옛 단계 레시피에서 온 시각이 틀린 곳만)
+                        for _n in _r['nodes']:
+                            if _n['id']==_k or (_k=='base' and _n.get('do')=='base'): _n['ts']=_v
+print('old prep dropped (flowchart reads its own prep):', PREP_DROPPED)
 # 사용자 요청으로 내린 레시피(2026-11-11 22:21: 금 목걸이 6옵션 — 플로우차트 옵션이 영상이 만든 목걸이와 다름. 영상 전체 기준으로 다시 만들 때까지 등록하지 않음)
 REMOVED={'gold-amulet-6line'}
 R[:]=[x for x in R if _re.sub(r'-(bal|ess)$','',_re.sub(r'-v2(?=$|-)','',x['id'])) not in REMOVED and _re.sub(r'-v2$','',x.get('simId') or x.get('tierGroup') or '') not in REMOVED]
