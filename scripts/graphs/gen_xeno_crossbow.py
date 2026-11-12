@@ -122,20 +122,18 @@ A(id='rvx', kind='act', group='main', pos=[1, 12], act='annul', cur='Orb_of_Annu
 A(id='w1', kind='act', group='main', pos=[0, 13], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
   goal=K('접두 세번째 옵션', 'Third prefix'), show=['hyb'], skipIf={'all': [{'has': 'hyb'}, {'desSide': 'p'}]}, skipTo='s2',
   skipNote=K('엑잘에서 복합 옵션이 붙었으면 건너뜀', 'Skipped if the exalt already gave the hybrid'),
-  edges=W1E,
-  item=[PP, HYB, EATK, CRIT])
+  edges=W1E)
 A(id='w1p', kind='act', group='main', pos=[1, 13.5], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'keepP', 'keepDes': True},
   label=K('절사/좌측 말소 + 카오스', 'Whittling / Sinistral Erasure + Chaos'), goal=K('접두 잡옵 바꾸기', 'Reroll the junk prefix'), show=['hyb'],
   edges=W1E)
 A(id='wc', kind='cleanup', group='main', pos=[2, 13], keep=['pp', 'hyb'], maxJunk=0, label=ANN, goal=ANN,
   target=K('잡옵 지우기 — 다시 자리 막기 (영상에 없음 — 시뮬 되돌림)', 'Remove the junk, then block again (not in the video: simulation fallback)'),
   edges=[{'lost': 'pp', 'to': 'hc', 'res': 'fail', 'hide': True}, {'lost': 'hyb', 'to': 'wc', 'res': 'fail', 'hide': True},
-         {'to': 'b1', 'res': 'ok', 'label': K('다시 훼손', 'Desecrate again')}])
+         {'to': 'b1', 'res': 'ok', 'label': K('막기가 지워짐 — 자리 막기부터', 'Blocker gone: block again')}])
 A(id='s2', kind='act', group='main', pos=[0, 14], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 두번째 옵션', 'Second suffix'), show=['proj'], skipIf={'has': 'proj'}, skipTo='s3',
   edges=[{'if': {'any': [{'has': 'proj'}, {'has': 'as'}]}, 'to': 's3', 'res': 'ok', 'label': K('성공', 'Hit')},
-         {'to': 'w2', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  item=[PP, HYB, EATK, CRIT, PROJ])
+         {'to': 'w2', 'res': 'fail', 'label': K('빗나감', 'Miss')}])
 A(id='w2', kind='act', group='main', pos=[1, 14.5], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 's', 'keep': 'keepS'},
   label=K('절사 + 카오스', 'Whittling + Chaos'), goal=K('접미 두번째 옵션', 'Second suffix'), show=['proj'],
   edges=[{'if': {'any': [{'has': 'proj'}, {'has': 'as'}]}, 'to': 's3', 'res': 'ok', 'label': K('투사체 +5', 'Projectile +5')},
@@ -144,8 +142,7 @@ A(id='s3', kind='act', group='main', pos=[0, 15.5], act='exalt', cur='Perfect_Ex
   goal=K('접미 세번째 옵션', 'Third suffix'), show=['as'], skipIf={'full': 's'}, skipTo='w3',
   skipNote=K('접미가 꽉 차 있으면 건너뜀', 'Skipped when the suffixes are full'),
   edges=[{'if': {'all': [{'has': 'proj'}, {'has': 'as'}]}, 'to': 'f1', 'res': 'ok', 'label': K('성공', 'Hit')},
-         {'to': 'w3', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  item=[PP, HYB, EATK, CRIT, PROJ, AS])
+         {'to': 'w3', 'res': 'fail', 'label': K('빗나감', 'Miss')}])
 A(id='w3', kind='act', group='main', pos=[1, 16], act='chaos', cur='Greater_Chaos_Orb', trim={'side': 's', 'keep': 'keepS'},
   label=K('절사/우측 말소 + 카오스', 'Whittling / Dextral Erasure + Chaos'), goal=K('접미 세번째 옵션', 'Third suffix'), show=['as'],
   edges=[{'if': {'all': [{'has': 'proj'}, {'has': 'as'}]}, 'to': 'f1', 'res': 'ok', 'label': K('공격 속도 1티어', 'T1 attack speed')},
@@ -169,6 +166,20 @@ g['nodes'] = N
 g['loops'] = [
  {'id': 'L1', 'nodes': ['t2', 't2x'], 'kr': '매직 옵션 맞추기', 'en': 'Magic options'},
  {'id': 'L2', 'nodes': ['b1', 'rv', 'rvx'], 'kr': '자리 막기', 'en': 'Blocker'},
+ {'id': 'L4', 'nodes': ['w1', 'w1p', 'wc'], 'kr': '접두 세번째 옵션', 'en': 'Third prefix', 'fold': True,
+  'goal': K('접두 물리 피해 % + 정확도 1티어', 'T1 % physical + accuracy prefix'),
+  'steps': [K('절사의 징조 + 완벽한 카오스 오브로 접두 복합 옵션', 'Omen of Whittling + Perfect Chaos Orb for the hybrid prefix') | {'node': 'w1'},
+            K('접두가 잡옵으로 꽉 차면 절사의 징조(필요하면 좌측 말소의 징조도) + 완벽한 카오스 오브', 'Prefixes full with junk: Omen of Whittling (plus Sinistral Erasure when needed) + Perfect Chaos Orb') | {'node': 'w1p'},
+            K('막기가 지워지고 접두가 꽉 차면 소멸의 오브로 잡옵을 지우고 자리 막기부터 (영상에 없음 — 시뮬 되돌림)', 'Blocker gone and prefixes full: annul the junk and block again (not in the video: simulation fallback)') | {'node': 'wc'}],
+  'worst': K('물리 피해 %가 지워지면 분열 + 옵션 1개로 정리한 뒤 카오스부터', 'Physical % gone: clear down to the fracture + one option, then Chaos again') | {'to': 'hc'},
+  'item': [PP, HYB, EATK, CRIT]},
+ {'id': 'L5', 'nodes': ['s2', 'w2', 's3', 'w3'], 'kr': '접미 두번째·세번째 옵션', 'en': 'Second and third suffixes', 'fold': True,
+  'goal': K('접미 투사체 +5 + 공격 속도 1티어', 'Projectile +5 and T1 attack speed suffixes'),
+  'steps': [K('완벽한 엑잘티드 오브로 접미 투사체 (접두가 꽉 차 접미로)', 'Perfect Exalt for the projectile suffix (prefixes are full)') | {'node': 's2'},
+            K('빗나가면 절사의 징조 + 완벽한 카오스 오브로 투사체까지', 'On a miss, Omen of Whittling + Perfect Chaos Orb until projectile') | {'node': 'w2'},
+            K('완벽한 엑잘티드 오브로 접미 공격 속도', 'Perfect Exalt for the attack speed suffix') | {'node': 's3'},
+            K('빗나가면 절사의 징조 + 상위 카오스 오브, 볼트 2개 추가 장전처럼 높은 잡옵이면 우측 말소의 징조(1/2) — 투사체가 지워지면 2번부터', 'On a miss, Omen of Whittling + Greater Chaos Orb; a high junk line like two extra bolts takes Dextral Erasure (1 in 2), and losing projectile goes back to 2') | {'node': 'w3'}],
+  'item': [PP, HYB, EATK, CRIT, PROJ, AS]},
  {'id': 'L3', 'nodes': ['f2', 'f3', 'f3x'], 'kr': '훼손 공개', 'en': 'Reveal'},
 ]
 
