@@ -24,12 +24,16 @@ hc_crit=textH('increased Critical Hit Chance','n','s')
 hc_rarS=textH('increased Rarity of Items found','n','s')
 hc_cdmg=textH('Critical Damage Bonus','d','s')
 HC_MAGIC=[{'gi':hc_flat,'tmax':1},{'gi':hc_rarS,'tmax':1}]   # video: flat T1 (1:29) + rarity T1 (1:41)
+hc_fire=textH('to Fire Resistance','n','s')
+hc_chaosR=textH('to Chaos Resistance','n','s')
+HC_LAST=[{'gi':hc_rarS,'tmax':1},{'gi':hc_fire,'tmax':1},{'gi':hc_chaosR,'tmax':1}]   # graph tag lastS
 HC_ANN={'cur':'Orb_of_Annulment','side':'any'}        # a plain annul: any non-fractured line on either side
 HC_LIGHT={'cur':'Orb_of_Annulment','omens':['Omen_of_Light']}
 # One recipe per grade, read from the flowchart at build time (policies C17, difficulty 4 -> high + bal):
 #   high-end  = % and %+mana T1, a miss -> Sinistral Erasure + Greater Chaos, annul the junk
 #   balance   = % and %+mana T1-2 -- the video's own finished item (% T2 at 9:32)
-#   both      = crit chance T1 (chaos after the fracture, policy C15), last suffix random (policy 10 exception 2: no safe reroll)
+#   both      = crit chance T1 (chaos after the fracture, policy C15)
+#   last suffix: high-end T1 rarity / fire / chaos res, rerolled with Whittling + Greater Chaos only while it is the lowest level; balance random (user 2026-11-13)
 #   essential = kept for the data, not shown (difficulty 4)
 def crit_helmet(tier):
     hi, ess = tier=='high', tier=='ess'
@@ -53,7 +57,13 @@ def crit_helmet(tier):
    'fail':{'goto':'self','lost':'p1'},'ts':'9:09'},
   {'id':'d1','phase':'des','do':'desecrate','cur':'Ancient_Rib','target':{'unrev':'s'},'ts':'10:03'},
   {'id':'d2','phase':'des','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':hc_cdmg},'side':'s','bone':'Ancient_Rib'},'fail':{'goto':'d1','via':HC_LIGHT},'ts':'10:30'},
-  {'id':'f1','phase':'fin','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'junk':'s'},'ts':'12:00'},
+    ]
+    if hi:   # 사용자 결정 2026-11-13 00:05: 배포판처럼 하이엔드 마지막 접미 = 희귀도·화염·카오스 저항 1티어, 빗나가면 가장 낮은 레벨일 때만 절사 + 상위 카오스
+        nodes.append({'id':'f1','phase':'fin','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':HC_LAST},'fail':{'goto':'f2'},'ts':'12:00'})
+        nodes.append({'id':'f2','phase':'fin','do':'chaos','cur':'Greater_Chaos_Orb','omens':['Omen_of_Whittling'],'fallbackFor':'f1','target':{'anyOf':HC_LAST,'replace':'s'},'fail':{'goto':'self'}})
+    else:
+        nodes.append({'id':'f1','phase':'fin','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'junk':'s'},'ts':'12:00'})
+    nodes+=[
   {'id':'f3','phase':'fin','do':'note','ts':'12:03','note':K('완성. 영상은 제작이 끝난 뒤 공허 유동체·룬으로 저항을 손보지만 제작에는 영향이 없어 비워 둠.',
         'Done. After the craft the video adjusts resistances with a Void Flux and runes; that does not affect crafting, so both sockets stay empty here.')},
     ]

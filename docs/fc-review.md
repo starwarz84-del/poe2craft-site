@@ -36,7 +36,7 @@
 | diztoh-endgame-quarterstaff-v2 | YfGJyBrObxI | high 712, bal 36 | 3 | 재확인 필요 | A(Opus) | 자동 번역 자막 전체(0:00~17:40) 대조, 단계 일치(기록 tools/notes/diztoh-YfGJyBrObxI.md). 공개 빗나감은 영상의 우측 소멸 대신 빛의 징조(지금 시세가 더 쌈). 712/36 → 1,043/577(등급 1티어 / 1~2티어) |
 | unstoppable-slipstrike-vest-v2 | swF5mwXmZ0k | high 651, bal 176 | 1 | 완료 11-11 | A(Opus) | 영상 40:45~46:30 대조. 첫 카오스 추가, 반복은 상위 카오스, 접두 결정화+심연. 하이엔드 870→651, 밸런스 540→176 |
 | breach-ring-phys-v2 |  | bal 535, ess 89 | 2 | 대기 |  |  |
-| diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 4,436, bal 1,255 | 1 | 검수 대기(비용 3배 — 사용자 확인) | W6-투구(Opus 5.5) · 검수 마스터 | 영상 전체(22:39) 프레임 약 110장. 분열 = 회피·에너지 보호막 최대치 1티어(사용자 확정 11-12, 11-09 해석 뒤집음), B·C = % 증가·복합 중 먼저, 뼈·오브 종류 화면 확인. 1,287/278 → 1,321/213 |
+| diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 3,852, bal 1,132 | 1 | 완료 11-13(새 기준) · 검수 90점 | W6-투구(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W6): 성공 회차(7:23~12:03) 한 줄, 접두 반복 8번 접음. 말소 카오스의 새 옵션이 접미로 가면 희귀도·카오스 저항 3티어 이상은 남기고 원소 저항 3티어 이상은 공허 유동체로 카오스 저항(사용자 결정 11-13, 영상은 9:17 소멸) — 4,436 → 3,852. 마지막 접미는 배포판처럼 11번 완벽한 엑잘(희귀도·화염·카오스 저항 1티어) + 11.A 가장 낮은 레벨일 때만 절사·우측 말소, 카드는 랜덤 옵션(사용자 확정 11-13: 영상도 마지막은 받아들임). 생성기 scripts/graphs/gen_diztoh_crit_helmet.py |
 | mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 완료 11-11(그림만 확인 안 됨) | B(Fable) | 단계 대조는 함. 화면 캡처가 오른쪽이 잘린 채였음 — 선은 다시 볼 것 |
 | sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 재확인 필요 | A(Opus) | 자막 전체 + 화면 2:30~3:45 대조(기록 tools/notes/sihan-GgD_vxKgNsw.md). 카오스는 저항 또는 카오스 피해, 완벽한 엑잘에서 좌측 찬미 뺌(영상에서 접미에도 붙음). 478/144 → 356/130 |
 | mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 재확인 필요 | A(Opus) | 자막 0:00~24:00 대조(기록 tools/notes/mastert-GNNkhSENp6Q.md). 경멸 전 엑잘 2번 → 영상대로 1번, 경멸 옵션을 지운 뒤 엑잘 1번 추가. 469/88 → 459/78 |

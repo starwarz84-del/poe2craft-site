@@ -7,7 +7,7 @@
  "basePrice": {
   "Chaos_Orb": 8
  },
- "note": "2026-11-12 W6 영상 전체 재대조(0:00~22:39, 근거 scratchpad review/W6-crit-helmet/timeline.md). 성공 회차 한 줄: 매직 최대치 1티어(1:29) + 희귀도 1티어(1:41) → 완벽한 제왕(1:47) → 보존된 갈비뼈 + 우측 강령술(2:07) → 분열 = 최대치(2:59) → 소멸 2번(3:01~3:08) → 카오스로 치명타 확률 1티어(7:23) → 완벽한 엑잘 + 좌측 찬미: 정확도(잡옵, 7:29)·% 증가 94%(7:32) → 좌측 말소 + 상위 카오스(9:09, % 증가가 지워지고 냉기 저항이 접미로) → 소멸 2번(9:17~9:26) → 완벽한 엑잘 % 증가 80%(2티어, 9:32)·% + 마나 1티어(9:41) → 고대 갈비뼈(10:03) + 심연의 메아리 공개, 빛의 징조 + 소멸 2번 → 치명타 피해 보너스(11:25) → 완벽한 엑잘 화염 저항(12:03).",
+ "note": "2026-11-12 W6 영상 전체 재대조(0:00~22:39, 근거 scratchpad review/W6-crit-helmet/timeline.md). 성공 회차 한 줄: 매직 최대치 1티어(1:29) + 희귀도 1티어(1:41) → 완벽한 제왕(1:47) → 보존된 갈비뼈 + 우측 강령술(2:07) → 분열 = 최대치(2:59) → 소멸 2번(3:01~3:08) → 카오스로 치명타 확률 1티어(7:23) → 완벽한 엑잘 + 좌측 찬미: 정확도(잡옵, 7:29)·% 증가 94%(7:32) → 좌측 말소 + 상위 카오스(9:09, % 증가가 지워지고 냉기 저항이 접미로) → 소멸 2번(9:17~9:26) → 완벽한 엑잘 % 증가 80%(2티어, 9:32)·% + 마나 1티어(9:41) → 고대 갈비뼈(10:03) + 심연의 메아리 공개, 빛의 징조 + 소멸 2번 → 치명타 피해 보너스(11:25) → 완벽한 엑잘 화염 저항(12:03). 사용자 결정 2026-11-13: 8번 좌측 말소 + 상위 카오스의 새 옵션이 접미의 화염·냉기·번개 저항 3티어 이상이면 공허 유동체로 카오스 저항(1~2티어)으로 바꿔 마지막 접미로 남기고 11번을 건너뜀, 카오스 저항 3티어 이상·아이템 희귀도도 그대로 남김(영상 9:11 냉기 저항 40%는 영상에서는 지움). 사용자 결정 2026-11-13 00:05: 마지막 접미는 배포판처럼 하이엔드 희귀도·화염·카오스 저항 1티어, 빗나가면 가장 낮은 레벨일 때만 절사(+우측 말소) + 상위 카오스로 다시.",
  "params": {
   "bT": {
    "kr": "회피·에너지 보호막 % 증가",
@@ -36,6 +36,20 @@
      "en": "T1–2"
     }
    }
+  },
+  "g": {
+   "kr": "마지막 접미",
+   "en": "Last suffix",
+   "values": {
+    "1": {
+     "kr": "희귀도·화염·카오스 저항 1티어까지 다시",
+     "en": "Reroll for T1 rarity, fire or chaos res"
+    },
+    "0": {
+     "kr": "랜덤 옵션",
+     "en": "Random option"
+    }
+   }
   }
  },
  "strategies": [
@@ -43,14 +57,16 @@
    "id": "high",
    "params": {
     "bT": 1,
-    "hT": 1
+    "hT": 1,
+    "g": 1
    }
   },
   {
    "id": "bal",
    "params": {
     "bT": 2,
-    "hT": 2
+    "hT": 2,
+    "g": 0
    }
   }
  ],
@@ -61,7 +77,8 @@
    "en": "Balance",
    "params": {
     "bT": 2,
-    "hT": 2
+    "hT": 2,
+    "g": 0
    },
    "tier": "bal",
    "desc": {
@@ -75,12 +92,13 @@
    "en": "High-end",
    "params": {
     "bT": 1,
-    "hT": 1
+    "hT": 1,
+    "g": 1
    },
    "tier": "high",
    "desc": {
-    "kr": "접두 % 증가·% + 마나 모두 1티어",
-    "en": "Prefix % and %+mana both T1"
+    "kr": "접두 % 증가·% + 마나 1티어, 마지막 접미 희귀도·화염·카오스 저항 1티어까지",
+    "en": "Prefix % and %+mana T1, last suffix T1 rarity, fire or chaos res"
    }
   }
  ],
@@ -134,6 +152,88 @@
   "cdmg": {
    "gi": 33,
    "tmax": 1
+  },
+  "fire3": {
+   "gi": 2,
+   "tmax": 3
+  },
+  "cold3": {
+   "gi": 3,
+   "tmax": 3
+  },
+  "light3": {
+   "gi": 4,
+   "tmax": 3
+  },
+  "eleR3": {
+   "anyOf": [
+    "fire3",
+    "cold3",
+    "light3"
+   ],
+   "label": {
+    "kr": "화염·냉기·번개 저항 1~3티어",
+    "en": "T1–3 fire, cold or lightning resistance"
+   }
+  },
+  "chaos2": {
+   "gi": 5,
+   "tmax": 2
+  },
+  "chaos3": {
+   "gi": 5,
+   "tmax": 3
+  },
+  "rarK": {
+   "gi": 17,
+   "tmax": 3
+  },
+  "lastKeep": {
+   "anyOf": [
+    "rarK",
+    "chaos3"
+   ],
+   "label": {
+    "kr": "아이템 희귀도·카오스 저항 1~3티어",
+    "en": "Item rarity or T1–3 chaos res"
+   }
+  },
+  "fire1": {
+   "gi": 2,
+   "tmax": 1
+  },
+  "chaos1": {
+   "gi": 5,
+   "tmax": 1
+  },
+  "lastS": {
+   "anyOf": [
+    "rarS1",
+    "fire1",
+    "chaos1"
+   ],
+   "label": {
+    "kr": "희귀도·화염 저항·카오스 저항 1티어",
+    "en": "T1 rarity, fire res or chaos res"
+   }
+  },
+  "lastAny": {
+   "anyOf": [
+    "rarK",
+    "fire1",
+    "chaos3"
+   ],
+   "label": {
+    "kr": "희귀도·화염 저항·카오스 저항",
+    "en": "Rarity, fire res or chaos res"
+   }
+  },
+  "keepS3": {
+   "anyOf": [
+    "critT1",
+    "cdmg",
+    "lastS"
+   ]
   }
  },
  "conds": {
@@ -1071,6 +1171,54 @@
     },
     {
      "if": {
+      "all": [
+       {
+        "not": {
+         "full": "p"
+        }
+       },
+       {
+        "count": {
+         "tag": "lastKeep",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "p3z",
+     "res": "fail",
+     "label": {
+      "kr": "남길 접미가 둘 — 하나만",
+      "en": "Two kept suffixes: keep one"
+     }
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "added": "eleR3"
+       },
+       {
+        "not": {
+         "full": "p"
+        }
+       },
+       {
+        "not": {
+         "has": "lastKeep"
+        }
+       }
+      ]
+     },
+     "to": "fx",
+     "res": "fail",
+     "label": {
+      "kr": "접미에 원소 저항 3티어 이상 — 공허 유동체",
+      "en": "T1–3 elemental res on the suffix: Void Flux"
+     }
+    },
+    {
+     "if": {
       "any": [
        {
         "removed": "pct"
@@ -1100,6 +1248,89 @@
    ]
   },
   {
+   "id": "fx",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    11.9
+   ],
+   "act": "flux",
+   "cur": "Void_Flux",
+   "label": {
+    "kr": "유동체",
+    "en": "Flux"
+   },
+   "goal": {
+    "kr": "접미 원소 저항 → 카오스 저항",
+    "en": "Suffix elemental res → chaos res"
+   },
+   "show": [
+    "chaos2"
+   ],
+   "edges": [
+    {
+     "to": "p3x",
+     "label": {
+      "kr": "카오스 저항은 두고 잡옵 정리",
+      "en": "Keep the chaos res, clear the junk"
+     }
+    }
+   ]
+  },
+  {
+   "id": "p3z",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    2,
+    12.9
+   ],
+   "keep": [
+    "critT1",
+    "pct",
+    "hybM"
+   ],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "남길 접미가 둘이면 하나만 남기기",
+    "en": "Two kept suffixes: keep one"
+   },
+   "edges": [
+    {
+     "lost": "critT1",
+     "to": "cz",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "lost": "pct",
+     "to": "p3z",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "lost": "hybM",
+     "to": "p3z",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "to": "p3x",
+     "res": "ok",
+     "hide": true
+    }
+   ]
+  },
+  {
    "id": "p3x",
    "kind": "cleanup",
    "group": "main",
@@ -1110,7 +1341,8 @@
    "keep": [
     "critT1",
     "pct",
-    "hybM"
+    "hybM",
+    "lastKeep"
    ],
    "maxJunk": 0,
    "label": {
@@ -1122,8 +1354,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "잡옵 지우기 (치명타 확률·% 증가·% + 마나는 유지)",
-    "en": "Remove the junk (keep crit chance, % and %+mana)"
+    "kr": "잡옵 지우기 (치명타 확률·% 증가·% + 마나·희귀도·카오스 저항은 유지)",
+    "en": "Remove the junk (keep crit chance, %, %+mana, rarity and chaos res)"
    },
    "ask": {
     "kr": "뭐가 지워짐?",
@@ -1147,6 +1379,12 @@
     },
     {
      "lost": "hybM",
+     "to": "p3x",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "lost": "lastKeep",
      "to": "p3x",
      "res": "fail",
      "hide": true
@@ -1373,16 +1611,51 @@
     "kr": "접미 세번째 옵션",
     "en": "Third suffix option"
    },
-   "showText": [
-    {
-     "s": "s",
-     "kr": "랜덤 옵션",
-     "en": "Random option"
-    }
+   "show": [
+    "rarS1",
+    "fire1",
+    "chaos1"
    ],
+   "skipIf": {
+    "full": "s"
+   },
+   "skipTo": "ok",
+   "skipNote": {
+    "kr": "8번에서 남긴 접미가 있으면(접미가 꽉 차면) 건너뜀",
+    "en": "Skipped if a suffix was kept at step 8 (suffixes full)"
+   },
    "edges": [
     {
-     "to": "ok"
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 1
+        }
+       },
+       {
+        "not": {
+         "has": "lastS"
+        }
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepS3",
+         "side": "s"
+        }
+       }
+      ]
+     },
+     "to": "f2",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 가장 낮은 레벨이면 다시",
+      "en": "Miss: reroll while it is the lowest level"
+     }
+    },
+    {
+     "to": "ok",
+     "res": "ok"
     }
    ],
    "item": [
@@ -1433,9 +1706,135 @@
     },
     {
      "s": "s",
-     "kr": "랜덤 옵션",
-     "en": "Random modifier",
-     "m": "j"
+     "kr": "희귀도·화염 저항·카오스 저항 1티어",
+     "en": "T1 rarity, fire res or chaos res",
+     "m": "n",
+     "tags": [
+      "lastS"
+     ]
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "회피·에너지 보호막 최대치 1티어",
+        "en": "T1 flat evasion and ES",
+        "m": "f",
+        "tags": [
+         "flatT1"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "회피·에너지 보호막 % 증가",
+        "en": "% evasion and ES",
+        "m": "n",
+        "tags": [
+         "pct"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "회피·에너지 보호막 % + 마나",
+        "en": "% evasion and ES + mana",
+        "m": "n",
+        "tags": [
+         "hybM"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "치명타 확률 1티어",
+        "en": "T1 crit chance",
+        "m": "n",
+        "tags": [
+         "critT1"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "치명타 피해 보너스 (훼손)",
+        "en": "Crit damage bonus (desecrated)",
+        "m": "d",
+        "tags": [
+         "cdmg"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션 (8번에서 남긴 옵션이 있으면 그 옵션)",
+        "en": "Random option (or the option kept at step 8)",
+        "m": "j"
+       }
+      ],
+      "show": [],
+      "showText": [
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "f2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    15.6
+   ],
+   "act": "chaos",
+   "cur": "Greater_Chaos_Orb",
+   "trim": {
+    "side": "s",
+    "keep": "keepS3"
+   },
+   "label": {
+    "kr": "절사/우측 말소 + 카오스",
+    "en": "Whittling / Dextral Erasure + Chaos"
+   },
+   "goal": {
+    "kr": "마지막 접미 다시 (가장 낮은 레벨일 때)",
+    "en": "Reroll the last suffix (while it is the lowest level)"
+   },
+   "show": [
+    "rarS1",
+    "fire1",
+    "chaos1"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "lastS"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "whittleSafe": {
+       "tag": "keepS3",
+       "side": "s"
+      }
+     },
+     "to": "f2",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "to": "ok",
+     "res": "ok",
+     "hide": true
     }
    ]
   },
@@ -1472,6 +1871,8 @@
     "p1",
     "p2",
     "p3",
+    "fx",
+    "p3z",
     "p3x"
    ],
    "kr": "접두 두번째·세번째 옵션",
@@ -1508,8 +1909,13 @@
      "node": "p3"
     },
     {
-     "kr": "원하는 접두가 지워지거나 새 옵션이 접미로 가면 소멸의 오브로 잡옵을 지우고 1번부터",
-     "en": "A wanted prefix went, or the new option went to the suffix: annul the junk and go back to 1",
+     "kr": "새 옵션이 접미로 가면 아이템 희귀도·카오스 저항 3티어 이상은 남기고, 화염·냉기·번개 저항 3티어 이상은 공허 유동체로 카오스 저항(마지막 접미)",
+     "en": "New option on the suffix: keep item rarity or a T1–3 chaos res; Void Flux turns a T1–3 fire/cold/lightning res into chaos res (last suffix)",
+     "node": "fx"
+    },
+    {
+     "kr": "원하는 접두가 지워지거나 새 옵션이 접미로 가면 소멸의 오브로 잡옵을 지우고 1번부터(남긴 접미는 그대로)",
+     "en": "A wanted prefix went, or the new option went to the suffix: annul the junk (the kept suffix stays) and go back to 1",
      "node": "p3x"
     }
    ],
