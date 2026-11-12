@@ -92,7 +92,7 @@ nodes=[
  act('k11','main',[0,2],'chaos','Chaos_Orb',K('접두 투사체 속도 1티어','T1 projectile speed prefix'),None,K('카오스','Chaos'),
      [{'if':{'has':'pspd1'},'to':'k12','res':'ok'},{'to':'k11','res':'fail'}],G1,show=['pspd1']),   # 15:56 성공 회차(사용자 확정 2026-11-12)
  cleanup('kz',[1,1.5],[],[{'to':'k11','port':'right'}],K('분열 + 옵션 1개만 남기기','Keep the fracture + one line'),maxJunk=1),   # 13:40 '투사체 속도가 지워짐 — 처음부터 카오스'
- act('k12','main',[0,3],'exalt','Greater_Exalted_Orb',K('접미 치명타 확률·관통','Crit chance or pierce suffix'),None,K('엑잘','Exalt'),E12,G2,show=['crit','pierce'],showText=[K('합금·발작 전에 맞으면 한 번 더 엑잘','A hit before the alloy and essence: exalt once more')],omens=['Omen_of_Dextral_Exaltation'],skipIf={'all':ALL},skipTo='k13',skipHide=True),   # 소멸 뒤 이미 완성된 상태면 엑잘 없이 13으로(영상 경로에는 없음, 그림에 안 보임)
+ act('k12','main',[0,3],'exalt','Greater_Exalted_Orb',K('접미 치명타 확률·관통','Crit chance or pierce suffix'),None,K('엑잘','Exalt'),E12,G3,show=['crit','pierce'],showText=[K('합금·발작 전에 맞으면 한 번 더 엑잘','A hit before the alloy and essence: exalt once more')],omens=['Omen_of_Dextral_Exaltation'],skipIf={'all':ALL},skipTo='k13',skipHide=True),   # 소멸 뒤 이미 완성된 상태면 엑잘 없이 13으로(영상 경로에는 없음, 그림에 안 보임)
  act('ka','main',[1,3],'essence','Sovereign_Alloy',K('빗나간 접미를 지우고 룬 수호','The missed suffix goes, runic ward comes'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],K('합금','Alloy'),[{'to':'k12','port':'left',**L_('다시 엑잘','Exalt again')}],[PS,WD,PJ],ess='ward',omens=['Omen_of_Dextral_Crystallisation']),
  act('kb','main',[1,4],'essence','Essence_of_Hysteria',K('빗나간 접미를 지우고 치명타 피해','The missed suffix goes, crit damage comes'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],K('에센스','Essence'),[{'to':'k12','port':'left',**L_('다시 엑잘','Exalt again')}],[PS,PJ,HY,WD],ess='hyst',omens=['Omen_of_Dextral_Crystallisation']),
  cleanup('kc',[1,5],['pspd1','ward','hyst','ss'],[{'lost':'pspd1','to':'kz','port':'right',**L_('투사체 속도가 지워짐 — 카오스부터','Projectile speed gone: back to Chaos')},
@@ -106,7 +106,16 @@ nodes=[
 graph11('mazbro-proj-gloves-v2','Gloves_str_dex','Blacksteel Gauntlets',80,
   'MazBro 투사체 +2 분열 장갑(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 특출난 검은강철 건틀릿 → 콜르의 사냥 → 완벽한 진화·확장·제왕 → 소멸로 옵션 1개 → 카오스 오브(투사체 +2) → 완벽한 엑잘 + 좌측 찬미 + 상위 찬미(접두 2개) → 고대 갈비뼈 + 우측 강령술 → 아스트리드의 창의성 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 카오스 오브(접두 투사체 속도 1티어) → 상위 엑잘 + 우측 찬미(접미 치명타 확률·관통, 빗나가면 우측 결정화 + 군왕의 합금 → 우측 결정화 + 발작의 에센스 → 소멸) → 고대 갈비뼈(접두) → 공개(투사체 피해, 빛의 징조로 다시). 퀄리티 30%·룬벼림·신성한 오브·룬 교체는 비용에서 뺌.',
   PT,P2,{'high':K('영상: 상위 엑잘 반복과 공개 모두 1티어','Video: T1 in the exalt loop and on the reveal'),'bal':K('상위 엑잘 반복과 공개를 1~2티어까지','The exalt loop and the reveal accept T1–2')},tags,nodes,
-  [{'id':'L1','nodes':['k12','ka','kb','kc'],'kr':'접미 치명타 확률·관통','en':'Crit or pierce suffix'},{'id':'L2','nodes':['k13','k14','k14x'],'kr':'훼손 공개','en':'Reveal'}],
+  [{'id':'L1','nodes':['k12','ka','kb','kc'],'kr':'접미 치명타 확률·관통','en':'Crit or pierce suffix',
+    # 다중 루프를 상자 하나로(사용자 확정 2026-11-12 17:06, 정책 11장) — 영상 노트 4A 순서, 시각은 timeline.md 13번 묶음 표
+    'fold':True,'goal':K('접미 치명타 확률·관통 1티어','T1 crit chance or pierce suffix'),
+    'goalBy':{'high':K('접미 치명타 확률·관통 1티어','T1 crit chance or pierce suffix'),'bal':K('접미 치명타 확률·관통 1~2티어','T1–2 crit chance or pierce suffix')},
+    'steps':[{**K('상위 엑잘 + 우측 찬미로 접미 치명타 확률·관통','Greater Exalt + Dextral Exaltation for a crit or pierce suffix'),'node':'k12'},
+             {**K('1번째 빗나감 — 우측 결정화 + 군왕의 합금으로 룬 수호(접두)','1st miss: Dextral Crystallisation + Sovereign Alloy for runic ward (prefix)'),'node':'ka'},
+             {**K('2번째 빗나감 — 우측 결정화 + 발작의 에센스로 치명타 피해','2nd miss: Dextral Crystallisation + Essence of Hysteria for crit damage'),'node':'kb'},
+             {**K('3번째 빗나감 — 빗나간 접미가 지워질 때까지 소멸의 오브 한 개씩','3rd miss: Annulment one at a time until the missed suffix goes'),'node':'kc'}],
+    'worst':{**K('투사체 속도가 지워지면 카오스 단계부터','Projectile speed gone: back to the Chaos step'),'to':'kz'},
+    'item':G3},{'id':'L2','nodes':['k13','k14','k14x'],'kr':'훼손 공개','en':'Reveal'}],
   FIN(('high','bal'),lambda v:[{'tag':'pspd1'},{'tag':'pdmg1' if v=='high' else 'pdmg2','des':True},{'tag':'ward'},{'tag':'proj','fr':True},{'tag':'ss1' if v=='high' else 'ss2'},{'tag':'hyst'}]),
   {'quality':30,'sockets':2},{'all':ALL+[{'has':'pdmg'},{'has':'proj'}]},('high','bal'),xsub=["Kolr's Hunt"],xroll=True)
 _gp=f"{H}/mazbro-proj-gloves-v2.json"; _g=json.load(open(_gp))
