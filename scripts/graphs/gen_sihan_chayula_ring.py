@@ -89,7 +89,8 @@ def route(ok_to=None):
     for e in E:
         if 'res' not in e: e['res'] = 'fail'
         e.setdefault('hide', True)
-    E[0]['hide'] = False
+    for e in E:
+        if e['to'] in ('k6', 'k4d', 'k4g', 'k5c') or (e['to'] == 'k5' and 'if' in e and e['if'] != BOTH): e['hide'] = False   # 접힌 상자 안 선(그림엔 안 나옴) — fc_noinput용
     return E
 
 # ---------------- 베이스템 완성 (영상 1:30~2:30) ----------------

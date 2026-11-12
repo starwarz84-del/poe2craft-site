@@ -69,7 +69,7 @@ A(id='f1', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_O
   label=K('매직 첫번째 옵션', 'First magic option'), goal=K('매직', 'Magic'), showText=[K('랜덤 옵션 1개', 'One random option')],
   edges=[{'to': 'f2'}], item=[ESP])
 A(id='f2', kind='act', group='prep', pos=[0, 2], act='augment', cur='Perfect_Orb_of_Augmentation',
-  label=K('매직 두번째 옵션', 'Second magic option'), goal=K('접두 에너지 보호막 % 증가 1티어 + 접미 모든 주문 스킬 +2 — 접두는 에너지 보호막 최대치 1티어와 함께 먼저 뜬 것', 'T1 % Energy Shield prefix + all spell skills +2 suffix: or T1 flat Energy Shield, whichever lands first'),
+  label=K('매직 두번째 옵션', 'Second magic option'), goal=K('접두 에너지 보호막 1티어 + 접미 모든 주문 스킬 +2', 'T1 Energy Shield prefix + all spell skills +2 suffix'),
   show=['esp1', 'esf1', 'lvl'], ask=K('둘 다 맞음?', 'Both options?'),
   edges=[{'if': MAGIC_DONE, 'to': 'f3', 'res': 'ok', 'label': K('성공', 'hit')},
          {'if': BOTH_FULL, 'to': 'f2x', 'res': 'fail', 'label': K('빗나감', 'miss')},
@@ -156,8 +156,7 @@ g['loops'] = [
   'goal': K('접두 에너지 보호막 최대치 + 에너지 보호막 % 증가', 'Flat Energy Shield + % Energy Shield prefixes'),
   'goalBy': {'high': K('접두 에너지 보호막 최대치 1티어 + 에너지 보호막 % 증가 1티어', 'T1 flat Energy Shield + T1 % Energy Shield prefixes'),
              'bal': K('접두 에너지 보호막 최대치 1~2티어 + 에너지 보호막 % 증가 1~2티어', 'T1–2 flat Energy Shield + T1–2 % Energy Shield prefixes')},
-  'steps': [K('완벽한 엑잘티드 오브로 접두 세번째 옵션 — 접미가 꽉 차 있어 접두로', 'Perfect Exalt for the third prefix: the suffixes are full') | {'node': 'e1'},
-            K('합금 단계에서 에너지 보호막이 지워져 접두 자리가 남으면 완벽한 엑잘티드 오브를 한 번 더', 'A prefix slot left after the Alloy step: one more Perfect Exalt') | {'node': 'e1'},
+  'steps': [K('완벽한 엑잘티드 오브로 접두 세번째 옵션 — 접미가 꽉 차 있어 접두로, 8번에서 에너지 보호막이 지워졌으면 두 번', 'Perfect Exalt for the third prefix: the suffixes are full; twice if step 8 removed the Energy Shield') | {'node': 'e1'},
             K('빗나가면 상위 카오스 오브로 가장 낮은 레벨 접두를 다시 — 잡옵이 가장 낮으면 절사의 징조 + 좌측 말소의 징조, 원하는 접두가 더 낮으면 좌측 말소의 징조만(1/2)',
               'A miss: Greater Chaos on the lowest-level prefix — Whittling + Sinistral Erasure while the junk is lowest, Sinistral Erasure alone (1 in 2) if a wanted prefix is lower') | {'node': 'w1'}],
   'item': [SDF, ESP, ESF, LVL, CS, J('s'), AS]},
