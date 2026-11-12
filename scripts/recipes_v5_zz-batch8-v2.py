@@ -35,16 +35,8 @@ def _quiver(r, t):
         n=_node(r,nid); _asIs(n, [dict(x,tmax=2) for x in n['target']['anyOf']], 'p')
 for _t in ('high','bal'): _grade8('noble-visceral-quiver','noble-visceral-quiver-v2',_t,_quiver)
 
-# 3. 시한 하이엔드 투구 — High-end = video, Balance = Greater Exalt one suffix at a time, the resistance as it comes, T1–2 armour, no Abyssal mark loop
-def _shelm(r, t):
-    if t=='high': return
-    s2=_node(r,'s2'); s2['cur']='Greater_Exalted_Orb'; s2['omens']=['Omen_of_Dextral_Exaltation']
-    s3=_node(r,'s3'); s3.update({'do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Dextral_Exaltation']})
-    _asIs(s3, [dict(x,tmax=4 if x['tmax']==3 else x['tmax']) for x in s3['target']['anyOf']], 's')
-    p1=_node(r,'p1'); _asIs(p1, [dict(x,tmax=2) for x in p1['target']['anyOf']], 'p')
-    p3=_node(r,'p3'); p3['target']['reveal']={'anyOf':[dict(x,tmax=2) for x in p3['target']['reveal']['anyOf']]}
-    for nid in ('p2','p3'): _node(r,nid).pop('branch',None)
-    _drop(r,'m1','m2','m3','m4')
+# 3. 시한 하이엔드 투구 — 2026-11-12 W8: 등급 레시피 단계는 플로우차트(scripts/graphs/sihan-highend-helmet-v2.json)를 등급별로 읽어 만듦(graph2recipe). 옛 단계 고치기는 쓰지 않음
+def _shelm(r, t): return
 for _t in ('high','bal'): _grade8('sihan-highend-helmet','sihan-highend-helmet-v2',_t,_shelm)
 
 # 4. Barricade 험악한 육척봉 — High-end = video (three T1 elemental prefixes), Balance = one T1–2 line with Whittling + Greater Chaos, the rest kept

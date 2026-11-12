@@ -150,7 +150,7 @@ TIPREF = {('unstoppable-vile-robe','t1'):['omens-for-last-line','whittle-safe-to
  ('barricade-quarterstaff','q1'):['low-ilvl-base'], ('barricade-quarterstaff','p4'):['whittle-stuck'], ('belton-plus8-wand','b1'):['fracture-sellable-lines','low-ilvl-base'], ('belton-plus8-wand','b2'):['block-high-weight'],
  ('farmer-budget-armour','f8'):['greater-exalt-omen-price'], ('farmer-starter-staff','w5'):['greater-exalt-omen-price'], ('farmer-budget-armour','f1'):['cheap-resist-essence'],
  ('seek-cyclone-boots','k2'):['augment-rune-before-chaos'], ('farmer-starter-staff','w3'):['putrefaction-gamble'],
- ('sihan-highend-helmet','p2'):['helmet-prefix-desecration'], ('sihan-highend-helmet','m1'):['cheap-junk-removal'], ('diztoh-es-helmet','e2'):['side-omen-save'],
+ ('sihan-highend-helmet','q4'):['helmet-prefix-desecration'], ('sihan-highend-helmet','q2'):['cheap-junk-removal'], ('diztoh-es-helmet','e2'):['side-omen-save'],
  ('saveq-absent-amulet','v5'):['attack-quality-plus1'], ('saveq-absent-amulet','v2'):['base-flipping'], ('diztoh-onehand-mace','m10'):['kurgal-speed-offset'], ('diztoh-onehand-mace','m5'):['thrud-last'],
  ('diztoh-as-spear','a7'):['thrud-last'], ('diztoh-as-spear','a3'):['side-omen-save'], ('lilbotq-emerald','l1'):['cheap-jewel-liquid-gamble'], ('lilbotq-emerald','l5'):['plus-one-erasure'], ('lilbotq-emerald','l7'):['jewel-five-mods'],
  ('noble-timelost-sapphire','n1'):['spell-tag-fracture'], ('noble-timelost-sapphire','n4'):['contempt-fill-prefixes','jewel-five-mods'], ('noble-timelost-sapphire','n5'):['contempt-line-annulled'], ('noble-timelost-sapphire','n6'):['plus-one-erasure'],

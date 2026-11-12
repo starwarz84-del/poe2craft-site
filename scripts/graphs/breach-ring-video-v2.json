@@ -4,7 +4,7 @@
  "cls": "Rings",
  "base": "Refined Breach Ring",
  "ilvl": 80,
- "note": "SL 원소 3플랫 재련된 균열 반지(RiJixgqBnBY) — 원소 플랫 1티어 분열 + 잡옵 → 균열의 에센스 → 강탈자 기폭제 65% → 바알 촉진시키는 주입기 1번 → 카오스 오브(접미) → 우측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브 뒤 다시) → 좌측 찬미 + 엑잘 → 좌측 결정화 + 재빠른 합금 → 완벽한 엑잘(빗나가면 좌측 소멸의 징조 + 완벽한 엑잘 반복) → 고대 빗장뼈 + 심연의 메아리(빛의 징조로 다시). 하이엔드 = 영상(원소 플랫 1티어), 밸런스 = 원소 플랫 1~2티어.",
+ "note": "SL 원소 3플랫 재련된 균열 반지(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 제련된 균열 반지 → 소멸로 옵션 1개 → 카오스 오브(화염 플랫 1티어) → 좌측 찬미 + 상위 찬미 + 완벽한 엑잘 → 보존된 빗장뼈 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 균열의 에센스 → 강탈자 기폭제 65% → 바알 촉진시키는 주입기 1개 → 카오스 오브(모든 원소 저항) → 우측 찬미 + 완벽한 엑잘(희귀도, 빗나가면 소멸의 오브) → 좌측 찬미 + 엑잘 → 좌측 결정화 + 재빠른 합금 → 완벽한 엑잘(번개 플랫, 빗나가면 좌측 소멸의 징조 + 소멸의 오브) → 고대 빗장뼈 → 공개 + 심연의 메아리(냉기 플랫, 빛의 징조로 다시). 75% 퀄리티·디바인·축성·타락은 뺌.",
  "params": {
   "pT": {
    "kr": "원소 플랫",
@@ -21,8 +21,8 @@
    }
   },
   "sT": {
-   "kr": "접미 (저항·희귀도)",
-   "en": "Suffixes",
+   "kr": "접미 저항·희귀도",
+   "en": "Resistance and rarity suffixes",
    "values": {
     "1": {
      "kr": "1티어",
@@ -33,20 +33,6 @@
      "en": "T1–2"
     }
    }
-  },
-  "g": {
-   "kr": "마지막 접두(훼손)",
-   "en": "Last prefix (desecrated)",
-   "values": {
-    "1": {
-     "kr": "원소 플랫까지 반복",
-     "en": "Repeat until a flat"
-    },
-    "0": {
-     "kr": "랜덤 옵션",
-     "en": "Random line"
-    }
-   }
   }
  },
  "strategies": [
@@ -54,16 +40,14 @@
    "id": "high",
    "params": {
     "pT": 1,
-    "sT": 1,
-    "g": 1
+    "sT": 1
    }
   },
   {
    "id": "bal",
    "params": {
     "pT": 2,
-    "sT": 2,
-    "g": 0
+    "sT": 2
    }
   }
  ],
@@ -74,12 +58,11 @@
    "en": "Balance",
    "params": {
     "pT": 2,
-    "sT": 2,
-    "g": 0
+    "sT": 2
    },
    "desc": {
-    "kr": "1~2티어 (영상: 너무 안 뜨면 2티어로 타협), 마지막 훼손 접두는 랜덤 옵션",
-    "en": "T1–2 (video: settle for T2 if it drags), the last desecrated prefix random"
+    "kr": "반복으로 찾는 원소 플랫·접미 1~2티어",
+    "en": "T1–2 on the looped flats and suffixes"
    }
   },
   {
@@ -88,31 +71,26 @@
    "en": "High-end",
    "params": {
     "pT": 1,
-    "sT": 1,
-    "g": 1
+    "sT": 1
    },
    "desc": {
-    "kr": "영상: 원소 플랫 모두 1티어",
-    "en": "Video: every elemental flat T1"
+    "kr": "영상: 원소 플랫·접미 모두 1티어",
+    "en": "Video: every flat and suffix T1"
    }
   }
  ],
  "tags": {
-  "ff": {
+  "ff1": {
    "gi": 15,
-   "tmax": "$pT"
-  },
-  "cf": {
-   "gi": 17,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "lf": {
    "gi": 19,
    "tmax": "$pT"
   },
-  "fr": {
-   "gi": 15,
-   "tmax": 1
+  "cf": {
+   "gi": 17,
+   "tmax": "$pT"
   },
   "mq": {
    "gi": 71
@@ -127,50 +105,18 @@
   },
   "as": {
    "gi": 73
-  },
-  "fl": {
-   "anyOf": [
-    "ff",
-    "cf",
-    "lf"
-   ]
-  },
-  "gs": {
-   "anyOf": [
-    "ar",
-    "rs"
-   ]
   }
  },
  "require": {
   "all": [
    {
-    "any": [
-     {
-      "count": {
-       "tag": "fl",
-       "min": 3
-      }
-     },
-     {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "count": {
-         "tag": "fl",
-         "min": 2
-        }
-       },
-       {
-        "full": "p"
-       }
-      ]
-     }
-    ]
+    "has": "ff1"
+   },
+   {
+    "has": "lf"
+   },
+   {
+    "has": "cf"
    },
    {
     "has": "ar"
@@ -206,13 +152,22 @@
  "start": "h1",
  "loops": [
   {
+   "id": "L0",
+   "nodes": [
+    "s2",
+    "s2x"
+   ],
+   "kr": "접미 희귀도",
+   "en": "Rarity suffix"
+  },
+  {
    "id": "L1",
    "nodes": [
     "p1",
     "p1x"
    ],
-   "kr": "접두 원소 플랫",
-   "en": "Prefix flat"
+   "kr": "접두 번개 플랫",
+   "en": "Lightning flat prefix"
   },
   {
    "id": "L2",
@@ -232,16 +187,16 @@
    "en": "High-end",
    "lines": [
     {
-     "tag": "fr",
+     "tag": "ff1",
      "tmax": 1,
      "fr": true
     },
     {
-     "tag": "cf",
+     "tag": "lf",
      "tmax": 1
     },
     {
-     "tag": "lf",
+     "tag": "cf",
      "tmax": 1,
      "des": true
     },
@@ -265,17 +220,18 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "fr",
+     "tag": "ff1",
      "tmax": 1,
      "fr": true
     },
     {
-     "tag": "cf",
+     "tag": "lf",
      "tmax": 2
     },
     {
-     "side": "p",
-     "random": true
+     "tag": "cf",
+     "tmax": 2,
+     "des": true
     },
     {
      "tag": "ar",
@@ -305,13 +261,18 @@
     0,
     0
    ],
-   "next": "ms",
+   "next": "pz",
    "start": {
     "rar": "rare",
     "mods": [
      {
-      "tag": "fr",
-      "fr": true
+      "junk": "p"
+     },
+     {
+      "junk": "s"
+     },
+     {
+      "junk": "p"
      },
      {
       "junk": "s"
@@ -319,18 +280,15 @@
     ]
    },
    "label": {
-    "kr": "공격 시 화염 피해 1티어 분열 + 잡옵 1개 (재련된 균열 반지, 아이템 레벨 80)",
-    "en": "Fractured T1 fire damage to attacks + one junk line (Refined Breach Ring, item level 80)"
+    "kr": "제련된 균열 반지 구입 (레어, 아이템 레벨 80)",
+    "en": "Buy a Refined Breach Ring (rare, item level 80)"
    },
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
-     "tags": [
-      "fr"
-     ]
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     },
     {
      "s": "s",
@@ -341,26 +299,315 @@
    ]
   },
   {
-   "id": "ms",
-   "kind": "mark",
-   "group": "main",
+   "id": "pz",
+   "kind": "cleanup",
+   "group": "prep",
    "pos": [
     0,
-    0.6
+    1
    ],
-   "next": "q1",
+   "keep": [],
+   "maxJunk": 1,
    "label": {
-    "kr": "아이템 제작 시작",
-    "en": "Item crafting starts"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
    },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "옵션 1개만 남기기",
+    "en": "Keep one line"
+   },
+   "edges": [
+    {
+     "to": "pc"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "pc",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "chaos",
+   "goal": {
+    "kr": "접두 화염 플랫 1티어",
+    "en": "T1 fire flat prefix"
+   },
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "ff1"
+     },
+     "to": "pe",
+     "res": "ok"
+    },
+    {
+     "to": "pc",
+     "res": "fail"
+    }
+   ],
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "n",
      "tags": [
-      "fr"
+      "ff1"
+     ]
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "show": [
+    "ff1"
+   ]
+  },
+  {
+   "id": "pe",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 2개",
+    "en": "Two prefixes"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "pb"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "n",
+     "tags": [
+      "ff1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "showText": [
+    {
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines"
+    }
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation",
+    "Omen_of_Greater_Exaltation"
+   ]
+  },
+  {
+   "id": "pb",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "네번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Fourth line (desecrated) — fracture needs four"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "pf"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "n",
+     "tags": [
+      "ff1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecrated (unrevealed, cannot fracture)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Collarbone",
+   "showText": [
+    {
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecrated (unrevealed, cannot fracture)"
+    }
+   ]
+  },
+  {
+   "id": "pf",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "fracture",
+   "goal": {
+    "kr": "분열 (셋 중 하나)",
+    "en": "Fracture (one of three)"
+   },
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "edges": [
+    {
+     "if": {
+      "fractured": "ff1"
+     },
+     "to": "p8",
+     "res": "ok",
+     "label": {
+      "kr": "화염 플랫 분열",
+      "en": "Fire flat fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another line fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
+     "tags": [
+      "ff1"
+     ]
+    }
+   ],
+   "cur": "Fracturing_Orb",
+   "showText": [
+    {
+     "kr": "화염 플랫이 분열되면 성공",
+     "en": "Success when the fire flat fractures"
+    }
+   ]
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    5
+   ],
+   "simTo": "h1",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another line fractured — new base"
+   },
+   "note": {
+    "kr": "화염 플랫이 아닌 옵션이 분열되면 이 반지는 따로 두고 새 베이스로 처음부터",
+    "en": "Another line fractured: set this ring aside and start on a new base"
+   }
+  },
+  {
+   "id": "p8",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one line"
+   },
+   "edges": [
+    {
+     "to": "q1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
+     "tags": [
+      "ff1"
      ]
     },
     {
@@ -374,10 +621,10 @@
   {
    "id": "q1",
    "kind": "act",
-   "group": "main",
+   "group": "prep",
    "pos": [
     0,
-    1
+    7
    ],
    "act": "essence",
    "goal": {
@@ -396,11 +643,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
      "tags": [
-      "fr"
+      "ff1"
      ]
     },
     {
@@ -426,10 +673,10 @@
   {
    "id": "q2",
    "kind": "act",
-   "group": "main",
+   "group": "prep",
    "pos": [
     0,
-    2
+    8
    ],
    "act": "quality",
    "goal": {
@@ -448,11 +695,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
      "tags": [
-      "fr"
+      "ff1"
      ]
     },
     {
@@ -468,19 +715,20 @@
    "cur": "Reaver_Catalyst",
    "showText": [
     {
-     "kr": "강탈자 기폭제 52개 (영상 평균)",
-     "en": "52 Reaver Catalysts (video average)"
+     "kr": "강탈자 기폭제 52개",
+     "en": "52 Reaver Catalysts"
     }
    ],
-   "count": 52
+   "count": 52,
+   "q": 65
   },
   {
    "id": "q3",
    "kind": "act",
-   "group": "main",
+   "group": "prep",
    "pos": [
     0,
-    3
+    9
    ],
    "act": "quality",
    "goal": {
@@ -493,17 +741,17 @@
    },
    "edges": [
     {
-     "to": "s1"
+     "to": "ms"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
      "tags": [
-      "fr"
+      "ff1"
      ]
     },
     {
@@ -519,11 +767,46 @@
    "cur": "Vaal_Catalysing_Infuser",
    "showText": [
     {
-     "kr": "바알 촉진시키는 주입기 1개",
-     "en": "One Vaal Catalysing Infuser"
+     "kr": "바알 촉진시키는 주입기 1개, 65%에서 첫 1개는 타락 없음",
+     "en": "One Vaal Catalysing Infuser, the first at 65% never corrupts"
     }
    ],
-   "count": 1
+   "count": 1,
+   "q": 66
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    10.6
+   ],
+   "next": "s1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
+     "tags": [
+      "ff1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    }
+   ]
   },
   {
    "id": "s1",
@@ -531,12 +814,12 @@
    "group": "main",
    "pos": [
     0,
-    4
+    11.6
    ],
    "act": "chaos",
    "goal": {
-    "kr": "최대 퀄리티를 접미 첫번째 옵션으로",
-    "en": "Max quality into the first suffix"
+    "kr": "최대 퀄리티를 지우고 접미 모든 원소 저항",
+    "en": "Max quality out, all elemental resistances suffix"
    },
    "label": {
     "kr": "카오스",
@@ -545,7 +828,7 @@
    "edges": [
     {
      "if": {
-      "has": "gs"
+      "has": "ar"
      },
      "to": "s2",
      "res": "ok"
@@ -558,11 +841,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
      "tags": [
-      "fr"
+      "ff1"
      ]
     },
     {
@@ -577,8 +860,7 @@
    ],
    "cur": "Chaos_Orb",
    "show": [
-    "ar",
-    "rs"
+    "ar"
    ]
   },
   {
@@ -587,12 +869,12 @@
    "group": "main",
    "pos": [
     0,
-    5
+    12.6
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix"
+    "kr": "접미 희귀도",
+    "en": "Rarity suffix"
    },
    "label": {
     "kr": "엑잘",
@@ -615,18 +897,17 @@
     },
     {
      "to": "s2x",
-     "res": "fail",
-     "port": "right"
+     "res": "fail"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
      "tags": [
-      "fr"
+      "ff1"
      ]
     },
     {
@@ -650,7 +931,6 @@
    ],
    "cur": "Perfect_Exalted_Orb",
    "show": [
-    "ar",
     "rs"
    ],
    "omens": [
@@ -663,7 +943,7 @@
    "group": "main",
    "pos": [
     1,
-    5
+    12.6
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -683,15 +963,22 @@
    "edges": [
     {
      "if": {
-      "has": "gs"
+      "has": "ar"
      },
      "to": "s2",
      "res": "ok",
-     "port": "right"
+     "label": {
+      "kr": "저항이 남음",
+      "en": "Resistances stay"
+     }
     },
     {
      "to": "s1",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "저항이 지워짐 — 카오스부터",
+      "en": "Resistances gone: back to Chaos"
+     }
     }
    ]
   },
@@ -701,7 +988,7 @@
    "group": "main",
    "pos": [
     0,
-    6
+    13.6
    ],
    "act": "exalt",
    "goal": {
@@ -720,11 +1007,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
      "tags": [
-      "fr"
+      "ff1"
      ]
     },
     {
@@ -770,12 +1057,12 @@
    "group": "main",
    "pos": [
     0,
-    7
+    14.6
    ],
    "act": "essence",
    "goal": {
-    "kr": "잡옵을 지우고 공격 속도 (7—9)% 증가",
-    "en": "The junk goes for (7—9)% increased Attack Speed"
+    "kr": "접두 잡옵을 지우고 공격 속도",
+    "en": "The junk prefix goes, attack speed comes"
    },
    "label": {
     "kr": "합금",
@@ -789,11 +1076,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
      "tags": [
-      "fr"
+      "ff1"
      ]
     },
     {
@@ -843,12 +1130,12 @@
    "group": "main",
    "pos": [
     0,
-    8
+    15.6
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
+    "kr": "접두 번개 플랫",
+    "en": "Lightning flat prefix"
    },
    "label": {
     "kr": "엑잘",
@@ -857,37 +1144,33 @@
    "edges": [
     {
      "if": {
-      "count": {
-       "tag": "fl",
-       "min": 2
-      }
+      "has": "lf"
      },
      "to": "d1",
      "res": "ok"
     },
     {
      "to": "p1x",
-     "res": "fail",
-     "port": "right"
+     "res": "fail"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
      "tags": [
-      "fr"
+      "ff1"
      ]
     },
     {
      "s": "p",
-     "kr": "공격 시 냉기 피해 (21—24)~(32—37) 추가",
-     "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
+     "kr": "공격 시 번개 피해 (1—4)~(60—71) 추가",
+     "en": "Adds (1—4) to (60—71) Lightning damage to Attacks",
      "m": "n",
      "tags": [
-      "cf"
+      "lf"
      ]
     },
     {
@@ -920,7 +1203,6 @@
    ],
    "cur": "Perfect_Exalted_Orb",
    "show": [
-    "cf",
     "lf"
    ]
   },
@@ -930,7 +1212,7 @@
    "group": "main",
    "pos": [
     1,
-    8
+    15.6
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -951,7 +1233,11 @@
    },
    "edges": [
     {
-     "to": "p1"
+     "to": "p1",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ]
   },
@@ -961,7 +1247,7 @@
    "group": "main",
    "pos": [
     0,
-    9
+    16.6
    ],
    "act": "desecrate",
    "goal": {
@@ -980,20 +1266,20 @@
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
      "tags": [
-      "fr"
+      "ff1"
      ]
     },
     {
      "s": "p",
-     "kr": "공격 시 냉기 피해 (21—24)~(32—37) 추가",
-     "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
+     "kr": "공격 시 번개 피해 (1—4)~(60—71) 추가",
+     "en": "Adds (1—4) to (60—71) Lightning damage to Attacks",
      "m": "n",
      "tags": [
-      "cf"
+      "lf"
      ]
     },
     {
@@ -1045,12 +1331,12 @@
    "group": "main",
    "pos": [
     0,
-    10
+    17.6
    ],
    "act": "reveal",
    "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
+    "kr": "접두 냉기 플랫",
+    "en": "Cold flat prefix"
    },
    "label": {
     "kr": "공개",
@@ -1059,55 +1345,42 @@
    "edges": [
     {
      "if": {
-      "count": {
-       "tag": "fl",
-       "min": 3
-      }
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "param": {
-       "g": 0
-      }
+      "added": "cf"
      },
      "to": "ok",
      "res": "ok"
     },
     {
      "to": "d2x",
-     "res": "fail",
-     "port": "right"
+     "res": "fail"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가 (분열)",
-     "en": "Adds (25—29) to (37—45) Fire damage to Attacks (fractured)",
-     "m": "n",
+     "kr": "공격 시 화염 피해 (25—29)~(37—45) 추가",
+     "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
+     "m": "f",
      "tags": [
-      "fr"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "공격 시 냉기 피해 (21—24)~(32—37) 추가",
-     "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
-     "m": "n",
-     "tags": [
-      "cf"
+      "ff1"
      ]
     },
     {
      "s": "p",
      "kr": "공격 시 번개 피해 (1—4)~(60—71) 추가",
      "en": "Adds (1—4) to (60—71) Lightning damage to Attacks",
-     "m": "d",
+     "m": "n",
      "tags": [
       "lf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 냉기 피해 (21—24)~(32—37) 추가",
+     "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
+     "m": "d",
+     "tags": [
+      "cf"
      ]
     },
     {
@@ -1138,27 +1411,12 @@
      ]
     }
    ],
-   "want": "fl",
+   "want": "cf",
    "show": [
-    "cf",
-    "lf"
+    "cf"
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
-   ],
-   "over": [
-    {
-     "param": {
-      "g": 0
-     },
-     "set": {
-      "omens": [],
-      "goal": {
-       "kr": "훼손 옵션 확인 (나오는 대로)",
-       "en": "Reveal (keep what comes)"
-      }
-     }
-    }
    ]
   },
   {
@@ -1167,7 +1425,7 @@
    "group": "main",
    "pos": [
     1,
-    10
+    17.6
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1189,7 +1447,10 @@
    "edges": [
     {
      "to": "d1",
-     "port": "right"
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
@@ -1199,12 +1460,15 @@
    "group": "main",
    "pos": [
     0,
-    11
+    18.6
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
   }
- ]
+ ],
+ "basePrice": {
+  "Divine_Orb": 50
+ }
 }

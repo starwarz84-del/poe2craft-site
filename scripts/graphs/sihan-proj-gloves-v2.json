@@ -4,11 +4,11 @@
  "cls": "Gloves_str",
  "base": "Massive Mitts",
  "ilvl": 80,
- "note": "시한 하이엔드 투사체 장갑(DH4jiORLg10) — 콜르의 사냥 + 투사체 +2 분열 → 카오스 오브(추가 발사) → 좌측 찬미 잡옵 + 좌측 결정화 + 발작의 에센스 → 아스트리드 → 좌측 찬미 + 완벽한 엑잘 접두 2개(첫째 빗나가면 소멸의 오브, 둘째 빗나가면 심연의 에센스 징표 → 보존된 갈비뼈 → 빛의 징조) → 고대 갈비뼈 공개. 하이엔드 = 1티어(영상), 밸런스 = 1~2티어(영상: 2티어는 금방). 콜르 옵션 가중치는 추정.",
+ "note": "시한 하이엔드 투사체 장갑(DH4jiORLg10, 2026-11-12 W10 영상 전체 재대조, 새 플로우차트 기준) — 특출난 거대한 미트 → 콜르의 사냥 → 완벽한 진화·확장(투사체 +2, 빗나가면 소멸) → 완벽한 확장 → 완벽한 제왕 → 보존된 갈비뼈 → 분열(1/3, 빗나가면 새 베이스) → 분열 + 옵션 1개 → 카오스 오브(추가 발사 1티어) → 좌측 찬미 + 완벽한 엑잘(잡옵) → 좌측 결정화 + 발작의 에센스 → 아스트리드의 창의성 → 완벽한 엑잘(물리 피해 추가, 빗나가면 징조 없이 소멸) → 완벽한 엑잘(투사체 피해, 빗나가면 징표에 보존된 갈비뼈 → 빛의 징조 + 소멸 → 좌측 결정화 + 심연의 에센스 → 징표를 둔 채 엑잘) → 징표에 고대 갈비뼈 → 공개 + 심연의 메아리(투사체 속도). 하이엔드 = 1티어(영상), 밸런스 = 엑잘·공개 반복 1~2티어(18:40 자막: 2티어는 금방). 콜르 옵션 가중치는 추정.",
  "params": {
-  "pT": {
-   "kr": "접두",
-   "en": "Prefixes",
+  "t": {
+   "kr": "반복 목표",
+   "en": "Loop target",
    "values": {
     "1": {
      "kr": "1티어",
@@ -17,34 +17,6 @@
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
-    }
-   }
-  },
-  "aT": {
-   "kr": "투사체 추가 발사",
-   "en": "Additional projectile",
-   "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    }
-   }
-  },
-  "g": {
-   "kr": "마지막 접두(훼손)",
-   "en": "Last prefix (desecrated)",
-   "values": {
-    "1": {
-     "kr": "목표 옵션까지 반복",
-     "en": "Repeat until a wanted line"
-    },
-    "0": {
-     "kr": "랜덤 옵션",
-     "en": "Random line"
     }
    }
   }
@@ -53,17 +25,13 @@
   {
    "id": "high",
    "params": {
-    "pT": 1,
-    "aT": 1,
-    "g": 1
+    "t": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "pT": 2,
-    "aT": 2,
-    "g": 0
+    "t": 2
    }
   }
  ],
@@ -73,13 +41,11 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "pT": 2,
-    "aT": 2,
-    "g": 0
+    "t": 2
    },
    "desc": {
-    "kr": "1~2티어, 마지막 훼손 접두는 랜덤 옵션",
-    "en": "T1–2, the last desecrated prefix random"
+    "kr": "접두 반복과 공개를 1~2티어까지",
+    "en": "The prefix loops and the reveal accept T1–2"
    }
   },
   {
@@ -87,42 +53,58 @@
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "pT": 1,
-    "aT": 1,
-    "g": 1
+    "t": 1
    },
    "desc": {
-    "kr": "영상: 접두 1티어 3개",
-    "en": "Video: three tier 1 prefixes"
+    "kr": "영상: 접두 반복과 공개 모두 1티어",
+    "en": "Video: T1 in the prefix loops and on the reveal"
    }
   }
  ],
  "tags": {
   "lvl": {
-   "gi": 78
+   "gi": 78,
+   "tmax": 1
   },
-  "add": {
+  "add1": {
    "gi": 72,
-   "tmax": "$aT"
-  },
-  "pdmg": {
-   "gi": 67,
-   "tmax": "$pT"
-  },
-  "pspd": {
-   "gi": 69,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "phys": {
    "gi": 13,
-   "tmax": "$pT"
+   "tmax": "$t"
   },
-  "pre": {
-   "anyOf": [
-    "phys",
-    "pdmg",
-    "pspd"
-   ]
+  "phys1": {
+   "gi": 13,
+   "tmax": 1
+  },
+  "phys2": {
+   "gi": 13,
+   "tmax": 2
+  },
+  "pdmg": {
+   "gi": 67,
+   "tmax": "$t"
+  },
+  "pdmg1": {
+   "gi": 67,
+   "tmax": 1
+  },
+  "pdmg2": {
+   "gi": 67,
+   "tmax": 2
+  },
+  "pspd": {
+   "gi": 69,
+   "tmax": "$t"
+  },
+  "pspd1": {
+   "gi": 69,
+   "tmax": 1
+  },
+  "pspd2": {
+   "gi": 69,
+   "tmax": 2
   },
   "cdb": {
    "gi": 54
@@ -137,38 +119,19 @@
     "has": "lvl"
    },
    {
-    "has": "add"
+    "has": "add1"
    },
    {
     "has": "cdb"
    },
    {
-    "any": [
-     {
-      "count": {
-       "tag": "pre",
-       "min": 3
-      }
-     },
-     {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "full": "p"
-       }
-      ]
-     }
-    ]
+    "has": "phys"
+   },
+   {
+    "has": "pdmg"
+   },
+   {
+    "has": "pspd"
    }
   ]
  },
@@ -197,21 +160,137 @@
   {
    "id": "L1",
    "nodes": [
-    "p7m",
-    "p7e",
-    "p7b",
-    "p7l"
+    "e2",
+    "e2m",
+    "e2e",
+    "e2b",
+    "e2l"
    ],
-   "kr": "징표로 접두 하나 지우기",
-   "en": "Clear a prefix with the Mark"
+   "kr": "접두 투사체 피해",
+   "en": "Projectile damage prefix",
+   "fold": true,
+   "goal": {
+    "kr": "접두 투사체 피해 1티어",
+    "en": "T1 projectile damage prefix"
+   },
+   "goalBy": {
+    "high": {
+     "kr": "접두 투사체 피해 1티어",
+     "en": "T1 projectile damage prefix"
+    },
+    "bal": {
+     "kr": "접두 투사체 피해 1~2티어",
+     "en": "T1–2 projectile damage prefix"
+    }
+   },
+   "steps": [
+    {
+     "kr": "완벽한 엑잘 + 좌측 찬미로 접두 투사체 피해",
+     "en": "Perfect Exalt + Sinistral Exaltation for projectile damage",
+     "node": "e2"
+    },
+    {
+     "kr": "빗나가면 좌측 결정화 + 심연의 에센스로 잡옵 자리에 징표, 둘 중 하나",
+     "en": "Miss: Sinistral Crystallisation + Essence of the Abyss puts the Mark on the junk, one of two",
+     "node": "e2m"
+    },
+    {
+     "kr": "징표를 둔 채 완벽한 엑잘 + 좌측 찬미",
+     "en": "Perfect Exalt + Sinistral Exaltation with the Mark kept",
+     "node": "e2e"
+    },
+    {
+     "kr": "빗나가면 징표에 보존된 갈비뼈",
+     "en": "Miss: Preserved Rib on the Mark",
+     "node": "e2b"
+    },
+    {
+     "kr": "빛의 징조 + 소멸의 오브로 훼손 옵션을 지우고 2번부터",
+     "en": "Omen of Light + Annulment clears it, back to step 2",
+     "node": "e2l"
+    }
+   ],
+   "worst": {
+    "kr": "물리 피해가 지워지면 소멸의 오브 단계부터",
+    "en": "Flat physical gone: back to the Annulment step",
+    "to": "ec"
+   },
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "n",
+     "tags": [
+      "pdmg"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "mk"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    }
+   ]
   },
   {
    "id": "L2",
    "nodes": [
-    "p8m",
-    "p8",
-    "p9",
-    "p9x"
+    "d1",
+    "d1n",
+    "d2",
+    "d2x"
    ],
    "kr": "훼손 공개",
    "en": "Reveal"
@@ -224,16 +303,13 @@
    "en": "High-end",
    "lines": [
     {
-     "tag": "phys",
-     "tmax": 1
+     "tag": "phys1"
     },
     {
-     "tag": "pspd",
-     "tmax": 1
+     "tag": "pdmg1"
     },
     {
-     "tag": "pdmg",
-     "tmax": 1,
+     "tag": "pspd1",
      "des": true
     },
     {
@@ -241,8 +317,7 @@
      "fr": true
     },
     {
-     "tag": "add",
-     "tmax": 1
+     "tag": "add1"
     },
     {
      "tag": "cdb",
@@ -256,30 +331,21 @@
    "en": "Balance",
    "lines": [
     {
-     "side": "p",
-     "label": {
-      "kr": "물리 피해 추가·투사체 속도·투사체 피해 1~2티어",
-      "en": "T1–2 flat physical, projectile speed or projectile damage"
-     }
+     "tag": "phys2"
     },
     {
-     "side": "p",
-     "label": {
-      "kr": "물리 피해 추가·투사체 속도·투사체 피해 1~2티어",
-      "en": "T1–2 flat physical, projectile speed or projectile damage"
-     }
+     "tag": "pdmg2"
     },
     {
-     "side": "p",
-     "random": true
+     "tag": "pspd2",
+     "des": true
     },
     {
      "tag": "lvl",
      "fr": true
     },
     {
-     "tag": "add",
-     "tmax": 2
+     "tag": "add1"
     },
     {
      "tag": "cdb",
@@ -301,23 +367,92 @@
     0,
     0
    ],
-   "next": "ms",
+   "next": "pk",
    "start": {
-    "rar": "rare",
-    "mods": [
-     {
-      "tag": "lvl",
-      "fr": true
-     },
-     {
-      "junk": "p"
-     }
-    ]
+    "rar": "normal",
+    "mods": []
    },
    "label": {
-    "kr": "거대한 미트(룬 소켓 2), 콜르의 사냥 장착 상태로 투사체 +2 분열 + 잡옵 1개",
-    "en": "Massive Mitts (two sockets) with Kolr’s Hunt: fractured +2 projectile skills + one junk line"
+    "kr": "특출난 거대한 미트 구입 (노멀, 아이템 레벨 80)",
+    "en": "Buy exceptional Massive Mitts (normal, item level 80)"
    },
+   "item": []
+  },
+  {
+   "id": "pk",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "콜르의 사냥 장착, 영구",
+    "en": "Socket Kolr’s Hunt, permanent"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "q1"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    }
+   ],
+   "showText": [
+    {
+     "kr": "콜르 옵션이 붙을 수 있음",
+     "en": "Kolr lines can roll"
+    }
+   ],
+   "rune": {
+    "kr": "콜르의 사냥",
+    "en": "Kolr’s Hunt"
+   }
+  },
+  {
+   "id": "q1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "transmute",
+   "goal": {
+    "kr": "매직 — 접미 모든 투사체 스킬 레벨 +2",
+    "en": "Magic: +2 projectile skills suffix"
+   },
+   "label": {
+    "kr": "진화",
+    "en": "Transmute"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "lvl"
+     },
+     "to": "q3",
+     "res": "ok"
+    },
+    {
+     "to": "q1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 소멸",
+      "en": "Miss: annul"
+     }
+    }
+   ],
    "item": [
     {
      "s": "r",
@@ -329,16 +464,428 @@
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2",
      "en": "+2 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    }
+   ],
+   "cur": "Perfect_Orb_of_Transmutation",
+   "show": [
+    "lvl"
+   ]
+  },
+  {
+   "id": "q1x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    1,
+    2.5
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "옵션 모두 지우기",
+    "en": "Remove every line"
+   },
+   "edges": [
+    {
+     "to": "q2"
+    }
+   ]
+  },
+  {
+   "id": "q2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    1,
+    3.5
+   ],
+   "act": "augment",
+   "goal": {
+    "kr": "매직 — 접미 모든 투사체 스킬 레벨 +2",
+    "en": "Magic: +2 projectile skills suffix"
+   },
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "lvl"
+     },
+     "to": "q3",
+     "res": "ok"
+    },
+    {
+     "to": "q1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 소멸",
+      "en": "Miss: annul"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    }
+   ],
+   "cur": "Perfect_Orb_of_Augmentation",
+   "show": [
+    "lvl"
+   ]
+  },
+  {
+   "id": "q3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "augment",
+   "goal": {
+    "kr": "매직 두번째 옵션",
+    "en": "Second magic line"
+   },
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "edges": [
+    {
+     "to": "q4"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    }
+   ],
+   "cur": "Perfect_Orb_of_Augmentation",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ]
+  },
+  {
+   "id": "q4",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "regal",
+   "goal": {
+    "kr": "레어",
+    "en": "Rare"
+   },
+   "label": {
+    "kr": "제왕",
+    "en": "Regal"
+   },
+   "edges": [
+    {
+     "to": "q5"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (21—30)% 증가",
+     "en": "(21—30)% increased Projectile Speed",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    }
+   ],
+   "cur": "Perfect_Regal_Orb",
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ]
+  },
+  {
+   "id": "q5",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "네번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Fourth line (desecrated): fracturing needs four"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "q6"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (21—30)% 증가",
+     "en": "(21—30)% increased Projectile Speed",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Preserved_Rib",
+   "showText": [
+    {
+     "kr": "훼손 옵션(미공개, 분열되지 않음)",
+     "en": "Desecrated (unrevealed, cannot fracture)"
+    }
+   ]
+  },
+  {
+   "id": "q6",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "fracture",
+   "goal": {
+    "kr": "분열 (셋 중 하나)",
+    "en": "Fracture (one of three)"
+   },
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "edges": [
+    {
+     "if": {
+      "fractured": "lvl"
+     },
+     "to": "q7",
+     "res": "ok",
+     "label": {
+      "kr": "투사체 +2 분열",
+      "en": "+2 projectile fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another line fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (21—30)% 증가",
+     "en": "(21—30)% increased Projectile Speed",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
      "m": "f",
      "tags": [
       "lvl"
      ]
     },
     {
+     "s": "s",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ],
+   "cur": "Fracturing_Orb",
+   "showText": [
+    {
+     "kr": "투사체 +2가 분열되면 성공",
+     "en": "Success when +2 projectile fractures"
+    }
+   ]
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    7
+   ],
+   "simTo": "h1",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another line fractured: new base"
+   },
+   "note": {
+    "kr": "투사체 +2가 아닌 옵션이 분열되면 이 장갑은 버리고 새 베이스로 처음부터",
+    "en": "Another line fractured: drop this one and start over on a new base"
+   }
+  },
+  {
+   "id": "q7",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    8
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep the fracture + one line"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
      "s": "p",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
     }
    ]
   },
@@ -348,9 +895,9 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    10
    ],
-   "next": "p2",
+   "next": "c1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -363,6 +910,12 @@
      "m": "r"
     },
     {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +2",
      "en": "+2 to Level of all Projectile Skills",
@@ -370,27 +923,21 @@
      "tags": [
       "lvl"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
    ]
   },
   {
-   "id": "p2",
+   "id": "c1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    1
+    11
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix"
+    "kr": "접미 추가 투사체 발사 1티어",
+    "en": "T1 additional projectile suffix"
    },
    "label": {
     "kr": "카오스",
@@ -399,13 +946,13 @@
    "edges": [
     {
      "if": {
-      "has": "add"
+      "has": "add1"
      },
-     "to": "p3",
+     "to": "c2",
      "res": "ok"
     },
     {
-     "to": "p2",
+     "to": "c1",
      "res": "fail"
     }
    ],
@@ -431,27 +978,55 @@
      "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
      "m": "n",
      "tags": [
-      "add"
+      "add1"
      ]
     }
    ],
    "cur": "Chaos_Orb",
    "show": [
-    "add"
+    "add1"
    ]
   },
   {
-   "id": "p3",
+   "id": "kz",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    10.5
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep the fracture + one line"
+   },
+   "edges": [
+    {
+     "to": "c1"
+    }
+   ]
+  },
+  {
+   "id": "c2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    12
    ],
    "act": "exalt",
    "goal": {
-    "kr": "에센스가 지울 접두",
-    "en": "The prefix for the essence to remove"
+    "kr": "발작의 에센스가 지울 접두 잡옵",
+    "en": "A junk prefix for the essence to take"
    },
    "label": {
     "kr": "엑잘",
@@ -459,7 +1034,7 @@
    },
    "edges": [
     {
-     "to": "p4"
+     "to": "c3"
     }
    ],
    "item": [
@@ -468,6 +1043,12 @@
      "kr": "콜르의 사냥",
      "en": "Kolr’s Hunt",
      "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     },
     {
      "s": "s",
@@ -484,17 +1065,11 @@
      "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
      "m": "n",
      "tags": [
-      "add"
+      "add1"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
    ],
-   "cur": "Exalted_Orb",
+   "cur": "Perfect_Exalted_Orb",
    "showText": [
     {
      "s": "p",
@@ -507,17 +1082,17 @@
    ]
   },
   {
-   "id": "p4",
+   "id": "c3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    13
    ],
    "act": "essence",
    "goal": {
-    "kr": "접두 잡옵을 지우고 치명타 피해 보너스",
-    "en": "Swap the junk prefix for critical damage bonus"
+    "kr": "접두 잡옵을 지우고 접미 치명타 피해 보너스",
+    "en": "The junk prefix goes, crit damage bonus suffix comes"
    },
    "label": {
     "kr": "에센스",
@@ -525,7 +1100,7 @@
    },
    "edges": [
     {
-     "to": "p5"
+     "to": "c4"
     }
    ],
    "item": [
@@ -550,7 +1125,7 @@
      "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
      "m": "n",
      "tags": [
-      "add"
+      "add1"
      ]
     },
     {
@@ -564,25 +1139,18 @@
     }
    ],
    "cur": "Essence_of_Hysteria",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "치명타 피해 보너스 (25—29)% 증가 (제작 옵션)",
-     "en": "(25—29)% increased Critical Damage Bonus (crafted)"
-    }
-   ],
    "ess": "cdb",
    "omens": [
     "Omen_of_Sinistral_Crystallisation"
    ]
   },
   {
-   "id": "p5",
+   "id": "c4",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    14
    ],
    "act": "rune",
    "goal": {
@@ -595,7 +1163,7 @@
    },
    "edges": [
     {
-     "to": "p6"
+     "to": "e1"
     }
    ],
    "item": [
@@ -603,6 +1171,12 @@
      "s": "r",
      "kr": "콜르의 사냥",
      "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
      "m": "r"
     },
     {
@@ -620,7 +1194,7 @@
      "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
      "m": "n",
      "tags": [
-      "add"
+      "add1"
      ]
     },
     {
@@ -631,12 +1205,6 @@
      "tags": [
       "cdb"
      ]
-    },
-    {
-     "s": "r",
-     "kr": "아스트리드의 창의성",
-     "en": "Astrid’s Creativity",
-     "m": "r"
     }
    ],
    "showText": [
@@ -648,20 +1216,25 @@
    "rune": {
     "kr": "아스트리드의 창의성",
     "en": "Astrid’s Creativity"
-   }
+   },
+   "skipIf": {
+    "rune": "Astrid"
+   },
+   "skipTo": "ec",
+   "skipHide": true
   },
   {
-   "id": "p6",
+   "id": "e1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    15
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 첫번째 옵션",
-    "en": "First prefix"
+    "kr": "접두 물리 피해 추가",
+    "en": "Flat physical damage prefix"
    },
    "label": {
     "kr": "엑잘",
@@ -670,240 +1243,18 @@
    "edges": [
     {
      "if": {
-      "not": {
-       "all": [
-        {
-         "has": "add"
-        },
-        {
-         "has": "cdb"
-        }
-       ]
-      }
+      "added": "phys"
      },
-     "to": "pc",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "p9",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 3
-      }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "has": "mk"
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p8m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p8",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "des": true
-       }
-      ]
-     },
-     "to": "p9x",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 2
-      }
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7e",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p7b",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7",
+     "to": "e2",
      "res": "ok"
     },
     {
-     "if": {
-      "has": "pre"
-     },
-     "to": "p6x",
+     "to": "ec",
      "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "mk"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       }
-      ]
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "p",
-       "n": 3
-      }
-     },
-     "to": "p6",
-     "hide": true
-    },
-    {
-     "to": "p6x",
-     "hide": true
+     "label": {
+      "kr": "빗나감 — 소멸의 오브",
+      "en": "Miss: Orb of Annulment"
+     }
     }
    ],
    "item": [
@@ -912,6 +1263,21 @@
      "kr": "콜르의 사냥",
      "en": "Kolr’s Hunt",
      "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
     },
     {
      "s": "s",
@@ -928,7 +1294,7 @@
      "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
      "m": "n",
      "tags": [
-      "add"
+      "add1"
      ]
     },
     {
@@ -939,304 +1305,29 @@
      "tags": [
       "cdb"
      ]
-    },
-    {
-     "s": "r",
-     "kr": "아스트리드의 창의성",
-     "en": "Astrid’s Creativity",
-     "m": "r"
-    },
-    {
-     "s": "p",
-     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
-     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
-     "m": "n",
-     "tags": [
-      "phys"
-     ]
     }
    ],
    "cur": "Perfect_Exalted_Orb",
    "show": [
-    "phys",
-    "pdmg",
-    "pspd"
-   ]
-  },
-  {
-   "id": "p6x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    5
+    "phys"
    ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "빗나간 접두 지우기 (좋은 옵션이 하나뿐일 때는 징조 없이)",
-    "en": "Remove the missed prefix (no omen while only one good line)"
-   },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "has": "add"
-        },
-        {
-         "has": "cdb"
-        }
-       ]
-      }
-     },
-     "to": "pc",
-     "res": "fail"
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "p9",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 3
-      }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "has": "mk"
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p8m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p8",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "des": true
-       }
-      ]
-     },
-     "to": "p9x",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 2
-      }
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7e",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p7b",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "pre"
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "mk"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       }
-      ]
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "p",
-       "n": 3
-      }
-     },
-     "to": "p6",
-     "port": "right"
-    },
-    {
-     "to": "p6x",
-     "hide": true
-    }
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
-   "id": "pc",
+   "id": "ec",
    "kind": "cleanup",
    "group": "main",
    "pos": [
-    2,
-    5
+    1,
+    15
    ],
    "keep": [
-    "lvl"
+    "add1",
+    "cdb"
    ],
-   "maxJunk": 1,
+   "maxJunk": 0,
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -1246,28 +1337,47 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "분열 + 옵션 1개만 남기기",
-    "en": "Leave the fracture and one line"
+    "kr": "징조 없이 접두 옵션이 모두 지워질 때까지",
+    "en": "No omen, until every prefix is gone"
    },
    "edges": [
     {
-     "to": "p2",
-     "res": "fail"
+     "lost": "add1",
+     "to": "kz",
+     "label": {
+      "kr": "추가 발사가 지워짐 — 카오스부터",
+      "en": "Additional projectile gone: back to Chaos"
+     }
+    },
+    {
+     "lost": "cdb",
+     "to": "c3",
+     "label": {
+      "kr": "치명타 피해가 지워짐 — 발작의 에센스부터",
+      "en": "Crit damage gone: back to the Hysteria step"
+     }
+    },
+    {
+     "to": "e1",
+     "label": {
+      "kr": "접두가 모두 지워짐 — 다시 엑잘",
+      "en": "Prefixes cleared: exalt again"
+     }
     }
    ]
   },
   {
-   "id": "p7",
+   "id": "e2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    6
+    16
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
+    "kr": "접두 투사체 피해",
+    "en": "Projectile damage prefix"
    },
    "label": {
     "kr": "엑잘",
@@ -1276,240 +1386,18 @@
    "edges": [
     {
      "if": {
-      "not": {
-       "all": [
-        {
-         "has": "add"
-        },
-        {
-         "has": "cdb"
-        }
-       ]
-      }
+      "added": "pdmg"
      },
-     "to": "pc",
-     "hide": true
+     "to": "d1",
+     "res": "ok",
+     "label": {
+      "kr": "투사체 피해 성공",
+      "en": "Projectile damage hit"
+     }
     },
     {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "p9",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 3
-      }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "has": "mk"
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p8m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p8",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "des": true
-       }
-      ]
-     },
-     "to": "p9x",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 2
-      }
-     },
-     "to": "p7m",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7e",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p7b",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "pre"
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "mk"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       }
-      ]
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "p",
-       "n": 3
-      }
-     },
-     "to": "p6",
-     "hide": true
-    },
-    {
-     "to": "p6x",
-     "hide": true
+     "to": "e2m",
+     "res": "fail"
     }
    ],
    "item": [
@@ -1518,33 +1406,6 @@
      "kr": "콜르의 사냥",
      "en": "Kolr’s Hunt",
      "m": "r"
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2",
-     "en": "+2 to Level of all Projectile Skills",
-     "m": "f",
-     "tags": [
-      "lvl"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
-     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
-     "m": "n",
-     "tags": [
-      "add"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
-     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
-     "m": "c",
-     "tags": [
-      "cdb"
-     ]
     },
     {
      "s": "r",
@@ -1563,33 +1424,195 @@
     },
     {
      "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
      "m": "n",
      "tags": [
-      "pspd"
+      "pdmg"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "mk"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
      ]
     }
    ],
    "cur": "Perfect_Exalted_Orb",
    "show": [
-    "phys",
-    "pdmg",
-    "pspd"
+    "pdmg"
+   ],
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
-   "id": "p7m",
+   "id": "e2b",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    6
+    18
+   ],
+   "act": "desecrate",
+   "goal": {
+    "kr": "징표 훼손 (지울 준비)",
+    "en": "Desecrate the Mark (to clear it)"
+   },
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "edges": [
+    {
+     "to": "e2l"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
+    }
+   ],
+   "cur": "Preserved_Rib",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션(미공개)",
+     "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "fromMark": true
+  },
+  {
+   "id": "e2l",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    18
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "e2m"
+    }
+   ]
+  },
+  {
+   "id": "e2m",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    16
    ],
    "act": "essence",
    "goal": {
-    "kr": "접두 하나를 징표로 (잡옵이면 성공)",
-    "en": "A prefix becomes the Mark (good when it is the junk)"
+    "kr": "잡옵 자리에 징표 (둘 중 하나)",
+    "en": "The Mark takes the junk spot (one of two)"
    },
    "label": {
     "kr": "심연",
@@ -1598,240 +1621,18 @@
    "edges": [
     {
      "if": {
-      "not": {
-       "all": [
-        {
-         "has": "add"
-        },
-        {
-         "has": "cdb"
-        }
-       ]
-      }
+      "removed": "phys"
      },
-     "to": "pc",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "p9",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 3
-      }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "has": "mk"
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p8m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p8",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "des": true
-       }
-      ]
-     },
-     "to": "p9x",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 2
-      }
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7e",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p7b",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "pre"
-     },
-     "to": "p6x",
+     "to": "ec",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "물리 피해가 지워짐 — 소멸의 오브부터",
+      "en": "Flat physical gone: back to Annulment"
+     }
     },
     {
-     "if": {
-      "all": [
-       {
-        "has": "mk"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       }
-      ]
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "p",
-       "n": 3
-      }
-     },
-     "to": "p6",
-     "hide": true
-    },
-    {
-     "to": "p6x",
-     "hide": true
+     "to": "e2e",
+     "res": "ok"
     }
    ],
    "item": [
@@ -1840,33 +1641,6 @@
      "kr": "콜르의 사냥",
      "en": "Kolr’s Hunt",
      "m": "r"
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2",
-     "en": "+2 to Level of all Projectile Skills",
-     "m": "f",
-     "tags": [
-      "lvl"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
-     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
-     "m": "n",
-     "tags": [
-      "add"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
-     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
-     "m": "c",
-     "tags": [
-      "cdb"
-     ]
     },
     {
      "s": "r",
@@ -1890,6 +1664,33 @@
      "m": "c",
      "tags": [
       "mk"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
      ]
     }
    ],
@@ -1908,17 +1709,17 @@
    ]
   },
   {
-   "id": "p7e",
+   "id": "e2e",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    7
+    17
    ],
    "act": "exalt",
    "goal": {
-    "kr": "징표를 둔 채 접두 두번째 옵션",
-    "en": "Second prefix with the Mark kept"
+    "kr": "징표를 둔 채 접두 투사체 피해",
+    "en": "Projectile damage prefix with the Mark kept"
    },
    "label": {
     "kr": "엑잘",
@@ -1927,240 +1728,14 @@
    "edges": [
     {
      "if": {
-      "not": {
-       "all": [
-        {
-         "has": "add"
-        },
-        {
-         "has": "cdb"
-        }
-       ]
-      }
+      "added": "pdmg"
      },
-     "to": "pc",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "p9",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 3
-      }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "has": "mk"
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p8m",
+     "to": "d1",
      "res": "ok"
     },
     {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p8",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "des": true
-       }
-      ]
-     },
-     "to": "p9x",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 2
-      }
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7e",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p7b",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "pre"
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "mk"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       }
-      ]
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "p",
-       "n": 3
-      }
-     },
-     "to": "p6",
-     "hide": true
-    },
-    {
-     "to": "p6x",
-     "hide": true
+     "to": "e2b",
+     "res": "fail"
     }
    ],
    "item": [
@@ -2169,33 +1744,6 @@
      "kr": "콜르의 사냥",
      "en": "Kolr’s Hunt",
      "m": "r"
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2",
-     "en": "+2 to Level of all Projectile Skills",
-     "m": "f",
-     "tags": [
-      "lvl"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
-     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
-     "m": "n",
-     "tags": [
-      "add"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
-     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
-     "m": "c",
-     "tags": [
-      "cdb"
-     ]
     },
     {
      "s": "r",
@@ -2214,11 +1762,11 @@
     },
     {
      "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
      "m": "n",
      "tags": [
-      "pspd"
+      "pdmg"
      ]
     },
     {
@@ -2228,384 +1776,51 @@
      "m": "c",
      "tags": [
       "mk"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
      ]
     }
    ],
    "cur": "Perfect_Exalted_Orb",
    "show": [
-    "phys",
-    "pdmg",
-    "pspd"
-   ]
-  },
-  {
-   "id": "p7b",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    2,
-    7
+    "pdmg"
    ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "징표 훼손 (지울 준비)",
-    "en": "Desecrate the Mark (to clear it)"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "edges": [
-    {
-     "to": "p7l"
-    }
-   ],
-   "item": [
-    {
-     "s": "r",
-     "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
-     "m": "r"
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2",
-     "en": "+2 to Level of all Projectile Skills",
-     "m": "f",
-     "tags": [
-      "lvl"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
-     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
-     "m": "n",
-     "tags": [
-      "add"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
-     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
-     "m": "c",
-     "tags": [
-      "cdb"
-     ]
-    },
-    {
-     "s": "r",
-     "kr": "아스트리드의 창의성",
-     "en": "Astrid’s Creativity",
-     "m": "r"
-    },
-    {
-     "s": "p",
-     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
-     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
-     "m": "n",
-     "tags": [
-      "phys"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "심연의 군주의 징표",
-     "en": "Mark of the Abyssal Lord",
-     "m": "c",
-     "tags": [
-      "mk"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Preserved_Rib",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "fromMark": true
-  },
-  {
-   "id": "p7l",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    2,
-    8
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
    "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
-   },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "has": "add"
-        },
-        {
-         "has": "cdb"
-        }
-       ]
-      }
-     },
-     "to": "pc",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "p9",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 3
-      }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "has": "mk"
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p8m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p8",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "des": true
-       }
-      ]
-     },
-     "to": "p9x",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 2
-      }
-     },
-     "to": "p7m",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7e",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p7b",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "pre"
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "mk"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       }
-      ]
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "p",
-       "n": 3
-      }
-     },
-     "to": "p6",
-     "hide": true
-    },
-    {
-     "to": "p6x",
-     "hide": true
-    }
+    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
-   "id": "p8m",
+   "id": "d1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7
+    18
    ],
    "act": "desecrate",
    "goal": {
@@ -2618,7 +1833,7 @@
    },
    "edges": [
     {
-     "to": "p9"
+     "to": "d2"
     }
    ],
    "item": [
@@ -2627,33 +1842,6 @@
      "kr": "콜르의 사냥",
      "en": "Kolr’s Hunt",
      "m": "r"
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2",
-     "en": "+2 to Level of all Projectile Skills",
-     "m": "f",
-     "tags": [
-      "lvl"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
-     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
-     "m": "n",
-     "tags": [
-      "add"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
-     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
-     "m": "c",
-     "tags": [
-      "cdb"
-     ]
     },
     {
      "s": "r",
@@ -2672,11 +1860,11 @@
     },
     {
      "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
      "m": "n",
      "tags": [
-      "pspd"
+      "pdmg"
      ]
     },
     {
@@ -2684,6 +1872,33 @@
      "kr": "훼손 옵션(미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
     }
    ],
    "cur": "Ancient_Rib",
@@ -2694,20 +1909,34 @@
      "en": "Desecrated modifier (unrevealed)"
     }
    ],
-   "fromMark": true
+   "fromMark": true,
+   "skipIf": {
+    "not": {
+     "has": "mk"
+    }
+   },
+   "skipTo": "d1n",
+   "skipLabel": {
+    "kr": "징표가 없으면",
+    "en": "No Mark"
+   },
+   "skipNote": {
+    "kr": "징표가 없으면 빈 접두에 훼손",
+    "en": "No Mark: desecrate the empty prefix"
+   }
   },
   {
-   "id": "p8",
+   "id": "d1n",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    8
+    18
    ],
    "act": "desecrate",
    "goal": {
-    "kr": "접두 세번째 옵션(훼손)",
-    "en": "Third prefix (desecrated)"
+    "kr": "빈 접두에 훼손",
+    "en": "Desecrate the empty prefix"
    },
    "label": {
     "kr": "훼손",
@@ -2715,7 +1944,7 @@
    },
    "edges": [
     {
-     "to": "p9"
+     "to": "d2"
     }
    ],
    "item": [
@@ -2724,33 +1953,6 @@
      "kr": "콜르의 사냥",
      "en": "Kolr’s Hunt",
      "m": "r"
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2",
-     "en": "+2 to Level of all Projectile Skills",
-     "m": "f",
-     "tags": [
-      "lvl"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
-     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
-     "m": "n",
-     "tags": [
-      "add"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
-     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
-     "m": "c",
-     "tags": [
-      "cdb"
-     ]
     },
     {
      "s": "r",
@@ -2769,11 +1971,11 @@
     },
     {
      "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
      "m": "n",
      "tags": [
-      "pspd"
+      "pdmg"
      ]
     },
     {
@@ -2781,6 +1983,33 @@
      "kr": "훼손 옵션(미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
+     ]
     }
    ],
    "cur": "Ancient_Rib",
@@ -2790,23 +2019,20 @@
      "kr": "훼손 옵션(미공개)",
      "en": "Desecrated modifier (unrevealed)"
     }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {
-   "id": "p9",
+   "id": "d2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    8
+    19
    ],
    "act": "reveal",
    "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
+    "kr": "접두 투사체 속도",
+    "en": "Projectile speed prefix"
    },
    "label": {
     "kr": "공개",
@@ -2815,240 +2041,14 @@
    "edges": [
     {
      "if": {
-      "not": {
-       "all": [
-        {
-         "has": "add"
-        },
-        {
-         "has": "cdb"
-        }
-       ]
-      }
-     },
-     "to": "pc",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "p9",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 3
-      }
+      "added": "pspd"
      },
      "to": "ok",
      "res": "ok"
     },
     {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "has": "mk"
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p8m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p8",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "des": true
-       }
-      ]
-     },
-     "to": "p9x",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 2
-      }
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7e",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p7b",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "pre"
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "mk"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       }
-      ]
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "p",
-       "n": 3
-      }
-     },
-     "to": "p6",
-     "hide": true
-    },
-    {
-     "to": "p6x",
-     "hide": true
+     "to": "d2x",
+     "res": "fail"
     }
    ],
    "item": [
@@ -3057,33 +2057,6 @@
      "kr": "콜르의 사냥",
      "en": "Kolr’s Hunt",
      "m": "r"
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2",
-     "en": "+2 to Level of all Projectile Skills",
-     "m": "f",
-     "tags": [
-      "lvl"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
-     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
-     "m": "n",
-     "tags": [
-      "add"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
-     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
-     "m": "c",
-     "tags": [
-      "cdb"
-     ]
     },
     {
      "s": "r",
@@ -3102,54 +2075,65 @@
     },
     {
      "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "n",
+     "tags": [
+      "pdmg"
+     ]
+    },
+    {
+     "s": "p",
      "kr": "투사체 속도 (31—40)% 증가",
      "en": "(31—40)% increased Projectile Speed",
-     "m": "n",
+     "m": "d",
      "tags": [
       "pspd"
      ]
     },
     {
-     "s": "p",
-     "kr": "투사체 피해 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Damage",
-     "m": "d",
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
      "tags": [
-      "pdmg"
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "+(51—66)%의 초과 확률로 추가 투사체 발사",
+     "en": "+(51—66)% Surpassing chance to fire an additional Projectile",
+     "m": "n",
+     "tags": [
+      "add1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 피해 보너스 (25—29)% 증가 (발작의 에센스)",
+     "en": "(25—29)% increased Critical Damage Bonus (Essence of Hysteria)",
+     "m": "c",
+     "tags": [
+      "cdb"
      ]
     }
    ],
-   "want": "pre",
+   "want": "pspd",
    "show": [
-    "phys",
-    "pdmg",
     "pspd"
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
-   ],
-   "over": [
-    {
-     "param": {
-      "g": 0
-     },
-     "set": {
-      "omens": [],
-      "goal": {
-       "kr": "훼손 옵션 확인 (나오는 대로)",
-       "en": "Reveal (keep what comes)"
-      }
-     }
-    }
    ]
   },
   {
-   "id": "p9x",
+   "id": "d2x",
    "kind": "act",
    "group": "main",
    "pos": [
-    2,
-    9
+    1,
+    19
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -3170,240 +2154,11 @@
    },
    "edges": [
     {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "has": "add"
-        },
-        {
-         "has": "cdb"
-        }
-       ]
-      }
-     },
-     "to": "pc",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "p9",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 3
-      }
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "has": "mk"
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p8m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p8",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "count": {
-         "tag": "pre",
-         "min": 2
-        }
-       },
-       {
-        "des": true
-       }
-      ]
-     },
-     "to": "p9x",
-     "hide": true
-    },
-    {
-     "if": {
-      "count": {
-       "tag": "pre",
-       "min": 2
-      }
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7e",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "has": "mk"
-       }
-      ]
-     },
-     "to": "p7b",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7m",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "pre"
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "p7",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "pre"
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "mk"
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "pre"
-        }
-       }
-      ]
-     },
-     "to": "p6x",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "p",
-       "n": 3
-      }
-     },
-     "to": "p6",
-     "hide": true
-    },
-    {
-     "to": "p6x",
-     "hide": true
+     "to": "d1n",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
@@ -3413,7 +2168,7 @@
    "group": "main",
    "pos": [
     0,
-    9
+    21
    ],
    "label": {
     "kr": "완성",

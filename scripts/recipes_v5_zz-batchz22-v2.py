@@ -54,4 +54,5 @@ def _pglv(r, t):
         if t=='bal': _node(r,nid)['expect']=8
     for x in _node(r,'p9')['target']['reveal']['anyOf']: x['tmax']=tm
     _node(r,'p8')['omens']=['Omen_of_Sinistral_Necromancy']
+    r['start'].pop('runes',None)   # 2026-11-12 W10: 플로우차트 준비 구역이 콜르의 사냥을 단계로 장착 — 시작 룬으로 두면 카드에 콜르가 두 번 나옴
 for _t in ('high','bal'): _grade8('sihan-proj-gloves','sihan-proj-gloves-v2',_t,_pglv)

@@ -25,4 +25,4 @@ def _bis(r, t):
     _nosideomen(r,'c12','c10','c13')
     if t=='bal':   # 영상 중간: 복합 저항 1개 + 원소 저항 1티어에서 끝내도 됨
         c13=_node(r,'c13'); c13['target']['anyOf']=c13['target']['anyOf']+[{'gi':g,'tmax':1} for g in (2,3,4)]
-for _t in ('high','bal'): _grade8('mazbro-bis-chest','mazbro-bis-chest-v2',_t,_bis)
+for _t in ('high',): _grade8('mazbro-bis-chest','mazbro-bis-chest-v2',_t,_bis)   # 2026-11-12 W7: 난이도 5(극한) → 하이엔드만(정책 10장), 단계는 플로우차트 읽기
