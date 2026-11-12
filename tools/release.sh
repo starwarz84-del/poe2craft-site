@@ -46,7 +46,7 @@ bash tools/test/serve.sh stop >/dev/null 2>&1
 
 step "4. 배포 폴더"
 python3 scripts/build_web.py | tail -1 || fail "배포 폴더 빌드 실패"
-( cd web && python3 -m http.server 8790 >/dev/null 2>&1 & echo $! > /tmp/poe2-web.pid ); sleep 1
+( cd web && exec python3 -m http.server 8790 >/dev/null 2>&1 ) 9>&- & echo $! > /tmp/poe2-web.pid; sleep 1   # exec: 기록한 번호 = 서버 자신, 9>&-: 빌드 잠금을 물려받지 않음(2026-11-12 서버가 남아 잠금을 쥔 사고)
 ( cd tools/test && node _web.js 2>&1 | tail -1 ) | tee /tmp/poe2-web.log
 kill "$(cat /tmp/poe2-web.pid)" 2>/dev/null
 grep -q "ERRORS 0" /tmp/poe2-web.log || fail "배포 폴더 검수 오류"
