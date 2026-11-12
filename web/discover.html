@@ -109,6 +109,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .rns{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.rchip{position:relative;display:inline-block;padding:2px 9px;border:1px solid var(--line);border-radius:999px;color:var(--rune,#9fb4ff);cursor:help}.rchip .rtip{display:none;position:absolute;left:0;top:calc(100% + 6px);z-index:20;min-width:220px;max-width:320px;padding:8px 10px;background:var(--bg,#111);border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.5);color:var(--text);font-size:12.5px;line-height:1.5;white-space:normal}.rchip:hover .rtip,.rchip:focus .rtip{display:flex;flex-direction:column;gap:2px}.rtip b{color:var(--rune,#9fb4ff);margin-bottom:2px}.rtip em{font-style:normal;color:var(--muted);margin-top:4px}
 .simrec{margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel,transparent)}.simrec .ch-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}.simrec .ch-h span{font-size:12px;color:var(--muted)}
 .simr{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 0;border-top:1px solid var(--line);font-size:13px}.simr .sk{flex:none;font-size:11.5px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}.simr.same .sk{color:var(--ok);border-color:var(--ok)}.simr .st{flex:1 1 220px;color:var(--text)}.simr .sm{color:var(--muted);font-size:12px}.simr .sgo{padding:3px 10px;font-size:12px}
+.anytip{margin-top:6px;padding:7px 10px;border-radius:8px;border:1px dashed var(--line);font-size:12px;color:var(--muted);line-height:1.5}.anytip b{color:var(--text);font-weight:600}
 .lvhelp{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px 14px;margin:0 0 10px;font-size:12.5px;color:var(--muted)}.lvhelp div{display:flex;gap:8px}.lvhelp dt{flex:none;min-width:34px;font-weight:700;color:var(--gold,#e2c27a)}.lvhelp dd{margin:0;line-height:1.5}
 .tshare{display:inline-flex;flex-direction:column;align-items:flex-end;margin-left:8px;font-weight:700;font-size:14px;color:var(--text);line-height:1.1}.tshare small{font-weight:400;font-size:11px;color:var(--muted)}
 .needguide{font-size:13px;color:var(--text);background:color-mix(in srgb,var(--gold,#c8a95a) 10%,transparent);border:1px solid color-mix(in srgb,var(--gold,#c8a95a) 40%,transparent);border-radius:8px;padding:6px 10px;flex-basis:100%}
@@ -1461,8 +1462,24 @@ function similarHTML(it, an){ const list=similarRecipes(it, an); if(!list.length
   const fd = v => v==null ? '…' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
   let need=false; const rows = list.map(x=>{ const m=S.simC?.[x.b.g+'|'+x.b.tr]; if(m===undefined){ need=true; simMean(x.b.g, x.b.tr).then(()=>{ if(S.last?.it===it) render(); }); }
     return `<div class="simr ${x.same?'same':''}"><span class="sk">${x.same?L('같은 구조','Same structure'):L(`비슷함 ${Math.round(x.sc*100)}%`,`${Math.round(x.sc*100)}% alike`)}</span><span class="st">${esc(x.b.ti?.[KR()?'kr':'en']||x.id)}</span><span class="sm">${GRADE_N()[x.b.tr]||''} · ${DIFF_N()[x.b.d]||''} · ${L('평균','avg')} ${fd(m)} div</span><button type="button" class="btn sgo" data-goto="${esc(x.id)}">${L('레시피 보기','Open recipe')}</button></div>`; }).join('');
-  const same = list.find(x=>x.same);
-  return `<div class="simrec"><div class="ch-h"><b>${L('비슷한 등록 레시피','Similar registered recipes')}</b><span>${same ? L('같은 구조가 있으면 그 레시피의 플로우차트를 먼저 따름. 아래 초안과 비용 비교','A same-structure recipe comes first; compare it with the draft below') : L('구조가 달라 초안은 가장 싼 길을 따로 찾음','Different structure: the draft searches its own cheapest path')}</span></div>${rows}</div>`; }
+  const same = list.find(x=>x.same), tip = anyTipHTML(it, an, list);
+  return `<div class="simrec"><div class="ch-h"><b>${L('비슷한 등록 레시피','Similar registered recipes')}</b><span>${same ? L('같은 구조가 있으면 그 레시피의 플로우차트를 먼저 따름. 아래 초안과 비용 비교','A same-structure recipe comes first; compare it with the draft below') : L('구조가 달라 초안은 가장 싼 길을 따로 찾음','Different structure: the draft searches its own cheapest path')}</span></div>${rows}${tip}</div>`; }
+/* 팁(사용자 확정 2026-11-12): 등록 레시피가 한 자리를 '여러 옵션 중 아무거나'로 받는데 초안은 붙여 넣은 옵션 하나만 노리면, 초안 비용이 더 크게 보이는 이유를 알려 줌.
+   나중에(로드맵) 리버스 화면에서 '유효 옵션군'을 고르면 그중 하나만 떠도 되는 목표로 초안을 만들 예정 */
+function anyTipHTML(it, an, list){
+  if(!S.recAll){ if(!S.recLoad) S.recLoad = fetch('data/recipes.json').then(r=>r.ok?r.json():null).then(j=>{ S.recAll = (j && (j.recipes||j)) || []; if(S.last?.it===it) render(); }).catch(()=>{ S.recAll=[]; }); return ''; }
+  const marked = S.need.size || S.soft?.size, mine = an.rows.filter((r,i)=>!r.unrev && !r.m.fr && r.g && (!marked || S.need.has(i) || S.soft?.has(i)));
+  const fam = gi => it.D.groups[gi]?.f.join('+'), hits=[], seen=new Set();
+  for(const x of list){ const rc = S.recAll.find(y=>y.id===x.id); if(!rc) continue;
+    for(const n of rc.nodes||[]){ const t=n.target||{}, A = n.do==='reveal' ? t.reveal?.anyOf : t.anyOf; if(!A || A.length<2 || t.junk || n.optional) continue;
+      if(new Set(A.map(o=>fam(o.gi))).size<2) continue; const m = mine.find(r=>A.some(o=>o.gi===r.m.gi)); if(!m || seen.has(m)) continue;
+      seen.add(m); hits.push({x, m, k:A.length}); } }
+  if(!hits.length) return ''; hits.sort((a,c)=>c.k-a.k);
+  const nm = r => { const v = (KR() ? (r.t[4]||r.t[2]) : (r.t[5]||r.t[3])) || ''; return v.length>42 ? v.slice(0,40)+'…' : v; };
+  const by = new Map(); hits.forEach(h=>{ if(!by.has(h.x.id)) by.set(h.x.id, []); by.get(h.x.id).push(h); });
+  return [...by.values()].slice(0,2).map(hs=>{ const x=hs[0].x, kt=x.b.ti?.kr||x.id, sl = hs.slice(0,3);
+    return `<div class="anytip">${L(`팁: 「${esc(kt)}」${josa(kt,'은','는')} ${sl.map(h=>`<b>${esc(nm(h.m))}</b> 자리를 ${h.k}개 중 아무거나`).join(', ')}로 받음. 초안은 붙여 넣은 옵션 하나만 노려서 비용이 더 크게 보일 수 있음.`,
+      `Tip: "${esc(x.b.ti?.en||x.id)}" accepts ${sl.map(h=>`any of ${h.k} in the <b>${esc(nm(h.m))}</b> slot`).join(', ')}. The draft aims only at the pasted modifier, so its cost can look higher.`)}</div>`; }).join(''); }
 function render(){
   renderStatic();
   const a=S.last;
