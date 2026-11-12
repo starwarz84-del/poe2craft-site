@@ -45,7 +45,7 @@
 | absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 재확인 필요 | A(Opus) | 자막 전체 대조, 단계·분기 일치(기록 tools/notes/sl-jr6-YLMJsC8.md). 등급 C17도 이미 맞음. 변경 없음 |
 | gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 삭제 11-11 | B(Fable) | 사용자 요청으로 내림(22:21). 플로우차트 옵션이 영상이 만든 목걸이와 달랐음. 다시 올리려면 영상 전체 기준으로 새로 만들고 build_recipes.py REMOVED·build_tips.py·gen_batch11.py의 막아 둔 줄을 지움 |
 | saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 재확인 필요 | A(Opus) | 자막 전체 대조, 첫 번째 집중구 단계 일치(기록 tools/notes/saveq-R43FVay8_XI.md). 하이엔드 에너지 보호막 접두도 1티어(C17). 343/208 → 504/208 |
-| mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 재확인 필요 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/mazbro-kULlZJBSec4.md). 하이엔드 공개 목표 1티어(C17). 222/201 → 233/201 |
+| mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 진행 중(새 기준 재작성) | W28(Opus 5.5) · 검수 마스터 | 자막 전체 대조, 단계 일치(기록 tools/notes/mazbro-kULlZJBSec4.md). 하이엔드 공개 목표 1티어(C17). 222/201 → 233/201 |
 | diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 재확인 필요 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-GDLDxn6yxEs.md). C17: 에센셜은 공개 나오는 대로(영상과 같음). 149/24/3 |
 | bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 재확인 필요 | A(Opus) | 글 다시 확인(6/22판), 가성비 길 단계 일치(기록 tools/notes/web-bigdaddy-wand.md). 완성품 임의 문구를 태그로. 비용 그대로 |
 | ragna-spell4-amulet-v2 | Tzpdm8M-Pkk | bal 118, ess 27 | 0 | 재확인 필요 | A(Opus) | 자막 전체(3:34) 대조, 단계 일치(기록 tools/notes/ragna-Tzpdm8M-Pkk.md). C17도 맞음. 변경 없음 |

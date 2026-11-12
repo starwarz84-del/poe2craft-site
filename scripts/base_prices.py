@@ -30,6 +30,7 @@ BASEPRICE = {
   'barricade-quarterstaff': None,
   'belton-plus8-wand': None,
   'chiba-timelost-emerald': None,
+  'chiba-timelost-emerald-v2': 14, 'chiba-timelost-emerald-v2-bal': 14,   # 영상 4:05: 공격 치명타 확률 + 옵션 2개 레어 14 div
   'diztoh-5mod-emerald': None,
   'diztoh-as-spear': None,
   'diztoh-budget-2h-mace': None,

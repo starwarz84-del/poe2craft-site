@@ -23,8 +23,7 @@ R.append({
    'note':K('공격 치명타 확률 7%(최대) 분열 + 잡옵 1개.','Fractured 7% attack crit chance (max) plus one junk line.')},
   {'id':'c2','phase':'suf','do':'chaos','cur':'Chaos_Orb','target':{'anyOf':[{'gi':cb_cdS},{'gi':cb_cdA}]},'fail':{'goto':'self'},'ts':'5:02'},
   {'id':'c3','phase':'con','do':'exalt','cur':'Exalted_Orb','target':{'junk':'p','count':2},'ts':'5:42'},
-  {'id':'c4','phase':'con','do':'essence','cur':'Ancient_Potent_Liquid_Contempt','knownP':True,'target':{'gi':cb_plusS,'chance':0.5,'slots':{'s':1}},'fail':{'goto':'c2','via':{'cur':'Orb_of_Annulment'}},'ts':'5:53',
-   'br':K('접미 +1 → 다음, 실패: 소멸의 오브로 분열 + 옵션 1개 → 카오스 오브부터','+1 suffix → next; miss: annul to fracture + one line, chaos again')},
+  {'id':'c4','phase':'con','do':'essence','cur':'Ancient_Potent_Liquid_Contempt','knownP':True,'target':{'gi':cb_plusS,'chance':0.5,'slots':{'s':1}},'fail':{'goto':'c2','via':{'cur':'Orb_of_Annulment'}},'ts':'5:53'},   # W24 11-13: 분기 줄은 플로우차트 갈래 칩과 겹쳐 뺌
   {'id':'c5','phase':'des','do':'desecrate','cur':'Preserved_Cranium','target':{'unrev':'s'},'ts':'6:11'},
   {'id':'c6','phase':'des','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':[{'gi':cb_as},{'gi':cb_cdA},{'gi':cb_asS},{'gi':cb_nef}]},'side':'s','bone':'Preserved_Cranium'},'fail':{'goto':'c5','via':LIGHT},'ts':'6:15'},
   {'id':'c7','phase':'pre','do':'remove','cur':'Orb_of_Annulment','omens':['Omen_of_Sinistral_Annulment'],'target':{'dropGi':cb_plusS},'ts':'10:02',
@@ -32,7 +31,6 @@ R.append({
   {'id':'c8','phase':'pre','do':'exalt','cur':'Exalted_Orb','target':{'junk':'p'},'ts':'10:30',
    'br':K('접두 옵션 2개까지, 두 번 지웠으면 2번','Up to two prefixes (twice if both were annulled)')},
   {'id':'c9','phase':'pre','do':'chaos','cur':'Chaos_Orb','target':{'anyOf':CB_PRE},'fail':{'goto':'self'},'ts':'10:40'},
-  {'id':'c10','phase':'pre','do':'essence','cur':'Ancient_Potent_Liquid_Melancholy','knownP':True,'target':{'gi':cb_mel,'chance':0.5,'missDrop':cb_pspd},'fail':{'goto':'c9'},'ts':'11:08',
-   'br':K('좋은 접두 유지 → 완성, 지워지면 카오스 오브부터','Good prefix kept → done; lost → chaos again')},
+  {'id':'c10','phase':'pre','do':'essence','cur':'Ancient_Potent_Liquid_Melancholy','knownP':True,'target':{'gi':cb_mel,'chance':0.5,'missDrop':cb_pspd},'fail':{'goto':'c9'},'ts':'11:08'},   # W24 11-13: 분기 줄은 플로우차트 갈래 칩과 겹쳐 뺌(밸런스는 결과 그대로)
   {'id':'c11','phase':'fin','do':'quality','cur':'Refined_Reaver_Catalyst','target':{'quality':20},'ts':'11:57'},
  ]})

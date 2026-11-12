@@ -8,5 +8,5 @@ for _t in ('high','bal'): _grade8('mastert-timelost-emerald','mastert-timelost-e
 def _chiba(r, t):
     _drop(r,'c11')   # finishing catalyst quality is left out (정책 23)
     _node(r,'c4')['target']['chance']=2/3   # 2 junk prefixes + 1 removable suffix: a prefix goes 2/3 → +1 suffix allowed
-    if t=='bal': c6=_node(r,'c6'); c6.pop('fail',None); c6['br']=KEEP
+    # W24 2026-11-13: 밸런스도 빛의 징조로 다시 공개(정책 10장 C17-3) — 플로우차트 그대로 읽음
 for _t in ('high','bal'): _grade8('chiba-timelost-emerald','chiba-timelost-emerald-v2',_t,_chiba)

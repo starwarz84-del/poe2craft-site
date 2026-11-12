@@ -15,7 +15,7 @@ def _tm32(r, nid, tm, gis=None):
 def _any32(r, nid):
     n=next(x for x in r['nodes'] if x['id']==nid); n['target']['anyReveal']=True; n.pop('fail',None)
     n['br']={'kr':'공개 결과 그대로, 다시 하지 않음','en':'Keep whatever the reveal gives'}
-for _id,_n in [('chiba-timelost-emerald-v2-bal','c6'),('mastert-timelost-emerald-v2-bal','t6'),('noble-timelost-sapphire-v2-bal','n11'),
+for _id,_n in [('mastert-timelost-emerald-v2-bal','t6'),('noble-timelost-sapphire-v2-bal','n11'),
                ('sl-5mod-jewel-v2-ess','s7'),('vodnarg-timelost-emerald-v2-ess','v4'),('zenm-timelost-sapphire-v2-ess','z5'),('mazbro-spell5-amulet-v2-bal','z13')]:
     _any32(_rid32(_id),_n)
 for _t,_tm in (('bal',2),('ess',3)):

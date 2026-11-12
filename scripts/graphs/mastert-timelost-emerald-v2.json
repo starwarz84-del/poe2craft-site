@@ -3,20 +3,20 @@
  "recipe": "mastert-timelost-emerald-v2",
  "cls": "Time-Lost_Emerald",
  "base": "Time-Lost Emerald",
- "ilvl": 81,
- "note": "Master T 5옵션 오래된 에메랄드(GNNkhSENp6Q) — 공격 치명타 확률 분열 + 잡옵 → 카오스 오브(공격 치명타 피해) → 엑잘(접두 잡옵) → 고대 위력적인 액체 경멸(실패 = 소멸의 오브로 분열 + 옵션 1개) → 우측 강령술 + 보존된 두개골 → 공개(이동 속도, 하이엔드 = 빛의 징조로 다시) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘(접두) → 카오스 오브(상태 이상·감전 강도) → 고대 위력적인 액체 우울. 신성한 오브 마무리는 뺌.",
+ "ilvl": 80,
+ "note": "2026-11-13 W23 영상 전체 화면 대조(오래된 에메랄드 Sol Curio 성공 회차, 일반 에메랄드와 동시 제작). 공격 치명타 확률 7% 분열 오래된 에메랄드 구입(5:00, 아이템 레벨 80) → 소멸의 오브로 분열 + 옵션 1개(5:30~5:47) → 카오스 반복으로 공격 피해의 치명타 피해 보너스(7:50) → 엑잘 하나로 접두 잡옵(8:08) → 고대 위력적인 액체 경멸 50:50(8:52 접미 +1 성공) → 우측 강령술 + 보존된 두개골(10:05) → 심연의 메아리 공개(12:09 실패, 빛의 징조로 다시) → 이동 속도(13:52) → 좌측 말소의 징조 + 카오스(15:21) → 엑잘(15:26) → 카오스 반복으로 접두만 바뀜(17:00~19:56, 감전의 강도) → 고대 위력적인 액체 우울(21:44 실패: 감전 강도가 지워짐) → 카오스 반복(21:58 상태 이상의 강도) → 우울 성공(22:13). 신성한 오브 마무리(22:40~24:52)는 정책 14장대로 뺌. 하이엔드 = 영상(이동 속도까지 빛의 징조로 다시), 밸런스 = 영상 11:00 설명의 남겨도 좋은 접미 다섯 중 먼저 뜬 것.",
  "params": {
   "v": {
-   "kr": "진행",
-   "en": "Route",
+   "kr": "공개 목표",
+   "en": "Reveal target",
    "values": {
     "1": {
-     "kr": "영상",
-     "en": "Video"
+     "kr": "이동 속도",
+     "en": "Movement speed"
     },
     "2": {
-     "kr": "결과 그대로",
-     "en": "As it comes"
+     "kr": "좋은 접미 다섯 중 하나",
+     "en": "One of five good suffixes"
     }
    }
   }
@@ -43,9 +43,10 @@
    "params": {
     "v": 2
    },
+   "tier": "bal",
    "desc": {
-    "kr": "공개 결과 그대로, 나머지는 영상대로",
-    "en": "Keep the reveal, the rest as in the video"
+    "kr": "공개는 영상이 꼽은 좋은 접미 다섯 중 먼저 뜬 것",
+    "en": "The reveal takes whichever of the five good suffixes from the video lands first"
    }
   },
   {
@@ -55,15 +56,25 @@
    "params": {
     "v": 1
    },
+   "tier": "high",
    "desc": {
-    "kr": "영상: 빛의 징조로 원하는 접미가 나올 때까지 다시 공개",
-    "en": "Video: Light retries until the wanted suffix shows"
+    "kr": "영상: 이동 속도가 나올 때까지 빛의 징조로 다시 공개",
+    "en": "Video: Omen of Light until movement speed shows"
    }
   }
  ],
  "tags": {
   "cc": {
    "gi": 8
+  },
+  "cd": {
+   "gi": 9
+  },
+  "ms": {
+   "gi": 48
+  },
+  "rad": {
+   "gi": 99
   },
   "contS": {
    "gi": 101,
@@ -77,20 +88,23 @@
     "p": 1
    }
   },
-  "rad": {
-   "gi": 99
-  },
-  "cd": {
-   "gi": 9
-  },
-  "ms": {
-   "gi": 48
-  },
   "p6": {
    "gi": 6
   },
   "p62": {
    "gi": 62
+  },
+  "s11": {
+   "gi": 11
+  },
+  "s17": {
+   "gi": 17
+  },
+  "s3": {
+   "gi": 3
+  },
+  "s2": {
+   "gi": 2
   },
   "pre": {
    "anyOf": [
@@ -98,13 +112,29 @@
     "p62"
    ],
    "label": {
-    "kr": "상태 이상·감전 강도",
-    "en": "Ailment or shock magnitude"
+    "kr": "상태 이상의 강도·감전의 강도",
+    "en": "Magnitude of Ailments or Magnitude of Shock"
+   }
+  },
+  "revB": {
+   "anyOf": [
+    "s11",
+    "s17",
+    "ms",
+    "s3",
+    "s2"
+   ],
+   "label": {
+    "kr": "공격 속도·활 사용 시 공격 속도·이동 속도·주요 패시브 스킬 효과·소형 패시브 스킬 효과",
+    "en": "Attack speed, attack speed with bows, movement speed, notable effect or small passive effect"
    }
   }
  },
  "require": {
   "all": [
+   {
+    "has": "cc"
+   },
    {
     "has": "cd"
    },
@@ -113,6 +143,9 @@
    },
    {
     "has": "rad"
+   },
+   {
+    "has": "revB"
    }
   ]
  },
@@ -136,28 +169,11 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "m5",
-    "m6",
-    "m6x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  },
-  {
-   "id": "L2",
-   "nodes": [
-    "m8",
-    "m9"
-   ],
-   "kr": "우울",
-   "en": "Melancholy"
-  }
- ],
+ "start": "h0",
+ "cap": {
+  "p": 2,
+  "s": 2
+ },
  "finals": [
   {
    "id": "high",
@@ -165,28 +181,22 @@
    "en": "High-end",
    "lines": [
     {
-     "side": "p",
-     "label": {
-      "kr": "상태 이상·감전 강도",
-      "en": "Ailment or shock magnitude"
-     }
+     "tag": "pre"
     },
     {
      "tag": "rad",
-     "tmax": 1
+     "ess": true
     },
     {
      "tag": "cc",
-     "tmax": 1,
      "fr": true
     },
     {
-     "tag": "cd",
-     "tmax": 1
+     "tag": "cd"
     },
     {
      "tag": "ms",
-     "tmax": 1
+     "des": true
     }
    ]
   },
@@ -196,28 +206,22 @@
    "en": "Balance",
    "lines": [
     {
-     "side": "p",
-     "label": {
-      "kr": "상태 이상·감전 강도",
-      "en": "Ailment or shock magnitude"
-     }
+     "tag": "pre"
     },
     {
      "tag": "rad",
-     "tmax": 1
+     "ess": true
     },
     {
      "tag": "cc",
-     "tmax": 1,
      "fr": true
     },
     {
-     "tag": "cd",
-     "tmax": 1
+     "tag": "cd"
     },
     {
-     "side": "s",
-     "random": true
+     "tag": "revB",
+     "des": true
     }
    ]
   }
@@ -228,14 +232,14 @@
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "h0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "pc",
    "start": {
     "rar": "rare",
     "mods": [
@@ -245,19 +249,22 @@
      },
      {
       "junk": "p"
+     },
+     {
+      "junk": "s"
      }
     ]
    },
    "label": {
-    "kr": "공격 치명타 확률 분열 + 잡옵 1개 오래된 에메랄드",
-    "en": "Time-Lost Emerald: fractured attack crit chance + one junk line"
+    "kr": "공격 치명타 확률 7% 분열 오래된 에메랄드 구입",
+    "en": "Buy a Time-Lost Emerald with fractured 7% attack critical chance"
    },
    "item": [
     {
      "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
-     "m": "n",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
      "tags": [
       "cc"
      ]
@@ -267,34 +274,9 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
-    }
-   ]
-  },
-  {
-   "id": "ms",
-   "kind": "mark",
-   "group": "main",
-   "pos": [
-    0,
-    0.6
-   ],
-   "next": "m2",
-   "label": {
-    "kr": "아이템 제작 시작",
-    "en": "Item crafting starts"
-   },
-   "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
-     "m": "n",
-     "tags": [
-      "cc"
-     ]
     },
     {
-     "s": "p",
+     "s": "s",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
@@ -302,203 +284,12 @@
    ]
   },
   {
-   "id": "m2",
-   "kind": "act",
-   "group": "main",
+   "id": "pc",
+   "kind": "cleanup",
+   "group": "prep",
    "pos": [
     0,
     1
-   ],
-   "act": "chaos",
-   "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix"
-   },
-   "label": {
-    "kr": "카오스",
-    "en": "Chaos"
-   },
-   "edges": [
-    {
-     "if": {
-      "has": "cd"
-     },
-     "to": "m3",
-     "res": "ok"
-    },
-    {
-     "to": "m2",
-     "res": "fail"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
-     "m": "n",
-     "tags": [
-      "cc"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "cd"
-     ]
-    }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "cd"
-   ]
-  },
-  {
-   "id": "m3",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    2
-   ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접두 잡옵 1개",
-    "en": "One junk prefix"
-   },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
-   "edges": [
-    {
-     "to": "m4"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
-     "m": "n",
-     "tags": [
-      "cc"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "cd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개 (접미가 꽉 차 접두로)",
-     "en": "One random line (suffixes are full)"
-    }
-   ]
-  },
-  {
-   "id": "m4",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    3
-   ],
-   "act": "essence",
-   "goal": {
-    "kr": "고대 위력적인 액체 경멸",
-    "en": "Ancient Potent Liquid Contempt"
-   },
-   "label": {
-    "kr": "액체",
-    "en": "Liquid"
-   },
-   "edges": [
-    {
-     "if": {
-      "all": [
-       {
-        "has": "contS"
-       },
-       {
-        "has": "cd"
-       }
-      ]
-     },
-     "to": "m5",
-     "res": "ok"
-    },
-    {
-     "to": "m4x",
-     "res": "fail",
-     "port": "right"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
-     "m": "n",
-     "tags": [
-      "cc"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "cd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
-     "tags": [
-      "contS"
-     ]
-    }
-   ],
-   "cur": "Ancient_Potent_Liquid_Contempt",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed"
-    }
-   ],
-   "ess": "contS",
-   "liquid": true,
-   "alt": "contP"
-  },
-  {
-   "id": "m4x",
-   "kind": "cleanup",
-   "group": "main",
-   "pos": [
-    1,
-    3
    ],
    "keep": [],
    "maxJunk": 1,
@@ -512,137 +303,458 @@
    },
    "target": {
     "kr": "분열 + 옵션 1개만 남기기",
-    "en": "Keep the fracture + one line"
+    "en": "Keep only the fracture + one option"
    },
    "edges": [
     {
-     "to": "m2",
-     "port": "right"
-    }
-   ]
-  },
-  {
-   "id": "m5",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    4
-   ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "접미 세번째 옵션(훼손)",
-    "en": "Third suffix (desecrated)"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "edges": [
-    {
-     "to": "m6"
+     "to": "ms"
     }
    ],
    "item": [
     {
      "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
-     "m": "n",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    2.4
+   ],
+   "next": "c1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3.4
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
+   },
+   "show": [
+    "cd"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "cd"
+     },
+     "to": "e1",
+     "res": "ok"
+    },
+    {
+     "to": "c1",
+     "res": "fail",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
      "tags": [
       "cc"
      ]
     },
     {
      "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
+     "kr": "반경 내 주요 패시브 스킬이 공격 피해의 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus for Attack Damage",
      "m": "n",
      "tags": [
       "cd"
      ]
-    },
+    }
+   ]
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4.4
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 잡옵 1개",
+    "en": "One junk prefix"
+   },
+   "showText": [
+    {
+     "kr": "접미가 꽉 차 접두로 랜덤 옵션 1개",
+     "en": "Suffixes are full: one random prefix"
+    }
+   ],
+   "edges": [
+    {
+     "to": "l1"
+    }
+   ],
+   "item": [
     {
      "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 피해의 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus for Attack Damage",
      "m": "n",
+     "tags": [
+      "cd"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "l1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5.4
+   ],
+   "act": "essence",
+   "cur": "Ancient_Potent_Liquid_Contempt",
+   "ess": "contS",
+   "alt": "contP",
+   "liquid": true,
+   "label": {
+    "kr": "액체",
+    "en": "Liquid"
+   },
+   "goal": {
+    "kr": "접미어 속성 부여의 최대 개수 +1개",
+    "en": "+1 Suffix Modifier allowed"
+   },
+   "showText": [
+    {
+     "kr": "접두 잡옵이 지워지면 성공, 치명타 피해가 지워지면 실패",
+     "en": "The junk prefix goes: success; the critical damage goes: miss"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "contS"
+       },
+       {
+        "has": "cd"
+       }
+      ]
+     },
+     "to": "d1",
+     "res": "ok"
+    },
+    {
+     "to": "l1x",
+     "res": "fail",
+     "label": {
+      "kr": "치명타 피해가 지워짐",
+      "en": "Critical damage gone"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
      "tags": [
       "contS"
      ]
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Cranium",
-   "showText": [
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
+     "tags": [
+      "cc"
+     ]
+    },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
+     "kr": "반경 내 주요 패시브 스킬이 공격 피해의 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus for Attack Damage",
+     "m": "n",
+     "tags": [
+      "cd"
+     ]
     }
-   ],
-   "omens": [
-    "Omen_of_Dextral_Necromancy"
    ]
   },
   {
-   "id": "m6",
+   "id": "l1x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    5.4
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기고 카오스부터",
+    "en": "Keep the fracture + one option, back to Chaos"
+   },
+   "edges": [
+    {
+     "to": "c1",
+     "label": {
+      "kr": "다시 카오스",
+      "en": "Chaos again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "d1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    6.4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Cranium",
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "r1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
+     "tags": [
+      "contS"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 피해의 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus for Attack Damage",
+     "m": "n",
+     "tags": [
+      "cd"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "r1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "ms",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접미 이동 속도",
+    "en": "Movement speed suffix"
+   },
+   "show": [
+    "ms"
+   ],
    "edges": [
     {
      "if": {
       "added": "ms"
      },
-     "to": "m7",
+     "to": "x1",
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
-     "to": "m6x",
-     "res": "fail"
-    },
+     "to": "r1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "over": [
     {
-     "to": "m7",
-     "res": "fail"
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "want": "revB",
+      "show": [
+       "s11",
+       "s17",
+       "ms",
+       "s3",
+       "s2"
+      ],
+      "goal": {
+       "kr": "접미 좋은 옵션 — 공격 속도·활 공격 속도·이동 속도·주요·소형 패시브 효과 중 먼저 뜬 것",
+       "en": "A good suffix: whichever of attack speed, bow attack speed, movement speed, notable or small passive effect lands first"
+      },
+      "edges": [
+       {
+        "if": {
+         "added": "revB"
+        },
+        "to": "x1",
+        "res": "ok"
+       },
+       {
+        "to": "r1x",
+        "res": "fail",
+        "label": {
+         "kr": "빗나감",
+         "en": "Miss"
+        }
+       }
+      ]
+     }
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
+     "tags": [
+      "contS"
+     ]
+    },
+    {
      "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
-     "m": "n",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
      "tags": [
       "cc"
      ]
     },
     {
      "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
+     "kr": "반경 내 주요 패시브 스킬이 공격 피해의 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus for Attack Damage",
      "m": "n",
      "tags": [
       "cd"
@@ -650,38 +762,22 @@
     },
     {
      "s": "s",
-     "kr": "이동 속도",
-     "en": "Movement speed",
-     "m": "n",
+     "kr": "반경 내 주요 패시브 스킬이 이동 속도 1% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant 1% increased Movement Speed",
+     "m": "d",
      "tags": [
       "ms"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
-     "tags": [
-      "contS"
-     ]
     }
-   ],
-   "want": "ms",
-   "show": [
-    "ms"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
-   "id": "m6x",
+   "id": "r1x",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    5
+    7.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -702,55 +798,75 @@
    },
    "edges": [
     {
-     "to": "m5",
-     "port": "right"
+     "to": "d1",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
   {
-   "id": "m7",
+   "id": "x1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    6
+    8.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "+1 접미 허용 옵션 지우기 (접두만 바뀜)",
-    "en": "Reroll the +1 suffix line away (prefixes only)"
-   },
+   "cur": "Chaos_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Erasure"
+   ],
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접미어 속성 부여의 최대 개수 +1개 지우기",
+    "en": "Remove +1 Suffix Modifier allowed"
+   },
+   "showText": [
+    {
+     "kr": "접미가 한도를 넘어 새 옵션은 접두로",
+     "en": "Suffixes are over the limit: the new option is a prefix"
+    }
+   ],
    "edges": [
     {
      "if": {
       "has": "contS"
      },
-     "to": "m7",
-     "res": "fail"
+     "to": "x1",
+     "res": "fail",
+     "hide": true
     },
     {
-     "to": "m7e",
+     "to": "e2",
      "res": "ok"
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
-     "m": "n",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
      "tags": [
       "cc"
      ]
     },
     {
      "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
+     "kr": "반경 내 주요 패시브 스킬이 공격 피해의 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus for Attack Damage",
      "m": "n",
      "tags": [
       "cd"
@@ -758,69 +874,78 @@
     },
     {
      "s": "s",
-     "kr": "이동 속도",
-     "en": "Movement speed",
-     "m": "n",
+     "kr": "반경 내 주요 패시브 스킬이 이동 속도 1% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant 1% increased Movement Speed",
+     "m": "d",
      "tags": [
       "ms"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
-   ],
-   "cur": "Chaos_Orb",
-   "omens": [
-    "Omen_of_Sinistral_Erasure"
    ]
   },
   {
-   "id": "m7e",
+   "id": "e2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    6.5
+    9.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 두번째 옵션 (아무 옵션)",
-    "en": "Second prefix (anything)"
-   },
+   "cur": "Exalted_Orb",
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
      "if": {
       "has": "pre"
      },
-     "to": "m9",
-     "res": "ok"
+     "to": "l2",
+     "res": "ok",
+     "hide": true
     },
     {
-     "to": "m8",
-     "res": "fail"
+     "to": "c2"
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
-     "m": "n",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
      "tags": [
       "cc"
      ]
     },
     {
      "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
+     "kr": "반경 내 주요 패시브 스킬이 공격 피해의 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus for Attack Damage",
      "m": "n",
      "tags": [
       "cd"
@@ -828,104 +953,80 @@
     },
     {
      "s": "s",
-     "kr": "이동 속도",
-     "en": "Movement speed",
-     "m": "n",
+     "kr": "반경 내 주요 패시브 스킬이 이동 속도 1% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant 1% increased Movement Speed",
+     "m": "d",
      "tags": [
       "ms"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
-    }
-   ],
-   "show": [
-    "p6",
-    "p62"
    ]
   },
   {
-   "id": "m8",
+   "id": "c2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7
+    10.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "좋은 접두 (접미가 한도를 넘어 접두만 바뀜)",
-    "en": "A good prefix (only prefixes change)"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접두 상태 이상의 강도 — 감전의 강도와 함께 먼저 뜬 것",
+    "en": "Magnitude of Ailments prefix: or Magnitude of Shock, whichever lands first"
+   },
+   "showText": [
+    {
+     "kr": "접미가 한도를 넘어 접두만 바뀜",
+     "en": "Suffixes are over the limit: only prefixes change"
+    }
+   ],
+   "show": [
+    "p6",
+    "p62"
+   ],
    "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "pre"
+       },
+       {
+        "has": "rad"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok",
+     "hide": true
+    },
     {
      "if": {
       "has": "pre"
      },
-     "to": "m9",
+     "to": "l2",
      "res": "ok"
     },
     {
-     "to": "m8",
-     "res": "fail"
+     "to": "c2",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
-     "m": "n",
-     "tags": [
-      "cc"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "cd"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "이동 속도",
-     "en": "Movement speed",
-     "m": "n",
-     "tags": [
-      "ms"
-     ]
-    },
-    {
      "s": "p",
-     "kr": "상태 이상·감전 강도",
-     "en": "Ailment or shock magnitude",
+     "kr": "반경 내 주요 패시브 스킬이 플레이어가 유발하는 상태 이상의 강도 (3—7)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (3—7)% increased Magnitude of Ailments you inflict",
      "m": "n",
      "tags": [
-      "pre"
+      "p6"
      ]
     },
     {
@@ -933,31 +1034,62 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 피해의 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus for Attack Damage",
+     "m": "n",
+     "tags": [
+      "cd"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 이동 속도 1% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant 1% increased Movement Speed",
+     "m": "d",
+     "tags": [
+      "ms"
+     ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "p6",
-    "p62"
    ]
   },
   {
-   "id": "m9",
+   "id": "l2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    8
+    11.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "고대 위력적인 액체 우울 (접두 하나가 지워짐)",
-    "en": "Ancient Potent Liquid Melancholy (one prefix goes)"
-   },
+   "cur": "Ancient_Potent_Liquid_Melancholy",
+   "ess": "rad",
+   "liquid": true,
    "label": {
     "kr": "액체",
     "en": "Liquid"
    },
+   "goal": {
+    "kr": "반경이 매우 넓은 반경으로 업그레이드",
+    "en": "Upgrades Radius to Very Large"
+   },
+   "showText": [
+    {
+     "kr": "접두 잡옵이 지워지면 성공, 좋은 접두가 지워지면 실패",
+     "en": "The junk prefix goes: success; the good prefix goes: miss"
+    }
+   ],
    "edges": [
     {
      "if": {
@@ -967,25 +1099,46 @@
      "res": "ok"
     },
     {
-     "to": "m8",
+     "to": "c2",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "좋은 접두가 지워짐 — 다시 카오스",
+      "en": "Good prefix gone: Chaos again"
+     }
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "공격 치명타 명중 확률 (분열)",
-     "en": "Attack crit chance (fractured)",
+     "s": "p",
+     "kr": "반경 내 주요 패시브 스킬이 플레이어가 유발하는 상태 이상의 강도 (3—7)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (3—7)% increased Magnitude of Ailments you inflict",
      "m": "n",
+     "tags": [
+      "p6"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "반경이 매우 넓은 반경으로 업그레이드",
+     "en": "Upgrades Radius to Very Large",
+     "m": "c",
+     "tags": [
+      "rad"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 7% 증가도 부여 (분열)",
+     "en": "Notable Passive Skills in Radius also grant 7% increased Critical Hit Chance for Attacks (fractured)",
+     "m": "f",
      "tags": [
       "cc"
      ]
     },
     {
      "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
+     "kr": "반경 내 주요 패시브 스킬이 공격 피해의 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus for Attack Damage",
      "m": "n",
      "tags": [
       "cd"
@@ -993,42 +1146,14 @@
     },
     {
      "s": "s",
-     "kr": "이동 속도",
-     "en": "Movement speed",
-     "m": "n",
+     "kr": "반경 내 주요 패시브 스킬이 이동 속도 1% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant 1% increased Movement Speed",
+     "m": "d",
      "tags": [
       "ms"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "상태 이상·감전 강도",
-     "en": "Ailment or shock magnitude",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "범위 아주 큼",
-     "en": "Very large radius",
-     "m": "n",
-     "tags": [
-      "rad"
-     ]
     }
-   ],
-   "cur": "Ancient_Potent_Liquid_Melancholy",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "범위 아주 큼",
-     "en": "Very large radius"
-    }
-   ],
-   "ess": "rad",
-   "liquid": true
+   ]
   },
   {
    "id": "ok",
@@ -1036,7 +1161,7 @@
    "group": "main",
    "pos": [
     0,
-    9
+    12.4
    ],
    "label": {
     "kr": "완성",
@@ -1044,8 +1169,25 @@
    }
   }
  ],
- "cap": {
-  "p": 2,
-  "s": 2
- }
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "d1",
+    "r1",
+    "r1x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "c2",
+    "l2"
+   ],
+   "kr": "우울",
+   "en": "Melancholy"
+  }
+ ]
 }
