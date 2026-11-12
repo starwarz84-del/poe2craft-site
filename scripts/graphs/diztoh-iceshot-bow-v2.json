@@ -206,6 +206,72 @@
    ]
   },
   {
+   "id": "L2",
+   "nodes": [
+    "e1",
+    "e1w",
+    "e1s"
+   ],
+   "kr": "접두 원소 피해 추가",
+   "en": "Elemental prefix",
+   "fold": true,
+   "goal": {
+    "kr": "접두 원소 피해 추가 1티어 (냉기·번개·화염)",
+    "en": "T1 added elemental damage prefix (cold, lightning or fire)"
+   },
+   "steps": [
+    {
+     "kr": "좌측 찬미의 징조 + 완벽한 엑잘티드 오브",
+     "en": "Omen of Sinistral Exaltation + Perfect Exalted Orb",
+     "node": "e1"
+    },
+    {
+     "kr": "빗나가면 절사의 징조 + 상위 카오스 오브, 가장 낮은 접두가 물리 피해 추가면 좌측 말소의 징조도",
+     "en": "Miss: Omen of Whittling + Greater Chaos Orb, plus Omen of Sinistral Erasure when flat physical is the lowest prefix",
+     "node": "e1w"
+    },
+    {
+     "kr": "새 옵션이 접미로 가면 우측 소멸의 징조 + 소멸의 오브 뒤 다시 엑잘",
+     "en": "New line on a suffix: Omen of Dextral Annulment + Orb of Annulment, then exalt again",
+     "node": "e1s"
+    }
+   ],
+   "worst": {
+    "kr": "물리 피해 추가가 지워지면 카오스 단계부터",
+    "en": "Flat physical gone: back to the Chaos step",
+    "to": "c1"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "n",
+     "tags": [
+      "fl"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해 (1—12)~(202—234) 추가",
+     "en": "Adds (1—12) to (202—234) Lightning Damage",
+     "m": "n",
+     "tags": [
+      "li"
+     ]
+    }
+   ]
+  },
+  {
    "id": "L1",
    "nodes": [
     "d2",
@@ -870,9 +936,24 @@
     },
     {
      "if": {
-      "has": "fl"
+      "all": [
+       {
+        "has": "fl"
+       },
+       {
+        "full": "p"
+       }
+      ]
      },
      "to": "e1w",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "fl"
+     },
+     "to": "e1s",
      "res": "ok",
      "hide": true
     },
@@ -1026,6 +1107,20 @@
      }
     },
     {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 3
+      }
+     },
+     "to": "e1s",
+     "res": "fail",
+     "label": {
+      "kr": "새 옵션이 접미로",
+      "en": "The new line went to a suffix"
+     }
+    },
+    {
      "to": "e1w",
      "res": "fail"
     }
@@ -1069,6 +1164,52 @@
     "side": "p",
     "keep": "keepP"
    }
+  },
+  {
+   "id": "e1s",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8.5
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접미 잡옵 지우기",
+    "en": "Remove the junk suffix"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "sideLt": {
+        "side": "s",
+        "n": 1
+       }
+      }
+     },
+     "to": "e1s"
+    },
+    {
+     "to": "e1",
+     "label": {
+      "kr": "다시 엑잘",
+      "en": "Exalt again"
+     }
+    }
+   ]
   },
   {
    "id": "al",
@@ -1729,7 +1870,17 @@
      "kr": "랜덤 옵션 1개 (접두가 꽉 차 접미로)",
      "en": "One random line (prefixes are full)"
     }
-   ]
+   ],
+   "skipIf": {
+    "not": {
+     "sideLt": {
+      "side": "s",
+      "n": 2
+     }
+    }
+   },
+   "skipTo": "x2",
+   "skipHide": true
   },
   {
    "id": "x2",
@@ -1771,7 +1922,6 @@
      },
      "to": "d1",
      "res": "fail",
-     "hide": true,
      "label": {
       "kr": "투사체 +4가 지워짐 — 훼손부터",
       "en": "+4 projectiles gone: desecrate again"
@@ -1944,7 +2094,12 @@
      "kr": "랜덤 옵션 1개",
      "en": "One random line"
     }
-   ]
+   ],
+   "skipIf": {
+    "full": "s"
+   },
+   "skipTo": "ok",
+   "skipHide": true
   },
   {
    "id": "ok",

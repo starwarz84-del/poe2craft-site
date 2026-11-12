@@ -540,6 +540,20 @@ def _routes(W, n, valid, G_=None, CD=None):
     return [{k: v for k, v in r.items() if v is not None and v is not False} for r in rs]
 
 
+def _repeats(W, n):
+    """상자가 다시 쓰이는지: 나가는 선을 따라 베이스·완성·버림을 거치지 않고 이 상자로 돌아올 수 있으면 반복(2026-11-12, recipes.html fcRepeats와 같은 규칙)"""
+    def nx(N): return [e.get('to') for e in N.get('edges') or []] + [N.get('next'), N.get('skipTo')] + list((N.get('options') or {}).values())
+    seen, q = set(), [x for x in nx(n) if x]
+    while q:
+        x = q.pop(0)
+        if x == n['id']: return True
+        if x in seen: continue
+        seen.add(x); N = W.by.get(x)
+        if not N or N.get('kind') in ('base', 'done', 'exit'): continue
+        q += [y for y in nx(N) if y]
+    return False
+
+
 def _fcs(W, n):
     t = W.st(n['id']) or {}
     tries = (t.get('visits') or 0) - (0 if n.get('kind') == 'cleanup' else (t.get('skips') or 0))
@@ -560,7 +574,7 @@ def _fcs(W, n):
             rows.append({'kr': rw['kr'], 'en': rw['en'], 'ids': ids, **({'p': round(b['ok'] / b['t'], 5)} if b and b.get('t') else {})})
     if p <= 0 and tries > 0: p = None   # 이 상자에서 바로 성공하는 일은 없고 결과에 따라 다음 상자로 갈림
     return {'p': round(p, 6) if p is not None else None, 'tries': round(tries, 4), 'use': {k: round(v, 4) for k, v in (t.get('use') or {}).items() if v >= 0.0005},
-            'div': round(t.get('div') or 0, 4), 'reach': round(t.get('reach') or 0, 4), **({'rows': rows} if rows else {}), **({'once': True} if n.get('once') else {})}
+            'div': round(t.get('div') or 0, 4), 'reach': round(t.get('reach') or 0, 4), **({'rows': rows} if rows else {}), **({'once': True} if n.get('once') or (n.get('kind') != 'cleanup' and p is not None and p < 0.995 and not _repeats(W, n)) else {})}   # 다시 하지 않는 상자: 레시피 글은 '1회 시도'
 
 
 def _miss(W, n):

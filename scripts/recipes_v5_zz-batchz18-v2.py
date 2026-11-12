@@ -6,11 +6,5 @@ for _t in ('high','bal'): _grade8('sl-proj7-gloves','sl-proj7-gloves-v2',_t,_pro
 
 def _iceshot(r, t):
     _drop(r,'w16')   # 신성한 오브·룬 교체·타락은 선택 (정책 23)
-    w8=_node(r,'w8'); el=w8['target']['anyOf']
-    tm=2 if t=='high' else 3   # 영상: 냉기가 좋지만 다른 원소·복합 물리도 받음
-    for x in el: x['tmax']=tm
-    _node(r,'w14')['target']['tmax']=3   # 영상 완성품 치명타 확률 = 3티어(+3.6%) — 하이엔드도 1~3티어 (2026-11-11 영상 재확인)
-    if t=='bal':
-        _node(r,'w7')['target']['tmax']=3
-        _node(r,'w12')['target']['reveal']['tmax']=2   # 투사체 +3도 받음
-for _t in ('high','bal'): _grade8('diztoh-iceshot-bow','diztoh-iceshot-bow-v2',_t,_iceshot)
+# 2026-11-12 W3 영상 전체 재대조: 극한(난이도 5) → 하이엔드만(정책 10장). 단계는 플로우차트(gen_batch18.py)에서 읽음(fcRead), 영상 시각은 build_recipes.py FC_TS.
+for _t in ('high',): _grade8('diztoh-iceshot-bow','diztoh-iceshot-bow-v2',_t,_iceshot)
