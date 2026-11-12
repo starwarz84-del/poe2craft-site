@@ -33,7 +33,7 @@ g = {
           '완벽한 엑잘 접미 잡옵(6:20) → 절사 + 완벽한 카오스로 투사체 +7(6:28~7:13, 약 200개) → 완벽한 엑잘(7:38, 볼트 2개 추가 장전 82 = 절사로 못 지움). '
           '사용자 확정 11-09 순서: 영상은 여기서 빛의 징조 → 턱뼈(8:06 보존된, 8:50 고대) → 물리 피해 추가 41~70(9:08)을 먼저 하고 우측 말소 + 카오스(9:48)·절사 + 상위 카오스로 공격 속도(9:54~10:26)를 했지만, '
           '10:06에 물리 피해 추가(레벨 75)가 절사 대상이 되어 위험 → 공격 속도까지 끝낸 뒤 막기를 지우고 물리 피해 추가를 마지막에 공개. '
-          '내부 결정: 4:36의 절사 카오스 한 번은 접두 복합 반복(절사 + 완벽한 카오스)과 같은 동작이라 그 반복으로 묶음, 자리 막기 공개는 영상 성공 회차대로 공격 원소 피해 1티어(영상 5:18은 정확도 1티어를 노리다 5:26에 바꿈), '
+          '내부 결정: 4:36의 절사 카오스 한 번은 접두 복합 반복(절사 + 완벽한 카오스)과 같은 동작이라 그 반복으로 묶음, 자리 막기 공개는 사용자 결정 11-13대로 정확도·공격 원소 피해 1티어 중 먼저 뜬 것(영상 5:18 정확도 목표 → 5:26 공격 원소 피해로 바꿈, 성공 회차 = 공격 원소 피해 133%), 막기 판정은 접두 훼손 옵션(desSide), 숫돌(퀄리티 20%)은 값싼 마무리라 비용 밖, '
           '마지막 공격 속도 반복의 절사·우측 말소는 trim 자동 선택(볼트 2개처럼 투사체보다 높은 잡옵이면 영상 9:48처럼 우측 말소 1/2). '
           '신성한 오브(2:04~2:50, 10:26)·히네코라의 머리카락 미리 보기(2:40, 9:32)·숫돌·상위 철 룬 3개(9:40)는 뺌.'),
  'params': {'pT': {'kr': '목표 티어', 'en': 'Target tier', 'values': {'1': K('1티어', 'T1')}}},
@@ -42,6 +42,7 @@ g = {
                'desc': K('영상: 접두 3개·접미 2개 모두 1티어, 물리 피해 추가는 마지막 훼손 공개', 'Video: every prefix and suffix at T1, flat physical revealed last')}],
  'tags': {'crit': {'gi': 18, 'tmax': 1}, 'pp': {'gi': 8, 'tmax': 1}, 'hyb': {'gi': 9, 'tmax': 1}, 'flat': {'gi': 3, 'tmax': 1},
           'eatk': {'gi': 23, 'tmax': 1}, 'acc': {'gi': 17, 'tmax': 1}, 'proj': {'gi': 10, 'tmax': 1}, 'as': {'gi': 16, 'tmax': 1},
+          'blk': {'anyOf': ['eatk', 'acc'], 'label': K('공격 스킬의 원소 피해·정확도 1티어', 'T1 elemental damage with attacks or accuracy')},
           'keepP': {'anyOf': ['pp', 'hyb'], 'label': K('물리 피해 % 1티어·복합 1티어', 'T1 % physical or T1 hybrid')},
           'keepS': {'anyOf': ['proj', 'as'], 'label': K('모든 투사체 스킬 레벨·공격 속도 1티어', 'T1 projectile skills or attack speed')}},
  'require': {'all': [{'has': 'pp'}, {'has': 'hyb'}, {'has': 'flat'}, {'has': 'crit'}, {'has': 'proj'}, {'has': 'as'}]},
@@ -109,15 +110,15 @@ A(id='b1', kind='act', group='main', pos=[0, 11], act='desecrate', cur='Preserve
   label=K('훼손', 'Desecrate'), goal=K('접두 훼손 — 자리 막기', 'Prefix desecration: the blocker'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'rv'}],
   item=[PP, J('p'), UN('p'), CRIT])
-A(id='rv', kind='act', group='main', pos=[0, 12], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='eatk', label=K('공개', 'Reveal'),
-  goal=K('접두 공격 스킬의 원소 피해 1티어 — 자리 막기', 'T1 elemental damage with attacks prefix: the blocker'), show=['eatk'],
+A(id='rv', kind='act', group='main', pos=[0, 12], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='blk', label=K('공개', 'Reveal'),
+  goal=K('접두 공격 스킬의 원소 피해 1티어 — 자리 막기', 'T1 elemental damage with attacks prefix: the blocker'), show=['eatk'], showText=[K('공격 스킬의 원소 피해·정확도 1티어 중 먼저 뜬 것', 'Whichever of T1 elemental damage with attacks or accuracy lands first')],
   edges=[{'if': {'not': {'has': 'pp'}}, 'to': 'hc', 'res': 'fail', 'hide': True},
-         {'if': {'added': 'eatk'}, 'to': 'w1', 'res': 'ok'},
+         {'if': {'added': 'blk'}, 'to': 'w1', 'res': 'ok'},
          {'to': 'rvx', 'res': 'fail'}],
   item=[PP, J('p'), EATK, CRIT])
 A(id='rvx', kind='act', group='main', pos=[1, 12], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'),
-  edges=[{'if': {'any': [{'famBlock': 'eatk'}, {'has': 'eatk'}]}, 'to': 'wc', 'res': 'fail', 'hide': True}, {'to': 'b1', 'label': K('다시 훼손', 'Desecrate again')}])
+  edges=[{'if': {'famBlock': 'blk'}, 'to': 'wc', 'res': 'fail', 'hide': True}, {'to': 'b1', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='w1', kind='act', group='main', pos=[0, 13], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
   goal=K('접두 세번째 옵션', 'Third prefix'), show=['hyb'], skipIf={'all': [{'has': 'hyb'}, {'desSide': 'p'}]}, skipTo='s2',
   skipNote=K('엑잘에서 복합 옵션이 붙었으면 건너뜀', 'Skipped if the exalt already gave the hybrid'),
@@ -127,7 +128,7 @@ A(id='w1p', kind='act', group='main', pos=[1, 13.5], act='chaos', cur='Perfect_C
   label=K('절사/좌측 말소 + 카오스', 'Whittling / Sinistral Erasure + Chaos'), goal=K('접두 잡옵 바꾸기', 'Reroll the junk prefix'), show=['hyb'],
   edges=W1E)
 A(id='wc', kind='cleanup', group='main', pos=[2, 13], keep=['pp', 'hyb'], maxJunk=0, label=ANN, goal=ANN,
-  target=K('잡옵 지우기 — 다시 자리 막기', 'Remove the junk, then block again'),
+  target=K('잡옵 지우기 — 다시 자리 막기 (영상에 없음 — 시뮬 되돌림)', 'Remove the junk, then block again (not in the video: simulation fallback)'),
   edges=[{'lost': 'pp', 'to': 'hc', 'res': 'fail', 'hide': True}, {'lost': 'hyb', 'to': 'wc', 'res': 'fail', 'hide': True},
          {'to': 'b1', 'res': 'ok', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='s2', kind='act', group='main', pos=[0, 14], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
