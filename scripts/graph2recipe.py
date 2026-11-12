@@ -452,7 +452,7 @@ def _routes(W, n, valid, G_=None, CD=None):
         elif len(multi.get(e0[5]) or ()) >= 2: lab = lab_ch; needc = not lab   # 지운 뒤 갈 곳이 여럿: 무엇이 지워졌는지(지운 뒤 선의 조건)로 씀
         else: lab = (e0[2] or lab_ch) if any(v.get('n') for v in L['vias']) else (lab_ch or e0[2])
         no = cls0 == 'fail' or (post and not main) or L['to'] == 'self' or bool(lab and re.match(r'(빗나감|실패)', lab.get('kr') or ''))
-        r = {'cls': 'no' if no else 'ok', 'lab': lab, 'to': L['to'], 'share': L['share'], 'n': round(L['share'] * ntot, 3), 'res': cls0 or cls_post}
+        r = {'cls': 'no' if no else 'ok', 'lab': lab, 'to': L['to'], 'share': L['share'], 'n': round(L['share'] * ntot, 3), 'res': cls0 or cls_post, '_i': e0[5] if e0[5] is not None and e0[5] >= 0 else 999}
         if needc: r['_c'] = True; r['_e0'] = e0[2]
         if L['vias']:
             v = dict(L['vias'][0])
@@ -477,7 +477,7 @@ def _routes(W, n, valid, G_=None, CD=None):
     m = {}
     for r in sorted(out, key=lambda r: -r['share']):
         k = (r['cls'], r['to'], json.dumps(r.get('lab'), ensure_ascii=False), json.dumps(r.get('via'), sort_keys=True), r.get('lost'))
-        if k in m: m[k]['share'] += r['share']; m[k]['n'] = (m[k].get('n') or 0) + (r.get('n') or 0)
+        if k in m: m[k]['share'] += r['share']; m[k]['n'] = (m[k].get('n') or 0) + (r.get('n') or 0); m[k]['_i'] = min(m[k].get('_i', 999), r.get('_i', 999))
         else: m[k] = dict(r)
     rs = list(m.values())
     # 아주 작은 갈래: 이 단계 반복(1% 미만)·실패(0.3% 미만)는 뺌, 1% 미만 실패가 둘 이상이면 '그 밖' 하나로.
@@ -534,9 +534,9 @@ def _routes(W, n, valid, G_=None, CD=None):
     if n.get('skipTo') and (t.get('skips') or 0) > 0.001 and ok_dest(dest(n['skipTo'])) and t['skips'] / max(1e-9, t.get('visits') or 1) >= 0.005:
         rs.append({'cls': 'ok', 'lab': n.get('skipNote') or {'kr': '이미 있으면 건너뜀', 'en': 'Skip if already there'}, 'to': dest(n['skipTo']),
                    'share': t['skips'] / max(1e-9, t.get('visits') or 1), 'skip': True})
-    # 순서: 성공(많은 것부터) → 실패(이 단계 반복 먼저) → 그 밖
-    rs.sort(key=lambda r: (r['cls'] != 'ok', r.get('skip', False), (r.get('lab') or {}).get('kr') == '그 밖', r['to'] != 'self', -(r['share'] or 0)))
-    for r in rs: r['share'] = round(r['share'], 5); r.pop('_a', None); r.pop('_c', None); r.pop('_e0', None)
+    # 순서: 성공(많은 것부터) → 실패(그래프 선 순서 = 플로우차트 흐름, 같으면 많은 것부터) → 그 밖 (2026-11-12: '1번째·2번째·3번째 빗나감'이 거꾸로 읽히던 것)
+    rs.sort(key=lambda r: (r['cls'] != 'ok', r.get('skip', False), (r.get('lab') or {}).get('kr') == '그 밖', r.get('_i', 999) if r['cls'] != 'ok' else 0, r['to'] != 'self', -(r['share'] or 0)))
+    for r in rs: r['share'] = round(r['share'], 5); r.pop('_a', None); r.pop('_c', None); r.pop('_e0', None); r.pop('_i', None)
     return [{k: v for k, v in r.items() if v is not None and v is not False} for r in rs]
 
 
