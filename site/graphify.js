@@ -161,7 +161,8 @@ function fromDraft(d, D, opt={}){
       else if(retry) o.edges.push({to:retry, res:'fail'});
       else o.edges.push({to:nxt, res:'fail'}); }
     // already done (a line that came back after a loss): skip the step
-    if(ch){ o.skipIf={count:{tag:ch.tag, min:ch.idx+1}}; o.skipTo=nxt; }
+    if(t.skipHas!=null && !n.k42){ const c={has:tagOf(t.skipHas)}; o.skipIf = n.pre!=null && typeof t.junk==='string' ? {any:[c, {not:{sideLt:{side:t.junk, n:n.pre+1}}}]} : c; o.skipTo=nxt; }   /* K42: 빗나간 엑잘 자리에 이미 붙은 에센스 — 버릴 옵션·에센스 단계를 건너뜀 */
+    else if(ch){ o.skipIf={count:{tag:ch.tag, min:ch.idx+1}}; o.skipTo=nxt; }
     else if(tg && !t.junk && !t.anyOf && a!=='reveal' && (okIf || a==='essence')) { o.skipIf={has:tg}; o.skipTo=nxt; }   // anyOf (policy 6: any single resistance) may already be met by another line
     else if(t.junk && ['exalt','chaos'].includes(a)){ const s=typeof t.junk==='string' ? t.junk : omSide(n.omens,/Exaltation/); if(s && a==='exalt'){ o.skipIf={full:s}; o.skipTo=nxt; } }
     else if(a==='desecrate' && !t.fromMark){ const rv=N.slice(N.indexOf(n)+1).find(x=>x.do==='reveal'); const rt=rv && targetTag(rv.target); o.skipIf = rt ? {any:[{unrev:true}, rv.pool ? {count:{tag:rt, min:rv.pool}} : {has:rt}]} : {unrev:true}; o.skipTo=nxt; }
@@ -195,6 +196,9 @@ function fromDraft(d, D, opt={}){
     const o=emit(n, xo._row, 1); if(!o) continue;
     // its success goes on like the step it backs up
     const xn = nextMain(X); o.edges = o.edges.map(e=>e.res==='ok' ? {...e, to:xn} : e); if(o.skipTo) o.skipTo=xn;
+    /* K42: 에센스를 붙이면 같은 엑잘로 돌아가고, 이미 붙어 있으면 그 엑잘의 평소 정리(다음 대체 단계 또는 실패 경로)로 */
+    if(n.k42){ o.edges = o.edges.map(e=>e.res==='ok' ? {...e, to:X.id} : e); const rest=(fb[X.id]||[]).filter(x=>x!==n && x.do!=='note' && !skipNode(x));
+      o.skipTo = rest.length ? rest[0].id : (failPath(X, X.fail, keepBefore(X), xo._row) || xn); }
     fbOut.push(o); }
   const all=[...mainOut, ...fbOut, ...extra];
   // positions: main lane rows, the rest to the right (one column per kind), sharing the row of the step they serve

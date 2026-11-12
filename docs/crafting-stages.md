@@ -132,6 +132,7 @@
 | 균열의 에센스 최대 퀄리티 옵션 | 퀄리티를 채운 뒤 그 옵션을 카오스 자리로 씀. 지워져도 퀄리티는 남고 제작 옵션 자리가 빔 | 카오스 1개 | sl-flamewave-ring, breach-ring-video (maxq-chaos-slot, breach-quality-stays) |
 | 확정 옵션도 필요함 | 결정화의 징조 + 합금·완벽한 에센스로 잡옵을 지우며 붙임. 그쪽이 분열 + 잡옵뿐이면 확정 | 합금 값 | sihan-chayula-sceptre (crystallise-alloy-clears-junk) |
 | 한쪽 잡옵 하나, 제작 옵션 자리가 빔 | 결정화의 징조 + 심연의 에센스 → 징표 → 싼 보존된 뼈로 훼손 → 공개(또는 빛 + 소멸). 접두·접미를 고를 수 있음 | 약 1 div (MazBro 기준) | mazbro-bis-chest, sl-proj7-gloves, gold-amulet-6line (cheap-junk-removal, K3) |
+| 엑잘이 빗나갔고 붙일 에센스·합금이 남음 | 빗나간 옵션을 지우지 않고 결정화의 징조 + 그 에센스·합금으로 바꿔 씀. 그쪽에 지울 옵션이 빗나간 옵션뿐이면 확정 | 소멸 징조·버릴 옵션 엑잘 값 | mazbro-sceptre, mazbro-proj-gloves (K42) |
 | 징표가 엉뚱한 쪽에 붙음 | 싼 뼈로 그 징표를 훼손한 뒤 다시 결정화 + 심연의 에센스. 그 훼손 옵션이 다음 지울 자리가 됨 | 뼈 + 에센스 | mirror-bow-video (mark-wrong-side) |
 | 접두·접미가 다 빗나감 | 빛 + 소멸 → 결정화 + 심연의 에센스로 한 바퀴에 접두 기회와 훼손 기회를 같이 봄 | 영상 기준 11~12 div 절약 | absent-amulet-video (abyss-mark-cheap-loop) |
 | 미공개 훼손이 있는 쪽 | 공개하지 않은 채 결정화 + 합금이면 그 훼손 옵션이 지워지며 합금 확정 | 합금 값 | sihan-chayula-wand (alloy-wipes-unrevealed) |

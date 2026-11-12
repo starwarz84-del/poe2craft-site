@@ -17,8 +17,8 @@ const out=[];
 for(const id of IDS){ const r=R.find(x=>x.id===id); if(!r || !SAMP.has(id)) continue; let reg; try{ reg=registered(r, +(process.env.REGN||400)); }catch(e){ out.push({id, skip:'등록 그래프: '+e.message}); continue; }
   if(!reg.fromReq){ out.push({id, skip:'완성 조건에 옵션 지정이 없음(아무 옵션이나 채우면 완성)'}); continue; }
   const buy=((r.start||{}).mods||[]).filter(m=>m.gi!=null && !m.crafted).map(m=>m.gi);
-  const x=await Promise.race([p.evaluate(async([id,card,qt,buy,EXP,OLD,per,rtags,rreq])=>{ const S=__rev; const x=S.recSamples.find(s=>s.id===id); if(!x) return {skip:'no sample'}; const it=await S.parse(x.text); if(it.err) return {skip:'parse'}; const an=S.analyse(it); if(an.putrid) return {skip:'putrid'};
-    S.need=new Set(); S.soft=new Set(); S.tsel={}; S.buy=new Set(); S.noVariants=!!OLD; const miss=[];
+  const x=await Promise.race([p.evaluate(async([id,card,qt,buy,EXP,OLD,per,rtags,rreq,NOK42])=>{ const S=__rev; const x=S.recSamples.find(s=>s.id===id); if(!x) return {skip:'no sample'}; const it=await S.parse(x.text); if(it.err) return {skip:'parse'}; const an=S.analyse(it); if(an.putrid) return {skip:'putrid'};
+    S.need=new Set(); S.soft=new Set(); S.tsel={}; S.buy=new Set(); S.noVariants=!!OLD; S.noK42=NOK42; const miss=[];
     const took=new Set(); card.forEach((l,ci)=>{ if(per[ci]<0.98) return; const i=an.rows.findIndex((r,k)=>!r.unrev && !took.has(k) && l.opts.some(o=>o.gi===r.m.gi)); if(i<0){ miss.push(ci); return; } const r=an.rows[i], o=l.opts.find(o=>o.gi===r.m.gi); took.add(i); if(r.m.fr) return;
       S.need.add(i); if(o.tmax) S.tsel[i]=Math.max(r.tierNo, Math.min(o.tmax, r.tierCnt)); if(buy.includes(r.m.gi) && r.how==='n') S.buy.add(i); });
     if(!S.need.size) return {skip:'목표 옵션이 완성품에 없음'};
@@ -31,7 +31,7 @@ for(const id of IDS){ const r=R.find(x=>x.id===id); if(!r || !SAMP.has(id)) cont
     const st=ck.strategies[0]||{}, res=st.res, use=res?.use||{}; let om=0; for(const k of EXP) om+=use[k]||0;
     const top=Object.entries(use).map(([k,v])=>[k, v*(k==='Exalted_Orb'?1:(S.prices.p[k]||0))/S.prices.divine]).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+' '+v.toFixed(1));
     return {err, warn, stuck:st.runaway||st.error||null, div:res?res.mean:null, match:res?res.reqOk:null, om, top, miss:miss.length, pick:d.pick||null, knowhow:d.knowhow||null, steps:d.nodes.length, ms:Math.round(performance.now()-t0), d};
-  },[id,reg.card,reg.qt,buy,EXP,process.env.V==='old',reg.per,reg.rtags,reg.rreq]), new Promise(z=>setTimeout(()=>z({err:['시간 초과']}),180000))]);
+  },[id,reg.card,reg.qt,buy,EXP,process.env.V==='old',reg.per,reg.rtags,reg.rreq,!!process.env.NOK42]), new Promise(z=>setTimeout(()=>z({err:['시간 초과']}),180000))]);
   out.push({id, reg, ...x}); }
 await p.goto('http://localhost:8779/recipes.html?lang=kr&debug=1'); await p.waitForFunction(()=>window.__rec&&__rec.booted);
 const unk=await p.evaluate(ds=>{ const R=__rec, o={}; for(const d of ds){ try{ d.likes=0; d.success=0; const a=R.analyse(d); o[d.id]=a.nodes.filter(n=>n.pUnknown).length; }catch(e){ o[d.id]=0; } } return o; }, out.filter(x=>x.d).map(x=>x.d));
@@ -48,6 +48,7 @@ const rows=out.map(x=>{ if(x.skip) return {id:x.id, skip:x.skip}; const reg=x.re
   const wn=(x.warn||[]).length; pts.pol = Math.max(0, 10-3*wn); if(wn) why.push(`검산 경고 ${wn}`);
   if(x.miss) why.push(`목표 옵션 ${x.miss}개가 완성품 글에 없음`);
   return {id:x.id, score:Object.values(pts).reduce((s,v)=>s+v,0), pts, k:k==null?null:+k.toFixed(2), div:x.div, orig:o.div, regRaw:o.raw, regMatch:o.match, match:x.match, om:x.om, top:x.top, pick:x.pick, knowhow:x.knowhow, why, ms:x.ms}; });
+if(process.env.DUMP) fs.writeFileSync(process.env.DUMP, JSON.stringify(rows,null,1));
 if(!process.env.NOSAVE) fs.writeFileSync(__dirname+'/revscore'+(process.env.V==='old'?'-old':'')+'.json', JSON.stringify(rows));
 const ok=rows.filter(r=>r.score!=null), ks=ok.map(r=>r.k).filter(v=>v!=null).sort((a,b)=>a-b);
 console.log(`초안 ${ok.length}개 · 평균 ${(ok.reduce((s,r)=>s+r.score,0)/Math.max(1,ok.length)).toFixed(1)}점 · 70점 미만 ${ok.filter(r=>r.score<70).length}개 · 비용 배수 중앙값 ${ks[Math.floor(ks.length/2)]} · 1.5배 안 ${ks.filter(k=>k<=1.5).length} · 5배 넘음 ${ks.filter(k=>k>5).length} · 검산 오류 ${ok.filter(r=>!r.pts.ver).length} · 시뮬 문제 ${ok.filter(r=>r.pts.sim<20).length}`);

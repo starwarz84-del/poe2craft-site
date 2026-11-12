@@ -103,6 +103,7 @@ cd /home/claude/poe2data && bash tools/test/serve.sh stop
 - `audit.js` 레시피 정책 점검 · `omen.js` 불필요한 좌측·우측 징조 · `unk.js` 가중치 모름 표시
 - `ver.js` 발굴 초안 17개 검산(오류 0이어야 함) · `eng.js` 초안을 레시피 엔진으로 계산(경고·확률)
 - `_cost.js` 레시피·초안 비용(div, 확정/추가 포함, 비싼 징조, 타협 수) · `_cheap.js` 시세로 바뀐 초안 오브 선택 · `_shots_price.js` 시세 화면 스크린샷 → shots/price-*.png
+- `_revprobe.js <레시피id> [후보키]` 리버스 초안 후보마다 시뮬 비용·탈락 여부, 후보키(예: `-|frside+noloop+k42`)를 주면 그 초안 단계 · `_revtrace.js <레시피id> [후보키]` 시뮬이 끝나지 않는 회차의 마지막 25단계와 아이템 상태 · `_revscore.js`에 `DUMP=<파일>`(항목별 결과 저장)·`NOK42=1`(K42 후보 빼고 비교) (2026-11-12 도과장)
 - `cmp2.js` 초안 vs 원본 단계 비교 → cmp2.txt · `one.js <레시피id>` 초안 하나 자세히 · `pair.js <레시피id>` 원본·초안 단계별 확률 나란히
 
 게시(아티팩트판은 리버스 화면이 `sim.js`·`graphify.js`를 읽으니 `files`에 `"sim.js":"sim.js","graphify.js":"graphify.js"`도): Artifact 도구 publish, `file_path=/home/claude/poe2craft-site/site/app.html`, `root=/home/claude/poe2craft-site/site`(**링크 경로 poe2data는 게시가 거부돼요**), `url=`위 주소,
