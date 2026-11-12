@@ -40,6 +40,7 @@ nav a .nb{margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius
     <a href="#emulator" data-view="emulator" data-en="Emulator" data-kr="에뮬레이터">Emulator</a>
     <a href="#builder" data-view="builder" data-en="Item Builder" data-kr="옵션 빌더">Item Builder</a>
     <a href="#recipes" data-view="recipes" data-en="Recipes" data-kr="레시피">Recipes</a>
+    <a href="#mirror" data-view="mirror" data-en="Mirror" data-kr="미러">Mirror</a>
     <a href="#discover" data-view="discover" data-en="Discover" data-kr="발굴">Discover</a>
     <a href="#bases" data-view="bases" data-en="Special Bases" data-kr="특수 베이스">Special Bases</a>
   </nav>
@@ -52,7 +53,7 @@ nav a .nb{margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius
 
 <script>
 (() => {
-  const SRC = {emulator:'emulator.html', builder:'builder.html', recipes:'recipes.html', discover:'discover.html', bases:'bases.html'};
+  const SRC = {emulator:'emulator.html', builder:'builder.html', recipes:'recipes.html', discover:'discover.html', bases:'bases.html', mirror:'recipes.html?mirror'};
   const frames = {};
   let lang = 'en';
   try{ lang = localStorage.getItem('poe2lang') || 'en'; }catch(e){}
@@ -71,7 +72,7 @@ nav a .nb{margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius
     if(!SRC[v]) v = 'emulator';
     links.forEach(a=>{ if(a.dataset.view===v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
     // each tool loads once and stays alive, so work in progress survives switching tabs
-    if(!frames[v]){ const f=document.createElement('iframe'); f.src=`${SRC[v]}?lang=${lang}${rid?'#r-'+rid:''}`; f.title=links.find(a=>a.dataset.view===v).textContent;
+    if(!frames[v]){ const f=document.createElement('iframe'); f.src=`${SRC[v]}${SRC[v].includes('?')?'&':'?'}lang=${lang}${rid?'#r-'+rid:''}`; f.title=links.find(a=>a.dataset.view===v).textContent;
       f.addEventListener('load', ()=>{ try{ f.contentWindow.postMessage({type:'poe2-lang', lang}, '*'); }catch(e){} }); frames[v]=f; document.getElementById('main').appendChild(f); }
     else if(rid){ try{ frames[v].contentWindow.postMessage({type:'poe2-open', id:rid}, '*'); }catch(e){} }
     Object.entries(frames).forEach(([k,f])=>f.hidden = k!==v);

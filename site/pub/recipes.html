@@ -423,6 +423,7 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .vtabs{display:flex;gap:4px;margin-bottom:12px;border-bottom:1px solid var(--line)}
 .vtabs button{background:none;border:0;border-bottom:2px solid transparent;padding:8px 12px;cursor:pointer;color:var(--muted);font-size:14px;display:flex;align-items:center;gap:6px;margin-bottom:-1px}
 .vtabs button span{font-family:var(--f-mono);font-size:11px;color:var(--faint)}
+.vtabs .mhead{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;padding:8px 2px 10px}.vtabs .mhead b{font-size:15px;color:var(--fg)}.vtabs .mhead span{font-size:12.5px;color:var(--muted)}
 .vtabs button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--rare);font-weight:600}
 .tipnote{margin:0 0 12px;font-size:12.5px;color:var(--muted)}
 .tips{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;align-items:start}
@@ -641,7 +642,8 @@ body.preview .btn.back, body.preview [data-act="link"], body.preview [data-act="
     <input type="search" id="q" aria-label="레시피 검색">
     <select id="fcat" aria-label="부위"></select>
     <select id="fsub" aria-label="세부 종류"></select>
-    <label><input type="checkbox" id="fpatch"> <span id="l-patch"></span></label>
+    <select id="flg" aria-label="리그" hidden></select>
+    <label id="w-patch"><input type="checkbox" id="fpatch"> <span id="l-patch"></span></label>
     <span class="sp"></span>
     <span class="count" id="count" hidden></span>
     <button type="button" class="btn freset" id="freset"></button>
@@ -717,10 +719,14 @@ const clsName = r => { for(const g of S.index.groups) for(const c of g.classes) 
 const catOf = r => S.index.groups.find(g=>g.classes.some(c=>c.id===r.cls));
 const sideOfOmens = os => { for(const o of os||[]){ if(/Sinistral/.test(o)) return 'p'; if(/Dextral/.test(o)) return 's'; } return null; };
 // league each patch belongs to (badge shows the league, hovering shows the patch)
-const LEAGUES = [{p:'0.5.5', en:'Forbidden Rites'}, {p:'0.5', en:'Runes of Aldur'}, {p:'0.4', en:'Fate of the Vaal'}, {p:'0.3', en:'Rise of the Abyssal'}, {p:'0.2', en:'Dawn of the Hunt'}];   // patch → league name
+/* 리그 이름: 한글은 poe2db 한글판 공식 표기(사용자 확정 2026-11-13: 한국어 화면은 한국 리그명) */
+const LEAGUES = [{p:'0.5.5', en:'Forbidden Rites', kr:'금단의 의식'}, {p:'0.5', en:'Runes of Aldur', kr:'알두르의 룬'}, {p:'0.4', en:'Fate of the Vaal', kr:'바알의 운명'}, {p:'0.3', en:'Rise of the Abyssal', kr:'떠오르는 심연'}, {p:'0.2', en:'Dawn of the Hunt', kr:'사냥의 서막'}];
+const lgName = lg => lg ? L(lg.kr||lg.en, lg.en) : '';
+/* 미러 탭(사용자 확정 2026-11-13): 껍데기의 '미러' 탭이 recipes.html?mirror 를 열면 가격 등급 '미러' 레시피만, 리그별로 */
+const MIRROR = new URLSearchParams(location.search).has('mirror');
 const leagueOf = r => LEAGUES.find(x=>String(r.patch)===x.p) || LEAGUES.find(x=>String(r.patch).startsWith(x.p)) || null;
 const leagueBadge = (r, old) => { const lg=leagueOf(r); const tip=L(`패치 ${r.patch}`,`Patch ${r.patch}`)+(old?L(' · 현재 패치와 다름',' · not the current patch'):'');
-  return `<span class="lg ${old?'old':''}" tabindex="0" data-tipx="${esc(tip)}">${esc(lg?`${lg.en} ${r.patch}`:L(`패치 ${r.patch}`,`Patch ${r.patch}`))}${old?' ⚠':''}</span>`; };
+  return `<span class="lg ${old?'old':''}" tabindex="0" data-tipx="${esc(tip)}">${esc(lg?`${lgName(lg)} ${r.patch}`:L(`패치 ${r.patch}`,`Patch ${r.patch}`))}${old?' ⚠':''}</span>`; };
 const featureOf = r => { const t=tx(r.title); const i=t.indexOf('—'); return (i>=0 ? t.slice(i+1) : t).trim(); };
 // title = base chosen at registration + the author's own title (its feature)
 const baseName = r => KR()?baseOf(r).kr:baseOf(r).en;
@@ -747,6 +753,7 @@ const tierMax = t => t.max==='mirror' ? mirrorDiv() : t.max;
 const mirrorDiv = () => S.prices ? (S.prices.p.Mirror_of_Kalandra||0)/S.prices.divine : 5300;
 function priceTier(r){ const ts=TIERS(); if(r.priceTier){ const t=ts.find(x=>x.id===r.priceTier); if(t) return t; }
   const c=recipeCost(r); if(!c) return null; return ts.find(t=>tierMax(t)==null || c.v < tierMax(t)) || ts[ts.length-1]; }
+const isMirror = r => { try{ return priceTier(r)?.id==='mirror'; }catch(e){ return false; } };
 const budgetTag = r => { const t=priceTier(r); if(t) return `<span class="tag bud pt-${t.id}" title="${esc(L('가격 등급','Price tier'))}">${esc(L(t.kr,t.en))}</span>`;
   return r.budget && BUDGET[r.budget] ? `<span class="tag bud">${esc(L(...BUDGET[r.budget]))}</span>` : ''; };
 const buildTags = r => (r.buildTags||[]).map(t=>`<span class="tag bld">${esc(tx(t))}</span>`).join('');
@@ -2093,7 +2100,7 @@ async function makePDF(r, btn){
     await loadScript('lib/jspdf.umd.min.js');
     const a=analyse(r), last=a.nodes[a.nodes.length-1]; CUR_R=r;
     const box=document.createElement('div'); box.className='pdfbox';
-    box.innerHTML=`<div class="pdfhead"><h1>${esc(fullTitle(r))}</h1><div class="meta"><span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span><span>${esc(leagueOf(r)?.en||'')} · ${L('패치','Patch')} ${esc(r.patch)}</span>${r.source?`<span>${esc(r.source.url)}</span>`:''}</div></div>
+    box.innerHTML=`<div class="pdfhead"><h1>${esc(fullTitle(r))}</h1><div class="meta"><span>${esc(tx(r.author))}</span><span>${esc(r.created)}</span><span>${esc(lgName(leagueOf(r)))} · ${L('패치','Patch')} ${esc(r.patch)}</span>${r.source?`<span>${esc(r.source.url)}</span>`:''}</div></div>
       ${overviewHTML(r)}
       ${flowHTML(r)}
       <div class="pdfend"><p class="sec">${L('총 소모품 (평균, 분석값)','Total cost (average, analytic)')}</p>${document.querySelector('#detail .tot')?.outerHTML||''}</div>`;
@@ -2160,6 +2167,8 @@ function list(){
   const q=S.q.trim().toLowerCase();
   let a = S.recipes.filter(r=>{
     if(r.tierGroup && tierLead(r)!==r) return false;
+    if(MIRROR && !isMirror(r)) return false;
+    if(MIRROR && S.mlg && leagueOf(r)?.p!==S.mlg) return false;
     if(S.cat && catOf(r)?.id!==S.cat) return false;
     if(S.sub && r.cls!==S.sub) return false;
     for(const k of S.stats) if(k && !statsOf(r).has(k)) return false;
@@ -2179,9 +2188,9 @@ let cards=[], panel=null;
 function renderBoard(){
   const L0=list(); const board=$('#board');
   S.shownN=L0.length; const vn=document.querySelector('#vtabs [data-view="recipes"] span'); if(vn) vn.textContent=L0.length;   // 탭 숫자 = 지금 목록의 카드 수 (사용자 2026-11-11)
-  const busy = !!(S.q || S.cat || S.sub || S.curOnly || S.tags.size || S.stats.some(Boolean));
+  const busy = !!(S.q || S.cat || S.sub || S.curOnly || S.mlg || S.tags.size || S.stats.some(Boolean));
   const rb=$('#freset'); rb.textContent=L('↺ 필터 초기화','↺ Reset filters'); rb.disabled=!busy;
-  const total=S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r)).length;
+  const total=S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r) && (!MIRROR || isMirror(r))).length;
   $('#count').textContent = L0.length===total ? L(`전체 ${total}개 레시피`, `${total} recipes`) : L(`${L0.length}개 / 전체 ${total}개 레시피`, `${L0.length} of ${total} recipes`);
   board.innerHTML = L0.length ? '' : `<div class="empty">${L('조건에 맞는 레시피가 없음','No recipes match these filters.')}</div>`;
   cards = L0.map(r=>{ const el=document.createElement('article'); el.className='card'+(S.open===r.id?' open':''); el.dataset.id=r.id; el.tabIndex=0; el.setAttribute('role','button'); el.setAttribute('aria-expanded', S.open===r.id);
@@ -2238,8 +2247,11 @@ function renderBar(){
   S.statList=[...S.statOpts.entries()].sort((a,b)=>(a[0].endsWith('|p')?0:1)-(b[0].endsWith('|p')?0:1) || a[1].l.localeCompare(b[1].l, KR()?'ko':'en'));   // prefixes first
   if(!document.querySelector('#stats .sbox:focus-within')) $('#stats').innerHTML=S.stats.map((v,i)=>`<div class="sbox ${v?'on':''}" data-sbox="${i}"><input type="text" data-stat="${i}" autocomplete="off" spellcheck="false" placeholder="${esc(L(`+ 옵션 ${i+1} — 입력해서 찾기 (~단어 단어)`,`+ Modifier ${i+1} — type to search (~word word)`))}" value="${esc(v?S.statOpts.get(v)?.l||'':'')}" aria-label="${esc(L('옵션','Modifier'))} ${i+1}">${v?`<button type="button" class="sx" data-sclear="${i}" aria-label="${esc(L('지우기','Clear'))}">✕</button>`:''}<div class="slist" hidden></div></div>`).join('');
   $('#sort').innerHTML=SORTS.map(([k,[kr,en]])=>`<button type="button" data-sort="${k}" aria-pressed="${S.sort===k}">${esc(L(kr,en))}${S.sort===k?`<span class="ar">${S.sortDir>0?'↑':'↓'}</span>`:''}</button>`).join('');
-  const lgN=(LEAGUES.find(x=>x.p===String(S.index.patch))||{}).en, pl=lgN?`${lgN} ${S.index.patch}`:S.index.patch;
+  const lgN=lgName(LEAGUES.find(x=>x.p===String(S.index.patch))), pl=lgN?`${lgN} ${S.index.patch}`:S.index.patch;
   $('#l-patch').textContent=L(`현재 패치(${pl})만`,`Current patch (${pl}) only`);
+  $('#w-patch').hidden = MIRROR; $('#flg').hidden = !MIRROR;
+  if(MIRROR){ const have=new Set(S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r) && isMirror(r)).map(r=>leagueOf(r)?.p).filter(Boolean));
+    $('#flg').innerHTML=`<option value="">${esc(L('모든 리그','All leagues'))}</option>`+LEAGUES.filter(x=>have.has(x.p)).map(x=>`<option value="${x.p}" ${S.mlg===x.p?'selected':''}>${esc(lgName(x))} ${x.p}</option>`).join(''); }
   
   { const n=S.recipes.filter(r=>r.draft).length, b=$('#clrdrafts'); b.hidden=!n; b.textContent=L(`역산 초안 모두 지우기 (${n})`,`Delete all drafts (${n})`); }
   const have=new Set(); S.recipes.forEach(r=>{ try{ tagsOf(r).forEach(t=>have.add(t)); }catch(e){} });
@@ -2250,7 +2262,9 @@ const CAT_EN = {weapon:'One-Handed', weapon2:'Two-Handed', offhand:'Off-hand', h
 const catEn = g => CAT_EN[g.id] || g.id;
 function render(){ document.documentElement.lang = KR()?'ko':'en'; renderBar(); renderDlg();
   $('#listView').hidden=!!S.open; $('#detail').hidden=!S.open;
+  if(MIRROR) S.view='recipes';
   const tipsOn = S.view==='tips'; $('#recView').hidden=tipsOn; $('#tipsView').hidden=!tipsOn;
+  if(MIRROR) $('#vtabs').innerHTML=`<div class="mhead"><b>${L('미러 아이템','Mirror items')}</b><span>${L('예상 제작 비용이 칼란드라의 거울 1개 이상인 레시피와 플로우차트','Recipes and flowcharts whose expected cost is one Mirror of Kalandra or more')}</span></div>`; else
   $('#vtabs').innerHTML=[['recipes',L('레시피','Recipes'),S.shownN ?? S.recipes.filter(r=>!(r.tierGroup && tierLead(r)!==r)).length],['tips',L('제작 꿀팁','Crafting tips'),S.tips.length]].map(([k,t,n])=>`<button type="button" role="tab" data-view="${k}" aria-selected="${(S.view||'recipes')===k}">${esc(t)}<span>${n}</span></button>`).join('');
   if(S.open) renderDetail(); else if(tipsOn) renderTips(); else renderBoard(); }
 // general tips that are not tied to one item: each keeps its source (with time) and the recipes that use it
@@ -2454,7 +2468,8 @@ $('#fsub').addEventListener('change', e=>{ S.sub=e.target.value; renderBoard(); 
 $('#sort').addEventListener('click', e=>{ const b=e.target.closest('[data-sort]'); if(!b) return; const k=b.dataset.sort;
   if(S.sort===k) S.sortDir=-S.sortDir; else { S.sort=k; S.sortDir = k==='price' ? 1 : -1; } renderBar(); renderBoard(); });
 $('#fpatch').addEventListener('change', e=>{ S.curOnly=e.target.checked; renderBoard(); });
-$('#freset').addEventListener('click', ()=>{ S.q=''; S.cat=''; S.sub=''; S.curOnly=false; S.tags.clear(); S.stats=['','',''];
+$('#flg').addEventListener('change', e=>{ S.mlg=e.target.value; renderBoard(); });
+$('#freset').addEventListener('click', ()=>{ S.q=''; S.cat=''; S.sub=''; S.curOnly=false; S.mlg=''; $('#flg').value=''; S.tags.clear(); S.stats=['','',''];
   $('#q').value=''; $('#fpatch').checked=false; renderBar(); renderBoard(); });   // 필터 초기화 (사용자 2026-11-11), 정렬은 그대로
 $('#vtabs').addEventListener('click', e=>{ const b=e.target.closest('[data-view]'); if(!b) return; S.view=b.dataset.view; store.set('view', S.view); render(); });
 $('#tipsView').addEventListener('click', e=>{ const a=e.target.closest('[data-open]'); if(a){ e.preventDefault(); const tf=a.dataset.tipfocus; setOpen(a.dataset.open); if(tf) focusTip(tf); } });

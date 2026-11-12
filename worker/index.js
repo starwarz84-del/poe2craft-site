@@ -158,7 +158,7 @@ async function feedbackList(req, env) {
 
 // 공개 주소(검색 등록 2026-11-12): 경로마다 같은 껍데기(index.html)를 주고 canonical·og:url을 그 경로로. scripts/build_web.py PAGES와 같게
 const HOST = 'poe2craft.xyz';
-const TABS = new Set(['/', '/recipes', '/discover', '/emulator', '/builder', '/bases']);
+const TABS = new Set(['/', '/recipes', '/mirror', '/discover', '/emulator', '/builder', '/bases']);
 async function shell(req, env, path) {
   const r = await env.ASSETS.fetch(new Request(new URL('/index.html', req.url), req));
   const url = `https://${HOST}${path === '/' ? '/' : path}`;

@@ -49,7 +49,7 @@ DOMAIN = 'poe2craft.xyz'
 # 검색 등록(사용자 확정 2026-11-12): 구글·네이버에 공개. False로 바꾸면 다시 전체 차단
 INDEX = True
 # 공개 주소(경로) — 껍데기가 경로로 탭을 고르고, Worker가 이 경로에 index.html을 줌(worker/index.js TABS와 같게)
-PAGES = ['', 'recipes', 'discover', 'emulator', 'builder', 'bases']
+PAGES = ['', 'recipes', 'mirror', 'discover', 'emulator', 'builder', 'bases']
 CANON = {'recipes.html': 'recipes', 'discover.html': 'discover', 'emulator.html': 'emulator', 'builder.html': 'builder', 'bases.html': 'bases', 'about.html': ''}
 NOINDEX_META = '<meta name="robots" content="noindex, nofollow">\n'
 # 검색 엔진 소유 확인 태그(네이버 서치어드바이저, 2026-11-12) — 공개(INDEX)일 때 모든 페이지 head에 넣음
