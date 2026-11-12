@@ -130,8 +130,8 @@ g22('bigdaddy-lightning-wand-v2',c,'Dueling Wand',81,
 c='Amulets'
 P={'bal':{'L':1,'pT':2},'ess':{'L':0,'pT':4}}
 tags={'pj':{'gi':20,'tmax':1},'sp':{'gi':28,'tmax':2},'enh':{'gi':74},'catR':{'anyOf':[{'gi':4},{'gi':7}]},
-      'gs':{'anyOf':[{'gi':4},{'gi':5},{'gi':6},{'gi':7},{'gi':8},{'gi':24},{'gi':26}]},
-      'gp':{'anyOf':[{'gi':9,'tmax':'$pT'},{'gi':13,'tmax':'$pT'},{'gi':16,'tmax':'$pT'}]}}
+      'gs':{'anyOf':[{'gi':4},{'gi':5},{'gi':6},{'gi':7},{'gi':8},{'gi':24},{'gi':26}],'label':K('저항·치명타·희귀도','Resistance, crit or rarity')},
+      'gp':{'anyOf':[{'gi':9,'tmax':'$pT'},{'gi':13,'tmax':'$pT'},{'gi':16,'tmax':'$pT'}],'label':K('생명력·에너지 보호막','Life or energy shield')}}
 PJ=itg('s',c,20,['pj'],'f'); SP=itg('p',c,28,['sp']); EN=itg('p',c,74,['enh'],'c',suffix=('제작 옵션','crafted'))
 GS=lambda: it('s','저항 (치명타·희귀도도 됨)','A resistance (crit or rarity also fine)',['gs'])
 I0=[PJ,J('p')]; I1=[PJ,SP]; I2=I1+[J('s')]; I3=I1+[EN]; I4=I3+[GS()]; I5=I4+[GS()]; I6=I5+[UN('p')]
@@ -156,7 +156,7 @@ g22('fubgun-proj-amulet-v2',c,'Gold Amulet',82,
   {'L':{'kr':'훼손 공개','en':'Desecration reveal','values':LV},'pT':{'kr':'마지막 접두','en':'Last prefix','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})}},P,
   {'bal':K('마지막 접두를 1~2티어까지 빛의 징조로 다시','Retry the last prefix with Light until T1–2'),'ess':K('마지막 접두는 공개 결과 그대로','Keep the last reveal')},
   tags,nodes,[{'id':'L1','nodes':['a4','a5','a5x'],'kr':'접미 두번째 옵션','en':'Second suffix'},{'id':'L2','nodes':['a8','a9','a9x'],'kr':'접두 세번째 옵션(훼손)','en':'Third prefix (desecrated)'}],
-  FIN(VB,lambda v:[{'tag':'sp','tmax':2},{'tag':'enh','tmax':1},{'side':'p','label':K('생명력·에너지 보호막' if v=='bal' else '공개 결과 그대로','Life or energy shield' if v=='bal' else 'Reveal as it comes')},{'tag':'pj','fr':True},{'side':'s','label':K('저항','Resistance')},{'side':'s','label':K('저항','Resistance')}]),
+  FIN(VB,lambda v:[{'tag':'sp','tmax':2},{'tag':'enh','tmax':1},{'tag':'gp'} if v=='bal' else {'side':'p','random':True},{'tag':'pj','fr':True},{'tag':'gs'},{'tag':'gs'}]),
   {'quality':20,'sockets':0},{'all':[{'has':'pj'},{'has':'sp'},{'has':'enh'},{'count':{'tag':'gs','min':2}},{'full':'p'}]},VB)
 
 # ---------- 6. Fubgun 가성비 에너지 보호막 투구 ----------

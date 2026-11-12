@@ -110,7 +110,7 @@ graph('lilbotq-armour-shield-v2','Shields_str','Tawhoan Tower Shield',81,
 # 원본 레시피(영상 기록): 정신력 분열 + 잡옵 → 상위 카오스 오브로 에너지 보호막 최대치 1티어 → 좌측 찬미 + 상위 엑잘(에너지 보호막 %, 빗나가면 소멸의 오브 — 접미가 비어 있어 접두만 지워짐)
 # → 아스트리드의 창의성 → 보존된 갈비뼈(접두가 꽉 차 접미로) → 공개(정신력 점유 효율, 아마나무) — 실패는 빛의 징조 없이: 우측 결정화 + 완벽한 추구의 에센스로 훼손 옵션 삭제 → 우측 결정화 + 심연의 에센스로 징표 → 보존된 갈비뼈
 # → 상위 찬미 + 완벽한 엑잘(접미 옵션 2개) → 절사의 징조 + 상위 카오스 오브로 저항(밸런스만).
-P={'bal':{'sT':4,'fT':1,'eT':2},'ess':{'sT':6,'fT':2,'eT':3}}
+P={'bal':{'sT':4,'fT':2,'eT':2,'g':1},'ess':{'sT':6,'fT':4,'eT':4,'g':0}}
 tags={'spirit':{'gi':14,'tmax':'$sT'},'esf':{'gi':6,'tmax':'$fT'},'esp':{'gi':7,'tmax':'$eT'},'res':{'gi':21},'seek':{'gi':43},'mark':{'gi':45},
       'fire':{'gi':1,'tmax':3},'cold':{'gi':2,'tmax':3},'light':{'gi':3,'tmax':3},'anyres':{'anyOf':['fire','cold','light'],'label':K('원소 저항 1~3티어','Elemental resistance T1–3')},'keepR':{'anyOf':['spirit','esf','esp','res']}}
 SP=it('p','정신력 (분열)','Spirit (fractured)',['spirit']); EF=it('p','에너지 보호막 최대치','Flat energy shield',['esf']); EP=it('p','에너지 보호막 % 증가','% energy shield',['esp'])
@@ -127,17 +127,17 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'p'}]}
  act('v6b','main',[1,5],'essence','Essence_of_the_Abyss',K('심연 군주의 징표로 바꿈','Turn it into the Abyssal Lord’s Mark'),[st('s','심연 군주의 징표','Mark of the Abyssal Lord')],K('에센스','Essence'),[{'to':'v6c'}],IB,ess='mark',mark=True,omens=['Omen_of_Dextral_Crystallisation']),
  act('v6c','main',[1,6],'desecrate','Preserved_Rib',K('징표 훼손','Desecrate the Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'v6','port':'right'}],I3,fromMark=True),
  act('v7','main',[0,7],'exalt','Perfect_Exalted_Orb',K('접미 옵션 2개','Two suffixes'),[st('s','랜덤 옵션 2개 — 저항 하나면 충분','Two random lines — one resistance is enough')],K('엑잘','Exalt'),
-     [{'if':{'any':[{'has':'anyres'},{'param':{'fT':2}}]},'to':'ok'},{'if':{'whittleSafe':'keepR'},'to':'v8'},{'to':'ok'}],I5,omens=['Omen_of_Greater_Exaltation'],over=[{'param':{'fT':2},'set':{'cur':'Greater_Exalted_Orb'}}]),
+     [{'if':{'any':[{'has':'anyres'},{'param':{'g':0}}]},'to':'ok'},{'if':{'whittleSafe':'keepR'},'to':'v8'},{'to':'ok'}],I5,omens=['Omen_of_Greater_Exaltation'],over=[{'param':{'g':0},'set':{'cur':'Greater_Exalted_Orb'}}]),
  act('v8','main',[0,8],'chaos','Greater_Chaos_Orb',K('가장 낮은 옵션을 저항으로','The lowest line into a resistance'),None,K('카오스','Chaos'),
      [{'if':{'has':'anyres'},'to':'ok','res':'ok'},{'if':{'whittleSafe':'keepR'},'to':'v8','res':'fail'},{'to':'ok','res':'fail'}],I6,show=['anyres'],omens=['Omen_of_Whittling']),
  done([0,9])]
 nodes[0]['group']='prep'
 graph('diztoh-vile-robe-v2','Body_Armours_int','Vile Robe',81,
   'Diztoh 정신력 로브(원본 레시피 기록) — 정신력 분열 + 잡옵 → 좌측 찬미의 징조 + 상위 엑잘티드 오브로 에너지 보호막 최대치·% 옵션 두 개, 빗나가면 징조 없는 소멸의 오브(영상 자막 확인 2026-11-10 — 접미가 비어 있어 접두만 지워짐, 6티어 최대치를 상위 카오스 오브로 바꾼 장면은 운이라 뺌) → 아스트리드의 창의성 + 보존된 갈비뼈 → 공개(정신력 점유 효율) — 실패는 빛의 징조 대신 우측 결정화 + 완벽한 추구의 에센스 → 우측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈(약 2.6 div, 빛의 징조 약 7.5 div) → 상위 찬미 + 완벽한 엑잘(접미 옵션 2개) → 저항이 없으면 절사의 징조 + 상위 카오스 오브(밸런스만, 가장 낮은 옵션이 버릴 옵션일 때만 — 레벨 65인 정신력 점유 효율이 가장 낮아지면 타협). 에센셜 = 낮은 티어 베이스·상위 엑잘·저항 결과 그대로.',
-  {'sT':{'kr':'정신력 (분열)','en':'Spirit (fractured)','values':TV({'4':('1~4티어','T1–4'),'6':('1~6티어','T1–6')})},'fT':{'kr':'에너지 보호막 최대치','en':'Flat energy shield','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'eT':{'kr':'에너지 보호막 %','en':'% energy shield','values':TV({'2':('1~2티어','T1–2'),'3':('1~3티어','T1–3')})}},P,
-  {'bal':K('영상: 에너지 보호막 1티어 옵션 2개 + 저항(절사의 징조)','Video: two T1 energy shield lines + a resistance (Whittling)'),'ess':K('낮은 티어, 상위 엑잘, 저항은 결과 그대로','Lower tiers, Greater Exalts, resistances as they come')},
+  {'sT':{'kr':'정신력 (분열)','en':'Spirit (fractured)','values':TV({'4':('1~4티어','T1–4'),'6':('1~6티어','T1–6')})},'fT':{'kr':'에너지 보호막 최대치','en':'Flat energy shield','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})},'eT':{'kr':'에너지 보호막 %','en':'% energy shield','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})},'g':{'kr':'저항','en':'Resistance','values':TV({'1':('절사의 징조로 맞춤','Whittling'),'0':('결과 그대로','As it comes')})}},P,
+  {'bal':K('에너지 보호막 옵션 2개 1~2티어 + 저항(절사의 징조, 영상)','Two T1–2 energy shield lines + a resistance (Whittling, as the video)'),'ess':K('에너지 보호막 1~4티어, 상위 엑잘, 저항은 결과 그대로','T1–4 energy shield, Greater Exalts, resistances as they come')},
   tags,nodes,[{'id':'L0','nodes':['v2','v2x'],'kr':'접두 에너지 보호막 옵션 2개','en':'Two ES prefixes'},{'id':'L1','nodes':['v6','v6a','v6b','v6c'],'kr':'정신력 점유 효율 공개','en':'Reservation efficiency reveal'}],
-  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'spirit','tmax':a},{'tag':'esf','tmax':b},{'tag':'esp','tmax':c},{'tag':'res','tmax':1},{'side':'s','label':d},{'side':'s','random':True}]} for v,kr,en,a,b,c,d in (('bal','밸런스 옵션','Balance',4,1,2,K('원소 저항 1~3티어','Elemental resistance T1–3')),('ess','에센셜 옵션','Essential',6,2,3,K('랜덤 옵션','Random modifier')))],
+  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'spirit','tmax':a},{'tag':'esf','tmax':b},{'tag':'esp','tmax':c},{'tag':'res','tmax':1},{'tag':'anyres'} if v=='bal' else {'side':'s','random':True},{'side':'s','random':True}]} for v,kr,en,a,b,c in (('bal','밸런스 옵션','Balance',4,2,2),('ess','에센셜 옵션','Essential',6,4,4))],
   {'quality':20,'sockets':3},{'all':[{'has':'spirit'},{'has':'esf'},{'has':'esp'},{'has':'res'},{'full':'s'}]})
 
 # ---------- 5. Diztoh +5 부적 (p6HIFmJ9mRU) ----------

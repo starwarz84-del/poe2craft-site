@@ -52,6 +52,7 @@ graph10('noble-timelost-sapphire-v2','Time-Lost_Sapphire','Time-Lost Sapphire',7
 # 원본: 콜르의 사냥 장착 + 모든 투사체 +2 분열 + 잡옵 (퀄리티 30%, 특출난 검은강철 건틀릿) → 아스트리드의 창의성 → 카오스 오브(콜르 옵션 1티어 하나: 투사체 속도·피해 / 치명타 확률·관통)
 # → 반대쪽을 상위 엑잘 + 좌측·우측 찬미로. 빗나가면 그쪽 결정화의 징조(좌측·우측) + 군왕의 합금(룬 수호) → 다시, 또 빗나가면 결정화 + 발작의 에센스(치명타 피해) → 다시
 # → 제작 옵션이 남았으면 잡옵을 하나 붙여 결정화 + 합금/에센스 → 남은 접두를 고대 갈비뼈로 훼손 → 공개(투사체 피해·속도 1티어, 빛의 징조로 다시).
+# 2026-11-12 영상 전체 대조(자동 번역 자막 0:00~21:25, 메인 세션): 4단계 A·B(9:00~11:50) 그대로, 마지막 고대 갈비뼈 + 메아리 + 빛의 징조로 투사체 피해 1티어(16:30~18:00). 단계 일치. 완성품 줄의 임의 문구를 태그로.
 # 영상 재확인(2026-11-10): 세 번째로도 빗나가면 징조 없는 소멸의 오브로 하나씩(좋은 옵션이 지워지면 카오스 오브부터). 첫 엑잘에 맞으면 접두에 잡옵 → 좌측 결정화 + 발작의 에센스(접미로) → 접두 잡옵 → 좌측 결정화 + 군왕의 합금. 시전 속도 룬 교체·룬 모루·신성한 오브는 뺌(정책 23).
 P2={'high':{'v':1},'bal':{'v':2}}
 tags={'proj':{'gi':81},'pspd':{'gi':72,'tmax':1},'pdmg':{'gi':70,'tmax':1},'crit':{'gi':73,'tmax':1},'pierce':{'gi':74},
@@ -117,5 +118,5 @@ graph11('mazbro-proj-gloves-v2','Gloves_str_dex','Blacksteel Gauntlets',82,
   'MazBro 투사체 +2 분열 장갑(원본 레시피 기록) — 콜르의 사냥 + 투사체 +2 분열 + 잡옵(퀄리티 30%) → 아스트리드의 창의성 → 카오스 오브(콜르 1티어 하나) → 반대쪽 상위 엑잘 + 좌측·우측 찬미(빗나가면 결정화 + 군왕의 합금 → 결정화 + 발작의 에센스로 빗나간 옵션을 제작 옵션으로 바꿈) → 남은 제작 옵션 → 고대 갈비뼈 → 공개(투사체 속도·피해 1티어, 하이엔드 = 빛의 징조로 다시). 룬 교체·신성한 오브는 뺌.',
   ROUTE,P2,{'high':K('영상: 공개는 빛의 징조로 다시','Video: Light retries on the reveal'),'bal':K('공개 결과 그대로, 나머지는 영상대로','Keep the reveal, the rest as in the video')},tags,nodes,
   [{'id':'L1','nodes':['k15','k16','k16x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'side':'p','label':K('투사체 속도·피해 1티어','T1 projectile speed or damage')},{'side':'p','label':K('투사체 속도·피해 1티어','T1 projectile speed or damage')} if v=='high' else {'side':'p','random':True},{'tag':'ward','tmax':1},{'tag':'proj','tmax':1,'fr':True},{'side':'s','label':K('치명타 확률 1티어·관통','T1 crit chance or pierce')},{'tag':'hyst','tmax':1}]),
+  FIN(('high','bal'),lambda v:[{'tag':'ps'},{'tag':'ps','des':True} if v=='high' else {'side':'p','random':True},{'tag':'ward','tmax':1},{'tag':'proj','tmax':1,'fr':True},{'tag':'ss'},{'tag':'hyst','tmax':1}]),
   {'quality':30,'sockets':2},{'all':[{'has':'ps'},{'has':'ss'},{'has':'ward'},{'has':'hyst'}]},('high','bal'),xsub=["Kolr's Hunt"],xroll=True)

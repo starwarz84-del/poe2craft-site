@@ -49,11 +49,11 @@
 | diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-GDLDxn6yxEs.md). C17: 에센셜은 공개 나오는 대로(영상과 같음). 149/24/3 |
 | bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 완료 11-12 | A(Opus) | 글 다시 확인(6/22판), 가성비 길 단계 일치(기록 tools/notes/web-bigdaddy-wand.md). 완성품 임의 문구를 태그로. 비용 그대로 |
 | ragna-spell4-amulet-v2 | Tzpdm8M-Pkk | bal 118, ess 27 | 0 | 완료 11-12 | A(Opus) | 자막 전체(3:34) 대조, 단계 일치(기록 tools/notes/ragna-Tzpdm8M-Pkk.md). C17도 맞음. 변경 없음 |
-| mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 진행 중 | A(Opus) |  |
-| fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 진행 중 | A(Opus) |  |
-| diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 진행 중 | A(Opus) |  |
-| diztoh-vile-robe-v2 | n97yEuKSWyM | bal 105, ess 51 | 0 | 진행 중 | A(Opus) |  |
-| sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 진행 중 | A(Opus) |  |
+| mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/mazbro-BIxlixCKPO0.md). 완성품 줄을 DB 태그로. 값 그대로 |
+| fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 완료 11-12 | A(Opus) | 글 목걸이 부분 다시 대조, 일치(기록 tools/notes/web-fubgun-iceshot.md). 완성품 줄을 DB 태그로. 값 그대로 |
+| diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 완료 11-12 | A(Opus) | 자막 전체(31:47) 대조, 단계 일치(기록 tools/notes/diztoh-s70CV_nvjXg.md). 완성품 줄을 DB 태그로. 값 그대로 |
+| diztoh-vile-robe-v2 | n97yEuKSWyM | bal 105, ess 51 | 0 | 완료 11-12 | A(Opus) | 자막 전체(20:33) 대조, 단계 일치(기록 tools/notes/diztoh-n97yEuKSWyM.md). C17 티어(밸런스 1~2, 에센셜 1~4). 105/51 → 76/39 |
+| sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 완료 11-12 | A(Opus) | 자막 전체(13:10) 대조, 단계 일치(기록 tools/notes/sl-VKMT7tuSIYk.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 98, ess 26 | 0 | 대기 |  |  |
 | sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 97, ess 23 | 1 | 대기 |  |  |
 | diztoh-5mod-sapphire-v2 | -YZm55-QuoQ | bal 95, ess 43 | 0 | 대기 |  |  |
@@ -106,7 +106,7 @@
 | breach-ring-phys-v2 | ess·bal | ess 화염 저항 1~3티어; bal 공격 시 원소 피해 1~3티어 | 대기 |  |  |
 | breach-ring-video-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 접미 1~2티어, 마지막 훼손 접두 랜덤(메아리 없음) — 934 → 651 |
 | chiba-timelost-emerald-v2 | bal·high | - | 대기 |  |  |
-| diztoh-5mod-emerald-v2 | ess·bal | - | 대기 |  |  |
+| diztoh-5mod-emerald-v2 | ess·bal | - | 완료 11-12 | A(Opus) | 주얼 티어 하나라 맞음 |
 | diztoh-5mod-sapphire-v2 | ess·bal | - | 대기 |  |  |
 | diztoh-as-spear-v2 | ess·bal | - | 대기 |  |  |
 | diztoh-budget-crossbow-v2 | ess·bal | ess 물리 피해 % 1~3티어; ess 원소 피해 추가 1~5티어; bal 원소 피해 추가 1~3티어 | 대기 |  |  |
@@ -119,14 +119,14 @@
 | diztoh-rarity-ring-v2 | ess·bal·high | high 1티어, bal 1~2티어, ess 1~4티어·공개 나오는 대로 | 완료 11-12 | A(Opus) | 149/24/3 |
 | diztoh-socket-gloves-v2 | ess·bal | - | 대기 |  |  |
 | diztoh-talisman-v2 | ess·bal | ess 화염 피해 추가 1~5티어; bal 화염 피해 추가 1~3티어 | 대기 |  |  |
-| diztoh-vile-robe-v2 | ess·bal | ess 정신력 (분열) 1~6티어; ess 에너지 보호막 최대치 1~2티어; ess 에너지 보호막 % 1~3티어; bal 정신력 (분열) 1~4티어; bal 에너지 보호막 최대치 1티어 | 대기 |  |  |
+| diztoh-vile-robe-v2 | ess·bal | ess 정신력 (분열) 1~6티어; ess 에너지 보호막 최대치 1~2티어; ess 에너지 보호막 % 1~3티어; bal 정신력 (분열) 1~4티어; bal 에너지 보호막 최대치 1티어 | 완료 11-12 | A(Opus) | 반복 목표: 밸런스 최대치 1 → 1~2, 에센셜 최대치·% 1~4(정신력은 구입 베이스라 그대로) |
 | easybabi-spiny-talisman-v2 | bal·high | bal 원소 피해 접두 1~3티어; high 원소 피해 접두 1~2티어 | 대기 |  |  |
 | farmer-budget-armour-v2 | ess·bal·high | ess 에너지 보호막 최대치 1~3티어 | 대기 |  |  |
 | farmer-starter-staff-v2 | ess·bal·high | ess 추가 화염 피해 1~2티어 | 대기 |  |  |
 | fubgun-crit-bow-v2 | ess·bal | - | 대기 |  |  |
 | fubgun-es-helmet-v2 | ess·bal | - | 대기 |  |  |
 | fubgun-phys-bow-v2 | ess·bal | - | 대기 |  |  |
-| fubgun-proj-amulet-v2 | ess·bal | - | 대기 |  |  |
+| fubgun-proj-amulet-v2 | ess·bal | - | 완료 11-12 | A(Opus) | 이미 맞음(밸런스 빛 1~2티어, 에센셜 결과 그대로) |
 | fubgun-quiver-v2 | ess·bal | ess 물리 피해 추가 1~2티어; bal 물리 피해 추가 1티어 | 대기 |  |  |
 | grasping-mail-spell1-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 접미 하나 1~2티어, 마지막 접두·접미 랜덤 — 613 → 24,496(분열 베이스 카오스 22만 개 포함) |
 | helmet-armour-sl-v2 | ess·bal·high | high 1티어, bal 1~2티어, ess 1~4티어(빛의 징조 없음), bal·ess 마지막 접두·접미 랜덤 | 완료 11-12 | A(Opus) | 723/83/60 |
@@ -139,7 +139,7 @@
 | mazbro-bis-chest-v2 | bal·high | - | 대기 |  |  |
 | mazbro-caster-amulet-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 시전 속도·마나 1~2티어, 마지막 접두·접미 랜덤 — 428 → 410 |
 | mazbro-caster-ring-v2 | ess·bal | ess 옵션 티어 1~3티어 | 대기 |  |  |
-| mazbro-proj-gloves-v2 | bal·high | - | 대기 |  |  |
+| mazbro-proj-gloves-v2 | bal·high | - | 완료 11-12 | A(Opus) | 이미 맞음(하이엔드 1티어 훼손, 밸런스 마지막 접두 랜덤) |
 | mazbro-sceptre-v2 | high | - | 대기 |  |  |
 | mazbro-spell5-amulet-v2 | bal·high | high 공개 1티어, bal 마지막 접미 랜덤 | 완료 11-12 | A(Opus) | 233/201 |
 | mirror-bow-video-v2 | high | - | 완료 11-12 | A(Opus) 하이엔드만(극한), 바꿀 것 없음 |
@@ -162,7 +162,7 @@
 | sihan-highend-boots-v2 | ess·bal·high | ess 저항 목표 1~2티어; ess 훼손 접두 목표 1~3티어 | 완료 11-12 | A(Opus) | 밸런스 접두 1~2티어, 마지막 접두·접미 랜덤. 에센셜은 밸런스와 같아(265/266) 뺌 — 난이도 4로 올려 하이엔드·밸런스 레시피 둘 다(사용자 확정 11-12) |
 | sihan-highend-helmet-v2 | bal·high | high 저항 1~3티어 (상위 카오스) | 완료 11-12 | A(Opus) | 밸런스 방어도 1~2티어, 마지막 접미(저항) 랜덤 — 181 → 202 |
 | sihan-proj-gloves-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 1~2티어, 마지막 훼손 접두 랜덤 — 327 → 282 |
-| sl-5mod-jewel-v2 | ess·bal | - | 대기 |  |  |
+| sl-5mod-jewel-v2 | ess·bal | - | 완료 11-12 | A(Opus) | 주얼 티어 하나라 맞음 |
 | sl-blacksteel-gauntlets-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 두번째 접미도 1~2티어 반복(상위 카오스), 마지막 접두·접미 랜덤 — 140 → 874 |
 | sl-flamewave-ring-v2 | bal·high | - | 완료 11-12 | A(Opus) | 이미 기준대로(저항 1~2티어, 마지막 접미 랜덤, 훼손 핵심 옵션은 반복) — 371 그대로 |
 | sl-flamewave-staff-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 접두 반복 1~2티어, 마지막 접두·접미 랜덤 — 178 → 40 |

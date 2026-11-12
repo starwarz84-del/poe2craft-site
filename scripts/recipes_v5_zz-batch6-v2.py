@@ -50,8 +50,9 @@ def _robe(r, t):
     r['start']['mods'][0]['tmax']=4 if t=='bal' else 6
     ANN={'cur':'Orb_of_Annulment'}
     v2=_node(r,'v2'); v2.update({'do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation'],'fail':{'goto':'self','via':ANN}})
-    v2['target']={'gi':vr_flat,'tmax':1 if t=='bal' else 2}
-    v3=_node(r,'v3'); v3['target']['tmax']=2 if t=='bal' else 3; v3['cur']='Greater_Exalted_Orb'
+    # C17(2026-11-12): 반복 목표 티어 밸런스 1~2, 에센셜 1~4
+    v2['target']={'gi':vr_flat,'tmax':2 if t=='bal' else 4}
+    v3=_node(r,'v3'); v3['target']['tmax']=2 if t=='bal' else 4; v3['cur']='Greater_Exalted_Orb'
     # 접두가 분열 + 잡옵 + 첫 옵션으로 꽉 차서 두 번째 엑잘 전에 잡옵을 지움(징조 없는 소멸의 오브 — 잡옵·첫 옵션 중 하나, 그래프 v2x와 같음).
     # 건너뛴 과정 점검(2026-11-11)에서 찾음: 이 단계가 없어 두 번째 엑잘이 확률 0이었음
     i=[n['id'] for n in r['nodes']].index('v3')

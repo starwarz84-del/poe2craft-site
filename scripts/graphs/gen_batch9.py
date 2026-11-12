@@ -69,7 +69,7 @@ P,tags,nodes,loops=jewel5('diztoh-5mod-emerald-v2','Emerald','Emerald',80,'',{'r
 graph9('diztoh-5mod-emerald-v2','Emerald','Emerald',80,
   'Diztoh 5옵션 에메랄드(원본 레시피 기록) — 공격 치명타 피해 + 잡옵 → 우측 찬미 + 엑잘(공격 속도, 빗나가면 소멸의 오브) → 엑잘(접두) → 위력적인 액체 경멸 → 보존된 두개골 → 공개(공격 속도) → 좌측 소멸의 징조로 경멸 옵션 제거 → 엑잘 → 카오스 오브(공격·육척봉 피해) → 위력적인 액체 흉포함. 제련된 강탈자 기폭제(퀄리티)는 마무리라 시뮬에서 뺌.',
   {'v':{'kr':'진행','en':'Route','values':TV({'1':('영상','Video'),'2':('결과 그대로','As it comes')})}},P,KEEP_E,tags,nodes,loops,
-  FIN(('bal','ess'),lambda v:([{'side':'p','label':K('공격·육척봉 피해','Attack or quarterstaff damage')},{'tag':'fer','tmax':1}] if v=='bal' else [{'side':'p','label':K('+1 접미 허용 또는 랜덤','+1 suffix allowed or random')},{'tag':'fer','tmax':1}])+[{'tag':'critD','tmax':1},{'side':'s','label':K('공격 속도','Attack speed')},{'side':'s','label':K('공격 속도','Attack speed')} if v=='bal' else {'side':'s','random':True}]),
+  FIN(('bal','ess'),lambda v:([{'tag':'pre'},{'tag':'fer','tmax':1}] if v=='bal' else [{'side':'p','random':True},{'tag':'fer','tmax':1}])+[{'tag':'critD','tmax':1},{'tag':'asAny'},{'tag':'asAny'} if v=='bal' else {'side':'s','random':True}]),
   {'quality':20,'sockets':0},{'all':[{'has':'critD'},{'has':'asAny'},{'has':'fer'}]},('bal','ess'))
 
 # ---------- 3. Diztoh 5옵션 사파이어 (-YZm55-QuoQ) ----------

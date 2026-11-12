@@ -24,13 +24,13 @@
    "kr": "에너지 보호막 최대치",
    "en": "Flat energy shield",
    "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
     }
    }
   },
@@ -42,9 +42,23 @@
      "kr": "1~2티어",
      "en": "T1–2"
     },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  },
+  "g": {
+   "kr": "저항",
+   "en": "Resistance",
+   "values": {
+    "1": {
+     "kr": "절사의 징조로 맞춤",
+     "en": "Whittling"
+    },
+    "0": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
     }
    }
   }
@@ -54,16 +68,18 @@
    "id": "bal",
    "params": {
     "sT": 4,
-    "fT": 1,
-    "eT": 2
+    "fT": 2,
+    "eT": 2,
+    "g": 1
    }
   },
   {
    "id": "ess",
    "params": {
     "sT": 6,
-    "fT": 2,
-    "eT": 3
+    "fT": 4,
+    "eT": 4,
+    "g": 0
    }
   }
  ],
@@ -74,12 +90,13 @@
    "en": "Essential",
    "params": {
     "sT": 6,
-    "fT": 2,
-    "eT": 3
+    "fT": 4,
+    "eT": 4,
+    "g": 0
    },
    "desc": {
-    "kr": "낮은 티어, 상위 엑잘, 저항은 결과 그대로",
-    "en": "Lower tiers, Greater Exalts, resistances as they come"
+    "kr": "에너지 보호막 1~4티어, 상위 엑잘, 저항은 결과 그대로",
+    "en": "T1–4 energy shield, Greater Exalts, resistances as they come"
    }
   },
   {
@@ -88,12 +105,13 @@
    "en": "Balance",
    "params": {
     "sT": 4,
-    "fT": 1,
-    "eT": 2
+    "fT": 2,
+    "eT": 2,
+    "g": 1
    },
    "desc": {
-    "kr": "영상: 에너지 보호막 1티어 옵션 2개 + 저항(절사의 징조)",
-    "en": "Video: two T1 energy shield lines + a resistance (Whittling)"
+    "kr": "에너지 보호막 옵션 2개 1~2티어 + 저항(절사의 징조, 영상)",
+    "en": "Two T1–2 energy shield lines + a resistance (Whittling, as the video)"
    }
   }
  ],
@@ -225,7 +243,7 @@
     },
     {
      "tag": "esf",
-     "tmax": 1
+     "tmax": 2
     },
     {
      "tag": "esp",
@@ -236,11 +254,7 @@
      "tmax": 1
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "원소 저항 1~3티어",
-      "en": "Elemental resistance T1–3"
-     }
+     "tag": "anyres"
     },
     {
      "side": "s",
@@ -259,11 +273,11 @@
     },
     {
      "tag": "esf",
-     "tmax": 2
+     "tmax": 4
     },
     {
      "tag": "esp",
-     "tmax": 3
+     "tmax": 4
     },
     {
      "tag": "res",
@@ -271,10 +285,7 @@
     },
     {
      "side": "s",
-     "label": {
-      "kr": "랜덤 옵션",
-      "en": "Random modifier"
-     }
+     "random": true
     },
     {
      "side": "s",
@@ -867,7 +878,7 @@
        },
        {
         "param": {
-         "fT": 2
+         "g": 0
         }
        }
       ]
@@ -948,7 +959,7 @@
    "over": [
     {
      "param": {
-      "fT": 2
+      "g": 0
      },
      "set": {
       "cur": "Greater_Exalted_Orb"

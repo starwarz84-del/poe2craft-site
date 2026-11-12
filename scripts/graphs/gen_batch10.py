@@ -44,7 +44,7 @@ graph10('sl-5mod-jewel-v2','Sapphire','Sapphire',81,
   'SL 5옵션 사파이어(원본 레시피 기록) — 상태 이상 가속 분열 + 잡옵 → 카오스 오브(접두) → 좌측 찬미 + 엑잘(다른 접두, 빗나가면 소멸의 오브) → 엑잘(접미) → 위력적인 액체 경멸(+1 접두 허용, 아니면 분열 + 옵션 1개로 되돌림) → 보존된 두개골 → 공개(밸런스 = 빛의 징조로 다시) → 우측 소멸의 징조 → 엑잘 → 위력적인 액체 흉포함. 신성한 오브·차율라의 기폭제는 마무리라 뺌.',
   ROUTE,PV,{'bal':K('영상: 공개가 빗나가면 빛의 징조로 다시','Video: Light on a missed reveal'),'ess':K('공개 결과 그대로','Keep the reveal')},tags,nodes,
   [{'id':'L1','nodes':['s6','s7','s7x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('bal','ess'),lambda v:[{'side':'p','label':K('원하는 접두','Wanted prefix')},{'side':'p','label':K('원하는 접두','Wanted prefix')},{'side':'p','label':K('원하는 접두','Wanted prefix')} if v=='bal' else {'side':'p','random':True},{'tag':'ail','tmax':1,'fr':True},{'tag':'fer','tmax':1}]),
+  FIN(('bal','ess'),lambda v:[{'tag':'pre'},{'tag':'pre'},{'tag':'pre'} if v=='bal' else {'side':'p','random':True},{'tag':'ail','tmax':1,'fr':True},{'tag':'fer','tmax':1}]),
   {'quality':20,'sockets':0},{'all':[{'count':{'tag':'pre','min':2}},{'has':'fer'}]},('bal','ess'),cap={'p':2,'s':2})
 
 # ---------- 2. Vodnarg 오래된 에메랄드 (3tFs16SXkD8) ----------
