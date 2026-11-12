@@ -965,7 +965,7 @@ function analyse(r){
     else if(n.do==='quality'){ const step = r.ilvl>=82 ? 1.2 : 1; o.fixedTries = Math.ceil(((t.quality||20)-(qual.v||t.from||0))/step); qual={v:t.quality, type:S.byId[n.cur]?.tag||null}; }
     if(t.setQuality!=null) qual={...qual, v:t.setQuality};
     // named runes / soul cores from manual steps: put one in, or swap one for another
-    if(t.rune) runes.push(t.rune);
+    if(t.rune && !runes.some(y=>String(typeof y==='object'?y.en:y).replace(/^rune:/,'').replace(/[’']/g,"'").toLowerCase()===String(t.rune.en||t.rune).replace(/[’']/g,"'").toLowerCase())) runes.push(t.rune);   /* 시작에 이미 있는 룬은 다시 넣지 않음(2026-11-13: 콜르가 두 번 들어가 세를이 빠지던 문제) */
     if(t.runeSwap){ const i=runes.findIndex(x=>typeof x==='object' && x.kr===t.runeSwap[0].kr); if(i>=0) runes[i]=t.runeSwap[1]; else runes.push(t.runeSwap[1]); }
     if(t.slots && n.do!=='socket') for(const k in t.slots) cap[k]+=t.slots[k];   // e.g. a liquid that allows one more suffix
     if(t.imp) imp=t.imp; if(t.anoint) anoint=t.anoint; if(t.sanctify) sanct=true; if(t.vals) vals={...vals, ...t.vals};

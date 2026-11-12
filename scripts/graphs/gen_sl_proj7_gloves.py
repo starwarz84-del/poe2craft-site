@@ -115,7 +115,7 @@ A(id='r1', kind='act', group='main', pos=[0, 9], act='rune', rune=K('세를의 �
   edges=[{'to': 'c1'}], item=[KOL, SER, PS, PR])
 A(id='c1', kind='act', group='main', pos=[0, 10], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'), goal=K('접두 첫번째 옵션', 'First prefix'),
   show=['ps1'], showText=FIRST, skipIf={'has': 'pgood'}, skipTo='e1',
-  skipNote=K('남은 옵션이 투사체 피해·속도·마나 최대치 1티어면 건너뜀', 'Skip if the option left is T1 projectile damage, speed or maximum mana'),
+  skipNote=K('남은 옵션이 투사체 피해·속도·세 번째 접두 1티어면 건너뜀', 'Skip if the option left is T1 projectile damage, speed or a third prefix'),
   edges=[{'if': {'has': 'pgood'}, 'to': 'e1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail'}], item=[KOL, SER, PS, PR])
 A(id='e1', kind='act', group='main', pos=[0, 11], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation', 'Omen_of_Sinistral_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접두 두번째·세번째 옵션', 'Second and third prefixes'), show=['pd1', 'mf1'], showText=REST,

@@ -180,7 +180,7 @@ nodes=[base('t2',{'rar':'magic','mods':['melee','fire']},K('근접 +5 + 화염 �
  act('t3','main',[0,2],'desecrate','Preserved_Jawbone',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','아마나무 훼손 옵션(미공개)','Amanamu desecration (unrevealed)')],K('훼손','Desecrate'),[{'to':'t4'}],I2,omens=['Omen_of_Dextral_Necromancy','Omen_of_the_Liege']),
  act('t4','main',[0,3],'reveal',None,K('훼손 옵션 확인 (아마나무 3개 전부 나옴)','Reveal (all three Amanamu lines show)'),[st('s','공격 속도 + 반려수 공격 속도','Attack speed + companion attack speed')],K('공개','Reveal'),[{'to':'t5'}],I3,want='as'),
  act('t5','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','물리·원소 피해 접두 (안 나와도 그대로)','Physical or elemental damage (keep whatever comes)')],K('엑잘','Exalt'),[{'to':'t8'}],I4,omens=['Omen_of_Greater_Exaltation'],over=EXO),
- act('t8','main',[0,5],'rune',None,K('세를의 승리 장착 (접미 +1)','Socket Serle’s Triumph (one more suffix)'),[st('s','접미 자리 +1','One more suffix slot')],K('룬','Rune'),[{'to':'t9'}],I4,slots={'s':1}),
+ act('t8','main',[0,5],'rune',None,K('세를의 승리 장착 (접미 +1)','Socket Serle’s Triumph (one more suffix)'),[st('s','접미 자리 +1','One more suffix slot')],K('룬','Rune'),[{'to':'t9'}],I4,slots={'s':1},rune=K('세를의 승리',"Serle's Triumph")),
  act('t9','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접미 네번째 옵션','Fourth suffix'),[st('s','치명타 피해 보너스 1~2티어 (안 나와도 그대로 — 영상: 정확도 + 빛 반경)','Crit damage bonus T1–2 (keep whatever comes — accuracy + light radius in the video)')],K('엑잘','Exalt'),[{'to':'ok'}],I5,over=EXO),
  done([0,7])]
 graph('diztoh-talisman-v2','Talismans','Maji Talisman',81,
