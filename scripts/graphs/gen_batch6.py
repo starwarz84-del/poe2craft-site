@@ -140,8 +140,8 @@ nodes=[base('p1',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'p'},{
      [{'if':{'has':'anyres'},'to':'ok','res':'ok','hide':True},{'to':'v8a','res':'fail','label':K('저항 없음','No resistance')}],I5,omens=['Omen_of_Greater_Exaltation'],over=[{'param':{'g':0},'set':{'cur':'Greater_Exalted_Orb','edges':[{'to':'ok'}]}}]),   # 11:30 저항 없음(30%·50%)
  annul('v8a',[0,10],[{'if':{'removed':'res'},'to':'v8x','res':'fail'},{'to':'v8','res':'ok'}],omens=('Omen_of_Dextral_Annulment',),target=K('접미 잡옵 하나 제거','Remove one junk suffix')),   # 12:29
  act('v8','main',[0,10.5],'chaos','Greater_Chaos_Orb',K('가장 낮은 옵션을 원소 저항으로','The lowest line into an elemental resistance'),None,K('카오스','Chaos'),
-     [{'if':{'has':'anyres'},'to':'v8b','res':'ok'},{'if':{'whittleSafe':'keepR'},'to':'v8','res':'fail'},{'to':'v8c'}],I6,show=['anyres'],omens=['Omen_of_Whittling'],
-     skipIf={'not':{'whittleSafe':'keepR'}},skipTo='v8c'),   # 13:20·13:52 채팅 '절사의 징조 소모'
+     [{'if':{'has':'anyres'},'to':'v8b','res':'ok'},{'if':{'whittleSafe':'keepR'},'to':'v8','res':'fail','label':K('가장 낮은 옵션이 잡옵이면 반복','Repeat while the lowest line is junk')},{'to':'v8c','res':'fail','label':K('가장 낮은 옵션이 남길 옵션','The lowest line is one to keep')}],I6,show=['anyres'],omens=['Omen_of_Whittling'],
+     skipIf={'not':{'whittleSafe':'keepR'}},skipTo='v8c',skipNote=K('가장 낮은 옵션이 남길 옵션이면 건너뜀','Skipped when the lowest line is one to keep'),skipLabel=K('가장 낮은 옵션이 남길 옵션','The lowest line is one to keep')),   # 13:20·13:52 채팅 '절사의 징조 소모'
  act('v8c','main',[1,10.5],'exalt','Perfect_Exalted_Orb',K('빈 접미에 원소 저항','An elemental resistance in the open suffix'),None,K('엑잘','Exalt'),[{'if':{'has':'anyres'},'to':'ok','res':'ok'},{'to':'v8a','res':'fail'}],I6,show=['anyres']),   # 영상에 없음(내부 결정)
  {**cleanup('v8x',[1,10],[],[{'to':'v5','label':K('훼손부터 다시','Desecrate again')}],K('남은 접미 잡옵 제거','Remove the remaining junk suffixes'),side='s'),'omens':['Omen_of_Dextral_Annulment']},   # 영상에 없음(최악의 경우)
  act('v8b','main',[0,11],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),[st('s','랜덤 옵션','Random modifier')],K('엑잘','Exalt'),[{'to':'ok'}],I8),   # 14:24 구입, 14:36

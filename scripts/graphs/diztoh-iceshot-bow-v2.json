@@ -4,49 +4,15 @@
  "cls": "Bows",
  "base": "Obliterator Bow",
  "ilvl": 82,
- "note": "Diztoh 얼음 사격 활(29vO0mMUoME) — 매직 물리 피해 % 2티어 → 상위 마모의 에센스 → 보존된 턱뼈 훼손 → 분열(셋 중 하나) → 소멸의 오브 → 카오스 오브(물리 피해 추가 1티어) → 좌측 찬미 + 완벽한 엑잘(냉기·번개·화염·복합, 빗나가면 절사의 징조 + 상위 카오스 오브) → 번개·화염이면 알두르의 숨결 → 아스트리드의 창의성 → 고대 턱뼈 → 공개(투사체 +4, 빗나가면 우측 결정화 + 완벽한 가속의 에센스 → 심연의 에센스 → 징표 훼손) → 완벽한 엑잘(접미 잡옵) → 절사(+ 우측 말소) + 카오스 오브(치명타 확률) → 완벽한 엑잘. 극한 → 하이엔드만: 원소·투사체 +4·치명타 확률 1티어, 마지막 접미는 공격 속도·치명타 피해·추가 화살 1티어로 바꾸는 도박.",
+ "note": "Diztoh 얼음 사격 활(29vO0mMUoME, 2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 특출난 절멸자 활 → 완벽한 진화·확장·소멸로 매직 물리 피해 % → 상위 마모의 에센스 → 보존된 턱뼈 훼손 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 카오스 오브(물리 피해 추가 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 절사의 징조 + 상위 카오스 오브) → 알두르의 숨결 → 아스트리드의 창의성 → 고대 턱뼈 → 공개(투사체 +4, 빗나가면 우측 결정화 + 완벽한 가속의 에센스 → 심연의 에센스 → 징표 훼손) → 완벽한 엑잘(접미 잡옵) → 절사(+ 우측 말소) + 상위 카오스 오브(치명타 확률) → 완벽한 엑잘. 극한 → 하이엔드만: 반복 목표 1티어, 마지막 접미는 영상처럼 랜덤. 신성한 오브·룬 교체·타락은 뺌.",
  "params": {
-  "v": {
-   "kr": "진행",
-   "en": "Route",
-   "values": {
-    "1": {
-     "kr": "영상",
-     "en": "Video"
-    },
-    "2": {
-     "kr": "결과 그대로",
-     "en": "As it comes"
-    }
-   }
-  },
-  "pT": {
-   "kr": "원소 피해 추가",
-   "en": "Elemental flat",
+  "t": {
+   "kr": "반복 목표",
+   "en": "Loop target",
    "values": {
     "1": {
      "kr": "1티어",
      "en": "T1"
-    }
-   }
-  },
-  "cT": {
-   "kr": "치명타 확률",
-   "en": "Critical hit chance",
-   "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    }
-   }
-  },
-  "jT": {
-   "kr": "모든 투사체 스킬 레벨",
-   "en": "Projectile skills",
-   "values": {
-    "1": {
-     "kr": "+4",
-     "en": "+4"
     }
    }
   }
@@ -55,10 +21,7 @@
   {
    "id": "high",
    "params": {
-    "v": 1,
-    "pT": 1,
-    "jT": 1,
-    "cT": 1
+    "t": 1
    }
   }
  ],
@@ -68,23 +31,16 @@
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "v": 1,
-    "pT": 1,
-    "jT": 1,
-    "cT": 1
+    "t": 1
    },
    "desc": {
-    "kr": "원소·투사체 +4·치명타 확률 1티어, 마지막 접미 도박",
-    "en": "T1 elemental, +4 projectiles, T1 crit chance, last suffix gambled"
+    "kr": "원소·투사체 +4·치명타 확률 1티어, 마지막 접미 랜덤",
+    "en": "T1 elemental, +4 projectiles, T1 crit chance, random last suffix"
    }
   }
  ],
  "tags": {
   "pp": {
-   "gi": 7,
-   "tmax": 2
-  },
-  "ppm": {
    "gi": 7,
    "tmax": 2
   },
@@ -97,41 +53,34 @@
   },
   "co": {
    "gi": 4,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "li": {
    "gi": 6,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "fi": {
    "gi": 3,
-   "tmax": "$pT"
-  },
-  "hy": {
-   "gi": 8,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "ele": {
    "anyOf": [
     "co",
     "li",
-    "fi",
-    "hy"
-   ]
-  },
-  "conv": {
-   "anyOf": [
-    "li",
     "fi"
-   ]
+   ],
+   "label": {
+    "kr": "냉기 피해 추가 1티어 (알두르의 숨결)",
+    "en": "T1 added cold damage (Breath of Aldur)"
+   }
   },
   "proj": {
    "gi": 9,
-   "tmax": "$jT"
+   "tmax": 1
   },
   "cc": {
    "gi": 17,
-   "tmax": "$cT"
+   "tmax": 1
   },
   "ons": {
    "gi": 55
@@ -165,21 +114,13 @@
   "keepP": {
    "anyOf": [
     "pp",
-    "fl",
-    "ele"
+    "fl"
    ]
   },
   "keepS": {
    "anyOf": [
     "proj",
     "cc"
-   ]
-  },
-  "keepS3": {
-   "anyOf": [
-    "proj",
-    "cc",
-    "last"
    ]
   }
  },
@@ -215,7 +156,7 @@
    "en": "Adding modifiers",
    "cols": [
     0,
-    2
+    1
    ]
   }
  ],
@@ -229,7 +170,40 @@
     "m1x"
    ],
    "kr": "매직 물리 피해 %",
-   "en": "Magic % physical"
+   "en": "Magic % physical",
+   "fold": true,
+   "goal": {
+    "kr": "매직 물리 피해 % 1~2티어",
+    "en": "Magic % physical damage T1–2"
+   },
+   "steps": [
+    {
+     "kr": "완벽한 진화의 오브로 매직",
+     "en": "Perfect Orb of Transmutation",
+     "node": "m1"
+    },
+    {
+     "kr": "접두가 빗나가면 소멸의 오브",
+     "en": "Missed prefix: Orb of Annulment",
+     "node": "m1x"
+    },
+    {
+     "kr": "접두가 비면 완벽한 확장의 오브",
+     "en": "Empty prefix: Perfect Orb of Augmentation",
+     "node": "m2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    }
+   ]
   },
   {
    "id": "L1",
@@ -251,29 +225,23 @@
    "lines": [
     {
      "tag": "pp",
-     "fr": true,
-     "tmax": 2,
-     "tmin": 2
+     "fr": true
     },
     {
-     "tag": "fl",
-     "tmax": 1
+     "tag": "fl"
     },
     {
-     "tag": "co",
-     "tmax": 1
+     "tag": "ele"
     },
     {
      "tag": "proj",
-     "tmax": 1,
      "des": true
     },
     {
-     "tag": "cc",
-     "tmax": 1
+     "tag": "cc"
     },
     {
-     "tag": "last"
+     "random": true
     }
    ]
   }
@@ -294,8 +262,8 @@
    ],
    "next": "m1",
    "label": {
-    "kr": "특출난 절멸자 활 구입 (룬 소켓 3, 아이템 레벨 82)",
-    "en": "Buy an exceptional Obliterator Bow (three rune sockets, item level 82)"
+    "kr": "특출난 절멸자 활 구입 (아이템 레벨 82, 룬 소켓 3)",
+    "en": "Buy an exceptional Obliterator Bow (item level 82, three rune sockets)"
    },
    "item": []
   },
@@ -309,8 +277,8 @@
    ],
    "act": "transmute",
    "goal": {
-    "kr": "매직 첫 옵션",
-    "en": "First magic option"
+    "kr": "매직 물리 피해 % 1~2티어",
+    "en": "Magic % physical damage T1–2"
    },
    "label": {
     "kr": "진화",
@@ -321,7 +289,7 @@
      "if": {
       "all": [
        {
-        "has": "ppm"
+        "has": "pp"
        },
        {
         "full": "s"
@@ -333,7 +301,7 @@
     },
     {
      "if": {
-      "has": "ppm"
+      "has": "pp"
      },
      "to": "m3",
      "res": "ok"
@@ -353,17 +321,17 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가",
-     "en": "(155—169)% increased Physical Damage",
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
      "m": "n",
      "tags": [
-      "ppm"
+      "pp"
      ]
     }
    ],
    "cur": "Perfect_Orb_of_Transmutation",
    "show": [
-    "ppm"
+    "pp"
    ]
   },
   {
@@ -371,8 +339,8 @@
    "kind": "act",
    "group": "prep",
    "pos": [
-    0,
-    2
+    1,
+    1
    ],
    "act": "augment",
    "goal": {
@@ -388,7 +356,7 @@
      "if": {
       "all": [
        {
-        "has": "ppm"
+        "has": "pp"
        },
        {
         "full": "s"
@@ -400,7 +368,7 @@
     },
     {
      "if": {
-      "has": "ppm"
+      "has": "pp"
      },
      "to": "m3",
      "res": "ok"
@@ -420,65 +388,17 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가",
-     "en": "(155—169)% increased Physical Damage",
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
      "m": "n",
      "tags": [
-      "ppm"
+      "pp"
      ]
     }
    ],
    "cur": "Perfect_Orb_of_Augmentation",
    "show": [
-    "ppm"
-   ]
-  },
-  {
-   "id": "m3",
-   "kind": "act",
-   "group": "prep",
-   "pos": [
-    0,
-    3
-   ],
-   "act": "augment",
-   "goal": {
-    "kr": "매직 접미 옵션",
-    "en": "Magic suffix option"
-   },
-   "label": {
-    "kr": "확장",
-    "en": "Augment"
-   },
-   "edges": [
-    {
-     "to": "e0"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "물리 피해 (155—169)% 증가",
-     "en": "(155—169)% increased Physical Damage",
-     "m": "n",
-     "tags": [
-      "ppm"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Perfect_Orb_of_Augmentation",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
-    }
+    "pp"
    ]
   },
   {
@@ -512,7 +432,7 @@
        },
        {
         "not": {
-         "has": "ppm"
+         "has": "pp"
         }
        }
       ]
@@ -525,12 +445,60 @@
    ]
   },
   {
+   "id": "m3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "augment",
+   "goal": {
+    "kr": "매직 접미 옵션",
+    "en": "Magic suffix option"
+   },
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "edges": [
+    {
+     "to": "e0"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Orb_of_Augmentation",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "잡옵 1개",
+     "en": "One junk line"
+    }
+   ]
+  },
+  {
    "id": "e0",
    "kind": "act",
    "group": "prep",
    "pos": [
     0,
-    4
+    3
    ],
    "act": "essence",
    "goal": {
@@ -549,11 +517,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가",
-     "en": "(155—169)% increased Physical Damage",
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
      "m": "n",
      "tags": [
-      "ppm"
+      "pp"
      ]
     },
     {
@@ -588,12 +556,12 @@
    "group": "prep",
    "pos": [
     0,
-    5
+    4
    ],
    "act": "desecrate",
    "goal": {
-    "kr": "분열 확률을 높이기 위해 훼손",
-    "en": "Desecrate to raise the fracture odds"
+    "kr": "네번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Fourth line (desecrated) — fracture needs four"
    },
    "label": {
     "kr": "훼손",
@@ -607,11 +575,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가",
-     "en": "(155—169)% increased Physical Damage",
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
      "m": "n",
      "tags": [
-      "ppm"
+      "pp"
      ]
     },
     {
@@ -630,7 +598,7 @@
      "m": "j"
     },
     {
-     "s": "x",
+     "s": "s",
      "kr": "훼손 옵션(미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
@@ -639,8 +607,8 @@
    "cur": "Preserved_Jawbone",
    "showText": [
     {
-     "kr": "훼손 옵션 1개 (미공개)",
-     "en": "One desecrated modifier (unrevealed)"
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecrated (unrevealed, cannot fracture)"
     }
    ]
   },
@@ -650,7 +618,7 @@
    "group": "prep",
    "pos": [
     1,
-    5.5
+    4.5
    ],
    "attach": [
     "f1",
@@ -658,8 +626,8 @@
    ],
    "cur": "Divine_Orb",
    "goal": {
-    "kr": "물리 피해 % 165 이상 (선택)",
-    "en": "Physical damage % 165 or more (optional)"
+    "kr": "물리 피해 % 165 이상, 선택·비용 미포함",
+    "en": "Physical damage % 165+, optional, not costed"
    },
    "label": {
     "kr": "신성",
@@ -672,7 +640,7 @@
    "group": "prep",
    "pos": [
     0,
-    6
+    5
    ],
    "act": "fracture",
    "goal": {
@@ -686,10 +654,14 @@
    "edges": [
     {
      "if": {
-      "fractured": "ppm"
+      "fractured": "pp"
      },
      "to": "f4",
-     "res": "ok"
+     "res": "ok",
+     "label": {
+      "kr": "물리 피해 % 분열",
+      "en": "% physical fractured"
+     }
     },
     {
      "to": "xj",
@@ -697,18 +669,18 @@
      "dash": true,
      "label": {
       "kr": "다른 옵션 분열",
-      "en": "Another option fractured"
+      "en": "Another line fractured"
      }
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가",
-     "en": "(155—169)% increased Physical Damage",
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
      "m": "f",
      "tags": [
-      "ppm"
+      "pp"
      ]
     },
     {
@@ -727,7 +699,7 @@
      "m": "j"
     },
     {
-     "s": "x",
+     "s": "s",
      "kr": "훼손 옵션(미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
@@ -748,13 +720,17 @@
    "group": "prep",
    "pos": [
     1,
-    6
+    5
    ],
    "simTo": "b0",
    "variant": "fail",
    "label": {
     "kr": "다른 옵션 분열 — 새 베이스",
-    "en": "Another option fractured — new base"
+    "en": "Another line fractured — new base"
+   },
+   "note": {
+    "kr": "물리 피해 %가 아닌 옵션이 분열되면 이 활은 다른 용도로 두고 새 베이스로 처음부터",
+    "en": "Another line fractured: set this bow aside and start on a new base"
    }
   },
   {
@@ -763,10 +739,10 @@
    "group": "prep",
    "pos": [
     0,
-    7
+    6
    ],
    "keep": [],
-   "maxJunk": 0,
+   "maxJunk": 1,
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -776,8 +752,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "분열 옵션만 남기기",
-    "en": "Keep only the fractured modifier"
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one line"
    },
    "edges": [
     {
@@ -787,9 +763,18 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ]
   },
@@ -799,7 +784,7 @@
    "group": "main",
    "pos": [
     0,
-    7.6
+    6.6
    ],
    "next": "c1",
    "label": {
@@ -809,9 +794,18 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ]
   },
@@ -821,12 +815,12 @@
    "group": "main",
    "pos": [
     0,
-    8
+    7
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
+    "kr": "접두 물리 피해 추가 1티어",
+    "en": "T1 flat physical prefix"
    },
    "label": {
     "kr": "카오스",
@@ -835,26 +829,38 @@
    "edges": [
     {
      "if": {
-      "not": {
-       "has": "fl"
-      }
+      "all": [
+       {
+        "has": "fl"
+       },
+       {
+        "has": "ele"
+       },
+       {
+        "full": "p"
+       }
+      ]
      },
-     "to": "c1",
-     "res": "fail",
-     "port": "right"
+     "to": "al",
+     "res": "ok",
+     "hide": true
     },
     {
      "if": {
       "all": [
        {
-        "not": {
-         "has": "ele"
-        }
+        "has": "fl"
        },
        {
         "sideLt": {
          "side": "p",
          "n": 3
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 1
         }
        }
       ]
@@ -864,49 +870,26 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "not": {
-         "has": "ele"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP"
-        }
-       }
-      ]
+      "has": "fl"
      },
      "to": "e1w",
+     "res": "ok",
      "hide": true
     },
     {
-     "if": {
-      "not": {
-       "has": "ele"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "conv"
-     },
-     "to": "al",
-     "hide": true
-    },
-    {
-     "to": "r2",
-     "hide": true
+     "to": "c1",
+     "res": "fail"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -929,12 +912,12 @@
    "group": "main",
    "pos": [
     0,
-    9
+    8
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 세번째 옵션",
-    "en": "Third prefix"
+    "kr": "접두 원소 피해 추가 1티어",
+    "en": "T1 added elemental damage prefix"
    },
    "label": {
     "kr": "엑잘",
@@ -943,80 +926,29 @@
    "edges": [
     {
      "if": {
-      "not": {
-       "has": "fl"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "ele"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "ele"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "e1w",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "not": {
-       "has": "ele"
-      }
-     },
-     "to": "e1x",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "has": "conv"
+      "has": "ele"
      },
      "to": "al",
-     "res": "ok",
-     "hide": true
+     "res": "ok"
     },
     {
-     "to": "r2",
-     "res": "ok"
+     "to": "e1w",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 절사",
+      "en": "Miss: Whittling"
+     }
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -1029,20 +961,16 @@
     },
     {
      "s": "p",
-     "kr": "냉기 피해 (72—81)~(110—123) 추가",
-     "en": "Adds (72—81) to (110—123) Cold Damage",
-     "m": "n",
-     "tags": [
-      "co"
-     ]
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ],
    "cur": "Perfect_Exalted_Orb",
    "show": [
     "co",
     "li",
-    "fi",
-    "hy"
+    "fi"
    ],
    "omens": [
     "Omen_of_Sinistral_Exaltation"
@@ -1054,12 +982,12 @@
    "group": "main",
    "pos": [
     1,
-    9
+    8
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접두 잡옵을 다시 (가장 낮은 레벨일 때)",
-    "en": "Reroll the junk prefix (while it is the lowest level)"
+    "kr": "접두 잡옵을 다시",
+    "en": "Reroll the junk prefix"
    },
    "label": {
     "kr": "카오스",
@@ -1068,80 +996,49 @@
    "edges": [
     {
      "if": {
+      "all": [
+       {
+        "has": "ele"
+       },
+       {
+        "has": "fl"
+       }
+      ]
+     },
+     "to": "al",
+     "res": "ok",
+     "label": {
+      "kr": "원소 피해 추가 1티어",
+      "en": "T1 added elemental"
+     }
+    },
+    {
+     "if": {
       "not": {
        "has": "fl"
       }
      },
      "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "ele"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
      "res": "fail",
-     "port": "left"
+     "label": {
+      "kr": "물리 피해 추가가 지워짐 — 카오스부터",
+      "en": "Flat physical gone: back to Chaos"
+     }
     },
     {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "ele"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
      "to": "e1w",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "not": {
-       "has": "ele"
-      }
-     },
-     "to": "e1x",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "has": "conv"
-     },
-     "to": "al",
-     "res": "ok"
-    },
-    {
-     "to": "r2",
-     "res": "ok"
+     "res": "fail"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -1154,11 +1051,11 @@
     },
     {
      "s": "p",
-     "kr": "냉기 피해 (72—81)~(110—123) 추가",
-     "en": "Adds (72—81) to (110—123) Cold Damage",
+     "kr": "번개 피해 (1—12)~(202—234) 추가",
+     "en": "Adds (1—12) to (202—234) Lightning Damage",
      "m": "n",
      "tags": [
-      "co"
+      "li"
      ]
     }
    ],
@@ -1166,115 +1063,20 @@
    "show": [
     "co",
     "li",
-    "fi",
-    "hy"
+    "fi"
    ],
-   "omens": [
-    "Omen_of_Whittling"
-   ]
-  },
-  {
-   "id": "e1x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    2,
-    9
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Sinistral_Annulment"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "접두 하나 지우기 (잡옵 또는 물리 피해 추가, 50:50)",
-    "en": "Remove one prefix (the junk or the flat physical, 50:50)"
-   },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "fl"
-      }
-     },
-     "to": "c1",
-     "res": "fail"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "ele"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "res": "ok",
-     "port": "top"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "ele"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "e1w",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "ele"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "conv"
-     },
-     "to": "al",
-     "hide": true
-    },
-    {
-     "to": "r2",
-     "hide": true
-    }
-   ]
+   "trim": {
+    "side": "p",
+    "keep": "keepP"
+   }
   },
   {
    "id": "al",
    "kind": "act",
    "group": "main",
    "pos": [
-    1,
-    10
+    0,
+    9
    ],
    "act": "rune",
    "goal": {
@@ -1293,9 +1095,12 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -1324,8 +1129,8 @@
    ],
    "showText": [
     {
-     "kr": "화염·번개 옵션 → 냉기",
-     "en": "Fire and lightning mods → cold"
+     "kr": "화염·번개 옵션 → 같은 티어 냉기",
+     "en": "Fire and lightning mods → same-tier cold"
     }
    ],
    "rune": {
@@ -1339,7 +1144,7 @@
    "group": "main",
    "pos": [
     0,
-    11
+    10
    ],
    "act": "rune",
    "goal": {
@@ -1352,166 +1157,18 @@
    },
    "edges": [
     {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "d2",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "x1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX"
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
      "to": "d1"
-    },
-    {
-     "to": "l1"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -1556,194 +1213,12 @@
    }
   },
   {
-   "id": "sX",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    11
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Dextral_Annulment"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "접미 잡옵 줄이기 (2개 이상일 때)",
-    "en": "Cut the junk suffixes (two or more)"
-   },
-   "edges": [
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "d2",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "x1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX"
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "d1"
-    },
-    {
-     "to": "l1"
-    }
-   ]
-  },
-  {
    "id": "d1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    12
+    11
    ],
    "act": "desecrate",
    "goal": {
@@ -1756,168 +1231,18 @@
    },
    "edges": [
     {
-     "if": {
-      "unrevSide": "s"
-     },
      "to": "d2"
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "x1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "to": "l1",
-     "hide": true
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -1971,12 +1296,12 @@
    "group": "main",
    "pos": [
     0,
-    13
+    12
    ],
    "act": "reveal",
    "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
+    "kr": "접미 모든 투사체 스킬 레벨 +4",
+    "en": "+4 projectile skills suffix"
    },
    "label": {
     "kr": "공개",
@@ -1985,169 +1310,29 @@
    "edges": [
     {
      "if": {
-      "unrevSide": "s"
-     },
-     "to": "d2",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
+      "has": "proj"
      },
      "to": "x1",
      "res": "ok"
     },
     {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
      "to": "l1",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "빗나감 — 빛 없이 다시",
+      "en": "Miss: lightless reroll"
+     }
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -2203,12 +1388,12 @@
    "group": "main",
    "pos": [
     1,
-    13
+    12
    ],
    "act": "essence",
    "goal": {
-    "kr": "접미 옵션을 지우고 맹공",
-    "en": "A suffix goes for Onslaught"
+    "kr": "공개된 접미를 지우고 맹공",
+    "en": "The revealed suffix goes, Onslaught comes"
    },
    "label": {
     "kr": "에센스",
@@ -2216,168 +1401,18 @@
    },
    "edges": [
     {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "d2",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "x1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
      "to": "l2"
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "to": "l1",
-     "hide": true
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -2438,7 +1473,7 @@
    "group": "main",
    "pos": [
     1,
-    14
+    13
    ],
    "act": "essence",
    "goal": {
@@ -2451,168 +1486,18 @@
    },
    "edges": [
     {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "d2",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
      "to": "l3"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "x1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "to": "l1",
-     "hide": true
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -2674,12 +1559,12 @@
    "group": "main",
    "pos": [
     1,
-    15
+    14
    ],
    "act": "desecrate",
    "goal": {
-    "kr": "접미 징표 훼손",
-    "en": "Desecrate the suffix Mark"
+    "kr": "징표 자리 훼손",
+    "en": "Desecrate the Mark"
    },
    "label": {
     "kr": "훼손",
@@ -2687,169 +1572,22 @@
    },
    "edges": [
     {
-     "if": {
-      "unrevSide": "s"
-     },
      "to": "d2",
-     "port": "right"
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "x1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "to": "l1",
-     "hide": true
+     "label": {
+      "kr": "다시 공개",
+      "en": "Reveal again"
+     }
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -2904,7 +1642,7 @@
    "group": "main",
    "pos": [
     0,
-    16
+    15
    ],
    "act": "exalt",
    "goal": {
@@ -2918,28 +1656,25 @@
    "edges": [
     {
      "if": {
-      "not": {
-       "whittleSafe": {
-        "tag": "keepS",
-        "side": "s"
-       }
-      }
+      "has": "cc"
      },
-     "to": "x2x",
-     "res": "fail",
-     "port": "right"
+     "to": "x3",
+     "res": "ok",
+     "hide": true
     },
     {
-     "to": "x2",
-     "res": "ok"
+     "to": "x2"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -2991,8 +1726,8 @@
    "showText": [
     {
      "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
+     "kr": "랜덤 옵션 1개 (접두가 꽉 차 접미로)",
+     "en": "One random line (prefixes are full)"
     }
    ]
   },
@@ -3002,12 +1737,12 @@
    "group": "main",
    "pos": [
     0,
-    17.4
+    16
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix"
+    "kr": "접미 치명타 확률 1티어",
+    "en": "T1 critical hit chance suffix"
    },
    "label": {
     "kr": "카오스",
@@ -3016,86 +1751,12 @@
    "edges": [
     {
      "if": {
-      "unrevSide": "s"
-     },
-     "to": "d2",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
       "all": [
        {
         "has": "proj"
        },
        {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "x1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
+        "has": "cc"
        }
       ]
      },
@@ -3104,82 +1765,32 @@
     },
     {
      "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
       "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
+       "has": "proj"
       }
      },
      "to": "d1",
-     "hide": true
+     "res": "fail",
+     "hide": true,
+     "label": {
+      "kr": "투사체 +4가 지워짐 — 훼손부터",
+      "en": "+4 projectiles gone: desecrate again"
+     }
     },
     {
-     "to": "l1",
-     "hide": true
+     "to": "x2",
+     "res": "fail"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -3240,197 +1851,12 @@
    }
   },
   {
-   "id": "x2x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    17.4
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Dextral_Annulment"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "접미 하나 지우기 (잡옵이 가장 낮은 레벨이 아닐 때)",
-    "en": "Remove one suffix (when the junk is not the lowest level)"
-   },
-   "edges": [
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "d2",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "x1",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "to": "l1",
-     "res": "fail"
-    }
-   ]
-  },
-  {
    "id": "x3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    18.8
+    17
    ],
    "act": "exalt",
    "goal": {
@@ -3443,171 +1869,18 @@
    },
    "edges": [
     {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "d2",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "x1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "to": "l1",
-     "hide": true
+     "to": "ok"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
+     "kr": "물리 피해 (155—179)% 증가",
+     "en": "(155—179)% increased Physical Damage",
+     "m": "f",
+     "tags": [
+      "pp"
+     ]
     },
     {
      "s": "p",
@@ -3671,263 +1944,7 @@
      "kr": "랜덤 옵션 1개",
      "en": "One random line"
     }
-   ],
-   "show": [
-    "as",
-    "cd",
-    "sur"
    ]
-  },
-  {
-   "id": "x3w",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    18.8
-   ],
-   "act": "chaos",
-   "goal": {
-    "kr": "마지막 접미를 다시 (가장 낮은 레벨일 때)",
-    "en": "Reroll the last suffix (while it is the lowest level)"
-   },
-   "label": {
-    "kr": "카오스",
-    "en": "Chaos"
-   },
-   "edges": [
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "d2",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
-       }
-      ]
-     },
-     "to": "x1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
-     },
-     "to": "x2x",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "to": "l1",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "물리 피해 (155—169)% 증가 (분열)",
-     "en": "(155—169)% increased Physical Damage (fractured)",
-     "m": "n"
-    },
-    {
-     "s": "p",
-     "kr": "물리 피해 (26—39)~(44—66) 추가",
-     "en": "Adds (26—39) to (44—66) Physical Damage",
-     "m": "n",
-     "tags": [
-      "fl"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "냉기 피해 (72—81)~(110—123) 추가",
-     "en": "Adds (72—81) to (110—123) Cold Damage",
-     "m": "n",
-     "tags": [
-      "co"
-     ]
-    },
-    {
-     "s": "r",
-     "kr": "알두르의 숨결",
-     "en": "Breath of Aldur",
-     "m": "r"
-    },
-    {
-     "s": "r",
-     "kr": "아스트리드의 창의성",
-     "en": "Astrid’s Creativity",
-     "m": "r"
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +4",
-     "en": "+4 to Level of all Projectile Skills",
-     "m": "d",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 확률 +(4.41—5)%",
-     "en": "+(4.41—5)% to Critical Hit Chance",
-     "m": "n",
-     "tags": [
-      "cc"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    }
-   ],
-   "cur": "Greater_Chaos_Orb",
-   "show": [
-    "as",
-    "cd",
-    "sur"
-   ],
-   "trim": {
-    "side": "s",
-    "keep": "keepS3"
-   }
   },
   {
    "id": "ok",
@@ -3935,7 +1952,7 @@
    "group": "main",
    "pos": [
     0,
-    19.8
+    18
    ],
    "label": {
     "kr": "완성",
