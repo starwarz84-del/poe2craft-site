@@ -112,7 +112,7 @@
 
 - `site/graphify.js` `fromDraft(초안, 클래스 파일, {craft, grades})` → 그래프, `view` → 화면용 그림 데이터, `check` → 등급별 시뮬·문제 목록. 브라우저(리버스 화면)와 node 공용.
 - 조건 `rune:'이름 일부'`(2026-11-12): 이번 진행에서 그 룬을 이미 장착함(룬 상자 `act:'rune'`의 `rune.en`·`rune.kr`에서 대소문자 무시하고 찾음, 그래프 `astrid:true`면 아스트리드는 처음부터 장착). 룬 상자에 `skipIf:{rune:'Astrid'}` + `skipTo`로 되돌아올 때 다시 지나지 않게.
-- `act:'flux'`(2026-11-12): `cur`가 맹렬한(`Blazing_Flux`)·오싹한(`Chilling_Flux`)·치직대는(`Crackling_Flux`)·공허(`Void_Flux`) 유동체면 아이템의 그 원소 저항 옵션을 같은 티어의 목표 원소 저항 옵션으로 바꿈(저항·저항 최대치·훼손 복합 저항의 원소 부분, 분열·미공개 옵션은 그대로, 훼손·에센스 표시는 유지, 같은 계열 두 개 공존 가능). 시뮬 `site/sim.js` `fluxTarget`, 엔진 `recipes.html` `do:'flux'`(같은 규칙). 예전처럼 `act:'divine'` + 유동체 `cur`로 두면 변환 없이 사용량만 셈. 완성품 카드에 같은 태그를 두 줄 적으면 `fincheck.js`는 그 태그가 두 개 있어야 통과
+- `act:'flux'`(2026-11-12): `cur`가 맹렬한(`Blazing_Flux`)·오싹한(`Chilling_Flux`)·치직대는(`Crackling_Flux`)·공허(`Void_Flux`) 유동체면 아이템의 그 원소 저항 옵션을 같은 수치 범위의 목표 원소 저항 옵션으로 바꿈(원소 → 카오스는 POE2DB 대응표, 원소 3티어 → 카오스 2티어 등 — game-rules.md)(저항·저항 최대치·훼손 복합 저항의 원소 부분, 분열·미공개 옵션은 그대로, 훼손·에센스 표시는 유지, 같은 계열 두 개 공존 가능). 시뮬 `site/sim.js` `fluxTarget`, 엔진 `recipes.html` `do:'flux'`(같은 규칙). 예전처럼 `act:'divine'` + 유동체 `cur`로 두면 변환 없이 사용량만 셈. 완성품 카드에 같은 태그를 두 줄 적으면 `fincheck.js`는 그 태그가 두 개 있어야 통과
 - 루프 `itemBy:{high,bal,ess}`(2026-11-12): 접힌 루프 상자의 왼쪽 아이템 칸을 등급(버전 id)마다 따로(`goalBy`처럼). 없으면 `item`. 등급에서 늘 건너뛰는 상자(시뮬 지나간 횟수 = 건너뛴 횟수, 사용량 없음, `skipTo` 있음)는 그 등급 플로우차트에서 빠지고 들어오는 선은 `skipTo`로 이어짐, 레시피 단계에서도 빠짐(`graph2recipe` `Walk.skipall`)
 - 조건 `famBlock:태그`: 원하는 옵션의 계열을 다른 옵션(티어가 안 맞는 같은 그룹 포함)이 이미 차지해 그 단계로는 절대 못 붙음.
 - 그래프 `maxSteps`: 한 번 진행에서 이 단계 수를 넘으면 `runaway`(기본 200만, 리버스 검사는 30만).
