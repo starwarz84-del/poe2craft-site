@@ -815,6 +815,25 @@ def read_recipe(r, sim, src, tiers):
             if ln: o['loopNote'] = ln
         out.append(o)
         if n['pos'][0] == 0: prev = cur
+    # 선택 상자(kind side: 신성한 오브 수치 올리기·축성·합금 도박 등)는 레시피에도 '선택' 단계로 — 비용 합계에는 넣지 않음(optional, 합계는 시뮬 값) (2026-11-13 S1)
+    for sn_ in [x for x in (src or {}).get('nodes') or [] if x.get('kind') == 'side']:
+        if isinstance(sn_.get('tiers'), list) and V['id'] not in sn_['tiers']: continue
+        at = [a_ for a_ in (sn_.get('attach') or []) if a_]
+        ids = [x['id'] for x in out]
+        anchor = next((a_ for a_ in at if a_ in ids), None)
+        if not anchor and not any(W.by.get(a_, {}).get('kind') == 'done' for a_ in at): continue   # 붙는 상자가 이 등급 레시피에 없음
+        o = {'id': sn_['id'], 'do': ACT.get(sn_.get('act'), sn_.get('act')) or 'manual', 'optional': True}
+        if sn_.get('cur'): o['cur'] = sn_['cur']
+        if sn_.get('omens'): o['omens'] = list(sn_['omens'])
+        if sn_.get('goal') or sn_.get('label'): o['label'] = sn_.get('goal') or sn_.get('label'); o['goal'] = o['label']
+        o['note'] = (sn_.get('showText') or [None])[0] or sn_.get('goal') or sn_.get('label') or {'kr': '선택 단계', 'en': 'Optional step'}
+        o.update(keep(sn_['id']))
+        i = ids.index(anchor) + 1 if anchor else len(out)
+        while i < len(out) and out[i].get('fallbackFor'): i += 1   # 붙는 단계의 옆 단계 묶음 뒤
+        o['phase'] = out[i - 1]['phase'] if i > 0 else phases[-1]['id']
+        pf = next((out[j].get('fst') for j in range(i - 1, -1, -1) if out[j].get('fst') is not None), None)
+        if pf is not None: o['fst'] = copy.deepcopy(pf)   # 선택 단계는 옵션을 바꾸지 않음 — 앞 단계 아이템 상태 그대로(엔진이 추측한 상태가 완성으로 넘어가지 않게)
+        out.insert(i, o)
     last = (r.get('nodes') or [None])[-1]
     # 옛 레시피의 마지막 '선택' 단계(optional, 예: 히네코라의 머리카락 + 바알 오브)는 플로우차트에 없는 단계라 완성 글로 쓰지 않음(2026-11-13 S1)
     done_note = last.get('note') if last and last.get('do') == 'note' and not last.get('optional') else None

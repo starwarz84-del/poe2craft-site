@@ -1672,7 +1672,10 @@ const FX={W:540, WB:330, GAPX:118, LANE:330, LANEGAP:40, ROWGAP:44, GROUPGAP:110
 let _fcCtx; const fcText = (t, px) => { try{ _fcCtx=_fcCtx||document.createElement('canvas').getContext('2d'); _fcCtx.font=`${px}px ${getComputedStyle(document.body).getPropertyValue('--f-body')||'sans-serif'}`; return Math.ceil(_fcCtx.measureText(t).width); }catch(e){ return fcLen(t)*px/12; } };
 const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?12:7),0);
 // a work step this version never reaches (0 visits in its simulation) is left out of its flowchart
-function fcPrune(g, res){ if(!res?.nodes) return g; const gone=new Set(g.nodes.filter(n=>(n.kind==='act'||n.kind==='cleanup'||n.kind==='mark') && !res.nodes[n.id]).map(n=>n.id));
+function fcPrune(g, res, vid){ if(!res?.nodes) return g; const gone=new Set(g.nodes.filter(n=>(n.kind==='act'||n.kind==='cleanup'||n.kind==='mark') && !res.nodes[n.id]).map(n=>n.id));
+  /* 선택 상자(kind side): tiers(버전 id 목록)에 이 버전이 없으면 빼고, 붙는 상자가 둘 다 빠져도 뺌(2026-11-13 S1) */
+  g.nodes.forEach(n=>{ if(n.kind!=='side') return; if(Array.isArray(n.tiers) && vid && !n.tiers.includes(vid)) gone.add(n.id); });
+  g.nodes.forEach(n=>{ if(n.kind==='side' && n.attach && n.attach.every(a=>gone.has(a) || !g.nodes.some(x=>x.id===a))) gone.add(n.id); });
   /* 이 등급에서 늘 건너뛰는 상자(지나간 횟수 = 건너뛴 횟수, 예: 시한 투구 밸런스의 유동체 — 2026-11-12): 그림에서 빼고 들어오는 선은 건너뛸 곳(skipTo)으로 */
   const jump={}; g.nodes.forEach(n=>{ const t=res.nodes[n.id]; if(n.kind==='act' && n.skipTo && t && t.visits>0 && (t.skips||0)>=t.visits*0.999 && !Object.keys(t.use||{}).length){ gone.add(n.id); jump[n.id]=n.skipTo; } });
   const to = id => { let k=id, i=0; while(jump[k] && i++<20) k=jump[k]; return k; };
@@ -1869,8 +1872,9 @@ function fcCardState(tags, lines, ds, revOnly=()=>false, r=null){
   lines=lines.map(l=>{ const T=tags?.[l.tag]; if(l.random || l.label || !T || T.gi!=null || !T.anyOf) return l; const g=leafGi(T); return {...l, side:l.side||sideOf(g[0]), label:T.label||{kr:'랜덤 옵션',en:'Random modifier'}, any:g}; });
   const state=lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side||(l.any?.length?sideOf(l.any[0]):undefined), label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}, des:!!l.des, rnd:!!l.random, fr:!!l.fr, ...((l.tmax||typeof tags?.[l.tag]?.tmax==='number')?{tmax:l.tmax||tags[l.tag].tmax}:{}), ...(l.any?.length?{any:l.any}:tags?.[l.tag]?.anyOf?{any:tags[l.tag].anyOf.map(x=>x.gi)}:{})}; const T=tags?.[l.tag]; if(!T || T.gi==null) return null;
     return {gi:T.gi, side:T.s, tmax:l.tmax||(typeof T.tmax==='number'?T.tmax:null), tmin:l.tmin||null, fr:!!l.fr, des:!!l.des || (ds ? false : (T.sec==='d' || revOnly(l.tag))), dsf:ds ? (ds.tag?.[l.tag]||0) : 0, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
-  if(ds && !state.some(m=>m.des)){ const t=state.filter(m=>m.gi!=null && m.dsf>=0.5).sort((a,b)=>b.dsf-a.dsf)[0];
-    if(t) t.des=true; else { const sd=['p','s'].filter(x=>(ds.side?.[x]||0)>=0.5).sort((a,b)=>(ds.side[b]||0)-(ds.side[a]||0))[0];
+  /* 시뮬 훼손 비율로 칠하는 건 모든 완성품에서 훼손일 때만(99.9% 이상) — 81%처럼 다른 경로(먼저 뜬 일반 옵션)가 있으면 일반 색(2026-11-13 S1: 노블 화살통 투사체 +1) */
+  if(ds && !state.some(m=>m.des)){ const t=state.filter(m=>m.gi!=null && m.dsf>=0.999).sort((a,b)=>b.dsf-a.dsf)[0];
+    if(t) t.des=true; else { const sd=['p','s'].filter(x=>(ds.side?.[x]||0)>=0.999).sort((a,b)=>(ds.side[b]||0)-(ds.side[a]||0))[0];
       const c=sd && (state.find(m=>m.side===sd && m.gi==null && !m.rnd) || state.find(m=>m.side===sd && m.gi==null && m.rnd)); if(c) c.des=true; } }
   { let one=false; for(const m of state) if(m.des){ if(one) m.des=false; one=true; } }
   return state; }
@@ -1921,7 +1925,7 @@ function fcFold(g, res, vid){ const Ls=(g.loops||[]).filter(L=>L.fold && L.nodes
 function fcRepeats(g, id){ const by=Object.fromEntries(g.nodes.map(n=>[n.id,n])), nx=n=>[...(n.edges||[]).map(e=>e.to), n.next, n.skipTo, ...Object.values(n.options||{})].filter(Boolean);
   const seen=new Set(), q=[...nx(by[id]||{})]; while(q.length){ const x=q.shift(); if(x===id) return true; if(seen.has(x)) continue; seen.add(x); const N=by[x]; if(!N || /^(base|done|exit)$/.test(N.kind)) continue; q.push(...nx(N)); } return false; }
 function fcOver(g, params){ return {...g, nodes:g.nodes.map(n=>{ const o=(n.over||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); return o ? {...n, ...o.set} : n; })}; }   // per-version node fields (same rule as sim.js)
-function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.graph, s.params), vid=(d.graph.versions||[]).find(v=>Object.entries(v.params).every(([k,x])=>String(s.params[k])===String(x)))?.id, {g, res}=fcFold(fcIlvl(fcPrune(g0, s.res), r), s.res, vid), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
+function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.graph, s.params), vid=(d.graph.versions||[]).find(v=>Object.entries(v.params).every(([k,x])=>String(s.params[k])===String(x)))?.id, {g, res}=fcFold(fcIlvl(fcPrune(g0, s.res, vid), r), s.res, vid), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
   const n0=Object.fromEntries(g0.nodes.map(n=>[n.id,n]));   /* 선 순번(sim edgesI 'id#i')은 정리(prune) 전 상자의 edges 순서 */
   const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : p>0 ? (p*100).toFixed(2)+'%' : '0%';
   const st = id => res.nodes[id], ecount = (a,b) => res.edges?.[a+'>'+b]||0;
@@ -1969,7 +1973,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
     yLast=top+h; prev=n.item; });
   const fcH=Math.max(Lay.Ht, yLast+FX.PAD+20);
   // optional side steps: a dashed line from the main line, no way out
-  const sideLines=g.nodes.filter(n=>n.kind==='side' && n.attach).map(n=>{ const b=Lay.box[n.id], A=Lay.box[n.attach[0]], x0=A.x+A.w/2, y=Math.round(b.y+b.h/2);
+  const sideLines=g.nodes.filter(n=>n.kind==='side' && n.attach).map(n=>{ const b=Lay.box[n.id], A=Lay.box[n.attach[0]]||Lay.box[n.attach[1]]; if(!A || !b) return '';   /* 붙는 상자가 이 등급에서 빠지면 선 없이(2026-11-13 S1: 버전 버튼이 멈추던 TypeError) */ const x0=A.x+A.w/2, y=Math.round(b.y+b.h/2);
     return `<path class="fce k-fwd skip side" d="M${x0},${y} L${b.x},${y}" marker-end="url(#fcm-side)"/>`; }).join('');
   // loops: one shaded area per loop (rows joined), its total use per finished item on a tag
   const loopsSvg=[], loopTags=[];

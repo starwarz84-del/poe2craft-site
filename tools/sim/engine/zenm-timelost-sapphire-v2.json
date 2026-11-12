@@ -1,31 +1,36 @@
 {
- "total": 7.584542699724517,
- "totalAll": 7.584542699724517,
+ "mode": "engine",
+ "total": 12.595361342414678,
+ "totalAll": 12.595361342414678,
  "main": {
   "tot": {
    "Regal_Orb": 1,
-   "Chaos_Orb": 1,
-   "Preserved_Cranium": 1,
-   "Omen_of_Dextral_Necromancy": 1,
-   "Omen_of_Abyssal_Echoes": 1,
+   "Orb_of_Annulment": 1,
+   "Chaos_Orb": 12.757424508834948,
+   "Preserved_Cranium": 1.4811369854757375,
+   "Omen_of_Dextral_Necromancy": 1.4811369854757375,
+   "Omen_of_Abyssal_Echoes": 1.4811369854757375,
    "Exalted_Orb": 1,
+   "Omen_of_Greater_Exaltation": 1,
    "Ancient_Potent_Liquid_Melancholy": 1
   },
   "totAll": {
    "Regal_Orb": 1,
-   "Chaos_Orb": 1,
-   "Preserved_Cranium": 1,
-   "Omen_of_Dextral_Necromancy": 1,
-   "Omen_of_Abyssal_Echoes": 1,
+   "Orb_of_Annulment": 1,
+   "Chaos_Orb": 12.757424508834948,
+   "Preserved_Cranium": 1.4811369854757375,
+   "Omen_of_Dextral_Necromancy": 1.4811369854757375,
+   "Omen_of_Abyssal_Echoes": 1.4811369854757375,
    "Exalted_Orb": 1,
+   "Omen_of_Greater_Exaltation": 1,
    "Ancient_Potent_Liquid_Melancholy": 1
   },
   "bases": 1,
-  "div": 7.584542699724517,
-  "divAll": 7.584542699724517,
+  "div": 12.595361342414678,
+  "divAll": 12.595361342414678,
   "nodes": [
    {
-    "id": "z1",
+    "id": "h1",
     "do": "base",
     "p": 1,
     "tries": 1,
@@ -43,13 +48,23 @@
     }
    },
    {
-    "id": "z3",
-    "do": "chaos",
+    "id": "z2x",
+    "do": "remove",
     "p": 1,
     "tries": 1,
     "passes": 1,
     "use": {
-     "Chaos_Orb": 1
+     "Orb_of_Annulment": 1
+    }
+   },
+   {
+    "id": "z3",
+    "do": "chaos",
+    "p": 0.1161,
+    "tries": 8.613264427217915,
+    "passes": 1.4811369854757375,
+    "use": {
+     "Chaos_Orb": 12.757424508834948
     }
    },
    {
@@ -57,22 +72,21 @@
     "do": "desecrate",
     "p": 1,
     "tries": 1,
-    "passes": 1,
+    "passes": 1.4811369854757375,
     "use": {
-     "Preserved_Cranium": 1,
-     "Omen_of_Dextral_Necromancy": 1
+     "Preserved_Cranium": 1.4811369854757375,
+     "Omen_of_Dextral_Necromancy": 1.4811369854757375
     }
    },
    {
     "id": "z5",
     "do": "reveal",
-    "p": 1,
+    "p": 0.6751569975,
     "tries": 1,
-    "passes": 1,
+    "passes": 1.4811369854757375,
     "use": {
-     "Omen_of_Abyssal_Echoes": 1
-    },
-    "lose": 0.5
+     "Omen_of_Abyssal_Echoes": 1.4811369854757375
+    }
    },
    {
     "id": "z6",
@@ -81,7 +95,8 @@
     "tries": 1,
     "passes": 1,
     "use": {
-     "Exalted_Orb": 1
+     "Exalted_Orb": 1,
+     "Omen_of_Greater_Exaltation": 1
     }
    },
    {
@@ -93,6 +108,14 @@
     "use": {
      "Ancient_Potent_Liquid_Melancholy": 1
     }
+   },
+   {
+    "id": "done",
+    "do": "note",
+    "p": 1,
+    "tries": 1,
+    "passes": 1,
+    "use": {}
    }
   ]
  },
