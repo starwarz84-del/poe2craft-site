@@ -497,13 +497,14 @@ tip('cheap-resist-essence','trade','armour',['절연의 에센스','풍요의 �
 # ---------- 상황으로 자동 연결(사용자 확정 2026-11-12) ----------
 # 레시피 단계마다 엔진이 아는 아이템 상태로 확인. 규칙 하나 안의 조건은 모두 맞아야 함(규칙끼리는 아무거나).
 #  do: 단계 행동 · use: 쓰는 커런시·징조 중 하나 · noUse: 이것들을 안 씀 · pre: 단계 전 상태
-#   (frJunk1 = 분열 + 다른 옵션 1개, noCrafted = 제작·훼손 옵션 없음, otherRoom = 징조 반대쪽에 빈자리)
+#   (frJunk1 = 분열 + 다른 옵션 1개, noCrafted = 제작·훼손 옵션 없음, otherRoom = 징조 반대쪽에 빈자리, unrevPre = 공개 안 한 훼손 옵션 있음)
+#  use는 단계의 커런시·징조와 함께 쓰는 것(extra, 예: 히네코라의 머리카락)도 봄
 #  failVia: 실패 처리에 그 징조 · sideOmenWaste: 꽉 찬 쪽 덕에 좌측·우측 징조가 필요 없음 · target: 목표에 그 키
 #  save: True면 '더 저렴한 방법' 알림(💰)
 AUTO = {
  'after-fracture-chaos':[{'do':['chaos'],'pre':'frJunk1','noUse':['Omen_of_Whittling']}],
- 'fracture-four-mods':[{'do':['fracture']}],
- 'hinekora-before-big':[{'do':['fracture']},{'use':['Hinekoras_Lock']}],
+ 'fracture-four-mods':[{'do':['fracture'],'pre':'unrevPre'}],
+ 'hinekora-before-big':[{'use':['Hinekoras_Lock']}],   # 분열 단계 전부에 붙던 것 → 히네코라의 머리카락을 실제로 쓰는 단계만(2026-11-12, 방패 7번)
  'whittle-side-first':[{'use':['Omen_of_Whittling']}],
  'whittle-needs-erasure':[{'use':['Omen_of_Whittling'],'noUse':['Omen_of_Sinistral_Erasure','Omen_of_Dextral_Erasure'],'pre':'otherRoom'}],
  'erasure-chaos-cheaper':[{'do':['exalt'],'failVia':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'save':True}],
@@ -511,7 +512,7 @@ AUTO = {
  'side-omen-save':[{'sideOmenWaste':True,'save':True}],
  'reveal-miss-exalt-first':[{'do':['reveal'],'failVia':['Omen_of_Light']}],
  'abyss-before-crafted':[{'use':['Essence_of_the_Abyss']}],
- 'mark-wrong-side':[{'use':['Essence_of_the_Abyss']}],
+ 'mark-wrong-side':[{'use':['Essence_of_the_Abyss'],'target':'mark'}],
  'crystallise-alloy-clears-junk':[{'do':['essence'],'use':['Omen_of_Sinistral_Crystallisation','Omen_of_Dextral_Crystallisation']}],
  'catalyst-steer':[{'use':['Omen_of_Catalysing_Exaltation']}],
  'breach-quality-stays':[{'use':['Essence_of_the_Breach']}],

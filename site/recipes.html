@@ -1234,7 +1234,7 @@ function stateHTML(r, o){
 }
 /* 단계 꿀팁(사용자 확정 2026-11-12): ① 단계 안에 제목 한 줄, 누르면 방법·이유 ② 손으로 붙인 꿀팁 + 상황 규칙(tips.json auto)으로 자동 연결 ③ 더 저렴한 방법은 💰 */
 function tipAutoHit(r, o, rule){ const n=o.n||{}, t=n.target||{}, pre=o.pre||[], cap=o.cap||{p:3,s:3};
-  const uses=new Set([n.cur, ...(n.omens||[])].filter(Boolean)), via=new Set([n.fail?.via?.cur, ...(n.fail?.via?.omens||[])].filter(Boolean));
+  const uses=new Set([n.cur, ...(n.omens||[]), ...Object.keys(n.extra||{})].filter(Boolean)), via=new Set([n.fail?.via?.cur, ...(n.fail?.via?.omens||[])].filter(Boolean));
   const cnt=s=>pre.filter(m=>m.side===s).length, crafted=m=>m.des || m.unrev || m.mark || (m.gi!=null && ['e','d'].includes(grp(r,m.gi)?.s));
   if(rule.do && !rule.do.includes(n.do)) return false;
   if(rule.use && !rule.use.some(x=>uses.has(x))) return false;
@@ -1243,6 +1243,7 @@ function tipAutoHit(r, o, rule){ const n=o.n||{}, t=n.target||{}, pre=o.pre||[],
   if(rule.target && !t[rule.target]) return false;
   if(rule.pre==='frJunk1' && !(pre.some(m=>m.fr) && pre.filter(m=>!m.fr).length===1)) return false;
   if(rule.pre==='noCrafted' && pre.some(crafted)) return false;
+  if(rule.pre==='unrevPre' && !pre.some(m=>m.unrev || (m.des && m.gi==null))) return false;   /* 공개 안 한 훼손 옵션이 있음 */
   if(rule.pre==='otherRoom'){ const sd=t.replace||(typeof t.junk==='string'?t.junk:null); const oth = sd ? (sd==='p'?'s':'p') : null; if(!(oth ? cnt(oth)<(cap[oth]||3) : (cnt('p')<(cap.p||3) || cnt('s')<(cap.s||3)))) return false; }
   if(rule.sideOmenWaste){ const om=n.omens||[]; const w = (om.some(x=>/Sinistral_(Exaltation|Necromancy)/.test(x)) && cnt('s')>=(cap.s||3)) || (om.some(x=>/Dextral_(Exaltation|Necromancy)/.test(x)) && cnt('p')>=(cap.p||3)); if(!w) return false; }
   return true; }
