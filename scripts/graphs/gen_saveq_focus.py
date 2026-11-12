@@ -1,0 +1,173 @@
+# W31 2026-11-13: SaVeQ 집중구(R43FVay8_XI, 37:31, 0.5.5) 플로우차트 생성기 — 영상 첫 번째 집중구(Demon Emblem) 성공 회차 한 줄
+# 근거: scratchpad review/W31-saveq-focus/timeline.md, frames/ (영상 화면 대조)
+# 실행: cd scripts/graphs && python3 gen_saveq_focus.py  → saveq-focus-v2.json (gen_batch17.py 끝에서 자동 호출, 그 파일의 이 아이템 구간을 대신함)
+import json, os, sys
+H = os.path.dirname(os.path.abspath(__file__))
+OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/saveq-focus-v2.json'
+K = lambda kr, en: {'kr': kr, 'en': en}
+
+def L(s, kr, en, m='n', tags=None):
+    d = {'s': s, 'kr': kr, 'en': en, 'm': m}
+    if tags: d['tags'] = tags
+    return d
+
+SDc = L('p', '주문 피해 (75—89)% 증가 (상위 마술의 에센스)', '(75—89)% increased Spell Damage (Greater Essence of Sorcery)', 'c', ['spE'])
+SDF = L('p', '주문 피해 (75—89)% 증가 (분열)', '(75—89)% increased Spell Damage (fractured)', 'f', ['spE'])
+ESP = L('p', '에너지 보호막 (92—100)% 증가', '(92—100)% increased Energy Shield', 'n', ['esp1'])
+ESF = L('p', '에너지 보호막 최대치 +(81—90)', '+(81—90) to maximum Energy Shield', 'n', ['esf'])
+LVL = L('s', '모든 주문 스킬 레벨 +2', '+2 to Level of all Spell Skills', 'n', ['lvl'])
+CS = L('s', '시전 속도 (26—31)% 증가 (초월의 합금)', '(26—31)% increased Cast Speed (Transcendent Alloy)', 'c', ['cs'])
+CR = L('s', '주문 치명타 명중 확률 (54—59)% 증가 (훼손)', '(54—59)% increased Critical Hit Chance for Spells (desecrated)', 'd', ['cr'])
+AS = L('r', '아스트리드의 창의성', 'Astrid’s Creativity', 'r')
+J = lambda s: L(s, '잡옵', 'Junk', 'j')
+UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')
+ANN = K('소멸의 오브 사용', 'Use an Orb of Annulment')
+
+g = {
+ 'id': 'saveq-focus-v2', 'recipe': 'saveq-focus-v2', 'cls': 'Foci', 'base': 'Tasalian Focus', 'ilvl': 80,
+ 'note': ('2026-11-13 W31 영상 전체 화면 대조(근거 scratchpad review/W31-saveq-focus/timeline.md). 첫 번째 집중구(Demon Emblem) 성공 회차 한 줄: '
+          '특출난 타살리안 집중구(아이템 레벨 80, 소켓 2개, 퀄리티 20%, 6:02) → 완벽한 진화 + 소멸의 오브·완벽한 확장 반복으로 에너지 보호막 % 증가 1티어 + 모든 주문 스킬 +2 매직(6:30~17:00) → '
+          '상위 마술의 에센스(18:20, 주문 피해) → 좌측 강령술 + 접두 훼손(19:33) → 분열의 오브 = 주문 피해(19:46~20:58) → 접두 훼손 공개 아무거나 = 화염 피해(20:22) → '
+          '아스트리드의 창의성 + 좌측 결정화 + 초월의 합금(21:40, 화염 피해가 지워짐) → 우측 강령술 + 고대 갈비뼈(22:18) → 공개 = 지능(잡옵, 22:23) → '
+          '완벽한 엑잘 = 에너지 보호막 % + 마나 2티어(22:58) → 절사 + 좌측 말소 + 상위 카오스 = 에너지 보호막 최대치 2티어(23:16, 영상은 여기서 타협) → '
+          '빛의 징조 + 소멸의 오브 → 고대 갈비뼈 → 심연의 메아리 공개 반복(24:00~26:10, 25:00 2티어 53%는 넘김) → 주문 치명타 명중 확률 1티어 54%(26:10). '
+          '신성한 오브(18:40)는 선택, 바알 주입기 퀄리티(6:15)·완벽한 철 룬(26:30)은 정책 9·14장대로 뺌. 두 번째 집중구(27:30~, 모든 주문 스킬 분열판)는 꿀팁 후보.'),
+ 'params': {'pT': {'kr': '에너지 보호막 최대치·주문 치명타 명중 확률', 'en': 'Flat ES and spell crit chance',
+                   'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
+ 'strategies': [{'id': 'high', 'params': {'pT': 1}}, {'id': 'bal', 'params': {'pT': 2}}],
+ 'versions': [
+   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'pT': 2}, 'tier': 'bal',
+    'desc': K('에너지 보호막 최대치·주문 치명타 명중 확률 1~2티어 (영상 완성품: 최대치 2티어)', 'T1–2 flat ES and spell crit chance (the video item: T2 flat ES)')},
+   {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'pT': 1}, 'tier': 'high',
+    'desc': K('에너지 보호막 최대치·주문 치명타 명중 확률 1티어', 'T1 flat ES and spell crit chance')}],
+ 'tags': {
+   'spE': {'gi': 43}, 'lvl': {'gi': 16, 'tmax': 1}, 'cs': {'gi': 59},
+   'esp': {'gi': 7, 'tmax': '$pT'}, 'esp1': {'gi': 7, 'tmax': 1}, 'esp2': {'gi': 7, 'tmax': 2},
+   'esf': {'gi': 6, 'tmax': '$pT'}, 'esf1': {'gi': 6, 'tmax': 1}, 'esf2': {'gi': 6, 'tmax': 2},
+   'magicES': {'anyOf': ['esp1', 'esf1'], 'label': K('에너지 보호막 % 증가 1티어·에너지 보호막 최대치 1티어', 'T1 % Energy Shield or T1 flat Energy Shield')},
+   'cr': {'gi': 19, 'tmax': '$pT'}, 'cr1': {'gi': 19, 'tmax': 1}, 'cr2': {'gi': 19, 'tmax': 2},
+   'keepP': {'anyOf': ['esp', 'esf']}},   # 사용자 경향 11-13: 매직 접두는 영상 계획대로 에너지 보호막 % 증가·최대치 1티어 중 먼저 뜬 것(영상은 둘 다 베이스로 씀), 나머지는 접두 세번째 옵션 반복에서
+ 'conds': {'magicDone': {'all': [{'has': 'magicES'}, {'has': 'lvl'}]},
+           'pDone': {'all': [{'has': 'esp'}, {'has': 'esf'}]}},
+ 'require': {'all': [{'has': 'spE'}, {'has': 'esp'}, {'has': 'esf'}, {'has': 'lvl'}, {'has': 'cs'}, {'has': 'cr'}]},
+ 'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
+            {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
+ 'start': 'f0',
+ 'finalItem': {'quality': 20, 'sockets': 2},
+}
+
+N = []
+A = lambda **kw: N.append(kw)
+MAGIC_DONE = {'ref': 'magicDone'}
+BOTH_FULL = {'all': [{'full': 'p'}, {'full': 's'}]}
+PDONE = {'ref': 'pDone'}
+
+# ---------------- 베이스템 완성 ----------------
+A(id='f0', kind='base', group='prep', pos=[0, 0], next='f1', start={'rar': 'normal', 'mods': [], 'quality': 20},
+  label=K('특출난 타살리안 집중구 구입 (아이템 레벨 80, 소켓 2개, 퀄리티 20%)', 'Buy an exceptional Tasalian Focus (item level 80, two sockets, 20% quality)'), item=[])
+A(id='f1', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation',
+  label=K('매직 첫번째 옵션', 'First magic option'), goal=K('매직', 'Magic'), showText=[K('랜덤 옵션 1개', 'One random option')],
+  edges=[{'to': 'f2'}], item=[ESP])
+A(id='f2', kind='act', group='prep', pos=[0, 2], act='augment', cur='Perfect_Orb_of_Augmentation',
+  label=K('매직 두번째 옵션', 'Second magic option'), goal=K('접두 에너지 보호막 % 증가 1티어 + 접미 모든 주문 스킬 +2 — 접두는 에너지 보호막 최대치 1티어와 함께 먼저 뜬 것', 'T1 % Energy Shield prefix + all spell skills +2 suffix: or T1 flat Energy Shield, whichever lands first'),
+  show=['esp1', 'esf1', 'lvl'], ask=K('둘 다 맞음?', 'Both options?'),
+  edges=[{'if': MAGIC_DONE, 'to': 'f3', 'res': 'ok', 'label': K('성공', 'hit')},
+         {'if': BOTH_FULL, 'to': 'f2x', 'res': 'fail', 'label': K('빗나감', 'miss')},
+         {'to': 'f2', 'hide': True}],
+  item=[ESP, LVL])
+A(id='f2x', kind='act', group='prep', pos=[1, 2], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
+  target=K('옵션 하나 지우기 (원하는 옵션이 지워지기도 함)', 'Remove one option (a wanted one can go too)'),
+  edges=[{'if': MAGIC_DONE, 'to': 'f3', 'hide': True}, {'to': 'f2', 'label': K('다시 확장', 'Augment again')}])
+A(id='f3', kind='act', group='prep', pos=[0, 3], act='essence', cur='Greater_Essence_of_Sorcery', ess='spE',
+  label=K('에센스', 'Essence'), goal=K('레어 + 접두 주문 피해 (제작 옵션)', 'Rare + spell damage prefix (crafted)'),
+  showText=[{'s': 'p', 'kr': '주문 피해 (75—89)% 증가 (제작 옵션)', 'en': '(75—89)% increased Spell Damage (crafted)'}],
+  edges=[{'to': 'f4'}], item=[SDc, ESP, LVL])
+A(id='f3d', kind='side', group='prep', pos=[1, 3.5], act='divine', cur='Divine_Orb', attach=['f3', 'f4'],
+  label=K('수치 올리기', 'Divine the values'), goal=K('옵션 수치 다시 굴리기 (선택)', 'Reroll option values (optional)'),
+  showText=[K('모든 옵션 수치 다시 굴림', 'Rerolls every value')])
+A(id='f4', kind='act', group='prep', pos=[0, 4], act='desecrate', cur='Preserved_Rib', omens=['Omen_of_Sinistral_Necromancy'],
+  label=K('훼손', 'Desecrate'), goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  showText=[K('접두 훼손 옵션 (미공개, 분열되지 않음)', 'Prefix desecration (unrevealed, cannot fracture)')],
+  edges=[{'to': 'f5'}], item=[SDc, ESP, UN('p'), LVL])
+A(id='f5', kind='act', group='prep', pos=[0, 5], act='fracture', cur='Fracturing_Orb',
+  label=K('분열', 'Fracture'), goal=K('분열 (공개된 옵션 3개 중 하나)', 'Fracture (one of the three revealed options)'),
+  showText=[K('주문 피해가 분열되면 성공', 'Success when the spell damage fractures')], ask=K('어느 옵션이 분열?', 'Which option fractured?'),
+  edges=[{'if': {'fractured': 'spE'}, 'to': 'f6', 'res': 'ok', 'label': K('주문 피해 분열', 'Spell damage fractured')},
+         {'to': 'fx', 'res': 'fail', 'label': K('다른 옵션 분열', 'Another option fractured')}],
+  item=[SDF, ESP, UN('p'), LVL])
+A(id='fx', kind='exit', group='prep', pos=[1, 5], simTo='f0', variant='fail', label=K('다른 옵션 분열 — 새 베이스', 'Another option fractured: new base'),
+  note=K('다른 제작에 쓰거나 판매, 새 베이스로 처음부터', 'Use it for another craft or sell it; start over on a new base'))
+A(id='f6', kind='act', group='prep', pos=[0, 6], act='reveal',
+  label=K('공개', 'Reveal'), goal=K('접두 훼손 옵션 공개 — 아무거나', 'Reveal the prefix desecration: anything'),
+  showText=[K('다음 합금 단계에서 1/2로 지울 옵션', 'The option the Alloy step removes 1 in 2')],
+  edges=[{'to': 'ms'}], item=[SDF, ESP, J('p'), LVL])
+# ---------------- 옵션 추가 작업 ----------------
+A(id='ms', kind='mark', group='main', pos=[0, 7.4], next='r1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[SDF, ESP, J('p'), LVL])
+A(id='r1', kind='act', group='main', pos=[0, 8.4], act='rune', label=K('룬', 'Rune'), goal=K('아스트리드의 창의성 장착', 'Socket Astrid’s Creativity'),
+  showText=[K('제작 옵션 하나 더', 'One more crafted modifier')], rune=K('아스트리드의 창의성', 'Astrid’s Creativity'),
+  edges=[{'to': 'a1'}], item=[SDF, ESP, J('p'), LVL, AS])
+A(id='a1', kind='act', group='main', pos=[0, 9.4], act='essence', cur='Transcendent_Alloy', ess='cs', omens=['Omen_of_Sinistral_Crystallisation'],
+  label=K('합금', 'Alloy'), goal=K('접두 하나를 지우고 시전 속도 (제작 옵션) — 잡옵이 지워지면 성공(1/2)', 'A prefix goes for Cast Speed (crafted): success when the junk goes (1 in 2)'),
+  showText=[{'s': 's', 'kr': '시전 속도 (26—31)% 증가 (제작 옵션)', 'en': '(26—31)% increased Cast Speed (crafted)'}],
+  edges=[{'if': {'desSide': 'p'}, 'to': 'a1x', 'res': 'fail', 'label': K('에너지 보호막이 지워짐', 'Energy Shield removed')},
+         {'to': 'd1', 'res': 'ok', 'label': K('잡옵이 지워짐', 'Junk removed')}], item=[SDF, ESP, LVL, CS, AS])
+A(id='a1x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'],
+  label=ANN, goal=ANN, target=K('남은 훼손 옵션 제거 — 훼손 옵션은 아이템당 하나', 'Remove the remaining desecrated option: one per item'),
+  edges=[{'to': 'd1', 'label': K('접두 두 자리는 접두 세번째 옵션 반복에서', 'Both prefixes come back in the third-prefix loop')}])
+A(id='d1', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Dextral_Necromancy'],
+  label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손) — 다음 엑잘을 접두로 보냄', 'Third suffix (desecrated): sends the next Exalt to the prefix'),
+  showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  edges=[{'to': 'v1'}], item=[UN('s'), SDF, ESP, LVL, CS, AS])
+A(id='v1', kind='act', group='main', pos=[0, 11.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cr',
+  label=K('공개', 'Reveal'), goal=K('접미 주문 치명타 명중 확률 — 빗나가도 그대로 두고 접두 먼저', 'Spell crit chance suffix: a miss stays, prefixes first'),
+  show=['cr'], edges=[{'to': 'e1'}], item=[SDF, ESP, LVL, CS, J('s'), AS])
+A(id='e1', kind='act', group='main', pos=[0, 12.4], act='exalt', cur='Perfect_Exalted_Orb',
+  label=K('엑잘', 'Exalt'), goal=K('접두 에너지 보호막 최대치', 'Flat Energy Shield prefix'), show=['esf'],
+  edges=[{'if': {'all': [PDONE, {'has': 'cr'}]}, 'to': 'ok', 'res': 'ok', 'hide': True},
+         {'if': PDONE, 'to': 'vx', 'res': 'ok', 'label': K('접두 완성', 'Prefixes done')},
+         {'if': {'not': {'full': 'p'}}, 'to': 'e1', 'res': 'fail', 'hide': True},
+         {'to': 'w1', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
+  item=[SDF, ESP, ESF, LVL, CS, J('s'), AS])
+A(id='w1', kind='act', group='main', pos=[1, 12.4], act='chaos', cur='Greater_Chaos_Orb', trim={'side': 'p', 'keep': 'keepP'},   # 영상 상태(접두 잡옵이 가장 낮음)에서는 절사 + 좌측 말소 = 영상 그대로, 고정 징조로 두면 1티어 % + 마나가 남을 때 끝나지 않음(W31 시험)
+ 
+  label=K('절사/좌측 말소 + 카오스', 'Whittling / Sinistral Erasure + Chaos'), goal=K('가장 낮은 레벨 접두 다시', 'Reroll the lowest-level prefix'), show=['esf'],
+  edges=[{'if': {'all': [PDONE, {'has': 'cr'}]}, 'to': 'ok', 'res': 'ok', 'hide': True},
+         {'if': PDONE, 'to': 'vx', 'res': 'ok', 'hide': True},
+         {'if': {'not': {'full': 'p'}}, 'to': 'e1', 'res': 'fail', 'hide': True},
+         {'to': 'w1', 'res': 'fail', 'hide': True}])
+A(id='vx', kind='act', group='main', pos=[0, 13.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'],
+  label=ANN, goal=ANN, target=K('훼손 옵션 제거', 'Remove the desecrated option'),
+  edges=[{'to': 'd2'}], item=[SDF, ESP, ESF, LVL, CS, AS])
+A(id='d2', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancient_Rib',
+  label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손) — 접두가 꽉 차 접미로', 'Third suffix (desecrated): prefixes are full'),
+  showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  edges=[{'to': 'v2'}], item=[UN('s'), SDF, ESP, ESF, LVL, CS, AS])
+A(id='v2', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cr',
+  label=K('공개', 'Reveal'), goal=K('접미 주문 치명타 명중 확률', 'Spell crit chance suffix'), show=['cr'],
+  edges=[{'if': {'has': 'cr'}, 'to': 'ok', 'res': 'ok'},
+         {'to': 'vx', 'res': 'fail', 'label': K('빗나감 — 빛의 징조로 다시', 'Miss: again with Omen of Light')}],
+  item=[SDF, ESP, ESF, LVL, CS, CR, AS])
+A(id='ok', kind='done', group='main', pos=[0, 16.4], label=K('완성', 'Finished'))
+g['nodes'] = N
+
+g['loops'] = [
+ {'id': 'L0', 'nodes': ['f2', 'f2x'], 'kr': '매직 옵션 맞추기', 'en': 'Magic options'},
+ {'id': 'L1', 'nodes': ['e1', 'w1'], 'kr': '접두 세번째 옵션', 'en': 'Third prefix', 'fold': True,
+  'goal': K('접두 에너지 보호막 최대치 + 에너지 보호막 % 증가', 'Flat Energy Shield + % Energy Shield prefixes'),
+  'goalBy': {'high': K('접두 에너지 보호막 최대치 1티어 + 에너지 보호막 % 증가 1티어', 'T1 flat Energy Shield + T1 % Energy Shield prefixes'),
+             'bal': K('접두 에너지 보호막 최대치 1~2티어 + 에너지 보호막 % 증가 1~2티어', 'T1–2 flat Energy Shield + T1–2 % Energy Shield prefixes')},
+  'steps': [K('완벽한 엑잘티드 오브로 접두 세번째 옵션 — 접미가 꽉 차 있어 접두로', 'Perfect Exalt for the third prefix: the suffixes are full') | {'node': 'e1'},
+            K('합금 단계에서 에너지 보호막이 지워져 접두 자리가 남으면 완벽한 엑잘티드 오브를 한 번 더', 'A prefix slot left after the Alloy step: one more Perfect Exalt') | {'node': 'e1'},
+            K('빗나가면 상위 카오스 오브로 가장 낮은 레벨 접두를 다시 — 잡옵이 가장 낮으면 절사의 징조 + 좌측 말소의 징조, 원하는 접두가 더 낮으면 좌측 말소의 징조만(1/2)',
+              'A miss: Greater Chaos on the lowest-level prefix — Whittling + Sinistral Erasure while the junk is lowest, Sinistral Erasure alone (1 in 2) if a wanted prefix is lower') | {'node': 'w1'}],
+  'item': [SDF, ESP, ESF, LVL, CS, J('s'), AS]},
+ {'id': 'L2', 'nodes': ['vx', 'd2', 'v2'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal'},
+]
+g['finals'] = [
+ {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
+  'lines': [{'tag': 'spE', 'fr': True, 'ess': True}, {'tag': 'esp1'}, {'tag': 'esf1'}, {'tag': 'lvl'}, {'tag': 'cs', 'ess': True}, {'tag': 'cr1', 'des': True}]},
+ {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
+  'lines': [{'tag': 'spE', 'fr': True, 'ess': True}, {'tag': 'esp2'}, {'tag': 'esf2'}, {'tag': 'lvl'}, {'tag': 'cs', 'ess': True}, {'tag': 'cr2', 'des': True}]},
+]
+json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
+print('wrote', OUT, len(N), 'nodes')

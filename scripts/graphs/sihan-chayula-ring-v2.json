@@ -4,19 +4,20 @@
  "cls": "Rings",
  "base": "Breach Ring",
  "ilvl": 81,
- "note": "시한 차율라 반지(GgD_vxKgNsw) — 잔류물 거리 분열 → 균열의 에센스 → 차율라의 기폭제 60% → 카오스 오브(모든 원소 저항 또는 카오스 피해) → 상위 찬미 + 완벽한 엑잘(나머지 하나, 빗나가면 소멸의 오브) → 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈 → 공개(잔류물 효과) → 완벽한 엑잘. 하이엔드 = 저항·카오스 피해 1티어(영상 완성품), 밸런스 = 1~2티어(영상: 저항 12% 이상이면 충분).",
+ "basePrice": {},
+ "note": "2026-11-13 W32 영상 전체 화면 대조. 성공 회차 한 줄: 균열 반지(부패하는 감개, 아이템 레벨 81, 잔류물 거리 분열 + 마나 최대치 잡옵, 1:38) → 균열의 에센스로 최대 퀄리티 +20%(2:07) → 차율라의 기폭제 60개로 카오스 퀄리티 60%(1:56 구입, 2:02~2:08) → 카오스 오브로 모든 원소 저항·카오스 피해 중 먼저 뜬 것(성공 회차 3:18~3:25 모든 원소 저항 +12 2티어) → 상위 찬미 + 좌측 찬미 + 완벽한 엑잘로 카오스 피해 1티어·생명력 1티어(3:28, 채팅 소모 메시지 3:32) → 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈로 접두 훼손(3:37~3:54) → 완벽한 엑잘로 마지막 옵션(처치 시 마나, 4:01) → 심연의 메아리의 징조로 공개, 잔류물 효과 14%(4:27~4:34). 첫 회차(2:32~3:15): 카오스 피해가 먼저 떴을 때 상위 찬미 + 우측 찬미(2:39), 빗나가면 소멸의 오브(2:48·3:03), 자리가 한쪽에 하나면 상위 찬미만(2:58). 등급(영상 4:30 기준 = 카오스 피해 1티어·모든 원소 저항 2티어 이상): 하이엔드 = 영상 기준, 밸런스 = 카오스 피해 1~2티어·모든 원소 저항 1~3티어. 나머지 두 옵션은 영상대로 랜덤 옵션(1:10 \"나머지 두 줄은 랜덤\").",
  "params": {
   "rT": {
    "kr": "모든 원소 저항",
    "en": "All resistances",
    "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
     }
    }
   },
@@ -39,14 +40,14 @@
   {
    "id": "high",
    "params": {
-    "rT": 1,
+    "rT": 2,
     "cT": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "rT": 2,
+    "rT": 3,
     "cT": 2
    }
   }
@@ -57,12 +58,13 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "rT": 2,
+    "rT": 3,
     "cT": 2
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상 기준: 1~2티어",
-    "en": "Video bar: T1–2"
+    "kr": "카오스 피해 1~2티어, 모든 원소 저항 1~3티어",
+    "en": "Chaos damage T1–2, all resistances T1–3"
    }
   },
   {
@@ -70,12 +72,13 @@
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "rT": 1,
+    "rT": 2,
     "cT": 1
    },
+   "tier": "high",
    "desc": {
-    "kr": "영상 완성품: 1티어",
-    "en": "Video item: tier 1"
+    "kr": "영상: 카오스 피해 1티어, 모든 원소 저항 1~2티어",
+    "en": "Video: chaos damage T1, all resistances T1–2"
    }
   }
  ],
@@ -83,19 +86,45 @@
   "far": {
    "gi": 106
   },
+  "maxq": {
+   "gi": 71
+  },
+  "eff": {
+   "gi": 37
+  },
   "res": {
    "gi": 7,
    "tmax": "$rT"
+  },
+  "resH": {
+   "gi": 7,
+   "tmax": 2
+  },
+  "resB": {
+   "gi": 7,
+   "tmax": 3
   },
   "chaos": {
    "gi": 33,
    "tmax": "$cT"
   },
-  "eff": {
-   "gi": 37
+  "chaosH": {
+   "gi": 33,
+   "tmax": 1
   },
-  "maxq": {
-   "gi": 71
+  "chaosB": {
+   "gi": 33,
+   "tmax": 2
+  },
+  "RC": {
+   "anyOf": [
+    "res",
+    "chaos"
+   ],
+   "label": {
+    "kr": "모든 원소 저항·카오스 피해",
+    "en": "All resistances or chaos damage"
+   }
   }
  },
  "require": {
@@ -134,19 +163,7 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "r6",
-    "r7",
-    "r7x"
-   ],
-   "kr": "아마나무 공개",
-   "en": "Amanamu reveal"
-  }
- ],
+ "start": "k0",
  "finals": [
   {
    "id": "high",
@@ -154,24 +171,22 @@
    "en": "High-end",
    "lines": [
     {
-     "tag": "chaos",
-     "tmax": 1
-    },
-    {
-     "tag": "eff",
-     "des": true
+     "tag": "chaosH"
     },
     {
      "side": "p",
      "random": true
     },
     {
+     "tag": "eff",
+     "des": true
+    },
+    {
      "tag": "far",
      "fr": true
     },
     {
-     "tag": "res",
-     "tmax": 1
+     "tag": "resH"
     },
     {
      "side": "s",
@@ -185,24 +200,22 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "chaos",
-     "tmax": 2
-    },
-    {
-     "tag": "eff",
-     "des": true
+     "tag": "chaosB"
     },
     {
      "side": "p",
      "random": true
     },
     {
+     "tag": "eff",
+     "des": true
+    },
+    {
      "tag": "far",
      "fr": true
     },
     {
-     "tag": "res",
-     "tmax": 2
+     "tag": "resB"
     },
     {
      "side": "s",
@@ -217,14 +230,14 @@
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "k0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "r2",
+   "next": "k1",
    "start": {
     "rar": "rare",
     "mods": [
@@ -233,34 +246,34 @@
       "fr": true
      },
      {
-      "junk": "s"
+      "junk": "p"
      }
     ]
    },
    "label": {
-    "kr": "균열 반지, 잔류물 거리 분열 + 잡옵 1개",
-    "en": "Breach Ring: fractured remnant pickup range + one junk line"
+    "kr": "균열 반지 구입 (아이템 레벨 81, 잔류물 거리 분열 + 잡옵 1개)",
+    "en": "Buy a Breach Ring (item level 81, fractured remnant pickup range + one junk option)"
    },
    "item": [
     {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능",
-     "en": "Remnants can be collected from (44—51)% further away",
+     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)",
+     "en": "Remnants can be collected from (44—51)% further away (fractured)",
      "m": "f",
      "tags": [
       "far"
      ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
    ]
   },
   {
-   "id": "r2",
+   "id": "k1",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -268,17 +281,26 @@
     1
    ],
    "act": "essence",
-   "goal": {
-    "kr": "최대 퀄리티 +20%",
-    "en": "+20% maximum quality"
-   },
+   "cur": "Essence_of_the_Breach",
+   "ess": "maxq",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "최대 퀄리티 +20%",
+    "en": "+20% maximum quality"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% to Maximum Quality (crafted)"
+    }
+   ],
    "edges": [
     {
-     "to": "r3"
+     "to": "k2"
     }
    ],
    "item": [
@@ -293,26 +315,17 @@
     },
     {
      "s": "s",
-     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능",
-     "en": "Remnants can be collected from (44—51)% further away",
+     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)",
+     "en": "Remnants can be collected from (44—51)% further away (fractured)",
      "m": "f",
      "tags": [
       "far"
      ]
     }
-   ],
-   "cur": "Essence_of_the_Breach",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "장신구 최대 퀄리티 +20% (제작 옵션)",
-     "en": "+20% to maximum quality (crafted)"
-    }
-   ],
-   "ess": "maxq"
+   ]
   },
   {
-   "id": "r3",
+   "id": "k2",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -320,17 +333,19 @@
     2
    ],
    "act": "quality",
-   "goal": {
-    "kr": "카오스 퀄리티 60%",
-    "en": "60% chaos quality"
-   },
+   "cur": "Chayulas_Catalyst",
+   "count": 60,
    "label": {
     "kr": "퀄리티",
     "en": "Quality"
    },
+   "goal": {
+    "kr": "카오스 퀄리티 60%",
+    "en": "60% chaos quality"
+   },
    "edges": [
     {
-     "to": "ms"
+     "to": "km"
     }
    ],
    "item": [
@@ -345,26 +360,24 @@
     },
     {
      "s": "s",
-     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능",
-     "en": "Remnants can be collected from (44—51)% further away",
+     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)",
+     "en": "Remnants can be collected from (44—51)% further away (fractured)",
      "m": "f",
      "tags": [
       "far"
      ]
     }
-   ],
-   "cur": "Chayulas_Catalyst",
-   "count": 40
+   ]
   },
   {
-   "id": "ms",
+   "id": "km",
    "kind": "mark",
    "group": "main",
    "pos": [
     0,
-    2.5
+    3.4
    ],
-   "next": "r4",
+   "next": "k3",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -381,8 +394,8 @@
     },
     {
      "s": "s",
-     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능",
-     "en": "Remnants can be collected from (44—51)% further away",
+     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)",
+     "en": "Remnants can be collected from (44—51)% further away (fractured)",
      "m": "f",
      "tags": [
       "far"
@@ -391,168 +404,45 @@
    ]
   },
   {
-   "id": "r4",
+   "id": "k3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    4.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "저항 또는 카오스 피해 (최대 퀄리티는 고정 속성이라 그대로)",
-    "en": "All resistances or chaos damage (max quality is implicit and stays)"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "모든 원소 저항·카오스 피해 중 먼저 뜬 것",
+    "en": "All resistances or chaos damage, whichever lands first"
+   },
+   "show": [
+    "res",
+    "chaos"
+   ],
    "edges": [
     {
      "if": {
-      "all": [
-       {
-        "all": [
-         {
-          "has": "res"
-         },
-         {
-          "has": "chaos"
-         }
-        ]
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
+      "has": "res"
      },
-     "to": "r6",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "has": "res"
-         },
-         {
-          "has": "chaos"
-         }
-        ]
-       },
-       {
-        "not": {
-         "all": [
-          {
-           "has": "res"
-          },
-          {
-           "has": "chaos"
-          }
-         ]
-        }
-       },
-       {
-        "any": [
-         {
-          "sideLt": {
-           "side": "p",
-           "n": 2
-          }
-         },
-         {
-          "sideLt": {
-           "side": "s",
-           "n": 2
-          }
-         },
-         {
-          "all": [
-           {
-            "sideLt": {
-             "side": "p",
-             "n": 3
-            }
-           },
-           {
-            "sideLt": {
-             "side": "s",
-             "n": 3
-            }
-           }
-          ]
-         }
-        ]
-       }
-      ]
-     },
-     "to": "r5",
+     "to": "k4",
      "res": "ok"
     },
     {
      "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "has": "res"
-          },
-          {
-           "has": "chaos"
-          }
-         ]
-        }
-       },
-       {
-        "any": [
-         {
-          "all": [
-           {
-            "sideLt": {
-             "side": "p",
-             "n": 1
-            }
-           },
-           {
-            "sideLt": {
-             "side": "s",
-             "n": 3
-            }
-           }
-          ]
-         },
-         {
-          "all": [
-           {
-            "sideLt": {
-             "side": "p",
-             "n": 2
-            }
-           },
-           {
-            "sideLt": {
-             "side": "s",
-             "n": 2
-            }
-           }
-          ]
-         }
-        ]
-       }
-      ]
+      "has": "chaos"
      },
-     "to": "r4",
-     "res": "fail",
-     "port": "right"
+     "to": "k4d",
+     "res": "ok",
+     "hide": true
     },
     {
-     "to": "r5x",
+     "to": "k3",
      "res": "fail",
      "hide": true
     }
@@ -560,8 +450,8 @@
    "item": [
     {
      "s": "s",
-     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능",
-     "en": "Remnants can be collected from (44—51)% further away",
+     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)",
+     "en": "Remnants can be collected from (44—51)% further away (fractured)",
      "m": "f",
      "tags": [
       "far"
@@ -569,37 +459,46 @@
     },
     {
      "s": "s",
-     "kr": "모든 원소 저항 +(15—16)%",
-     "en": "+(15—16)% to all Elemental Resistances",
+     "kr": "모든 원소 저항 +(12—14)%",
+     "en": "+(12—14)% to all Elemental Resistances",
      "m": "n",
      "tags": [
       "res"
      ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "res",
-    "chaos"
    ]
   },
   {
-   "id": "r5",
+   "id": "k4",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    5.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "나머지 하나 (2개 붙이기)",
-    "en": "The other one (two lines)"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation",
+    "Omen_of_Sinistral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 2개 — 카오스 피해",
+    "en": "Two prefixes: chaos damage"
+   },
+   "show": [
+    "chaos"
+   ],
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
      "if": {
@@ -622,8 +521,88 @@
        }
       ]
      },
-     "to": "r6",
-     "res": "ok"
+     "to": "k6",
+     "res": "ok",
+     "hide": false
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "res"
+       },
+       {
+        "has": "chaos"
+       }
+      ]
+     },
+     "to": "k5",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "res"
+         },
+         {
+          "not": {
+           "has": "chaos"
+          }
+         },
+         {
+          "not": {
+           "famBlock": "chaos"
+          }
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "k4",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "chaos"
+         },
+         {
+          "not": {
+           "has": "res"
+          }
+         },
+         {
+          "not": {
+           "famBlock": "res"
+          }
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "k4d",
+     "res": "fail",
+     "hide": true
     },
     {
      "if": {
@@ -631,24 +610,40 @@
        {
         "any": [
          {
-          "has": "res"
+          "all": [
+           {
+            "has": "res"
+           },
+           {
+            "not": {
+             "has": "chaos"
+            }
+           },
+           {
+            "not": {
+             "famBlock": "chaos"
+            }
+           }
+          ]
          },
          {
-          "has": "chaos"
+          "all": [
+           {
+            "has": "chaos"
+           },
+           {
+            "not": {
+             "has": "res"
+            }
+           },
+           {
+            "not": {
+             "famBlock": "res"
+            }
+           }
+          ]
          }
         ]
-       },
-       {
-        "not": {
-         "all": [
-          {
-           "has": "res"
-          },
-          {
-           "has": "chaos"
-          }
-         ]
-        }
        },
        {
         "any": [
@@ -684,70 +679,70 @@
        }
       ]
      },
-     "to": "r5",
+     "to": "k4g",
      "res": "fail",
      "hide": true
     },
     {
      "if": {
-      "all": [
+      "any": [
        {
-        "not": {
-         "any": [
-          {
-           "has": "res"
-          },
-          {
-           "has": "chaos"
-          }
-         ]
-        }
+        "has": "res"
        },
        {
-        "any": [
+        "has": "chaos"
+       }
+      ]
+     },
+     "to": "k5",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
          {
-          "all": [
-           {
-            "sideLt": {
-             "side": "p",
-             "n": 1
-            }
-           },
-           {
-            "sideLt": {
-             "side": "s",
-             "n": 3
-            }
-           }
-          ]
+          "sideLt": {
+           "side": "p",
+           "n": 1
+          }
          },
          {
-          "all": [
-           {
-            "sideLt": {
-             "side": "p",
-             "n": 2
-            }
-           },
-           {
-            "sideLt": {
-             "side": "s",
-             "n": 2
-            }
-           }
-          ]
+          "sideLt": {
+           "side": "s",
+           "n": 3
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 2
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 2
+          }
          }
         ]
        }
       ]
      },
-     "to": "r4",
+     "to": "k3",
+     "res": "fail",
      "hide": true
     },
     {
-     "to": "r5x",
+     "to": "k5c",
      "res": "fail",
-     "port": "right"
+     "hide": true
     }
    ],
    "item": [
@@ -762,14 +757,14 @@
     },
     {
      "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
+     "kr": "생명력 최대치 +(100—119)",
+     "en": "+(100—119) to maximum Life",
+     "m": "n"
     },
     {
      "s": "s",
-     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능",
-     "en": "Remnants can be collected from (44—51)% further away",
+     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)",
+     "en": "Remnants can be collected from (44—51)% further away (fractured)",
      "m": "f",
      "tags": [
       "far"
@@ -777,36 +772,566 @@
     },
     {
      "s": "s",
-     "kr": "모든 원소 저항 +(15—16)%",
-     "en": "+(15—16)% to all Elemental Resistances",
+     "kr": "모든 원소 저항 +(12—14)%",
+     "en": "+(12—14)% to all Elemental Resistances",
      "m": "n",
      "tags": [
       "res"
      ]
     }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
-    {
-     "kr": "랜덤 옵션 2개",
-     "en": "Two random lines"
-    }
-   ],
-   "show": [
-    "res",
-    "chaos"
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
    ]
   },
   {
-   "id": "r5x",
+   "id": "k4d",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    4
+    5.4
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation",
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접미 2개 — 모든 원소 저항",
+    "en": "Two suffixes: all resistances"
+   },
+   "show": [
+    "res"
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "res"
+         },
+         {
+          "has": "chaos"
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "k6",
+     "res": "ok",
+     "hide": false
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "res"
+       },
+       {
+        "has": "chaos"
+       }
+      ]
+     },
+     "to": "k5",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "res"
+         },
+         {
+          "not": {
+           "has": "chaos"
+          }
+         },
+         {
+          "not": {
+           "famBlock": "chaos"
+          }
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "k4",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "chaos"
+         },
+         {
+          "not": {
+           "has": "res"
+          }
+         },
+         {
+          "not": {
+           "famBlock": "res"
+          }
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "k4d",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "has": "res"
+           },
+           {
+            "not": {
+             "has": "chaos"
+            }
+           },
+           {
+            "not": {
+             "famBlock": "chaos"
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "has": "chaos"
+           },
+           {
+            "not": {
+             "has": "res"
+            }
+           },
+           {
+            "not": {
+             "famBlock": "res"
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "any": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 2
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 3
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 3
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "k4g",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "has": "res"
+       },
+       {
+        "has": "chaos"
+       }
+      ]
+     },
+     "to": "k5",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 1
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 3
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 2
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "k3",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "to": "k5c",
+     "res": "fail",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "k4g",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6.4
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "옵션 2개 — 남은 모든 원소 저항·카오스 피해",
+    "en": "Two options: the missing all resistances or chaos damage"
+   },
+   "show": [
+    "res",
+    "chaos"
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "res"
+         },
+         {
+          "has": "chaos"
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "k6",
+     "res": "ok",
+     "hide": false
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "res"
+       },
+       {
+        "has": "chaos"
+       }
+      ]
+     },
+     "to": "k5",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "res"
+         },
+         {
+          "not": {
+           "has": "chaos"
+          }
+         },
+         {
+          "not": {
+           "famBlock": "chaos"
+          }
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "k4",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "chaos"
+         },
+         {
+          "not": {
+           "has": "res"
+          }
+         },
+         {
+          "not": {
+           "famBlock": "res"
+          }
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "k4d",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "has": "res"
+           },
+           {
+            "not": {
+             "has": "chaos"
+            }
+           },
+           {
+            "not": {
+             "famBlock": "chaos"
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "has": "chaos"
+           },
+           {
+            "not": {
+             "has": "res"
+            }
+           },
+           {
+            "not": {
+             "famBlock": "res"
+            }
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "any": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 2
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 3
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 3
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "k4g",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "has": "res"
+       },
+       {
+        "has": "chaos"
+       }
+      ]
+     },
+     "to": "k5",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 1
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 3
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 2
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 2
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "to": "k3",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "to": "k5c",
+     "res": "fail",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "k5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    5.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -821,7 +1346,7 @@
    },
    "target": {
     "kr": "빗나간 옵션 지우기",
-    "en": "Remove a missed line"
+    "en": "Remove a missed option"
    },
    "edges": [
     {
@@ -845,8 +1370,87 @@
        }
       ]
      },
-     "to": "r6",
+     "to": "k6",
      "res": "ok",
+     "hide": false
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "res"
+       },
+       {
+        "has": "chaos"
+       }
+      ]
+     },
+     "to": "k5",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "res"
+         },
+         {
+          "not": {
+           "has": "chaos"
+          }
+         },
+         {
+          "not": {
+           "famBlock": "chaos"
+          }
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "k4",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "all": [
+         {
+          "has": "chaos"
+         },
+         {
+          "not": {
+           "has": "res"
+          }
+         },
+         {
+          "not": {
+           "famBlock": "res"
+          }
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "k4d",
+     "res": "fail",
      "hide": true
     },
     {
@@ -855,24 +1459,40 @@
        {
         "any": [
          {
-          "has": "res"
+          "all": [
+           {
+            "has": "res"
+           },
+           {
+            "not": {
+             "has": "chaos"
+            }
+           },
+           {
+            "not": {
+             "famBlock": "chaos"
+            }
+           }
+          ]
          },
          {
-          "has": "chaos"
+          "all": [
+           {
+            "has": "chaos"
+           },
+           {
+            "not": {
+             "has": "res"
+            }
+           },
+           {
+            "not": {
+             "famBlock": "res"
+            }
+           }
+          ]
          }
         ]
-       },
-       {
-        "not": {
-         "all": [
-          {
-           "has": "res"
-          },
-          {
-           "has": "chaos"
-          }
-         ]
-        }
        },
        {
         "any": [
@@ -908,244 +1528,83 @@
        }
       ]
      },
-     "to": "r5",
-     "res": "ok",
-     "port": "right"
+     "to": "k4g",
+     "res": "fail",
+     "hide": true
     },
     {
      "if": {
-      "all": [
+      "any": [
        {
-        "not": {
-         "any": [
-          {
-           "has": "res"
-          },
-          {
-           "has": "chaos"
-          }
-         ]
-        }
+        "has": "res"
        },
        {
-        "any": [
+        "has": "chaos"
+       }
+      ]
+     },
+     "to": "k5",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "any": [
+       {
+        "all": [
          {
-          "all": [
-           {
-            "sideLt": {
-             "side": "p",
-             "n": 1
-            }
-           },
-           {
-            "sideLt": {
-             "side": "s",
-             "n": 3
-            }
-           }
-          ]
+          "sideLt": {
+           "side": "p",
+           "n": 1
+          }
          },
          {
-          "all": [
-           {
-            "sideLt": {
-             "side": "p",
-             "n": 2
-            }
-           },
-           {
-            "sideLt": {
-             "side": "s",
-             "n": 2
-            }
-           }
-          ]
+          "sideLt": {
+           "side": "s",
+           "n": 3
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 2
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 2
+          }
          }
         ]
        }
       ]
      },
-     "to": "r4",
-     "res": "fail"
+     "to": "k3",
+     "res": "fail",
+     "hide": true
     },
     {
-     "to": "r5x",
+     "to": "k5c",
      "res": "fail",
      "hide": true
     }
    ]
   },
   {
-   "id": "r6",
-   "kind": "act",
+   "id": "k5c",
+   "kind": "cleanup",
    "group": "main",
    "pos": [
-    0,
-    5
+    2,
+    6.4
    ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "접두 두번째 옵션(아마나무 훼손)",
-    "en": "Second prefix (Amanamu desecration)"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "edges": [
-    {
-     "to": "r7"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "카오스 피해 (27—30)% 증가",
-     "en": "(27—30)% increased Chaos Damage",
-     "m": "n",
-     "tags": [
-      "chaos"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능",
-     "en": "Remnants can be collected from (44—51)% further away",
-     "m": "f",
-     "tags": [
-      "far"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 원소 저항 +(15—16)%",
-     "en": "+(15—16)% to all Elemental Resistances",
-     "m": "n",
-     "tags": [
-      "res"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Collarbone",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "아마나무 훼손 옵션(미공개)",
-     "en": "Amanamu desecration (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy",
-    "Omen_of_the_Liege"
-   ]
-  },
-  {
-   "id": "r7",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    6
-   ],
-   "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
-   "label": {
-    "kr": "공개",
-    "en": "Reveal"
-   },
-   "edges": [
-    {
-     "if": {
-      "added": "eff"
-     },
-     "to": "r8",
-     "res": "ok"
-    },
-    {
-     "to": "r7x",
-     "res": "fail"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "카오스 피해 (27—30)% 증가",
-     "en": "(27—30)% increased Chaos Damage",
-     "m": "n",
-     "tags": [
-      "chaos"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능",
-     "en": "Remnants can be collected from (44—51)% further away",
-     "m": "f",
-     "tags": [
-      "far"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 원소 저항 +(15—16)%",
-     "en": "+(15—16)% to all Elemental Resistances",
-     "m": "n",
-     "tags": [
-      "res"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "플레이어가 생성하는 잔류물의 효과 (8—15)% 증가",
-     "en": "Remnants you create have (8—15)% increased effect",
-     "m": "d",
-     "tags": [
-      "eff"
-     ]
-    }
-   ],
-   "want": "eff",
-   "show": [
-    "eff"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
-   ]
-  },
-  {
-   "id": "r7x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    6
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
+   "keep": [],
+   "maxJunk": 1,
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -1155,36 +1614,48 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one option"
    },
    "edges": [
     {
-     "to": "r6",
-     "port": "right"
+     "to": "k3",
+     "res": "fail"
     }
    ]
   },
   {
-   "id": "r8",
+   "id": "k6",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7
+    7.4
    ],
-   "act": "exalt",
-   "goal": {
-    "kr": "마지막 옵션",
-    "en": "Last line"
-   },
+   "act": "desecrate",
+   "cur": "Preserved_Collarbone",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy",
+    "Omen_of_the_Liege"
+   ],
    "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
+    "kr": "훼손",
+    "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션 — 아마나무 훼손",
+    "en": "Third prefix: Amanamu desecration"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
-     "to": "ok"
+     "to": "k7"
     }
    ],
    "item": [
@@ -1199,14 +1670,20 @@
     },
     {
      "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
+     "kr": "생명력 최대치 +(100—119)",
+     "en": "+(100—119) to maximum Life",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
     },
     {
      "s": "s",
-     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능",
-     "en": "Remnants can be collected from (44—51)% further away",
+     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)",
+     "en": "Remnants can be collected from (44—51)% further away (fractured)",
      "m": "f",
      "tags": [
       "far"
@@ -1214,17 +1691,162 @@
     },
     {
      "s": "s",
-     "kr": "모든 원소 저항 +(15—16)%",
-     "en": "+(15—16)% to all Elemental Resistances",
+     "kr": "모든 원소 저항 +(12—14)%",
+     "en": "+(12—14)% to all Elemental Resistances",
+     "m": "n",
+     "tags": [
+      "res"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "k7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8.4
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "마지막 옵션",
+    "en": "Last option"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "skipIf": {
+    "all": [
+     {
+      "full": "p"
+     },
+     {
+      "full": "s"
+     }
+    ]
+   },
+   "skipTo": "k8",
+   "skipHide": true,
+   "edges": [
+    {
+     "to": "k8"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "카오스 피해 (27—30)% 증가",
+     "en": "(27—30)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "chaos"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(100—119)",
+     "en": "+(100—119) to maximum Life",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)",
+     "en": "Remnants can be collected from (44—51)% further away (fractured)",
+     "m": "f",
+     "tags": [
+      "far"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(12—14)%",
+     "en": "+(12—14)% to all Elemental Resistances",
      "m": "n",
      "tags": [
       "res"
      ]
     },
     {
+     "s": "s",
+     "kr": "처치한 적 하나당 마나 (21—27) 획득",
+     "en": "Gain (21—27) Mana per enemy killed",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "k8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9.4
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "eff",
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손) — 플레이어가 생성하는 잔류물의 효과",
+    "en": "Third prefix (desecrated): remnant effect"
+   },
+   "show": [
+    "eff"
+   ],
+   "edges": [
+    {
+     "if": {
+      "added": "eff"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "ok",
+     "res": "fail",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
      "s": "p",
-     "kr": "플레이어가 생성하는 잔류물의 효과 (8—15)% 증가",
-     "en": "Remnants you create have (8—15)% increased effect",
+     "kr": "카오스 피해 (27—30)% 증가",
+     "en": "(27—30)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "chaos"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(100—119)",
+     "en": "+(100—119) to maximum Life",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "플레이어가 생성하는 잔류물의 효과 (8—15)% 증가 (훼손)",
+     "en": "Remnants you create have (8—15)% increased effect (desecrated)",
      "m": "d",
      "tags": [
       "eff"
@@ -1232,16 +1854,27 @@
     },
     {
      "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
+     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)",
+     "en": "Remnants can be collected from (44—51)% further away (fractured)",
+     "m": "f",
+     "tags": [
+      "far"
+     ]
+    },
     {
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
+     "s": "s",
+     "kr": "모든 원소 저항 +(12—14)%",
+     "en": "+(12—14)% to all Elemental Resistances",
+     "m": "n",
+     "tags": [
+      "res"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "처치한 적 하나당 마나 (21—27) 획득",
+     "en": "Gain (21—27) Mana per enemy killed",
+     "m": "n"
     }
    ]
   },
@@ -1251,12 +1884,108 @@
    "group": "main",
    "pos": [
     0,
-    8
+    10.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "k4",
+    "k4d",
+    "k4g",
+    "k5",
+    "k5c"
+   ],
+   "kr": "남은 하나",
+   "en": "The other one",
+   "fold": true,
+   "goal": {
+    "kr": "접두 카오스 피해 1티어 — 모든 원소 저항·카오스 피해 중 남은 것",
+    "en": "T1 chaos damage prefix: whichever of all resistances or chaos damage is missing"
+   },
+   "goalBy": {
+    "high": {
+     "kr": "접두 카오스 피해 1티어 — 모든 원소 저항·카오스 피해 중 남은 것",
+     "en": "T1 chaos damage prefix: whichever of all resistances or chaos damage is missing"
+    },
+    "bal": {
+     "kr": "접두 카오스 피해 1~2티어 — 모든 원소 저항·카오스 피해 중 남은 것",
+     "en": "T1–2 chaos damage prefix: whichever of all resistances or chaos damage is missing"
+    }
+   },
+   "steps": [
+    {
+     "kr": "상위 찬미의 징조 + 좌측 찬미의 징조 + 완벽한 엑잘티드 오브로 접두 2개",
+     "en": "Omen of Greater Exaltation + Omen of Sinistral Exaltation + Perfect Exalted Orb for two prefixes",
+     "node": "k4"
+    },
+    {
+     "kr": "카오스 피해가 먼저 떴으면 우측 찬미의 징조로 접미 2개",
+     "en": "Chaos damage came first: Omen of Dextral Exaltation for two suffixes",
+     "node": "k4d"
+    },
+    {
+     "kr": "빗나가면 소멸의 오브",
+     "en": "A miss: Orb of Annulment",
+     "node": "k5"
+    },
+    {
+     "kr": "필요한 쪽 빈자리가 하나뿐이면 상위 찬미의 징조만",
+     "en": "Only one free slot on the needed side: Omen of Greater Exaltation alone",
+     "node": "k4g"
+    },
+    {
+     "kr": "둘 다 지워지면 분열 + 옵션 1개까지 소멸의 오브",
+     "en": "Both gone: annul down to the fracture + one option",
+     "node": "k5c"
+    }
+   ],
+   "worst": {
+    "kr": "모든 원소 저항·카오스 피해가 모두 지워지면 카오스 단계부터",
+    "en": "All resistances and chaos damage both gone: back to the Chaos step",
+    "to": "k3"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "카오스 피해 (27—30)% 증가",
+     "en": "(27—30)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "chaos"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(100—119)",
+     "en": "+(100—119) to maximum Life",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "잔류물을 (44—51)% 더 먼 곳에서 획득 가능 (분열)",
+     "en": "Remnants can be collected from (44—51)% further away (fractured)",
+     "m": "f",
+     "tags": [
+      "far"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(12—14)%",
+     "en": "+(12—14)% to all Elemental Resistances",
+     "m": "n",
+     "tags": [
+      "res"
+     ]
+    }
+   ]
   }
  ]
 }
