@@ -70,6 +70,7 @@ BASEPRICE = {
   'saveq-absent-amulet-v2': None, 'saveq-absent-amulet-v2-bal': None, 'saveq-absent-amulet-v2-ess': None,
   'saveq-alloy-focus': None,
   'saveq-focus': None,
+  'saveq-focus-v2': 6, 'saveq-focus-v2-bal': 6,   # 영상 6:00: 특출난 타살리안 집중구(아이템 레벨 79+, 2소켓) 5~7 div, 매물 약 6
   'seek-cyclone-boots': None,
   'sihan-chayula-sceptre': None,
   'sihan-highend-boots': None,
