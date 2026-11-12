@@ -53,12 +53,12 @@
 | fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 재확인 필요 | A(Opus) | 글 목걸이 부분 다시 대조, 일치(기록 tools/notes/web-fubgun-iceshot.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 재확인 필요 | A(Opus) | 자막 전체(31:47) 대조, 단계 일치(기록 tools/notes/diztoh-s70CV_nvjXg.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | diztoh-vile-robe-v2 | n97yEuKSWyM | bal 152, ess 49 | 0 | 완료 11-12(새 기준) · 검수 94점 | W4-로브(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W4): 영상 전체 캡처 82장·단계표. 로브 한 개를 처음부터 완성까지 진행한 회차 그대로. 준비 구역에 소멸(2:23·3:18), 아스트리드는 영상대로 갈비뼈(4:55) 뒤 6:10, 8번 접미 원소 저항 다중 루프 접음(우측 소멸 → 절사 + 상위 카오스 → 빈 접미 엑잘), 7 → 8 확정 선. 원소 저항 2~3티어(아이템 레벨 81이라 1티어 불가). 확인 못 함: 베이스 가격, 3:19~3:28 상위 카오스 II 아이콘(구입·툴팁·자막으로 판단), 10:04~10:27 갈비뼈 순간(편집). 152/49 → 152/49 |
-| sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 재확인 필요 | A(Opus) | 자막 전체(13:10) 대조, 단계 일치(기록 tools/notes/sl-VKMT7tuSIYk.md). 완성품 줄을 DB 태그로. 값 그대로 |
+| sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 진행 중 11-13 · G4 | G4(Opus 5.5) | 자막 전체(13:10) 대조, 단계 일치(기록 tools/notes/sl-VKMT7tuSIYk.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 98, ess 26 | 0 | 진행 중 11-13 · G1 | G1(Opus 5.5) |  |
 | sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 97, ess 23 | 1 | 진행 중 11-13 · G2 | G2(Opus 5.5) |  |
 | diztoh-5mod-sapphire-v2 | -YZm55-QuoQ | bal 95, ess 43 | 0 | 대기 |  |  |
 | easybabi-spiny-talisman-v2 | fabBIuR6yhw | high 155, bal 82 | 1 | 완료 11-13(새 기준) · 검수 95점(영상 28·플로우차트 25·카드 15·글 13·점검 14) | W33(Opus 5.5) · 검수 마스터 · R1 독립 검수 | 새 기준 재작성(W33): 영상 전체 화면 대조(6분 설명 영상, 성공작 성스러운 장악), 전용 생성기 gen_easybabi_spiny_talisman.py. 보존된 턱뼈·완벽한 카오스 오브로 고침, 정확도 막기·훼손 공개 접힌 상자 2개, 절사는 성공 회차대로 공개 뒤. 엑잘 접두 2개는 랜덤 옵션(10장 예외, 좌측 말소 추가 대안은 1,851/341). 94/13 → 155/82 **R1 검수 11-13(95점)**: 영상 -1 성공작 과정 화면은 일부만, -1 첫 공개 빗나감 처리 내부 결정 / 글 -1 번호 어긋남(공용), -1 상위 찬미 엑잘을 '아무 옵션 1개 추가'로 적음(실제 2개) / 점검 -1 단계별 기대값 12 vs 시뮬 155 div 설명 없음(공용) |
-| vodnarg-timelost-emerald-v2 | 3tFs16SXkD8 | bal 94, ess 70 | 0 | 대기 |  |  |
+| vodnarg-timelost-emerald-v2 | 3tFs16SXkD8 | bal 94, ess 70 | 0 | 진행 중 11-13 · G4 | G4(Opus 5.5) |  |
 | lilbotq-boots-v2 | S-7YHuq3-P4 | bal 92, ess 5 | 2 | 대기 |  |  |
 | mazbro-caster-ring-v2 | o3Fh1DJmxBA | bal 86, ess 16 | 1 | 진행 중 11-13 · G2 | G2(Opus 5.5) |  |
 | lilbotq-emerald-v2 | Hcb_HcWDUOA | bal 84 | 0 | 대기 |  |  |
@@ -66,7 +66,7 @@
 | saveq-alloy-focus-v2 | uCbyTF-LJ5I | bal 80, ess 1 | 0 | 대기 |  |  |
 | chiba-timelost-emerald-v2 | O6Rp7JIxhrs | high 160 | 0 | 완료 11-13(새 기준) · 검수 90점 | W24(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W24): 영상 전체 화면 대조, 전용 생성기 gen_chiba_timelost_emerald.py, 노트 tools/notes/chiba-O6Rp7JIxhrs.md. 준비 구역(공격 치명타 + 옵션 2개 레어 14 div → 보존된 두개골 → 분열 1/3, 실패 새 베이스 → 소멸) 추가. 밸런스 = 마지막 접두 랜덤 + 공개는 빛의 징조로 다시(C17-3). 77.9/64.8(베이스·준비 없음) → 160/157. 11-13 F1: 사용자 결정대로 밸런스 뺌(하이엔드만, -bal 레시피·base_prices·priority 정리) |
 | fubgun-crit-bow-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 62, ess ? | 3 | 대기 |  |  |
-| seek-cyclone-boots-v2 | cj9o8_LuFQs | bal 53, ess 14 | 2 | 대기 |  |  |
+| seek-cyclone-boots-v2 | cj9o8_LuFQs | bal 53, ess 14 | 2 | 진행 중 11-13 · G4 | G4(Opus 5.5) |  |
 | belton-plus8-wand-v2 | j0FeuX0NZQI | bal 38, ess 12 | 0 | 대기 |  |  |
 | sihan-chayula-sceptre-v2 | -F7pV0Y7BMA | bal 36, ess 13 | 0 | 대기 |  |  |
 | diztoh-onehand-mace-v2 | WDEkEIQFgT4 | bal 33, ess ? | 0 | 진행 중 11-13 · G3 | G3(Opus 5.5) |  |
