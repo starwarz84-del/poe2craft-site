@@ -1457,7 +1457,8 @@ function itemTipHTML(r, o, opt={}){
   const line = (m, cls='') => {
     const sl=`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>`;
     if(m.unrev) return `<div class="tt-mod des-u ${cls}">${sl}${L('훼손 옵션 (미공개)','Desecrated (unrevealed)')}</div>`;
-    if(m.gi==null) return `<div class="tt-mod junk ${m.des?'desm':''} ${m.fr?'fr':''} ${cls}">${m.label&&m.tmax?`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}${m.tmax===1?'1':'1–'+m.tmax}</span>`:sl}${m.label?esc(tx(m.label)):opt.final?L('랜덤 옵션','Random modifier'):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
+    /* 이름(label)이 붙은 줄 = DB 옵션 묶음(anyOf)에서 고르는 줄 → 일반 옵션 색. 회갈색 기울임(junk)은 랜덤 옵션·잡옵만(사용자 2026-11-12) */
+    if(m.gi==null) return `<div class="tt-mod ${m.label&&!m.rnd?'lbl':'junk'} ${m.des?'desm':''} ${m.fr?'fr':''} ${cls}">${m.label&&m.tmax?`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}${m.tmax===1?'1':'1–'+m.tmax}</span>`:sl}${m.label?esc(tx(m.label)):opt.final?L('랜덤 옵션','Random modifier'):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
     if(m.mark) return `<div class="tt-mod markm ${cls}"><span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>${esc(KR()?grp(r,m.gi).t[0][4]:grp(r,m.gi).t[0][5])}</div>`;
     const l=modLine(r,m.gi,m.tmax,m.max,m.tmin), qv=o.qual?.v, qt=o.qual?.type, shown=(o.vals||{})[m.gi];
     let txt=l.txt, sub='';
