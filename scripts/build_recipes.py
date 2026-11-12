@@ -614,6 +614,10 @@ for _r in R:
                 if t.get('gi') is not None: return [t['gi']]
                 return [g for x in (t.get('anyOf') or []) for g in _gis(x, seen)]
             def _anyline(l):
+                # 묶음 태그만 적은 줄 → 그 태그 이름 + 옵션 목록(2026-11-12: 화면에서 줄이 빠지던 문제)
+                T0=_GT.get(l.get('tag')) if l.get('tag') else None
+                if not l.get('label') and not l.get('random') and isinstance(T0,dict) and T0.get('gi') is None and T0.get('anyOf'):
+                    g=_gis(T0); return {**{k:v for k,v in l.items() if k!='tag'}, 'label':T0.get('label') or {'kr':'랜덤 옵션','en':'Random modifier'}, 'any':g}
                 if not l.get('label') or l.get('random'): return l
                 T=_GT.get(l.get('tag')) if l.get('tag') else next((t for t in _GT.values() if isinstance(t,dict) and t.get('anyOf') and (t.get('label') or {}).get('kr')==l['label'].get('kr')), None)
                 g=_gis(T) if T else []

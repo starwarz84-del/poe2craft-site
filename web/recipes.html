@@ -1008,7 +1008,7 @@ function analyse(r){
     Object.assign(tot, F.use||{}); Object.assign(totAll, F.use||{}); bases = F.bases||1;
     if(out[0]) out[0].passes = bases;
     const c=uc2.base; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+(+c.v)*bases; } else if(+r.basePrice>0) manual.Divine_Orb=(+r.basePrice)*bases; else if(+F.baseDiv>0) manual.Divine_Orb=(+F.baseDiv)*bases; /* 플로우차트 베이스 가격(그래프 basePrice, 예: 사슬옷 분열 베이스 카오스 22만 개) — 2026-11-12 */ }
-  const fcState = r.fc ? fcCardState(r.fc.tags, r.fc.lines, r.fc.ds) : null;   // 플로우차트의 그 등급 완성품 카드가 기준
+  const fcState = r.fc ? fcCardState(r.fc.tags, r.fc.lines, r.fc.ds, undefined, r) : null;   // 플로우차트의 그 등급 완성품 카드가 기준
   const final = (fcState || mods).filter(m=>m.gi!=null).map(m=>({...modLine(r,m.gi,m.tmax,m.max,m.tmin), tmax:m.tmax, fr:m.fr, des:m.des, ess:m.ess}))
     .sort((a,c)=>(a.g.g==='p'?0:1)-(c.g.g==='p'?0:1));
   /* 등급 카드 구분(2026-11-12, 정책 10장 C17): 플로우차트 완성품의 '랜덤 옵션'·범위 줄(옵션 이름 대신 설명)도 목록 카드에 보임 */
@@ -1724,8 +1724,12 @@ function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||'')
   return [...lines.map(l=>[l, had.has(key(l))?'':'new']), ...gone.map(l=>[l,'gone'])].map((x,i)=>[...x,i]).sort((a,b)=>ord(a[0].s)-ord(b[0].s)||a[2]-b[2]).map(([l,c])=>row(l,c)).join(''); }
 // finished items (best / settle / budget) in the recipe's item-card format
 // 완성품 카드 상태(플로우차트 finals 한 장) — 플로우차트 완성품 카드와 그 등급 레시피의 완성 카드가 같이 씀(사용자 확정 2026-11-11)
-function fcCardState(tags, lines, ds, revOnly=()=>false){
-  const state=lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side, label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}, des:!!l.des, rnd:!!l.random, ...(l.any?.length?{any:l.any}:tags?.[l.tag]?.anyOf?{any:tags[l.tag].anyOf.map(x=>x.gi)}:{})}; const T=tags?.[l.tag]; if(!T || T.gi==null) return null;
+function fcCardState(tags, lines, ds, revOnly=()=>false, r=null){
+  /* 묶음 태그(anyOf, gi 없음)만 적은 줄은 그 태그의 이름(label)으로 고르는 줄 — 예전엔 줄이 통째로 빠졌음(2026-11-12) */
+  const leafGi=(T,seen=[])=>!T?[]:T.gi!=null?[T.gi]:(T.anyOf||[]).flatMap(x=>typeof x==='string'?(seen.includes(x)?[]:leafGi(tags?.[x],[...seen,x])):(x&&x.gi!=null?[x.gi]:[]));
+  const sideOf=gi=>{ const t=Object.values(tags||{}).find(t=>t&&t.gi===gi&&t.s); if(t) return t.s; try{ return r?grp(r,gi)?.g:undefined; }catch(e){ return undefined; } };
+  lines=lines.map(l=>{ const T=tags?.[l.tag]; if(l.random || l.label || !T || T.gi!=null || !T.anyOf) return l; const g=leafGi(T); return {...l, side:l.side||sideOf(g[0]), label:T.label||{kr:'랜덤 옵션',en:'Random modifier'}, any:g}; });
+  const state=lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side||(l.any?.length?sideOf(l.any[0]):undefined), label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}, des:!!l.des, rnd:!!l.random, ...(l.any?.length?{any:l.any}:tags?.[l.tag]?.anyOf?{any:tags[l.tag].anyOf.map(x=>x.gi)}:{})}; const T=tags?.[l.tag]; if(!T || T.gi==null) return null;
     return {gi:T.gi, side:T.s, tmax:l.tmax||(typeof T.tmax==='number'?T.tmax:null), tmin:l.tmin||null, fr:!!l.fr, des:!!l.des || (ds ? false : (T.sec==='d' || revOnly(l.tag))), dsf:ds ? (ds.tag?.[l.tag]||0) : 0, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
   if(ds && !state.some(m=>m.des)){ const t=state.filter(m=>m.gi!=null && m.dsf>=0.5).sort((a,b)=>b.dsf-a.dsf)[0];
     if(t) t.des=true; else { const sd=['p','s'].filter(x=>(ds.side?.[x]||0)>=0.5).sort((a,b)=>(ds.side[b]||0)-(ds.side[a]||0))[0];
@@ -1740,7 +1744,7 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
   const cards=g.finals.map(F=>{
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
     // 훼손 여부 = 제작 과정에서 훼손으로 얻었는지(사용자 확정 2026-11-11): 시뮬 완성품 통계 desStat — 태그별 훼손 비율, 면별 훼손 옵션 수(잡옵도 훼손일 수 있음). 통계가 없을 때만 옵션 종류로 추정
-    const state=fcCardState(g.tags, F.lines, S2?.res?.desStat, revOnly);
+    const state=fcCardState(g.tags, F.lines, S2?.res?.desStat, revOnly, r);
     const go=r.tierGroup && tierSibs(r).find(x=>x.tier===(F.tier||F.id));   // 완성품 카드 → 그 등급 레시피 탭 (사용자 확정 2026-11-11)
     return `<div class="fcfin ${on?'on':''} ${go?'go':''}" ${go?`data-rtab="${esc(go.id)}" role="button" tabindex="0" title="${esc(L('이 완성품의 제작 과정 보기','Open the crafting steps for this item'))}"`:''}><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:[]}, {final:true})}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
