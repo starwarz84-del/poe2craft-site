@@ -1866,7 +1866,7 @@ function fcFold(g, res, vid){ const Ls=(g.loops||[]).filter(L=>L.fold && L.nodes
     const H=byId[h], wt=L.worst?.to, ok=[];   /* 성공 선 = 소속 상자 어디서든 밖으로 나가는 성공 선(머리 밖에서 나가는 경우 포함, 2026-11-12 장갑 14번·로브 8번), 통과 수는 소속 상자들의 합 */
     L.nodes.forEach(id=>(byId[id]?.edges||[]).forEach(e=>{ if(e.res!=='ok' || e.hide || mem.has(e.to) || e.to===wt) return; if(!ok.some(x=>x.to===e.to)) ok.push({...e}); }));
     ok.forEach(e=>{ if(L.nodes.some(id=>id!==h && res?.edges?.[id+'>'+e.to])){ let c=0; L.nodes.forEach(id=>{ c+=res?.edges?.[id+'>'+e.to]||0; }); edges[h+'>'+e.to]=c; } });
-    const es=[...ok]; if(wt && !mem.has(wt)){ es.push({to:wt, res:'fail', label:{kr:L.worst.kr, en:L.worst.en}}); let c=0; L.nodes.forEach(id=>{ c+=res?.edges?.[id+'>'+wt]||0; }); edges[h+'>'+wt]=c; }
+    const es=[...ok]; if(wt && !mem.has(wt)){ es.push({to:wt, res:'fail'});   /* 최악의 경우 글은 상자 안에 있으니 선 이름표는 없음 */ let c=0; L.nodes.forEach(id=>{ c+=res?.edges?.[id+'>'+wt]||0; }); edges[h+'>'+wt]=c; }
     heads[h]={...H, kind:H.kind==='cleanup'?'act':H.kind, fold:{...L, goal:L.goalBy?.[vid]||L.goal}, edges:es, next:undefined, skipTo:undefined, item:L.item||H.item}; });
   const re=to=>gone[to]||to;
   const nodes=g.nodes.filter(n=>!gone[n.id]).map(n=>heads[n.id] || (n.edges?.some(e=>gone[e.to]) || gone[n.next] ? {...n, edges:(n.edges||[]).map(e=>gone[e.to]?{...e, to:re(e.to)}:e), next:n.next&&re(n.next)} : n));

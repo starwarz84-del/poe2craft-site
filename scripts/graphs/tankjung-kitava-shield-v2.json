@@ -4,7 +4,7 @@
  "cls": "Shields_str",
  "base": "Tawhoan Tower Shield",
  "ilvl": 81,
- "note": "탱정 키타바 방패(gQa51XOS98s, 2026-11-12 W5 영상 전체 재대조, 새 플로우차트 기준) — 특출난 타호아의 거대 방패 → 완벽한 진화 → 완벽한 확장 + 소멸의 오브로 접미 4종 중 하나(냉기·번개면 맹렬한 유동체) → 완벽한 확장·완벽한 제왕 + 보존된 갈비뼈(미공개) → 분열(실패면 새 베이스) → 소멸 2번 + 카오스 오브(접미 4종 중 남은 하나) → 우측 강령술 + 고대 갈비뼈 → 공개(심연의 메아리, 빗나가면 빛의 징조 + 소멸) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 최대치·%·복합. 하이엔드 = 영상(모두 1티어), 밸런스 = 저항 최대치 공개·방어도 3종 1~2티어. 퀄리티 30%·철 룬은 비용에서 뺌.",
+ "note": "탱정 키타바 방패(gQa51XOS98s, 2026-11-12 W5 영상 전체 재대조, 새 플로우차트 기준) — 특출난 타호아의 거대 방패 → 완벽한 진화 → 완벽한 확장 + 소멸의 오브로 받는 물리 피해 감소 → 완벽한 확장·완벽한 제왕 + 보존된 갈비뼈(미공개) → 분열(실패면 새 베이스) → 소멸 2번 + 카오스 오브(화염 저항 최대치) → 우측 강령술 + 고대 갈비뼈 → 공개(냉기·번개 저항 최대치, 심연의 메아리, 빗나가면 빛의 징조 + 소멸) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 최대치·%·복합. 하이엔드 = 영상(모두 1티어), 밸런스 = 저항 최대치 공개·방어도 3종 1~2티어. 퀄리티 30%·철 룬은 비용에서 뺌.",
  "params": {
   "mT": {
    "kr": "훼손 저항 최대치",
@@ -108,32 +108,6 @@
    "gi": 16,
    "tmax": 2
   },
-  "suf1": {
-   "anyOf": [
-    "pdr1",
-    "mf1",
-    "mc1",
-    "ml1"
-   ],
-   "label": {
-    "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-    "en": "T1 physical damage reduction or maximum resistance"
-   }
-  },
-  "mcl": {
-   "anyOf": [
-    "mc1",
-    "ml1"
-   ],
-   "label": {
-    "kr": "냉기·번개 저항 최대치 1티어",
-    "en": "T1 maximum cold or lightning resistance"
-   }
-  },
-  "mf": {
-   "gi": 14,
-   "tmax": "$mT"
-  },
   "mc": {
    "gi": 15,
    "tmax": "$mT"
@@ -142,25 +116,14 @@
    "gi": 16,
    "tmax": "$mT"
   },
-  "maxres": {
+  "mcl": {
    "anyOf": [
-    "mf",
     "mc",
     "ml"
    ],
    "label": {
-    "kr": "화염·냉기·번개 저항 최대치",
-    "en": "Maximum fire, cold or lightning resistance"
-   }
-  },
-  "desW": {
-   "anyOf": [
-    "pdr1",
-    "maxres"
-   ],
-   "label": {
-    "kr": "받는 물리 피해 감소 또는 저항 최대치",
-    "en": "Physical damage reduction or maximum resistance"
+    "kr": "냉기·번개 저항 최대치 +3%",
+    "en": "+3% maximum cold or lightning resistance"
    }
   },
   "flat": {
@@ -210,61 +173,39 @@
    "gi": 8,
    "tmax": 2
   },
-  "sufF": {
-   "anyOf": [
-    "pdr1",
-    "mf1",
-    "mc1",
-    "ml1"
-   ],
-   "label": {
-    "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어 (분열)",
-    "en": "T1 physical damage reduction or maximum resistance (fractured)"
-   }
-  },
   "desH": {
    "anyOf": [
-    "pdr1",
-    "mf1",
     "mc1",
     "ml1"
    ],
    "label": {
-    "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어 (훼손)",
-    "en": "T1 physical damage reduction or maximum resistance (desecrated)"
+    "kr": "냉기·번개 저항 최대치 +3% 1티어",
+    "en": "T1 +3% maximum cold or lightning resistance"
    }
   },
   "desB": {
    "anyOf": [
-    "pdr1",
-    "mf2",
     "mc2",
     "ml2"
    ],
    "label": {
-    "kr": "받는 물리 피해 감소 1티어 또는 저항 최대치 1~2티어 (훼손)",
-    "en": "T1 physical damage reduction or T1–2 maximum resistance (desecrated)"
+    "kr": "냉기·번개 저항 최대치 +3% 1~2티어",
+    "en": "T1–2 +3% maximum cold or lightning resistance"
    }
   }
  },
  "require": {
   "all": [
    {
-    "count": {
-     "tag": "suf1",
-     "min": 1
-    }
-   },
-   {
     "all": [
      {
       "has": "pdr1"
      },
      {
-      "count": {
-       "tag": "maxres",
-       "min": 2
-      }
+      "has": "mf1"
+     },
+     {
+      "has": "mcl"
      }
     ]
    },
@@ -317,8 +258,8 @@
    "en": "Magic suffix hunt",
    "fold": true,
    "goal": {
-    "kr": "매직 접미 4종 중 하나 1티어",
-    "en": "One of the four suffixes, T1, on a magic item"
+    "kr": "매직 접미 받는 물리 피해 8% 추가 감소 1티어",
+    "en": "T1 8% physical damage reduction suffix on a magic item"
    },
    "steps": [
     {
@@ -341,11 +282,11 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     }
    ]
@@ -385,11 +326,11 @@
      "tag": "hyb1"
     },
     {
-     "tag": "sufF",
+     "tag": "pdr1",
      "fr": true
     },
     {
-     "tag": "suf1"
+     "tag": "mf1"
     },
     {
      "tag": "desH",
@@ -412,11 +353,11 @@
      "tag": "hyb2"
     },
     {
-     "tag": "sufF",
+     "tag": "pdr1",
      "fr": true
     },
     {
-     "tag": "suf1"
+     "tag": "mf1"
     },
     {
      "tag": "desB",
@@ -486,13 +427,13 @@
    "edges": [
     {
      "if": {
-      "has": "suf1"
+      "has": "pdr1"
      },
-     "to": "fl",
+     "to": "r1",
      "res": "ok",
      "label": {
-      "kr": "접미 4종 중 하나",
-      "en": "One of the four suffixes"
+      "kr": "받는 물리 피해 감소",
+      "en": "Physical damage reduction"
      }
     },
     {
@@ -516,17 +457,17 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     }
    ],
    "cur": "Perfect_Orb_of_Transmutation",
    "show": [
-    "suf1"
+    "pdr1"
    ]
   },
   {
@@ -549,13 +490,13 @@
    "edges": [
     {
      "if": {
-      "has": "suf1"
+      "has": "pdr1"
      },
-     "to": "fl",
+     "to": "r1",
      "res": "ok",
      "label": {
-      "kr": "접미 4종 중 하나",
-      "en": "One of the four suffixes"
+      "kr": "받는 물리 피해 감소",
+      "en": "Physical damage reduction"
      }
     },
     {
@@ -589,17 +530,17 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     }
    ],
    "cur": "Perfect_Orb_of_Augmentation",
    "show": [
-    "suf1"
+    "pdr1"
    ]
   },
   {
@@ -645,63 +586,12 @@
    ]
   },
   {
-   "id": "fl",
-   "kind": "act",
-   "group": "prep",
-   "pos": [
-    0,
-    3
-   ],
-   "act": "divine",
-   "goal": {
-    "kr": "냉기·번개 저항 최대치를 화염으로",
-    "en": "Cold or lightning maximum resistance into fire"
-   },
-   "label": {
-    "kr": "유동체",
-    "en": "Flux"
-   },
-   "edges": [
-    {
-     "to": "r1"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
-     "m": "n",
-     "tags": [
-      "suf1"
-     ]
-    }
-   ],
-   "cur": "Blazing_Flux",
-   "skipIf": {
-    "not": {
-     "has": "mcl"
-    }
-   },
-   "skipTo": "r1",
-   "skipNote": {
-    "kr": "물리 피해 감소·화염 저항 최대치면 건너뜀",
-    "en": "Skip for damage reduction or fire maximum resistance"
-   }
-  },
-  {
    "id": "r1",
    "kind": "act",
    "group": "prep",
    "pos": [
     0,
-    4
+    3
    ],
    "act": "augment",
    "goal": {
@@ -726,11 +616,11 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     }
    ],
@@ -757,7 +647,7 @@
    "group": "prep",
    "pos": [
     0,
-    5
+    4
    ],
    "act": "regal",
    "goal": {
@@ -782,11 +672,11 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
@@ -810,7 +700,7 @@
    "group": "prep",
    "pos": [
     0,
-    6
+    5
    ],
    "act": "desecrate",
    "goal": {
@@ -835,11 +725,11 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
@@ -869,7 +759,7 @@
    "group": "prep",
    "pos": [
     0,
-    7
+    6
    ],
    "act": "fracture",
    "goal": {
@@ -883,7 +773,7 @@
    "edges": [
     {
      "if": {
-      "fractured": "suf1"
+      "fractured": "pdr1"
      },
      "to": "f4",
      "res": "ok"
@@ -907,11 +797,11 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
@@ -930,8 +820,8 @@
    "cur": "Fracturing_Orb",
    "showText": [
     {
-     "kr": "접미 4종 중 하나가 분열되면 성공",
-     "en": "Success when one of the four suffixes fractures"
+     "kr": "받는 물리 피해 감소가 분열되면 성공",
+     "en": "Success when physical damage reduction fractures"
     }
    ],
    "pAll": true
@@ -942,7 +832,7 @@
    "group": "prep",
    "pos": [
     1,
-    7
+    6
    ],
    "simTo": "b0",
    "variant": "fail",
@@ -957,7 +847,7 @@
    "group": "prep",
    "pos": [
     0,
-    8
+    7
    ],
    "keep": [],
    "maxJunk": 1,
@@ -985,11 +875,11 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
@@ -1006,7 +896,7 @@
    "group": "main",
    "pos": [
     0,
-    8.6
+    7.6
    ],
    "next": "t2",
    "label": {
@@ -1016,11 +906,11 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
@@ -1051,10 +941,7 @@
    "edges": [
     {
      "if": {
-      "count": {
-       "tag": "suf1",
-       "min": 2
-      }
+      "has": "mf1"
      },
      "to": "t3",
      "res": "ok"
@@ -1067,32 +954,29 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "화염 저항 최대치 +3% 1티어",
+     "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "suf1"
+      "mf1"
      ]
     }
    ],
    "cur": "Chaos_Orb",
    "show": [
-    "suf1"
+    "mf1"
    ],
    "skipIf": {
-    "count": {
-     "tag": "suf1",
-     "min": 2
-    }
+    "has": "mf1"
    },
    "skipTo": "t3",
    "skipHide": true
@@ -1122,20 +1006,20 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "화염 저항 최대치 +3% 1티어",
+     "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "suf1"
+      "mf1"
      ]
     },
     {
@@ -1182,10 +1066,10 @@
         "has": "pdr1"
        },
        {
-        "count": {
-         "tag": "maxres",
-         "min": 2
-        }
+        "has": "mf1"
+       },
+       {
+        "has": "mcl"
        }
       ]
      },
@@ -1200,36 +1084,34 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "화염 저항 최대치 +3% 1티어",
+     "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "suf1"
+      "mf1"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 (훼손)",
-     "en": "Damage reduction or maximum resistance (desecrated)",
+     "kr": "냉기·번개 저항 최대치 +3% (훼손)",
+     "en": "+3% maximum cold or lightning resistance (desecrated)",
      "m": "d",
      "tags": [
-      "desW"
+      "mcl"
      ]
     }
    ],
-   "want": "desW",
+   "want": "mcl",
    "show": [
-    "pdr1",
-    "mf",
     "mc",
     "ml"
    ],
@@ -1309,29 +1191,29 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "화염 저항 최대치 +3% 1티어",
+     "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "suf1"
+      "mf1"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 (훼손)",
-     "en": "Damage reduction or maximum resistance (desecrated)",
+     "kr": "냉기·번개 저항 최대치 +3% (훼손)",
+     "en": "+3% maximum cold or lightning resistance (desecrated)",
      "m": "d",
      "tags": [
-      "desW"
+      "mcl"
      ]
     }
    ],
@@ -1390,29 +1272,29 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "화염 저항 최대치 +3% 1티어",
+     "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "suf1"
+      "mf1"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 (훼손)",
-     "en": "Damage reduction or maximum resistance (desecrated)",
+     "kr": "냉기·번개 저항 최대치 +3% (훼손)",
+     "en": "+3% maximum cold or lightning resistance (desecrated)",
      "m": "d",
      "tags": [
-      "desW"
+      "mcl"
      ]
     }
    ],
@@ -1488,29 +1370,29 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "suf1"
+      "pdr1"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
-     "en": "T1 physical damage reduction or maximum resistance",
+     "kr": "화염 저항 최대치 +3% 1티어",
+     "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "suf1"
+      "mf1"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 또는 저항 최대치 (훼손)",
-     "en": "Damage reduction or maximum resistance (desecrated)",
+     "kr": "냉기·번개 저항 최대치 +3% (훼손)",
+     "en": "+3% maximum cold or lightning resistance (desecrated)",
      "m": "d",
      "tags": [
-      "desW"
+      "mcl"
      ]
     }
    ],
