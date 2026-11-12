@@ -94,7 +94,7 @@ A(id='q1', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Exalted_Orb
 A(id='q2', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('접두 잡옵을 지우고 최대 퀄리티 +20%', 'The junk prefix goes for +20% Maximum Quality'),
   showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'q3'}], item=[SP, MQ, SL])
-A(id='q3', kind='act', group='main', pos=[0, 9.4], act='quality', cur='Sibilant_Catalyst', count=40, label=K('퀄리티', 'Quality'),
+A(id='q3', kind='act', group='main', pos=[0, 9.4], act='quality', cur='Sibilant_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('시전 퀄리티 40%', 'Caster quality 40%'), showText=[K('쇳소리 기폭제 40개', '40 Sibilant Catalysts')], edges=[{'to': 'd1'}], item=[SP, MQ, SL])
 A(id='d1', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_the_Blackblooded'],
   label=K('훼손', 'Desecrate'), goal=K('접미 두번째 옵션(훼손)', 'Second suffix (desecrated)'),

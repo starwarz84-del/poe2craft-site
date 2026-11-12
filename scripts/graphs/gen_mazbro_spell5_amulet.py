@@ -95,7 +95,7 @@ A(id='ms', kind='mark', group='main', pos=[0, 8.4], next='z7', label=K('아이�
 A(id='z7', kind='act', group='main', pos=[0, 9.4], act='essence', cur='Essence_of_the_Breach', ess='mq', label=K('에센스', 'Essence'),
   goal=K('잡옵을 지우고 최대 퀄리티', 'The junk goes for max quality'),
   showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'z8'}], item=[SP, MQ])
-A(id='z8', kind='act', group='main', pos=[0, 10.4], act='quality', cur='Sibilant_Catalyst', count=40, label=K('퀄리티', 'Quality'),
+A(id='z8', kind='act', group='main', pos=[0, 10.4], act='quality', cur='Sibilant_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('시전 퀄리티 40%', 'Caster quality 40%'), edges=[{'to': 'z9'}], item=[SP, MQ])
 # 3단계: 카오스 스팸 + 드문 접미 1티어에 반대쪽 엑잘(접힌 상자 L0)
 A(id='z9', kind='act', group='main', pos=[0, 11.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),

@@ -11,7 +11,7 @@ z_cast=txA('increased Cast Speed','n','s'); z_crit=txA('increased Critical Hit C
 z_res=txA('to all Elemental Resistances','n','s'); z_rar=txA('increased Rarity of Items found','n','s')
 IMP_Z=lambda lv:[K('스킬 부여: 레벨 %d 원소 상태 이상 시 시전'%lv,'Grants Skill: Level %d Cast on Elemental Ailment'%lv),K('접두어 속성 부여의 최대 개수 -1개\n접미어 속성 부여의 최대 개수 -1개','-1 Prefix Modifier allowed\n-1 Suffix Modifier allowed')]
 R.append({
- 'id':'mazbro-spell5-amulet','cls':c,'base':base(c,'Absent Amulet'),'ilvl':81,'imp':IMP_Z(12),'difficulty':4,'budget':'high',
+ 'id':'mazbro-spell5-amulet','cls':c,'base':base(c,'Absent Amulet'),'ilvl':80,'imp':IMP_Z(18),'difficulty':4,'budget':'high',
  'buildTags':[K('주문','Spell'),K('정신력','Spirit'),K('룬 수호','Runic Ward')],'patch':'0.5.5','created':'2026-11-09','author':MZ5,
  'source':{'url':'https://www.youtube.com/watch?v=kULlZJBSec4','title':'+5 Skill Amulet Craft Guide that PAYS FOR ITSELF','channel':'MazBro'},
  'title':K('정신력 분열 + 주문 +3 + 룬 수호 (축성 +5 노리기)','fractured Spirit + spell +3 + Runic Ward (sanctify for +5)'),
@@ -21,7 +21,7 @@ R.append({
            {'id':'fin','kr':'성유 · 디바인 · 축성','en':'Anoint, Divine, sanctify'}],
  'nodes':[
   {'id':'z1','phase':'base','do':'base','cost':'base','ts':'8:40',
-   'note':K('원하는 부여 스킬(원소 상태 이상 시 시전·치명타 시 시전·삼위일체 등)이 붙은 희귀 부재 목걸이. 타락·축성되지 않은 것, 아이템 레벨 75 이상(모든 원소 저항까지 보려면 82).','A rare Absent Amulet with the granted skill you want (Cast on Elemental Ailment, Cast on Critical, Trinity…), not corrupted or sanctified, item level 75+ (82 if you want all elemental resistances).')},
+   'note':K('원하는 부여 스킬(원소 상태 이상 시 시전·치명타 시 시전·삼위일체 등)이 붙은 노멀 부재 목걸이. 타락·축성되지 않은 것, 아이템 레벨 75 이상(모든 원소 저항 1티어는 80).','A normal Absent Amulet with the granted skill you want (Cast on Elemental Ailment, Cast on Critical, Trinity…), not corrupted or sanctified, item level 75+ (80 for T1 all elemental resistances).')},
   {'id':'z2','phase':'base','do':'chaos','cur':'Chaos_Orb','target':{'gi':z_spirit,'tmax':1},'fail':{'goto':'self'},'after':{'keepOnly':[z_spirit]},'ts':'9:20',
    'note':K('카오스 오브로 정신력 1티어. 나온 뒤 소멸의 오브로 정신력만 남김. 도중에 주문 스킬 +3이 접두 하나와 뜨면 그대로 팔아도 이득(영상 140디바인).','Chaos for T1 Spirit, then annul down to Spirit alone. If +3 spell skills shows up with a single prefix on the way, selling it as is pays (140 divines in the video).')},
   {'id':'z3','phase':'base','do':'divine','cur':'Divine_Orb','target':{'roll':{'gi':z_spirit}},'fail':{'goto':'self'},'ts':'10:20',
