@@ -38,7 +38,7 @@
 | kind | 뜻 | 필드 |
 |---|---|---|
 | `base` | 새 베이스 구입(노멀, 옵션 없음). 베이스 수를 셈 | `next` |
-| `act` | 커런시 한 번 사용 | `act`(transmute·augment·regal·exalt·chaos·annul·desecrate·reveal·divine·fracture), `cur`, `omens[]`, `curIf:[{if, cur}]`(상태에 따라 오브 바꾸기, 예: 치명타 1티어면 완벽한 엑잘티드 오브), `trim:{side, keep}`(정책 23④ 절사/말소 자동 선택), `want`(공개 때 고를 태그), `skipIf`+`skipTo`, `edges` |
+| `act` | 커런시 한 번 사용 | `act`(transmute·augment·regal·exalt·chaos·annul·desecrate·reveal·divine·fracture·flux), `cur`, `omens[]`, `curIf:[{if, cur}]`(상태에 따라 오브 바꾸기, 예: 치명타 1티어면 완벽한 엑잘티드 오브), `trim:{side, keep}`(정책 23④ 절사/말소 자동 선택), `want`(공개 때 고를 태그), `skipIf`+`skipTo`, `edges` |
 | `cleanup` | 징조 없는 소멸의 오브를 반복해 `keep` 태그 밖의 줄을 `maxJunk`개 이하로 줄임. `keep` 줄이 지워지면 그 자리에서 멈춤 | `keep[]`, `maxJunk`, `edges:[{lost:태그, to}, {to}]` |
 | `choice` | **정책 노드**: 전략 옵션 값으로 갈래를 고름(타협 / 추가 과정, 정리 방법 등) | `param`, `options:{값: 노드 id}`, `edgeLabels` |
 | `assume` | 계산상 가정(1차 시험: 접미 분열 = 같은 비용 가정 → 분열 줄을 바꿔 본 흐름으로) | `swapFracture`, `next` |
@@ -112,6 +112,7 @@
 
 - `site/graphify.js` `fromDraft(초안, 클래스 파일, {craft, grades})` → 그래프, `view` → 화면용 그림 데이터, `check` → 등급별 시뮬·문제 목록. 브라우저(리버스 화면)와 node 공용.
 - 조건 `rune:'이름 일부'`(2026-11-12): 이번 진행에서 그 룬을 이미 장착함(룬 상자 `act:'rune'`의 `rune.en`·`rune.kr`에서 대소문자 무시하고 찾음, 그래프 `astrid:true`면 아스트리드는 처음부터 장착). 룬 상자에 `skipIf:{rune:'Astrid'}` + `skipTo`로 되돌아올 때 다시 지나지 않게.
+- `act:'flux'`(2026-11-12): `cur`가 맹렬한(`Blazing_Flux`)·오싹한(`Chilling_Flux`)·치직대는(`Crackling_Flux`)·공허(`Void_Flux`) 유동체면 아이템의 그 원소 저항 옵션을 같은 티어의 목표 원소 저항 옵션으로 바꿈(저항·저항 최대치·훼손 복합 저항의 원소 부분, 분열·미공개 옵션은 그대로, 훼손·에센스 표시는 유지, 같은 계열 두 개 공존 가능). 시뮬 `site/sim.js` `fluxTarget`, 엔진 `recipes.html` `do:'flux'`(같은 규칙). 예전처럼 `act:'divine'` + 유동체 `cur`로 두면 변환 없이 사용량만 셈. 완성품 카드에 같은 태그를 두 줄 적으면 `fincheck.js`는 그 태그가 두 개 있어야 통과
 - 조건 `famBlock:태그`: 원하는 옵션의 계열을 다른 옵션(티어가 안 맞는 같은 그룹 포함)이 이미 차지해 그 단계로는 절대 못 붙음.
 - 그래프 `maxSteps`: 한 번 진행에서 이 단계 수를 넘으면 `runaway`(기본 200만, 리버스 검사는 30만).
 - sim.js 에센스: 에센스 옵션이 들어갈 쪽이 꽉 차 있으면 결정화의 징조가 반대쪽이어도 그쪽 옵션이 지워짐(발굴 규칙 6). 공개할 옵션이 하나도 없으면 아무것도 안 붙음(멈춤 방지).

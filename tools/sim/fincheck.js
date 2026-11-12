@@ -10,8 +10,8 @@ for(const id of ids){ let g; try{ g=JSON.parse(fs.readFileSync(`${R}/scripts/gra
     const run=SIM.make(g,D,c,s.params), rnd=SIM.rng(5);
     let err=null; for(let i=0;i<N&&!err;i++) try{ run(rnd,{tally:{visit(){},use(){},base(){},skip(){},byCur(){},edge(){},done:(it,cond)=>{ n++;
       if(it.mods.some(m=>m.unrev||m.mark)) unrev++; if(it.mods.filter(m=>!m.rune).length<want) few++;
-      for(const t of tags){ let ok=false; try{ ok=cond({has:t}); }catch(_){ } if(ok) cnt[t]=(cnt[t]||0)+1; } }}}); }catch(e){ err=e.message; }
+      for(const t of new Set(tags)){ const k=tags.filter(x=>x===t).length; let ok=false; try{ ok = k>1 ? cond({count:{tag:t, min:k}}) : cond({has:t}); }catch(_){ } if(ok) cnt[t]=(cnt[t]||0)+1; }   /* 같은 태그 줄이 둘이면(유동체로 바꾼 같은 계열 두 개, 2026-11-12) 두 개 다 있어야 함 */ }}}); }catch(e){ err=e.message; }
     if(err){ console.log(id.padEnd(34),s.id.padEnd(12),'오류',err); continue; }
-    const bad=tags.filter(t=>(cnt[t]||0)/n<0.999).map(t=>`${t} ${((cnt[t]||0)/n*100).toFixed(1)}%`);
+    const bad=[...new Set(tags)].filter(t=>(cnt[t]||0)/n<0.999).map(t=>`${t} ${((cnt[t]||0)/n*100).toFixed(1)}%`);
     if(bad.length||unrev||few) console.log(id.padEnd(34),s.id.padEnd(12),'카드 옵션',bad.join(', ')||'-','| 미공개·징표',unrev,'| 옵션 부족',few,'/',n);
   } }

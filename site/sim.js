@@ -8,6 +8,17 @@
 function rng(seed){ let a=seed>>>0; return ()=>{ a=(a+0x6D2B79F5)>>>0; let t=a; t=Math.imul(t^(t>>>15), t|1); t^=t+Math.imul(t^(t>>>7), t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
 const pickW = (rnd, xs) => { let s=0; for(const x of xs) s+=x.w; let v=rnd()*s; for(const x of xs){ v-=x.w; if(v<=0) return x; } return xs[xs.length-1]; };
 
+// 유동체(맹렬한·오싹한·치직대는·공허): 아이템의 그 원소 저항 옵션을 같은 티어의 목표 원소 저항 옵션으로 바꿈(분열된 옵션은 그대로, des·ess 등 표시는 유지,
+// 바꾼 뒤 같은 계열 두 개 공존 가능 — 확인됨: 사용자 제공 거래소 아이템, 2026-11-12, docs/game-rules.md). 훼손 복합 저항(화염 및 카오스)은 원소 부분만 바뀜
+const FLUX={Blazing_Flux:{to:'Fire', from:['Cold','Lightning']}, Chilling_Flux:{to:'Cold', from:['Fire','Lightning']}, Crackling_Flux:{to:'Lightning', from:['Fire','Cold']}, Void_Flux:{to:'Chaos', from:['Fire','Cold','Lightning']}};
+const resFam = f => { const m=/^(Maximum)?(Fire|Cold|Lightning|Chaos)(And(?:Fire|Cold|Lightning|Chaos))?(?:Damage)?Resist(?:ance)?$/.exec(f||''); return m ? {el:m[2], key:(m[1]||'')+'|'+(m[3]||'')} : null; };
+// 한 옵션 {gi,ti} → 바뀐 {gi,ti} 또는 null(해당 없음). G = 클래스 파일 groups
+function fluxTarget(G, cur, m){ const F=FLUX[cur], g=G[m.gi]; if(!F || !g || m.fr || m.unrev || g.f.length!==1) return null;
+  const r=resFam(g.f[0]); if(!r || !F.from.includes(r.el) || (r.key.endsWith('And'+F.to))) return null;
+  const sub=JSON.stringify(g.sub||null); let best=-1;
+  G.forEach((x,i)=>{ if(best>=0 && JSON.stringify(G[best].sub||null)===sub) return; if(x.f.length!==1 || x.s!==g.s || x.g!==g.g) return; const q=resFam(x.f[0]); if(q && q.el===F.to && q.key===r.key) best=i; });
+  if(best<0) return null; return {gi:best, ti:Math.min(m.ti||0, G[best].t.length-1)}; }
+
 // build a simulator for one graph. D = class file (site/data/c/<cls>.json), craft = crafting.json, params = strategy settings
 function make(graph, D, craft, params){
   const byId={}; for(const k in craft) for(const x of craft[k]) byId[x.id]=x;
@@ -146,6 +157,7 @@ function make(graph, D, craft, params){
       else if(a==='rune'){ if(n.rune) runes.push(String(n.rune.en||'')+'|'+String(n.rune.kr||'')); for(const k in (n.slots||{})) capR[k]+=n.slots[k]; if(/Astrid/.test(n.rune?.en||'')) astrid=true; else if(n.rune && n.swapAstrid) astrid=false; }   // a socketed rune that opens a slot (Serle's Triumph: one more suffix)
       else if(a==='quality'){ it.cq = n.q || n.count || 0; }   // catalyst quality % (count = catalysts ≈ %), used up by Catalysing Exaltation
       else if(a==='divine'){ /* values only */ }
+      else if(a==='flux'){ for(const m of it.mods){ const t=fluxTarget(G, cur, m); if(t){ m.gi=t.gi; m.ti=t.ti; } } }   /* 유동체 변환(cur = Blazing_Flux 등) — 2026-11-12 */
       else throw new Error('unknown act '+a);
       return use; }
 
@@ -209,6 +221,6 @@ function simulate(graph, D, craft, prices, params, N=20000, seed=1){
   const e2={}; for(const k in edges) e2[k]=edges[k]/N; const eI={}; for(const k in edgesI) eI[k]=edgesI[k]/N;   /* per-edge counts (a#index): two edges to the same box (success and failure both to 완성) stay apart — 2026-11-11 */
   return {N, seed, mean:costs.reduce((s,x)=>s+x,0)/N, median:q(0.5), p90:q(0.9), p10:q(0.1), bases:bases/N, baseDiv, use:avg(tot), useDiv:div(avg(tot)), nodes, edges:e2, edgesI:eI, reqOk:okReq/Math.max(1,ok), c1:Object.fromEntries(Object.entries(c1).map(([k,v])=>[k,v/N])), missing:[...missing], desStat:{tag:Object.fromEntries(Object.entries(dsT).map(([k,x])=>[k,x.d/x.n])), side:{p:dsSide.p/Math.max(1,ok), s:dsSide.s/Math.max(1,ok)}}};
 }
-const api={rng, make, simulate};
+const api={rng, make, simulate, fluxTarget, FLUX};
 if(typeof module!=='undefined' && module.exports) module.exports=api; else root.POE2SIM=api;
 })(typeof window!=='undefined' ? window : globalThis);
