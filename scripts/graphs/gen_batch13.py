@@ -67,7 +67,7 @@ tags={'proj':{'gi':81,'tmax':1},
       'ps1':{'anyOf':['pspd1','pdmg1'],'label':K('투사체 속도·피해 1티어','T1 projectile speed or damage')},'ss1':{'anyOf':['crit1','pierce1'],'label':K('치명타 확률·관통 1티어','T1 crit chance or pierce')},
       'ps2':{'anyOf':['pspd2','pdmg2'],'label':K('투사체 속도·피해 1~2티어','T1–2 projectile speed or damage')},'ss2':{'anyOf':['crit2','pierce2'],'label':K('치명타 확률·관통 1~2티어','T1–2 crit chance or pierce')},
       'ward':{'gi':69},'hyst':{'gi':57},'gp':{'anyOf':['pspd','pdmg','ward'],'label':K('좋은 접두','Good prefix')},'gs':{'anyOf':['crit','pierce','hyst'],'label':K('좋은 접미','Good suffix')}}
-PJ=it('s','모든 투사체 스킬 레벨 +2 (분열, 콜르)','+2 projectile skills (fractured, Kolr)',['proj'],'f'); PS=it('p','투사체 속도·피해','Projectile speed or damage',['ps']); SS=it('s','치명타 확률·관통','Crit chance or pierce',['ss'])
+PJ=it('s','모든 투사체 스킬 레벨 +2 (콜르)','+2 projectile skills (Kolr)',['proj'],'f'); PS=it('p','투사체 속도·피해','Projectile speed or damage',['ps']); SS=it('s','치명타 확률·관통','Crit chance or pierce',['ss'])   # PJ 글은 베이스 준비 _PJI와 같아야 왼쪽 칸이 같은 옵션으로 봄
 WD=it('p','룬 수호 (군왕의 합금)','Runic ward (Sovereign Alloy)',['ward']); HY=it('s','치명타 피해 (발작의 에센스)','Crit damage (Essence of Hysteria)',['hyst'])
 G0=[PJ,J('p')]; G1=[PJ,PS]; G2=[PJ,PS,SS]; G3=[PJ,PS,WD,SS,HY]; G4=G3[:1]+[PS,WD,UN('p')]+G3[3:]; G5=[PJ,PS,WD,PS,SS,HY]
 ALL4={'all':[{'has':'ps'},{'has':'ss'},{'has':'ward'},{'has':'hyst'}]}
@@ -90,12 +90,13 @@ def route(vis=None, okHidden=()):   # every step re-checks the item: what is sti
        {'if':{'all':[{'not':{'has':'ward'}},{'any':[missP,{'full':'p'}]}]},'to':'ja'},
        {'to':'jp'}]
     vis=vis or {}; out=[]
+    failTo={e['to'] for e in E if e.get('key',e['to']) in vis and (vis[e.get('key',e['to'])] if isinstance(vis[e.get('key',e['to'])],str) else vis[e.get('key',e['to'])].get('res'))=='fail'}
     for e in E:
         e=dict(e); k=e.pop('key',e['to'])
         if k in vis: v=vis[k]; e.update(v if isinstance(v,dict) else {'res':v})
         else:
             e['hide']=True
-            if k in okHidden: e['res']='ok'
+            if k in okHidden and e['to'] not in failTo: e['res']='ok'   # 화면 확률은 간선 통과 수를 도착 상자별로 세므로, 실패 상자와 같은 도착은 성공으로 못 셈
         out.append(e)
     return out
 OKH=('ok','apx_all','k15','csH_h','js','jh','jp','ja')   # after a hit the item goes on to one of these
@@ -109,15 +110,15 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'proj','fr':True},{'junk':'p'}],'q
  RUNE('k8',[0,1],'k9',G0),
  act('k9','main',[0,2],'chaos','Chaos_Orb',K('콜르 옵션 1티어 하나','One T1 Kolr line'),None,K('카오스','Chaos'),[{'if':{'has':'ps1'},'to':'xs','res':'ok'},{'if':{'has':'ss1'},'to':'xp','res':'ok'},{'to':'k9','res':'fail'}],G1,show=['pspd1','pdmg1','crit1','pierce1']),   # 분열 뒤 카오스 오브 = 싼 반복이라 두 등급 모두 1티어(C15)
  ex('xs',[0,3],'Omen_of_Dextral_Exaltation',['crit','pierce'],G2,K('접미: 치명타 확률·관통','Suffix: crit chance or pierce'),{'js':'ok','csA':F,'csH':F,'asx':F}),
- cr('csA',[1,3],'Sovereign_Alloy','ward','Omen_of_Dextral_Crystallisation',K('빗나간 접미를 지우고 룬 수호','The missed suffix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'xs':{'port':'right'}}),
- cr('csH',[1,4],'Essence_of_Hysteria','hyst','Omen_of_Dextral_Crystallisation',K('빗나간 접미를 지우고 치명타 피해','The missed suffix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],G3,K('에센스','Essence'),{'xs':{'port':'right'}}),
+ cr('csA',[1,3],'Sovereign_Alloy','ward','Omen_of_Dextral_Crystallisation',K('빗나간 접미를 지우고 룬 수호','The missed suffix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],[PJ,PS,WD],K('합금','Alloy'),{'xs':{'port':'right'}}),
+ cr('csH',[1,4],'Essence_of_Hysteria','hyst','Omen_of_Dextral_Crystallisation',K('빗나간 접미를 지우고 치명타 피해','The missed suffix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],[PJ,PS,HY],K('에센스','Essence'),{'xs':{'port':'right'}}),
  act('asx','main',[1,5],'annul','Orb_of_Annulment',K('빗나간 접미 지우기','Remove the missed suffix'),None,K('소멸','Annul'),route({'xs':{'port':'right'},'kz':{'port':'right'}}),G2),
  ex('xp',[0,6],'Omen_of_Sinistral_Exaltation',['pspd','pdmg'],G2,K('접두: 투사체 속도·피해','Prefix: projectile speed or damage'),{'js':'ok','cpA':F,'apx':F}),
- cr('cpA',[1,6],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('빗나간 접두를 지우고 룬 수호','The missed prefix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'xp':{'port':'right'}}),
+ cr('cpA',[1,6],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('빗나간 접두를 지우고 룬 수호','The missed prefix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],[PJ,WD,SS],K('합금','Alloy'),{'xp':{'port':'right'}}),
  act('apx','main',[1,7],'annul','Orb_of_Annulment',K('빗나간 접두 지우기','Remove the missed prefix'),None,K('소멸','Annul'),route({'xp':{'port':'right'},'kz':{'port':'right'}}),G2),
- act('js','main',[0,9],'exalt','Exalted_Orb',K('에센스가 바꿀 접두 하나','A prefix for the essence to replace'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'jh':{}}),G2,omens=['Omen_of_Sinistral_Exaltation']),
- cr('jh',[0,10],'Essence_of_Hysteria','hyst','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 치명타 피해','A prefix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],G3,K('에센스','Essence'),{'jp':'ok','ja':'ok','k15':'ok','cpA':F,'apx':F},OKH),   # 다음으로 가는 길이 여러 개라 투사체가 남으면 모두 성공으로 셈
- act('jp','main',[0,11],'exalt','Exalted_Orb',K('합금이 바꿀 접두 하나','A prefix for the alloy to replace'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'ja':{}}),G2,omens=['Omen_of_Sinistral_Exaltation']),
+ act('js','main',[0,9],'exalt','Exalted_Orb',K('에센스가 바꿀 접두 하나','A prefix for the essence to replace'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'jh':{}}),[PJ,PS,J('p'),SS],omens=['Omen_of_Sinistral_Exaltation']),
+ cr('jh',[0,10],'Essence_of_Hysteria','hyst','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 치명타 피해','A prefix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],[PJ,PS,SS,HY],K('에센스','Essence'),{'jp':'ok','ja':'ok','k15':'ok','cpA':F,'apx':F},OKH),   # 다음으로 가는 길이 여러 개라 투사체가 남으면 모두 성공으로 셈
+ act('jp','main',[0,11],'exalt','Exalted_Orb',K('합금이 바꿀 접두 하나','A prefix for the alloy to replace'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'ja':{}}),[PJ,PS,J('p'),SS,HY],omens=['Omen_of_Sinistral_Exaltation']),
  cr('ja',[0,12],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 룬 수호','A prefix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'k15':'ok','apx':F,'cpA':F},OKH),
  resetx('kz',[1,2],'k9'),
  act('k15','main',[0,13],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'k16'}],G4),   # 영상 17:35: 접두에만 빈자리라 징조 없음

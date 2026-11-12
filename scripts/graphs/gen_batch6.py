@@ -115,7 +115,7 @@ graph('lilbotq-armour-shield-v2','Shields_str','Tawhoan Tower Shield',81,
 # → 13:15·13:46 절사의 징조 + 상위 카오스 오브 2번(중독 → 능력치 요구 → 냉기 저항 3티어) → 14:36 완벽한 엑잘(접미 세번째: 능력치 요구 감소 1티어) → 신성한 오브·룬·여우 우상·치직대는 유동체(마무리).
 P={'bal':{'sT':4,'fT':2,'eT':2,'g':1},'ess':{'sT':6,'fT':4,'eT':4,'g':0}}
 tags={'spirit':{'gi':14,'tmax':'$sT'},'esf':{'gi':6,'tmax':'$fT'},'esp':{'gi':7,'tmax':'$eT'},'res':{'gi':21},'seek':{'gi':43},'mark':{'gi':45},
-      'fire':{'gi':1,'tmax':3},'cold':{'gi':2,'tmax':3},'light':{'gi':3,'tmax':3},'anyres':{'anyOf':['fire','cold','light'],'label':K('원소 저항 1~3티어','Elemental resistance T1–3')},'keepR':{'anyOf':['spirit','esf','esp','res']}}
+      'fire':{'gi':1,'tmax':3},'cold':{'gi':2,'tmax':3},'light':{'gi':3,'tmax':3},'anyres':{'anyOf':['fire','cold','light'],'label':K('원소 저항 2~3티어','Elemental resistance T2–3')},'keepR':{'anyOf':['spirit','esf','esp','res']}}
 SP=it('p','정신력 (분열)','Spirit (fractured)',['spirit']); EF=it('p','에너지 보호막 최대치','Flat energy shield',['esf']); EP=it('p','에너지 보호막 % 증가','% energy shield',['esp'])
 RE=it('s','스킬의 정신력 점유 효율 (아마나무)','Spirit reservation efficiency (Amanamu)',['res']); AR=it('s','원소 저항','Elemental resistance',['anyres'])
 I0=[SP,J('p')]; I1=[SP,EF]; I2=I1+[EP]; I3=I2+[UN('s')]; I4=I2+[RE]; I5=I4+[J('s'),J('s')]; I7=I4+[J('s')]; I6=I4+[AR]; I8=I6+[J('s')]
@@ -136,7 +136,9 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'p'}]}
  annul('v8a',[0,9],[{'if':{'removed':'res'},'to':'v8x','res':'fail'},{'to':'v8','res':'ok'}],omens=('Omen_of_Dextral_Annulment',),target=K('접미 잡옵 하나 제거','Remove one junk suffix')),
  {**cleanup('v8x',[1,9],[],[{'to':'v5'}],K('남은 접미 잡옵 제거','Remove the remaining junk suffixes'),side='s'),'omens':['Omen_of_Dextral_Annulment']},
  act('v8','main',[0,10],'chaos','Greater_Chaos_Orb',K('가장 낮은 옵션을 저항으로','The lowest line into a resistance'),None,K('카오스','Chaos'),
-     [{'if':{'has':'anyres'},'to':'v8b','res':'ok'},{'if':{'whittleSafe':'keepR'},'to':'v8','res':'fail'},{'to':'v8b','res':'fail'}],I6,show=['anyres'],omens=['Omen_of_Whittling'],skipIf={'not':{'whittleSafe':'keepR'}},skipTo='v8b',skipNote=K('가장 낮은 옵션이 남길 옵션이면 건너뜀','Skipped when the lowest line is one to keep')),
+     [{'if':{'has':'anyres'},'to':'v8b','res':'ok'},{'if':{'whittleSafe':'keepR'},'to':'v8','res':'fail','label':K('가장 낮은 옵션이 잡옵이면 반복','Repeat while the lowest line is junk')},{'to':'v8c','label':K('가장 낮은 옵션이 남길 옵션','The lowest line is one to keep')}],I6,show=['anyres'],omens=['Omen_of_Whittling'],
+     skipIf={'not':{'whittleSafe':'keepR'}},skipTo='v8c',skipNote=K('가장 낮은 옵션이 남길 옵션이면 건너뜀','Skipped when the lowest line is one to keep'),skipLabel=K('가장 낮은 옵션이 남길 옵션','The lowest line is one to keep')),
+ act('v8c','main',[1,10],'exalt','Perfect_Exalted_Orb',K('빈 접미에 저항','A resistance in the open suffix'),None,K('엑잘','Exalt'),[{'if':{'has':'anyres'},'to':'ok','res':'ok'},{'to':'v8a','res':'fail','port':'right'}],I6,show=['anyres']),
  act('v8b','main',[0,11],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),[st('s','랜덤 옵션','Random modifier')],K('엑잘','Exalt'),[{'to':'ok'}],I8),
  done([0,12])]
 nodes[0]['group']='prep'
@@ -146,7 +148,7 @@ graph('diztoh-vile-robe-v2','Body_Armours_int','Vile Robe',81,
   {'bal':K('에너지 보호막 옵션 2개 1~2티어 + 저항(우측 소멸·절사의 징조, 영상)','Two T1–2 energy shield lines + a resistance (Dextral Annulment and Whittling, as the video)'),'ess':K('에너지 보호막 1~4티어, 상위 엑잘, 저항은 결과 그대로','T1–4 energy shield, Greater Exalts, resistances as they come')},
   tags,nodes,[{'id':'L0','nodes':['v3','v3x'],'kr':'접두 에너지 보호막 % 옵션','en':'% energy shield prefix'},{'id':'L1','nodes':['v6','v6a','v6b','v6c'],'kr':'정신력 점유 효율 공개','en':'Reservation efficiency reveal'}],
   [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'spirit','tmax':a},{'tag':'esf','tmax':b},{'tag':'esp','tmax':c},{'tag':'res','tmax':1},{'tag':'anyres'} if v=='bal' else {'side':'s','random':True},{'side':'s','random':True}]} for v,kr,en,a,b,c in (('bal','밸런스 옵션','Balance',4,2,2),('ess','에센셜 옵션','Essential',6,4,4))],
-  {'quality':20,'sockets':3},{'all':[{'has':'spirit'},{'has':'esf'},{'has':'esp'},{'has':'res'},{'full':'s'}]})
+  {'quality':20,'sockets':3},{'all':[{'has':'spirit'},{'has':'esf'},{'has':'esp'},{'has':'res'},{'full':'s'},{'any':[{'has':'anyres'},{'param':{'g':0}}]}]})
 
 # ---------- 5. Diztoh +5 부적 (p6HIFmJ9mRU) ----------
 # 원본 레시피(영상 기록): 근접 +5 + 화염 피해 추가 매직 구입 → 상위 추구의 에센스(치명타) → 우측 강령술 + 군왕의 징조 + 보존된 턱뼈 → 공개(공격 속도, 아마나무 3개 전부)

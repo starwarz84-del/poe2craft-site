@@ -59,7 +59,7 @@ def _robe(r, t):
         r['nodes'].insert(i,{'id':'v8a','phase':'suf','do':'remove','cur':'Orb_of_Annulment','omens':['Omen_of_Dextral_Annulment'],'target':{'removeJunk':'s'},'knownP':2/3,'fail':{'goto':'v5'},'ts':'12:00',
             'br':K('접미 3개 중 하나가 지워짐. 정신력 점유 효율이 지워지면 남은 잡옵을 지우고 갈비뼈부터.','One of three suffixes goes; if it is the reservation line, clear the junk and start again from the Rib.')})
         v8=_node(r,'v8'); v8['ts']='13:00'
-        v8['br']=K('가장 낮은 옵션이 버릴 옵션일 때만. 영상은 2번(중독 → 능력치 요구 → 냉기 저항 3티어).','Only while the lowest line is junk; twice in the video (poison → attributes → T3 cold).')
+        v8['br']=K('가장 낮은 옵션이 잡옵일 때만 반복. 영상은 2번(중독 → 능력치 요구 → 냉기 저항 3티어). 남길 옵션이 가장 낮으면 빈 접미에 완벽한 엑잘티드 오브, 빗나가면 우측 소멸부터 다시(영상에 없음).','Repeat only while the lowest line is junk; twice in the video (poison → attributes → T3 cold). If a kept line is lowest, Perfect Exalt the open suffix; a miss goes back to Dextral Annulment (not in the video).')
         i=[n['id'] for n in r['nodes']].index('v8')
         r['nodes'].insert(i+1,{'id':'v8b','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','target':{'junk':['s']},'ts':'14:30'})
     else:

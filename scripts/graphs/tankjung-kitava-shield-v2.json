@@ -996,7 +996,21 @@
    },
    "edges": [
     {
-     "to": "t4p"
+     "if": {
+      "has": "pdr1"
+     },
+     "to": "t4",
+     "label": {
+      "kr": "물리 피해 감소 있음",
+      "en": "Damage reduction present"
+     }
+    },
+    {
+     "to": "t4p",
+     "label": {
+      "kr": "물리 피해 감소 없음",
+      "en": "No damage reduction yet"
+     }
     }
    ],
    "item": [
@@ -1043,7 +1057,7 @@
    "group": "main",
    "pos": [
     0,
-    11
+    10
    ],
    "act": "reveal",
    "goal": {
@@ -1109,7 +1123,7 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    0,
+    1,
     10
    ],
    "act": "reveal",
@@ -1127,8 +1141,7 @@
       "added": "pdr"
      },
      "to": "t5",
-     "res": "ok",
-     "port": "right"
+     "res": "ok"
     },
     {
      "to": "t4x",
@@ -1170,23 +1183,15 @@
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
-   ],
-   "skipIf": {
-    "has": "pdr1"
-   },
-   "skipTo": "t4",
-   "skipNote": {
-    "kr": "물리 피해 감소가 이미 있으면 건너뜀",
-    "en": "Skip when damage reduction is already there"
-   }
+   ]
   },
   {
    "id": "t4x",
    "kind": "act",
    "group": "main",
    "pos": [
-    1,
-    10.5
+    2,
+    10
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1218,7 +1223,7 @@
    "group": "main",
    "pos": [
     0,
-    12
+    11
    ],
    "act": "exalt",
    "goal": {
@@ -1293,7 +1298,7 @@
    "group": "main",
    "pos": [
     0,
-    13
+    12
    ],
    "act": "exalt",
    "goal": {
@@ -1413,7 +1418,7 @@
    "group": "main",
    "pos": [
     0,
-    14
+    13
    ],
    "act": "chaos",
    "goal": {
@@ -1609,7 +1614,7 @@
    "group": "main",
    "pos": [
     0,
-    15
+    14
    ],
    "label": {
     "kr": "완성",

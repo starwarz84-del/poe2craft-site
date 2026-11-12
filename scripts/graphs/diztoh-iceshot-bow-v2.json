@@ -81,7 +81,8 @@
  ],
  "tags": {
   "pp": {
-   "gi": 7
+   "gi": 7,
+   "tmax": 2
   },
   "ppm": {
    "gi": 7,
@@ -318,9 +319,23 @@
    "edges": [
     {
      "if": {
-      "has": "ppm"
+      "all": [
+       {
+        "has": "ppm"
+       },
+       {
+        "full": "s"
+       }
+      ]
      },
      "to": "e0",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "ppm"
+     },
+     "to": "m3",
      "res": "ok"
     },
     {
@@ -347,13 +362,6 @@
     }
    ],
    "cur": "Perfect_Orb_of_Transmutation",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "물리 피해 % 증가 1~2티어",
-     "en": "% physical damage, T1–2"
-    }
-   ],
    "show": [
     "ppm"
    ]
@@ -378,9 +386,23 @@
    "edges": [
     {
      "if": {
-      "has": "ppm"
+      "all": [
+       {
+        "has": "ppm"
+       },
+       {
+        "full": "s"
+       }
+      ]
      },
      "to": "e0",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "ppm"
+     },
+     "to": "m3",
      "res": "ok"
     },
     {
@@ -413,15 +435,56 @@
     }
    ],
    "cur": "Perfect_Orb_of_Augmentation",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "물리 피해 % 증가 1~2티어",
-     "en": "% physical damage, T1–2"
-    }
-   ],
    "show": [
     "ppm"
+   ]
+  },
+  {
+   "id": "m3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "augment",
+   "goal": {
+    "kr": "매직 접미 옵션",
+    "en": "Magic suffix option"
+   },
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "edges": [
+    {
+     "to": "e0"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "ppm"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Perfect_Orb_of_Augmentation",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
    ]
   },
   {
@@ -473,7 +536,7 @@
    "group": "prep",
    "pos": [
     0,
-    3
+    4
    ],
    "act": "essence",
    "goal": {
@@ -531,7 +594,7 @@
    "group": "prep",
    "pos": [
     0,
-    4
+    5
    ],
    "act": "desecrate",
    "goal": {
@@ -593,7 +656,7 @@
    "group": "prep",
    "pos": [
     1,
-    4.5
+    5.5
    ],
    "attach": [
     "f1",
@@ -615,7 +678,7 @@
    "group": "prep",
    "pos": [
     0,
-    5
+    6
    ],
    "act": "fracture",
    "goal": {
@@ -691,7 +754,7 @@
    "group": "prep",
    "pos": [
     1,
-    5
+    6
    ],
    "simTo": "b0",
    "variant": "fail",
@@ -706,7 +769,7 @@
    "group": "prep",
    "pos": [
     0,
-    6
+    7
    ],
    "keep": [],
    "maxJunk": 0,
@@ -730,11 +793,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가",
-     "en": "(155—169)% increased Physical Damage",
-     "m": "f",
+     "kr": "물리 피해 (155—169)% 증가 (분열)",
+     "en": "(155—169)% increased Physical Damage (fractured)",
+     "m": "n",
      "tags": [
-      "ppm"
+      "pp"
      ]
     }
    ]
@@ -745,7 +808,7 @@
    "group": "main",
    "pos": [
     0,
-    6.6
+    7.6
    ],
    "next": "c1",
    "label": {
@@ -755,11 +818,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (155—169)% 증가",
-     "en": "(155—169)% increased Physical Damage",
-     "m": "f",
+     "kr": "물리 피해 (155—169)% 증가 (분열)",
+     "en": "(155—169)% increased Physical Damage (fractured)",
+     "m": "n",
      "tags": [
-      "ppm"
+      "pp"
      ]
     }
    ]
@@ -770,7 +833,7 @@
    "group": "main",
    "pos": [
     0,
-    7
+    8
    ],
    "act": "chaos",
    "goal": {
@@ -881,7 +944,7 @@
    "group": "main",
    "pos": [
     0,
-    8
+    9
    ],
    "act": "exalt",
    "goal": {
@@ -1009,7 +1072,7 @@
    "group": "main",
    "pos": [
     1,
-    8
+    9
    ],
    "act": "chaos",
    "goal": {
@@ -1137,7 +1200,7 @@
    "group": "main",
    "pos": [
     2,
-    8
+    9
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1232,7 +1295,7 @@
    "group": "main",
    "pos": [
     1,
-    9
+    10
    ],
    "act": "rune",
    "goal": {
@@ -1300,7 +1363,7 @@
    "group": "main",
    "pos": [
     0,
-    10
+    11
    ],
    "act": "rune",
    "goal": {
@@ -1525,7 +1588,7 @@
    "group": "main",
    "pos": [
     1,
-    10
+    11
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1707,7 +1770,7 @@
    "group": "main",
    "pos": [
     0,
-    11
+    12
    ],
    "act": "desecrate",
    "goal": {
@@ -1938,7 +2001,7 @@
    "group": "main",
    "pos": [
     0,
-    12
+    13
    ],
    "act": "reveal",
    "goal": {
@@ -2173,7 +2236,7 @@
    "group": "main",
    "pos": [
     1,
-    12
+    13
    ],
    "act": "essence",
    "goal": {
@@ -2411,7 +2474,7 @@
    "group": "main",
    "pos": [
     1,
-    13
+    14
    ],
    "act": "essence",
    "goal": {
@@ -2650,7 +2713,7 @@
    "group": "main",
    "pos": [
     1,
-    14
+    15
    ],
    "act": "desecrate",
    "goal": {
@@ -2883,7 +2946,7 @@
    "group": "main",
    "pos": [
     0,
-    15
+    16
    ],
    "act": "exalt",
    "goal": {
@@ -2897,160 +2960,20 @@
    "edges": [
     {
      "if": {
-      "unrevSide": "s"
-     },
-     "to": "d2",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mk"
-     },
-     "to": "l3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 2
-        }
+      "not": {
+       "whittleSafe": {
+        "tag": "keepS",
+        "side": "s"
        }
-      ]
-     },
-     "to": "x1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x2"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "not": {
-         "has": "cc"
-        }
-       }
-      ]
+      }
      },
      "to": "x2x",
      "res": "fail",
      "port": "right"
     },
     {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "x3",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "has": "last"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "proj"
-       },
-       {
-        "whittleSafe": {
-         "tag": "keepS3",
-         "side": "s"
-        }
-       }
-      ]
-     },
-     "to": "x3w",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "proj"
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "sideLt": {
-        "side": "s",
-        "n": 2
-       }
-      }
-     },
-     "to": "sX",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "ons"
-     },
-     "to": "l2",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "to": "l1",
-     "hide": true
+     "to": "x2",
+     "res": "ok"
     }
    ],
    "item": [
@@ -3124,7 +3047,7 @@
    "group": "main",
    "pos": [
     0,
-    16
+    17.4
    ],
    "act": "chaos",
    "goal": {
@@ -3370,7 +3293,7 @@
    "group": "main",
    "pos": [
     1,
-    16
+    17.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -3418,7 +3341,8 @@
        }
       ]
      },
-     "to": "x1"
+     "to": "x1",
+     "res": "ok"
     },
     {
      "if": {
@@ -3554,7 +3478,7 @@
    "group": "main",
    "pos": [
     0,
-    17
+    18.8
    ],
    "act": "exalt",
    "goal": {
@@ -3811,7 +3735,7 @@
    "group": "main",
    "pos": [
     1,
-    17
+    18.8
    ],
    "act": "chaos",
    "goal": {
@@ -4065,7 +3989,7 @@
    "group": "main",
    "pos": [
     0,
-    18
+    19.8
    ],
    "label": {
     "kr": "완성",

@@ -156,8 +156,8 @@
     "light"
    ],
    "label": {
-    "kr": "원소 저항 1~3티어",
-    "en": "Elemental resistance T1–3"
+    "kr": "원소 저항 2~3티어",
+    "en": "Elemental resistance T2–3"
    }
   },
   "keepR": {
@@ -185,6 +185,18 @@
    },
    {
     "full": "s"
+   },
+   {
+    "any": [
+     {
+      "has": "anyres"
+     },
+     {
+      "param": {
+       "g": 0
+      }
+     }
+    ]
    }
   ]
  },
@@ -1158,11 +1170,18 @@
       "whittleSafe": "keepR"
      },
      "to": "v8",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "가장 낮은 옵션이 잡옵이면 반복",
+      "en": "Repeat while the lowest line is junk"
+     }
     },
     {
-     "to": "v8b",
-     "res": "fail"
+     "to": "v8c",
+     "label": {
+      "kr": "가장 낮은 옵션이 남길 옵션",
+      "en": "The lowest line is one to keep"
+     }
     }
    ],
    "item": [
@@ -1224,11 +1243,98 @@
      "whittleSafe": "keepR"
     }
    },
-   "skipTo": "v8b",
+   "skipTo": "v8c",
    "skipNote": {
     "kr": "가장 낮은 옵션이 남길 옵션이면 건너뜀",
     "en": "Skipped when the lowest line is one to keep"
+   },
+   "skipLabel": {
+    "kr": "가장 낮은 옵션이 남길 옵션",
+    "en": "The lowest line is one to keep"
    }
+  },
+  {
+   "id": "v8c",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    10
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "빈 접미에 저항",
+    "en": "A resistance in the open suffix"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "anyres"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "v8a",
+     "res": "fail",
+     "port": "right"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "n",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "스킬의 정신력 점유 효율 (아마나무)",
+     "en": "Spirit reservation efficiency (Amanamu)",
+     "m": "n",
+     "tags": [
+      "res"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "원소 저항",
+     "en": "Elemental resistance",
+     "m": "n",
+     "tags": [
+      "anyres"
+     ]
+    }
+   ],
+   "cur": "Perfect_Exalted_Orb",
+   "show": [
+    "anyres"
+   ]
   },
   {
    "id": "v8b",

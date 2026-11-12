@@ -479,16 +479,16 @@ def read_recipe(r, sim, src, tiers):
     done_note = last.get('note') if last and last.get('do') == 'note' else None
     out.append({'id': 'done', 'phase': phases[-1]['id'], 'do': 'note', 'note': done_note or {'kr': '완성.', 'en': 'Done.'}})
     res = S['res']
-    return {'nodes': out, 'phases': phases, 'start': start_of(r, sim, src),
+    return {'nodes': out, 'phases': phases, 'start': start_of(r, sim, src, V['params']),
             'fcRead': {k: res.get(k) for k in ('mean', 'median', 'p90', 'bases', 'baseDiv', 'use', 'useDiv')} | {'version': V['id']}}
 
 
-def start_of(r, sim, src):
+def start_of(r, sim, src, params=None):
     """시작 아이템 = 플로우차트 베이스 상자의 아이템(분열·잡옵·미공개 훼손)"""
     st = copy.deepcopy(r.get('start') or {})
     s0 = next((n for n in (src or {}).get('nodes') or [] if n.get('kind') == 'base'), None)
     if not s0 or not s0.get('start'): return st
-    G_ = G(sim, src, {})
+    G_ = G(sim, src, params or {})
     mods = []
     for m in s0['start'].get('mods') or []:
         if isinstance(m, str): m = {'tag': m}
