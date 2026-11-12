@@ -493,3 +493,35 @@ tip('cheap-resist-essence','trade','armour',['절연의 에센스','풍요의 �
   [('그날 가장 저렴한 원소 저항 에센스로 레어 + 저항 확정','Make it rare with the day’s cheapest resist essence'),('엑잘티드 오브 한두 개로 마무리','Finish with one or two Exalted Orbs')],
   [('why','장화·장갑은 방어 수치가 낮아 방어 에센스보다 저항이 이득. 장갑은 희귀도 풍요의 에센스도 선택지','Low defences make resists better than defence essences; gloves can also take a rarity essence')], detail=('장화·장갑','Boots & gloves')),
 ]
+
+# ---------- 상황으로 자동 연결(사용자 확정 2026-11-12) ----------
+# 레시피 단계마다 엔진이 아는 아이템 상태로 확인. 규칙 하나 안의 조건은 모두 맞아야 함(규칙끼리는 아무거나).
+#  do: 단계 행동 · use: 쓰는 커런시·징조 중 하나 · noUse: 이것들을 안 씀 · pre: 단계 전 상태
+#   (frJunk1 = 분열 + 다른 옵션 1개, noCrafted = 제작·훼손 옵션 없음, otherRoom = 징조 반대쪽에 빈자리)
+#  failVia: 실패 처리에 그 징조 · sideOmenWaste: 꽉 찬 쪽 덕에 좌측·우측 징조가 필요 없음 · target: 목표에 그 키
+#  save: True면 '더 저렴한 방법' 알림(💰)
+AUTO = {
+ 'after-fracture-chaos':[{'do':['chaos'],'pre':'frJunk1','noUse':['Omen_of_Whittling']}],
+ 'fracture-four-mods':[{'do':['fracture']}],
+ 'hinekora-before-big':[{'do':['fracture']},{'use':['Hinekoras_Lock']}],
+ 'whittle-side-first':[{'use':['Omen_of_Whittling']}],
+ 'whittle-needs-erasure':[{'use':['Omen_of_Whittling'],'noUse':['Omen_of_Sinistral_Erasure','Omen_of_Dextral_Erasure'],'pre':'otherRoom'}],
+ 'erasure-chaos-cheaper':[{'do':['exalt'],'failVia':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'save':True}],
+ 'cheap-junk-removal':[{'use':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'pre':'noCrafted','save':True},{'failVia':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'pre':'noCrafted','save':True}],
+ 'side-omen-save':[{'sideOmenWaste':True,'save':True}],
+ 'reveal-miss-exalt-first':[{'do':['reveal'],'failVia':['Omen_of_Light']}],
+ 'abyss-before-crafted':[{'use':['Essence_of_the_Abyss']}],
+ 'mark-wrong-side':[{'use':['Essence_of_the_Abyss']}],
+ 'crystallise-alloy-clears-junk':[{'do':['essence'],'use':['Omen_of_Sinistral_Crystallisation','Omen_of_Dextral_Crystallisation']}],
+ 'catalyst-steer':[{'use':['Omen_of_Catalysing_Exaltation']}],
+ 'breach-quality-stays':[{'use':['Essence_of_the_Breach']}],
+ 'one-exalt-at-a-time':[{'use':['Omen_of_Greater_Exaltation']}],
+ 'putrefaction-gamble':[{'use':['Omen_of_Putrefaction']}],
+ 'jewel-five-mods':[{'use':['Potent_Liquid_Contempt','Ancient_Potent_Liquid_Contempt']}],
+ 'contempt-junk-first':[{'use':['Potent_Liquid_Contempt','Ancient_Potent_Liquid_Contempt']}],
+ 'vaal-infuser-plan':[{'use':['Vaal_Catalysing_Infuser','Vaal_Arcanists_Infuser','Vaal_Armourers_Infuser','Vaal_Blacksmiths_Infuser']}],
+ 'sanctify-checklist':[{'target':'sanctify'},{'use':['Omen_of_Sanctification']}],
+ 'desecration-later':[{'do':['reveal'],'failVia':['Omen_of_Light']}],
+ 'light-annul-count':[{'use':['Omen_of_Light']}],
+ 'liege-omen-resist-jewellery':[{'target':'lord'}],
+}
