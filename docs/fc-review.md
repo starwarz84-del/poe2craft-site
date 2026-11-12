@@ -47,8 +47,8 @@
 | saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 완료 11-12 | A(Opus) | 자막 전체 대조, 첫 번째 집중구 단계 일치(기록 tools/notes/saveq-R43FVay8_XI.md). 하이엔드 에너지 보호막 접두도 1티어(C17). 343/208 → 504/208 |
 | mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/mazbro-kULlZJBSec4.md). 하이엔드 공개 목표 1티어(C17). 222/201 → 233/201 |
 | diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-GDLDxn6yxEs.md). C17: 에센셜은 공개 나오는 대로(영상과 같음). 149/24/3 |
-| bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 대기 |  |  |
-| ragna-spell4-amulet-v2 | Tzpdm8M-Pkk | bal 118, ess 27 | 0 | 대기 |  |  |
+| bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 진행 중 | A(Opus) |  |
+| ragna-spell4-amulet-v2 | Tzpdm8M-Pkk | bal 118, ess 27 | 0 | 진행 중 | A(Opus) |  |
 | mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 대기 |  |  |
 | fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 대기 |  |  |
 | diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 대기 |  |  |
