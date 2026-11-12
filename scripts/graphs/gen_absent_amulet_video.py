@@ -20,6 +20,7 @@ KQ = L('s', '모든 스킬의 퀄리티 +(3—5)%', '+(3—5)% to Quality of all
 MK = lambda s: L(s, '심연의 군주의 징표', 'Mark of the Abyssal Lord', 'c', ['mkp' if s == 'p' else 'mks'])
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')
+UNu = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'u')   # 같은 미공개 줄이 앞 상자에도 있을 때 graph2recipe가 새 줄로 읽게(접미 훼손 쪽 판단)
 DJ = L('s', '소환수의 재사용 대기시간 회복 속도 (16—20)% 증가', '(16—20)% increased Minion Cooldown Recovery Rate', 'd')   # 15:15 공개 결과(자리 막기)
 LIGHT = K('소멸의 오브 사용', 'Use an Orb of Annulment')
 GPL = K('에너지 보호막 %·방어도 %·생명력·주문 피해', 'Energy Shield %, Armour %, Life or Spell Damage')
@@ -110,45 +111,45 @@ A(id='w1', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Perfect_Ch
 # 접두 두번째 옵션 루프(접힘): 빛의 징조 → 좌측 결정화 + 심연의 에센스(징표 50:50) → 접두 징표: 빗장뼈 + 빛의 징조 → 좌측 찬미 + 완벽한 엑잘 / 접미 징표: 완벽한 엑잘
 A(id='m0', kind='act', group='main', pos=[0, 13.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
   target=K('접미 훼손 옵션 제거', 'Remove the suffix desecration'), edges=[{'to': 'm1'}], item=[SP, J('p'), SL])
-A(id='m1', kind='act', group='main', pos=[1, 13.4], act='essence', cur='Essence_of_the_Abyss', ess='mkp', alt='mks', mark=True,
+A(id='m1', kind='act', group='main', pos=[0, 14.4], act='essence', cur='Essence_of_the_Abyss', ess='mkp', alt='mks', mark=True,
   omens=['Omen_of_Sinistral_Crystallisation'], label=K('에센스', 'Essence'),
   goal=K('접두 잡옵을 지우고 징표 — 접두·접미 반반', 'The junk prefix goes for the Mark: prefix or suffix, 50/50'),
   showText=[K('심연의 군주의 징표', 'Mark of the Abyssal Lord')],
   edges=[{'if': {'has': 'mkp'}, 'to': 'm2', 'label': K('접두 징표', 'Prefix Mark')}, {'to': 'm4', 'label': K('접미 징표', 'Suffix Mark')}],
   item=[SP, SL, MK('s')])
-A(id='m2', kind='act', group='main', pos=[1, 14.4], act='desecrate', cur='Preserved_Collarbone', fromMark=True, label=K('훼손', 'Desecrate'),
+A(id='m2', kind='act', group='main', pos=[2, 15.4], act='desecrate', cur='Preserved_Collarbone', fromMark=True, label=K('훼손', 'Desecrate'),
   goal=K('접두 징표 훼손', 'Desecrate the prefix Mark'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'm3'}], item=[SP, UN('p'), SL])
-A(id='m3', kind='act', group='main', pos=[1, 15.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
+A(id='m3', kind='act', group='main', pos=[2, 16.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
   target=K('접두 훼손 옵션 제거', 'Remove the prefix desecration'), edges=[{'to': 'm3e'}], item=[SP, SL])
-A(id='m3e', kind='act', group='main', pos=[1, 16.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
+A(id='m3e', kind='act', group='main', pos=[2, 17.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 두번째 옵션', 'Second prefix'), show=['gp'],
   edges=[{'if': {'added': 'gp'}, 'to': 's1m', 'res': 'ok'}, {'to': 'm1', 'res': 'fail', 'label': K('빗나감 — 다시 심연의 에센스', 'Miss: Essence of the Abyss again')}],
   item=[SP, ESP, SL])
-A(id='m4', kind='act', group='main', pos=[2, 14.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
+A(id='m4', kind='act', group='main', pos=[0, 15.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 두번째 옵션 — 접미가 차서 접두로', 'Second prefix: the suffixes are full'), show=['gp'],
   edges=[{'if': {'added': 'gp'}, 'to': 's1m', 'res': 'ok'}, {'to': 'm5', 'res': 'fail'}],
   item=[SP, ESP, SL, MK('s')])
-A(id='m5', kind='act', group='main', pos=[2, 15.4], act='desecrate', cur='Preserved_Collarbone', fromMark=True, label=K('훼손', 'Desecrate'),
+A(id='m5', kind='act', group='main', pos=[1, 16.4], act='desecrate', cur='Preserved_Collarbone', fromMark=True, label=K('훼손', 'Desecrate'),
   goal=K('접미 징표 훼손', 'Desecrate the suffix Mark'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
-  edges=[{'to': 'm6'}])
-A(id='m6', kind='act', group='main', pos=[2, 16.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
+  edges=[{'to': 'm6'}], item=[SP, UNu('s'), J('p'), SL])
+A(id='m6', kind='act', group='main', pos=[1, 17.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
   target=K('접미 훼손 옵션 제거', 'Remove the suffix desecration'), edges=[{'to': 'm1'}])
 # ---------------- 접미 마무리: 모든 스킬의 퀄리티 ----------------
-A(id='s1m', kind='act', group='main', pos=[0, 17.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_the_Blackblooded'], fromMark=True,
+A(id='s1m', kind='act', group='main', pos=[0, 18.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_the_Blackblooded'], fromMark=True,
   label=K('훼손', 'Desecrate'), goal=K('접미 징표 훼손', 'Desecrate the suffix Mark'),
   skipIf={'not': {'has': 'mks'}}, skipTo='s1', skipNote=K('접미 징표가 없으면 건너뜀', 'Skipped without a suffix Mark'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 's1'}], item=[SP, ESP, SL, UN('s')])
-A(id='s1', kind='act', group='main', pos=[0, 18.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_the_Blackblooded'],
+A(id='s1', kind='act', group='main', pos=[0, 19.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_the_Blackblooded'],
   label=K('훼손', 'Desecrate'), goal=K('접미 두번째 옵션(훼손)', 'Second suffix (desecrated)'),
   skipIf={'unrevSide': 's'}, skipTo='s2', skipNote=K('미공개 훼손 옵션이 있으면 건너뜀', 'Skipped with an unrevealed desecration on'),
-  showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 's2'}], item=[SP, ESP, SL, UN('s')])
-A(id='s2', kind='act', group='main', pos=[0, 19.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='kq', label=K('공개', 'Reveal'),
+  showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 's2'}], item=[SP, ESP, SL, UNu('s')])
+A(id='s2', kind='act', group='main', pos=[0, 20.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='kq', label=K('공개', 'Reveal'),
   goal=K('접미 모든 스킬의 퀄리티', 'Quality of all Skills suffix'), show=['kq'],
   edges=[{'if': {'added': 'kq'}, 'to': 'ok', 'res': 'ok'}, {'to': 's2x', 'res': 'fail'}], item=[SP, ESP, SL, KQ])
-A(id='s2x', kind='act', group='main', pos=[1, 19.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
+A(id='s2x', kind='act', group='main', pos=[1, 20.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 's1', 'label': K('다시 훼손', 'Desecrate again')}])
-A(id='ok', kind='done', group='main', pos=[0, 20.4], label=K('완성', 'Finished'))
+A(id='ok', kind='done', group='main', pos=[0, 21.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [

@@ -161,7 +161,7 @@ A(id='w1', kind='act', group='main', pos=[0, 14], act='chaos', cur='Perfect_Chao
   edges=R({'f1': {'res': 'ok'}, 'r1': {'res': 'fail'}}), item=[LF, BW, PS, CA, CD, BL2])   # 8:50 '절사로 접두 옵션을 돌릴 수 있다. 완벽한 카오스', 8:58 냉기 2티어(레벨 65), 10:38~10:54 활 스킬 피해 57%
 A(id='r1', kind='act', group='main', pos=[1, 14], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('막기 옵션 지우기 — 접두 잡옵과 레벨이 같거나 낮을 때', 'Remove the blocker: when it is no higher than the junk prefix'), edges=[{'to': 'r2'}])   # 9:00 '플렛 2티어는 65렙… 훼손을 한번씩 더 볼거다', 9:22 빛의 징조
-A(id='r2', kind='act', group='main', pos=[1, 15], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
+A(id='r2', kind='act', group='main', pos=[1, 15], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
   goal=K('접미 훼손 다시', 'Desecrate the suffix again'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'r3'}])
 A(id='r3', kind='act', group='main', pos=[1, 16], act='reveal', missPick='lvl', label=K('공개', 'Reveal'),
   goal=K('더 높은 레벨 옵션으로 다시 막기', 'Block again with a higher-level option'),
@@ -194,7 +194,7 @@ g['loops'] = [
              'bal': K('접두 투사체 속도·활 스킬로 주는 피해 1~2티어 하나 + 랜덤 옵션', 'One T1–2 projectile speed or bow damage prefix + a random option')},
   'steps': [K('완벽한 카오스 오브 + 절사의 징조로 접두 잡옵 다시 — 잡옵이 치명타 옵션보다 높으면 좌측 말소의 징조도', 'Perfect Chaos + Omen of Whittling on the junk prefix: add Sinistral Erasure if the junk outranks a crit option') | {'node': 'w1'},
             K('잡옵 레벨이 막기 옵션 이상이면 빛의 징조 + 소멸의 오브로 막기 옵션 지우기', 'Junk at or above the blocker level: Omen of Light + Orb of Annulment on the blocker') | {'node': 'r1'},
-            K('보존된 턱뼈로 접미 훼손 다시', 'Preserved Jawbone on the suffix again') | {'node': 'r2'},
+            K('우측 강령술 + 보존된 턱뼈로 접미 훼손 다시', 'Dextral Necromancy + Preserved Jawbone on the suffix again') | {'node': 'r2'},
             K('공개 — 가장 높은 레벨 옵션으로 다시 막기', 'Reveal: block again with the highest-level option') | {'node': 'r3'}],
   'item': [LF, BW, PS, CA, CD, BL2],
   'itemBy': {'high': [LF, BW, PS, CA, CD, BL2], 'bal': [LF, PS, RP, CA, CD, RS_]}},

@@ -33,7 +33,7 @@
 | saveq-absent-amulet-v2 | S4sflKbsA8A | high 935, bal 797, ess 729 | 4 | 재확인 필요 | A(Opus) | 자동 번역 자막 전체(기록 tools/notes/saveq-S4sflKbsA8A.md), 단계 일치. 935/797/729 → 935/797/688 |
 | unstoppable-vile-robe-v2 | swF5mwXmZ0k | high 739, bal 689 | 4 | 완료 11-11 | A(Opus) | 영상 5:45~24:15 대조. 접미는 엑잘+소멸(비싼 징조는 마지막 한 옵션만), 접두 막기·결정화+심연. 하이엔드 739→809, 밸런스(1티어 + 마지막 접미 랜덤) 689→163 |
 | helmet-armour-sl-v2 | p0fChSu91uI | high 723, bal 718, ess 75 | 5 | 재확인 필요 | A(Opus) | 자막 전체(0:00~11:10) 대조, 단계 일치(기록 tools/notes/sl-p0fChSu91uI.md). 723/718/75 → 723/83/60(밸런스·에센셜 마지막 접두·접미 랜덤) |
-| diztoh-endgame-quarterstaff-v2 | YfGJyBrObxI | high 712, bal 36 | 3 | 진행 중(새 기준 재작성) | W22(Opus 5.5) · 검수 마스터 | 자동 번역 자막 전체(0:00~17:40) 대조, 단계 일치(기록 tools/notes/diztoh-YfGJyBrObxI.md). 공개 빗나감은 영상의 우측 소멸 대신 빛의 징조(지금 시세가 더 쌈). 712/36 → 1,043/577(등급 1티어 / 1~2티어) |
+| diztoh-endgame-quarterstaff-v2 | YfGJyBrObxI | high 2,887, bal 948 | 3 | 완료 11-13(새 기준) · 검수 88점 | W22(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W22): 영상 전체 화면 대조로 성공 회차를 새로 씀(옛 노트와 크게 다름), 전용 생성기 gen_diztoh_endgame_quarterstaff.py. 상위 카오스 → 상위 엑잘 + 좌측 찬미(소멸) → 완벽한 엑잘·절사 카오스 → 우측 말소 + 상위 카오스 → 훼손 공개 접음. 사용자 결정(11-13): 접미 빈자리에 훼손, 공개 빗나감은 항상 빛의 징조(영상 방식이면 36,103 div). 세 번째 접두는 두 등급 모두 랜덤 옵션(10장 예외). 1,043/577 → 2,887/948 |
 | unstoppable-slipstrike-vest-v2 | swF5mwXmZ0k | high 651, bal 176 | 1 | 완료 11-11 | A(Opus) | 영상 40:45~46:30 대조. 첫 카오스 추가, 반복은 상위 카오스, 접두 결정화+심연. 하이엔드 870→651, 밸런스 540→176 |
 | breach-ring-phys-v2 |  | bal 535, ess 89 | 2 | 대기 |  |  |
 | diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 3,852, bal 1,132 | 1 | 완료 11-13(새 기준) · 검수 90점 | W6-투구(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W6): 성공 회차(7:23~12:03) 한 줄, 접두 반복 8번 접음. 말소 카오스의 새 옵션이 접미로 가면 희귀도·카오스 저항 3티어 이상은 남기고 원소 저항 3티어 이상은 공허 유동체로 카오스 저항(사용자 결정 11-13, 영상은 9:17 소멸) — 4,436 → 3,852. 마지막 접미는 배포판처럼 11번 완벽한 엑잘(희귀도·화염·카오스 저항 1티어) + 11.A 가장 낮은 레벨일 때만 절사·우측 말소, 카드는 랜덤 옵션(사용자 확정 11-13: 영상도 마지막은 받아들임). 생성기 scripts/graphs/gen_diztoh_crit_helmet.py |
@@ -57,7 +57,7 @@
 | sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 98, ess 26 | 0 | 대기 |  |  |
 | sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 97, ess 23 | 1 | 대기 |  |  |
 | diztoh-5mod-sapphire-v2 | -YZm55-QuoQ | bal 95, ess 43 | 0 | 대기 |  |  |
-| easybabi-spiny-talisman-v2 | fabBIuR6yhw | high 94, bal 13 | 1 | 대기 |  |  |
+| easybabi-spiny-talisman-v2 | fabBIuR6yhw | high 94, bal 13 | 1 | 진행 중(새 기준 재작성) | W33(Opus 5.5) · 검수 마스터 |  |
 | vodnarg-timelost-emerald-v2 | 3tFs16SXkD8 | bal 94, ess 70 | 0 | 대기 |  |  |
 | lilbotq-boots-v2 | S-7YHuq3-P4 | bal 92, ess 5 | 2 | 대기 |  |  |
 | mazbro-caster-ring-v2 | o3Fh1DJmxBA | bal 86, ess 16 | 1 | 대기 |  |  |

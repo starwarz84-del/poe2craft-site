@@ -130,7 +130,7 @@ A(id='d1', kind='act', group='main', pos=[0, 11.4], act='desecrate', cur='Ancien
 A(id='d2', kind='act', group='main', pos=[0, 12.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pre', label=K('공개', 'Reveal'),
   goal=K('접두 추가 화염 피해(훼손) — 피해 증가·추가 피해 중 먼저 뜬 것', 'Extra fire prefix (desecrated): whichever increased or extra damage lands first'), showText=PRE_T(T1), over=OVR(PRE_T),
   edges=[{'if': {'all': [{'added': 'pre'}, V1]}, 'to': 'r1', 'res': 'ok'},
-         {'if': {'added': 'pre'}, 'to': 'b1', 'res': 'ok', 'label': K('밸런스', 'Balance')},
+         {'if': {'added': 'pre'}, 'to': 'b1', 'res': 'ok'},
          {'to': 'dx', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[F7, PF, XC, XF])
 A(id='dx', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,

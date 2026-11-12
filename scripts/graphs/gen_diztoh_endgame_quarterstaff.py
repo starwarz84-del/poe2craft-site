@@ -104,37 +104,38 @@ A(id='e2', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Perfect_Exa
   goal=K('접두 세번째 옵션', 'Third prefix option'), show=['hyb'],
   edges=[{'if': {'all': [{'param': {'g': 1}}, {'not': {'count': {'tag': 'p1', 'min': 3}}}, {'whittleSafe': {'tag': 'keepW'}}]}, 'to': 'e2b', 'res': 'fail',
           'label': K('가장 낮은 레벨이면 절사', 'Lowest level: Whittling')},
-         {'to': 's0', 'res': 'ok'}],
+         {'to': 'sz', 'res': 'ok'}],
   item=[FLAT, PCT, FIRE, ML],
   over=[{'param': {'g': 0}, 'set': {'goal': K('접두 세번째 옵션 (나오는 대로)', 'Third prefix option (keep what comes)'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}]}}])
 A(id='e2b', kind='act', group='main', pos=[1, 5.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
   goal=K('가장 낮은 레벨 옵션 다시 (물리 피해 접두와 같은 레벨이면 멈춤)', 'Reroll the lowest-level option (stop if it ties with a physical prefix)'), show=['hyb'],
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 3}}, 'to': 'e2', 'res': 'fail', 'label': K('새 옵션이 접미로 — 다시 엑잘', 'New option on the suffix: exalt again')},
-         {'if': {'count': {'tag': 'p1', 'min': 3}}, 'to': 's0', 'res': 'ok', 'hide': True},
+         {'if': {'count': {'tag': 'p1', 'min': 3}}, 'to': 'sz', 'res': 'ok', 'hide': True},
          {'if': {'whittleSafe': {'tag': 'keepW'}}, 'to': 'e2b', 'res': 'fail', 'hide': True},
-         {'to': 's0', 'res': 'ok', 'hide': True}])
-A(id='s0', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
+         {'to': 'sz', 'res': 'ok', 'hide': True}])
+# 영상에 없음: 접미 잡옵이 2개(접미 꽉 참)면 우측 소멸로 하나를 먼저 지움 — 다음 훼손이 빈자리로 가게(사용자 결정 11-13의 뒷받침)
+A(id='sz', kind='act', group='main', pos=[0, 6.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=ANN, goal=ANN,
+  target=K('접미가 꽉 차면 잡옵 하나 지우기', 'Suffixes full: remove one junk suffix'),
+  skipIf={'sideLt': {'side': 's', 'n': 3}}, skipTo='s0', skipHide=True,
+  skipNote=K('접미가 꽉 차지 않으면 건너뜀', 'Skipped unless the suffixes are full'),
+  edges=[{'to': 's0'}])
+A(id='s0', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 두번째 옵션', 'Second suffix option'), show=['as', 'crit'],
-  skipIf={'not': {'sideLt': {'side': 's', 'n': 2}}}, skipTo='sz', skipHide=True,
+  skipIf={'not': {'sideLt': {'side': 's', 'n': 2}}}, skipTo='s1', skipHide=True,
   skipNote=K('접미 잡옵이 이미 있으면 건너뜀', 'Skipped when a junk suffix is already there'),
   edges=[{'if': {'all': [{'has': 'sg'}, {'sideLt': {'side': 's', 'n': 3}}]}, 'to': 'd1', 'res': 'ok', 'hide': True}, {'to': 's1', 'res': 'fail', 'label': K('잡옵', 'Junk')}],
   item=[FLAT, PCT, FIRE, ML, LPH])
-# 영상에 없음: 접미 잡옵이 2개(접미 꽉 참)면 우측 소멸로 하나를 먼저 지움 — 다음 훼손이 빈자리로 가게(사용자 결정 11-13의 뒷받침)
-A(id='sz', kind='act', group='main', pos=[1, 7.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=ANN, goal=ANN,
-  target=K('접미가 꽉 차면 잡옵 하나 지우기', 'Suffixes full: remove one junk suffix'),
-  skipIf={'sideLt': {'side': 's', 'n': 3}}, skipTo='s1', skipHide=True,
-  edges=[{'if': {'all': [{'has': 'sg'}, {'sideLt': {'side': 's', 'n': 3}}]}, 'to': 'd1', 'res': 'ok', 'hide': True}, {'to': 's1', 'label': K('우측 말소 + 카오스로', 'On to Dextral Erasure + Chaos')}])
-A(id='s1', kind='act', group='main', pos=[0, 7.4], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Dextral_Erasure'], label=K('우측 말소 + 카오스', 'Dextral Erasure + Chaos'),
+A(id='s1', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Dextral_Erasure'], label=K('우측 말소 + 카오스', 'Dextral Erasure + Chaos'),
   goal=K('접미 공격 속도 — 공격 속도·치명타 확률 중 먼저 뜬 것', 'Attack speed suffix: attack speed or crit chance, whichever lands first'), show=['as', 'crit'],
   edges=[{'if': {'all': [{'has': 'sg'}, {'sideLt': {'side': 's', 'n': 3}}]}, 'to': 'd1', 'res': 'ok'}, {'to': 's1', 'res': 'fail', 'hide': True}],
   item=[FLAT, PCT, FIRE, ML, AS])
 # 사용자 결정 11-13: 영상 10:20의 엑잘(접미 채우기)을 빼고 빈 접미 자리에 훼손 — 꽉 찬 접미를 밀어내지 않음
-A(id='d1', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Ancient_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
+A(id='d1', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Ancient_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
   goal=K('접미 세번째 옵션(훼손) — 빈 접미 자리에', 'Third suffix (desecrated): into the empty suffix slot'),
   showText=[{'s': 's', 'kr': '접미 훼손 옵션 (미공개)', 'en': 'Suffix desecration (unrevealed)'}],
   skipIf={'des': True}, skipTo='lx', skipHide=True,
   edges=[{'to': 'r1'}], item=[UN, FLAT, PCT, FIRE, ML, AS])
-A(id='r1', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cr', label=K('공개', 'Reveal'),
+A(id='r1', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cr', label=K('공개', 'Reveal'),
   goal=K('접미 치명타 피해 보너스 1티어 — 치명타 확률·치명타 피해 보너스 중 먼저 뜬 것', 'T1 crit damage bonus suffix: crit chance or crit damage bonus, whichever lands first'),
   show=['critD', 'cdmg'],
   edges=[{'if': {'ref': 'sDone'}, 'to': 'ok', 'res': 'ok'},
@@ -142,9 +143,9 @@ A(id='r1', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of
          {'to': 'lx', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[FLAT, PCT, FIRE, ML, AS, CD])
 # 사용자 결정 11-13: 공개 빗나감은 항상 빛의 징조 + 소멸의 오브(영상 13:00의 우측 소멸 50:50은 꿀팁으로)
-A(id='lx', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
+A(id='lx', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'd1', 'label': K('다시 훼손', 'Desecrate again')}])
-A(id='ok', kind='done', group='main', pos=[0, 10.4], label=K('완성', 'Finished'))
+A(id='ok', kind='done', group='main', pos=[0, 11.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [

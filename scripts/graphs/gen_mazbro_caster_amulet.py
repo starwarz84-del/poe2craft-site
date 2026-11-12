@@ -176,8 +176,8 @@ A(id='a13', kind='act', group='main', pos=[0, 10.4], act='quality', cur='Sibilan
 A(id='a14', kind='act', group='main', pos=[0, 11.4], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'keep'}, label=K('카오스', 'Chaos'),
   goal=K('최대 퀄리티를 지우고 접두 세번째 옵션', 'Max quality out, third prefix'), show=['mp', 'mf', 'sd'],
   edges=[{'if': {'count': {'tag': 'gp', 'min': 2}}, 'to': 'a15', 'res': 'ok'},
-         {'if': V1, 'to': 'a14', 'res': 'fail'},
-         {'to': 'a15', 'res': 'fail', 'hide': True}], item=[SP, MF, SD, SL, DEX, CS])
+         {'if': V1, 'to': 'a14', 'res': 'fail', 'label': K('다시 절사 카오스', 'Whittle again')},
+         {'if': {'param': {'v': 2}}, 'to': 'a15', 'res': 'fail', 'hide': True}], item=[SP, MF, SD, SL, DEX, CS])
 # 11단계: 쿠르갈
 A(id='a15', kind='act', group='main', pos=[0, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('자리 막기 훼손 옵션 제거', 'Remove the blocking desecration'), edges=[{'to': 'a16'}], item=[SP, MF, SD, SL, CS])

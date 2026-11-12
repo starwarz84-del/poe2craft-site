@@ -748,7 +748,7 @@
      }
     },
     {
-     "to": "s0",
+     "to": "sz",
      "res": "ok"
     }
    ],
@@ -855,7 +855,7 @@
        "min": 3
       }
      },
-     "to": "s0",
+     "to": "sz",
      "res": "ok",
      "hide": true
     },
@@ -870,9 +870,52 @@
      "hide": true
     },
     {
-     "to": "s0",
+     "to": "sz",
      "res": "ok",
      "hide": true
+    }
+   ]
+  },
+  {
+   "id": "sz",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접미가 꽉 차면 잡옵 하나 지우기",
+    "en": "Suffixes full: remove one junk suffix"
+   },
+   "skipIf": {
+    "sideLt": {
+     "side": "s",
+     "n": 3
+    }
+   },
+   "skipTo": "s0",
+   "skipHide": true,
+   "skipNote": {
+    "kr": "접미가 꽉 차지 않으면 건너뜀",
+    "en": "Skipped unless the suffixes are full"
+   },
+   "edges": [
+    {
+     "to": "s0"
     }
    ]
   },
@@ -882,7 +925,7 @@
    "group": "main",
    "pos": [
     0,
-    6.4
+    7.4
    ],
    "act": "exalt",
    "cur": "Greater_Exalted_Orb",
@@ -906,7 +949,7 @@
      }
     }
    },
-   "skipTo": "sz",
+   "skipTo": "s1",
    "skipHide": true,
    "skipNote": {
     "kr": "접미 잡옵이 이미 있으면 건너뜀",
@@ -983,73 +1026,12 @@
    ]
   },
   {
-   "id": "sz",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    7.4
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Dextral_Annulment"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "접미가 꽉 차면 잡옵 하나 지우기",
-    "en": "Suffixes full: remove one junk suffix"
-   },
-   "skipIf": {
-    "sideLt": {
-     "side": "s",
-     "n": 3
-    }
-   },
-   "skipTo": "s1",
-   "skipHide": true,
-   "edges": [
-    {
-     "if": {
-      "all": [
-       {
-        "has": "sg"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "d1",
-     "res": "ok",
-     "hide": true
-    },
-    {
-     "to": "s1",
-     "label": {
-      "kr": "우측 말소 + 카오스로",
-      "en": "On to Dextral Erasure + Chaos"
-     }
-    }
-   ]
-  },
-  {
    "id": "s1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7.4
+    8.4
    ],
    "act": "chaos",
    "cur": "Greater_Chaos_Orb",
@@ -1143,7 +1125,7 @@
    "group": "main",
    "pos": [
     0,
-    8.4
+    9.4
    ],
    "act": "desecrate",
    "cur": "Ancient_Jawbone",
@@ -1232,7 +1214,7 @@
    "group": "main",
    "pos": [
     0,
-    9.4
+    10.4
    ],
    "act": "reveal",
    "omens": [
@@ -1338,7 +1320,7 @@
    "group": "main",
    "pos": [
     1,
-    9.4
+    10.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1373,7 +1355,7 @@
    "group": "main",
    "pos": [
     0,
-    10.4
+    11.4
    ],
    "label": {
     "kr": "완성",
