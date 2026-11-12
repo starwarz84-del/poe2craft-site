@@ -327,7 +327,7 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .tt-mod.removed::before{content:"−";position:absolute;right:8px;top:1px;color:var(--warn);font-weight:700}
 .tt-mod.junk{color:#8d877b;font-style:italic}
 .tt-mod.des-u{color:#9be86a;font-style:italic}
-.tt-mod.junk.desm{color:#9be86a}
+.tt-mod.junk.desm{color:#9be86a}.tt-mod.junk.fr,.tt-mod.xline.fr{color:#c9b27a}
 .tt-mod.markm{color:#c58bff}
 .tt-mod.rune{color:#9fb4ff;padding-left:8px}
 @media (max-width:1180px){ .dgrid{grid-template-columns:minmax(0,1fr) 300px} .dnav{display:none} }
@@ -650,7 +650,7 @@ const baseOf = r => S.cls[r.cls] ? C(r).bases[r.base] : S.board[r.id].b;
 const lite = r => !S.cls[r.cls] && S.board?.[r.id];
 function liteA(r){ const b=S.board[r.id], k=KR()?0:1; if(b._a?.[k]) return b._a[k];
   const final=b.f.map(m=>({gi:m.gi, txt:m.x[k], tag:m.tag, tmax:m.tm, fr:m.fr, des:m.des, ess:m.ess, max:m.max, g:{g:m.g, s:m.s, tg:m.tg, t:[[0,0,0,0,m.t[0],m.t[1]]]}}));
-  const finalX=(b.fx||[]).map(m=>({txt:m.x[k], side:m.s, des:m.des, rnd:m.rnd}));
+  const finalX=(b.fx||[]).map(m=>({txt:m.x[k], side:m.s, des:m.des, rnd:m.rnd, fr:m.fr, tmax:m.tm}));
   return (b._a=b._a||[])[k] = {final, finalX, qual:b.q, tot:b.tot, totAll:b.totAll, manual:b.manual, bases:b.bases, nodes:[], keys:Object.keys(b.tot)}; }
 const A = r => lite(r) ? liteA(r) : analyse(r);
 const tx = o => o ? (o[S.lang] || o.en || o.kr || '') : '';
@@ -996,7 +996,7 @@ function analyse(r){
   const final = (fcState || mods).filter(m=>m.gi!=null).map(m=>({...modLine(r,m.gi,m.tmax,m.max,m.tmin), tmax:m.tmax, fr:m.fr, des:m.des, ess:m.ess}))
     .sort((a,c)=>(a.g.g==='p'?0:1)-(c.g.g==='p'?0:1));
   /* 등급 카드 구분(2026-11-12, 정책 10장 C17): 플로우차트 완성품의 '랜덤 옵션'·범위 줄(옵션 이름 대신 설명)도 목록 카드에 보임 */
-  const finalX = (fcState||[]).filter(m=>m.gi==null && (m.label||m.rnd)).map(m=>({txt:m.rnd?L('랜덤 옵션','Random modifier'):tx(m.label), side:m.side||'p', des:!!m.des, rnd:!!m.rnd}))
+  const finalX = (fcState||[]).filter(m=>m.gi==null && (m.label||m.rnd)).map(m=>({txt:m.rnd?L('랜덤 옵션','Random modifier'):tx(m.label), side:m.side||'p', des:!!m.des, rnd:!!m.rnd, fr:!!m.fr, tmax:m.label?m.tmax:null}))
     .sort((a,c)=>(a.side==='p'?0:1)-(c.side==='p'?0:1));
   CUR_R=null;
   const basesAll = r.fcRead ? bases : passes[0] + (out[0]?.extraOpt||0), optMore = !r.fcRead && (basesAll > passes[0]+0.05 || Object.keys(totAll).some(k=>totAll[k]-(tot[k]||0) >= 0.01));
@@ -1157,7 +1157,7 @@ function cardHTML(r){
   a.final.forEach(m=>{ const k=(m.g.t[0][5]||'').match(/Explicit (.+?) Modifier magnitudes/i); const v=(m.txt.match(/(\d+)(?:—(\d+))?\)?%/)||[]); if(k && MT[k[1].toLowerCase()] && (v[2]||v[1])) mg[MT[k[1].toLowerCase()]]={v:+(v[2]||v[1]), gi:m.gi}; });
   const boosted = m => { const t=Object.keys(mg).find(t=>m.g.tg.includes(t) && mg[t].gi!==m.gi && m.g.s!=='x'); return t ? qualBoost(m.txt, mg[t].v) : m.txt; };
   const row = m => `<div class="tt-mod ${m.fr?'fr':''} ${m.des?'desm':''} ${m.ess?'essm':''}"><span class="tier ${m.g.g}">${esc(m.tag)}</span>${esc(boosted(m))}</div>`;
-  const rowX = m => `<div class="tt-mod xline ${m.rnd?'rndm':''} ${m.des?'desm':''}"><span class="tier ${m.side}">${m.side==='s'?'S':'P'}</span>${esc(m.txt)}</div>`;
+  const rowX = m => `<div class="tt-mod xline ${m.rnd?'rndm':''} ${m.des?'desm':''} ${m.fr?'fr':''}"><span class="tier ${m.side}">${m.side==='s'?'S':'P'}${m.tmax===1?'1':m.tmax?'1–'+m.tmax:''}</span>${esc(m.txt)}</div>`;
   const X=a.finalX||[], ml = a.final.filter(m=>m.g.g==='p').map(row).join('') + X.filter(m=>m.side==='p').map(rowX).join('') + a.final.filter(m=>m.g.g!=='p').map(row).join('') + X.filter(m=>m.side!=='p').map(rowX).join('');
   return `<div class="tt"><div class="tt-head"><div class="tt-name">${esc(itemName(r))}</div></div><div class="tt-body">
       ${b.img?`<div class="tt-art"><img src="${b.img}" alt=""></div>`:''}
@@ -1210,6 +1210,7 @@ function nodeHTML(r, o, i, idx){
   if(t.removeDes) tgt=L('훼손 옵션 제거','Removes the desecrated modifier');
   if(t.removeJunk) tgt = t.removeJunk==='any' ? L('잡옵 제거','Removes a junk modifier') : L(`${t.removeJunk==='p'?'접두':'접미'} 잡옵 제거`,`Removes the junk ${t.removeJunk==='p'?'prefix':'suffix'}`);
   if(t.removeMark) tgt=L('징표를 훼손한 뒤 제거','Desecrate the Mark, then remove it');
+  if(n.do==='remove' && n.fcTarget && tx(n.fcTarget)) tgt=esc(tx(n.fcTarget));   /* 플로우차트 지우기 상자의 목표 글(2026-11-12) */
   if(t.quality) tgt=L(`퀄리티 ${t.quality}%까지 (평균 ${fmt(o.fixedTries)}개, 레어는 1개당 +1${r.ilvl>=82?' · 20% 확률로 +2':''})`,`Quality to ${t.quality}% (avg ${fmt(o.fixedTries)}; +1 each on a rare${r.ilvl>=82?', 20% chance of +2':''})`);
   if(t.removeGi!=null && t.junk) tgt=L(`${esc(modLine(r,t.removeGi).txt)} 제거 (접두엔 아무 옵션)`,`Removes ${esc(modLine(r,t.removeGi).txt)} (any prefix lands)`);
   if(t.lord && tgt){ const LN={kurgal:['쿠르갈','Kurgal'],amanamu:['아마나무','Amanamu'],ulaman:['울라만','Ulaman']}[t.lord]||[t.lord,t.lord]; tgt += ` <small>(${L('공개 옵션 모두 '+LN[0],'all revealed options are '+LN[1]+'’s')})</small>`; }
@@ -1275,16 +1276,16 @@ function routeHTML(r, o, i, via){
   const chip = (cls, label, to, extra='') => `<span class="rt ${cls}"><b>${label}</b> → ${to}${extra}</span>`;
   const out=[];
   if(n.routes){   /* 플로우차트 읽기: 상자에서 나가는 선 그대로, 비율은 시뮬 */
-    const dst = to => to==='state' ? L('아이템 상태에 맞는 단계','the step that fits the item') : to==='self' ? L('이 단계 반복','repeat this step') : to==='done' ? L('완성','done') : to==='restart' ? L('버리고 처음부터','discard, start over') : L(`${stepNo(r,to)}번`,`step ${stepNo(r,to)}`);
-    const viaT = v => [v.cur, ...(v.omens||[])].map(x=>`${icon(x,r)}${esc(nm(cur(x)))}`).join(' + ');
+    const dst = (to, x) => x?.toAlt?.length ? L(`${[to,...x.toAlt].map(t=>t==='self'?stepNo(r,n.id):t==='done'?L('완성','done'):stepNo(r,t)).join('·')}번`,`steps ${[to,...x.toAlt].map(t=>t==='self'?stepNo(r,n.id):t==='done'?'done':stepNo(r,t)).join(', ')}`) : to==='state' ? L('아이템 상태에 맞는 단계','the step that fits the item') : to==='self' ? L('이 단계 반복','repeat this step') : to==='done' ? L('완성','done') : to==='restart' ? L('버리고 처음부터','discard, start over') : L(`${stepNo(r,to)}번`,`step ${stepNo(r,to)}`);
+    const viaT = v => [v, ...(v.then||[])].map(w=>[w.cur, ...(w.omens||[])].map(x=>`${icon(x,r)}${esc(nm(cur(x)))}`).join(' + ')+(w.n>1.05?` ×${fmt(w.n)}`:'')).join(' → ');   /* then = 지우기 상자를 둘 이상 거침, n = 같은 지우기를 평균 몇 번(2026-11-12) */
     const rs=n.routes, oks=rs.filter(x=>x.cls==='ok' && !x.skip);
     if(rs.length===1 && rs[0].cls==='ok' && (rs[0].to==='done' ? i===r.nodes.length-2 : stepNo(r,rs[0].to)===i+2)) return '';
     rs.forEach(x=>{ const lab = x.to==='self' && x.cls==='no' && !x.via ? L('실패','Miss') : x.lab ? esc(tx(x.lab).replace(/^[a-z]/,c=>c.toUpperCase())) : x.cls==='ok' ? L('성공','Success') : L('실패','Miss');
       const sh = x.share!=null && x.share<0.995 && x.to!=='self' && !(x.cls==='ok' && !x.skip && oks.length===1) ? ` (${pct(x.share)})` : '';
       const back = !['self','done','restart','state'].includes(x.to) && stepNo(r,x.to)<i+1, lostS = x.lost || (x.vo && back && x.alt);
       const lab2 = x.vo && back && x.alt && (!x.lab || x.plab) ? L('원하는 옵션이 지워지면','Wanted mod removed') : lab;
-      if(lostS) out.push(chip('no', lab2+sh, L(`${dst(x.to)}으로`,dst(x.to)), (x.n?` <small>(${L('평균','avg')} ${fmt(x.n)}${L('회','×')})</small>`:'')));
-      else out.push(chip(x.cls, lab+sh, dst(x.to), x.via?` <small>(${x.to==='self'?L('지우기','remove with'):L('먼저','first')}: ${viaT(x.via)})</small>`:'')); });
+      if(lostS) out.push(chip('no', lab2+sh, L(`${dst(x.to,x)}으로`,dst(x.to,x)), (x.n?` <small>(${L('평균','avg')} ${fmt(x.n)}${L('회','×')})</small>`:'')));
+      else out.push(chip(x.cls, lab+sh, dst(x.to,x), x.via?` <small>(${x.to==='self'?L('지우기','remove with'):L('먼저','first')}: ${viaT(x.via)})</small>`:'')); });
     return out.length ? `<div class="routes">${out.join('')}</div>` : ''; }
   const nx = nextOnSuccess(r, n), plainNext = nx && stepNo(r,nx)===i+2;
   if(n.exit) out.push(chip('ok jack', L('대박','Jackpot'), esc(tx(n.exit))));   // an optional gamble that can end the craft early
@@ -1450,7 +1451,7 @@ function itemTipHTML(r, o, opt={}){
   const line = (m, cls='') => {
     const sl=`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>`;
     if(m.unrev) return `<div class="tt-mod des-u ${cls}">${sl}${L('훼손 옵션 (미공개)','Desecrated (unrevealed)')}</div>`;
-    if(m.gi==null) return `<div class="tt-mod junk ${m.des?'desm':''} ${cls}">${sl}${m.label?esc(tx(m.label)):opt.final?L('랜덤 옵션','Random modifier'):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
+    if(m.gi==null) return `<div class="tt-mod junk ${m.des?'desm':''} ${m.fr?'fr':''} ${cls}">${m.label&&m.tmax?`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}${m.tmax===1?'1':'1–'+m.tmax}</span>`:sl}${m.label?esc(tx(m.label)):opt.final?L('랜덤 옵션','Random modifier'):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
     if(m.mark) return `<div class="tt-mod markm ${cls}"><span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>${esc(KR()?grp(r,m.gi).t[0][4]:grp(r,m.gi).t[0][5])}</div>`;
     const l=modLine(r,m.gi,m.tmax,m.max,m.tmin), qv=o.qual?.v, qt=o.qual?.type, shown=(o.vals||{})[m.gi];
     let txt=l.txt, sub='';
@@ -1715,7 +1716,7 @@ function fcCardState(tags, lines, ds, revOnly=()=>false, r=null){
   const leafGi=(T,seen=[])=>!T?[]:T.gi!=null?[T.gi]:(T.anyOf||[]).flatMap(x=>typeof x==='string'?(seen.includes(x)?[]:leafGi(tags?.[x],[...seen,x])):(x&&x.gi!=null?[x.gi]:[]));
   const sideOf=gi=>{ const t=Object.values(tags||{}).find(t=>t&&t.gi===gi&&t.s); if(t) return t.s; try{ return r?grp(r,gi)?.g:undefined; }catch(e){ return undefined; } };
   lines=lines.map(l=>{ const T=tags?.[l.tag]; if(l.random || l.label || !T || T.gi!=null || !T.anyOf) return l; const g=leafGi(T); return {...l, side:l.side||sideOf(g[0]), label:T.label||{kr:'랜덤 옵션',en:'Random modifier'}, any:g}; });
-  const state=lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side||(l.any?.length?sideOf(l.any[0]):undefined), label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}, des:!!l.des, rnd:!!l.random, ...(l.any?.length?{any:l.any}:tags?.[l.tag]?.anyOf?{any:tags[l.tag].anyOf.map(x=>x.gi)}:{})}; const T=tags?.[l.tag]; if(!T || T.gi==null) return null;
+  const state=lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side||(l.any?.length?sideOf(l.any[0]):undefined), label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}, des:!!l.des, rnd:!!l.random, fr:!!l.fr, ...((l.tmax||typeof tags?.[l.tag]?.tmax==='number')?{tmax:l.tmax||tags[l.tag].tmax}:{}), ...(l.any?.length?{any:l.any}:tags?.[l.tag]?.anyOf?{any:tags[l.tag].anyOf.map(x=>x.gi)}:{})}; const T=tags?.[l.tag]; if(!T || T.gi==null) return null;
     return {gi:T.gi, side:T.s, tmax:l.tmax||(typeof T.tmax==='number'?T.tmax:null), tmin:l.tmin||null, fr:!!l.fr, des:!!l.des || (ds ? false : (T.sec==='d' || revOnly(l.tag))), dsf:ds ? (ds.tag?.[l.tag]||0) : 0, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
   if(ds && !state.some(m=>m.des)){ const t=state.filter(m=>m.gi!=null && m.dsf>=0.5).sort((a,b)=>b.dsf-a.dsf)[0];
     if(t) t.des=true; else { const sd=['p','s'].filter(x=>(ds.side?.[x]||0)>=0.5).sort((a,b)=>(ds.side[b]||0)-(ds.side[a]||0))[0];

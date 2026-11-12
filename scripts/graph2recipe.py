@@ -255,63 +255,279 @@ class Walk:
         return self.cnt(nid, x[4]) if first is x else 0
 
 
-def _routes(W, n, valid):
-    """단계 칩: 성공·실패·되돌아감, 비율은 시뮬에서 그 선을 지난 횟수"""
+SIDE_W = {'p': ('접두', 'prefix'), 's': ('접미', 'suffix')}
+
+
+def _clean_name(t):
+    """아이템 칸 글 → 짧은 옵션 이름: 끝의 설명 괄호·수치 범위를 뗌"""
+    t = re.sub(r'\s*\([^)]*[가-힣A-Za-z][^)]*\)\s*$', '', t or '')          # 끝의 '(분열)'·'(군왕의 합금)'
+    t = re.sub(r'[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)(\s*~\s*[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\))?%?', '', t)   # (16—24)~(28—42), +(4.41—5)%
+    t = re.sub(r'\s+', ' ', t).strip(' +~')
+    return t or None
+
+
+class Cond:
+    """갈래 조건 → 짧은 명사구(화면 문구 명사형). 라우터 선(상태마다 다음 단계를 고르는 선)을 사람이 읽을 수 있게(2026-11-12)"""
+    def __init__(self, G_, sim, src, cls=None):
+        self.G = G_; self.cls = cls; self._grp = None; self.conds = (src or {}).get('conds') or sim['graph'].get('conds') or {}
+        self.nm = {}
+        for n in sim['graph'].get('nodes') or []:
+            for l in n.get('item') or []:
+                tg = l.get('tags') or []
+                if len(tg) == 1 and tg[0] not in self.nm:
+                    k = _clean_name(l.get('kr')); e = _clean_name(l.get('en'))
+                    if k: self.nm[G_.name(tg[0])] = (k, e or k)
+
+    def name(self, tag):
+        tag = self.G.name(tag) if isinstance(tag, str) else tag
+        if isinstance(tag, dict):   # 조건 안에 바로 적은 옵션 {gi…}
+            return None
+        T = self.G.tags.get(tag) or {}
+        if T.get('label'): return (T['label']['kr'], T['label']['en'])
+        if tag in self.nm: return self.nm[tag]
+        if T.get('gi') is not None and self.cls:   # 클래스 파일의 옵션 글(수치 뺀 것)
+            if self._grp is None:
+                try: self._grp = json.load(open(f'/home/claude/poe2data/site/data/c/{self.cls}.json'))['groups']
+                except Exception: self._grp = []
+            g = self._grp[T['gi']] if 0 <= T['gi'] < len(self._grp) else None
+            if g and g.get('t'):
+                k = _clean_name(g['t'][0][4]); e = _clean_name(g['t'][0][5])
+                if k: return (k, e or k)
+        subs = [x for x in T.get('anyOf') or [] if isinstance(x, str)]
+        if 1 < len(subs) <= 2:
+            ns = [self.name(x) for x in subs]
+            if all(ns): return ('·'.join(x[0] for x in ns), ' or '.join(x[1] for x in ns))
+        return None
+
+    def atoms(self, c, neg=False):
+        """[(키, kr, en, 종류)] — all은 펼침, 등급 param은 뺌. 모르는 조건은 빼고(None이면 이 선은 이 등급에서 안 지남)"""
+        if c is None: return []
+        if not isinstance(c, dict): return []
+        if 'ref' in c: return self.atoms(self.conds.get(c['ref']), neg)
+        if 'param' in c:
+            ok = all(str(self.G.params.get(k)) == str(v) for k, v in c['param'].items())
+            return [] if ok != neg else None
+        if 'not' in c: return self.atoms(c['not'], not neg)
+        if 'all' in c and not neg:
+            out = []
+            for x in c['all']:
+                a = self.atoms(x)
+                if a is None: return None
+                out += a
+            return out
+        if 'any' in c and not neg:
+            parts = []
+            for x in c['any']:
+                a = self.atoms(x)
+                if a is None: continue
+                if not a: return []
+                parts.append(a)
+            if not parts: return None
+            if len(parts) > 3 or any(len(p) > 1 for p in parts): return []
+            return [(('any',) + tuple(p[0][0] for p in parts), ' 또는 '.join(p[0][1] for p in parts), ' or '.join(p[0][2] for p in parts), 'any')]
+        if ('all' in c or 'any' in c) and neg: return []
+        k = next(iter(c)); v = c[k]
+        S = lambda sd: SIDE_W.get(sd, ('', ''))
+        def N(t):
+            return self.name(t if not isinstance(t, dict) or 'tag' not in t else t['tag'])
+        key = (k, json.dumps(v, sort_keys=True), neg)
+        a = None
+        if k == 'has':
+            n_ = N(v); a = n_ and ((f'{n_[0]} 없음', f'no {n_[1]}', 'nohas') if neg else (f'{n_[0]} 있음', f'has {n_[1]}', 'has'))
+        elif k == 'added':
+            n_ = N(v); a = n_ and ((f'{n_[0]} 안 붙음', f'{n_[1]} not added', 'x') if neg else (f'{n_[0]} 붙음', f'{n_[1]} added', 'added'))
+        elif k == 'removed':
+            n_ = N(v); a = n_ and ((f'{n_[0]} 남음', f'{n_[1]} kept', 'x') if neg else (f'{n_[0]} 지워짐', f'{n_[1]} removed', 'x'))
+        elif k == 'fractured':
+            n_ = N(v); a = n_ and (('다른 옵션 분열', 'another mod fractured', 'x') if neg else (f'{n_[0]} 분열', f'{n_[1]} fractured', 'x'))
+        elif k == 'full':
+            s_ = S(v); a = (f'{s_[0]} 빈자리 있음', f'open {s_[1]}', 'x') if neg else (f'{s_[0]} 꽉 참', f'{s_[1]}es full', 'x')
+        elif k == 'sideLt':
+            s_ = S(v.get('side')); m = int(v.get('n') or 1)
+            if neg: a = (f'{s_[0]} {m}개 이상', f'{m}+ {s_[1]}es', 'x')
+            else: a = (f'{s_[0]} 없음', f'no {s_[1]}', 'x') if m <= 1 else (f'{s_[0]} {m - 1}개 이하', f'≤{m - 1} {s_[1]}es', 'x')
+        elif k == 'count':
+            n_ = N(v.get('tag')); m = v.get('min')
+            a = n_ and ((f'{n_[0]} {m}개 미만', f'fewer than {m} {n_[1]}', 'x') if neg else (f'{n_[0]} {m}개', f'{m}× {n_[1]}', 'has'))
+        elif k == 'unrevSide':
+            s_ = S(v); a = None if neg else (f'{s_[0]} 미공개 훼손', f'unrevealed {s_[1]}', 'x')
+        elif k == 'unrev':
+            yes = bool(v) != neg; a = ('미공개 훼손 있음', 'unrevealed desecration', 'x') if yes else ('미공개 훼손 없음', 'no unrevealed desecration', 'x')
+        elif k == 'des':
+            yes = bool(v) != neg; a = ('훼손 옵션 있음', 'desecrated mod', 'x') if yes else ('훼손 옵션 없음', 'no desecrated mod', 'x')
+        elif k == 'desSide':
+            s_ = S(v); a = (f'{s_[0]} 훼손 옵션 없음', f'no desecrated {s_[1]}', 'x') if neg else (f'{s_[0]} 훼손 옵션', f'desecrated {s_[1]}', 'x')
+        elif k == 'sideAll':
+            s_ = S(v.get('side')); n_ = N(v.get('tag'))
+            if neg: a = (f'{s_[0]}에 잡옵', f'junk {s_[1]}', 'x')
+            else: a = n_ and (f'{s_[0]} 모두 {n_[0]}', f'all {s_[1]}es {n_[1]}', 'x')
+        elif k == 'junk':
+            s_ = S(v.get('side')); a = (f'{s_[0]} 잡옵 없음', f'no junk {s_[1]}', 'x') if neg else (f'{s_[0]}에 잡옵', f'junk {s_[1]}', 'x')
+        elif k == 'whittleSafe':
+            a = ('가장 낮은 옵션이 지킬 옵션', 'lowest mod is a keeper', 'x') if neg else ('가장 낮은 옵션이 잡옵', 'lowest mod is junk', 'x')
+        elif k == 'allMods':
+            n_ = N(v); a = None if neg else n_ and (f'모두 {n_[0]}', f'all {n_[1]}', 'x')
+        elif k == 'famBlock':
+            a = None if neg else ('같은 계열 옵션이 막음', 'blocked by the same family', 'x')
+        return [(key,) + a] if a else []
+
+
+def _label(atoms, drop=()):
+    """조건 조각 → 한 줄(최대 둘). 있음이 셋 이상이면 '목표 옵션 모두'"""
+    if not atoms: return None
+    xs = [a for a in atoms if a[0] not in drop] or list(atoms)
+    hs = [a for a in atoms if a[3] == 'has']
+    if len(hs) >= 3: return {'kr': '목표 옵션 모두 있음', 'en': 'all target mods'}
+    seen = []; out = []
+    for a in xs:
+        if a[1] in seen: continue
+        seen.append(a[1]); out.append(a)
+    out = out[:2]
+    return {'kr': ', '.join(a[1] for a in out), 'en': ', '.join(a[2] for a in out)}
+
+
+def _routes(W, n, valid, G_=None, CD=None):
+    """단계 칩: 상자에서 나가는 선을 끝까지 따라가 실제 단계 번호로(지우기 상자·표시 상자는 건너뜀), 비율은 시뮬에서 그 선을 지난 횟수.
+    라우터 선(아이템 상태마다 다음 단계를 고르는 숨은 선)은 '아이템 상태에 맞는 단계'로 묶지 않고 조건 글 + 단계 번호로(2026-11-12)"""
     t = W.st(n['id']) or {}
-    outs = W.outs(n); tot = sum(W.ec(n['id'], x, outs) for x in outs) or 1
-    out = []
     def dest(to):
         T = W.by.get(to) or {}
         if to == n['id']: return 'self'
         if T.get('kind') in ('base', 'exit'): return 'restart'
         if T.get('kind') == 'done': return 'done'
         return to
-    other = {'n': 0, 'share': 0}
     def ok_dest(d): return d in ('self', 'done', 'restart') or d in valid
-    def hidden_many(es, frm):
-        return len({x[1] for x in es if x[0].get('hide') and W.ec(frm, x, es) > 0 and x[1] != frm}) >= 2
-    hm = hidden_many(outs, n['id'])
-    for x0 in outs:
-        e, to, lab, cls, raw = x0[:5]
-        c = W.ec(n['id'], x0, outs)
-        if c <= 0 and (e.get('hide') or len(outs) > 1): continue
-        share = c / tot
-        if hm and e.get('hide') and to != n['id']: other['n'] += c; other['share'] += share; continue
-        if W.via(to):
-            V = W.by[to]; vo = W.outs(V); vt = sum(W.ec(to, x, vo) for x in vo) or 1
-            via = {'cur': V.get('cur') or 'Orb_of_Annulment', **({'omens': V['omens']} if V.get('omens') else {})}
-            vhm = hidden_many(vo, to); vother = 0; k0 = len(out)
-            for y0 in vo:
-                e2, to2, lab2, cls2, raw2 = y0[:5]
-                c2 = W.ec(to, y0, vo)
-                if c2 <= 0 and len(vo) > 1: continue
-                d2 = dest(to2)
-                if (vhm and e2.get('hide')) or not ok_dest(d2): vother += c2; continue
-                main = d2 == 'self' or cls2 != 'fail' or len(vo) == 1
-                out.append({'cls': 'no' if (cls == 'fail' or not main) else 'ok', 'lab': lab2 or (lab if main else {'kr': '다른 옵션이 지워지면', 'en': 'Another mod removed'}),
-                            'plab': bool(main and not lab2), 'vo': True,
-                            'to': d2, 'via': via if main else None, 'share': share * (c2 / vt), 'n': round(c2, 3), 'lost': not main, 'res': cls})
-            if vother > 0: out.append({'cls': 'no' if cls == 'fail' else 'ok', 'lab': lab, 'to': 'state', 'via': via, 'share': share * (vother / vt), 'res': cls})
-            mine = out[k0:]
-            if len(mine) > 1:
-                top = max(mine, key=lambda x: x.get('n') or 0)
-                for x in mine:
-                    if x is not top: x['alt'] = True
-            continue
-        if not ok_dest(dest(to)): other['n'] += c; other['share'] += share; continue
-        out.append({'cls': 'no' if cls == 'fail' else 'ok', 'lab': lab, 'to': dest(to), 'share': share, 'n': round(c, 3), 'res': cls})
-    if other['share'] > 0: out.append({'cls': 'ok', 'lab': {'kr': '그 밖', 'en': 'Otherwise'}, 'to': 'state', 'share': other['share']})
-    if n.get('skipTo') and (t.get('skips') or 0) > 0.001 and ok_dest(dest(n['skipTo'])):
-        out.append({'cls': 'ok', 'lab': n.get('skipNote') or {'kr': '이미 있으면 건너뜀', 'en': 'Skip if already there'}, 'to': dest(n['skipTo']),
-                    'share': t['skips'] / max(1e-9, t.get('visits') or 1), 'skip': True})
+    def src_if(nid, i, to):
+        se = ((G_.srcn.get(nid) or {}).get('edges') or []) if G_ else []
+        return se[i].get('if') if i < len(se) and se[i].get('to') == to else '?'
+    def outs_of(N_):
+        o = W.outs(N_)
+        if o: return [(x, W.ec(N_['id'], x, o)) for x in o]
+        nx = [(k.split('>', 1)[1], v) for k, v in W.E.items() if k.startswith(N_['id'] + '>')]
+        if not nx and N_.get('next'): nx = [(N_['next'], 1)]
+        return [(({'to': to}, to, None, None, to, -1), c) for to, c in nx]
+    leaves = []
+    def walk(N_, frac, first, chain, vias, depth, seen):
+        os_ = outs_of(N_); tot = sum(c for _, c in os_)
+        loop = sum(c for x, c in os_ if x[1] == N_['id'] and N_ is not n)   # 지우기 상자가 자기에게 돌아감 = 같은 오브를 한 번 더
+        vis = [(x, c) for x, c in os_ if not (x[1] == N_['id'] and N_ is not n)]
+        tv = sum(c for _, c in vis)
+        if N_ is not n and loop > 0 and vias and tot / max(1e-9, tv) >= 1.05: vias[-1] = {**vias[-1], 'n': round(tot / max(1e-9, tv), 2)}
+        for x, c in vis:
+            if tv > 0 and c <= 0: continue
+            if tv <= 0 and (x[0].get('hide') or len(vis) > 1): continue
+            sh = frac * (c / tv if tv > 0 else 1.0)
+            fx = first or (N_['id'], x); px = chain if N_ is n else chain + [(N_['id'], x)]
+            to = x[1]; d = dest(to); T = W.by.get(to)
+            if ok_dest(d) or not T or depth >= 5 or to in seen:
+                leaves.append({'first': fx, 'chain': px, 'to': d if ok_dest(d) else 'state', 'share': sh,
+                               'n': round(c, 3) if N_ is n else None, 'vias': list(vias), 'lab': x[2], 'cls': x[3]})
+                continue
+            nv = list(vias)
+            if W.via(to): nv.append({'cur': T.get('cur') or 'Orb_of_Annulment', **({'omens': T['omens']} if T.get('omens') else {})})
+            walk(T, sh, fx, px, nv, depth + 1, seen | {to})
+    walk(n, 1.0, None, [], [], 0, {n['id']})
+    multi = {}
+    for L in leaves:
+        if L['chain'] and L['to'] != 'self': multi.setdefault(L['first'][1][5], set()).add(L['to'])
+    ntot = sum(c for _, c in outs_of(n))
+    out = []
+    for L in leaves:
+        e0 = L['first'][1]; cls0 = e0[3]
+        ch = L['chain']; post = ch[-1] if ch else None
+        cls_post = post[1][3] if post else None
+        lab_ch = next((y[1][2] for y in reversed(ch) if y[1][2]), None)
+        main = L['to'] == 'self' or not post or cls_post != 'fail'
+        needc = False
+        if not post: lab = e0[2]
+        elif L['to'] == 'self': lab = (e0[2] or lab_ch) if any(v.get('n') for v in L['vias']) else (lab_ch or e0[2])   # 지우기를 되풀이하는 상자: 이 단계 선 이름
+        elif len(multi.get(e0[5]) or ()) >= 2: lab = lab_ch; needc = not lab   # 지운 뒤 갈 곳이 여럿: 무엇이 지워졌는지(지운 뒤 선의 조건)로 씀
+        else: lab = (e0[2] or lab_ch) if any(v.get('n') for v in L['vias']) else (lab_ch or e0[2])
+        no = cls0 == 'fail' or (post and not main) or L['to'] == 'self' or bool(lab and re.match(r'(빗나감|실패)', lab.get('kr') or ''))
+        r = {'cls': 'no' if no else 'ok', 'lab': lab, 'to': L['to'], 'share': L['share'], 'n': round(L['share'] * ntot, 3), 'res': cls0 or cls_post}
+        if needc: r['_c'] = True; r['_e0'] = e0[2]
+        if L['vias']:
+            v = dict(L['vias'][0])
+            if len(L['vias']) > 1: v['then'] = L['vias'][1:]
+            r['via'] = v; r['vo'] = True
+        if post and not main: r['lost'] = True
+        # 조건 글 재료: 이 단계 선의 조건, 지우기 뒤 선의 조건(지운 뒤 상태)
+        if CD:
+            a0 = CD.atoms(src_if(L['first'][0], L['first'][1][5], L['first'][1][4])) if L['first'][1][5] >= 0 else []
+            r['_a'] = a0 or []
+            if post:
+                ap = CD.atoms(src_if(post[0], post[1][5], post[1][4])) if post[1][5] >= 0 else []
+                ap = [a for a in (ap or []) if a[0] not in {b[0] for b in (a0 or [])}]
+                # 같은 라우터 선 목록이고 지운 뒤 선이 앞 순번이면, 그 선이 지우기 전엔 맞지 않았음 = '없음'이 '지워짐'
+                Pn = W.by.get(post[0]) or {}
+                same = [e['to'] for e in n.get('edges') or []] == [e['to'] for e in Pn.get('edges') or []]
+                if same and post[1][5] < L['first'][1][5]:
+                    ap = [(a[0], a[1][:-3] + ' 지워짐', a[2].replace('no ', '', 1) + ' removed', 'x') if a[3] == 'nohas' else a for a in ap]
+                r['_a'] = ap if needc else (a0 or [])
+        out.append(r)
+    # 같은 결과(종류·도착·지우기·글)는 합침 — 조건 재료는 많이 지난 쪽
     m = {}
-    for r in out:
-        k = (r['cls'], r['to'], json.dumps(r.get('lab'), ensure_ascii=False), json.dumps(r.get('via')), r.get('lost'))
-        if k in m: m[k]['share'] = (m[k]['share'] or 0) + (r['share'] or 0); m[k]['n'] = (m[k].get('n') or 0) + (r.get('n') or 0)
+    for r in sorted(out, key=lambda r: -r['share']):
+        k = (r['cls'], r['to'], json.dumps(r.get('lab'), ensure_ascii=False), json.dumps(r.get('via'), sort_keys=True), r.get('lost'))
+        if k in m: m[k]['share'] += r['share']; m[k]['n'] = (m[k].get('n') or 0) + (r.get('n') or 0)
         else: m[k] = dict(r)
-    rs = [r for r in m.values() if not ((r.get('lost') or r.get('skip') or r['cls'] == 'no' or r['to'] == 'state') and r['to'] != 'self' and (r['share'] or 0) < 0.005)]
-    for r in rs: r['share'] = round(r['share'], 5)
-    return [{k: v for k, v in r.items() if v not in (None, False)} for r in rs]
+    rs = list(m.values())
+    # 아주 작은 갈래: 이 단계 반복(1% 미만)·실패(0.3% 미만)는 뺌, 1% 미만 실패가 둘 이상이면 '그 밖' 하나로.
+    # 성공은 가장 큰 성공의 2% 미만이면 빼고 10% 미만은 같은 도착에 합치거나 '그 밖'으로
+    rs = [r for r in rs if not (r['to'] == 'self' and r['share'] < 0.01 and len(rs) > 1)]
+    rs = [r for r in rs if not (r['cls'] == 'no' and r['to'] != 'self' and r['share'] < 0.003)]
+    def fold(tiny, cl):
+        tiny.sort(key=lambda r: -r['share']); ds = []
+        for r in tiny:
+            if r['to'] not in ds: ds.append(r['to'])
+        return {'cls': cl, 'lab': {'kr': '그 밖', 'en': 'Otherwise'}, 'to': ds[0], **({'toAlt': ds[1:4]} if len(ds) > 1 else {}), 'share': sum(r['share'] for r in tiny)}
+    tiny = [r for r in rs if r['cls'] == 'no' and r['to'] != 'self' and r['share'] < 0.01]
+    if len(tiny) >= 2: rs = [r for r in rs if r not in tiny] + [fold(tiny, 'no')]
+    oks = [r for r in rs if r['cls'] == 'ok']
+    mx = max([r['share'] for r in oks] or [0])
+    if len(oks) > 1 and mx > 0:
+        rs = [r for r in rs if not (r['cls'] == 'ok' and r['share'] < 0.02 * mx)]
+        small = [r for r in rs if r['cls'] == 'ok' and r['share'] < 0.1 * mx]
+        big = [r for r in rs if r['cls'] == 'ok' and r not in small]
+        rest = []
+        for r in small:
+            same = next((b for b in big if b['to'] == r['to'] and json.dumps(b.get('via')) == json.dumps(r.get('via'))), None)
+            if same: same['share'] += r['share']; same['n'] = (same.get('n') or 0) + (r.get('n') or 0)
+            else: rest.append(r)
+        rs = [r for r in rs if r not in small]
+        if len(rest) == 1: rs.append(rest[0])
+        elif rest: rs.append(fold(rest, 'ok'))
+    # 같은 종류(성공·실패) 안에서 도착이 둘 이상이면 이름 없는 선에 조건 글, 지운 뒤 다른 단계로 가는 선은 늘 조건 글
+    for cl in ('ok', 'no'):
+        grp = [r for r in rs if r['cls'] == cl and r['to'] != 'self' and not r.get('skip')]
+        many = len({(r['to'], bool(r.get('via'))) for r in grp}) >= 2
+        need = [r for r in grp if not r.get('lab') and (many or r.get('_c'))]
+        if not need: continue
+        al = [set(a[0] for a in r.get('_a') or []) for r in grp if r.get('_a') and not r.get('_c')]
+        common = set.intersection(*al) if len(al) >= 2 else set()
+        hasres = any(r.get('res') for r in grp)
+        # 조건 없는 선(마지막 '나머지' 선) 하나 + 조건 하나짜리 선 하나: 그 반대 글
+        bare = [r for r in need if not r.get('_a') and not r.get('_c')]
+        one = [r for r in grp if r not in bare and len(r.get('_a') or []) == 1 and r['_a'][0][3] in ('has', 'nohas')]
+        if len(bare) == 1 and len(grp) == 2 and len(one) == 1:
+            a = one[0]['_a'][0]
+            bare[0]['_a'] = [(('neg',) + a[0], a[1][:-3] + (' 없음' if a[3] == 'has' else ' 있음'), ('no ' + a[2][4:]) if a[3] == 'has' else a[2][3:], 'x')]
+        for r in need:
+            lb = _label(r.get('_a'), () if r.get('_c') else common)
+            if lb:
+                pre = ('성공, ', 'Hit, ') if cl == 'ok' and hasres else ('실패, ', 'Miss, ') if cl == 'no' and hasres and not r.get('_c') else ('', '')
+                r['lab'] = {'kr': pre[0] + lb['kr'], 'en': pre[1] + (lb['en'][:1].upper() + lb['en'][1:] if not pre[1] else lb['en'])}
+            r['plab'] = False
+    for r in rs:
+        if (r.get('lost') or r.get('_c')) and not r.get('lab'):
+            r['lab'] = r.get('_e0') or {'kr': '다른 옵션 지워짐', 'en': 'Another mod removed'}
+    if n.get('skipTo') and (t.get('skips') or 0) > 0.001 and ok_dest(dest(n['skipTo'])):
+        rs.append({'cls': 'ok', 'lab': n.get('skipNote') or {'kr': '이미 있으면 건너뜀', 'en': 'Skip if already there'}, 'to': dest(n['skipTo']),
+                   'share': t['skips'] / max(1e-9, t.get('visits') or 1), 'skip': True})
+    # 순서: 성공(많은 것부터) → 실패(이 단계 반복 먼저) → 그 밖
+    rs.sort(key=lambda r: (r['cls'] != 'ok', r.get('skip', False), (r.get('lab') or {}).get('kr') == '그 밖', r['to'] != 'self', -(r['share'] or 0)))
+    for r in rs: r['share'] = round(r['share'], 5); r.pop('_a', None); r.pop('_c', None); r.pop('_e0', None)
+    return [{k: v for k, v in r.items() if v is not None and v is not False} for r in rs]
 
 
 def _fcs(W, n):
@@ -403,7 +619,7 @@ def read_recipe(r, sim, src, tiers):
     tier = r.get('tier') or 'high'
     F, V, S = _version(sim, tier)
     if not S: return None
-    W = Walk(sim, V, S); G_ = G(sim, src, V['params'])
+    W = Walk(sim, V, S); G_ = G(sim, src, V['params']); CD = Cond(G_, sim, src, r.get('cls'))
     final_tags = {G_.name(l['tag']) for l in F.get('lines') or [] if l.get('tag')}
     nodes = W.nodes
     base = next((n for n in nodes if n.get('kind') == 'base'), None)
@@ -479,7 +695,7 @@ def read_recipe(r, sim, src, tiers):
         if t: o['target'] = t
         if n.get('trim'): o['trimFc'] = n['trim'].get('side') if isinstance(n['trim'], dict) else 'p'
         o['fcs'] = _fcs(W, n)
-        o['routes'] = _routes(W, n, placed)
+        o['routes'] = _routes(W, n, placed, G_, CD)
         if not o.get('cur') and (n.get('goal') or n.get('label')): o['label'] = n.get('goal') or n.get('label')
         if not t and n.get('showText'): o['note'] = n['showText'][0]
         back = max([x for x in o['routes'] if x['cls'] == 'no' and x['to'] not in ('done', 'self', 'restart', 'state')], key=lambda x: x.get('share') or 0, default=None)
