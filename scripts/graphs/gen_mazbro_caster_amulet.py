@@ -19,7 +19,7 @@ MQ = L('p', '최대 퀄리티 +20% (균열의 에센스)', '+20% to Maximum Qual
 MF = L('p', '마나 최대치 +(180—189)', '+(180—189) to maximum Mana', 'n', ['mf'])
 SD = L('p', '주문 피해 (27—30)% 증가', '(27—30)% increased Spell Damage', 'n', ['sd'])
 SL = L('s', '모든 주문 스킬 레벨 +3', '+3 to Level of all Spell Skills', 'n', ['spell'])
-DEX = L('s', '민첩 +(31—33) (훼손, 자리 막기)', '+(31—33) to Dexterity (desecrated, blocker)', 'd', ['blk'])
+DEX = L('s', '민첩 +(31—33) (훼손, 자리 막기)', '+(31—33) to Dexterity (desecrated, blocker)', 'd')
 CS = L('s', '시전 속도 (25—28)% 증가', '(25—28)% increased Cast Speed', 'n', ['cs'])
 KQ = L('s', '모든 스킬의 퀄리티 +(3—5)%', '+(3—5)% to Quality of all Skills', 'd', ['kq'])
 J = lambda s='x': L(s, '잡옵', 'Junk', 'j')
@@ -73,7 +73,7 @@ g = {
    {'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
     'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'gp'}, {'tag': 'gp'}, {'tag': 'spell'}, {'tag': 'gs'}, {'tag': 'kq', 'des': True}]},
    {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-    'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'gp'}, {'side': 'p', 'random': True}, {'tag': 'spell'}, {'tag': 'gs'}, {'side': 's', 'random': True}]}],
+    'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'gp'}, {'side': 'p', 'random': True}, {'tag': 'spell'}, {'tag': 'gs'}, {'side': 's', 'random': True, 'des': True}]}],
  'finalItem': {'quality': 40, 'sockets': 0},
 }
 
@@ -176,8 +176,8 @@ A(id='a13', kind='act', group='main', pos=[0, 10.4], act='quality', cur='Sibilan
 A(id='a14', kind='act', group='main', pos=[0, 11.4], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'keep'}, label=K('카오스', 'Chaos'),
   goal=K('최대 퀄리티를 지우고 접두 세번째 옵션', 'Max quality out, third prefix'), show=['mp', 'mf', 'sd'],
   edges=[{'if': {'count': {'tag': 'gp', 'min': 2}}, 'to': 'a15', 'res': 'ok'},
-         {'if': {'param': {'v': 2}}, 'to': 'a15', 'res': 'fail', 'hide': True},
-         {'to': 'a14', 'res': 'fail'}], item=[SP, MF, SD, SL, DEX, CS])
+         {'if': V1, 'to': 'a14', 'res': 'fail'},
+         {'to': 'a15', 'res': 'fail', 'hide': True}], item=[SP, MF, SD, SL, DEX, CS])
 # 11단계: 쿠르갈
 A(id='a15', kind='act', group='main', pos=[0, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('자리 막기 훼손 옵션 제거', 'Remove the blocking desecration'), edges=[{'to': 'a16'}], item=[SP, MF, SD, SL, CS])

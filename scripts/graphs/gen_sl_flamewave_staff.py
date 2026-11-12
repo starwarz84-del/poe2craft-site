@@ -155,10 +155,13 @@ A(id='s3m', kind='act', group='main', pos=[1, 16.4], act='chaos', cur='Perfect_C
   edges=[{'if': {'all': [{'has': 'fm'}, {'has': 'alloy'}]}, 'to': 'ok', 'res': 'ok', 'label': K('완성', 'Done')},
          {'if': {'has': 'fm'}, 'to': 's3', 'res': 'ok', 'hide': True}, {'to': 's3m', 'res': 'fail', 'hide': True}])
 # 밸런스 (영상 9:13 가성비 마무리)
-A(id='b1', kind='act', group='main', pos=[2, 13.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접미 잡옵 2개', 'Two junk suffixes'), showText=[{'s': 's', 'kr': '랜덤 옵션 1개씩 2번', 'en': 'One random option, twice'}],
-  edges=[{'if': {'sideLt': {'side': 's', 'n': 3}}, 'to': 'b1', 'hide': True}, {'to': 'b2'}], item=[F7, PF, XC, XF, J('s'), J('s')])
-A(id='b2', kind='act', group='main', pos=[2, 14.4], act='essence', cur='Transcendent_Alloy', ess='alloy', label=K('합금', 'Alloy'),
+A(id='b1', kind='act', group='main', pos=[0, 13.9], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
+  goal=K('접미 두번째 옵션(잡옵)', 'Second suffix (junk)'), showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  edges=[{'to': 'b1b'}], item=[F7, PF, XC, XF, J('s')])
+A(id='b1b', kind='act', group='main', pos=[0, 14.9], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
+  goal=K('접미 세번째 옵션(잡옵)', 'Third suffix (junk)'), showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  edges=[{'to': 'b2'}], item=[F7, PF, XC, XF, J('s'), J('s')])
+A(id='b2', kind='act', group='main', pos=[0, 15.9], act='essence', cur='Transcendent_Alloy', ess='alloy', label=K('합금', 'Alloy'),
   goal=K('접미 잡옵 하나를 지우고 초월의 합금', 'A junk suffix goes for the Transcendent Alloy'), showText=ALT,
   edges=[{'to': 'ok'}], item=[F7, PF, XC, XF, J('s'), AL])
 A(id='ok', kind='done', group='main', pos=[0, 17.4], label=K('완성', 'Finished'))

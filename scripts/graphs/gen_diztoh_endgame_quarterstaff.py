@@ -143,12 +143,12 @@ A(id='lx', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_Ann
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'd2', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='d2', kind='act', group='main', pos=[1, 11.4], act='desecrate', cur='Ancient_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
   goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '접미 훼손 옵션 (미공개)', 'en': 'Suffix desecration (unrevealed)'}],
-  edges=[{'to': 'r2'}])
+  edges=[{'to': 'r2'}], item=[UN, FLAT, PCT, FIRE, ML, AS])
 A(id='r2', kind='act', group='main', pos=[1, 12.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cr', label=K('공개', 'Reveal'),
   goal=K('접미 치명타 확률·치명타 피해 보너스', 'Crit chance or crit damage bonus suffix'), show=['critD', 'cdmg'],
   edges=[{'if': {'ref': 'sDone'}, 'to': 'ok', 'res': 'ok'},
-         {'if': {'not': {'has': 'sg'}}, 'to': 's1', 'res': 'fail', 'hide': True},
-         {'to': 'ax', 'res': 'fail', 'label': K('2번째 빗나감부터', 'From the 2nd miss')}])
+         {'if': {'not': {'has': 'sg'}}, 'to': 's1', 'res': 'fail', 'hide': True, 'label': K('공격 속도가 지워짐 — 접미 카오스부터', 'Attack speed gone: back to the suffix Chaos')},
+         {'to': 'ax', 'res': 'fail', 'label': K('2번째 빗나감부터', 'From the 2nd miss')}], item=[FLAT, PCT, FIRE, ML, AS, CD])
 A(id='ax', kind='act', group='main', pos=[2, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=ANN, goal=ANN,
   target=K('접미 하나 지우기 (훼손 옵션·공격 속도 1/2)', 'Remove one suffix (the desecration or attack speed, 1 in 2)'),
   edges=[{'if': {'removed': 'sg'}, 'to': 's1', 'res': 'fail', 'label': K('공격 속도가 지워짐 — 접미 카오스부터', 'Attack speed gone: back to the suffix Chaos')},

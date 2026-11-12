@@ -127,7 +127,7 @@ A(id='m1', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Chaos_Orb'
   target=K('반경 중형·대형과 훼손 옵션이 없어질 때까지', 'Until no Medium/Large radius and no desecrated line is left'),
   skipIf={'not': {'any': [{'has': 'radLo'}, {'desSide': 'p'}]}}, skipTo='m2', skipHide=True,
   edges=[{'if': {'any': [{'has': 'radLo'}, {'desSide': 'p'}]}, 'to': 'm1', 'res': 'fail', 'hide': True},
-         {'if': {'has': 'rad'}, 'to': 'm3', 'res': 'ok', 'label': K('매우 넓은 반경이 남음', 'Very Large radius kept')},
+         {'if': {'has': 'rad'}, 'to': 'm3', 'label': K('매우 넓은 반경이 남음', 'Very Large radius kept')},
          {'to': 'm2', 'res': 'ok'}],
   item=[J('p'), J('p'), CC, SCD, CD])
 A(id='m2', kind='act', group='main', pos=[0, 13.4], act='essence', cur='Ancient_Potent_Liquid_Melancholy', ess='rad', liquid=True,
