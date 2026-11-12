@@ -15,7 +15,7 @@ HYn = L('p', '에너지 보호막 최대치 +(26—30), 에너지 보호막 (39�
 HY = L('p', '에너지 보호막 최대치 +(26—30), 에너지 보호막 (39—42)% 증가 (분열)', '+(26—30) to maximum Energy Shield, (39—42)% increased Energy Shield (fractured)', 'f', ['hyb'])
 EP = L('p', '에너지 보호막 (101—110)% 증가', '(101—110)% increased Energy Shield', 'n', ['esP'])
 EF = L('p', '에너지 보호막 최대치 +(91—96) (훼손)', '+(91—96) to maximum Energy Shield (desecrated)', 'd', ['esF'])
-LB = L('p', '생명력 최대치 +(70—84) (훼손, 자리 막기)', '+(70—84) to maximum Life (desecrated, blocker)', 'd', ['blk'])
+LB = L('p', '생명력 최대치 +(70—84) (훼손)', '+(70—84) to maximum Life (desecrated)', 'd')
 FR = L('s', '화염 저항 +(41—45)%', '+(41—45)% to Fire Resistance', 'n', ['fr'])
 CR = L('s', '냉기 저항 +(41—45)%', '+(41—45)% to Cold Resistance', 'n', ['cr'])
 LR = L('s', '번개 저항 +(41—45)%', '+(41—45)% to Lightning Resistance', 'n', ['lr'])
@@ -136,7 +136,7 @@ A(id='k2', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Perfect_Exa
   item=[HY, FR, CR, J('s')])
 A(id='k2x', kind='cleanup', group='main', pos=[1, 9.4], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('분열 + 옵션 1개까지 지우기', 'Annul down to the fracture + one option'),
-  edges=[{'to': 'k1', 'res': 'fail', 'label': K('카오스부터', 'Back to Chaos')}])
+  edges=[{'to': 'k1', 'label': K('카오스부터', 'Back to Chaos')}])
 # 접두 첫 옵션: 자리 막기 → 엑잘, 빗나가면 징표 → 훼손 → 다시 막기 (영상 14:30~15:55, 조끼 42:25~45:00)
 A(id='q0', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Preserved_Rib', label=K('훼손', 'Desecrate'),
   goal=K('빈 접두 자리 훼손', 'Desecrate an empty prefix slot'), showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],

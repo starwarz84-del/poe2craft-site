@@ -15,7 +15,7 @@ EVn = L('p', '회피 (101—110)% 증가', '(101—110)% increased Evasion Ratin
 EV = L('p', '회피 (101—110)% 증가 (분열)', '(101—110)% increased Evasion Rating (fractured)', 'f', ['evP'])
 FL = L('p', '회피 +(262—300)', '+(262—300) to Evasion Rating', 'n', ['evF'])
 HB = L('p', '회피 +(71—90), 회피 (39—42)% 증가 (훼손)', '+(71—90) to Evasion Rating, (39—42)% increased Evasion Rating (desecrated)', 'd', ['hyb'])
-LB = L('p', '생명력 최대치 +(150—174) (훼손, 자리 막기)', '+(150—174) to maximum Life (desecrated, blocker)', 'd', ['blk'])
+LB = L('p', '생명력 최대치 +(150—174) (훼손)', '+(150—174) to maximum Life (desecrated)', 'd')
 FR = L('s', '화염 저항 +(41—45)%', '+(41—45)% to Fire Resistance', 'n', ['fr'])
 CR = L('s', '냉기 저항 +(41—45)%', '+(41—45)% to Cold Resistance', 'n', ['cr'])
 DF = L('s', '회피의 (21—23)%와 동일한 튕겨내기 평점 획득', 'Gain Deflection Rating equal to (21—23)% of Evasion Rating', 'n', ['dfl'])
@@ -148,12 +148,12 @@ A(id='k1', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb',
 A(id='k2', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation', 'Omen_of_Dextral_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접미 옵션 2개 — 튕겨내기 2티어 + 잡옵', 'Two suffixes: T2 deflection + junk'),
   show=['fr', 'cr', 'lr', 'dfl'],
-  edges=SR({'q2': {'res': 'ok', 'label': K('접미 완성', 'Suffixes done')}, 'k3': {'res': 'ok', 'label': K('좋은 접미 2개 + 잡옵', 'Two good suffixes + junk')},
+  edges=SR({'k3': {'res': 'ok', 'label': K('좋은 접미 2개 + 잡옵', 'Two good suffixes + junk')},
             'k2x': {'res': 'fail', 'label': K('좋은 접미 1개뿐', 'Only one good suffix')}}),
   item=[EV, FR, DF, J('s')])
 A(id='k2x', kind='cleanup', group='main', pos=[1, 9.4], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('분열 + 옵션 1개까지 지우기', 'Annul down to the fracture + one option'),
-  edges=[{'to': 'k1', 'res': 'fail', 'label': K('카오스부터', 'Back to Chaos')}])
+  edges=[{'to': 'k1', 'label': K('카오스부터', 'Back to Chaos')}])
 A(id='k3', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
   goal=K('접미 냉기 저항 1티어 — 가장 낮은 레벨 잡옵 바꾸기', 'T1 cold resistance suffix: reroll the lowest-level junk'), show=['fr', 'cr', 'lr'],
   edges=SR({'q2': {'res': 'ok'}, 'k3e': {'res': 'fail', 'label': K('새 옵션이 접두로', 'New option went to a prefix')},
