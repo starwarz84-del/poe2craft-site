@@ -70,7 +70,7 @@
 | belton-plus8-wand-v2 | j0FeuX0NZQI | bal 38, ess 12 | 0 | 대기 |  |  |
 | sihan-chayula-sceptre-v2 | -F7pV0Y7BMA | bal 36, ess 13 | 0 | 대기 |  |  |
 | diztoh-onehand-mace-v2 | WDEkEIQFgT4 | bal 33, ess ? | 0 | 진행 중 11-13 · G3 | G3(Opus 5.5) |  |
-| sihan-chayula-helmet-v2 | z_r1uAYIusk | bal 31, ess 15 | 0 | 대기 |  |  |
+| sihan-chayula-helmet-v2 | z_r1uAYIusk | bal 31, ess 15 | 0 | 진행 중 11-13 · G1 | G1(Opus 5.5) |  |
 | fubgun-phys-bow-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 28, ess ? | 3 | 대기 |  |  |
 | lilbotq-armour-shield-v2 | 4YOSSAa53UU | bal 27, ess 7 | 0 | 대기 |  |  |
 | sihan-chayula-gloves-v2 | Sf-2cvWhQY0 | bal 27, ess 23 | 1 | 대기 |  |  |
