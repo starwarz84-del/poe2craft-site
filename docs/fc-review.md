@@ -47,8 +47,8 @@
 | saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 완료 11-12 | A(Opus) | 자막 전체 대조, 첫 번째 집중구 단계 일치(기록 tools/notes/saveq-R43FVay8_XI.md). 하이엔드 에너지 보호막 접두도 1티어(C17). 343/208 → 504/208 |
 | mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/mazbro-kULlZJBSec4.md). 하이엔드 공개 목표 1티어(C17). 222/201 → 233/201 |
 | diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-GDLDxn6yxEs.md). C17: 에센셜은 공개 나오는 대로(영상과 같음). 149/24/3 |
-| bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 진행 중 | A(Opus) |  |
-| ragna-spell4-amulet-v2 | Tzpdm8M-Pkk | bal 118, ess 27 | 0 | 진행 중 | A(Opus) |  |
+| bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 완료 11-12 | A(Opus) | 글 다시 확인(6/22판), 가성비 길 단계 일치(기록 tools/notes/web-bigdaddy-wand.md). 완성품 임의 문구를 태그로. 비용 그대로 |
+| ragna-spell4-amulet-v2 | Tzpdm8M-Pkk | bal 118, ess 27 | 0 | 완료 11-12 | A(Opus) | 자막 전체(3:34) 대조, 단계 일치(기록 tools/notes/ragna-Tzpdm8M-Pkk.md). C17도 맞음. 변경 없음 |
 | mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 대기 |  |  |
 | fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 대기 |  |  |
 | diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 대기 |  |  |
@@ -102,7 +102,7 @@
 | banzino-mirror-staff-v2 | bal·high | - | 완료 11-12 | A(Opus) 하이엔드만 레시피(극한). 플로우차트 밸런스: 시전 속도·훼손 접두 1~2티어, 마지막 접두·접미 랜덤 — 3,325 → 664 |
 | barricade-quarterstaff-v2 | bal·high | - | 완료 11-12 | A(Opus) 밸런스 원소 피해 접두 2개 1~2티어(전엔 1개), 세번째 랜덤 — 346 → 619. 하이엔드 2,617 그대로 |
 | belton-plus8-wand-v2 | ess·bal | ess 주문 피해 1~5티어; ess 마나 재생 1~3티어; bal 주문 피해 1~3티어; bal 마나 재생 1티어 | 대기 |  |  |
-| bigdaddy-lightning-wand-v2 | ess·bal | - | 대기 |  |  |
+| bigdaddy-lightning-wand-v2 | ess·bal | bal 마지막 접두 1~2티어(빛), ess 1~4티어·공개 그대로 | 완료 11-12 | A(Opus) | 이미 맞음 |
 | breach-ring-phys-v2 | ess·bal | ess 화염 저항 1~3티어; bal 공격 시 원소 피해 1~3티어 | 대기 |  |  |
 | breach-ring-video-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 접미 1~2티어, 마지막 훼손 접두 랜덤(메아리 없음) — 934 → 651 |
 | chiba-timelost-emerald-v2 | bal·high | - | 대기 |  |  |
@@ -146,7 +146,7 @@
 | noble-timelost-sapphire-v2 | bal·high | 주얼이라 티어 없음 | 완료 11-12 | A(Opus) | 변경 없음 |
 | noble-visceral-quiver-v2 | bal·high | bal 치명타 피해 1~3티어; high 치명타 피해 1~2티어 | 완료 11-12 | A(Opus) | 하이엔드 모두 1티어(영상 '치피 1티'), 밸런스 1~2티어·마지막 접두·접미 랜덤 — 110 → 110 |
 | ragna-ashot-bow-v2 | ess·bal | ess 물리 피해 % 1~3티어; bal 물리 피해 % 1티어 | 대기 |  |  |
-| ragna-spell4-amulet-v2 | ess·bal | ess 정신력 (분열) 1~3티어; bal 정신력 (분열) 1티어 | 대기 |  |  |
+| ragna-spell4-amulet-v2 | ess·bal | bal 1~2티어(영상), ess 결과 그대로·빛 없음 | 완료 11-12 | A(Opus) | 이미 맞음 |
 | sane-resist-belt-v2 | ess·bal | ess 생명력 1~3티어; ess 번개 저항 1~3티어; bal 생명력 1티어 | 대기 |  |  |
 | saveq-absent-amulet-v2 | ess·bal·high | - | 완료 11-12 | A(Opus) | 에센셜 빛의 징조 없이 공개 한 번(랜덤 옵션) — 729 → 688 |
 | saveq-alloy-focus-v2 | ess·bal | ess 공개 목표 1~3티어; bal 공개 목표 1티어 | 대기 |  |  |

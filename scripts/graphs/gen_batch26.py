@@ -96,7 +96,8 @@ g22('fubgun-crit-bow-v2',c,'Warmonger Bow',75,
 c='Wands'
 P={'bal':{'L':1,'pT':2},'ess':{'L':0,'pT':4}}
 tags={'l5':{'gi':13,'tmax':1},'crit':{'gi':20,'tmax':1},'trans':{'gi':60},'blk':{'gi':1},
-      'gp':{'anyOf':[{'gi':3,'tmax':'$pT'},{'gi':7,'tmax':'$pT'},{'gi':4,'tmax':'$pT'},{'gi':28,'tmax':'$pT'}]}}
+      'gp':{'anyOf':[{'gi':3,'tmax':'$pT'},{'gi':7,'tmax':'$pT'},{'gi':4,'tmax':'$pT'},{'gi':28,'tmax':'$pT'}],'label':K('주문 피해·번개 피해·주문 피해 + 마나·번개 피해 추가 획득','Spell, lightning, spell + mana or extra lightning damage')}}
+# 2026-11-12 글 다시 확인(내장 브라우저, 6/22 수정판, 메인 세션): 가성비 길(+6) 단계 일치. 등급 C17: 밸런스 마지막 접두 1~2티어(빛의 징조로 다시), 에센셜 1~4티어·공개 나오는 대로. 완성품 줄의 임의 문구를 태그로.
 L5=itg('s',c,13,['l5'],'f'); CR=itg('s',c,20,['crit']); TR=itg('s',c,60,['trans'],'c',suffix=('제작 옵션','crafted'))
 MA=it('p','마나 최대치 (훼손, 자리 막기)','Max mana (desecrated, slot blocker)',['blk'],'d')
 GP=it('p','주문 피해 / 번개 피해 / 주문 피해·마나 복합 / 번개 피해 추가 획득','Spell, lightning, hybrid spell/mana or extra lightning damage',['gp'])
@@ -122,7 +123,7 @@ g22('bigdaddy-lightning-wand-v2',c,'Dueling Wand',81,
   {'L':{'kr':'훼손 공개','en':'Desecration reveals','values':LV},'pT':{'kr':'마지막 접두','en':'Last prefix','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})}},P,
   {'bal':K('마나 막기·마지막 접두 모두 빛의 징조로 다시, 엑잘은 완벽한 엑잘티드 오브','Retry both reveals with Light; perfect exalts'),'ess':K('공개 결과 그대로, 엑잘은 상위 엑잘티드 오브','Keep both reveals; greater exalts')},
   tags,nodes,[{'id':'L1','nodes':['w4','w5','w5x'],'kr':'접두 자리 막기','en':'Prefix blocker'},{'id':'L2','nodes':['w8','w9','w9x'],'kr':'접두 마지막 옵션(훼손)','en':'Last prefix (desecrated)'}],
-  FIN(VB,lambda v:[{'tag':'gp','label':K('주문 피해·번개 피해 등','Spell or lightning damage')},{'side':'p','random':True},{'side':'p','label':K('주문 피해·번개 피해 등' if v=='bal' else '공개 결과 그대로','Spell or lightning damage' if v=='bal' else 'Reveal as it comes')},{'tag':'l5','fr':True},{'tag':'crit','tmax':1},{'tag':'trans','tmax':1}]),
+  FIN(VB,lambda v:[{'tag':'gp'} if v=='bal' else {'side':'p','random':True},{'side':'p','random':True},{'side':'p','random':True},{'tag':'l5','fr':True},{'tag':'crit','tmax':1},{'tag':'trans','tmax':1}]),
   {'quality':20,'sockets':1},{'all':[{'has':'l5'},{'has':'crit'},{'has':'trans'},{'full':'p'}]},VB)
 
 # ---------- 5. Fubgun 투사체 +3 목걸이 ----------
