@@ -56,6 +56,7 @@ def _kitava(r, t):
     _node(r,'t4')['br']=K('받는 물리 피해 감소가 없으면 물리 피해 감소, 있으면 저항 최대치를 고름. 빗나가면 빛의 징조 + 소멸의 오브 → {#t3}번','Pick physical damage reduction if the item lacks it, otherwise maximum resistance. Miss: Omen of Light + Annulment → step {#t3}')
     _node(r,'t7')['br']=K('절사의 징조는 요구 레벨이 가장 낮은 옵션을 바꿈. 방어도 최대치·% 1티어는 레벨 75, 복합 1티어와 가시 피해 1티어는 74라 마지막 칸은 복합이 나올 때까지 반복',
         'Whittling hits the lowest-level option: flat and % armour T1 are level 75, the hybrid T1 and thorns T1 are 74, so the last slot repeats until the hybrid lands')
+    _node(r,'t2')['tips']=['chaos-after-fracture-families']   # 17:24 STEP 10 '이미 붙은 옵션은 중복 등장하지 않음'(마스터 지시 2026-11-12)
     r['start'].pop('quality',None); r.pop('prep',None)
 _grade('tankjung-kitava-shield','tankjung-kitava-shield-v2','bal',_kitava)
 _r=_cp.deepcopy(_orig('tankjung-kitava-shield')); _r.update(id='tankjung-kitava-shield-v2',tierGroup='tankjung-kitava-shield-v2',tier='high',tierLabel=K('하이엔드','High-end')); _r.pop('note',None); _kitava(_r,'high'); R.append(_r)
