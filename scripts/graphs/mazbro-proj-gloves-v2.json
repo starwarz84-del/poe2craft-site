@@ -4,7 +4,7 @@
  "cls": "Gloves_str_dex",
  "base": "Blacksteel Gauntlets",
  "ilvl": 80,
- "note": "MazBro 투사체 +2 분열 장갑(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 특출난 검은강철 건틀릿 → 콜르의 사냥 → 완벽한 진화·확장·제왕 → 소멸로 옵션 1개 → 카오스 오브(투사체 +2) → 완벽한 엑잘 + 좌측 찬미 + 상위 찬미(접두 2개) → 고대 갈비뼈 + 우측 강령술 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 아스트리드의 창의성 → 카오스 오브(접두 투사체 피해 1티어) → 상위 엑잘 + 우측 찬미(접미 치명타 확률·관통, 빗나가면 우측 결정화 + 군왕의 합금 → 우측 결정화 + 발작의 에센스 → 소멸) → 고대 갈비뼈(접두) → 공개(투사체 속도, 빛의 징조로 다시). 퀄리티 30%·룬벼림·신성한 오브·룬 교체는 비용에서 뺌.",
+ "note": "MazBro 투사체 +2 분열 장갑(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 특출난 검은강철 건틀릿 → 콜르의 사냥 → 완벽한 진화·확장·제왕 → 소멸로 옵션 1개 → 카오스 오브(투사체 +2) → 완벽한 엑잘 + 좌측 찬미 + 상위 찬미(접두 2개) → 고대 갈비뼈 + 우측 강령술 → 아스트리드의 창의성 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 카오스 오브(접두 투사체 속도 1티어) → 상위 엑잘 + 우측 찬미(접미 치명타 확률·관통, 빗나가면 우측 결정화 + 군왕의 합금 → 우측 결정화 + 발작의 에센스 → 소멸) → 고대 갈비뼈(접두) → 공개(투사체 피해, 빛의 징조로 다시). 퀄리티 30%·룬벼림·신성한 오브·룬 교체는 비용에서 뺌.",
  "params": {
   "t": {
    "kr": "반복 목표",
@@ -66,20 +66,20 @@
    "gi": 81,
    "tmax": 1
   },
-  "pdmg1": {
-   "gi": 70,
-   "tmax": 1
-  },
-  "pspd": {
-   "gi": 72,
-   "tmax": "$t"
-  },
   "pspd1": {
    "gi": 72,
    "tmax": 1
   },
-  "pspd2": {
-   "gi": 72,
+  "pdmg": {
+   "gi": 70,
+   "tmax": "$t"
+  },
+  "pdmg1": {
+   "gi": 70,
+   "tmax": 1
+  },
+  "pdmg2": {
+   "gi": 70,
    "tmax": 2
   },
   "crit": {
@@ -149,7 +149,7 @@
  "require": {
   "all": [
    {
-    "has": "pdmg1"
+    "has": "pspd1"
    },
    {
     "has": "ss"
@@ -161,7 +161,7 @@
     "has": "hyst"
    },
    {
-    "has": "pspd"
+    "has": "pdmg"
    },
    {
     "has": "proj"
@@ -219,10 +219,10 @@
    "en": "High-end",
    "lines": [
     {
-     "tag": "pdmg1"
+     "tag": "pspd1"
     },
     {
-     "tag": "pspd1",
+     "tag": "pdmg1",
      "des": true
     },
     {
@@ -246,10 +246,10 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "pdmg1"
+     "tag": "pspd1"
     },
     {
-     "tag": "pspd2",
+     "tag": "pdmg2",
      "des": true
     },
     {
@@ -631,6 +631,68 @@
    },
    "edges": [
     {
+     "to": "pA"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2 (콜르)",
+     "en": "+2 projectile skills (Kolr)",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "pA",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "rune",
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
+   },
+   "edges": [
+    {
      "to": "p7"
     }
    ],
@@ -670,7 +732,7 @@
    "group": "prep",
    "pos": [
     0,
-    9
+    10
    ],
    "act": "fracture",
    "cur": "Fracturing_Orb",
@@ -728,7 +790,7 @@
    "group": "prep",
    "pos": [
     1,
-    9
+    10
    ],
    "simTo": "h1",
    "variant": "fail",
@@ -747,7 +809,7 @@
    "group": "prep",
    "pos": [
     0,
-    10
+    11
    ],
    "keep": [],
    "maxJunk": 1,
@@ -792,9 +854,9 @@
    "group": "main",
    "pos": [
     0,
-    12.0
+    13.0
    ],
-   "next": "kA",
+   "next": "k11",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -818,67 +880,17 @@
    ]
   },
   {
-   "id": "kA",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    12.4
-   ],
-   "act": "rune",
-   "goal": {
-    "kr": "아스트리드의 창의성 장착",
-    "en": "Socket Astrid’s Creativity"
-   },
-   "label": {
-    "kr": "룬",
-    "en": "Rune"
-   },
-   "edges": [
-    {
-     "to": "k11"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (콜르)",
-     "en": "+2 projectile skills (Kolr)",
-     "m": "f",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "showText": [
-    {
-     "kr": "제작 옵션 하나 더",
-     "en": "One more crafted modifier"
-    }
-   ],
-   "rune": {
-    "kr": "아스트리드의 창의성",
-    "en": "Astrid’s Creativity"
-   }
-  },
-  {
    "id": "k11",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    13.4
+    14.4
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접두 투사체 피해 1티어",
-    "en": "T1 projectile damage prefix"
+    "kr": "접두 투사체 속도 1티어",
+    "en": "T1 projectile speed prefix"
    },
    "label": {
     "kr": "카오스",
@@ -887,7 +899,7 @@
    "edges": [
     {
      "if": {
-      "has": "pdmg1"
+      "has": "pspd1"
      },
      "to": "k12",
      "res": "ok"
@@ -909,17 +921,17 @@
     },
     {
      "s": "p",
-     "kr": "투사체 피해 1티어 (콜르)",
-     "en": "T1 projectile damage (Kolr)",
+     "kr": "투사체 속도 1티어 (콜르)",
+     "en": "T1 projectile speed (Kolr)",
      "m": "n",
      "tags": [
-      "pdmg1"
+      "pspd1"
      ]
     }
    ],
    "cur": "Chaos_Orb",
    "show": [
-    "pdmg1"
+    "pspd1"
    ]
   },
   {
@@ -928,7 +940,7 @@
    "group": "main",
    "pos": [
     1,
-    12.9
+    13.9
    ],
    "keep": [],
    "maxJunk": 1,
@@ -957,7 +969,7 @@
    "group": "main",
    "pos": [
     0,
-    14.4
+    15.4
    ],
    "act": "exalt",
    "goal": {
@@ -973,7 +985,7 @@
      "if": {
       "all": [
        {
-        "has": "pdmg1"
+        "has": "pspd1"
        },
        {
         "has": "ss"
@@ -1058,11 +1070,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "투사체 피해 1티어 (콜르)",
-     "en": "T1 projectile damage (Kolr)",
+     "kr": "투사체 속도 1티어 (콜르)",
+     "en": "T1 projectile speed (Kolr)",
      "m": "n",
      "tags": [
-      "pdmg1"
+      "pspd1"
      ]
     },
     {
@@ -1095,7 +1107,7 @@
    "skipIf": {
     "all": [
      {
-      "has": "pdmg1"
+      "has": "pspd1"
      },
      {
       "has": "ss"
@@ -1117,7 +1129,7 @@
    "group": "main",
    "pos": [
     1,
-    14.4
+    15.4
    ],
    "act": "essence",
    "goal": {
@@ -1141,11 +1153,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "투사체 피해 1티어 (콜르)",
-     "en": "T1 projectile damage (Kolr)",
+     "kr": "투사체 속도 1티어 (콜르)",
+     "en": "T1 projectile speed (Kolr)",
      "m": "n",
      "tags": [
-      "pdmg1"
+      "pspd1"
      ]
     },
     {
@@ -1186,7 +1198,7 @@
    "group": "main",
    "pos": [
     1,
-    15.4
+    16.4
    ],
    "act": "essence",
    "goal": {
@@ -1210,11 +1222,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "투사체 피해 1티어 (콜르)",
-     "en": "T1 projectile damage (Kolr)",
+     "kr": "투사체 속도 1티어 (콜르)",
+     "en": "T1 projectile speed (Kolr)",
      "m": "n",
      "tags": [
-      "pdmg1"
+      "pspd1"
      ]
     },
     {
@@ -1264,10 +1276,10 @@
    "group": "main",
    "pos": [
     1,
-    16.4
+    17.4
    ],
    "keep": [
-    "pdmg1",
+    "pspd1",
     "ward",
     "hyst",
     "ss"
@@ -1287,12 +1299,12 @@
    },
    "edges": [
     {
-     "lost": "pdmg1",
+     "lost": "pspd1",
      "to": "kz",
      "port": "right",
      "label": {
-      "kr": "투사체 피해가 지워짐 — 카오스부터",
-      "en": "Projectile damage gone: back to Chaos"
+      "kr": "투사체 속도가 지워짐 — 카오스부터",
+      "en": "Projectile speed gone: back to Chaos"
      }
     },
     {
@@ -1332,7 +1344,7 @@
    "group": "main",
    "pos": [
     0,
-    17.4
+    18.4
    ],
    "act": "desecrate",
    "goal": {
@@ -1351,11 +1363,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "투사체 피해 1티어 (콜르)",
-     "en": "T1 projectile damage (Kolr)",
+     "kr": "투사체 속도 1티어 (콜르)",
+     "en": "T1 projectile speed (Kolr)",
      "m": "n",
      "tags": [
-      "pdmg1"
+      "pspd1"
      ]
     },
     {
@@ -1416,12 +1428,12 @@
    "group": "main",
    "pos": [
     0,
-    18.4
+    19.4
    ],
    "act": "reveal",
    "goal": {
-    "kr": "접두 투사체 속도",
-    "en": "Projectile speed prefix"
+    "kr": "접두 투사체 피해",
+    "en": "Projectile damage prefix"
    },
    "label": {
     "kr": "공개",
@@ -1430,7 +1442,7 @@
    "edges": [
     {
      "if": {
-      "added": "pspd"
+      "added": "pdmg"
      },
      "to": "ok",
      "res": "ok"
@@ -1444,11 +1456,11 @@
    "item": [
     {
      "s": "p",
-     "kr": "투사체 피해 1티어 (콜르)",
-     "en": "T1 projectile damage (Kolr)",
+     "kr": "투사체 속도 1티어 (콜르)",
+     "en": "T1 projectile speed (Kolr)",
      "m": "n",
      "tags": [
-      "pdmg1"
+      "pspd1"
      ]
     },
     {
@@ -1462,11 +1474,11 @@
     },
     {
      "s": "p",
-     "kr": "투사체 속도 (훼손, 콜르)",
-     "en": "Projectile speed (desecrated, Kolr)",
+     "kr": "투사체 피해 (훼손, 콜르)",
+     "en": "Projectile damage (desecrated, Kolr)",
      "m": "d",
      "tags": [
-      "pspd"
+      "pdmg"
      ]
     },
     {
@@ -1497,9 +1509,9 @@
      ]
     }
    ],
-   "want": "pspd",
+   "want": "pdmg",
    "show": [
-    "pspd"
+    "pdmg"
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
@@ -1511,7 +1523,7 @@
    "group": "main",
    "pos": [
     1,
-    18.4
+    19.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1547,7 +1559,7 @@
    "group": "main",
    "pos": [
     0,
-    19.4
+    20.4
    ],
    "label": {
     "kr": "완성",
