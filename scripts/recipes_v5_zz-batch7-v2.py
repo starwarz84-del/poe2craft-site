@@ -44,24 +44,18 @@ def _focus(r, t):
         _node(r,'vr3')['target']['reveal']={'anyOf':rev}
 for _t in ('bal','ess'): _grade('saveq-alloy-focus','saveq-alloy-focus-v2',_t,_focus)
 
-# 5. 탱정 키타바 방패 — 난이도 4(사용자 확정 2026-11-12) = 하이엔드(영상) + 밸런스. 단계·확률은 플로우차트(graph2recipe)가 다시 쓰고, 여기서는 영상 시간·분기 줄·베이스 설명만 정함.
-#    영상 시간은 2026-11-12 W6 화면 확인(evidence/tankjung-kitava-shield-v2/timeline.md).
+# 5. 탱정 키타바 방패 — 난이도 4(사용자 확정 2026-11-12) = 하이엔드(영상) + 밸런스. 단계·확률·준비 과정은 플로우차트(graph2recipe)가 다시 쓰고, 여기서는 베이스 설명·분기 줄만 정함.
+#    영상 시각은 build_recipes.py FC_TS(2026-11-12 W5 영상 전체 재대조, 근거 scratchpad review/W5-kitava-shield/timeline.md).
 def _kitava(r, t):
     m={'high':1,'bal':2}[t]
     for x in _node(r,'t2')['target']['anyOf']: x['tmax']=1
     _node(r,'t4')['target']['reveal']={'anyOf':[dict(x,tmax=m) for x in TJ_MAXRES]}
-    _drop(r,'t10','t11','t12')
-    _node(r,'t1').update(ts='14:30',note=K('특출난 타호아의 거대 방패(소켓 2개), 아이템 레벨 정확히 81, 일반 등급·미타락. 접미 4종 중 하나를 분열해 둔 상태에서 시작.',
-        'Exceptional Tawhoan Tower Shield (two sockets), item level exactly 81, normal and not corrupted. Starts once one of the four suffixes is fractured.'))
-    for nid,ts in (('t2','17:25'),('t3','17:55'),('t4','17:55'),('t5','19:04'),('t6','19:04'),('t7','19:08')): _node(r,nid)['ts']=ts
+    _drop(r,'t8','t9','t10','t11','t12')
+    _node(r,'t1')['note']=K('특출난 타호아의 거대 방패(소켓 2개), 아이템 레벨 정확히 81, 일반 등급·미타락·미축성.',
+        'Exceptional Tawhoan Tower Shield (two sockets), item level exactly 81, normal, not corrupted or sanctified.')
     _node(r,'t4')['br']=K('빗나가면 빛의 징조 + 소멸의 오브 → {#t3}번','Miss: Omen of Light + Annulment → step {#t3}')
-    _node(r,'t7')['br']=K('절사의 징조는 요구 레벨이 가장 낮은 옵션을 바꿈. 방어도 최대치·% 1티어는 레벨 75, 복합 1티어는 74라 복합이 다시 바뀔 수 있음','Whittling hits the lowest-level option: flat and % armour T1 are level 75, the hybrid T1 is 74, so the hybrid can be rolled again')
-    for nid in ('t8','t9'): _node(r,nid).pop('br',None)
-    r['start'].pop('quality',None)
-    r['prep']={'start':{'rar':'normal','quality':0},'phases':[{'id':'prep','kr':'분열 준비','en':'Fracture prep'}],'nodes':[
-     {'id':'x1','phase':'prep','do':'note','ts':'15:25','note':K('완벽한 진화의 오브로 시작해 접두가 붙으면 완벽한 확장의 오브, 빗나간 접미는 소멸의 오브로 지우고 다시. 목표는 접미 4종(받는 물리 피해 8% 감소, 화염·냉기·번개 저항 최대치 +3%) 중 하나. 냉기·번개가 나오면 맹렬한 유동체로 화염으로 바꿈.',
-       'Start with a Perfect Orb of Transmutation; on a prefix add a Perfect Orb of Augmentation, annul a missed suffix and retry, until one of the four suffixes (8% physical damage reduction, +3% maximum fire, cold or lightning resistance). Turn cold or lightning into fire with Blazing Flux.')},
-     {'id':'x2','phase':'prep','do':'note','ts':'16:55','note':K('옵션이 1개면 완벽한 확장의 오브를 먼저 쓰고 완벽한 제왕의 오브로 옵션 3개. 보존된 갈비뼈로 훼손 옵션을 붙이고 공개하지 않은 채 분열의 오브. 다른 옵션이 분열되면 새 베이스.',
-       'With one option add a Perfect Orb of Augmentation first, then a Perfect Regal Orb for three options. Add a Preserved Rib desecration, leave it unrevealed and use a Fracturing Orb. Another option fractured means a new base.')}]}
+    _node(r,'t7')['br']=K('절사의 징조는 요구 레벨이 가장 낮은 옵션을 바꿈. 방어도 최대치·% 1티어는 레벨 75, 복합 1티어와 가시 피해 1티어는 74라 마지막 칸은 복합이 나올 때까지 반복',
+        'Whittling hits the lowest-level option: flat and % armour T1 are level 75, the hybrid T1 and thorns T1 are 74, so the last slot repeats until the hybrid lands')
+    r['start'].pop('quality',None); r.pop('prep',None)
 _grade('tankjung-kitava-shield','tankjung-kitava-shield-v2','bal',_kitava)
 _r=_cp.deepcopy(_orig('tankjung-kitava-shield')); _r.update(id='tankjung-kitava-shield-v2',tierGroup='tankjung-kitava-shield-v2',tier='high',tierLabel=K('하이엔드','High-end')); _r.pop('note',None); _kitava(_r,'high'); R.append(_r)

@@ -611,6 +611,7 @@ PREP_DROPPED=[]
 # 플로우차트 읽기 레시피의 단계 시각은 옛 단계 레시피(같은 id 상자, 베이스는 옛 베이스 단계)에서 옴 — 틀린 곳만 여기서 고침(그래프 id → {상자 id 또는 'base': 시각})
 FC_TS={'mazbro-proj-gloves-v2': {'base':'2:00','pk':'4:22','p1':'4:36','p2':'4:50','p3':'5:02','p3x':'5:05','p4':'5:15','p5':'6:55','p6':'7:03','p7':'8:45','xj':'7:10','p8':'12:15','pA':'8:06','k11':'15:56','kz':'13:40','k12':'15:58','ka':'16:00','kb':'16:03','kc':'13:30','k13':'17:35','k14':'17:50','k14x':'17:56'}}   # 2026-11-12 W1 영상 전체 재대조(화면 캡처 근거 scratchpad review/W1-mazbro-gloves/timeline.md) — 새 플로우차트 상자 id별 영상 시각   # 플로우차트 읽기를 끈 레시피(문제가 있을 때만)
 FC_TS['diztoh-vile-robe-v2']={'base':'2:05','p1':'2:23','v2':'3:19','v3':'3:35','v3x':'4:20','v4':'6:10','v5':'4:55','v6':'8:56','v6a':'9:34','v6b':'9:58','v6c':'10:27','v7':'11:30','v8a':'12:29','v8':'13:20','v8b':'14:36'}   # 2026-11-12 W4 영상 전체 재대조(화면 캡처 근거 scratchpad review/W4-vile-robe/timeline.md) — v8c·v8x는 영상에 없음
+FC_TS['tankjung-kitava-shield-v2']={'base':'14:28','m1':'15:52','m2':'15:52','m2x':'15:52','fl':'16:18','r1':'16:44','r2':'16:44','f1':'16:44','f2':'17:14','xj':'17:14','f4':'17:24','t2':'17:24','t3':'17:54','t4':'17:54','t4x':'17:54','t5':'19:04','t6':'19:04','t7':'19:08'}   # 2026-11-12 W5 영상 전체 재대조(슬라이드가 바뀌는 시각, 근거 scratchpad review/W5-kitava-shield/timeline.md)
 # flowchart + simulation (tools/sim/run.js → site/data/sim/<id>.json): the recipe tab shows its button only when the file exists
 for _r in R:
     _sid=_r.get('tierGroup') or _r['id']
