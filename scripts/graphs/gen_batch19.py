@@ -79,8 +79,7 @@ _g=json.load(open(f'{H}/grasping-mail-spell1-v2.json')); _g['basePrice']={'Chaos
 P1={'high':{}}
 tags={'spirit':{'gi':15,'tmax':1},'isp':{'gi':53},'ima':{'gi':52},'hf':{'gi':56},'hc':{'gi':57},'sre':{'gi':23},
       'mkS':{'gi':47},
-      **{f'b{g}':{'gi':g} for g in (0,1,2,3,4,5,11,12,14,16,17,18,19,20,21,22,24,25,27,28,29,30,31,54,55)},
-      'blk':{'anyOf':[f'b{g}' for g in (0,1,2,3,4,5,11,12,14,16,17,18,19,20,21,22,24,25,27,28,29,30,31,54,55)],'label':K('자리 막기 옵션','Blocker line')},   # 공개에서 고를 막기 옵션 = 목표 복합 저항·마지막 훼손 옵션 밖의 접미(공개 풀에 메드베드 옵션도 있음)
+      'b14':{'gi':14},
       'hl':{'gi':58},'good':{'anyOf':['hf','hc','hl'],'label':K('원소 및 카오스 복합 저항','Elemental and chaos hybrid resistances')},
       'keepW':{'anyOf':['isp','ima','hf','hc','hl'],'label':K('남길 옵션','Lines to keep')}}
 DONE={'count':{'tag':'good','min':2}}   # 영상은 복합 저항 셋 중 둘이면 됨(17:00·19:30 번개·카오스도 '원하는 것') — 카드·상자 글은 성공 회차의 두 옵션
@@ -110,19 +109,19 @@ nodes=[
  act('e1','main',[0,3],'exalt','Greater_Exalted_Orb',K('접두 마나 최대치 % 증가','Prefix % increased maximum Mana'),None,K('엑잘','Exalt'),
      [{'if':{'has':'ima'},'to':'s0','res':'ok'},{'to':'e1x',**F,**L_('빗나감 — 소멸','Miss: annul')}],B3,show=['ima'],omens=['Omen_of_Sinistral_Exaltation']),   # 6:38 상위 엑잘(47 → 46), 7:00 자막
  annul('e1x',[1,3],[{'if':{'not':{'has':'isp'}},'to':'c1',**F,**L_('정신력 %가 지워짐 — 카오스부터','% Spirit gone: back to Chaos')},{'to':'e1','res':'ok',**L_('다시 엑잘','Exalt again')}],
-       omens=(),target=K('반반 — 빗나간 접두가 지워지길','50/50: hoping the missed prefix goes')),   # 6:44 '50/50'
+       omens=(),target=K('빗나간 접두 지우기 — 확률 반반','Remove the missed prefix — a 50/50')),   # 6:44 '50/50'
  act('s0','main',[0,4],'exalt','Greater_Exalted_Orb',K('접미 첫번째 옵션','First suffix'),[st('s','잡옵 (초당 생명력 재생)','Junk (life regeneration per second)')],K('엑잘','Exalt'),[{'to':'mA'}],B4),   # 12:46 화면 생명력 재생 2티어
  act('mA','main',[0,5],'essence','Essence_of_the_Abyss',K('접미 잡옵을 지우고 심연의 군주의 징표','The junk suffix goes for the Mark of the Abyssal Lord'),[st('s','심연의 군주의 징표','Mark of the Abyssal Lord')],K('에센스','Essence'),[{'to':'b2'}],B5,
      ess='mkS',mark=True,omens=['Omen_of_Dextral_Crystallisation'],skipIf={'not':{'junk':{'side':'s','tag':'good'}}},skipTo='b2',skipHide=True),   # 13:04 화면 징표, 12:58 우측 결정화 툴팁
  act('b2','main',[0,6],'desecrate','Preserved_Rib',K('접미 징표 훼손','Desecrate the suffix Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),
      [{'if':{'not':{'unrevSide':'s'}},'to':'b2n',**L_('징표 없음 — 빈자리에 훼손','No Mark: desecrate the open slot')},{'to':'b3'}],B6,
      fromMark=True,skipIf={'not':{'has':'mkS'}},skipTo='b2n',skipHide=True),   # 징표가 없으면 건너뜀 — 그 통과 수가 b2 → b2n 선에 붙음   # 10:30 자막 '보존된 갈비뼈', 13:36 가방 II 뼈
- act('b2n','main',[1,6],'desecrate','Preserved_Rib',K('접미 빈자리 훼손','Desecrate the open suffix'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'b3'}],B6,omens=['Omen_of_Dextral_Necromancy']),   # 30:58~31:04 두 번째 흉갑 '막기 먼저 훼손'(접미 빈자리), 첫 흉갑 성공 회차에는 없음
- act('b3','main',[0,7],'reveal',None,K('자리 막기 옵션 확인','Reveal the blocker'),[st('s','초당 생명력 재생','Life Regeneration per second')],K('공개','Reveal'),RM({'s1':{}}),B7,want='blk',omens=['Omen_of_Abyssal_Echoes']),   # 13:38~13:43 화면 공개 2번(메아리), 생명력 재생 선택
+ act('b2n','main',[2,6],'desecrate','Preserved_Rib',K('접미 빈자리 훼손','Desecrate the open suffix'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'b3'}],B6,omens=['Omen_of_Dextral_Necromancy']),   # 30:58~31:04 두 번째 흉갑 '막기 먼저 훼손'(접미 빈자리), 첫 흉갑 성공 회차에는 없음
+ act('b3','main',[0,7],'reveal',None,K('자리 막기 옵션 확인','Reveal the blocker'),[st('s','초당 생명력 재생','Life Regeneration per second')],K('공개','Reveal'),RM({'s1':{}}),B7,want='b14',missPick='lvl',omens=['Omen_of_Abyssal_Echoes']),   # 생명력 재생이 없으면 가장 높은 레벨 옵션(16:04 편집 자막 '높은 레벨로 막기')   # 13:38~13:43 화면 공개 2번(메아리), 생명력 재생 선택
  act('s1','main',[0,8],'exalt','Perfect_Exalted_Orb',K('접미 화염·카오스 저항 + 냉기·카오스 저항','Suffix fire and chaos + cold and chaos resistances'),None,K('엑잘','Exalt'),RM({'f1':'ok','w1':F,'da':F}),BL,show=['hf','hc'],omens=['Omen_of_Greater_Exaltation']),   # 14:30·23:47 상위 찬미 + 완벽한 엑잘
  act('w1','main',[1,8],'chaos','Perfect_Chaos_Orb',K('가장 낮은 잡옵을 다시','Reroll the lowest junk line'),None,K('카오스','Chaos'),RM({'f1':'ok','s1':F}),BL,show=['hf','hc'],omens=['Omen_of_Whittling']),   # 18:10·24:36~24:42 절사
  annul('da',[2,8],RM({'s1':{'res':'ok'},'mA':F}),omens=('Omen_of_Dextral_Annulment',),target=K('접미 잡옵 지우기','Remove a junk suffix')),   # 15:00 빛의 징조를 끄고 우측 소멸
- annul('f1',[0,9],[{'to':'f2'}],target=K('자리 막기 훼손 옵션 제거','Remove the blocking desecration')),   # 26:40 빛의 징조로 화염 저항 제거
+ annul('f1',[0,9],[{'if':DONE,'to':'f2'},{'to':'mA','hide':True}],target=K('자리 막기 훼손 옵션 제거','Remove the blocking desecration')),   # 막기 자리에 복합 저항이 붙어 있었으면(시뮬 드묾) 막기부터 다시   # 26:40 빛의 징조로 화염 저항 제거
  act('f2','main',[0,10],'desecrate','Ancient_Rib',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'f3'}],B10),   # 26:30 자막 '고대 갈비뼈 14개'
  act('f3','main',[0,11],'reveal',None,K('접미 정신력 점유 효율','Suffix Spirit Reservation Efficiency'),None,K('공개','Reveal'),[{'if':{'added':'sre'},'to':'ok','res':'ok'},{'to':'f3x',**F}],B11,want='sre',show=['sre'],omens=['Omen_of_Abyssal_Echoes']),   # 27:30 화면 6% 선택
  annul('f3x',[1,11],[{'to':'f2',**L_('다시 훼손','Desecrate again')}]),   # 27:05~27:28 빛의 징조 + 소멸 반복
@@ -144,7 +143,7 @@ _gp=f"{H}/mazbro-bis-chest-v2.json"; _g=json.load(open(_gp))
 for _n in _g['nodes']:
     if _n.get('group')=='main': _n['pos']=[_n['pos'][0], _n['pos'][1]+8.4]
 _g['basePrice']={'Chaos_Orb':1}   # 2:50 노트 'Conjurer Mantle Cloak … 1 Chaos'
-_SP=lambda m='n': {'s':'p','kr':'정신력 +(57—61)','en':'+(57—61) to Spirit','m':m,'tags':['spirit']}
+_SP=lambda m='n': {'s':'p','kr':'정신력 +(57—61)'+(' (분열)' if m=='f' else ''),'en':'+(57—61) to Spirit'+(' (fractured)' if m=='f' else ''),'m':m,'tags':['spirit']}
 _JK=lambda s: {'s':s,'kr':'잡옵','en':'Junk','m':'j'}
 _prep=[
  {'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'p1','start':{'rar':'normal','mods':[]},'label':K('요술사 외투 구입 (노멀)','Buy a Conjurer Mantle (normal)'),'item':[]},   # 2:30 화면·2:50 노트

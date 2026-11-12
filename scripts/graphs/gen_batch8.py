@@ -139,7 +139,7 @@ tags={'life':{'gi':6,'tmax':1},'crit':{'gi':16,'tmax':2},
       'pct':{'gi':9,'tmax':'$aT'},'pct1':{'gi':9,'tmax':1},'pct2':{'gi':9,'tmax':2},'mark':{'gi':47}}
 conds={'sOK':{'all':[{'has':'crit'},{'has':'ele'},{'any':[{'param':{'g':0}},{'has':'res'}]},{'full':'s'}]}}
 LI0=it('p','생명력 최대치 1티어','T1 maximum life',['life'])
-LI=it('p','생명력 최대치 1티어 (분열)','T1 maximum life (fractured)',['life'],'f')
+LI=it('p','생명력 최대치 1티어','T1 maximum life',['life'],'f')   # 분열 표시는 m='f'(금색)
 CR=it('s','치명타 확률 1~2티어','T1–2 critical hit chance',['crit'])
 EL=it('s','방어도 원소 피해 적용 1티어','T1 armour also applies to elemental damage',['ele'])
 RS=it('s','원소 저항 1~3티어 (유동체로 카오스 저항)','T1–3 elemental resistance (Flux turns it into chaos)',['res'])
@@ -166,11 +166,11 @@ nodes=[
      [{'if':{'has':'crit'},'to':'k1','res':'ok'},{'to':'s1','res':'fail'}],[LI,CR],show=['crit'],skipIf={'has':'crit'},skipTo='k1',skipHide=True),   # 17:01 성공 회차 치명타 26%(2티어), 창고 카오스 343 → 322(14:22·14:46)
  {'id':'kz','kind':'cleanup','group':'main','pos':[1,8],'keep':[],'maxJunk':1,'label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),'target':K('분열 + 옵션 1개만 남기기','Keep the fracture + one line'),'edges':[{'to':'s1',**L_('다시 카오스','Chaos again')}]},   # 16:30~16:40 '날아갔죠 — 다시 소멸해서 한 줄 남기고 다시 돌려'
  act('k1','main',[0,9],'exalt','Perfect_Exalted_Orb',K('접미 두번째·세번째 옵션','Second and third suffixes'),None,K('엑잘','Exalt'),
-     [{'if':{'ref':'sOK'},'to':'fx','res':'ok',**L_('방어도 원소 피해 적용·저항 성공','Armour-to-elemental and resistance hit')},{'to':'k2',**F_,**L_('빗나간 접미 — 소멸','Missed suffix: annul')}],[LI,CR,EL,RS],show=['ele','res'],omens=['Omen_of_Dextral_Exaltation','Omen_of_Greater_Exaltation'],over=[{'param':{'g':0},'set':{'item':[LI,CR,EL,R1('s')]}}]),   # 17:34 완벽한 엑잘 + 우측 찬미 + 상위 찬미(인벤 20 → 19, 징조 3 → 2, 10 → 9 — 14:48·15:03)
+     [{'if':{'ref':'sOK'},'to':'fx','res':'ok',**L_('목표 접미 성공','Target suffixes hit')},{'to':'k2',**F_,**L_('빗나간 접미 — 소멸','Missed suffix: annul')}],[LI,CR,EL,RS],show=['ele','res'],omens=['Omen_of_Dextral_Exaltation','Omen_of_Greater_Exaltation'],over=[{'param':{'g':0},'set':{'item':[LI,CR,EL,R1('s')],'show':['ele']}}]),   # 17:34 완벽한 엑잘 + 우측 찬미 + 상위 찬미(인벤 20 → 19, 징조 3 → 2, 10 → 9 — 14:48·15:03)
  act('k2','main',[1,9],'annul','Orb_of_Annulment',K('빗나간 접미 지우기 (한 개)','Remove a missed suffix (one)'),None,K('소멸','Annul'),
      [{'if':{'removed':'crit'},'to':'kz',**F_,**L_('치명타 확률이 지워짐 — 카오스부터','Crit chance gone: back to Chaos')},{'to':'k3',**L_('빈 접미에 엑잘','Exalt into the empty suffix')}],[LI,CR,EL]),   # 17:38 소멸 → 모든 소환수 +2 지워짐
  act('k3','main',[1,10],'exalt','Perfect_Exalted_Orb',K('빈 접미 하나','The empty suffix'),None,K('엑잘','Exalt'),
-     [{'if':{'ref':'sOK'},'to':'fx','res':'ok'},{'to':'k2',**F_,**L_('또 빗나감 — 소멸','Missed again: annul')}],[LI,CR,EL,RS],show=['ele','res'],omens=['Omen_of_Dextral_Exaltation'],over=[{'param':{'g':0},'set':{'item':[LI,CR,EL,R1('s')]}}]),   # 17:44 상위 찬미 끔(7/10), 17:48 방어도 원소 적용 38% 1티어(인벤 엑잘 17 → 16, 우측 찬미 10 → 9)
+     [{'if':{'ref':'sOK'},'to':'fx','res':'ok'},{'to':'k2',**F_,**L_('또 빗나감 — 소멸','Missed again: annul')}],[LI,CR,EL,RS],show=['ele','res'],omens=['Omen_of_Dextral_Exaltation'],over=[{'param':{'g':0},'set':{'item':[LI,CR,EL,R1('s')],'show':['ele']}}]),   # 17:44 상위 찬미 끔(7/10), 17:48 방어도 원소 적용 38% 1티어(인벤 엑잘 17 → 16, 우측 찬미 10 → 9)
  act('fx','main',[0,10],'flux','Void_Flux',K('원소 저항 → 카오스 저항','Elemental resistance → chaos resistance'),None,K('유동체','Flux'),[{'to':'q1'}],[LI,CR,EL,CH],
      skipIf={'param':{'g':0}},skipTo='q1',skipHide=True,skipNote=K('밸런스는 세번째 접미가 랜덤 옵션이라 건너뜀','Balance skips it: the third suffix is random')),   # 18:20~18:38 번개 저항 35%(3티어) → 카오스 저항 21%
  act('q1','main',[0,11],'exalt','Perfect_Exalted_Orb',K('접두 방어도 최대치','Flat armour prefix'),None,K('엑잘','Exalt'),

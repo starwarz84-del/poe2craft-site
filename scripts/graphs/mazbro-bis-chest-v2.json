@@ -50,67 +50,6 @@
   "b14": {
    "gi": 14
   },
-  "b0": {
-   "gi": 0
-  },
-  "b1": {
-   "gi": 1
-  },
-  "b22": {
-   "gi": 22
-  },
-  "b28": {
-   "gi": 28
-  },
-  "b29": {
-   "gi": 29
-  },
-  "b2": {
-   "gi": 2
-  },
-  "b3": {
-   "gi": 3
-  },
-  "b4": {
-   "gi": 4
-  },
-  "b5": {
-   "gi": 5
-  },
-  "b16": {
-   "gi": 16
-  },
-  "b17": {
-   "gi": 17
-  },
-  "b18": {
-   "gi": 18
-  },
-  "b20": {
-   "gi": 20
-  },
-  "blk": {
-   "anyOf": [
-    "b14",
-    "b0",
-    "b1",
-    "b22",
-    "b28",
-    "b29",
-    "b2",
-    "b3",
-    "b4",
-    "b5",
-    "b16",
-    "b17",
-    "b18",
-    "b20"
-   ],
-   "label": {
-    "kr": "생명력 재생·능력치·저항·상태 이상 감소·방어도 원소 적용",
-    "en": "Life regeneration, attributes, resistances, ailment duration or armour to elemental"
-   }
-  },
   "hl": {
    "gi": 58
   },
@@ -954,8 +893,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "반반 — 빗나간 접두가 지워지길",
-    "en": "50/50: hoping the missed prefix goes"
+    "kr": "빗나간 접두 지우기 — 확률 반반",
+    "en": "Remove the missed prefix — a 50/50"
    },
    "edges": [
     {
@@ -1240,7 +1179,7 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    1,
+    2,
     14.4
    ],
    "act": "desecrate",
@@ -1472,7 +1411,7 @@
      "en": "Life Regeneration per second"
     }
    ],
-   "want": "blk",
+   "want": "b14",
    "missPick": "lvl",
    "omens": [
     "Omen_of_Abyssal_Echoes"
@@ -1995,7 +1934,17 @@
    },
    "edges": [
     {
+     "if": {
+      "count": {
+       "tag": "good",
+       "min": 2
+      }
+     },
      "to": "f2"
+    },
+    {
+     "to": "mA",
+     "hide": true
     }
    ]
   },
