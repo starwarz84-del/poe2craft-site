@@ -149,58 +149,58 @@ A(id='k4w', kind='act', group='main', pos=[1, 10], act='chaos', cur='Greater_Cha
   goal=K('빗나간 훼손 옵션 교체', 'Replace the missed desecration'),
   showText=[K('레벨이 가장 낮은 옵션 교체', 'The lowest-level option is replaced')],
   edges=[{'if': {'all': [{'has': 'pp'}, {'not': {'des': True}}, {'not': {'has': 'eatk'}}]}, 'to': 'k2', 'label': K('다시 징표', 'Mark again')}] + route())
-A(id='k4x', kind='act', group='main', pos=[1, 9], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
+A(id='k4x', kind='act', group='main', pos=[1, 11], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('빗나간 훼손 옵션 제거', 'Remove the missed desecration'),
   edges=[{'if': {'all': [{'has': 'pp'}, {'not': {'des': True}}, {'not': {'has': 'eatk'}}, {'not': {'famBlock': 'eatk'}}]}, 'to': 'k2', 'label': K('다시 징표', 'Mark again')}] + route())
-A(id='q1', kind='act', group='main', pos=[0, 11], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
+A(id='q1', kind='act', group='main', pos=[0, 12], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 세번째 옵션', 'Third prefix'), show=['hyb'],
   skipIf={'full': 'p'}, skipTo='q1w', skipNote=K('접두가 꽉 차 있으면 건너뜀', 'Skipped when the prefixes are full'),
   edges=[{'if': {'added': 'hyb'}, 'to': 'u1', 'res': 'ok'}, {'to': 'q1w', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[PP, BLK, HY, CR])
-A(id='q1w', kind='act', group='main', pos=[1, 11], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
+A(id='q1w', kind='act', group='main', pos=[1, 12], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
   goal=K('접두 세번째 옵션', 'Third prefix'), show=['hyb'],
   edges=[{'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}, {'has': 'hyb'}]}, 'to': 'u1', 'res': 'ok', 'label': K('물리 피해 + 정확도 1티어', 'T1 physical + accuracy')},
          {'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}]}, 'to': 'q1w', 'res': 'fail', 'hide': True}] + route())
-A(id='u1', kind='act', group='main', pos=[0, 12], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
+A(id='u1', kind='act', group='main', pos=[0, 13], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 잡옵', 'A junk suffix'), showText=[{'s': 's', 'kr': '잡옵', 'en': 'Junk'}],
   skipIf={'not': {'sideLt': {'side': 's', 'n': 2}}}, skipTo='u2', skipNote=K('접미 잡옵이 이미 있으면 건너뜀', 'Skipped if a junk suffix is already there'),
   edges=[{'to': 'u2'}], item=[PP, BLK, HY, CR, J('s')])
-A(id='u2', kind='act', group='main', pos=[0, 13], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Dextral_Erasure'], label=K('카오스', 'Chaos'),
+A(id='u2', kind='act', group='main', pos=[0, 14], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Dextral_Erasure'], label=K('카오스', 'Chaos'),
   goal=K('접미 두번째 옵션', 'Second suffix'), show=['proj'],
   edges=[{'if': {'all': [{'has': 'proj'}, {'has': 'pp'}, {'has': 'hyb'}, {'has': 'eatk'}]}, 'to': 'u3', 'res': 'ok'},
          {'if': {'all': [{'not': {'has': 'proj'}}, {'has': 'pp'}, {'has': 'hyb'}, {'has': 'eatk'}]}, 'to': 'u2', 'res': 'fail', 'hide': True}] + route(),
   item=[PP, BLK, HY, CR, PJ])
-A(id='u3', kind='act', group='main', pos=[0, 14], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
+A(id='u3', kind='act', group='main', pos=[0, 15], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 잡옵', 'A junk suffix'), showText=[{'s': 's', 'kr': '잡옵', 'en': 'Junk'}],
   skipIf={'not': {'sideLt': {'side': 's', 'n': 3}}}, skipTo='u4', skipNote=K('접미 세번째 옵션이 이미 있으면 건너뜀', 'Skipped if a third suffix is already there'),
   edges=[{'to': 'u4'}], item=[PP, BLK, HY, CR, PJ, J('s')])
-A(id='u4', kind='act', group='main', pos=[0, 15], act='rune', rune=K('세를의 승리', 'Serle’s Triumph'), slots={'s': 1}, label=K('룬', 'Rune'),
+A(id='u4', kind='act', group='main', pos=[0, 16], act='rune', rune=K('세를의 승리', 'Serle’s Triumph'), slots={'s': 1}, label=K('룬', 'Rune'),
   goal=K('세를의 승리 장착 (접미 +1)', 'Socket Serle’s Triumph (+1 suffix)'), showText=[K('접미 옵션 4개', 'Four suffixes')],
   skipIf={'rune': 'Serle'}, skipTo='u5',
   edges=[{'to': 'u5'}], item=[PP, BLK, HY, CR, PJ, J('s'), SE])
-A(id='u5', kind='act', group='main', pos=[0, 16], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
+A(id='u5', kind='act', group='main', pos=[0, 17], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 잡옵', 'A junk suffix'), showText=[{'s': 's', 'kr': '잡옵', 'en': 'Junk'}],
   skipIf={'not': {'sideLt': {'side': 's', 'n': 4}}}, skipTo='u6', skipNote=K('접미 네번째 옵션이 이미 있으면 건너뜀', 'Skipped if a fourth suffix is already there'),
   edges=[{'to': 'u6'}], item=[PP, BLK, HY, CR, PJ, J('s'), J('s'), SE])
-A(id='u6', kind='act', group='main', pos=[0, 17], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
+A(id='u6', kind='act', group='main', pos=[0, 18], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
   goal=K('접미 세번째·네번째 옵션 — 남은 옵션 중 먼저 뜬 것', 'Third and fourth suffix: whichever is left comes first'), show=['arr', 'cdm'],
   edges=[{'if': {'all': [{'has': 'pp'}, {'has': 'hyb'}, {'has': 'eatk'}, {'has': 'proj'}, {'has': 'arr'}, {'has': 'cdm'}]}, 'to': 'z1', 'res': 'ok'},
          {'if': {'all': [{'has': 'pp'}, {'has': 'hyb'}, {'has': 'eatk'}, {'has': 'proj'}]}, 'to': 'u6', 'res': 'fail', 'hide': True}] + route(),
   item=[PP, BLK, HY, CR, PJ, AR, CD, SE])
-A(id='z1', kind='act', group='main', pos=[0, 18], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
+A(id='z1', kind='act', group='main', pos=[0, 19], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('자리 막기 훼손 옵션 제거', 'Remove the blocking desecration'),
   skipIf={'not': {'des': True}}, skipTo='z2', edges=[{'to': 'z2'}], item=[PP, HY, CR, PJ, AR, CD, SE])
-A(id='z2', kind='act', group='main', pos=[0, 19], act='desecrate', cur='Ancient_Jawbone', label=K('훼손', 'Desecrate'),
+A(id='z2', kind='act', group='main', pos=[0, 20], act='desecrate', cur='Ancient_Jawbone', label=K('훼손', 'Desecrate'),
   goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'z3'}],
   item=[PP, HY, UN('p'), CR, PJ, AR, CD, SE])
-A(id='z3', kind='act', group='main', pos=[0, 20], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='flat', label=K('공개', 'Reveal'),
+A(id='z3', kind='act', group='main', pos=[0, 21], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='flat', label=K('공개', 'Reveal'),
   goal=K('접두 물리 피해 추가 1티어', 'T1 flat physical prefix'), show=['flat'],
   edges=[{'if': {'added': 'flat'}, 'to': 'ok', 'res': 'ok'}, {'to': 'z3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[PP, HY, FL, CR, PJ, AR, CD, SE])
-A(id='z3x', kind='act', group='main', pos=[1, 20], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
+A(id='z3x', kind='act', group='main', pos=[1, 21], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'if': FIN, 'to': 'z2', 'label': K('다시 훼손', 'Desecrate again')}] + route())
-A(id='ok', kind='done', group='main', pos=[0, 21], label=K('완성', 'Finished'))
+A(id='ok', kind='done', group='main', pos=[0, 22], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [

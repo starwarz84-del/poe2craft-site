@@ -4,6 +4,7 @@
 # build_recipes.py copies it to recipe.basePrice.
 BASEPRICE = {
   'mirror-bow-video': None,
+  'mirror-bow-video-v2': 35,   # 영상 7:30: 퀄리티 30% 전쟁광 활 30~40 div(사용자 확정 11-13: 특출난 그대로, 35 div)
   'absent-amulet-video': None,
   'breach-ring-video': None,
   'helmet-armour-sl': None,
