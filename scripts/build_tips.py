@@ -469,6 +469,11 @@ T+=[
  {'id':'desecrate-reroll-no-light-bow','tags':[K('훼손','Desecrate')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**DZB,'ts':'8:48'},'recipes':['diztoh-iceshot-bow']},
  {'id':'reveal-high-to-steer-whittle-bow','tags':[K('절사','Whittling')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**DZB,'ts':'12:43'},'recipes':['diztoh-iceshot-bow']},
  {'id':'whittle-safe-top-level-bow','tags':[K('절사','Whittling')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**DZB,'ts':'15:43'},'recipes':['diztoh-iceshot-bow']},
+ # 흉갑(mazbro-bis-chest-v2) 검수 꿀팁 후보 1~5(2026-11-12, 근거 캡처 W7 frames: 1246·1304·1338·1343 / 1544·1604·2045 / 0956·1310 / 1208 / 2110·2225)
+ {'id':'block-high-weight-chest','tags':[K('훼손','Desecrate')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**MZC,'ts':'12:40'},'recipes':['mazbro-bis-chest']},
+ {'id':'blocker-high-level','tags':[K('절사','Whittling'),K('훼손','Desecrate')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**MZC,'ts':'15:44'},'recipes':['mazbro-bis-chest']},
+ {'id':'annul-omen-combo','tags':[K('징조','Omens'),K('실수 방지','Pitfalls')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**MZC,'ts':'9:20'},'recipes':['mazbro-bis-chest']},
+ {'id':'price-check-stop','tags':[K('시세','Prices')],'patch':'0.5.5','title':K('',''),'body':K('',''),'source':{**MZC,'ts':'21:00'},'recipes':['mazbro-bis-chest']},
 ]
 for t in T: t['recipes']=[r for r in t.get('recipes',[]) if r not in ('gold-amulet-6line',)]   # 내린 레시피(build_recipes.py REMOVED)
 # 공통 형식으로 다시 씀(사용자 확정 2026-11-12) — 글은 tips_text.py, 출처·레시피·패치는 위 T(합친 꿀팁은 모두 모음)

@@ -133,8 +133,8 @@ L_=lambda kr,en: {'label':K(kr,en)}
 F_={'res':'fail'}
 tags={'life':{'gi':6,'tmax':1},'crit':{'gi':16,'tmax':2},
       'ele':{'gi':20,'tmax':'$eT'},'ele1':{'gi':20,'tmax':1},'ele2':{'gi':20,'tmax':2},
-      'fire':{'gi':2,'tmax':3},'cold':{'gi':3,'tmax':3},'lres':{'gi':4,'tmax':3},'chaos3':{'gi':5,'tmax':3},
-      'res':{'anyOf':['fire','cold','lres','chaos3'],'label':K('원소·카오스 저항 1~3티어','T1–3 elemental or chaos resistance')},
+      'fire':{'gi':2,'tmax':3},'cold':{'gi':3,'tmax':3},'lres':{'gi':4,'tmax':3},'chaos3':{'gi':5,'tmax':3},'chaos2':{'gi':5,'tmax':2},
+      'res':{'anyOf':['fire','cold','lres','chaos2'],'label':K('원소·카오스 저항 1~3티어','T1–3 elemental or chaos resistance')},
       'flat':{'gi':8,'tmax':'$aT'},'flat1':{'gi':8,'tmax':1},'flat2':{'gi':8,'tmax':2},
       'pct':{'gi':9,'tmax':'$aT'},'pct1':{'gi':9,'tmax':1},'pct2':{'gi':9,'tmax':2},'mark':{'gi':47}}
 conds={'sOK':{'all':[{'has':'crit'},{'has':'ele'},{'any':[{'param':{'g':0}},{'has':'res'}]},{'full':'s'}]}}
@@ -143,7 +143,7 @@ LI=it('p','생명력 최대치 1티어','T1 maximum life',['life'],'f')   # 분�
 CR=it('s','치명타 확률 1~2티어','T1–2 critical hit chance',['crit'])
 EL=it('s','방어도 원소 피해 적용 1티어','T1 armour also applies to elemental damage',['ele'])
 RS=it('s','원소 저항 1~3티어 (유동체로 카오스 저항)','T1–3 elemental resistance (Flux turns it into chaos)',['res'])
-CH=it('s','카오스 저항','Chaos resistance',['chaos3'])
+CH=it('s','카오스 저항','Chaos resistance',['chaos2'])   # 공허 유동체: 원소 1~3티어 → 카오스 1~2티어(POE2DB Mod Equivalencies)
 AF=it('p','방어도 최대치 1티어','T1 flat armour',['flat'])
 MK=it('p','심연 군주의 징표','Mark of the Abyssal Lord',['mark'])
 AP=it('p','방어도 % 증가 1티어 (훼손)','T1 % increased armour (desecrated)',['pct'],'d')
@@ -211,8 +211,8 @@ graph8('sihan-highend-helmet-v2','Helmets_str','Imperial Greathelm',82,
              {**K('빛의 징조 + 소멸의 오브로 훼손 옵션 제거 → 2번부터','Omen of Light + Annulment clear it, then from step 2'),'node':'q3y'}],
     'item':[LI,AF,MK,CR,EL,CH]},
    {'id':'L3','nodes':['q6','q5','q5x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'life','fr':True},{'tag':'flat1' if v=='high' else 'flat2'},{'tag':'pct1' if v=='high' else 'pct2','des':True},{'tag':'crit'},{'tag':'ele1' if v=='high' else 'ele2'},{'tag':'chaos3'} if v=='high' else {'side':'s','random':True}]),
-  {'quality':0,'sockets':2},{'all':[{'has':'life'},{'has':'crit'},{'has':'ele'},{'has':'flat'},{'has':'pct'},{'any':[{'param':{'g':0}},{'has':'chaos3'}]},{'full':'p'},{'full':'s'}]},('high','bal'),conds=conds)
+  FIN(('high','bal'),lambda v:[{'tag':'life','fr':True},{'tag':'flat1' if v=='high' else 'flat2'},{'tag':'pct1' if v=='high' else 'pct2','des':True},{'tag':'crit'},{'tag':'ele1' if v=='high' else 'ele2'},{'tag':'chaos2'} if v=='high' else {'side':'s','random':True}]),
+  {'quality':0,'sockets':2},{'all':[{'has':'life'},{'has':'crit'},{'has':'ele'},{'has':'flat'},{'has':'pct'},{'any':[{'param':{'g':0}},{'has':'chaos2'}]},{'full':'p'},{'full':'s'}]},('high','bal'),conds=conds)
 
 # ---------- 4. Barricade 험악한 육척봉 (B4yShuKydt0) ----------
 # 원본: 퀄리티 30%, 치명타 확률 5% 분열 + 잡옵 → 카오스 오브(근접 스킬 +5) → 우측 강령술 + 보존된 턱뼈 → 공개(공격 속도·치명타 피해 1티어, 빛의 징조로 다시)
