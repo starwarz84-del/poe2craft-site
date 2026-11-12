@@ -101,7 +101,7 @@ A(id='k0', kind='base', group='prep', pos=[0, 0], next='k1',
 A(id='k1', kind='act', group='prep', pos=[0, 1], act='essence', cur='Essence_of_the_Breach', ess='maxq', label=K('에센스', 'Essence'),
   goal=K('최대 퀄리티 +20%', '+20% maximum quality'),
   showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'k2'}], item=[MQ, FR])
-A(id='k2', kind='act', group='prep', pos=[0, 2], act='quality', cur='Chayulas_Catalyst', count=60, label=K('퀄리티', 'Quality'),
+A(id='k2', kind='act', group='prep', pos=[0, 2], act='quality', cur='Chayulas_Catalyst', count=60, q=60, label=K('퀄리티', 'Quality'),
   goal=K('카오스 퀄리티 60%', '60% chaos quality'), edges=[{'to': 'km'}], item=[MQ, FR])
 
 # ---------------- 옵션 추가 작업 ----------------

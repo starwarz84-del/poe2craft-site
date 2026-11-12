@@ -147,7 +147,7 @@ A(id='a8', kind='act', group='main', pos=[1, 8.4], act='reveal', omens=['Omen_of
   edges=[{'if': {'not': {'added': 'blk'}}, 'to': 'a8x', 'res': 'fail', 'label': K('빗나감', 'Miss')}] + R1({'a9': {'res': 'ok'}}))
 A(id='a8x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'a7', 'label': K('다시 훼손', 'Desecrate again')}])
-A(id='a9', kind='act', group='main', pos=[1, 10.4], act='quality', cur='Skittering_Catalyst', count=40, label=K('퀄리티', 'Quality'),
+A(id='a9', kind='act', group='main', pos=[1, 10.4], act='quality', cur='Skittering_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('속도 퀄리티 40%', 'Speed quality 40%'), edges=[{'to': 'a10'}])
 A(id='a10', kind='act', group='main', pos=[1, 11.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'],
   cat='csCat', label=K('엑잘', 'Exalt'), goal=K('접미 세번째 옵션', 'Third suffix'), show=['cs', 'cr', 'cd'],
@@ -159,7 +159,7 @@ A(id='a10e', kind='act', group='main', pos=[1, 13.4], act='essence', cur='Essenc
   label=K('에센스', 'Essence'), goal=K('접두 하나를 지우고 최대 퀄리티', 'A prefix goes for max quality'),
   showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=R1({'a9': {}}))
 # 7·7B단계: 접두 촉진 엑잘(접힌 상자 L2)
-A(id='a11', kind='act', group='main', pos=[0, 9.4], act='quality', cur='Neural_Catalyst', count=40, label=K('퀄리티', 'Quality'),
+A(id='a11', kind='act', group='main', pos=[0, 9.4], act='quality', cur='Neural_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('마나 퀄리티 40%', 'Mana quality 40%'), edges=[{'to': 'a11x'}], item=[SP, MF, MQ, SL, DEX, CS])
 A(id='a11x', kind='act', group='main', pos=[2, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Sinistral_Annulment'], label=ANN, goal=ANN,
   target=K('잡옵 접두 지우기', 'Remove the junk prefix'), skipIf={'sideLt': {'side': 'p', 'n': 3}}, skipTo='a12',
@@ -171,7 +171,7 @@ A(id='a12', kind='act', group='main', pos=[2, 11.4], act='exalt', cur='Perfect_E
   label=K('엑잘', 'Exalt'), goal=K('접두 두번째 옵션', 'Second prefix'), show=['mp', 'mf', 'sd'],
   edges=[{'if': {'added': 'gp'}, 'to': 'a13', 'res': 'ok'}, {'to': 'a11', 'res': 'fail', 'label': K('빗나감', 'Miss')}])
 # 8·10단계
-A(id='a13', kind='act', group='main', pos=[0, 10.4], act='quality', cur='Sibilant_Catalyst', count=40, label=K('퀄리티', 'Quality'),
+A(id='a13', kind='act', group='main', pos=[0, 10.4], act='quality', cur='Sibilant_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('시전 퀄리티 40%', 'Caster quality 40%'), edges=[{'to': 'a14'}], item=[SP, MF, MQ, SL, DEX, CS])
 A(id='a14', kind='act', group='main', pos=[0, 11.4], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'keep'}, label=K('카오스', 'Chaos'),
   goal=K('최대 퀄리티를 지우고 접두 세번째 옵션', 'Max quality out, third prefix'), show=['mp', 'mf', 'sd'],
