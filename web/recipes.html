@@ -444,11 +444,18 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .tfoot{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);margin-top:auto;padding-top:4px}
 .tfoot a{color:var(--rare)}
 .rtips{margin:18px 0 0}
-.tipin{grid-column:2/4;margin:6px 0 0;font-size:12.5px;border:1px solid var(--line);border-radius:8px;padding:5px 9px;background:color-mix(in srgb,var(--panel) 70%,transparent)}
-.tipin summary{cursor:pointer;list-style:none;color:var(--fg)}.tipin summary::-webkit-details-marker{display:none}
+.tiprow{grid-column:2/4;display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 0}
+.tipin{position:relative;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:color-mix(in srgb,var(--panel) 70%,transparent);cursor:pointer;max-width:100%}
+.tipin>.tipt{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--fg)}
+.tipin.save{border-color:color-mix(in srgb,var(--rare) 55%,var(--line))}.tipin.save>.tipt{color:var(--rare)}
+.tippop{display:none;position:absolute;left:0;top:calc(100% + 6px);z-index:30;width:min(440px,86vw);padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);box-shadow:0 8px 24px rgba(0,0,0,.45);cursor:auto;white-space:normal;font-size:12.5px}
+.tippop::before{content:"";position:absolute;left:0;right:0;top:-8px;height:8px}
+.tippop .tpt{margin:0 0 4px;font-weight:600;color:var(--fg)}
+@media (hover:hover){.tipin:hover>.tippop{display:block}}
+.tipin.on>.tippop{display:block}
+.tippop.up{top:auto;bottom:calc(100% + 6px)}.tippop.up::before{top:auto;bottom:-8px}
 @keyframes tipflash{0%{box-shadow:0 0 0 2px var(--rare)}100%{box-shadow:0 0 0 0 transparent}}.tipin.flash{animation:tipflash 1.6s ease-out}
-.tipin.save{border-color:color-mix(in srgb,var(--rare) 55%,var(--line))}.tipin.save summary{color:var(--rare)}
-.tipin .twhen{margin:6px 0 0;color:var(--muted)}.tipin .tsteps{margin:4px 0}
+.tipin .twhen{margin:0 0 4px;color:var(--muted)}.tipin .tsteps{margin:4px 0}
 /* 제작 꿀팁 공통 형식(사용자 확정 2026-11-12): 제목 · 언제 · 방법 · 이유·비용·주의 · 분류 */
 .tipbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px}
 .tipbar input{flex:1 1 220px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);font:inherit}
@@ -1244,7 +1251,9 @@ function stepTipsHTML(r, o){ const n=o.n||{}, out=[], seen=new Set();
   const auto=[]; for(const t of S.tips){ if(!t.auto || seen.has(t.id)) continue; const hit=t.auto.find(rule=>tipAutoHit(r,o,rule)); if(hit) auto.push({t, save:!!hit.save, w:Object.keys(hit).length}); }
   auto.sort((a,b)=>(b.save-a.save)||(b.w-a.w)).slice(0,2).forEach(x=>add(x.t, x.save));
   const NK=S.tipMeta?.notes||{};
-  return out.map(({t,save})=>`<details class="tipin ${save?'save':''}" data-tipid="${esc(t.id)}"><summary>${save?'💰 '+L('더 저렴한 방법','Cheaper option'):'💡'} <span class="tipno">#${S.tips.indexOf(t)+1}</span> ${esc(tx(t.title))}</summary>${t.when?`<p class="twhen">${esc(tx(t.when))}</p><ol class="tsteps">${(t.steps||[]).map(x=>`<li>${esc(tx(x))}</li>`).join('')}</ol>${(t.notes||[]).map(x=>`<p class="tnote ${x.k}"><b>${esc(tx(NK[x.k]||{kr:'',en:''}))}</b>${esc(tx(x))}</p>`).join('')}`:`<p>${esc(tx(t.body))}</p>`}</details>`).join(''); }
+  if(!out.length) return '';
+  return `<div class="tiprow">${out.map(({t,save})=>{ const tt=`${save?'💰 '+L('더 저렴한 방법','Cheaper option'):'💡'} <span class="tipno">#${S.tips.indexOf(t)+1}</span> ${esc(tx(t.title))}`;
+    return `<span class="tipin ${save?'save':''}" data-tipkey="${esc(t.id)}" tabindex="0" role="button" aria-expanded="false"><span class="tipt">${tt}</span><span class="tippop" role="tooltip"><p class="tpt">${tt}</p>${t.when?`<p class="twhen">${esc(tx(t.when))}</p><ol class="tsteps">${(t.steps||[]).map(x=>`<li>${esc(tx(x))}</li>`).join('')}</ol>${(t.notes||[]).map(x=>`<p class="tnote ${x.k}"><b>${esc(tx(NK[x.k]||{kr:'',en:''}))}</b>${esc(tx(x))}</p>`).join('')}`:`<p>${esc(tx(t.body))}</p>`}</span></span>`; }).join('')}</div>`; }
 function nodeHTML(r, o, i, idx){
   const n=o.n, t=n.target||{}; CUR_R=r;
   const c=n.cur?cur(n.cur):null, uc=userCost(r);
@@ -2353,8 +2362,15 @@ $('#freset').addEventListener('click', ()=>{ S.q=''; S.cat=''; S.sub=''; S.curOn
 $('#vtabs').addEventListener('click', e=>{ const b=e.target.closest('[data-view]'); if(!b) return; S.view=b.dataset.view; store.set('view', S.view); render(); });
 $('#tipsView').addEventListener('click', e=>{ const a=e.target.closest('[data-open]'); if(a){ e.preventDefault(); const tf=a.dataset.tipfocus; setOpen(a.dataset.open); if(tf) focusTip(tf); } });
 /* 꿀팁 카드의 '사용한 레시피' → 그 레시피의 꿀팁이 붙은 단계로(사용자 확정 2026-11-12). 플로우차트 탭이면 레시피 탭으로 바꿔서 찾음 */
-function focusTip(id, n=0){ const d=document.querySelector(`.tipin[data-tipid="${CSS.escape(id)}"]`);
-  if(d){ d.open=true; d.scrollIntoView({block:'center', behavior:'smooth'}); d.classList.add('flash'); setTimeout(()=>d.classList.remove('flash'), 1600); return; }
+/* 단계 꿀팁 팝업: 마우스를 올리면 보이고, 누르면 고정(휴대폰은 누르기), 바깥을 누르거나 Esc로 닫기 */
+function tipFit(d){ const p=d&&d.querySelector('.tippop'); if(!p) return; p.classList.remove('rt','up'); const r=d.getBoundingClientRect(), w=Math.min(440,innerWidth*.86);
+  p.style.left=Math.max(8-r.left, Math.min(0, innerWidth-8-w-r.left))+'px'; if(r.bottom+p.offsetHeight+16>innerHeight && r.top>p.offsetHeight+16) p.classList.add('up'); }
+document.addEventListener('mouseover', e=>{ const d=e.target.closest?.('.tipin'); if(d && !d.contains(e.relatedTarget)) tipFit(d); });
+function tipOn(d){ document.querySelectorAll('.tipin.on').forEach(x=>{ if(x!==d){ x.classList.remove('on'); x.setAttribute('aria-expanded','false'); } }); if(d){ d.classList.add('on'); d.setAttribute('aria-expanded','true'); tipFit(d); } }
+document.addEventListener('click', e=>{ const d=e.target.closest('.tipin'); if(d && e.target.closest('.tippop')) return; if(d){ d.classList.contains('on') ? (d.classList.remove('on'), d.setAttribute('aria-expanded','false')) : tipOn(d); } else tipOn(null); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') tipOn(null); else if((e.key==='Enter'||e.key===' ') && e.target.classList?.contains('tipin')){ e.preventDefault(); e.target.click(); } });
+function focusTip(id, n=0){ const d=document.querySelector(`.tipin[data-tipkey="${CSS.escape(id)}"]`);
+  if(d){ tipOn(d); d.scrollIntoView({block:'center', behavior:'smooth'}); d.classList.add('flash'); setTimeout(()=>d.classList.remove('flash'), 1600); return; }
   if(n===4){ const b=document.querySelector('.rtabs [data-rtab]'); if(b) b.click(); }
   if(n<12) setTimeout(()=>focusTip(id, n+1), 250); }
 $('#tags').addEventListener('click', e=>{ const b=e.target.closest('[data-tag]'); if(!b) return; const k=b.dataset.tag; S.tags.has(k)?S.tags.delete(k):S.tags.add(k); renderBar(); renderBoard(); });
