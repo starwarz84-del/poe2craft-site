@@ -147,7 +147,7 @@ A(id='s2', kind='act', group='main', pos=[0, 15.4], act='chaos', cur='Perfect_Ch
   label=K('절사 + 카오스', 'Whittling + Chaos'), goal=K('접미 비고정 화염 속성 부여 규모', 'Explicit fire modifier magnitudes suffix'), show=['fm'],
   edges=[{'if': {'has': 'fm'}, 'to': 'ok', 'res': 'ok'}, {'to': 's2', 'res': 'fail', 'hide': True}], item=[F7, PF, XC, XF, FM, J('s'), RN])
 # 초월의 합금 = 선택 단계(사용자 결정 2026-11-13 06:40): 시뮬·비용에서 빠짐. 영상 13:18
-A(id='hs3', kind='side', group='main', pos=[1, 16.9], attach=['ok', 'ok'], cur='Transcendent_Alloy',   # attach[0]은 두 등급 모두에 있는 상자(s2는 밸런스에서 빠져 그림 오류)
+A(id='hs3', kind='side', group='main', pos=[1, 16.9], attach=['ok', 'ok'], tiers=['high'], cur='Transcendent_Alloy',   # attach[0]은 두 등급 모두에 있는 상자(s2는 밸런스에서 빠져 그림 오류)
   goal=K('하이엔드 합금 도박, 선택·비용 미포함', 'High-end alloy gamble, optional, not costed'),   # 접미 하나를 1/2로 지움 — 규모가 지워지면 절사 카오스 다시
   label=K('합금', 'Alloy'))
 # 밸런스 (영상 9:13 가성비 마무리)

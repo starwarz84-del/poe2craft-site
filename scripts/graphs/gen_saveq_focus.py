@@ -150,7 +150,7 @@ A(id='v2', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_o
   item=[SDF, ESP, ESF, LVL, CS, CR, AS])
 # 마무리 룬: 아스트리드의 창의성은 꺼낼 수 없어 다른 룬으로 바꿈 (영상 26:15~26:40, 2026-11-13 사용자 결정)
 A(id='r2', kind='act', group='main', pos=[0, 16.4], act='rune', label=K('룬 교체', 'Rune swap'), goal=K('아스트리드의 창의성 → 완벽한 철 룬, 빈 소켓에도 완벽한 철 룬', 'Astrid’s Creativity → Perfect Iron Rune, and a Perfect Iron Rune in the empty socket'),
-  showText=[K('제작이 끝나 아스트리드의 창의성은 필요 없음', 'Crafting is done: Astrid’s Creativity is no longer needed')], rune=K('완벽한 철 룬', 'Perfect Iron Rune'), swapAstrid=True,
+  showText=[K('제작이 끝나 아스트리드의 창의성은 필요 없음', 'Crafting is done: Astrid’s Creativity is no longer needed')], rune=K('완벽한 철 룬', 'Perfect Iron Rune'), swapAstrid=True, fill=True,
   edges=[{'to': 'ok'}], item=[SDF, ESP, ESF, LVL, CS, CR, IR, IR])
 A(id='ok', kind='done', group='main', pos=[0, 17.4], label=K('완성', 'Finished'))
 g['nodes'] = N
