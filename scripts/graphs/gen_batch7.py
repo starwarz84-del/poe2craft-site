@@ -169,7 +169,7 @@ graph('tankjung-kitava-shield-v2','Shields_str','Tawhoan Tower Shield',81,
   {'mT':{'kr':'최대 저항','en':'Maximum resistance','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2'),'3':('1~3티어','T1–3')})},'aT':{'kr':'방어도 접두 3개 (절사)','en':'Three armour prefixes (Whittling)','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})}},P,
   {'high':K('영상: 최대 저항·방어도 1티어','Video: T1 max res and armour'),'bal':K('최대 저항·방어도 1~2티어','T1–2 max res and armour'),'ess':K('최대 저항 1~3티어, 방어도 1~4티어','T1–3 max res, T1–4 armour')},
   tags,nodes,[{'id':'L1','nodes':['t3','t4','t4x'],'kr':'최대 저항 공개','en':'Max res reveal'}],
-  [{'id':v,'kr':kr,'en':en,'lines':[{'side':'p','label':a},{'side':'p','label':a},{'side':'p','label':a},{'tag':'pdr','tmax':1},{'side':'s','label':m},{'side':'s','label':m}]} for v,kr,en,a,m in (('high','하이엔드 옵션','High-end',K('방어도 1티어','T1 armour'),K('최대 저항 1티어','T1 maximum resistance')),('bal','밸런스 옵션','Balance',K('방어도 1~2티어','T1–2 armour'),K('최대 저항 1~2티어','T1–2 maximum resistance')),('ess','에센셜 옵션','Essential',K('방어도 1~4티어','T1–4 armour'),K('최대 저항','Maximum resistance')))],
+  [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'arm'},{'tag':'arm'},{'tag':'arm'},{'tag':'pdr','tmax':1,'fr':True},{'tag':'maxres'},{'tag':'maxres'}]} for v,kr,en in (('high','하이엔드 옵션','High-end'),('bal','밸런스 옵션','Balance'),('ess','에센셜 옵션','Essential'))],
   {'quality':20,'sockets':2},{'all':[{'has':'pdr'},{'count':{'tag':'maxres','min':2}},{'full':'p'},{'full':'s'}]})
 _p=f'{H}/tankjung-kitava-shield-v2.json'; _g=json.load(open(_p))   # 등급 C17: 하이엔드·밸런스·에센셜
 _D={'high':K('영상: 최대 저항·방어도 1티어','Video: T1 max res and armour'),'bal':K('최대 저항·방어도 1~2티어','T1–2 max res and armour'),'ess':K('최대 저항 1~3티어, 방어도 1~4티어','T1–3 max res, T1–4 armour')}

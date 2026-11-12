@@ -125,5 +125,5 @@ graph11('diztoh-iceshot-bow-v2','Bows','Obliterator Bow',82,
   {'high':{'v':1,'pT':1,'jT':1,'cT':1},'bal':{'v':2,'pT':2,'jT':2,'cT':2}},
   {'high':K('원소·투사체 +4·치명타 확률 1티어, 마지막 접미 도박','T1 elemental, +4 projectiles, T1 crit chance, last suffix gambled'),'bal':K('원소·치명타 확률 1~2티어 · 투사체 +3~+4 · 마지막 접미 랜덤 옵션','T1–2 elemental and crit chance, +3–+4 projectiles, last suffix random')},tags,nodes,
   [{'id':'L1','nodes':['d2','l1','l2','l3'],'kr':'빛 없이 다시 공개','en':'Lightless reroll'}],
-  FIN(('high','bal'),lambda v:[{'tag':'pp','fr':True,'tmax':2,'tmin':2},{'tag':'fl','tmax':1},{'tag':'co','tmax':1 if v=='high' else 2},{'tag':'proj','tmax':1 if v=='high' else 2,'des':True},{'tag':'cc','tmax':1 if v=='high' else 2},{'side':'s','label':K('공격 속도·치명타 피해 1티어 (도박, 절사가 안 되면 그대로)','T1 attack speed or crit damage (gamble; kept when whittling cannot reach it)')} if v=='high' else {'side':'s','random':True}]),
+  FIN(('high','bal'),lambda v:[{'tag':'pp','fr':True,'tmax':2,'tmin':2},{'tag':'fl','tmax':1},{'tag':'co','tmax':1 if v=='high' else 2},{'tag':'proj','tmax':1 if v=='high' else 2,'des':True},{'tag':'cc','tmax':1 if v=='high' else 2},{'tag':'last'} if v=='high' else {'side':'s','random':True}]),
   {'quality':20,'sockets':3,'exceptional':True},{'all':[{'has':'fl'},{'has':'ele'},{'has':'proj'},{'has':'cc'}]},('high','bal'))
