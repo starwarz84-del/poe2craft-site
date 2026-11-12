@@ -12,7 +12,7 @@ TJ_ARM=[{'gi':tj_flat,'tmax':1},{'gi':tj_pct,'tmax':1}]
 TJ_WH=['Omen_of_Whittling']
 TJ_IRON=K('상위 철 룬 → 일품 룬으로 완벽한 철 룬','Greater Iron Rune → Masterwork Rune to a Perfect Iron Rune')
 R.append({
- 'id':'tankjung-kitava-shield','cls':c,'base':base(c,'Tawhoan Tower Shield'),'ilvl':81,'sockets':2,'exceptional':{'sockets':1},'difficulty':3,'budget':'high',
+ 'id':'tankjung-kitava-shield','cls':c,'base':base(c,'Tawhoan Tower Shield'),'ilvl':81,'sockets':2,'exceptional':{'sockets':1},'difficulty':4,'budget':'high',
  'buildTags':[K('방어도','Armour'),K('방패 분쇄','Shield Crush'),K('최대 저항','Maximum resistance')],'patch':'0.5.5','created':'2026-11-09','author':TJ5,
  'source':{'url':'https://www.youtube.com/watch?v=gQa51XOS98s','title':'[POE2] 방패분쇄 키타바 2부 | 하이엔드 장비 제작 가이드 (워리어 방패·장갑·장화·철퇴)','channel':'탱정-탱커의정석'},
  'title':K('받는 물리 피해 감소 분열 + 최대 저항 옵션 2개 + 방어도 1티어 옵션 3개','fractured physical damage reduction + two max resistances + three T1 armour lines'),

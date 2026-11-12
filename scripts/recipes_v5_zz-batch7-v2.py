@@ -45,11 +45,12 @@ def _focus(r, t):
 for _t in ('bal','ess'): _grade('saveq-alloy-focus','saveq-alloy-focus-v2',_t,_focus)
 
 # 5. 탱정 키타바 방패 — Balance = video (Whittling + Perfect Chaos for three T1 armour lines), Essential = T1–3 max res, prefixes as they come
-def _kitava(r, t):
-    m=1 if t=='bal' else 3
+def _kitava(r, t):   # 2026-11-12 등급 C17 + 난이도 4(사용자): 하이엔드 = 영상(1티어), 밸런스 = 1~2티어 — 단계는 플로우차트(graph2recipe)가 다시 씀
+    m={'high':1,'bal':2}.get(t,3)
     for nid in ('t2',):
         for x in _node(r,nid)['target']['anyOf']: x['tmax']=m
     _node(r,'t4')['target']['reveal']={'anyOf':[dict(x,tmax=m) for x in TJ_MAXRES]}
     _drop(r,'t10','t11','t12')
     if t=='ess': _drop(r,'t7','t8','t9'); _node(r,'t6')['br']=KEEP
 for _t in ('bal','ess'): _grade('tankjung-kitava-shield','tankjung-kitava-shield-v2',_t,_kitava)
+_r=_cp.deepcopy(_orig('tankjung-kitava-shield')); _r.update(id='tankjung-kitava-shield-v2',tierGroup='tankjung-kitava-shield-v2',tier='high',tierLabel=K('하이엔드','High-end')); _r.pop('note',None); _kitava(_r,'high'); R.append(_r)

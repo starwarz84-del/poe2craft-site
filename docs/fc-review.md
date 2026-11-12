@@ -41,10 +41,10 @@
 | sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 완료 11-12 | A(Opus) | 자막 전체 + 화면 2:30~3:45 대조(기록 tools/notes/sihan-GgD_vxKgNsw.md). 카오스는 저항 또는 카오스 피해, 완벽한 엑잘에서 좌측 찬미 뺌(영상에서 접미에도 붙음). 478/144 → 356/130 |
 | mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 완료 11-12 | A(Opus) | 자막 0:00~24:00 대조(기록 tools/notes/mastert-GNNkhSENp6Q.md). 경멸 전 엑잘 2번 → 영상대로 1번, 경멸 옵션을 지운 뒤 엑잘 1번 추가. 469/88 → 459/78 |
 | noble-timelost-sapphire-v2 | zEV8kWwveYQ | high 468, bal 418 | 3 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/noble-zEV8kWwveYQ.md). 경멸 전 엑잘 2번은 사용자 확정이라 그대로. 변경 없음 |
-| tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 완료 11-12 | A(Opus) | 자막 12:00~21:30 대조, 단계 일치(기록 tools/notes/tankjung-gQa51XOS98s.md). 첫 절사 전 확인 추가(에센셜 완성 조건 99% → 100%). 영상(1티어)은 하이엔드로: 358/125/58 |
-| absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 대기 |  |  |
+| tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 완료 11-12 | A(Opus) | 자막 12:00~21:30 대조, 단계 일치(기록 tools/notes/tankjung-gQa51XOS98s.md). 첫 절사 전 확인 추가(에센셜 완성 조건 99% → 100%). 영상(1티어)은 하이엔드로: 358/125/58, 난이도 3 → 4(사용자 확정) |
+| absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 진행 중 | A(Opus) |  |
 | gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 삭제 11-11 | B(Fable) | 사용자 요청으로 내림(22:21). 플로우차트 옵션이 영상이 만든 목걸이와 달랐음. 다시 올리려면 영상 전체 기준으로 새로 만들고 build_recipes.py REMOVED·build_tips.py·gen_batch11.py의 막아 둔 줄을 지움 |
-| saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 대기 |  |  |
+| saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 진행 중 | A(Opus) |  |
 | mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 대기 |  |  |
 | diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 대기 |  |  |
 | bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 대기 |  |  |
@@ -167,7 +167,7 @@
 | sl-flamewave-ring-v2 | bal·high | - | 완료 11-12 | A(Opus) | 이미 기준대로(저항 1~2티어, 마지막 접미 랜덤, 훼손 핵심 옵션은 반복) — 371 그대로 |
 | sl-flamewave-staff-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 접두 반복 1~2티어, 마지막 접두·접미 랜덤 — 178 → 40 |
 | sl-proj7-gloves-v2 | bal·high | - | 대기 |  |  |
-| tankjung-kitava-shield-v2 | ess·bal·high | high 1티어(영상), bal 1~2티어, ess 최대 저항 1~3티어·방어도 1~4티어 | 완료 11-12 | A(Opus) | 358/125/58, 난이도 3이라 high는 숨음 |
+| tankjung-kitava-shield-v2 | ess·bal·high | high 1티어(영상), bal 1~2티어, ess 최대 저항 1~3티어·방어도 1~4티어 | 완료 11-12 | A(Opus) | 358/125/58, 난이도 4로 올림(사용자 11-12) → high·bal 표시 |
 | unstoppable-slipstrike-vest-v2 | bal·high | bal 굴절 1~4티어; high 굴절 1~3티어 | 완료 11-12 | A(Opus) 하이엔드 굴절 1~3 → 1티어(651 → 1,368), 밸런스 1~2티어 + 마지막 접미 랜덤(176 → 74) |
 | unstoppable-vile-robe-v2 | bal·high | bal 접두 에너지 보호막·정신력 1티어; bal 저항 1티어 | 완료 11-12 | A(Opus) 밸런스 접두(엑잘·훼손 반복) 1 → 1~2티어(163 → 99), 저항은 싼 반복이라 1티어 유지 |
 | vodnarg-timelost-emerald-v2 | ess·bal | - | 대기 |  |  |
