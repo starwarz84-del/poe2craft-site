@@ -296,4 +296,5 @@ g22('sihan-proj-gloves-v2',c,'Massive Mitts',80,
 import os as _os, subprocess as _sp, sys as _sy
 if _os.path.exists(f'{H}/gen_sihan_chayula_ring.py'): _sp.run([_sy.executable, f'{H}/gen_sihan_chayula_ring.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
 if _os.path.exists(f'{H}/gen_sihan_chayula_amulet.py'): _sp.run([_sy.executable, f'{H}/gen_sihan_chayula_amulet.py'], check=True)   # 2026-11-13 G2: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_sihan_chayula_wand.py'): _sp.run([_sy.executable, f'{H}/gen_sihan_chayula_wand.py'], check=True)   # 2026-11-13 G1: 새 기준 전용 생성기가 덮어씀
 if _os.path.exists(f'{H}/gen_sihan_attack_flat_ring.py'): _sp.run([_sy.executable, f'{H}/gen_sihan_attack_flat_ring.py'], check=True)   # 2026-11-13 G2: 새 기준 전용 생성기가 덮어씀

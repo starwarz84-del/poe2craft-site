@@ -2,9 +2,10 @@
  "id": "sihan-chayula-wand-v2",
  "recipe": "sihan-chayula-wand-v2",
  "cls": "Wands",
- "base": "Primordial Wand",
+ "base": "Attuned Wand",
  "ilvl": 82,
- "note": "시한 차율라 마법봉(rSs4fumlHo4) — 카오스 피해 분열 → 카오스 오브(주문 치명타) → 우측 찬미 + 완벽한 엑잘(지능 등) → 좌측 찬미 잡옵 + 좌측 결정화 + 완벽한 마술의 에센스 → 아스트리드 → 보존된 턱뼈 미공개 훼손 → 좌측 결정화 + 천공의 합금 → 군주의 징조 + 보존된 턱뼈 → 공개(울라만 확정). 밸런스 = 영상(주문 치명타 1~2티어, 접미 빗나가면 다시), 에센셜 = 주문 치명타 1~3티어, 접미 결과 그대로.",
+ "basePrice": {},
+ "note": "2026-11-13 G1 영상 전체 화면 대조. 성공 회차 한 줄: 특출난 조율된 마법봉(아이템 레벨 82, 룬 소켓 2, 카오스 피해 1티어 분열 + 지능 잡옵, 2:45) → 카오스 오브로 주문 치명타 명중 확률 64% 1티어(3:24) → 우측 찬미 + 완벽한 엑잘로 접미 두번째 옵션, 빗나가면 소멸의 오브(3:20·3:37, 성공 5:01~5:26 지능 +28 2티어) → 좌측 찬미 + 엑잘로 접두 잡옵(설명 1:00·5:52·8:20 — 영상 성공 회차는 절사 카오스 데모에서 마나 최대치가 접두로 떠서 그대로 씀, 4:50) → 좌측 결정화 + 완벽한 마술의 에센스로 접두 잡옵을 지우고 접미 주문 +3(6:10~6:28) → 아스트리드의 창의성(6:35) → 보존된 턱뼈로 접두 미공개 훼손(6:44~6:52) → 좌측 결정화 + 천공의 합금으로 미공개 훼손을 지우고 마나 최대치·주문 +1(7:00~7:14) → 군주의 징조 + 보존된 턱뼈(7:32~7:40) → 심연의 메아리 공개, 추가 물리 23%(7:44~7:57). 3:44~4:50 절사의 징조 + 카오스 데모는 영상에서 \"절삭한 건 잊어 주세요\"(5:30)라 넣지 않음. 등급(난이도 3 = 밸런스·에센셜, 정책 10장 C17): 밸런스 = 주문 치명타 1~2티어(영상 3:00 \"1티어 혹은 2티어\"), 접미 두번째 옵션 = 지능 1~2티어 반복(영상 성공 회차) 에센셜 = 주문 치명타 1~4티어(영상 8:00 \"2티어 3티어도 괜찮습니다\"), 접미 두번째 옵션은 결과 그대로. 공개는 군주의 징조로 울라만 접두 3개 중 추가 물리 피해가 확정이라 두 등급 같음.",
  "params": {
   "cT": {
    "kr": "주문 치명타 명중 확률",
@@ -14,9 +15,9 @@
      "kr": "1~2티어",
      "en": "T1–2"
     },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
     }
    }
   },
@@ -25,8 +26,8 @@
    "en": "Route",
    "values": {
     "1": {
-     "kr": "영상",
-     "en": "Video"
+     "kr": "반복",
+     "en": "Repeat"
     },
     "2": {
      "kr": "결과 그대로",
@@ -46,7 +47,7 @@
   {
    "id": "ess",
    "params": {
-    "cT": 3,
+    "cT": 4,
     "v": 2
    }
   }
@@ -57,12 +58,13 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "cT": 3,
+    "cT": 4,
     "v": 2
    },
+   "tier": "ess",
    "desc": {
-    "kr": "주문 치명타 1~3티어, 접미 결과 그대로",
-    "en": "T1–3 spell crit, keep the second suffix"
+    "kr": "주문 치명타 1~4티어, 접미 두번째 옵션 결과 그대로",
+    "en": "T1–4 spell crit; second suffix kept as it comes"
    }
   },
   {
@@ -73,39 +75,33 @@
     "cT": 2,
     "v": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상: 주문 치명타 1~2티어 + 지능 등",
-    "en": "Video: T1–2 spell crit + intelligence or similar"
+    "kr": "영상: 주문 치명타 1~2티어, 지능 1~2티어, 추가 물리 피해",
+    "en": "Video: T1–2 spell crit, T1–2 intelligence, extra physical damage"
    }
   }
  ],
  "tags": {
   "chaos": {
    "gi": 8,
-   "tmax": 2
+   "tmax": 1
   },
   "scrit": {
    "gi": 20,
    "tmax": "$cT"
   },
+  "scrit2": {
+   "gi": 20,
+   "tmax": 2
+  },
+  "scrit4": {
+   "gi": 20,
+   "tmax": 4
+  },
   "int": {
    "gi": 0,
    "tmax": 2
-  },
-  "mreg": {
-   "gi": 16,
-   "tmax": 2
-  },
-  "cast": {
-   "gi": 19,
-   "tmax": 2
-  },
-  "suf": {
-   "anyOf": [
-    "int",
-    "mreg",
-    "cast"
-   ]
   },
   "sp3": {
    "gi": 50
@@ -133,6 +129,20 @@
    },
    {
     "has": "ula"
+   },
+   {
+    "any": [
+     {
+      "not": {
+       "param": {
+        "v": 1
+       }
+      }
+     },
+     {
+      "has": "int"
+     }
+    ]
    }
   ]
  },
@@ -156,11 +166,15 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [],
+ "start": "b0",
+ "finalItem": {
+  "quality": 20,
+  "sockets": 2
+ },
  "finals": [
   {
    "id": "bal",
+   "tier": "bal",
    "kr": "밸런스 옵션",
    "en": "Balance",
    "lines": [
@@ -177,8 +191,7 @@
      "des": true
     },
     {
-     "tag": "scrit",
-     "tmax": 2
+     "tag": "scrit2"
     },
     {
      "tag": "int"
@@ -191,6 +204,7 @@
   },
   {
    "id": "ess",
+   "tier": "ess",
    "kr": "에센셜 옵션",
    "en": "Essential",
    "lines": [
@@ -207,8 +221,7 @@
      "des": true
     },
     {
-     "tag": "scrit",
-     "tmax": 3
+     "tag": "scrit4"
     },
     {
      "side": "s",
@@ -221,13 +234,9 @@
    ]
   }
  ],
- "finalItem": {
-  "quality": 20,
-  "sockets": 2
- },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
@@ -248,14 +257,14 @@
     ]
    },
    "label": {
-    "kr": "특출난 마법봉(룬 소켓 2), 카오스 피해 분열 + 잡옵 1개",
-    "en": "Exceptional wand (two sockets): fractured chaos damage + one junk line"
+    "kr": "특출난 조율된 마법봉 구입 (아이템 레벨 82, 룬 소켓 2, 카오스 피해 분열 + 잡옵 1개)",
+    "en": "Buy an exceptional Attuned Wand (item level 82, two rune sockets, fractured chaos damage + one junk option)"
    },
    "item": [
     {
      "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
      "m": "f",
      "tags": [
       "chaos"
@@ -275,7 +284,7 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    1.4
    ],
    "next": "w2",
    "label": {
@@ -285,8 +294,8 @@
    "item": [
     {
      "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
      "m": "f",
      "tags": [
       "chaos"
@@ -306,17 +315,21 @@
    "group": "main",
    "pos": [
     0,
-    1
+    2.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "접미 첫번째 옵션",
-    "en": "First suffix"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접미 첫번째 옵션 — 주문 치명타 명중 확률",
+    "en": "First suffix: spell critical hit chance"
+   },
+   "show": [
+    "scrit"
+   ],
    "edges": [
     {
      "if": {
@@ -327,14 +340,15 @@
     },
     {
      "to": "w2",
-     "res": "fail"
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
      "m": "f",
      "tags": [
       "chaos"
@@ -349,10 +363,6 @@
       "scrit"
      ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "scrit"
    ]
   },
   {
@@ -361,44 +371,103 @@
    "group": "main",
    "pos": [
     0,
-    2
+    3.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 두번째 옵션 — 지능",
+    "en": "Second suffix: intelligence"
+   },
+   "show": [
+    "int"
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "goal": {
+       "kr": "접미 두번째 옵션",
+       "en": "Second suffix"
+      },
+      "show": [],
+      "showText": [
+       {
+        "s": "s",
+        "kr": "랜덤 옵션 1개",
+        "en": "One random option"
+       }
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "카오스 피해 (105—119)% 증가 (분열)",
+        "en": "(105—119)% increased Chaos Damage (fractured)",
+        "m": "f",
+        "tags": [
+         "chaos"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+        "en": "(60—73)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scrit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
+    }
+   ],
    "edges": [
     {
      "if": {
-      "has": "suf"
+      "param": {
+       "v": 2
+      }
+     },
+     "to": "w4",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "int"
      },
      "to": "w4",
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
      "to": "w3x",
-     "res": "fail"
-    },
-    {
-     "to": "w4",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
      "m": "f",
      "tags": [
       "chaos"
@@ -415,22 +484,13 @@
     },
     {
      "s": "s",
-     "kr": "지능 +(31—33)",
-     "en": "+(31—33) to Intelligence",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
      "m": "n",
      "tags": [
       "int"
      ]
     }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "show": [
-    "int",
-    "mreg",
-    "cast"
-   ],
-   "omens": [
-    "Omen_of_Dextral_Exaltation"
    ]
   },
   {
@@ -439,7 +499,7 @@
    "group": "main",
    "pos": [
     1,
-    2
+    3.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -453,8 +513,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접미 지우기 (주문 치명타가 지워지면 카오스부터)",
-    "en": "Remove the missed suffix (spell crit lost → back to Chaos)"
+    "kr": "빗나간 접미 지우기 — 주문 치명타가 지워지면 카오스부터",
+    "en": "Remove the missed suffix: back to Chaos if spell crit goes"
    },
    "edges": [
     {
@@ -462,12 +522,19 @@
       "has": "scrit"
      },
      "to": "w3",
-     "port": "right",
-     "res": "ok"
+     "res": "ok",
+     "label": {
+      "kr": "주문 치명타 남음",
+      "en": "Spell crit kept"
+     }
     },
     {
      "to": "w2",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "주문 치명타가 지워짐",
+      "en": "Spell crit gone"
+     }
     }
    ]
   },
@@ -477,17 +544,28 @@
    "group": "main",
    "pos": [
     0,
-    3
+    4.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "에센스가 지울 접두",
-    "en": "The prefix for the essence to remove"
-   },
+   "cur": "Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 잡옵 — 에센스가 지울 자리",
+    "en": "Junk prefix for the essence to remove"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
      "to": "w5"
@@ -496,12 +574,18 @@
    "item": [
     {
      "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
      "m": "f",
      "tags": [
       "chaos"
      ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     },
     {
      "s": "s",
@@ -514,30 +598,54 @@
     },
     {
      "s": "s",
-     "kr": "지능 +(31—33)",
-     "en": "+(31—33) to Intelligence",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
      "m": "n",
      "tags": [
       "int"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
    ],
-   "cur": "Exalted_Orb",
-   "showText": [
+   "over": [
     {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "카오스 피해 (105—119)% 증가 (분열)",
+        "en": "(105—119)% increased Chaos Damage (fractured)",
+        "m": "f",
+        "tags": [
+         "chaos"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+        "en": "(60—73)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scrit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
     }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
@@ -546,17 +654,29 @@
    "group": "main",
    "pos": [
     0,
-    4
+    5.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "접두 잡옵을 지우고 접미 주문 +3",
-    "en": "Swap the junk prefix for +3 spell skills"
-   },
+   "cur": "Perfect_Essence_of_Sorcery",
+   "ess": "sp3",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "접두 잡옵을 지우고 접미 모든 주문 스킬 레벨 +3",
+    "en": "Swap the junk prefix for +3 to all spell skills (suffix)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 to Level of all Spell Skills (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "w6"
@@ -565,8 +685,8 @@
    "item": [
     {
      "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
      "m": "f",
      "tags": [
       "chaos"
@@ -583,8 +703,8 @@
     },
     {
      "s": "s",
-     "kr": "지능 +(31—33)",
-     "en": "+(31—33) to Intelligence",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
      "m": "n",
      "tags": [
       "int"
@@ -600,17 +720,49 @@
      ]
     }
    ],
-   "cur": "Perfect_Essence_of_Sorcery",
-   "showText": [
+   "over": [
     {
-     "s": "s",
-     "kr": "모든 주문 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 to all spell skills (crafted)"
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "카오스 피해 (105—119)% 증가 (분열)",
+        "en": "(105—119)% increased Chaos Damage (fractured)",
+        "m": "f",
+        "tags": [
+         "chaos"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+        "en": "(60—73)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scrit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "모든 주문 스킬 레벨 +3 (완벽한 마술의 에센스)",
+        "en": "+3 to Level of all Spell Skills (Perfect Essence of Sorcery)",
+        "m": "c",
+        "tags": [
+         "sp3"
+        ]
+       }
+      ]
+     }
     }
-   ],
-   "ess": "sp3",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
    ]
   },
   {
@@ -619,66 +771,17 @@
    "group": "main",
    "pos": [
     0,
-    5
+    6.4
    ],
    "act": "rune",
-   "goal": {
-    "kr": "아스트리드의 창의성 장착",
-    "en": "Socket Astrid’s Creativity"
-   },
    "label": {
     "kr": "룬",
     "en": "Rune"
    },
-   "edges": [
-    {
-     "to": "w7"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
-     "m": "f",
-     "tags": [
-      "chaos"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
-     "en": "(60—73)% increased Critical Hit Chance for Spells",
-     "m": "n",
-     "tags": [
-      "scrit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "지능 +(31—33)",
-     "en": "+(31—33) to Intelligence",
-     "m": "n",
-     "tags": [
-      "int"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 주문 스킬 레벨 +3 (완벽한 마술의 에센스)",
-     "en": "+3 to Level of all Spell Skills (Perfect Essence of Sorcery)",
-     "m": "c",
-     "tags": [
-      "sp3"
-     ]
-    },
-    {
-     "s": "r",
-     "kr": "아스트리드의 창의성",
-     "en": "Astrid’s Creativity",
-     "m": "r"
-    }
-   ],
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
    "showText": [
     {
      "kr": "제작 옵션 하나 더",
@@ -688,35 +791,17 @@
    "rune": {
     "kr": "아스트리드의 창의성",
     "en": "Astrid’s Creativity"
-   }
-  },
-  {
-   "id": "w7",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    6
-   ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "합금이 지울 접두(훼손)",
-    "en": "A desecrated prefix for the alloy to remove"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
    },
    "edges": [
     {
-     "to": "w8"
+     "to": "w7"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
      "m": "f",
      "tags": [
       "chaos"
@@ -733,8 +818,8 @@
     },
     {
      "s": "s",
-     "kr": "지능 +(31—33)",
-     "en": "+(31—33) to Intelligence",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
      "m": "n",
      "tags": [
       "int"
@@ -754,20 +839,193 @@
      "kr": "아스트리드의 창의성",
      "en": "Astrid’s Creativity",
      "m": "r"
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
     }
    ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "카오스 피해 (105—119)% 증가 (분열)",
+        "en": "(105—119)% increased Chaos Damage (fractured)",
+        "m": "f",
+        "tags": [
+         "chaos"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+        "en": "(60—73)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scrit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "모든 주문 스킬 레벨 +3 (완벽한 마술의 에센스)",
+        "en": "+3 to Level of all Spell Skills (Perfect Essence of Sorcery)",
+        "m": "c",
+        "tags": [
+         "sp3"
+        ]
+       },
+       {
+        "s": "r",
+        "kr": "아스트리드의 창의성",
+        "en": "Astrid’s Creativity",
+        "m": "r"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "w7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
+   ],
+   "act": "desecrate",
    "cur": "Preserved_Jawbone",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접두 두번째 옵션(훼손) — 합금이 지울 자리",
+    "en": "Second prefix (desecrated) for the alloy to remove"
+   },
    "showText": [
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개) — 공개하지 않음",
-     "en": "Desecrated (unrevealed) — leave it hidden"
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "w8"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
+     "m": "f",
+     "tags": [
+      "chaos"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+     "en": "(60—73)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "scrit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
+     "m": "n",
+     "tags": [
+      "int"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +3 (완벽한 마술의 에센스)",
+     "en": "+3 to Level of all Spell Skills (Perfect Essence of Sorcery)",
+     "m": "c",
+     "tags": [
+      "sp3"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "카오스 피해 (105—119)% 증가 (분열)",
+        "en": "(105—119)% increased Chaos Damage (fractured)",
+        "m": "f",
+        "tags": [
+         "chaos"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "훼손 옵션 (미공개)",
+        "en": "Desecrated (unrevealed)",
+        "m": "n"
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+        "en": "(60—73)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scrit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "모든 주문 스킬 레벨 +3 (완벽한 마술의 에센스)",
+        "en": "+3 to Level of all Spell Skills (Perfect Essence of Sorcery)",
+        "m": "c",
+        "tags": [
+         "sp3"
+        ]
+       },
+       {
+        "s": "r",
+        "kr": "아스트리드의 창의성",
+        "en": "Astrid’s Creativity",
+        "m": "r"
+       }
+      ]
+     }
     }
    ]
   },
@@ -777,17 +1035,29 @@
    "group": "main",
    "pos": [
     0,
-    7
+    8.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "미공개 훼손을 지우고 천공의 합금",
-    "en": "Swap the hidden desecration for the Celestial Alloy"
-   },
+   "cur": "Celestial_Alloy",
+   "ess": "cel",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
    "label": {
     "kr": "합금",
     "en": "Alloy"
    },
+   "goal": {
+    "kr": "미공개 훼손을 지우고 천공의 합금",
+    "en": "Swap the unrevealed desecration for the Celestial Alloy"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(142—188) / 모든 주문 스킬 레벨 +1 (제작 옵션)",
+     "en": "+(142—188) to maximum Mana / +1 to Level of all Spell Skills (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "w9"
@@ -796,11 +1066,20 @@
    "item": [
     {
      "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
      "m": "f",
      "tags": [
       "chaos"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(142—188) / 모든 주문 스킬 레벨 +1 (천공의 합금)",
+     "en": "+(142—188) to maximum Mana / +1 to Level of all Spell Skills (Celestial Alloy)",
+     "m": "c",
+     "tags": [
+      "cel"
      ]
     },
     {
@@ -814,8 +1093,8 @@
     },
     {
      "s": "s",
-     "kr": "지능 +(31—33)",
-     "en": "+(31—33) to Intelligence",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
      "m": "n",
      "tags": [
       "int"
@@ -835,28 +1114,66 @@
      "kr": "아스트리드의 창의성",
      "en": "Astrid’s Creativity",
      "m": "r"
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(142—188) / 모든 주문 스킬 레벨 +1 (천공의 합금)",
-     "en": "+(142—188) to maximum Mana / +1 to Level of all Spell Skills (Celestial Alloy)",
-     "m": "c",
-     "tags": [
-      "cel"
-     ]
     }
    ],
-   "cur": "Celestial_Alloy",
-   "showText": [
+   "over": [
     {
-     "s": "p",
-     "kr": "마나 최대치 + 모든 주문 스킬 레벨 +1 (제작 옵션)",
-     "en": "Maximum mana + +1 to all spell skills (crafted)"
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "카오스 피해 (105—119)% 증가 (분열)",
+        "en": "(105—119)% increased Chaos Damage (fractured)",
+        "m": "f",
+        "tags": [
+         "chaos"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "마나 최대치 +(142—188) / 모든 주문 스킬 레벨 +1 (천공의 합금)",
+        "en": "+(142—188) to maximum Mana / +1 to Level of all Spell Skills (Celestial Alloy)",
+        "m": "c",
+        "tags": [
+         "cel"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+        "en": "(60—73)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scrit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "모든 주문 스킬 레벨 +3 (완벽한 마술의 에센스)",
+        "en": "+3 to Level of all Spell Skills (Perfect Essence of Sorcery)",
+        "m": "c",
+        "tags": [
+         "sp3"
+        ]
+       },
+       {
+        "s": "r",
+        "kr": "아스트리드의 창의성",
+        "en": "Astrid’s Creativity",
+        "m": "r"
+       }
+      ]
+     }
     }
-   ],
-   "ess": "cel",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
    ]
   },
   {
@@ -865,17 +1182,28 @@
    "group": "main",
    "pos": [
     0,
-    8
+    9.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접두 세번째 옵션(울라만 훼손)",
-    "en": "Third prefix (Ulaman desecration)"
-   },
+   "cur": "Preserved_Jawbone",
+   "omens": [
+    "Omen_of_the_Sovereign"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션 — 울라만 훼손",
+    "en": "Third prefix: Ulaman desecration"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
      "to": "w10"
@@ -884,12 +1212,27 @@
    "item": [
     {
      "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
      "m": "f",
      "tags": [
       "chaos"
      ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(142—188) / 모든 주문 스킬 레벨 +1 (천공의 합금)",
+     "en": "+(142—188) to maximum Mana / +1 to Level of all Spell Skills (Celestial Alloy)",
+     "m": "c",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
     },
     {
      "s": "s",
@@ -902,8 +1245,8 @@
     },
     {
      "s": "s",
-     "kr": "지능 +(31—33)",
-     "en": "+(31—33) to Intelligence",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
      "m": "n",
      "tags": [
       "int"
@@ -923,33 +1266,72 @@
      "kr": "아스트리드의 창의성",
      "en": "Astrid’s Creativity",
      "m": "r"
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(142—188) / 모든 주문 스킬 레벨 +1 (천공의 합금)",
-     "en": "+(142—188) to maximum Mana / +1 to Level of all Spell Skills (Celestial Alloy)",
-     "m": "c",
-     "tags": [
-      "cel"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
     }
    ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
+   "over": [
     {
-     "s": "p",
-     "kr": "울라만 훼손 옵션(미공개)",
-     "en": "Ulaman desecration (unrevealed)"
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "카오스 피해 (105—119)% 증가 (분열)",
+        "en": "(105—119)% increased Chaos Damage (fractured)",
+        "m": "f",
+        "tags": [
+         "chaos"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "마나 최대치 +(142—188) / 모든 주문 스킬 레벨 +1 (천공의 합금)",
+        "en": "+(142—188) to maximum Mana / +1 to Level of all Spell Skills (Celestial Alloy)",
+        "m": "c",
+        "tags": [
+         "cel"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "훼손 옵션 (미공개)",
+        "en": "Desecrated (unrevealed)",
+        "m": "n"
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+        "en": "(60—73)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scrit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "모든 주문 스킬 레벨 +3 (완벽한 마술의 에센스)",
+        "en": "+3 to Level of all Spell Skills (Perfect Essence of Sorcery)",
+        "m": "c",
+        "tags": [
+         "sp3"
+        ]
+       },
+       {
+        "s": "r",
+        "kr": "아스트리드의 창의성",
+        "en": "Astrid’s Creativity",
+        "m": "r"
+       }
+      ]
+     }
     }
-   ],
-   "omens": [
-    "Omen_of_the_Sovereign"
    ]
   },
   {
@@ -958,30 +1340,56 @@
    "group": "main",
    "pos": [
     0,
-    9
+    10.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인 (울라만 접두 2개가 모두 나옴)",
-    "en": "Reveal (both Ulaman prefixes show)"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "ula",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손) — 피해의 %를 추가 물리 피해로 획득",
+    "en": "Third prefix (desecrated): damage gained as extra physical"
+   },
+   "show": [
+    "ula"
+   ],
    "edges": [
     {
-     "to": "ok"
+     "to": "ok",
+     "res": "ok"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "카오스 피해 (105—119)% 증가",
-     "en": "(105—119)% increased Chaos Damage",
+     "kr": "카오스 피해 (105—119)% 증가 (분열)",
+     "en": "(105—119)% increased Chaos Damage (fractured)",
      "m": "f",
      "tags": [
       "chaos"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(142—188) / 모든 주문 스킬 레벨 +1 (천공의 합금)",
+     "en": "+(142—188) to maximum Mana / +1 to Level of all Spell Skills (Celestial Alloy)",
+     "m": "c",
+     "tags": [
+      "cel"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해의 (21—25)%를 추가 물리 피해로 획득 (훼손)",
+     "en": "Gain (21—25)% of Damage as Extra Physical Damage (desecrated)",
+     "m": "d",
+     "tags": [
+      "ula"
      ]
     },
     {
@@ -995,8 +1403,8 @@
     },
     {
      "s": "s",
-     "kr": "지능 +(31—33)",
-     "en": "+(31—33) to Intelligence",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
      "m": "n",
      "tags": [
       "int"
@@ -1016,36 +1424,75 @@
      "kr": "아스트리드의 창의성",
      "en": "Astrid’s Creativity",
      "m": "r"
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(142—188) / 모든 주문 스킬 레벨 +1 (천공의 합금)",
-     "en": "+(142—188) to maximum Mana / +1 to Level of all Spell Skills (Celestial Alloy)",
-     "m": "c",
-     "tags": [
-      "cel"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "피해의 (21—25)%를 추가 물리 피해로 획득",
-     "en": "Gain (21—25)% of Damage as Extra Physical Damage",
-     "m": "d",
-     "tags": [
-      "ula"
-     ]
     }
    ],
-   "showText": [
+   "over": [
     {
-     "s": "p",
-     "kr": "피해의 (21—25)%를 추가 물리 피해로 획득",
-     "en": "Gain (21—25)% of Damage as Extra Physical Damage"
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "카오스 피해 (105—119)% 증가 (분열)",
+        "en": "(105—119)% increased Chaos Damage (fractured)",
+        "m": "f",
+        "tags": [
+         "chaos"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "마나 최대치 +(142—188) / 모든 주문 스킬 레벨 +1 (천공의 합금)",
+        "en": "+(142—188) to maximum Mana / +1 to Level of all Spell Skills (Celestial Alloy)",
+        "m": "c",
+        "tags": [
+         "cel"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "피해의 (21—25)%를 추가 물리 피해로 획득 (훼손)",
+        "en": "Gain (21—25)% of Damage as Extra Physical Damage (desecrated)",
+        "m": "d",
+        "tags": [
+         "ula"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+        "en": "(60—73)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scrit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "모든 주문 스킬 레벨 +3 (완벽한 마술의 에센스)",
+        "en": "+3 to Level of all Spell Skills (Perfect Essence of Sorcery)",
+        "m": "c",
+        "tags": [
+         "sp3"
+        ]
+       },
+       {
+        "s": "r",
+        "kr": "아스트리드의 창의성",
+        "en": "Astrid’s Creativity",
+        "m": "r"
+       }
+      ]
+     }
     }
-   ],
-   "want": "ula",
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
@@ -1054,12 +1501,23 @@
    "group": "main",
    "pos": [
     0,
-    10
+    11.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "w3",
+    "w3x"
+   ],
+   "kr": "접미 두번째 옵션",
+   "en": "Second suffix"
   }
  ]
 }

@@ -9,7 +9,7 @@ cw_chaos=textW('increased Chaos Damage','n','p'); cw_scrit=textW('increased Crit
 cw_int=textW('to Intelligence','n','s'); cw_mreg=textW('increased Mana Regeneration Rate','n','s'); cw_cast=textW('increased Cast Speed','n','s')
 cw_spell3=textW('+3 to Level of all Spell Skills','e','s'); cw_cel=textW('to Level of all Spell Skills','e','p'); cw_ula=textW('of Damage as Extra Physical Damage','d','p')
 R.append({
- 'id':'sihan-chayula-wand','cls':c,'base':base(c,'Primordial Wand'),'ilvl':82,'sockets':2,'exceptional':{'sockets':1},'difficulty':3,'budget':'medium',
+ 'id':'sihan-chayula-wand','cls':c,'base':base(c,'Attuned Wand'),'ilvl':82,'sockets':2,'exceptional':{'sockets':1},'difficulty':3,'budget':'medium',
  'buildTags':[K('카오스','Chaos'),K('주문','Spell'),K('차율라','Chayula')],'patch':'0.5.5','created':'2026-11-11','author':SHW,
  'source':{'url':'https://www.youtube.com/watch?v=rSs4fumlHo4','title':'[POE2 0.5.5] 차율라 부패운반자 장비 제작｜마법봉 제작 가이드｜매물이 없다면 직접 만들자!','channel':'시한'},
  'title':K('카오스 피해 분열 + 주문 +3 에센스 + 천공의 합금 + 울라만 추가 물리 피해','fractured chaos damage + spell +3 essence + Celestial Alloy + Ulaman extra physical'),
@@ -27,5 +27,5 @@ R.append({
   {'id':'w8','phase':'fix','do':'essence','cur':'Celestial_Alloy','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':cw_cel,'chance':1},'ts':'6:55'},
   {'id':'w9','phase':'fix','do':'desecrate','cur':'Preserved_Jawbone','omens':['Omen_of_the_Sovereign'],'target':{'unrev':'p'},'ts':'7:21'},
   {'id':'w10','phase':'fix','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':cw_ula},'side':'p','lord':'ulaman','bone':'Preserved_Jawbone'},'fail':{'goto':'w9','via':LIGHT},'ts':'7:40'},
-  {'id':'w11','phase':'fix','do':'note','ts':'8:00','note':K('완성. 접미 두 번째 옵션은 지능이 가장 좋음(무기 세트 2의 능력치 부족).','Done; intelligence is the best second suffix (weapon set 2 runs short on attributes).')},
+  {'id':'w11','phase':'fix','do':'note','ts':'8:00','note':K('완성. 무기 세트 2의 능력치가 모자라 접미 두 번째 옵션은 지능이 가장 좋음.','Done; weapon set 2 runs short on attributes, so intelligence is the best second suffix.')},
  ]})
