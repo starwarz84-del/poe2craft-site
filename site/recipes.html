@@ -1156,12 +1156,21 @@ function statTiles(r){
   return `<div class="stats">${t.map(([v,l,sub])=>`<div class="stat"><b>${esc(v)}</b><span>${esc(l)}</span>${sub?`<small>${esc(sub)}</small>`:''}</div>`).join('')}</div>`;
 }
 // start → finish, side by side
+/* 완성 카드 하나 = 플로우차트 완성품 카드와 레시피 탭 완성 카드가 같은 값(사용자 2026-11-12): 옵션 줄은 플로우차트 카드(fcCardState),
+   아이템 정보(퀄리티·소켓·룬·스킬 부여·성유)는 그 등급 레시피의 마지막 상태 — 레시피에 퀄리티가 없으면 플로우차트 완성품 퀄리티, 소켓은 둘 중 큰 값 */
+function finCardO(r, state){ const a=analyse(r), fin=a.nodes[a.nodes.length-1], fi=r.fc?.fi||{}, st=state||a.finalState||fin.state;
+  const qual = fin.qual?.v ? {...fin.qual} : fi.quality ? {v:fi.quality, type:null} : {...(fin.qual||{v:0})}, sockets=Math.max(fin.sockets||0, fi.sockets||0);
+  const runes=[...(fin.runes||[])], has=x=>runes.some(y=>runeName(y).toLowerCase()===runeName(x).toLowerCase());
+  let rs=[]; try{ rs=C(r).runes||[]; }catch(e){}
+  (st||[]).forEach(m=>{ if(m.gi==null) return; let G; try{ G=grp(r,m.gi); }catch(e){ return; } const sb=G?.s==='x' && Array.isArray(G.sub) ? G.sub : null; if(!sb || /otherworldly/i.test(sb[1]||'')) return;   /* 룬이 주는 옵션이 카드에 있으면 그 룬도 소켓에 */
+    const k=String(sb[1]).replace(/[’']/g,"'").toLowerCase(); if(rs.some(x=>(x.t||[]).some(t=>String(t[1]).replace(/[’']/g,"'").toLowerCase()===k))){ const x={kr:sb[0], en:sb[1]}; if(!has(x)) runes.push(x); } });
+  return {...fin, state:st, pre:st, cap:{...fin.cap}, qual, sockets, runes:runes.slice(0, sockets)}; }
 function overviewHTML(r){
   const a=analyse(r), st=a.nodes[0], fin=a.nodes[a.nodes.length-1];   // start = the base as bought
   // both cards get the same rows (final item's slots and quality line) so they line up
   // the start card shows the base itself: junk or hidden slots it came with stay empty
-  const tip = (o, isStart) => { const st = isStart ? o.state.filter(m=>m.gi!=null) : (a.finalState || o.state);
-    return itemTipHTML(r,{...o, state:st, pre:st, cap:{...fin.cap}, sockets:fin.sockets}, {showQual:!!fin.qual?.v, final:!isStart}); };
+  const FO=finCardO(r);
+  const tip = (o, isStart) => isStart ? itemTipHTML(r,{...o, state:o.state.filter(m=>m.gi!=null), pre:o.state.filter(m=>m.gi!=null), cap:{...fin.cap}, sockets:FO.sockets}, {showQual:!!FO.qual?.v, final:false}) : itemTipHTML(r, FO, {showQual:!!FO.qual?.v, final:true});
   return `<section class="ovw"><div class="otags">${infoTags(r)}</div>
     <div class="ostart" data-pair><div><p class="olab"><i class="dot"></i>${L('시작 아이템','Starting item')}</p>${tip(st,true)}</div>
       <div class="oarrow" aria-hidden="true">→</div>
@@ -1837,7 +1846,8 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
     // 훼손 여부 = 제작 과정에서 훼손으로 얻었는지(사용자 확정 2026-11-11): 시뮬 완성품 통계 desStat — 태그별 훼손 비율, 면별 훼손 옵션 수(잡옵도 훼손일 수 있음). 통계가 없을 때만 옵션 종류로 추정
     const state=fcCardState(g.tags, F.lines, S2?.res?.desStat, revOnly, r);
     const go=r.tierGroup && tierSibs(r).find(x=>x.tier===(F.tier||F.id));   // 완성품 카드 → 그 등급 레시피 탭 (사용자 확정 2026-11-11)
-    return `<div class="fcfin ${on?'on':''} ${go?'go':''}" ${go?`data-rtab="${esc(go.id)}" role="button" tabindex="0" title="${esc(L('이 완성품의 제작 과정 보기','Open the crafting steps for this item'))}"`:''}><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:fcRunes(r, g, S2, state, fi)}, {final:true})}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');
+    return `<div class="fcfin ${on?'on':''} ${go?'go':''}" ${go?`data-rtab="${esc(go.id)}" role="button" tabindex="0" title="${esc(L('이 완성품의 제작 과정 보기','Open the crafting steps for this item'))}"`:''}><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${(()=>{ let O=null; if(go){ try{ O=finCardO(go, state); }catch(e){ O=null; } }   /* 그 등급 레시피가 있으면 레시피 탭 완성 카드와 같은 값 */
+      return O ? itemTipHTML(go, O, {showQual:!!O.qual?.v, final:true}) : itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:fcRunes(r, g, S2, state, fi)}, {final:true}); })()}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
 /* 아이템 레벨로 붙을 수 없는 티어는 목표 글에서 뺌: 태그마다 lo = 붙을 수 있는 가장 좋은 티어(리버스 graphify view와 같은 규칙, 2026-11-12) */
 function fcIlvl(g, r){ let gs; try{ gs=C(r).groups; }catch(e){ return g; } if(!gs || !r?.ilvl) return g;
@@ -1999,7 +2009,7 @@ function syncStep(force){
   const o=a.nodes[i];
   nodes.forEach(el=>el.classList.toggle('cur', el.dataset.node===id));
   document.querySelectorAll('#detail .dnav [data-go-node]').forEach(el=>el.classList.toggle('on', el.dataset.goNode===id));
-  const last=i===a.nodes.length-1, oo = last && a.finalState ? {...o, state:a.finalState, pre:a.finalState} : o;
+  const last=i===a.nodes.length-1, oo = last && r.fc ? finCardO(r) : last && a.finalState ? {...o, state:a.finalState, pre:a.finalState} : o;   /* 마지막 단계 아이템 = 완성 카드와 같음 */
   $('#detail [data-tip]').innerHTML=itemTipHTML(r,oo,{final:last});
   $('#detail [data-dihead]').innerHTML=`<span class="k">${L(`${i+1}번 단계 후`,`After step ${i+1}`)}</span><b>${esc(shortTitle(o.n))}</b>`;
   // progress: every phase segment fills up to the current step

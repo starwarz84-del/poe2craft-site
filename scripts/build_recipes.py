@@ -640,6 +640,7 @@ for _r in R:
                 g=_gis(T) if T else []
                 return {**l, 'any':g} if g else l
             _r['fc']={'lines':[_anyline(l) for l in _F['lines']],'tags':_tags,'ds':(_S or {}).get('res',{}).get('desStat')}
+            if _g.get('finalItem'): _r['fc']['fi']={k:v for k,v in _g['finalItem'].items() if k in ('quality','sockets')}   # 완성 카드 퀄리티·소켓(두 완성 카드가 같은 값을 쓰게, 2026-11-12)
             # 레시피 = 그 등급 플로우차트를 순서대로 읽은 것(사용자 확정 2026-11-11, scripts/graph2recipe.py): 단계·확률·사용량·갈래 모두 플로우차트·시뮬 값
             if _S and _r['id'] not in FCREAD_OFF and os.path.exists(f"/home/claude/poe2data/scripts/graphs/{_sid}.json"):
                 _tiers=[x.get('tier') or 'high' for x in R if (x.get('tierGroup') or x['id'])==_sid]
