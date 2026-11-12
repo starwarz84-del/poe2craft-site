@@ -1291,7 +1291,11 @@ function nodeHTML(r, o, i, idx){
   if(t.removeJunk) tgt = t.removeJunk==='any' ? L('잡옵 제거','Removes a junk modifier') : L(`${t.removeJunk==='p'?'접두':'접미'} 잡옵 제거`,`Removes the junk ${t.removeJunk==='p'?'prefix':'suffix'}`);
   if(t.removeMark) tgt=L('징표를 훼손한 뒤 제거','Desecrate the Mark, then remove it');
   if(n.do==='remove' && n.fcTarget && tx(n.fcTarget)) tgt=esc(tx(n.fcTarget));   /* 플로우차트 지우기 상자의 목표 글(2026-11-12) */
-  if(t.quality) tgt=L(`퀄리티 ${t.quality}%까지 (평균 ${fmt(o.fixedTries)}개, 레어는 1개당 +1${r.ilvl>=82?' · 20% 확률로 +2':''})`,`Quality to ${t.quality}% (avg ${fmt(o.fixedTries)}; +1 each on a rare${r.ilvl>=82?', 20% chance of +2':''})`);
+  if(t.quality){ /* 퀄리티 목표 글(2026-11-12 균열 반지 검수): 플로우차트 읽기 단계는 상자 사용량(시뮬 값)에서 한 번에 쓰는 개수, '레어는 1개당 +1'은 방어구·무기 퀄리티 오브만, 주입기는 개수 없이 */
+    const ak=S.byId[n.cur]?.act, fu=n.fcs?.use?.[n.cur], per = fu!=null ? fu/Math.max(1, n.fcs.tries||1) : o.fixedTries;
+    tgt = ak==='infuse' ? L(`퀄리티 ${t.quality}%까지`,`Quality to ${t.quality}%`)
+      : ak==='catalyst' || fu!=null ? L(`퀄리티 ${t.quality}%까지 (한 번에 ${fmt(per)}개)`,`Quality to ${t.quality}% (${fmt(per)} at a time)`)
+      : L(`퀄리티 ${t.quality}%까지 (평균 ${fmt(per)}개, 레어는 1개당 +1${r.ilvl>=82?' · 20% 확률로 +2':''})`,`Quality to ${t.quality}% (avg ${fmt(per)}; +1 each on a rare${r.ilvl>=82?', 20% chance of +2':''})`); }
   if(t.removeGi!=null && t.junk) tgt=L(`${esc(modLine(r,t.removeGi).txt)} 제거 (접두엔 아무 옵션)`,`Removes ${esc(modLine(r,t.removeGi).txt)} (any prefix lands)`);
   if(t.lord && tgt){ const LN={kurgal:['쿠르갈','Kurgal'],amanamu:['아마나무','Amanamu'],ulaman:['울라만','Ulaman']}[t.lord]||[t.lord,t.lord]; tgt += ` <small>(${L('공개 옵션 모두 '+LN[0],'all revealed options are '+LN[1]+'’s')})</small>`; }
   if(n.trimFc) tgt=L(`${n.trimFc==='s'?'접미':'접두'} 잡옵을 지우고 새 옵션 굴림`,`Remove the junk ${n.trimFc==='s'?'suffix':'prefix'} and roll a new modifier`);
