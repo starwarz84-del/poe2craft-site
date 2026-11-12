@@ -4,7 +4,7 @@
  "cls": "Time-Lost_Emerald",
  "base": "Time-Lost Emerald",
  "ilvl": 81,
- "note": "Master T 5옵션 오래된 에메랄드(원본 레시피 기록) — 공격 치명타 확률 분열 + 잡옵 → 카오스 오브(공격 치명타 피해) → 엑잘 2번(접두) → 고대 위력적인 액체 경멸(실패 = 소멸의 오브로 분열 + 옵션 1개) → 우측 강령술 + 보존된 두개골 → 공개(이동 속도, 하이엔드 = 빛의 징조로 다시) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 카오스 오브(상태 이상·감전 강도) → 고대 위력적인 액체 우울. 신성한 오브 마무리는 뺌.",
+ "note": "Master T 5옵션 오래된 에메랄드(GNNkhSENp6Q) — 공격 치명타 확률 분열 + 잡옵 → 카오스 오브(공격 치명타 피해) → 엑잘(접두 잡옵) → 고대 위력적인 액체 경멸(실패 = 소멸의 오브로 분열 + 옵션 1개) → 우측 강령술 + 보존된 두개골 → 공개(이동 속도, 하이엔드 = 빛의 징조로 다시) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘(접두) → 카오스 오브(상태 이상·감전 강도) → 고대 위력적인 액체 우울. 신성한 오브 마무리는 뺌.",
  "params": {
   "v": {
    "kr": "진행",
@@ -366,8 +366,8 @@
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 옵션 2개",
-    "en": "Two prefixes"
+    "kr": "접두 잡옵 1개",
+    "en": "One junk prefix"
    },
    "label": {
     "kr": "엑잘",
@@ -375,14 +375,7 @@
    },
    "edges": [
     {
-     "if": {
-      "full": "p"
-     },
      "to": "m4"
-    },
-    {
-     "to": "m3",
-     "hide": true
     }
    ],
    "item": [
@@ -409,20 +402,14 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
    ],
    "cur": "Exalted_Orb",
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 옵션 1개씩 (접미가 꽉 차 접두로)",
-     "en": "One random line each (suffixes are full)"
+     "kr": "랜덤 옵션 1개 (접미가 꽉 차 접두로)",
+     "en": "One random line (suffixes are full)"
     }
    ]
   },
@@ -482,12 +469,6 @@
      "tags": [
       "cd"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     },
     {
      "s": "p",
@@ -580,12 +561,6 @@
      "tags": [
       "cd"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     },
     {
      "s": "p",
@@ -684,12 +659,6 @@
     },
     {
      "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
      "kr": "+1 접미 허용",
      "en": "+1 suffix allowed",
      "m": "n",
@@ -764,8 +733,78 @@
      "res": "fail"
     },
     {
-     "to": "m8",
+     "to": "m7e",
      "res": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 치명타 명중 확률 (분열)",
+     "en": "Attack crit chance (fractured)",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 치명타 피해 보너스",
+     "en": "Attack crit damage bonus",
+     "m": "n",
+     "tags": [
+      "cd"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "이동 속도",
+     "en": "Movement speed",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ],
+   "cur": "Chaos_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Erasure"
+   ]
+  },
+  {
+   "id": "m7e",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6.5
+   ],
+   "act": "exalt",
+   "goal": {
+    "kr": "접두 두번째 옵션 (아무 옵션)",
+    "en": "Second prefix (anything)"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "m9",
+     "res": "ok"
+    },
+    {
+     "to": "m8",
+     "res": "fail"
     }
    ],
    "item": [
@@ -809,9 +848,17 @@
      "m": "j"
     }
    ],
-   "cur": "Chaos_Orb",
-   "omens": [
-    "Omen_of_Sinistral_Erasure"
+   "cur": "Exalted_Orb",
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line"
+    }
+   ],
+   "show": [
+    "p6",
+    "p62"
    ]
   },
   {

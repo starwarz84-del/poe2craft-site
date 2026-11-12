@@ -27,25 +27,28 @@ def melan(id,pos,back,item):
         [{'if':{'has':'pre'},'to':'ok','res':'ok'},{'to':back,'res':'fail','port':'right'}],item)
 
 # ---------- 1. Master T 5옵션 오래된 에메랄드 (GNNkhSENp6Q) ----------
+# 2026-11-12 영상 전체 대조(자동 번역 자막 0:00~35:12, 메인 세션): 엑잘은 경멸 전에 하나만(8:00 '일반 엑잘을 하나씩' — 경멸이 치명타 피해와 잡옵 중 하나를 50:50으로 지움),
+#   경멸 옵션을 좌측 말소 카오스로 지운 뒤 엑잘 하나 더(15:00 '어떤 옵션이든 붙이세요') → 카오스 오브로 접두만 바꿈(17:00, 접미는 한도를 넘어 안 바뀜) → 우울 50:50(21:00). 공개는 메아리 징조, 빗나가면 빛의 징조(12:00). 하이엔드 = 이동 속도(영상), 밸런스 = 공개 결과 그대로.
 # 원본: 공격 치명타 확률 분열 + 잡옵 → 카오스 오브(공격 치명타 피해) → 엑잘(접두 잡옵) → 고대 위력적인 액체 경멸(실패 = 소멸의 오브로 분열 + 옵션 1개, 카오스부터)
 # → 우측 강령술 + 보존된 두개골 → 공개(이동 속도, 빛의 징조로 다시) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션 지우기) → 카오스 오브(상태 이상·감전 강도) → 고대 위력적인 액체 우울(1/2).
 GP=[6,62]
 tags={**BASE_TAGS,'cd':{'gi':9},'ms':{'gi':48},**{f'p{g}':{'gi':g} for g in GP},'pre':{'anyOf':[f'p{g}' for g in GP],'label':K('상태 이상·감전 강도','Ailment or shock magnitude')}}
 CD=it('s','공격 치명타 피해 보너스','Attack crit damage bonus',['cd']); MS=it('s','이동 속도','Movement speed',['ms']); PR=it('p','상태 이상·감전 강도','Ailment or shock magnitude',['pre'])
-I0=[FRC,J('p')]; I1=[FRC,CD]; I2=[FRC,CD,J('p'),J('p')]; I3=[FRC,CD,J('p'),CS2]; I4=I3+[UN('s')]; I5=[FRC,CD,MS,J('p'),CS2]; I6=[FRC,CD,MS,J('p'),J('p')]; I7=[FRC,CD,MS,PR,J('p')]; I8=[FRC,CD,MS,PR,RD]
+I0=[FRC,J('p')]; I1=[FRC,CD]; I2=[FRC,CD,J('p')]; I3=[FRC,CD,CS2]; I4=I3+[UN('s')]; I5=[FRC,CD,MS,CS2]; I6=[FRC,CD,MS,J('p')]; I6b=I6+[J('p')]; I7=[FRC,CD,MS,PR,J('p')]; I8=[FRC,CD,MS,PR,RD]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cc','fr':True},{'junk':'p'}]},K('공격 치명타 확률 분열 + 잡옵 1개 오래된 에메랄드','Time-Lost Emerald: fractured attack crit chance + one junk line'),I0),
  mark([0,0.6],'m2',I0),
  act('m2','main',[0,1],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),[{'if':{'has':'cd'},'to':'m3','res':'ok'},{'to':'m2','res':'fail'}],I1,show=['cd']),
- act('m3','main',[0,2],'exalt','Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 1개씩 (접미가 꽉 차 접두로)','One random line each (suffixes are full)')],K('엑잘','Exalt'),[{'if':{'full':'p'},'to':'m4'},{'to':'m3','hide':True}],I2),
+ act('m3','main',[0,2],'exalt','Exalted_Orb',K('접두 잡옵 1개','One junk prefix'),[st('p','랜덤 옵션 1개 (접미가 꽉 차 접두로)','One random line (suffixes are full)')],K('엑잘','Exalt'),[{'to':'m4'}],I2),
  contempt('m4',[0,3],'m5','m4x',I3,keep='cd'), resetx('m4x',[1,3],'m2'),
  act('m5','main',[0,4],'desecrate','Preserved_Cranium',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'m6'}],I4,omens=['Omen_of_Dextral_Necromancy']),
  REVEAL('m6',[0,5],'ms',['ms'],'m7','m6x',I5), LIGHTX('m6x',[1,5],'m5'),
- erase('m7',[0,6],'m8',I6),
+ erase('m7',[0,6],'m7e',I6),
+ act('m7e','main',[0,6.5],'exalt','Exalted_Orb',K('접두 두번째 옵션 (아무 옵션)','Second prefix (anything)'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'if':{'has':'pre'},'to':'m9','res':'ok'},{'to':'m8','res':'fail'}],I6b,show=[f'p{g}' for g in GP]),
  goodpre('m8',[0,7],'m9',[f'p{g}' for g in GP],I7),
  melan('m9',[0,8],'m8',I8),
  done([0,9])]
 graph10('mastert-timelost-emerald-v2','Time-Lost_Emerald','Time-Lost Emerald',81,
-  'Master T 5옵션 오래된 에메랄드(원본 레시피 기록) — 공격 치명타 확률 분열 + 잡옵 → 카오스 오브(공격 치명타 피해) → 엑잘 2번(접두) → 고대 위력적인 액체 경멸(실패 = 소멸의 오브로 분열 + 옵션 1개) → 우측 강령술 + 보존된 두개골 → 공개(이동 속도, 하이엔드 = 빛의 징조로 다시) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 카오스 오브(상태 이상·감전 강도) → 고대 위력적인 액체 우울. 신성한 오브 마무리는 뺌.',
+  'Master T 5옵션 오래된 에메랄드(GNNkhSENp6Q) — 공격 치명타 확률 분열 + 잡옵 → 카오스 오브(공격 치명타 피해) → 엑잘(접두 잡옵) → 고대 위력적인 액체 경멸(실패 = 소멸의 오브로 분열 + 옵션 1개) → 우측 강령술 + 보존된 두개골 → 공개(이동 속도, 하이엔드 = 빛의 징조로 다시) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션) → 엑잘(접두) → 카오스 오브(상태 이상·감전 강도) → 고대 위력적인 액체 우울. 신성한 오브 마무리는 뺌.',
   ROUTE,PH,DESC,tags,nodes,
   [{'id':'L1','nodes':['m5','m6','m6x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['m8','m9'],'kr':'우울','en':'Melancholy'}],
   FIN(('high','bal'),lambda v:[{'side':'p','label':K('상태 이상·감전 강도','Ailment or shock magnitude')},{'tag':'rad','tmax':1},{'tag':'cc','tmax':1,'fr':True},{'tag':'cd','tmax':1},{'tag':'ms','tmax':1} if v=='high' else {'side':'s','random':True}]),

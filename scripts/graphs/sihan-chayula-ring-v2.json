@@ -4,7 +4,7 @@
  "cls": "Rings",
  "base": "Breach Ring",
  "ilvl": 81,
- "note": "시한 차율라 반지(GgD_vxKgNsw) — 잔류물 거리 분열 → 균열의 에센스 → 차율라의 기폭제 60% → 카오스 오브(모든 원소 저항) → 상위 + 좌측 찬미 + 완벽한 엑잘(접두 2개 중 카오스 피해, 빗나가면 소멸의 오브) → 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈 → 공개(잔류물 효과) → 완벽한 엑잘. 하이엔드 = 저항·카오스 피해 1티어(영상 완성품), 밸런스 = 1~2티어(영상: 저항 12% 이상이면 충분).",
+ "note": "시한 차율라 반지(GgD_vxKgNsw) — 잔류물 거리 분열 → 균열의 에센스 → 차율라의 기폭제 60% → 카오스 오브(모든 원소 저항 또는 카오스 피해) → 상위 찬미 + 완벽한 엑잘(나머지 하나, 빗나가면 소멸의 오브) → 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈 → 공개(잔류물 효과) → 완벽한 엑잘. 하이엔드 = 저항·카오스 피해 1티어(영상 완성품), 밸런스 = 1~2티어(영상: 저항 12% 이상이면 충분).",
  "params": {
   "rT": {
    "kr": "모든 원소 저항",
@@ -400,8 +400,8 @@
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접미 두번째 옵션 (최대 퀄리티 옵션이 바뀜)",
-    "en": "Second suffix (replaces the max-quality line)"
+    "kr": "저항 또는 카오스 피해 (최대 퀄리티는 고정 속성이라 그대로)",
+    "en": "All resistances or chaos damage (max quality is implicit and stays)"
    },
    "label": {
     "kr": "카오스",
@@ -412,13 +412,82 @@
      "if": {
       "all": [
        {
-        "has": "res"
+        "all": [
+         {
+          "has": "res"
+         },
+         {
+          "has": "chaos"
+         }
+        ]
        },
        {
         "sideLt": {
          "side": "p",
-         "n": 1
+         "n": 3
         }
+       }
+      ]
+     },
+     "to": "r6",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "has": "res"
+         },
+         {
+          "has": "chaos"
+         }
+        ]
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "has": "res"
+          },
+          {
+           "has": "chaos"
+          }
+         ]
+        }
+       },
+       {
+        "any": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 2
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 3
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 3
+            }
+           }
+          ]
+         }
+        ]
        }
       ]
      },
@@ -427,15 +496,65 @@
     },
     {
      "if": {
-      "has": "res"
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "has": "res"
+          },
+          {
+           "has": "chaos"
+          }
+         ]
+        }
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 1
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 3
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 2
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
      },
-     "to": "r5x",
-     "res": "ok",
-     "hide": true
+     "to": "r4",
+     "res": "fail",
+     "port": "right"
     },
     {
-     "to": "r4",
-     "res": "fail"
+     "to": "r5x",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
@@ -460,7 +579,8 @@
    ],
    "cur": "Chaos_Orb",
    "show": [
-    "res"
+    "res",
+    "chaos"
    ]
   },
   {
@@ -473,8 +593,8 @@
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 첫번째·두번째 옵션",
-    "en": "First and second prefixes"
+    "kr": "나머지 하나 (2개 붙이기)",
+    "en": "The other one (two lines)"
    },
    "label": {
     "kr": "엑잘",
@@ -483,14 +603,151 @@
    "edges": [
     {
      "if": {
-      "has": "chaos"
+      "all": [
+       {
+        "all": [
+         {
+          "has": "res"
+         },
+         {
+          "has": "chaos"
+         }
+        ]
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 3
+        }
+       }
+      ]
      },
      "to": "r6",
      "res": "ok"
     },
     {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "has": "res"
+         },
+         {
+          "has": "chaos"
+         }
+        ]
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "has": "res"
+          },
+          {
+           "has": "chaos"
+          }
+         ]
+        }
+       },
+       {
+        "any": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 2
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 3
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 3
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "r5",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "has": "res"
+          },
+          {
+           "has": "chaos"
+          }
+         ]
+        }
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 1
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 3
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 2
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "r4",
+     "hide": true
+    },
+    {
      "to": "r5x",
-     "res": "fail"
+     "res": "fail",
+     "port": "right"
     }
    ],
    "item": [
@@ -531,17 +788,16 @@
    "cur": "Perfect_Exalted_Orb",
    "showText": [
     {
-     "s": "p",
-     "kr": "랜덤 옵션 1개 더",
-     "en": "One more random line"
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines"
     }
    ],
    "show": [
+    "res",
     "chaos"
    ],
    "omens": [
-    "Omen_of_Greater_Exaltation",
-    "Omen_of_Sinistral_Exaltation"
+    "Omen_of_Greater_Exaltation"
    ]
   },
   {
@@ -564,39 +820,158 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접두 지우기",
-    "en": "Remove the missed prefixes"
+    "kr": "빗나간 옵션 지우기",
+    "en": "Remove a missed line"
    },
    "edges": [
     {
      "if": {
       "all": [
        {
-        "has": "res"
+        "all": [
+         {
+          "has": "res"
+         },
+         {
+          "has": "chaos"
+         }
+        ]
        },
        {
         "sideLt": {
          "side": "p",
-         "n": 1
+         "n": 3
         }
        }
       ]
      },
-     "to": "r5",
-     "port": "right",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "has": "res"
-     },
-     "to": "r5x",
+     "to": "r6",
      "res": "ok",
      "hide": true
     },
     {
+     "if": {
+      "all": [
+       {
+        "any": [
+         {
+          "has": "res"
+         },
+         {
+          "has": "chaos"
+         }
+        ]
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "has": "res"
+          },
+          {
+           "has": "chaos"
+          }
+         ]
+        }
+       },
+       {
+        "any": [
+         {
+          "sideLt": {
+           "side": "p",
+           "n": 2
+          }
+         },
+         {
+          "sideLt": {
+           "side": "s",
+           "n": 2
+          }
+         },
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 3
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 3
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "to": "r5",
+     "res": "ok",
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "any": [
+          {
+           "has": "res"
+          },
+          {
+           "has": "chaos"
+          }
+         ]
+        }
+       },
+       {
+        "any": [
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 1
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 3
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "sideLt": {
+             "side": "p",
+             "n": 2
+            }
+           },
+           {
+            "sideLt": {
+             "side": "s",
+             "n": 2
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
      "to": "r4",
      "res": "fail"
+    },
+    {
+     "to": "r5x",
+     "res": "fail",
+     "hide": true
     }
    ]
   },

@@ -38,8 +38,8 @@
 | breach-ring-phys-v2 |  | bal 535, ess 89 | 2 | 대기 |  |  |
 | diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 512, bal 340, ess 278 | 1 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-QuW8BOSpPpo.md). 등급 C17 적용. 512/340/278 → 1,287/278/219 |  |
 | mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 완료 11-11(그림만 확인 안 됨) | B(Fable) | 단계 대조는 함. 화면 캡처가 오른쪽이 잘린 채였음 — 선은 다시 볼 것 |
-| sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 진행 중 | A(Opus) |  |
-| mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 진행 중 | A(Opus) |  |
+| sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 완료 11-12 | A(Opus) | 자막 전체 + 화면 2:30~3:45 대조(기록 tools/notes/sihan-GgD_vxKgNsw.md). 카오스는 저항 또는 카오스 피해, 완벽한 엑잘에서 좌측 찬미 뺌(영상에서 접미에도 붙음). 478/144 → 356/130 |
+| mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 완료 11-12 | A(Opus) | 자막 0:00~24:00 대조(기록 tools/notes/mastert-GNNkhSENp6Q.md). 경멸 전 엑잘 2번 → 영상대로 1번, 경멸 옵션을 지운 뒤 엑잘 1번 추가. 469/88 → 459/78 |
 | noble-timelost-sapphire-v2 | zEV8kWwveYQ | high 468, bal 418 | 3 | 대기 |  |  |
 | tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 대기 |  |  |
 | absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 대기 |  |  |
@@ -135,7 +135,7 @@
 | lilbotq-boots-v2 | ess·bal | - | 대기 |  |  |
 | lilbotq-budget-boots-v2 | ess·bal | ess 이동 속도 1~2티어; ess 냉기 저항 1~3티어; bal 이동 속도 1티어; bal 냉기 저항 1티어 | 대기 |  |  |
 | lilbotq-emerald-v2 | bal | - | 대기 |  |  |
-| mastert-timelost-emerald-v2 | bal·high | - | 대기 |  |  |
+| mastert-timelost-emerald-v2 | bal·high | 주얼이라 티어 없음, high 이동 속도 공개 반복 · bal 결과 그대로 | 완료 11-12 | A(Opus) | 459/78 |
 | mazbro-bis-chest-v2 | bal·high | - | 대기 |  |  |
 | mazbro-caster-amulet-v2 | bal·high | - | 완료 11-12 | A(Opus) | 밸런스 시전 속도·마나 1~2티어, 마지막 접두·접미 랜덤 — 428 → 410 |
 | mazbro-caster-ring-v2 | ess·bal | ess 옵션 티어 1~3티어 | 대기 |  |  |
@@ -156,7 +156,7 @@
 | sihan-chayula-amulet-v2 | ess·bal | ess 정신력 1~2티어; bal 정신력 1티어 | 대기 |  |  |
 | sihan-chayula-gloves-v2 | ess·bal | - | 대기 |  |  |
 | sihan-chayula-helmet-v2 | ess·bal | ess 튕겨내기 평점 1~3티어; ess 방어 접두 1~3티어; bal 방어 접두 1~3티어 | 대기 |  |  |
-| sihan-chayula-ring-v2 | bal·high | - | 대기 |  |  |
+| sihan-chayula-ring-v2 | bal·high | high 1티어, bal 1~2티어, 마지막 두 옵션은 원하는 옵션이 없어 둘 다 랜덤 | 완료 11-12 | A(Opus) | 356/130 |
 | sihan-chayula-sceptre-v2 | ess·bal | ess 접근 효과 범위 1~2티어; ess 정신력 % + 마나 1~6티어; bal 접근 효과 범위 1티어; bal 정신력 % + 마나 1~4티어 | 대기 |  |  |
 | sihan-chayula-wand-v2 | ess·bal | ess 주문 치명타 명중 확률 1~3티어 | 대기 |  |  |
 | sihan-highend-boots-v2 | ess·bal·high | ess 저항 목표 1~2티어; ess 훼손 접두 목표 1~3티어 | 완료 11-12 | A(Opus) | 밸런스 접두 1~2티어, 마지막 접두·접미 랜덤. 에센셜은 밸런스와 같아(265/266) 뺌 — 난이도 4로 올려 하이엔드·밸런스 레시피 둘 다(사용자 확정 11-12) |
