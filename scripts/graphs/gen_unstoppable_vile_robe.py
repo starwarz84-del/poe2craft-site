@@ -68,6 +68,10 @@ g = {
 N = []
 A = lambda **kw: N.append(kw)
 
+PL = {'ok': K('접두 완성', 'Prefixes done'), 'w9': K('접두 완성', 'Prefixes done'), 'r2': K('공개', 'Reveal'), 'q1': K('자리 막기 공개', 'Reveal for a blocker'),
+      'q4': K('막기가 남음', 'Blocker still there'), 'q5': K('징표 훼손', 'Desecrate the Mark'), 'r1': K('빈 접두 자리 훼손', 'Desecrate the empty prefix'),
+      'q2': K('엑잘', 'Exalt'), 'r0': K('막기 제거', 'Remove the blocker'), 'q3': K('징표 만들기', 'Make the Mark'), 'q0': K('빈 접두 자리 훼손', 'Desecrate an empty prefix')}
+
 # 매직 단계: 복합이 없으면 접두가 차 있을 때 소멸의 오브, 비어 있으면 확장 (영상 7:30)
 def MG(vis):
     out = []
@@ -79,7 +83,7 @@ def MG(vis):
 
 # 접두 두 자리: 단계마다 아이템 상태를 다시 봄 (영상 14:30~18:25, 회피 조끼 42:10~45:55와 같은 방식)
 def PR(vis):
-    out = []
+    out = []; seen = set()
     for e in [{'if': {'count': {'tag': 'gp', 'min': 2}}, 'to': 'w9'},
               {'if': {'all': [{'unrevSide': 'p'}, {'count': {'tag': 'gp', 'min': 1}}]}, 'to': 'r2'},
               {'if': {'unrevSide': 'p'}, 'to': 'q1'},
@@ -92,8 +96,8 @@ def PR(vis):
               {'if': {'all': [{'sideLt': {'side': 'p', 'n': 3}}, {'desSide': 'p'}]}, 'to': 'q2'},
               {'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'q0'},
               {'to': 'q3'}]:
-        v = vis.get(e['to'])
-        out.append({**e, **v} if v is not None else {**e, 'hide': True})
+        v = vis.get(e['to']); dup = e['to'] in seen; seen.add(e['to']); d = {'label': PL[e['to']]} if e['to'] in PL else {}
+        out.append({**e, **d, **v, **({'hide': True} if dup else {})} if v is not None else {**e, **d, 'hide': True})
     return out
 
 # ---------------- 베이스템 완성 ----------------
@@ -151,7 +155,7 @@ A(id='q3', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Essence_
   label=K('에센스', 'Essence'), goal=K('빗나간 접두를 지우고 심연의 군주의 징표', 'The missed prefix goes for the Mark of the Abyssal Lord'),
   showText=[{'s': 'p', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=PR({'q4': {'label': K('막기가 남음', 'Blocker still there')}, 'q5': {'label': K('막기가 지워짐', 'Blocker removed')}}))
 A(id='q4', kind='act', group='main', pos=[2, 11.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('남은 막기 훼손 옵션 제거', 'Remove the old blocker'), edges=PR({'q5': {}}))
+  target=K('남은 막기 훼손 옵션 제거', 'Remove the old blocker'), edges=PR({'q5': {'label': K('막기 제거 뒤 징표 훼손', 'Blocker removed, then desecrate the Mark')}}))
 A(id='q5', kind='act', group='main', pos=[1, 12.4], act='desecrate', cur='Preserved_Rib', fromMark=True, label=K('훼손', 'Desecrate'),
   goal=K('접두 징표 훼손', 'Desecrate the prefix Mark'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=PR({'q1': {}}))
@@ -167,7 +171,7 @@ A(id='r2', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_o
 # 마지막 접미: 절사의 징조 + 우측 말소의 징조 + 완벽한 카오스 오브 (영상 21:00~22:04, 레벨 82 저항이 접미를 잠금 18:45)
 A(id='w9', kind='act', group='main', pos=[0, 16.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling', 'Omen_of_Dextral_Erasure'],
   label=K('절사 + 우측 말소 + 카오스', 'Whittling + Dextral Erasure + Chaos'),
-  goal=K('접미 번개 저항 1티어 — 마지막 잡옵 바꾸기', 'T1 lightning resistance suffix: reroll the last junk'), show=['fr', 'cr', 'lr'],
+  goal=K('접미 번개 저항 1티어 — 마지막 잡옵 바꾸기', 'T1 lightning resistance suffix: reroll the last junk'), show=['frT', 'crT', 'lrT'],
   skipIf={'count': {'tag': 'resT', 'min': 3}}, skipTo='ok', skipHide=True,
   edges=[{'if': {'count': {'tag': 'resT', 'min': 3}}, 'to': 'ok', 'res': 'ok'}, {'to': 'w9', 'res': 'fail', 'hide': True}],
   item=[HY, EP, EF, FR, CR, LR],

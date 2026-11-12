@@ -69,6 +69,10 @@ g = {
 N = []
 A = lambda **kw: N.append(kw)
 
+PL = {'ok': K('접두 완성', 'Prefixes done'), 'w9': K('접두 완성', 'Prefixes done'), 'r2': K('공개', 'Reveal'), 'q1': K('자리 막기 공개', 'Reveal for a blocker'),
+      'q4': K('막기가 남음', 'Blocker still there'), 'q5': K('징표 훼손', 'Desecrate the Mark'), 'r1': K('빈 접두 자리 훼손', 'Desecrate the empty prefix'),
+      'q2': K('엑잘', 'Exalt'), 'r0': K('막기 제거', 'Remove the blocker'), 'q3': K('징표 만들기', 'Make the Mark'), 'q0': K('빈 접두 자리 훼손', 'Desecrate an empty prefix')}
+
 # 매직 단계: 회피 증가가 없으면 접두가 차 있을 때 소멸의 오브, 비어 있으면 확장 (영상 26:00·40:00 자막)
 def MG(vis):
     out = []
@@ -84,19 +88,22 @@ def SR(vis):
     seen = set()
     for e in PR({}):   # 접미가 끝나면 접두 상태에 맞는 단계로 (카오스가 접두에 남긴 옵션 포함)
         to = e['to']; c = {'all': [{'ref': 'sDone'}, e['if']]} if e.get('if') else {'ref': 'sDone'}
-        v = vis.get(to) if to not in seen else None; seen.add(to)
-        out.append({'if': c, 'to': to, **(v if v is not None else {'hide': True})})
+        v = vis.get(to); dup = to in seen; seen.add(to)
+        d = {'label': K('접미 완성 — ' + e['label']['kr'], 'Suffixes done: ' + e['label']['en'])} if e.get('label') else {}
+        out.append({'if': c, 'to': to, **d, **(({**v, 'hide': True} if dup else v) if v is not None else {'hide': True})})
+    SL = {'k3e': K('접미 빈자리 — 엑잘', 'Empty suffix: exalt'), 'k3': K('좋은 접미 2개 + 잡옵', 'Two good suffixes + junk'),
+          'k3d': K('접두에 옵션 있음', 'A prefix option is there'), 'k2x': K('좋은 접미 1개뿐 — 카오스부터', 'Only one good suffix: back to Chaos')}
     for e in [{'if': {'not': {'full': 's'}}, 'to': 'k3e'},
               {'if': {'all': [{'has': 'res1'}, {'count': {'tag': 'sG', 'min': 2}}, {'sideLt': {'side': 'p', 'n': 2}}]}, 'to': 'k3'},
               {'if': {'all': [{'has': 'res1'}, {'count': {'tag': 'sG', 'min': 2}}]}, 'to': 'k3d'},
               {'to': 'k2x'}]:
-        v = vis.get(e['to'])
-        out.append({**e, **v} if v is not None else {**e, 'hide': True})
+        v = vis.get(e['to']); d = {'label': SL[e['to']]}
+        out.append({**e, **d, **v} if v is not None else {**e, **d, 'hide': True})
     return out
 
 # 접두 두 자리: 단계마다 아이템 상태를 다시 봄 (영상 42:10~46:05)
 def PR(vis):
-    out = []
+    out = []; seen = set()
     for e in [{'if': {'count': {'tag': 'gp', 'min': 2}}, 'to': 'ok'},
               {'if': {'all': [{'unrevSide': 'p'}, {'count': {'tag': 'gp', 'min': 1}}]}, 'to': 'r2'},
               {'if': {'unrevSide': 'p'}, 'to': 'q1'},
@@ -109,8 +116,8 @@ def PR(vis):
               {'if': {'all': [{'sideLt': {'side': 'p', 'n': 3}}, {'desSide': 'p'}]}, 'to': 'q2'},
               {'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'q2'},
               {'to': 'q3'}]:
-        v = vis.get(e['to'])
-        out.append({**e, **v} if v is not None else {**e, 'hide': True})
+        v = vis.get(e['to']); dup = e['to'] in seen; seen.add(e['to']); d = {'label': PL[e['to']]} if e['to'] in PL else {}
+        out.append({**e, **d, **v, **({'hide': True} if dup else {})} if v is not None else {**e, **d, 'hide': True})
     return out
 
 # ---------------- 베이스템 완성 ----------------
@@ -155,17 +162,17 @@ A(id='k2x', kind='cleanup', group='main', pos=[1, 9.4], keep=[], maxJunk=1, labe
   target=K('분열 + 옵션 1개까지 지우기', 'Annul down to the fracture + one option'),
   edges=[{'to': 'k1', 'label': K('카오스부터', 'Back to Chaos')}])
 A(id='k3', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
-  goal=K('접미 냉기 저항 1티어 — 가장 낮은 레벨 잡옵 바꾸기', 'T1 cold resistance suffix: reroll the lowest-level junk'), show=['fr', 'cr', 'lr'],
+  goal=K('접미 냉기 저항 1티어 — 가장 낮은 레벨 잡옵 바꾸기', 'T1 cold resistance suffix: reroll the lowest-level junk'), show=['frT', 'crT', 'lrT', 'dfl'],
   edges=SR({'q2': {'res': 'ok'}, 'k3e': {'res': 'fail', 'label': K('새 옵션이 접두로', 'New option went to a prefix')},
             'k3d': {'res': 'fail', 'label': K('접두에 옵션 있음', 'A prefix option is there')}}),
   item=[EV, FR, CR, DF],
   over=[{'param': {'rT': 2}, 'set': {'goal': K('접미 냉기 저항 1~2티어 — 가장 낮은 레벨 잡옵 바꾸기', 'T1–2 cold resistance suffix: reroll the lowest-level junk')}}])
 A(id='k3d', kind='act', group='main', pos=[2, 10.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling', 'Omen_of_Dextral_Erasure'],
   label=K('절사 + 우측 말소 + 카오스', 'Whittling + Dextral Erasure + Chaos'),
-  goal=K('접두에 옵션이 있으면 접미 잡옵만 바꾸기', 'With a prefix option present: reroll only the suffix junk'), show=['fr', 'cr', 'lr'],
+  goal=K('접두에 옵션이 있으면 접미 잡옵만 바꾸기', 'With a prefix option present: reroll only the suffix junk'), show=['frT', 'crT', 'lrT', 'dfl'],
   edges=SR({}))
 A(id='k3e', kind='act', group='main', pos=[1, 10.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('빈 접미 채우기', 'Fill the empty suffix'), show=['fr', 'cr', 'lr', 'dfl'], edges=SR({}))
+  goal=K('빈 접미 채우기', 'Fill the empty suffix'), show=['frT', 'crT', 'lrT', 'dfl'], edges=SR({}))
 # 접두: 엑잘 → 빗나가면 징표 → 훼손 → 자리 막기 → 다시 엑잘 (영상 42:10~45:02)
 A(id='q2', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 회피 1티어 — 회피·회피 복합 중 먼저 뜬 것', 'T1 flat evasion prefix: flat or hybrid evasion, whichever lands first'),
@@ -174,7 +181,7 @@ A(id='q3', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Essence_
   label=K('에센스', 'Essence'), goal=K('빗나간 접두를 지우고 심연의 군주의 징표', 'The missed prefix goes for the Mark of the Abyssal Lord'),
   showText=[{'s': 'p', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=PR({'q4': {'label': K('막기가 남음', 'Blocker still there')}, 'q5': {'label': K('막기가 지워짐', 'Blocker removed')}}))
 A(id='q4', kind='act', group='main', pos=[2, 11.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('남은 막기 훼손 옵션 제거', 'Remove the old blocker'), edges=PR({'q5': {}}))
+  target=K('남은 막기 훼손 옵션 제거', 'Remove the old blocker'), edges=PR({'q5': {'label': K('막기 제거 뒤 징표 훼손', 'Blocker removed, then desecrate the Mark')}}))
 A(id='q5', kind='act', group='main', pos=[1, 12.4], act='desecrate', cur='Preserved_Rib', fromMark=True, label=K('훼손', 'Desecrate'),
   goal=K('접두 징표 훼손', 'Desecrate the prefix Mark'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=PR({'q1': {}}))

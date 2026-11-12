@@ -70,6 +70,7 @@ BASEPRICE = {
   'saveq-absent-amulet-v2': None, 'saveq-absent-amulet-v2-bal': None, 'saveq-absent-amulet-v2-ess': None,
   'saveq-alloy-focus': None,
   'saveq-focus': None,
+  'unstoppable-vile-robe-v2': 17.5, 'unstoppable-vile-robe-v2-bal': 17.5,   # 영상 1:30·2:30: 아이템 레벨 82 3소켓 끔찍한 로브 15~20 div
   'saveq-focus-v2': 6, 'saveq-focus-v2-bal': 6,   # 영상 6:00: 특출난 타살리안 집중구(아이템 레벨 79+, 2소켓) 5~7 div, 매물 약 6
   'seek-cyclone-boots': None,
   'sihan-chayula-sceptre': None,
