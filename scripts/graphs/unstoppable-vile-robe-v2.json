@@ -21,16 +21,16 @@
    }
   },
   "rT": {
-   "kr": "마지막 저항",
-   "en": "Last resistance",
+   "kr": "마지막 접미",
+   "en": "Last suffix",
    "values": {
     "1": {
-     "kr": "1티어",
-     "en": "T1"
+     "kr": "번개 저항 1티어",
+     "en": "T1 lightning resistance"
     },
     "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
+     "kr": "랜덤 옵션",
+     "en": "Random option"
     }
    }
   }
@@ -62,8 +62,8 @@
    },
    "tier": "bal",
    "desc": {
-    "kr": "저항 1티어 2개, 접두 에너지 보호막과 마지막 저항은 1~2티어",
-    "en": "Two T1 resistances; energy shield prefixes and the last resistance T1–2"
+    "kr": "저항 1티어 2개, 접두 에너지 보호막 1~2티어, 마지막 접미는 랜덤 옵션",
+    "en": "Two T1 resistances, T1–2 energy shield prefixes, a random last suffix"
    }
   },
   {
@@ -221,10 +221,19 @@
     }
    },
    {
-    "count": {
-     "tag": "resT",
-     "min": 3
-    }
+    "any": [
+     {
+      "param": {
+       "rT": 2
+      }
+     },
+     {
+      "count": {
+       "tag": "resT",
+       "min": 3
+      }
+     }
+    ]
    }
   ]
  },
@@ -3337,13 +3346,26 @@
     "lrT"
    ],
    "skipIf": {
-    "count": {
-     "tag": "resT",
-     "min": 3
-    }
+    "any": [
+     {
+      "param": {
+       "rT": 2
+      }
+     },
+     {
+      "count": {
+       "tag": "resT",
+       "min": 3
+      }
+     }
+    ]
    },
    "skipTo": "ok",
    "skipHide": true,
+   "skipNote": {
+    "kr": "밸런스는 마지막 접미가 랜덤 옵션이라 건너뜀",
+    "en": "Balance skips it: the last suffix is random"
+   },
    "edges": [
     {
      "if": {
@@ -3415,19 +3437,6 @@
      "tags": [
       "lr"
      ]
-    }
-   ],
-   "over": [
-    {
-     "param": {
-      "rT": 2
-     },
-     "set": {
-      "goal": {
-       "kr": "접미 번개 저항 1~2티어 — 마지막 잡옵 바꾸기",
-       "en": "T1–2 lightning resistance suffix: reroll the last junk"
-      }
-     }
     }
    ]
   },
@@ -3715,7 +3724,8 @@
      "tag": "res1"
     },
     {
-     "tag": "res2"
+     "side": "s",
+     "random": true
     }
    ]
   }

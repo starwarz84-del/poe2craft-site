@@ -38,11 +38,11 @@ g = {
           '유동체·신성한 오브·바알 오브·완벽한 룬(22:30~23:50)은 정책 14장대로 뺌.'),
  'params': {
    'pT': {'kr': '접두 에너지 보호막', 'en': 'Energy shield prefixes', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
-   'rT': {'kr': '마지막 저항', 'en': 'Last resistance', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
+   'rT': {'kr': '마지막 접미', 'en': 'Last suffix', 'values': {'1': K('번개 저항 1티어', 'T1 lightning resistance'), '2': K('랜덤 옵션', 'Random option')}}},
  'strategies': [{'id': 'high', 'params': {'pT': 1, 'rT': 1}}, {'id': 'bal', 'params': {'pT': 2, 'rT': 2}}],
  'versions': [
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'pT': 2, 'rT': 2}, 'tier': 'bal',
-    'desc': K('저항 1티어 2개, 접두 에너지 보호막과 마지막 저항은 1~2티어', 'Two T1 resistances; energy shield prefixes and the last resistance T1–2')},
+    'desc': K('저항 1티어 2개, 접두 에너지 보호막 1~2티어, 마지막 접미는 랜덤 옵션', 'Two T1 resistances, T1–2 energy shield prefixes, a random last suffix')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'pT': 1, 'rT': 1}, 'tier': 'high',
     'desc': K('영상: 모든 옵션 1티어, 저항 3개', 'Video: every option T1, three resistances')}],
  'tags': {
@@ -58,7 +58,7 @@ g = {
    'resT': {'anyOf': ['frT', 'crT', 'lrT']},
    'blk': {'anyOf': [{'gi': 5}, {'gi': 12}], 'label': K('생명력 최대치·물리 가시 피해', 'Maximum life or physical thorns')},
    'mkP': {'gi': 44}},
- 'require': {'all': [{'has': 'hyb'}, {'count': {'tag': 'gp', 'min': 2}}, {'count': {'tag': 'res1', 'min': 2}}, {'count': {'tag': 'resT', 'min': 3}}]},
+ 'require': {'all': [{'has': 'hyb'}, {'count': {'tag': 'gp', 'min': 2}}, {'count': {'tag': 'res1', 'min': 2}}, {'any': [{'param': {'rT': 2}}, {'count': {'tag': 'resT', 'min': 3}}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'ub',
@@ -172,10 +172,10 @@ A(id='r2', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_o
 A(id='w9', kind='act', group='main', pos=[0, 16.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling', 'Omen_of_Dextral_Erasure'],
   label=K('절사 + 우측 말소 + 카오스', 'Whittling + Dextral Erasure + Chaos'),
   goal=K('접미 번개 저항 1티어 — 마지막 잡옵 바꾸기', 'T1 lightning resistance suffix: reroll the last junk'), show=['frT', 'crT', 'lrT'],
-  skipIf={'count': {'tag': 'resT', 'min': 3}}, skipTo='ok', skipHide=True,
+  skipIf={'any': [{'param': {'rT': 2}}, {'count': {'tag': 'resT', 'min': 3}}]}, skipTo='ok', skipHide=True,
+  skipNote=K('밸런스는 마지막 접미가 랜덤 옵션이라 건너뜀', 'Balance skips it: the last suffix is random'),
   edges=[{'if': {'count': {'tag': 'resT', 'min': 3}}, 'to': 'ok', 'res': 'ok'}, {'to': 'w9', 'res': 'fail', 'hide': True}],
-  item=[HY, EP, EF, FR, CR, LR],
-  over=[{'param': {'rT': 2}, 'set': {'goal': K('접미 번개 저항 1~2티어 — 마지막 잡옵 바꾸기', 'T1–2 lightning resistance suffix: reroll the last junk')}}])
+  item=[HY, EP, EF, FR, CR, LR])
 A(id='ok', kind='done', group='main', pos=[0, 17.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
@@ -205,7 +205,7 @@ g['finals'] = [
  {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
   'lines': [{'tag': 'hyb', 'fr': True}, {'tag': 'esP1'}, {'tag': 'esF1', 'des': True}, {'tag': 'fr'}, {'tag': 'cr'}, {'tag': 'lr'}]},
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'hyb', 'fr': True}, {'tag': 'esP2'}, {'tag': 'esF2', 'des': True}, {'tag': 'res1'}, {'tag': 'res1'}, {'tag': 'res2'}]},
+  'lines': [{'tag': 'hyb', 'fr': True}, {'tag': 'esP2'}, {'tag': 'esF2', 'des': True}, {'tag': 'res1'}, {'tag': 'res1'}, {'side': 's', 'random': True}]},
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

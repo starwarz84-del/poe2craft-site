@@ -21,16 +21,16 @@
    }
   },
   "rT": {
-   "kr": "남은 저항",
-   "en": "Remaining resistances",
+   "kr": "마지막 접미",
+   "en": "Last suffix",
    "values": {
     "1": {
-     "kr": "1티어",
-     "en": "T1"
+     "kr": "냉기 저항 1티어",
+     "en": "T1 cold resistance"
     },
     "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
+     "kr": "랜덤 옵션",
+     "en": "Random option"
     }
    }
   }
@@ -62,8 +62,8 @@
    },
    "tier": "bal",
    "desc": {
-    "kr": "저항 1티어 1개, 나머지 저항과 접두 회피는 1~2티어",
-    "en": "One T1 resistance; the other resistance and evasion prefixes T1–2"
+    "kr": "저항 1티어 1개, 접두 회피와 두번째 접미는 1~2티어, 마지막 접미는 랜덤 옵션",
+    "en": "One T1 resistance, T1–2 evasion prefixes and second suffix, a random last suffix"
    }
   },
   {
@@ -241,21 +241,46 @@
  },
  "conds": {
   "sDone": {
-   "all": [
+   "any": [
     {
-     "has": "res1"
+     "all": [
+      {
+       "param": {
+        "rT": 2
+       }
+      },
+      {
+       "has": "res1"
+      },
+      {
+       "count": {
+        "tag": "sG",
+        "min": 2
+       }
+      },
+      {
+       "full": "s"
+      }
+     ]
     },
     {
-     "count": {
-      "tag": "resT",
-      "min": 2
-     }
-    },
-    {
-     "count": {
-      "tag": "sG",
-      "min": 3
-     }
+     "all": [
+      {
+       "has": "res1"
+      },
+      {
+       "count": {
+        "tag": "resT",
+        "min": 2
+       }
+      },
+      {
+       "count": {
+        "tag": "sG",
+        "min": 3
+       }
+      }
+     ]
     }
    ]
   }
@@ -1753,19 +1778,6 @@
       "dfl"
      ]
     }
-   ],
-   "over": [
-    {
-     "param": {
-      "rT": 2
-     },
-     "set": {
-      "goal": {
-       "kr": "접미 냉기 저항 1~2티어 — 가장 낮은 레벨 잡옵 바꾸기",
-       "en": "T1–2 cold resistance suffix: reroll the lowest-level junk"
-      }
-     }
-    }
    ]
   },
   {
@@ -2809,6 +2821,59 @@
      "tags": [
       "dfl"
      ]
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "rT": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "회피 (101—110)% 증가 (분열)",
+        "en": "(101—110)% increased Evasion Rating (fractured)",
+        "m": "f",
+        "tags": [
+         "evP"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "회피 +(262—300)",
+        "en": "+(262—300) to Evasion Rating",
+        "m": "n",
+        "tags": [
+         "evF"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "화염 저항 +(41—45)%",
+        "en": "+(41—45)% to Fire Resistance",
+        "m": "n",
+        "tags": [
+         "fr"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+        "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+        "m": "n",
+        "tags": [
+         "dfl"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       }
+      ]
+     }
     }
    ]
   },
@@ -4015,6 +4080,59 @@
       "dfl"
      ]
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "rT": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "회피 (101—110)% 증가 (분열)",
+        "en": "(101—110)% increased Evasion Rating (fractured)",
+        "m": "f",
+        "tags": [
+         "evP"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "회피 +(262—300)",
+        "en": "+(262—300) to Evasion Rating",
+        "m": "n",
+        "tags": [
+         "evF"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "화염 저항 +(41—45)%",
+        "en": "+(41—45)% to Fire Resistance",
+        "m": "n",
+        "tags": [
+         "fr"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+        "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+        "m": "n",
+        "tags": [
+         "dfl"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       }
+      ]
+     }
+    }
    ]
   },
   {
@@ -4298,6 +4416,65 @@
      "tags": [
       "dfl"
      ]
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "rT": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "회피 (101—110)% 증가 (분열)",
+        "en": "(101—110)% increased Evasion Rating (fractured)",
+        "m": "f",
+        "tags": [
+         "evP"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "회피 +(262—300)",
+        "en": "+(262—300) to Evasion Rating",
+        "m": "n",
+        "tags": [
+         "evF"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "훼손 옵션 (미공개)",
+        "en": "Desecrated (unrevealed)",
+        "m": "n"
+       },
+       {
+        "s": "s",
+        "kr": "화염 저항 +(41—45)%",
+        "en": "+(41—45)% to Fire Resistance",
+        "m": "n",
+        "tags": [
+         "fr"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+        "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+        "m": "n",
+        "tags": [
+         "dfl"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       }
+      ]
+     }
     }
    ]
   },
@@ -4587,6 +4764,68 @@
       "dfl"
      ]
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "rT": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "회피 (101—110)% 증가 (분열)",
+        "en": "(101—110)% increased Evasion Rating (fractured)",
+        "m": "f",
+        "tags": [
+         "evP"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "회피 +(262—300)",
+        "en": "+(262—300) to Evasion Rating",
+        "m": "n",
+        "tags": [
+         "evF"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "회피 +(71—90), 회피 (39—42)% 증가 (훼손)",
+        "en": "+(71—90) to Evasion Rating, (39—42)% increased Evasion Rating (desecrated)",
+        "m": "d",
+        "tags": [
+         "hyb"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "화염 저항 +(41—45)%",
+        "en": "+(41—45)% to Fire Resistance",
+        "m": "n",
+        "tags": [
+         "fr"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+        "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+        "m": "n",
+        "tags": [
+         "dfl"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       }
+      ]
+     }
+    }
    ]
   },
   {
@@ -4634,8 +4873,8 @@
      "en": "T1 cold resistance: two T1 resistances + a T1 resistance or T1–2 deflection, whichever lands first"
     },
     "bal": {
-     "kr": "접미 냉기 저항 1~2티어 — 저항 2개 + 저항·튕겨내기 1~2티어 중 먼저 뜬 것",
-     "en": "T1–2 cold resistance: two resistances + a T1–2 resistance or deflection, whichever lands first"
+     "kr": "밸런스는 건너뜀 — 마지막 접미는 랜덤 옵션",
+     "en": "Balance skips it: the last suffix is random"
     }
    },
    "steps": [
@@ -4799,7 +5038,59 @@
       "dfl"
      ]
     }
-   ]
+   ],
+   "itemBy": {
+    "bal": [
+     {
+      "s": "p",
+      "kr": "회피 (101—110)% 증가 (분열)",
+      "en": "(101—110)% increased Evasion Rating (fractured)",
+      "m": "f",
+      "tags": [
+       "evP"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "생명력 최대치 +(150—174) (훼손)",
+      "en": "+(150—174) to maximum Life (desecrated)",
+      "m": "d"
+     },
+     {
+      "s": "p",
+      "kr": "회피 +(262—300)",
+      "en": "+(262—300) to Evasion Rating",
+      "m": "n",
+      "tags": [
+       "evF"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "화염 저항 +(41—45)%",
+      "en": "+(41—45)% to Fire Resistance",
+      "m": "n",
+      "tags": [
+       "fr"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+      "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+      "m": "n",
+      "tags": [
+       "dfl"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "잡옵",
+      "en": "Junk",
+      "m": "j"
+     }
+    ]
+   }
   },
   {
    "id": "L3",
@@ -4897,7 +5188,62 @@
       "dfl"
      ]
     }
-   ]
+   ],
+   "itemBy": {
+    "bal": [
+     {
+      "s": "p",
+      "kr": "회피 (101—110)% 증가 (분열)",
+      "en": "(101—110)% increased Evasion Rating (fractured)",
+      "m": "f",
+      "tags": [
+       "evP"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "회피 +(262—300)",
+      "en": "+(262—300) to Evasion Rating",
+      "m": "n",
+      "tags": [
+       "evF"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "회피 +(71—90), 회피 (39—42)% 증가 (훼손)",
+      "en": "+(71—90) to Evasion Rating, (39—42)% increased Evasion Rating (desecrated)",
+      "m": "d",
+      "tags": [
+       "hyb"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "화염 저항 +(41—45)%",
+      "en": "+(41—45)% to Fire Resistance",
+      "m": "n",
+      "tags": [
+       "fr"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "회피의 (21—23)%와 동일한 튕겨내기 평점 획득",
+      "en": "Gain Deflection Rating equal to (21—23)% of Evasion Rating",
+      "m": "n",
+      "tags": [
+       "dfl"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "잡옵",
+      "en": "Junk",
+      "m": "j"
+     }
+    ]
+   }
   }
  ],
  "finals": [
@@ -4950,10 +5296,11 @@
      "tag": "res1"
     },
     {
-     "tag": "res2"
+     "tag": "sG2"
     },
     {
-     "tag": "sG2"
+     "side": "s",
+     "random": true
     }
    ]
   }

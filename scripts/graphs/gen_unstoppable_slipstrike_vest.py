@@ -34,11 +34,11 @@ g = {
           '신성한 오브·바알 오브·퀄리티 30%·네번째 소켓 도박(46:30~48:40)은 정책 14장대로 뺌.'),
  'params': {
    'pT': {'kr': '접두 회피', 'en': 'Evasion prefixes', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
-   'rT': {'kr': '남은 저항', 'en': 'Remaining resistances', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
+   'rT': {'kr': '마지막 접미', 'en': 'Last suffix', 'values': {'1': K('냉기 저항 1티어', 'T1 cold resistance'), '2': K('랜덤 옵션', 'Random option')}}},
  'strategies': [{'id': 'high', 'params': {'pT': 1, 'rT': 1}}, {'id': 'bal', 'params': {'pT': 2, 'rT': 2}}],
  'versions': [
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'pT': 2, 'rT': 2}, 'tier': 'bal',
-    'desc': K('저항 1티어 1개, 나머지 저항과 접두 회피는 1~2티어', 'One T1 resistance; the other resistance and evasion prefixes T1–2')},
+    'desc': K('저항 1티어 1개, 접두 회피와 두번째 접미는 1~2티어, 마지막 접미는 랜덤 옵션', 'One T1 resistance, T1–2 evasion prefixes and second suffix, a random last suffix')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'pT': 1, 'rT': 1}, 'tier': 'high',
     'desc': K('영상: 접두 회피 1티어 3개, 저항 1티어 2개 + 튕겨내기', 'Video: three T1 evasion prefixes, two T1 resistances + deflection')}],
  'tags': {
@@ -58,7 +58,8 @@ g = {
    'sG2': {'anyOf': ['fr2', 'cr2', 'lr2', 'dfl'], 'label': K('저항·튕겨내기 1~2티어', 'T1–2 resistance or deflection')},
    'blk': {'anyOf': [{'gi': 5}, {'gi': 12}], 'label': K('생명력 최대치·물리 가시 피해', 'Maximum life or physical thorns')},
    'mkP': {'gi': 45}},
- 'conds': {'sDone': {'all': [{'has': 'res1'}, {'count': {'tag': 'resT', 'min': 2}}, {'count': {'tag': 'sG', 'min': 3}}]}},
+ 'conds': {'sDone': {'any': [{'all': [{'param': {'rT': 2}}, {'has': 'res1'}, {'count': {'tag': 'sG', 'min': 2}}, {'full': 's'}]},
+                             {'all': [{'has': 'res1'}, {'count': {'tag': 'resT', 'min': 2}}, {'count': {'tag': 'sG', 'min': 3}}]}]}},
  'require': {'all': [{'has': 'evP'}, {'count': {'tag': 'gp', 'min': 2}}, {'ref': 'sDone'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
@@ -165,8 +166,7 @@ A(id='k3', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Perfect_Ch
   goal=K('접미 냉기 저항 1티어 — 가장 낮은 레벨 잡옵 바꾸기', 'T1 cold resistance suffix: reroll the lowest-level junk'), show=['frT', 'crT', 'lrT', 'dfl'],
   edges=SR({'q2': {'res': 'ok'}, 'k3e': {'res': 'fail', 'label': K('새 옵션이 접두로', 'New option went to a prefix')},
             'k3d': {'res': 'fail', 'label': K('접두에 옵션 있음', 'A prefix option is there')}}),
-  item=[EV, FR, CR, DF],
-  over=[{'param': {'rT': 2}, 'set': {'goal': K('접미 냉기 저항 1~2티어 — 가장 낮은 레벨 잡옵 바꾸기', 'T1–2 cold resistance suffix: reroll the lowest-level junk')}}])
+  item=[EV, FR, CR, DF])
 A(id='k3d', kind='act', group='main', pos=[2, 10.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling', 'Omen_of_Dextral_Erasure'],
   label=K('절사 + 우측 말소 + 카오스', 'Whittling + Dextral Erasure + Chaos'),
   goal=K('접두에 옵션이 있으면 접미 잡옵만 바꾸기', 'With a prefix option present: reroll only the suffix junk'), show=['frT', 'crT', 'lrT', 'dfl'],
@@ -176,7 +176,8 @@ A(id='k3e', kind='act', group='main', pos=[1, 10.4], act='exalt', cur='Perfect_E
 # 접두: 엑잘 → 빗나가면 징표 → 훼손 → 자리 막기 → 다시 엑잘 (영상 42:10~45:02)
 A(id='q2', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 회피 1티어 — 회피·회피 복합 중 먼저 뜬 것', 'T1 flat evasion prefix: flat or hybrid evasion, whichever lands first'),
-  show=['evF', 'hyb'], edges=PR({'r0': {'res': 'ok'}, 'q3': {'res': 'fail'}}), item=[EV, FL, FR, CR, DF])
+  show=['evF', 'hyb'], edges=PR({'r0': {'res': 'ok'}, 'q3': {'res': 'fail'}}), item=[EV, FL, FR, CR, DF],
+  over=[{'param': {'rT': 2}, 'set': {'item': [EV, FL, FR, DF, J('s')]}}])
 A(id='q3', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Essence_of_the_Abyss', ess='mkP', mark=True, omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('빗나간 접두를 지우고 심연의 군주의 징표', 'The missed prefix goes for the Mark of the Abyssal Lord'),
   showText=[{'s': 'p', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=PR({'q4': {'label': K('막기가 남음', 'Blocker still there')}, 'q5': {'label': K('막기가 지워짐', 'Blocker removed')}}))
@@ -190,13 +191,16 @@ A(id='q1', kind='act', group='main', pos=[2, 12.4], act='reveal', omens=['Omen_o
   edges=PR({'q2': {'label': K('자리 막기 완료 — 엑잘', 'Blocker in place: exalt')}, 'q3': {'label': K('접두가 꽉 참 — 다시 징표', 'Prefixes full: Mark again')}}))
 # 접두 두번째 옵션: 막기 제거 → 고대 갈비뼈 → 공개 (영상 45:32~46:05)
 A(id='r0', kind='act', group='main', pos=[0, 13.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=PR({'r1': {}}), item=[EV, FL, FR, CR, DF])
+  target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=PR({'r1': {}}), item=[EV, FL, FR, CR, DF],
+  over=[{'param': {'rT': 2}, 'set': {'item': [EV, FL, FR, DF, J('s')]}}])
 A(id='r1', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancient_Rib', label=K('훼손', 'Desecrate'),
   goal=K('빈 접두 자리 훼손', 'Desecrate the empty prefix slot'), showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
-  edges=PR({'r2': {}}), item=[EV, FL, UN('p'), FR, CR, DF])
+  edges=PR({'r2': {}}), item=[EV, FL, UN('p'), FR, CR, DF],
+  over=[{'param': {'rT': 2}, 'set': {'item': [EV, FL, UN('p'), FR, DF, J('s')]}}])
 A(id='r2', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='gp', label=K('공개', 'Reveal'),
   goal=K('접두 회피 복합 1티어', 'T1 hybrid evasion prefix'), show=['hyb', 'evF'],
-  edges=PR({'ok': {'res': 'ok'}, 'r0': {'res': 'fail', 'label': K('빗나감', 'Miss')}}), item=[EV, FL, HB, FR, CR, DF])
+  edges=PR({'ok': {'res': 'ok'}, 'r0': {'res': 'fail', 'label': K('빗나감', 'Miss')}}), item=[EV, FL, HB, FR, CR, DF],
+  over=[{'param': {'rT': 2}, 'set': {'item': [EV, FL, HB, FR, DF, J('s')]}}])
 A(id='ok', kind='done', group='main', pos=[0, 16.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
@@ -205,7 +209,7 @@ g['loops'] = [
  {'id': 'L1', 'nodes': ['k3', 'k3e', 'k3d'], 'kr': '접미 세번째 옵션', 'en': 'Third suffix', 'fold': True,
   'goal': K('접미 냉기 저항 1티어 — 저항 2개 + 좋은 접미 하나', 'T1 cold resistance: two resistances + one more good suffix'),
   'goalBy': {'high': K('접미 냉기 저항 1티어 — 저항 1티어 2개 + 저항 1티어·튕겨내기 1~2티어 중 먼저 뜬 것', 'T1 cold resistance: two T1 resistances + a T1 resistance or T1–2 deflection, whichever lands first'),
-             'bal': K('접미 냉기 저항 1~2티어 — 저항 2개 + 저항·튕겨내기 1~2티어 중 먼저 뜬 것', 'T1–2 cold resistance: two resistances + a T1–2 resistance or deflection, whichever lands first')},
+             'bal': K('밸런스는 건너뜀 — 마지막 접미는 랜덤 옵션', 'Balance skips it: the last suffix is random')},
   'steps': [K('절사의 징조 + 완벽한 카오스 오브로 가장 낮은 레벨 잡옵 바꾸기', 'Omen of Whittling + Perfect Chaos Orb rerolls the lowest-level junk') | {'node': 'k3'},
             K('새 옵션이 접두로 가면 우측 찬미 + 완벽한 엑잘로 빈 접미 채우기', 'New option on a prefix: Dextral Exaltation + Perfect Exalted Orb fills the suffix') | {'node': 'k3e'},
             K('접두에 옵션이 생긴 뒤에는 우측 말소의 징조를 더해 접미만 바꾸기', 'Once a prefix option exists, add Omen of Dextral Erasure so only the suffix changes') | {'node': 'k3d'}],
@@ -219,7 +223,7 @@ g['loops'] = [
             K('막기가 남아 있으면 빛의 징조 + 소멸의 오브로 제거', 'Blocker still there: Omen of Light + Orb of Annulment') | {'node': 'q4'},
             K('보존된 갈비뼈로 징표 훼손', 'Preserved Rib on the Mark') | {'node': 'q5'},
             K('심연의 메아리 공개로 생명력 최대치 자리 막기 (없으면 물리 가시 피해) → 다시 엑잘', 'Reveal with Abyssal Echoes: block with maximum life (thorns if no life), then exalt again') | {'node': 'q1'}],
-  'item': [EV, LB, FL, FR, CR, DF]},
+  'item': [EV, LB, FL, FR, CR, DF], 'itemBy': {'bal': [EV, LB, FL, FR, DF, J('s')]}},
  {'id': 'L3', 'nodes': ['r0', 'r1', 'r2'], 'kr': '접두 두번째 옵션(훼손)', 'en': 'Second prefix (desecrated)', 'fold': True,
   'goal': K('접두 회피 복합 1티어 (훼손)', 'T1 hybrid evasion (desecrated)'),
   'goalBy': {'high': K('접두 회피 복합 1티어 (훼손) — 남은 회피 접두', 'T1 hybrid evasion (desecrated): the remaining evasion prefix'),
@@ -227,13 +231,13 @@ g['loops'] = [
   'steps': [K('빛의 징조 + 소멸의 오브로 막기 제거', 'Omen of Light + Orb of Annulment removes the blocker') | {'node': 'r0'},
             K('고대 갈비뼈로 빈 접두 자리 훼손', 'Ancient Rib into the empty prefix slot') | {'node': 'r1'},
             K('심연의 메아리 공개 — 빗나가면 빛의 징조 + 소멸의 오브로 다시', 'Reveal with Abyssal Echoes; on a miss Omen of Light + Orb of Annulment and again') | {'node': 'r2'}],
-  'item': [EV, FL, HB, FR, CR, DF]},
+  'item': [EV, FL, HB, FR, CR, DF], 'itemBy': {'bal': [EV, FL, HB, FR, DF, J('s')]}},
 ]
 g['finals'] = [
  {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
   'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF1'}, {'tag': 'hyb1', 'des': True}, {'tag': 'res1'}, {'tag': 'res1'}, {'tag': 'sG1'}]},
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF2'}, {'tag': 'hyb2', 'des': True}, {'tag': 'res1'}, {'tag': 'res2'}, {'tag': 'sG2'}]},
+  'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF2'}, {'tag': 'hyb2', 'des': True}, {'tag': 'res1'}, {'tag': 'sG2'}, {'side': 's', 'random': True}]},
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

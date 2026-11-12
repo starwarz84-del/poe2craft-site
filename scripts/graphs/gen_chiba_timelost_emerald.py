@@ -32,12 +32,10 @@ g = {
           '엑잘 2번(10:34) → 카오스로 투사체 속도(11:00, 접미가 한도를 넘어 접두만 바뀜) → 고대 위력적인 액체 우울, 잡옵이 지워지고 매우 넓은 반경(11:26). '
           '신성한 오브 수치 올리기(11:30~11:55)와 정제된 약탈자 기폭제 퀄리티(12:00)는 정책 14장·7장대로 뺌. 첫 베이스의 완벽한 확장·완벽한 제왕·신성한 오브(2:00~3:40)는 실패 회차라 꿀팁 후보. '
           '내부 결정: 두 번째 훼손의 뼈 종류는 화면으로 못 봐 보존된 두개골(정책 6장, 주얼 옵션 레벨 1). 경멸이 창 치명타 피해를 지우면 분열 + 옵션 1개까지 소멸 후 카오스부터(영상에 없음). '
-          '밸런스 = 마지막 접두를 카오스로 고르지 않고 우울이 남긴 옵션 그대로(정책 10장 C17-2), 공개는 두 등급 모두 빛의 징조로 다시(C17-3).'),
- 'params': {'v': {'kr': '마지막 접두', 'en': 'Last prefix', 'values': {'1': K('투사체 속도·투사체 피해·공격 피해까지 카오스', 'Chaos for projectile speed, projectile damage or attack damage'), '2': K('랜덤 옵션', 'Random option')}}},
- 'strategies': [{'id': 'high', 'params': {'v': 1}}, {'id': 'bal', 'params': {'v': 2}}],
+          '공개는 빛의 징조로 다시(C17-3). 밸런스(마지막 접두 랜덤)는 하이엔드와 비용 차이가 약 2%라 뺌(사용자 결정 2026-11-13).'),
+ 'params': {'v': {'kr': '마지막 접두', 'en': 'Last prefix', 'values': {'1': K('투사체 속도·투사체 피해·공격 피해까지 카오스', 'Chaos for projectile speed, projectile damage or attack damage')}}},
+ 'strategies': [{'id': 'high', 'params': {'v': 1}}],
  'versions': [
-   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 2}, 'tier': 'bal',
-    'desc': K('마지막 접두는 우울이 남긴 옵션 그대로', 'Last prefix: whatever Melancholy leaves')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'v': 1}, 'tier': 'high',
     'desc': K('영상: 접두 투사체 속도까지 카오스, 우울이 지우면 다시', 'Video: Chaos until projectile speed, again if Melancholy takes it')}],
  'tags': {'cc': {'gi': 8}, 'contS': {'gi': 101, 'slot': {'s': 1}}, 'contP': {'gi': 102, 'slot': {'p': 1}}, 'rad': {'gi': 99},
@@ -46,15 +44,13 @@ g = {
           'rev': {'anyOf': ['s11', 's9', 's64', 's3'], 'label': K('공격 속도·공격 치명타 피해 보너스·창 공격 속도·주요 패시브 스킬 효과', 'Attack Speed, Critical Damage Bonus for Attack Damage, Attack Speed with Spears or Notable Passive effect')},
           'p55': {'gi': 55}, 'p54': {'gi': 54}, 'p10': {'gi': 10},
           'pre': {'anyOf': ['p55', 'p54', 'p10'], 'label': K('투사체 속도·투사체 피해·공격 피해', 'Projectile Speed, Projectile Damage or Attack Damage')}},   # 5:00·6:30·10:40 영상 계획대로, 먼저 뜬 것
- 'require': {'all': [{'has': 'cc'}, {'has': 'suf'}, {'has': 'rev'}, {'has': 'rad'}, {'any': [{'param': {'v': 2}}, {'has': 'pre'}]}]},
+ 'require': {'all': [{'has': 'cc'}, {'has': 'suf'}, {'has': 'rev'}, {'has': 'rad'}, {'has': 'pre'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0',
  'finals': [
    {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-    'lines': [{'tag': 'pre'}, {'tag': 'rad'}, {'tag': 'cc', 'fr': True}, {'tag': 'suf'}, {'tag': 'rev', 'des': True}]},
-   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-    'lines': [{'side': 'p', 'random': True}, {'tag': 'rad'}, {'tag': 'cc', 'fr': True}, {'tag': 'suf'}, {'tag': 'rev', 'des': True}]}],
+    'lines': [{'tag': 'pre'}, {'tag': 'rad'}, {'tag': 'cc', 'fr': True}, {'tag': 'suf'}, {'tag': 'rev', 'des': True}]}],
  'finalItem': {'quality': 0, 'sockets': 0},
  'cap': {'p': 2, 's': 2},
 }
@@ -114,13 +110,11 @@ A(id='c8', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Exalted_Or
   edges=[{'if': {'full': 'p'}, 'to': 'c9'}, {'to': 'c8', 'hide': True}], item=[J('p'), J('p'), CC, CDS, AS])
 A(id='c9', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접두 투사체 속도 — 투사체 피해·공격 피해와 함께 먼저 뜬 것', 'Projectile speed prefix: or projectile damage or attack damage, whichever lands first'), show=['p55', 'p54', 'p10'],
-  skipIf={'param': {'v': 2}}, skipTo='c10',
   edges=[{'if': {'has': 'pre'}, 'to': 'c10', 'res': 'ok'}, {'to': 'c9', 'res': 'fail', 'hide': True}], item=[PS, J('p'), CC, CDS, AS])
 A(id='c10', kind='act', group='main', pos=[0, 13.4], act='essence', cur='Ancient_Potent_Liquid_Melancholy', ess='rad', liquid=True,
   label=K('액체', 'Liquid'), goal=K('고대 위력적인 액체 우울', 'Ancient Potent Liquid Melancholy'),
   showText=[{'s': 'p', 'kr': '반경이 매우 넓은 반경으로 업그레이드', 'en': 'Upgrades Radius to Very Large'}],
   edges=[{'if': {'has': 'pre'}, 'to': 'ok', 'res': 'ok'}, {'to': 'c9', 'res': 'fail', 'label': K('투사체 속도가 지워짐', 'Projectile speed removed')}],
-  over=[{'param': {'v': 2}, 'set': {'edges': [{'to': 'ok', 'res': 'ok'}], 'item': [J('p'), RAD, CC, CDS, AS]}}],
   item=[PS, RAD, CC, CDS, AS])
 A(id='ok', kind='done', group='main', pos=[0, 14.4], label=K('완성', 'Finished'))
 g['nodes'] = N

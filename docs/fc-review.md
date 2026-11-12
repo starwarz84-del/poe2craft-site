@@ -105,7 +105,7 @@
 | bigdaddy-lightning-wand-v2 | ess·bal | bal 마지막 접두 1~2티어(빛), ess 1~4티어·공개 그대로 | 재확인 필요 | A(Opus) | 이미 맞음 |
 | breach-ring-phys-v2 | ess·bal | ess 화염 저항 1~3티어; bal 공격 시 원소 피해 1~3티어 | 대기 |  |  |
 | breach-ring-video-v2 | bal·high | - | 재확인 필요 | A(Opus) | 밸런스 접미 1~2티어, 마지막 훼손 접두 랜덤(메아리 없음) — 934 → 651 |
-| chiba-timelost-emerald-v2 | bal·high | - | 대기 |  |  |
+| chiba-timelost-emerald-v2 | high | - | 대기 |  | 11-13 밸런스 뺌(사용자 결정) |
 | diztoh-5mod-emerald-v2 | ess·bal | - | 재확인 필요 | A(Opus) | 주얼 티어 하나라 맞음 |
 | diztoh-5mod-sapphire-v2 | ess·bal | - | 대기 |  |  |
 | diztoh-as-spear-v2 | ess·bal | - | 대기 |  |  |

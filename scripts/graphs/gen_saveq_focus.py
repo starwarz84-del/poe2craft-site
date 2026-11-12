@@ -19,6 +19,7 @@ LVL = L('s', '모든 주문 스킬 레벨 +2', '+2 to Level of all Spell Skills'
 CS = L('s', '시전 속도 (26—31)% 증가 (초월의 합금)', '(26—31)% increased Cast Speed (Transcendent Alloy)', 'c', ['cs'])
 CR = L('s', '주문 치명타 명중 확률 (54—59)% 증가 (훼손)', '(54—59)% increased Critical Hit Chance for Spells (desecrated)', 'd', ['cr'])
 AS = L('r', '아스트리드의 창의성', 'Astrid’s Creativity', 'r')
+IR = L('r', '완벽한 철 룬', 'Perfect Iron Rune', 'r')
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')
 ANN = K('소멸의 오브 사용', 'Use an Orb of Annulment')
@@ -31,7 +32,7 @@ g = {
           '아스트리드의 창의성 + 좌측 결정화 + 초월의 합금(21:40, 화염 피해가 지워짐) → 우측 강령술 + 고대 갈비뼈(22:18) → 공개 = 지능(잡옵, 22:23) → '
           '완벽한 엑잘 = 에너지 보호막 % + 마나 2티어(22:58) → 절사 + 좌측 말소 + 상위 카오스 = 에너지 보호막 최대치 2티어(23:16, 영상은 여기서 타협) → '
           '빛의 징조 + 소멸의 오브 → 고대 갈비뼈 → 심연의 메아리 공개 반복(24:00~26:10, 25:00 2티어 53%는 넘김) → 주문 치명타 명중 확률 1티어 54%(26:10). '
-          '신성한 오브(18:40)는 선택, 바알 주입기 퀄리티(6:15)·완벽한 철 룬(26:30)은 정책 9·14장대로 뺌. 두 번째 집중구(27:30~, 모든 주문 스킬 분열판)는 꿀팁 후보.'),
+          '신성한 오브(18:40)는 선택, 바알 주입기 퀄리티(6:15)는 정책 14장대로 뺌. 26:15~26:40 아스트리드의 창의성을 완벽한 철 룬으로 바꾸고 빈 소켓에도 완벽한 철 룬(사용자 결정 11-13: 완성 카드 룬은 영상대로, 아스트리드는 제작 도구 — 꺼낼 수 없고 다른 룬으로만 바꿈). 두 번째 집중구(27:30~, 모든 주문 스킬 분열판)는 꿀팁 후보.'),
  'params': {'pT': {'kr': '에너지 보호막 최대치·주문 치명타 명중 확률', 'en': 'Flat ES and spell crit chance',
                    'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
  'strategies': [{'id': 'high', 'params': {'pT': 1}}, {'id': 'bal', 'params': {'pT': 2}}],
@@ -123,7 +124,7 @@ A(id='v1', kind='act', group='main', pos=[0, 11.4], act='reveal', omens=['Omen_o
   show=['cr'], edges=[{'to': 'e1'}], item=[SDF, ESP, LVL, CS, J('s'), AS])
 A(id='e1', kind='act', group='main', pos=[0, 12.4], act='exalt', cur='Perfect_Exalted_Orb',
   label=K('엑잘', 'Exalt'), goal=K('접두 에너지 보호막 최대치', 'Flat Energy Shield prefix'), show=['esf'],
-  edges=[{'if': {'all': [PDONE, {'has': 'cr'}]}, 'to': 'ok', 'res': 'ok', 'hide': True},
+  edges=[{'if': {'all': [PDONE, {'has': 'cr'}]}, 'to': 'r2', 'res': 'ok', 'hide': True},
          {'if': PDONE, 'to': 'vx', 'res': 'ok', 'label': K('접두 완성', 'Prefixes done')},
          {'if': {'not': {'full': 'p'}}, 'to': 'e1', 'res': 'fail', 'hide': True},
          {'to': 'w1', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
@@ -131,7 +132,7 @@ A(id='e1', kind='act', group='main', pos=[0, 12.4], act='exalt', cur='Perfect_Ex
 A(id='w1', kind='act', group='main', pos=[1, 12.4], act='chaos', cur='Greater_Chaos_Orb', trim={'side': 'p', 'keep': 'keepP'},   # 영상 상태(접두 잡옵이 가장 낮음)에서는 절사 + 좌측 말소 = 영상 그대로, 고정 징조로 두면 1티어 % + 마나가 남을 때 끝나지 않음(W31 시험)
  
   label=K('절사/좌측 말소 + 카오스', 'Whittling / Sinistral Erasure + Chaos'), goal=K('가장 낮은 레벨 접두 다시', 'Reroll the lowest-level prefix'), show=['esf'],
-  edges=[{'if': {'all': [PDONE, {'has': 'cr'}]}, 'to': 'ok', 'res': 'ok', 'hide': True},
+  edges=[{'if': {'all': [PDONE, {'has': 'cr'}]}, 'to': 'r2', 'res': 'ok', 'hide': True},
          {'if': PDONE, 'to': 'vx', 'res': 'ok', 'hide': True},
          {'if': {'not': {'full': 'p'}}, 'to': 'e1', 'res': 'fail', 'hide': True},
          {'to': 'w1', 'res': 'fail', 'hide': True}])
@@ -144,10 +145,14 @@ A(id='d2', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancien
   edges=[{'to': 'v2'}], item=[UN('s'), SDF, ESP, ESF, LVL, CS, AS])
 A(id='v2', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cr',
   label=K('공개', 'Reveal'), goal=K('접미 주문 치명타 명중 확률', 'Spell crit chance suffix'), show=['cr'],
-  edges=[{'if': {'has': 'cr'}, 'to': 'ok', 'res': 'ok'},
+  edges=[{'if': {'has': 'cr'}, 'to': 'r2', 'res': 'ok'},
          {'to': 'vx', 'res': 'fail', 'label': K('빗나감 — 빛의 징조로 다시', 'Miss: again with Omen of Light')}],
   item=[SDF, ESP, ESF, LVL, CS, CR, AS])
-A(id='ok', kind='done', group='main', pos=[0, 16.4], label=K('완성', 'Finished'))
+# 마무리 룬: 아스트리드의 창의성은 꺼낼 수 없어 다른 룬으로 바꿈 (영상 26:15~26:40, 2026-11-13 사용자 결정)
+A(id='r2', kind='act', group='main', pos=[0, 16.4], act='rune', label=K('룬 교체', 'Rune swap'), goal=K('아스트리드의 창의성 → 완벽한 철 룬, 빈 소켓에도 완벽한 철 룬', 'Astrid’s Creativity → Perfect Iron Rune, and a Perfect Iron Rune in the empty socket'),
+  showText=[K('제작이 끝나 아스트리드의 창의성은 필요 없음', 'Crafting is done: Astrid’s Creativity is no longer needed')], rune=K('완벽한 철 룬', 'Perfect Iron Rune'), swapAstrid=True,
+  edges=[{'to': 'ok'}], item=[SDF, ESP, ESF, LVL, CS, CR, IR, IR])
+A(id='ok', kind='done', group='main', pos=[0, 17.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [
