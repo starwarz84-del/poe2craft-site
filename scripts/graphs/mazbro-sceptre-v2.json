@@ -4,7 +4,7 @@
  "cls": "Sceptres",
  "base": "Stoic Sceptre",
  "ilvl": 82,
- "note": "MazBro BiS 셉터(UwzsARlgaFM) — 아군 피해 1티어 분열 + 잡옵 → 카오스 오브(마나 최대치 1티어) → 좌측 찬미 + 상위 엑잘(정신력 증가 또는 정신력·마나 1티어, 빗나가면 소멸의 오브) → 아스트리드의 창의성 → 완벽한 엑잘(접미 하나씩). 빗나가면 우측 결정화 + 군왕의 합금 → 우측 결정화 + 심연의 에센스 → 보존된 턱뼈 징표 훼손 → 공개(마나 재생·존재 범위·시전 속도, 아니면 자리 막기) → 우측 소멸의 징조. 마나 1티어(레벨 70) 때문에 절사의 징조는 못 씀.",
+ "note": "2026-11-13 W16 영상 전체 화면 대조. 성공 회차(Brood Crack) 한 줄: 노멀 엄숙한 셉터(아이템 레벨 82, 증강 소켓 2개, 2:00) → 완벽한 진화·완벽한 확장 + 소멸의 오브 반복으로 아군 피해 1티어 매직(2:10~8:10) → 완벽한 제왕(8:24) → 좌측 강령술 + 보존된 턱뼈로 접두 훼손(10:40~11:15) → 분열 1/3(11:35, 셉터 4개 중 Brood Crack 성공) → 아스트리드의 창의성(25:50) → 소멸의 오브로 분열 + 옵션 1개(23:30) → 카오스로 마나 최대치 1티어(41:49) → 좌측 찬미 + 상위 엑잘로 정신력 증가 1티어(41:51) → 접미는 완벽한 엑잘 하나씩, 빗나가면 우측 결정화 + 군왕의 합금·우측 결정화 + 심연의 에센스(징표 → 보존된 턱뼈 → 심연의 메아리 공개)·우측 소멸의 징조 + 소멸의 오브(48:40~57:52) → 마나 재생 속도 1티어(훼손 공개 57:45)·아군 시전 속도 1티어(완벽한 엑잘 57:52)·장착 증강 효과(합금)로 완성. 신성한 오브(8:40·9:30 분열 전 아군 피해 119%, 58:50 마무리)·바알 신비학자의 식각기·완벽한 유동체·완벽한 쥬얼러 오브(59:20~59:40)는 정책 14장대로 뺌. 내부 결정: 정신력은 영상 성공 회차의 정신력 증가 1티어만(영상 계획은 정신력·마나 복합 1티어도 받음), 접미는 영상 완성품의 마나 재생 속도·시전 속도만 성공으로 셈(49:15 존재 범위 1티어는 영상에서도 결국 지워짐).",
  "params": {
   "pT": {
    "kr": "목표 티어",
@@ -33,9 +33,10 @@
    "params": {
     "pT": 1
    },
+   "tier": "high",
    "desc": {
-    "kr": "영상: 접미 1티어 2개 + 장착 증강 효과",
-    "en": "Video: two T1 suffixes + socketed augment effect"
+    "kr": "영상: 접두 1티어 2개 + 접미 1티어 2개 + 장착 증강 효과",
+    "en": "Video: two T1 prefixes, two T1 suffixes + socketed augment effect"
    }
   }
  ],
@@ -52,10 +53,6 @@
    "gi": 19,
    "tmax": 1
   },
-  "hyb": {
-   "gi": 20,
-   "tmax": 1
-  },
   "regen": {
    "gi": 13,
    "tmax": 1
@@ -64,46 +61,26 @@
    "gi": 15,
    "tmax": 1
   },
-  "aoe": {
-   "gi": 21,
-   "tmax": 1
-  },
-  "cr": {
-   "gi": 16,
-   "tmax": 1
-  },
-  "cd": {
-   "gi": 17,
-   "tmax": 1
-  },
   "aug": {
    "gi": 34
   },
   "mkS": {
    "gi": 28
   },
-  "spi": {
-   "anyOf": [
-    "sp",
-    "hyb"
-   ]
-  },
   "sg": {
    "anyOf": [
     "regen",
-    "cs",
-    "aoe",
-    "cr",
-    "cd"
-   ]
+    "cs"
+   ],
+   "label": {
+    "kr": "마나 재생 속도·시전 속도 1티어",
+    "en": "T1 mana regeneration or cast speed"
+   }
   },
   "keepS": {
    "anyOf": [
     "regen",
     "cs",
-    "aoe",
-    "cr",
-    "cd",
     "aug"
    ]
   }
@@ -111,19 +88,22 @@
  "require": {
   "all": [
    {
+    "has": "dmg"
+   },
+   {
     "has": "mana"
    },
    {
-    "has": "spi"
+    "has": "sp"
    },
    {
     "has": "aug"
    },
    {
-    "count": {
-     "tag": "sg",
-     "min": 2
-    }
+    "has": "regen"
+   },
+   {
+    "has": "cs"
    }
   ]
  },
@@ -147,19 +127,7 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "mA",
-    "b2",
-    "b3"
-   ],
-   "kr": "자리 막기",
-   "en": "Block"
-  }
- ],
+ "start": "h0",
  "finals": [
   {
    "id": "high",
@@ -196,36 +164,480 @@
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "h0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "p1",
    "start": {
-    "rar": "rare",
-    "mods": [
-     {
-      "tag": "dmg",
-      "fr": true
-     },
-     {
-      "junk": "s"
-     }
-    ]
+    "rar": "normal",
+    "mods": []
    },
    "label": {
-    "kr": "존재 범위 내 아군이 주는 피해 1티어 분열 + 잡옵 1개",
-    "en": "Fractured T1 ally damage + one junk line"
+    "kr": "엄숙한 셉터 구입 (아이템 레벨 82, 증강 소켓 2개)",
+    "en": "Buy a Stoic Sceptre (item level 82, two augment sockets)"
    },
+   "item": []
+  },
+  {
+   "id": "p1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "transmute",
+   "cur": "Perfect_Orb_of_Transmutation",
+   "label": {
+    "kr": "진화",
+    "en": "Transmute"
+   },
+   "goal": {
+    "kr": "매직",
+    "en": "Magic"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "dmg"
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "p3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "dmg"
+     },
+     "to": "p2"
+    },
+    {
+     "if": {
+      "full": "p"
+     },
+     "to": "p2x",
+     "hide": true
+    },
+    {
+     "to": "p2"
+    }
+   ],
+   "item": [
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "goal": {
+    "kr": "접두 아군 피해 1티어",
+    "en": "T1 ally damage prefix"
+   },
+   "show": [
+    "dmg"
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "dmg"
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "p3",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "dmg"
+     },
+     "to": "p2",
+     "hide": true
+    },
+    {
+     "if": {
+      "full": "p"
+     },
+     "to": "p2x",
+     "res": "fail",
+     "label": {
+      "kr": "다른 접두",
+      "en": "Another prefix"
+     }
+    },
+    {
+     "to": "p2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가",
+     "en": "Allies in your Presence deal (105—119)% increased Damage",
+     "m": "n",
+     "tags": [
+      "dmg"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "p2x",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    1,
+    2
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 지우기",
+    "en": "Remove the missed prefix"
+   },
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "dmg"
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "p3",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "dmg"
+     },
+     "to": "p2",
+     "label": {
+      "kr": "다시 확장",
+      "en": "Augment again"
+     }
+    },
+    {
+     "if": {
+      "full": "p"
+     },
+     "to": "p2x",
+     "hide": true
+    },
+    {
+     "to": "p2",
+     "label": {
+      "kr": "다시 확장",
+      "en": "Augment again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "regal",
+   "cur": "Perfect_Regal_Orb",
+   "label": {
+    "kr": "제왕",
+    "en": "Regal"
+   },
+   "goal": {
+    "kr": "레어",
+    "en": "Rare"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "p4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가",
+     "en": "Allies in your Presence deal (105—119)% increased Damage",
+     "m": "n",
+     "tags": [
+      "dmg"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "p4",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Jawbone",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "네번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Fourth option (desecrated): the fracture needs four"
+   },
+   "showText": [
+    {
+     "kr": "접두 훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Prefix desecration (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "dmg"
+     },
+     "to": "pf"
+    },
+    {
+     "to": "xj",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가",
+     "en": "Allies in your Presence deal (105—119)% increased Damage",
+     "m": "n",
+     "tags": [
+      "dmg"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "pf",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 (공개된 옵션 3개 중 하나)",
+    "en": "Fracture (one of the three revealed options)"
+   },
+   "showText": [
+    {
+     "kr": "아군 피해가 분열되면 성공",
+     "en": "Success when ally damage fractures"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "fractured": "dmg"
+     },
+     "to": "pc",
+     "res": "ok",
+     "label": {
+      "kr": "아군 피해 분열",
+      "en": "Ally damage fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
    "item": [
     {
      "s": "p",
      "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
      "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
+     "m": "f",
+     "tags": [
+      "dmg"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    5
+   ],
+   "simTo": "h0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured: new base"
+   },
+   "note": {
+    "kr": "아군 피해가 아닌 옵션이 분열되면 새 베이스로 처음부터",
+    "en": "Another option fractured: start over on a new base"
+   }
+  },
+  {
+   "id": "pc",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one option"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
+     "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
+     "m": "f",
      "tags": [
       "dmg"
      ]
@@ -244,9 +656,9 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    7.4
    ],
-   "next": "c1",
+   "next": "r1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -256,7 +668,7 @@
      "s": "p",
      "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
      "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "dmg"
      ]
@@ -270,22 +682,82 @@
    ]
   },
   {
+   "id": "r1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8.4
+   ],
+   "act": "rune",
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
+   },
+   "edges": [
+    {
+     "to": "c1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
+     "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
+     "m": "f",
+     "tags": [
+      "dmg"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
    "id": "c1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    1
+    9.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접두 마나 최대치 1티어",
+    "en": "T1 maximum Mana prefix"
+   },
+   "show": [
+    "mana"
+   ],
    "edges": [
     {
      "if": {
@@ -296,7 +768,8 @@
     },
     {
      "to": "c1",
-     "res": "fail"
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
@@ -304,7 +777,7 @@
      "s": "p",
      "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
      "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "dmg"
      ]
@@ -317,11 +790,13 @@
      "tags": [
       "mana"
      ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "mana"
    ]
   },
   {
@@ -330,29 +805,39 @@
    "group": "main",
    "pos": [
     0,
-    2
+    10.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 세번째 옵션",
-    "en": "Third prefix"
-   },
+   "cur": "Greater_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 정신력 증가 1티어",
+    "en": "T1 increased Spirit prefix"
+   },
+   "show": [
+    "sp"
+   ],
    "edges": [
     {
      "if": {
-      "has": "spi"
+      "has": "sp"
      },
-     "to": "r1",
+     "to": "s1",
      "res": "ok"
     },
     {
      "to": "e1x",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
@@ -360,7 +845,7 @@
      "s": "p",
      "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
      "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "dmg"
      ]
@@ -382,15 +867,13 @@
      "tags": [
       "sp"
      ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "cur": "Greater_Exalted_Orb",
-   "show": [
-    "sp",
-    "hyb"
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
@@ -399,7 +882,7 @@
    "group": "main",
    "pos": [
     1,
-    2
+    10.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -413,8 +896,8 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "접두 잡옵 지우기",
-    "en": "Remove the junk prefix"
+    "kr": "빗나간 접두 지우기 — 마나 최대치가 지워지면 카오스부터",
+    "en": "Remove the missed prefix: back to Chaos if maximum Mana goes"
    },
    "edges": [
     {
@@ -424,234 +907,21 @@
       }
      },
      "to": "c1",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "마나 최대치가 지워짐",
+      "en": "Maximum Mana gone"
+     }
     },
     {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "spi"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
      "to": "e1",
      "res": "ok",
-     "port": "right"
-    },
-    {
-     "if": {
-      "not": {
-       "has": "spi"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "b3",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "b2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 2
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "junk": {
-           "side": "s",
-           "tag": "keepS"
-          }
-         },
-         {
-          "full": "s"
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "aug"
-        }
-       }
-      ]
-     },
-     "to": "aL",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "junk": {
-         "side": "s",
-         "tag": "keepS"
-        }
-       },
-       {
-        "des": false
-       }
-      ]
-     },
-     "to": "mA",
-     "hide": true
-    },
-    {
-     "if": {
-      "junk": {
-       "side": "s",
-       "tag": "keepS"
-      }
-     },
-     "to": "da",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": true
-       },
-       {
-        "full": "s"
-       }
-      ]
-     },
-     "to": "fl",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": false
-       },
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 1
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "b2n",
-     "hide": true
-    },
-    {
-     "to": "s1",
-     "hide": true
+     "label": {
+      "kr": "다시 엑잘",
+      "en": "Exalt again"
+     }
     }
    ]
-  },
-  {
-   "id": "r1",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    3
-   ],
-   "act": "rune",
-   "goal": {
-    "kr": "아스트리드의 창의성 장착",
-    "en": "Socket Astrid’s Creativity"
-   },
-   "label": {
-    "kr": "룬",
-    "en": "Rune"
-   },
-   "edges": [
-    {
-     "to": "s1"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
-     "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
-     "tags": [
-      "dmg"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(150—164)",
-     "en": "+(150—164) to maximum Mana",
-     "m": "n",
-     "tags": [
-      "mana"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "정신력 (61—65)% 증가",
-     "en": "(61—65)% increased Spirit",
-     "m": "n",
-     "tags": [
-      "sp"
-     ]
-    },
-    {
-     "s": "r",
-     "kr": "아스트리드의 창의성",
-     "en": "Astrid’s Creativity",
-     "m": "r"
-    }
-   ],
-   "showText": [
-    {
-     "kr": "제작 옵션 하나 더",
-     "en": "One more crafted modifier"
-    }
-   ],
-   "rune": {
-    "kr": "아스트리드의 창의성",
-    "en": "Astrid’s Creativity"
-   }
   },
   {
    "id": "s1",
@@ -659,55 +929,23 @@
    "group": "main",
    "pos": [
     0,
-    4
+    11.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 옵션",
-    "en": "A suffix"
-   },
+   "cur": "Perfect_Exalted_Orb",
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 옵션 하나 (접두가 꽉 차 징조 없음)",
+    "en": "One suffix (prefixes are full, no omen)"
+   },
+   "show": [
+    "regen",
+    "cs"
+   ],
    "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "mana"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "spi"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "spi"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
     {
      "if": {
       "unrevSide": "s"
@@ -729,10 +967,10 @@
         "has": "aug"
        },
        {
-        "count": {
-         "tag": "sg",
-         "min": 2
-        }
+        "has": "regen"
+       },
+       {
+        "has": "cs"
        }
       ]
      },
@@ -763,8 +1001,7 @@
       ]
      },
      "to": "aL",
-     "res": "fail",
-     "port": "right"
+     "res": "fail"
     },
     {
      "if": {
@@ -781,59 +1018,24 @@
       ]
      },
      "to": "mA",
-     "res": "fail",
-     "port": "right"
+     "res": "fail"
     },
     {
      "if": {
-      "junk": {
-       "side": "s",
-       "tag": "keepS"
-      }
-     },
-     "to": "da",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
+      "any": [
        {
-        "des": true
+        "junk": {
+         "side": "s",
+         "tag": "keepS"
+        }
        },
        {
         "full": "s"
        }
       ]
      },
-     "to": "fl",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": false
-       },
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 1
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "b2n",
-     "hide": true
+     "to": "da",
+     "res": "fail"
     },
     {
      "to": "s1",
@@ -845,7 +1047,7 @@
      "s": "p",
      "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
      "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "dmg"
      ]
@@ -869,25 +1071,20 @@
      ]
     },
     {
+     "s": "s",
+     "kr": "존재 범위 내 아군의 시전 속도 (17—20)% 증가",
+     "en": "Allies in your Presence have (17—20)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
      "s": "r",
      "kr": "아스트리드의 창의성",
      "en": "Astrid’s Creativity",
      "m": "r"
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "show": [
-    "regen",
-    "aoe",
-    "cs",
-    "cr",
-    "cd"
    ]
   },
   {
@@ -896,55 +1093,30 @@
    "group": "main",
    "pos": [
     1,
-    4
+    11.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "잡옵을 지우고 장착 증강 아이템 효과 (20—30)% 증가",
-    "en": "The junk goes for (20—30)% increased effect of Socketed Augment Items"
-   },
+   "cur": "Sovereign_Alloy",
+   "ess": "aug",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ],
    "label": {
     "kr": "합금",
     "en": "Alloy"
    },
+   "goal": {
+    "kr": "빗나간 접미를 지우고 장착 증강 아이템 효과",
+    "en": "The missed suffix goes for socketed augment effect"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "장착 증강 아이템 효과 (20—30)% 증가 (제작 옵션)",
+     "en": "(20—30)% increased effect of Socketed Augment Items (crafted)"
+    }
+   ],
    "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "mana"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "spi"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "spi"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
     {
      "if": {
       "unrevSide": "s"
@@ -966,10 +1138,10 @@
         "has": "aug"
        },
        {
-        "count": {
-         "tag": "sg",
-         "min": 2
-        }
+        "has": "regen"
+       },
+       {
+        "has": "cs"
        }
       ]
      },
@@ -1016,56 +1188,24 @@
        }
       ]
      },
-     "to": "mA"
-    },
-    {
-     "if": {
-      "junk": {
-       "side": "s",
-       "tag": "keepS"
-      }
-     },
-     "to": "da",
+     "to": "mA",
      "hide": true
     },
     {
      "if": {
-      "all": [
+      "any": [
        {
-        "des": true
+        "junk": {
+         "side": "s",
+         "tag": "keepS"
+        }
        },
        {
         "full": "s"
        }
       ]
      },
-     "to": "fl",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": false
-       },
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 1
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "b2n",
+     "to": "da",
      "hide": true
     },
     {
@@ -1077,7 +1217,7 @@
      "s": "p",
      "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
      "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "dmg"
      ]
@@ -1115,18 +1255,6 @@
      "en": "Astrid’s Creativity",
      "m": "r"
     }
-   ],
-   "cur": "Sovereign_Alloy",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "장착 증강 아이템 효과 (20—30)% 증가 (제작 옵션)",
-     "en": "(20—30)% increased effect of Socketed Augment Items (crafted)"
-    }
-   ],
-   "ess": "aug",
-   "omens": [
-    "Omen_of_Dextral_Crystallisation"
    ]
   },
   {
@@ -1135,55 +1263,31 @@
    "group": "main",
    "pos": [
     1,
-    5
+    12.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "잡옵을 지우고 심연의 군주의 징표",
-    "en": "The junk goes for the Mark of the Abyssal Lord"
-   },
+   "cur": "Essence_of_the_Abyss",
+   "ess": "mkS",
+   "mark": true,
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ],
    "label": {
-    "kr": "심연",
-    "en": "Abyss"
+    "kr": "에센스",
+    "en": "Essence"
    },
+   "goal": {
+    "kr": "빗나간 접미를 지우고 심연의 군주의 징표",
+    "en": "The missed suffix goes for the Mark of the Abyssal Lord"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
+    }
+   ],
    "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "mana"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "spi"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "spi"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
     {
      "if": {
       "unrevSide": "s"
@@ -1204,10 +1308,10 @@
         "has": "aug"
        },
        {
-        "count": {
-         "tag": "sg",
-         "min": 2
-        }
+        "has": "regen"
+       },
+       {
+        "has": "cs"
        }
       ]
      },
@@ -1259,52 +1363,19 @@
     },
     {
      "if": {
-      "junk": {
-       "side": "s",
-       "tag": "keepS"
-      }
-     },
-     "to": "da",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
+      "any": [
        {
-        "des": true
+        "junk": {
+         "side": "s",
+         "tag": "keepS"
+        }
        },
        {
         "full": "s"
        }
       ]
      },
-     "to": "fl",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": false
-       },
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 1
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "b2n",
+     "to": "da",
      "hide": true
     },
     {
@@ -1317,7 +1388,7 @@
      "s": "p",
      "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
      "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "dmg"
      ]
@@ -1364,19 +1435,6 @@
      "en": "Astrid’s Creativity",
      "m": "r"
     }
-   ],
-   "cur": "Essence_of_the_Abyss",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "심연의 군주의 징표",
-     "en": "Mark of the Abyssal Lord"
-    }
-   ],
-   "ess": "mkS",
-   "mark": true,
-   "omens": [
-    "Omen_of_Dextral_Crystallisation"
    ]
   },
   {
@@ -1385,55 +1443,27 @@
    "group": "main",
    "pos": [
     1,
-    6
+    13.4
    ],
    "act": "desecrate",
+   "cur": "Preserved_Jawbone",
+   "fromMark": true,
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
    "goal": {
     "kr": "접미 징표 훼손",
     "en": "Desecrate the suffix Mark"
    },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "mana"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "spi"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "spi"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
     {
      "if": {
       "unrevSide": "s"
@@ -1454,10 +1484,10 @@
         "has": "aug"
        },
        {
-        "count": {
-         "tag": "sg",
-         "min": 2
-        }
+        "has": "regen"
+       },
+       {
+        "has": "cs"
        }
       ]
      },
@@ -1509,233 +1539,7 @@
     },
     {
      "if": {
-      "junk": {
-       "side": "s",
-       "tag": "keepS"
-      }
-     },
-     "to": "da",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": true
-       },
-       {
-        "full": "s"
-       }
-      ]
-     },
-     "to": "fl",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": false
-       },
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 1
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "b2n",
-     "hide": true
-    },
-    {
-     "to": "s1",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
-     "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
-     "tags": [
-      "dmg"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(150—164)",
-     "en": "+(150—164) to maximum Mana",
-     "m": "n",
-     "tags": [
-      "mana"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "정신력 (61—65)% 증가",
-     "en": "(61—65)% increased Spirit",
-     "m": "n",
-     "tags": [
-      "sp"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "장착 증강 아이템 효과 (20—30)% 증가 (군왕의 합금)",
-     "en": "(20—30)% increased effect of Socketed Augment Items (Sovereign Alloy)",
-     "m": "c",
-     "tags": [
-      "aug"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    },
-    {
-     "s": "r",
-     "kr": "아스트리드의 창의성",
-     "en": "Astrid’s Creativity",
-     "m": "r"
-    }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "fromMark": true
-  },
-  {
-   "id": "b2n",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    2,
-    6
-   ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "접미 빈자리 훼손",
-    "en": "Desecrate the open suffix"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "mana"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "spi"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "spi"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "b3"
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "b2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 2
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "junk": {
-           "side": "s",
-           "tag": "keepS"
-          }
-         },
-         {
-          "full": "s"
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "aug"
-        }
-       }
-      ]
-     },
-     "to": "aL",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
+      "any": [
        {
         "junk": {
          "side": "s",
@@ -1743,61 +1547,11 @@
         }
        },
        {
-        "des": false
-       }
-      ]
-     },
-     "to": "mA",
-     "hide": true
-    },
-    {
-     "if": {
-      "junk": {
-       "side": "s",
-       "tag": "keepS"
-      }
-     },
-     "to": "da",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": true
-       },
-       {
         "full": "s"
        }
       ]
      },
-     "to": "fl",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": false
-       },
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 1
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "b2n",
+     "to": "da",
      "hide": true
     },
     {
@@ -1810,7 +1564,7 @@
      "s": "p",
      "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
      "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "dmg"
      ]
@@ -1844,7 +1598,7 @@
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
     },
@@ -1853,14 +1607,6 @@
      "kr": "아스트리드의 창의성",
      "en": "Astrid’s Creativity",
      "m": "r"
-    }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
     }
    ]
   },
@@ -1870,55 +1616,26 @@
    "group": "main",
    "pos": [
     1,
-    7
+    14.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "sg",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접미 마나 재생 속도·시전 속도 1티어 — 빗나가면 자리 막기",
+    "en": "T1 mana regeneration or cast speed suffix: a miss stays as the blocker"
+   },
+   "show": [
+    "regen",
+    "cs"
+   ],
    "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "mana"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "spi"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "spi"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
     {
      "if": {
       "unrevSide": "s"
@@ -1940,10 +1657,10 @@
         "has": "aug"
        },
        {
-        "count": {
-         "tag": "sg",
-         "min": 2
-        }
+        "has": "regen"
+       },
+       {
+        "has": "cs"
        }
       ]
      },
@@ -1995,52 +1712,19 @@
     },
     {
      "if": {
-      "junk": {
-       "side": "s",
-       "tag": "keepS"
-      }
-     },
-     "to": "da",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
+      "any": [
        {
-        "des": true
+        "junk": {
+         "side": "s",
+         "tag": "keepS"
+        }
        },
        {
         "full": "s"
        }
       ]
      },
-     "to": "fl",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": false
-       },
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 1
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "b2n",
+     "to": "da",
      "hide": true
     },
     {
@@ -2052,7 +1736,7 @@
      "s": "p",
      "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
      "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "dmg"
      ]
@@ -2099,15 +1783,6 @@
      "en": "Astrid’s Creativity",
      "m": "r"
     }
-   ],
-   "want": "sg",
-   "show": [
-    "regen",
-    "aoe",
-    "cs"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
@@ -2116,7 +1791,7 @@
    "group": "main",
    "pos": [
     2,
-    4
+    11.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -2132,47 +1807,10 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "접미 잡옵 지우기",
-    "en": "Remove the junk suffix"
+    "kr": "접미 하나 지우기",
+    "en": "Remove one suffix"
    },
    "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "mana"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "spi"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "spi"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
     {
      "if": {
       "unrevSide": "s"
@@ -2194,10 +1832,10 @@
         "has": "aug"
        },
        {
-        "count": {
-         "tag": "sg",
-         "min": 2
-        }
+        "has": "regen"
+       },
+       {
+        "has": "cs"
        }
       ]
      },
@@ -2249,52 +1887,19 @@
     },
     {
      "if": {
-      "junk": {
-       "side": "s",
-       "tag": "keepS"
-      }
-     },
-     "to": "da",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
+      "any": [
        {
-        "des": true
+        "junk": {
+         "side": "s",
+         "tag": "keepS"
+        }
        },
        {
         "full": "s"
        }
       ]
      },
-     "to": "fl",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": false
-       },
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 1
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "b2n",
+     "to": "da",
      "hide": true
     },
     {
@@ -2304,209 +1909,131 @@
    ]
   },
   {
-   "id": "fl",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    2,
-    7
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "자리 막기 훼손 옵션 제거",
-    "en": "Remove the blocking desecration"
-   },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "mana"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "spi"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "spi"
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "b3",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "b2",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 2
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "any": [
-         {
-          "junk": {
-           "side": "s",
-           "tag": "keepS"
-          }
-         },
-         {
-          "full": "s"
-         }
-        ]
-       },
-       {
-        "not": {
-         "has": "aug"
-        }
-       }
-      ]
-     },
-     "to": "aL",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "junk": {
-         "side": "s",
-         "tag": "keepS"
-        }
-       },
-       {
-        "des": false
-       }
-      ]
-     },
-     "to": "mA",
-     "hide": true
-    },
-    {
-     "if": {
-      "junk": {
-       "side": "s",
-       "tag": "keepS"
-      }
-     },
-     "to": "da",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": true
-       },
-       {
-        "full": "s"
-       }
-      ]
-     },
-     "to": "fl",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "des": false
-       },
-       {
-        "has": "aug"
-       },
-       {
-        "count": {
-         "tag": "sg",
-         "min": 1
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "b2n"
-    },
-    {
-     "to": "s1",
-     "hide": true
-    }
-   ]
-  },
-  {
    "id": "ok",
    "kind": "done",
    "group": "main",
    "pos": [
     0,
-    8
+    15.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "s1",
+    "aL",
+    "mA",
+    "b2",
+    "b3",
+    "da"
+   ],
+   "kr": "접미 세 자리",
+   "en": "Three suffixes",
+   "fold": true,
+   "goal": {
+    "kr": "접미 마나 재생 속도 1티어 + 시전 속도 1티어 + 장착 증강 아이템 효과",
+    "en": "Suffixes: T1 mana regeneration, T1 cast speed + socketed augment effect"
+   },
+   "steps": [
+    {
+     "kr": "완벽한 엑잘로 접미 하나 — 남은 옵션 중 먼저 뜬 것",
+     "en": "Perfect Exalt one suffix: whichever wanted option lands first",
+     "node": "s1"
+    },
+    {
+     "kr": "빗나감에 장착 증강 효과가 없으면 우측 결정화 + 군왕의 합금",
+     "en": "On a miss without the augment effect: Dextral Crystallisation + Sovereign Alloy",
+     "node": "aL"
+    },
+    {
+     "kr": "훼손 옵션이 없으면 우측 결정화 + 심연의 에센스로 징표",
+     "en": "No desecration yet: Dextral Crystallisation + Essence of the Abyss for the Mark",
+     "node": "mA"
+    },
+    {
+     "kr": "보존된 턱뼈로 징표 훼손",
+     "en": "Preserved Jawbone on the Mark",
+     "node": "b2"
+    },
+    {
+     "kr": "심연의 메아리 공개 — 마나 재생 속도·시전 속도가 아니면 자리 막기",
+     "en": "Reveal with Abyssal Echoes: anything else stays as the blocker",
+     "node": "b3"
+    },
+    {
+     "kr": "그 밖의 빗나감은 우측 소멸의 징조 + 소멸의 오브",
+     "en": "Any other miss: Omen of Dextral Annulment + Orb of Annulment",
+     "node": "da"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "존재 범위 내 아군이 주는 피해 (105—119)% 증가 (분열)",
+     "en": "Allies in your Presence deal (105—119)% increased Damage (fractured)",
+     "m": "f",
+     "tags": [
+      "dmg"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(150—164)",
+     "en": "+(150—164) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mana"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (61—65)% 증가",
+     "en": "(61—65)% increased Spirit",
+     "m": "n",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "장착 증강 아이템 효과 (20—30)% 증가 (군왕의 합금)",
+     "en": "(20—30)% increased effect of Socketed Augment Items (Sovereign Alloy)",
+     "m": "c",
+     "tags": [
+      "aug"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "마나 재생 속도 (60—69)% 증가",
+     "en": "(60—69)% increased Mana Regeneration Rate",
+     "m": "d",
+     "tags": [
+      "regen"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "존재 범위 내 아군의 시전 속도 (17—20)% 증가",
+     "en": "Allies in your Presence have (17—20)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
   }
  ]
 }

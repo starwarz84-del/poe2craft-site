@@ -4,33 +4,15 @@
  "cls": "Gloves_int",
  "base": "Sirenscale Gloves",
  "ilvl": 80,
- "note": "SL 투사체 7옵션 장갑(XMYJh3CnXuY) — 콜르의 사냥 · 투사체 +2 분열 + 잡옵 → 세를의 승리 → 카오스 오브(투사체 피해·속도) → 상위 찬미 + 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) → 상위 찬미 + 완벽한 엑잘(치명타 확률, 잡옵 2개면 우측 결정화 + 심연의 에센스 → 고대 갈비뼈 → 빛의 징조) → 우측 결정화 + 팽창하는 합금(1/2) → 고대 갈비뼈 → 관통 공개. 하이엔드 = 영상, 밸런스 = 세 번째 접두 1~2티어 · 관통 공개 결과 그대로.",
+ "note": "SL 투사체 7옵션 장갑(XMYJh3CnXuY, 2026-11-13 W14 영상 전체 화면 대조) — 특출난 사이렌비늘 장갑(80) → 콜르의 사냥 → 완벽한 진화·확장 + 소멸(투사체 +2) → 완벽한 제왕 → 보존된 갈비뼈 → 분열(투사체 +2) → 분열 + 옵션 1개 → 세를의 승리 → 카오스 오브(접두 1티어) → 상위·좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) → 상위 찬미 + 완벽한 엑잘(접미 치명타 확률, 잡옵마다 우측 결정화 + 심연의 에센스 → 보존된 갈비뼈 → 빛의 징조 + 소멸) → 우측 결정화 + 팽창하는 합금(1/2) → 고대 갈비뼈 → 공개(관통 1티어, 빗나가면 빛의 징조 + 소멸). 하이엔드만(극한).",
  "params": {
-  "v": {
-   "kr": "진행",
-   "en": "Route",
-   "values": {
-    "1": {
-     "kr": "영상",
-     "en": "Video"
-    },
-    "2": {
-     "kr": "결과 그대로",
-     "en": "As it comes"
-    }
-   }
-  },
-  "pT": {
-   "kr": "접두 세번째 옵션",
-   "en": "Third prefix",
+  "t": {
+   "kr": "반복 목표",
+   "en": "Loop target",
    "values": {
     "1": {
      "kr": "1티어",
      "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
     }
    }
   }
@@ -39,43 +21,21 @@
   {
    "id": "high",
    "params": {
-    "v": 1,
-    "pT": 1
-   }
-  },
-  {
-   "id": "bal",
-   "params": {
-    "v": 2,
-    "pT": 2
+    "t": 1
    }
   }
  ],
  "versions": [
   {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "v": 2,
-    "pT": 2
-   },
-   "desc": {
-    "kr": "세 번째 접두 1~2티어, 관통 공개 결과 그대로",
-    "en": "T1–2 third prefix, keep the reveal"
-   }
-  },
-  {
    "id": "high",
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "v": 1,
-    "pT": 1
+    "t": 1
    },
    "desc": {
-    "kr": "영상: 세 번째 접두 1티어, 관통은 빛의 징조로 다시",
-    "en": "Video: T1 third prefix, Light retries pierce"
+    "kr": "영상: 접두 3개·치명타 확률·관통 모두 1티어",
+    "en": "Video: three prefixes, crit chance and pierce all T1"
    }
   }
  ],
@@ -83,18 +43,38 @@
   "proj": {
    "gi": 82
   },
-  "pd": {
+  "pd1": {
    "gi": 71,
    "tmax": 1
   },
-  "ps": {
+  "ps1": {
    "gi": 73,
    "tmax": 1
   },
-  "cr": {
-   "gi": 74
+  "mf1": {
+   "gi": 7,
+   "tmax": 1
   },
-  "pie": {
+  "pgood": {
+   "anyOf": [
+    "pd1",
+    "ps1",
+    "mf1"
+   ],
+   "label": {
+    "kr": "투사체 피해·투사체 속도·마나 최대치 1티어",
+    "en": "T1 projectile damage, projectile speed or maximum mana"
+   }
+  },
+  "cr1": {
+   "gi": 74,
+   "tmax": 1
+  },
+  "pie1": {
+   "gi": 75,
+   "tmax": 1
+  },
+  "pieAny": {
    "gi": 75
   },
   "rem": {
@@ -102,68 +82,41 @@
   },
   "mkS": {
    "gi": 61
+  }
+ },
+ "conds": {
+  "pDone": {
+   "count": {
+    "tag": "pgood",
+    "min": 3
+   }
   },
-  "mf": {
-   "gi": 7,
-   "tmax": "$pT"
-  },
-  "esf": {
-   "gi": 8,
-   "tmax": "$pT"
-  },
-  "esp": {
-   "gi": 9,
-   "tmax": "$pT"
-  },
-  "esh": {
-   "gi": 10,
-   "tmax": "$pT"
-  },
-  "ph": {
-   "gi": 13,
-   "tmax": "$pT"
-  },
-  "pp": {
-   "anyOf": [
-    "pd",
-    "ps"
-   ]
-  },
-  "third": {
-   "anyOf": [
-    "mf",
-    "esf",
-    "esp",
-    "esh",
-    "ph"
-   ]
-  },
-  "gpre": {
-   "anyOf": [
-    "pp",
-    "third"
-   ]
-  },
-  "keepP": {
-   "anyOf": [
-    "pp",
-    "third"
-   ]
+  "sClean": {
+   "sideLt": {
+    "side": "s",
+    "n": 2
+   }
   }
  },
  "require": {
   "all": [
    {
-    "count": {
-     "tag": "pp",
-     "min": 2
-    }
+    "has": "proj"
    },
    {
-    "has": "third"
+    "has": "pd1"
    },
    {
-    "has": "cr"
+    "has": "ps1"
+   },
+   {
+    "has": "mf1"
+   },
+   {
+    "has": "cr1"
+   },
+   {
+    "has": "pie1"
    },
    {
     "has": "rem"
@@ -190,221 +143,191 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "d1",
-    "d2",
-    "d2x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  },
-  {
-   "id": "L2",
-   "nodes": [
-    "mA",
-    "mB",
-    "mL"
-   ],
-   "kr": "잡옵 정리",
-   "en": "Clear junk"
-  }
+ "start": "b0",
+ "xsub": [
+  "Kolr's Hunt"
  ],
- "finals": [
-  {
-   "id": "high",
-   "kr": "하이엔드 옵션",
-   "en": "High-end",
-   "lines": [
-    {
-     "tag": "ps",
-     "tmax": 1
-    },
-    {
-     "tag": "pd",
-     "tmax": 1
-    },
-    {
-     "tag": "mf",
-     "tmax": 1
-    },
-    {
-     "tag": "proj",
-     "fr": true
-    },
-    {
-     "tag": "cr"
-    },
-    {
-     "tag": "rem",
-     "ess": true
-    },
-    {
-     "tag": "pie",
-     "des": true
-    }
-   ]
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "ps",
-     "tmax": 1
-    },
-    {
-     "tag": "pd",
-     "tmax": 1
-    },
-    {
-     "tag": "mf",
-     "tmax": 2
-    },
-    {
-     "tag": "proj",
-     "fr": true
-    },
-    {
-     "tag": "cr"
-    },
-    {
-     "tag": "rem",
-     "ess": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  }
- ],
+ "xroll": true,
  "finalItem": {
   "quality": 25,
-  "sockets": 2
+  "sockets": 2,
+  "exceptional": true
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "pk",
    "start": {
-    "rar": "rare",
-    "mods": [
-     {
-      "tag": "proj",
-      "fr": true
-     },
-     {
-      "junk": "p"
-     }
-    ]
+    "rar": "normal",
+    "mods": [],
+    "quality": 25
    },
    "label": {
-    "kr": "콜르의 사냥 장착 · 모든 투사체 스킬 레벨 +2 분열 + 잡옵 1개 (퀄리티 25%)",
-    "en": "Kolr’s Hunt socketed · fractured +2 projectile skills + one junk line (25% quality)"
+    "kr": "특출난 사이렌비늘 장갑 구입 (노멀, 아이템 레벨 75 이상, 룬 소켓 2개)",
+    "en": "Buy exceptional Sirenscale Gloves (normal, item level 75+, two sockets)"
    },
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "r",
-     "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
-     "m": "r"
-    }
-   ]
+   "item": []
   },
   {
-   "id": "ms",
-   "kind": "mark",
-   "group": "main",
+   "id": "hq",
+   "kind": "side",
+   "group": "prep",
    "pos": [
-    0,
-    0.6
+    1,
+    0.5
    ],
-   "next": "r1",
-   "label": {
-    "kr": "아이템 제작 시작",
-    "en": "Item crafting starts"
+   "attach": [
+    "b0",
+    "pk"
+   ],
+   "cur": "Vaal_Armourers_Infuser",
+   "goal": {
+    "kr": "퀄리티 25% 이상, 비용 미포함",
+    "en": "Quality 25%+, not costed"
    },
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "r",
-     "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
-     "m": "r"
-    }
-   ]
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   }
   },
   {
-   "id": "r1",
+   "id": "pk",
    "kind": "act",
-   "group": "main",
+   "group": "prep",
    "pos": [
     0,
     1
    ],
    "act": "rune",
-   "goal": {
-    "kr": "세를의 승리 장착 (접미 +1)",
-    "en": "Socket Serle’s Triumph (+1 suffix)"
+   "rune": {
+    "kr": "콜르의 사냥",
+    "en": "Kolr’s Hunt"
    },
+   "goal": {
+    "kr": "콜르의 사냥 장착",
+    "en": "Socket Kolr’s Hunt"
+   },
+   "showText": [
+    {
+     "kr": "콜르 옵션이 붙을 수 있음",
+     "en": "Kolr lines can roll"
+    }
+   ],
    "label": {
     "kr": "룬",
     "en": "Rune"
    },
    "edges": [
     {
-     "to": "c1"
+     "to": "m1"
     }
    ],
    "item": [
     {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "m1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "transmute",
+   "cur": "Perfect_Orb_of_Transmutation",
+   "label": {
+    "kr": "매직 첫번째 옵션",
+    "en": "First magic option"
+   },
+   "goal": {
+    "kr": "매직으로",
+    "en": "Make it magic"
+   },
+   "showText": [
+    {
+     "kr": "옵션 1개",
+     "en": "One option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "m2"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
      "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
      "m": "n",
      "tags": [
       "proj"
      ]
+    }
+   ]
+  },
+  {
+   "id": "m2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "label": {
+    "kr": "매직 두번째 옵션",
+    "en": "Second magic option"
+   },
+   "goal": {
+    "kr": "접미 모든 투사체 스킬 레벨 +2",
+    "en": "+2 projectile skills suffix"
+   },
+   "show": [
+    "proj"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "proj"
+     },
+     "to": "m3",
+     "res": "ok"
+    },
+    {
+     "to": "m2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 소멸의 오브",
+      "en": "Miss: Orb of Annulment"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
     },
     {
      "s": "p",
@@ -413,339 +336,20 @@
      "m": "j"
     },
     {
-     "s": "r",
-     "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
-     "m": "r"
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
-    }
-   ],
-   "showText": [
-    {
-     "kr": "접미 옵션 4개",
-     "en": "Four suffixes"
-    }
-   ],
-   "slots": {
-    "s": 1
-   },
-   "rune": {
-    "kr": "세를의 승리",
-    "en": "Serle’s Triumph"
-   }
-  },
-  {
-   "id": "c1",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    2
-   ],
-   "act": "chaos",
-   "goal": {
-    "kr": "접두 첫번째 옵션",
-    "en": "First prefix"
-   },
-   "label": {
-    "kr": "카오스",
-    "en": "Chaos"
-   },
-   "edges": [
-    {
-     "if": {
-      "has": "pp"
-     },
-     "to": "e1",
-     "res": "ok"
-    },
-    {
-     "to": "c1",
-     "res": "fail"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
-     "m": "n",
-     "tags": [
-      "ps"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
      "m": "n",
      "tags": [
       "proj"
      ]
-    },
-    {
-     "s": "r",
-     "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
-     "m": "r"
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "pd",
-    "ps"
    ]
   },
   {
-   "id": "e1",
+   "id": "m2x",
    "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    3
-   ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접두 두번째·세번째 옵션",
-    "en": "Second and third prefixes"
-   },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "pp"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "mL",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "mB",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "all": [
-          {
-           "count": {
-            "tag": "pp",
-            "min": 2
-           }
-          },
-          {
-           "has": "third"
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "count": {
-          "tag": "pp",
-          "min": 2
-         }
-        },
-        {
-         "has": "third"
-        }
-       ]
-      }
-     },
-     "to": "e1x",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "has": "rem"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 4
-        }
-       }
-      ]
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "sR",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       }
-      ]
-     },
-     "to": "a1",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 2
-      }
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "to": "mA",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
-     "m": "n",
-     "tags": [
-      "ps"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "투사체 피해 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Damage",
-     "m": "n",
-     "tags": [
-      "pd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(105—124)",
-     "en": "+(105—124) to maximum Mana",
-     "m": "n",
-     "tags": [
-      "mf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "r",
-     "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
-     "m": "r"
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "show": [
-    "pd",
-    "ps",
-    "mf",
-    "esf",
-    "esp",
-    "esh",
-    "ph"
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation",
-    "Omen_of_Sinistral_Exaltation"
-   ]
-  },
-  {
-   "id": "e1x",
-   "kind": "act",
-   "group": "main",
+   "group": "prep",
    "pos": [
     1,
     3
@@ -762,160 +366,721 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "접두 잡옵 지우기",
-    "en": "Remove a junk prefix"
+    "kr": "옵션 하나 지우기",
+    "en": "Remove one option"
+   },
+   "edges": [
+    {
+     "to": "m2",
+     "label": {
+      "kr": "다시 확장",
+      "en": "Augment again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "m3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "regal",
+   "cur": "Perfect_Regal_Orb",
+   "label": {
+    "kr": "레어",
+    "en": "Rare"
+   },
+   "goal": {
+    "kr": "분열하기 위해 레어로",
+    "en": "Make it rare for the fracture"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "m4"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "m4",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Rib",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "네번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Fourth option (desecrated): the fracture needs four"
+   },
+   "showText": [
+    {
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecration (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "m5"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "m5",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 (공개된 옵션 3개 중 하나)",
+    "en": "Fracture (one of the three revealed options)"
+   },
+   "showText": [
+    {
+     "kr": "투사체 +2가 분열되면 성공",
+     "en": "Success when +2 projectile fractures"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "fractured": "proj"
+     },
+     "to": "m6",
+     "res": "ok",
+     "label": {
+      "kr": "투사체 +2 분열",
+      "en": "+2 projectile fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another line fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    6
+   ],
+   "simTo": "b0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another line fractured: new base"
+   },
+   "note": {
+    "kr": "투사체 +2가 아닌 옵션이 분열되면 새 베이스로 처음부터",
+    "en": "Another line fractured: start over on a new base"
+   }
+  },
+  {
+   "id": "m6",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    7
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one option"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "next": "r1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "r1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9
+   ],
+   "act": "rune",
+   "rune": {
+    "kr": "세를의 승리",
+    "en": "Serle’s Triumph"
+   },
+   "slots": {
+    "s": 1
+   },
+   "goal": {
+    "kr": "세를의 승리 장착",
+    "en": "Socket Serle’s Triumph"
+   },
+   "showText": [
+    {
+     "kr": "접미 옵션 4개",
+     "en": "Four suffixes"
+    }
+   ],
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "c1"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "세를의 승리",
+     "en": "Serle’s Triumph",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix"
+   },
+   "show": [
+    "ps1"
+   ],
+   "showText": [
+    {
+     "kr": "투사체 피해·투사체 속도·마나 최대치 1티어 중 먼저 뜬 것",
+     "en": "Whichever of T1 projectile damage, projectile speed or maximum mana lands first"
+    }
+   ],
+   "skipIf": {
+    "has": "pgood"
+   },
+   "skipTo": "e1",
+   "skipNote": {
+    "kr": "남은 옵션이 투사체 피해·속도·마나 최대치 1티어면 건너뜀",
+    "en": "Skip if the option left is T1 projectile damage, speed or maximum mana"
+   },
+   "edges": [
+    {
+     "if": {
+      "has": "pgood"
+     },
+     "to": "e1",
+     "res": "ok"
+    },
+    {
+     "to": "c1",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "세를의 승리",
+     "en": "Serle’s Triumph",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation",
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 두번째·세번째 옵션",
+    "en": "Second and third prefixes"
+   },
+   "show": [
+    "pd1",
+    "mf1"
+   ],
+   "showText": [
+    {
+     "kr": "남은 옵션 중 먼저 뜬 것",
+     "en": "Whichever of the rest lands first"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "ref": "pDone"
+     },
+     "to": "s1",
+     "res": "ok"
+    },
+    {
+     "to": "e1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 소멸의 오브",
+      "en": "Miss: Orb of Annulment"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "세를의 승리",
+     "en": "Serle’s Triumph",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "n",
+     "tags": [
+      "pd1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(105—124)",
+     "en": "+(105—124) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mf1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e1x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    11
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접두 지우기",
+    "en": "Remove the missed prefix"
    },
    "edges": [
     {
      "if": {
       "not": {
-       "has": "pp"
+       "has": "pgood"
       }
      },
-     "to": "c1",
-     "res": "fail"
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "mL",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "mB",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "all": [
-          {
-           "count": {
-            "tag": "pp",
-            "min": 2
-           }
-          },
-          {
-           "has": "third"
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "res": "ok",
-     "port": "right"
-    },
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "count": {
-          "tag": "pp",
-          "min": 2
-         }
-        },
-        {
-         "has": "third"
-        }
-       ]
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "has": "rem"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 4
-        }
-       }
-      ]
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "sR",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       }
-      ]
-     },
-     "to": "a1",
-     "hide": true
+     "to": "kz",
+     "res": "fail",
+     "label": {
+      "kr": "좋은 접두가 모두 지워짐 — 카오스부터",
+      "en": "Every good prefix gone: back to Chaos"
+     }
     },
     {
      "if": {
       "sideLt": {
-       "side": "s",
+       "side": "p",
        "n": 2
       }
      },
-     "to": "s1",
-     "hide": true
+     "to": "e1",
+     "res": "ok",
+     "label": {
+      "kr": "접두 빈자리 2개 — 상위 찬미 + 좌측 찬미",
+      "en": "Two prefixes free: Greater + Sinistral Exaltation"
+     }
     },
     {
-     "to": "mA",
-     "hide": true
+     "to": "e2",
+     "res": "ok",
+     "label": {
+      "kr": "접두 빈자리 1개 — 좌측 찬미",
+      "en": "One prefix free: Sinistral Exaltation"
+     }
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    12
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix"
+   },
+   "show": [
+    "mf1"
+   ],
+   "showText": [
+    {
+     "kr": "남은 옵션 중 먼저 뜬 것",
+     "en": "Whichever of the rest lands first"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "ref": "pDone"
+     },
+     "to": "s1",
+     "res": "ok"
+    },
+    {
+     "to": "e1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 소멸의 오브",
+      "en": "Miss: Orb of Annulment"
+     }
+    }
+   ]
+  },
+  {
+   "id": "kz",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    2,
+    11
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep the fracture + one option"
+   },
+   "edges": [
+    {
+     "to": "c1"
     }
    ]
   },
@@ -925,178 +1090,67 @@
    "group": "main",
    "pos": [
     0,
-    4
+    13
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 두번째·세번째 옵션",
-    "en": "Second and third suffixes"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 두번째 옵션",
+    "en": "Second suffix"
+   },
+   "show": [
+    "cr1"
+   ],
+   "showText": [
+    {
+     "kr": "잡옵 1개가 함께 붙음",
+     "en": "One junk line comes with it"
+    }
+   ],
    "edges": [
     {
      "if": {
-      "not": {
-       "has": "pp"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "mL",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "mB",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "all": [
-          {
-           "count": {
-            "tag": "pp",
-            "min": 2
-           }
-          },
-          {
-           "has": "third"
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "count": {
-          "tag": "pp",
-          "min": 2
-         }
-        },
-        {
-         "has": "third"
-        }
-       ]
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "has": "rem"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 4
-        }
-       }
-      ]
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "sR",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       }
-      ]
+      "has": "cr1"
      },
      "to": "a1",
      "res": "ok"
     },
     {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 2
-      }
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
      "to": "mA",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "빗나감 — 우측 결정화 + 심연의 에센스",
+      "en": "Miss: Dextral Crystallisation + Essence of the Abyss"
+     }
     }
    ],
    "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "세를의 승리",
+     "en": "Serle’s Triumph",
+     "m": "r"
+    },
     {
      "s": "p",
      "kr": "투사체 속도 (31—40)% 증가",
      "en": "(31—40)% increased Projectile Speed",
      "m": "n",
      "tags": [
-      "ps"
+      "ps1"
      ]
     },
     {
@@ -1105,7 +1159,7 @@
      "en": "(31—40)% increased Projectile Damage",
      "m": "n",
      "tags": [
-      "pd"
+      "pd1"
      ]
     },
     {
@@ -1114,14 +1168,14 @@
      "en": "+(105—124) to maximum Mana",
      "m": "n",
      "tags": [
-      "mf"
+      "mf1"
      ]
     },
     {
      "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
-     "m": "n",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
      "tags": [
       "proj"
      ]
@@ -1132,7 +1186,7 @@
      "en": "(28—34)% increased Critical Hit Chance",
      "m": "n",
      "tags": [
-      "cr"
+      "cr1"
      ]
     },
     {
@@ -1140,26 +1194,7 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
-    },
-    {
-     "s": "r",
-     "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
-     "m": "r"
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
     }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "show": [
-    "cr"
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
    ]
   },
   {
@@ -1168,234 +1203,23 @@
    "group": "main",
    "pos": [
     1,
-    4
+    13
    ],
    "act": "essence",
-   "goal": {
-    "kr": "잡옵을 지우고 심연의 군주의 징표",
-    "en": "The junk goes for the Mark of the Abyssal Lord"
-   },
+   "cur": "Essence_of_the_Abyss",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ],
+   "ess": "mkS",
+   "mark": true,
    "label": {
     "kr": "심연",
     "en": "Abyss"
    },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "pp"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "mL",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "mB"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "all": [
-          {
-           "count": {
-            "tag": "pp",
-            "min": 2
-           }
-          },
-          {
-           "has": "third"
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "count": {
-          "tag": "pp",
-          "min": 2
-         }
-        },
-        {
-         "has": "third"
-        }
-       ]
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "has": "rem"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 4
-        }
-       }
-      ]
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "sR",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       }
-      ]
-     },
-     "to": "a1",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 2
-      }
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "to": "mA",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
-     "m": "n",
-     "tags": [
-      "ps"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "투사체 피해 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Damage",
-     "m": "n",
-     "tags": [
-      "pd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(105—124)",
-     "en": "+(105—124) to maximum Mana",
-     "m": "n",
-     "tags": [
-      "mf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "심연의 군주의 징표",
-     "en": "Mark of the Abyssal Lord",
-     "m": "c",
-     "tags": [
-      "mkS"
-     ]
-    },
-    {
-     "s": "r",
-     "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
-     "m": "r"
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
-    }
-   ],
-   "cur": "Essence_of_the_Abyss",
+   "goal": {
+    "kr": "접미 잡옵을 지우고 심연의 군주의 징표",
+    "en": "A junk suffix goes for the Mark of the Abyssal Lord"
+   },
    "showText": [
     {
      "s": "s",
@@ -1403,10 +1227,10 @@
      "en": "Mark of the Abyssal Lord"
     }
    ],
-   "ess": "mkS",
-   "mark": true,
-   "omens": [
-    "Omen_of_Dextral_Crystallisation"
+   "edges": [
+    {
+     "to": "mB"
+    }
    ]
   },
   {
@@ -1414,251 +1238,40 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    2,
-    4
+    1,
+    14
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 징표 훼손",
-    "en": "Desecrate the suffix Mark"
-   },
+   "cur": "Preserved_Rib",
+   "fromMark": true,
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "pp"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "mL"
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "mB",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "all": [
-          {
-           "count": {
-            "tag": "pp",
-            "min": 2
-           }
-          },
-          {
-           "has": "third"
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "count": {
-          "tag": "pp",
-          "min": 2
-         }
-        },
-        {
-         "has": "third"
-        }
-       ]
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "has": "rem"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 4
-        }
-       }
-      ]
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "sR",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       }
-      ]
-     },
-     "to": "a1",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 2
-      }
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "to": "mA",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
-     "m": "n",
-     "tags": [
-      "ps"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "투사체 피해 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Damage",
-     "m": "n",
-     "tags": [
-      "pd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(105—124)",
-     "en": "+(105—124) to maximum Mana",
-     "m": "n",
-     "tags": [
-      "mf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "심연의 군주의 징표",
-     "en": "Mark of the Abyssal Lord",
-     "m": "c",
-     "tags": [
-      "mkS"
-     ]
-    },
-    {
-     "s": "r",
-     "kr": "콜르의 사냥",
-     "en": "Kolr’s Hunt",
-     "m": "r"
-    },
-    {
-     "s": "r",
-     "kr": "세를의 승리",
-     "en": "Serle’s Triumph",
-     "m": "r"
-    }
-   ],
-   "cur": "Ancient_Rib",
+   "goal": {
+    "kr": "접미 징표 훼손",
+    "en": "Desecrate the suffix Mark"
+   },
    "showText": [
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
     }
    ],
-   "fromMark": true
+   "edges": [
+    {
+     "to": "mL"
+    }
+   ]
   },
   {
    "id": "mL",
    "kind": "act",
    "group": "main",
    "pos": [
-    2,
-    5
+    1,
+    15
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1680,151 +1293,22 @@
    "edges": [
     {
      "if": {
-      "not": {
-       "has": "pp"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "mL",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "mB",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "all": [
-          {
-           "count": {
-            "tag": "pp",
-            "min": 2
-           }
-          },
-          {
-           "has": "third"
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "count": {
-          "tag": "pp",
-          "min": 2
-         }
-        },
-        {
-         "has": "third"
-        }
-       ]
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "has": "rem"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 4
-        }
-       }
-      ]
-     },
-     "to": "d1",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "sR",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       }
-      ]
-     },
-     "to": "a1",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 2
-      }
+      "ref": "sClean"
      },
      "to": "s1",
-     "hide": true
+     "res": "ok",
+     "label": {
+      "kr": "접미 정리 끝 — 다시 엑잘",
+      "en": "Suffixes clear: exalt again"
+     }
     },
     {
-     "to": "mA"
+     "to": "mA",
+     "res": "fail",
+     "label": {
+      "kr": "잡옵 남음 — 다시 심연",
+      "en": "Junk left: Abyss again"
+     }
     }
    ]
   },
@@ -1834,102 +1318,38 @@
    "group": "main",
    "pos": [
     0,
-    6
+    14
    ],
    "act": "essence",
-   "goal": {
-    "kr": "잡옵을 지우고 잔류물을 (35—50)% 더 먼 곳에서 획득 가능",
-    "en": "The junk goes for Remnants collected (35—50)% further away"
-   },
+   "cur": "Expansive_Alloy",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ],
+   "ess": "rem",
    "label": {
     "kr": "합금",
     "en": "Alloy"
    },
+   "goal": {
+    "kr": "접미 잡옵을 지우고 잔류물 획득 거리",
+    "en": "The junk suffix goes for remnant pickup range"
+   },
+   "showText": [
+    {
+     "kr": "치명타 확률이 남으면 성공, 1/2",
+     "en": "Success if crit chance stays, 1/2"
+    }
+   ],
    "edges": [
     {
      "if": {
-      "not": {
-       "has": "pp"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "mL",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "mB",
-     "hide": true
-    },
-    {
-     "if": {
       "all": [
+       {
+        "has": "cr1"
+       },
        {
         "not": {
-         "all": [
-          {
-           "count": {
-            "tag": "pp",
-            "min": 2
-           }
-          },
-          {
-           "has": "third"
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "count": {
-          "tag": "pp",
-          "min": 2
-         }
-        },
-        {
-         "has": "third"
-        }
-       ]
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "has": "rem"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 4
+         "has": "pieAny"
         }
        }
       ]
@@ -1938,121 +1358,15 @@
      "res": "ok"
     },
     {
-     "if": {
-      "has": "rem"
-     },
      "to": "sR",
      "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       }
-      ]
-     },
-     "to": "a1",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 2
-      }
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "to": "mA",
-     "hide": true
+     "label": {
+      "kr": "치명타 확률이 지워짐 — 우측 소멸의 징조",
+      "en": "Crit chance gone: Omen of Dextral Annulment"
+     }
     }
    ],
    "item": [
-    {
-     "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
-     "m": "n",
-     "tags": [
-      "ps"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "투사체 피해 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Damage",
-     "m": "n",
-     "tags": [
-      "pd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(105—124)",
-     "en": "+(105—124) to maximum Mana",
-     "m": "n",
-     "tags": [
-      "mf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 확률 (28—34)% 증가",
-     "en": "(28—34)% increased Critical Hit Chance",
-     "m": "n",
-     "tags": [
-      "cr"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잔류물을 (35—50)% 더 먼 곳에서 획득 가능 (팽창하는 합금)",
-     "en": "Remnants can be collected from (35—50)% further away (Expansive Alloy)",
-     "m": "c",
-     "tags": [
-      "rem"
-     ]
-    },
     {
      "s": "r",
      "kr": "콜르의 사냥",
@@ -2064,19 +1378,61 @@
      "kr": "세를의 승리",
      "en": "Serle’s Triumph",
      "m": "r"
-    }
-   ],
-   "cur": "Expansive_Alloy",
-   "showText": [
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "n",
+     "tags": [
+      "pd1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(105—124)",
+     "en": "+(105—124) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mf1"
+     ]
+    },
     {
      "s": "s",
-     "kr": "잔류물을 (35—50)% 더 먼 곳에서 획득 가능 (제작 옵션)",
-     "en": "Remnants can be collected from (35—50)% further away (crafted)"
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (28—34)% 증가",
+     "en": "(28—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cr1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잔류물을 (35—50)% 더 먼 곳에서 획득 가능",
+     "en": "Remnants can be collected from (35—50)% further away",
+     "m": "n",
+     "tags": [
+      "rem"
+     ]
     }
-   ],
-   "ess": "rem",
-   "omens": [
-    "Omen_of_Dextral_Crystallisation"
    ]
   },
   {
@@ -2085,7 +1441,7 @@
    "group": "main",
    "pos": [
     1,
-    6
+    16
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -2101,156 +1457,25 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "접미 옵션 지우기",
-    "en": "Remove a suffix"
+    "kr": "접미를 투사체 +2만 남기기",
+    "en": "Clear the suffixes down to the +2"
    },
    "edges": [
     {
      "if": {
-      "not": {
-       "has": "pp"
-      }
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "s"
-     },
-     "to": "mL",
-     "hide": true
-    },
-    {
-     "if": {
-      "has": "mkS"
-     },
-     "to": "mB",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "all": [
-          {
-           "count": {
-            "tag": "pp",
-            "min": 2
-           }
-          },
-          {
-           "has": "third"
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "p",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "e1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "all": [
-        {
-         "count": {
-          "tag": "pp",
-          "min": 2
-         }
-        },
-        {
-         "has": "third"
-        }
-       ]
-      }
-     },
-     "to": "e1x",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "has": "rem"
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 4
-        }
-       }
-      ]
-     },
-     "to": "d1"
-    },
-    {
-     "if": {
-      "has": "rem"
-     },
-     "to": "sR",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "cr"
-       },
-       {
-        "not": {
-         "has": "rem"
-        }
-       }
-      ]
-     },
-     "to": "a1",
-     "hide": true
-    },
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 2
-      }
+      "ref": "sClean"
      },
      "to": "s1",
-     "hide": true
+     "res": "ok",
+     "label": {
+      "kr": "접미 정리 끝 — 다시 엑잘",
+      "en": "Suffixes clear: exalt again"
+     }
     },
     {
-     "to": "mA"
+     "to": "sR",
+     "res": "fail",
+     "hide": true
     }
    ]
   },
@@ -2260,83 +1485,31 @@
    "group": "main",
    "pos": [
     0,
-    7
+    17
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 네번째 옵션(훼손)",
-    "en": "Fourth suffix (desecrated)"
-   },
+   "cur": "Ancient_Rib",
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접미 네번째 옵션(훼손)",
+    "en": "Fourth suffix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
      "to": "d2"
     }
    ],
    "item": [
-    {
-     "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
-     "m": "n",
-     "tags": [
-      "ps"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "투사체 피해 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Damage",
-     "m": "n",
-     "tags": [
-      "pd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(105—124)",
-     "en": "+(105—124) to maximum Mana",
-     "m": "n",
-     "tags": [
-      "mf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 확률 (28—34)% 증가",
-     "en": "(28—34)% increased Critical Hit Chance",
-     "m": "n",
-     "tags": [
-      "cr"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잔류물을 (35—50)% 더 먼 곳에서 획득 가능 (팽창하는 합금)",
-     "en": "Remnants can be collected from (35—50)% further away (Expansive Alloy)",
-     "m": "c",
-     "tags": [
-      "rem"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    },
     {
      "s": "r",
      "kr": "콜르의 사냥",
@@ -2348,14 +1521,66 @@
      "kr": "세를의 승리",
      "en": "Serle’s Triumph",
      "m": "r"
-    }
-   ],
-   "cur": "Ancient_Rib",
-   "showText": [
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "n",
+     "tags": [
+      "pd1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(105—124)",
+     "en": "+(105—124) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mf1"
+     ]
+    },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (28—34)% 증가",
+     "en": "(28—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cr1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "잔류물을 (35—50)% 더 먼 곳에서 획득 가능",
+     "en": "Remnants can be collected from (35—50)% further away",
+     "m": "n",
+     "tags": [
+      "rem"
+     ]
     }
    ]
   },
@@ -2365,104 +1590,35 @@
    "group": "main",
    "pos": [
     0,
-    8
+    18
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "want": "pie1",
+   "show": [
+    "pie1"
+   ],
    "edges": [
     {
      "if": {
-      "added": "pie"
+      "added": "pie1"
      },
      "to": "ok",
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
      "to": "d2x",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "to": "ok",
      "res": "fail"
     }
    ],
    "item": [
-    {
-     "s": "p",
-     "kr": "투사체 속도 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Speed",
-     "m": "n",
-     "tags": [
-      "ps"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "투사체 피해 (31—40)% 증가",
-     "en": "(31—40)% increased Projectile Damage",
-     "m": "n",
-     "tags": [
-      "pd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 +(105—124)",
-     "en": "+(105—124) to maximum Mana",
-     "m": "n",
-     "tags": [
-      "mf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +2 (분열)",
-     "en": "+2 to Level of all Projectile Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 확률 (28—34)% 증가",
-     "en": "(28—34)% increased Critical Hit Chance",
-     "m": "n",
-     "tags": [
-      "cr"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잔류물을 (35—50)% 더 먼 곳에서 획득 가능 (팽창하는 합금)",
-     "en": "Remnants can be collected from (35—50)% further away (Expansive Alloy)",
-     "m": "c",
-     "tags": [
-      "rem"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "(51—100)%의 확률로 적 관통",
-     "en": "(51—100)% chance to Pierce an Enemy",
-     "m": "d",
-     "tags": [
-      "pie"
-     ]
-    },
     {
      "s": "r",
      "kr": "콜르의 사냥",
@@ -2474,11 +1630,70 @@
      "kr": "세를의 승리",
      "en": "Serle’s Triumph",
      "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "n",
+     "tags": [
+      "pd1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(105—124)",
+     "en": "+(105—124) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mf1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (28—34)% 증가",
+     "en": "(28—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cr1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "(51—100)%의 확률로 적 관통",
+     "en": "(51—100)% chance to Pierce an Enemy",
+     "m": "d",
+     "tags": [
+      "pie1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잔류물을 (35—50)% 더 먼 곳에서 획득 가능",
+     "en": "Remnants can be collected from (35—50)% further away",
+     "m": "n",
+     "tags": [
+      "rem"
+     ]
     }
-   ],
-   "want": "pie",
-   "show": [
-    "pie"
    ]
   },
   {
@@ -2487,7 +1702,7 @@
    "group": "main",
    "pos": [
     1,
-    8
+    18
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -2509,7 +1724,10 @@
    "edges": [
     {
      "to": "d1",
-     "port": "right"
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
@@ -2519,7 +1737,7 @@
    "group": "main",
    "pos": [
     0,
-    9
+    19
    ],
    "label": {
     "kr": "완성",
@@ -2527,8 +1745,264 @@
    }
   }
  ],
- "xsub": [
-  "Kolr's Hunt"
+ "loops": [
+  {
+   "id": "L0",
+   "nodes": [
+    "m2",
+    "m2x"
+   ],
+   "kr": "투사체 +2 맞추기",
+   "en": "+2 projectile"
+  },
+  {
+   "id": "L1",
+   "nodes": [
+    "e1",
+    "e1x",
+    "e2"
+   ],
+   "kr": "접두 1티어 3개",
+   "en": "Three T1 prefixes",
+   "fold": true,
+   "goal": {
+    "kr": "접두 투사체 피해·투사체 속도·마나 최대치 1티어, 남은 옵션 중 먼저 뜬 것",
+    "en": "T1 projectile damage, projectile speed and maximum mana, whichever lands first"
+   },
+   "steps": [
+    {
+     "kr": "상위 찬미 + 좌측 찬미 + 완벽한 엑잘티드 오브로 접두 2개",
+     "en": "Greater + Sinistral Exaltation + Perfect Exalted Orb for two prefixes",
+     "node": "e1"
+    },
+    {
+     "kr": "빗나간 접두는 징조 없는 소멸의 오브로 지움",
+     "en": "A missed prefix goes with a plain Orb of Annulment",
+     "node": "e1x"
+    },
+    {
+     "kr": "접두 빈자리가 1개면 좌측 찬미 + 완벽한 엑잘티드 오브",
+     "en": "One prefix free: Sinistral Exaltation + Perfect Exalted Orb",
+     "node": "e2"
+    }
+   ],
+   "worst": {
+    "kr": "좋은 접두가 모두 지워지면 소멸의 오브로 분열 + 옵션 1개까지 지우고 카오스 단계부터",
+    "en": "Every good prefix gone: annul down to the fracture + one option, then back to Chaos",
+    "to": "kz"
+   },
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "세를의 승리",
+     "en": "Serle’s Triumph",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "n",
+     "tags": [
+      "pd1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(105—124)",
+     "en": "+(105—124) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mf1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "s1",
+    "mA",
+    "mB",
+    "mL",
+    "a1",
+    "sR"
+   ],
+   "kr": "접미 치명타 확률 + 합금",
+   "en": "Crit chance suffix + alloy",
+   "fold": true,
+   "goal": {
+    "kr": "접미 치명타 확률 1티어 + 잔류물 획득 거리(팽창하는 합금)",
+    "en": "T1 crit chance suffix + remnant pickup range (Expansive Alloy)"
+   },
+   "steps": [
+    {
+     "kr": "상위 찬미 + 완벽한 엑잘티드 오브로 접미 2개",
+     "en": "Greater Exaltation + Perfect Exalted Orb for two suffixes",
+     "node": "s1"
+    },
+    {
+     "kr": "치명타 확률이 없으면 잡옵마다 우측 결정화 + 심연의 에센스",
+     "en": "No crit chance: Dextral Crystallisation + Essence of the Abyss on each junk line",
+     "node": "mA"
+    },
+    {
+     "kr": "보존된 갈비뼈로 징표를 훼손 옵션으로",
+     "en": "Preserved Rib turns the Mark into a desecration",
+     "node": "mB"
+    },
+    {
+     "kr": "빛의 징조 + 소멸의 오브로 훼손 옵션을 지우고, 접미가 투사체 +2만 남으면 다시 엑잘",
+     "en": "Omen of Light + Annulment removes it; with only the +2 left, exalt again",
+     "node": "mL"
+    },
+    {
+     "kr": "치명타 확률 + 잡옵 1개면 우측 결정화 + 팽창하는 합금, 1/2",
+     "en": "Crit chance + one junk: Dextral Crystallisation + Expansive Alloy, 1/2",
+     "node": "a1"
+    },
+    {
+     "kr": "합금이 치명타 확률을 지우면 우측 소멸의 징조 + 소멸의 오브로 접미를 비우고 다시",
+     "en": "If the alloy took crit chance: Dextral Annulment until the suffixes are clear, then again",
+     "node": "sR"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "콜르의 사냥",
+     "en": "Kolr’s Hunt",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "세를의 승리",
+     "en": "Serle’s Triumph",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "투사체 속도 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Speed",
+     "m": "n",
+     "tags": [
+      "ps1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "투사체 피해 (31—40)% 증가",
+     "en": "(31—40)% increased Projectile Damage",
+     "m": "n",
+     "tags": [
+      "pd1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(105—124)",
+     "en": "+(105—124) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mf1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +2",
+     "en": "+2 to Level of all Projectile Skills",
+     "m": "f",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (28—34)% 증가",
+     "en": "(28—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cr1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잔류물을 (35—50)% 더 먼 곳에서 획득 가능",
+     "en": "Remnants can be collected from (35—50)% further away",
+     "m": "n",
+     "tags": [
+      "rem"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3",
+   "nodes": [
+    "d1",
+    "d2",
+    "d2x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
  ],
- "xroll": true
+ "finals": [
+  {
+   "id": "high",
+   "tier": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "pd1"
+    },
+    {
+     "tag": "ps1"
+    },
+    {
+     "tag": "mf1"
+    },
+    {
+     "tag": "proj",
+     "fr": true
+    },
+    {
+     "tag": "cr1"
+    },
+    {
+     "tag": "pie1",
+     "des": true
+    },
+    {
+     "tag": "rem",
+     "ess": true
+    }
+   ]
+  }
+ ]
 }
