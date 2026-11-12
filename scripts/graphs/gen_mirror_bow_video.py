@@ -48,6 +48,7 @@ g = {
           'hyb': {'gi': 8, 'tmax': 1}, 'eatk': {'gi': 21, 'tmax': 1}, 'proj': {'gi': 9, 'tmax': 1},
           'arr': {'gi': 20, 'tmax': 1}, 'cdm': {'gi': 18, 'tmax': 1}, 'mkp': {'gi': 56}, 'mks': {'gi': 57},
           'p3': {'anyOf': ['hyb', 'flat'], 'label': K('물리 피해 + 정확도 1티어 또는 물리 피해 추가 1티어', 'T1 physical + accuracy or T1 flat physical')},
+          'keepP': {'anyOf': ['pp', 'p3']},
           'keepS': {'anyOf': ['proj', 'arr', 'cdm']},
           'lastS': {'anyOf': ['arr', 'cdm'], 'label': K('추가 화살을 발사할 초과 확률·치명타 피해 보너스 1티어', 'T1 additional Arrow chance or Critical Damage Bonus')}},
  'require': {'all': [{'has': 'crit'}, {'has': 'pp'}, {'has': 'hyb'}, {'has': 'flat'}, {'has': 'proj'}, {'has': 'arr'}, {'has': 'cdm'}]},
@@ -69,7 +70,7 @@ def route(skip=()):
          ({'all': [{'unrevSide': 'p'}, FIN]}, 'z3', K('훼손 옵션 확인', 'Reveal')),
          ({'unrevSide': 'p'}, 'k4', K('훼손 옵션 확인', 'Reveal')),
          ({'all': [{'famBlock': 'eatk'}, {'not': FIN}]}, 'k4w', K('공격 스킬의 원소 피해 낮은 티어가 자리를 차지 — 절사로 교체', 'A low tier attack elemental holds the family: Whittle it away')),
-         ({'all': [{'has': 'eatk'}, {'not': {'des': True}}, {'not': FIN}]}, 'k4w', K('공격 스킬의 원소 피해가 일반 옵션으로 붙음 — 절사로 교체', 'Attack elemental landed as a normal option: Whittle it away')),
+         ({'all': [{'has': 'eatk'}, {'not': {'des': True}}, {'not': FIN}]}, 'q1w', K('공격 스킬의 원소 피해가 일반 옵션으로 붙음 — 절사로 교체', 'Attack elemental landed as a normal option: Whittle it away')),
          ({'all': [{'not': {'has': 'eatk'}}, {'not': FIN}, {'des': True}, DESLOW]}, 'k4w', K('빗나간 훼손 옵션 교체', 'Replace the missed desecration')),
          ({'all': [{'not': {'has': 'eatk'}}, {'not': FIN}, {'des': True}]}, 'k4x', K('빗나간 옵션 레벨이 높음 — 빛의 징조로 제거', 'The miss is high level: Omen of Light removes it')),
          ({'all': [{'not': {'has': 'eatk'}}, {'not': FIN}]}, 'k2', K('자리 막기가 지워짐 — 다시 징표', 'Blocker gone: Mark again')),
@@ -162,11 +163,11 @@ A(id='q1', kind='act', group='main', pos=[0, 12], act='exalt', cur='Perfect_Exal
   skipIf={'full': 'p'}, skipTo='q1w', skipNote=K('접두가 꽉 차 있으면 건너뜀', 'Skipped when the prefixes are full'),
   edges=[{'if': {'added': 'p3'}, 'to': 'u1', 'res': 'ok'}, {'to': 'q1w', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[PP, BLK, HY, CR])
-A(id='q1w', kind='act', group='main', pos=[1, 12], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
+A(id='q1w', kind='act', group='main', pos=[1, 12], act='chaos', cur='Greater_Chaos_Orb', trim={'side': 'p', 'keep': 'keepP', 'keepDes': True}, label=K('카오스', 'Chaos'),
   goal=K('접두 세번째 옵션', 'Third prefix'), show=['hyb'],
   showText=[K('물리 피해 + 정확도 1티어·물리 피해 추가 1티어 중 먼저 뜬 것', 'T1 physical + accuracy or T1 flat physical, whichever comes first')],
-  edges=[{'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}, {'has': 'p3'}]}, 'to': 'u1', 'res': 'ok'},
-         {'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}]}, 'to': 'q1w', 'res': 'fail', 'hide': True}] + route())
+  edges=[{'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}, {'des': True}, {'has': 'p3'}]}, 'to': 'u1', 'res': 'ok'},
+         {'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}, {'des': True}, {'full': 'p'}]}, 'to': 'q1w', 'res': 'fail', 'hide': True}] + route())
 A(id='u1', kind='act', group='main', pos=[0, 13], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 잡옵', 'A junk suffix'), showText=[{'s': 's', 'kr': '잡옵', 'en': 'Junk'}],
   skipIf={'not': {'sideLt': {'side': 's', 'n': 2}}}, skipTo='u2', skipNote=K('접미 잡옵이 이미 있으면 건너뜀', 'Skipped if a junk suffix is already there'),
