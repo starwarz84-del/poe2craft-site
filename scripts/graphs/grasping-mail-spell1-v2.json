@@ -4,77 +4,22 @@
  "cls": "Grasping_Mail_ring",
  "base": "Runefather's Grasping Mail",
  "ilvl": 82,
- "note": "반지깎는노인 탐욕스러운 사슬옷(y5Ch3AJpl5c) — 모든 주문 스킬 +1 분열 + 잡옵(카오스 오브 약 22만 개 + 히네코라의 머리카락 4개, 베이스) → 접미 주문 치명타 피해 보너스 · 시전 속도(영상은 방법 생략: 카오스 오브 → 우측 찬미 + 완벽한 엑잘 → 절사로 가정) → 좌측 결정화 + 섬망의 에센스(주요 패시브 할당) → 접두 잡옵 → 아스트리드의 창의성 → 좌측 결정화 + 룬 합금(1/2) → 고대 갈비뼈 → 주문 피해 공개(빛의 징조로 다시). 기원의 나무 옵션 가중치는 추정.",
- "params": {
-  "pT": {
-   "kr": "목표 티어",
-   "en": "Target tier",
-   "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    }
-   }
-  },
-  "g": {
-   "kr": "마지막 접두·접미",
-   "en": "Last prefix and suffix",
-   "values": {
-    "1": {
-     "kr": "목표 옵션까지 반복",
-     "en": "Repeat until the wanted line"
-    },
-    "0": {
-     "kr": "랜덤 옵션",
-     "en": "Random line"
-    }
-   }
-  }
- },
+ "note": "반지깎는노인 탐욕스러운 사슬옷(y5Ch3AJpl5c, 2026-11-13 W11 영상 전체 재대조, 새 플로우차트 기준) — 모든 주문 스킬 +1 분열 + 잡옵(카오스 오브 약 22만 개, 베이스) → 카오스 오브(주문 치명타 피해 보너스) → 우측 찬미 + 완벽한 엑잘·절사의 징조 + 완벽한 카오스 오브(시전 속도, 영상 10:12 절사 2개) → 아스트리드의 창의성 → 좌측 결정화 + 섬망의 에센스(할당) → 접두 잡옵 → 좌측 결정화 + 군왕의 합금(룬 수호, 1/2) → 고대 갈비뼈 → 주문 피해 1티어 공개(빛의 징조로 다시). 기원의 나무 옵션 가중치는 추정. 히네코라의 머리카락·신성한 오브는 비용에서 뺌.",
+ "params": {},
  "strategies": [
   {
    "id": "high",
-   "params": {
-    "pT": 1,
-    "g": 1
-   }
-  },
-  {
-   "id": "bal",
-   "params": {
-    "pT": 2,
-    "g": 0
-   }
+   "params": {}
   }
  ],
  "versions": [
   {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "pT": 2,
-    "g": 0
-   },
-   "desc": {
-    "kr": "접미 하나 1~2티어, 마지막 접두(훼손)·접미는 랜덤 옵션",
-    "en": "One suffix T1–2, the last prefix (desecrated) and suffix random"
-   }
-  },
-  {
    "id": "high",
    "kr": "하이엔드",
    "en": "High-end",
-   "params": {
-    "pT": 1,
-    "g": 1
-   },
+   "params": {},
    "desc": {
-    "kr": "영상: 주문 치명타 피해 · 시전 속도 · 주문 피해 1티어",
+    "kr": "영상: 주문 치명타 피해 보너스 · 시전 속도 · 주문 피해 1티어",
     "en": "Video: T1 spell crit damage, cast speed and spell damage"
    }
   }
@@ -85,15 +30,15 @@
   },
   "csd": {
    "gi": 138,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "cs": {
    "gi": 126,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "sd": {
    "gi": 134,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "nt": {
    "gi": 51
@@ -105,7 +50,11 @@
    "anyOf": [
     "csd",
     "cs"
-   ]
+   ],
+   "label": {
+    "kr": "주문 치명타 피해 보너스·시전 속도 1티어",
+    "en": "T1 spell crit damage or cast speed"
+   }
   },
   "keepS": {
    "anyOf": [
@@ -131,39 +80,16 @@
     "has": "rw"
    },
    {
-    "any": [
-     {
-      "all": [
-       {
-        "count": {
-         "tag": "suf",
-         "min": 2
-        }
-       },
-       {
-        "has": "sd"
-       }
-      ]
-     },
-     {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "has": "suf"
-       },
-       {
-        "full": "s"
-       },
-       {
-        "full": "p"
-       }
-      ]
-     }
-    ]
+    "has": "sd"
+   },
+   {
+    "has": "csd"
+   },
+   {
+    "has": "cs"
+   },
+   {
+    "has": "spell"
    }
   ]
  },
@@ -189,6 +115,71 @@
  ],
  "start": "h1",
  "loops": [
+  {
+   "id": "L0",
+   "nodes": [
+    "s1",
+    "w1"
+   ],
+   "kr": "접미 시전 속도",
+   "en": "Cast speed suffix",
+   "fold": true,
+   "goal": {
+    "kr": "접미 시전 속도 1티어",
+    "en": "T1 cast speed suffix"
+   },
+   "steps": [
+    {
+     "kr": "우측 찬미의 징조 + 완벽한 엑잘티드 오브로 접미 세번째 옵션",
+     "en": "Omen of Dextral Exaltation + Perfect Exalted Orb for the third suffix",
+     "node": "s1"
+    },
+    {
+     "kr": "빗나간 옵션이 가장 낮으면 절사의 징조 + 완벽한 카오스 오브로 다시",
+     "en": "Miss and it is the lowest line: Omen of Whittling + Perfect Chaos Orb",
+     "node": "w1"
+    },
+    {
+     "kr": "접미 자리가 비면 1번부터",
+     "en": "A suffix slot opens: back to step 1",
+     "node": "s1"
+    }
+   ],
+   "worst": {
+    "kr": "주문 치명타 피해 보너스가 지워지면 카오스 단계부터",
+    "en": "Spell crit damage gone: back to the Chaos step",
+    "to": "c1"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +1 (분열)",
+     "en": "+1 to Level of all Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 피해 보너스 (26—29)% 증가",
+     "en": "(26—29)% increased Critical Spell Damage Bonus",
+     "m": "n",
+     "tags": [
+      "csd"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cs"
+     ]
+    }
+   ]
+  },
   {
    "id": "L1",
    "nodes": [
@@ -232,45 +223,19 @@
      "tmax": 1
     }
    ]
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "nt",
-     "ess": true
-    },
-    {
-     "tag": "rw",
-     "ess": true
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "tag": "spell",
-     "fr": true
-    },
-    {
-     "side": "s",
-     "label": {
-      "kr": "주문 치명타 피해·시전 속도 1~2티어",
-      "en": "T1–2 spell crit damage or cast speed"
-     }
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
   }
  ],
  "finalItem": {
   "quality": 30,
   "sockets": 2
+ },
+ "xsub": [
+  "Genesis Tree Caster",
+  "Genesis Tree Minion"
+ ],
+ "xroll": true,
+ "basePrice": {
+  "Chaos_Orb": 220000
  },
  "nodes": [
   {
@@ -310,7 +275,7 @@
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +1 (분열)",
      "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spell"
      ]
@@ -341,7 +306,7 @@
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +1 (분열)",
      "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spell"
      ]
@@ -357,6 +322,7 @@
     1
    ],
    "act": "chaos",
+   "cur": "Chaos_Orb",
    "goal": {
     "kr": "접미 두번째 옵션",
     "en": "Second suffix"
@@ -383,7 +349,7 @@
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +1 (분열)",
      "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spell"
      ]
@@ -398,10 +364,14 @@
      ]
     }
    ],
-   "cur": "Chaos_Orb",
    "show": [
-    "csd",
-    "cs"
+    "csd"
+   ],
+   "showText": [
+    {
+     "kr": "주문 치명타 피해 보너스·시전 속도 중 먼저 뜬 것",
+     "en": "Whichever of spell crit damage or cast speed lands first"
+    }
    ]
   },
   {
@@ -413,6 +383,7 @@
     2
    ],
    "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
    "goal": {
     "kr": "접미 세번째 옵션",
     "en": "Third suffix"
@@ -423,85 +394,15 @@
    },
    "edges": [
     {
+     "to": "c1",
      "if": {
       "all": [
        {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "any": [
-         {
-          "count": {
-           "tag": "suf",
-           "min": 2
-          }
-         },
-         {
-          "all": [
-           {
-            "param": {
-             "g": 0
-            }
-           },
-           {
-            "has": "suf"
-           },
-           {
-            "full": "s"
-           }
-          ]
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
          }
-        ]
-       },
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "unrev": true
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
         }
        },
        {
@@ -511,37 +412,18 @@
        }
       ]
      },
-     "to": "c1",
      "hide": true
     },
     {
+     "to": "s1",
      "if": {
       "all": [
        {
         "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
         }
        },
        {
@@ -552,49 +434,39 @@
        }
       ]
      },
-     "to": "s1",
      "hide": true
     },
     {
+     "to": "w1",
      "if": {
       "not": {
-       "any": [
-        {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
-        },
-        {
-         "all": [
-          {
-           "param": {
-            "g": 0
-           }
-          },
-          {
-           "has": "suf"
-          },
-          {
-           "full": "s"
-          }
-         ]
-        }
-       ]
+       "count": {
+        "tag": "suf",
+        "min": 2
+       }
       }
      },
-     "to": "w1",
      "res": "fail",
      "port": "right"
     },
     {
+     "to": "r1",
+     "if": {
+      "not": {
+       "rune": "Astrid"
+      }
+     },
+     "res": "ok"
+    },
+    {
+     "to": "rv",
      "if": {
       "unrevSide": "p"
      },
-     "to": "rv",
      "hide": true
     },
     {
+     "to": "ok",
      "if": {
       "all": [
        {
@@ -608,17 +480,43 @@
        }
       ]
      },
-     "to": "ok",
      "hide": true
     },
     {
+     "to": "rvx",
      "if": {
       "des": true
      },
-     "to": "rvx",
      "hide": true
     },
     {
+     "to": "pc",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "not": {
+         "sideLt": {
+          "side": "p",
+          "n": 2
+         }
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p1",
      "if": {
       "all": [
        {
@@ -634,19 +532,19 @@
        }
       ]
      },
-     "to": "p1",
      "hide": true
     },
     {
+     "to": "p0",
      "if": {
       "not": {
        "has": "nt"
       }
      },
-     "to": "p0",
-     "res": "ok"
+     "hide": true
     },
     {
+     "to": "p3",
      "if": {
       "all": [
        {
@@ -662,16 +560,15 @@
        }
       ]
      },
-     "to": "p3",
      "hide": true
     },
     {
+     "to": "p2",
      "if": {
       "not": {
        "has": "rw"
       }
      },
-     "to": "p2",
      "hide": true
     },
     {
@@ -684,7 +581,7 @@
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +1 (분열)",
      "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spell"
      ]
@@ -708,13 +605,17 @@
      ]
     }
    ],
-   "cur": "Perfect_Exalted_Orb",
    "show": [
-    "csd",
     "cs"
    ],
    "omens": [
     "Omen_of_Dextral_Exaltation"
+   ],
+   "showText": [
+    {
+     "kr": "남은 옵션 중 먼저 뜬 것",
+     "en": "Whichever of the rest lands first"
+    }
    ]
   },
   {
@@ -726,6 +627,7 @@
     2
    ],
    "act": "chaos",
+   "cur": "Perfect_Chaos_Orb",
    "goal": {
     "kr": "접미 세번째 옵션",
     "en": "Third suffix"
@@ -736,85 +638,15 @@
    },
    "edges": [
     {
+     "to": "c1",
      "if": {
       "all": [
        {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "any": [
-         {
-          "count": {
-           "tag": "suf",
-           "min": 2
-          }
-         },
-         {
-          "all": [
-           {
-            "param": {
-             "g": 0
-            }
-           },
-           {
-            "has": "suf"
-           },
-           {
-            "full": "s"
-           }
-          ]
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
          }
-        ]
-       },
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "unrev": true
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
         }
        },
        {
@@ -824,37 +656,18 @@
        }
       ]
      },
-     "to": "c1",
-     "hide": true
+     "res": "fail"
     },
     {
+     "to": "s1",
      "if": {
       "all": [
        {
         "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
         }
        },
        {
@@ -865,48 +678,38 @@
        }
       ]
      },
-     "to": "s1",
      "res": "fail"
     },
     {
+     "to": "w1",
      "if": {
       "not": {
-       "any": [
-        {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
-        },
-        {
-         "all": [
-          {
-           "param": {
-            "g": 0
-           }
-          },
-          {
-           "has": "suf"
-          },
-          {
-           "full": "s"
-          }
-         ]
-        }
-       ]
+       "count": {
+        "tag": "suf",
+        "min": 2
+       }
       }
      },
-     "to": "w1",
      "hide": true
     },
     {
+     "to": "r1",
+     "if": {
+      "not": {
+       "rune": "Astrid"
+      }
+     },
+     "res": "ok"
+    },
+    {
+     "to": "rv",
      "if": {
       "unrevSide": "p"
      },
-     "to": "rv",
      "hide": true
     },
     {
+     "to": "ok",
      "if": {
       "all": [
        {
@@ -920,17 +723,43 @@
        }
       ]
      },
-     "to": "ok",
      "hide": true
     },
     {
+     "to": "rvx",
      "if": {
       "des": true
      },
-     "to": "rvx",
      "hide": true
     },
     {
+     "to": "pc",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "not": {
+         "sideLt": {
+          "side": "p",
+          "n": 2
+         }
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p1",
      "if": {
       "all": [
        {
@@ -946,19 +775,19 @@
        }
       ]
      },
-     "to": "p1",
      "hide": true
     },
     {
+     "to": "p0",
      "if": {
       "not": {
        "has": "nt"
       }
      },
-     "to": "p0",
-     "res": "ok"
+     "hide": true
     },
     {
+     "to": "p3",
      "if": {
       "all": [
        {
@@ -974,16 +803,15 @@
        }
       ]
      },
-     "to": "p3",
      "hide": true
     },
     {
+     "to": "p2",
      "if": {
       "not": {
        "has": "rw"
       }
      },
-     "to": "p2",
      "hide": true
     },
     {
@@ -996,7 +824,7 @@
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +1 (분열)",
      "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spell"
      ]
@@ -1020,9 +848,7 @@
      ]
     }
    ],
-   "cur": "Perfect_Chaos_Orb",
    "show": [
-    "csd",
     "cs"
    ],
    "trim": {
@@ -1031,1003 +857,12 @@
    }
   },
   {
-   "id": "p0",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    3
-   ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접두 잡옵",
-    "en": "A junk prefix"
-   },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
-   "edges": [
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "any": [
-         {
-          "count": {
-           "tag": "suf",
-           "min": 2
-          }
-         },
-         {
-          "all": [
-           {
-            "param": {
-             "g": 0
-            }
-           },
-           {
-            "has": "suf"
-           },
-           {
-            "full": "s"
-           }
-          ]
-         }
-        ]
-       },
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "unrev": true
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
-        }
-       },
-       {
-        "not": {
-         "has": "suf"
-        }
-       }
-      ]
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "any": [
-        {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
-        },
-        {
-         "all": [
-          {
-           "param": {
-            "g": 0
-           }
-          },
-          {
-           "has": "suf"
-          },
-          {
-           "full": "s"
-          }
-         ]
-        }
-       ]
-      }
-     },
-     "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "rv",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "has": "sd"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "des": true
-     },
-     "to": "rvx",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "nt"
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "p1"
-    },
-    {
-     "if": {
-      "not": {
-       "has": "nt"
-      }
-     },
-     "to": "p0",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "rw"
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "p3",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "rw"
-      }
-     },
-     "to": "p2",
-     "hide": true
-    },
-    {
-     "to": "d1",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "모든 주문 스킬 레벨 +1 (분열)",
-     "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "spell"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 피해 보너스 (26—29)% 증가",
-     "en": "(26—29)% increased Critical Spell Damage Bonus",
-     "m": "n",
-     "tags": [
-      "csd"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "시전 속도 (22—24)% 증가",
-     "en": "(22—24)% increased Cast Speed",
-     "m": "n",
-     "tags": [
-      "cs"
-     ]
-    }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
-   ]
-  },
-  {
-   "id": "p1",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    4
-   ],
-   "act": "essence",
-   "goal": {
-    "kr": "잡옵을 지우고 무작위 주요 패시브 스킬 할당",
-    "en": "The junk goes for Allocates a random Notable Passive Skill"
-   },
-   "label": {
-    "kr": "에센스",
-    "en": "Essence"
-   },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "rw"
-      }
-     },
-     "to": "p2"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "any": [
-         {
-          "count": {
-           "tag": "suf",
-           "min": 2
-          }
-         },
-         {
-          "all": [
-           {
-            "param": {
-             "g": 0
-            }
-           },
-           {
-            "has": "suf"
-           },
-           {
-            "full": "s"
-           }
-          ]
-         }
-        ]
-       },
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "unrev": true
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
-        }
-       },
-       {
-        "not": {
-         "has": "suf"
-        }
-       }
-      ]
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "any": [
-        {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
-        },
-        {
-         "all": [
-          {
-           "param": {
-            "g": 0
-           }
-          },
-          {
-           "has": "suf"
-          },
-          {
-           "full": "s"
-          }
-         ]
-        }
-       ]
-      }
-     },
-     "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "rv",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "has": "sd"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "des": true
-     },
-     "to": "rvx",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "nt"
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "p1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "nt"
-      }
-     },
-     "to": "p0",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "rw"
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "p3",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "rw"
-      }
-     },
-     "to": "p2",
-     "hide": true
-    },
-    {
-     "to": "d1",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "무작위 주요 패시브 스킬 할당 (섬망의 에센스)",
-     "en": "Allocates a random Notable Passive Skill (Essence of Delirium)",
-     "m": "c",
-     "tags": [
-      "nt"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 주문 스킬 레벨 +1 (분열)",
-     "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "spell"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 피해 보너스 (26—29)% 증가",
-     "en": "(26—29)% increased Critical Spell Damage Bonus",
-     "m": "n",
-     "tags": [
-      "csd"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "시전 속도 (22—24)% 증가",
-     "en": "(22—24)% increased Cast Speed",
-     "m": "n",
-     "tags": [
-      "cs"
-     ]
-    }
-   ],
-   "cur": "Essence_of_Delirium",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "무작위 주요 패시브 스킬 할당 (제작 옵션)",
-     "en": "Allocates a random Notable Passive Skill (crafted)"
-    }
-   ],
-   "ess": "nt",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
-   ]
-  },
-  {
-   "id": "p2",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    5
-   ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접두 잡옵",
-    "en": "A junk prefix"
-   },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
-   "edges": [
-    {
-     "if": {
-      "not": {
-       "has": "rw"
-      }
-     },
-     "to": "r1"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "any": [
-         {
-          "count": {
-           "tag": "suf",
-           "min": 2
-          }
-         },
-         {
-          "all": [
-           {
-            "param": {
-             "g": 0
-            }
-           },
-           {
-            "has": "suf"
-           },
-           {
-            "full": "s"
-           }
-          ]
-         }
-        ]
-       },
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "unrev": true
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
-        }
-       },
-       {
-        "not": {
-         "has": "suf"
-        }
-       }
-      ]
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "any": [
-        {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
-        },
-        {
-         "all": [
-          {
-           "param": {
-            "g": 0
-           }
-          },
-          {
-           "has": "suf"
-          },
-          {
-           "full": "s"
-          }
-         ]
-        }
-       ]
-      }
-     },
-     "to": "w1",
-     "hide": true
-    },
-    {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "rv",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "has": "sd"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "des": true
-     },
-     "to": "rvx",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "nt"
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "p1",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "nt"
-      }
-     },
-     "to": "p0",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "rw"
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "p3",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "rw"
-      }
-     },
-     "to": "p2",
-     "hide": true
-    },
-    {
-     "to": "d1",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "무작위 주요 패시브 스킬 할당 (섬망의 에센스)",
-     "en": "Allocates a random Notable Passive Skill (Essence of Delirium)",
-     "m": "c",
-     "tags": [
-      "nt"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "모든 주문 스킬 레벨 +1 (분열)",
-     "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
-     "tags": [
-      "spell"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 피해 보너스 (26—29)% 증가",
-     "en": "(26—29)% increased Critical Spell Damage Bonus",
-     "m": "n",
-     "tags": [
-      "csd"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "시전 속도 (22—24)% 증가",
-     "en": "(22—24)% increased Cast Speed",
-     "m": "n",
-     "tags": [
-      "cs"
-     ]
-    }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
-   ]
-  },
-  {
    "id": "r1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    6
+    3
    ],
    "act": "rune",
    "goal": {
@@ -2040,19 +875,10 @@
    },
    "edges": [
     {
-     "to": "p3"
+     "to": "pc"
     }
    ],
    "item": [
-    {
-     "s": "p",
-     "kr": "무작위 주요 패시브 스킬 할당 (섬망의 에센스)",
-     "en": "Allocates a random Notable Passive Skill (Essence of Delirium)",
-     "m": "c",
-     "tags": [
-      "nt"
-     ]
-    },
     {
      "s": "p",
      "kr": "잡옵",
@@ -2063,7 +889,7 @@
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +1 (분열)",
      "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spell"
      ]
@@ -2102,307 +928,61 @@
    "rune": {
     "kr": "아스트리드의 창의성",
     "en": "Astrid’s Creativity"
-   }
+   },
+   "skipIf": {
+    "rune": "Astrid"
+   },
+   "skipTo": "pc",
+   "skipHide": true
   },
   {
-   "id": "p3",
+   "id": "pc",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7
+    4
    ],
-   "act": "essence",
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
    "goal": {
-    "kr": "잡옵을 지우고 룬 수호 (24—30)% 증가",
-    "en": "The junk goes for (24—30)% increased Runic Ward"
+    "kr": "접두 잡옵 하나만 남기기",
+    "en": "Leave one junk prefix"
    },
    "label": {
-    "kr": "합금",
-    "en": "Alloy"
+    "kr": "소멸",
+    "en": "Annul"
    },
    "edges": [
     {
      "if": {
-      "all": [
-       {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "any": [
-         {
-          "count": {
-           "tag": "suf",
-           "min": 2
-          }
-         },
-         {
-          "all": [
-           {
-            "param": {
-             "g": 0
-            }
-           },
-           {
-            "has": "suf"
-           },
-           {
-            "full": "s"
-           }
-          ]
-         }
-        ]
-       },
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "unrev": true
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
-        }
-       },
-       {
-        "not": {
-         "has": "suf"
-        }
-       }
-      ]
-     },
-     "to": "c1",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
-        }
-       },
-       {
-        "sideLt": {
-         "side": "s",
-         "n": 3
-        }
-       }
-      ]
-     },
-     "to": "s1",
-     "hide": true
-    },
-    {
-     "if": {
       "not": {
-       "any": [
-        {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
-        },
-        {
-         "all": [
-          {
-           "param": {
-            "g": 0
-           }
-          },
-          {
-           "has": "suf"
-          },
-          {
-           "full": "s"
-          }
-         ]
-        }
-       ]
+       "sideLt": {
+        "side": "p",
+        "n": 2
+       }
       }
      },
-     "to": "w1",
-     "hide": true
+     "to": "pc",
+     "res": "fail"
     },
     {
-     "if": {
-      "unrevSide": "p"
-     },
-     "to": "rv",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "has": "sd"
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "des": true
-     },
-     "to": "rvx",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "nt"
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "p1",
-     "res": "fail",
-     "port": "right"
-    },
-    {
-     "if": {
-      "not": {
-       "has": "nt"
-      }
-     },
      "to": "p0",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "has": "rw"
-        }
-       },
-       {
-        "junk": {
-         "side": "p",
-         "tag": "keepP"
-        }
-       }
-      ]
-     },
-     "to": "p3",
-     "hide": true
-    },
-    {
-     "if": {
-      "not": {
-       "has": "rw"
-      }
-     },
-     "to": "p2",
-     "hide": true
-    },
-    {
-     "to": "d1",
      "res": "ok"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "무작위 주요 패시브 스킬 할당 (섬망의 에센스)",
-     "en": "Allocates a random Notable Passive Skill (Essence of Delirium)",
-     "m": "c",
-     "tags": [
-      "nt"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "룬 수호 (24—30)% 증가 (룬 합금)",
-     "en": "(24—30)% increased Runic Ward (Runic Alloy)",
-     "m": "c",
-     "tags": [
-      "rw"
-     ]
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     },
     {
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +1 (분열)",
      "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spell"
      ]
@@ -2432,7 +1012,927 @@
      "m": "r"
     }
    ],
-   "cur": "Runic_Alloy",
+   "omens": [
+    "Omen_of_Sinistral_Annulment"
+   ],
+   "skipIf": {
+    "any": [
+     {
+      "has": "nt"
+     },
+     {
+      "has": "rw"
+     },
+     {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     }
+    ]
+   },
+   "skipTo": "p0",
+   "skipNote": {
+    "kr": "접두가 하나 이하면 건너뜀",
+    "en": "Skipped with one prefix or none"
+   }
+  },
+  {
+   "id": "p0",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "goal": {
+    "kr": "에센스가 지울 접두 잡옵",
+    "en": "A junk prefix for the essence to remove"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "p1",
+     "res": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +1 (분열)",
+     "en": "+1 to Level of all Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 피해 보너스 (26—29)% 증가",
+     "en": "(26—29)% increased Critical Spell Damage Bonus",
+     "m": "n",
+     "tags": [
+      "csd"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "showText": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk"
+    }
+   ],
+   "skipIf": {
+    "any": [
+     {
+      "junk": {
+       "side": "p",
+       "tag": "keepP"
+      }
+     },
+     {
+      "has": "nt"
+     }
+    ]
+   },
+   "skipTo": "p1",
+   "skipNote": {
+    "kr": "접두 잡옵이 있으면 건너뜀",
+    "en": "Skipped while a junk prefix is there"
+   }
+  },
+  {
+   "id": "p1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "essence",
+   "cur": "Essence_of_Delirium",
+   "goal": {
+    "kr": "잡옵을 지우고 무작위 주요 패시브 스킬 할당",
+    "en": "The junk goes for Allocates a random Notable Passive Skill"
+   },
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "edges": [
+    {
+     "to": "c1",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "suf"
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "s1",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "w1",
+     "if": {
+      "not": {
+       "count": {
+        "tag": "suf",
+        "min": 2
+       }
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "r1",
+     "if": {
+      "not": {
+       "rune": "Astrid"
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "rv",
+     "if": {
+      "unrevSide": "p"
+     },
+     "hide": true
+    },
+    {
+     "to": "ok",
+     "if": {
+      "all": [
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "has": "sd"
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "rvx",
+     "if": {
+      "des": true
+     },
+     "hide": true
+    },
+    {
+     "to": "pc",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "not": {
+         "sideLt": {
+          "side": "p",
+          "n": 2
+         }
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p1",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "keepP"
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p0",
+     "if": {
+      "not": {
+       "has": "nt"
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "p3",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "keepP"
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p2",
+     "if": {
+      "not": {
+       "has": "rw"
+      }
+     },
+     "res": "ok"
+    },
+    {
+     "to": "d1",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "무작위 주요 패시브 스킬 할당 (섬망의 에센스)",
+     "en": "Allocates a random Notable Passive Skill (Essence of Delirium)",
+     "m": "c",
+     "tags": [
+      "nt"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +1 (분열)",
+     "en": "+1 to Level of all Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 피해 보너스 (26—29)% 증가",
+     "en": "(26—29)% increased Critical Spell Damage Bonus",
+     "m": "n",
+     "tags": [
+      "csd"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "showText": [
+    {
+     "s": "p",
+     "kr": "무작위 주요 패시브 스킬 할당 (제작 옵션)",
+     "en": "Allocates a random Notable Passive Skill (crafted)"
+    }
+   ],
+   "ess": "nt",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
+   "skipIf": {
+    "has": "nt"
+   },
+   "skipTo": "p2",
+   "skipHide": true
+  },
+  {
+   "id": "p2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "goal": {
+    "kr": "합금이 지울 접두 잡옵",
+    "en": "A junk prefix for the alloy to remove"
+   },
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "edges": [
+    {
+     "to": "c1",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "suf"
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "s1",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "w1",
+     "if": {
+      "not": {
+       "count": {
+        "tag": "suf",
+        "min": 2
+       }
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "r1",
+     "if": {
+      "not": {
+       "rune": "Astrid"
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "rv",
+     "if": {
+      "unrevSide": "p"
+     },
+     "hide": true
+    },
+    {
+     "to": "ok",
+     "if": {
+      "all": [
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "has": "sd"
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "rvx",
+     "if": {
+      "des": true
+     },
+     "hide": true
+    },
+    {
+     "to": "pc",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "not": {
+         "sideLt": {
+          "side": "p",
+          "n": 2
+         }
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p1",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "keepP"
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p0",
+     "if": {
+      "not": {
+       "has": "nt"
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "p3",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "keepP"
+        }
+       }
+      ]
+     },
+     "res": "ok"
+    },
+    {
+     "to": "p2",
+     "if": {
+      "not": {
+       "has": "rw"
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "d1",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "무작위 주요 패시브 스킬 할당 (섬망의 에센스)",
+     "en": "Allocates a random Notable Passive Skill (Essence of Delirium)",
+     "m": "c",
+     "tags": [
+      "nt"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +1 (분열)",
+     "en": "+1 to Level of all Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 피해 보너스 (26—29)% 증가",
+     "en": "(26—29)% increased Critical Spell Damage Bonus",
+     "m": "n",
+     "tags": [
+      "csd"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "showText": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk"
+    }
+   ],
+   "skipIf": {
+    "any": [
+     {
+      "has": "rw"
+     },
+     {
+      "all": [
+       {
+        "has": "nt"
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "keepP"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "skipTo": "p3",
+   "skipNote": {
+    "kr": "접두 잡옵이 남아 있으면 건너뜀",
+    "en": "Skipped while a junk prefix is left"
+   }
+  },
+  {
+   "id": "p3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "essence",
+   "cur": "Sovereign_Alloy",
+   "goal": {
+    "kr": "잡옵을 지우고 룬 수호 (24—30)% 증가",
+    "en": "The junk goes for (24—30)% increased Runic Ward"
+   },
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "edges": [
+    {
+     "to": "c1",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "suf"
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "s1",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
+        }
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "w1",
+     "if": {
+      "not": {
+       "count": {
+        "tag": "suf",
+        "min": 2
+       }
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "r1",
+     "if": {
+      "not": {
+       "rune": "Astrid"
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "rv",
+     "if": {
+      "unrevSide": "p"
+     },
+     "hide": true
+    },
+    {
+     "to": "ok",
+     "if": {
+      "all": [
+       {
+        "has": "nt"
+       },
+       {
+        "has": "rw"
+       },
+       {
+        "has": "sd"
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "rvx",
+     "if": {
+      "des": true
+     },
+     "hide": true
+    },
+    {
+     "to": "pc",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "not": {
+         "sideLt": {
+          "side": "p",
+          "n": 2
+         }
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p1",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "keepP"
+        }
+       }
+      ]
+     },
+     "res": "fail",
+     "port": "right",
+     "label": {
+      "kr": "할당이 지워짐 — 에센스부터",
+      "en": "Allocation gone: back to the essence"
+     }
+    },
+    {
+     "to": "p0",
+     "if": {
+      "not": {
+       "has": "nt"
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "p3",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "junk": {
+         "side": "p",
+         "tag": "keepP"
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p2",
+     "if": {
+      "not": {
+       "has": "rw"
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "d1",
+     "res": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "무작위 주요 패시브 스킬 할당 (섬망의 에센스)",
+     "en": "Allocates a random Notable Passive Skill (Essence of Delirium)",
+     "m": "c",
+     "tags": [
+      "nt"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "룬 수호 (24—30)% 증가 (군왕의 합금)",
+     "en": "(24—30)% increased Runic Ward (Sovereign Alloy)",
+     "m": "c",
+     "tags": [
+      "rw"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +1 (분열)",
+     "en": "+1 to Level of all Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 피해 보너스 (26—29)% 증가",
+     "en": "(26—29)% increased Critical Spell Damage Bonus",
+     "m": "n",
+     "tags": [
+      "csd"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
    "showText": [
     {
      "s": "p",
@@ -2451,9 +1951,10 @@
    "group": "main",
    "pos": [
     0,
-    8
+    9
    ],
    "act": "desecrate",
+   "cur": "Ancient_Rib",
    "goal": {
     "kr": "접두 세번째 옵션(훼손)",
     "en": "Third prefix (desecrated)"
@@ -2464,85 +1965,15 @@
    },
    "edges": [
     {
+     "to": "c1",
      "if": {
       "all": [
        {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "any": [
-         {
-          "count": {
-           "tag": "suf",
-           "min": 2
-          }
-         },
-         {
-          "all": [
-           {
-            "param": {
-             "g": 0
-            }
-           },
-           {
-            "has": "suf"
-           },
-           {
-            "full": "s"
-           }
-          ]
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
          }
-        ]
-       },
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "unrev": true
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
         }
        },
        {
@@ -2552,37 +1983,18 @@
        }
       ]
      },
-     "to": "c1",
      "hide": true
     },
     {
+     "to": "s1",
      "if": {
       "all": [
        {
         "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
         }
        },
        {
@@ -2593,47 +2005,37 @@
        }
       ]
      },
-     "to": "s1",
      "hide": true
     },
     {
+     "to": "w1",
      "if": {
       "not": {
-       "any": [
-        {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
-        },
-        {
-         "all": [
-          {
-           "param": {
-            "g": 0
-           }
-          },
-          {
-           "has": "suf"
-          },
-          {
-           "full": "s"
-          }
-         ]
-        }
-       ]
+       "count": {
+        "tag": "suf",
+        "min": 2
+       }
       }
      },
-     "to": "w1",
      "hide": true
     },
     {
+     "to": "r1",
      "if": {
-      "unrevSide": "p"
+      "not": {
+       "rune": "Astrid"
+      }
      },
-     "to": "rv"
+     "hide": true
     },
     {
+     "to": "rv",
+     "if": {
+      "unrevSide": "p"
+     }
+    },
+    {
+     "to": "ok",
      "if": {
       "all": [
        {
@@ -2647,17 +2049,43 @@
        }
       ]
      },
-     "to": "ok",
      "hide": true
     },
     {
+     "to": "rvx",
      "if": {
       "des": true
      },
-     "to": "rvx",
      "hide": true
     },
     {
+     "to": "pc",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "not": {
+         "sideLt": {
+          "side": "p",
+          "n": 2
+         }
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p1",
      "if": {
       "all": [
        {
@@ -2673,19 +2101,19 @@
        }
       ]
      },
-     "to": "p1",
      "hide": true
     },
     {
+     "to": "p0",
      "if": {
       "not": {
        "has": "nt"
       }
      },
-     "to": "p0",
      "hide": true
     },
     {
+     "to": "p3",
      "if": {
       "all": [
        {
@@ -2701,16 +2129,15 @@
        }
       ]
      },
-     "to": "p3",
      "hide": true
     },
     {
+     "to": "p2",
      "if": {
       "not": {
        "has": "rw"
       }
      },
-     "to": "p2",
      "hide": true
     },
     {
@@ -2730,8 +2157,8 @@
     },
     {
      "s": "p",
-     "kr": "룬 수호 (24—30)% 증가 (룬 합금)",
-     "en": "(24—30)% increased Runic Ward (Runic Alloy)",
+     "kr": "룬 수호 (24—30)% 증가 (군왕의 합금)",
+     "en": "(24—30)% increased Runic Ward (Sovereign Alloy)",
      "m": "c",
      "tags": [
       "rw"
@@ -2740,14 +2167,14 @@
     {
      "s": "p",
      "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
+     "en": "Desecrated modifier (unrevealed)",
+     "m": "u"
     },
     {
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +1 (분열)",
      "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spell"
      ]
@@ -2777,16 +2204,12 @@
      "m": "r"
     }
    ],
-   "cur": "Ancient_Rib",
    "showText": [
     {
      "s": "p",
      "kr": "훼손 옵션(미공개)",
      "en": "Desecrated modifier (unrevealed)"
     }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {
@@ -2795,7 +2218,7 @@
    "group": "main",
    "pos": [
     0,
-    9
+    10
    ],
    "act": "reveal",
    "goal": {
@@ -2808,85 +2231,15 @@
    },
    "edges": [
     {
+     "to": "c1",
      "if": {
       "all": [
        {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "any": [
-         {
-          "count": {
-           "tag": "suf",
-           "min": 2
-          }
-         },
-         {
-          "all": [
-           {
-            "param": {
-             "g": 0
-            }
-           },
-           {
-            "has": "suf"
-           },
-           {
-            "full": "s"
-           }
-          ]
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
          }
-        ]
-       },
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "unrev": true
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
         }
        },
        {
@@ -2896,37 +2249,18 @@
        }
       ]
      },
-     "to": "c1",
      "hide": true
     },
     {
+     "to": "s1",
      "if": {
       "all": [
        {
         "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
         }
        },
        {
@@ -2937,48 +2271,38 @@
        }
       ]
      },
-     "to": "s1",
      "hide": true
     },
     {
+     "to": "w1",
      "if": {
       "not": {
-       "any": [
-        {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
-        },
-        {
-         "all": [
-          {
-           "param": {
-            "g": 0
-           }
-          },
-          {
-           "has": "suf"
-          },
-          {
-           "full": "s"
-          }
-         ]
-        }
-       ]
+       "count": {
+        "tag": "suf",
+        "min": 2
+       }
       }
      },
-     "to": "w1",
      "hide": true
     },
     {
+     "to": "r1",
+     "if": {
+      "not": {
+       "rune": "Astrid"
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "rv",
      "if": {
       "unrevSide": "p"
      },
-     "to": "rv",
      "hide": true
     },
     {
+     "to": "ok",
      "if": {
       "all": [
        {
@@ -2992,18 +2316,44 @@
        }
       ]
      },
-     "to": "ok",
-     "hide": true
+     "res": "ok"
     },
     {
+     "to": "rvx",
      "if": {
       "des": true
      },
-     "to": "rvx",
      "res": "fail",
      "port": "right"
     },
     {
+     "to": "pc",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "not": {
+         "sideLt": {
+          "side": "p",
+          "n": 2
+         }
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p1",
      "if": {
       "all": [
        {
@@ -3019,19 +2369,19 @@
        }
       ]
      },
-     "to": "p1",
      "hide": true
     },
     {
+     "to": "p0",
      "if": {
       "not": {
        "has": "nt"
       }
      },
-     "to": "p0",
      "hide": true
     },
     {
+     "to": "p3",
      "if": {
       "all": [
        {
@@ -3047,16 +2397,15 @@
        }
       ]
      },
-     "to": "p3",
      "hide": true
     },
     {
+     "to": "p2",
      "if": {
       "not": {
        "has": "rw"
       }
      },
-     "to": "p2",
      "hide": true
     },
     {
@@ -3076,8 +2425,8 @@
     },
     {
      "s": "p",
-     "kr": "룬 수호 (24—30)% 증가 (룬 합금)",
-     "en": "(24—30)% increased Runic Ward (Runic Alloy)",
+     "kr": "룬 수호 (24—30)% 증가 (군왕의 합금)",
+     "en": "(24—30)% increased Runic Ward (Sovereign Alloy)",
      "m": "c",
      "tags": [
       "rw"
@@ -3096,7 +2445,7 @@
      "s": "s",
      "kr": "모든 주문 스킬 레벨 +1 (분열)",
      "en": "+1 to Level of all Spell Skills (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spell"
      ]
@@ -3140,7 +2489,7 @@
    "group": "main",
    "pos": [
     1,
-    9
+    10
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -3161,85 +2510,15 @@
    },
    "edges": [
     {
+     "to": "c1",
      "if": {
       "all": [
        {
-        "param": {
-         "g": 0
-        }
-       },
-       {
-        "any": [
-         {
-          "count": {
-           "tag": "suf",
-           "min": 2
-          }
-         },
-         {
-          "all": [
-           {
-            "param": {
-             "g": 0
-            }
-           },
-           {
-            "has": "suf"
-           },
-           {
-            "full": "s"
-           }
-          ]
+        "not": {
+         "count": {
+          "tag": "suf",
+          "min": 2
          }
-        ]
-       },
-       {
-        "has": "nt"
-       },
-       {
-        "has": "rw"
-       },
-       {
-        "full": "p"
-       },
-       {
-        "not": {
-         "unrev": true
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "hide": true
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
         }
        },
        {
@@ -3249,37 +2528,18 @@
        }
       ]
      },
-     "to": "c1",
      "hide": true
     },
     {
+     "to": "s1",
      "if": {
       "all": [
        {
         "not": {
-         "any": [
-          {
-           "count": {
-            "tag": "suf",
-            "min": 2
-           }
-          },
-          {
-           "all": [
-            {
-             "param": {
-              "g": 0
-             }
-            },
-            {
-             "has": "suf"
-            },
-            {
-             "full": "s"
-            }
-           ]
-          }
-         ]
+         "count": {
+          "tag": "suf",
+          "min": 2
+         }
         }
        },
        {
@@ -3290,48 +2550,38 @@
        }
       ]
      },
-     "to": "s1",
      "hide": true
     },
     {
+     "to": "w1",
      "if": {
       "not": {
-       "any": [
-        {
-         "count": {
-          "tag": "suf",
-          "min": 2
-         }
-        },
-        {
-         "all": [
-          {
-           "param": {
-            "g": 0
-           }
-          },
-          {
-           "has": "suf"
-          },
-          {
-           "full": "s"
-          }
-         ]
-        }
-       ]
+       "count": {
+        "tag": "suf",
+        "min": 2
+       }
       }
      },
-     "to": "w1",
      "hide": true
     },
     {
+     "to": "r1",
+     "if": {
+      "not": {
+       "rune": "Astrid"
+      }
+     },
+     "hide": true
+    },
+    {
+     "to": "rv",
      "if": {
       "unrevSide": "p"
      },
-     "to": "rv",
      "hide": true
     },
     {
+     "to": "ok",
      "if": {
       "all": [
        {
@@ -3345,17 +2595,43 @@
        }
       ]
      },
-     "to": "ok",
      "hide": true
     },
     {
+     "to": "rvx",
      "if": {
       "des": true
      },
-     "to": "rvx",
      "hide": true
     },
     {
+     "to": "pc",
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "nt"
+        }
+       },
+       {
+        "not": {
+         "has": "rw"
+        }
+       },
+       {
+        "not": {
+         "sideLt": {
+          "side": "p",
+          "n": 2
+         }
+        }
+       }
+      ]
+     },
+     "hide": true
+    },
+    {
+     "to": "p1",
      "if": {
       "all": [
        {
@@ -3371,19 +2647,19 @@
        }
       ]
      },
-     "to": "p1",
      "hide": true
     },
     {
+     "to": "p0",
      "if": {
       "not": {
        "has": "nt"
       }
      },
-     "to": "p0",
      "hide": true
     },
     {
+     "to": "p3",
      "if": {
       "all": [
        {
@@ -3399,21 +2675,19 @@
        }
       ]
      },
-     "to": "p3",
      "hide": true
     },
     {
+     "to": "p2",
      "if": {
       "not": {
        "has": "rw"
       }
      },
-     "to": "p2",
      "hide": true
     },
     {
-     "to": "d1",
-     "port": "right"
+     "to": "d1"
     }
    ]
   },
@@ -3423,20 +2697,12 @@
    "group": "main",
    "pos": [
     0,
-    10
+    11
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
   }
- ],
- "xsub": [
-  "Genesis Tree Caster",
-  "Genesis Tree Minion"
- ],
- "xroll": true,
- "basePrice": {
-  "Chaos_Orb": 220000
- }
+ ]
 }

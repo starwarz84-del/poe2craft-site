@@ -20,8 +20,11 @@ def _mbow(r, t):
 for _t in ('high',): _grade8('mirror-bow-video','mirror-bow-video-v2',_t,_mbow)
 
 def _spell6(r, t):
-    if t=='bal':   # 유동체·성유·신성한 오브·축성 없이 판매
-        _drop(r,'e1','e2','e3','e4')
-        for x in _node(r,'m2')['target']['anyOf']: x['tmax']=2
-        for x in _node(r,'c1')['target']['reveal']['anyOf']: x['tmax']=2
+    # 2026-11-13 W12 영상 전체 화면 재대조: 단계는 플로우차트(scripts/graphs/gen_absent_amulet_spell6.py)를 그대로 읽음. 여기서는 같은 id 단계에 영상 시각만 붙임
+    # 극한(난이도 5) = 하이엔드만(정책 10장). 성유·완벽한 유동체·신성한 오브·축성은 정책 14장대로 레시피에서 뺌
+    _b=next(n for n in r['nodes'] if n.get('do')=='base'); _b['ts']='2:40'
+    for _nid,_ts in [('b1','2:30'),('b2','3:35'),('b3','3:20'),('b4','7:25'),('b5','9:22'),('b6','9:40'),('b7','9:46'),('b8','9:57'),('b9','10:13'),
+                     ('pf','19:00'),('b11','20:30'),('k1','20:58'),('q1','21:51'),('q2','21:55'),('q3','25:30'),('m1','27:20'),('m1e','27:28'),('m1d','28:08'),
+                     ('c1','28:25'),('m2','29:15'),('m2l','29:20'),('m2e','29:25'),('m2d','29:50'),('m2r','30:00'),('m3','32:20'),('m3d','32:30'),('m3r','33:50'),('m3x','33:35')]:
+        r['nodes'].append({'id':_nid,'do':'note','ts':_ts})
 for _t in ('high',): _grade8('absent-amulet-spell6','absent-amulet-spell6-v2',_t,_spell6)

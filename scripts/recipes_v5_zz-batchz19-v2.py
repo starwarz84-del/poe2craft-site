@@ -6,7 +6,7 @@ def _nosideomen(r, *ids):   # the other side is full: side omens do nothing (RED
 import re
 def _grasp(r, t):
     _drop(r,'m8')   # 룬 교체는 취향 (정책 23)
-    _node(r,'p3')['cur']='Runic_Alloy'   # 영상: 룬 합금
+    _node(r,'p3')['cur']='Sovereign_Alloy'   # 2026-11-13 W11: 룬 수호 (24—30)% 증가 = POE2DB 군왕의 합금(Armour) 옵션 — 룬 합금은 반지·목걸이·벨트용(11:28 화면)
     for nid in ('p4','p5'):
         n=_node(r,nid)
         if n.get('cur')=='Preserved_Collarbone': n['cur']='Ancient_Rib'
@@ -16,7 +16,7 @@ def _grasp(r, t):
     if t=='bal':
         for x in _node(r,'s1')['target']['all']: x['tmax']=2
         for x in p5['target']['reveal']['anyOf']: x['tmax']=2
-for _t in ('high','bal'): _grade8('grasping-mail-spell1','grasping-mail-spell1-v2',_t,_grasp)
+for _t in ('high',): _grade8('grasping-mail-spell1','grasping-mail-spell1-v2',_t,_grasp)   # 2026-11-13 W11: 난이도 5(극한) → 하이엔드만(정책 10장), 단계는 플로우차트 읽기
 
 def _bis(r, t):
     _drop(r,'c17')   # 신성한 오브·축복받은 자의 징조·유동체는 선택 (정책 23)

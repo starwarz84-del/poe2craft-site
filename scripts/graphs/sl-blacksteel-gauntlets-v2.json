@@ -4,47 +4,18 @@
  "cls": "Gloves_str_dex",
  "base": "Blacksteel Gauntlets",
  "ilvl": 82,
- "note": "SL 딜용 장갑(J7J8Jo7ibvE 슬라이드) — 카틀라의 순흑 · 상태 이상 강도 1티어 분열 + 잡옵(퀄리티 25%) → 카오스 오브(점화 강도·피해 가속) → 좌측 찬미 + 완벽한 엑잘(실패 = 소멸의 오브) → 상위 찬미 + 완벽한 엑잘(접미, 실패 = 우측 소멸의 징조) → 절사 + 우측 말소 + 완벽한 카오스 오브 → 고대 갈비뼈 → 공개(화염 저항·저주·위축). 하이엔드 = 영상(1티어), 밸런스 = 1~2티어, 접두 엑잘·접미 카오스 한 번·공개 결과 그대로. 카틀라 옵션 가중치는 추정.",
+ "basePrice": {
+  "Divine_Orb": 12
+ },
+ "note": "SL 딜용 장갑(J7J8Jo7ibvE 6:08~6:22 슬라이드, 2026-11-13 W13 영상 전체 화면 대조) — 검은강철 건틀릿(82+, 홈 2개) → 바알 방어구 장인의 주입기 25%+ → 카틀라의 순흑 → 완벽한 진화·확장 + 소멸(매직 저주 강도 1티어 + 카틀라 접두 1티어) → 완벽한 제왕 → 보존된 갈비뼈 + 분열(저주 강도) → 분열 + 옵션 1개 → 카오스 오브(카틀라 접두 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸) → 좌측 강령술 + 고대 갈비뼈 → 공개(남은 카틀라 접두, 빗나가면 빛의 징조) → 상위 찬미 + 완벽한 엑잘(접미, 빗나가면 우측 소멸의 징조 2개) → 절사 + 우측 말소 + 완벽한 카오스(남은 접미 1티어). 하이엔드만(극한). 카틀라 옵션 가중치는 추정.",
  "params": {
-  "pT": {
-   "kr": "접두",
-   "en": "Prefixes",
+  "t": {
+   "kr": "반복 목표",
+   "en": "Loop target",
    "values": {
     "1": {
      "kr": "1티어",
      "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    }
-   }
-  },
-  "sT": {
-   "kr": "접미",
-   "en": "Suffixes",
-   "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    }
-   }
-  },
-  "v": {
-   "kr": "마지막 접두·접미",
-   "en": "Last prefix and suffix",
-   "values": {
-    "1": {
-     "kr": "목표 옵션까지 반복",
-     "en": "Repeat until a wanted line"
-    },
-    "2": {
-     "kr": "랜덤 옵션",
-     "en": "Random line"
     }
    }
   }
@@ -53,99 +24,109 @@
   {
    "id": "high",
    "params": {
-    "pT": 1,
-    "sT": 1,
-    "v": 1
-   }
-  },
-  {
-   "id": "bal",
-   "params": {
-    "pT": 2,
-    "sT": 2,
-    "v": 2
+    "t": 1
    }
   }
  ],
  "versions": [
   {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "pT": 2,
-    "sT": 2,
-    "v": 2
-   },
-   "desc": {
-    "kr": "1~2티어, 마지막 접두·접미는 랜덤 옵션",
-    "en": "T1–2, the last prefix and suffix random"
-   }
-  },
-  {
    "id": "high",
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
-    "pT": 1,
-    "sT": 1,
-    "v": 1
+    "t": 1
    },
    "desc": {
-    "kr": "영상: 1티어까지",
-    "en": "Video: tier 1 lines"
+    "kr": "영상 슬라이드: 카틀라 옵션·화염 저항 모두 1티어",
+    "en": "Video slide: every Katla line and fire resistance at T1"
    }
   }
  ],
  "tags": {
-  "am": {
+  "am1": {
    "gi": 85,
    "tmax": 1
   },
-  "ig": {
+  "ig1": {
    "gi": 82,
-   "tmax": "$pT"
+   "tmax": 1
   },
-  "fa": {
+  "fa1": {
    "gi": 86,
-   "tmax": "$pT"
+   "tmax": 1
   },
-  "cu": {
+  "mp": {
+   "anyOf": [
+    "am1",
+    "ig1",
+    "fa1"
+   ],
+   "label": {
+    "kr": "상태 이상의 강도·점화 강도·피해 가속 1티어",
+    "en": "T1 ailment magnitude, ignite magnitude or faster ailments"
+   }
+  },
+  "cu1": {
    "gi": 92,
-   "tmax": "$sT"
+   "tmax": 1
   },
-  "wi": {
+  "wi1": {
    "gi": 91,
-   "tmax": "$sT"
+   "tmax": 1
   },
-  "fr": {
+  "fr1": {
    "gi": 2,
-   "tmax": "$sT"
+   "tmax": 1
   },
-  "p2": {
+  "s2": {
    "anyOf": [
-    "ig",
-    "fa"
-   ]
+    "wi1",
+    "fr1"
+   ],
+   "label": {
+    "kr": "위축 강도·화염 저항 1티어",
+    "en": "T1 withered magnitude or fire resistance"
+   }
   },
-  "sg": {
+  "magicGood": {
    "anyOf": [
-    "cu",
-    "wi",
-    "fr"
+    "mp",
+    "cu1"
+   ],
+   "label": {
+    "kr": "카틀라 접두·저주 강도 1티어",
+    "en": "T1 Katla prefix or curse magnitude"
+   }
+  }
+ },
+ "conds": {
+  "magicDone": {
+   "all": [
+    {
+     "has": "mp"
+    },
+    {
+     "has": "cu1"
+    }
    ]
   }
  },
  "require": {
   "all": [
    {
-    "has": "am"
+    "has": "cu1"
    },
    {
-    "full": "p"
+    "count": {
+     "tag": "mp",
+     "min": 3
+    }
    },
    {
-    "full": "s"
+    "count": {
+     "tag": "s2",
+     "min": 2
+    }
    }
   ]
  },
@@ -156,7 +137,7 @@
    "en": "Finished base",
    "cols": [
     0,
-    1
+    2
    ]
   },
   {
@@ -170,95 +151,14 @@
   }
  ],
  "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "k5",
-    "k6",
-    "k6x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  }
+ "xsub": [
+  "Katla's Gloom"
  ],
- "finals": [
-  {
-   "id": "high",
-   "kr": "하이엔드 옵션",
-   "en": "High-end",
-   "lines": [
-    {
-     "tag": "am",
-     "fr": true
-    },
-    {
-     "tag": "ig",
-     "tmax": 1
-    },
-    {
-     "tag": "fa",
-     "tmax": 1
-    },
-    {
-     "tag": "cu",
-     "tmax": 1
-    },
-    {
-     "tag": "wi",
-     "tmax": 1
-    },
-    {
-     "tag": "fr",
-     "tmax": 1,
-     "des": true
-    }
-   ]
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "am",
-     "fr": true
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "점화 강도·피해 가속 1~2티어",
-      "en": "T1–2 ignite magnitude or ailment acceleration"
-     }
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "side": "s",
-     "label": {
-      "kr": "저주 강도·위축 강도·화염 저항 1~2티어",
-      "en": "T1–2 curse magnitude, wither magnitude or fire resistance"
-     }
-    },
-    {
-     "side": "s",
-     "label": {
-      "kr": "저주 강도·위축 강도·화염 저항 1~2티어",
-      "en": "T1–2 curse magnitude, wither magnitude or fire resistance"
-     }
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  }
- ],
+ "xroll": true,
  "finalItem": {
-  "quality": 25,
-  "sockets": 2
+  "quality": 29,
+  "sockets": 2,
+  "exceptional": true
  },
  "nodes": [
   {
@@ -269,24 +169,214 @@
     0,
     0
    ],
-   "next": "ms",
+   "next": "pk",
    "start": {
-    "rar": "rare",
-    "mods": [
-     {
-      "tag": "am",
-      "fr": true
-     },
-     {
-      "junk": "s"
-     }
-    ],
-    "quality": 25
+    "rar": "normal",
+    "mods": [],
+    "quality": 29
    },
    "label": {
-    "kr": "카틀라의 순흑 장착, 상태 이상 강도 1티어 분열 + 잡옵 1개 (퀄리티 25%, 특출난 베이스)",
-    "en": "Katla’s Gloom socketed: fractured T1 ailment magnitude + one junk line (25% quality, Exceptional)"
+    "kr": "특출난 검은강철 건틀릿 구입 (노멀, 아이템 레벨 82 이상, 룬 소켓 2개)",
+    "en": "Buy exceptional Blacksteel Gauntlets (normal, item level 82+, two sockets)"
    },
+   "item": []
+  },
+  {
+   "id": "hq",
+   "kind": "side",
+   "group": "prep",
+   "pos": [
+    1,
+    0.5
+   ],
+   "attach": [
+    "h1",
+    "pk"
+   ],
+   "cur": "Vaal_Armourers_Infuser",
+   "goal": {
+    "kr": "퀄리티 25% 이상, 비용 미포함",
+    "en": "Quality 25%+, not costed"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   }
+  },
+  {
+   "id": "pk",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "rune",
+   "rune": {
+    "kr": "카틀라의 순흑",
+    "en": "Katla’s Gloom"
+   },
+   "goal": {
+    "kr": "카틀라의 순흑 장착",
+    "en": "Socket Katla’s Gloom"
+   },
+   "showText": [
+    {
+     "kr": "카틀라 옵션이 붙을 수 있음",
+     "en": "Katla lines can roll"
+    }
+   ],
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "edges": [
+    {
+     "to": "m1"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "m1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "transmute",
+   "cur": "Perfect_Orb_of_Transmutation",
+   "label": {
+    "kr": "매직 첫번째 옵션",
+    "en": "First magic option"
+   },
+   "goal": {
+    "kr": "접미 저주 강도 1티어",
+    "en": "T1 curse magnitude suffix"
+   },
+   "show": [
+    "cu1"
+   ],
+   "edges": [
+    {
+     "if": {
+      "added": "magicGood"
+     },
+     "to": "m2",
+     "res": "ok",
+     "label": {
+      "kr": "성공",
+      "en": "hit"
+     }
+    },
+    {
+     "to": "m1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "miss"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "n",
+     "tags": [
+      "cu1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m1x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    1,
+    2
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 옵션 지우기",
+    "en": "Remove the missed option"
+   },
+   "edges": [
+    {
+     "to": "m2"
+    }
+   ]
+  },
+  {
+   "id": "m2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "label": {
+    "kr": "매직 두번째 옵션",
+    "en": "Second magic option"
+   },
+   "goal": {
+    "kr": "접두 카틀라의 순흑 옵션 1티어",
+    "en": "T1 Katla’s Gloom prefix"
+   },
+   "showText": [
+    {
+     "kr": "피해 가속·점화 강도·상태 이상의 강도 1티어 중 먼저 뜬 것",
+     "en": "Whichever of T1 faster ailments, ignite or ailment magnitude lands first"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "ref": "magicDone"
+     },
+     "to": "m3",
+     "res": "ok",
+     "label": {
+      "kr": "성공",
+      "en": "hit"
+     }
+    },
+    {
+     "to": "m2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "miss"
+     }
+    }
+   ],
    "item": [
     {
      "s": "r",
@@ -296,18 +386,414 @@
     },
     {
      "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "f",
+     "kr": "카틀라 접두 1티어 중 먼저 뜬 것",
+     "en": "Whichever T1 Katla prefix lands first",
+     "m": "n",
      "tags": [
-      "am"
+      "mp"
      ]
     },
     {
      "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "n",
+     "tags": [
+      "cu1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m2x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    1,
+    3
+   ],
+   "keep": [
+    "magicGood"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 옵션 지우기",
+    "en": "Remove the missed option"
+   },
+   "edges": [
+    {
+     "lost": "magicGood",
+     "to": "m2y",
+     "res": "fail",
+     "label": {
+      "kr": "원하는 옵션 지워짐",
+      "en": "wanted option gone"
+     }
+    },
+    {
+     "to": "m2",
+     "res": "ok",
+     "label": {
+      "kr": "잡옵 지워짐",
+      "en": "junk gone"
+     }
+    }
+   ]
+  },
+  {
+   "id": "m2y",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    2,
+    3
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "남은 옵션 지우기",
+    "en": "Remove the remaining option"
+   },
+   "edges": [
+    {
+     "to": "m2"
+    }
+   ]
+  },
+  {
+   "id": "m3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "regal",
+   "cur": "Perfect_Regal_Orb",
+   "label": {
+    "kr": "레어",
+    "en": "Rare"
+   },
+   "goal": {
+    "kr": "분열하기 위해 레어로",
+    "en": "Make it rare for the fracture"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "m4"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "카틀라 접두 1티어 중 먼저 뜬 것",
+     "en": "Whichever T1 Katla prefix lands first",
+     "m": "n",
+     "tags": [
+      "mp"
+     ]
+    },
+    {
+     "s": "p",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "n",
+     "tags": [
+      "cu1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m4",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Rib",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "네번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Fourth option (desecrated): the fracture needs four"
+   },
+   "showText": [
+    {
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecration (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "m5"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "카틀라 접두 1티어 중 먼저 뜬 것",
+     "en": "Whichever T1 Katla prefix lands first",
+     "m": "n",
+     "tags": [
+      "mp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "n",
+     "tags": [
+      "cu1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "m5",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 (공개된 옵션 3개 중 하나)",
+    "en": "Fracture (one of the three revealed options)"
+   },
+   "showText": [
+    {
+     "kr": "저주 강도가 분열되면 성공",
+     "en": "Success when the curse magnitude fractures"
+    }
+   ],
+   "ask": {
+    "kr": "어느 옵션이 분열?",
+    "en": "Which option fractured?"
+   },
+   "edges": [
+    {
+     "if": {
+      "fractured": "cu1"
+     },
+     "to": "m6",
+     "res": "ok",
+     "label": {
+      "kr": "저주 강도 분열",
+      "en": "curse fractured"
+     }
+    },
+    {
+     "if": {
+      "fractured": "mp"
+     },
+     "to": "xs",
+     "res": "ok",
+     "dash": true,
+     "label": {
+      "kr": "카틀라 접두 분열",
+      "en": "Katla prefix fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "잡옵 분열",
+      "en": "junk fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "카틀라 접두 1티어 중 먼저 뜬 것",
+     "en": "Whichever T1 Katla prefix lands first",
+     "m": "n",
+     "tags": [
+      "mp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "f",
+     "tags": [
+      "cu1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "xs",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    6
+   ],
+   "simTo": "m6",
+   "swapFracture": "cu1",
+   "variant": "ok",
+   "label": {
+    "kr": "카틀라 접두 분열",
+    "en": "Katla prefix fractured"
+   },
+   "note": {
+    "kr": "슬라이드 13번 갈래: 접두를 먼저 채우고 고대 갈비뼈로 접미 마저 (비용은 같다고 가정)",
+    "en": "Slide branch 13: prefixes first, then an Ancient Rib for the last suffix (assumed to cost the same)"
+   }
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    7
+   ],
+   "simTo": "h1",
+   "variant": "fail",
+   "label": {
+    "kr": "잡옵 분열 — 새 베이스",
+    "en": "Junk fractured: new base"
+   },
+   "note": {
+    "kr": "제왕의 오브로 붙은 잡옵이 분열되면 새 베이스로 처음부터",
+    "en": "If the regal junk fractures, start over on a new base"
+   }
+  },
+  {
+   "id": "m6",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    8
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one option"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "f",
+     "tags": [
+      "cu1"
+     ]
     }
    ]
   },
@@ -317,7 +803,7 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    9
    ],
    "next": "k1",
    "label": {
@@ -333,18 +819,18 @@
     },
     {
      "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "f",
-     "tags": [
-      "am"
-     ]
-    },
-    {
-     "s": "s",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "f",
+     "tags": [
+      "cu1"
+     ]
     }
    ]
   },
@@ -354,21 +840,39 @@
    "group": "main",
    "pos": [
     0,
-    1
+    10
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix"
+   },
+   "show": [
+    "fa1"
+   ],
+   "showText": [
+    {
+     "kr": "피해 가속·점화 강도·상태 이상의 강도 1티어 중 먼저 뜬 것",
+     "en": "Whichever of T1 faster ailments, ignite or ailment magnitude lands first"
+    }
+   ],
+   "skipIf": {
+    "has": "mp"
+   },
+   "skipTo": "k2",
+   "skipNote": {
+    "kr": "남은 옵션이 카틀라 접두 1티어면 건너뜀",
+    "en": "Skip if the option left is a T1 Katla prefix"
+   },
    "edges": [
     {
      "if": {
-      "has": "p2"
+      "has": "mp"
      },
      "to": "k2",
      "res": "ok"
@@ -387,27 +891,22 @@
     },
     {
      "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "f",
+     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
+     "en": "Damaging Ailments deal damage (14—20)% faster",
+     "m": "n",
      "tags": [
-      "am"
+      "fa1"
      ]
     },
     {
-     "s": "p",
-     "kr": "점화 강도 (35—50)% 증가",
-     "en": "(35—50)% increased Ignite Magnitude",
-     "m": "n",
+     "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "f",
      "tags": [
-      "ig"
+      "cu1"
      ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "ig",
-    "fa"
    ]
   },
   {
@@ -416,40 +915,48 @@
    "group": "main",
    "pos": [
     0,
-    2
+    11
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 세번째 옵션",
-    "en": "Third prefix"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "show": [
+    "ig1"
+   ],
+   "showText": [
+    {
+     "kr": "남은 옵션 중 먼저 뜬 것",
+     "en": "Whichever of the rest lands first"
+    }
+   ],
    "edges": [
     {
      "if": {
       "count": {
-       "tag": "p2",
+       "tag": "mp",
        "min": 2
       }
      },
-     "to": "k3",
+     "to": "k5",
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
      "to": "k2x",
-     "res": "fail"
-    },
-    {
-     "to": "k3",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 소멸의 오브",
+      "en": "Miss: Orb of Annulment"
+     }
     }
    ],
    "item": [
@@ -461,11 +968,11 @@
     },
     {
      "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "f",
+     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
+     "en": "Damaging Ailments deal damage (14—20)% faster",
+     "m": "n",
      "tags": [
-      "am"
+      "fa1"
      ]
     },
     {
@@ -474,35 +981,17 @@
      "en": "(35—50)% increased Ignite Magnitude",
      "m": "n",
      "tags": [
-      "ig"
+      "ig1"
      ]
     },
     {
-     "s": "p",
-     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
-     "en": "Damaging Ailments deal damage (14—20)% faster",
-     "m": "n",
+     "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "f",
      "tags": [
-      "fa"
+      "cu1"
      ]
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "show": [
-    "ig",
-    "fa"
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
-   ],
-   "over": [
-    {
-     "param": {
-      "v": 2
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
-     }
     }
    ]
   },
@@ -512,7 +1001,7 @@
    "group": "main",
    "pos": [
     1,
-    2
+    11
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -532,273 +1021,21 @@
    "edges": [
     {
      "if": {
-      "has": "p2"
+      "has": "mp"
      },
      "to": "k2",
      "res": "ok",
-     "port": "right"
+     "label": {
+      "kr": "빗나간 접두 지워짐 — 다시 엑잘",
+      "en": "Missed prefix gone: exalt again"
+     }
     },
     {
      "to": "k1",
      "res": "fail",
-     "port": "right"
-    }
-   ]
-  },
-  {
-   "id": "k3",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    3
-   ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접미 첫번째·두번째 옵션",
-    "en": "First and second suffixes"
-   },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
-   "edges": [
-    {
-     "if": {
-      "has": "sg"
-     },
-     "to": "k4",
-     "res": "ok"
-    },
-    {
-     "to": "k3x",
-     "res": "fail"
-    }
-   ],
-   "item": [
-    {
-     "s": "r",
-     "kr": "카틀라의 순흑",
-     "en": "Katla’s Gloom",
-     "m": "r"
-    },
-    {
-     "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "f",
-     "tags": [
-      "am"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "점화 강도 (35—50)% 증가",
-     "en": "(35—50)% increased Ignite Magnitude",
-     "m": "n",
-     "tags": [
-      "ig"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
-     "en": "Damaging Ailments deal damage (14—20)% faster",
-     "m": "n",
-     "tags": [
-      "fa"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "저주 강도 (22—29)% 증가",
-     "en": "(22—29)% increased Curse Magnitudes",
-     "m": "n",
-     "tags": [
-      "cu"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 2개",
-     "en": "Two random lines"
-    }
-   ],
-   "show": [
-    "cu",
-    "wi",
-    "fr"
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
-   ],
-   "over": [
-    {
-     "param": {
-      "v": 2
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
-     }
-    }
-   ]
-  },
-  {
-   "id": "k3x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    3
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Dextral_Annulment"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "접미 지우기",
-    "en": "Remove the suffixes"
-   },
-   "edges": [
-    {
-     "if": {
-      "sideLt": {
-       "side": "s",
-       "n": 1
-      }
-     },
-     "to": "k3",
-     "res": "ok",
-     "port": "right"
-    },
-    {
-     "to": "k3x",
-     "res": "fail",
-     "hide": true
-    }
-   ]
-  },
-  {
-   "id": "k4",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    4
-   ],
-   "act": "chaos",
-   "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix"
-   },
-   "label": {
-    "kr": "카오스",
-    "en": "Chaos"
-   },
-   "edges": [
-    {
-     "if": {
-      "count": {
-       "tag": "sg",
-       "min": 2
-      }
-     },
-     "to": "k5",
-     "res": "ok"
-    },
-    {
-     "to": "k4",
-     "res": "fail"
-    }
-   ],
-   "item": [
-    {
-     "s": "r",
-     "kr": "카틀라의 순흑",
-     "en": "Katla’s Gloom",
-     "m": "r"
-    },
-    {
-     "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "f",
-     "tags": [
-      "am"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "점화 강도 (35—50)% 증가",
-     "en": "(35—50)% increased Ignite Magnitude",
-     "m": "n",
-     "tags": [
-      "ig"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
-     "en": "Damaging Ailments deal damage (14—20)% faster",
-     "m": "n",
-     "tags": [
-      "fa"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "저주 강도 (22—29)% 증가",
-     "en": "(22—29)% increased Curse Magnitudes",
-     "m": "n",
-     "tags": [
-      "cu"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "위축 강도 (25—35)% 증가",
-     "en": "(25—35)% increased Withered Magnitude",
-     "m": "n",
-     "tags": [
-      "wi"
-     ]
-    }
-   ],
-   "cur": "Perfect_Chaos_Orb",
-   "show": [
-    "cu",
-    "wi",
-    "fr"
-   ],
-   "trim": {
-    "side": "s",
-    "keep": "sg"
-   },
-   "over": [
-    {
-     "param": {
-      "v": 2
-     },
-     "set": {
-      "cur": "Greater_Chaos_Orb"
+     "label": {
+      "kr": "카틀라 접두가 지워짐 — 카오스부터",
+      "en": "Katla prefix gone: back to Chaos"
      }
     }
    ]
@@ -809,17 +1046,27 @@
    "group": "main",
    "pos": [
     0,
-    5
+    12
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 세번째 옵션(훼손)",
-    "en": "Third suffix (desecrated)"
-   },
+   "cur": "Ancient_Rib",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
      "to": "k6"
@@ -834,11 +1081,11 @@
     },
     {
      "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "f",
+     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
+     "en": "Damaging Ailments deal damage (14—20)% faster",
+     "m": "n",
      "tags": [
-      "am"
+      "fa1"
      ]
     },
     {
@@ -847,49 +1094,23 @@
      "en": "(35—50)% increased Ignite Magnitude",
      "m": "n",
      "tags": [
-      "ig"
+      "ig1"
      ]
     },
     {
      "s": "p",
-     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
-     "en": "Damaging Ailments deal damage (14—20)% faster",
-     "m": "n",
-     "tags": [
-      "fa"
-     ]
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
     },
     {
      "s": "s",
      "kr": "저주 강도 (22—29)% 증가",
      "en": "(22—29)% increased Curse Magnitudes",
-     "m": "n",
+     "m": "f",
      "tags": [
-      "cu"
+      "cu1"
      ]
-    },
-    {
-     "s": "s",
-     "kr": "위축 강도 (25—35)% 증가",
-     "en": "(25—35)% increased Withered Magnitude",
-     "m": "n",
-     "tags": [
-      "wi"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Ancient_Rib",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
     }
    ]
   },
@@ -899,36 +1120,37 @@
    "group": "main",
    "pos": [
     0,
-    6
+    13
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "want": "mp",
+   "show": [
+    "am1"
+   ],
+   "showText": [
+    {
+     "kr": "남은 옵션 중 먼저 뜬 것",
+     "en": "Whichever of the rest lands first"
+    }
+   ],
    "edges": [
     {
      "if": {
-      "added": "sg"
+      "added": "mp"
      },
-     "to": "ok",
+     "to": "k3",
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
      "to": "k6x",
-     "res": "fail"
-    },
-    {
-     "to": "ok",
      "res": "fail"
     }
    ],
@@ -941,11 +1163,11 @@
     },
     {
      "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "f",
+     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
+     "en": "Damaging Ailments deal damage (14—20)% faster",
+     "m": "n",
      "tags": [
-      "am"
+      "fa1"
      ]
     },
     {
@@ -954,51 +1176,27 @@
      "en": "(35—50)% increased Ignite Magnitude",
      "m": "n",
      "tags": [
-      "ig"
+      "ig1"
      ]
     },
     {
      "s": "p",
-     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
-     "en": "Damaging Ailments deal damage (14—20)% faster",
-     "m": "n",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
+     "en": "(26—32)% increased Magnitude of Ailments you inflict",
+     "m": "d",
      "tags": [
-      "fa"
+      "am1"
      ]
     },
     {
      "s": "s",
      "kr": "저주 강도 (22—29)% 증가",
      "en": "(22—29)% increased Curse Magnitudes",
-     "m": "n",
+     "m": "f",
      "tags": [
-      "cu"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "위축 강도 (25—35)% 증가",
-     "en": "(25—35)% increased Withered Magnitude",
-     "m": "n",
-     "tags": [
-      "wi"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "화염 저항 +(41—45)%",
-     "en": "+(41—45)% to Fire Resistance",
-     "m": "d",
-     "tags": [
-      "fr"
+      "cu1"
      ]
     }
-   ],
-   "want": "sg",
-   "show": [
-    "fr",
-    "cu",
-    "wi"
    ]
   },
   {
@@ -1007,7 +1205,7 @@
    "group": "main",
    "pos": [
     1,
-    6
+    13
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1029,7 +1227,285 @@
    "edges": [
     {
      "to": "k5",
-     "port": "right"
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    14
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접미 두번째·세번째 옵션",
+    "en": "Second and third suffixes"
+   },
+   "show": [
+    "fr1"
+   ],
+   "showText": [
+    {
+     "kr": "위축 강도·화염 저항 1티어 중 먼저 뜬 것",
+     "en": "Whichever of T1 withered or fire resistance lands first"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "s2"
+     },
+     "to": "k4",
+     "res": "ok"
+    },
+    {
+     "to": "k3x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 우측 소멸의 징조",
+      "en": "Miss: Omen of Dextral Annulment"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
+     "en": "Damaging Ailments deal damage (14—20)% faster",
+     "m": "n",
+     "tags": [
+      "fa1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "점화 강도 (35—50)% 증가",
+     "en": "(35—50)% increased Ignite Magnitude",
+     "m": "n",
+     "tags": [
+      "ig1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
+     "en": "(26—32)% increased Magnitude of Ailments you inflict",
+     "m": "d",
+     "tags": [
+      "am1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "f",
+     "tags": [
+      "cu1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 +(41—45)%",
+     "en": "+(41—45)% to Fire Resistance",
+     "m": "n",
+     "tags": [
+      "fr1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "k3x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    14
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접미 2개 지우기",
+    "en": "Remove both missed suffixes"
+   },
+   "edges": [
+    {
+     "if": {
+      "sideLt": {
+       "side": "s",
+       "n": 2
+      }
+     },
+     "to": "k3",
+     "res": "ok",
+     "label": {
+      "kr": "다시 엑잘",
+      "en": "Exalt again"
+     }
+    },
+    {
+     "to": "k3x",
+     "res": "fail",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "k4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    15
+   ],
+   "act": "chaos",
+   "cur": "Perfect_Chaos_Orb",
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "goal": {
+    "kr": "접미 세번째 옵션",
+    "en": "Third suffix"
+   },
+   "show": [
+    "wi1"
+   ],
+   "showText": [
+    {
+     "kr": "남은 옵션",
+     "en": "The one left"
+    }
+   ],
+   "trim": {
+    "side": "s",
+    "keep": "s2"
+   },
+   "skipIf": {
+    "count": {
+     "tag": "s2",
+     "min": 2
+    }
+   },
+   "skipTo": "ok",
+   "skipNote": {
+    "kr": "위축 강도·화염 저항이 모두 있으면 건너뜀",
+    "en": "Skip if both withered and fire resistance are on"
+   },
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "s2",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "k4",
+     "res": "fail"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "카틀라의 순흑",
+     "en": "Katla’s Gloom",
+     "m": "r"
+    },
+    {
+     "s": "p",
+     "kr": "피해를 주는 상태 이상의 피해 (14—20)%만큼 가속",
+     "en": "Damaging Ailments deal damage (14—20)% faster",
+     "m": "n",
+     "tags": [
+      "fa1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "점화 강도 (35—50)% 증가",
+     "en": "(35—50)% increased Ignite Magnitude",
+     "m": "n",
+     "tags": [
+      "ig1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
+     "en": "(26—32)% increased Magnitude of Ailments you inflict",
+     "m": "d",
+     "tags": [
+      "am1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "저주 강도 (22—29)% 증가",
+     "en": "(22—29)% increased Curse Magnitudes",
+     "m": "f",
+     "tags": [
+      "cu1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 +(41—45)%",
+     "en": "+(41—45)% to Fire Resistance",
+     "m": "n",
+     "tags": [
+      "fr1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "위축 강도 (25—35)% 증가",
+     "en": "(25—35)% increased Withered Magnitude",
+     "m": "n",
+     "tags": [
+      "wi1"
+     ]
     }
    ]
   },
@@ -1039,7 +1515,7 @@
    "group": "main",
    "pos": [
     0,
-    7
+    16
    ],
    "label": {
     "kr": "완성",
@@ -1047,8 +1523,57 @@
    }
   }
  ],
- "xsub": [
-  "Katla's Gloom"
+ "loops": [
+  {
+   "id": "L0",
+   "nodes": [
+    "m1",
+    "m1x",
+    "m2",
+    "m2x",
+    "m2y"
+   ],
+   "kr": "매직 옵션 맞추기",
+   "en": "Magic options"
+  },
+  {
+   "id": "L1",
+   "nodes": [
+    "k5",
+    "k6",
+    "k6x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
  ],
- "xroll": true
+ "finals": [
+  {
+   "id": "high",
+   "tier": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "fa1"
+    },
+    {
+     "tag": "ig1"
+    },
+    {
+     "tag": "am1"
+    },
+    {
+     "tag": "cu1",
+     "fr": true
+    },
+    {
+     "tag": "fr1"
+    },
+    {
+     "tag": "wi1"
+    }
+   ]
+  }
+ ]
 }

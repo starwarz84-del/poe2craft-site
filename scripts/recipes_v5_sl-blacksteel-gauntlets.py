@@ -8,8 +8,8 @@ R.append({
  'id':'sl-blacksteel-gauntlets','cls':c,'base':base(c,'Blacksteel Gauntlets'),'ilvl':82,'exceptional':{'sockets':1},'difficulty':5,'budget':'high',
  'buildTags':[K('상태 이상','Ailment'),K('점화','Ignite'),K('저주','Curse')],'patch':'0.5.5','created':'2026-11-11','author':SLG,
  'source':{'url':'https://www.youtube.com/watch?v=J7J8Jo7ibvE','title':'[POE2 0.5.5] 검은 화염파 최종 완성형 세팅 | 극 하이엔드 세팅 | 화염파 | 제작 가이드 포함','channel':'SL 게임연구소'},
- 'title':K('상태 이상 강도 분열 + 점화 강도 + 피해 가속 + 저주·위축·화염 저항','fractured ailment magnitude + ignite + faster ailments + curse, withered and fire resistance'),
- 'start':{'rar':'rare','quality':25,'runes':[SG_KATLA],'mods':[{'gi':sg_am,'tmax':1,'fr':True},{'junk':'s'}]},
+ 'title':K('저주 강도 분열 + 상태 이상 강도·점화 강도·피해 가속 + 위축·화염 저항','fractured curse magnitude + ailment magnitude, ignite and faster ailments + withered and fire resistance'),   # 2026-11-13 W13: 6:08 툴팁의 분열 색 = 저주 강도
+ 'start':{'rar':'rare','quality':29,'mods':[{'gi':sg_cu,'tmax':1,'fr':True},{'junk':'p'}]},   # 2026-11-13 W13: 분열 = 접미 저주 강도(플로우차트가 단계·시작 상태를 덮어씀), 카틀라의 순흑은 플로우차트 룬 단계에서 장착(시작에 두면 두 번 들어감)
  'phases':[{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'suf','kr':'접미','en':'Suffixes'},{'id':'fin','kr':'훼손 공개','en':'Reveal'}],
  'nodes':[
   {'id':'k0','phase':'pre','do':'base','cost':'base','ts':'6:10','note':K('퀄리티 25%. 카틀라의 순흑 장착 상태로 상태 이상 강도 1티어 분열 + 잡옵 1개.',"25% quality. Katla's Gloom socketed: fractured T1 ailment magnitude plus one junk line.")},

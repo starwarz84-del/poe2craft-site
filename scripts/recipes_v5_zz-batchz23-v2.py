@@ -9,12 +9,7 @@ def _tali(r, t):
         t9=_node(r,'t9'); t9.pop('fail',None); t9['br']=KEEP
 for _t in ('high','bal'): _grade8('easybabi-spiny-talisman','easybabi-spiny-talisman-v2',_t,_tali)
 
-# 2. SL 딜용 장갑 — 하이엔드 = 영상(1티어), 밸런스 = 1~2티어·접두 엑잘·접미 카오스 한 번·공개 결과 그대로
-def _sgl(r, t):
-    if t=='bal':
-        for n in r['nodes']:
-            for x in (n.get('target',{}).get('anyOf') or n.get('target',{}).get('reveal',{}).get('anyOf') or []): x['tmax']=2
-        k2=_node(r,'k2'); _asIs(k2, k2['target']['anyOf'], 'p')
-        k4=_node(r,'k4'); k4['fail']={'goto':'k5'}; k4['br']=KEEP
-        k6=_node(r,'k6'); k6.pop('fail',None); k6['br']=KEEP
-for _t in ('high','bal'): _grade8('sl-blacksteel-gauntlets','sl-blacksteel-gauntlets-v2',_t,_sgl)
+# 2. SL 딜용 장갑 — 2026-11-13 W13: 영상 전체 화면 대조로 새 기준 재작성(scripts/graphs/gen_sl_blacksteel_gauntlets.py). 난이도 극한 → 하이엔드만(정책 10장 C11).
+#    등급 레시피 단계는 플로우차트를 읽어 만듦(graph2recipe), 옛 단계 고치기는 쓰지 않음
+def _sgl(r, t): return
+for _t in ('high',): _grade8('sl-blacksteel-gauntlets','sl-blacksteel-gauntlets-v2',_t,_sgl)
