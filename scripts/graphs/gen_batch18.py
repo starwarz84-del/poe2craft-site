@@ -160,7 +160,8 @@ graph11('diztoh-iceshot-bow-v2','Bows','Obliterator Bow',82,
     'worst':{**K('물리 피해 추가가 지워지면 카오스 단계부터','Flat physical gone: back to the Chaos step'),'to':'c1'},
     'item':W2},
    {'id':'L1','nodes':['d2','l1','l2','l3'],'kr':'빛 없이 다시 공개','en':'Lightless reroll'}],
-  FIN(('high',),lambda v:[{'tag':'pp','fr':True},{'tag':'fl'},{'tag':'ele'},{'tag':'proj','des':True},{'tag':'cc'},{'side':'s','random':True}]),
+  # 카드 줄은 냉기 피해 추가 1티어(gi 4): 알두르의 숨결을 항상 장착해 완성품은 늘 냉기. 시뮬은 변환을 모델링하지 않아 완성 조건(require)은 anyOf 'ele' 그대로(2026-11-12 사용자 지적)
+  FIN(('high',),lambda v:[{'tag':'pp','fr':True},{'tag':'fl'},{'tag':'co'},{'tag':'proj','des':True},{'tag':'cc'},{'side':'s','random':True}]),
   {'quality':20,'sockets':3,'exceptional':True},{'all':[{'has':'fl'},{'has':'ele'},{'has':'proj'},{'has':'cc'}]},('high',))
 _p=f'{H}/diztoh-iceshot-bow-v2.json'; _g=json.load(open(_p))   # 분열 준비를 플로우차트 안에(prep 묶음) — 비용에 베이스·준비가 들어감
 _g['start']='b0'

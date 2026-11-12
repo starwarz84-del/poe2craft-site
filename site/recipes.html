@@ -1679,7 +1679,9 @@ function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[..
   const xOf=(c,w)=>{ if(Number.isInteger(c)) return w>colW[c] ? colX[c] : colX[c]+(colW[c]-w)/2; const a=Math.floor(c); return colX[a]+colW[a]-w*0.75; }; const Wt=x-FX.GAPX+FX.PAD+40;
   const rows=[...new Set(g.nodes.map(n=>n.pos[1]))].sort((a,b)=>a-b), box={}, dia={}, rowSpan=[], grp={};
   let y=FX.PAD, prevG=null, prevLoop, lastIt=null, prevItem=null;
+  let prevFold=false;
   rows.forEach(r=>{ const R=g.nodes.filter(n=>n.pos[1]===r).sort((a,b)=>a.pos[0]-b.pos[0]), m=R[0], gid=m.group;
+    if(prevFold) y+=34; prevFold=R.some(n=>n.fold);   /* 접힌 상자 아래 구간 총 사용 표시 자리(다른 상자 사이 간격과 같게, 2026-11-12) */
     y+=Math.max(0,...R.map(n=>n.gapBefore||0)); if(M.E.filter(e=>e.b===m.id && e.a!==m.id).length>=2) y+=40;
     const lp=M.loopOf[m.id]||null; if(prevLoop!==undefined && lp!==prevLoop && (lp||prevLoop) && gid===prevG) y+=34; prevLoop=lp;
     if(gid!==prevG){ if(prevG) grp[prevG].y1=y-FX.ROWGAP+16; y+= prevG ? FX.GROUPGAP : 30;
@@ -1861,7 +1863,9 @@ function fcIlvl(g, r){ let gs; try{ gs=C(r).groups; }catch(e){ return g; } if(!g
 function fcFold(g, res, vid){ const Ls=(g.loops||[]).filter(L=>L.fold && L.nodes?.length>=2); if(!Ls.length) return {g, res};
   const byId=Object.fromEntries(g.nodes.map(n=>[n.id,n])), edges={...(res?.edges||{})}, gone={}, heads={};
   Ls.forEach(L=>{ const h=L.nodes[0], mem=new Set(L.nodes); if(!byId[h]) return; L.nodes.slice(1).forEach(id=>gone[id]=h);
-    const H=byId[h], ok=(H.edges||[]).filter(e=>e.res==='ok' && !e.hide && !mem.has(e.to)), wt=L.worst?.to;
+    const H=byId[h], wt=L.worst?.to, ok=[];   /* 성공 선 = 소속 상자 어디서든 밖으로 나가는 성공 선(머리 밖에서 나가는 경우 포함, 2026-11-12 장갑 14번·로브 8번), 통과 수는 소속 상자들의 합 */
+    L.nodes.forEach(id=>(byId[id]?.edges||[]).forEach(e=>{ if(e.res!=='ok' || e.hide || mem.has(e.to) || e.to===wt) return; if(!ok.some(x=>x.to===e.to)) ok.push({...e}); }));
+    ok.forEach(e=>{ if(L.nodes.some(id=>id!==h && res?.edges?.[id+'>'+e.to])){ let c=0; L.nodes.forEach(id=>{ c+=res?.edges?.[id+'>'+e.to]||0; }); edges[h+'>'+e.to]=c; } });
     const es=[...ok]; if(wt && !mem.has(wt)){ es.push({to:wt, res:'fail', label:{kr:L.worst.kr, en:L.worst.en}}); let c=0; L.nodes.forEach(id=>{ c+=res?.edges?.[id+'>'+wt]||0; }); edges[h+'>'+wt]=c; }
     heads[h]={...H, kind:H.kind==='cleanup'?'act':H.kind, fold:{...L, goal:L.goalBy?.[vid]||L.goal}, edges:es, next:undefined, skipTo:undefined, item:L.item||H.item}; });
   const re=to=>gone[to]||to;
