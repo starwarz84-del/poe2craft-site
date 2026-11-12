@@ -606,7 +606,19 @@ for _r in R:
             _V=next((v for v in (_g.get('versions') or []) if v['id']==_F['id']), None)
             _S=_V and next((x for x in _sd.get('strategies',[]) if not x.get('hidden') and all(str(x['params'].get(k))==str(v) for k,v in _V['params'].items())), None)
             _tags={l['tag']:{k:_g['tags'][l['tag']].get(k) for k in ('gi','s','sec','tmax')} for l in _F['lines'] if l.get('tag') in (_g.get('tags') or {})}
-            _r['fc']={'lines':_F['lines'],'tags':_tags,'ds':(_S or {}).get('res',{}).get('desStat')}
+            # 고르는 줄(label)은 같은 이름의 anyOf 태그로 게임 데이터 옵션(gi)을 붙임 — 글자만 있는 줄은 정책 12장 위반(사용자 확정 2026-11-12)
+            _GT=_g.get('tags') or {}
+            def _gis(t, seen=()):
+                if isinstance(t, str): return [] if t in seen else _gis(_GT.get(t), seen+(t,))
+                if not isinstance(t, dict): return []
+                if t.get('gi') is not None: return [t['gi']]
+                return [g for x in (t.get('anyOf') or []) for g in _gis(x, seen)]
+            def _anyline(l):
+                if not l.get('label') or l.get('random'): return l
+                T=_GT.get(l.get('tag')) if l.get('tag') else next((t for t in _GT.values() if isinstance(t,dict) and t.get('anyOf') and (t.get('label') or {}).get('kr')==l['label'].get('kr')), None)
+                g=_gis(T) if T else []
+                return {**l, 'any':g} if g else l
+            _r['fc']={'lines':[_anyline(l) for l in _F['lines']],'tags':_tags,'ds':(_S or {}).get('res',{}).get('desStat')}
             # 레시피 = 그 등급 플로우차트를 순서대로 읽은 것(사용자 확정 2026-11-11, scripts/graph2recipe.py): 단계·확률·사용량·갈래 모두 플로우차트·시뮬 값
             if _S and _r['id'] not in FCREAD_OFF and os.path.exists(f"/home/claude/poe2data/scripts/graphs/{_sid}.json"):
                 _tiers=[x.get('tier') or 'high' for x in R if (x.get('tierGroup') or x['id'])==_sid]

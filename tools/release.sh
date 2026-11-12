@@ -40,6 +40,7 @@ python3 tools/test/fcaudit.py
 
 step "3. 크래프팅 점수"
 python3 scripts/score_recipes.py | head -1 | tee /tmp/poe2-score.log
+python3 tools/test/fclabel.py -q   # 정책 12장: 고르는 줄의 DB 옵션 연결(아직 정리 중이라 알림만)
 grep -q "<70: 0" /tmp/poe2-score.log || fail "70점 미만 레시피 있음 — docs/recipe-notes.md 점수표 확인"
 bash tools/test/serve.sh stop >/dev/null 2>&1
 
