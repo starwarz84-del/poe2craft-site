@@ -82,6 +82,10 @@
    "gi": 74,
    "tmax": "$t"
   },
+  "cdmg": {
+   "gi": 28,
+   "tmax": "$t"
+  },
   "pspd1": {
    "gi": 72,
    "tmax": 1
@@ -96,6 +100,10 @@
   },
   "pierce1": {
    "gi": 74,
+   "tmax": 1
+  },
+  "cdmg1": {
+   "gi": 28,
    "tmax": 1
   },
   "pspd2": {
@@ -113,6 +121,13 @@
   "pierce2": {
    "gi": 74,
    "tmax": 2
+  },
+  "cdmg2": {
+   "gi": 28,
+   "tmax": 2
+  },
+  "cdAny": {
+   "gi": 28
   },
   "ps": {
    "anyOf": [
@@ -174,11 +189,63 @@
     "en": "T1–2 crit chance or pierce"
    }
   },
+  "sx1": {
+   "anyOf": [
+    "crit1",
+    "pierce1",
+    "cdmg1"
+   ],
+   "label": {
+    "kr": "치명타 확률·관통·치명타 피해 1티어",
+    "en": "T1 crit chance, pierce or crit damage"
+   }
+  },
+  "sx": {
+   "anyOf": [
+    "crit",
+    "pierce",
+    "cdmg"
+   ],
+   "label": {
+    "kr": "치명타 확률·관통·치명타 피해",
+    "en": "Crit chance, pierce or crit damage"
+   }
+  },
   "ward": {
    "gi": 69
   },
   "hyst": {
    "gi": 57
+  },
+  "cd": {
+   "anyOf": [
+    "cdmg",
+    "hyst"
+   ],
+   "label": {
+    "kr": "치명타 피해",
+    "en": "Crit damage"
+   }
+  },
+  "cdF1": {
+   "anyOf": [
+    "cdmg1",
+    "hyst"
+   ],
+   "label": {
+    "kr": "치명타 피해 1티어 또는 발작의 에센스",
+    "en": "T1 crit damage or Essence of Hysteria"
+   }
+  },
+  "cdF2": {
+   "anyOf": [
+    "cdmg2",
+    "hyst"
+   ],
+   "label": {
+    "kr": "치명타 피해 1~2티어 또는 발작의 에센스",
+    "en": "T1–2 crit damage or Essence of Hysteria"
+   }
   },
   "gp": {
    "anyOf": [
@@ -195,6 +262,7 @@
    "anyOf": [
     "crit",
     "pierce",
+    "cdmg",
     "hyst"
    ],
    "label": {
@@ -215,7 +283,7 @@
     "has": "ward"
    },
    {
-    "has": "hyst"
+    "has": "cd"
    }
   ]
  },
@@ -278,8 +346,7 @@
      "tag": "ss1"
     },
     {
-     "tag": "hyst",
-     "tmax": 1
+     "tag": "cdF1"
     }
    ]
   },
@@ -308,8 +375,7 @@
      "tag": "ss2"
     },
     {
-     "tag": "hyst",
-     "tmax": 1
+     "tag": "cdF2"
     }
    ]
   }
@@ -405,7 +471,14 @@
      "to": "p2"
     }
    ],
-   "item": []
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
   },
   {
    "id": "p2",
@@ -430,7 +503,20 @@
      "to": "p3"
     }
    ],
-   "item": []
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
   },
   {
    "id": "p3",
@@ -455,7 +541,26 @@
      "to": "p3x"
     }
    ],
-   "item": []
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
   },
   {
    "id": "p3x",
@@ -486,7 +591,7 @@
    ],
    "item": [
     {
-     "s": "x",
+     "s": "s",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
@@ -884,14 +989,22 @@
       "has": "ps1"
      },
      "to": "xs",
-     "res": "ok"
+     "res": "ok",
+     "label": {
+      "kr": "접두 1티어 → 4A",
+      "en": "T1 prefix → 4A"
+     }
     },
     {
      "if": {
-      "has": "ss1"
+      "has": "sx1"
      },
      "to": "xp",
-     "res": "ok"
+     "res": "ok",
+     "label": {
+      "kr": "접미 1티어 → 4B",
+      "en": "T1 suffix → 4B"
+     }
     },
     {
      "to": "k9",
@@ -923,7 +1036,8 @@
     "pspd1",
     "pdmg1",
     "crit1",
-    "pierce1"
+    "pierce1",
+    "cdmg1"
    ]
   },
   {
@@ -959,7 +1073,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -972,6 +1086,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true,
      "res": "ok"
     },
@@ -990,7 +1108,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -1000,6 +1118,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true,
      "res": "ok"
     },
@@ -1016,13 +1138,109 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
      "hide": true,
      "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
+     "hide": true
     },
     {
      "if": {
@@ -1039,7 +1257,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -1066,6 +1288,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "res": "fail",
      "port": "right"
     },
@@ -1087,12 +1313,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "res": "fail",
      "port": "right"
     },
@@ -1115,6 +1352,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "res": "fail",
      "port": "right"
     },
@@ -1125,6 +1366,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "hide": true
     },
     {
@@ -1151,6 +1396,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -1172,6 +1421,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -1181,6 +1434,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -1188,7 +1445,44 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -1201,7 +1495,11 @@
        }
       ]
      },
-     "to": "csH",
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
      "hide": true
     },
     {
@@ -1209,7 +1507,7 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -1230,16 +1528,24 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true,
      "res": "ok"
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "res": "ok"
     },
     {
@@ -1268,11 +1574,19 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true,
      "res": "ok"
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true,
      "res": "ok"
     }
@@ -1309,7 +1623,8 @@
    "cur": "Greater_Exalted_Orb",
    "show": [
     "crit",
-    "pierce"
+    "pierce",
+    "cdmg"
    ],
    "omens": [
     "Omen_of_Dextral_Exaltation"
@@ -1348,7 +1663,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -1361,6 +1676,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true
     },
     {
@@ -1378,7 +1697,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -1388,6 +1707,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -1403,11 +1726,107 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -1425,7 +1844,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -1452,6 +1875,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -1472,12 +1899,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -1499,6 +1937,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -1508,6 +1950,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "port": "right"
     },
     {
@@ -1534,6 +1980,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -1555,6 +2005,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -1564,6 +2018,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -1571,7 +2029,44 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -1584,7 +2079,11 @@
        }
       ]
      },
-     "to": "csH",
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
      "hide": true
     },
     {
@@ -1592,7 +2091,7 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -1613,15 +2112,23 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "hide": true
     },
     {
@@ -1650,10 +2157,18 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true
     }
    ],
@@ -1732,7 +2247,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -1745,6 +2260,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true
     },
     {
@@ -1762,7 +2281,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -1772,6 +2291,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -1787,11 +2310,107 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -1809,7 +2428,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -1836,6 +2459,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -1856,12 +2483,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -1883,6 +2521,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -1892,6 +2534,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "port": "right"
     },
     {
@@ -1918,6 +2564,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -1939,6 +2589,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -1948,6 +2602,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -1955,7 +2613,44 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -1968,7 +2663,11 @@
        }
       ]
      },
-     "to": "csH",
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
      "hide": true
     },
     {
@@ -1976,7 +2675,7 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -1997,15 +2696,23 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "hide": true
     },
     {
@@ -2034,10 +2741,18 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true
     }
    ],
@@ -2116,7 +2831,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -2129,6 +2844,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true
     },
     {
@@ -2146,7 +2865,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -2156,6 +2875,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -2171,11 +2894,107 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -2193,8 +3012,12 @@
        }
       ]
      },
-     "to": "kz",
-     "port": "right"
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
+     "hide": true
     },
     {
      "if": {
@@ -2220,6 +3043,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -2240,12 +3067,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -2267,6 +3105,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -2276,6 +3118,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "port": "right"
     },
     {
@@ -2302,6 +3148,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -2323,6 +3173,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -2332,6 +3186,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -2339,7 +3197,44 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -2352,7 +3247,11 @@
        }
       ]
      },
-     "to": "csH",
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
      "hide": true
     },
     {
@@ -2360,7 +3259,7 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -2381,15 +3280,23 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "hide": true
     },
     {
@@ -2418,10 +3325,18 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true
     }
    ],
@@ -2489,7 +3404,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -2502,6 +3417,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true,
      "res": "ok"
     },
@@ -2520,7 +3439,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -2530,6 +3449,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -2545,13 +3468,109 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
      "hide": true,
      "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
+     "hide": true
     },
     {
      "if": {
@@ -2568,7 +3587,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -2595,6 +3618,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -2615,12 +3642,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -2642,6 +3680,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -2651,7 +3693,12 @@
       }
      },
      "to": "xs",
-     "hide": true
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
+     "hide": true,
+     "res": "ok"
     },
     {
      "if": {
@@ -2677,6 +3724,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "res": "fail",
      "port": "right"
     },
@@ -2699,6 +3750,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "res": "fail",
      "port": "right"
     },
@@ -2709,6 +3764,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -2716,7 +3775,45 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true,
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -2729,16 +3826,19 @@
        }
       ]
      },
-     "to": "csH",
-     "hide": true,
-     "res": "ok"
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
+     "hide": true
     },
     {
      "if": {
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -2759,16 +3859,24 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true,
      "res": "ok"
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "res": "ok"
     },
     {
@@ -2797,11 +3905,19 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true,
      "res": "ok"
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true,
      "res": "ok"
     }
@@ -2877,7 +3993,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -2890,6 +4006,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true
     },
     {
@@ -2907,7 +4027,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -2917,6 +4037,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -2932,11 +4056,107 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -2954,7 +4174,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -2981,6 +4205,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -3001,12 +4229,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -3028,6 +4267,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -3037,6 +4280,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "hide": true
     },
     {
@@ -3063,6 +4310,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -3084,6 +4335,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -3093,6 +4348,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "port": "right"
     },
     {
@@ -3100,7 +4359,44 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -3113,7 +4409,11 @@
        }
       ]
      },
-     "to": "csH",
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
      "hide": true
     },
     {
@@ -3121,7 +4421,7 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -3142,15 +4442,23 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "hide": true
     },
     {
@@ -3179,10 +4487,18 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true
     }
    ],
@@ -3261,7 +4577,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -3274,6 +4590,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true
     },
     {
@@ -3291,7 +4611,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -3301,6 +4621,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -3316,11 +4640,107 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -3338,8 +4758,12 @@
        }
       ]
      },
-     "to": "kz",
-     "port": "right"
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
+     "hide": true
     },
     {
      "if": {
@@ -3365,6 +4789,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -3385,12 +4813,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -3412,6 +4851,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -3421,6 +4864,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "hide": true
     },
     {
@@ -3447,6 +4894,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -3468,6 +4919,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -3477,6 +4932,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "port": "right"
     },
     {
@@ -3484,7 +4943,44 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -3497,7 +4993,11 @@
        }
       ]
      },
-     "to": "csH",
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
      "hide": true
     },
     {
@@ -3505,7 +5005,7 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -3526,15 +5026,23 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "hide": true
     },
     {
@@ -3563,10 +5071,18 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true
     }
    ],
@@ -3634,7 +5150,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -3647,6 +5163,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true
     },
     {
@@ -3664,7 +5184,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -3674,6 +5194,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -3689,11 +5213,107 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -3711,7 +5331,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -3738,6 +5362,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -3758,12 +5386,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -3785,6 +5424,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -3794,6 +5437,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "hide": true
     },
     {
@@ -3820,6 +5467,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -3841,6 +5492,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -3850,6 +5505,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -3857,7 +5516,44 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -3870,7 +5566,11 @@
        }
       ]
      },
-     "to": "csH",
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
      "hide": true
     },
     {
@@ -3878,7 +5578,7 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -3898,15 +5598,25 @@
        }
       ]
      },
-     "to": "jh"
+     "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
+     "res": "ok"
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "좋은 접두가 붙음 — 한 번 더",
+      "en": "A good prefix landed: once more"
+     },
+     "res": "fail",
      "hide": true
     },
     {
@@ -3935,10 +5645,18 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true
     }
    ],
@@ -4022,7 +5740,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -4035,6 +5753,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true,
      "res": "ok"
     },
@@ -4053,7 +5775,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -4063,6 +5785,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -4078,12 +5804,108 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
      "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
+     "hide": true
     },
     {
      "if": {
@@ -4100,7 +5922,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -4127,6 +5953,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -4147,12 +5977,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -4174,6 +6015,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -4183,6 +6028,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "hide": true
     },
     {
@@ -4209,6 +6058,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "투사체 접두가 지워짐",
+      "en": "The projectile prefix was removed"
+     },
      "res": "fail",
      "port": "right"
     },
@@ -4231,6 +6084,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "투사체 접두가 지워짐",
+      "en": "The projectile prefix was removed"
+     },
      "res": "fail",
      "port": "right"
     },
@@ -4241,6 +6098,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -4248,7 +6109,45 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true,
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -4261,16 +6160,19 @@
        }
       ]
      },
-     "to": "csH",
-     "hide": true,
-     "res": "ok"
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
+     "hide": true
     },
     {
      "if": {
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -4291,16 +6193,24 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true,
      "res": "ok"
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "hide": true,
      "res": "ok"
     },
@@ -4330,10 +6240,18 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "res": "ok"
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "res": "ok"
     }
    ],
@@ -4421,7 +6339,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -4434,6 +6352,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true
     },
     {
@@ -4451,7 +6373,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -4461,6 +6383,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -4476,11 +6402,107 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -4498,7 +6520,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -4525,6 +6551,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -4545,12 +6575,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -4572,6 +6613,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -4581,6 +6626,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "hide": true
     },
     {
@@ -4607,6 +6656,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -4628,6 +6681,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -4637,6 +6694,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -4644,7 +6705,44 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -4657,7 +6755,11 @@
        }
       ]
      },
-     "to": "csH",
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
      "hide": true
     },
     {
@@ -4665,7 +6767,7 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -4686,15 +6788,23 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "hide": true
     },
     {
@@ -4722,10 +6832,20 @@
        }
       ]
      },
-     "to": "ja"
+     "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
+     "res": "ok"
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "좋은 접두가 붙음 — 한 번 더",
+      "en": "A good prefix landed: once more"
+     },
+     "res": "fail",
      "hide": true
     }
    ],
@@ -4818,7 +6938,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -4831,6 +6951,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true,
      "res": "ok"
     },
@@ -4849,7 +6973,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -4859,6 +6983,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -4874,12 +7002,108 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
      "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
+     "hide": true
     },
     {
      "if": {
@@ -4896,7 +7120,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -4923,6 +7151,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -4943,12 +7175,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -4970,6 +7213,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -4979,6 +7226,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "hide": true
     },
     {
@@ -5005,6 +7256,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "투사체 접두가 지워짐",
+      "en": "The projectile prefix was removed"
+     },
      "res": "fail",
      "port": "right"
     },
@@ -5027,6 +7282,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "투사체 접두가 지워짐",
+      "en": "The projectile prefix was removed"
+     },
      "res": "fail",
      "port": "right"
     },
@@ -5037,6 +7296,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -5044,7 +7307,45 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true,
+     "res": "ok"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -5057,16 +7358,19 @@
        }
       ]
      },
-     "to": "csH",
-     "hide": true,
-     "res": "ok"
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
+     "hide": true
     },
     {
      "if": {
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -5087,16 +7391,24 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true,
      "res": "ok"
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "hide": true,
      "res": "ok"
     },
@@ -5126,11 +7438,19 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true,
      "res": "ok"
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true,
      "res": "ok"
     }
@@ -5174,11 +7494,11 @@
     },
     {
      "s": "s",
-     "kr": "치명타 피해 (발작의 에센스)",
-     "en": "Crit damage (Essence of Hysteria)",
+     "kr": "치명타 피해",
+     "en": "Crit damage",
      "m": "n",
      "tags": [
-      "hyst"
+      "cd"
      ]
     }
    ],
@@ -5291,11 +7611,11 @@
     },
     {
      "s": "s",
-     "kr": "치명타 피해 (발작의 에센스)",
-     "en": "Crit damage (Essence of Hysteria)",
+     "kr": "치명타 피해",
+     "en": "Crit damage",
      "m": "n",
      "tags": [
-      "hyst"
+      "cd"
      ]
     }
    ],
@@ -5341,7 +7661,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -5388,7 +7708,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -5398,6 +7718,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -5413,11 +7737,107 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "옵션 5개 완성",
+      "en": "Five modifiers done"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -5435,7 +7855,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -5462,6 +7886,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -5482,12 +7910,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -5509,6 +7948,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -5518,6 +7961,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "hide": true
     },
     {
@@ -5544,6 +7991,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -5565,6 +8016,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -5574,6 +8029,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -5581,7 +8040,44 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -5594,7 +8090,11 @@
        }
       ]
      },
-     "to": "csH",
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
      "hide": true
     },
     {
@@ -5602,7 +8102,7 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -5623,15 +8123,23 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "hide": true
     },
     {
@@ -5660,10 +8168,18 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true
     }
    ],
@@ -5715,11 +8231,11 @@
     },
     {
      "s": "s",
-     "kr": "치명타 피해 (발작의 에센스)",
-     "en": "Crit damage (Essence of Hysteria)",
+     "kr": "치명타 피해",
+     "en": "Crit damage",
      "m": "n",
      "tags": [
-      "hyst"
+      "cd"
      ]
     }
    ],
@@ -5773,7 +8289,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -5786,6 +8302,10 @@
       ]
      },
      "to": "ok",
+     "label": {
+      "kr": "완성",
+      "en": "Finished"
+     },
      "hide": true
     },
     {
@@ -5803,7 +8323,7 @@
           "has": "ward"
          },
          {
-          "has": "hyst"
+          "has": "cd"
          }
         ]
        },
@@ -5813,6 +8333,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "접두가 꽉 참 — 잡옵 지우기",
+      "en": "Prefixes full: remove the junk"
+     },
      "hide": true
     },
     {
@@ -5828,13 +8352,109 @@
         "has": "ward"
        },
        {
-        "has": "hyst"
+        "has": "cd"
        }
       ]
      },
      "to": "k15",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     },
      "hide": false,
      "port": "right"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "has": "cdmg"
+        }
+       }
+      ]
+     },
+     "to": "kz",
+     "label": {
+      "kr": "좋은 옵션이 모두 지워짐",
+      "en": "Every good modifier is gone"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       },
+       {
+        "not": {
+         "has": "ward"
+        }
+       }
+      ]
+     },
+     "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "ps"
+        }
+       },
+       {
+        "not": {
+         "has": "ss"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "p",
+          "tag": "gp"
+         }
+        }
+       }
+      ]
+     },
+     "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
+     "hide": true
     },
     {
      "if": {
@@ -5851,7 +8471,11 @@
        }
       ]
      },
-     "to": "kz",
+     "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -5878,6 +8502,10 @@
       ]
      },
      "to": "csA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -5898,12 +8526,23 @@
        },
        {
         "not": {
-         "has": "hyst"
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
         }
        }
       ]
      },
      "to": "csH",
+     "label": {
+      "kr": "빗나감, 치명타 피해 없음",
+      "en": "Miss, no crit damage"
+     },
      "hide": true
     },
     {
@@ -5925,6 +8564,10 @@
       ]
      },
      "to": "asx",
+     "label": {
+      "kr": "빗나감, 합금·에센스 다 씀",
+      "en": "Miss, alloy and essence used"
+     },
      "hide": true
     },
     {
@@ -5934,6 +8577,10 @@
       }
      },
      "to": "xs",
+     "label": {
+      "kr": "접미 치명타 확률·관통 없음",
+      "en": "No crit chance or pierce suffix yet"
+     },
      "hide": true
     },
     {
@@ -5960,6 +8607,10 @@
       ]
      },
      "to": "cpA",
+     "label": {
+      "kr": "빗나감, 룬 수호 없음",
+      "en": "Miss, no runic ward"
+     },
      "hide": true
     },
     {
@@ -5981,6 +8632,10 @@
       ]
      },
      "to": "apx",
+     "label": {
+      "kr": "빗나감, 합금 씀",
+      "en": "Miss, alloy already used"
+     },
      "hide": true
     },
     {
@@ -5990,6 +8645,10 @@
       }
      },
      "to": "xp",
+     "label": {
+      "kr": "접두 투사체 옵션 없음",
+      "en": "No projectile prefix yet"
+     },
      "hide": true
     },
     {
@@ -5997,7 +8656,44 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
+        }
+       },
+       {
+        "not": {
+         "sideAll": {
+          "side": "s",
+          "tag": "gs"
+         }
+        }
+       },
+       {
+        "not": {
+         "any": [
+          {
+           "has": "cdAny"
+          },
+          {
+           "has": "hyst"
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "to": "csH",
+     "label": {
+      "kr": "치명타 피해 없음, 접미 잡옵",
+      "en": "No crit damage, junk suffix"
+     },
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "has": "cd"
         }
        },
        {
@@ -6010,7 +8706,11 @@
        }
       ]
      },
-     "to": "csH",
+     "to": "asx",
+     "label": {
+      "kr": "낮은 티어 치명타 피해 — 지우기",
+      "en": "Low-tier crit damage: remove it"
+     },
      "hide": true
     },
     {
@@ -6018,7 +8718,7 @@
       "all": [
        {
         "not": {
-         "has": "hyst"
+         "has": "cd"
         }
        },
        {
@@ -6039,15 +8739,23 @@
       ]
      },
      "to": "jh",
+     "label": {
+      "kr": "치명타 피해 없음, 접두 잡옵 있음",
+      "en": "No crit damage, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "if": {
       "not": {
-       "has": "hyst"
+       "has": "cd"
       }
      },
      "to": "js",
+     "label": {
+      "kr": "치명타 피해 없음",
+      "en": "No crit damage yet"
+     },
      "hide": true
     },
     {
@@ -6076,10 +8784,18 @@
       ]
      },
      "to": "ja",
+     "label": {
+      "kr": "룬 수호 없음, 접두 잡옵 있음",
+      "en": "No runic ward, a junk prefix to replace"
+     },
      "hide": true
     },
     {
      "to": "jp",
+     "label": {
+      "kr": "룬 수호 없음",
+      "en": "No runic ward yet"
+     },
      "hide": true
     }
    ]

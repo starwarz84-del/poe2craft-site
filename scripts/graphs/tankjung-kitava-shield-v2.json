@@ -182,15 +182,53 @@
     "hyb"
    ],
    "label": {
-    "kr": "방어도 접두",
-    "en": "Armour prefix"
+    "kr": "방어도 최대치·%·복합 중 하나 (1~2티어)",
+    "en": "Flat, % or hybrid armour (T1–2)"
    }
   },
   "sufK": {
    "anyOf": [
     "pdr",
     "maxres"
-   ]
+   ],
+   "label": {
+    "kr": "받는 물리 피해 감소 또는 저항 최대치",
+    "en": "Physical damage reduction or maximum resistance"
+   }
+  },
+  "sufF": {
+   "anyOf": [
+    "pdr1",
+    "mf1",
+    "mc1",
+    "ml1"
+   ],
+   "label": {
+    "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어 (분열)",
+    "en": "T1 physical damage reduction or maximum resistance (fractured)"
+   }
+  },
+  "desH": {
+   "anyOf": [
+    "pdr1",
+    "mf1",
+    "mc1",
+    "ml1"
+   ],
+   "label": {
+    "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어 (훼손)",
+    "en": "T1 physical damage reduction or maximum resistance (desecrated)"
+   }
+  },
+  "desB": {
+   "anyOf": [
+    "pdr",
+    "maxres"
+   ],
+   "label": {
+    "kr": "받는 물리 피해 감소 또는 저항 최대치 1~2티어 (훼손)",
+    "en": "T1–2 physical damage reduction or maximum resistance (desecrated)"
+   }
   }
  },
  "require": {
@@ -276,25 +314,24 @@
    "en": "High-end",
    "lines": [
     {
-     "tag": "arm"
+     "tag": "flat"
     },
     {
-     "tag": "arm"
+     "tag": "pct"
     },
     {
-     "tag": "arm"
+     "tag": "hyb"
     },
     {
-     "tag": "pdr",
-     "tmax": 1,
+     "tag": "sufF",
      "fr": true
     },
     {
-     "tag": "maxres",
-     "tmax": 1
+     "tag": "suf1"
     },
     {
-     "tag": "maxres"
+     "tag": "desH",
+     "des": true
     }
    ]
   },
@@ -314,16 +351,15 @@
      "random": true
     },
     {
-     "tag": "pdr",
-     "tmax": 1,
+     "tag": "sufF",
      "fr": true
     },
     {
-     "tag": "maxres",
-     "tmax": 1
+     "tag": "suf1"
     },
     {
-     "tag": "maxres"
+     "tag": "desB",
+     "des": true
     }
    ]
   }
@@ -392,25 +428,37 @@
       "added": "mcl"
      },
      "to": "fl",
-     "res": "ok"
+     "label": {
+      "kr": "냉기·번개 저항 최대치",
+      "en": "Cold or lightning max res"
+     }
     },
     {
      "if": {
       "added": "suf1"
      },
      "to": "r1",
-     "res": "ok"
+     "label": {
+      "kr": "접미 4종 중 하나",
+      "en": "One of the four suffixes"
+     }
     },
     {
      "if": {
       "full": "s"
      },
      "to": "m2x",
-     "res": "fail"
+     "label": {
+      "kr": "다른 접미",
+      "en": "Another suffix"
+     }
     },
     {
      "to": "m2",
-     "res": "fail"
+     "label": {
+      "kr": "접두",
+      "en": "A prefix"
+     }
     }
    ],
    "item": [
@@ -452,14 +500,22 @@
       "added": "mcl"
      },
      "to": "fl",
-     "res": "ok"
+     "res": "ok",
+     "label": {
+      "kr": "냉기·번개 저항 최대치",
+      "en": "Cold or lightning max res"
+     }
     },
     {
      "if": {
       "added": "suf1"
      },
      "to": "r1",
-     "res": "ok"
+     "res": "ok",
+     "label": {
+      "kr": "접미 4종 중 하나",
+      "en": "One of the four suffixes"
+     }
     },
     {
      "if": {
@@ -468,11 +524,19 @@
       }
      },
      "to": "m2",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "접두",
+      "en": "A prefix"
+     }
     },
     {
      "to": "m2x",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "다른 접미",
+      "en": "Another suffix"
+     }
     }
    ],
    "item": [
@@ -524,10 +588,18 @@
      "if": {
       "full": "s"
      },
-     "to": "m2x"
+     "to": "m2x",
+     "label": {
+      "kr": "접미가 남음",
+      "en": "Suffix still there"
+     }
     },
     {
-     "to": "m2"
+     "to": "m2",
+     "label": {
+      "kr": "접미가 지워짐",
+      "en": "Suffix removed"
+     }
     }
    ]
   },
@@ -785,11 +857,11 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 (분열)",
-     "en": "Physical damage reduction (fractured)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "f",
      "tags": [
-      "pdr"
+      "suf1"
      ]
     },
     {
@@ -853,17 +925,21 @@
    },
    "edges": [
     {
-     "to": "ms"
+     "to": "ms",
+     "label": {
+      "kr": "분열 + 옵션 1개",
+      "en": "Fracture + one option"
+     }
     }
    ],
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 (분열)",
-     "en": "Physical damage reduction (fractured)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "f",
      "tags": [
-      "pdr"
+      "suf1"
      ]
     },
     {
@@ -890,11 +966,11 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 (분열)",
-     "en": "Physical damage reduction (fractured)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "f",
      "tags": [
-      "pdr"
+      "suf1"
      ]
     },
     {
@@ -941,20 +1017,20 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 (분열)",
-     "en": "Physical damage reduction (fractured)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "f",
      "tags": [
-      "pdr"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +%",
-     "en": "Maximum resistance",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "n",
      "tags": [
-      "maxres"
+      "suf1"
      ]
     }
    ],
@@ -1016,20 +1092,20 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 (분열)",
-     "en": "Physical damage reduction (fractured)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "f",
      "tags": [
-      "pdr"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +%",
-     "en": "Maximum resistance",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "n",
      "tags": [
-      "maxres"
+      "suf1"
      ]
     },
     {
@@ -1084,29 +1160,29 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 (분열)",
-     "en": "Physical damage reduction (fractured)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "f",
      "tags": [
-      "pdr"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +%",
-     "en": "Maximum resistance",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "n",
      "tags": [
-      "maxres"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +% (훼손)",
-     "en": "Maximum resistance (desecrated)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 (훼손)",
+     "en": "Damage reduction or maximum resistance (desecrated)",
      "m": "d",
      "tags": [
-      "maxres"
+      "sufK"
      ]
     }
    ],
@@ -1138,7 +1214,7 @@
    "edges": [
     {
      "if": {
-      "added": "pdr"
+      "added": "pdr1"
      },
      "to": "t5",
      "res": "ok"
@@ -1151,35 +1227,35 @@
    "item": [
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 (분열)",
-     "en": "Physical damage reduction (fractured)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "f",
      "tags": [
-      "pdr"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +%",
-     "en": "Maximum resistance",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "n",
      "tags": [
-      "maxres"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +% (훼손)",
-     "en": "Maximum resistance (desecrated)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 (훼손)",
+     "en": "Damage reduction or maximum resistance (desecrated)",
      "m": "d",
      "tags": [
-      "maxres"
+      "sufK"
      ]
     }
    ],
-   "want": "pdr",
+   "want": "pdr1",
    "show": [
-    "pdr"
+    "pdr1"
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
@@ -1254,29 +1330,29 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 (분열)",
-     "en": "Physical damage reduction (fractured)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "f",
      "tags": [
-      "pdr"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +%",
-     "en": "Maximum resistance",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "n",
      "tags": [
-      "maxres"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +% (훼손)",
-     "en": "Maximum resistance (desecrated)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 (훼손)",
+     "en": "Damage reduction or maximum resistance (desecrated)",
      "m": "d",
      "tags": [
-      "maxres"
+      "sufK"
      ]
     }
    ],
@@ -1377,29 +1453,29 @@
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 (분열)",
-     "en": "Physical damage reduction (fractured)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "f",
      "tags": [
-      "pdr"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +%",
-     "en": "Maximum resistance",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "n",
      "tags": [
-      "maxres"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +% (훼손)",
-     "en": "Maximum resistance (desecrated)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 (훼손)",
+     "en": "Damage reduction or maximum resistance (desecrated)",
      "m": "d",
      "tags": [
-      "maxres"
+      "sufK"
      ]
     }
    ],
@@ -1474,56 +1550,56 @@
    "item": [
     {
      "s": "p",
-     "kr": "방어도 접두",
-     "en": "Armour prefix",
+     "kr": "방어도 최대치 1티어",
+     "en": "T1 flat armour",
      "m": "n",
      "tags": [
-      "arm"
+      "flat"
      ]
     },
     {
      "s": "p",
-     "kr": "방어도 접두",
-     "en": "Armour prefix",
+     "kr": "방어도 % 1티어",
+     "en": "T1 % armour",
      "m": "n",
      "tags": [
-      "arm"
+      "pct"
      ]
     },
     {
      "s": "p",
-     "kr": "방어도 접두",
-     "en": "Armour prefix",
+     "kr": "방어도 %·기절 한계치 1티어",
+     "en": "T1 armour % and stun threshold",
      "m": "n",
      "tags": [
-      "arm"
+      "hyb"
      ]
     },
     {
      "s": "s",
-     "kr": "받는 물리 피해 감소 (분열)",
-     "en": "Physical damage reduction (fractured)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "f",
      "tags": [
-      "pdr"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +%",
-     "en": "Maximum resistance",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+     "en": "T1 physical damage reduction or maximum resistance",
      "m": "n",
      "tags": [
-      "maxres"
+      "suf1"
      ]
     },
     {
      "s": "s",
-     "kr": "최대 저항 +% (훼손)",
-     "en": "Maximum resistance (desecrated)",
+     "kr": "받는 물리 피해 감소 또는 저항 최대치 (훼손)",
+     "en": "Damage reduction or maximum resistance (desecrated)",
      "m": "d",
      "tags": [
-      "maxres"
+      "sufK"
      ]
     }
    ],
@@ -1547,8 +1623,8 @@
       "item": [
        {
         "s": "p",
-        "kr": "방어도 접두",
-        "en": "Armour prefix",
+        "kr": "방어도 최대치·%·복합 중 하나",
+        "en": "Flat, % or hybrid armour",
         "m": "n",
         "tags": [
          "arm"
@@ -1556,8 +1632,8 @@
        },
        {
         "s": "p",
-        "kr": "방어도 접두",
-        "en": "Armour prefix",
+        "kr": "방어도 최대치·%·복합 중 하나",
+        "en": "Flat, % or hybrid armour",
         "m": "n",
         "tags": [
          "arm"
@@ -1571,29 +1647,29 @@
        },
        {
         "s": "s",
-        "kr": "받는 물리 피해 감소 (분열)",
-        "en": "Physical damage reduction (fractured)",
+        "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+        "en": "T1 physical damage reduction or maximum resistance",
         "m": "f",
         "tags": [
-         "pdr"
+         "suf1"
         ]
        },
        {
         "s": "s",
-        "kr": "최대 저항 +%",
-        "en": "Maximum resistance",
+        "kr": "받는 물리 피해 감소 또는 저항 최대치 1티어",
+        "en": "T1 physical damage reduction or maximum resistance",
         "m": "n",
         "tags": [
-         "maxres"
+         "suf1"
         ]
        },
        {
         "s": "s",
-        "kr": "최대 저항 +% (훼손)",
-        "en": "Maximum resistance (desecrated)",
+        "kr": "받는 물리 피해 감소 또는 저항 최대치 (훼손)",
+        "en": "Damage reduction or maximum resistance (desecrated)",
         "m": "d",
         "tags": [
-         "maxres"
+         "sufK"
         ]
        }
       ],
