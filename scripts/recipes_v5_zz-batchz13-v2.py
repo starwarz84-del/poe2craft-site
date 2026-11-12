@@ -11,6 +11,7 @@ def _noble(r, t):
 for _t in ('high','bal'): _grade8('noble-timelost-sapphire','noble-timelost-sapphire-v2',_t,_noble)
 def _mzgloves(r, t):
     _drop(r,'g17')   # rune swap and Divine values are taste (정책 23)
+    r['ilvl']=80   # 2026-11-12 영상 18:38 완성품 툴팁 '아이템 레벨 80'(분열에 성공한 네 번째 장갑)
     # 영상 재확인(2026-11-10, 10:56~): with the suffix done, a prefix junk + Sinistral Crystallisation pushes crit damage into the suffixes; the alloy the same way on a prefix
     ids=[n['id'] for n in r['nodes']]; g11,g12,g13,g14=(_node(r,x) for x in ('g11','g12','g13','g14'))
     g13.update({'omens':['Omen_of_Sinistral_Exaltation'],'target':{'junk':'p'}}); g14['omens']=['Omen_of_Sinistral_Crystallisation']

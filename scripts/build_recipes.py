@@ -609,7 +609,7 @@ import sys as _sys; _sys.path.insert(0,'/home/claude/poe2data/scripts'); import 
 FCREAD_OFF=set()
 PREP_DROPPED=[]
 # 플로우차트 읽기 레시피의 단계 시각은 옛 단계 레시피(같은 id 상자, 베이스는 옛 베이스 단계)에서 옴 — 틀린 곳만 여기서 고침(그래프 id → {상자 id 또는 'base': 시각})
-FC_TS={'mazbro-proj-gloves-v2': {'base':'2:00'}}   # 옛 1:30 → 영상 2:00 베이스 고르기(2026-11-12 하위 작업 영상 대조)   # 플로우차트 읽기를 끈 레시피(문제가 있을 때만)
+FC_TS={'mazbro-proj-gloves-v2': {'base':'2:00','pk':'4:22','p1':'4:36','p2':'4:50','p3':'5:02','p3x':'5:05','p4':'5:15','p5':'6:55','p6':'7:03','p7':'7:08','xj':'7:10','p8':'12:15','kA':'8:06','k11':'12:25','kz':'13:40','k12':'12:52','ka':'13:00','kb':'13:10','kc':'13:30','k13':'17:35','k14':'17:50','k14x':'17:56'}}   # 2026-11-12 W1 영상 전체 재대조(화면 캡처 근거 scratchpad review/W1-mazbro-gloves/timeline.md) — 새 플로우차트 상자 id별 영상 시각   # 플로우차트 읽기를 끈 레시피(문제가 있을 때만)
 # flowchart + simulation (tools/sim/run.js → site/data/sim/<id>.json): the recipe tab shows its button only when the file exists
 for _r in R:
     _sid=_r.get('tierGroup') or _r['id']

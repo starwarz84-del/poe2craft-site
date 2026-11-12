@@ -48,141 +48,88 @@ graph10('noble-timelost-sapphire-v2','Time-Lost_Sapphire','Time-Lost Sapphire',7
   FIN(('high','bal'),lambda v:[{'tag':'mana','tmax':1} if v=='high' else {'side':'p','random':True},{'tag':'rad','tmax':1},{'tag':'cc','tmax':1,'fr':True},{'tag':'scd','tmax':1},{'tag':'cd','tmax':1}]),
   {'quality':0,'sockets':0},{'all':[{'has':'scd'},{'has':'cd'},{'has':'rad'}]},('high','bal'),cap={'p':2,'s':2})
 
-# ---------- 2. MazBro 투사체 +2 분열 장갑 ----------
-# 원본: 콜르의 사냥 장착 + 모든 투사체 +2 분열 + 잡옵 (퀄리티 30%, 특출난 검은강철 건틀릿) → 아스트리드의 창의성 → 카오스 오브(콜르 옵션 1티어 하나: 투사체 속도·피해 / 치명타 확률·관통)
-# → 반대쪽을 상위 엑잘 + 좌측·우측 찬미로. 빗나가면 그쪽 결정화의 징조(좌측·우측) + 군왕의 합금(룬 수호) → 다시, 또 빗나가면 결정화 + 발작의 에센스(치명타 피해) → 다시
-# → 제작 옵션이 남았으면 잡옵을 하나 붙여 결정화 + 합금/에센스 → 남은 접두를 고대 갈비뼈로 훼손 → 공개(투사체 피해·속도 1티어, 빛의 징조로 다시).
-# 2026-11-12 영상 전체 대조(하위 작업, 자막 + 화면 프레임 — 증거 scratchpad evidence/mazbro-proj-gloves-v2/timeline.md):
-#   9:35 화면 단계 노트 4A '합금 다음 발작', 4B '군왕의 합금만(발작은 합금을 대체)' → 접두 쪽 발작의 에센스 없음. 17:35 '접두만 비어 징조 필요 없음' → 고대 갈비뼈 징조 없음.
-#   12:57 치명타 16%(낮은 티어)·15:40 관통 25%(2티어)를 버림 → 영상 목표는 1티어(관통 tmax 1 추가). 투사체 +2는 +1(2티어)과 다른 티어 → proj tmax 1.
-#   등급(정책 10장 C17): 하이엔드 = 영상(반복 구간 1티어), 밸런스 = 상위 엑잘·결정화·소멸 반복과 빛의 징조 공개를 1~2티어로. 분열 뒤 카오스 오브는 싼 반복이라 두 등급 모두 1티어(C15).
-# 영상 재확인(2026-11-10): 세 번째로도 빗나가면 징조 없는 소멸의 오브로 하나씩(좋은 옵션이 지워지면 카오스 오브부터). 시전 속도 룬 교체·룬 모루(룬벼림)·신성한 오브는 뺌(정책 23).
+# ---------- 2. MazBro 투사체 +2 분열 장갑 (BIxlixCKPO0) ----------
+# 2026-11-12 W1 영상 전체 재대조(자막 0:00~21:25 + 화면 캡처, 근거 scratchpad review/W1-mazbro-gloves/timeline.md) + 새 플로우차트 기준(사용자 확정 2026-11-12 15:02, 정책 11장 맨 위):
+#   영상 흐름 한 줄. 11 카오스 → 영상에서 나온 접두 투사체 피해 1티어(15:20)로 정해진 상태 → 12 접미 치명타 확률·관통(4A, 12:52~13:40·15:25~16:10)
+#   → 13·14 접두 투사체 속도를 훼손 공개로(17:35~18:24). 실패는 그 단계 옆의 짧은 되돌림만(라우터 없음).
+# 베이스 준비(영상 화면): 2:05 특출난 검은강철 건틀릿(노트 '24 Gloves x 12 Divs') → 3:00~4:05 바알 방어구 장인의 주입기 30%(선택, 비용 미포함 — 다른 그래프와 같은 옆 상자)
+#   → 4:22 콜르의 사냥(룬 툴팁) → 4:42 완벽한 진화(투사체 피해) → 4:56 완벽한 확장(덱스터리티) → 5:02 완벽한 제왕 → 5:12 소멸로 옵션 1개
+#   → 6:34 카오스 오브로 투사체 +2(카오스 1073 → 503개) → 7:01 '좌측 찬미·상위 찬미 소모' 메시지 + 7:51 완벽한 엑잘티드 오브 → 7:04 훼손(미공개)
+#   → 분열 1/3: 장갑 1·2·3 실패(7:20 투사체 피해가 분열되어 맨 위로), 장갑 4에서 성공(8:48 투사체 +2가 맨 위) → 12:15~12:27 소멸로 분열 + 옵션 1개.
+#   아스트리드의 창의성은 8:06에 장착(화면 툴팁), 12:27부터 아이템에 '제작 옵션 1개 추가' 표시.
 P2={'high':{'t':1},'bal':{'t':2}}
 PT={'t':{'kr':'반복 목표','en':'Loop target','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}}
 tags={'proj':{'gi':81,'tmax':1},
-      'pspd':{'gi':72,'tmax':'$t'},'pdmg':{'gi':70,'tmax':'$t'},'crit':{'gi':73,'tmax':'$t'},'pierce':{'gi':74,'tmax':'$t'},'cdmg':{'gi':28,'tmax':'$t'},
-      'pspd1':{'gi':72,'tmax':1},'pdmg1':{'gi':70,'tmax':1},'crit1':{'gi':73,'tmax':1},'pierce1':{'gi':74,'tmax':1},'cdmg1':{'gi':28,'tmax':1},
-      'pspd2':{'gi':72,'tmax':2},'pdmg2':{'gi':70,'tmax':2},'crit2':{'gi':73,'tmax':2},'pierce2':{'gi':74,'tmax':2},'cdmg2':{'gi':28,'tmax':2},
-      'cdAny':{'gi':28},   # 치명타 피해 계열(티어 무관): 있으면 발작의 에센스(같은 계열)를 못 붙임
-      'ps':{'anyOf':['pspd','pdmg'],'label':K('투사체 속도·피해','Projectile speed or damage')},'ss':{'anyOf':['crit','pierce'],'label':K('치명타 확률·관통','Crit chance or pierce')},
-      'ps1':{'anyOf':['pspd1','pdmg1'],'label':K('투사체 속도·피해 1티어','T1 projectile speed or damage')},'ss1':{'anyOf':['crit1','pierce1'],'label':K('치명타 확률·관통 1티어','T1 crit chance or pierce')},
-      'ps2':{'anyOf':['pspd2','pdmg2'],'label':K('투사체 속도·피해 1~2티어','T1–2 projectile speed or damage')},'ss2':{'anyOf':['crit2','pierce2'],'label':K('치명타 확률·관통 1~2티어','T1–2 crit chance or pierce')},
-      'sx1':{'anyOf':['crit1','pierce1','cdmg1'],'label':K('치명타 확률·관통·치명타 피해 1티어','T1 crit chance, pierce or crit damage')},   # 9:35 노트 Step 3: T1 Suffix (%Pierce, Crit Hit, Crit Dmg)
-      'sx':{'anyOf':['crit','pierce','cdmg'],'label':K('치명타 확률·관통·치명타 피해','Crit chance, pierce or crit damage')},
-      'ward':{'gi':69},'hyst':{'gi':57},
-      'cd':{'anyOf':['cdmg','hyst'],'label':K('치명타 피해','Crit damage')},
-      'cdF1':{'anyOf':['cdmg1','hyst'],'label':K('치명타 피해 1티어 또는 발작의 에센스','T1 crit damage or Essence of Hysteria')},
-      'cdF2':{'anyOf':['cdmg2','hyst'],'label':K('치명타 피해 1~2티어 또는 발작의 에센스','T1–2 crit damage or Essence of Hysteria')},
-      'gp':{'anyOf':['pspd','pdmg','ward'],'label':K('좋은 접두','Good prefix')},'gs':{'anyOf':['crit','pierce','cdmg','hyst'],'label':K('좋은 접미','Good suffix')}}
-PJ=it('s','모든 투사체 스킬 레벨 +2 (콜르)','+2 projectile skills (Kolr)',['proj'],'f'); PS=it('p','투사체 속도·피해','Projectile speed or damage',['ps']); SS=it('s','치명타 확률·관통','Crit chance or pierce',['ss'])   # PJ 글은 베이스 준비 _PJI와 같아야 왼쪽 칸이 같은 옵션으로 봄
-SX=it('s','치명타 확률·관통·치명타 피해','Crit chance, pierce or crit damage',['sx'])
-WD=it('p','룬 수호 (군왕의 합금)','Runic ward (Sovereign Alloy)',['ward']); HY=it('s','치명타 피해 (발작의 에센스)','Crit damage (Essence of Hysteria)',['hyst']); CD=it('s','치명타 피해','Crit damage',['cd'])
-G0=[PJ,J('p')]; G1=[PJ,PS]; G2=[PJ,PS,SS]; G3=[PJ,PS,WD,SS,HY]; G4=G3[:1]+[PS,WD,UN('p')]+G3[3:]; G5=[PJ,PS,WD,PS,SS,HY]   # 왼쪽 칸은 주 경로(발작의 에센스) 기준, 치명타 피해 1티어 경로는 완성 카드 줄 cdF
-# 완성 조건(2026-11-12 2차): 투사체 속도·피해 + 룬 수호 + 치명타 확률·관통 + 치명타 피해(노트 Step 3의 치명타 피해 1티어로 이미 있으면 발작의 에센스는 쓰지 않음 — 같은 계열이라 붙지도 않음)
-ALL4={'all':[{'has':'ps'},{'has':'ss'},{'has':'ward'},{'has':'cd'}]}
+      'pspd1':{'gi':72,'tmax':1},
+      'pdmg':{'gi':70,'tmax':'$t'},'pdmg1':{'gi':70,'tmax':1},'pdmg2':{'gi':70,'tmax':2},
+      'crit':{'gi':73,'tmax':'$t'},'pierce':{'gi':74,'tmax':'$t'},
+      'crit1':{'gi':73,'tmax':1},'pierce1':{'gi':74,'tmax':1},'crit2':{'gi':73,'tmax':2},'pierce2':{'gi':74,'tmax':2},
+      'ss':{'anyOf':['crit','pierce'],'label':K('치명타 확률·관통','Crit chance or pierce')},
+      'ss1':{'anyOf':['crit1','pierce1'],'label':K('치명타 확률·관통 1티어','T1 crit chance or pierce')},
+      'ss2':{'anyOf':['crit2','pierce2'],'label':K('치명타 확률·관통 1~2티어','T1–2 crit chance or pierce')},
+      'cdAny':{'gi':28},   # 일반 치명타 피해(같은 계열이라 발작의 에센스가 붙지 않음)
+      'ward':{'gi':69},'hyst':{'gi':57}}
+PJ=it('s','모든 투사체 스킬 레벨 +2 (콜르)','+2 projectile skills (Kolr)',['proj'],'f')
+PS=it('p','투사체 속도 1티어 (콜르)','T1 projectile speed (Kolr)',['pspd1'])
+PD=it('p','투사체 피해 (훼손, 콜르)','Projectile damage (desecrated, Kolr)',['pdmg'],'d')
+SS=it('s','치명타 확률·관통 (콜르)','Crit chance or pierce (Kolr)',['ss'])
+WD=it('p','룬 수호 (군왕의 합금)','Runic ward (Sovereign Alloy)',['ward'])
+HY=it('s','치명타 피해 (발작의 에센스)','Crit damage (Essence of Hysteria)',['hyst'])
+MISS=lambda: it('s','빗나간 접미 (잡옵)','Missed suffix (junk)',None,'j')
+G0=[PJ,J('p')]; G1=[PJ,PS]; G2=[PS,PJ,SS]; G3=[PS,WD,PJ,SS,HY]; G4=[PS,WD,UN('p'),PJ,SS,HY]; G5=[PS,WD,PD,PJ,SS,HY]
+ALL=[{'has':'pspd1'},{'has':'ss'},{'has':'ward'},{'has':'hyst'}]
 L_=lambda kr,en: {'label':K(kr,en)}
-def route(vis=None, okHidden=(), lab=True):   # every step re-checks the item: what is still missing decides the next step; only the edges in vis are drawn
-    # vis / okHidden use edge keys: the target id, or *_x keys for a second edge to the same target. okHidden: hidden edges that still count as success.
-    # 2026-11-12 2차: 간선마다 조건 이름표(label) — 레시피 글이 '아이템 상태에 맞는 단계' 대신 무슨 일인지 말하게
-    missS={'not':{'sideAll':{'side':'s','tag':'gs'}}}; missP={'not':{'sideAll':{'side':'p','tag':'gp'}}}
-    noPS={'not':{'has':'ps'}}; noSS={'not':{'has':'ss'}}; noCD={'not':{'has':'cd'}}; noW={'not':{'has':'ward'}}; noCDA={'not':{'any':[{'has':'cdAny'},{'has':'hyst'}]}}
-    E=[{'if':{'all':[ALL4,{'count':{'tag':'ps','min':2}}]},'to':'ok',**L_('완성','Finished')},
-       {'if':{'all':[ALL4,{'full':'p'}]},'to':'apx','key':'apx_all',**L_('접두가 꽉 참 — 잡옵 지우기','Prefixes full: remove the junk')},
-       {'if':ALL4,'to':'k15',**L_('옵션 5개 완성','Five modifiers done')},
-       {'if':{'all':[noPS,noSS,{'not':{'has':'cdmg'}}]},'to':'kz',**L_('좋은 옵션이 모두 지워짐','Every good modifier is gone')},
-       # 4B를 치명타 피해 1티어로 시작(접미가 먼저): 접두부터
-       {'if':{'all':[noPS,noSS,missP,noW]},'to':'cpA','key':'cpA_d',**L_('빗나감, 룬 수호 없음','Miss, no runic ward')},
-       {'if':{'all':[noPS,noSS,missP]},'to':'apx','key':'apx_d',**L_('빗나감, 합금 씀','Miss, alloy already used')},
-       {'if':{'all':[noPS,noSS]},'to':'xp','key':'xp_d',**L_('접두 투사체 옵션 없음','No projectile prefix yet')},
-       # 4A: 접두가 먼저, 접미 치명타 확률·관통
-       {'if':{'all':[noSS,missS,noW]},'to':'csA',**L_('빗나감, 룬 수호 없음','Miss, no runic ward')},
-       {'if':{'all':[noSS,missS,noCDA]},'to':'csH',**L_('빗나감, 치명타 피해 없음','Miss, no crit damage')},
-       {'if':{'all':[noSS,missS]},'to':'asx',**L_('빗나감, 합금·에센스 다 씀','Miss, alloy and essence used')},
-       {'if':noSS,'to':'xs',**L_('접미 치명타 확률·관통 없음','No crit chance or pierce suffix yet')},
-       # 4B: 접미가 먼저
-       {'if':{'all':[noPS,missP,noW]},'to':'cpA',**L_('빗나감, 룬 수호 없음','Miss, no runic ward')},
-       {'if':{'all':[noPS,missP]},'to':'apx',**L_('빗나감, 합금 씀','Miss, alloy already used')},
-       {'if':noPS,'to':'xp',**L_('접두 투사체 옵션 없음','No projectile prefix yet')},
-       # 남은 제작 옵션
-       {'if':{'all':[noCD,missS,noCDA]},'to':'csH','key':'csH_h',**L_('치명타 피해 없음, 접미 잡옵','No crit damage, junk suffix')},
-       {'if':{'all':[noCD,missS]},'to':'asx','key':'asx_c',**L_('낮은 티어 치명타 피해 — 지우기','Low-tier crit damage: remove it')},
-       {'if':{'all':[noCD,{'any':[missP,{'full':'p'}]}]},'to':'jh',**L_('치명타 피해 없음, 접두 잡옵 있음','No crit damage, a junk prefix to replace')},
-       {'if':noCD,'to':'js',**L_('치명타 피해 없음','No crit damage yet')},
-       {'if':{'all':[noW,{'any':[missP,{'full':'p'}]}]},'to':'ja',**L_('룬 수호 없음, 접두 잡옵 있음','No runic ward, a junk prefix to replace')},
-       {'to':'jp',**L_('룬 수호 없음','No runic ward yet')}]
-    vis=vis or {}; out=[]
-    rv=lambda k: vis[k] if isinstance(vis[k],str) else vis[k].get('res')
-    failTo={e['to'] for e in E if e.get('key',e['to']) in vis and rv(e.get('key',e['to']))=='fail'}
-    for e in E:
-        e=dict(e); k=e.pop('key',e['to'])
-        if not lab: e.pop('label',None)
-        if k in vis: v=vis[k]; e.update(v if isinstance(v,dict) else {'res':v})
-        else:
-            e['hide']=True
-            if k in okHidden and e['to'] not in failTo: e['res']='ok'   # 화면 확률은 간선 통과 수를 도착 상자별로 세므로, 실패 상자와 같은 도착은 성공으로 못 셈
-        out.append(e)
-    return out
-OKH=('ok','apx_all','k15','csH_h','js','jh','jp','ja')   # 성공 뒤 갈 수 있는 곳(실패 상자와 도착이 같으면 failTo가 뺌)
-OKHP=OKH+('xs',)   # 접두 엑잘이 맞았는데 접미 치명타 확률·관통이 아직 없음(치명타 피해 1티어로 시작한 4B)
-def ex(id,pos,omen,show,item,goal,vis,okh=OKH):
-    return act(id,'main',pos,'exalt','Greater_Exalted_Orb',goal,None,K('엑잘','Exalt'),route(vis,okh),item,show=show,omens=[omen])
-def cr(id,pos,cur,ess,omen,goal,shw,item,lbl,vis,okh=()):
-    return act(id,'main',pos,'essence',cur,goal,shw,lbl,route(vis,okh),item,ess=ess,omens=[omen])
 F={'res':'fail','port':'right'}
-FL=dict(F,label=K('투사체 접두가 지워짐','The projectile prefix was removed'))   # 결정화가 잡옵 대신 투사체 옵션을 지움
-nodes=[base('ms',{'rar':'rare','mods':[{'tag':'proj','fr':True},{'junk':'p'}],'quality':30},K('콜르의 사냥 장착, 모든 투사체 +2 분열 + 잡옵 1개 (퀄리티 30%, 특출난 베이스)','Kolr’s Hunt socketed: fractured +2 projectile skills + one junk line (30% quality, Exceptional)'),G0),
- mark([0,0.6],'k8',G0),
- RUNE('k8',[0,1],'k9',G0),
- act('k9','main',[0,2],'chaos','Chaos_Orb',K('콜르 옵션 1티어 하나','One T1 Kolr line'),None,K('카오스','Chaos'),[{'if':{'has':'ps1'},'to':'xs','res':'ok',**L_('접두 1티어 → 4A','T1 prefix → 4A')},{'if':{'has':'sx1'},'to':'xp','res':'ok',**L_('접미 1티어 → 4B','T1 suffix → 4B')},{'to':'k9','res':'fail'}],G1,show=['pspd1','pdmg1','crit1','pierce1','cdmg1']),   # 분열 뒤 카오스 오브 = 싼 반복이라 두 등급 모두 1티어(C15)
- ex('xs',[0,3],'Omen_of_Dextral_Exaltation',['crit','pierce','cdmg'],G2,K('접미: 치명타 확률·관통','Suffix: crit chance or pierce'),{'js':'ok','csA':F,'csH':F,'asx':F}),   # 노트 4A 'hit 1 T1 Suffix' — 치명타 피해 1티어가 붙으면 치명타 확률·관통을 다시 노림(라우터)
- cr('csA',[1,3],'Sovereign_Alloy','ward','Omen_of_Dextral_Crystallisation',K('빗나간 접미를 지우고 룬 수호','The missed suffix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],[PJ,PS,WD],K('합금','Alloy'),{'xs':{'port':'right'}}),
- cr('csH',[1,4],'Essence_of_Hysteria','hyst','Omen_of_Dextral_Crystallisation',K('빗나간 접미를 지우고 치명타 피해','The missed suffix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],[PJ,PS,HY],K('에센스','Essence'),{'xs':{'port':'right'}}),
- act('asx','main',[1,5],'annul','Orb_of_Annulment',K('빗나간 접미 지우기','Remove the missed suffix'),None,K('소멸','Annul'),route({'xs':{'port':'right'},'kz':{'port':'right'},'csA':{'port':'right',**L_('룬 수호가 지워짐, 접미 잡옵 남음','Runic ward removed, junk suffix left')},'csH':{'port':'right',**L_('치명타 피해가 지워짐, 접미 잡옵 남음','Crit damage removed, junk suffix left')}}),G2),
- ex('xp',[0,6],'Omen_of_Sinistral_Exaltation',['pspd','pdmg'],G2,K('접두: 투사체 속도·피해','Prefix: projectile speed or damage'),{'js':'ok','cpA':F,'apx':F,'cpA_d':F,'apx_d':F},OKHP),
- cr('cpA',[1,6],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('빗나간 접두를 지우고 룬 수호','The missed prefix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],[PJ,WD,SS],K('합금','Alloy'),{'xp':{'port':'right'}}),
- act('apx','main',[1,7],'annul','Orb_of_Annulment',K('빗나간 접두 지우기','Remove the missed prefix'),None,K('소멸','Annul'),route({'xp':{'port':'right'},'xp_d':{'port':'right'},'kz':{'port':'right'},'cpA':{'port':'right',**L_('룬 수호가 지워짐, 접두 잡옵 남음','Runic ward removed, junk prefix left')},'cpA_d':{'port':'right',**L_('룬 수호가 지워짐, 접두 잡옵 남음','Runic ward removed, junk prefix left')}}),G2),
- act('js','main',[0,9],'exalt','Exalted_Orb',K('에센스가 바꿀 접두 하나','A prefix for the essence to replace'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'jh':'ok','js':{'res':'fail','hide':True,**L_('좋은 접두가 붙음 — 한 번 더','A good prefix landed: once more')}}),[PJ,PS,J('p'),SS],omens=['Omen_of_Sinistral_Exaltation']),
- cr('jh',[0,10],'Essence_of_Hysteria','hyst','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 치명타 피해','A prefix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],[PJ,PS,SS,HY],K('에센스','Essence'),{'jp':'ok','ja':'ok','k15':'ok','cpA':FL,'apx':FL},OKH),   # 다음으로 가는 길이 여러 개라 투사체가 남으면 모두 성공으로 셈
- act('jp','main',[0,11],'exalt','Exalted_Orb',K('합금이 바꿀 접두 하나','A prefix for the alloy to replace'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'ja':'ok','jp':{'res':'fail','hide':True,**L_('좋은 접두가 붙음 — 한 번 더','A good prefix landed: once more')}}),[PJ,PS,J('p'),SS,HY],omens=['Omen_of_Sinistral_Exaltation']),
- cr('ja',[0,12],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 룬 수호','A prefix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'k15':'ok','apx':FL,'cpA':FL},OKH),
- resetx('kz',[1,2],'k9'),
- act('k15','main',[0,13],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'k16'}],G4),   # 영상 17:35: 접두에만 빈자리라 징조 없음
- act('k16','main',[0,14],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),
-     [{'if':{'all':[ALL4,{'count':{'tag':'ps','min':2}}]},'to':'ok','res':'ok'},{'if':{'all':[{'unrev':False},{'not':{'added':'ps'}}]},'to':'k16x','res':'fail','port':'right'}]+[dict(e,hide=True) for e in route()[1:]],G5,want='ps',show=['pspd','pdmg'],omens=['Omen_of_Abyssal_Echoes']),
- annul('k16x',[1,14],[dict(e,hide=True) if e['to']!='k15' else dict(e,port='right',hide=False,label=K('다시 훼손','Desecrate again')) for e in route()]),   # 빛의 징조 + 소멸의 오브: 두 등급 모두(C17 3번), 밸런스는 1~2티어까지
- done([0,15])]
-graph11('mazbro-proj-gloves-v2','Gloves_str_dex','Blacksteel Gauntlets',82,
-  'MazBro 투사체 +2 분열 장갑(원본 레시피 기록, 2026-11-12 영상 전체 대조) — 특출난 검은강철 건틀릿 + 콜르의 사냥 → 완벽한 진화·확장·제왕 → 옵션 1개까지 소멸 → 카오스 오브(투사체 +2) → 완벽한 엑잘 + 좌측 찬미 + 상위 찬미(접두 2개) → 고대 갈비뼈 + 우측 강령술 → 분열(1/3, 빗나가면 새 베이스) → 분열 + 옵션 1개 → 아스트리드의 창의성 → 카오스 오브(콜르 1티어 하나) → 반대쪽 상위 엑잘 + 좌측·우측 찬미(빗나가면 결정화 + 군왕의 합금 → 결정화 + 발작의 에센스, 그래도 빗나가면 소멸) → 남은 제작 옵션 → 고대 갈비뼈 → 공개(투사체 피해·속도, 빛의 징조로 다시). 퀄리티 30%·룬벼림·룬 교체·신성한 오브는 비용에서 뺌.',
-  PT,P2,{'high':K('영상: 반복 구간과 공개 모두 1티어','Video: T1 in every loop and on the reveal'),'bal':K('상위 엑잘 반복과 공개를 1~2티어까지','Exalt loops and the reveal accept T1–2')},tags,nodes,
-  [{'id':'L1','nodes':['k15','k16','k16x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'ps1' if v=='high' else 'ps2'},{'tag':'ps1' if v=='high' else 'ps2','des':True},{'tag':'ward','tmax':1},{'tag':'proj','tmax':1,'fr':True},{'tag':'ss1' if v=='high' else 'ss2'},{'tag':'cdF1' if v=='high' else 'cdF2'}]),
-  {'quality':30,'sockets':2},ALL4,('high','bal'),xsub=["Kolr's Hunt"],xroll=True)
-# 베이스 준비(2026-11-12 영상 전체 대조, 프레임 근거는 timeline.md):
-# 2:05 특출난 검은강철 건틀릿(화면 노트 '24 Gloves x 12 Divs' → 장당 12디바인, basePrice) → 퀄리티 20% → 3:00~4:05 바알 방어구 장인의 주입기로 30%(선택, 비용 미포함 — 노트 '65 * 2.7 = 175 Divs', 자막 '10번에 1번꼴', '300~400디바인')
-# → 4:22 콜르의 사냥 장착 → 4:36 완벽한 진화·확장 → 5:06 완벽한 제왕 → 5:32 소멸의 오브로 옵션 1개까지 → 6:32 카오스 오브로 투사체 +2(옵션 1개 상태)
-# → 6:58 '좌측 찬미·상위 찬미의 징조 소모' 메시지로 접두 2개(7:45 자막 '접두에 완벽한 엑잘') → 7:04·7:32 '우측 강령술의 징조 소모' + 7:13 고대 갈비뼈 → 분열 1/3(훼손은 분열 안 됨)
-# → 영상은 장갑 4개째(8:58)에 성공, 빗나간 장갑은 새 베이스 → 12:30 소멸의 오브로 분열 + 옵션 1개.
-# 내부 결정: 영상의 '분열 전에 좋은 옵션 2개 이상'(5:15 권장)은 실제 장갑 1~3에서 지키지 않아 뺌. 4번째 장갑의 아스트리드 + 결정화 + 발작·합금(8:00~8:40)은 분열이 빗나갈 때를 위한 보험이고 12:30에 모두 지우므로 뺌.
+# 12번(상위 엑잘) 뒤: 성공이면 13, 빗나가면 영상 순서대로 합금(12.A) → 발작의 에센스(12.B) → 소멸(12.C). 영상 노트 4A 마지막 줄 '맞으면 남은 접미를 치명타 에센스로'(12.D~F)는 첫 엑잘에 맞았을 때만
+# 12번 엑잘 뒤 상태로 다음 상자: 합금·발작 옵션보다 먼저 맞으면 그 상자에서 엑잘을 한 번 더(세 번째 접미) 하고 빗나간 접미를 합금·발작의 에센스로 바꿈 — 따로 상자를 그리지 않음
+E12=[{'if':{'all':ALL},'to':'k13','res':'ok',**L_('치명타 확률·관통 성공','Crit chance or pierce hit')},
+     {'if':{'all':[{'has':'ss'},{'not':{'full':'s'}}]},'to':'k12','res':'ok','hide':True},
+     {'if':{'not':{'has':'ward'}},'to':'ka',**F,**L_('빗나감 — 합금','Miss: alloy')},
+     {'if':{'not':{'any':[{'has':'hyst'},{'has':'cdAny'}]}},'to':'kb',**F,**L_('또 빗나감 — 발작의 에센스','Miss again: Essence of Hysteria')},
+     {'to':'kc',**F,**L_('세 번째도 빗나감 — 소멸','Third miss: annul')}]
+nodes=[
+ mark([0,0.6],'k11',G0),
+ act('k11','main',[0,2],'chaos','Chaos_Orb',K('접두 투사체 속도 1티어','T1 projectile speed prefix'),None,K('카오스','Chaos'),
+     [{'if':{'has':'pspd1'},'to':'k12','res':'ok'},{'to':'k11','res':'fail'}],G1,show=['pspd1']),   # 15:56 성공 회차(사용자 확정 2026-11-12)
+ cleanup('kz',[1,1.5],[],[{'to':'k11','port':'right'}],K('분열 + 옵션 1개만 남기기','Keep the fracture + one line'),maxJunk=1),   # 13:40 '투사체 속도가 지워짐 — 처음부터 카오스'
+ act('k12','main',[0,3],'exalt','Greater_Exalted_Orb',K('접미 치명타 확률·관통','Crit chance or pierce suffix'),None,K('엑잘','Exalt'),E12,G2,show=['crit','pierce'],omens=['Omen_of_Dextral_Exaltation'],skipIf={'all':ALL},skipTo='k13',skipHide=True),   # 소멸 뒤 이미 완성된 상태면 엑잘 없이 13으로(영상 경로에는 없음, 그림에 안 보임)
+ act('ka','main',[1,3],'essence','Sovereign_Alloy',K('빗나간 접미를 지우고 룬 수호','The missed suffix goes, runic ward comes'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],K('합금','Alloy'),[{'to':'k12','port':'left',**L_('다시 엑잘','Exalt again')}],[PS,WD,PJ],ess='ward',omens=['Omen_of_Dextral_Crystallisation']),
+ act('kb','main',[1,4],'essence','Essence_of_Hysteria',K('빗나간 접미를 지우고 치명타 피해','The missed suffix goes, crit damage comes'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],K('에센스','Essence'),[{'to':'k12','port':'left',**L_('다시 엑잘','Exalt again')}],[PS,PJ,HY,WD],ess='hyst',omens=['Omen_of_Dextral_Crystallisation']),
+ cleanup('kc',[1,5],['pspd1','ward','hyst','ss'],[{'lost':'pspd1','to':'kz','port':'right',**L_('투사체 속도가 지워짐 — 카오스부터','Projectile speed gone: back to Chaos')},
+     {'lost':'ward','to':'kc',**L_('룬 수호가 지워짐 — 하나 더','Runic ward gone: one more')},{'lost':'hyst','to':'kc',**L_('치명타 피해가 지워짐 — 하나 더','Crit damage gone: one more')},{'lost':'ss','to':'kc','hide':True},
+     {'to':'k12','port':'left',**L_('빗나간 접미가 지워짐 — 다시 엑잘','Missed suffix gone: exalt again')}],K('빗나간 접미가 지워질 때까지 하나씩','One at a time until the missed suffix goes')),
+ act('k13','main',[0,6],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'k14'}],G4),   # 17:35 '남은 자리가 접두뿐이라 징조 필요 없음'
+ act('k14','main',[0,7],'reveal',None,K('접두 투사체 피해','Projectile damage prefix'),None,K('공개','Reveal'),
+     [{'if':{'added':'pdmg'},'to':'ok','res':'ok'},{'to':'k14x','res':'fail','port':'right'}],G5,want='pdmg',show=['pdmg'],omens=['Omen_of_Abyssal_Echoes']),
+ annul('k14x',[1,7],[{'to':'k13','port':'right',**L_('다시 훼손','Desecrate again')}]),   # 17:56 빛의 징조 + 소멸의 오브, 18:06 2티어(30%)도 지움
+ done([0,8])]
+graph11('mazbro-proj-gloves-v2','Gloves_str_dex','Blacksteel Gauntlets',80,
+  'MazBro 투사체 +2 분열 장갑(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 특출난 검은강철 건틀릿 → 콜르의 사냥 → 완벽한 진화·확장·제왕 → 소멸로 옵션 1개 → 카오스 오브(투사체 +2) → 완벽한 엑잘 + 좌측 찬미 + 상위 찬미(접두 2개) → 고대 갈비뼈 + 우측 강령술 → 아스트리드의 창의성 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 카오스 오브(접두 투사체 속도 1티어) → 상위 엑잘 + 우측 찬미(접미 치명타 확률·관통, 빗나가면 우측 결정화 + 군왕의 합금 → 우측 결정화 + 발작의 에센스 → 소멸) → 고대 갈비뼈(접두) → 공개(투사체 피해, 빛의 징조로 다시). 퀄리티 30%·룬벼림·신성한 오브·룬 교체는 비용에서 뺌.',
+  PT,P2,{'high':K('영상: 상위 엑잘 반복과 공개 모두 1티어','Video: T1 in the exalt loop and on the reveal'),'bal':K('상위 엑잘 반복과 공개를 1~2티어까지','The exalt loop and the reveal accept T1–2')},tags,nodes,
+  [{'id':'L1','nodes':['k12','ka','kb','kc'],'kr':'접미 치명타 확률·관통','en':'Crit or pierce suffix'},{'id':'L2','nodes':['k13','k14','k14x'],'kr':'훼손 공개','en':'Reveal'}],
+  FIN(('high','bal'),lambda v:[{'tag':'pspd1'},{'tag':'pdmg1' if v=='high' else 'pdmg2','des':True},{'tag':'ward'},{'tag':'proj','fr':True},{'tag':'ss1' if v=='high' else 'ss2'},{'tag':'hyst'}]),
+  {'quality':30,'sockets':2},{'all':ALL+[{'has':'pdmg'},{'has':'proj'}]},('high','bal'),xsub=["Kolr's Hunt"],xroll=True)
 _gp=f"{H}/mazbro-proj-gloves-v2.json"; _g=json.load(open(_gp))
 for _n in _g['nodes']:
-    if _n.get('group')=='main': _n['pos']=[_n['pos'][0], _n['pos'][1]+10.4]
+    if _n.get('group')=='main': _n['pos']=[_n['pos'][0], _n['pos'][1]+12.4]
 _g['basePrice']={'Divine_Orb':12}
 _PJI=[{'s':'s','kr':'모든 투사체 스킬 레벨 +2 (콜르)','en':'+2 projectile skills (Kolr)','m':'n','tags':['proj']}]
 _JK=lambda s: {'s':s,'kr':'잡옵','en':'Junk','m':'j'}
 _prep=[
- {'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'p1','start':{'rar':'normal','mods':[],'quality':30},'label':K('특출난 검은강철 건틀릿 구입 (노멀)','Buy exceptional Blacksteel Gauntlets (normal)'),'item':[]},
- {'id':'hq','kind':'side','group':'prep','pos':[1,0.5],'attach':['h1','p1'],'cur':'Vaal_Armourers_Infuser','goal':K('퀄리티 20% → 30%, 선택·비용 미포함','Quality 20% → 30%, optional, not costed'),'label':K('퀄리티','Quality')},
- {'id':'hk','kind':'side','group':'prep','pos':[1,1.5],'attach':['p1','p2'],'goal':K('콜르의 사냥 장착, 영구','Socket Kolr’s Hunt, permanent'),'label':K('룬','Rune')},
- {'id':'p1','kind':'act','group':'prep','pos':[0,1],'act':'transmute','cur':'Perfect_Orb_of_Transmutation','goal':K('매직','Magic'),'label':K('진화','Transmute'),'edges':[{'to':'p2'}],'item':[_JK('p')]},   # 4:56 화면: 매직 = 투사체 피해(접두) + 덱스터리티(접미)
- {'id':'p2','kind':'act','group':'prep','pos':[0,2],'act':'augment','cur':'Perfect_Orb_of_Augmentation','goal':K('매직 두번째 옵션','Second magic line'),'label':K('확장','Augment'),'edges':[{'to':'p3'}],'item':[_JK('p'),_JK('s')]},
- {'id':'p3','kind':'act','group':'prep','pos':[0,3],'act':'regal','cur':'Perfect_Regal_Orb','goal':K('레어','Rare'),'label':K('제왕','Regal'),'edges':[{'to':'p3x'}],'item':[_JK('p'),_JK('s'),_JK('x')]},
- {'id':'p3x','kind':'cleanup','group':'prep','pos':[0,4],'keep':[],'maxJunk':1,'label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),'target':K('옵션 1개만 남기기','Keep one line'),'edges':[{'to':'p4'}],'item':[_JK('s')]},   # 5:32 화면: 덱스터리티 +31만 남음
- {'id':'p4','kind':'act','group':'prep','pos':[0,5],'act':'chaos','cur':'Chaos_Orb','goal':K('모든 투사체 스킬 레벨 +2','+2 to all projectile skills'),'label':K('카오스','Chaos'),'show':['proj'],'edges':[{'if':{'has':'proj'},'to':'p5','res':'ok'},{'to':'p4','res':'fail'}],'item':_PJI},
- {'id':'p5','kind':'act','group':'prep','pos':[0,6],'act':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation','Omen_of_Greater_Exaltation'],'goal':K('접두 2개','Two prefixes'),'showText':[K('랜덤 옵션 2개','Two random lines')],'label':K('엑잘','Exalt'),'edges':[{'to':'p6'}],'item':_PJI+[_JK('p'),_JK('p')]},
- {'id':'p6','kind':'act','group':'prep','pos':[0,7],'act':'desecrate','cur':'Ancient_Rib','omens':['Omen_of_Dextral_Necromancy'],'goal':K('네번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth line (desecrated) — fracture needs four'),'showText':[K('훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')],'label':K('훼손','Desecrate'),'edges':[{'to':'p7'}],'item':_PJI+[_JK('p'),_JK('p'),{'s':'s','kr':'훼손 옵션 (미공개)','en':'Desecrated (unrevealed)','m':'n'}]},
- {'id':'p7','kind':'act','group':'prep','pos':[0,8],'act':'fracture','cur':'Fracturing_Orb','goal':K('분열 (셋 중 하나)','Fracture (one of three)'),'showText':[K('투사체 +2가 분열되면 성공','Success when +2 projectile fractures')],'label':K('분열','Fracture'),'edges':[{'if':{'fractured':'proj'},'to':'p8','res':'ok','label':K('투사체 +2 분열','+2 projectile fractured')},{'to':'xj','res':'fail','dash':True,'label':K('다른 옵션 분열','Another line fractured')}],'item':[dict(_PJI[0],m='f')]},
- {'id':'xj','kind':'exit','group':'prep','pos':[1,8],'simTo':'h1','variant':'fail','label':K('다른 옵션 분열 — 새 베이스','Another line fractured — new base'),'note':K('투사체 +2가 아닌 옵션이 분열되면 이 장갑은 다른 용도로 두고 새 베이스로 처음부터','Another line fractured: set this one aside and start on a new base')},
- {'id':'p8','kind':'cleanup','group':'prep','pos':[0,9],'keep':[],'maxJunk':1,'label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),'target':K('분열 + 옵션 1개만 남기기','Keep only the fracture + one line'),'edges':[{'to':'ms'}],'item':[dict(_PJI[0],m='f'),_JK('p')]}]
+ {'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'pk','start':{'rar':'normal','mods':[],'quality':30},'label':K('특출난 검은강철 건틀릿 구입 (노멀)','Buy exceptional Blacksteel Gauntlets (normal)'),'item':[]},
+ {'id':'hq','kind':'side','group':'prep','pos':[1,0.5],'attach':['h1','pk'],'cur':'Vaal_Armourers_Infuser','goal':K('퀄리티 20% → 30%, 선택·비용 미포함','Quality 20% → 30%, optional, not costed'),'label':K('퀄리티','Quality')},
+ {'id':'pk','kind':'act','group':'prep','pos':[0,1],'act':'rune','goal':K('콜르의 사냥 장착, 영구','Socket Kolr’s Hunt, permanent'),'showText':[K('콜르 옵션이 붙을 수 있음','Kolr lines can roll')],'label':K('룬','Rune'),'rune':K('콜르의 사냥','Kolr’s Hunt'),'edges':[{'to':'p1'}],'item':[]},   # 4:22 화면 툴팁 '장갑: 명사수 옵션 가능'
+ {'id':'p1','kind':'act','group':'prep','pos':[0,2],'act':'transmute','cur':'Perfect_Orb_of_Transmutation','goal':K('매직','Magic'),'label':K('진화','Transmute'),'edges':[{'to':'p2'}],'item':[_JK('p')]},   # 4:42 화면: 투사체 피해 40% 접두
+ {'id':'p2','kind':'act','group':'prep','pos':[0,3],'act':'augment','cur':'Perfect_Orb_of_Augmentation','goal':K('매직 두번째 옵션','Second magic line'),'label':K('확장','Augment'),'edges':[{'to':'p3'}],'item':[_JK('p'),_JK('s')]},   # 4:56 화면: 덱스터리티 +32
+ {'id':'p3','kind':'act','group':'prep','pos':[0,4],'act':'regal','cur':'Perfect_Regal_Orb','goal':K('레어','Rare'),'label':K('제왕','Regal'),'edges':[{'to':'p3x'}],'item':[_JK('p'),_JK('s'),_JK('x')]},   # 5:02 화면: 방어도·회피 접두 추가
+ {'id':'p3x','kind':'cleanup','group':'prep','pos':[0,5],'keep':[],'maxJunk':1,'label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),'target':K('옵션 1개만 남기기','Keep one line'),'edges':[{'to':'p4'}],'item':[_JK('s')]},   # 5:12 화면: 덱스터리티만 남음
+ {'id':'p4','kind':'act','group':'prep','pos':[0,6],'act':'chaos','cur':'Chaos_Orb','goal':K('모든 투사체 스킬 레벨 +2','+2 to all projectile skills'),'label':K('카오스','Chaos'),'show':['proj'],'edges':[{'if':{'has':'proj'},'to':'p5','res':'ok'},{'to':'p4','res':'fail'}],'item':_PJI},   # 6:34 화면
+ {'id':'p5','kind':'act','group':'prep','pos':[0,7],'act':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Sinistral_Exaltation','Omen_of_Greater_Exaltation'],'goal':K('접두 2개','Two prefixes'),'showText':[K('랜덤 옵션 2개','Two random lines')],'label':K('엑잘','Exalt'),'edges':[{'to':'p6'}],'item':_PJI+[_JK('p'),_JK('p')]},   # 7:01 징조 소모 메시지, 7:51 완벽한 엑잘티드 오브
+ {'id':'p6','kind':'act','group':'prep','pos':[0,8],'act':'desecrate','cur':'Ancient_Rib','omens':['Omen_of_Dextral_Necromancy'],'goal':K('네번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth line (desecrated) — fracture needs four'),'showText':[K('훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')],'label':K('훼손','Desecrate'),'edges':[{'to':'pA'}],'item':_PJI+[_JK('p'),_JK('p'),{'s':'s','kr':'훼손 옵션 (미공개)','en':'Desecrated (unrevealed)','m':'n'}]},   # 7:04 화면 미공개 훼손, 7:22~7:32 자막 '접미에만'·'고대 갈비뼈'
+ {'id':'pA','kind':'act','group':'prep','pos':[0,9],'act':'rune','goal':K('아스트리드의 창의성 장착','Socket Astrid’s Creativity'),'showText':[K('제작 옵션 하나 더','One more crafted modifier')],'label':K('룬','Rune'),'rune':K('아스트리드의 창의성','Astrid’s Creativity'),'edges':[{'to':'p7'}],'item':_PJI+[_JK('p'),_JK('p'),{'s':'s','kr':'훼손 옵션 (미공개)','en':'Desecrated (unrevealed)','m':'n'}]},   # 8:06 장갑 4 장착(분열 8:48 전), 7:16 장갑 2 툴팁에도 '제작 옵션 1개 추가'
+ {'id':'p7','kind':'act','group':'prep','pos':[0,10],'act':'fracture','cur':'Fracturing_Orb','goal':K('분열 (셋 중 하나)','Fracture (one of three)'),'showText':[K('투사체 +2가 분열되면 성공','Success when +2 projectile fractures')],'label':K('분열','Fracture'),'edges':[{'if':{'fractured':'proj'},'to':'p8','res':'ok','label':K('투사체 +2 분열','+2 projectile fractured')},{'to':'xj','res':'fail','dash':True,'label':K('다른 옵션 분열','Another line fractured')}],'item':[dict(_PJI[0],m='f')]},   # 7:20 실패(투사체 피해 분열), 8:48 성공
+ {'id':'xj','kind':'exit','group':'prep','pos':[1,10],'simTo':'h1','variant':'fail','label':K('다른 옵션 분열 — 새 베이스','Another line fractured — new base'),'note':K('투사체 +2가 아닌 옵션이 분열되면 이 장갑은 다른 용도로 두고 새 베이스로 처음부터','Another line fractured: set this one aside and start on a new base')},
+ {'id':'p8','kind':'cleanup','group':'prep','pos':[0,11],'keep':[],'maxJunk':1,'label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),'target':K('분열 + 옵션 1개만 남기기','Keep only the fracture + one line'),'edges':[{'to':'ms'}],'item':[dict(_PJI[0],m='f'),_JK('p')]}]   # 12:15~12:27 화면
 _g['nodes']=_prep+[n for n in _g['nodes'] if n['id']!='h1']
 _g['start']='h1'
 json.dump(_g,open(_gp,'w'),ensure_ascii=False,indent=1)
