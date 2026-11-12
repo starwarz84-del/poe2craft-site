@@ -1,9 +1,12 @@
 // Simulate one recipe graph for each of its strategies → site/data/sim/<id>.json (the flowchart view reads it).
 const pOnly=c=>{ if(!c) return; if(c.param) return c.param; if(c.all){ const o={}; c.all.forEach(x=>x.param&&Object.assign(o,x.param)); return Object.keys(o).length?o:undefined; } };
-// usage: node tools/sim/run.js <graph id> [runs=5000]      (graph: scripts/graphs/<id>.json)
+// usage: node tools/sim/run.js <graph id> [runs]   runs default by difficulty (user 2026-11-13): 쉬움 500 · 보통 1000 · 어려움 2000 · 전문가 이상 5000      (graph: scripts/graphs/<id>.json)
 // The engine's expected values (recipes.html analyse) are added when tools/sim/engine/<id>.json exists (node tools/test/_eng_one.js <recipe id> > that file).
 const fs=require('fs'), path=require('path'), SIM=require('../../site/sim.js');
-const ROOT=path.join(__dirname,'../..'), id=process.argv[2], N=+(process.argv[3]||5000);
+const ROOT=path.join(__dirname,'../..'), id=process.argv[2];
+const RUNS_BY_DIFF={0:500,1:500,2:1000,3:2000,4:5000,5:5000};
+const N=+(process.argv[3]||(()=>{ try{ const g0=JSON.parse(fs.readFileSync(`${ROOT}/scripts/graphs/${id}.json`,'utf8')); const R=JSON.parse(fs.readFileSync(`${ROOT}/site/data/recipes.json`,'utf8')).recipes;
+  const ds=R.filter(r=>r.id===(g0.recipe||id)||(r.tierGroup&&r.tierGroup===(g0.recipe||id))||r.id.startsWith((g0.recipe||id)+'-')).map(r=>+r.difficulty).filter(x=>!isNaN(x)); return ds.length?RUNS_BY_DIFF[Math.max(...ds)]||5000:5000; }catch(e){ return 5000; } })());
 const graph=JSON.parse(fs.readFileSync(`${ROOT}/scripts/graphs/${id}.json`,'utf8'));
 const D=JSON.parse(fs.readFileSync(`${ROOT}/site/data/c/${graph.cls}.json`,'utf8'));
 const craft=JSON.parse(fs.readFileSync(`${ROOT}/site/data/crafting.json`,'utf8'));

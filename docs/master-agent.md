@@ -134,7 +134,7 @@
 [ -e /home/claude/poe2data ] || ln -s /home/claude/poe2craft-site /home/claude/poe2data
 cd /home/claude/poe2craft-site && bash tools/test/serve.sh start
 cd scripts/graphs && python3 gen_batchN.py && python3 patch_astrid.py
-cd /home/claude/poe2craft-site && node tools/sim/run.js <그래프 id> 5000   (시뮬은 5000회로 제한 — 사용자 확정 2026-11-12 23:39)
+cd /home/claude/poe2craft-site && node tools/sim/run.js <그래프 id>   (횟수는 난이도대로 자동: 쉬움 500 · 보통 1000 · 어려움 2000 · 전문가 이상 5000 — 사용자 확정 2026-11-13 01:24)
 flock /tmp/poe2build.lock -c 'cd /home/claude/poe2craft-site/scripts && python3 build_recipes.py'
 flock /tmp/poe2build.lock -c 'cd /home/claude/poe2craft-site && node tools/sim/engine.js <가장 높은 등급 레시피 id> > tools/sim/engine/<그래프 id>.json'
 node tools/sim/c1check.js <그래프 id>
