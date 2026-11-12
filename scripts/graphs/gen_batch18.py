@@ -68,11 +68,12 @@ graph11('sl-proj7-gloves-v2','Gloves_int','Sirenscale Gloves',80,
 #     (15:43 인벤토리 상위 카오스 오브 'II' 10+20개, 18:06 12개, 창고 카오스 오브 307개는 5:30과 18:32에 같음 — 일반 카오스는 안 씀)
 #   → 18:30 완벽한 엑잘 한 번(민첩, 그대로 둠) → 19:00 물리 룬·신성·타락(벽돌) — 레시피에서 뺌.
 # 난이도 5(극한) → 하이엔드만(정책 10장). 하이엔드 = 영상 흐름 + C17(반복 목표 1티어, 마지막 접미가 잡옵이면 공격 속도·치명타 피해·추가 화살 1티어로 바꾸는 도박).
-tags={'pp':{'gi':7,'tmax':2},'ppm':{'gi':7,'tmax':2},'fle':{'gi':2},'fl':{'gi':2,'tmax':1},'co':{'gi':4,'tmax':'$pT'},'li':{'gi':6,'tmax':'$pT'},'fi':{'gi':3,'tmax':'$pT'},'hy':{'gi':8,'tmax':'$pT'},
+tags={'pp':{'gi':7,'tmax':2},   # 분열 2티어(완성품 줄 tmin 2·tmax 2)
+     'ppm':{'gi':7,'tmax':2},'fle':{'gi':39},'fl':{'gi':2,'tmax':1},'co':{'gi':4,'tmax':'$pT'},'li':{'gi':6,'tmax':'$pT'},'fi':{'gi':3,'tmax':'$pT'},'hy':{'gi':8,'tmax':'$pT'},
       'ele':{'anyOf':['co','li','fi','hy']},'conv':{'anyOf':['li','fi']},'proj':{'gi':9,'tmax':'$jT'},'cc':{'gi':17,'tmax':'$cT'},'ons':{'gi':55},'mk':{'gi':57},
       'as':{'gi':15,'tmax':1},'cd':{'gi':18,'tmax':1},'sur':{'gi':20,'tmax':1},'last':{'anyOf':['as','cd','sur'],'label':K('공격 속도·치명타 피해 보너스·추가 화살 1티어','T1 attack speed, crit damage bonus or additional arrow')},
       'keepP':{'anyOf':['pp','fl','ele']},'keepS':{'anyOf':['proj','cc']},'keepS3':{'anyOf':['proj','cc','last']}}
-PP=it('p','물리 피해 (155—169)% 증가 (분열)','(155—169)% increased Physical Damage (fractured)',['pp'])   # 영상 완성품 = 2티어 분열(165%)
+PP=it('p','물리 피해 (155—169)% 증가 (분열)','(155—169)% increased Physical Damage (fractured)')   # 영상 = 2티어 165% 분열. 태그를 붙이면 칸에 1~2티어(155—179)로 보여 글로만 둠(티어는 태그 pp·완성품 카드가 2티어로 맞춤)   # 영상 완성품 = 2티어 분열(165%)
 PPM=lambda m='n': it('p','물리 피해 (155—169)% 증가','(155—169)% increased Physical Damage',['ppm'],m)
 FLE=it('p','물리 피해 (16—24)~(28—42) 추가 (상위 마모의 에센스)','Adds (16—24) to (28—42) Physical Damage (Greater Essence of Abrasion)',['fle'],'c')
 FL=it('p','물리 피해 (26—39)~(44—66) 추가','Adds (26—39) to (44—66) Physical Damage',['fl']); CO=it('p','냉기 피해 (72—81)~(110—123) 추가','Adds (72—81) to (110—123) Cold Damage',['co'])
