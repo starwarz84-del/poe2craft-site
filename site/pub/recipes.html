@@ -425,7 +425,7 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .vtabs button span{font-family:var(--f-mono);font-size:11px;color:var(--faint)}
 .vtabs button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--rare);font-weight:600}
 .tipnote{margin:0 0 12px;font-size:12.5px;color:var(--muted)}
-.tips{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.tips{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;align-items:start}
 .tip{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
 .tip h3{margin:0;font-size:15px;line-height:1.4;text-wrap:balance}
 .tip p{margin:0;font-size:13px;line-height:1.6;color:color-mix(in srgb,var(--fg) 85%,var(--muted))}
@@ -434,6 +434,26 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .tfoot{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);margin-top:auto;padding-top:4px}
 .tfoot a{color:var(--rare)}
 .rtips{margin:18px 0 0}
+/* 제작 꿀팁 공통 형식(사용자 확정 2026-11-12): 제목 · 언제 · 방법 · 이유·비용·주의 · 분류 */
+.tipbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px}
+.tipbar input{flex:1 1 220px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);font:inherit}
+.tipbar select{padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);font:inherit}
+.tipstages{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.tipstages button{padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;cursor:pointer}
+.tipstages button[aria-pressed="true"]{color:var(--fg);border-color:var(--rare)}
+.tipstages small{opacity:.7;margin-left:3px}
+.tipsec{margin:16px 0 8px;font-size:13px;color:var(--rare);font-weight:600}
+.tip .twhen{font-size:13px;color:var(--muted);margin:0}
+.tip details{font-size:13px}
+.tip details summary{cursor:pointer;color:var(--muted);font-size:12px;list-style:none}
+.tip details summary::-webkit-details-marker{display:none}
+.tip details summary::before{content:'▸ ';}
+.tip details[open] summary::before{content:'▾ ';}
+.tsteps{margin:6px 0 4px;padding-left:20px;line-height:1.6}
+.tnote{margin:2px 0;line-height:1.55}.tnote b{font-weight:600;margin-right:6px;color:var(--fg)}
+.tnote.warn b{color:var(--warn,#e0a050)}.tnote.cost b{color:var(--rare)}
+.tcur{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.tcur span{font-size:11.5px;padding:1px 7px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+.tipempty{color:var(--muted);font-size:13px;padding:12px 0}
 .rt.jack{border-color:color-mix(in srgb,var(--rare) 60%,var(--line))} .rt.jack b{color:var(--rare)}
 .nt.liqt{color:#9fd0ff}
 .pdfbox{position:absolute;left:-10000px;top:0;width:880px;padding:24px;background:var(--bg);color:var(--fg);display:flex;flex-direction:column;gap:16px}
@@ -1039,7 +1059,7 @@ const icon = (id, r) => { CUR_R=r||CUR_R; const c=cur(id); return c.icon ? `<img
     if(x+w>innerWidth-8) x=Math.max(8,e.clientX-w-14); if(y+h>innerHeight-8) y=Math.max(8,e.clientY-h-16); tip.style.left=x+'px'; tip.style.top=y+'px'; };
   const show = (t, e) => { if(t===on) return; on=t;
     if(!t){ tip.style.display='none'; return; }
-    if(t.dataset.tipid){ const x=S.tips.find(y=>y.id===t.dataset.tipid); if(!x){ tip.style.display='none'; return; } tip.innerHTML=`<b>#${S.tips.indexOf(x)+1} ${esc(tx(x.title))}</b><div>${esc(tx(x.body))}</div>`; tip.style.display='block'; place(e); return; }
+    if(t.dataset.tipid){ const x=S.tips.find(y=>y.id===t.dataset.tipid || (y.alias||[]).includes(t.dataset.tipid)); if(!x){ tip.style.display='none'; return; } tip.innerHTML=`<b>#${S.tips.indexOf(x)+1} ${esc(tx(x.title))}</b>${x.when?`<div>${esc(tx(x.when))}</div><ol class="tsteps">${(x.steps||[]).map(y=>`<li>${esc(tx(y))}</li>`).join('')}</ol>`:`<div>${esc(tx(x.body))}</div>`}`; tip.style.display='block'; place(e); return; }
     const c=cur(t.dataset.cid), fx=KR()?(c.fx||''):(c.fxen||c.fx||'');
     tip.innerHTML=`<div class="ci-row">${c.icon?`<img src="${c.icon}" alt="">`:''}<div><b>${esc(nm(c))}</b>${fx?`<div>${esc(fx)}</div>`:''}</div></div>`;
     tip.style.display='block'; place(e); };
@@ -1239,7 +1259,7 @@ function nodeHTML(r, o, i, idx){
   const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : n.compromise && !o.pUnknown && o.p<0.995 ? `<div class="pr">${L('타협 가능','Can settle')}<small>${L('1회 시도','1 attempt')} · ${pct(o.p)}</small>${o.settleK?`<small>${L('다시 하면 평균','retry avg')} ${fmt(o.settleK)}${L('회','×')}${(()=>{ const d=divOf(o.settleUse); return d && d.v>=0.005 ? ` · ${L('약','≈')} ${fmtDiv(d.v)} div` : ''; })()}</small>`:''}</div>` : o.pUnknown||o.pDep ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산함. 일반 옵션은 원래 가중치 그대로.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
   const dn = doneSet(r).has(n.id);
   return `<li class="node ${n.optional?'opt':''} ${dn?'done':''}" data-node="${esc(n.id)}"><div class="nbody"><span class="n"><button type="button" class="tick" data-done="${esc(n.id)}" aria-pressed="${dn}" title="${esc(L('완료 표시','Mark done'))}">${dn?'✓':idx}</button></span><div class="what">${head}${n.optional?`<span class="optl">${L('선택','optional')}</span>`:''}${ts}</div>${pr}
-    ${tgt?`<div class="tgt">${tgt}</div>`:''}${fcRows}${fail}${grade}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${(n.tips||[]).filter(id=>!_tipSeen || (!_tipSeen.has(id) && _tipSeen.add(id))).map(id=>{ const k=S.tips.findIndex(t=>t.id===id); return k<0?'':`<div class="tipref" data-tipid="${esc(id)}" tabindex="0">💡 ${L('제작 꿀팁','Tip')} #${k+1}</div>`; }).join('')}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 옵션 하나뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}${divHTML(divOf(o.use))}</div>`:''}</div>
+    ${tgt?`<div class="tgt">${tgt}</div>`:''}${fcRows}${fail}${grade}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${(n.tips||[]).filter(id=>!_tipSeen || (!_tipSeen.has(id) && _tipSeen.add(id))).map(id=>{ const k=S.tips.findIndex(t=>t.id===id || (t.alias||[]).includes(id)); return k<0?'':`<div class="tipref" data-tipid="${esc(id)}" tabindex="0">💡 ${L('제작 꿀팁','Tip')} #${k+1}</div>`; }).join('')}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 옵션 하나뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}${divHTML(divOf(o.use))}</div>`:''}</div>
 </li>`;
 }
 // ---------- flow layout: success / miss routes as chips, side paths as indented boxes (no free-floating arrows) ----------
@@ -2094,14 +2114,36 @@ function render(){ document.documentElement.lang = KR()?'ko':'en'; renderBar(); 
 // general tips that are not tied to one item: each keeps its source (with time) and the recipes that use it
 const tsSec = ts => ts ? ts.split(':').reduce((s,x)=>s*60+(+x),0) : 0;
 const tipSrc = t => t.source ? `<a class="tsrc" href="${esc(t.source.url)}${/youtu/.test(t.source.url)&&t.source.ts?`&t=${tsSec(t.source.ts)}s`:''}" target="_blank" rel="noopener">${esc(t.source.channel||'')}${t.source.ts?` · ▶ ${esc(t.source.ts)}`:''} ↗</a>` : '';
+const tipStageName = id => { const x=(S.tipMeta?.stages||[]).find(y=>y.id===id); return x?tx(x):''; };
 function tipCard(t, compact){
-  const recs = (t.recipes||[]).map(id=>S.recipes.find(r=>r.id===id)).filter(Boolean);
-  return `<article class="tip ${compact?'sm':''}"><div class="ttags">${(t.tags||[]).map(x=>`<span class="tag">${esc(tx(x))}</span>`).join('')}<span class="tag pt">${L('패치','Patch')} ${esc(t.patch||'')}</span></div>
-    <h3><span class="tipno">#${S.tips.indexOf(t)+1}</span> ${esc(tx(t.title))}</h3><p>${esc(tx(t.body))}</p>
-    <div class="tfoot">${tipSrc(t)}${!compact&&recs.length?`<span class="trec">${L('사용한 레시피','Used in')}: ${recs.map(r=>`<a href="#r-${esc(r.id)}" data-open="${esc(r.id)}">${esc(baseName(r))}</a>`).join(', ')}</span>`:''}</div></article>`;
+  const recs = (t.recipes||[]).map(id=>S.recipes.find(r=>r.id===id)).filter(Boolean), NK=S.tipMeta?.notes||{};
+  const srcs = (t.sources&&t.sources.length?t.sources:(t.source?[t.source]:[]));
+  const srcH = srcs.map(x=>tipSrc({source:x})).join('');
+  const inner = t.when ? `<ol class="tsteps">${(t.steps||[]).map(x=>`<li>${esc(tx(x))}</li>`).join('')}</ol>${(t.notes||[]).map(n=>`<p class="tnote ${n.k}"><b>${esc(tx(NK[n.k]||{kr:'',en:''}))}</b>${esc(tx(n))}</p>`).join('')}${(t.cur||[]).length?`<div class="tcur">${t.cur.map(c=>`<span>${esc(curName(c))}</span>`).join('')}</div>`:''}` : `<p>${esc(tx(t.body))}</p>`;
+  return `<article class="tip ${compact?'sm':''}"><div class="ttags">${(t.when && !compact ? (t.tags||[]).slice(1) : (t.tags||[])).map(x=>`<span class="tag">${esc(tx(x))}</span>`).join('')}<span class="tag pt">${L('패치','Patch')} ${esc(t.patch||'')}</span></div>
+    <h3><span class="tipno">#${S.tips.indexOf(t)+1}</span> ${esc(tx(t.title))}</h3>${t.when?`<p class="twhen">${esc(tx(t.when))}</p>`:''}
+    <details><summary>${L('방법·이유 보기','Steps and notes')}</summary>${inner}
+    <div class="tfoot">${srcH}${!compact&&recs.length?`<span class="trec">${L('사용한 레시피','Used in')}: ${recs.map(r=>`<a href="#r-${esc(r.id)}" data-open="${esc(r.id)}">${esc(baseName(r))}</a>`).join(', ')}</span>`:''}</div></details></article>`;
 }
-function renderTips(){
-  $('#tipsView').innerHTML = `<p class="tipnote">${L('아이템과 상관없이 두루 쓰이는 제작 팁 모음','Tips that apply beyond a single item, collected from the recipe videos.')}</p><div class="tips">${S.tips.map(t=>tipCard(t)).join('')}</div>`;
+/* 커런시 이름: 한글 화면은 게임 데이터 이름 그대로, 영문은 crafting.json의 영문 이름 */
+function curName(kr){ if(KR()) return kr; const C=S.craft; let en=null; const walk=x=>{ if(en||!x) return; if(Array.isArray(x)) return x.forEach(walk); if(typeof x==='object'){ if(x.kr===kr && typeof x.en==='string'){ en=x.en; return; } Object.values(x).forEach(walk); } }; walk(C); return en||kr; }
+function tipMatch(t, q){ if(!q) return true; const hay=[t.title,t.when,t.body,...(t.steps||[]),...(t.notes||[])].map(x=>x?(x.kr+' '+x.en):'').join(' ')+' '+(t.cur||[]).join(' ')+' '+(t.cur||[]).map(curName).join(' '); return q.toLowerCase().split(/\s+/).filter(Boolean).every(w=>hay.toLowerCase().includes(w)); }
+function renderTipList(){ const q=(S.tipQ||'').trim(), st=S.tipStage||'', pt=S.tipPart||'';
+  const list=S.tips.filter(t=>(!st||t.stage===st) && (!pt || t.part===pt || (pt!=='all' && t.part==='all')) && tipMatch(t,q));
+  const stages=(S.tipMeta?.stages||[]).filter(x=>list.some(t=>t.stage===x.id));
+  const el=$('#tipList'); if(!el) return;
+  el.innerHTML = list.length ? stages.map(x=>`<h3 class="tipsec">${esc(tx(x))} <small>${list.filter(t=>t.stage===x.id).length}</small></h3><div class="tips">${list.filter(t=>t.stage===x.id).map(t=>tipCard(t)).join('')}</div>`).join('') + (list.some(t=>!t.stage)?`<div class="tips">${list.filter(t=>!t.stage).map(t=>tipCard(t)).join('')}</div>`:'') : `<p class="tipempty">${L('맞는 꿀팁 없음','No matching tips')}</p>`;
+  const sb=$('#tipStages'); if(sb) sb.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed', String((b.dataset.st||'')===st))); }
+function renderTips(){ const M=S.tipMeta||{stages:[],parts:[]}, cnt=id=>S.tips.filter(t=>t.stage===id).length;
+  $('#tipsView').innerHTML = `<p class="tipnote">${L('아이템과 상관없이 두루 쓰이는 제작 팁 모음','Tips that apply beyond a single item, collected from the recipe videos.')}</p>
+    <div class="tipbar"><input type="search" id="tipQ" placeholder="${esc(L('꿀팁 검색 (예: 절사, 분열, 심연의 에센스)','Search tips (e.g. Whittling, fracture, Abyss)'))}" aria-label="${esc(L('꿀팁 검색','Search tips'))}" value="${esc(S.tipQ||'')}">
+    <select id="tipPart" aria-label="${esc(L('부위','Item type'))}"><option value="">${L('모든 부위','All item types')}</option>${(M.parts||[]).filter(p=>p.id!=='all').map(p=>`<option value="${p.id}" ${S.tipPart===p.id?'selected':''}>${esc(tx(p))}</option>`).join('')}</select></div>
+    <div class="tipstages" id="tipStages"><button type="button" data-st="">${L('전체','All')}<small>${S.tips.length}</small></button>${(M.stages||[]).map(x=>`<button type="button" data-st="${x.id}">${esc(tx(x))}<small>${cnt(x.id)}</small></button>`).join('')}</div>
+    <div id="tipList"></div>`;
+  renderTipList();
+  $('#tipQ').addEventListener('input', e=>{ S.tipQ=e.target.value; renderTipList(); });
+  $('#tipPart').addEventListener('change', e=>{ S.tipPart=e.target.value; renderTipList(); });
+  $('#tipStages').addEventListener('click', e=>{ const b=e.target.closest('button[data-st]'); if(!b) return; S.tipStage=b.dataset.st; renderTipList(); });
 }
 
 // ---------- routing / sharing ----------
@@ -2409,7 +2451,7 @@ async function boot(){
   [S.prices, S.budget, S.trade, S.boardRaw] = await Promise.all(['prices','budget','trade','board'].map(f=>fetch(`data/${f}.json`).then(r=>r.ok?r.json():null).catch(()=>null)));
   // 요약이 지금 레시피와 같을 때만 씀(레시피 내용 해시 비교), 사용자가 비용을 바꾼 레시피는 원래 계산
   S.board={}; if(S.boardRaw?.r) for(const r of rec.recipes){ const b=S.boardRaw.r[r.id]; if(b && b.h===recHash(r) && !store.get('cost:'+r.id,null)) S.board[r.id]=b; }
-  S.tips = tips.tips||[];
+  S.tips = tips.tips||[]; S.tipMeta = {stages:tips.stages||[], parts:tips.parts||[], notes:tips.notes||{}};
   S.index=idx; S.craft=craft; for(const k in craft) for(const x of craft[k]) S.byId[x.id]=x;
   S.recipes = rec.recipes.map(r=>({likes:0, success:0, ...r}));
   const drafts = PREVIEW ? [] : store.get('drafts',[]).filter(r=>r && /^draft-/.test(r.id) && Array.isArray(r.nodes)).flatMap(unpackDraft);

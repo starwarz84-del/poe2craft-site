@@ -436,5 +436,22 @@ T+=[
   'source':{'url':'https://www.youtube.com/watch?v=swF5mwXmZ0k','title':'How to Craft the Best Body Armours and Sell Them for Big Profit in Path of Exile 2','channel':'Unstoppable BTW'},'recipes':['unstoppable-vile-robe','unstoppable-slipstrike-vest']},
 ]
 for t in T: t['recipes']=[r for r in t.get('recipes',[]) if r not in ('gold-amulet-6line',)]   # 내린 레시피(build_recipes.py REMOVED)
-json.dump({'v':1,'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
+# 공통 형식으로 다시 씀(사용자 확정 2026-11-12) — 글은 tips_text.py, 출처·레시피·패치는 위 T(합친 꿀팁은 모두 모음)
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from tips_text import TIPS, STAGES, PARTS, NOTE
+OLD = {t['id']:t for t in T}; SK = {k:(kr,en) for k,kr,en in STAGES}
+NEW = []
+for x in TIPS:
+    ids = [x['id'], *x['alias']]; olds = [OLD[i] for i in ids]
+    srcs = []; [srcs.append(o['source']) for o in olds if o.get('source') and o['source'] not in srcs]
+    recs = []; [recs.append(r) for o in olds for r in o.get('recipes',[]) if r not in recs]
+    st = SK[x['stage']]; pt = PARTS[x['part']]; det = x['detail']
+    steps = [K(*a) for a in x['steps']]; notes = [{'k':k, **K(kr,en)} for k,kr,en in x['notes']]
+    body = K(' '.join([x['when'][0], *[a[0] for a in x['steps']], *[n[1] for n in x['notes']]]), ' '.join([x['when'][1], *[a[1] for a in x['steps']], *[n[2] for n in x['notes']]]))   # 검색·옛 화면용
+    NEW.append({'id':x['id'], 'alias':x['alias'], 'stage':x['stage'], 'part':x['part'], 'detail':K(*det) if det else None, 'cur':x['cur'],
+                'tags':[K(*st), K(*(det or pt))], 'patch':olds[0].get('patch','0.5.5'), 'title':K(*x['title']), 'when':K(*x['when']), 'steps':steps, 'notes':notes, 'body':body,
+                'source':srcs[0] if srcs else None, 'sources':srcs, 'recipes':recs})
+order = {k:i for i,(k,_,_) in enumerate(STAGES)}; NEW.sort(key=lambda t: order[t['stage']])
+T = NEW
+json.dump({'v':2,'stages':[{'id':k,'kr':kr,'en':en} for k,kr,en in STAGES],'parts':[{'id':k,'kr':v[0],'en':v[1]} for k,v in PARTS.items()],'notes':{k:K(*v) for k,v in NOTE.items()},'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
 print(len(T),'tips')
