@@ -49,11 +49,11 @@
 | diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-GDLDxn6yxEs.md). C17: 에센셜은 공개 나오는 대로(영상과 같음). 149/24/3 |
 | bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 완료 11-12 | A(Opus) | 글 다시 확인(6/22판), 가성비 길 단계 일치(기록 tools/notes/web-bigdaddy-wand.md). 완성품 임의 문구를 태그로. 비용 그대로 |
 | ragna-spell4-amulet-v2 | Tzpdm8M-Pkk | bal 118, ess 27 | 0 | 완료 11-12 | A(Opus) | 자막 전체(3:34) 대조, 단계 일치(기록 tools/notes/ragna-Tzpdm8M-Pkk.md). C17도 맞음. 변경 없음 |
-| mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 대기 |  |  |
-| fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 대기 |  |  |
-| diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 대기 |  |  |
-| diztoh-vile-robe-v2 | n97yEuKSWyM | bal 105, ess 51 | 0 | 대기 |  |  |
-| sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 대기 |  |  |
+| mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 진행 중 | A(Opus) |  |
+| fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 진행 중 | A(Opus) |  |
+| diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 진행 중 | A(Opus) |  |
+| diztoh-vile-robe-v2 | n97yEuKSWyM | bal 105, ess 51 | 0 | 진행 중 | A(Opus) |  |
+| sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 진행 중 | A(Opus) |  |
 | sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 98, ess 26 | 0 | 대기 |  |  |
 | sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 97, ess 23 | 1 | 대기 |  |  |
 | diztoh-5mod-sapphire-v2 | -YZm55-QuoQ | bal 95, ess 43 | 0 | 대기 |  |  |
