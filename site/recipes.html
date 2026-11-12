@@ -543,6 +543,14 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcn .fcs b{color:var(--rare)}
 .fcn.k-task{border:1px solid color-mix(in srgb,var(--muted) 55%,var(--line));border-radius:8px;background:var(--panel-2);display:flex;flex-direction:column;overflow:hidden}
 .fcn.k-task.k-clean{background:var(--panel)}
+.fcn.k-fold{border-color:#b9a2ff88}
+.lpn{font-size:12.5px;color:var(--muted);display:grid;gap:2px;margin-top:4px}.lpn b{color:#d5c8ff;font-weight:600;margin-right:6px}.lpn .w b{color:var(--warn)}
+.fcfold{list-style:none;margin:2px 0 0;padding:0 12px;counter-reset:fs;display:grid;gap:6px;font-size:12.5px}
+.fcfold li{counter-increment:fs;display:flex;align-items:flex-start;gap:10px;color:var(--fg);line-height:18px}
+.fcfold li::before{content:counter(fs);flex:none;width:16px;height:16px;margin-top:1px;border-radius:50%;border:1px solid var(--line);color:var(--muted);font-size:10.5px;line-height:15px;text-align:center}
+.fcfold .ft{flex:1;min-width:0}
+.fcfold .fu{flex:none;white-space:nowrap;color:var(--muted);display:flex;align-items:center;gap:2px}.fcfold .fu b{color:var(--rare);margin:0 1px}.fcfold .fu img{width:16px;height:16px}.fcfold .dot{margin:0 4px}
+.fcworst{margin:6px 12px 10px;padding-top:6px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--warn)}.fcworst b{font-weight:600}
 .fch{display:flex;gap:8px;align-items:center;padding:9px 12px 4px}
 .fch em{font-style:normal;flex:none;display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 4px;border-radius:5px;background:var(--line);color:var(--fg);font-size:12px;font-weight:600}
 .fch .sep{color:var(--faint)}
@@ -1288,7 +1296,7 @@ function nodeHTML(r, o, i, idx){
   const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : n.compromise && !o.pUnknown && o.p<0.995 ? `<div class="pr">${L('타협 가능','Can settle')}<small>${L('1회 시도','1 attempt')} · ${pct(o.p)}</small>${o.settleK?`<small>${L('다시 하면 평균','retry avg')} ${fmt(o.settleK)}${L('회','×')}${(()=>{ const d=divOf(o.settleUse); return d && d.v>=0.005 ? ` · ${L('약','≈')} ${fmtDiv(d.v)} div` : ''; })()}</small>`:''}</div>` : o.pUnknown||o.pDep ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산함. 일반 옵션은 원래 가중치 그대로.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
   const dn = doneSet(r).has(n.id);
   return `<li class="node ${n.optional?'opt':''} ${dn?'done':''}" data-node="${esc(n.id)}"><div class="nbody"><span class="n"><button type="button" class="tick" data-done="${esc(n.id)}" aria-pressed="${dn}" title="${esc(L('완료 표시','Mark done'))}">${dn?'✓':idx}</button></span><div class="what">${head}${n.optional?`<span class="optl">${L('선택','optional')}</span>`:''}${ts}</div>${pr}
-    ${tgt?`<div class="tgt">${tgt}</div>`:''}${fcRows}${fail}${grade}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${stepTipsHTML(r,o)}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 옵션 하나뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}${divHTML(divOf(o.use))}</div>`:''}</div>
+    ${tgt?`<div class="tgt">${tgt}</div>`:''}${n.loopNote?`<div class="lpn">${n.loopNote.goal?`<div><b>${L('반복 목표','Loop goal')}</b> ${esc(tx(n.loopNote.goal))}</div>`:''}${n.loopNote.worst?`<div class="w"><b>${L('최악의 경우','Worst case')}</b> ${esc(tx(n.loopNote.worst))}</div>`:''}</div>`:''}${fcRows}${fail}${grade}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${stepTipsHTML(r,o)}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 옵션 하나뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}${divHTML(divOf(o.use))}</div>`:''}</div>
 </li>`;
 }
 // ---------- flow layout: success / miss routes as chips, side paths as indented boxes (no free-floating arrows) ----------
@@ -1612,7 +1620,7 @@ function nodeCur(n){ const ids=[...(n.curIf||[]), n.cur, ...(n.omens||[])].filte
   const uniq=[...new Set(ids)], txt=uniq.map(id=>nm(cur(id))).join(' + ') + (tr.length ? ' + '+tr.map(id=>nm(cur(id))).join(L(' 또는 ',' or ')) : '');
   return {html: [...uniq, ...tr].map(id=>icon(id)).join('') + esc(txt), title: txt}; }
 // flowchart layout: top → down, main path in the first column, branches to the right, orthogonal edges with rounded corners
-const FX={W:540, WB:330, GAPX:118, LANE:330, LANEGAP:40, ROWGAP:44, GROUPGAP:110, PAD:22, DW:150, DH:66, DGAP:18, CW:200, CH:104, STUB:14, R:9};
+const FX={W:540, WB:330, GAPX:118, LANE:330, LANEGAP:40, ROWGAP:44, GROUPGAP:110, PAD:22, DW:150, DH:66, DGAP:18, CW:200, CH:104, STUB:14, R:9, EDGE:9};   /* EDGE = 선과 상자 테두리 사이 최소 간격 */
 let _fcCtx; const fcText = (t, px) => { try{ _fcCtx=_fcCtx||document.createElement('canvas').getContext('2d'); _fcCtx.font=`${px}px ${getComputedStyle(document.body).getPropertyValue('--f-body')||'sans-serif'}`; return Math.ceil(_fcCtx.measureText(t).width); }catch(e){ return fcLen(t)*px/12; } };
 const fcLen = s => [...String(s||'')].reduce((w,ch)=>w+(ch.charCodeAt(0)>0x2e80?12:7),0);
 // a work step this version never reaches (0 visits in its simulation) is left out of its flowchart
@@ -1640,7 +1648,9 @@ function fcWant(g, n, params){ const out=[]; const ov=(n.showIf||[]).find(o=>Obj
   if(n.target) out.push(`<b class="sd">${L('목표','Goal')}</b> : ${esc(tx(n.target))}`);
   (n.showText||[]).forEach(t=>out.push(t.s ? `<b class="sd">${t.s==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${esc(tx(t))}` : esc(tx(t))));
   return out; }
+const fcFoldRows = (n, W) => n.fold.steps.map(x=>Math.max(1,Math.ceil(fcLen(tx(x))*0.93/Math.max(120, W-26-150))));   /* 접힌 루프 상자의 순서 줄마다 몇 줄인지(오른쪽 150px = 커런시·평균 개수) */
 function fcSize(n, M, g, params, cap){ let W = n.pos[0]===0 ? FX.W : FX.WB;
+  if(n.fold){ const goalL=Math.max(1,Math.ceil(fcLen(tx(n.fold.goal||''))*1.02/((W-26)/1.12))); return [W, 40 + (n.fold.goal?goalL*20+6:0) + 8 + fcFoldRows(n, W).reduce((t,k)=>t+k*18+6,0) + (n.fold.worst?Math.ceil(fcLen(tx(n.fold.worst))*1.02/(W-40))*18+12:0) + 12]; }
   if(n.curRows) W=Math.max(W, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcText(tx(rw)+' → ', 12.5)+6+ids.length*18+fcText(ids.map(id=>nm(cur(id))).join(' + '), 12.5)+fcText('확률 25% · 평균 4.0개', 12.5)+24+28; })); if((n.kind==='act'||n.kind==='cleanup') && !n.curRows){ const c=nodeCur(n); W=Math.max(W, Math.min(n.pos[0]===0 ? FX.W : 1100, (n.pos[0]===0?16:60)+((n.cur?1:0)+(n.omens||[]).length+(n.trim?2:0))*18+fcText(c.title,12.5)*(n.pos[0]===0?1:1.1)+fcText('확률 25% · 평균 4.0개',12.5)), n.pos[0]===0 ? 0 : Math.min(1100, fcText(tx(n.goal||n.label||''),14)+76)); }
   // 사용자 확정 2026-11-10: a right-hand box (A, B …) with nothing further right on its row grows to fit its text; with an a-box beside it, it keeps the column width (ellipsis)
   if(cap) W=Math.min(W, FX.WB); if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
@@ -1685,7 +1695,7 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
   const l0=Lay.colX[Lay.colIds[0]]; [14,24,34].forEach(o=>cxs.push(l0-o));
   const cys=[]; Lay.rowSpan.forEach((s,i)=>{ const nx=Lay.rowSpan[i+1]; const mid = nx ? (s[1]+nx[0])/2 : s[1]+20; [-16,-8,0,8,16].forEach(o=>cys.push(mid+o)); });
   const hit=(a,b)=>{ let n=0; const x0=Math.min(a[0],b[0]), x1=Math.max(a[0],b[0]), y0=Math.min(a[1],b[1]), y1=Math.max(a[1],b[1]);
-    for(const r of rects) if(x1>r.x-4 && x0<r.x+r.w+4 && y1>r.y-4 && y0<r.y+r.h+4) n++; return n; };
+    for(const r of rects) if(x1>r.x-FX.EDGE && x0<r.x+r.w+FX.EDGE && y1>r.y-FX.EDGE && y0<r.y+r.h+FX.EDGE) n++; return n; };   /* 상자 테두리와 맞닿거나 따라가는 선도 상자를 지나는 것으로 셈(사용자 2026-11-12: 장갑 11.A → 12) */
   const overlap=(a,b,tid,ln)=>{ let p=0; for(const [c,d,t2,l2] of placed){ const same = t2===tid || (ln && l2===ln); if(a[0]===b[0] && c[0]===d[0] && Math.abs(a[0]-c[0])<16){ const k = same ? (Math.abs(a[0]-c[0])<0.5 ? -0.4 : 30) : 30; const o=Math.min(Math.max(a[1],b[1]),Math.max(c[1],d[1]))-Math.max(Math.min(a[1],b[1]),Math.min(c[1],d[1])); if(o>0) p+=o*k; }
       else if(a[1]===b[1] && c[1]===d[1] && Math.abs(a[1]-c[1])<16){ const k = same ? (Math.abs(a[1]-c[1])<0.5 ? -0.4 : 30) : 30; const o=Math.min(Math.max(a[0],b[0]),Math.max(c[0],d[0]))-Math.max(Math.min(a[0],b[0]),Math.min(c[0],d[0])); if(o>0) p+=o*k; } } return p; };
   const clean=pts=>{ const o=[]; for(const p of pts){ const q=o[o.length-1]; if(q && Math.abs(q[0]-p[0])<0.5 && Math.abs(q[1]-p[1])<0.5) continue; o.push(p); }
@@ -1720,7 +1730,7 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
     cand.sort((p,q)=>p.lb-q.lb);
     for(const c of cand){ if(best && c.lb>=best.sc) break; const {pts,k,d0,dl}=c;
         let coll=0, ov=0; for(let i=0;i<k-1;i++){ const a=pts[i], b=pts[i+1];
-          if(i>0 && i<k-2) coll+=hit(a,b); else { const a2 = i===0 ? [a[0]+d0[0]*6, a[1]+d0[1]*6] : a, b2 = i===k-2 ? [b[0]-dl[0]*6, b[1]-dl[1]*6] : b; if(Math.abs(a2[0]-b2[0])+Math.abs(a2[1]-b2[1])>2 && Math.sign(b2[0]-a2[0])===Math.sign(b[0]-a[0]) && Math.sign(b2[1]-a2[1])===Math.sign(b[1]-a[1])) coll+=hit(a2,b2); }
+          if(i>0 && i<k-2) coll+=hit(a,b); else { const a2 = i===0 ? [a[0]+d0[0]*(FX.EDGE+2), a[1]+d0[1]*(FX.EDGE+2)] : a, b2 = i===k-2 ? [b[0]-dl[0]*(FX.EDGE+2), b[1]-dl[1]*(FX.EDGE+2)] : b; if(Math.abs(a2[0]-b2[0])+Math.abs(a2[1]-b2[1])>2 && Math.sign(b2[0]-a2[0])===Math.sign(b[0]-a[0]) && Math.sign(b2[1]-a2[1])===Math.sign(b[1]-a[1])) coll+=hit(a2,b2); }
           ov+=overlap(a,b,T.id,e.lane); for(const L of loopR) if(!L.ids.has(e.a) && !L.ids.has(e.b) && segIn(a,b,L.R)) coll+=0.5; }
         let sc=coll*5000 + c.len + ov + c.fixed; if(best && sc>=best.sc) continue;
         let cross=0; for(let i=0;i<k-1;i++){ const a=pts[i], b=pts[i+1]; for(const [cc,d,t2,l2] of placed){ const v1=a[0]===b[0], v2=cc[0]===d[0]; if(v1===v2 || t2===T.id || (e.lane && l2===e.lane)) continue;
@@ -1729,7 +1739,18 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
         if(!best || sc<best.sc) best={sc, pts}; }
       return best; };
     let best=tryRoute(e.enter ? [e.enter] : T.col===0 ? ['top'] : ['top','left']); if(!best) best=tryRoute(['top','left']);
-    e.pts=best.pts; for(let i=0;i<best.pts.length-1;i++) placed.push([best.pts[i],best.pts[i+1],T.id,e.lane,e]); };
+    e.pts=unjog(best.pts); for(let i=0;i<e.pts.length-1;i++) placed.push([e.pts[i],e.pts[i+1],T.id,e.lane,e]); };
+  /* 직선 도중의 짧은 턱(평행한 두 선 사이 12px 이하 꺾임)을 없앰 — 앞이나 뒤 평행 구간을 다른 쪽 높이로 옮겨 봄, 상자에 닿으면 그대로(사용자 2026-11-12: 장갑 13 → 13.B) */
+  function unjog(pts){ let p=pts.map(q=>[q[0],q[1]]);
+    for(let guard=0; guard<6; guard++){ let done=false;
+      for(let i=1;i+2<p.length && !done;i++){ const a=p[i], b=p[i+1], k=a[0]===b[0] ? 1 : 0, L0=Math.abs(b[k]-a[k]); if(L0<0.5 || L0>12) continue;   /* k = 턱이 움직이는 축 */
+        const pa=p[i-1], pb=p[i+2]; if(pa[k]!==a[k] || pb[k]!==b[k]) continue; if(Math.sign(a[1-k]-pa[1-k])!==Math.sign(pb[1-k]-b[1-k])) continue;   /* 앞뒤가 같은 방향으로 평행할 때만 */
+        const tryMove=(from,to,v)=>{ const q=p.map(x=>[...x]); for(let j=from;j<=to;j++) q[j][k]=v; for(let j=Math.max(1,from-1); j<=Math.min(q.length-1,to+1); j++){ const s0=q[j-1], s1=q[j]; if(s0[0]!==s1[0] && s0[1]!==s1[1]) return null; if(j>1 && j<q.length-1 && hit(s0,s1)) return null; } return q; };
+        let q = i-1>=1 && p[i-2][k]!==pa[k] && Math.sign(b[k]-p[i-2][k])===Math.sign(pa[k]-p[i-2][k]) ? tryMove(i-1, i, b[k]) : null;   /* 앞 평행 구간을 뒤 높이로 */
+        if(!q && i+2<=p.length-2 && p[i+3][k]!==pb[k] && Math.sign(p[i+3][k]-a[k])===Math.sign(p[i+3][k]-pb[k])) q=tryMove(i+1, i+2, a[k]);   /* 뒤 평행 구간을 앞 높이로 */
+        if(q){ const c=clean(q); if(c){ p=c; done=true; } } }
+      if(!done) break; }
+    return p; }
   order.forEach(routeOne);
   // second and third pass: each line is routed again knowing where every other line went, so a line drawn early can step out of the way of one drawn later
   for(let pass=0; pass<2; pass++) (pass%2 ? [...order].reverse() : order).forEach(e=>{ for(let i=placed.length-1;i>=0;i--) if(placed[i][4]===e) placed.splice(i,1); routeOne(e); }); }
@@ -1811,8 +1832,19 @@ function fcIlvl(g, r){ let gs; try{ gs=C(r).groups; }catch(e){ return g; } if(!g
   const tags={}; for(const [k,T] of Object.entries(g.tags||{})){ const G=T && T.gi!=null && T.tiers && T.lo==null ? gs[T.gi] : null;
     if(!G?.t){ tags[k]=T; continue; } const lo=Math.max(1, G.t.findIndex(x=>x[0]<=r.ilvl)+1); tags[k]= lo>1 && T.tiers[lo-1] ? {...T, lo} : T; }
   return {...g, tags}; }
+/* 접힌 루프(그래프 loops fold:true, 사용자 확정 2026-11-12 17:06): 소속 상자를 머리 상자 하나로 그림 — 시뮬·레시피 값은 그대로, 그림만.
+   밖으로 나가는 선 = 머리의 성공 선 + 최악의 경우(worst.to) 선 하나. 그 선의 통과 수는 소속 상자에서 worst.to로 간 수의 합 */
+function fcFold(g, res, vid){ const Ls=(g.loops||[]).filter(L=>L.fold && L.nodes?.length>=2); if(!Ls.length) return {g, res};
+  const byId=Object.fromEntries(g.nodes.map(n=>[n.id,n])), edges={...(res?.edges||{})}, gone={}, heads={};
+  Ls.forEach(L=>{ const h=L.nodes[0], mem=new Set(L.nodes); if(!byId[h]) return; L.nodes.slice(1).forEach(id=>gone[id]=h);
+    const H=byId[h], ok=(H.edges||[]).filter(e=>e.res==='ok' && !e.hide && !mem.has(e.to)), wt=L.worst?.to;
+    const es=[...ok]; if(wt && !mem.has(wt)){ es.push({to:wt, res:'fail', label:{kr:L.worst.kr, en:L.worst.en}}); let c=0; L.nodes.forEach(id=>{ c+=res?.edges?.[id+'>'+wt]||0; }); edges[h+'>'+wt]=c; }
+    heads[h]={...H, kind:H.kind==='cleanup'?'act':H.kind, fold:{...L, goal:L.goalBy?.[vid]||L.goal}, edges:es, next:undefined, skipTo:undefined, item:L.item||H.item}; });
+  const re=to=>gone[to]||to;
+  const nodes=g.nodes.filter(n=>!gone[n.id]).map(n=>heads[n.id] || (n.edges?.some(e=>gone[e.to]) || gone[n.next] ? {...n, edges:(n.edges||[]).map(e=>gone[e.to]?{...e, to:re(e.to)}:e), next:n.next&&re(n.next)} : n));
+  return {g:{...g, nodes, loops:(g.loops||[]).map(L=>L.fold && heads[L.nodes[0]] ? {...L, nodes:[L.nodes[0]], allNodes:L.nodes} : L)}, res:{...res, edges}}; }
 function fcOver(g, params){ return {...g, nodes:g.nodes.map(n=>{ const o=(n.over||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); return o ? {...n, ...o.set} : n; })}; }   // per-version node fields (same rule as sim.js)
-function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g0=fcOver(d.graph, s.params), g=fcIlvl(fcPrune(g0, res), r), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
+function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.graph, s.params), vid=(d.graph.versions||[]).find(v=>Object.entries(v.params).every(([k,x])=>String(s.params[k])===String(x)))?.id, {g, res}=fcFold(fcIlvl(fcPrune(g0, s.res), r), s.res, vid), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
   const n0=Object.fromEntries(g0.nodes.map(n=>[n.id,n]));   /* 선 순번(sim edgesI 'id#i')은 정리(prune) 전 상자의 edges 순서 */
   const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : p>0 ? (p*100).toFixed(2)+'%' : '0%';
   const st = id => res.nodes[id], ecount = (a,b) => res.edges?.[a+'>'+b]||0;
@@ -1863,7 +1895,9 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g0
     return `<path class="fce k-fwd skip side" d="M${x0},${y} L${b.x},${y}" marker-end="url(#fcm-side)"/>`; }).join('');
   // loops: one shaded area per loop (rows joined), its total use per finished item on a tag
   const loopsSvg=[], loopTags=[];
-  (g.loops||[]).forEach(Lp=>{ const mem=Lp.nodes.filter(id=>Lay.box[id] && stAny(id)); if(mem.filter(id=>/act|cleanup/.test(M.byId[id].kind)).length<2 || Lp.nodes.some(id=>M.byId[id]?.kind==='choice')) return; const P=18;
+  (g.loops||[]).forEach(Lp=>{ if(Lp.allNodes){ const B=Lay.box[Lp.nodes[0]]; if(!B) return; const li=(g.loops||[]).indexOf(Lp)%2, use={}; Lp.allNodes.forEach(id=>{ for(const k2 in st(id)?.use||{}) use[k2]=(use[k2]||0)+st(id).use[k2]; });   /* 접힌 루프: 구간 총 사용은 상자 아래 */
+      loopTags.push(`<div class="fclpt c${li}" style="right:${Lay.Wt-(B.x+B.w)-2}px;top:${B.y+B.h+14}px"><b>↺ ${esc(tx(Lp))}</b><span>${L('총 사용 (완성 1개당)','Total used (per finished item)')}</span>${Object.entries(use).filter(([,v])=>v>=0.005).sort((a2,b2)=>b2[1]-a2[1]).map(([k2,v])=>`<span class="cu" title="${esc(nm(cur(k2)))}">${icon(k2)}${fmt(v)}${L('개','')}</span>`).join('')}</div>`); return; }
+    const mem=Lp.nodes.filter(id=>Lay.box[id] && stAny(id)); if(mem.filter(id=>/act|cleanup/.test(M.byId[id].kind)).length<2 || Lp.nodes.some(id=>M.byId[id]?.kind==='choice')) return; const P=18;
     let R=[1e9,1e9,-1e9,-1e9]; mem.forEach(id=>[Lay.box[id], Lay.dia[id]].filter(Boolean).forEach(r=>{ R=[Math.min(R[0],r.x-P), Math.min(R[1],r.y-P), Math.max(R[2],r.x+r.w+P), Math.max(R[3],r.y+r.h+P)]; }));
     const ids=new Set(Lp.nodes); edges.filter(e=>ids.has(e.a) && ids.has(e.b) && e.pts).forEach(e=>e.pts.forEach(([px,py])=>{ R=[Math.min(R[0],px-14), Math.min(R[1],py-14), Math.max(R[2],px+14), Math.max(R[3],py+14)]; }));
     const li=(g.loops||[]).indexOf(Lp)%2;
@@ -1879,6 +1913,13 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g0
     if(n.kind==='exit') return `<div class="fcn k-exit v-${n.variant||'fail'} ${t?'':'off'}" style="${pos}"><b>${esc(tx(n.label))}</b>${n.note?`<span>${esc(tx(n.note))}</span>`:''}</div>`;
     if(n.kind==='side'){ const c=nodeCur(n); return `<div class="fcn k-task k-side" style="${pos}"><div class="fch"><b>${esc(tx(n.goal||n.label))}</b></div><div class="fcf"><div class="fc1"><span class="cn" title="${esc(c.title)}">${c.html}</span></div></div></div>`; }
     if(n.kind==='assume') return `<div class="fcn k-note ${t?'':'off'}" style="${pos}"><small>${L('별첨','Note')}</small><b>${esc(tx(n.label))}</b>${n.note?`<span>${esc(tx(n.note))}</span>`:''}</div>`;
+    if(n.fold){ const F=n.fold;
+      const li=F.steps.map((x,i)=>{ const N=n0[x.node]||M.byId[x.node]||{}, t2=stAny(x.node), ids=[...new Set([...(N.kind==='cleanup'?['Orb_of_Annulment']:[]), N.cur, ...(N.omens||[])].filter(Boolean))], k=N.kind==='cleanup'?'Orb_of_Annulment':N.cur, v=t2 ? (t2.use?.[k] ?? (t2.visits-(t2.skips||0))) : null;
+        return `<li><span class="ft">${esc(tx(x))}</span><span class="fu" title="${esc(ids.map(id=>nm(cur(id))).join(' + '))}">${ids.map(id=>icon(id)).join('')}${v!=null?`<span class="dot">·</span>${L('평균','avg')} <b>${fmt(v)}</b>${L('개','')}`:''}</span></li>`; }).join('');
+      return `<div class="fcn k-task k-fold ${t?'':'off'}" style="${pos}" title="${esc(tx(F))}">
+      <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b>${esc(tx(F))}</b></div>
+      ${F.goal?`<div class="fcw"><p><b class="sd">${L('목표','Goal')}</b> : ${esc(tx(F.goal))}</p></div>`:''}
+      <ol class="fcfold">${li}</ol>${F.worst?`<div class="fcworst"><b>${L('최악의 경우','Worst case')}</b> : ${esc(tx(F.worst))}</div>`:''}</div>`; }
     const c=nodeCur(n), tries=t ? (n.kind==='cleanup' ? t.visits : t.visits-(t.skips||0)) : 0;
     const outs=M.E.filter(e=>e.a===n.id && !e.skip), okE=[...new Set((n.edges||[]).filter(x=>x.res==='ok' && (n.pAll || !x.dash)).map(x=>x.to))].map(to=>({a:n.id, b:to})), hasRes=outs.some(e=>e.res);
     /* 성공 % = 성공으로 표시된 선을 지난 횟수(선마다 센 값 edgesI) — 같은 상자로 가는 건너뜀·타협 선은 성공이 아님(2026-11-12). 옛 sim 파일은 도착 상자 기준 */
@@ -1893,7 +1934,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g0
     // the totals stay available on hover; the box itself shows only the goal, the currency and the chance
     const LH=M.loopHead[n.id]; let tip=tx(n.label)+' — '+c.title;
     if(t) tip+=`\n${L('평균','avg')} ${fmt(n.kind==='cleanup'?(t.use?.Orb_of_Annulment||0):tries)}${L('회','×')} · ${L('도달','reached')} ${pct1(t.reach)} · ≈ ${fmtDiv(t.div)} div`;
-    if(LH && t){ const ids=new Set(LH.nodes); let dv=0; LH.nodes.forEach(id=>{ dv+=st(id)?.div||0; }); const into=M.E.filter(e=>ids.has(e.b) && !ids.has(e.a)).reduce((s2,e)=>s2+ecount(e.a,e.b),0);
+    if(LH && t){ const ids=new Set(LH.nodes); let dv=0; (LH.allNodes||LH.nodes).forEach(id=>{ dv+=st(id)?.div||0; }); const into=M.E.filter(e=>ids.has(e.b) && !ids.has(e.a)).reduce((s2,e)=>s2+ecount(e.a,e.b),0);
       tip+=`\n↺ ${tx(LH)}${into?` · ${L('평균','avg')} ${fmt(t.visits/into)}${L('바퀴',' rounds')}`:''} · ${L('구간 총','loop total')} ≈ ${fmtDiv(dv)} div`; }
     const want=fcWant(g, n, s.params), per = !t ? 0 : n.kind==='cleanup' ? (t.use?.Orb_of_Annulment||0)/Math.max(1e-9,t.visits) : n.once ? 1 : pS>0 ? 1/pS : 0;   // per success of this step (once: used one time whatever happens — the miss goes elsewhere)
     return `<div class="fcn k-task ${n.kind==='cleanup'?'k-clean':''} ${t?'':'off'}" style="${pos}" title="${esc(tip)}">

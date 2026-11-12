@@ -739,6 +739,12 @@ def read_recipe(r, sim, src, tiers):
                 phases.append({'id': f'f{len(phases)}', 'kr': tl['kr'], 'en': tl['en']})
             o['phase'] = phases[-1]['id']
         ph_of[n['id']] = o['phase']
+        # 접힌 루프(그래프 loops fold)의 머리 단계: 목표·최악의 경우 한 줄씩(2026-11-12)
+        FL = next((x for x in (src or {}).get('loops') or [] if x.get('fold') and (x.get('nodes') or [None])[0] == n['id']), None)
+        if FL:
+            ln = {'goal': (FL.get('goalBy') or {}).get(V['id']) or FL.get('goal'), 'worst': {'kr': FL['worst']['kr'], 'en': FL['worst']['en']} if FL.get('worst') else None}
+            ln = {k: v for k, v in ln.items() if v}
+            if ln: o['loopNote'] = ln
         out.append(o)
         if n['pos'][0] == 0: prev = cur
     last = (r.get('nodes') or [None])[-1]
