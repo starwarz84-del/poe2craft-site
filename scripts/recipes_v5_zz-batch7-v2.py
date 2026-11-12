@@ -58,5 +58,6 @@ def _kitava(r, t):
         'Whittling hits the lowest-level option: flat and % armour T1 are level 75, the hybrid T1 and thorns T1 are 74, so the last slot repeats until the hybrid lands')
     _node(r,'t2')['tips']=['chaos-after-fracture-families']   # 17:24 STEP 10 '이미 붙은 옵션은 중복 등장하지 않음'(마스터 지시 2026-11-12)
     r['start'].pop('quality',None); r.pop('prep',None)
+    r['nodes'].insert([n['id'] for n in r['nodes']].index('t5'),{'id':'tf','phase':'pre','do':'note','br':K('영상에 없는 단계. 슬라이드 완성 문구 화염 저항 최대치 총 +6%와 거래소 실물에 맞춤','Not in the video: matches the slide goal of +6% total maximum fire resistance and a traded item')})   # 사용자 결정 2026-11-12
 _grade('tankjung-kitava-shield','tankjung-kitava-shield-v2','bal',_kitava)
 _r=_cp.deepcopy(_orig('tankjung-kitava-shield')); _r.update(id='tankjung-kitava-shield-v2',tierGroup='tankjung-kitava-shield-v2',tier='high',tierLabel=K('하이엔드','High-end')); _r.pop('note',None); _kitava(_r,'high'); R.append(_r)

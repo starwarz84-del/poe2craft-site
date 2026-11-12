@@ -152,8 +152,9 @@ graph('saveq-alloy-focus-v2','Foci','Tasalian Focus',81,
 #     분열 = 받는 물리 피해 8% 추가 감소(STEP 04 16:05 파란 테두리 첫 칸, STEP 06 16:30 왼쪽 '받는 물리 피해 감소 8% → 그대로 분열', STEP 11 완성 문구 첫 옵션)
 #     카오스 = 화염 저항 최대치 +3%(STEP 11 완성 문구 '물리 피해 감소 8% + 화염 저항 최대치 총 +6%')
 #     공개 = 저항 최대치 +3%(STEP 11 '물리 피해 감소 8%가 이미 있다면 → 저항 최대치 +3%'). 화염 저항 최대치는 같은 계열이라 두 번 못 붙고(카오스로 이미 붙음),
-#       방패 데이터에 화염 저항 최대치 훼손 전용 옵션도 없어 '총 +6%'는 맞출 수 없음 → 가장 가까운 조합 = 냉기·번개 저항 최대치 +3%(내부 결정).
-#       슬라이드가 냉기·번개 중 하나를 고르지 않아 둘 중 무엇이든 성공으로 둠(하나로 정하면 근거 없이 공개 비용이 약 2배).
+#       방패 데이터에 화염 저항 최대치 훼손 전용 옵션도 없어 공개로는 냉기·번개 저항 최대치 +3%(둘 다 성공).
+#     유동체(내부 결정, 사용자 결정 2026-11-12): 공개 뒤 맹렬한 유동체로 냉기·번개 → 화염 = 화염 저항 최대치 +3% 두 줄(하나 훼손) = 슬라이드 '총 +6%'.
+#       영상(슬라이드 STEP 06 16:18)은 분열 전에만 유동체를 씀 — 이 상자는 영상에 없음. 근거: STEP 11 완성 문구 + 사용자 제공 거래소 실물(화염 저항 최대치 +3% 두 줄 공존).
 #   다른 조합(냉기·번개 → 맹렬한 유동체로 화염 분열, 저항 최대치 분열 뒤 물리 피해 감소 공개 등)은 꿀팁 후보로만 — STEP 06 유동체 상자는 이 줄에 없음.
 #   등급(난이도 4 = 하이엔드·밸런스, 사용자 확정 2026-11-12): 분열 준비·카오스 오브는 싼 단계라 두 등급 모두 1티어(C15).
 #   반복 구간 = 훼손 공개(빛의 징조)·절사 카오스. 하이엔드 = 영상(1티어), 밸런스 = 저항 최대치 공개 1~2티어·방어도 3종 1~2티어(정책 11장 15:02 '유효 옵션은 반드시, 티어만 타협').
@@ -161,19 +162,19 @@ graph('saveq-alloy-focus-v2','Foci','Tasalian Focus',81,
 P={'high':{'mT':1,'aT':1},'bal':{'mT':2,'aT':2}}
 tags={'pdr1':{'gi':13,'tmax':1},'mf1':{'gi':14,'tmax':1},'mc1':{'gi':15,'tmax':1},'ml1':{'gi':16,'tmax':1},
       'mf2':{'gi':14,'tmax':2},'mc2':{'gi':15,'tmax':2},'ml2':{'gi':16,'tmax':2},
-      'mc':{'gi':15,'tmax':'$mT'},'ml':{'gi':16,'tmax':'$mT'},'mcl':{'anyOf':['mc','ml'],'label':K('냉기·번개 저항 최대치 +3%','+3% maximum cold or lightning resistance')},
+      'mfT':{'gi':14,'tmax':'$mT'},'mc':{'gi':15,'tmax':'$mT'},'ml':{'gi':16,'tmax':'$mT'},'mcl':{'anyOf':['mc','ml'],'label':K('냉기·번개 저항 최대치 +3%','+3% maximum cold or lightning resistance')},
       'flat':{'gi':6,'tmax':'$aT'},'pct':{'gi':7,'tmax':'$aT'},'hyb':{'gi':8,'tmax':'$aT'},'arm':{'anyOf':['flat','pct','hyb'],'label':K('방어도 최대치·%·복합','Flat, % or hybrid armour')},
       'flat1':{'gi':6,'tmax':1},'pct1':{'gi':7,'tmax':1},'hyb1':{'gi':8,'tmax':1},'flat2':{'gi':6,'tmax':2},'pct2':{'gi':7,'tmax':2},'hyb2':{'gi':8,'tmax':2},
-      'desH':{'anyOf':['mc1','ml1'],'label':K('냉기·번개 저항 최대치 +3% 1티어','T1 +3% maximum cold or lightning resistance')},
-      'desB':{'anyOf':['mc2','ml2'],'label':K('냉기·번개 저항 최대치 +3% 1~2티어','T1–2 +3% maximum cold or lightning resistance')}}
+}
 ARMDONE={'count':{'tag':'arm','min':3}}
 SUFDONE={'all':[{'has':'pdr1'},{'has':'mf1'},{'has':'mcl'}]}
 SUF=lambda m='n': it('s','받는 물리 피해 8% 추가 감소 1티어','T1 8% physical damage reduction',['pdr1'],m)
 X=lambda: it('x','잡옵','Junk',None,'j')
 PD=SUF('f'); MR=it('s','화염 저항 최대치 +3% 1티어','T1 +3% maximum fire resistance',['mf1'])
 MRD=it('s','냉기·번개 저항 최대치 +3% (훼손)','+3% maximum cold or lightning resistance (desecrated)',['mcl'],'d')
-I1=[PD,MR]; I2=I1+[UN('s')]; I3=I1+[MRD]; I4=[J('p'),J('p')]+I3; I5=[J('p')]+I4
-I6=[it('p','방어도 최대치','Flat armour',['flat']),it('p','방어도 %','% armour',['pct']),it('p','방어도 %·기절 한계치 복합','Armour % and stun threshold',['hyb'])]+I3
+MFD=it('s','화염 저항 최대치 +3% (훼손)','+3% maximum fire resistance (desecrated)',['mfT'],'d')
+I1=[PD,MR]; I2=I1+[UN('s')]; I3=I1+[MRD]; I3F=I1+[MFD]; I4=[J('p'),J('p')]+I3F; I5=[J('p')]+I4
+I6=[it('p','방어도 최대치','Flat armour',['flat']),it('p','방어도 %','% armour',['pct']),it('p','방어도 %·기절 한계치 복합','Armour % and stun threshold',['hyb'])]+I3F
 OKM={'if':{'has':'pdr1'},'to':'r1','res':'ok','label':K('받는 물리 피해 감소','Physical damage reduction')}
 b0=base('m1',None,K('특출난 타호아의 거대 방패 구입 (소켓 2개, 아이템 레벨 81)','Buy an exceptional Tawhoan Tower Shield (two sockets, item level 81)'),[]); b0['id']='b0'; b0.pop('start',None)   # 14:30 STEP 02
 nodes=[b0,
@@ -196,17 +197,18 @@ nodes=[b0,
      [{'if':{'has':'mf1'},'to':'t3','res':'ok'},{'to':'t2','res':'fail'}],I1,show=['mf1'],skipIf={'has':'mf1'},skipTo='t3',skipHide=True),
  act('t3','main',[0,10],'desecrate','Ancient_Rib',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'t4'}],I2,omens=['Omen_of_Dextral_Necromancy']),   # 17:56 STEP 11 ①②
  act('t4','main',[0,11],'reveal',None,K('접미 세번째 옵션 공개','Reveal the third suffix'),None,K('공개','Reveal'),   # 17:56 STEP 11 ③④
-     [{'if':SUFDONE,'to':'t5','res':'ok'},{'to':'t4x','res':'fail'}],I3,want='mcl',show=['mc','ml'],omens=['Omen_of_Abyssal_Echoes']),
+     [{'if':SUFDONE,'to':'tf','res':'ok'},{'to':'t4x','res':'fail'}],I3,want='mcl',show=['mc','ml'],omens=['Omen_of_Abyssal_Echoes']),
  annul('t4x',[1,11],[{'to':'t3','label':K('다시 훼손','Desecrate again')}]),   # 17:56 STEP 11 NO: 빛의 징조 → 소멸의 오브 → ①부터
- act('t5','main',[0,12],'exalt','Perfect_Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 2개','Two random options')],K('엑잘','Exalt'),[{'to':'t6'}],I4,omens=['Omen_of_Greater_Exaltation']),   # 19:06 STEP 12 ①②
- act('t6','main',[0,13],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random option')],K('엑잘','Exalt'),   # 19:06 STEP 12 ③
+ act('tf','main',[0,12],'flux','Blazing_Flux',K('냉기·번개 저항 최대치를 화염으로','Cold or lightning maximum resistance into fire'),[st('s','화염 저항 최대치 +3% 두 줄 (하나 훼손)','Two +3% maximum fire resistance lines (one desecrated)')],K('유동체','Flux'),[{'to':'t5'}],I3F),   # 영상에 없음(내부 결정, 사용자 결정 2026-11-12)
+ act('t5','main',[0,13],'exalt','Perfect_Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 2개','Two random options')],K('엑잘','Exalt'),[{'to':'t6'}],I4,omens=['Omen_of_Greater_Exaltation']),   # 19:06 STEP 12 ①②
+ act('t6','main',[0,14],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random option')],K('엑잘','Exalt'),   # 19:06 STEP 12 ③
      [{'to':'t7'}],I5),
- act('t7','main',[0,14.6],'chaos','Perfect_Chaos_Orb',K('가장 낮은 옵션을 방어도로','The lowest option into armour'),[st('p','방어도 최대치·%·복합 1티어','T1 flat, % and hybrid armour')],K('카오스','Chaos'),   # 19:10~21:26 STEP 13
+ act('t7','main',[0,15.6],'chaos','Perfect_Chaos_Orb',K('가장 낮은 옵션을 방어도로','The lowest option into armour'),[st('p','방어도 최대치·%·복합 1티어','T1 flat, % and hybrid armour')],K('카오스','Chaos'),   # 19:10~21:26 STEP 13
      [{'if':ARMDONE,'to':'ok','res':'ok'},{'to':'t7','res':'fail'}],I6,omens=['Omen_of_Whittling'],skipIf=ARMDONE,skipTo='ok',skipHide=True,
      over=[{'param':{'aT':2},'set':{'showText':[st('p','방어도 최대치·%·복합 1~2티어','T1–2 flat, % and hybrid armour')]}}]),
- done([0,15.6])]
+ done([0,16.6])]
 graph('tankjung-kitava-shield-v2','Shields_str','Tawhoan Tower Shield',81,
-  '탱정 키타바 방패(gQa51XOS98s, 2026-11-12 W5 영상 전체 재대조, 새 플로우차트 기준) — 특출난 타호아의 거대 방패 → 완벽한 진화 → 완벽한 확장 + 소멸의 오브로 받는 물리 피해 감소 → 완벽한 확장·완벽한 제왕 + 보존된 갈비뼈(미공개) → 분열(실패면 새 베이스) → 소멸 2번 + 카오스 오브(화염 저항 최대치) → 우측 강령술 + 고대 갈비뼈 → 공개(냉기·번개 저항 최대치, 심연의 메아리, 빗나가면 빛의 징조 + 소멸) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 최대치·%·복합. 하이엔드 = 영상(모두 1티어), 밸런스 = 저항 최대치 공개·방어도 3종 1~2티어. 퀄리티 30%·철 룬은 비용에서 뺌.',
+  '탱정 키타바 방패(gQa51XOS98s, 2026-11-12 W5 영상 전체 재대조, 새 플로우차트 기준) — 특출난 타호아의 거대 방패 → 완벽한 진화 → 완벽한 확장 + 소멸의 오브로 받는 물리 피해 감소 → 완벽한 확장·완벽한 제왕 + 보존된 갈비뼈(미공개) → 분열(실패면 새 베이스) → 소멸 2번 + 카오스 오브(화염 저항 최대치) → 우측 강령술 + 고대 갈비뼈 → 공개(냉기·번개 저항 최대치, 심연의 메아리, 빗나가면 빛의 징조 + 소멸) → 맹렬한 유동체(화염 저항 최대치 두 줄, 영상에 없음) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 최대치·%·복합. 하이엔드 = 영상(모두 1티어), 밸런스 = 저항 최대치 공개·방어도 3종 1~2티어. 퀄리티 30%·철 룬은 비용에서 뺌.',
   {'mT':{'kr':'훼손 저항 최대치','en':'Desecrated maximum resistance','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'aT':{'kr':'방어도 접두 (절사)','en':'Armour prefixes (Whittling)','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},dict(P,ess=P['bal']),
   {'high':K('영상: 모두 1티어','Video: all T1'),'bal':K('저항 최대치 공개·방어도 3종 1~2티어','T1–2 revealed maximum resistance and armour'),'ess':None},
   tags,nodes,
@@ -217,9 +219,9 @@ graph('tankjung-kitava-shield-v2','Shields_str','Tawhoan Tower Shield',81,
              {**K('빗나간 접미 — 접미가 지워질 때까지 소멸의 오브','Missed suffix: Annulment until the suffix is gone'),'node':'m2x'}],
     'item':[J('p'),SUF()]},
    {'id':'L1','nodes':['t3','t4','t4x'],'kr':'훼손 공개','en':'Desecrated reveal'},{'id':'L2','nodes':['t7'],'kr':'절사','en':'Whittling'}],
-  [{'id':'high','kr':'하이엔드 옵션','en':'High-end','lines':[{'tag':'flat1'},{'tag':'pct1'},{'tag':'hyb1'},{'tag':'pdr1','fr':True},{'tag':'mf1'},{'tag':'desH','des':True}]},
-   {'id':'bal','kr':'밸런스 옵션','en':'Balance','lines':[{'tag':'flat2'},{'tag':'pct2'},{'tag':'hyb2'},{'tag':'pdr1','fr':True},{'tag':'mf1'},{'tag':'desB','des':True}]}],
-  {'sockets':2},{'all':[SUFDONE,{'has':'flat'},{'has':'pct'},{'has':'hyb'},{'full':'p'},{'full':'s'}]})
+  [{'id':'high','kr':'하이엔드 옵션','en':'High-end','lines':[{'tag':'flat1'},{'tag':'pct1'},{'tag':'hyb1'},{'tag':'pdr1','fr':True},{'tag':'mf1'},{'tag':'mf1','des':True}]},
+   {'id':'bal','kr':'밸런스 옵션','en':'Balance','lines':[{'tag':'flat2'},{'tag':'pct2'},{'tag':'hyb2'},{'tag':'pdr1','fr':True},{'tag':'mf1'},{'tag':'mf2','des':True}]}],
+  {'sockets':2},{'all':[{'has':'pdr1'},{'count':{'tag':'mfT','min':2}},{'has':'mf1'},{'has':'flat'},{'has':'pct'},{'has':'hyb'},{'full':'p'},{'full':'s'}]})
 _p=f'{H}/tankjung-kitava-shield-v2.json'; _g=json.load(open(_p))   # 등급: 난이도 4 → 하이엔드·밸런스(사용자 확정 2026-11-12)
 _D={'high':K('영상: 모두 1티어','Video: all T1'),'bal':K('저항 최대치 공개·방어도 3종 1~2티어','T1–2 revealed maximum resistance and armour')}
 _g['groups']=[{'id':'prep','kr':'베이스템 완성','en':'Finished base','cols':[0,1]},{'id':'main','kr':'옵션 추가 작업','en':'Adding modifiers','cols':[0,1]}]

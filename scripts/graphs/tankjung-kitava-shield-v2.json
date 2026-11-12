@@ -4,7 +4,7 @@
  "cls": "Shields_str",
  "base": "Tawhoan Tower Shield",
  "ilvl": 81,
- "note": "탱정 키타바 방패(gQa51XOS98s, 2026-11-12 W5 영상 전체 재대조, 새 플로우차트 기준) — 특출난 타호아의 거대 방패 → 완벽한 진화 → 완벽한 확장 + 소멸의 오브로 받는 물리 피해 감소 → 완벽한 확장·완벽한 제왕 + 보존된 갈비뼈(미공개) → 분열(실패면 새 베이스) → 소멸 2번 + 카오스 오브(화염 저항 최대치) → 우측 강령술 + 고대 갈비뼈 → 공개(냉기·번개 저항 최대치, 심연의 메아리, 빗나가면 빛의 징조 + 소멸) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 최대치·%·복합. 하이엔드 = 영상(모두 1티어), 밸런스 = 저항 최대치 공개·방어도 3종 1~2티어. 퀄리티 30%·철 룬은 비용에서 뺌.",
+ "note": "탱정 키타바 방패(gQa51XOS98s, 2026-11-12 W5 영상 전체 재대조, 새 플로우차트 기준) — 특출난 타호아의 거대 방패 → 완벽한 진화 → 완벽한 확장 + 소멸의 오브로 받는 물리 피해 감소 → 완벽한 확장·완벽한 제왕 + 보존된 갈비뼈(미공개) → 분열(실패면 새 베이스) → 소멸 2번 + 카오스 오브(화염 저항 최대치) → 우측 강령술 + 고대 갈비뼈 → 공개(냉기·번개 저항 최대치, 심연의 메아리, 빗나가면 빛의 징조 + 소멸) → 맹렬한 유동체(화염 저항 최대치 두 줄, 영상에 없음) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 최대치·%·복합. 하이엔드 = 영상(모두 1티어), 밸런스 = 저항 최대치 공개·방어도 3종 1~2티어. 퀄리티 30%·철 룬은 비용에서 뺌.",
  "params": {
   "mT": {
    "kr": "훼손 저항 최대치",
@@ -108,6 +108,10 @@
    "gi": 16,
    "tmax": 2
   },
+  "mfT": {
+   "gi": 14,
+   "tmax": "$mT"
+  },
   "mc": {
    "gi": 15,
    "tmax": "$mT"
@@ -172,42 +176,21 @@
   "hyb2": {
    "gi": 8,
    "tmax": 2
-  },
-  "desH": {
-   "anyOf": [
-    "mc1",
-    "ml1"
-   ],
-   "label": {
-    "kr": "냉기·번개 저항 최대치 +3% 1티어",
-    "en": "T1 +3% maximum cold or lightning resistance"
-   }
-  },
-  "desB": {
-   "anyOf": [
-    "mc2",
-    "ml2"
-   ],
-   "label": {
-    "kr": "냉기·번개 저항 최대치 +3% 1~2티어",
-    "en": "T1–2 +3% maximum cold or lightning resistance"
-   }
   }
  },
  "require": {
   "all": [
    {
-    "all": [
-     {
-      "has": "pdr1"
-     },
-     {
-      "has": "mf1"
-     },
-     {
-      "has": "mcl"
-     }
-    ]
+    "has": "pdr1"
+   },
+   {
+    "count": {
+     "tag": "mfT",
+     "min": 2
+    }
+   },
+   {
+    "has": "mf1"
    },
    {
     "has": "flat"
@@ -333,7 +316,7 @@
      "tag": "mf1"
     },
     {
-     "tag": "desH",
+     "tag": "mf1",
      "des": true
     }
    ]
@@ -360,7 +343,7 @@
      "tag": "mf1"
     },
     {
-     "tag": "desB",
+     "tag": "mf2",
      "des": true
     }
    ]
@@ -1073,7 +1056,7 @@
        }
       ]
      },
-     "to": "t5",
+     "to": "tf",
      "res": "ok"
     },
     {
@@ -1155,12 +1138,72 @@
    ]
   },
   {
-   "id": "t5",
+   "id": "tf",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
     12
+   ],
+   "act": "flux",
+   "goal": {
+    "kr": "냉기·번개 저항 최대치를 화염으로",
+    "en": "Cold or lightning maximum resistance into fire"
+   },
+   "label": {
+    "kr": "유동체",
+    "en": "Flux"
+   },
+   "edges": [
+    {
+     "to": "t5"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
+     "m": "f",
+     "tags": [
+      "pdr1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 최대치 +3% 1티어",
+     "en": "T1 +3% maximum fire resistance",
+     "m": "n",
+     "tags": [
+      "mf1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 최대치 +3% (훼손)",
+     "en": "+3% maximum fire resistance (desecrated)",
+     "m": "d",
+     "tags": [
+      "mfT"
+     ]
+    }
+   ],
+   "cur": "Blazing_Flux",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "화염 저항 최대치 +3% 두 줄 (하나 훼손)",
+     "en": "Two +3% maximum fire resistance lines (one desecrated)"
+    }
+   ]
+  },
+  {
+   "id": "t5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    13
    ],
    "act": "exalt",
    "goal": {
@@ -1209,11 +1252,11 @@
     },
     {
      "s": "s",
-     "kr": "냉기·번개 저항 최대치 +3% (훼손)",
-     "en": "+3% maximum cold or lightning resistance (desecrated)",
+     "kr": "화염 저항 최대치 +3% (훼손)",
+     "en": "+3% maximum fire resistance (desecrated)",
      "m": "d",
      "tags": [
-      "mcl"
+      "mfT"
      ]
     }
    ],
@@ -1235,7 +1278,7 @@
    "group": "main",
    "pos": [
     0,
-    13
+    14
    ],
    "act": "exalt",
    "goal": {
@@ -1290,11 +1333,11 @@
     },
     {
      "s": "s",
-     "kr": "냉기·번개 저항 최대치 +3% (훼손)",
-     "en": "+3% maximum cold or lightning resistance (desecrated)",
+     "kr": "화염 저항 최대치 +3% (훼손)",
+     "en": "+3% maximum fire resistance (desecrated)",
      "m": "d",
      "tags": [
-      "mcl"
+      "mfT"
      ]
     }
    ],
@@ -1313,7 +1356,7 @@
    "group": "main",
    "pos": [
     0,
-    14.6
+    15.6
    ],
    "act": "chaos",
    "goal": {
@@ -1388,11 +1431,11 @@
     },
     {
      "s": "s",
-     "kr": "냉기·번개 저항 최대치 +3% (훼손)",
-     "en": "+3% maximum cold or lightning resistance (desecrated)",
+     "kr": "화염 저항 최대치 +3% (훼손)",
+     "en": "+3% maximum fire resistance (desecrated)",
      "m": "d",
      "tags": [
-      "mcl"
+      "mfT"
      ]
     }
    ],
@@ -1438,7 +1481,7 @@
    "group": "main",
    "pos": [
     0,
-    15.6
+    16.6
    ],
    "label": {
     "kr": "완성",
