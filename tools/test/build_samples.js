@@ -19,6 +19,13 @@ const out=await p.evaluate(()=>{const R=__rec;
       const side=g.g==='p'?'Prefix':'Suffix'; const kind=m.fr?'Fractured ':m.des?'Desecrated ':'';
       L.push(`{ ${kind}${side} Modifier "${t[3]}"${g.s==='n'?` (Tier: ${ti+1})`:''} }`);
       const k = a.qual?.type && g.tg.includes(a.qual.type) ? 1+a.qual.v/100 : 1; t[5].split('\n').forEach(x=>L.push(mid(x,k)+(m.fr?' (fractured)':m.des?' (desecrated)':''))); n++; }
+    /* 2026-11-12: 랜덤 옵션·'물리 또는 원소' 같은 고르는 줄도 실제 완성품처럼 채움(빠지면 리버스가 빈자리로 보고 훨씬 싸게 계산함) — 그쪽에서 가장 흔한 옵션의 4티어쯤 */
+    const used=new Set((a.final||[]).filter(m=>m.gi!=null).flatMap(m=>D.groups[m.gi].f||[])), ilv=r.ilvl||82;
+    for(const m of (a.finalState||[]).filter(x=>x.gi==null && (x.side==='p'||x.side==='s'))){
+      const c=D.groups.map((g,gi)=>({g,gi})).filter(({g,gi})=>(m.any?.length ? m.any.includes(gi) : g.s==='n') && g.g===m.side && !(g.f||[]).some(f=>used.has(f)) && g.t.some(t=>t[0]<=ilv && t[1]>0))
+        .sort((x,y)=>y.g.t.reduce((s,t)=>s+(t[0]<=ilv?t[1]:0),0)-x.g.t.reduce((s,t)=>s+(t[0]<=ilv?t[1]:0),0))[0]; if(!c) continue;
+      (c.g.f||[]).forEach(f=>used.add(f)); const ok=c.g.t.map((t,i)=>({t,i})).filter(x=>x.t[0]<=ilv && x.t[1]>0), pick=ok[Math.min(3, ok.length-1)];
+      L.push(`{ ${m.des?'Desecrated ':''}${m.side==='p'?'Prefix':'Suffix'} Modifier "${pick.t[3]}" (Tier: ${pick.i+1}) }`); pick.t[5].split('\n').forEach(x=>L.push(mid(x)+(m.des?' (desecrated)':''))); n++; }
     res.push({id:r.id, title:r.title, base:{kr:b.kr,en:b.en}, n, text:L.join('\n')}); }
   return res;});
 fs.writeFileSync('/home/claude/poe2data/site/data/samples.json', JSON.stringify({samples:out}));

@@ -1725,7 +1725,7 @@ function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||'')
 // finished items (best / settle / budget) in the recipe's item-card format
 // 완성품 카드 상태(플로우차트 finals 한 장) — 플로우차트 완성품 카드와 그 등급 레시피의 완성 카드가 같이 씀(사용자 확정 2026-11-11)
 function fcCardState(tags, lines, ds, revOnly=()=>false){
-  const state=lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side, label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}, des:!!l.des, rnd:!!l.random}; const T=tags?.[l.tag]; if(!T || T.gi==null) return null;
+  const state=lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side, label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}, des:!!l.des, rnd:!!l.random, ...(tags?.[l.tag]?.anyOf?{any:tags[l.tag].anyOf.map(x=>x.gi)}:{})}; const T=tags?.[l.tag]; if(!T || T.gi==null) return null;
     return {gi:T.gi, side:T.s, tmax:l.tmax||(typeof T.tmax==='number'?T.tmax:null), tmin:l.tmin||null, fr:!!l.fr, des:!!l.des || (ds ? false : (T.sec==='d' || revOnly(l.tag))), dsf:ds ? (ds.tag?.[l.tag]||0) : 0, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
   if(ds && !state.some(m=>m.des)){ const t=state.filter(m=>m.gi!=null && m.dsf>=0.5).sort((a,b)=>b.dsf-a.dsf)[0];
     if(t) t.des=true; else { const sd=['p','s'].filter(x=>(ds.side?.[x]||0)>=0.5).sort((a,b)=>(ds.side[b]||0)-(ds.side[a]||0))[0];

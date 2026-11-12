@@ -1215,7 +1215,7 @@ function makeDraft(it, an, opt){
     return it.D.groups.map((g,gi)=>({g,gi})).filter(({g,gi})=>g.s==='n' && g.g===sd && !P.some(r=>r.m.gi===gi) && ATK.test((g.t[0]?.[5]||'').split('\n')[0]) && !(g.f||[]).some(f=>used.has(f)) && g.t.some(t=>t[0]<=it.ilvl && t[1]>0))
       .filter(({g},_,A)=>!A.some(o=>o.g!==g && (o.g.f||[]).some(f=>(g.f||[]).includes(f)) && (o.g.t[0]?.[0]||0)>(g.t[0]?.[0]||0)))   /* 같은 계열의 낮은 레벨 그룹(Adds (1—2) to 3 …)은 빼고 본 그룹만 */
       .map(({g,gi})=>{ const lo=Math.max(0, g.t.findIndex(t=>t[0]<=it.ilvl)); return {gi, tmax:Math.min(g.t.length, lo+tm)}; }); };
-  for(const sd of ['p','s']){ const P=POOL[sd]; if(!P) continue; const ext=atkExtra(P, sd), gis=new Set(P.map(r=>r.m.gi)), all0=anyOf(P), all = ext.length ? {anyOf:[...(all0.anyOf||[all0]), ...ext]} : all0;
+  for(const sd of ['p','s']){ const P=POOL[sd]; if(!P) continue; const ext=atkExtra(P, sd), gis=new Set(P.map(r=>r.m.gi)), all0=anyOf(P), mem=(all0.anyOf||[all0]).filter(x=>gis.has(x.gi)) /* 묶음 밖 대체 옵션(아무 저항 등)은 빼야 '묶음 3개'가 정확함 — 2026-11-12 등록 Slipstrike Vest: 번개 저항이 튕겨내기 자리를 차지했음 */, all = {anyOf:[...mem, ...ext]};
     const hit = t => t && ((t.gi!=null && gis.has(t.gi)) || (t.anyOf||[]).some(x=>gis.has(x.gi)));
     for(const n of nodes){ const t=n.target; if(!t) continue;
       if(hit(t)){ const {gi, tmax, anyOf:_a, ...rest} = t; n.target = {...rest, ...all}; n.pool=P.length; }
