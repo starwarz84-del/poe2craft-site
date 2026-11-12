@@ -100,8 +100,8 @@ nodes=[
      {'to':'k12',**L_('빗나간 접미가 지워짐 — 다시 엑잘','Missed suffix gone: exalt again')}],K('빗나간 접미가 지워질 때까지 한 개씩, 룬 수호·치명타 피해가 지워져도 계속','One at a time until the missed suffix goes, even if runic ward or crit damage goes first')),
  act('k13','main',[0,6],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'k14'}],G4),   # 17:35 '남은 자리가 접두뿐이라 징조 필요 없음'
  act('k14','main',[0,7],'reveal',None,K('접두 투사체 피해','Projectile damage prefix'),None,K('공개','Reveal'),
-     [{'if':{'added':'pdmg'},'to':'ok','res':'ok'},{'to':'k14x','res':'fail','port':'right'}],G5,want='pdmg',show=['pdmg'],omens=['Omen_of_Abyssal_Echoes']),
- annul('k14x',[1,7],[{'to':'k13','port':'right',**L_('다시 훼손','Desecrate again')}]),   # 17:56 빛의 징조 + 소멸의 오브, 18:06 2티어(30%)도 지움
+     [{'if':{'added':'pdmg'},'to':'ok','res':'ok'},{'to':'k14x','res':'fail'}],G5,want='pdmg',show=['pdmg'],omens=['Omen_of_Abyssal_Echoes']),
+ annul('k14x',[1,7],[{'to':'k13',**L_('다시 훼손','Desecrate again')}]),   # 17:56 빛의 징조 + 소멸의 오브, 18:06 2티어(30%)도 지움
  done([0,8])]
 graph11('mazbro-proj-gloves-v2','Gloves_str_dex','Blacksteel Gauntlets',80,
   'MazBro 투사체 +2 분열 장갑(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 특출난 검은강철 건틀릿 → 콜르의 사냥 → 완벽한 진화·확장·제왕 → 소멸로 옵션 1개 → 카오스 오브(투사체 +2) → 완벽한 엑잘 + 좌측 찬미 + 상위 찬미(접두 2개) → 고대 갈비뼈 + 우측 강령술 → 아스트리드의 창의성 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 카오스 오브(접두 투사체 속도 1티어) → 상위 엑잘 + 우측 찬미(접미 치명타 확률·관통, 빗나가면 우측 결정화 + 군왕의 합금 → 우측 결정화 + 발작의 에센스 → 소멸) → 고대 갈비뼈(접두) → 공개(투사체 피해, 빛의 징조로 다시). 퀄리티 30%·룬벼림·신성한 오브·룬 교체는 비용에서 뺌.',
