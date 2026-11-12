@@ -27,12 +27,13 @@ P = {'high': {'rT': 1, 'eT': 1}, 'bal': {'rT': 2, 'eT': 2}}
 g = {
  'id': 'barricade-quarterstaff-v2', 'recipe': 'barricade-quarterstaff-v2', 'cls': 'Quarterstaves', 'base': 'Sinister Quarterstaff', 'ilvl': 81, 'basePrice': {'Divine_Orb': 7},   # 4:52 거래소 약 7 div
  'note': ('2026-11-13 W21 영상 전체 화면 대조. 성공 회차(Corpse Mast) 한 줄: 특출난 험악한 육척봉(아이템 레벨 81, 소켓 3개, 노멀, 약 7 div, 4:52) → '
-          '대장장이의 숫돌 20%(5:45) → 바알 대장장이의 주입기로 30%(6:28 21% → 6:52 30%, 주입기 10 → 2개) → 진화(7:36 정확도) → 제왕(7:42 근접 스킬 +3) → '
+          '대장장이의 숫돌 20%(5:45) → 진화(7:36 정확도) → 제왕(7:42 근접 스킬 +3) → '
           '소멸의 오브로 옵션 하나만(7:50) → 카오스로 치명타 확률 1티어(8:02) → 엑잘 2번 + 보존된 턱뼈(9:35 공격 속도·정확도와 빛 반경·접두 미공개 훼손) → 분열 1/3(10:00, 첫 베이스는 공격 속도 분열로 실패 10:02) → '
           '두 번째 베이스 치명타 분열(10:24) → 분열 + 근접 스킬 +5 두 옵션(10:36, 중간 과정은 편집으로 빠짐) → 우측 강령술 + 보존된 턱뼈(12:02) → 심연의 메아리 공개, 빗나가면 빛의 징조 + 소멸의 오브(12:50 처치 시 생명력) → '
           '공격 속도 28%(13:06) → 상위 찬미 + 완벽한 엑잘(14:50 공격 원소 피해 1티어 + 화염 5티어) → 절사 + 완벽한 카오스(15:42 번개 3티어 … 16:35 화염 1티어) → '
           '완벽한 엑잘(17:28 물리 피해 추가 4티어) → 절사 + 완벽한 카오스(17:39 번개 2티어 → 17:46 물리 %·정확도 1티어) → 좌측 소멸의 징조 + 소멸의 오브(19:32~19:36) → 완벽한 엑잘(19:46 냉기 5티어) → '
           '절사 + 완벽한 카오스(20:05 번개 2티어 … 20:43 냉기 1티어 완성). 신성한 오브(8:30 치명타 4.8 → 5%)는 정책 14장대로 뺌. 룬·영혼 핵 3개(23:40)·세를의 승리(21:00 말로만)·히네코라 + 바알 오브(23:50 말로만)는 제작과 무관해 뺌. '
+          '바알 대장장이의 주입기로 30%(6:28 21% → 6:52 30%, 주입기 10 → 2개)는 사용자 결정(2026-11-13 06:40)대로 뺌, 퀄리티 20% 베이스. '
           '접두 목표는 영상 계획(3:00·15:50 공격 원소 피해·화염·냉기·번개 피해 추가 1티어 중 셋)대로 먼저 뜬 것, 접미 훼손은 공격 속도·치명타 피해 1티어 중 먼저 뜬 것(12:00).'),
  'params': {'rT': {'kr': '공격 속도·치명타 피해', 'en': 'Attack speed or crit damage', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
             'eT': {'kr': '원소 피해 접두', 'en': 'Elemental prefixes', 'values': {'1': K('1티어 옵션 3개', 'Three T1 options'), '2': K('1~2티어 옵션 2개, 세번째는 랜덤 옵션', 'Two T1–2 options, the third random')}}},
@@ -62,7 +63,7 @@ g = {
              'lines': [{'tag': 'ele1'}, {'tag': 'ele1'}, {'tag': 'ele1'}, {'tag': 'crit', 'fr': True}, {'tag': 'melee'}, {'tag': 'rev1', 'des': True}]},
             {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
              'lines': [{'tag': 'ele2'}, {'tag': 'ele2'}, {'side': 'p', 'random': True}, {'tag': 'crit', 'fr': True}, {'tag': 'melee'}, {'tag': 'rev2', 'des': True}]}],
- 'finalItem': {'quality': 30, 'sockets': 3},
+ 'finalItem': {'quality': 20, 'sockets': 3},
 }
 
 N = []
@@ -72,10 +73,7 @@ A = lambda **kw: N.append(kw)
 A(id='h0', kind='base', group='prep', pos=[0, 0], next='q1', start={'rar': 'normal', 'mods': [], 'quality': 0},
   label=K('특출난 험악한 육척봉 구입 (아이템 레벨 81, 소켓 3개)', 'Buy an exceptional Sinister Quarterstaff (item level 81, three sockets)'), item=[])
 A(id='q1', kind='act', group='prep', pos=[0, 1], act='quality', cur='Blacksmiths_Whetstone', count=4, q=20, label=K('퀄리티', 'Quality'),
-  goal=K('퀄리티 20%', 'Quality 20%'), showText=[K('대장장이의 숫돌 4개', 'Four Blacksmith’s Whetstones')], edges=[{'to': 'q2'}], item=[])
-A(id='q2', kind='act', group='prep', pos=[0, 2], act='quality', cur='Vaal_Blacksmiths_Infuser', count=8, q=30, label=K('퀄리티', 'Quality'),
-  goal=K('퀄리티 30%', 'Quality 30%'), showText=[K('바알 대장장이의 주입기 8개, 첫 1개는 타락 없음', 'Eight Vaal Blacksmith’s Infusers, the first never corrupts')],
-  edges=[{'to': 't1'}], item=[])
+  goal=K('퀄리티 20%', 'Quality 20%'), showText=[K('대장장이의 숫돌 4개', 'Four Blacksmith’s Whetstones')], edges=[{'to': 't1'}], item=[])
 A(id='t1', kind='act', group='prep', pos=[0, 3], act='transmute', cur='Orb_of_Transmutation', label=K('매직', 'Magic'),
   goal=K('매직', 'Magic'), showText=[K('랜덤 옵션 1개', 'One random option')], edges=[{'to': 'r1'}], item=[J('x')])
 A(id='r1', kind='act', group='prep', pos=[0, 4], act='regal', cur='Regal_Orb', label=K('레어', 'Rare'),

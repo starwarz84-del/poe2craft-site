@@ -33,7 +33,8 @@ g = {
           '신성한 오브로 +50(10:33) → 상위 찬미의 징조 + 상위 엑잘로 옵션 2개(징조 3개 소모, 11:31) → 보존된 빗장뼈로 4개(11:51) → 분열(3개 중 2개 성공, 12:07) → '
           '소멸로 옵션 1개 → 균열의 에센스(12:27) → 쇳소리 기폭제 40%(13:20) → 카오스로 주문 +3(치명타 1티어가 떴을 때 우측 찬미 + 상위 엑잘 시도 → 화염 저항, 14:24·14:26, '
           '+3은 17:32 카오스) → 좌측 찬미 + 상위 엑잘(에너지 보호막 4티어, 27:17) → 좌측 결정화 + 룬 합금(29:13 화면 룬 수호 10%) → 고대 빗장뼈(29:20) → 공개 시전 속도 1티어(29:31). '
-          '촉진 엑잘 실험(17:40~24:00)·실험 목걸이 정리(24:00~28:00)는 꿀팁 후보. 성유·완벽한 유동체·완벽한 쥬얼러·신성한 오브·축성(30:00~37:50)은 정책 14장대로 뺌.'),
+          '촉진 엑잘 실험(17:40~24:00)·실험 목걸이 정리(24:00~28:00)는 꿀팁 후보. 완벽한 유동체·완벽한 쥬얼러·신성한 오브(30:00~37:50)는 정책 14장대로 뺌. '
+          '축성(축성의 징조 + 신성한 오브, 37:45 Hypnotic Noose +5)은 영상 제목이라 사용자 결정(2026-11-13 06:40)대로 완성 뒤 선택 단계(점선 상자, 비용 미포함). 성유(30:12 자로크의 선물)는 축성 뒤엔 못 하므로 같은 상자에 그 전에 한다고만 적음.'),
  'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video'), '2': K('결과 그대로', 'As it comes')}}},
  'strategies': [{'id': 'high', 'params': {'v': 1}}, {'id': 'bal', 'params': {'v': 2}}],
  'versions': [
@@ -129,6 +130,10 @@ A(id='z13', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_
 A(id='z13x', kind='act', group='main', pos=[1, 15.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'z12', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='ok', kind='done', group='main', pos=[0, 16.4], label=K('완성', 'Finished'))
+# 축성 = 선택 단계(사용자 결정 2026-11-13 06:40, 영상 제목 '축성으로 +5'): 시뮬·비용에서 빠짐. 37:45 Hypnotic Noose 축성 +5
+A(id='zs', kind='side', group='main', pos=[1, 16.4], attach=['ok', 'ok'], cur='Divine_Orb', omens=['Omen_of_Sanctification'],
+  goal=K('축성으로 +5 노리기, 선택·비용 미포함', 'Sanctify for +5, optional, not costed'),   # 축성 뒤엔 수정 불가 — 성유는 그 전에
+  label=K('축성', 'Sanctify'))
 g['nodes'] = N
 
 g['loops'] = [

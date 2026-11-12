@@ -41,6 +41,7 @@ g = {
           '소멸 2번(분열 + 능력치 요구사항 잡옵, 6:35) → 카오스 오브로 주문 피해 1티어(6:50) → 좌측 찬미 + 완벽한 엑잘 = 마나 최대치(7:10) → 소멸이 주문 피해를 지움(7:14) → '
           '카오스 오브로 화염 피해 1티어(7:32) → 좌측 찬미 + 완벽한 엑잘 = 추가 냉기 1티어(7:50) → 좌측 강령술 + 고대 턱뼈 + 심연의 메아리 공개 = 추가 화염 1티어(8:20~8:32, 빛의 징조 준비) → '
           '알두르의 배신(9:05) → 스루드의 완력(11:20) → 상위 찬미 + 완벽한 엑잘 접미 2개(11:20) → 절사의 징조 + 완벽한 카오스 오브 = 비고정 화염 속성 부여 규모 17%(12:20) → 초월의 합금(13:18). '
+          '초월의 합금(13:18)은 사용자 결정(2026-11-13 06:40)대로 하이엔드 선택 단계(점선 상자, 비용 미포함) — 접미 하나를 1/2로 지워 화염 속성 부여 규모를 잃으면 절사 카오스를 다시 해야 해서 이 구간만 약 550 div. '
           '알두르의 배신(옵션을 카오스로 바꿈)·완벽한 유동체(스킬 20레벨)·퀄리티 20%·바알 오브(14:45)는 제작 확률과 무관해 뺌(정책 9·14장). '
           '밸런스 = 영상 9:13 가성비 마무리(스루드의 완력 없이 엑잘 접미 2개 + 초월의 합금) + 접두 반복 1~2티어, 공개 빗나감은 빛의 징조로 다시(10장 C17 3번).'),
  'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('스루드의 완력', 'Thrud’s Might'), '2': K('가성비 마무리', 'Budget finish')}},
@@ -50,7 +51,7 @@ g = {
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 2, 'pT': 2}, 'tier': 'bal',
     'desc': K('영상의 가성비 마무리: 접두 1~2티어, 엑잘 접미 2개 + 초월의 합금', 'Video budget finish: T1–2 prefixes, two exalted suffixes + Transcendent Alloy')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'v': 1, 'pT': 1}, 'tier': 'high',
-    'desc': K('영상: 접두 1티어 3개, 스루드의 완력으로 비고정 화염 속성 부여 규모 + 초월의 합금', 'Video: three T1 prefixes, Thrud’s Might fire magnitudes + Transcendent Alloy')}],
+    'desc': K('영상: 접두 1티어 3개, 스루드의 완력으로 비고정 화염 속성 부여 규모, 초월의 합금은 선택', 'Video: three T1 prefixes, Thrud’s Might fire magnitudes, Transcendent Alloy optional')}],
  'tags': {
    'fire7': {'gi': 12, 'tmax': 1},
    'dsp': {'gi': 3, 'tmax': '$pT'}, 'dfi': {'gi': 5, 'tmax': '$pT'}, 'dco': {'gi': 6, 'tmax': '$pT'}, 'dli': {'gi': 7, 'tmax': '$pT'}, 'dch': {'gi': 8, 'tmax': '$pT'},
@@ -68,7 +69,7 @@ g = {
    'pd2': {'anyOf': ['dsp2', 'dfi2', 'dco2', 'dli2', 'dch2'], 'label': K('주문·화염·냉기·번개·카오스 피해 증가 1~2티어', 'T1–2 increased spell, fire, cold, lightning or chaos damage')},
    'pre2': {'anyOf': ['dsp2', 'dfi2', 'dco2', 'dli2', 'dch2', 'xfi2', 'xco2', 'xli2'], 'label': K('피해 증가·피해의 %를 추가 피해로 획득 1~2티어', 'T1–2 increased damage or damage gained as extra')},
    'fm': {'gi': 68}, 'alloy': {'gi': 65}, 'keep': {'anyOf': ['fm', 'alloy']}},
- 'require': {'all': [{'has': 'fire7'}, {'has': 'pd'}, {'count': {'tag': 'pre', 'min': 3}}, {'has': 'alloy'}, {'any': [V2, {'has': 'fm'}]}]},
+ 'require': {'all': [{'has': 'fire7'}, {'has': 'pd'}, {'count': {'tag': 'pre', 'min': 3}}, {'any': [{'all': [V1, {'has': 'fm'}]}, {'all': [V2, {'has': 'alloy'}]}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 2]}],
  'start': 'b0',
@@ -141,19 +142,14 @@ A(id='r1', kind='act', group='main', pos=[0, 13.4], act='rune', label=K('룬', '
   edges=[{'to': 's1'}], item=[F7, PF, XC, XF, RN])
 A(id='s1', kind='act', group='main', pos=[0, 14.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접미 잡옵 2개', 'Two junk suffixes'), showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
-  edges=[{'if': {'has': 'fm'}, 'to': 's3', 'hide': True}, {'to': 's2'}], item=[F7, PF, XC, XF, J('s'), J('s'), RN])
+  edges=[{'if': {'has': 'fm'}, 'to': 'ok', 'hide': True}, {'to': 's2'}], item=[F7, PF, XC, XF, J('s'), J('s'), RN])
 A(id='s2', kind='act', group='main', pos=[0, 15.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'],
   label=K('절사 + 카오스', 'Whittling + Chaos'), goal=K('접미 비고정 화염 속성 부여 규모', 'Explicit fire modifier magnitudes suffix'), show=['fm'],
-  edges=[{'if': {'has': 'fm'}, 'to': 's3', 'res': 'ok'}, {'to': 's2', 'res': 'fail', 'hide': True}], item=[F7, PF, XC, XF, FM, J('s'), RN])
-A(id='s3', kind='act', group='main', pos=[0, 16.4], act='essence', cur='Transcendent_Alloy', ess='alloy', label=K('합금', 'Alloy'),
-  goal=K('접미 잡옵을 지우고 초월의 합금', 'The junk suffix goes for the Transcendent Alloy'), showText=ALT,
-  edges=[{'if': {'all': [{'has': 'fm'}, {'has': 'alloy'}]}, 'to': 'ok', 'res': 'ok'},
-         {'to': 's3m', 'res': 'fail', 'label': K('규모 지워짐', 'Magnitudes gone')}],
-  item=[F7, PF, XC, XF, FM, AL, RN])
-A(id='s3m', kind='act', group='main', pos=[1, 16.4], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 's', 'keep': 'keep'},
-  label=K('절사 + 카오스', 'Whittling + Chaos'), goal=K('접미 비고정 화염 속성 부여 규모 다시', 'Fire magnitudes suffix again'), show=['fm'],
-  edges=[{'if': {'all': [{'has': 'fm'}, {'has': 'alloy'}]}, 'to': 'ok', 'res': 'ok', 'label': K('완성', 'Done')},
-         {'if': {'has': 'fm'}, 'to': 's3', 'res': 'ok', 'hide': True}, {'to': 's3m', 'res': 'fail', 'hide': True}])
+  edges=[{'if': {'has': 'fm'}, 'to': 'ok', 'res': 'ok'}, {'to': 's2', 'res': 'fail', 'hide': True}], item=[F7, PF, XC, XF, FM, J('s'), RN])
+# 초월의 합금 = 선택 단계(사용자 결정 2026-11-13 06:40): 시뮬·비용에서 빠짐. 영상 13:18
+A(id='hs3', kind='side', group='main', pos=[1, 16.9], attach=['ok', 'ok'], cur='Transcendent_Alloy',   # attach[0]은 두 등급 모두에 있는 상자(s2는 밸런스에서 빠져 그림 오류)
+  goal=K('하이엔드 합금 도박, 선택·비용 미포함', 'High-end alloy gamble, optional, not costed'),   # 접미 하나를 1/2로 지움 — 규모가 지워지면 절사 카오스 다시
+  label=K('합금', 'Alloy'))
 # 밸런스 (영상 9:13 가성비 마무리)
 A(id='b1', kind='act', group='main', pos=[0, 13.9], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 두번째 옵션(잡옵)', 'Second suffix (junk)'), showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
@@ -164,18 +160,17 @@ A(id='b1b', kind='act', group='main', pos=[0, 14.9], act='exalt', cur='Exalted_O
 A(id='b2', kind='act', group='main', pos=[0, 15.9], act='essence', cur='Transcendent_Alloy', ess='alloy', label=K('합금', 'Alloy'),
   goal=K('접미 잡옵 하나를 지우고 초월의 합금', 'A junk suffix goes for the Transcendent Alloy'), showText=ALT,
   edges=[{'to': 'ok'}], item=[F7, PF, XC, XF, J('s'), AL])
-A(id='ok', kind='done', group='main', pos=[0, 17.4], label=K('완성', 'Finished'))
+A(id='ok', kind='done', group='main', pos=[0, 16.9], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [
  {'id': 'L1', 'nodes': ['a1', 'x1'], 'kr': '매직 화염 주문 +7', 'en': 'Magic +7 fire spells'},
  {'id': 'L2', 'nodes': ['e1', 'e1x'], 'kr': '접두 두번째 옵션', 'en': 'Second prefix'},
  {'id': 'L3', 'nodes': ['d1', 'd2', 'dx'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal'},
- {'id': 'L4', 'nodes': ['s3', 's3m'], 'kr': '초월의 합금', 'en': 'Transcendent Alloy'},
 ]
 g['finals'] = [
  {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-  'lines': [{'tag': 'pd1'}, {'tag': 'pre1'}, {'tag': 'pre1', 'des': True}, {'tag': 'fire7', 'fr': True}, {'tag': 'fm'}, {'tag': 'alloy', 'ess': True}]},
+  'lines': [{'tag': 'pd1'}, {'tag': 'pre1'}, {'tag': 'pre1', 'des': True}, {'tag': 'fire7', 'fr': True}, {'tag': 'fm'}, {'side': 's', 'random': True}]},
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
   'lines': [{'tag': 'pd2'}, {'tag': 'pre2'}, {'tag': 'pre2', 'des': True}, {'tag': 'fire7', 'fr': True}, {'side': 's', 'random': True}, {'tag': 'alloy', 'ess': True}]},
 ]

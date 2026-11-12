@@ -31,7 +31,7 @@ P = {'high': {'cT': 1, 'dT': 1, 'pT': 1, 'g': 1}, 'bal': {'cT': 2, 'dT': 2, 'pT'
 TV = lambda d: {k: K(*v) for k, v in d.items()}
 G1 = {'param': {'g': 1}}; G0 = {'param': {'g': 0}}
 S1 = {'count': {'tag': 'suf', 'min': 1}}; S2 = {'count': {'tag': 'suf', 'min': 2}}
-SJ = {'junk': {'side': 's', 'tag': 'suf'}}
+SJ = {'junk': {'side': 's', 'tag': 'sf1'}}
 PD = {'any': [{'all': [G1, {'count': {'tag': 'pre', 'min': 2}}]}, {'all': [G0, {'has': 'pre'}, {'full': 'p'}]}]}
 
 g = {
@@ -42,6 +42,7 @@ g = {
           '공개는 가장 높은 레벨 옵션으로 자리 막기(8:32) → 완벽한 카오스 + 절사로 접두 잡옵 다시, 잡옵 레벨이 막기 옵션과 같으면 빛의 징조 + 소멸의 오브로 막기 옵션을 지우고 다시 훼손(8:50~10:54, 민첩 66으로 막고 활 스킬 피해 1티어) → '
           '빛의 징조 + 소멸의 오브로 막기 옵션 제거 → 보존된 턱뼈 + 공개로 모든 투사체(10:56~11:20). '
           '0.5 데이터에는 영상의 모든 투사체 +2(훼손)가 없어 일반 옵션 모든 투사체 +1(레벨 5)을 마지막 공개로 찾음 — 레벨이 가장 낮아 절사보다 먼저 붙이면 안 되므로 첫 공개는 투사체가 나와도 막기 옵션으로 받음(내부 결정). '
+          '첫 접미는 영상 계획(5:20 화면 자막: 치명타 확률·치명타 피해·투사체 중 하나)대로 셋 중 먼저 뜬 것(사용자 결정 2026-11-13 06:40) — 모든 투사체 +1이 먼저 뜨면 치명타 둘을 엑잘로 채워 접미가 차므로 막기·마지막 공개를 건너뜀, 완성 카드의 투사체 줄은 훼손 표시 없이. '
           '신성한 오브(2:15 매직 단계 번개 피해 최대치)는 비용에서 뺌. 하이엔드 = 영상(모두 1티어), 밸런스 = 1~2티어, 마지막 접두·접미는 랜덤 옵션.'),
  'params': {'cT': {'kr': '공격 치명타 확률', 'en': 'Attack crit chance', 'values': TV({'1': ('1티어', 'T1'), '2': ('1~2티어', 'T1–2')})},
             'dT': {'kr': '치명타 피해', 'en': 'Crit damage', 'values': TV({'1': ('1티어', 'T1'), '2': ('1~2티어', 'T1–2')})},
@@ -55,6 +56,7 @@ g = {
  'tags': {'light': {'gi': 8, 'tmax': 1},
           'critA': {'gi': 14, 'tmax': '$cT'}, 'critD': {'gi': 15, 'tmax': '$dT'},
           'critA1': {'gi': 14, 'tmax': 1}, 'critD1': {'gi': 15, 'tmax': 1}, 'critA2': {'gi': 14, 'tmax': 2}, 'critD2': {'gi': 15, 'tmax': 2},
+          'sf1': {'anyOf': ['critA', 'critD', 'proj'], 'label': K('공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스·모든 투사체 스킬 레벨', 'Attack critical hit chance, critical damage bonus or projectile skill levels')},   # 첫 접미 = 영상 계획(5:20)의 셋 중 먼저 뜬 것(사용자 결정 2026-11-13 06:40)
           'suf': {'anyOf': ['critA', 'critD'], 'label': K('공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스', 'Attack critical hit chance or critical damage bonus')},
           'pspd': {'gi': 18, 'tmax': '$pT'}, 'bow': {'gi': 19, 'tmax': '$pT'},
           'pspd1': {'gi': 18, 'tmax': 1}, 'bow1': {'gi': 19, 'tmax': 1}, 'pspd2': {'gi': 18, 'tmax': 2}, 'bow2': {'gi': 19, 'tmax': 2},
@@ -68,7 +70,7 @@ g = {
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'h0',
  'finals': [{'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-             'lines': [{'tag': 'light', 'fr': True}, {'tag': 'pspd1'}, {'tag': 'bow1'}, {'tag': 'critA1'}, {'tag': 'critD1'}, {'tag': 'proj', 'des': True}]},
+             'lines': [{'tag': 'light', 'fr': True}, {'tag': 'pspd1'}, {'tag': 'bow1'}, {'tag': 'critA1'}, {'tag': 'critD1'}, {'tag': 'proj'}]},
             {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
              'lines': [{'tag': 'light', 'fr': True}, {'tag': 'pre2'}, {'side': 'p', 'random': True}, {'tag': 'critA2'}, {'tag': 'critD2'}, {'side': 's', 'random': True}]}],
  'finalItem': {'quality': 0, 'sockets': 0},
@@ -95,7 +97,7 @@ def MG(vis):
 #  → 접두 잡옵을 완벽한 카오스 + 절사로 다시(8:50, 10:38). 잡옵 레벨이 막기 옵션 이상이면 막기 옵션을 지우고 다시 훼손(9:00~10:22), 잡옵이 치명타 옵션보다 높으면 좌측 말소의 징조(시뮬 trim 자동)
 #  → 하이엔드: 막기 옵션을 지우고 모든 투사체 공개(10:56~11:20)
 def R(vis):
-    return vis_([{'if': {'not': S1}, 'to': 's1'},
+    return vis_([{'if': {'not': {'has': 'sf1'}}, 'to': 's1'},
                  {'if': {'all': [{'not': S2}, {'any': [SJ, {'full': 's'}]}]}, 'to': 's2x'},
                  {'if': {'not': S2}, 'to': 's2'},
                  {'if': {'all': [{'sideLt': {'side': 's', 'n': 3}}, {'des': False}, {'not': {'unrevSide': 's'}}]}, 'to': 'd1'},
@@ -138,14 +140,14 @@ A(id='pc', kind='cleanup', group='prep', pos=[0, 6], keep=[], maxJunk=1, label=A
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 7.4], next='s1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[LF, J('p')])
 A(id='s1', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 치명타 옵션 하나 — 공격 치명타 확률·치명타 피해 중 먼저 뜬 것', 'One crit suffix: attack crit chance or crit damage, whichever lands first'), show=['critA', 'critD'],
+  goal=K('접미 첫 옵션 — 공격 치명타 확률·치명타 피해·모든 투사체 스킬 레벨 중 먼저 뜬 것', 'First suffix: attack crit chance, crit damage or projectile skill levels, whichever lands first'), show=['critA', 'critD', 'proj'],
   edges=R({'s2': {'res': 'ok'}}), item=[LF, CA])   # 5:20 계획 자막, 7:20~7:34 카오스 반복 화면
 A(id='s2', kind='act', group='main', pos=[1, 8.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('남은 접미 치명타 옵션', 'The other crit suffix'), show=['critA', 'critD'],
+  goal=K('남은 접미 치명타 옵션 — 투사체가 먼저 떴으면 치명타 둘', 'The remaining crit suffix: both if projectile levels came first'), show=['critA', 'critD'],
   edges=R({'d1': {'res': 'ok'}, 's2x': {'res': 'fail', 'label': K('빗나감 — 소멸', 'Miss: annul')}}), item=[LF, CA, CD])   # 7:36 공격 치명타 확률 36%(1티어), 7:48 치명타 피해 38%(1티어)
 A(id='s2x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
-  target=K('빗나간 옵션 지우기 — 치명타 옵션이 모두 지워지면 카오스부터', 'Remove the miss: back to Chaos if no crit option is left'),
-  edges=R({'s2': {'label': K('다시 엑잘', 'Exalt again')}, 's1': {'res': 'fail', 'label': K('치명타 옵션이 모두 지워짐', 'No crit option left')}}))   # 7:40~7:46 소멸로 물리·투사체 속도·마나 획득 제거
+  target=K('빗나간 옵션 지우기 — 좋은 접미가 모두 지워지면 카오스부터', 'Remove the miss: back to Chaos if no good suffix is left'),
+  edges=R({'s2': {'label': K('다시 엑잘', 'Exalt again')}, 's1': {'res': 'fail', 'label': K('좋은 접미가 모두 지워짐', 'No good suffix left')}}))   # 7:40~7:46 소멸로 물리·투사체 속도·마나 획득 제거
 A(id='d1', kind='act', group='main', pos=[0, 11], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
   goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=R({'e1': {}}), item=[LF, CA, CD, UN('s')])   # 8:02 '우측 강령술+ 보존된 턱뼈로 접미에 훼손을 미리 입히자'
@@ -181,12 +183,12 @@ g['nodes'] = N
 
 g['loops'] = [
  {'id': 'L1', 'nodes': ['s1', 's2', 's2x'], 'kr': '접미 치명타 두 옵션', 'en': 'Two crit suffixes', 'fold': True,
-  'goal': K('접미 공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스 1티어 — 먼저 뜬 것부터', 'T1 attack crit chance and crit damage suffixes: whichever lands first'),
-  'goalBy': {'high': K('접미 공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스 1티어 — 먼저 뜬 것부터', 'T1 attack crit chance and crit damage suffixes: whichever lands first'),
-             'bal': K('접미 공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스 1~2티어 — 먼저 뜬 것부터', 'T1–2 attack crit chance and crit damage suffixes: whichever lands first')},
-  'steps': [K('카오스 오브로 분열 외 옵션 하나 다시 — 치명타 옵션 하나', 'Chaos the one unfractured option: one crit suffix') | {'node': 's1'},
-            K('완벽한 엑잘로 남은 치명타 옵션', 'Perfect Exalt for the other crit suffix') | {'node': 's2'},
-            K('접미 잡옵이 붙으면 소멸의 오브 — 치명타 옵션이 모두 지워지면 1번부터', 'A junk suffix: Orb of Annulment, back to step 1 if no crit option is left') | {'node': 's2x'}],
+  'goal': K('접미 공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스 1티어 — 모든 투사체 스킬 레벨까지 셋 중 먼저 뜬 것부터', 'T1 attack crit chance and crit damage suffixes: start from whichever of the three, projectile levels included, lands first'),
+  'goalBy': {'high': K('접미 공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스 1티어 — 모든 투사체 스킬 레벨까지 셋 중 먼저 뜬 것부터', 'T1 attack crit chance and crit damage suffixes: start from whichever of the three, projectile levels included, lands first'),
+             'bal': K('접미 공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스 1~2티어 — 모든 투사체 스킬 레벨까지 셋 중 먼저 뜬 것부터', 'T1–2 attack crit chance and crit damage suffixes: start from whichever of the three, projectile levels included, lands first')},
+  'steps': [K('카오스 오브로 분열 외 옵션 하나 다시 — 치명타 확률·치명타 피해·모든 투사체 스킬 레벨 중 하나', 'Chaos the one unfractured option: crit chance, crit damage or projectile levels') | {'node': 's1'},
+            K('완벽한 엑잘로 남은 치명타 옵션', 'Perfect Exalt for the remaining crit suffixes') | {'node': 's2'},
+            K('접미 잡옵이 붙으면 소멸의 오브 — 좋은 접미가 모두 지워지면 1번부터', 'A junk suffix: Orb of Annulment, back to step 1 if no good suffix is left') | {'node': 's2x'}],
   'item': [LF, CA, CD]},
  {'id': 'L2', 'nodes': ['w1', 'r1', 'r2', 'r3'], 'kr': '접두 마지막 옵션', 'en': 'Last prefix', 'fold': True,
   'goal': K('접두 투사체 속도·활 스킬로 주는 피해 1티어 둘 — 남은 옵션', 'T1 projectile speed and bow damage prefixes: the one still missing'),
