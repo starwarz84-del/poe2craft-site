@@ -38,8 +38,8 @@
 | breach-ring-phys-v2 |  | bal 535, ess 89 | 2 | 대기 |  |  |
 | diztoh-crit-helmet-v2 | QuW8BOSpPpo | high 512, bal 340, ess 278 | 1 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-QuW8BOSpPpo.md). 등급 C17 적용. 512/340/278 → 1,287/278/219 |  |
 | mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 완료 11-11(그림만 확인 안 됨) | B(Fable) | 단계 대조는 함. 화면 캡처가 오른쪽이 잘린 채였음 — 선은 다시 볼 것 |
-| sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 대기 |  |  |
-| mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 대기 |  |  |
+| sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 진행 중 | A(Opus) |  |
+| mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 진행 중 | A(Opus) |  |
 | noble-timelost-sapphire-v2 | zEV8kWwveYQ | high 468, bal 418 | 3 | 대기 |  |  |
 | tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 대기 |  |  |
 | absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 대기 |  |  |
