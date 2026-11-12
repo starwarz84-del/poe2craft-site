@@ -32,6 +32,7 @@ for _t in ('bal','ess'): _grade8('sihan-chayula-wand','sihan-chayula-wand-v2',_t
 
 # 5. 공격 플랫 3줄 반지 — 밸런스 = 영상(플랫 1~2티어, 공개는 빛의 징조로 다시), 에센셜 = 1~3티어·공개 결과 그대로
 def _flat(r, t):
+    r['ilvl']=80   # 2026-11-13 G2: 영상 매물(9:55) 아이템 레벨 80
     if t=='ess':
         for nid in ('f4',):
             for x in _node(r,nid)['target']['anyOf']: x['tmax']=3
