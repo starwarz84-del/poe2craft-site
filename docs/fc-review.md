@@ -54,11 +54,11 @@
 | diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 완료 11-12 | A(Opus) | 자막 전체(31:47) 대조, 단계 일치(기록 tools/notes/diztoh-s70CV_nvjXg.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | diztoh-vile-robe-v2 | n97yEuKSWyM | bal 105, ess 51 | 0 | 완료 11-12 | A(Opus) | 자막 전체(20:33) 대조, 단계 일치(기록 tools/notes/diztoh-n97yEuKSWyM.md). C17 티어(밸런스 1~2, 에센셜 1~4). 105/51 → 76/39 |
 | sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 완료 11-12 | A(Opus) | 자막 전체(13:10) 대조, 단계 일치(기록 tools/notes/sl-VKMT7tuSIYk.md). 완성품 줄을 DB 태그로. 값 그대로 |
-| sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 98, ess 26 | 0 | 대기 |  |  |
-| sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 97, ess 23 | 1 | 대기 |  |  |
-| diztoh-5mod-sapphire-v2 | -YZm55-QuoQ | bal 95, ess 43 | 0 | 대기 |  |  |
-| easybabi-spiny-talisman-v2 | fabBIuR6yhw | high 94, bal 13 | 1 | 대기 |  |  |
-| vodnarg-timelost-emerald-v2 | 3tFs16SXkD8 | bal 94, ess 70 | 0 | 대기 |  |  |
+| sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 98, ess 26 | 0 | 진행 중 | A(Opus) |  |
+| sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 97, ess 23 | 1 | 진행 중 | A(Opus) |  |
+| diztoh-5mod-sapphire-v2 | -YZm55-QuoQ | bal 95, ess 43 | 0 | 진행 중 | A(Opus) |  |
+| easybabi-spiny-talisman-v2 | fabBIuR6yhw | high 94, bal 13 | 1 | 진행 중 | A(Opus) |  |
+| vodnarg-timelost-emerald-v2 | 3tFs16SXkD8 | bal 94, ess 70 | 0 | 진행 중 | A(Opus) |  |
 | lilbotq-boots-v2 | S-7YHuq3-P4 | bal 92, ess 5 | 2 | 대기 |  |  |
 | mazbro-caster-ring-v2 | o3Fh1DJmxBA | bal 86, ess 16 | 1 | 대기 |  |  |
 | lilbotq-emerald-v2 | Hcb_HcWDUOA | bal 84 | 0 | 대기 |  |  |
