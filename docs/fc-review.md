@@ -45,8 +45,8 @@
 | absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계·분기 일치(기록 tools/notes/sl-jr6-YLMJsC8.md). 등급 C17도 이미 맞음. 변경 없음 |
 | gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 삭제 11-11 | B(Fable) | 사용자 요청으로 내림(22:21). 플로우차트 옵션이 영상이 만든 목걸이와 달랐음. 다시 올리려면 영상 전체 기준으로 새로 만들고 build_recipes.py REMOVED·build_tips.py·gen_batch11.py의 막아 둔 줄을 지움 |
 | saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 완료 11-12 | A(Opus) | 자막 전체 대조, 첫 번째 집중구 단계 일치(기록 tools/notes/saveq-R43FVay8_XI.md). 하이엔드 에너지 보호막 접두도 1티어(C17). 343/208 → 504/208 |
-| mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 진행 중 | A(Opus) |  |
-| diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 진행 중 | A(Opus) |  |
+| mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/mazbro-kULlZJBSec4.md). 하이엔드 공개 목표 1티어(C17). 222/201 → 233/201 |
+| diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계 일치(기록 tools/notes/diztoh-GDLDxn6yxEs.md). C17: 에센셜은 공개 나오는 대로(영상과 같음). 149/24/3 |
 | bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 대기 |  |  |
 | ragna-spell4-amulet-v2 | Tzpdm8M-Pkk | bal 118, ess 27 | 0 | 대기 |  |  |
 | mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 대기 |  |  |
@@ -116,7 +116,7 @@
 | diztoh-es-helmet-v2 | ess·bal | ess 접두 희귀도 1~2티어; bal 에너지 보호막 % 1~3티어; bal 접두 희귀도 1티어 | 대기 |  |  |
 | diztoh-iceshot-bow-v2 | bal·high | 물리 피해 추가 모두 1티어, high 1티어 + 마지막 접미 도박, bal 1~2티어 | 완료 11-12 | A(Opus) | 4,091/1,321 |
 | diztoh-onehand-mace-v2 | ess·bal | ess 치명타 확률 1~3티어 | 대기 |  |  |
-| diztoh-rarity-ring-v2 | ess·bal·high | ess 접두 희귀도 1~3티어; ess 냉기 저항 1~2티어; bal 모든 원소 저항 목표 1~3티어; bal 접두 희귀도 1~3티어 | 대기 |  |  |
+| diztoh-rarity-ring-v2 | ess·bal·high | high 1티어, bal 1~2티어, ess 1~4티어·공개 나오는 대로 | 완료 11-12 | A(Opus) | 149/24/3 |
 | diztoh-socket-gloves-v2 | ess·bal | - | 대기 |  |  |
 | diztoh-talisman-v2 | ess·bal | ess 화염 피해 추가 1~5티어; bal 화염 피해 추가 1~3티어 | 대기 |  |  |
 | diztoh-vile-robe-v2 | ess·bal | ess 정신력 (분열) 1~6티어; ess 에너지 보호막 최대치 1~2티어; ess 에너지 보호막 % 1~3티어; bal 정신력 (분열) 1~4티어; bal 에너지 보호막 최대치 1티어 | 대기 |  |  |
@@ -141,7 +141,7 @@
 | mazbro-caster-ring-v2 | ess·bal | ess 옵션 티어 1~3티어 | 대기 |  |  |
 | mazbro-proj-gloves-v2 | bal·high | - | 대기 |  |  |
 | mazbro-sceptre-v2 | high | - | 대기 |  |  |
-| mazbro-spell5-amulet-v2 | bal·high | - | 대기 |  |  |
+| mazbro-spell5-amulet-v2 | bal·high | high 공개 1티어, bal 마지막 접미 랜덤 | 완료 11-12 | A(Opus) | 233/201 |
 | mirror-bow-video-v2 | high | - | 완료 11-12 | A(Opus) 하이엔드만(극한), 바꿀 것 없음 |
 | noble-timelost-sapphire-v2 | bal·high | 주얼이라 티어 없음 | 완료 11-12 | A(Opus) | 변경 없음 |
 | noble-visceral-quiver-v2 | bal·high | bal 치명타 피해 1~3티어; high 치명타 피해 1~2티어 | 완료 11-12 | A(Opus) | 하이엔드 모두 1티어(영상 '치피 1티'), 밸런스 1~2티어·마지막 접두·접미 랜덤 — 110 → 110 |

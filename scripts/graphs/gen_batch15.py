@@ -20,9 +20,11 @@ def T(gis, tm=None): return {'anyOf':[dict({'gi':g}, **({'tmax':tm} if tm else {
 # 영상: 부재 목걸이(접두·접미 2개씩) 정신력 50 분열 + 잡옵 → (소멸의 오브로 옵션 1개) → 균열의 에센스(최대 퀄리티) → 쇳소리 기폭제 40%(주문 +3 → +4)
 # → 카오스 오브로 모든 주문 +3(약 1/1000, 최대 퀄리티 옵션은 첫 카오스에 바뀌어도 퀄리티는 남음) → 좌측 찬미 + 상위 엑잘(접두) → 좌측 결정화 + 룬 합금(룬 수호)
 # → 고대 빗장뼈(남은 접미) → 공개(시전 속도·치명타·모든 원소 저항·희귀도·모든 스킬 퀄리티, 빛의 징조로 다시) → 성유·완벽한 유동체·완벽한 쥬얼러 오브·신성한 오브 → 축성(+5, 약 13%).
+# 2026-11-12 영상 전체 대조(자동 번역 자막 0:00~38:10, 메인 세션): 단계 일치(12:00 소멸 → 균열의 에센스 → 쇳소리 40%, 13:00 카오스, 26:00 좌측 찬미 + 상위 엑잘 → 좌측 결정화 + 룬 합금, 28:30 고대 빗장뼈 + 메아리 + 빛의 징조 → 시전 속도 1티어·모든 저항 18%).
+#   등급 C17: 공개 목표는 하이엔드 1티어(옛 그래프는 치명타·희귀도 2티어까지 받음), 밸런스는 마지막 접미라 랜덤 옵션.
 # 촉진 + 완벽한 엑잘로 주문 +3·시전 속도를 같이 노리는 방법은 영상에서 20번에 1번 — 뺌. 성유~축성은 제작 옵션이 아니라 그림에서 뺌(레시피 하이엔드에는 남김).
 tags={'spirit':{'gi':28,'tmax':1},'spell':{'gi':17,'tmax':1},'mq':{'gi':81},'rw':{'gi':82},
-      'kq':{'gi':46},'cs':{'gi':32,'tmax':1},'cr':{'gi':24,'tmax':2},'cd':{'gi':25,'tmax':2},'ar':{'gi':7,'tmax':2},'rs':{'gi':26,'tmax':1},'fin':{'anyOf':['kq','cs','cr','cd','ar','rs']}}
+      'kq':{'gi':46},'cs':{'gi':32,'tmax':1},'cr':{'gi':24,'tmax':1},'cd':{'gi':25,'tmax':1},'ar':{'gi':7,'tmax':1},'rs':{'gi':26,'tmax':1},'fin':{'anyOf':['kq','cs','cr','cd','ar','rs'],'label':K('시전 속도·치명타·저항·희귀도·스킬 퀄리티 1티어','T1 cast speed, crit, resistances, rarity or skill quality')}}
 SP=it('p','정신력 +50 (분열)','+50 Spirit (fractured)',['spirit']); SL=it('s','모든 주문 스킬 레벨 +3','+3 spell skills',['spell']); MQ=it('p','최대 퀄리티 +20% (균열의 에센스)','+20% max quality (Essence of the Breach)',['mq'],'c')
 RW=it('p','최대 룬 수호 % (룬 합금)','% max runic ward (Runic Alloy)',['rw'],'c'); FN=it('s','시전 속도','Cast speed',['cs'],'d')
 M0=[SP,J('s')]; M1=[SP,MQ]; M2=[SP,SL]; M3=[SP,J('p'),SL]; M4=[SP,RW,SL]; M5=M4+[UN('s')]; M6=M4+[FN]
@@ -42,7 +44,7 @@ graph11('mazbro-spell5-amulet-v2','Amulets','Absent Amulet',81,
   'MazBro +5 부재 목걸이(kULlZJBSec4) — 정신력 50 분열 + 잡옵 → 균열의 에센스 → 쇳소리 기폭제 40% → 카오스 오브(주문 +3) → 좌측 찬미 + 상위 엑잘 → 좌측 결정화 + 룬 합금 → 고대 빗장뼈 → 공개. 하이엔드 = 영상(공개는 빛의 징조로 다시, 이후 성유·유동체·쥬얼러·신성한 오브·축성은 레시피에만), 밸런스 = 공개 결과 그대로·축성 없이 판매.',
   ROUTE,P2,{'high':K('영상: 공개는 빛의 징조로 다시, 그다음 축성(+5 약 13%)','Video: Light retries the reveal, then sanctify (+5 about 13%)'),'bal':K('공개 결과 그대로, 축성 없이','Reveal kept, no sanctify')},tags,nodes,
   [{'id':'L1','nodes':['z12','z13','z13x'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'spirit','tmax':1,'fr':True},{'tag':'rw','ess':True},{'tag':'spell','tmax':1},{'tag':'cs','tmax':1,'des':True} if v=='high' else {'side':'s','random':True}]),
+  FIN(('high','bal'),lambda v:[{'tag':'spirit','tmax':1,'fr':True},{'tag':'rw','ess':True},{'tag':'spell','tmax':1},{'tag':'fin','des':True} if v=='high' else {'side':'s','random':True}]),
   {'quality':40,'sockets':0},{'all':[{'has':'spell'},{'has':'rw'}]},('high','bal'))
 
 # ---------- 2. SL 6옵션 황금 목걸이 (cb36jD9pqsw) ----------
