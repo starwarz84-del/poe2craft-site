@@ -925,12 +925,13 @@ function analyse(r){
           if(!cand.length) o.warn=L('지울 수 있는 옵션이 없음','Nothing to replace');
           else { o.p = t.chance ?? (jn ? jn/cand.length : 1); if(!jn && t.chance==null) o.warn=L('접두·접미가 꽉 차서 좋은 옵션 하나가 지워짐','Full side: a wanted line will be replaced');
             const k = t.dropGi!=null ? mods.findIndex(m=>m.gi===t.dropGi) : mods.findIndex(m=>m.junk && m.side===t.unrev); mods.splice(k>=0 ? k : mods.indexOf(cand[0]), 1); } }
-        mods.push({unrev:true, junk:true, side:t.unrev}); }
+        const lordOm = (n.omens||[]).includes('Omen_of_the_Liege')?'amanamu':(n.omens||[]).includes('Omen_of_the_Sovereign')?'ulaman':(n.omens||[]).includes('Omen_of_the_Blackblooded')?'kurgal':null;   /* 심연 군주의 징조: 이 훼손 옵션을 공개하면 그 군주 옵션만(site/sim.js와 같음, 2026-11-13 S1 — 엔진이 군왕의 징조를 무시하던 것) */
+        mods.push({unrev:true, junk:true, side:t.unrev, ...(lordOm||t.lord?{lord:lordOm||t.lord}:{})}); }
     } else if(n.do==='reveal'){
       if(t.swapDes){ const i=mods.findIndex(m=>m.des); if(i>=0) mods.splice(i,1); }
-      const i=mods.findIndex(m=>m.unrev && m.side===t.side); if(i>=0) mods.splice(i,1);
+      const i=mods.findIndex(m=>m.unrev && m.side===t.side), lord=t.lord||(i>=0?mods[i].lord:null)||null; if(lord) o.lord=lord; if(i>=0) mods.splice(i,1);
       if(t.anyReveal){ o.p=1; mods.push({junk:true, side:t.side, des:true}); }   // 정책 32: 티어가 하나뿐인 옵션(주얼)은 낮은 등급에서 공개 결과를 그대로 받음 → 카드엔 안 보임
-      else { const q=revealChance(t.reveal, t.side, minOf(t.bone), t.lord, t.bone);
+      else { const q=revealChance(t.reveal, t.side, minOf(t.bone), lord, t.bone);
       o.p = (n.omens||[]).includes('Omen_of_Abyssal_Echoes') ? 1-(1-q)*(1-q) : q; o.q=q; o.pEst=revealEst;
       const F=fams(); const x=specList(t.reveal).find(x=>!grp(r,x.gi).f.some(f=>F.has(f))) || specList(t.reveal)[0]; mods.push({gi:x.gi, ti:0, side:t.side, des:true, tmax:x.tmax}); }
     } else if(n.do==='fracture'){
@@ -965,7 +966,10 @@ function analyse(r){
     else if(n.do==='quality'){ const step = r.ilvl>=82 ? 1.2 : 1; o.fixedTries = Math.ceil(((t.quality||20)-(qual.v||t.from||0))/step); qual={v:t.quality, type:S.byId[n.cur]?.tag||null}; }
     if(t.setQuality!=null) qual={...qual, v:t.setQuality};
     // named runes / soul cores from manual steps: put one in, or swap one for another
-    if(t.rune && !runes.some(y=>String(typeof y==='object'?y.en:y).replace(/^rune:/,'').replace(/[’']/g,"'").toLowerCase()===String(t.rune.en||t.rune).replace(/[’']/g,"'").toLowerCase())) runes.push(t.rune);   /* 시작에 이미 있는 룬은 다시 넣지 않음(2026-11-13: 콜르가 두 번 들어가 세를이 빠지던 문제) */
+    const rkey = y=>String(typeof y==='object'?(y.en||y.kr):y).replace(/^rune:/,'').replace(/[’']/g,"'").toLowerCase();
+    if(t.rune && t.swapAstrid){ const i=runes.findIndex(y=>/astrid|아스트리드/i.test(rkey(y)+' '+(y?.kr||''))); if(i>=0) runes.splice(i,1); }   /* 룬 교체 상자: 아스트리드의 창의성을 빼고(2026-11-13 S1) */
+    if(t.rune && (t.runeCount>1 || t.runeFill)){ const k = t.runeFill ? Math.max(0, sockets-runes.length) : t.runeCount; for(let j=0;j<k && runes.length<sockets;j++) runes.push(t.rune); }   /* 같은 룬 여러 개(Limited to 1이 아닌 룬만 — 점검 tools/test/runerules.py) */
+    else if(t.rune && !runes.some(y=>String(typeof y==='object'?y.en:y).replace(/^rune:/,'').replace(/[’']/g,"'").toLowerCase()===String(t.rune.en||t.rune).replace(/[’']/g,"'").toLowerCase())) runes.push(t.rune);   /* 시작에 이미 있는 룬은 다시 넣지 않음(2026-11-13: 콜르가 두 번 들어가 세를이 빠지던 문제) */
     if(t.runeSwap){ const i=runes.findIndex(x=>typeof x==='object' && x.kr===t.runeSwap[0].kr); if(i>=0) runes[i]=t.runeSwap[1]; else runes.push(t.runeSwap[1]); }
     if(t.slots && n.do!=='socket') for(const k in t.slots) cap[k]+=t.slots[k];   // e.g. a liquid that allows one more suffix
     if(t.imp) imp=t.imp; if(t.anoint) anoint=t.anoint; if(t.sanctify) sanct=true; if(t.vals) vals={...vals, ...t.vals};
@@ -1002,9 +1006,9 @@ function analyse(r){
     if(block && blockKey(r.nodes[ni+1]||{})!==block.key && !(r.nodes[ni+1] && block.key.startsWith('m:') && r.nodes[ni+1].branch?.of===block.pr.n.id && r.nodes[ni+1].branch?.when==='miss')){
       if(block.key.startsWith('m:')){ mods=block.main; block=null; continue; }
       // end of the retry block: the reveal is tried again with the retry bone
-      const pt=block.pr.n.target, i=mods.findIndex(m=>m.unrev && m.side===pt.side); if(i>=0 && block.pr.n.do==='reveal') mods.splice(i,1);
+      const pt=block.pr.n.target, i=mods.findIndex(m=>m.unrev && m.side===pt.side), lord2=pt.lord||(i>=0?mods[i].lord:null)||null; if(i>=0 && block.pr.n.do==='reveal') mods.splice(i,1);
       if(block.pr.n.do!=='reveal'){ block.pr.p2=block.pr.p; mods=block.main; block=null; continue; }   // any other step: the retry has the same odds as the first try
-      const q=revealChance(pt.reveal, pt.side, minOf(pt.retryBone||pt.bone), pt.lord, pt.retryBone||pt.bone);
+      const q=revealChance(pt.reveal, pt.side, minOf(pt.retryBone||pt.bone), lord2, pt.retryBone||pt.bone);
       block.pr.p2 = (block.pr.n.omens||[]).includes('Omen_of_Abyssal_Echoes') ? 1-(1-q)*(1-q) : q; block.pr.q2=q;
       mods = block.main; block=null; }
   }
@@ -1180,7 +1184,7 @@ function statTiles(r){
 /* 완성 카드 하나 = 플로우차트 완성품 카드와 레시피 탭 완성 카드가 같은 값(사용자 2026-11-12): 옵션 줄은 플로우차트 카드(fcCardState),
    아이템 정보(퀄리티·소켓·룬·스킬 부여·성유)는 그 등급 레시피의 마지막 상태 — 레시피에 퀄리티가 없으면 플로우차트 완성품 퀄리티, 소켓은 둘 중 큰 값 */
 function finCardO(r, state){ const a=analyse(r), fin=a.nodes[a.nodes.length-1], fi=r.fc?.fi||{}, st=state||a.finalState||fin.state;
-  const qual = fin.qual?.v ? {...fin.qual} : fi.quality ? {v:fi.quality, type:null} : {...(fin.qual||{v:0})}, sockets=Math.max(fin.sockets||0, fi.sockets||0);
+  const qual = fi.quality ? {v:fi.quality, type:fin.qual?.type||null} : fin.qual?.v ? {...fin.qual} : {...(fin.qual||{v:0})}, sockets=Math.max(fin.sockets||0, fi.sockets||0);
   const runes=[...(fin.runes||[])], has=x=>runes.some(y=>runeName(y).toLowerCase()===runeName(x).toLowerCase());
   let rs=[]; try{ rs=C(r).runes||[]; }catch(e){}
   (st||[]).forEach(m=>{ if(m.gi==null) return; let G; try{ G=grp(r,m.gi); }catch(e){ return; } const sb=G?.s==='x' && Array.isArray(G.sub) ? G.sub : null; if(!sb || /otherworldly/i.test(sb[1]||'')) return;   /* 룬이 주는 옵션이 카드에 있으면 그 룬도 소켓에 */
@@ -1295,7 +1299,8 @@ function nodeHTML(r, o, i, idx){
   else if(t.unrev){ const sl=sideLbl(n,o,t.unrev); tgt=sl.any ? L('공개하지 않은 훼손 옵션 추가 (접두·접미 무관)','Adds an unrevealed desecrated modifier (prefix or suffix)') : L(`${sl.kr} 자리에 공개하지 않은 훼손 옵션 추가${sl.left?' (남은 자리)':''}`,`Adds an unrevealed desecrated ${sl.en}${sl.left?' (the free slot)':''}`); }
   else if(Array.isArray(t.junk)){ const np=t.junk.filter(x=>x==='p').length, ns=t.junk.length-np; tgt=L(`아무 옵션 ${t.junk.length}개 추가 (${[np?`접두 ${np}`:'',ns?`접미 ${ns}`:''].filter(Boolean).join(' · ')})`,`Adds ${t.junk.length} random modifiers (${[np?`${np} prefix`:'',ns?`${ns} suffix`:''].filter(Boolean).join(', ')})`); }
   else if(t.junk){ const sl=sideLbl(n,o,t.junk); tgt=L(`아무 옵션 ${t.count||1}개 추가 (${sl.any?'접두·접미 무관':sl.kr+(sl.left?', 남은 자리':'')})`,`Adds ${t.count||1} random modifier${(t.count||1)>1?'s':''} (${sl.any?'prefix or suffix':sl.en+(sl.left?', the free slot':'')})`); }
-  else if(t.rune) tgt=L(`룬 소켓에 <span class="mod">${esc(tx(t.rune))}</span> 장착`,`Socket <span class="mod">${esc(tx(t.rune))}</span>`);
+  else if(t.rune && t.swapAstrid) tgt=L(`룬 교체: 아스트리드의 창의성 → <span class="mod">${esc(tx(t.rune))}</span>${t.runeFill?' (빈 소켓에도)':t.runeCount>1?` ${t.runeCount}개`:''}`,`Rune swap: Astrid’s Creativity → <span class="mod">${esc(tx(t.rune))}</span>${t.runeFill?' (empty sockets too)':t.runeCount>1?` ×${t.runeCount}`:''}`);
+  else if(t.rune) tgt=L(`룬 소켓에 <span class="mod">${esc(tx(t.rune))}</span>${t.runeFill?' (빈 소켓 모두)':t.runeCount>1?` ${t.runeCount}개`:''} 장착`,`Socket <span class="mod">${esc(tx(t.rune))}</span>${t.runeFill?' (every empty socket)':t.runeCount>1?` ×${t.runeCount}`:''}`);
   else if(t.runeSwap) tgt=L(`룬 교체: ${esc(tx(t.runeSwap[0]))} → <span class="mod">${esc(tx(t.runeSwap[1]))}</span>`,`Rune swap: ${esc(tx(t.runeSwap[0]))} → <span class="mod">${esc(tx(t.runeSwap[1]))}</span>`);
   else if(t.reroll) tgt=L('가장 낮은 레벨 옵션을 다시 굴림','Rerolls the lowest-level modifier');
   else if(t.slots) tgt=L(`${t.slots.s?'접미':'접두'} 자리 +1`,`+1 ${t.slots.s?'suffix':'prefix'} slot`);
@@ -1311,7 +1316,7 @@ function nodeHTML(r, o, i, idx){
       : ak==='catalyst' || fu!=null ? L(`퀄리티 ${t.quality}%까지 (한 번에 ${fmt(per)}개)`,`Quality to ${t.quality}% (${fmt(per)} at a time)`)
       : L(`퀄리티 ${t.quality}%까지 (평균 ${fmt(per)}개, 레어는 1개당 +1${r.ilvl>=82?' · 20% 확률로 +2':''})`,`Quality to ${t.quality}% (avg ${fmt(per)}; +1 each on a rare${r.ilvl>=82?', 20% chance of +2':''})`); }
   if(t.removeGi!=null && t.junk) tgt=L(`${esc(modLine(r,t.removeGi).txt)} 제거 (접두엔 아무 옵션)`,`Removes ${esc(modLine(r,t.removeGi).txt)} (any prefix lands)`);
-  if(t.lord && tgt){ const LN={kurgal:['쿠르갈','Kurgal'],amanamu:['아마나무','Amanamu'],ulaman:['울라만','Ulaman']}[t.lord]||[t.lord,t.lord]; tgt += ` <small>(${L('공개 옵션 모두 '+LN[0],'all revealed options are '+LN[1]+'’s')})</small>`; }
+  if((t.lord||o.lord) && tgt){ const LN={kurgal:['쿠르갈','Kurgal'],amanamu:['아마나무','Amanamu'],ulaman:['울라만','Ulaman']}[t.lord||o.lord]||[t.lord||o.lord,t.lord||o.lord]; tgt += ` <small>(${L('공개 옵션 모두 '+LN[0],'all revealed options are '+LN[1]+'’s')})</small>`; }
   if(n.trimFc) tgt=L(`${n.trimFc==='s'?'접미':'접두'} 잡옵을 지우고 새 옵션 굴림`,`Remove the junk ${n.trimFc==='s'?'suffix':'prefix'} and roll a new modifier`);
   /* 플로우차트 읽기: 커런시를 경우마다 고르는 상자(curRows)와 등급이 갈리는 곳 */
   const fcRows = n.fcs?.rows ? `<div class="fcrows">${n.fcs.rows.map(w=>`<div><span class="rw">${esc(tx(w))} →</span>${w.ids.map(x=>`${icon(x,r)}`).join('')}<span>${esc(w.ids.map(x=>nm(cur(x))).join(' + '))}</span>${w.p!=null?`<small>${pct(w.p)} · ${L('평균','avg')} ${fmt(1/w.p)}${L('회','×')}</small>`:''}</div>`).join('')}</div>` : '';
@@ -1573,7 +1578,8 @@ function itemTipHTML(r, o, opt={}){
   const cnt=`<div class="tt-cnt"><span class="p">P ${np}/${o.cap.p}</span><span class="s">S ${ns}/${o.cap.s}</span>${o.sockets?`<span class="r">${'R'} ${o.runes.length}/${o.sockets}</span>`:''}</div>`;
   const QT = {attack:['공격','attack'], caster:['시전','caster'], life:['생명력','life'], mana:['마나','mana'], defences:['방어','defences'], physical:['물리','physical'], fire:['화염','fire'], cold:['냉기','cold'], lightning:['번개','lightning'], chaos:['카오스','chaos'], speed:['속도','speed'], attribute:['능력치','attribute'], minion:['소환수','minion']};
   const q = (o.qual?.v || opt.showQual) ? `<div class="tt-prop">${L('퀄리티','Quality')}${o.qual.type&&QT[o.qual.type]?` (${L(QT[o.qual.type][0]+' 속성 부여',QT[o.qual.type][1]+' modifiers')})`:''}: <b>+${o.qual?.v||0}%</b></div>` : '';
-  const ru = o.sockets ? `<div class="tt-sep"></div>${o.runes.map(id=>{ const ls=runeLines(r,id); return ls.length ? ls.map((x,i)=>`<div class="tt-mod rune" title="${esc(runeName(id))}"><span class="tier r"${i?' style="visibility:hidden"':''}>${'R'}</span>${esc(tx(x))}</div>`).join('') : `<div class="tt-mod rune"><span class="tier r">${'R'}</span>${esc(runeName(id))}</div>`; }).join('')}${`<div class="tt-mod slot0"><span class="tier r">${'R'}</span></div>`.repeat(Math.max(0,o.sockets-o.runes.length))}` : '';
+  /* 완성 카드(opt.final)는 빈 룬 소켓 줄(R만 있는 빈 줄)을 그리지 않고 위 'R n/m' 개수만 남김 — 사용자 확정 2026-11-13. 룬이 하나도 없으면 구분선도 뺌 */
+  const ru = o.sockets && !(opt.final && !o.runes.length) ? `<div class="tt-sep"></div>${o.runes.map(id=>{ const ls=runeLines(r,id); return ls.length ? ls.map((x,i)=>`<div class="tt-mod rune" title="${esc(runeName(id))}"><span class="tier r"${i?' style="visibility:hidden"':''}>${'R'}</span>${esc(tx(x))}</div>`).join('') : `<div class="tt-mod rune"><span class="tier r">${'R'}</span>${esc(runeName(id))}</div>`; }).join('')}${`<div class="tt-mod slot0"><span class="tier r">${'R'}</span></div>`.repeat(opt.final?0:Math.max(0,o.sockets-o.runes.length))}` : '';
   const ench = (o.anoint||(o.imp||[]).length) ? `<div class="tt-ench"><div class="tt-sep"></div>${o.anoint?`<div class="tt-mod ench"><span class="tier e">${L('성유','Anoint')}</span>${esc(L('할당 ','Allocates ')+tx(o.anoint))}</div>`:''}${(o.imp||[]).map(x=>`<div class="tt-mod imp">${esc(tx(x))}</div>`).join('')}</div>` : '';
   const va = o.vaal ? `<div class="tt-sep"></div><div class="tt-mod vaal"><span class="tier v">Vaal</span>${esc(tx(o.vaal))}</div>` : '';
   return `<div class="tt ${['normal','magic'].includes(o.rar)?o.rar:'rare'}"><div class="tt-head"><div class="tt-name">${esc(itemName(r))}</div></div><div class="tt-body">
@@ -1866,7 +1872,10 @@ function fcCardState(tags, lines, ds, revOnly=()=>false, r=null){
 function fcRunes(r, g, S2, state, fi){ const out=[], key=x=>String(typeof x==='object'?(x.en||x.kr):x).replace(/^rune:/,'').replace(/[’']/g,"'").toLowerCase(), add=x=>{ if(x && key(x) && !out.some(y=>key(y)===key(x))) out.push(x); };
   (r.start?.runes||[]).forEach(add);
   (g.nodes||[]).forEach(n=>{ if(n.kind==='base') (n.start?.runes||[]).forEach(add); });
-  (g.nodes||[]).forEach(n=>{ if(n.act==='rune' && n.rune && (!S2 || S2.res.nodes?.[n.id])) add(n.rune); });
+  (g.nodes||[]).forEach(n=>{ if(!(n.act==='rune' && n.rune && (!S2 || S2.res.nodes?.[n.id]))) return;
+    if(n.swapAstrid){ const i=out.findIndex(y=>/astrid|아스트리드/i.test(key(y)+' '+(y?.kr||''))); if(i>=0) out.splice(i,1); }   /* 룬 교체 상자: 아스트리드를 빼고 그 룬(2026-11-13 S1) */
+    const k = n.fill ? Math.max(1, (fi?.sockets||0)-out.length) : (n.count>1 ? n.count : 1);
+    if(k>1) for(let j=0;j<k;j++) out.push(n.rune); else add(n.rune); });
   let rs=[]; try{ rs=C(r).runes||[]; }catch(e){}
   (state||[]).forEach(m=>{ if(m.gi==null) return; let G; try{ G=grp(r,m.gi); }catch(e){ return; } const sb=G?.s==='x' && Array.isArray(G.sub) ? G.sub : null; if(!sb || /otherworldly/i.test(sb[1]||'')) return;
     if(rs.some(x=>(x.t||[]).some(t=>key(t[1])===key(sb[1])))) add({kr:sb[0], en:sb[1]}); });
@@ -1994,14 +2003,15 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
     if(byI){ const anyOk=eds.some(x=>x.res==='ok'); okN = anyOk ? sumI(x=>x.res==='ok' && (n.pAll || !x.dash)) : sumI(x=>!x.res && x.to!==n.id);
       if(okN<=0 && tries>0) okN=sumI(x=>x.res!=='fail' && x.to!==n.id); }
     else okN = okE.reduce((s2,e)=>s2+(R2?.edges?.[e.a+'>'+e.b]||0),0);
-    const pS0 = !t || !tries ? null : hasRes ? Math.min(1, okN/tries) : 1, pS = pS0===0 && byI ? null : pS0, split = byI && pS0===0;
+    const pS0 = !t || !tries ? null : hasRes && n.act!=='flux' ? Math.min(1, okN/tries) : 1, pS = pS0===0 && byI ? null : pS0, split = byI && pS0===0;
     // the totals stay available on hover; the box itself shows only the goal, the currency and the chance
     const LH=M.loopHead[n.id]; let tip=tx(n.label)+' — '+c.title;
     if(t) tip+=`\n${L('평균','avg')} ${fmt(n.kind==='cleanup'?(t.use?.Orb_of_Annulment||0):tries)}${L('회','×')} · ${L('도달','reached')} ${pct1(t.reach)} · ≈ ${fmtDiv(t.div)} div`;
     if(LH && t){ const ids=new Set(LH.nodes); let dv=0; (LH.allNodes||LH.nodes).forEach(id=>{ dv+=st(id)?.div||0; }); const into=M.E.filter(e=>ids.has(e.b) && !ids.has(e.a)).reduce((s2,e)=>s2+ecount(e.a,e.b),0);
       tip+=`\n↺ ${tx(LH)}${into?` · ${L('평균','avg')} ${fmt(t.visits/into)}${L('바퀴',' rounds')}`:''} · ${L('구간 총','loop total')} ≈ ${fmtDiv(dv)} div`; }
     /* 다시 하지 않는 상자(빗나가도 이 상자로 돌아오지 않음, 사용자 2026-11-12 방패 1번): 확률은 '1회 시도', 개수는 시뮬의 실제 사용량(완성 1개당) */
-    const once1 = !!t && n.kind!=='cleanup' && (n.once || !fcRepeats(g, n.id)), used1 = t ? (t.use?.[n.cur] ?? tries) : 0;
+    /* 선 구조로는 되돌아올 수 있어도 이 버전 시뮬에서 빗나감이 이 상자로 돌아오지 않으면(거친 아이템 1개당 성공 수 = 시도 × 확률 ÷ 도달 < 0.9) 1회 시도로 — 1/확률 개수는 실제 사용량과 다름(2026-11-13 S1: MazBro 시전자 목걸이 밸런스 10번 '평균 7.8개' vs 실제 1회) */
+    const once1 = !!t && n.kind!=='cleanup' && (n.once || !fcRepeats(g, n.id) || (pS>0 && pS<0.995 && tries*pS<0.9*(t.reach||1))), used1 = t ? (t.use?.[n.cur] ?? tries) : 0;
     const want=fcWant(g, n, s.params), per = !t ? 0 : n.kind==='cleanup' ? (t.use?.Orb_of_Annulment||0)/Math.max(1e-9,t.visits) : n.once ? 1 : pS>0 ? 1/pS : 0;   // per success of this step (once: used one time whatever happens — the miss goes elsewhere)
     return `<div class="fcn k-task ${n.kind==='cleanup'?'k-clean':''} ${t?'':'off'}" style="${pos}" title="${esc(tip)}">
       <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b title="${esc(tx(n.goal||n.label))}">${esc(tx(n.goal||n.label))}</b></div>

@@ -45,6 +45,8 @@ function make(graph, D, craft, params){
   for(const k in graph.tags){ tags[k]=resolve(k, graph.tags[k]); if(graph.tags[k].slot) tags[k].slot=graph.tags[k].slot; }   // slot: a line that opens one (Potent Liquid Contempt: +1 suffix / prefix allowed)
   const match = (m, tag) => { if(!m || m.unrev) return false; const t = typeof tag==='string' ? tags[tag] : tag; if(!t) throw new Error('unknown tag '+tag);
     if(t.anyOf) return t.anyOf.some(x=>match(m,x)); return m.gi===t.gi && (!t.tmax || m.ti < t.tmax); };
+  const nq = x => String(x||'').toLowerCase().replace(/[’']/g,"'");
+  const xLate = new Set((graph.xsub||[]).map(nq).filter(x=>graph.nodes.some(n=>n.act==='rune' && n.rune && nq(n.rune.en).includes(x))));   /* 룬 상자로 끼우는 증강물 */
   const nodes={}; graph.nodes.forEach(n=>{ const o=(n.over||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); nodes[n.id]=o ? {...n, ...o.set} : n; });   // over: per-version node fields
 
   return function run(rnd, hooks){
@@ -69,7 +71,9 @@ function make(graph, D, craft, params){
     function pool(sides, minLvl, sections=['n'], xs=[]){
       const F=fams(), free=(sides||['p','s']).filter(s=>count(s)<maxA(s));
       return groupsFor(minLvl, sections.join(''), xs).filter(g=>free.includes(g.side) && !g.f.some(x=>F.has(x))); }
-    const add = (sides, minLvl) => { const gs=graph.xroll ? pool(sides, minLvl, ['n','x'], graph.xsub||[]) : pool(sides, minLvl); if(!gs.length) return null; const g=pickW(rnd, gs), p=pickW(rnd, g.ts); const m={gi:p.gi, ti:p.ti, side:g.side}; it.mods.push(m); last.added.push(m); return m; };
+    /* 증강물 전용 옵션(graph.xsub)은 그 룬을 장착한 뒤에만 풀에 들어감 — 룬 상자(act rune)로 끼우는 룬은 그 상자를 지난 뒤, 룬 상자가 없는 룬은 처음부터 장착(베이스 설명) (2026-11-13 S1: 장착 전 엑잘에 콜르 옵션이 붙던 것) */
+    const xOn = () => (graph.xsub||[]).filter(x=>!xLate.has(nq(x)) || runes.some(r=>nq(r).includes(nq(x))));
+    const add = (sides, minLvl) => { const gs=graph.xroll ? pool(sides, minLvl, ['n','x'], xOn()) : pool(sides, minLvl); if(!gs.length) return null; const g=pickW(rnd, gs), p=pickW(rnd, g.ts); const m={gi:p.gi, ti:p.ti, side:g.side}; it.mods.push(m); last.added.push(m); return m; };
     const take = m => { it.mods.splice(it.mods.indexOf(m),1); last.removed.push(m); return m; };
     const takeRandom = f => { const c=it.mods.filter(m=>!m.fr && (!f || f(m))); if(!c.length) return null; return take(c[Math.floor(rnd()*c.length)]); };
     const sideOm = (oms, a, b) => oms.some(o=>a.test(o)) ? 'p' : oms.some(o=>b.test(o)) ? 's' : null;
@@ -122,7 +126,7 @@ function make(graph, D, craft, params){
         // 사용자 경험값 2026-11-10: a wanted line lands about as often as the quality % consumed (20% → about 20%, 40% → about 40%) (estimate)
         const catQ = oms.includes('Omen_of_Catalysing_Exaltation') ? (it.cq||0) : 0; if(oms.includes('Omen_of_Catalysing_Exaltation')) it.cq=0;
         const catHit = n.cat && catQ>0 && rnd() < catQ/100;
-        for(let i=0;i<k;i++){ if(catHit && i===0){ const base=graph.xroll ? pool(sd?[sd]:null, mn, ['n','x'], graph.xsub||[]) : pool(sd?[sd]:null, mn);
+        for(let i=0;i<k;i++){ if(catHit && i===0){ const base=graph.xroll ? pool(sd?[sd]:null, mn, ['n','x'], xOn()) : pool(sd?[sd]:null, mn);
             const gs=base.map(g=>{ const ts=g.ts.filter(t=>match({gi:t.gi, ti:t.ti}, P(n.cat))); return {...g, ts, w:ts.reduce((q,t)=>q+t.w,0)}; }).filter(g=>g.ts.length);
             if(gs.length){ const g=pickW(rnd, gs), p=pickW(rnd, g.ts); const m={gi:p.gi, ti:p.ti, side:g.side}; it.mods.push(m); last.added.push(m); continue; } }
           add(sd?[sd]:null, mn); } }
@@ -147,11 +151,11 @@ function make(graph, D, craft, params){
       else if(a==='desecrate'){ const sd=sideOm(oms,/Sinistral_Necromancy/,/Dextral_Necromancy/), ss=sd?[sd]:['p','s'];
         let free=ss.filter(s=>count(s)<maxA(s)), s;
         if(free.length) s=free[Math.floor(rnd()*free.length)];
-        else { s=ss[Math.floor(rnd()*ss.length)]; takeRandom(m=>m.side===s); }   // a full side: one of its lines makes way
+        else { const ok=ss.filter(x=>count(x)<=maxA(x)), cs=ok.length ? ok : ss; s=cs[Math.floor(rnd()*cs.length)]; takeRandom(m=>m.side===s); }   // a full side: one of its lines makes way — 한도를 넘은 쪽(경멸 옵션이 지워진 주얼의 접미 3개)은 고르지 않음, 강령술로 그쪽만 정했을 때만 그쪽(2026-11-13 S1: 노블 오래된 사파이어)
         const lord=oms.includes('Omen_of_the_Liege')?'amanamu':oms.includes('Omen_of_the_Sovereign')?'ulaman':oms.includes('Omen_of_the_Blackblooded')?'kurgal':null;   // an Abyssal lord omen: one revealed option is that lord's
         const m={unrev:true, side:s, bone:cur, min:mn, lord}; it.mods.push(m); last.added.push(m); }
       else if(a==='reveal'){ const m=it.mods.find(x=>x.unrev); if(m){ it.mods.splice(it.mods.indexOf(m),1);
-        const gs0=pool([m.side], m.min, ['n','d','x'], [...(graph.xsub||[]), ...(/^Altered_/.test(m.bone||'')?['Otherworldly']:[])]);   // x lines have no published weight: counted like desecrated-only lines (dW)   // reveal: 3 groups without repeats, desecrated-only groups weigh 1000 (recipes.html revealChance, emulator revealOptions)
+        const gs0=pool([m.side], m.min, ['n','d','x'], [...xOn(), ...(/^Altered_/.test(m.bone||'')?['Otherworldly']:[])]);   // x lines have no published weight: counted like desecrated-only lines (dW)   // reveal: 3 groups without repeats, desecrated-only groups weigh 1000 (recipes.html revealChance, emulator revealOptions)
         const draw = () => { let gs=gs0.map(g=>({g, w:g.d?dW:g.w})), out=[];
           if(m.lord){ const lg=gs.filter(x=>x.g.d && (G[x.g.gi].tg||[]).includes(m.lord+'_mod')); if(lg.length) gs=lg; }   // an Abyssal lord omen: every option is that lord's (영상 확인 2026-11-10) — recipes.html revealChance
           while(out.length<3 && gs.length){ const x=pickW(rnd, gs); gs=gs.filter(y=>y!==x); let t=pickW(rnd, x.g.ts);

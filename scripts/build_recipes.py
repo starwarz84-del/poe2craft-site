@@ -693,6 +693,10 @@ for _r in R:
                 except Exception as _e: print('flowchart read failed', _r['id'], _e); _rd=None
                 if _rd:
                     _r['nodes']=_rd['nodes']; _r['phases']=_rd['phases']; _r['start']=_rd['start']; _r['fcRead']=_rd['fcRead']
+                    for _n in _r['nodes']:   # 꿀팁 연결(notes_short TIPREF)을 플로우차트 상자 id로도 — 옛 단계 id와 다른 새 그래프(SaVeQ 집중구 f0·d1, 2026-11-13 S1)
+                        _k=(_r['id'],_n['id'])
+                        if _k not in TIPREF: _k=(_old(_r),_n['id'])
+                        if _k in TIPREF: _n['tips']=list(dict.fromkeys((_n.get('tips') or [])+TIPREF[_k]))
                     if _g2r.has_prep(_sd) and _r.pop('prep', None) is not None: PREP_DROPPED.append(_r['id'])   # 준비 단계는 플로우차트에서 읽음 — 옛 접힌 준비(r.prep)를 두면 엔진 합계가 두 번 셈
                     for _k,_v in (FC_TS.get(_sid) or {}).items():   # 플로우차트 상자 → 영상 시각(옛 단계 레시피에서 온 시각이 틀린 곳만)
                         for _n in _r['nodes']:

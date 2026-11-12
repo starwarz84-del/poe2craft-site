@@ -146,7 +146,7 @@ TIPREF = {('unstoppable-vile-robe','t1'):['omens-for-last-line','whittle-safe-to
  ('helmet-armour-sl','s1'):['liquid-resist-swap'], ('sl-flamewave-ring','s1'):['liquid-resist-swap'], ('mazbro-caster-amulet','a4'):['chaos-side-swap','sell-offtarget'], ('gold-amulet-6line','k1'):['sell-offtarget'],
  ('sane-resist-belt','b3'):['liege-omen-resist-jewellery'], ('lilbotq-armour-shield','l1'):['fracture-safety-line'], ('sihan-highend-boots','h1'):['fracture-percent-line'],
  ('sihan-highend-boots','s1'):['low-weight-first'], ('sihan-highend-boots','s4'):['liquid-resist-swap'], ('sihan-highend-boots','m1'):['cheap-junk-removal'],
- ('saveq-focus','q1'):['low-ilvl-base'], ('saveq-focus','q4'):['unrevealed-filler'], ('icesly-budget-wand','i6'):['unrevealed-filler'], ('icesly-budget-wand','i8'):['side-omen-save'],
+ ('saveq-focus','f0'):['low-ilvl-base'], ('saveq-focus','d1'):['unrevealed-filler'], ('icesly-budget-wand','i6'):['unrevealed-filler'], ('icesly-budget-wand','i8'):['side-omen-save'],
  ('barricade-quarterstaff','q1'):['low-ilvl-base'], ('barricade-quarterstaff','p4'):['whittle-stuck'], ('belton-plus8-wand','b1'):['fracture-sellable-lines','low-ilvl-base'], ('belton-plus8-wand','b2'):['block-high-weight'],
  ('farmer-budget-armour','f8'):['greater-exalt-omen-price'], ('farmer-starter-staff','w5'):['greater-exalt-omen-price'], ('farmer-budget-armour','f1'):['cheap-resist-essence'],
  ('seek-cyclone-boots','k2'):['augment-rune-before-chaos'], ('farmer-starter-staff','w3'):['putrefaction-gamble'],

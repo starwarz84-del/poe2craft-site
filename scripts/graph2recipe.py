@@ -151,7 +151,8 @@ def _target(G_, n, prev, cur, last_bone):
         mk = next((l for l in new if '징표' in (l.get('kr') or '')), None)
         if mk and not t: t = {'mark': {'gi': (G_.spec(mk.get('tags') or []) or {}).get('gi', 0)}}
     elif act == 'desecrate':
-        sd = _side_of_omens(om, 'Necromancy') or next((l.get('s') for l in new), None) or 'p'
+        sd = _side_of_omens(om, 'Necromancy') or next((l.get('s') for l in new), None) or next((l.get('s') for l in n.get('showText') or [] if l.get('s') in ('p', 's')), None) or 'p'
+        G_._lus = sd   # 다음 공개 상자의 쪽(접힌 상자는 아이템 칸이 없어 공개 쪽을 못 읽음, 2026-11-13 S1)
         t = {'unrev': sd}
         if sn.get('fromMark') or (sn.get('target') or {}).get('fromMark'): t['fromMark'] = True
         last_bone = n.get('cur') or last_bone
@@ -161,7 +162,9 @@ def _target(G_, n, prev, cur, last_bone):
         wl = [G_.name(w) for w in wl] or okc
         nl = next((l for l in new if l.get('tags')), None)
         sp = G_.spec([w for w in wl if isinstance(w, str)]) or (nl and G_.spec(nl['tags']))
-        sd = (nl or {}).get('s') or next((l.get('s') for l in gone), None) or 'p'
+        # 공개 쪽: 새로 공개된 줄 → 바로 앞 훼손 상자의 쪽 → 고르는 옵션의 쪽 → 지워진 줄 — 접힌 상자(아이템 칸 없음)가 늘 접두로 나오던 것(2026-11-13 S1: MazBro 시전자 목걸이 a8)
+        ws = next((T.get('s') for w in wl if isinstance(w, str) for gi, _ in G_.leaves(w) for T in G_.tags.values() if isinstance(T, dict) and T.get('gi') == gi and T.get('s') in ('p', 's')), None)
+        sd = (nl or {}).get('s') or getattr(G_, '_lus', None) or ws or next((l.get('s') for l in gone), None) or 'p'
         t = {'reveal': sp or {'anyOf': []}, 'side': sd}
         if last_bone: t['bone'] = last_bone
         if not sp: t['asIs'] = True
@@ -176,10 +179,17 @@ def _target(G_, n, prev, cur, last_bone):
         sp = (G_.spec(nf[0]['tags']) if nf else None) or (G_.spec(okc) if okc else None)
         if sp: t = dict(sp)
     elif act == 'quality':
-        t = {'quality': sn.get('q') or 20}
+        # q가 없으면 상자 글의 'n%' → 기폭제 개수(count ≈ %) → 20 (2026-11-13 S1: q 없는 기폭제 상자가 늘 20%로 읽히던 것)
+        mq = re.search(r'(\d+)\s*%', ' '.join(((sn.get(k) or n.get(k) or {}).get('kr') or '') for k in ('goal', 'label')))
+        t = {'quality': sn.get('q') or (int(mq.group(1)) if mq else None) or sn.get('count') or 20}
     elif act == 'rune':
         rn = n.get('rune') or sn.get('rune')
         t = {'rune': rn if isinstance(rn, dict) else {'kr': rn or '', 'en': rn or ''}}
+        # 룬 교체 상자(swapAstrid: 아스트리드의 창의성을 빼고 이 룬) · 같은 룬 여러 개(count, fill = 빈 소켓 모두) — 2026-11-13 S1: SaVeQ 집중구 r2 철 룬 2개
+        if sn.get('swapAstrid') or n.get('swapAstrid'): t['swapAstrid'] = True
+        k = sn.get('count') or n.get('count')
+        if isinstance(k, int) and k > 1: t['runeCount'] = k
+        if sn.get('fill') or n.get('fill'): t['runeFill'] = True
     return act, om, t, last_bone
 
 
@@ -575,6 +585,7 @@ def _fcs(W, n):
     if has_res and okc <= 0 and tries > 0:   # 상태마다 다른 단계로 보내는 상자: 표시된 성공선을 안 거치고 숨은 선으로 나아감 → 실패·반복이 아닌 선 모두
         okc = sum(W.ec(n['id'], x, outs) for x in outs if x[3] != 'fail' and x[1] != n['id'])
     p = min(1.0, okc / tries) if has_res and tries > 0 else 1.0
+    if n.get('act') == 'flux': p = 1.0   # 유동체는 늘 바뀜(확정 변환) — 뒤 선은 변환 뒤 상태로 고르는 갈래라 성공 확률이 아님(2026-11-13 S1: 시한 장화 6.8%)
     rows = None
     if n.get('curRows') and t.get('byCur'):
         rows = []
@@ -582,9 +593,22 @@ def _fcs(W, n):
             b = t['byCur'].get(rw.get('key') or rw.get('cur'))
             ids = rw.get('ids') or [rw.get('cur')] + list(n.get('omens') or [])
             rows.append({'kr': rw['kr'], 'en': rw['en'], 'ids': ids, **({'p': round(b['ok'] / b['t'], 5)} if b and b.get('t') else {})})
+    if not rows and n.get('trim') and len(t.get('byCur') or {}) >= 2:   # 절사/말소 상자: 경우마다 쓰는 징조와 그때 성공 확률(2026-11-13 S1)
+        sd = (n['trim'].get('side') if isinstance(n['trim'], dict) else None) or 'p'
+        er = 'Omen_of_Sinistral_Erasure' if sd == 'p' else 'Omen_of_Dextral_Erasure'
+        sk, se = ('접두', 'prefix') if sd == 'p' else ('접미', 'suffix')
+        LB = {'Omen_of_Whittling': (f'잡옵이 아이템에서 레벨이 가장 낮음', 'Junk is the lowest-level modifier'),
+              f'{er}+Omen_of_Whittling': (f'잡옵이 {sk}에서만 레벨이 가장 낮음', f'Junk is the lowest-level {se} only'),
+              er: (f'남길 {sk}가 잡옵보다 레벨이 낮음', f'A kept {se} is lower than the junk')}
+        rows = []
+        for k in sorted(t['byCur'], key=lambda k: -t['byCur'][k].get('t', 0)):
+            b = t['byCur'][k]
+            if k not in LB or not b.get('t'): continue
+            rows.append({'kr': LB[k][0], 'en': LB[k][1], 'ids': [n.get('cur')] + k.split('+'), 'p': round(b['ok'] / b['t'], 5)})
+        rows = rows or None
     if p <= 0 and tries > 0: p = None   # 이 상자에서 바로 성공하는 일은 없고 결과에 따라 다음 상자로 갈림
     return {'p': round(p, 6) if p is not None else None, 'tries': round(tries, 4), 'use': {k: round(v, 4) for k, v in (t.get('use') or {}).items() if v >= 0.0005},
-            'div': round(t.get('div') or 0, 4), 'reach': round(t.get('reach') or 0, 4), **({'rows': rows} if rows else {}), **({'once': True} if n.get('once') or (n.get('kind') != 'cleanup' and p is not None and p < 0.995 and not _repeats(W, n)) else {})}   # 다시 하지 않는 상자: 레시피 글은 '1회 시도'
+            'div': round(t.get('div') or 0, 4), 'reach': round(t.get('reach') or 0, 4), **({'rows': rows} if rows else {}), **({'once': True} if n.get('once') or (n.get('kind') != 'cleanup' and p is not None and p < 0.995 and (not _repeats(W, n) or (p > 0 and tries * p < 0.9 * (t.get('reach') or 1)))) else {})}   # 다시 하지 않는 상자: 레시피 글은 '1회 시도'
 
 
 def _miss(W, n):
@@ -705,11 +729,13 @@ def read_recipe(r, sim, src, tiers):
     loops = sim['graph'].get('loops') or []
     def loop_of(nid): return next((L for L in loops if nid in L['nodes']), None)
     old = {n['id']: n for n in r.get('nodes') or []}
-    keep = lambda i: {k: old[i][k] for k in ('br', 'tips', 'ts') if i in old and old[i].get(k)}
+    # 옛 단계 레시피(recipes_v5·notes_short)의 갈래 글(br)은 붙이지 않음 — 같은 id라도 플로우차트와 다른 흐름의 글이 섞여 나옴(2026-11-13 S1: 시한 장화 p1, 바리케이드 p2).
+    # 갈래는 플로우차트 선(routes)에서 읽음. 꿀팁 번호(tips)·영상 시각(ts)만 이어받음
+    keep = lambda i: {k: old[i][k] for k in ('tips', 'ts') if i in old and old[i].get(k)}
     b0 = {'id': base['id'] if base else 'b0', 'phase': 'base', 'do': 'base', 'cost': 'base', **(keep(base['id']) if base else {})}
     ob = next((x for x in r.get('nodes') or [] if x.get('do') == 'base'), None)
     if ob:
-        for k in ('note', 'br', 'tips', 'ts'):
+        for k in ('note', 'tips', 'ts'):
             if ob.get(k): b0[k] = ob[k]
     # 준비 과정을 그린 그래프인데 옛 베이스 설명이 '분열해 둔 상태에서 시작'이면 플로우차트 베이스 상자 이름으로(2026-11-12)
     bst = ((base or {}).get('start') or {}) if own_prep else {}
@@ -739,6 +765,10 @@ def read_recipe(r, sim, src, tiers):
         if n.get('kind') == 'cleanup':   # 좌측·우측 소멸의 징조를 같이 쓰는 정리 상자(그래프 side): 시뮬 사용량에 있는 징조를 커런시 줄에(2026-11-12, 활 14.A)
             u = (W.st(n['id']) or {}).get('use') or {}
             om = om + [k for k in ('Omen_of_Sinistral_Annulment', 'Omen_of_Dextral_Annulment') if (u.get(k) or 0) > 0 and k not in om]
+        if n.get('trim'):   # 절사/말소 자동 선택 상자(sim trimOmens): 시뮬이 실제로 쓴 징조를 많이 쓴 순서로 — '절사의 징조'만 적던 것(2026-11-13 S1: SaVeQ 집중구 w1, 좌측 말소가 더 많음)
+            u = (W.st(n['id']) or {}).get('use') or {}
+            tu = sorted([k for k in u if re.search(r'Whittling|Erasure', k) and (u.get(k) or 0) > 0], key=lambda k: -(u.get(k) or 0))
+            if tu: om = [x for x in om if not re.search(r'Whittling|Erasure', x)] + tu
         if om: o['omens'] = om
         if t: o['target'] = t
         if n.get('trim'): o['trimFc'] = n['trim'].get('side') if isinstance(n['trim'], dict) else 'p'
@@ -786,7 +816,8 @@ def read_recipe(r, sim, src, tiers):
         out.append(o)
         if n['pos'][0] == 0: prev = cur
     last = (r.get('nodes') or [None])[-1]
-    done_note = last.get('note') if last and last.get('do') == 'note' else None
+    # 옛 레시피의 마지막 '선택' 단계(optional, 예: 히네코라의 머리카락 + 바알 오브)는 플로우차트에 없는 단계라 완성 글로 쓰지 않음(2026-11-13 S1)
+    done_note = last.get('note') if last and last.get('do') == 'note' and not last.get('optional') else None
     out.append({'id': 'done', 'phase': phases[-1]['id'], 'do': 'note', 'note': done_note or {'kr': '완성.', 'en': 'Done.'}})
     res = S['res']
     return {'nodes': out, 'phases': phases, 'start': start_of(r, sim, src, V['params']),
