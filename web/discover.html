@@ -655,7 +655,7 @@ function simCost(it, d, N){ try{ const g=POE2GRAPH.fromDraft(d, it.D, {craft:S.c
 // 남는 시간에는 상위 후보를 더 많이 돌려 값을 다듬음. 무거운 아이템은 1차 계산만으로 그 시간을 넘김. 후보 = 노하우(K5·K6) × 복구 방법·면 순서·반복 생략 × 엑잘 등급
 async function bestDraftAsync(it, an, opt, tick, minMs){ const t0=performance.now(), nap = ms => new Promise(r=>setTimeout(r, ms||0)), el = () => performance.now()-t0;
   const kn=[{k:[], a:an}]; { const e=essSwap(it, an), d=desSwap(it, an); if(e!==an) kn.push({k:['K5'], a:e}); if(d!==an) kn.push({k:['K6'], a:d}); if(e!==an){ const ed=desSwap(it, e); if(ed!==e) kn.push({k:['K5','K6'], a:ed}); } }
-  const RV=[{k:'', o:{}}, ...REC_VARIANTS, {k:'flip+plain', o:{flip:1, rec:'plain'}}, {k:'flip+noloop', o:{flip:1, noLoop:1}}, {k:'noloop-p', o:{noLoop:'p'}}, {k:'noloop-s', o:{noLoop:'s'}}], EX=[{k:'', o:{}}, {k:'gex', o:{ex:'Greater_Exalted_Orb'}}];
+  const RV=[{k:'', o:{}}, ...REC_VARIANTS, {k:'flip+plain', o:{flip:1, rec:'plain'}}, {k:'flip+noloop', o:{flip:1, noLoop:1}}, {k:'noloop-p', o:{noLoop:'p'}}, {k:'noloop-s', o:{noLoop:'s'}}, {k:'frside', o:{frSide:1}}, {k:'frside+noloop', o:{frSide:1, noLoop:1}}], EX=[{k:'', o:{}}, {k:'gex', o:{ex:'Greater_Exalted_Orb'}}];
   const sig = d => JSON.stringify(d.nodes.map(n=>[n.do,n.cur,n.omens,n.target,n.fail])), seen=new Set(), C=[]; let runs=0;
   const say = ph => tick && tick({phase:ph, n:C.length, runs, ms:el()});
   for(const K of kn) for(const v of RV) for(const x of EX){ try{ const o={...v.o, ...x.o}, d=makeDraft(it, K.a, {...(opt||{}), ...o, market:1e9}); if(!d) continue; const sg=sig(d); if(seen.has(sg)) continue; seen.add(sg);
@@ -667,7 +667,9 @@ async function bestDraftAsync(it, an, opt, tick, minMs){ const t0=performance.no
   // 다듬기: 상위 후보 3개를 번갈아 더 돌림(한 번에 0.4초 안쪽). 1차가 이미 오래 걸린 후보는 한 번만 더
   for(let seed=11, round=0; round<60; round++){ const top=C.filter(c=>!c.bad).sort((a,b)=>mean(a)-mean(b)).slice(0,3); if(!top.length || (el()>=(minMs||0) && round>0)) break;
     for(const c of top){ const N = Math.max(10, Math.min(120, Math.round(30*400/Math.max(c.ms,1)))); roll(c, N, seed++); say('refine'); await nap(); if(el() > Math.max(minMs||0, 10000)*3) break; } }
-  const d0=C[0] && !C[0].K.k.length && !C[0].k ? C[0] : null; let best = C.filter(c=>!c.bad).sort((a,b)=>mean(a)-mean(b))[0] || C[0];
+  /* 고르기 전 확인(2026-11-12, MazBro 셉터: 짧게 돌릴 땐 괜찮던 후보가 길게 돌리면 끝나지 않음) — 가장 싼 후보부터 300회 더 돌려 끝나지 않거나 조건을 못 맞추면 뺌 */
+  for(let k=0;k<6;k++){ const c=C.filter(c=>!c.bad && !c.ok).sort((a,b)=>mean(a)-mean(b))[0]; if(!c) break; try{ const st=c.g.strategies[0], r=POE2SIM.simulate({...c.g, maxSteps:1e5}, it.D, S.craft, S.prices, st.params, 300, 99); if(r.reqOk<0.98) c.bad=true; else c.ok=true; }catch(_){ c.bad=true; } await nap(); if(c.ok) break; }
+  const d0=C[0] && !C[0].K.k.length && !C[0].k && !C[0].bad ? C[0] : null; let best = C.filter(c=>!c.bad).sort((a,b)=>mean(a)-mean(b))[0] || C[0];
   if(d0 && best!==d0 && !(mean(best) < mean(d0)*0.9)) best=d0;   // 기본 초안보다 10% 넘게 싸야 바꿈
   while(el() < (minMs||0)){ say('wait'); await nap(200); }
   if(!best) return {...bestDraft(it, an, {...(opt||{}), quick:true}), tried:0, runs};
@@ -748,8 +750,8 @@ function makeDraft(it, an, opt){
   let rnd = rows.filter(r=>(r.how==='n' || r.how==='sc') && !r.m.fr).sort((a,b)=>(a.unknown?1:a.pOmen)-(b.unknown?1:b.pOmen));
   /* K39(사용자 2026-11-12): 같은 쪽 필수 옵션 여럿이 확률·레벨이 비슷하면(예: 회피 하이브리드·회피 %·회피 고정치 1티어, 모두 약 1.9%) 하나씩 노리지 않고
      '셋 중 먼저 뜨는 것'으로 — 카오스·엑잘·훼손 공개 단계가 모두 그 묶음 중 아무거나를 노림(이미 붙은 계열은 다시 안 나와 남은 것만 뜸) */
-  const POOL = {}; for(const sd of ['p','s']){ const c = rows.filter(r=>!r.m.fr && !r.soft && r.m.side===sd && r.g?.s==='n' && (r.how==='n' || r.how==='d') && r.pAny>0);
-    if(c.length<2) continue; const ps=c.map(r=>r.pAny); if(Math.max(...ps)/Math.min(...ps) > 3) continue; POOL[sd]=c; }
+  const POOL = {}; for(const sd of ['p','s']){ const c = rows.filter(r=>!r.m.fr && !r.soft && r.m.side===sd && r.g?.s==='n' && (r.how==='n' || (r.how==='d' && it.cat!=='jewel')) && r.pAny>0);   /* 주얼 훼손 공개로는 일반 옵션이 잘 안 나와 묶지 않음(2026-11-12 오래된 사파이어 시뮬이 끝나지 않았음) */
+    if(c.length<2) continue; const ps=c.map(r=>r.pAny); if(Math.max(...ps)/Math.min(...ps) > (opt?.frSide ? 30 : 3)) continue; POOL[sd]=c; }   /* frSide: 분열 쪽 첫 카오스는 그쪽 남은 옵션 아무거나(MazBro 셉터: 마나 또는 정신력) */
   const inPool = r => !!(r && POOL[r.m.side]?.includes(r));
   const mqGi = it.cat==='jewellery' && it.qual>20+impMaxQ(it.b) ? it.D.groups.findIndex(g=>g.s==='e' && g.f.includes('LocalMaximumQuality')) : -1;
   let R0 = null; if(mqGi>=0){ const ps = rnd.filter(r=>r.m.side==='p' && r.how==='n' && !r.unknown); R0 = ps.length ? ps[ps.length-1] : null; if(R0) rnd.splice(rnd.indexOf(R0),1); }
@@ -812,7 +814,8 @@ function makeDraft(it, an, opt){
   else if(exc && it.sockets!=null){ const b0=nodes[0]; b0.note = note(b0.note.kr+` 타락하지 않았는데 룬 소켓이 ${it.sockets}개(기본 ${baseSock}개)라 특출난 베이스.`, b0.note.en+` Not corrupted yet it has ${it.sockets} rune sockets (base ${baseSock}), so it is an exceptional base.`); }
   else if(exc){ const krOf = en => rows.find(x=>x.core && x.g.sub[1]===en).g.sub[0]; const runesK = [...(serle?['세를의 승리']:[]), ...augNames.map(krOf), ...(astrid?['아스트리드의 창의성']:augLate.map(krOf))], runesE = [...(serle?["Serle's Triumph"]:[]), ...augNames, ...(astrid?["Astrid's Creativity"]:augLate)];
     const b0 = nodes[0]; b0.note = note(b0.note.kr+` 룬 ${runeNeed}개(${runesK.join(', ')})를 함께 끼워야 해서 룬 소켓 +${sockets-baseSock}인 특출난 베이스가 필요(일반 베이스는 ${baseSock}개).`, b0.note.en+` ${runeNeed} runes (${runesE.join(', ')}) sit together, so it must be an exceptional base with +${sockets-baseSock} rune socket(s) (a normal one has ${baseSock}).`); }
-  const firstSd = frs.length ? other(frs[0].m.side) : null;   // fractured: finish the other side first (cheap omens only), then the fractured side
+  /* 분열 반대쪽부터가 기본. frSide(2026-11-12, MazBro 셉터 리버스가 13배): 분열 쪽을 먼저 — 분열 + 잡옵 1개라 카오스로 하나, 반대쪽이 비어 엑잘 실패는 징조 없는 소멸로 하나 더. 어느 쪽이 싼지는 시뮬로 비교 */
+  const firstSd = frs.length ? (opt?.frSide ? frs[0].m.side : other(frs[0].m.side)) : null;   // fractured: finish the other side first (cheap omens only), then the fractured side
   // 2a. fractured base: Chaos is free while everything else is junk; take any wanted line
   if(frs.length && junk.p+junk.s>0 && rnd.length){
     const wantC = rnd.filter(r=>cnt[r.m.side]-junk[r.m.side] < cap[r.m.side]-resv[r.m.side]-desNeed[r.m.side]);
@@ -1017,7 +1020,7 @@ function makeDraft(it, an, opt){
   let mqGone = false; const mqLive = () => mqGi>=0 && !mqGone && nodes.some(n=>n.target?.gi===mqGi);
   // every essence line is crafted, the magic-stage ones included
   let crafted = essRows.length - rareEss.length + subCraft + frs.filter(r=>r.g?.s==='e').length; const essDone = new Set(), bone = boneFor(it.cat), desDone = new Set();
-  if(craftFirst && mqGi<0 && !j5?.B) essPass(null, true);
+  if(craftFirst && mqGi<0 && !j5?.B && !opt?.frSide) essPass(null, true);   /* frSide: 분열 쪽을 다 채울 때까지 반대쪽을 비워 둬야 엑잘 실패를 징조 없는 소멸로 지움 */
   // policy 18 (bought magic base): a side one line short is finished by a desecration (the reveal picks from 3), then
   // Greater Exaltation + Perfect Exalted Orb puts two lines on the other side; up to here is the guaranteed part.
   // The extra step (optional): Whittling + Chaos swaps the lowest-level line, i.e. the junk when every good line sits above it
@@ -1458,7 +1461,7 @@ function render(){
   const rowsHTML = an.rows.map(r=>{
     const m=r.m, side=m.side;
     if(r.unrev) return `<div class="mod ${side||''}"><div class="mt"><div class="ml">${esc(m.l)}</div><div class="tags">${side?`<span class="tag ${side}">${side==='p'?L('접두','Prefix'):L('접미','Suffix')}</span>`:''}<span class="tag d">${L('미공개 훼손','Unrevealed')}</span></div></div><div class="note">${L('공개하면 3개 중 하나 선택','Reveal at the Well of Souls to pick one of three.')}</div></div>`;
-    const how = {fr:['fr',L('분열','Fractured')], d:['d',L('훼손','Desecrated')], e:['e',r.g.sub[KR()?0:1]], x:['x',L('별세계','Otherworldly')], sc:['x',L('증강물 ','Augment ')+r.g.sub[KR()?0:1]], n:['',L('일반','Regular')]}[r.how];
+    const how = {fr:['fr',L('분열','Fractured')], d:['d',L('훼손','Desecrated')], e:['e',r.g.sub[KR()?0:1]], x:['x',L('별세계','Otherworldly')], sc:['x',L('증강물 ','Augment ')+r.g.sub[KR()?0:1]], n:['',L('일반','Regular')]}[r.how] || ['x', r.g?.sub?.[KR()?0:1] || L('기타','Other')];   /* 액체 등 다른 출처(2026-11-12: 오래된 사파이어에서 화면이 멈췄음) */
     const tags = [`<span class="tag ${side}">${side==='p'?L('접두','Prefix'):L('접미','Suffix')}</span>`,
       `<span class="tag ${how[0]}">${how[1]}</span>`,
       m.fr && r.g.s!=='n' ? `<span class="tag ${r.g.s}">${SRC[r.g.s][KR()?0:1]}</span>` : '',
