@@ -201,7 +201,7 @@ function make(graph, D, craft, params){
 }
 
 // many runs → per-success averages, cost distribution, node reach. prices: site/data/prices.json (ex), basePrice in currency units
-function simulate(graph, D, craft, prices, params, N=20000, seed=1){
+function simulate(graph, D, craft, prices, params, N=5000, seed=1){
   const run=make(graph, D, craft, params), rnd=rng(seed);
   const ex = id => id==='Exalted_Orb' ? 1 : prices.p[id]!=null ? +prices.p[id] : null, missing=new Set();
   const div = use => { let v=0; for(const k in use){ const e=ex(k); if(e==null) missing.add(k); else v+=use[k]*e; } return v/prices.divine; };
