@@ -4,19 +4,19 @@
  "cls": "Rings",
  "base": "Gold Ring",
  "ilvl": 82,
- "note": "SL 검은 화염파 반지(UAF91gEFRkM) — 모든 원소 저항 분열 반지 → 균열의 에센스 → 차율라의 기폭제 40% → 카오스 오브(접두 카오스 피해·희귀도 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) → 좌측 강령술 + 뒤바뀐 빗장뼈 → 공개(주문이 피해의 %를 카오스 피해로 획득, 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘(저항, 빗나가면 우측 소멸의 징조 + 소멸의 오브 → 완벽한 엑잘) → 절사 + 완벽한 카오스 오브(희귀도). 하이엔드 = 영상, 밸런스 = 저항 1~2티어·접두에 생명력 1티어도 받음·마지막 접미는 나오는 대로.",
+ "note": "SL 검은 화염파 반지(UAF91gEFRkM, 2026-11-13 W30 영상 전체 화면 대조) — 모든 원소 저항 1티어 매직 황금 반지(82) → 완벽한 제왕 → 보존된 빗장뼈 → 분열(모든 원소 저항, 1/3) → 균열의 에센스 → 차율라의 기폭제 40%(바알 촉진시키는 주입기는 선택) → 소멸로 분열 + 옵션 1개 → 카오스 오브(카오스 피해·희귀도 1티어 중 먼저 뜬 것) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸, 좋은 접두가 지워지면 카오스부터) → 좌측 강령술 + 뒤바뀐 빗장뼈 → 심연의 메아리 공개(주문이 피해의 %를 카오스 피해로 획득, 빗나가면 빛의 징조 + 소멸) → 상위 찬미 + 완벽한 엑잘(저항, 빗나가면 우측 소멸의 징조 + 소멸로 접미 비우기) → 절사 + 우측 말소 + 완벽한 카오스 오브(희귀도). 하이엔드 = 저항 1티어 + 희귀도 접미 1티어(슬라이드·제작 목표물), 밸런스 = 저항 1~2티어, 접두 생명력 1티어도 받음, 마지막 접미 랜덤 옵션(영상은 냉기 저항에서 멈춤).",
  "params": {
   "v": {
-   "kr": "진행",
-   "en": "Route",
+   "kr": "마지막 접미",
+   "en": "Last suffix",
    "values": {
     "1": {
-     "kr": "영상",
-     "en": "Video"
+     "kr": "희귀도 1티어",
+     "en": "T1 rarity"
     },
     "2": {
-     "kr": "결과 그대로",
-     "en": "As it comes"
+     "kr": "랜덤 옵션",
+     "en": "Random"
     }
    }
   },
@@ -60,6 +60,7 @@
     "v": 2,
     "pT": 2
    },
+   "tier": "bal",
    "desc": {
     "kr": "저항 1~2티어, 접두 생명력 1티어도 받음, 마지막 접미는 나오는 대로",
     "en": "T1–2 resistance, T1 life is a fine prefix, last suffix as it comes"
@@ -73,9 +74,10 @@
     "v": 1,
     "pT": 1
    },
+   "tier": "high",
    "desc": {
-    "kr": "영상: 저항 1티어 + 마지막 접미 희귀도 1티어",
-    "en": "Video: T1 resistance + T1 rarity last suffix"
+    "kr": "저항 1티어 + 접미 희귀도 1티어(슬라이드 목표)",
+    "en": "T1 resistance + T1 rarity suffix (the slide target)"
    }
   }
  ],
@@ -102,7 +104,7 @@
   "oc": {
    "gi": 86
   },
-  "fr": {
+  "fi": {
    "gi": 4,
    "tmax": "$pT"
   },
@@ -120,11 +122,15 @@
   },
   "res": {
    "anyOf": [
-    "fr",
+    "fi",
     "co",
     "li",
     "ch"
-   ]
+   ],
+   "label": {
+    "kr": "화염·냉기·번개·카오스 저항",
+    "en": "Fire, cold, lightning or chaos resistance"
+   }
   },
   "rs": {
    "gi": 27,
@@ -134,27 +140,93 @@
    "anyOf": [
     "cd",
     "rp"
-   ]
+   ],
+   "label": {
+    "kr": "카오스 피해·발견하는 아이템 희귀도 1티어",
+    "en": "T1 chaos damage or item rarity"
+   }
   },
   "gpreB": {
    "anyOf": [
     "cd",
     "rp",
     "lf"
-   ]
+   ],
+   "label": {
+    "kr": "카오스 피해·발견하는 아이템 희귀도·생명력 최대치 1티어",
+    "en": "T1 chaos damage, item rarity or maximum life"
+   }
   },
-  "keepS": {
+  "fi1": {
+   "gi": 4,
+   "tmax": 1
+  },
+  "co1": {
+   "gi": 5,
+   "tmax": 1
+  },
+  "li1": {
+   "gi": 6,
+   "tmax": 1
+  },
+  "ch1": {
+   "gi": 8,
+   "tmax": 1
+  },
+  "fi2": {
+   "gi": 4,
+   "tmax": 2
+  },
+  "co2": {
+   "gi": 5,
+   "tmax": 2
+  },
+  "li2": {
+   "gi": 6,
+   "tmax": 2
+  },
+  "ch2": {
+   "gi": 8,
+   "tmax": 2
+  },
+  "res1": {
    "anyOf": [
-    "ar",
-    "res",
-    "cd",
-    "rp",
-    "oc"
-   ]
+    "fi1",
+    "co1",
+    "li1",
+    "ch1"
+   ],
+   "label": {
+    "kr": "화염·냉기·번개·카오스 저항 1티어",
+    "en": "T1 fire, cold, lightning or chaos resistance"
+   }
+  },
+  "res2": {
+   "anyOf": [
+    "fi2",
+    "co2",
+    "li2",
+    "ch2"
+   ],
+   "label": {
+    "kr": "화염·냉기·번개·카오스 저항 1~2티어",
+    "en": "T1–2 fire, cold, lightning or chaos resistance"
+   }
+  }
+ },
+ "conds": {
+  "sClean": {
+   "sideLt": {
+    "side": "s",
+    "n": 2
+   }
   }
  },
  "require": {
   "all": [
+   {
+    "has": "ar"
+   },
    {
     "has": "oc"
    },
@@ -162,7 +234,40 @@
     "has": "res"
    },
    {
-    "has": "gpreB"
+    "has": "gpre"
+   },
+   {
+    "count": {
+     "tag": "gpreB",
+     "min": 2
+    }
+   },
+   {
+    "any": [
+     {
+      "param": {
+       "v": 2
+      }
+     },
+     {
+      "count": {
+       "tag": "gpre",
+       "min": 2
+      }
+     }
+    ]
+   },
+   {
+    "any": [
+     {
+      "param": {
+       "v": 2
+      }
+     },
+     {
+      "has": "rs"
+     }
+    ]
    }
   ]
  },
@@ -186,114 +291,26 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "p3",
-    "p4",
-    "p4x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  },
-  {
-   "id": "L2",
-   "nodes": [
-    "s2",
-    "s2b"
-   ],
-   "kr": "접미 저항",
-   "en": "Suffix resistance"
-  }
- ],
- "finals": [
-  {
-   "id": "high",
-   "kr": "하이엔드 옵션",
-   "en": "High-end",
-   "lines": [
-    {
-     "tag": "cd",
-     "tmax": 1
-    },
-    {
-     "tag": "rp",
-     "tmax": 1
-    },
-    {
-     "tag": "oc",
-     "des": true
-    },
-    {
-     "tag": "ar",
-     "tmax": 1,
-     "fr": true
-    },
-    {
-     "tag": "ch",
-     "tmax": 1
-    },
-    {
-     "tag": "rs",
-     "tmax": 1
-    }
-   ]
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "cd",
-     "tmax": 1
-    },
-    {
-     "tag": "rp",
-     "tmax": 1
-    },
-    {
-     "tag": "oc",
-     "des": true
-    },
-    {
-     "tag": "ar",
-     "tmax": 1,
-     "fr": true
-    },
-    {
-     "tag": "ch",
-     "tmax": 2
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  }
- ],
+ "start": "b0",
  "finalItem": {
   "quality": 40,
   "sockets": 0
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "rg",
    "start": {
-    "rar": "rare",
+    "rar": "magic",
     "mods": [
      {
-      "tag": "ar",
-      "fr": true
+      "tag": "ar"
      },
      {
       "junk": "p"
@@ -301,17 +318,272 @@
     ]
    },
    "label": {
-    "kr": "모든 원소 저항 1티어 분열 + 잡옵 1개 (황금 반지, 아이템 레벨 82)",
-    "en": "Fractured T1 all elemental resistances + one junk line (Gold Ring, item level 82)"
+    "kr": "모든 원소 저항 1티어 매직 황금 반지 구입 (아이템 레벨 82)",
+    "en": "Buy a magic Gold Ring with T1 all elemental resistances (item level 82)"
    },
    "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(15—16)%",
+     "en": "+(15—16)% to all Elemental Resistances",
+     "m": "n",
+     "tags": [
+      "ar"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rg",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "regal",
+   "cur": "Perfect_Regal_Orb",
+   "label": {
+    "kr": "제왕",
+    "en": "Regal"
+   },
+   "goal": {
+    "kr": "분열하기 위해 레어로",
+    "en": "Make it rare for the fracture"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "bn"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(15—16)%",
+     "en": "+(15—16)% to all Elemental Resistances",
+     "m": "n",
+     "tags": [
+      "ar"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "bn",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Collarbone",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "네번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Fourth option (desecrated): the fracture needs four"
+   },
+   "showText": [
+    {
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecration (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "fr"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(15—16)%",
+     "en": "+(15—16)% to all Elemental Resistances",
+     "m": "n",
+     "tags": [
+      "ar"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    }
+   ]
+  },
+  {
+   "id": "fr",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 (공개된 옵션 3개 중 하나)",
+    "en": "Fracture (one of the three revealed options)"
+   },
+   "showText": [
+    {
+     "kr": "모든 원소 저항이 분열되면 성공",
+     "en": "Success when all elemental resistances fractures"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "fractured": "ar"
+     },
+     "to": "es",
+     "res": "ok",
+     "label": {
+      "kr": "모든 원소 저항 분열",
+      "en": "All res fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
     {
      "s": "s",
      "kr": "모든 원소 저항 +(15—16)% (분열)",
      "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "ar"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    }
+   ]
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    3
+   ],
+   "simTo": "b0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured: new base"
+   },
+   "note": {
+    "kr": "모든 원소 저항이 아닌 옵션이 분열되면 새 베이스로 처음부터",
+    "en": "Another option fractured: start over on a new base"
+   }
+  },
+  {
+   "id": "es",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "essence",
+   "cur": "Essence_of_the_Breach",
+   "ess": "mq",
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "접두 잡옵을 지우고 최대 퀄리티",
+    "en": "A junk prefix goes for max quality"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% to Maximum Quality (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "ct"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "mq"
      ]
     },
     {
@@ -319,6 +591,151 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(15—16)% (분열)",
+     "en": "+(15—16)% to all Elemental Resistances (fractured)",
+     "m": "f",
+     "tags": [
+      "ar"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    }
+   ]
+  },
+  {
+   "id": "ct",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "quality",
+   "cur": "Chayulas_Catalyst",
+   "count": 40,
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "goal": {
+    "kr": "카오스 퀄리티 40%",
+    "en": "Chaos quality 40%"
+   },
+   "showText": [
+    {
+     "kr": "차율라의 기폭제 40개",
+     "en": "40 Chayula’s Catalysts"
+    }
+   ],
+   "edges": [
+    {
+     "to": "cl"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(15—16)% (분열)",
+     "en": "+(15—16)% to all Elemental Resistances (fractured)",
+     "m": "f",
+     "tags": [
+      "ar"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    }
+   ]
+  },
+  {
+   "id": "vi",
+   "kind": "side",
+   "group": "prep",
+   "pos": [
+    1,
+    5.5
+   ],
+   "attach": [
+    "ct",
+    "cl"
+   ],
+   "cur": "Vaal_Catalysing_Infuser",
+   "goal": {
+    "kr": "퀄리티 45%, 선택·비용 미포함",
+    "en": "Quality 45%, optional, not costed"
+   },
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   }
+  },
+  {
+   "id": "cl",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one option"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(15—16)% (분열)",
+     "en": "+(15—16)% to all Elemental Resistances (fractured)",
+     "m": "f",
+     "tags": [
+      "ar"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
     }
    ]
   },
@@ -328,9 +745,9 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    7.4
    ],
-   "next": "q1",
+   "next": "ca",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -340,195 +757,99 @@
      "s": "s",
      "kr": "모든 원소 저항 +(15—16)% (분열)",
      "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "ar"
      ]
     },
     {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
     }
    ]
   },
   {
-   "id": "q1",
+   "id": "ca",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    1
-   ],
-   "act": "essence",
-   "goal": {
-    "kr": "잡옵을 지우고 최대 퀄리티",
-    "en": "The junk goes for max quality"
-   },
-   "label": {
-    "kr": "에센스",
-    "en": "Essence"
-   },
-   "edges": [
-    {
-     "to": "q2"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "최대 퀄리티 +20% (균열의 에센스)",
-     "en": "+20% to Maximum Quality (Essence of the Breach)",
-     "m": "c",
-     "tags": [
-      "mq"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 원소 저항 +(15—16)% (분열)",
-     "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
-     "tags": [
-      "ar"
-     ]
-    }
-   ],
-   "cur": "Essence_of_the_Breach",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "최대 퀄리티 +20% (제작 옵션)",
-     "en": "+20% to Maximum Quality (crafted)"
-    }
-   ],
-   "ess": "mq"
-  },
-  {
-   "id": "q2",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    2
-   ],
-   "act": "quality",
-   "goal": {
-    "kr": "카오스 퀄리티 40%",
-    "en": "Chaos quality 40%"
-   },
-   "label": {
-    "kr": "퀄리티",
-    "en": "Quality"
-   },
-   "edges": [
-    {
-     "to": "p1"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "최대 퀄리티 +20% (균열의 에센스)",
-     "en": "+20% to Maximum Quality (Essence of the Breach)",
-     "m": "c",
-     "tags": [
-      "mq"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 원소 저항 +(15—16)% (분열)",
-     "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
-     "tags": [
-      "ar"
-     ]
-    }
-   ],
-   "cur": "Chayulas_Catalyst",
-   "showText": [
-    {
-     "kr": "차율라의 기폭제 40개",
-     "en": "40 Chayula’s Catalysts"
-    }
-   ],
-   "count": 40
-  },
-  {
-   "id": "p1",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    3
+    8.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "최대 퀄리티를 접두 첫번째 옵션으로",
-    "en": "Max quality into the first prefix"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접두 첫번째 옵션 — 카오스 피해·희귀도 1티어 중 먼저 뜬 것",
+    "en": "First prefix: T1 chaos damage or rarity, whichever lands first"
+   },
+   "show": [
+    "cd"
+   ],
    "edges": [
     {
      "if": {
       "has": "gpre"
      },
-     "to": "p2",
+     "to": "ex",
      "res": "ok"
     },
     {
-     "to": "p1",
-     "res": "fail"
+     "to": "ca",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "발견하는 아이템 희귀도 (16—19)% 증가",
-     "en": "(16—19)% increased Rarity of Items found",
+     "kr": "카오스 피해 (27—30)% 증가",
+     "en": "(27—30)% increased Chaos Damage",
      "m": "n",
      "tags": [
-      "rp"
+      "cd"
      ]
     },
     {
      "s": "s",
      "kr": "모든 원소 저항 +(15—16)% (분열)",
      "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "ar"
      ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "cd",
-    "rp"
    ]
   },
   {
-   "id": "p2",
+   "id": "ex",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    9.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 두번째 옵션 — 남은 옵션",
+    "en": "Second prefix: the other one"
+   },
+   "show": [
+    "rp"
+   ],
    "edges": [
     {
      "if": {
@@ -537,7 +858,7 @@
        "min": 2
       }
      },
-     "to": "p3",
+     "to": "dn",
      "res": "ok"
     },
     {
@@ -556,14 +877,17 @@
        }
       ]
      },
-     "to": "p3",
+     "to": "dn",
      "res": "ok",
      "hide": true
     },
     {
-     "to": "p2x",
+     "to": "ea",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
@@ -589,28 +913,20 @@
      "s": "s",
      "kr": "모든 원소 저항 +(15—16)% (분열)",
      "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "ar"
      ]
     }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "show": [
-    "cd",
-    "rp"
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
-   "id": "p2x",
+   "id": "ea",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    4
+    9.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -624,44 +940,62 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "접두 하나 지우기",
-    "en": "Remove one prefix"
+    "kr": "빗나간 접두 지우기 — 좋은 접두가 지워지면 카오스부터",
+    "en": "Remove the missed prefix: back to Chaos if the good one goes"
    },
    "edges": [
     {
      "if": {
       "has": "gpre"
      },
-     "to": "p2",
+     "to": "ex",
      "res": "ok",
-     "port": "right"
+     "label": {
+      "kr": "다시 엑잘",
+      "en": "Exalt again"
+     }
     },
     {
-     "to": "p1",
-     "res": "fail"
+     "to": "ca",
+     "res": "fail",
+     "label": {
+      "kr": "좋은 접두가 지워짐",
+      "en": "Good prefix gone"
+     }
     }
    ]
   },
   {
-   "id": "p3",
+   "id": "dn",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    10.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접두 세번째 옵션(훼손)",
-    "en": "Third prefix (desecrated)"
-   },
+   "cur": "Altered_Collarbone",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
-     "to": "p4"
+     "to": "rv"
     }
    ],
    "item": [
@@ -685,49 +1019,45 @@
     },
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
-     "m": "n"
+     "m": "u"
     },
     {
      "s": "s",
      "kr": "모든 원소 저항 +(15—16)% (분열)",
      "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "ar"
      ]
     }
-   ],
-   "cur": "Altered_Collarbone",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {
-   "id": "p4",
+   "id": "rv",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    6
+    11.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "oc",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "훼손 옵션 확인",
+    "en": "Reveal the desecrated modifier"
+   },
+   "show": [
+    "oc"
+   ],
    "edges": [
     {
      "if": {
@@ -737,9 +1067,12 @@
      "res": "ok"
     },
     {
-     "to": "p4x",
+     "to": "rx",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
@@ -763,8 +1096,8 @@
     },
     {
      "s": "p",
-     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득",
-     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage",
+     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득 (훼손)",
+     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage (desecrated)",
      "m": "d",
      "tags": [
       "oc"
@@ -774,27 +1107,20 @@
      "s": "s",
      "kr": "모든 원소 저항 +(15—16)% (분열)",
      "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "ar"
      ]
     }
-   ],
-   "want": "oc",
-   "show": [
-    "oc"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
-   "id": "p4x",
+   "id": "rx",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    6
+    11.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -815,8 +1141,11 @@
    },
    "edges": [
     {
-     "to": "p3",
-     "port": "right"
+     "to": "dn",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
@@ -826,45 +1155,45 @@
    "group": "main",
    "pos": [
     0,
-    7
+    12.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 두번째·세번째 옵션",
-    "en": "Second and third suffixes"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
-   "edges": [
+   "goal": {
+    "kr": "접미 두번째·세번째 옵션 — 저항 하나",
+    "en": "Second and third suffixes: one resistance"
+   },
+   "show": [
+    "li"
+   ],
+   "showText": [
     {
-     "if": {
-      "all": [
-       {
-        "has": "res"
-       },
-       {
-        "param": {
-         "v": 2
-        }
-       }
-      ]
-     },
-     "to": "ok",
-     "res": "ok"
-    },
+     "kr": "랜덤 옵션 1개가 함께 붙음",
+     "en": "One random option comes with it"
+    }
+   ],
+   "edges": [
     {
      "if": {
       "has": "res"
      },
-     "to": "s3",
+     "to": "wc",
      "res": "ok"
     },
     {
-     "to": "s2",
+     "to": "sR",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
@@ -888,8 +1217,8 @@
     },
     {
      "s": "p",
-     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득",
-     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage",
+     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득 (훼손)",
+     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage (desecrated)",
      "m": "d",
      "tags": [
       "oc"
@@ -899,45 +1228,35 @@
      "s": "s",
      "kr": "모든 원소 저항 +(15—16)% (분열)",
      "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "ar"
      ]
     },
     {
      "s": "s",
-     "kr": "카오스 저항 +(24—27)%",
-     "en": "+(24—27)% to Chaos Resistance",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "ch"
+      "li"
      ]
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "n"
     }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "show": [
-    "fr",
-    "co",
-    "li",
-    "ch"
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
    ]
   },
   {
-   "id": "s2",
+   "id": "sR",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    7
+    12.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -953,140 +1272,69 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "접미 옵션 하나 지우기",
-    "en": "Remove one suffix"
-   },
-   "edges": [
-    {
-     "to": "s2b",
-     "port": "bottom"
-    }
-   ]
-  },
-  {
-   "id": "s2b",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    8
-   ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접미 세번째 옵션",
-    "en": "Third suffix"
-   },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
+    "kr": "접미를 분열 옵션만 남기기",
+    "en": "Clear the suffixes down to the fracture"
    },
    "edges": [
     {
      "if": {
-      "all": [
-       {
-        "has": "res"
-       },
-       {
-        "param": {
-         "v": 2
-        }
-       }
-      ]
+      "ref": "sClean"
      },
-     "to": "ok",
-     "res": "ok"
+     "to": "s1",
+     "res": "ok",
+     "label": {
+      "kr": "접미 정리 끝 — 다시 엑잘",
+      "en": "Suffixes clear: exalt again"
+     }
     },
     {
-     "if": {
-      "has": "res"
-     },
-     "to": "s3",
-     "res": "ok"
-    },
-    {
-     "to": "s2",
+     "to": "sR",
      "res": "fail",
-     "port": "right"
+     "hide": true
     }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "카오스 피해 (27—30)% 증가",
-     "en": "(27—30)% increased Chaos Damage",
-     "m": "n",
-     "tags": [
-      "cd"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "발견하는 아이템 희귀도 (16—19)% 증가",
-     "en": "(16—19)% increased Rarity of Items found",
-     "m": "n",
-     "tags": [
-      "rp"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득",
-     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage",
-     "m": "d",
-     "tags": [
-      "oc"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 원소 저항 +(15—16)% (분열)",
-     "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
-     "tags": [
-      "ar"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "카오스 저항 +(24—27)%",
-     "en": "+(24—27)% to Chaos Resistance",
-     "m": "n",
-     "tags": [
-      "ch"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "show": [
-    "fr",
-    "co",
-    "li",
-    "ch"
    ]
   },
   {
-   "id": "s3",
+   "id": "wc",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    9
+    13.4
    ],
    "act": "chaos",
+   "cur": "Perfect_Chaos_Orb",
+   "omens": [
+    "Omen_of_Whittling",
+    "Omen_of_Dextral_Erasure"
+   ],
+   "label": {
+    "kr": "절사 + 카오스",
+    "en": "Whittling + Chaos"
+   },
    "goal": {
     "kr": "접미 세번째 옵션",
     "en": "Third suffix"
    },
-   "label": {
-    "kr": "카오스",
-    "en": "Chaos"
+   "show": [
+    "rs"
+   ],
+   "skipIf": {
+    "any": [
+     {
+      "param": {
+       "v": 2
+      }
+     },
+     {
+      "has": "rs"
+     }
+    ]
+   },
+   "skipTo": "ok",
+   "skipNote": {
+    "kr": "희귀도 접미가 이미 있으면 건너뜀",
+    "en": "Skip if the rarity suffix is already there"
    },
    "edges": [
     {
@@ -1097,8 +1345,9 @@
      "res": "ok"
     },
     {
-     "to": "s3",
-     "res": "fail"
+     "to": "wc",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
@@ -1122,8 +1371,8 @@
     },
     {
      "s": "p",
-     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득",
-     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage",
+     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득 (훼손)",
+     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage (desecrated)",
      "m": "d",
      "tags": [
       "oc"
@@ -1133,18 +1382,18 @@
      "s": "s",
      "kr": "모든 원소 저항 +(15—16)% (분열)",
      "en": "+(15—16)% to all Elemental Resistances (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "ar"
      ]
     },
     {
      "s": "s",
-     "kr": "카오스 저항 +(24—27)%",
-     "en": "+(24—27)% to Chaos Resistance",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "ch"
+      "li"
      ]
     },
     {
@@ -1156,15 +1405,7 @@
       "rs"
      ]
     }
-   ],
-   "cur": "Perfect_Chaos_Orb",
-   "show": [
-    "rs"
-   ],
-   "trim": {
-    "side": "s",
-    "keep": "keepS"
-   }
+   ]
   },
   {
    "id": "ok",
@@ -1172,12 +1413,101 @@
    "group": "main",
    "pos": [
     0,
-    10
+    14.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "ex",
+    "ea"
+   ],
+   "kr": "접두 두번째 옵션",
+   "en": "Second prefix"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "dn",
+    "rv",
+    "rx"
+   ],
+   "kr": "훼손 공개",
+   "en": "Desecrate and reveal"
+  },
+  {
+   "id": "L3",
+   "nodes": [
+    "s1",
+    "sR"
+   ],
+   "kr": "접미 저항",
+   "en": "Suffix resistance"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "tier": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "cd"
+    },
+    {
+     "tag": "rp"
+    },
+    {
+     "tag": "oc",
+     "des": true
+    },
+    {
+     "tag": "ar",
+     "fr": true
+    },
+    {
+     "tag": "res1"
+    },
+    {
+     "tag": "rs"
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "gpre"
+    },
+    {
+     "tag": "gpreB"
+    },
+    {
+     "tag": "oc",
+     "des": true
+    },
+    {
+     "tag": "ar",
+     "fr": true
+    },
+    {
+     "tag": "res2"
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
   }
  ]
 }
