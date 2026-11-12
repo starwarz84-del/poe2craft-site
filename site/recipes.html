@@ -544,7 +544,7 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fcn.k-task{border:1px solid color-mix(in srgb,var(--muted) 55%,var(--line));border-radius:8px;background:var(--panel-2);display:flex;flex-direction:column;overflow:hidden}
 .fcn.k-task.k-clean{background:var(--panel)}
 .fcn.k-fold{border-color:#b9a2ff88}
-.lpn{font-size:12.5px;color:var(--muted);display:grid;gap:2px;margin-top:4px}.lpn b{color:#d5c8ff;font-weight:600;margin-right:6px}.lpn .w b{color:var(--warn)}
+.lpn{grid-column:2/4;font-size:12.5px;color:var(--muted);display:grid;gap:2px;margin-top:4px}.lpn b{color:#d5c8ff;font-weight:600;margin-right:6px}.lpn .w b{color:var(--warn)}
 .fcfold{list-style:none;margin:2px 0 0;padding:0 12px;counter-reset:fs;display:grid;gap:6px;font-size:12.5px}
 .fcfold li{counter-increment:fs;display:flex;align-items:flex-start;gap:10px;color:var(--fg);line-height:18px}
 .fcfold li::before{content:counter(fs);flex:none;width:16px;height:16px;margin-top:1px;border-radius:50%;border:1px solid var(--line);color:var(--muted);font-size:10.5px;line-height:15px;text-align:center}
@@ -1739,21 +1739,33 @@ function fcRoute(Lay, M, edges){ const rects=[...Object.values(Lay.box), ...Obje
         if(!best || sc<best.sc) best={sc, pts}; }
       return best; };
     let best=tryRoute(e.enter ? [e.enter] : T.col===0 ? ['top'] : ['top','left']); if(!best) best=tryRoute(['top','left']);
-    e.pts=unjog(best.pts); for(let i=0;i<e.pts.length-1;i++) placed.push([e.pts[i],e.pts[i+1],T.id,e.lane,e]); };
+    e.pts=unjog(best.pts, e); for(let i=0;i<e.pts.length-1;i++) placed.push([e.pts[i],e.pts[i+1],T.id,e.lane,e]); };
   /* 직선 도중의 짧은 턱(평행한 두 선 사이 12px 이하 꺾임)을 없앰 — 앞이나 뒤 평행 구간을 다른 쪽 높이로 옮겨 봄, 상자에 닿으면 그대로(사용자 2026-11-12: 장갑 13 → 13.B) */
-  function unjog(pts){ let p=pts.map(q=>[q[0],q[1]]);
+  const crossOf = (pts, e) => { let n=0; for(let i=0;i<pts.length-1;i++){ const a=pts[i], b=pts[i+1]; for(const [cc,d,t2,l2,e2] of placed){ if(e2===e || t2===e.dst.id || (e.lane && l2===e.lane)) continue; const v1=a[0]===b[0], v2=cc[0]===d[0];
+      if(v1!==v2){ const [V0,V1,H0,H1] = v1 ? [a,b,cc,d] : [cc,d,a,b]; if(V0[0]>Math.min(H0[0],H1[0])+1 && V0[0]<Math.max(H0[0],H1[0])-1 && H0[1]>Math.min(V0[1],V1[1])+1 && H0[1]<Math.max(V0[1],V1[1])-1) n++; }
+      else { const k=v1?0:1, o=1-k; if(Math.abs(a[k]-cc[k])<7 && Math.min(Math.max(a[o],b[o]),Math.max(cc[o],d[o]))-Math.max(Math.min(a[o],b[o]),Math.min(cc[o],d[o]))>4) n++; } } } return n; };
+  function unjog(pts, e){ let p=pts.map(q=>[q[0],q[1]]);
     for(let guard=0; guard<6; guard++){ let done=false;
       for(let i=1;i+2<p.length && !done;i++){ const a=p[i], b=p[i+1], k=a[0]===b[0] ? 1 : 0, L0=Math.abs(b[k]-a[k]); if(L0<0.5 || L0>12) continue;   /* k = 턱이 움직이는 축 */
         const pa=p[i-1], pb=p[i+2]; if(pa[k]!==a[k] || pb[k]!==b[k]) continue; if(Math.sign(a[1-k]-pa[1-k])!==Math.sign(pb[1-k]-b[1-k])) continue;   /* 앞뒤가 같은 방향으로 평행할 때만 */
         const tryMove=(from,to,v)=>{ const q=p.map(x=>[...x]); for(let j=from;j<=to;j++) q[j][k]=v; for(let j=Math.max(1,from-1); j<=Math.min(q.length-1,to+1); j++){ const s0=q[j-1], s1=q[j]; if(s0[0]!==s1[0] && s0[1]!==s1[1]) return null; if(j>1 && j<q.length-1 && hit(s0,s1)) return null; } return q; };
         let q = i-1>=1 && p[i-2][k]!==pa[k] && Math.sign(b[k]-p[i-2][k])===Math.sign(pa[k]-p[i-2][k]) ? tryMove(i-1, i, b[k]) : null;   /* 앞 평행 구간을 뒤 높이로 */
         if(!q && i+2<=p.length-2 && p[i+3][k]!==pb[k] && Math.sign(p[i+3][k]-a[k])===Math.sign(p[i+3][k]-pb[k])) q=tryMove(i+1, i+2, a[k]);   /* 뒤 평행 구간을 앞 높이로 */
-        if(q){ const c=clean(q); if(c){ p=c; done=true; } } }
+        if(q){ const c=clean(q); if(c && crossOf(c, e)<=crossOf(p, e)){ p=c; done=true; } } }   /* 턱을 없애 다른 선과 새로 겹치거나 엇갈리면 그대로 */
       if(!done) break; }
     return p; }
-  order.forEach(routeOne);
   // second and third pass: each line is routed again knowing where every other line went, so a line drawn early can step out of the way of one drawn later
-  for(let pass=0; pass<2; pass++) (pass%2 ? [...order].reverse() : order).forEach(e=>{ for(let i=placed.length-1;i>=0;i--) if(placed[i][4]===e) placed.splice(i,1); routeOne(e); }); }
+  const runAll = ord => { placed.length=0; ord.forEach(routeOne); for(let pass=0; pass<2; pass++) (pass%2 ? [...ord].reverse() : ord).forEach(e=>{ for(let i=placed.length-1;i>=0;i--) if(placed[i][4]===e) placed.splice(i,1); routeOne(e); }); return {q:quality(), pts:edges.map(e=>e.pts)}; };
+  /* 그림 전체 점수 = tools/test/_fclines.js와 같은 기준(교차·7px 안 평행 겹침·상자 통과, 같은 도착·같은 출발·같은 lane끼리는 셈 안 함) */
+  function quality(){ let q=0; const sg=[]; edges.forEach((e,ei)=>{ for(let i=0;i<e.pts.length-1;i++) sg.push({a:e.pts[i], b:e.pts[i+1], e, ei, i, n:e.pts.length-1}); });
+    for(let x=0;x<sg.length;x++) for(let y=x+1;y<sg.length;y++){ const s1=sg[x], t1=sg[y]; if(s1.ei===t1.ei) continue; const same = s1.e.b===t1.e.b || (s1.e.lane && s1.e.lane===t1.e.lane) || s1.e.a===t1.e.a; if(same) continue;
+      const v1=s1.a[0]===s1.b[0], v2=t1.a[0]===t1.b[0];
+      if(v1!==v2){ const [V,H]=v1?[s1,t1]:[t1,s1], vx=V.a[0], hy=H.a[1]; if(vx>Math.min(H.a[0],H.b[0])+1 && vx<Math.max(H.a[0],H.b[0])-1 && hy>Math.min(V.a[1],V.b[1])+1 && hy<Math.max(V.a[1],V.b[1])-1) q++; }
+      else { const k=v1?0:1, o=1-k; if(Math.abs(s1.a[k]-t1.a[k])>=7) continue; const ov=Math.min(Math.max(s1.a[o],s1.b[o]),Math.max(t1.a[o],t1.b[o]))-Math.max(Math.min(s1.a[o],s1.b[o]),Math.min(t1.a[o],t1.b[o])); if(ov>4) q++; } }
+    for(const s1 of sg){ if(s1.i===0 || s1.i===s1.n-1) continue; const x0=Math.min(s1.a[0],s1.b[0]), x1=Math.max(s1.a[0],s1.b[0]), y0=Math.min(s1.a[1],s1.b[1]), y1=Math.max(s1.a[1],s1.b[1]); for(const r of rects) if(x1>r.x+2 && x0<r.x+r.w-2 && y1>r.y+2 && y0<r.y+r.h-2) q++; }
+    return q; }
+  /* 그리는 순서를 바꾼 두 번째 안도 그려 보고 더 깔끔한 쪽(점수 낮은 쪽, 같으면 처음 안)을 씀 — 경우마다 출구·경로를 비교해 고름(사용자 2026-11-12) */
+  const A=runAll(order); if(A.q>0){ const B=runAll([...order].reverse()); const W=B.q<A.q ? B : A; edges.forEach((e,i)=>e.pts=W.pts[i]); } }
 function fcD(pts, sharp){ let d=`M${pts[0][0]},${pts[0][1]}`;
   for(let i=1;i<pts.length;i++){ const p=pts[i]; if(i===pts.length-1){ d+=` L${p[0]},${p[1]}`; break; } const a=pts[i-1], c=pts[i+1];
     const l1=Math.abs(p[0]-a[0])+Math.abs(p[1]-a[1]), l2=Math.abs(c[0]-p[0])+Math.abs(c[1]-p[1]), r=sharp?.has(i) ? 0 : Math.min(FX.R, l1/2, l2/2);
