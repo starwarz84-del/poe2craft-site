@@ -104,3 +104,7 @@ g22('unstoppable-slipstrike-vest-v2',c,'Slipstrike Vest',82,
   FIN(('high','bal'),lambda v:[{'tag':'pev','fr':True},{'tag':'evf','tmax':1},{'tag':'hyb','tmax':1},{'tag':'fr','tmax':1},{'tag':'cr','tmax':1},{'tag':'dfl','tmax':1}] if v=='high' else
       [{'tag':'pev','fr':True},{'tag':'evf','tmax':2},{'tag':'hyb','tmax':2},{'side':'s','label':K('저항 또는 굴절 1~2티어','Resistance or deflection T1–2')},{'side':'s','label':K('저항 또는 굴절 1~2티어','Resistance or deflection T1–2')},{'side':'s','random':True}]),
   {'quality':20,'sockets':3,'exceptional':True},{'all':[{'has':'pev'},{'count':{'tag':'gpE','min':2}},G3]},('high','bal'))
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_unstoppable_vile_robe.py'): _sp.run([_sy.executable, f'{H}/gen_unstoppable_vile_robe.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_unstoppable_slipstrike_vest.py'): _sp.run([_sy.executable, f'{H}/gen_unstoppable_slipstrike_vest.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀

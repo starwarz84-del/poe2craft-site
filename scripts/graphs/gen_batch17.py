@@ -115,3 +115,6 @@ graph11('saveq-focus-v2','Foci','Tasalian Focus',80,
   [{'id':'L1','nodes':['d1','rv','rvx'],'kr':'훼손 공개','en':'Reveal'}],
   FIN(('high','bal'),lambda v:[{'tag':'sp','fr':True,'ess':True},{'tag':'esp','tmax':1},{'tag':'ges'},{'tag':'lvl'},{'tag':'cs','ess':True},{'tag':'cr','tmax':1 if v=='high' else 2,'des':True}]),
   {'quality':22,'sockets':2},{'all':[{'has':'cr'},{'has':'cs'},{'count':{'tag':'ges','min':2}}]},('high','bal'))
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_saveq_focus.py'): _sp.run([_sy.executable, f'{H}/gen_saveq_focus.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀

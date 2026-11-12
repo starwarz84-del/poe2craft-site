@@ -98,3 +98,7 @@ graph11('sl-flamewave-ring-v2','Rings','Gold Ring',82,
   FIN(('high','bal'),lambda v:[{'tag':'cd','tmax':1},{'tag':'rp','tmax':1},{'tag':'oc','des':True},{'tag':'ar','tmax':1,'fr':True},
       {'tag':'ch','tmax':1 if v=='high' else 2},{'tag':'rs','tmax':1} if v=='high' else {'side':'s','random':True}]),
   {'quality':40,'sockets':0},{'all':[{'has':'oc'},{'has':'res'},{'has':'gpreB'}]},('high','bal'))
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_absent_amulet_video.py'): _sp.run([_sy.executable, f'{H}/gen_absent_amulet_video.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_sl_flamewave_ring.py'): _sp.run([_sy.executable, f'{H}/gen_sl_flamewave_ring.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀

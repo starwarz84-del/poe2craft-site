@@ -161,3 +161,6 @@ _prep=[
 _g['nodes']=_prep+[n for n in _g['nodes'] if n['id']!='h1']
 _g['start']='h1'
 json.dump(_g,open(_gp,'w'),ensure_ascii=False,indent=1)
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_noble_timelost_sapphire.py'): _sp.run([_sy.executable, f'{H}/gen_noble_timelost_sapphire.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀

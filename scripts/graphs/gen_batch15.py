@@ -101,3 +101,6 @@ graph11('gold-amulet-6line-v2','Amulets','Gold Amulet',82,
   FIN(('high','bal'),lambda v:[{'tag':'spirit','tmax':1,'fr':True},{'tag':'sd','tmax':2},{'tag':'mf','tmax':2},
       {'tag':'spell','tmax':1},{'tag':'rs','tmax':2},{'tag':'cs','tmax':2,'des':True} if v=='high' else {'side':'s','random':True}]),
   {'quality':40,'sockets':0},{'all':[{'has':'spell'},{'has':'gs'},{'count':{'tag':'gp','min':2}}]},('high','bal'))
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_mazbro_spell5_amulet.py'): _sp.run([_sy.executable, f'{H}/gen_mazbro_spell5_amulet.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀

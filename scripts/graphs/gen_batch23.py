@@ -82,3 +82,6 @@ g22('sl-blacksteel-gauntlets-v2',c,'Blacksteel Gauntlets',82,
       [{'tag':'am','fr':True},{'side':'p','label':K('점화 강도·피해 가속 1~2티어','T1–2 ignite magnitude or ailment acceleration')},{'side':'p','random':True},{'side':'s','label':SL3},{'side':'s','label':SL3},{'side':'s','random':True}]),
   {'quality':25,'sockets':2},{'all':[{'has':'am'},{'full':'p'},{'full':'s'}]},VHB,xsub=["Katla's Gloom"],xroll=True)
 print('wrote batch 23')
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_easybabi_spiny_talisman.py'): _sp.run([_sy.executable, f'{H}/gen_easybabi_spiny_talisman.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀

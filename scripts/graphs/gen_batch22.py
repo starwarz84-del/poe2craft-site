@@ -292,3 +292,6 @@ g22('sihan-proj-gloves-v2',c,'Massive Mitts',80,
    {'id':'L2','nodes':['d1','d1n','d2','d2x'],'kr':'훼손 공개','en':'Reveal'}],
   FIN(VHB,lambda v:[{'tag':'phys1' if v=='high' else 'phys2'},{'tag':'pdmg1' if v=='high' else 'pdmg2'},{'tag':'pspd1' if v=='high' else 'pspd2','des':True},{'tag':'lvl','fr':True},{'tag':'add1'},{'tag':'cdb','ess':True}]),
   {'quality':20,'sockets':2},{'all':[{'has':'lvl'},{'has':'add1'},{'has':'cdb'},{'count':{'tag':'pre','min':3}}]},VHB,xsub=["Kolr's Hunt"],xroll=True)
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_sihan_chayula_ring.py'): _sp.run([_sy.executable, f'{H}/gen_sihan_chayula_ring.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀

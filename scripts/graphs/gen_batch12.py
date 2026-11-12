@@ -82,3 +82,7 @@ graph10('chiba-timelost-emerald-v2','Time-Lost_Emerald','Time-Lost Emerald',80,
   [{'id':'L1','nodes':['c5','c6','c6x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['c9','c10'],'kr':'우울','en':'Melancholy'}],
   FIN(('high','bal'),lambda v:[{'side':'p','label':K('투사체·공격 피해 접두','Projectile or attack damage prefix')},{'tag':'rad','tmax':1},{'tag':'cc','tmax':1,'fr':True},{'side':'s','label':K('치명타 피해 (창 포함)','Crit damage (or with spears)')},{'side':'s','label':K('핵심 패시브 접미','Notable suffix')} if v=='high' else {'side':'s','random':True}]),
   {'quality':0,'sockets':0},{'all':[{'has':'suf'},{'has':'pre'},{'has':'rad'}]},('high','bal'),cap={'p':2,'s':2})
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_mastert_timelost_emerald.py'): _sp.run([_sy.executable, f'{H}/gen_mastert_timelost_emerald.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_chiba_timelost_emerald.py'): _sp.run([_sy.executable, f'{H}/gen_chiba_timelost_emerald.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀

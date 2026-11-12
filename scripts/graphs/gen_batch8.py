@@ -294,3 +294,8 @@ graph8('diztoh-endgame-quarterstaff-v2','Quarterstaves','Sinister Quarterstaff',
   FIN(('high','bal'),lambda v:[{'tag':'p1'},{'tag':'pp'},{'tag':'p3'} if v=='high' else {'side':'p','random':True},{'tag':'melee','tmax':1,'fr':True},{'tag':'suf'},{'tag':'cr'} if v=='high' else {'side':'s','random':True}]),
   {'quality':20,'sockets':2},{'all':[{'has':'melee'},{'has':'p1'},{'any':[{'has':'cr'},{'param':{'g':0}}]},{'full':'p'},{'full':'s'}]},('high','bal'))
 print('wrote 5 graphs (batch 8)')
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_noble_visceral_quiver.py'): _sp.run([_sy.executable, f'{H}/gen_noble_visceral_quiver.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_barricade_quarterstaff.py'): _sp.run([_sy.executable, f'{H}/gen_barricade_quarterstaff.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_diztoh_endgame_quarterstaff.py'): _sp.run([_sy.executable, f'{H}/gen_diztoh_endgame_quarterstaff.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀

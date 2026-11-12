@@ -116,3 +116,7 @@ graph11('mazbro-caster-amulet-v2','Amulets','Solar Amulet',82,
       [{'tag':'spirit','tmax':1,'fr':True},{'side':'p','label':K('마나 %·마나 최대치·주문 피해 1~2티어','T1–2 % mana, maximum mana or spell damage')},{'side':'p','random':True},
        {'tag':'spell','tmax':1},{'side':'s','label':K('시전 속도·치명타 확률·치명타 피해 1~2티어','T1–2 cast speed, crit chance or crit damage')},{'side':'s','random':True}]),
   {'quality':40,'sockets':0},{'all':[{'has':'spell'},{'has':'gs'},{'has':'gp'}]},('high','bal'))
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_sl_flamewave_staff.py'): _sp.run([_sy.executable, f'{H}/gen_sl_flamewave_staff.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_mazbro_caster_amulet.py'): _sp.run([_sy.executable, f'{H}/gen_mazbro_caster_amulet.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
