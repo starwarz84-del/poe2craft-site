@@ -424,7 +424,7 @@ R.append({
  'buildTags':[K('주문','Spell'),K('정신력','Spirit'),K('마나','Mana')], 'patch':'0.5', 'created':'2026-11-08',
  'author':K('반지깎는노인 영상 기반','Based on 반지깎는노인'),
  'source':{'url':V7, 'title':'주문 스킬레벨 +6 목걸이 만들기 [POE2] How to make +6 skill level amulet', 'channel':'반지깎는노인'},
- 'title':K('축성 주문 스킬 +6 · 정신력 · 마나 · 시전 속도','sanctified +6 spell skills, Spirit, Mana, cast speed'),
+ 'title':K('주문 스킬 +3 · 정신력 · 마나 · 시전 속도','+3 spell skills, Spirit, Mana, cast speed'),   # 사용자 결정 11-13: 퀄리티 50%·축성 뺌
  'note':K('목표: 접두 = 정신력 +50(분열) + 마나 최대치 1티어, 접미 = 주문 스킬 +3 + 시전 속도 1티어, 쇳소리 기폭제 퀄리티 50%. 퀄리티 50%로 주문 +3이 +4가 되고, 축성이 1.5배로 붙으면 +6. 부재 목걸이는 접두·접미가 한 자리씩 적고(2/2) 매직 상태에서는 제작이 안 돼서 희귀에서 시작. 마나 1티어(레벨 82) 때문에 아이템 레벨 82 베이스. 히네코라의 머리카락으로 결과를 미리 보며 비싼 단계를 넘기는 게 핵심.',
           'Target: prefixes = fractured +50 Spirit + T1 maximum Mana; suffixes = +3 spell skills + T1 cast speed; 50% caster catalyst quality. At 50% quality +3 becomes +4, and a 1.5× sanctify makes it +6. Absent Amulets have one fewer prefix and suffix (2/2) and cannot be crafted while magic, so start from a rare. Item level 82 for T1 Mana (level 82). The key is previewing expensive steps with Hinekora\'s Lock.'),
  'start':{'rar':'magic','mods':[]},
@@ -510,7 +510,7 @@ FRSTART = {
  'helmet-armour-sl-v2-ess': _fb(('h2','f4'), [{'gi':20,'tmax':1,'fr':True},{'junk':'p'}], '방어도의 원소 피해 적용 분열 + 잡옵 1개.', 'Fractured armour applies to elemental damage plus one junk line.', 26),
  'gold-amulet-6line': _fb(('g2','g3'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '정신력 분열 + 잡옵 1개.', 'Fractured Spirit plus one junk line.'),
  'grasping-mail-spell1': _fb(('m2','f1'), [{'gi':140,'fr':True},{'junk':'s'}], '룬 아버지 단계까지 올린 베이스(갑옷·기폭제 퀄리티 30%). 모든 주문 스킬 레벨 +1 분열 + 잡옵 1개.', "A Runefather base (armour and catalyst quality 30%) with fractured +1 spell skills plus one junk line.", 30),
- 'absent-amulet-spell6': _fb(('b1b','f1'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '시전 퀄리티 48%. 정신력 분열 + 잡옵 1개.', '48% caster quality, fractured Spirit plus one junk line.', 48),
+ 'absent-amulet-spell6': _fb(('b1b','f1'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '정신력 분열 + 잡옵 1개.', 'Fractured Spirit plus one junk line.'),
  'mazbro-caster-ring': _fb(('r1b','r4'), [{'gi':34,'tmax':1,'fr':True},{'junk':'p'}], '시전 속도 분열 + 잡옵 1개.', 'Fractured cast speed plus one junk line.'),
  'mazbro-caster-amulet': _fb(('a2','a3'), [{'gi':28,'tmax':1,'fr':True},{'junk':'s'}], '정신력 분열 + 잡옵 1개.', 'Fractured Spirit plus one junk line.'),
  'mazbro-bis-chest': _fb(('c2','c6'), [{'gi':15,'tmax':1,'fr':True}], '정신력 분열(나머지 옵션은 정리한 상태).', 'Fractured Spirit, everything else cleared.'),

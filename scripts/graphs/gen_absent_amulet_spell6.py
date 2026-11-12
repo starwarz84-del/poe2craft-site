@@ -47,7 +47,7 @@ g = {
  'start': 'h0',
  'finals': [{'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
              'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'mana', 'tmax': 1}, {'tag': 'spell'}, {'tag': 'cs', 'tmax': 1, 'des': True}]}],
- 'finalItem': {'quality': 50, 'sockets': 0},
+ 'finalItem': {'quality': 0, 'sockets': 0},   # 사용자 결정 11-13 02:24: 퀄리티 50%·축성 빼고 전문가로
 }
 
 N = []
@@ -60,14 +60,7 @@ A(id='b1', kind='act', group='prep', pos=[0, 1], act='regal', cur='Perfect_Regal
   edges=[{'to': 'b2'}], item=[J('x')])
 A(id='b2', kind='act', group='prep', pos=[0, 2], act='essence', cur='Essence_of_the_Breach', ess='mq', label=K('에센스', 'Essence'),
   goal=K('랜덤 옵션을 지우고 최대 퀄리티 +20%', 'The random option goes for +20% Maximum Quality'),
-  showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'b3'}], item=[MQ])
-A(id='b3', kind='act', group='prep', pos=[0, 3], act='quality', cur='Sibilant_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
-  goal=K('시전 퀄리티 40%', 'Caster quality 40%'), showText=[K('쇳소리 기폭제 40개', '40 Sibilant Catalysts')], edges=[{'to': 'b4'}], item=[MQ])
-A(id='b4', kind='act', group='prep', pos=[0, 4], act='quality', cur='Vaal_Catalysing_Infuser', count=9, q=49, label=K('퀄리티', 'Quality'),
-  goal=K('시전 퀄리티 49%', 'Caster quality 49%'), showText=[K('바알 촉진시키는 주입기 9개', '9 Vaal Catalysing Infusers')],
-  note=K('주입기는 타락 위험이 있음(영상 첫 목걸이는 44%에서 타락) — 타락으로 잃는 베이스는 계산에 없음',
-         'Infusers can corrupt (the first amulet in the video corrupted at 44%); bases lost that way are not counted'),
-  edges=[{'to': 'b5'}], item=[MQ])
+  showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'b5'}], item=[MQ])
 A(id='b5', kind='act', group='prep', pos=[0, 5], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접두 정신력 1티어', 'T1 Spirit prefix'), show=['spirit'],
   edges=[{'if': {'has': 'spirit'}, 'to': 'b6', 'res': 'ok'}, {'to': 'b5', 'res': 'fail', 'hide': True}], item=[SPn])
@@ -103,13 +96,7 @@ A(id='q1', kind='act', group='main', pos=[0, 14.4], act='exalt', cur='Exalted_Or
   goal=K('접두 잡옵', 'A junk prefix'), showText=[{'s': 'p', 'kr': '잡옵', 'en': 'Junk'}], edges=[{'to': 'q2'}], item=[SP, J('p'), SL])
 A(id='q2', kind='act', group='main', pos=[0, 15.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('접두 잡옵을 지우고 최대 퀄리티 +20%', 'The junk prefix goes for +20% Maximum Quality'),
-  showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'q3'}], item=[SP, MQ, SL])
-# 사용자 결정 11-13: 히네코라 없이 주입기만(영상 25:30은 머리카락으로 타락 여부를 먼저 봄). 타락 위험은 시뮬에 없음
-A(id='q3', kind='act', group='main', pos=[0, 16.4], act='quality', cur='Vaal_Catalysing_Infuser', count=1, q=50,
-  label=K('퀄리티', 'Quality'), goal=K('시전 퀄리티 50%', 'Caster quality 50%'),
-  showText=[K('바알 촉진시키는 주입기 1개 — 타락 위험', 'One Vaal Catalysing Infuser: risk of corruption')],
-  note=K('타락하면 이 목걸이는 끝 — 타락 위험은 비용 계산에 없음', 'A corruption ends this amulet; the risk is not in the cost'),
-  edges=[{'to': 'm1'}], item=[SP, MQ, SL])
+  showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'm1'}], item=[SP, MQ, SL])
 A(id='m1', kind='act', group='main', pos=[0, 17.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_Sinistral_Necromancy'],
   label=K('훼손', 'Desecrate'), goal=K('최대 퀄리티를 훼손으로 밀어내기', 'Push out Maximum Quality with a desecration'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'm1e'}], item=[SP, UN('p'), SL])
