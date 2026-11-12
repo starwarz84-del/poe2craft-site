@@ -57,7 +57,7 @@
 | sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 98, ess 26 | 0 | 대기 |  |  |
 | sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 97, ess 23 | 1 | 대기 |  |  |
 | diztoh-5mod-sapphire-v2 | -YZm55-QuoQ | bal 95, ess 43 | 0 | 대기 |  |  |
-| easybabi-spiny-talisman-v2 | fabBIuR6yhw | high 94, bal 13 | 1 | 진행 중(새 기준 재작성) | W33(Opus 5.5) · 검수 마스터 |  |
+| easybabi-spiny-talisman-v2 | fabBIuR6yhw | high 155, bal 82 | 1 | 완료 11-13(새 기준) · 검수 88점 | W33(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W33): 영상 전체 화면 대조(6분 설명 영상, 성공작 성스러운 장악), 전용 생성기 gen_easybabi_spiny_talisman.py. 보존된 턱뼈·완벽한 카오스 오브로 고침, 정확도 막기·훼손 공개 접힌 상자 2개, 절사는 성공 회차대로 공개 뒤. 엑잘 접두 2개는 랜덤 옵션(10장 예외, 좌측 말소 추가 대안은 1,851/341). 94/13 → 155/82 |
 | vodnarg-timelost-emerald-v2 | 3tFs16SXkD8 | bal 94, ess 70 | 0 | 대기 |  |  |
 | lilbotq-boots-v2 | S-7YHuq3-P4 | bal 92, ess 5 | 2 | 대기 |  |  |
 | mazbro-caster-ring-v2 | o3Fh1DJmxBA | bal 86, ess 16 | 1 | 대기 |  |  |

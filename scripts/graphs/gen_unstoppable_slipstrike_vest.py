@@ -156,7 +156,8 @@ A(id='k2x', kind='cleanup', group='main', pos=[1, 9.4], keep=[], maxJunk=1, labe
   edges=[{'to': 'k1', 'res': 'fail', 'label': K('카오스부터', 'Back to Chaos')}])
 A(id='k3', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
   goal=K('접미 냉기 저항 1티어 — 가장 낮은 레벨 잡옵 바꾸기', 'T1 cold resistance suffix: reroll the lowest-level junk'), show=['fr', 'cr', 'lr'],
-  edges=SR({'q2': {'res': 'ok'}, 'k3e': {'res': 'fail', 'label': K('새 옵션이 접두로', 'New option went to a prefix')}}),
+  edges=SR({'q2': {'res': 'ok'}, 'k3e': {'res': 'fail', 'label': K('새 옵션이 접두로', 'New option went to a prefix')},
+            'k3d': {'res': 'fail', 'label': K('접두에 옵션 있음', 'A prefix option is there')}}),
   item=[EV, FR, CR, DF],
   over=[{'param': {'rT': 2}, 'set': {'goal': K('접미 냉기 저항 1~2티어 — 가장 낮은 레벨 잡옵 바꾸기', 'T1–2 cold resistance suffix: reroll the lowest-level junk')}}])
 A(id='k3d', kind='act', group='main', pos=[2, 10.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling', 'Omen_of_Dextral_Erasure'],
