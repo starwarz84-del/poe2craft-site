@@ -40,8 +40,8 @@
 | mazbro-sceptre-v2 | UwzsARlgaFM | high 504 | 10 | 완료 11-11(그림만 확인 안 됨) | B(Fable) | 단계 대조는 함. 화면 캡처가 오른쪽이 잘린 채였음 — 선은 다시 볼 것 |
 | sihan-chayula-ring-v2 | GgD_vxKgNsw | high 478, bal 144 | 0 | 완료 11-12 | A(Opus) | 자막 전체 + 화면 2:30~3:45 대조(기록 tools/notes/sihan-GgD_vxKgNsw.md). 카오스는 저항 또는 카오스 피해, 완벽한 엑잘에서 좌측 찬미 뺌(영상에서 접미에도 붙음). 478/144 → 356/130 |
 | mastert-timelost-emerald-v2 | GNNkhSENp6Q | high 469, bal 88 | 1 | 완료 11-12 | A(Opus) | 자막 0:00~24:00 대조(기록 tools/notes/mastert-GNNkhSENp6Q.md). 경멸 전 엑잘 2번 → 영상대로 1번, 경멸 옵션을 지운 뒤 엑잘 1번 추가. 469/88 → 459/78 |
-| noble-timelost-sapphire-v2 | zEV8kWwveYQ | high 468, bal 418 | 3 | 대기 |  |  |
-| tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 대기 |  |  |
+| noble-timelost-sapphire-v2 | zEV8kWwveYQ | high 468, bal 418 | 3 | 진행 중 | A(Opus) |  |
+| tankjung-kitava-shield-v2 | gQa51XOS98s | bal 359, ess 48 | 2 | 진행 중 | A(Opus) |  |
 | absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 대기 |  |  |
 | gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 삭제 11-11 | B(Fable) | 사용자 요청으로 내림(22:21). 플로우차트 옵션이 영상이 만든 목걸이와 달랐음. 다시 올리려면 영상 전체 기준으로 새로 만들고 build_recipes.py REMOVED·build_tips.py·gen_batch11.py의 막아 둔 줄을 지움 |
 | saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 대기 |  |  |
