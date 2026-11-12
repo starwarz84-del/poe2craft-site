@@ -204,7 +204,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
       </section>
       <section class="ipane" data-ipane="item">
       <p class="ihelp" id="i-help"></p>
-      <textarea id="txt" spellcheck="false" aria-label="item text"></textarea>
+      <textarea id="txt" spellcheck="false" aria-label="아이템 텍스트"></textarea>
       <div class="row">
         <button type="button" class="btn primary" id="go"></button>
         <button type="button" class="btn" id="clr"></button>
@@ -246,11 +246,18 @@ function tplRe(line){ const ranges=[]; let src='';
     if(m){ ranges.push([+m[1],+m[2]]); src+=NUM; } else src += reEsc(part).replace(/\d+(?:\.\d+)?/g, x=>{ ranges.push([+x,+x]); return NUM; }); });
   return {re:new RegExp('^'+src.replace(/\\\+(?=\()/g,'\\+?')+'$','i'), ranges}; }
 /* 한글 화면에선 붙여 넣은 영문 옵션 줄을 DB의 한글 문구에 실제 수치를 넣어 보여 줌(사용자 2026-11-12) — 영문 문구 틀과 맞춰 수치를 순서대로 옮김, 못 맞추면 원문 */
-function locLine(l, t){ if(!KR() || !t?.[4] || !t?.[5] || /[ㄱ-힝]/.test(l)) return l; if(l.includes('\n')) return l.split('\n').map(x=>locLine(x,t)).join('\n'); const ln=cleanLine(l), E=t[5].split('\n'), K=t[4].split('\n');
-  for(let j=0;j<E.length;j++){ const mm=ln.match(tplRe(E[j]).re); if(!mm || !K[j]) continue; const v=mm.slice(1); let i=0;
-    const out=K[j].split(/(\(\d+(?:\.\d+)?—\d+(?:\.\d+)?\))/).map(part=>/^\(\d/.test(part) && /—/.test(part) ? (v[i++] ?? part) : part.replace(/\d+(?:\.\d+)?/g, x=>v[i++] ?? x)).join('');
-    return i===v.length ? out : l; }
-  return l; }
+function xferLine(l, en, kr){ const mm=cleanLine(l).match(tplRe(en).re); if(!mm || !kr) return null; const v=mm.slice(1); let i=0;
+  const out=kr.split(/(\(\d+(?:\.\d+)?—\d+(?:\.\d+)?\))/).map(part=>/^\(\d/.test(part) && /—/.test(part) ? (v[i++] ?? part) : part.replace(/\d+(?:\.\d+)?/g, x=>v[i++] ?? x)).join('');
+  return i===v.length ? out : null; }
+function locLine(l, t){ if(!KR() || !t?.[4] || !t?.[5] || /[ㄱ-힝]/.test(l)) return l; if(l.includes('\n')) return l.split('\n').map(x=>locLine(x,t)).join('\n');
+  const E=t[5].split('\n'), K=t[4].split('\n'); for(let j=0;j<E.length;j++){ const o=xferLine(l, E[j], K[j]); if(o!=null) return o; } return l; }
+/* 고정 옵션·룬 줄(it.other)도 한글로: 베이스 고정 옵션과 룬 효과·결속 문구에서 찾음(2026-11-12) */
+function locOther(it, l){ if(!KR() || /[ㄱ-힝]/.test(l)) return l; const BD=/^Bonded\s*:\s*/i, bond=BD.test(l), x=l.replace(BD,'');
+  const pairs=[]; try{ const ri=it.b?.imp||[[],[]], imp = Array.isArray(ri) ? ri : JSON.parse(String(ri).replace(/'/g,'"')); (imp[0]||[]).forEach((e,i)=>pairs.push([e, imp[1]?.[i]])); }catch(_){}
+  for(const r of [...(it.D?.runes||[]), ...Object.values(it.D?.runesBy||{}).flat()]) for(const t of r.t||[]){ const a=(t[3]||'').split('\n'), b=(t[2]||'').split('\n'), c=(t[5]||'').split('\n'), d=(t[4]||'').split('\n'); a.forEach((e,i)=>pairs.push([e,b[i]])); c.forEach((e,i)=>pairs.push([e,d[i]])); }
+  for(const [e,k] of pairs){ if(!e || !k) continue; const o=xferLine(x, e, k); if(o!=null) return (bond?'결속: ':'')+o; } return l; }
+const QTKR = {attack:'공격',caster:'시전',life:'생명력',mana:'마나',defences:'방어',physical:'물리',fire:'화염',cold:'냉기',lightning:'번개',chaos:'카오스',speed:'속도',attribute:'능력치',minion:'소환수'};
+const qtName = it => KR() && it.qTag && QTKR[it.qTag] ? `${QTKR[it.qTag]} 옵션` : it.qualType;
 function matcher(data){ if(data._mx) return data._mx; const list=[];
   data.groups.forEach((g,gi)=>{ if(!['n','d','e','x','c'].includes(g.s)) return;
     g.t.forEach((t,ti)=>{ for(const k of [4,5]){ list.push({gi,ti,s:g.s,lines:t[k].split('\n').map(tplRe)}); } }); });
@@ -470,7 +477,7 @@ function analyse(it){
   if(oth.length) tr.push({c:'var(--oth)', t:L(`<b>별세계 속성</b> — 옵션 ${oth.length}개. 훼손 뼈에서 낮은 확률로 붙는 옵션.`,`<b>Otherworldly</b> — ${oth.length} line(s), a rare outcome of a desecration bone.`)});
   const cores = [...new Set(rows.filter(r=>r.how==='sc' || (r.m.fr && r.core)).map(r=>r.core[KR()?0:1]))];
   if(cores.length) tr.push({c:'var(--oth)', t:L(`<b>증강물 전용 옵션</b> — ${cores.map(x=>'「'+esc(x)+'」').join(', ')} 옵션 ${rows.filter(r=>r.core).length}개. 룬·영혼 핵을 룬 소켓에 끼워야 굴릴 수 있는 옵션이라, 장착한 뒤 카오스·엑잘로 붙인 것.`,`<b>Augment-only lines</b> — ${rows.filter(r=>r.core).length} from ${cores.join(', ')}: they only roll once that rune or soul core is socketed.`)});
-  if(it.qTag && it.qual) tr.push({c:'var(--rare)', t:L(`<b>기폭제 퀄리티 ${it.qual}%</b> — ${esc(it.qualType)}. 해당 속성 옵션 값은 퀄리티를 걷어낸 원래 값으로 티어를 판정.`,`<b>Catalyst quality ${it.qual}%</b> (${esc(it.qualType)}): matching modifiers were tiered from their values before quality.`)});
+  if(it.qTag && it.qual) tr.push({c:'var(--rare)', t:L(`<b>기폭제 퀄리티 ${it.qual}%</b> — ${esc(qtName(it))}. 해당 속성 옵션 값은 퀄리티를 걷어낸 원래 값으로 티어를 판정.`,`<b>Catalyst quality ${it.qual}%</b> (${esc(it.qualType)}): matching modifiers were tiered from their values before quality.`)});
   const outv = rows.filter(r=>r.m.out);
   if(outv.length) tr.push({c:'var(--rare)', t: it.qualType && !it.qTag ? L(`<b>${esc(it.qualType)} 퀄리티</b> — 옵션 ${outv.length}개의 값이 티어 범위를 넘음. 기폭제 퀄리티가 적용된 값.`,`<b>${esc(it.qualType)} quality</b> — ${outv.length} value(s) above the tier range: catalyst quality applied.`)
     : it.sanctified ? L(`<b>축성</b> — 옵션 ${outv.length}개의 값이 티어 범위를 벗어남. 축성으로 값이 바뀐 것.`,`<b>Sanctified</b> — ${outv.length} value(s) outside the tier range, changed by sanctification.`)
@@ -494,7 +501,7 @@ function analyse(it){
   if(putrid) tr.unshift({c:'var(--warn)', t:L(`<b>레시피 작성 불가</b> — 훼손 옵션 ${nDes}개. ${esc(curName('Omen_of_Putrefaction'))}로 만든 아이템이라 단계별 레시피를 만들 수 없음.`,`<b>No recipe</b> — ${nDes} desecrated lines. This item was made with ${esc(curName('Omen_of_Putrefaction', true))}, so there is no step-by-step recipe.`)});
   return {cap, cnt, rows, tr, flat, putrid, nDes};
 }
-function short(r){ const s=(r.m.l||'').split('\n')[0]; return s.length>34 ? s.slice(0,33)+'…' : s; }
+function short(r){ const s=(locLine(r.m.l||'', r.t)||'').split('\n')[0]; return s.length>34 ? s.slice(0,33)+'…' : s; }
 function rareCls(p){ return p==null ? '' : p>=0.2 ? 'r0' : p>=0.05 ? 'r1' : p>=0.01 ? 'r2' : 'r3'; }
 function rareTxt(p){ return p==null ? '' : p>=0.2 ? L('흔함','common') : p>=0.05 ? L('보통','fair') : p>=0.01 ? L('귀함','scarce') : L('매우 귀함','very scarce'); }
 
@@ -1470,13 +1477,13 @@ function render(){
     return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml" ${KR()&&locLine(m.l,r.t)!==m.l?`title="${esc(m.l)}"`:''}>${esc(locLine(m.l,r.t))}</div><div class="tags">${tags}<span class="tag">${tierT}</span></div></div>${needH}</div>`;
   }).join('');
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
-  const otherHTML = it.other.length ? `<div class="other">${it.other.map(o=>`<div class="${o.k==='?'?'bad':''}"><span class="k">${kName[o.k]}</span>${esc(o.l)}</div>`).join('')}</div>` : '';
+  const otherHTML = it.other.length ? `<div class="other">${it.other.map(o=>`<div class="${o.k==='?'?'bad':''}"><span class="k">${kName[o.k]}</span>${esc(locOther(it, o.l))}</div>`).join('')}</div>` : '';
   const canDraft = it.rarity!=='normal' && an.rows.some(r=>!r.unrev) && !an.putrid;
   const runes = it.other.filter(o=>o.k==='rune'), nNeed = an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length, ready = nNeed>0 && S.okQR;
   const confirmH = canDraft ? `<div class="confirm"><b>${L('리버스 전 확인','Before reverse-engineering')}</b>
     <div class="cr">${L('① 필수 옵션','① Must-have modifiers')}: <b>${nNeed}${L('개','')}</b> <span class="hint">${L('— 위 옵션 오른쪽에서 필수·유효·잡옵 선택 · 티어 범위 설정','— mark each line above Must, Useful or Junk and set a tier range.')}</span></div>
-    <div class="cr">${L('② 퀄리티','② Quality')} <input type="number" id="qin" min="0" max="75" value="${it.qual||0}">%${it.qualType?` (${esc(it.qualType)})`:''} <span class="hint">${L('— 기폭제 퀄리티는 옵션 값을 올려 티어 판단이 달라짐','— catalyst quality raises modifier values, which changes the tier read.')}</span></div>
-    <div class="cr">${L('③ 룬','③ Runes')}: ${runes.length ? runes.map(o=>esc(o.l)).join(' · ') : L('없음','none')}</div>
+    <div class="cr">${L('② 퀄리티','② Quality')} <input type="number" id="qin" min="0" max="75" value="${it.qual||0}">%${it.qualType?` (${esc(qtName(it))})`:''} <span class="hint">${L('— 기폭제 퀄리티는 옵션 값을 올려 티어 판단이 달라짐','— catalyst quality raises modifier values, which changes the tier read.')}</span></div>
+    <div class="cr">${L('③ 룬','③ Runes')}: ${runes.length ? runes.map(o=>esc(locOther(it, o.l))).join(' · ') : L('없음','none')}</div>
     <label class="cr"><input type="checkbox" id="qrok" ${S.okQR?'checked':''}> ${L('퀄리티와 룬 확인 완료','I checked the quality and runes')}</label>
     ${nNeed && S.prices ? (()=>{ const fd=v=>v==null?'—':v>=100?Math.round(v).toLocaleString():v>=10?v.toFixed(0):v.toFixed(1);
         // compared with no compromise (사용자 2026-11-11 테스트): with compromises a wider tier range could look dearer
