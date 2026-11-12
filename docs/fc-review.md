@@ -45,8 +45,8 @@
 | absent-amulet-video-v2 | jr6-YLMJsC8 | high 356, bal 223 | 8 | 완료 11-12 | A(Opus) | 자막 전체 대조, 단계·분기 일치(기록 tools/notes/sl-jr6-YLMJsC8.md). 등급 C17도 이미 맞음. 변경 없음 |
 | gold-amulet-6line-v2 | cb36jD9pqsw | high 354, bal 345 | 20 | 삭제 11-11 | B(Fable) | 사용자 요청으로 내림(22:21). 플로우차트 옵션이 영상이 만든 목걸이와 달랐음. 다시 올리려면 영상 전체 기준으로 새로 만들고 build_recipes.py REMOVED·build_tips.py·gen_batch11.py의 막아 둔 줄을 지움 |
 | saveq-focus-v2 | R43FVay8_XI | high 343, bal 208 | 5 | 완료 11-12 | A(Opus) | 자막 전체 대조, 첫 번째 집중구 단계 일치(기록 tools/notes/saveq-R43FVay8_XI.md). 하이엔드 에너지 보호막 접두도 1티어(C17). 343/208 → 504/208 |
-| mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 대기 |  |  |
-| diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 대기 |  |  |
+| mazbro-spell5-amulet-v2 | kULlZJBSec4 | high 222, bal 201 | 0 | 진행 중 | A(Opus) |  |
+| diztoh-rarity-ring-v2 | GDLDxn6yxEs | high 149, bal 20, ess 15 | 1 | 진행 중 | A(Opus) |  |
 | bigdaddy-lightning-wand-v2 | 글: mobalytics.gg/poe-2/profile/bigdaddygami | bal 146, ess 98 | 2 | 대기 |  |  |
 | ragna-spell4-amulet-v2 | Tzpdm8M-Pkk | bal 118, ess 27 | 0 | 대기 |  |  |
 | mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 대기 |  |  |
