@@ -4,7 +4,7 @@
  "cls": "Body_Armours_int",
  "base": "Vile Robe",
  "ilvl": 81,
- "note": "Diztoh 정신력 로브(영상 화면·자막 전체 확인 2026-11-12) — 정신력 분열 + 잡옵 1개 → 상위 카오스 오브로 에너지 보호막 최대치(영상 3:18~3:28, 6티어 다음 1티어) → 좌측 찬미의 징조 + 상위 엑잘티드 오브로 단일 에너지 보호막 %, 빗나가면 징조 없는 소멸의 오브(접미가 비어 접두만 지워짐, 최대치가 지워지면 카오스부터) → 아스트리드의 창의성 + 보존된 갈비뼈 → 공개(정신력 점유 효율) — 빗나가면 빛의 징조 대신 우측 결정화 + 완벽한 추구의 에센스 → 우측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈 → 상위 찬미 + 완벽한 엑잘(접미 2개) → 저항이 없으면(밸런스) 우측 소멸의 징조 + 소멸의 오브로 접미 하나 제거 → 절사의 징조 + 상위 카오스 오브로 가장 낮은 옵션을 저항으로(영상 2번) → 완벽한 엑잘(접미 세번째). 에센셜 = 낮은 티어 베이스·상위 엑잘·저항 결과 그대로.",
+ "note": "Diztoh 정신력 로브(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 정신력 분열 베이스를 소멸의 오브로 분열 + 옵션 1개 → 상위 카오스 오브로 에너지 보호막 최대치 → 좌측 찬미의 징조 + 상위 엑잘티드 오브로 단일 에너지 보호막 %, 빗나가면 소멸의 오브 → 아스트리드의 창의성 → 보존된 갈비뼈 → 공개(스킬의 정신력 점유 효율), 빗나가면 우측 결정화 + 완벽한 추구의 에센스 → 우측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈 → 상위 찬미 + 완벽한 엑잘(접미 2개) → 우측 소멸의 징조 + 소멸의 오브 → 절사의 징조 + 상위 카오스 오브로 원소 저항 → 완벽한 엑잘(접미 세번째). 신성한 오브·룬·여우 우상·유동체는 비용에서 뺌.",
  "params": {
   "sT": {
    "kr": "정신력 (분열)",
@@ -13,10 +13,6 @@
     "4": {
      "kr": "1~4티어",
      "en": "T1–4"
-    },
-    "6": {
-     "kr": "1~6티어",
-     "en": "T1–6"
     }
    }
   },
@@ -49,7 +45,7 @@
    }
   },
   "g": {
-   "kr": "저항",
+   "kr": "원소 저항",
    "en": "Resistance",
    "values": {
     "1": {
@@ -76,7 +72,7 @@
   {
    "id": "ess",
    "params": {
-    "sT": 6,
+    "sT": 4,
     "fT": 4,
     "eT": 4,
     "g": 0
@@ -89,7 +85,7 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "sT": 6,
+    "sT": 4,
     "fT": 4,
     "eT": 4,
     "g": 0
@@ -110,7 +106,7 @@
     "g": 1
    },
    "desc": {
-    "kr": "에너지 보호막 옵션 2개 1~2티어 + 저항(우측 소멸·절사의 징조, 영상)",
+    "kr": "에너지 보호막 옵션 2개 1~2티어 + 원소 저항(우측 소멸·절사의 징조, 영상)",
     "en": "Two T1–2 energy shield lines + a resistance (Dextral Annulment and Whittling, as the video)"
    }
   }
@@ -241,6 +237,90 @@
    ],
    "kr": "정신력 점유 효율 공개",
    "en": "Reservation efficiency reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "v8a",
+    "v8",
+    "v8c"
+   ],
+   "kr": "접미 원소 저항",
+   "en": "Resistance suffix",
+   "fold": true,
+   "goal": {
+    "kr": "접미 원소 저항 2~3티어",
+    "en": "T2–3 elemental resistance suffix"
+   },
+   "steps": [
+    {
+     "kr": "우측 소멸의 징조 + 소멸의 오브로 접미 하나 제거",
+     "en": "Dextral Annulment + Orb of Annulment removes one suffix",
+     "node": "v8a"
+    },
+    {
+     "kr": "절사의 징조 + 상위 카오스 오브로 가장 낮은 잡옵을 원소 저항으로, 저항이 나올 때까지",
+     "en": "Whittling + Greater Chaos turns the lowest junk line into a resistance, until one comes",
+     "node": "v8"
+    },
+    {
+     "kr": "가장 낮은 옵션이 남길 옵션이면 완벽한 엑잘티드 오브로 빈 접미에 원소 저항, 빗나가면 처음부터",
+     "en": "When a kept line is lowest: Perfect Exalt the open suffix for a resistance, a miss starts over",
+     "node": "v8c"
+    }
+   ],
+   "worst": {
+    "kr": "스킬의 정신력 점유 효율이 지워지면 접미 잡옵을 지우고 훼손부터",
+    "en": "Reservation efficiency gone: clear the junk suffixes and desecrate again",
+    "to": "v8x"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "f",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치",
+     "en": "Flat energy shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 % 증가",
+     "en": "% energy shield",
+     "m": "n",
+     "tags": [
+      "esp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "스킬의 정신력 점유 효율 (아마나무)",
+     "en": "Spirit reservation efficiency (Amanamu)",
+     "m": "d",
+     "tags": [
+      "res"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "원소 저항",
+     "en": "Elemental resistance",
+     "m": "n",
+     "tags": [
+      "anyres"
+     ]
+    }
+   ]
   }
  ],
  "finals": [
@@ -251,7 +331,8 @@
    "lines": [
     {
      "tag": "spirit",
-     "tmax": 4
+     "tmax": 4,
+     "fr": true
     },
     {
      "tag": "esf",
@@ -263,7 +344,8 @@
     },
     {
      "tag": "res",
-     "tmax": 1
+     "tmax": 1,
+     "des": true
     },
     {
      "tag": "anyres"
@@ -281,7 +363,8 @@
    "lines": [
     {
      "tag": "spirit",
-     "tmax": 6
+     "tmax": 4,
+     "fr": true
     },
     {
      "tag": "esf",
@@ -293,7 +376,8 @@
     },
     {
      "tag": "res",
-     "tmax": 1
+     "tmax": 1,
+     "des": true
     },
     {
      "side": "s",
@@ -319,7 +403,7 @@
     0,
     0
    ],
-   "next": "ms",
+   "next": "p1",
    "start": {
     "rar": "rare",
     "mods": [
@@ -329,19 +413,74 @@
      },
      {
       "junk": "p"
+     },
+     {
+      "junk": "p"
      }
-    ]
+    ],
+    "quality": 20
    },
    "label": {
-    "kr": "정신력 분열 + 잡옵 1개 특출난 끔찍한 로브 구입",
-    "en": "Buy an exceptional Vile Robe with fractured Spirit + one junk line"
+    "kr": "정신력 분열 특출난 끔찍한 로브 구입",
+    "en": "Buy an exceptional Vile Robe with fractured Spirit"
    },
    "item": [
     {
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
+     "tags": [
+      "spirit"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "정신력 분열 + 옵션 1개만 남기기",
+    "en": "Keep the fractured Spirit + one line"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (분열)",
+     "en": "Spirit (fractured)",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -360,7 +499,7 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    1.6
    ],
    "next": "v2",
    "label": {
@@ -372,7 +511,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -391,12 +530,12 @@
    "group": "main",
    "pos": [
     0,
-    1
+    2
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix option"
+    "kr": "접두 에너지 보호막 최대치",
+    "en": "Flat energy shield prefix"
    },
    "label": {
     "kr": "카오스",
@@ -420,7 +559,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -446,12 +585,12 @@
    "group": "main",
    "pos": [
     0,
-    2
+    3
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 세번째 옵션",
-    "en": "Third prefix option"
+    "kr": "접두 에너지 보호막 % 증가",
+    "en": "% energy shield prefix"
    },
    "label": {
     "kr": "엑잘",
@@ -467,7 +606,11 @@
     },
     {
      "to": "v3x",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 소멸",
+      "en": "Miss: annul"
+     }
     }
    ],
    "item": [
@@ -475,7 +618,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -513,7 +656,7 @@
    "group": "main",
    "pos": [
     1,
-    2
+    3
    ],
    "keep": [
     "spirit",
@@ -529,17 +672,24 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접두 제거 (접미가 비어 있어 접두만 지워짐)",
-    "en": "Remove the missed prefix (no suffixes yet)"
+    "kr": "빗나간 접두 제거, 접미가 비어 있어 접두만 지워짐",
+    "en": "Remove the missed prefix; no suffixes yet, so a prefix goes"
    },
    "edges": [
     {
      "lost": "esf",
-     "to": "v2"
+     "to": "v2",
+     "label": {
+      "kr": "최대치가 지워짐 — 카오스부터",
+      "en": "Flat ES gone: back to Chaos"
+     }
     },
     {
      "to": "v3",
-     "port": "right"
+     "label": {
+      "kr": "다시 엑잘",
+      "en": "Exalt again"
+     }
     }
    ]
   },
@@ -549,7 +699,7 @@
    "group": "main",
    "pos": [
     0,
-    3
+    4
    ],
    "act": "rune",
    "goal": {
@@ -570,7 +720,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -611,7 +761,7 @@
    "group": "main",
    "pos": [
     0,
-    4
+    5
    ],
    "act": "desecrate",
    "goal": {
@@ -632,7 +782,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -677,12 +827,12 @@
    "group": "main",
    "pos": [
     0,
-    5
+    6
    ],
    "act": "reveal",
    "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
+    "kr": "접미 스킬의 정신력 점유 효율",
+    "en": "Spirit reservation efficiency suffix"
    },
    "label": {
     "kr": "공개",
@@ -698,7 +848,11 @@
     },
     {
      "to": "v6a",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 빛의 징조 없이 다시",
+      "en": "Miss: reroll without Omen of Light"
+     }
     }
    ],
    "item": [
@@ -706,7 +860,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -733,7 +887,7 @@
      "s": "s",
      "kr": "스킬의 정신력 점유 효율 (아마나무)",
      "en": "Spirit reservation efficiency (Amanamu)",
-     "m": "n",
+     "m": "d",
      "tags": [
       "res"
      ]
@@ -753,12 +907,12 @@
    "group": "main",
    "pos": [
     1,
-    5
+    6
    ],
    "act": "essence",
    "goal": {
-    "kr": "빗나간 훼손 옵션 삭제 (빛의 징조 없이)",
-    "en": "Remove the missed desecration (no Omen of Light)"
+    "kr": "빗나간 훼손 옵션을 추구의 에센스 옵션으로",
+    "en": "Swap the missed desecration for the Seeking line"
    },
    "label": {
     "kr": "에센스",
@@ -774,7 +928,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -826,7 +980,7 @@
    "group": "main",
    "pos": [
     1,
-    6
+    7
    ],
    "act": "essence",
    "goal": {
@@ -847,7 +1001,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -900,7 +1054,7 @@
    "group": "main",
    "pos": [
     1,
-    7
+    8
    ],
    "act": "desecrate",
    "goal": {
@@ -914,7 +1068,10 @@
    "edges": [
     {
      "to": "v6",
-     "port": "right"
+     "label": {
+      "kr": "다시 공개",
+      "en": "Reveal again"
+     }
     }
    ],
    "item": [
@@ -922,7 +1079,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -968,7 +1125,7 @@
    "group": "main",
    "pos": [
     0,
-    8
+    9
    ],
    "act": "exalt",
    "goal": {
@@ -985,11 +1142,16 @@
       "has": "anyres"
      },
      "to": "ok",
-     "res": "ok"
+     "res": "ok",
+     "hide": true
     },
     {
      "to": "v8a",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "저항 없음",
+      "en": "No resistance"
+     }
     }
    ],
    "item": [
@@ -997,7 +1159,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -1024,7 +1186,7 @@
      "s": "s",
      "kr": "스킬의 정신력 점유 효율 (아마나무)",
      "en": "Spirit reservation efficiency (Amanamu)",
-     "m": "n",
+     "m": "d",
      "tags": [
       "res"
      ]
@@ -1046,8 +1208,8 @@
    "showText": [
     {
      "s": "s",
-     "kr": "랜덤 옵션 2개 — 저항 하나면 충분",
-     "en": "Two random lines — one resistance is enough"
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random lines"
     }
    ],
    "omens": [
@@ -1075,7 +1237,7 @@
    "group": "main",
    "pos": [
     0,
-    9
+    10
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1109,49 +1271,17 @@
    ]
   },
   {
-   "id": "v8x",
-   "kind": "cleanup",
-   "group": "main",
-   "pos": [
-    1,
-    9
-   ],
-   "keep": [],
-   "maxJunk": 0,
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "남은 접미 잡옵 제거",
-    "en": "Remove the remaining junk suffixes"
-   },
-   "edges": [
-    {
-     "to": "v5"
-    }
-   ],
-   "side": "s",
-   "omens": [
-    "Omen_of_Dextral_Annulment"
-   ]
-  },
-  {
    "id": "v8",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    10
+    10.5
    ],
    "act": "chaos",
    "goal": {
-    "kr": "가장 낮은 옵션을 저항으로",
-    "en": "The lowest line into a resistance"
+    "kr": "가장 낮은 옵션을 원소 저항으로",
+    "en": "The lowest line into an elemental resistance"
    },
    "label": {
     "kr": "카오스",
@@ -1170,18 +1300,10 @@
       "whittleSafe": "keepR"
      },
      "to": "v8",
-     "res": "fail",
-     "label": {
-      "kr": "가장 낮은 옵션이 잡옵이면 반복",
-      "en": "Repeat while the lowest line is junk"
-     }
+     "res": "fail"
     },
     {
-     "to": "v8c",
-     "label": {
-      "kr": "가장 낮은 옵션이 남길 옵션",
-      "en": "The lowest line is one to keep"
-     }
+     "to": "v8c"
     }
    ],
    "item": [
@@ -1189,7 +1311,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -1216,7 +1338,7 @@
      "s": "s",
      "kr": "스킬의 정신력 점유 효율 (아마나무)",
      "en": "Spirit reservation efficiency (Amanamu)",
-     "m": "n",
+     "m": "d",
      "tags": [
       "res"
      ]
@@ -1243,15 +1365,7 @@
      "whittleSafe": "keepR"
     }
    },
-   "skipTo": "v8c",
-   "skipNote": {
-    "kr": "가장 낮은 옵션이 남길 옵션이면 건너뜀",
-    "en": "Skipped when the lowest line is one to keep"
-   },
-   "skipLabel": {
-    "kr": "가장 낮은 옵션이 남길 옵션",
-    "en": "The lowest line is one to keep"
-   }
+   "skipTo": "v8c"
   },
   {
    "id": "v8c",
@@ -1259,12 +1373,12 @@
    "group": "main",
    "pos": [
     1,
-    10
+    10.5
    ],
    "act": "exalt",
    "goal": {
-    "kr": "빈 접미에 저항",
-    "en": "A resistance in the open suffix"
+    "kr": "빈 접미에 원소 저항",
+    "en": "An elemental resistance in the open suffix"
    },
    "label": {
     "kr": "엑잘",
@@ -1280,8 +1394,7 @@
     },
     {
      "to": "v8a",
-     "res": "fail",
-     "port": "right"
+     "res": "fail"
     }
    ],
    "item": [
@@ -1289,7 +1402,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -1316,7 +1429,7 @@
      "s": "s",
      "kr": "스킬의 정신력 점유 효율 (아마나무)",
      "en": "Spirit reservation efficiency (Amanamu)",
-     "m": "n",
+     "m": "d",
      "tags": [
       "res"
      ]
@@ -1334,6 +1447,42 @@
    "cur": "Perfect_Exalted_Orb",
    "show": [
     "anyres"
+   ]
+  },
+  {
+   "id": "v8x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    10
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "남은 접미 잡옵 제거",
+    "en": "Remove the remaining junk suffixes"
+   },
+   "edges": [
+    {
+     "to": "v5",
+     "label": {
+      "kr": "훼손부터 다시",
+      "en": "Desecrate again"
+     }
+    }
+   ],
+   "side": "s",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
    ]
   },
   {
@@ -1363,7 +1512,7 @@
      "s": "p",
      "kr": "정신력 (분열)",
      "en": "Spirit (fractured)",
-     "m": "n",
+     "m": "f",
      "tags": [
       "spirit"
      ]
@@ -1390,7 +1539,7 @@
      "s": "s",
      "kr": "스킬의 정신력 점유 효율 (아마나무)",
      "en": "Spirit reservation efficiency (Amanamu)",
-     "m": "n",
+     "m": "d",
      "tags": [
       "res"
      ]
