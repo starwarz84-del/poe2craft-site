@@ -679,6 +679,13 @@ for _r in R:   # {#id} → 플로우차트에서 읽은 단계 번호(그 id가 
 # 사용자 요청으로 내린 레시피(2026-11-11 22:21: 금 목걸이 6옵션 — 플로우차트 옵션이 영상이 만든 목걸이와 다름. 영상 전체 기준으로 다시 만들 때까지 등록하지 않음)
 REMOVED={'gold-amulet-6line'}
 R[:]=[x for x in R if _re.sub(r'-(bal|ess)$','',_re.sub(r'-v2(?=$|-)','',x['id'])) not in REMOVED and _re.sub(r'-v2$','',x.get('simId') or x.get('tierGroup') or '') not in REMOVED]
+# 룬 규칙(2026-11-13): 시작 룬과 같은 룬을 단계에서 장착하면 시작 룬에서 뺌 — 'Limited to 1' 룬이 두 번 들어가 소켓이 넘치던 문제(SL 장갑 콜르)
+_rn=lambda x:(x.get('en') if isinstance(x,dict) else str(x).replace('rune:','')).replace('’',"'").strip()
+for _r in R:
+    _st=(_r.get('start') or {}).get('runes')
+    if not _st: continue
+    _put={_rn(n['target']['rune']) for n in _r['nodes'] if (n.get('target') or {}).get('rune')}
+    _r['start']['runes']=[x for x in _st if _rn(x) not in _put]
 EXCLUDED={'banzino-mirror-staff'}   # 사용자 결정 2026-11-13: 미러 지팡이는 가중치 문제(전도성 지팡이 베이스별 옵션 제한이 데이터에 없음)로 사이트에서 뺌
 R[:]=[x for x in R if _re.sub(r'-v2(-(bal|ess))?$','',x['id']) not in EXCLUDED]
 json.dump({'v':2,'recipes':R},open(D+'recipes.json','w'),ensure_ascii=False)

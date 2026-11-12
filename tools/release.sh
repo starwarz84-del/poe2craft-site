@@ -10,7 +10,7 @@ step(){ echo; echo "== $1"; }
 fail(){ echo "!! $1"; BAD=$((BAD+1)); }
 
 step "1. 데이터·레시피 빌드"
-( cd scripts && python3 build_prices.py >/dev/null && python3 build_tips.py >/dev/null && python3 build_recipes.py | tail -1 && python3 build_special.py >/dev/null && python3 graphs/patch_astrid.py ) || fail "빌드 실패"
+( cd scripts && python3 build_prices.py >/dev/null && python3 build_tips.py >/dev/null && python3 graphs/patch_runes.py >/dev/null && python3 build_recipes.py | tail -1 && python3 build_special.py >/dev/null && python3 graphs/patch_astrid.py ) || fail "빌드 실패"
 python3 i18n/build.py | tail -1 || fail "i18n 빌드 실패"
 
 step "2. 검사 (테스트 서버)"
@@ -29,6 +29,8 @@ bash tools/test/serve.sh stop >/dev/null 2>&1; bash tools/test/serve.sh start >/
 python3 tools/test/fc_noinput.py | tail -1
 python3 tools/test/fc_noinput.py | tail -1 | grep -q " 0$" || fail "들어오는 선 없는 상자 있음 — python3 tools/test/fc_noinput.py"
 python3 tools/test/essence_tier.py | tail -1
+python3 tools/test/runerules.py | tail -1
+python3 tools/test/runerules.py | tail -1 | grep -q " 0$" || fail "룬 규칙 위반 — python3 tools/test/runerules.py"
 python3 tools/test/essence_tier.py | tail -1 | grep -q " 0 problem" || fail "에센스 등급 오류"
 if [ $FULL = 1 ]; then
   step "2-1. 제작 옵션 한도 점검"; node tools/sim/c1check.js | tail -1; node tools/sim/c1check.js >/dev/null; python3 -c "import json,sys; sys.exit(1 if json.load(open('tools/sim/c1check.json')) else 0)" || fail "제작 옵션 한도 위반"
