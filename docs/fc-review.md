@@ -52,7 +52,7 @@
 | mazbro-proj-gloves-v2 | BIxlixCKPO0 | high 112, bal 66 | 40 | 진행 중 | A(Opus) 작업자 | 자막 전체 대조, 단계 일치(기록 tools/notes/mazbro-BIxlixCKPO0.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 재확인 필요 | A(Opus) | 글 목걸이 부분 다시 대조, 일치(기록 tools/notes/web-fubgun-iceshot.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 재확인 필요 | A(Opus) | 자막 전체(31:47) 대조, 단계 일치(기록 tools/notes/diztoh-s70CV_nvjXg.md). 완성품 줄을 DB 태그로. 값 그대로 |
-| diztoh-vile-robe-v2 | n97yEuKSWyM | bal 105, ess 51 | 0 | 진행 중 | A(Opus) 작업자 | 자막 전체(20:33) 대조, 단계 일치(기록 tools/notes/diztoh-n97yEuKSWyM.md). C17 티어(밸런스 1~2, 에센셜 1~4). 105/51 → 76/39 |
+| diztoh-vile-robe-v2 | n97yEuKSWyM | bal 152, ess 49 | 0 | 완료 11-12 · 검수 97점 | W3(Opus) · 검수 A(Opus) | 영상 전체(20:33) 화면 캡처 63장 + 단계표. 최대치는 상위 카오스 반복(3:18), % 5티어도 지움(4:17), 우측 소멸(12:28)·세번째 접미 엑잘(14:36) 추가, 아스트리드 룬 상자, 밸런스 저항 반드시(내부 결정 8.A), C17 1~2/1~4. 105/51 → 152/49 |
 | sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 재확인 필요 | A(Opus) | 자막 전체(13:10) 대조, 단계 일치(기록 tools/notes/sl-VKMT7tuSIYk.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 98, ess 26 | 0 | 대기 |  |  |
 | sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 97, ess 23 | 1 | 대기 |  |  |
@@ -119,7 +119,7 @@
 | diztoh-rarity-ring-v2 | ess·bal·high | high 1티어, bal 1~2티어, ess 1~4티어·공개 나오는 대로 | 재확인 필요 | A(Opus) | 149/24/3 |
 | diztoh-socket-gloves-v2 | ess·bal | - | 대기 |  |  |
 | diztoh-talisman-v2 | ess·bal | ess 화염 피해 추가 1~5티어; bal 화염 피해 추가 1~3티어 | 대기 |  |  |
-| diztoh-vile-robe-v2 | ess·bal | ess 정신력 (분열) 1~6티어; ess 에너지 보호막 최대치 1~2티어; ess 에너지 보호막 % 1~3티어; bal 정신력 (분열) 1~4티어; bal 에너지 보호막 최대치 1티어 | 재확인 필요 | A(Opus) | 반복 목표: 밸런스 최대치 1 → 1~2, 에센셜 최대치·% 1~4(정신력은 구입 베이스라 그대로) |
+| diztoh-vile-robe-v2 | ess·bal | ess 정신력 (분열) 1~6티어; ess 에너지 보호막 최대치 1~2티어; ess 에너지 보호막 % 1~3티어; bal 정신력 (분열) 1~4티어; bal 에너지 보호막 최대치 1티어 | 완료 11-12 · 검수 97점 | A(Opus) | 반복 목표: 밸런스 최대치 1 → 1~2, 에센셜 최대치·% 1~4(정신력은 구입 베이스라 그대로) |
 | easybabi-spiny-talisman-v2 | bal·high | bal 원소 피해 접두 1~3티어; high 원소 피해 접두 1~2티어 | 대기 |  |  |
 | farmer-budget-armour-v2 | ess·bal·high | ess 에너지 보호막 최대치 1~3티어 | 대기 |  |  |
 | farmer-starter-staff-v2 | ess·bal·high | ess 추가 화염 피해 1~2티어 | 대기 |  |  |

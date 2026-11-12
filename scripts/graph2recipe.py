@@ -470,6 +470,11 @@ def read_recipe(r, sim, src, tiers):
         o = {'id': n['id'], 'do': ACT.get(act, act) or 'manual'}
         if n.get('cur'): o['cur'] = n['cur']
         elif o['do'] == 'remove': o['cur'] = 'Orb_of_Annulment'
+        if n.get('curIf') and o.get('cur'):   # 상태에 따라 오브가 바뀌는 상자: 그 등급 시뮬에서 가장 많이 쓴 오브(2026-11-12, 예: 하이엔드는 늘 완벽한 엑잘티드 오브)
+            u = (W.st(n['id']) or {}).get('use') or {}
+            cs = [o['cur']] + [c if isinstance(c, str) else c.get('cur') for c in n['curIf'] if (c if isinstance(c, str) else c.get('cur'))]
+            top = max(cs, key=lambda c: u.get(c) or 0)
+            if (u.get(top) or 0) > (u.get(o['cur']) or 0): o['cur'] = top
         if om: o['omens'] = om
         if t: o['target'] = t
         if n.get('trim'): o['trimFc'] = n['trim'].get('side') if isinstance(n['trim'], dict) else 'p'

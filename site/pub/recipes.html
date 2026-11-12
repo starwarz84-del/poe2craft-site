@@ -1825,8 +1825,13 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g0
     const outs=M.E.filter(e=>e.a===n.id && !e.skip), okE=[...new Set((n.edges||[]).filter(x=>x.res==='ok' && (n.pAll || !x.dash)).map(x=>x.to))].map(to=>({a:n.id, b:to})), hasRes=outs.some(e=>e.res);
     /* 성공 % = 성공으로 표시된 선을 지난 횟수(선마다 센 값 edgesI) — 같은 상자로 가는 건너뜀·타협 선은 성공이 아님(2026-11-12). 옛 sim 파일은 도착 상자 기준 */
     const R2=res.nodes[n.id]?res:d.strategies.find(x=>x.res.nodes[n.id])?.res, EI=R2?.edgesI, byI=EI && Object.keys(EI).some(k=>k.startsWith(n.id+'#'));
-    const okN = byI ? ((n0[n.id]||n).edges||[]).reduce((s2,x,i)=>s2+(x.res==='ok' && (n.pAll || !x.dash) ? (EI[n.id+'#'+i]||0) : 0),0) : okE.reduce((s2,e)=>s2+(R2?.edges?.[e.a+'>'+e.b]||0),0);
-    const pS = !t || !tries ? null : hasRes ? Math.min(1, okN/tries) : 1;
+    /* 레시피 탭(graph2recipe _fcs)과 같은 규칙: 성공 선이 없으면 표시 없는 선(반복 제외), 그래도 0이면 실패·반복이 아닌 선 모두, 그래도 0이면 '결과별 갈림' */
+    const eds=(n0[n.id]||n).edges||[], ei=i=>EI[n.id+'#'+i]||0, sumI=f=>eds.reduce((s2,x,i)=>s2+(f(x) ? ei(i) : 0),0);
+    let okN;
+    if(byI){ const anyOk=eds.some(x=>x.res==='ok'); okN = anyOk ? sumI(x=>x.res==='ok' && (n.pAll || !x.dash)) : sumI(x=>!x.res && x.to!==n.id);
+      if(okN<=0 && tries>0) okN=sumI(x=>x.res!=='fail' && x.to!==n.id); }
+    else okN = okE.reduce((s2,e)=>s2+(R2?.edges?.[e.a+'>'+e.b]||0),0);
+    const pS0 = !t || !tries ? null : hasRes ? Math.min(1, okN/tries) : 1, pS = pS0===0 && byI ? null : pS0, split = byI && pS0===0;
     // the totals stay available on hover; the box itself shows only the goal, the currency and the chance
     const LH=M.loopHead[n.id]; let tip=tx(n.label)+' — '+c.title;
     if(t) tip+=`\n${L('평균','avg')} ${fmt(n.kind==='cleanup'?(t.use?.Orb_of_Annulment||0):tries)}${L('회','×')} · ${L('도달','reached')} ${pct1(t.reach)} · ≈ ${fmtDiv(t.div)} div`;
@@ -1838,7 +1843,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), res=s.res, g0
       ${want.length?`<div class="fcw">${want.map(h=>`<p>${h}</p>`).join('')}</div>`:''}
       ${n.skipNote?`<div class="fcsk">↷ ${esc(tx(n.skipNote))}</div>`:''}
       <div class="fcf">${n.curRows && t?.byCur ? n.curRows.map(rw=>{ const b=t.byCur[rw.key||rw.cur], p2=b&&b.t?b.ok/b.t:null, ids=rw.ids || [rw.cur, ...(n.omens||[])];
-          return `<div class="fc1" title="${esc(ids.map(id=>nm(cur(id))).join(' + '))}"><span class="cn"><i class="rw">${esc(tx(rw))} →</i>${ids.map(id=>icon(id)).join('')}${esc(ids.map(id=>nm(cur(id))).join(' + '))}</span><span class="pr">${p2!=null?`${L('확률','Chance')} <b>${pct1(p2)}</b><span class="dot">·</span>${L('평균','avg')} <b>${fmt(1/p2)}</b>${L('개','')}`:L('해당 없음','n/a')}</span></div>`; }).join('') : `<div class="fc1"><span class="cn" title="${esc(c.title)}">${c.html}</span>${t?`<span class="pr">${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(per)}</b>${L('개','')}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div>`}</div></div>`; }).join('');
+          return `<div class="fc1" title="${esc(ids.map(id=>nm(cur(id))).join(' + '))}"><span class="cn"><i class="rw">${esc(tx(rw))} →</i>${ids.map(id=>icon(id)).join('')}${esc(ids.map(id=>nm(cur(id))).join(' + '))}</span><span class="pr">${p2!=null?`${L('확률','Chance')} <b>${pct1(p2)}</b><span class="dot">·</span>${L('평균','avg')} <b>${fmt(1/p2)}</b>${L('개','')}`:L('해당 없음','n/a')}</span></div>`; }).join('') : `<div class="fc1"><span class="cn" title="${esc(c.title)}">${c.html}</span>${t?`<span class="pr">${split?`${L('결과별 갈림','Splits by result')}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(tries)}</b>${L('회','×')}`:`${pS>=0.995?L('확정','Certain'):`${L('확률','Chance')} <b>${pct1(pS)}</b>`}<span class="dot">·</span>${L('평균','avg')} <b>${fmt(per)}</b>${L('개','')}`}</span>`:`<span class="pr">${L('이 버전에선 안 거침','Not used in this version')}</span>`}</div>`}</div></div>`; }).join('');
   const diamonds=Object.values(Lay.dia).map(D=>{ const n=M.byId[D.id.slice(0,-1)]; return `<div class="fcn k-dec ${st(n.id)?'':'off'}" style="left:${D.x}px;top:${D.y}px;width:${D.w}px;height:${D.h}px"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,2 98,50 50,98 2,50"/></svg><span>${esc(tx(n.ask)||L('결과','Result'))}</span></div>`; }).join('');
   // top bar: versions, then detailed toggles
   const vers=(g.versions||[]).map(v=>{ const on=Object.entries(v.params).every(([k2,x])=>String(sel[k2]??s.params[k2])===String(x)) && keys.every(k2=>v.params[k2]!=null);
@@ -1868,7 +1873,7 @@ function renderDetail(){
   const r=S.recipes.find(x=>x.id===S.open); if(!r) return;
   let html=detailHTML(r); const lead=tierLead(r);
   if(S.fcTab && r.tierGroup && lead.sim){ const i=html.indexOf('<div class="dgrid">'); html=html.slice(0,i)+`<div class="fcpane">${simHTML(lead, true)}</div>`; }
-  $('#detail').innerHTML=html; S.stepIdx=-1; setHeadH(); pairRows($('#detail')); document.fonts?.ready.then(()=>pairRows($('#detail'))); syncStep(true); setTimeout(syncFcProg,60);
+  $('#detail').innerHTML=html; fitFc(); S.stepIdx=-1; setHeadH(); pairRows($('#detail')); document.fonts?.ready.then(()=>pairRows($('#detail'))); syncStep(true); setTimeout(syncFcProg,60);
 }
 // which step is "current": the last node whose top has passed 45% of the space under the header
 function syncStep(force){
@@ -2207,10 +2212,14 @@ let kbNav={i:-1,t:0};
 // flowchart zoom (사용자 2026-11-11): − / 80% / + — 기본 80%(사용자 2026-11-12: 화면에 딱 들어옴, 글씨는 + 또는 전체 화면으로 키움), keeps the middle of the view in place
 const ZOOMS=[0.4,0.5,0.6,0.7,0.8,0.9,1,1.15,1.3,1.5,1.75,2];
 function zoomFc(dir){ const fc=document.querySelector('[data-simbox] .fc'), inn=fc?.querySelector('.fcin'); if(!inn) return;
-  const z0=S.fcZoom||0.8, i=ZOOMS.indexOf(z0), z=dir===0?0.8:ZOOMS[Math.max(0,Math.min(ZOOMS.length-1,(i<0?4:i)+dir))]; if(z===z0) return;
+  const z0=+inn.style.zoom||S.fcZoom||0.8, i=ZOOMS.indexOf(z0)>=0 ? ZOOMS.indexOf(z0) : dir>0 ? ZOOMS.findIndex(x=>x>z0)-1 : ZOOMS.findIndex(x=>x>=z0), z=dir===0?0.8:ZOOMS[Math.max(0,Math.min(ZOOMS.length-1,(i<0?4:i)+dir))]; if(z===z0) return;
   const cx=(fc.scrollLeft+fc.clientWidth/2)/z0, cy=(fc.scrollTop+fc.clientHeight/2)/z0;
   S.fcZoom=z; store.set('fcZoom', z); inn.style.zoom=z; fc.scrollLeft=cx*z-fc.clientWidth/2; fc.scrollTop=cy*z-fc.clientHeight/2;
   const v=document.querySelector('[data-simbox] .fczoom .zv'); if(v) v.textContent=Math.round(z*100)+'%'; }
+/* 기본 크기(80%)에서 플로우차트 폭이 화면보다 넓으면(옆 열 3개 등) 가로 스크롤 없이 들어오게 줄임 — 60% 아래로는 안 줄이고 휴대폰 폭은 그대로(2026-11-12) */
+function fitFc(){ const fc=document.querySelector('#detail [data-simbox] .fc'), inn=fc?.querySelector('.fcin'); if(!inn || (S.fcZoom||0.8)!==0.8 || innerWidth<900) return;
+  const w=parseFloat(inn.style.width)||0; if(!(w>0) || !(fc.clientWidth>0)) return; const z=Math.max(0.6, Math.min(0.8, Math.floor((fc.clientWidth-2)/w*100)/100)); if(z>=0.8) return;
+  inn.style.zoom=z; const v=document.querySelector('#detail [data-simbox] .fczoom .zv'); if(v) v.textContent=Math.round(z*100)+'%'; }
 function setSimFull(on, quiet){ S.simFull=!!on; document.body.classList.toggle('simfull', S.simFull); try{ parent!==window && parent.postMessage({type:'poe2-full', on:S.simFull}, '*'); }catch(e){} if(!quiet) keepY(renderDetail); }
 document.addEventListener('keydown', e=>{ const c=e.target.closest?.('.fcfin.go'); if(c && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); c.click(); } });
 document.addEventListener('keydown', e=>{ if(S.simFull && e.key==='Escape'){ e.preventDefault(); setSimFull(false); } }, true);

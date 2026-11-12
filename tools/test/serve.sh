@@ -6,6 +6,7 @@ ROOT=/home/claude/poe2data; T=${T:-/tmp/poe2test}
 if [ "$1" = stop ]; then kill "$(cat $T/.pid)" 2>/dev/null || true; exit 0; fi
 mkdir -p $T && cd $T
 ln -sfn $ROOT/site/data data
+ln -sfn $ROOT/site/img img   # 카드 머리 모서리 그림(img/tt) 등 — 실제 사이트와 같게(2026-11-12)
 (echo '<meta charset="utf-8">'; cat $ROOT/site/app.html) > app.html
 for f in recipes discover emulator builder bases; do cp $ROOT/site/pub/$f.html .; done
 cp $ROOT/site/sim.js $ROOT/site/graphify.js .

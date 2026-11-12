@@ -562,6 +562,9 @@ print('FRSTART skipped (flowchart has its own prep):', FRSTART_SKIP)
 exec(open('/home/claude/poe2data/scripts/notes_short.py').read())
 # "{#id}" in a step's text becomes that step's number, so cutting steps never leaves stale references
 import re as _re
+def _fcread_later(_r):   # 플로우차트에서 단계를 다시 읽을 레시피: 단계 번호가 바뀌니 {#id}는 읽은 뒤에 채움(2026-11-12)
+    _sid=_r.get('tierGroup') or _r['id']
+    return os.path.exists(f"{D}sim/{_sid}.json") and os.path.exists(f"/home/claude/poe2data/scripts/graphs/{_sid}.json")
 for _r in R:
     _no = {n['id']:i+1 for i,n in enumerate(_r['nodes'])}
     def _fix(v):
@@ -569,7 +572,8 @@ for _r in R:
         if isinstance(v, dict): return {k:_fix(x) for k,x in v.items()}
         if isinstance(v, list): return [_fix(x) for x in v]
         return v
-    _r['nodes'] = _fix(_r['nodes'])
+    if _fcread_later(_r): _r['_no0'] = _no
+    else: _r['nodes'] = _fix(_r['nodes'])
     if _r.get('prep'):
         _no = {n['id']:i+1 for i,n in enumerate(_r['prep']['nodes'])}
         _r['prep']['nodes'] = _fix(_r['prep']['nodes'])
@@ -648,6 +652,16 @@ for _r in R:
                         for _n in _r['nodes']:
                             if _n['id']==_k or (_k=='base' and _n.get('do')=='base'): _n['ts']=_v
 print('old prep dropped (flowchart reads its own prep):', PREP_DROPPED)
+for _r in R:   # {#id} → 플로우차트에서 읽은 단계 번호(그 id가 없으면 옛 번호)
+    _no0 = _r.pop('_no0', None)
+    if _no0 is None: continue
+    _no1 = {n['id']:i+1 for i,n in enumerate(_r['nodes'])}
+    def _fix2(v):
+        if isinstance(v, str): return _re.sub(r'\{#(\w+)\}', lambda m: str(_no1.get(m.group(1)) or _no0[m.group(1)]), v)
+        if isinstance(v, dict): return {k:_fix2(x) for k,x in v.items()}
+        if isinstance(v, list): return [_fix2(x) for x in v]
+        return v
+    _r['nodes'] = _fix2(_r['nodes'])
 # 사용자 요청으로 내린 레시피(2026-11-11 22:21: 금 목걸이 6옵션 — 플로우차트 옵션이 영상이 만든 목걸이와 다름. 영상 전체 기준으로 다시 만들 때까지 등록하지 않음)
 REMOVED={'gold-amulet-6line'}
 R[:]=[x for x in R if _re.sub(r'-(bal|ess)$','',_re.sub(r'-v2(?=$|-)','',x['id'])) not in REMOVED and _re.sub(r'-v2$','',x.get('simId') or x.get('tierGroup') or '') not in REMOVED]
