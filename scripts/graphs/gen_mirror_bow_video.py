@@ -183,7 +183,7 @@ A(id='u3', kind='act', group='main', pos=[0, 15], act='exalt', cur='Perfect_Exal
   edges=[{'to': 'u4'}], item=[PP, BLK, HY, CR, PJ, J('s')])
 A(id='u4', kind='act', group='main', pos=[0, 16], act='rune', rune=K('세를의 승리', 'Serle’s Triumph'), slots={'s': 1}, label=K('룬', 'Rune'),
   goal=K('세를의 승리 장착 (접미 +1)', 'Socket Serle’s Triumph (+1 suffix)'), showText=[K('접미 옵션 4개', 'Four suffixes')],
-  skipIf={'rune': 'Serle'}, skipTo='u5',
+  skipIf={'rune': 'Serle'}, skipTo='u5', skipHide=True,
   edges=[{'to': 'u5'}], item=[PP, BLK, HY, CR, PJ, J('s'), SE])
 A(id='u5', kind='act', group='main', pos=[0, 17], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 잡옵', 'A junk suffix'), showText=[{'s': 's', 'kr': '잡옵', 'en': 'Junk'}],
@@ -218,7 +218,15 @@ g['loops'] = [
             K('빗나간 옵션은 소멸의 오브', 'A missed option: Orb of Annulment') | {'node': 'px'},
             K('빈자리는 완벽한 확장의 오브', 'An open slot: Perfect Orb of Augmentation') | {'node': 'pa'}],
   'item': [FLm, CRm]},
- {'id': 'L1', 'nodes': ['k2', 'k3', 'k4', 'k4w', 'k4x'], 'kr': '자리 막기', 'en': 'Blocker'},
+ {'id': 'L1', 'nodes': ['k2', 'k3', 'k4', 'k4w', 'k4x'], 'kr': '자리 막기', 'en': 'Blocker', 'fold': True,
+  'goal': K('접두 자리 막기 — 공격 스킬의 원소 피해 1티어', 'Prefix blocker: T1 attack elemental damage'),
+  'steps': [K('우측 결정화 + 심연의 에센스로 징표', 'Dextral Crystallisation + Essence of the Abyss for the Mark') | {'node': 'k2'},
+            K('고대 턱뼈로 징표 훼손', 'Ancient Jawbone on the Mark') | {'node': 'k3'},
+            K('심연의 메아리 공개', 'Reveal with Abyssal Echoes') | {'node': 'k4'},
+            K('빗나가면 레벨이 가장 낮은 옵션을 절사 + 상위 카오스 오브로 바꾸고 징표부터', 'On a miss, Whittling + Greater Chaos replaces the lowest option, then the Mark again') | {'node': 'k4w'},
+            K('빗나간 옵션 레벨이 높으면 빛의 징조 + 소멸의 오브 후 징표부터 (영상에 없음)', 'A high-level miss: Omen of Light + Annulment, then the Mark again (not in the video)') | {'node': 'k4x'}],
+  'worst': K('물리 피해 %가 지워지면 카오스 단계부터', '% physical gone: back to the Chaos step') | {'to': 'k1'},
+  'item': [PP, BLK, CR]},
  {'id': 'L2', 'nodes': ['z2', 'z3', 'z3x'], 'kr': '훼손 공개', 'en': 'Reveal'},
 ]
 
