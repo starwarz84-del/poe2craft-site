@@ -1522,7 +1522,7 @@ function itemTipHTML(r, o, opt={}){
   const line = (m, cls='') => {
     const sl=`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>`;
     if(m.unrev) return `<div class="tt-mod des-u ${cls}">${sl}${L('훼손 옵션 (미공개)','Desecrated (unrevealed)')}</div>`;
-    /* 이름(label)이 붙은 줄 = DB 옵션 묶음(anyOf)에서 고르는 줄 → 일반 옵션 색. 회갈색 기울임(junk)은 랜덤 옵션·잡옵만(사용자 2026-11-12). 완성 카드(opt.final)는 에센스·합금 줄도 일반 옵션 파랑 — 색은 파랑·회갈색·초록(훼손)·금색(분열) 넷만(2026-11-12) */
+    /* 이름(label)이 붙은 줄 = DB 옵션 묶음(anyOf)에서 고르는 줄 → 일반 옵션 색. 회갈색 기울임(junk)은 랜덤 옵션·잡옵만(사용자 2026-11-12). 옵션 줄 색은 하나만: 분열(금색) > 훼손(초록) > 제작(에센스·합금·징표, 청록) > 일반(파랑) — 에뮬레이터와 같은 순서(docs/site-ui.md, 사용자 2026-11-12 17:44) */
     if(m.gi==null) return `<div class="tt-mod ${m.label&&!m.rnd?'lbl':'junk'} ${m.des?'desm':''} ${m.fr?'fr':''} ${cls}">${m.label&&m.tmax?`<span class="tier ${m.side}">${m.side==='p'?'P':'S'}${m.tmax===1?'1':'1–'+m.tmax}</span>`:sl}${m.label?esc(tx(m.label)):opt.final?L('랜덤 옵션','Random modifier'):m.des?L('훼손 옵션 (잡옵)','Desecrated (junk)'):L('잡옵','junk modifier')}</div>`;
     if(m.mark) return `<div class="tt-mod markm ${cls}"><span class="tier ${m.side}">${m.side==='p'?'P':'S'}</span>${esc(KR()?grp(r,m.gi).t[0][4]:grp(r,m.gi).t[0][5])}</div>`;
     const l=modLine(r,m.gi,m.tmax,m.max,m.tmin), qv=o.qual?.v, qt=o.qual?.type, shown=(o.vals||{})[m.gi];
@@ -1531,7 +1531,7 @@ function itemTipHTML(r, o, opt={}){
     if(shown){ txt=tx(shown); sub=L('영상 결과값','value in the video'); }
     else if(qv && qt && l.g.tg.includes(qt)){ txt=qualBoost(l.txt, qv); sub=L(`퀄리티 ${qv}% 반영 · 원래 ${l.txt}`,`with ${qv}% quality · base ${l.txt}`); }
     else { const mg = Object.keys(mag).find(t=>l.g.tg.includes(t) && mag[t].gi!==m.gi && l.g.s!=='x'); if(mg){ txt=qualBoost(l.txt, mag[mg].v); sub=L(`속성 부여 규모 ${mag[mg].v}% 반영 · 원래 ${l.txt}`,`with ${mag[mg].v}% modifier magnitude · base ${l.txt}`); } }
-    return `<div class="tt-mod ${m.fr?'fr':''} ${m.des?'desm':''} ${m.ess && !opt.final?'essm':''} ${cls}" ${sub?`title="${esc(sub)}"`:''}><span class="tier ${l.g.g}">${esc(l.tag)}</span>${esc(txt)}</div>`; };
+    return `<div class="tt-mod ${m.fr?'fr':m.des?'desm':m.ess?'essm':''} ${cls}" ${sub?`title="${esc(sub)}"`:''}><span class="tier ${l.g.g}">${esc(l.tag)}</span>${esc(txt)}</div>`; };
   const side = sd => {
     const ms=o.state.filter(m=>m.side===sd);
     const rows = ms.map(m=>{ const k=key(m); seen[k]=(seen[k]||0)+1; return line(m, seen[k]>(pre[k]||0) ? 'added' : ''); });
