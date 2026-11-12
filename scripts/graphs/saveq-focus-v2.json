@@ -4,7 +4,7 @@
  "cls": "Foci",
  "base": "Tasalian Focus",
  "ilvl": 80,
- "note": "SaVeQ 집중구(R43FVay8_XI) — 주문 피해 분열 + 에너지 보호막 1티어 + 모든 주문 스킬 +2 + 잡옵 → 아스트리드의 창의성 → 좌측 결정화 + 초월의 합금 → 고대 갈비뼈(접미 훼손) → 완벽한 엑잘(접두) → 절사로 에너지 보호막 1~2티어 → 공개(빛의 징조로 다시). 하이엔드 = 영상(주문 치명타 1티어), 밸런스 = 1~2티어.",
+ "note": "SaVeQ 집중구(R43FVay8_XI) — 주문 피해 분열 + 에너지 보호막 1티어 + 모든 주문 스킬 +2 + 잡옵 → 아스트리드의 창의성 → 좌측 결정화 + 초월의 합금 → 고대 갈비뼈(접미 훼손) → 완벽한 엑잘(접두) → 절사로 에너지 보호막 → 공개(빛의 징조로 다시). 하이엔드 = 에너지 보호막·주문 치명타 1티어, 밸런스 = 1~2티어(영상 에너지 보호막 타협).",
  "params": {
   "v": {
    "kr": "진행",
@@ -21,8 +21,8 @@
    }
   },
   "pT": {
-   "kr": "주문 치명타 명중 확률",
-   "en": "Spell critical hit chance",
+   "kr": "에너지 보호막·주문 치명타",
+   "en": "Energy shield and spell crit",
    "values": {
     "1": {
      "kr": "1티어",
@@ -61,8 +61,8 @@
     "pT": 2
    },
    "desc": {
-    "kr": "주문 치명타 명중 확률 1~2티어",
-    "en": "T1–2 spell crit chance"
+    "kr": "에너지 보호막·주문 치명타 명중 확률 1~2티어 (영상은 에너지 보호막 2티어 타협)",
+    "en": "T1–2 energy shield and spell crit chance (the video settles for T2 energy shield)"
    }
   },
   {
@@ -74,8 +74,8 @@
     "pT": 1
    },
    "desc": {
-    "kr": "영상: 주문 치명타 명중 확률 1티어, 에너지 보호막은 2티어로 타협",
-    "en": "Video: T1 spell crit chance, settle for T2 energy shield"
+    "kr": "에너지 보호막·주문 치명타 명중 확률 1티어",
+    "en": "T1 energy shield and spell crit chance"
    }
   }
  ],
@@ -89,11 +89,11 @@
   },
   "esf": {
    "gi": 6,
-   "tmax": 2
+   "tmax": "$pT"
   },
   "esh": {
    "gi": 8,
-   "tmax": 2
+   "tmax": "$pT"
   },
   "lvl": {
    "gi": 16
@@ -110,7 +110,11 @@
     "esp",
     "esf",
     "esh"
-   ]
+   ],
+   "label": {
+    "kr": "에너지 보호막 접두",
+    "en": "Energy shield prefix"
+   }
   },
   "keepF": {
    "anyOf": [
@@ -185,8 +189,7 @@
      "tmax": 1
     },
     {
-     "tag": "esf",
-     "tmax": 2
+     "tag": "ges"
     },
     {
      "tag": "lvl"
@@ -217,8 +220,7 @@
      "tmax": 1
     },
     {
-     "tag": "esf",
-     "tmax": 2
+     "tag": "ges"
     },
     {
      "tag": "lvl"

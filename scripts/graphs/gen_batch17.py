@@ -55,8 +55,10 @@ graph11('breach-ring-video-v2','Rings','Refined Breach Ring',80,
 # → 완벽한 엑잘(에너지 보호막 1티어 기대, 혼합 에너지 보호막이 뜸) → 절사로 접두 → 에너지 보호막 2티어로 타협("완벽을 노리지 말 것")
 # → 심연의 메아리 + 빛의 징조로 주문 치명타 명중 확률 1티어(2티어도 고민, 영상은 1티어까지). 완벽한 철 룬은 취향(정책 23).
 # 하이엔드 = 영상(주문 치명타 1티어), 밸런스 = 주문 치명타 1~2티어.
-tags={'sp':{'gi':43},'esp':{'gi':7,'tmax':1},'esf':{'gi':6,'tmax':2},'esh':{'gi':8,'tmax':2},'lvl':{'gi':16},'cs':{'gi':59},'cr':{'gi':19,'tmax':'$pT'},
-      'ges':{'anyOf':['esp','esf','esh']},'keepF':{'anyOf':['ges','lvl','cs']}}
+# 2026-11-12 영상 전체 대조(자동 번역 자막 0:00~37:30, 메인 세션): 첫 번째 집중구 단계 일치(19:00 접두 훼손 + 분열 → 20:00 아스트리드 → 21:00 좌측 결정화 + 초월의 합금 → 21:40 접미 고대 훼손 → 22:40 완벽한 엑잘(혼합 에너지 보호막) → 23:00 절사 카오스 → 2티어 타협 → 24:00 메아리 + 빛의 징조로 주문 치명타 1티어(26:00)).
+#   등급 C17: 세 번째 접두(에너지 보호막)도 하이엔드 1티어(영상은 2티어 타협), 밸런스 1~2티어.
+tags={'sp':{'gi':43},'esp':{'gi':7,'tmax':1},'esf':{'gi':6,'tmax':'$pT'},'esh':{'gi':8,'tmax':'$pT'},'lvl':{'gi':16},'cs':{'gi':59},'cr':{'gi':19,'tmax':'$pT'},
+      'ges':{'anyOf':['esp','esf','esh'],'label':K('에너지 보호막 접두','Energy shield prefix')},'keepF':{'anyOf':['ges','lvl','cs']}}
 SPF=it('p','주문 피해 (75—89)% 증가 (분열)','(75—89)% increased Spell Damage (fractured)',['sp'],'c')
 ESP=it('p','에너지 보호막 (92—100)% 증가','(92—100)% increased Energy Shield',['esp']); ESF=it('p','에너지 보호막 최대치 +(81—90)','+(81—90) to maximum Energy Shield',['esf'])
 LV=it('s','모든 주문 스킬 레벨 +2','+2 to Level of all Spell Skills',['lvl']); CSA=it('s','시전 속도 (26—31)% 증가 (초월의 합금)','(26—31)% increased Cast Speed (Transcendent Alloy)',['cs'],'c')
@@ -82,9 +84,9 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'sp','fr':True,'ess':True},{'tag':
  done([0,6])]
 nodes[0]['start']['runes']=[]
 graph11('saveq-focus-v2','Foci','Tasalian Focus',80,
-  'SaVeQ 집중구(R43FVay8_XI) — 주문 피해 분열 + 에너지 보호막 1티어 + 모든 주문 스킬 +2 + 잡옵 → 아스트리드의 창의성 → 좌측 결정화 + 초월의 합금 → 고대 갈비뼈(접미 훼손) → 완벽한 엑잘(접두) → 절사로 에너지 보호막 1~2티어 → 공개(빛의 징조로 다시). 하이엔드 = 영상(주문 치명타 1티어), 밸런스 = 1~2티어.',
-  {**ROUTE,'pT':{'kr':'주문 치명타 명중 확률','en':'Spell critical hit chance','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},PT,
-  {'high':K('영상: 주문 치명타 명중 확률 1티어, 에너지 보호막은 2티어로 타협','Video: T1 spell crit chance, settle for T2 energy shield'),'bal':K('주문 치명타 명중 확률 1~2티어','T1–2 spell crit chance')},tags,nodes,
+  'SaVeQ 집중구(R43FVay8_XI) — 주문 피해 분열 + 에너지 보호막 1티어 + 모든 주문 스킬 +2 + 잡옵 → 아스트리드의 창의성 → 좌측 결정화 + 초월의 합금 → 고대 갈비뼈(접미 훼손) → 완벽한 엑잘(접두) → 절사로 에너지 보호막 → 공개(빛의 징조로 다시). 하이엔드 = 에너지 보호막·주문 치명타 1티어, 밸런스 = 1~2티어(영상 에너지 보호막 타협).',
+  {**ROUTE,'pT':{'kr':'에너지 보호막·주문 치명타','en':'Energy shield and spell crit','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},PT,
+  {'high':K('에너지 보호막·주문 치명타 명중 확률 1티어','T1 energy shield and spell crit chance'),'bal':K('에너지 보호막·주문 치명타 명중 확률 1~2티어 (영상은 에너지 보호막 2티어 타협)','T1–2 energy shield and spell crit chance (the video settles for T2 energy shield)')},tags,nodes,
   [{'id':'L1','nodes':['d1','rv','rvx'],'kr':'훼손 공개','en':'Reveal'}],
-  FIN(('high','bal'),lambda v:[{'tag':'sp','fr':True,'ess':True},{'tag':'esp','tmax':1},{'tag':'esf','tmax':2},{'tag':'lvl'},{'tag':'cs','ess':True},{'tag':'cr','tmax':1 if v=='high' else 2,'des':True}]),
+  FIN(('high','bal'),lambda v:[{'tag':'sp','fr':True,'ess':True},{'tag':'esp','tmax':1},{'tag':'ges'},{'tag':'lvl'},{'tag':'cs','ess':True},{'tag':'cr','tmax':1 if v=='high' else 2,'des':True}]),
   {'quality':22,'sockets':2},{'all':[{'has':'cr'},{'has':'cs'},{'count':{'tag':'ges','min':2}}]},('high','bal'))
