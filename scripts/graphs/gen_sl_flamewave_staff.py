@@ -109,11 +109,11 @@ A(id='pc', kind='cleanup', group='prep', pos=[0, 7], keep=[], maxJunk=1, label=A
 A(id='ms', kind='mark', group='main', pos=[0, 8.4], next='c1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[F7, J('s')])
 A(id='c1', kind='act', group='main', pos=[0, 9.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접두 화염 피해 증가 1티어 — 주문·냉기·번개·카오스 피해 증가와 함께 먼저 뜬 것', 'T1 increased fire damage prefix: or spell, cold, lightning or chaos, whichever lands first'),
-  show=['dsp', 'dfi', 'dco', 'dli', 'dch'],
+  show=['pd'],
   edges=[{'if': {'has': 'pd'}, 'to': 'e1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}], item=[F7, PF])
 A(id='e1', kind='act', group='main', pos=[0, 10.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접두 추가 냉기 피해 1티어 — 피해 증가·추가 피해 중 먼저 뜬 것', 'T1 extra cold prefix: whichever increased or extra damage lands first'),
-  show=['pd', 'px'],
+  show=['pre'],
   edges=[{'if': {'count': {'tag': 'pre', 'min': 2}}, 'to': 'd1', 'res': 'ok'}, {'to': 'e1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[F7, PF, XC])
 A(id='e1x', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
@@ -124,7 +124,7 @@ A(id='d1', kind='act', group='main', pos=[0, 11.4], act='desecrate', cur='Ancien
   label=K('훼손', 'Desecrate'), goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'd2'}], item=[UN('p'), F7, PF, XC])
 A(id='d2', kind='act', group='main', pos=[0, 12.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pre', label=K('공개', 'Reveal'),
-  goal=K('접두 추가 화염 피해 1티어 — 피해 증가·추가 피해 중 먼저 뜬 것', 'T1 extra fire prefix: whichever increased or extra damage lands first'), show=['pd', 'px'],
+  goal=K('접두 추가 화염 피해 1티어 — 피해 증가·추가 피해 중 먼저 뜬 것', 'T1 extra fire prefix: whichever increased or extra damage lands first'), show=['pre'],
   edges=[{'if': {'all': [{'added': 'pre'}, V1]}, 'to': 'r1', 'res': 'ok'},
          {'if': {'added': 'pre'}, 'to': 'b1', 'res': 'ok', 'label': K('밸런스', 'Balance')},
          {'to': 'dx', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
@@ -144,7 +144,7 @@ A(id='s2', kind='act', group='main', pos=[0, 15.4], act='chaos', cur='Perfect_Ch
 A(id='s3', kind='act', group='main', pos=[0, 16.4], act='essence', cur='Transcendent_Alloy', ess='alloy', label=K('합금', 'Alloy'),
   goal=K('접미 잡옵을 지우고 초월의 합금', 'The junk suffix goes for the Transcendent Alloy'), showText=ALT,
   edges=[{'if': {'all': [{'has': 'fm'}, {'has': 'alloy'}]}, 'to': 'ok', 'res': 'ok'},
-         {'to': 's3m', 'res': 'fail', 'label': K('화염 속성 부여 규모가 지워짐', 'Fire magnitudes gone')}],
+         {'to': 's3m', 'res': 'fail', 'label': K('규모 지워짐', 'Magnitudes gone')}],
   item=[F7, PF, XC, XF, FM, AL, RN])
 A(id='s3m', kind='act', group='main', pos=[1, 16.4], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 's', 'keep': 'keep'},
   label=K('절사 + 카오스', 'Whittling + Chaos'), goal=K('접미 비고정 화염 속성 부여 규모 다시', 'Fire magnitudes suffix again'), show=['fm'],

@@ -36,18 +36,19 @@ g = {
           '내부 결정: 접미 둘째·셋째 자리는 힘·원소 저항 중 먼저 뜬 것(영상은 의뢰인 요청으로 힘을 상위 카오스로 나중에 넣음), 접두 엑잘·훼손은 이동 속도·생명력 중 먼저 뜬 것과 남은 것.'),
  'params': {
   'strT': {'kr': '힘 목표', 'en': 'Strength target', 'values': {'2': K('1~2티어', 'T1–2'), '3': K('1~3티어', 'T1–3')}},
+  'resT': {'kr': '카오스 저항 목표', 'en': 'Chaos Resistance target', 'values': {'2': K('1~2티어', 'T1–2'), '3': K('1~3티어', 'T1–3')}},
   'desT': {'kr': '훼손 접두 목표', 'en': 'Desecrated prefix target', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
  },
- 'strategies': [{'id': 'high', 'params': {'strT': 2, 'desT': 1}}, {'id': 'bal', 'params': {'strT': 3, 'desT': 2}}],
+ 'strategies': [{'id': 'high', 'params': {'strT': 2, 'resT': 2, 'desT': 1}}, {'id': 'bal', 'params': {'strT': 3, 'resT': 3, 'desT': 2}}],
  'versions': [
-  {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'strT': 3, 'desT': 2}, 'tier': 'bal',
-   'desc': K('마지막 접두(훼손) 1~2티어, 힘은 완벽한 엑잘이 주는 대로', 'Last prefix (desecrated) T1–2, Strength as the Perfect Exalt gives it')},
-  {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'strT': 2, 'desT': 1}, 'tier': 'high',
-   'desc': K('영상: 마지막 접두(훼손) 1티어, 힘 1~2티어', 'Video: last prefix (desecrated) T1, Strength T1–2')}],
+  {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'strT': 3, 'resT': 3, 'desT': 2}, 'tier': 'bal',
+   'desc': K('마지막 접두(훼손) 1~2티어, 힘·카오스 저항 1~3티어', 'Last prefix (desecrated) T1–2, Strength and Chaos Resistance T1–3')},
+  {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'strT': 2, 'resT': 2, 'desT': 1}, 'tier': 'high',
+   'desc': K('영상: 마지막 접두(훼손) 1티어, 힘·카오스 저항 1~2티어', 'Video: last prefix (desecrated) T1, Strength and Chaos Resistance T1–2')}],
  'tags': {
   'armP': {'gi': 8, 'tmax': 1}, 'armEle': {'gi': 18, 'tmax': 1},
   'str': {'gi': 0, 'tmax': '$strT'}, 'strH': {'gi': 0, 'tmax': 2}, 'strB': {'gi': 0, 'tmax': 3},
-  'fire': {'gi': 1}, 'cold': {'gi': 2}, 'light': {'gi': 3}, 'chaosR': {'gi': 4},
+  'fire': {'gi': 1}, 'cold': {'gi': 2}, 'light': {'gi': 3}, 'chaosR': {'gi': 4, 'tmax': '$resT'}, 'chaosRH': {'gi': 4, 'tmax': 2}, 'chaosRB': {'gi': 4, 'tmax': 3},
   'ELE': {'anyOf': ['fire', 'cold', 'light']},
   'ms': {'gi': 12}, 'life': {'gi': 5},
   'msD': {'gi': 12, 'tmax': '$desT'}, 'lifeD': {'gi': 5, 'tmax': '$desT'},
@@ -65,9 +66,9 @@ g = {
  'start': 'b0',
  'finals': [
   {'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-   'lines': [{'tag': 'armP', 'fr': True}, {'tag': 'PRE'}, {'tag': 'PREDh', 'des': True}, {'tag': 'armEle'}, {'tag': 'strH'}, {'tag': 'chaosR'}]},
+   'lines': [{'tag': 'armP', 'fr': True}, {'tag': 'PRE'}, {'tag': 'PREDh', 'des': True}, {'tag': 'armEle'}, {'tag': 'strH'}, {'tag': 'chaosRH'}]},
   {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-   'lines': [{'tag': 'armP', 'fr': True}, {'tag': 'PRE'}, {'tag': 'PREDb', 'des': True}, {'tag': 'armEle'}, {'tag': 'strB'}, {'tag': 'chaosR'}]}],
+   'lines': [{'tag': 'armP', 'fr': True}, {'tag': 'PRE'}, {'tag': 'PREDb', 'des': True}, {'tag': 'armEle'}, {'tag': 'strB'}, {'tag': 'chaosRB'}]}],
  'finalItem': {'sockets': 2},
 }
 
@@ -76,7 +77,7 @@ A = lambda **kw: N.append(kw)
 
 # ---------------- 베이스템 완성 (영상 7:20~9:50) ----------------
 A(id='b0', kind='base', group='prep', pos=[0, 0], next='m1', start={'rar': 'normal', 'mods': []},
-  label=K('타살리오의 각반 구입 (아이템 레벨 82, 증강 가능한 홈 2개)', 'Buy Tasalian Greaves (item level 82, two augment sockets)'), item=[])
+  label=K('특출난 타살리오의 각반 구입 (아이템 레벨 82)', 'Buy exceptional Tasalian Greaves (item level 82)'), item=[])
 A(id='m1', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation', label=K('진화', 'Transmute'),
   goal=K('접두 방어도 % 증가 1티어', 'T1 % increased Armour prefix'), show=['armP'],
   edges=[{'if': {'has': 'armP'}, 'to': 'm2', 'res': 'ok'}, {'to': 'm1x', 'res': 'fail', 'label': K('다른 옵션', 'Another option')}], item=[ARMn])
@@ -164,9 +165,9 @@ g['nodes'] = N
 
 g['loops'] = [
  {'id': 'L2', 'nodes': ['s2', 'sf', 's2x', 's0'], 'kr': '접미 두 자리', 'en': 'Two more suffixes', 'fold': True,
-  'goal': K('접미 힘 1~2티어 + 카오스 저항 — 먼저 뜬 것부터', 'Strength T1–2 + Chaos Resistance suffixes: whichever lands first'),
-  'goalBy': {'high': K('접미 힘 1~2티어 + 카오스 저항 — 먼저 뜬 것부터', 'Strength T1–2 + Chaos Resistance suffixes: whichever lands first'),
-             'bal': K('접미 힘 + 카오스 저항 — 먼저 뜬 것부터', 'Strength + Chaos Resistance suffixes: whichever lands first')},
+  'goal': K('접미 힘 + 카오스 저항 1~2티어 — 먼저 뜬 것부터', 'T1–2 Strength + Chaos Resistance suffixes: whichever lands first'),
+  'goalBy': {'high': K('접미 힘 + 카오스 저항 1~2티어 — 먼저 뜬 것부터', 'T1–2 Strength + Chaos Resistance suffixes: whichever lands first'),
+             'bal': K('접미 힘 + 카오스 저항 1~3티어 — 먼저 뜬 것부터', 'T1–3 Strength + Chaos Resistance suffixes: whichever lands first')},
   'steps': [K('우측 찬미의 징조 + 완벽한 엑잘티드 오브로 접미 하나', 'Omen of Dextral Exaltation + Perfect Exalted Orb for one suffix') | {'node': 's2'},
             K('화염·냉기·번개 저항이면 공허 유동체로 카오스 저항', 'Fire, cold or lightning resistance: Void Flux turns it into Chaos Resistance') | {'node': 'sf'},
             K('빗나가면 소멸의 오브', 'A miss: Orb of Annulment') | {'node': 's2x'},

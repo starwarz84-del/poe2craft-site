@@ -13,7 +13,7 @@ def L(s, kr, en, m='n', tags=None):
 
 RADL = L('p', '반경이 대형으로 업그레이드', 'Upgrades Radius to Large', 'n', ['radL'])
 CCn = L('s', '반경 내 주요 패시브 스킬이 주문 치명타 명중 확률 (3—7)% 증가도 부여', 'Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Spells', 'n', ['cc'])
-CC = L('s', '반경 내 주요 패시브 스킬이 주문 치명타 명중 확률 (3—7)% 증가도 부여 (분열)', 'Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Spells (fractured)', 'f', ['cc'])
+CC = dict(CCn, m='f')   # 같은 글 + 분열 표시(왼쪽 칸이 같은 옵션으로 이어서 보게)
 SCD = L('s', '반경 내 주요 패시브 스킬이 주문 치명타 피해 보너스 (5—10)% 증가도 부여', 'Notable Passive Skills in Radius also grant (5—10)% increased Critical Spell Damage Bonus', 'n', ['scd'])
 CD = L('s', '반경 내 주요 패시브 스킬이 치명타 피해 보너스 (5—10)% 증가도 부여', 'Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus', 'n', ['cd'])
 CONT = L('p', '접미어 속성 부여의 최대 개수 +1개 (고대 위력적인 액체 경멸)', '+1 Suffix Modifier allowed (Ancient Potent Liquid Contempt)', 'n', ['contS'])
@@ -91,39 +91,40 @@ A(id='c1', kind='act', group='main', pos=[0, 6.4], act='chaos', cur='Chaos_Orb',
 A(id='e1', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 옵션 1개 — 경멸이 지울 자리', 'One prefix: the line Contempt takes'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
-  edges=[{'to': 'n4'}], item=[J('p'), CC, SCD])
-A(id='n4', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Ancient_Potent_Liquid_Contempt', ess='contS', alt='contP', liquid=True,
+  edges=[{'to': 'k4'}], item=[J('p'), CC, SCD])
+A(id='k4', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Ancient_Potent_Liquid_Contempt', ess='contS', alt='contP', liquid=True,
   label=K('액체', 'Liquid'), goal=K('접미어 속성 부여의 최대 개수 +1개 (1/2)', '+1 Suffix Modifier allowed (1 in 2)'),
   showText=[{'s': 'p', 'kr': '접미어 속성 부여의 최대 개수 +1개', 'en': '+1 Suffix Modifier allowed'}],
-  edges=[{'if': {'all': [{'has': 'contS'}, {'has': 'scd'}]}, 'to': 'n5', 'res': 'ok', 'label': K('접두 잡옵이 지워짐', 'The junk prefix went')},
-         {'to': 'n4x', 'res': 'fail', 'label': K('주문 치명타 피해가 지워짐', 'Spell crit damage went')}],
+  edges=[{'if': {'all': [{'has': 'contS'}, {'has': 'scd'}]}, 'to': 'k5', 'res': 'ok', 'label': K('접두 잡옵이 지워짐', 'The junk prefix went')},
+         {'to': 'k4x', 'res': 'fail', 'label': K('주문 치명타 피해가 지워짐', 'Spell crit damage went')}],
   item=[CONT, CC, SCD])
-A(id='n4x', kind='cleanup', group='main', pos=[1, 7.4], keep=[], maxJunk=1, label=ANN, goal=ANN,
+A(id='k4x', kind='cleanup', group='main', pos=[1, 7.4], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'c1'}])
-A(id='n5', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'],
+A(id='k5', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접미 치명타 피해 보너스', 'Crit damage suffix'), show=['cd'],
-  edges=[{'if': {'has': 'cd'}, 'to': 'n6', 'res': 'ok'}, {'to': 'n5x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
+  edges=[{'if': {'has': 'cd'}, 'to': 'k6', 'res': 'ok'}, {'to': 'k5x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[CONT, CC, SCD, CD])
-A(id='n5x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
+A(id='k5x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
   target=K('셋 중 하나 지우기 — 빗나간 접미가 지워지면 다시 엑잘', 'One of three goes: the missed suffix going means exalt again'),
-  edges=[{'if': {'not': {'has': 'contS'}}, 'to': 'n5c', 'res': 'fail', 'label': K('경멸 옵션이 지워짐', 'The Contempt line went')},
-         {'if': {'not': {'has': 'scd'}}, 'to': 'n4x', 'res': 'fail', 'label': K('주문 치명타 피해가 지워짐', 'Spell crit damage went')},
-         {'to': 'n5', 'res': 'ok', 'label': K('다시 엑잘', 'Exalt again')}])
-A(id='n5c', kind='act', group='main', pos=[2, 9.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
+  edges=[{'if': {'not': {'has': 'contS'}}, 'to': 'k5c', 'res': 'fail', 'label': K('경멸 옵션이 지워짐', 'The Contempt line went')},
+         {'if': {'not': {'has': 'scd'}}, 'to': 'k4x', 'res': 'fail', 'label': K('주문 치명타 피해가 지워짐', 'Spell crit damage went')},
+         {'to': 'k5', 'res': 'ok', 'label': K('다시 엑잘', 'Exalt again')}])
+A(id='k5c', kind='act', group='main', pos=[2, 9.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('빗나간 접미를 접두로 넘기기 (1/2)', 'Move the missed suffix to a prefix (1 in 2)'),
-  edges=[{'if': {'has': 'scd'}, 'to': 'n4', 'res': 'ok', 'label': K('경멸 다시', 'Contempt again')},
-         {'to': 'n4x', 'res': 'fail', 'label': K('주문 치명타 피해가 지워짐', 'Spell crit damage went')}])
-A(id='n6', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Chaos_Orb', omens=['Omen_of_Sinistral_Erasure'],
+  edges=[{'if': {'has': 'scd'}, 'to': 'k4', 'res': 'ok', 'label': K('경멸 다시', 'Contempt again')},
+         {'to': 'k4x', 'res': 'fail', 'label': K('주문 치명타 피해가 지워짐', 'Spell crit damage went')}])
+A(id='k6', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Chaos_Orb', omens=['Omen_of_Sinistral_Erasure'],
   label=K('좌측 말소 + 카오스', 'Sinistral Erasure + Chaos'), goal=K('경멸 옵션 지우기', 'Remove the Contempt line'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 한도를 넘어 접두로)', 'en': 'One random option (suffixes over the limit)'}],
-  edges=[{'to': 'n7'}], item=[J('p'), CC, SCD, CD])
-A(id='n7', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
+  edges=[{'to': 'k7'}], item=[J('p'), CC, SCD, CD])
+A(id='k7', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 두번째 옵션', 'Second prefix'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 한도를 넘어 접두로)', 'en': 'One random option (suffixes over the limit)'}],
   edges=[{'to': 'm1'}], item=[J('p'), J('p'), CC, SCD, CD])
 # 최대 마나 반복: 반경·훼손 옵션 정리 카오스 → 액체 우울 → 두개골 → 공개
 A(id='m1', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접두 반경·훼손 옵션 지우기', 'Clear the radius and desecrated prefixes'),
+  target=K('반경 중형·대형과 훼손 옵션이 없어질 때까지', 'Until no Medium/Large radius and no desecrated line is left'),
   skipIf={'not': {'any': [{'has': 'radLo'}, {'desSide': 'p'}]}}, skipTo='m2', skipHide=True,
   edges=[{'if': {'any': [{'has': 'radLo'}, {'desSide': 'p'}]}, 'to': 'm1', 'res': 'fail', 'hide': True},
          {'if': {'has': 'rad'}, 'to': 'm3', 'res': 'ok', 'label': K('매우 넓은 반경이 남음', 'Very Large radius kept')},
@@ -132,7 +133,7 @@ A(id='m1', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Chaos_Orb'
 A(id='m2', kind='act', group='main', pos=[0, 13.4], act='essence', cur='Ancient_Potent_Liquid_Melancholy', ess='rad', liquid=True,
   label=K('액체', 'Liquid'), goal=K('고대 위력적인 액체 우울 (접두 하나가 지워짐)', 'Ancient Potent Liquid Melancholy (one prefix goes)'),
   showText=[{'s': 'p', 'kr': '반경이 매우 넓은 반경으로 업그레이드', 'en': 'Upgrades Radius to Very Large'}],
-  edges=[{'if': {'all': [{'has': 'mana'}, {'has': 'rad'}]}, 'to': 'ok', 'res': 'ok', 'hide': True}, {'to': 'm3'}],
+  edges=[{'if': {'all': [{'has': 'mana'}, {'has': 'rad'}]}, 'to': 'ok', 'res': 'ok', 'hide': True}, {'to': 'm3', 'res': 'ok'}],
   item=[J('p'), RAD, CC, SCD, CD])
 A(id='m3', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Preserved_Cranium', omens=['Omen_of_Sinistral_Necromancy'],
   label=K('훼손', 'Desecrate'), goal=K('접두 훼손 (접두 하나가 지워짐)', 'Prefix desecration (one prefix goes)'),
@@ -155,23 +156,22 @@ A(id='ok', kind='done', group='main', pos=[0, 16.6], label=K('완성', 'Finished
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L1', 'nodes': ['n4', 'n5', 'n5x', 'n5c'], 'kr': '경멸 + 접미 세번째 옵션', 'en': 'Contempt + third suffix', 'fold': True,
+ {'id': 'L1', 'nodes': ['k4', 'k5', 'k5x', 'k5c'], 'kr': '경멸 + 접미 세번째 옵션', 'en': 'Contempt + third suffix', 'fold': True,
   'goal': K('접미어 속성 부여의 최대 개수 +1개 + 접미 치명타 피해 보너스', '+1 Suffix Modifier allowed + crit damage suffix'),
-  'steps': [K('고대 위력적인 액체 경멸 — 접두 잡옵이 지워지면 성공(1/2)', 'Ancient Potent Liquid Contempt: success when the junk prefix goes (1 in 2)') | {'node': 'n4'},
-            K('우측 찬미의 징조 + 엑잘티드 오브로 치명타 피해 보너스', 'Dextral Exaltation + Exalted Orb for crit damage') | {'node': 'n5'},
-            K('빗나가면 소멸의 오브 — 빗나간 접미가 지워지면 다시 엑잘', 'Miss: Orb of Annulment; if the missed suffix goes, exalt again') | {'node': 'n5x'},
-            K('경멸 옵션이 지워지면 카오스 오브로 빗나간 접미를 접두로 넘기고 경멸 다시', 'The Contempt line went: Chaos moves the missed suffix to a prefix, then Contempt again') | {'node': 'n5c'}],
-  'worst': K('주문 치명타 피해 보너스가 지워지면 소멸의 오브로 분열 + 옵션 1개 → 카오스부터', 'Spell crit damage gone: annul to the fracture + one option, back to Chaos') | {'to': 'n4x'},
+  'steps': [K('고대 위력적인 액체 경멸 — 접두 잡옵이 지워지면 성공(1/2)', 'Ancient Potent Liquid Contempt: success when the junk prefix goes (1 in 2)') | {'node': 'k4'},
+            K('우측 찬미의 징조 + 엑잘티드 오브로 치명타 피해 보너스', 'Dextral Exaltation + Exalted Orb for crit damage') | {'node': 'k5'},
+            K('빗나가면 소멸의 오브 — 빗나간 접미가 지워지면 다시 엑잘', 'Miss: Orb of Annulment; if the missed suffix goes, exalt again') | {'node': 'k5x'},
+            K('경멸 옵션이 지워지면 카오스 오브로 빗나간 접미를 접두로 넘기고 경멸 다시', 'The Contempt line went: Chaos moves the missed suffix to a prefix, then Contempt again') | {'node': 'k5c'}],
+  'worst': K('주문 치명타 피해 보너스가 지워지면 소멸의 오브로 분열 + 옵션 1개 → 카오스부터', 'Spell crit damage gone: annul to the fracture + one option, back to Chaos') | {'to': 'k4x'},
   'item': [CONT, CC, SCD, CD]},
  {'id': 'L2', 'nodes': ['m1', 'm2', 'm3', 'm4', 'm5'], 'kr': '반경 + 최대 마나', 'en': 'Radius + maximum mana', 'fold': True,
   'goal': K('접두 매우 넓은 반경 + 최대 마나 % 증가(훼손)', 'Very Large radius + maximum mana % prefix (desecrated)'),
   'goalBy': {'high': K('접두 매우 넓은 반경 + 최대 마나 % 증가(훼손)', 'Very Large radius + maximum mana % prefix (desecrated)'),
              'bal': K('접두 매우 넓은 반경 + 공개 결과 그대로', 'Very Large radius + whatever the reveal gives')},
   'steps': [K('반경 중형·대형이나 훼손 옵션이 있으면 카오스 오브로 지우기', 'Chaos away a Medium/Large radius or a desecrated line') | {'node': 'm1'},
-            K('고대 위력적인 액체 우울로 매우 넓은 반경', 'Ancient Potent Liquid Melancholy for the Very Large radius') | {'node': 'm2'},
-            K('보존된 두개골 — 접두 하나가 지워짐', 'Preserved Cranium: one prefix goes') | {'node': 'm3'},
-            K('심연의 메아리의 징조로 공개 — 최대 마나 % 증가', 'Reveal with Abyssal Echoes: maximum mana %') | {'node': 'm4'},
-            K('최대 마나가 떴는데 반경이 지워졌으면 액체 우울 다시', 'Maximum mana but the radius went: Melancholy again') | {'node': 'm2'}],
+            K('고대 위력적인 액체 우울로 매우 넓은 반경 — 공개 뒤 반경이 지워졌으면 다시', 'Ancient Potent Liquid Melancholy for the Very Large radius; again if the reveal finds it gone') | {'node': 'm2'},
+            K('좌측 강령술의 징조 + 보존된 두개골 — 접두 하나가 지워짐', 'Sinistral Necromancy + Preserved Cranium: one prefix goes') | {'node': 'm3'},
+            K('심연의 메아리의 징조로 공개 — 최대 마나 % 증가 노림', 'Reveal with Abyssal Echoes, aiming at maximum mana %') | {'node': 'm4'}],
   'item': [MANA, RAD, CC, SCD, CD],
   'itemBy': {'high': [MANA, RAD, CC, SCD, CD], 'bal': [L('p', '랜덤 옵션', 'Random option', 'j'), RAD, CC, SCD, CD]}},
 ]

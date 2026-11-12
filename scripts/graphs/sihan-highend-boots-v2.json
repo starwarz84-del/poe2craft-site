@@ -21,6 +21,20 @@
     }
    }
   },
+  "resT": {
+   "kr": "카오스 저항 목표",
+   "en": "Chaos Resistance target",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "1~3티어",
+     "en": "T1–3"
+    }
+   }
+  },
   "desT": {
    "kr": "훼손 접두 목표",
    "en": "Desecrated prefix target",
@@ -41,6 +55,7 @@
    "id": "high",
    "params": {
     "strT": 2,
+    "resT": 2,
     "desT": 1
    }
   },
@@ -48,6 +63,7 @@
    "id": "bal",
    "params": {
     "strT": 3,
+    "resT": 3,
     "desT": 2
    }
   }
@@ -59,12 +75,13 @@
    "en": "Balance",
    "params": {
     "strT": 3,
+    "resT": 3,
     "desT": 2
    },
    "tier": "bal",
    "desc": {
-    "kr": "마지막 접두(훼손) 1~2티어, 힘은 완벽한 엑잘이 주는 대로",
-    "en": "Last prefix (desecrated) T1–2, Strength as the Perfect Exalt gives it"
+    "kr": "마지막 접두(훼손) 1~2티어, 힘·카오스 저항 1~3티어",
+    "en": "Last prefix (desecrated) T1–2, Strength and Chaos Resistance T1–3"
    }
   },
   {
@@ -73,12 +90,13 @@
    "en": "High-end",
    "params": {
     "strT": 2,
+    "resT": 2,
     "desT": 1
    },
    "tier": "high",
    "desc": {
-    "kr": "영상: 마지막 접두(훼손) 1티어, 힘 1~2티어",
-    "en": "Video: last prefix (desecrated) T1, Strength T1–2"
+    "kr": "영상: 마지막 접두(훼손) 1티어, 힘·카오스 저항 1~2티어",
+    "en": "Video: last prefix (desecrated) T1, Strength and Chaos Resistance T1–2"
    }
   }
  ],
@@ -113,7 +131,16 @@
    "gi": 3
   },
   "chaosR": {
-   "gi": 4
+   "gi": 4,
+   "tmax": "$resT"
+  },
+  "chaosRH": {
+   "gi": 4,
+   "tmax": 2
+  },
+  "chaosRB": {
+   "gi": 4,
+   "tmax": 3
   },
   "ELE": {
    "anyOf": [
@@ -280,7 +307,7 @@
      "tag": "strH"
     },
     {
-     "tag": "chaosR"
+     "tag": "chaosRH"
     }
    ]
   },
@@ -307,7 +334,7 @@
      "tag": "strB"
     },
     {
-     "tag": "chaosR"
+     "tag": "chaosRB"
     }
    ]
   }
@@ -330,8 +357,8 @@
     "mods": []
    },
    "label": {
-    "kr": "타살리오의 각반 구입 (아이템 레벨 82, 증강 가능한 홈 2개)",
-    "en": "Buy Tasalian Greaves (item level 82, two augment sockets)"
+    "kr": "특출난 타살리오의 각반 구입 (아이템 레벨 82)",
+    "en": "Buy exceptional Tasalian Greaves (item level 82)"
    },
    "item": []
   },
@@ -1712,17 +1739,17 @@
    "en": "Two more suffixes",
    "fold": true,
    "goal": {
-    "kr": "접미 힘 1~2티어 + 카오스 저항 — 먼저 뜬 것부터",
-    "en": "Strength T1–2 + Chaos Resistance suffixes: whichever lands first"
+    "kr": "접미 힘 + 카오스 저항 1~2티어 — 먼저 뜬 것부터",
+    "en": "T1–2 Strength + Chaos Resistance suffixes: whichever lands first"
    },
    "goalBy": {
     "high": {
-     "kr": "접미 힘 1~2티어 + 카오스 저항 — 먼저 뜬 것부터",
-     "en": "Strength T1–2 + Chaos Resistance suffixes: whichever lands first"
+     "kr": "접미 힘 + 카오스 저항 1~2티어 — 먼저 뜬 것부터",
+     "en": "T1–2 Strength + Chaos Resistance suffixes: whichever lands first"
     },
     "bal": {
-     "kr": "접미 힘 + 카오스 저항 — 먼저 뜬 것부터",
-     "en": "Strength + Chaos Resistance suffixes: whichever lands first"
+     "kr": "접미 힘 + 카오스 저항 1~3티어 — 먼저 뜬 것부터",
+     "en": "T1–3 Strength + Chaos Resistance suffixes: whichever lands first"
     }
    },
    "steps": [
