@@ -129,7 +129,7 @@ A(id='w1p', kind='act', group='main', pos=[1, 13.5], act='chaos', cur='Perfect_C
 A(id='wc', kind='cleanup', group='main', pos=[2, 13], keep=['pp', 'hyb'], maxJunk=0, label=ANN, goal=ANN,
   target=K('잡옵 지우기 — 다시 자리 막기 (영상에 없음 — 시뮬 되돌림)', 'Remove the junk, then block again (not in the video: simulation fallback)'),
   edges=[{'lost': 'pp', 'to': 'hc', 'res': 'fail', 'hide': True}, {'lost': 'hyb', 'to': 'wc', 'res': 'fail', 'hide': True},
-         {'to': 'b1', 'res': 'ok', 'label': K('막기가 지워짐 — 자리 막기부터', 'Blocker gone: block again')}])
+         {'to': 'b1', 'res': 'ok', 'hide': True, 'label': K('막기가 지워짐 — 자리 막기부터', 'Blocker gone: block again')}])
 A(id='s2', kind='act', group='main', pos=[0, 14], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 두번째 옵션', 'Second suffix'), show=['proj'], skipIf={'has': 'proj'}, skipTo='s3',
   edges=[{'if': {'any': [{'has': 'proj'}, {'has': 'as'}]}, 'to': 's3', 'res': 'ok', 'label': K('성공', 'Hit')},
