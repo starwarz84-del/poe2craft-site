@@ -35,6 +35,16 @@
   "ima": {
    "gi": 52
   },
+  "pre": {
+   "anyOf": [
+    "isp",
+    "ima"
+   ],
+   "label": {
+    "kr": "메드베드 접두 % 옵션",
+    "en": "Medved % prefix"
+   }
+  },
   "hf": {
    "gi": 56
   },
@@ -755,7 +765,7 @@
    "edges": [
     {
      "if": {
-      "has": "isp"
+      "has": "pre"
      },
      "to": "e1",
      "res": "ok"
@@ -816,7 +826,10 @@
    "edges": [
     {
      "if": {
-      "has": "ima"
+      "count": {
+       "tag": "pre",
+       "min": 2
+      }
      },
      "to": "s0",
      "res": "ok"
@@ -900,7 +913,7 @@
     {
      "if": {
       "not": {
-       "has": "isp"
+       "has": "pre"
       }
      },
      "to": "c1",

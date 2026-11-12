@@ -930,6 +930,26 @@
    "edges": [
     {
      "if": {
+      "all": [
+       {
+        "added": "pct"
+       },
+       {
+        "not": {
+         "full": "p"
+        }
+       }
+      ]
+     },
+     "to": "p2",
+     "res": "ok",
+     "label": {
+      "kr": "% 증가 성공",
+      "en": "% hit"
+     }
+    },
+    {
+     "if": {
       "ref": "pDone"
      },
      "to": "d1",
@@ -945,17 +965,6 @@
      "label": {
       "kr": "잡옵으로 접두가 꽉 참 — 좌측 말소",
       "en": "Prefixes full with junk: Sinistral Erasure"
-     }
-    },
-    {
-     "if": {
-      "added": "pct"
-     },
-     "to": "p2",
-     "res": "ok",
-     "label": {
-      "kr": "% 증가 성공",
-      "en": "% hit"
      }
     },
     {
@@ -997,7 +1006,14 @@
    "edges": [
     {
      "if": {
-      "ref": "pDone"
+      "all": [
+       {
+        "has": "pct"
+       },
+       {
+        "has": "hybM"
+       }
+      ]
      },
      "to": "d1",
      "res": "ok",
@@ -1176,6 +1192,12 @@
    ],
    "item": [
     {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
      "s": "p",
      "kr": "회피·에너지 보호막 최대치 1티어",
      "en": "T1 flat evasion and ES",
@@ -1210,12 +1232,6 @@
      "tags": [
       "critT1"
      ]
-    },
-    {
-     "s": "s",
-     "kr": "훼손 옵션 (미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
     }
    ]
   },
@@ -1419,7 +1435,7 @@
      "s": "s",
      "kr": "랜덤 옵션",
      "en": "Random modifier",
-     "m": "n"
+     "m": "j"
     }
    ]
   },

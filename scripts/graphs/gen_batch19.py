@@ -75,9 +75,9 @@ _g=json.load(open(f'{H}/grasping-mail-spell1-v2.json')); _g['basePrice']={'Chaos
 # 신성한 오브(28:00)·축복받은 자의 징조(29:20)·유동체(32:00)는 수치 올리기라 뺌(14장).
 # 등급: 난이도 5(극한) → 하이엔드만(10장). 복합 저항은 티어가 하나뿐이라 티어 타협 자리가 없음.
 # 내부 결정: 반복의 완성 조건은 영상대로 복합 저항 셋 중 둘(17:00·19:30 번개·카오스도 받아들임). 상자 글·왼쪽 칸·카드는 성공 회차의 두 옵션(화염·카오스, 냉기·카오스, 24:44)으로 적음(확정 옵션 규칙, 활과 같은 방식).
-#   두 옵션만 받는 시뮬(시험 1500회)은 평균 약 6,900 div, 셋 중 둘은 약 3,300 div.
+#   두 옵션만 받는 시뮬(시험 1500회)은 평균 약 6,900 div, 셋 중 둘은 약 3,300 div. 접두 카오스·엑잘도 같은 방식(정신력 %·마나 % 중 먼저 나온 쪽).
 P1={'high':{}}
-tags={'spirit':{'gi':15,'tmax':1},'isp':{'gi':53},'ima':{'gi':52},'hf':{'gi':56},'hc':{'gi':57},'sre':{'gi':23},
+tags={'spirit':{'gi':15,'tmax':1},'isp':{'gi':53},'ima':{'gi':52},'pre':{'anyOf':['isp','ima'],'label':K('메드베드 접두 % 옵션','Medved % prefix')},'hf':{'gi':56},'hc':{'gi':57},'sre':{'gi':23},
       'mkS':{'gi':47},
       'b14':{'gi':14},
       'hl':{'gi':58},'good':{'anyOf':['hf','hc','hl'],'label':K('원소 및 카오스 복합 저항','Elemental and chaos hybrid resistances')},
@@ -105,10 +105,10 @@ BL=B3[:3]+[HF,HC,FRB,MD]; B9=B3[:3]+[HF,HC,MD]; B10=B3[:3]+[HF,HC,UN('s'),MD]; B
 nodes=[
  mark([0,0.6],'r1',B0),
  act('r1','main',[0,1],'rune',None,K('메드베드의 보살핌 장착','Socket Medved’s Tending'),[st(None,'영혼 핵 옵션이 붙을 수 있음','Soul core lines can roll')],K('룬','Rune'),[{'to':'c1'}],B1,rune=K('메드베드의 보살핌','Medved’s Tending')),   # 5:40 화면 '제거·교체 불가' 확인 창
- act('c1','main',[0,2],'chaos','Chaos_Orb',K('접두 정신력 % 증가','Prefix % increased Spirit'),None,K('카오스','Chaos'),[{'if':{'has':'isp'},'to':'e1','res':'ok'},{'to':'c1','res':'fail'}],B2,show=['isp']),   # 6:28 화면 정신력 11%
+ act('c1','main',[0,2],'chaos','Chaos_Orb',K('접두 정신력 % 증가','Prefix % increased Spirit'),None,K('카오스','Chaos'),[{'if':{'has':'pre'},'to':'e1','res':'ok'},{'to':'c1','res':'fail'}],B2,show=['isp']),   # 영상은 둘 중 먼저 나온 쪽(6:28 정신력, 6:50 마나) — 상자 글은 6:28 정신력   # 6:28 화면 정신력 11%
  act('e1','main',[0,3],'exalt','Greater_Exalted_Orb',K('접두 마나 최대치 % 증가','Prefix % increased maximum Mana'),None,K('엑잘','Exalt'),
-     [{'if':{'has':'ima'},'to':'s0','res':'ok'},{'to':'e1x',**F,**L_('빗나감 — 소멸','Miss: annul')}],B3,show=['ima'],omens=['Omen_of_Sinistral_Exaltation']),   # 6:38 상위 엑잘(47 → 46), 7:00 자막
- annul('e1x',[1,3],[{'if':{'not':{'has':'isp'}},'to':'c1',**F,**L_('정신력 %가 지워짐 — 카오스부터','% Spirit gone: back to Chaos')},{'to':'e1','res':'ok',**L_('다시 엑잘','Exalt again')}],
+     [{'if':{'count':{'tag':'pre','min':2}},'to':'s0','res':'ok'},{'to':'e1x',**F,**L_('빗나감 — 소멸','Miss: annul')}],B3,show=['ima'],omens=['Omen_of_Sinistral_Exaltation']),   # 6:38 상위 엑잘(47 → 46), 7:00 자막
+ annul('e1x',[1,3],[{'if':{'not':{'has':'pre'}},'to':'c1',**F,**L_('정신력 %가 지워짐 — 카오스부터','% Spirit gone: back to Chaos')},{'to':'e1','res':'ok',**L_('다시 엑잘','Exalt again')}],
        omens=(),target=K('빗나간 접두 지우기 — 확률 반반','Remove the missed prefix — a 50/50')),   # 6:44 '50/50'
  act('s0','main',[0,4],'exalt','Greater_Exalted_Orb',K('접미 첫번째 옵션','First suffix'),[st('s','잡옵 (초당 생명력 재생)','Junk (life regeneration per second)')],K('엑잘','Exalt'),[{'to':'mA'}],B4),   # 12:46 화면 생명력 재생 2티어
  act('mA','main',[0,5],'essence','Essence_of_the_Abyss',K('접미 잡옵을 지우고 심연의 군주의 징표','The junk suffix goes for the Mark of the Abyssal Lord'),[st('s','심연의 군주의 징표','Mark of the Abyssal Lord')],K('에센스','Essence'),[{'to':'b2'}],B5,

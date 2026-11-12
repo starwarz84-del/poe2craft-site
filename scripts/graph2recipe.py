@@ -133,6 +133,8 @@ def _target(G_, n, prev, cur, last_bone):
                 rep = next((l.get('s') for l in gone if l.get('m') == 'j'), None)
                 if rep in ('p', 's') and 'all' not in t: t['replace'] = rep
                 if n.get('trim') and not om: om = ['Omen_of_Whittling']
+        elif junk and n['pos'][0] != 0 and [x for x in (n.get('show') or []) if isinstance(x, str)] and G_.spec([x for x in n['show'] if isinstance(x, str)]):
+            t = dict(G_.spec([x for x in n['show'] if isinstance(x, str)]))   # 옆 상자가 잡옵 자리를 채우지만 플로우차트에 고르는 옵션(show)을 적었으면 그 옵션이 목표 — 시한 투구 밸런스 '빈 접미 엑잘'(2026-11-12)
         elif junk:
             sides = [l['s'] for l in junk]
             t = {'junk': sides if len(sides) > 1 else sides[0]}
@@ -225,7 +227,12 @@ class Walk:
     def st(self, nid): return (self.res.get('nodes') or {}).get(nid)
 
     def seen(self, nid):
-        t = self.st(nid); return bool(t) and (t.get('visits') or 0) > 0
+        t = self.st(nid); return bool(t) and (t.get('visits') or 0) > 0 and not self.skipall(nid)
+
+    def skipall(self, nid):
+        """이 등급에서 늘 건너뛰는 상자(지나간 횟수 = 건너뛴 횟수, 사용량 없음 — 시한 투구 밸런스의 유동체, 2026-11-12): 레시피 단계에서 뺌"""
+        t = self.st(nid) or {}; v = t.get('visits') or 0
+        return v > 0 and (t.get('skips') or 0) >= v * 0.999 and not (t.get('use') or {}) and bool((self.by.get(nid) or {}).get('skipTo'))
 
     def via(self, nid):
         n = self.by.get(nid) or {}
@@ -716,6 +723,10 @@ def read_recipe(r, sim, src, tiers):
     for n in order:
         cur = n.get('item') or prev
         pv = prev if n['pos'][0] == 0 or not parent.get(n['id']) else (W.by[parent[n['id']]].get('item') or prev)
+        # 바로 앞 상자가 레시피 단계에서 빠진 상자면 그 상자의 아이템 칸이 이 상자의 시작 상태(2026-11-12 시한 투구):
+        # 옆 상자 앞의 지우기 상자(k2 → k3 '빈 접미 엑잘'), 이 등급에서 늘 건너뛰는 상자(밸런스 유동체 → q1)
+        vin = [m for m in W.nodes if m.get('item') and ((n['pos'][0] != 0 and W.via(m['id'])) or W.skipall(m['id'])) and any(e.get('to') == n['id'] for e in m.get('edges') or [])]
+        if vin: pv = vin[0]['item']
         act, om, t, last_bone = _target(G_, n, pv, cur, last_bone)
         o = {'id': n['id'], 'do': ACT.get(act, act) or 'manual'}
         if n.get('cur'): o['cur'] = n['cur']
