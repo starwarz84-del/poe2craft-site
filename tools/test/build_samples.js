@@ -24,7 +24,7 @@ const out=await p.evaluate(()=>{const R=__rec;
     for(const m of (a.finalState||[]).filter(x=>x.gi==null && (x.side==='p'||x.side==='s'))){
       const c=D.groups.map((g,gi)=>({g,gi})).filter(({g,gi})=>(m.any?.length ? m.any.includes(gi) : g.s==='n') && g.g===m.side && !(g.f||[]).some(f=>used.has(f)) && g.t.some(t=>t[0]<=ilv && t[1]>0))
         .sort((x,y)=>y.g.t.reduce((s,t)=>s+(t[0]<=ilv?t[1]:0),0)-x.g.t.reduce((s,t)=>s+(t[0]<=ilv?t[1]:0),0))[0]; if(!c) continue;
-      (c.g.f||[]).forEach(f=>used.add(f)); const ok=c.g.t.map((t,i)=>({t,i})).filter(x=>x.t[0]<=ilv && x.t[1]>0), pick=ok[Math.min(3, ok.length-1)];
+      (c.g.f||[]).forEach(f=>used.add(f)); const ok=c.g.t.map((t,i)=>({t,i})).filter(x=>x.t[0]<=ilv && x.t[1]>0), pick=ok[m.any?.length ? 0 : Math.min(3, ok.length-1)];   /* 고르는 줄(…1티어)은 그 옵션의 가장 좋은 티어, 랜덤 옵션만 4티어쯤 */
       L.push(`{ ${m.des?'Desecrated ':''}${m.side==='p'?'Prefix':'Suffix'} Modifier "${pick.t[3]}" (Tier: ${pick.i+1}) }`); pick.t[5].split('\n').forEach(x=>L.push(mid(x)+(m.des?' (desecrated)':''))); n++; }
     res.push({id:r.id, title:r.title, base:{kr:b.kr,en:b.en}, n, text:L.join('\n')}); }
   return res;});
