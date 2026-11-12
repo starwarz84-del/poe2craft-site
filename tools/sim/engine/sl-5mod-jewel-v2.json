@@ -1,36 +1,38 @@
 {
  "mode": "engine",
- "total": 42.82672825592723,
- "totalAll": 42.82672825592723,
+ "total": 42.42706699351994,
+ "totalAll": 42.42706699351994,
  "main": {
   "tot": {
-   "Chaos_Orb": 61.74005453780791,
-   "Exalted_Orb": 7.4501992031872515,
-   "Omen_of_Sinistral_Exaltation": 5.4501992031872515,
+   "Fracturing_Orb": 1,
+   "Orb_of_Annulment": 2,
+   "Chaos_Orb": 35.5922327624626,
+   "Exalted_Orb": 9.014159292035398,
+   "Omen_of_Sinistral_Exaltation": 7.014159292035398,
    "Potent_Liquid_Contempt": 1,
-   "Preserved_Cranium": 2.3442677306125757,
-   "Omen_of_Abyssal_Echoes": 2.3442677306125757,
-   "Orb_of_Annulment": 1,
+   "Preserved_Cranium": 1,
+   "Omen_of_Abyssal_Echoes": 1,
    "Omen_of_Dextral_Annulment": 1,
    "Potent_Liquid_Ferocity": 1
   },
   "totAll": {
-   "Chaos_Orb": 61.74005453780791,
-   "Exalted_Orb": 7.4501992031872515,
-   "Omen_of_Sinistral_Exaltation": 5.4501992031872515,
+   "Fracturing_Orb": 1,
+   "Orb_of_Annulment": 2,
+   "Chaos_Orb": 35.5922327624626,
+   "Exalted_Orb": 9.014159292035398,
+   "Omen_of_Sinistral_Exaltation": 7.014159292035398,
    "Potent_Liquid_Contempt": 1,
-   "Preserved_Cranium": 2.3442677306125757,
-   "Omen_of_Abyssal_Echoes": 2.3442677306125757,
-   "Orb_of_Annulment": 1,
+   "Preserved_Cranium": 1,
+   "Omen_of_Abyssal_Echoes": 1,
    "Omen_of_Dextral_Annulment": 1,
    "Potent_Liquid_Ferocity": 1
   },
   "bases": 1,
-  "div": 42.82672825592723,
-  "divAll": 42.82672825592723,
+  "div": 37.42706699351994,
+  "divAll": 37.42706699351994,
   "nodes": [
    {
-    "id": "h1",
+    "id": "b0",
     "do": "base",
     "p": 1,
     "tries": 1,
@@ -38,24 +40,44 @@
     "use": {}
    },
    {
+    "id": "pf",
+    "do": "fracture",
+    "p": 0.25,
+    "tries": 1,
+    "passes": 1,
+    "use": {
+     "Fracturing_Orb": 1
+    }
+   },
+   {
+    "id": "pc",
+    "do": "remove",
+    "p": 1,
+    "tries": 1,
+    "passes": 1,
+    "use": {
+     "Orb_of_Annulment": 1
+    }
+   },
+   {
     "id": "s2",
     "do": "chaos",
-    "p": 0.08827655310621242,
-    "tries": 11.328036322360953,
-    "passes": 5.4501992031872515,
+    "p": 0.19706994328922495,
+    "tries": 5.074340527577938,
+    "passes": 7.014159292035398,
     "use": {
-     "Chaos_Orb": 61.74005453780791
+     "Chaos_Orb": 35.5922327624626
     }
    },
    {
     "id": "s3",
     "do": "exalt",
-    "p": 0.1834795321637427,
+    "p": 0.14256876103961647,
     "tries": 1,
-    "passes": 5.4501992031872515,
+    "passes": 7.014159292035398,
     "use": {
-     "Exalted_Orb": 5.4501992031872515,
-     "Omen_of_Sinistral_Exaltation": 5.4501992031872515
+     "Exalted_Orb": 7.014159292035398,
+     "Omen_of_Sinistral_Exaltation": 7.014159292035398
     }
    },
    {
@@ -83,19 +105,19 @@
     "do": "desecrate",
     "p": 1,
     "tries": 1,
-    "passes": 2.3442677306125757,
+    "passes": 1,
     "use": {
-     "Preserved_Cranium": 2.3442677306125757
+     "Preserved_Cranium": 1
     }
    },
    {
     "id": "s7",
     "do": "reveal",
-    "p": 0.42657243750000007,
+    "p": 0,
     "tries": 1,
-    "passes": 2.3442677306125757,
+    "passes": 1,
     "use": {
-     "Omen_of_Abyssal_Echoes": 2.3442677306125757
+     "Omen_of_Abyssal_Echoes": 1
     }
    },
    {
@@ -139,5 +161,6 @@
    }
   ]
  },
- "prep": null
+ "prep": null,
+ "basePrice": 5
 }

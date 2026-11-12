@@ -3,8 +3,11 @@
  "recipe": "sl-5mod-jewel-v2",
  "cls": "Sapphire",
  "base": "Sapphire",
- "ilvl": 81,
- "note": "SL 5옵션 사파이어(원본 레시피 기록) — 상태 이상 가속 분열 + 잡옵 → 카오스 오브(접두) → 좌측 찬미 + 엑잘(다른 접두, 빗나가면 소멸의 오브) → 엑잘(접미) → 위력적인 액체 경멸(+1 접두 허용, 아니면 분열 + 옵션 1개로 되돌림) → 보존된 두개골 → 공개(밸런스 = 빛의 징조로 다시) → 우측 소멸의 징조 → 엑잘 → 위력적인 액체 흉포함. 신성한 오브·차율라의 기폭제는 마무리라 뺌.",
+ "ilvl": 82,
+ "basePrice": {
+  "Divine_Orb": 5
+ },
+ "note": "2026-11-13 G4 영상 전체 화면 대조(근거 scratchpad review/G4/sl-5mod-jewel-v2/timeline.md). 피해를 주는 상태 이상의 피해 가속 7% 사파이어 4개 구입(6:30, 옵션 4개) → 분열 1/4(6:58 상태 이상 가속 분열) → 소멸의 오브로 분열 + 옵션 1개(7:00) → 카오스로 접두(8:02 상태 이상의 강도, 목표 카오스·주문·상태 이상 강도·점화 강도) → 좌측 찬미 + 엑잘, 빗나가면 소멸의 오브(8:05~8:21 카오스 피해) → 엑잘 접미 잡옵 → 위력적인 액체 경멸 1/3(8:44 접미 잡옵이 지워지고 접두어 +1개) → 보존된 두개골(자막) + 심연의 메아리 공개(9:07 주문 피해) → 우측 소멸의 징조 + 소멸의 오브로 경멸 옵션 제거(9:35) → 엑잘 접미 잡옵(9:48) → 위력적인 액체 흉포함(10:22 접두어 효과 43%). 흉포함 수치 다시 굴리기(카오스 → 흉포함, 10:20~10:40)·신성한 오브·카오스 기폭제 퀄리티(10:50)·바알 오브(11:30)는 뺌. 내부 결정: 공개 빗나감은 영상에 없어 밸런스 = 빛의 징조로 다시(C17-3), 에센셜 = 그대로. 경멸 실패 처리(분열 + 옵션 1개로 되돌려 카오스부터)는 영상에 없음.",
  "params": {
   "v": {
    "kr": "진행",
@@ -43,6 +46,7 @@
    "params": {
     "v": 2
    },
+   "tier": "ess",
    "desc": {
     "kr": "공개 결과 그대로",
     "en": "Keep the reveal"
@@ -55,9 +59,10 @@
    "params": {
     "v": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상: 공개가 빗나가면 빛의 징조로 다시",
-    "en": "Video: Light on a missed reveal"
+    "kr": "공개가 빗나가면 빛의 징조로 다시",
+    "en": "Omen of Light on a missed reveal"
    }
   }
  ],
@@ -77,20 +82,28 @@
   "p4": {
    "gi": 4
   },
-  "p53": {
-   "gi": 53
-  },
   "pre": {
    "anyOf": [
-    "p29",
-    "p1",
-    "p49",
     "p4",
-    "p53"
+    "p49",
+    "p1",
+    "p29"
    ],
    "label": {
-    "kr": "점화·상태 이상·주문·카오스·위축",
-    "en": "Ignite, ailment, spell, chaos or wither"
+    "kr": "카오스 피해·주문 피해·상태 이상의 강도·점화 강도",
+    "en": "Chaos Damage, Spell Damage, Magnitude of Ailments or Ignite Magnitude"
+   }
+  },
+  "preD": {
+   "anyOf": [
+    "p4",
+    "p49",
+    "p1",
+    "p29"
+   ],
+   "label": {
+    "kr": "카오스 피해·주문 피해·상태 이상의 강도·점화 강도",
+    "en": "Chaos Damage, Spell Damage, Magnitude of Ailments or Ignite Magnitude"
    }
   },
   "contP": {
@@ -112,6 +125,9 @@
  "require": {
   "all": [
    {
+    "has": "ail"
+   },
+   {
     "count": {
      "tag": "pre",
      "min": 2
@@ -119,6 +135,11 @@
    },
    {
     "has": "fer"
+   },
+   {
+    "not": {
+     "has": "contP"
+    }
    }
   ]
  },
@@ -142,22 +163,15 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "s6",
-    "s7",
-    "s7x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  }
- ],
+ "start": "b0",
+ "cap": {
+  "p": 2,
+  "s": 2
+ },
  "finals": [
   {
    "id": "bal",
+   "tier": "bal",
    "kr": "밸런스 옵션",
    "en": "Balance",
    "lines": [
@@ -168,21 +182,21 @@
      "tag": "pre"
     },
     {
-     "tag": "pre"
+     "tag": "preD",
+     "des": true
     },
     {
      "tag": "ail",
-     "tmax": 1,
      "fr": true
     },
     {
-     "tag": "fer",
-     "tmax": 1
+     "tag": "fer"
     }
    ]
   },
   {
    "id": "ess",
+   "tier": "ess",
    "kr": "에센셜 옵션",
    "en": "Essential",
    "lines": [
@@ -194,65 +208,219 @@
     },
     {
      "side": "p",
-     "random": true
+     "random": true,
+     "des": true
     },
     {
      "tag": "ail",
-     "tmax": 1,
      "fr": true
     },
     {
-     "tag": "fer",
-     "tmax": 1
+     "tag": "fer"
     }
    ]
   }
  ],
  "finalItem": {
-  "quality": 20,
+  "quality": 0,
   "sockets": 0
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "pf",
    "start": {
     "rar": "rare",
     "mods": [
+     "ail",
      {
-      "tag": "ail",
-      "fr": true
+      "junk": "p"
      },
      {
       "junk": "p"
+     },
+     {
+      "junk": "s"
      }
     ]
    },
    "label": {
-    "kr": "상태 이상 가속 분열 + 잡옵 1개 사파이어",
-    "en": "Sapphire: fractured faster ailments + one junk line"
+    "kr": "피해를 주는 상태 이상의 피해 가속 + 옵션 3개 레어 사파이어 구입 (아이템 레벨 82)",
+    "en": "Buy a rare Sapphire: faster damaging ailments + three options (item level 82)"
    },
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
-     "m": "n",
-     "tags": [
-      "ail"
-     ]
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     },
     {
      "s": "p",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "n",
+     "tags": [
+      "ail"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "pf",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 (옵션 4개 중 하나)",
+    "en": "Fracture (one of the four options)"
+   },
+   "showText": [
+    {
+     "kr": "상태 이상 가속이 분열되면 성공",
+     "en": "Success when faster ailments fractures"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "fractured": "ail"
+     },
+     "to": "pc",
+     "res": "ok",
+     "label": {
+      "kr": "상태 이상 가속 분열",
+      "en": "Faster ailments fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
+     "tags": [
+      "ail"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    1
+   ],
+   "simTo": "b0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured: new base"
+   },
+   "note": {
+    "kr": "상태 이상 가속이 아닌 옵션이 분열되면 새 베이스로 처음부터",
+    "en": "Another option fractured: start over on a new base"
+   }
+  },
+  {
+   "id": "pc",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one option"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "x",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
+     "tags": [
+      "ail"
+     ]
     }
    ]
   },
@@ -262,7 +430,7 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    3.4
    ],
    "next": "s2",
    "label": {
@@ -271,19 +439,19 @@
    },
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
-     "m": "n",
-     "tags": [
-      "ail"
-     ]
-    },
-    {
-     "s": "p",
+     "s": "x",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
+     "tags": [
+      "ail"
+     ]
     }
    ]
   },
@@ -293,17 +461,24 @@
    "group": "main",
    "pos": [
     0,
-    1
+    4.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "접두 첫번째 옵션",
-    "en": "First prefix"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접두 상태 이상의 강도 — 아래 옵션 중 먼저 뜬 것",
+    "en": "Magnitude of Ailments prefix: whichever listed option lands first"
+   },
+   "show": [
+    "p4",
+    "p49",
+    "p1",
+    "p29"
+   ],
    "edges": [
     {
      "if": {
@@ -314,36 +489,29 @@
     },
     {
      "to": "s2",
-     "res": "fail"
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (5—15)% 증가",
+     "en": "(5—15)% increased Magnitude of Ailments you inflict",
      "m": "n",
      "tags": [
-      "ail"
+      "p1"
      ]
     },
     {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
      "tags": [
-      "pre"
+      "ail"
      ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "p29",
-    "p1",
-    "p49",
-    "p4",
-    "p53"
    ]
   },
   {
@@ -352,17 +520,27 @@
    "group": "main",
    "pos": [
     0,
-    2
+    5.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
-   },
+   "cur": "Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 카오스 피해 — 남은 옵션 중 먼저 뜬 것",
+    "en": "Chaos damage prefix: whichever remaining option lands first"
+   },
+   "show": [
+    "p4",
+    "p49",
+    "p1",
+    "p29"
+   ],
    "edges": [
     {
      "if": {
@@ -376,48 +554,41 @@
     },
     {
      "to": "s3x",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (5—15)% 증가",
+     "en": "(5—15)% increased Magnitude of Ailments you inflict",
      "m": "n",
+     "tags": [
+      "p1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "카오스 피해 (7—13)% 증가",
+     "en": "(7—13)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "p4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
      "tags": [
       "ail"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
     }
-   ],
-   "cur": "Exalted_Orb",
-   "show": [
-    "p29",
-    "p1",
-    "p49",
-    "p4",
-    "p53"
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
@@ -426,7 +597,7 @@
    "group": "main",
    "pos": [
     1,
-    2
+    5.4
    ],
    "keep": [
     "pre"
@@ -448,11 +619,17 @@
     {
      "lost": "pre",
      "to": "s2",
-     "port": "right"
+     "label": {
+      "kr": "좋은 접두가 지워짐 — 다시 카오스",
+      "en": "Good prefix gone: Chaos again"
+     }
     },
     {
      "to": "s3",
-     "port": "bottom"
+     "label": {
+      "kr": "다시 엑잘",
+      "en": "Exalt again"
+     }
     }
    ]
   },
@@ -462,17 +639,24 @@
    "group": "main",
    "pos": [
     0,
-    3
+    6.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix"
-   },
+   "cur": "Exalted_Orb",
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 잡옵 1개",
+    "en": "One junk suffix"
+   },
+   "showText": [
+    {
+     "kr": "접미에 랜덤 옵션 1개",
+     "en": "One random suffix"
+    }
+   ],
    "edges": [
     {
      "to": "s5"
@@ -480,30 +664,30 @@
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (5—15)% 증가",
+     "en": "(5—15)% increased Magnitude of Ailments you inflict",
      "m": "n",
+     "tags": [
+      "p1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "카오스 피해 (7—13)% 증가",
+     "en": "(7—13)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "p4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
      "tags": [
       "ail"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
      ]
     },
     {
@@ -511,14 +695,6 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
-    }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
     }
    ]
   },
@@ -528,82 +704,92 @@
    "group": "main",
    "pos": [
     0,
-    4
+    7.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "위력적인 액체 경멸 (+1 접두 허용, 접미 잡옵이 지워지면 성공 1/3)",
-    "en": "Potent Liquid Contempt (+1 prefix allowed; the junk suffix must go, 1/3)"
-   },
+   "cur": "Potent_Liquid_Contempt",
+   "ess": "contP",
+   "liquid": true,
+   "anyRemove": true,
    "label": {
     "kr": "액체",
     "en": "Liquid"
    },
+   "goal": {
+    "kr": "접두어 속성 부여의 최대 개수 +1개",
+    "en": "+1 Prefix Modifier allowed"
+   },
+   "showText": [
+    {
+     "kr": "접미 잡옵이 지워지면 성공, 접두가 지워지면 실패",
+     "en": "The junk suffix goes: success; a prefix goes: miss"
+    }
+   ],
    "edges": [
     {
      "if": {
-      "count": {
-       "tag": "pre",
-       "min": 2
-      }
+      "all": [
+       {
+        "has": "contP"
+       },
+       {
+        "count": {
+         "tag": "pre",
+         "min": 2
+        }
+       }
+      ]
      },
      "to": "s6",
      "res": "ok"
     },
     {
      "to": "s5x",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "접두가 지워짐",
+      "en": "A prefix removed"
+     }
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (5—15)% 증가",
+     "en": "(5—15)% increased Magnitude of Ailments you inflict",
      "m": "n",
+     "tags": [
+      "p1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "카오스 피해 (7—13)% 증가",
+     "en": "(7—13)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "p4"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
      "tags": [
       "ail"
      ]
     },
     {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "+1 접두 허용",
-     "en": "+1 prefix allowed",
-     "m": "n",
+     "kr": "접두어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Prefix Modifier allowed",
+     "m": "c",
      "tags": [
       "contP"
      ]
     }
-   ],
-   "cur": "Potent_Liquid_Contempt",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "+1 접두 허용 (좋은 접두가 지워지면 분열 + 1개로 되돌림)",
-     "en": "+1 prefix allowed (a good prefix gone: back to the fracture + one line)"
-    }
-   ],
-   "ess": "contP",
-   "liquid": true,
-   "anyRemove": true
+   ]
   },
   {
    "id": "s5x",
@@ -611,7 +797,7 @@
    "group": "main",
    "pos": [
     1,
-    4
+    7.4
    ],
    "keep": [],
    "maxJunk": 1,
@@ -624,13 +810,16 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "분열 + 옵션 1개로 되돌리기",
-    "en": "Back to the fracture + one line"
+    "kr": "분열 + 옵션 1개만 남기고 카오스부터",
+    "en": "Keep the fracture + one option, Chaos again"
    },
    "edges": [
     {
      "to": "s2",
-     "port": "right"
+     "label": {
+      "kr": "다시 카오스",
+      "en": "Chaos again"
+     }
     }
    ]
   },
@@ -640,17 +829,25 @@
    "group": "main",
    "pos": [
     0,
-    5
+    8.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접두 세번째 옵션(훼손)",
-    "en": "Third prefix (desecrated)"
-   },
+   "cur": "Preserved_Cranium",
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
      "to": "s7"
@@ -658,54 +855,46 @@
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (5—15)% 증가",
+     "en": "(5—15)% increased Magnitude of Ailments you inflict",
      "m": "n",
+     "tags": [
+      "p1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "카오스 피해 (7—13)% 증가",
+     "en": "(7—13)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "p4"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
      "tags": [
       "ail"
      ]
     },
     {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "+1 접두 허용",
-     "en": "+1 prefix allowed",
-     "m": "n",
+     "kr": "접두어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Prefix Modifier allowed",
+     "m": "c",
      "tags": [
       "contP"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Cranium",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
     }
    ]
   },
@@ -715,96 +904,120 @@
    "group": "main",
    "pos": [
     0,
-    6
+    9.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "preD",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 주문 피해 — 남은 옵션 중 먼저 뜬 것",
+    "en": "Spell damage prefix: whichever remaining option lands first"
+   },
+   "show": [
+    "p4",
+    "p49",
+    "p1",
+    "p29"
+   ],
    "edges": [
     {
      "if": {
-      "added": "pre"
+      "added": "preD"
      },
      "to": "s8",
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
      "to": "s7x",
-     "res": "fail"
-    },
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "over": [
     {
-     "to": "s8",
-     "res": "fail"
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "goal": {
+       "kr": "접두 세번째 옵션 — 공개 결과 그대로",
+       "en": "Third prefix: keep the reveal"
+      },
+      "edges": [
+       {
+        "if": {
+         "added": "preD"
+        },
+        "to": "s8",
+        "res": "ok"
+       },
+       {
+        "to": "s8",
+        "res": "fail",
+        "label": {
+         "kr": "빗나감 — 그대로",
+         "en": "Miss: keep it"
+        }
+       }
+      ]
+     }
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (5—15)% 증가",
+     "en": "(5—15)% increased Magnitude of Ailments you inflict",
      "m": "n",
+     "tags": [
+      "p1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "카오스 피해 (7—13)% 증가",
+     "en": "(7—13)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "p4"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 (5—15)% 증가",
+     "en": "(5—15)% increased Spell Damage",
+     "m": "d",
+     "tags": [
+      "p49"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
      "tags": [
       "ail"
      ]
     },
     {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "+1 접두 허용",
-     "en": "+1 prefix allowed",
-     "m": "n",
+     "kr": "접두어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Prefix Modifier allowed",
+     "m": "c",
      "tags": [
       "contP"
      ]
     }
-   ],
-   "want": "pre",
-   "show": [
-    "p29",
-    "p1",
-    "p49",
-    "p4",
-    "p53"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
@@ -813,7 +1026,7 @@
    "group": "main",
    "pos": [
     1,
-    6
+    9.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -829,13 +1042,16 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "훼손 옵션 지우고 다시 훼손",
+    "en": "Remove the desecrated option, desecrate again"
    },
    "edges": [
     {
      "to": "s6",
-     "port": "right"
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
@@ -845,17 +1061,27 @@
    "group": "main",
    "pos": [
     0,
-    7
+    10.4
    ],
    "act": "annul",
-   "goal": {
-    "kr": "+1 접두 허용 옵션 제거",
-    "en": "Remove the +1 prefix line"
-   },
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ],
    "label": {
     "kr": "소멸",
     "en": "Annul"
    },
+   "goal": {
+    "kr": "접두어 속성 부여의 최대 개수 +1개 지우기",
+    "en": "Remove +1 Prefix Modifier allowed"
+   },
+   "showText": [
+    {
+     "kr": "접미에 분열 말고 이 옵션뿐이라 확정",
+     "en": "The only non-fractured suffix: certain"
+    }
+   ],
    "edges": [
     {
      "to": "s9"
@@ -863,45 +1089,41 @@
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (5—15)% 증가",
+     "en": "(5—15)% increased Magnitude of Ailments you inflict",
      "m": "n",
+     "tags": [
+      "p1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "카오스 피해 (7—13)% 증가",
+     "en": "(7—13)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "p4"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 (5—15)% 증가",
+     "en": "(5—15)% increased Spell Damage",
+     "m": "d",
+     "tags": [
+      "p49"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
      "tags": [
       "ail"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
     }
-   ],
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Dextral_Annulment"
    ]
   },
   {
@@ -910,17 +1132,24 @@
    "group": "main",
    "pos": [
     0,
-    8
+    11.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "흉포함이 지울 접미",
-    "en": "The suffix for Ferocity to remove"
-   },
+   "cur": "Exalted_Orb",
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "흉포함이 지울 접미 잡옵",
+    "en": "A junk suffix for Ferocity to remove"
+   },
+   "showText": [
+    {
+     "kr": "접두가 한도를 넘어 접미로 랜덤 옵션 1개",
+     "en": "Prefixes are over the limit: one random suffix"
+    }
+   ],
    "edges": [
     {
      "to": "s11"
@@ -928,39 +1157,39 @@
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (5—15)% 증가",
+     "en": "(5—15)% increased Magnitude of Ailments you inflict",
      "m": "n",
+     "tags": [
+      "p1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "카오스 피해 (7—13)% 증가",
+     "en": "(7—13)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "p4"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 (5—15)% 증가",
+     "en": "(5—15)% increased Spell Damage",
+     "m": "d",
+     "tags": [
+      "p49"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
      "tags": [
       "ail"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
      ]
     },
     {
@@ -968,14 +1197,6 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
-    }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
     }
    ]
   },
@@ -985,17 +1206,26 @@
    "group": "main",
    "pos": [
     0,
-    9
+    12.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "위력적인 액체 흉포함 (접미 잡옵이 지워짐)",
-    "en": "Potent Liquid Ferocity (the junk suffix goes)"
-   },
+   "cur": "Potent_Liquid_Ferocity",
+   "ess": "fer",
+   "liquid": true,
    "label": {
     "kr": "액체",
     "en": "Liquid"
    },
+   "goal": {
+    "kr": "접두어 효과 (40—60)% 증가",
+    "en": "(40—60)% increased Effect of Prefixes"
+   },
+   "showText": [
+    {
+     "kr": "접미 잡옵이 지워지고 붙음",
+     "en": "The junk suffix goes"
+    }
+   ],
    "edges": [
     {
      "to": "ok"
@@ -1003,61 +1233,51 @@
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "상태 이상 가속 (분열)",
-     "en": "Faster ailments (fractured)",
+     "s": "p",
+     "kr": "플레이어가 유발하는 상태 이상의 강도 (5—15)% 증가",
+     "en": "(5—15)% increased Magnitude of Ailments you inflict",
      "m": "n",
+     "tags": [
+      "p1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "카오스 피해 (7—13)% 증가",
+     "en": "(7—13)% increased Chaos Damage",
+     "m": "n",
+     "tags": [
+      "p4"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 (5—15)% 증가",
+     "en": "(5—15)% increased Spell Damage",
+     "m": "d",
+     "tags": [
+      "p49"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "피해를 주는 상태 이상의 피해 (3—7)%만큼 가속",
+     "en": "Damaging Ailments deal damage (3—7)% faster",
+     "m": "f",
      "tags": [
       "ail"
      ]
     },
     {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "원하는 접두",
-     "en": "Wanted prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "접두 효과 증가",
-     "en": "Increased effect of prefixes",
-     "m": "n",
+     "kr": "접두어 효과 (40—60)% 증가",
+     "en": "(40—60)% increased Effect of Prefixes",
+     "m": "c",
      "tags": [
       "fer"
      ]
     }
-   ],
-   "cur": "Potent_Liquid_Ferocity",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "접두 효과 증가",
-     "en": "Increased effect of prefixes"
-    }
-   ],
-   "ess": "fer",
-   "liquid": true
+   ]
   },
   {
    "id": "ok",
@@ -1065,7 +1285,7 @@
    "group": "main",
    "pos": [
     0,
-    10
+    13.4
    ],
    "label": {
     "kr": "완성",
@@ -1073,8 +1293,16 @@
    }
   }
  ],
- "cap": {
-  "p": 2,
-  "s": 2
- }
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "s6",
+    "s7",
+    "s7x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ]
 }

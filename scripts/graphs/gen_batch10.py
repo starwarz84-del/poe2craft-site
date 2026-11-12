@@ -136,3 +136,7 @@ graph10('mazbro-caster-ring-v2','Rings','Mnemonic Ring',82,
   FIN(('bal','ess'),lambda v:[{'tag':'pmana','tmax':1},{'tag':'mana','tmax':2 if v=='bal' else 3},{'side':'p','label':K('받는 피해를 마나로 또는 마나 1티어','Damage from mana or T1 mana')} if v=='bal' else {'side':'p','random':True},{'tag':'cast','tmax':1,'fr':True},{'side':'s','label':K('마나 재생·희귀도·모든 원소 저항 1티어','T1 mana regen, rarity or all res')},{'side':'s','random':True}]),
   {'quality':41,'sockets':0},{'all':[{'has':'cast'},{'has':'pmana'},{'has':'good'},{'full':'p'},{'full':'s'}]},('bal','ess'))
 print('wrote 4 graphs (batch 10)')
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_vodnarg_timelost_emerald.py'): _sp.run([_sy.executable, f'{H}/gen_vodnarg_timelost_emerald.py'], check=True)   # 2026-11-13 G4: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_sl_5mod_jewel.py'): _sp.run([_sy.executable, f'{H}/gen_sl_5mod_jewel.py'], check=True)   # 2026-11-13 G4: 새 기준 전용 생성기가 덮어씀

@@ -4,7 +4,10 @@
  "cls": "Time-Lost_Emerald",
  "base": "Time-Lost Emerald",
  "ilvl": 80,
- "note": "Vodnarg 오래된 에메랄드(원본 레시피 기록) — 원하는 접미 옵션 2개 + 접두 옵션 2개 구입 → 고대 위력적인 액체 경멸(+1 접미 허용, 아니면 새 주얼) → 우측 강령술 + 보존된 두개골 → 공개(밸런스 = 빛의 징조로 다시) → 좌측 말소의 징조 + 카오스 오브(경멸 옵션 지우기) → 카오스 오브(좋은 접두, 밸런스) → 고대 위력적인 액체 우울. 오래된",
+ "basePrice": {
+  "Divine_Orb": 3
+ },
+ "note": "2026-11-13 G4 영상 전체 화면 대조(근거 scratchpad review/G4/vodnarg-timelost-emerald-v2/timeline.md). 주얼 3개를 같이 만들고 셋 다 완성 — 레시피는 1번 주얼(Blight Desire) 한 줄: 공격 속도 + 창 치명타 피해 보너스 접미 2개, 접두 잡옵 2개(실명 효과·소형 회피) 오래된 에메랄드 구입(2:55, 약 3 div) → 고대 위력적인 액체 경멸 50:50(4:28 실명 효과가 지워지고 접미어 +1개, 실패면 버리고 새 주얼) → 우측 강령술의 징조 + 보존된 두개골(5:10~5:14) → 심연의 메아리 공개(6:02 공격 치명타 확률, 2·3번 주얼은 빛의 징조로 다시 6:35~9:28) → 좌측 말소의 징조 + 카오스(10:33 접미어 +1개가 지워지고 정확도 접두, 50:50 빗나가면 다시) → 카오스 반복으로 접두만 바뀜(11:00~12:20, 투사체 피해) → 고대 위력적인 액체 우울(12:58 정확도가 지워지고 매우 넓은 반경, 50:50 빗나가면 카오스부터). 신성한 오브(14:10 말로만)는 뺌. 밸런스 = 영상, 에센셜 = 공개 결과 그대로·접두 카오스 없이 우울 한 번(C17-3).",
  "params": {
   "v": {
    "kr": "진행",
@@ -43,9 +46,10 @@
    "params": {
     "v": 2
    },
+   "tier": "ess",
    "desc": {
-    "kr": "공개 결과 그대로, 접두 카오스 한 번",
-    "en": "Keep the reveal, one prefix Chaos"
+    "kr": "공개 결과 그대로, 우울 한 번",
+    "en": "Keep the reveal, one Melancholy"
    }
   },
   {
@@ -55,9 +59,10 @@
    "params": {
     "v": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상: 빛의 징조로 다시 공개, 좋은 접두까지 카오스 오브",
-    "en": "Video: Light retries, Chaos until a good prefix"
+    "kr": "영상: 빛의 징조로 다시 공개, 좋은 접두까지 카오스",
+    "en": "Video: Omen of Light on a missed reveal, Chaos until a good prefix"
    }
   }
  ],
@@ -77,50 +82,14 @@
   "s9": {
    "gi": 9
   },
-  "suf": {
-   "anyOf": [
-    "s11",
-    "s65"
-   ],
-   "label": {
-    "kr": "핵심 패시브 접미",
-    "en": "Notable suffix"
-   }
-  },
-  "rev": {
-   "anyOf": [
-    "s8",
-    "s64",
-    "s9"
-   ],
-   "label": {
-    "kr": "핵심 패시브 접미",
-    "en": "Notable suffix"
-   }
-  },
   "p54": {
    "gi": 54
   },
   "p66": {
    "gi": 66
   },
-  "p55": {
-   "gi": 55
-  },
-  "p10": {
-   "gi": 10
-  },
-  "pre": {
-   "anyOf": [
-    "p54",
-    "p66",
-    "p55",
-    "p10"
-   ],
-   "label": {
-    "kr": "반경 패시브 접두",
-    "en": "Radius passive prefix"
-   }
+  "rad": {
+   "gi": 99
   },
   "contS": {
    "gi": 101,
@@ -134,20 +103,41 @@
     "p": 1
    }
   },
-  "rad": {
-   "gi": 99
+  "rev": {
+   "anyOf": [
+    "s8",
+    "s64",
+    "s9"
+   ],
+   "label": {
+    "kr": "공격 치명타 확률·창 공격 속도·공격 치명타 피해 보너스",
+    "en": "Critical Hit Chance for Attacks, Attack Speed with Spears or Critical Damage Bonus for Attack Damage"
+   }
+  },
+  "pre": {
+   "anyOf": [
+    "p54",
+    "p66"
+   ],
+   "label": {
+    "kr": "투사체 피해·창 사용 시 피해",
+    "en": "Projectile Damage or Damage with Spears"
+   }
   }
  },
  "require": {
   "all": [
    {
-    "count": {
-     "tag": "suf",
-     "min": 2
-    }
+    "has": "s11"
+   },
+   {
+    "has": "s65"
    },
    {
     "has": "rad"
+   },
+   {
+    "full": "s"
    }
   ]
  },
@@ -171,70 +161,39 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "v3",
-    "v4",
-    "v4x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  },
-  {
-   "id": "L2",
-   "nodes": [
-    "v6",
-    "v7"
-   ],
-   "kr": "우울",
-   "en": "Melancholy"
-  }
- ],
+ "start": "b0",
+ "cap": {
+  "p": 2,
+  "s": 2
+ },
  "finals": [
   {
    "id": "bal",
+   "tier": "bal",
    "kr": "밸런스 옵션",
    "en": "Balance",
    "lines": [
     {
-     "side": "p",
-     "label": {
-      "kr": "반경 패시브 접두",
-      "en": "Radius passive prefix"
-     }
+     "tag": "pre"
     },
     {
-     "tag": "rad",
-     "tmax": 1
+     "tag": "rad"
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "핵심 패시브 접미",
-      "en": "Notable suffix"
-     }
+     "tag": "s11"
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "핵심 패시브 접미",
-      "en": "Notable suffix"
-     }
+     "tag": "s65"
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "핵심 패시브 접미",
-      "en": "Notable suffix"
-     }
+     "tag": "rev",
+     "des": true
     }
    ]
   },
   {
    "id": "ess",
+   "tier": "ess",
    "kr": "에센셜 옵션",
    "en": "Essential",
    "lines": [
@@ -243,26 +202,18 @@
      "random": true
     },
     {
-     "tag": "rad",
-     "tmax": 1
+     "tag": "rad"
+    },
+    {
+     "tag": "s11"
+    },
+    {
+     "tag": "s65"
     },
     {
      "side": "s",
-     "label": {
-      "kr": "핵심 패시브 접미",
-      "en": "Notable suffix"
-     }
-    },
-    {
-     "side": "s",
-     "label": {
-      "kr": "핵심 패시브 접미",
-      "en": "Notable suffix"
-     }
-    },
-    {
-     "side": "s",
-     "random": true
+     "random": true,
+     "des": true
     }
    ]
   }
@@ -273,7 +224,7 @@
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
@@ -295,29 +246,11 @@
     ]
    },
    "label": {
-    "kr": "원하는 접미 옵션 2개 + 접두 옵션 2개 희귀 오래된 에메랄드 구입",
-    "en": "Buy a rare Time-Lost Emerald: two wanted suffixes + two prefixes"
+    "kr": "공격 속도 + 창 치명타 피해 보너스 접미, 접두 2개 레어 오래된 에메랄드 구입",
+    "en": "Buy a rare Time-Lost Emerald: attack speed + spear crit damage suffixes, two prefixes"
    },
    "item": [
     {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
      "s": "p",
      "kr": "잡옵",
      "en": "Junk",
@@ -328,6 +261,24 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 속도 (1—2)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "s11"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 창 사용 시 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus with Spears",
+     "m": "n",
+     "tags": [
+      "s65"
+     ]
     }
    ]
   },
@@ -337,33 +288,15 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    1.4
    ],
-   "next": "v2",
+   "next": "l1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
    },
    "item": [
     {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
      "s": "p",
      "kr": "잡옵",
      "en": "Junk",
@@ -374,59 +307,82 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 속도 (1—2)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "s11"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 창 사용 시 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus with Spears",
+     "m": "n",
+     "tags": [
+      "s65"
+     ]
     }
    ]
   },
   {
-   "id": "v2",
+   "id": "l1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    1
+    2.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "고대 위력적인 액체 경멸 (50%로 +1 접미 허용)",
-    "en": "Ancient Potent Liquid Contempt (50%: +1 suffix allowed)"
-   },
+   "cur": "Ancient_Potent_Liquid_Contempt",
+   "ess": "contS",
+   "alt": "contP",
+   "liquid": true,
    "label": {
     "kr": "액체",
     "en": "Liquid"
    },
+   "goal": {
+    "kr": "접미어 속성 부여의 최대 개수 +1개",
+    "en": "+1 Suffix Modifier allowed"
+   },
+   "showText": [
+    {
+     "kr": "접두 잡옵이 지워지면 성공, 접미가 지워지면 실패",
+     "en": "A junk prefix goes: success; a suffix goes: miss"
+    }
+   ],
    "edges": [
     {
      "if": {
-      "has": "contS"
+      "all": [
+       {
+        "has": "contS"
+       },
+       {
+        "has": "s11"
+       },
+       {
+        "has": "s65"
+       }
+      ]
      },
-     "to": "v3",
+     "to": "d1",
      "res": "ok"
     },
     {
-     "to": "h1",
+     "to": "l1x",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "접미가 지워짐",
+      "en": "A suffix removed"
+     }
     }
    ],
    "item": [
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
     {
      "s": "p",
      "kr": "잡옵",
@@ -435,67 +391,86 @@
     },
     {
      "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
      "tags": [
       "contS"
      ]
-    }
-   ],
-   "cur": "Ancient_Potent_Liquid_Contempt",
-   "showText": [
+    },
     {
-     "s": "p",
-     "kr": "+1 접미 허용 (아니면 접미가 지워져 새 주얼)",
-     "en": "+1 suffix allowed (else a suffix goes: new jewel)"
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 속도 (1—2)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "s11"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 창 사용 시 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus with Spears",
+     "m": "n",
+     "tags": [
+      "s65"
+     ]
     }
-   ],
-   "ess": "contS",
-   "liquid": true,
-   "alt": "contP"
+   ]
   },
   {
-   "id": "v3",
+   "id": "l1x",
+   "kind": "exit",
+   "group": "main",
+   "pos": [
+    1,
+    2.4
+   ],
+   "simTo": "b0",
+   "variant": "fail",
+   "label": {
+    "kr": "새 주얼",
+    "en": "New jewel"
+   },
+   "note": {
+    "kr": "접미어 +1개가 붙지 않으면 그 주얼은 버리고 새 주얼로",
+    "en": "No +1 suffix: set the jewel aside and buy a new one"
+   }
+  },
+  {
+   "id": "d1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    3.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 세번째 옵션(훼손)",
-    "en": "Third suffix (desecrated)"
-   },
+   "cur": "Preserved_Cranium",
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
-     "to": "v4"
+     "to": "r1"
     }
    ],
    "item": [
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
     {
      "s": "p",
      "kr": "잡옵",
@@ -504,132 +479,164 @@
     },
     {
      "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
      "tags": [
       "contS"
      ]
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "반경 내 주요 패시브 스킬이 공격 속도 (1—2)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "s11"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 창 사용 시 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus with Spears",
+     "m": "n",
+     "tags": [
+      "s65"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
     }
-   ],
-   "cur": "Preserved_Cranium",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Dextral_Necromancy"
    ]
   },
   {
-   "id": "v4",
+   "id": "r1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    4.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "rev",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
-   "edges": [
-    {
-     "if": {
-      "added": "rev"
-     },
-     "to": "v5",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
-     "to": "v4x",
-     "res": "fail"
-    },
-    {
-     "to": "v5",
-     "res": "fail"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
-     "tags": [
-      "contS"
-     ]
-    }
-   ],
-   "want": "rev",
+   "goal": {
+    "kr": "접미 공격 치명타 확률 — 아래 옵션 중 먼저 뜬 것",
+    "en": "Attack crit chance suffix: whichever listed option lands first"
+   },
    "show": [
     "s8",
     "s64",
     "s9"
    ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
+   "edges": [
+    {
+     "if": {
+      "added": "rev"
+     },
+     "to": "x1",
+     "res": "ok"
+    },
+    {
+     "to": "r1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "goal": {
+       "kr": "접미 세번째 옵션 — 공개 결과 그대로",
+       "en": "Third suffix: keep the reveal"
+      },
+      "edges": [
+       {
+        "if": {
+         "added": "rev"
+        },
+        "to": "x1",
+        "res": "ok"
+       },
+       {
+        "to": "x1",
+        "res": "fail",
+        "label": {
+         "kr": "빗나감 — 그대로",
+         "en": "Miss: keep it"
+        }
+       }
+      ]
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
+     "tags": [
+      "contS"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 속도 (1—2)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "s11"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 창 사용 시 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus with Spears",
+     "m": "n",
+     "tags": [
+      "s65"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 (3—7)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Attacks",
+     "m": "d",
+     "tags": [
+      "s8"
+     ]
+    }
    ]
   },
   {
-   "id": "v4x",
+   "id": "r1x",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    3
+    4.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -645,75 +652,62 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "훼손 옵션 지우고 다시 훼손",
+    "en": "Remove the desecrated option, desecrate again"
    },
    "edges": [
     {
-     "to": "v3",
-     "port": "right"
+     "to": "d1",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
   {
-   "id": "v5",
+   "id": "x1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    5.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "+1 접미 허용 옵션 지우기 (접두만 바뀜)",
-    "en": "Reroll the +1 suffix line away (prefixes only)"
-   },
+   "cur": "Chaos_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Erasure"
+   ],
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접미어 속성 부여의 최대 개수 +1개 지우기",
+    "en": "Remove +1 Suffix Modifier allowed"
+   },
+   "showText": [
+    {
+     "kr": "접미가 한도를 넘어 새 옵션은 접두로",
+     "en": "Suffixes are over the limit: the new option is a prefix"
+    }
+   ],
    "edges": [
     {
      "if": {
       "has": "contS"
      },
-     "to": "v5",
-     "res": "fail"
+     "to": "x1",
+     "res": "fail",
+     "hide": true
     },
     {
-     "to": "v6",
+     "to": "c2",
      "res": "ok"
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
-    },
-    {
      "s": "p",
      "kr": "잡옵",
      "en": "Junk",
@@ -724,78 +718,99 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 속도 (1—2)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "s11"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 창 사용 시 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus with Spears",
+     "m": "n",
+     "tags": [
+      "s65"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 (3—7)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Attacks",
+     "m": "d",
+     "tags": [
+      "s8"
+     ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "omens": [
-    "Omen_of_Sinistral_Erasure"
    ]
   },
   {
-   "id": "v6",
+   "id": "c2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    6.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "좋은 접두 (접미가 한도를 넘어 접두만 바뀜)",
-    "en": "A good prefix (only prefixes change)"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접두 투사체 피해 — 창 사용 시 피해와 함께 먼저 뜬 것",
+    "en": "Projectile damage prefix: or damage with spears, whichever lands first"
+   },
+   "showText": [
+    {
+     "kr": "접미가 한도를 넘어 접두만 바뀜",
+     "en": "Suffixes are over the limit: only prefixes change"
+    }
+   ],
+   "show": [
+    "p54",
+    "p66"
+   ],
+   "skipIf": {
+    "any": [
+     {
+      "has": "pre"
+     },
+     {
+      "param": {
+       "v": 2
+      }
+     }
+    ]
+   },
+   "skipTo": "l2",
    "edges": [
     {
      "if": {
       "has": "pre"
      },
-     "to": "v7",
+     "to": "l2",
      "res": "ok"
     },
     {
-     "to": "v6",
-     "res": "fail"
+     "to": "c2",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
-    },
-    {
      "s": "p",
-     "kr": "반경 패시브 접두",
-     "en": "Radius passive prefix",
+     "kr": "반경 내 소형 패시브 스킬이 투사체 피해 (1—2)% 증가도 부여",
+     "en": "Small Passive Skills in Radius also grant (1—2)% increased Projectile Damage",
      "m": "n",
      "tags": [
-      "pre"
+      "p54"
      ]
     },
     {
@@ -803,14 +818,78 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 속도 (1—2)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "s11"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 창 사용 시 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus with Spears",
+     "m": "n",
+     "tags": [
+      "s65"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 (3—7)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Attacks",
+     "m": "d",
+     "tags": [
+      "s8"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "l2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
+   ],
+   "act": "essence",
+   "cur": "Ancient_Potent_Liquid_Melancholy",
+   "ess": "rad",
+   "liquid": true,
+   "label": {
+    "kr": "액체",
+    "en": "Liquid"
+   },
+   "goal": {
+    "kr": "반경이 매우 넓은 반경으로 업그레이드",
+    "en": "Upgrades Radius to Very Large"
+   },
+   "showText": [
+    {
+     "kr": "접두 잡옵이 지워지면 성공, 좋은 접두가 지워지면 실패",
+     "en": "The junk prefix goes: success; the good prefix goes: miss"
     }
    ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "p54",
-    "p66",
-    "p55",
-    "p10"
+   "edges": [
+    {
+     "if": {
+      "has": "pre"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "c2",
+     "res": "fail",
+     "label": {
+      "kr": "좋은 접두가 지워짐 — 다시 카오스",
+      "en": "Good prefix gone: Chaos again"
+     }
+    }
    ],
    "over": [
     {
@@ -818,116 +897,68 @@
       "v": 2
      },
      "set": {
-      "edges": [
+      "showText": [
        {
-        "to": "v7"
+        "kr": "접두 하나가 지워짐 — 결과 그대로",
+        "en": "One prefix goes: keep the result"
        }
       ],
-      "goal": {
-       "kr": "접두 한 번 다시 (결과 그대로)",
-       "en": "One prefix reroll (keep it)"
-      }
+      "edges": [
+       {
+        "to": "ok",
+        "res": "ok"
+       }
+      ]
      }
-    }
-   ]
-  },
-  {
-   "id": "v7",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    6
-   ],
-   "act": "essence",
-   "goal": {
-    "kr": "고대 위력적인 액체 우울 (접두 하나가 지워짐)",
-    "en": "Ancient Potent Liquid Melancholy (one prefix goes)"
-   },
-   "label": {
-    "kr": "액체",
-    "en": "Liquid"
-   },
-   "edges": [
-    {
-     "if": {
-      "param": {
-       "v": 2
-      }
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "has": "pre"
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "to": "v6",
-     "res": "fail",
-     "port": "right"
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
+     "s": "p",
+     "kr": "반경 내 소형 패시브 스킬이 투사체 피해 (1—2)% 증가도 부여",
+     "en": "Small Passive Skills in Radius also grant (1—2)% increased Projectile Damage",
      "m": "n",
      "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "핵심 패시브 접미",
-     "en": "Notable suffix",
-     "m": "n",
-     "tags": [
-      "suf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "rev"
+      "p54"
      ]
     },
     {
      "s": "p",
-     "kr": "반경 패시브 접두",
-     "en": "Radius passive prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "범위 아주 큼",
-     "en": "Very large radius",
-     "m": "n",
+     "kr": "반경이 매우 넓은 반경으로 업그레이드",
+     "en": "Upgrades Radius to Very Large",
+     "m": "c",
      "tags": [
       "rad"
      ]
-    }
-   ],
-   "cur": "Ancient_Potent_Liquid_Melancholy",
-   "showText": [
+    },
     {
-     "s": "p",
-     "kr": "범위 아주 큼",
-     "en": "Very large radius"
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 속도 (1—2)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "s11"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 창 사용 시 치명타 피해 보너스 (5—10)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus with Spears",
+     "m": "n",
+     "tags": [
+      "s65"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 (3—7)% 증가도 부여",
+     "en": "Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Attacks",
+     "m": "d",
+     "tags": [
+      "s8"
+     ]
     }
-   ],
-   "ess": "rad",
-   "liquid": true
+   ]
   },
   {
    "id": "ok",
@@ -935,7 +966,7 @@
    "group": "main",
    "pos": [
     0,
-    7
+    8.4
    ],
    "label": {
     "kr": "완성",
@@ -943,8 +974,25 @@
    }
   }
  ],
- "cap": {
-  "p": 2,
-  "s": 2
- }
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "d1",
+    "r1",
+    "r1x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "c2",
+    "l2"
+   ],
+   "kr": "우울",
+   "en": "Melancholy"
+  }
+ ]
 }

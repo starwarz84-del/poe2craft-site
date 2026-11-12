@@ -11,7 +11,7 @@ sj_spell=textB('increased Spell Damage','n','p'); sj_chaos=textB('increased Chao
 sj_plusP=textB('+1 Prefix Modifier allowed','x','s'); sj_effP=textB('increased Effect of Prefixes','x','s')
 SJP=[{'gi':sj_ign},{'gi':sj_ail},{'gi':sj_spell},{'gi':sj_chaos},{'gi':sj_with}]
 R.append({
- 'id':'sl-5mod-jewel','cls':c,'base':0,'ilvl':81,'cap':{'p':2,'s':2},'difficulty':3,'budget':'medium','unknownW':True,
+ 'id':'sl-5mod-jewel','cls':c,'base':0,'ilvl':82,'cap':{'p':2,'s':2},'difficulty':3,'budget':'medium','unknownW':True,
  'buildTags':[K('주얼','Jewel'),K('상태 이상','Ailments'),K('카오스','Chaos')],'patch':'0.5.5','created':'2026-11-09','author':SL,
  'source':{'url':'https://www.youtube.com/watch?v=VKMT7tuSIYk','title':'[POE2 0.5.5] #4 (5줄) 레어 주얼 제작 가이드 (맥롤까지 비교적 저렴하게 띄우기)','channel':'SL 게임연구소!'},
  'title':K('접두 옵션 3개 5옵션 · 상태 이상 가속 분열','five mods with three prefixes, fractured ailment speed'),
