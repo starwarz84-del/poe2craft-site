@@ -25,7 +25,7 @@ ANN = K('소멸의 오브 사용', 'Use an Orb of Annulment')
 P = {'high': {'rT': 1, 'eT': 1}, 'bal': {'rT': 2, 'eT': 2}}
 
 g = {
- 'id': 'barricade-quarterstaff-v2', 'recipe': 'barricade-quarterstaff-v2', 'cls': 'Quarterstaves', 'base': 'Sinister Quarterstaff', 'ilvl': 81,
+ 'id': 'barricade-quarterstaff-v2', 'recipe': 'barricade-quarterstaff-v2', 'cls': 'Quarterstaves', 'base': 'Sinister Quarterstaff', 'ilvl': 81, 'basePrice': {'Divine_Orb': 7},   # 4:52 거래소 약 7 div
  'note': ('2026-11-13 W21 영상 전체 화면 대조. 성공 회차(Corpse Mast) 한 줄: 특출난 험악한 육척봉(아이템 레벨 81, 소켓 3개, 노멀, 약 7 div, 4:52) → '
           '대장장이의 숫돌 20%(5:45) → 바알 대장장이의 주입기로 30%(6:28 21% → 6:52 30%, 주입기 10 → 2개) → 진화(7:36 정확도) → 제왕(7:42 근접 스킬 +3) → '
           '소멸의 오브로 옵션 하나만(7:50) → 카오스로 치명타 확률 1티어(8:02) → 엑잘 2번 + 보존된 턱뼈(9:35 공격 속도·정확도와 빛 반경·접두 미공개 훼손) → 분열 1/3(10:00, 첫 베이스는 공격 속도 분열로 실패 10:02) → '
@@ -123,7 +123,7 @@ A(id='p1', kind='act', group='main', pos=[0, 17], act='exalt', cur='Perfect_Exal
   goal=K('접두 옵션 2개', 'Two prefixes'), showText=[{'s': 'p', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   edges=[{'if': {'count': {'tag': 'ele', 'min': 2}}, 'to': 'p4', 'res': 'ok'}, {'to': 'p2', 'res': 'fail'}], item=[EA, J('p'), CR, ME, AS])
 A(id='p2', kind='act', group='main', pos=[0, 18], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'keep'}, label=K('절사 + 카오스', 'Whittling + Chaos'),
-  goal=K('가장 낮은 접두를 원소 피해로 — 화염·냉기·번개 피해 추가·공격 스킬의 원소 피해 중 먼저 뜬 것', 'The lowest prefix into elemental damage: whichever of added fire, cold, lightning or elemental damage with attacks lands first'),
+  goal=K('가장 낮은 접두를 원소 피해로 — 먼저 뜬 것', 'The lowest prefix into elemental damage: whichever lands first'),
   show=['fire', 'cold', 'lflat', 'eatk'],
   edges=[{'if': {'count': {'tag': 'ele', 'min': 2}}, 'to': 'p4', 'res': 'ok'}, {'to': 'p2', 'res': 'fail', 'hide': True}], item=[EA, FI, CR, ME, AS])
 A(id='p4', kind='act', group='main', pos=[0, 19], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
