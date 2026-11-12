@@ -1791,8 +1791,8 @@ function fcD(pts, sharp){ let d=`M${pts[0][0]},${pts[0][1]}`;
 function fcLabels(list, rects, lines=[]){ // list: [{pts, w, ...}] → x,y per label: near the source, clear of boxes, other labels and other lines
   const placed=[], H=21, ov=(a,b)=>Math.max(0,Math.min(a[2],b[2])-Math.max(a[0],b[0]))*Math.max(0,Math.min(a[3],b[3])-Math.max(a[1],b[1]));
   /* 다른 선을 가리는 자리(그 선과 겹쳐 지나는 줄기는 빼고)는 피함 — 이름표 밑으로 선이 사라지지 않게(사용자 2026-11-12, 모든 그래프) */
-  const segs=[]; lines.forEach(e=>{ for(let i=0;i<(e.pts||[]).length-1;i++) segs.push([e.pts[i], e.pts[i+1], e]); });
-  const hide=(R, x, y, horiz, own)=>{ let n=0; for(const [a,b,e] of segs){ if(e===own) continue; const h2=a[1]===b[1]; if(h2===horiz && (h2 ? Math.abs(a[1]-y)<1 : Math.abs(a[0]-x)<1)) continue;
+  const segs=[]; lines.forEach(e=>{ for(let i=0;i<(e.pts||[]).length-1;i++) segs.push([e.pts[i], e.pts[i+1], e, i]); });
+  const hide=(R, x, y, horiz, own)=>{ let n=0; for(const [a,b,e,i] of segs){ if(e===own || (own && e.a===own.a && i<=1)) continue;   /* 같은 상자에서 함께 나가는 선의 첫 부분(갈라지는 곳)은 가림으로 안 셈 */ const h2=a[1]===b[1]; if(h2===horiz && (h2 ? Math.abs(a[1]-y)<1 : Math.abs(a[0]-x)<1)) continue;
       if(Math.max(a[0],b[0])>=R[0]-1 && Math.min(a[0],b[0])<=R[2]+1 && Math.max(a[1],b[1])>=R[1]-1 && Math.min(a[1],b[1])<=R[3]+1) n++; } return n; };
   list.forEach(L0=>{ const pts=L0.pts, w=L0.w; let best=null;
     for(let i=0;i<pts.length-1;i++){ const a=pts[i], b=pts[i+1], horiz=a[1]===b[1], len=Math.abs(b[0]-a[0])+Math.abs(b[1]-a[1]), dir=horiz?Math.sign(b[0]-a[0]):Math.sign(b[1]-a[1]);
