@@ -53,6 +53,7 @@ graph10('noble-timelost-sapphire-v2','Time-Lost_Sapphire','Time-Lost Sapphire',7
 # → 반대쪽을 상위 엑잘 + 좌측·우측 찬미로. 빗나가면 그쪽 결정화의 징조(좌측·우측) + 군왕의 합금(룬 수호) → 다시, 또 빗나가면 결정화 + 발작의 에센스(치명타 피해) → 다시
 # → 제작 옵션이 남았으면 잡옵을 하나 붙여 결정화 + 합금/에센스 → 남은 접두를 고대 갈비뼈로 훼손 → 공개(투사체 피해·속도 1티어, 빛의 징조로 다시).
 # 2026-11-12 영상 전체 대조(자동 번역 자막 0:00~21:25, 메인 세션): 4단계 A·B(9:00~11:50) 그대로, 마지막 고대 갈비뼈 + 메아리 + 빛의 징조로 투사체 피해 1티어(16:30~18:00). 단계 일치. 완성품 줄의 임의 문구를 태그로.
+# 2026-11-12 12:50 다시 대조(사용자 지적 — 앞의 대조는 화면을 안 봄): 영상 11:30 '4단계 B는 합금(또는 원하는 재료) 한 번만, 두 번째 에센스는 첫 번째를 대체' → 접두 쪽 발작의 에센스(cpH) 뺌. 17:30 '접두에 걸리니까 징조 필요 없음' → 고대 갈비뼈의 좌측 강령술 뺌.
 # 영상 재확인(2026-11-10): 세 번째로도 빗나가면 징조 없는 소멸의 오브로 하나씩(좋은 옵션이 지워지면 카오스 오브부터). 첫 엑잘에 맞으면 접두에 잡옵 → 좌측 결정화 + 발작의 에센스(접미로) → 접두 잡옵 → 좌측 결정화 + 군왕의 합금. 시전 속도 룬 교체·룬 모루·신성한 오브는 뺌(정책 23).
 P2={'high':{'v':1},'bal':{'v':2}}
 tags={'proj':{'gi':81},'pspd':{'gi':72,'tmax':1},'pdmg':{'gi':70,'tmax':1},'crit':{'gi':73,'tmax':1},'pierce':{'gi':74},
@@ -71,7 +72,6 @@ def route(vis=None):   # every step re-checks the item: what is still missing de
        {'if':{'all':[{'not':{'has':'ss'}},missS]},'to':'asx'},
        {'if':{'not':{'has':'ss'}},'to':'xs'},
        {'if':{'all':[{'not':{'has':'ps'}},missP,{'not':{'has':'ward'}}]},'to':'cpA'},
-       {'if':{'all':[{'not':{'has':'ps'}},missP,{'not':{'has':'hyst'}}]},'to':'cpH'},
        {'if':{'all':[{'not':{'has':'ps'}},missP]},'to':'apx'},
        {'if':{'not':{'has':'ps'}},'to':'xp'},
        {'if':{'all':[{'not':{'has':'hyst'}},missS]},'to':'csH'},
@@ -99,16 +99,15 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'proj','fr':True},{'junk':'p'}],'q
  cr('csA',[1,3],'Sovereign_Alloy','ward','Omen_of_Dextral_Crystallisation',K('빗나간 접미를 지우고 룬 수호','The missed suffix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'xs':{'port':'right'}}),
  cr('csH',[1,4],'Essence_of_Hysteria','hyst','Omen_of_Dextral_Crystallisation',K('빗나간 접미를 지우고 치명타 피해','The missed suffix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],G3,K('에센스','Essence'),{'xs':{'port':'right'}}),
  act('asx','main',[1,5],'annul','Orb_of_Annulment',K('빗나간 접미 지우기','Remove the missed suffix'),None,K('소멸','Annul'),route({'xs':{'port':'right'}}),G2),
- ex('xp',[0,6],'Omen_of_Sinistral_Exaltation',['pspd','pdmg'],G2,K('접두: 투사체 속도·피해 1티어','Prefix: T1 projectile speed or damage'),{'js':'ok','cpA':F,'cpH':F,'apx':F}),
+ ex('xp',[0,6],'Omen_of_Sinistral_Exaltation',['pspd','pdmg'],G2,K('접두: 투사체 속도·피해 1티어','Prefix: T1 projectile speed or damage'),{'js':'ok','cpA':F,'apx':F}),
  cr('cpA',[1,6],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('빗나간 접두를 지우고 룬 수호','The missed prefix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'xp':{'port':'right'}}),
- cr('cpH',[1,7],'Essence_of_Hysteria','hyst','Omen_of_Sinistral_Crystallisation',K('빗나간 접두를 지우고 치명타 피해','The missed prefix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],G3,K('에센스','Essence'),{'xp':{'port':'right'}}),
- act('apx','main',[1,8],'annul','Orb_of_Annulment',K('빗나간 접두 지우기','Remove the missed prefix'),None,K('소멸','Annul'),route({'xp':{'port':'right'}}),G2),
+ act('apx','main',[1,7],'annul','Orb_of_Annulment',K('빗나간 접두 지우기','Remove the missed prefix'),None,K('소멸','Annul'),route({'xp':{'port':'right'}}),G2),
  act('js','main',[0,9],'exalt','Exalted_Orb',K('에센스가 바꿀 접두 하나','A prefix for the essence to replace'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'jh':{}}),G2,omens=['Omen_of_Sinistral_Exaltation']),
- cr('jh',[0,10],'Essence_of_Hysteria','hyst','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 치명타 피해','A prefix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],G3,K('에센스','Essence'),{'jp':'ok','xp':F}),
+ cr('jh',[0,10],'Essence_of_Hysteria','hyst','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 치명타 피해','A prefix goes for crit damage'),[st('s','치명타 피해 (제작 옵션)','Crit damage (crafted)')],G3,K('에센스','Essence'),{'jp':'ok','ja':'ok','k15':'ok','cpA':F,'apx':F}),   # 다음으로 가는 길이 여러 개라 투사체가 남으면 모두 성공으로 셈
  act('jp','main',[0,11],'exalt','Exalted_Orb',K('합금이 바꿀 접두 하나','A prefix for the alloy to replace'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),route({'ja':{}}),G2,omens=['Omen_of_Sinistral_Exaltation']),
- cr('ja',[0,12],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 룬 수호','A prefix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'k15':'ok','xp':F}),
+ cr('ja',[0,12],'Sovereign_Alloy','ward','Omen_of_Sinistral_Crystallisation',K('접두 하나를 지우고 룬 수호','A prefix goes for runic ward'),[st('p','룬 수호 (제작 옵션)','Runic ward (crafted)')],G3,K('합금','Alloy'),{'k15':'ok','apx':F,'cpA':F}),
  resetx('kz',[1,2],'k9'),
- act('k15','main',[0,13],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'k16'}],G4,omens=['Omen_of_Sinistral_Necromancy']),
+ act('k15','main',[0,13],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'k16'}],G4),   # 영상 17:30: 접두에만 빈자리라 징조 없음
  act('k16','main',[0,14],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),
      [{'if':{'all':[ALL4,{'count':{'tag':'ps','min':2}}]},'to':'ok','res':'ok'},{'if':{'all':[{'param':{'v':1}},{'unrev':False},{'not':{'added':'ps'}}]},'to':'k16x','res':'fail','port':'right'},{'if':{'all':[{'param':{'v':2}},ALL4]},'to':'ok','res':'ok','hide':True}]+[dict(e,hide=True) for e in route()[1:]],G5,want='ps',show=['pspd','pdmg'],omens=['Omen_of_Abyssal_Echoes'],
      over=[{'param':{'v':2},'set':{'edges':[{'if':ALL4,'to':'ok','res':'ok'}]+[dict(e,hide=True) for e in route()[1:]]}}]),
@@ -120,3 +119,28 @@ graph11('mazbro-proj-gloves-v2','Gloves_str_dex','Blacksteel Gauntlets',82,
   [{'id':'L1','nodes':['k15','k16','k16x'],'kr':'훼손 공개','en':'Reveal'}],
   FIN(('high','bal'),lambda v:[{'tag':'ps'},{'tag':'ps','des':True} if v=='high' else {'side':'p','random':True},{'tag':'ward','tmax':1},{'tag':'proj','tmax':1,'fr':True},{'tag':'ss'},{'tag':'hyst','tmax':1}]),
   {'quality':30,'sockets':2},{'all':[{'has':'ps'},{'has':'ss'},{'has':'ward'},{'has':'hyst'}]},('high','bal'),xsub=["Kolr's Hunt"],xroll=True)
+# 베이스 준비(2026-11-12, 사용자 지적으로 다시 대조): 예전엔 '분열 + 잡옵 베이스'에서 시작해 베이스값이 0으로 잡혔음 — 영상 2:00~8:50 과정을 넣음.
+# 영상: 퀄리티 20% → 바알 방어구 주입기로 30%(선택, 비용 미포함) → 콜르의 사냥 장착 → 완벽한 진화·확장·제왕 → 카오스 오브로 투사체 +2
+# (카오스 오브는 옵션 하나를 바꾸는 것이라 제왕 뒤 옵션 3개 그대로 — 소멸 단계 필요 없음)
+# → 분열은 옵션 4개가 있어야 하고 훼손(미공개)은 분열되지 않음 → 옵션 3개 + 훼손 1개로 1/3 → 투사체 +2가 분열되면 성공, 아니면 새 베이스(영상 6:30~8:50).
+# 영상의 '분열 전에 좋은 접두 두 개 이상'은 분열이 빗나갔을 때 다른 장갑으로 쓰려는 보험이라 뺌(빗나가면 새 베이스로 셈). 훼손에 쓴 뼈 종류는 영상에 안 나와 보존된 갈비뼈로 둠.
+_gp=f"{H}/mazbro-proj-gloves-v2.json"; _g=json.load(open(_gp))
+for _n in _g['nodes']:
+    if _n.get('group')=='main': _n['pos']=[_n['pos'][0], _n['pos'][1]+7.4]
+_PJI=[{'s':'s','kr':'모든 투사체 스킬 레벨 +2 (콜르)','en':'+2 projectile skills (Kolr)','m':'n','tags':['proj']}]
+_prep=[
+ {'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'p1','start':{'rar':'normal','mods':[],'quality':30},'label':K('특출난 검은강철 건틀릿 구입 (노멀)','Buy exceptional Blacksteel Gauntlets (normal)'),'item':[]},
+ {'id':'hq','kind':'side','group':'prep','pos':[1,0.5],'attach':['h1','p1'],'cur':'Vaal_Armourers_Infuser','goal':K('퀄리티 20% → 30% (선택, 비용 미포함 — 20%로도 제작 가능)','Quality 20% → 30% (optional, not costed — 20% works too)'),'label':K('퀄리티','Quality')},
+ {'id':'hk','kind':'side','group':'prep','pos':[1,1.5],'attach':['p1','p2'],'goal':K('콜르의 사냥 장착 (영구, 투사체 +2 옵션이 붙을 수 있게 됨)','Socket Kolr’s Hunt (permanent; lets +2 projectile roll)'),'label':K('룬','Rune')},
+ {'id':'p1','kind':'act','group':'prep','pos':[0,1],'act':'transmute','cur':'Perfect_Orb_of_Transmutation','goal':K('매직','Magic'),'label':K('진화','Transmute'),'edges':[{'to':'p2'}],'item':[]},
+ {'id':'p2','kind':'act','group':'prep','pos':[0,2],'act':'augment','cur':'Perfect_Orb_of_Augmentation','goal':K('매직 두번째 옵션','Second magic line'),'label':K('확장','Augment'),'edges':[{'to':'p3'}],'item':[]},
+ {'id':'p3','kind':'act','group':'prep','pos':[0,3],'act':'regal','cur':'Perfect_Regal_Orb','goal':K('레어','Rare'),'label':K('제왕','Regal'),'edges':[{'to':'p4'}],'item':[]},
+ {'id':'p4','kind':'act','group':'prep','pos':[0,4],'act':'chaos','cur':'Chaos_Orb','goal':K('모든 투사체 스킬 레벨 +2','+2 to all projectile skills'),'label':K('카오스','Chaos'),'show':['proj'],'edges':[{'if':{'has':'proj'},'to':'p6','res':'ok'},{'to':'p4','res':'fail'}],'item':_PJI},
+ {'id':'p6','kind':'act','group':'prep','pos':[0,5],'act':'desecrate','cur':'Preserved_Rib','goal':K('네번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth line (desecrated) — fracture needs four'),'showText':[K('훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')],'label':K('훼손','Desecrate'),'edges':[{'to':'p7'}],'item':_PJI+[{'s':'x','kr':'잡옵','en':'Junk','m':'j'},{'s':'x','kr':'잡옵','en':'Junk','m':'j'},{'s':'x','kr':'훼손 옵션 (미공개)','en':'Desecrated (unrevealed)','m':'n'}]},
+ {'id':'p7','kind':'act','group':'prep','pos':[0,6],'act':'fracture','cur':'Fracturing_Orb','goal':K('분열 (셋 중 하나)','Fracture (one of three)'),'showText':[K('투사체 +2가 분열되면 성공','Success when +2 projectile fractures')],'label':K('분열','Fracture'),'edges':[{'if':{'fractured':'proj'},'to':'p8','res':'ok','label':K('투사체 +2 분열','+2 projectile fractured')},{'to':'xj','res':'fail','dash':True,'label':K('다른 옵션 분열','Another line fractured')}],'item':[dict(_PJI[0],m='f')]},
+ {'id':'xj','kind':'exit','group':'prep','pos':[1,6],'simTo':'h1','variant':'fail','label':K('다른 옵션 분열 — 새 베이스','Another line fractured — new base'),'note':K('투사체 +2가 아닌 옵션이 분열되면 이 장갑은 다른 용도로 두고 새 베이스로 처음부터','Another line fractured: set this one aside and start on a new base')},
+ {'id':'p8','kind':'cleanup','group':'prep','pos':[0,7],'keep':[],'maxJunk':1,'label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),'target':K('분열 + 옵션 1개만 남기기','Keep only the fracture + one line'),'edges':[{'to':'ms'}],'item':[dict(_PJI[0],m='f'),{'s':'x','kr':'잡옵','en':'Junk','m':'j'}]}]
+_g['nodes']=_prep+[n for n in _g['nodes'] if n['id']!='h1']
+_g['start']='h1'
+json.dump(_g,open(_gp,'w'),ensure_ascii=False,indent=1)
+

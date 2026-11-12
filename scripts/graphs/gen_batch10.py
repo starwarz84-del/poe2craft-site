@@ -4,7 +4,7 @@
 import os, json
 H=os.path.dirname(os.path.abspath(__file__))
 _src=open(f'{H}/gen_batch9.py').read(); exec(_src[:_src.index('# ---------- 1. LilBotQ')])
-RUNE=lambda id,pos,nxt,item: act(id,'main',pos,'rune',None,K('아스트리드의 창의성 장착','Socket Astrid’s Creativity'),[st(None,'제작 옵션 하나 더','One more crafted modifier')],K('룬','Rune'),[{'to':nxt}],item)
+RUNE=lambda id,pos,nxt,item: act(id,'main',pos,'rune',None,K('아스트리드의 창의성 장착','Socket Astrid’s Creativity'),[st(None,'제작 옵션 하나 더','One more crafted modifier')],K('룬','Rune'),[{'to':nxt}],item,rune={'kr':'아스트리드의 창의성','en':'Astrid’s Creativity'})   # 시뮬이 룬 이름으로 제작 옵션 2개 허용을 켬(2026-11-12)
 ROUTE={'v':{'kr':'진행','en':'Route','values':TV({'1':('영상','Video'),'2':('결과 그대로','As it comes')})}}
 PV={'bal':{'v':1},'ess':{'v':2}}
 def graph10(*a, cap=None, xsub=None, **k):
