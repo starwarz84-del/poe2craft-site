@@ -981,7 +981,7 @@ function analyse(r){
     else if(n.do==='quality'){ const step = r.ilvl>=82 ? 1.2 : 1; o.fixedTries = Math.ceil(((t.quality||20)-(qual.v||t.from||0))/step); qual={v:t.quality, type:S.byId[n.cur]?.tag||null}; }
     if(t.setQuality!=null) qual={...qual, v:t.setQuality};
     // named runes / soul cores from manual steps: put one in, or swap one for another
-    if(t.rune) runes.push(t.rune);
+    if(t.rune && !runes.some(y=>String(typeof y==='object'?y.en:y).replace(/^rune:/,'').replace(/[’']/g,"'").toLowerCase()===String(t.rune.en||t.rune).replace(/[’']/g,"'").toLowerCase())) runes.push(t.rune);   /* 시작에 이미 있는 룬은 다시 넣지 않음(2026-11-13: 콜르가 두 번 들어가 세를이 빠지던 문제) */
     if(t.runeSwap){ const i=runes.findIndex(x=>typeof x==='object' && x.kr===t.runeSwap[0].kr); if(i>=0) runes[i]=t.runeSwap[1]; else runes.push(t.runeSwap[1]); }
     if(t.slots && n.do!=='socket') for(const k in t.slots) cap[k]+=t.slots[k];   // e.g. a liquid that allows one more suffix
     if(t.imp) imp=t.imp; if(t.anoint) anoint=t.anoint; if(t.sanctify) sanct=true; if(t.vals) vals={...vals, ...t.vals};
@@ -1975,7 +1975,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
   // loops: one shaded area per loop (rows joined), its total use per finished item on a tag
   const loopsSvg=[], loopTags=[];
   (g.loops||[]).forEach(Lp=>{ if(Lp.allNodes){ const B=Lay.box[Lp.nodes[0]]; if(!B) return; const li=(g.loops||[]).indexOf(Lp)%2, use={}; Lp.allNodes.forEach(id=>{ for(const k2 in st(id)?.use||{}) use[k2]=(use[k2]||0)+st(id).use[k2]; });   /* 접힌 루프: 구간 총 사용은 상자 아래 */
-      loopTags.push(`<div class="fclpt c${li}" style="right:${Lay.Wt-(B.x+B.w)-2}px;top:${B.y+B.h+14}px"><b>↺ ${esc(tx(Lp))}</b><span>${L('총 사용 (완성 1개당)','Total used (per finished item)')}</span>${Object.entries(use).filter(([,v])=>v>=0.005).sort((a2,b2)=>b2[1]-a2[1]).map(([k2,v])=>`<span class="cu" title="${esc(nm(cur(k2)))}">${icon(k2)}${fmt(v)}${L('개','')}</span>`).join('')}</div>`); return; }
+      loopTags.push(`<div class="fclpt c${li}" style="right:${Lay.Wt-(B.x+B.w)-2}px;top:${B.y+B.h+3}px;transform:none;max-width:${B.w+30}px;white-space:normal"><b>↺ ${esc(tx(Lp))}</b><span>${L('총 사용 (완성 1개당)','Total used (per finished item)')}</span>${Object.entries(use).filter(([,v])=>v>=0.005).sort((a2,b2)=>b2[1]-a2[1]).map(([k2,v])=>`<span class="cu" title="${esc(nm(cur(k2)))}">${icon(k2)}${fmt(v)}${L('개','')}</span>`).join('')}</div>`); return; }
     const mem=Lp.nodes.filter(id=>Lay.box[id] && stAny(id)); if(mem.filter(id=>/act|cleanup/.test(M.byId[id].kind)).length<2 || Lp.nodes.some(id=>M.byId[id]?.kind==='choice')) return; const P=18;
     let R=[1e9,1e9,-1e9,-1e9]; mem.forEach(id=>[Lay.box[id], Lay.dia[id]].filter(Boolean).forEach(r=>{ R=[Math.min(R[0],r.x-P), Math.min(R[1],r.y-P), Math.max(R[2],r.x+r.w+P), Math.max(R[3],r.y+r.h+P)]; }));
     const ids=new Set(Lp.nodes); edges.filter(e=>ids.has(e.a) && ids.has(e.b) && e.pts).forEach(e=>e.pts.forEach(([px,py])=>{ R=[Math.min(R[0],px-14), Math.min(R[1],py-14), Math.max(R[2],px+14), Math.max(R[3],py+14)]; }));
