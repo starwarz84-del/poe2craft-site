@@ -57,6 +57,7 @@ g = {
    {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
     'lines': [{'side': 'p', 'random': True}, {'tag': 'rad'}, {'tag': 'cc', 'fr': True}, {'tag': 'scd'}, {'tag': 'cd'}]}],
  'finalItem': {'quality': 0, 'sockets': 0},
+ 'cap': {'p': 2, 's': 2},   # 주얼: 접두 2 · 접미 2(정책 8장)
 }
 
 N = []

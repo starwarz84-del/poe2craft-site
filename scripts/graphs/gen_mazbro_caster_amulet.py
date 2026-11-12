@@ -68,7 +68,7 @@ g = {
  'require': {'all': [{'has': 'spell'}, {'has': 'gs'}, {'has': 'gp'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 2]}],
- 'start': 'h0',
+ 'start': 'a1',
  'finals': [
    {'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
     'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'gp'}, {'tag': 'gp'}, {'tag': 'spell'}, {'tag': 'gs'}, {'tag': 'kq', 'des': True}]},
@@ -85,144 +85,144 @@ V1 = {'param': {'v': 1}}
 def R1(vis):
     out = []
     for e in [{'if': {'not': {'has': 'spell'}}, 'to': 'cz'},
-              {'if': {'not': {'has': 'mq'}}, 'to': 'a7e'},
-              {'if': {'unrevSide': 's'}, 'to': 'a5'},
-              {'if': {'all': [{'des': False}, {'sideLt': {'side': 's', 'n': 3}}]}, 'to': 'a4'},
-              {'if': {'all': [{'has': 'gs'}, {'des': True}]}, 'to': 'a9'},
-              {'if': {'full': 's'}, 'to': 'a7x'},
-              {'to': 'a6'}]:
+              {'if': {'not': {'has': 'mq'}}, 'to': 'a10e'},
+              {'if': {'unrevSide': 's'}, 'to': 'a8'},
+              {'if': {'all': [{'des': False}, {'sideLt': {'side': 's', 'n': 3}}]}, 'to': 'a7'},
+              {'if': {'all': [{'has': 'gs'}, {'des': True}]}, 'to': 'a11'},
+              {'if': {'full': 's'}, 'to': 'a10x'},
+              {'to': 'a9'}]:
         v = vis.get(e['to'])
         out.append({**e, **v} if v is not None else {**e, 'hide': True})
     return out
 
 # ---------------- 베이스템 완성 ----------------
-A(id='h0', kind='base', group='prep', pos=[0, 0], next='p1', start={'rar': 'rare', 'mods': [{'tag': 'spirit'}, {'junk': 'p'}, {'junk': 's'}]},
+A(id='a1', kind='base', group='prep', pos=[0, 0], next='a2', start={'rar': 'rare', 'mods': [{'tag': 'spirit'}, {'junk': 'p'}, {'junk': 's'}]},
   label=K('태양 목걸이 구입 (아이템 레벨 82, 정신력 +50, 옵션 3개)', 'Buy a Solar Amulet (item level 82, +50 Spirit, three options)'),
   item=[SPn, J('p'), J('s')])
-A(id='p1', kind='act', group='prep', pos=[0, 1], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
+A(id='a2', kind='act', group='prep', pos=[0, 1], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
   goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecrated (unrevealed, cannot fracture)')],
-  edges=[{'to': 'pf'}], item=[SPn, J('p'), J('s'), UN('x')])
-A(id='pf', kind='act', group='prep', pos=[0, 2], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
+  edges=[{'to': 'a3'}], item=[SPn, J('p'), J('s'), UN('x')])
+A(id='a3', kind='act', group='prep', pos=[0, 2], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
   goal=K('분열 (공개된 옵션 3개 중 하나)', 'Fracture (one of the three revealed options)'),
   showText=[K('정신력이 분열되면 성공', 'Success when Spirit fractures')],
   edges=[{'if': {'fractured': 'spirit'}, 'to': 'pc', 'res': 'ok', 'label': K('정신력 분열', 'Spirit fractured')},
          {'to': 'xj', 'res': 'fail', 'dash': True, 'label': K('다른 옵션 분열', 'Another option fractured')}],
   item=[SP, J('p'), J('s'), UN('x')])
-A(id='xj', kind='exit', group='prep', pos=[1, 2], simTo='h0', variant='fail', label=K('다른 옵션 분열 — 새 베이스', 'Another option fractured: new base'),
+A(id='xj', kind='exit', group='prep', pos=[1, 2], simTo='a1', variant='fail', label=K('다른 옵션 분열 — 새 베이스', 'Another option fractured: new base'),
   note=K('정신력이 아닌 옵션이 분열되면 새 베이스로 처음부터', 'Another option fractured: start over on a new base'))
 A(id='pc', kind='cleanup', group='prep', pos=[0, 3], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'ms'}], item=[SP, J('x')])
 # ---------------- 옵션 추가 작업 ----------------
-A(id='ms', kind='mark', group='main', pos=[0, 4.4], next='c1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[SP, J('x')])
+A(id='ms', kind='mark', group='main', pos=[0, 4.4], next='a4', label=K('아이템 제작 시작', 'Item crafting starts'), item=[SP, J('x')])
 A(id='cz', kind='cleanup', group='main', pos=[1, 4.9], keep=[], maxJunk=1, label=ANN, goal=ANN,
-  target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'c1'}])
+  target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'a4'}])
 # 2단계: 카오스 스팸 + 반대쪽 엑잘(접힌 상자 L0)
-A(id='c1', kind='act', group='main', pos=[0, 5.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
+A(id='a4', kind='act', group='main', pos=[0, 5.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접미 모든 주문 스킬 레벨 +3', '+3 to Level of all Spell Skills suffix'), show=['spell'],
-  edges=[{'if': {'has': 'spell'}, 'to': 'a2', 'res': 'ok'}, {'if': {'has': 'anc'}, 'to': 'c2', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}],
+  edges=[{'if': {'has': 'spell'}, 'to': 'a5', 'res': 'ok'}, {'if': {'has': 'anc'}, 'to': 'c2', 'res': 'ok'}, {'to': 'a4', 'res': 'fail', 'hide': True}],
   item=[SP, RAR, SL])
 A(id='c2', kind='act', group='main', pos=[1, 5.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 1티어를 두고 접미 모든 주문 스킬 레벨 +3', 'Keep the T1 prefix, +3 Spell Skills suffix'), show=['spell'],
-  edges=[{'if': {'added': 'spell'}, 'to': 'a2', 'res': 'ok'}, {'to': 'c3', 'res': 'fail'}])
+  edges=[{'if': {'added': 'spell'}, 'to': 'a5', 'res': 'ok'}, {'to': 'c3', 'res': 'fail'}])
 A(id='c3', kind='act', group='main', pos=[1, 6.4], act='chaos', cur='Greater_Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('빗나간 접미 다시', 'Reroll the missed suffix'), show=['spell'],
-  edges=[{'if': {'has': 'spell'}, 'to': 'a2', 'res': 'ok'}, {'if': {'has': 'anc'}, 'to': 'c3', 'res': 'fail', 'hide': True}, {'to': 'c4', 'res': 'fail'}])
+  edges=[{'if': {'has': 'spell'}, 'to': 'a5', 'res': 'ok'}, {'if': {'has': 'anc'}, 'to': 'c3', 'res': 'fail', 'hide': True}, {'to': 'c4', 'res': 'fail'}])
 A(id='c4', kind='act', group='main', pos=[1, 7.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
-  target=K('접두 1티어가 지워지면 옵션 1개 남기기', 'T1 prefix gone: back to one option'), edges=[{'to': 'c1'}])
+  target=K('접두 1티어가 지워지면 옵션 1개 남기기', 'T1 prefix gone: back to one option'), edges=[{'to': 'a4'}])
 # 3·4단계
-A(id='a2', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
+A(id='a5', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 세번째 옵션', 'Third prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
-  skipIf={'full': 'p'}, skipTo='a3', edges=[{'to': 'a3'}], item=[SP, RAR, SD2, SL])
-A(id='a3', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
+  skipIf={'full': 'p'}, skipTo='a6', edges=[{'to': 'a6'}], item=[SP, RAR, SD2, SL])
+A(id='a6', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('접두 하나를 지우고 최대 퀄리티', 'A prefix goes for max quality'),
   showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}],
-  edges=[{'to': 'a4'}], item=[SP, SD2, MQ, SL])
+  edges=[{'to': 'a7'}], item=[SP, SD2, MQ, SL])
 # 5·6·6B단계: 자리 막기 + 촉진 엑잘(접힌 상자 L1)
-A(id='a4', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
+A(id='a7', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
   goal=K('접미 두번째 옵션(훼손)', 'Second suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
-  edges=R1({'a5': {}}), item=[SP, SD2, MQ, SL, UN('s')])
-A(id='a5', kind='act', group='main', pos=[1, 8.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='blk', label=K('공개', 'Reveal'),
+  edges=R1({'a8': {}}), item=[SP, SD2, MQ, SL, UN('s')])
+A(id='a8', kind='act', group='main', pos=[1, 8.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='blk', label=K('공개', 'Reveal'),
   goal=K('자리 막기 옵션 — 생명력 재생·능력치·저항', 'Blocker: life regeneration, attribute or resistance'), show=['blk'],
-  edges=[{'if': {'not': {'added': 'blk'}}, 'to': 'a5x', 'res': 'fail', 'label': K('빗나감', 'Miss')}] + R1({'a6': {'res': 'ok'}}))
-A(id='a5x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'a4', 'label': K('다시 훼손', 'Desecrate again')}])
-A(id='a6', kind='act', group='main', pos=[1, 10.4], act='quality', cur='Skittering_Catalyst', count=40, label=K('퀄리티', 'Quality'),
-  goal=K('속도 퀄리티 40%', 'Speed quality 40%'), edges=[{'to': 'a7'}])
-A(id='a7', kind='act', group='main', pos=[1, 11.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'],
+  edges=[{'if': {'not': {'added': 'blk'}}, 'to': 'a8x', 'res': 'fail', 'label': K('빗나감', 'Miss')}] + R1({'a9': {'res': 'ok'}}))
+A(id='a8x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
+  target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'a7', 'label': K('다시 훼손', 'Desecrate again')}])
+A(id='a9', kind='act', group='main', pos=[1, 10.4], act='quality', cur='Skittering_Catalyst', count=40, label=K('퀄리티', 'Quality'),
+  goal=K('속도 퀄리티 40%', 'Speed quality 40%'), edges=[{'to': 'a10'}])
+A(id='a10', kind='act', group='main', pos=[1, 11.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'],
   cat='csCat', label=K('엑잘', 'Exalt'), goal=K('접미 세번째 옵션', 'Third suffix'), show=['cs', 'cr', 'cd'],
-  edges=[{'if': {'added': 'gs'}, 'to': 'a9', 'res': 'ok'}, {'to': 'a7x', 'res': 'fail', 'label': K('빗나감', 'Miss')}])
-A(id='a7x', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
+  edges=[{'if': {'added': 'gs'}, 'to': 'a11', 'res': 'ok'}, {'to': 'a10x', 'res': 'fail', 'label': K('빗나감', 'Miss')}])
+A(id='a10x', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
   target=K('빗나간 접미 지우기', 'Remove the missed suffix'),
-  edges=R1({'a6': {'res': 'ok'}, 'cz': {'res': 'fail'}, 'a7e': {'res': 'fail'}, 'a4': {'res': 'fail'}}))
-A(id='a7e', kind='act', group='main', pos=[1, 13.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
+  edges=R1({'a9': {'res': 'ok'}, 'cz': {'res': 'fail'}, 'a10e': {'res': 'fail'}, 'a7': {'res': 'fail'}}))
+A(id='a10e', kind='act', group='main', pos=[1, 13.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('접두 하나를 지우고 최대 퀄리티', 'A prefix goes for max quality'),
-  showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=R1({'a6': {}}))
+  showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=R1({'a9': {}}))
 # 7·7B단계: 접두 촉진 엑잘(접힌 상자 L2)
-A(id='a9', kind='act', group='main', pos=[0, 9.4], act='quality', cur='Neural_Catalyst', count=40, label=K('퀄리티', 'Quality'),
-  goal=K('마나 퀄리티 40%', 'Mana quality 40%'), edges=[{'to': 'a8'}], item=[SP, MF, MQ, SL, DEX, CS])
-A(id='a8', kind='act', group='main', pos=[2, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Sinistral_Annulment'], label=ANN, goal=ANN,
-  target=K('잡옵 접두 지우기', 'Remove the junk prefix'), skipIf={'sideLt': {'side': 'p', 'n': 3}}, skipTo='a10',
-  edges=[{'if': {'has': 'mq'}, 'to': 'a10', 'res': 'ok'}, {'to': 'a8e', 'res': 'fail', 'label': K('최대 퀄리티가 지워짐', 'Max quality gone')}])
-A(id='a8e', kind='act', group='main', pos=[2, 10.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
+A(id='a11', kind='act', group='main', pos=[0, 9.4], act='quality', cur='Neural_Catalyst', count=40, label=K('퀄리티', 'Quality'),
+  goal=K('마나 퀄리티 40%', 'Mana quality 40%'), edges=[{'to': 'a11x'}], item=[SP, MF, MQ, SL, DEX, CS])
+A(id='a11x', kind='act', group='main', pos=[2, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Sinistral_Annulment'], label=ANN, goal=ANN,
+  target=K('잡옵 접두 지우기', 'Remove the junk prefix'), skipIf={'sideLt': {'side': 'p', 'n': 3}}, skipTo='a12',
+  edges=[{'if': {'has': 'mq'}, 'to': 'a12', 'res': 'ok'}, {'to': 'a11e', 'res': 'fail', 'label': K('최대 퀄리티가 지워짐', 'Max quality gone')}])
+A(id='a11e', kind='act', group='main', pos=[2, 10.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('접두 하나를 지우고 최대 퀄리티', 'A prefix goes for max quality'),
-  showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'a10'}])
-A(id='a10', kind='act', group='main', pos=[2, 11.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation'], cat='manaCat',
+  showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'a12'}])
+A(id='a12', kind='act', group='main', pos=[2, 11.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation'], cat='manaCat',
   label=K('엑잘', 'Exalt'), goal=K('접두 두번째 옵션', 'Second prefix'), show=['mp', 'mf', 'sd'],
-  edges=[{'if': {'added': 'gp'}, 'to': 'a11', 'res': 'ok'}, {'to': 'a9', 'res': 'fail', 'label': K('빗나감', 'Miss')}])
+  edges=[{'if': {'added': 'gp'}, 'to': 'a13', 'res': 'ok'}, {'to': 'a11', 'res': 'fail', 'label': K('빗나감', 'Miss')}])
 # 8·10단계
-A(id='a11', kind='act', group='main', pos=[0, 10.4], act='quality', cur='Sibilant_Catalyst', count=40, label=K('퀄리티', 'Quality'),
-  goal=K('시전 퀄리티 40%', 'Caster quality 40%'), edges=[{'to': 'a12'}], item=[SP, MF, MQ, SL, DEX, CS])
-A(id='a12', kind='act', group='main', pos=[0, 11.4], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'keep'}, label=K('카오스', 'Chaos'),
+A(id='a13', kind='act', group='main', pos=[0, 10.4], act='quality', cur='Sibilant_Catalyst', count=40, label=K('퀄리티', 'Quality'),
+  goal=K('시전 퀄리티 40%', 'Caster quality 40%'), edges=[{'to': 'a14'}], item=[SP, MF, MQ, SL, DEX, CS])
+A(id='a14', kind='act', group='main', pos=[0, 11.4], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'keep'}, label=K('카오스', 'Chaos'),
   goal=K('최대 퀄리티를 지우고 접두 세번째 옵션', 'Max quality out, third prefix'), show=['mp', 'mf', 'sd'],
-  edges=[{'if': {'count': {'tag': 'gp', 'min': 2}}, 'to': 'a13', 'res': 'ok'},
-         {'if': {'param': {'v': 2}}, 'to': 'a13', 'res': 'fail', 'hide': True},
-         {'to': 'a12', 'res': 'fail'}], item=[SP, MF, SD, SL, DEX, CS])
+  edges=[{'if': {'count': {'tag': 'gp', 'min': 2}}, 'to': 'a15', 'res': 'ok'},
+         {'if': {'param': {'v': 2}}, 'to': 'a15', 'res': 'fail', 'hide': True},
+         {'to': 'a14', 'res': 'fail'}], item=[SP, MF, SD, SL, DEX, CS])
 # 11단계: 쿠르갈
-A(id='a13', kind='act', group='main', pos=[0, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('자리 막기 훼손 옵션 제거', 'Remove the blocking desecration'), edges=[{'to': 'a14'}], item=[SP, MF, SD, SL, CS])
-A(id='a14', kind='act', group='main', pos=[0, 13.4], act='desecrate', cur='Ancient_Collarbone', omens=['Omen_of_the_Blackblooded'], label=K('훼손', 'Desecrate'),
+A(id='a15', kind='act', group='main', pos=[0, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
+  target=K('자리 막기 훼손 옵션 제거', 'Remove the blocking desecration'), edges=[{'to': 'a16'}], item=[SP, MF, SD, SL, CS])
+A(id='a16', kind='act', group='main', pos=[0, 13.4], act='desecrate', cur='Ancient_Collarbone', omens=['Omen_of_the_Blackblooded'], label=K('훼손', 'Desecrate'),
   goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
-  edges=[{'to': 'a15'}], item=[SP, MF, SD, SL, CS, UN('s')])
-A(id='a15', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='kq', label=K('공개', 'Reveal'),
+  edges=[{'to': 'a17'}], item=[SP, MF, SD, SL, CS, UN('s')])
+A(id='a17', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='kq', label=K('공개', 'Reveal'),
   goal=K('접미 모든 스킬의 퀄리티', 'Quality of all Skills suffix'), show=['kq'],
-  edges=[{'if': {'added': 'kq'}, 'to': 'ok', 'res': 'ok'}, {'if': V1, 'to': 'a15x', 'res': 'fail'}, {'to': 'ok', 'res': 'fail', 'hide': True}],
+  edges=[{'if': {'added': 'kq'}, 'to': 'ok', 'res': 'ok'}, {'if': V1, 'to': 'a17x', 'res': 'fail'}, {'to': 'ok', 'res': 'fail', 'hide': True}],
   item=[SP, MF, SD, SL, CS, KQ])
-A(id='a15x', kind='act', group='main', pos=[1, 14.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'a14', 'label': K('다시 훼손', 'Desecrate again')}])
+A(id='a17x', kind='act', group='main', pos=[1, 14.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
+  target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'a16', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='ok', kind='done', group='main', pos=[0, 15.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L0', 'nodes': ['c1', 'c2', 'c3', 'c4'], 'kr': '카오스 스팸', 'en': 'Chaos spam', 'fold': True,
+ {'id': 'L0', 'nodes': ['a4', 'c2', 'c3', 'c4'], 'kr': '카오스 스팸', 'en': 'Chaos spam', 'fold': True,
   'goal': K('접미 모든 주문 스킬 레벨 +3', '+3 to Level of all Spell Skills suffix'),
-  'steps': [K('카오스 오브로 모든 주문 스킬 레벨 +3', 'Chaos Orb for +3 Spell Skills') | {'node': 'c1'},
-            K('접두 1티어(최대 마나 %·마나 최대치·주문 피해·희귀도)가 뜨면 우측 찬미 + 상위 엑잘로 접미 +3', 'A T1 prefix (% mana, flat mana, spell damage or rarity): Dextral Exaltation + Greater Exalt for the +3 suffix') | {'node': 'c2'},
+  'steps': [K('카오스 오브로 모든 주문 스킬 레벨 +3', 'Chaos Orb for +3 Spell Skills') | {'node': 'a4'},
+            K('접두에 최대 마나 %·마나 최대치·주문 피해·희귀도 1티어가 뜨면 우측 찬미 + 상위 엑잘로 접미 +3', 'A T1 % mana, flat mana, spell damage or rarity prefix: Dextral Exaltation + Greater Exalt for the +3 suffix') | {'node': 'c2'},
             K('빗나가면 상위 카오스 오브, 접두 1티어가 남아 있으면 다시', 'A miss: Greater Chaos Orb, again while the T1 prefix stays') | {'node': 'c3'},
             K('접두 1티어가 지워지면 소멸의 오브로 옵션 1개 남기고 카오스부터', 'T1 prefix gone: Orb of Annulment down to one option, then Chaos again') | {'node': 'c4'}],
   'item': [SP, RAR, SL]},
- {'id': 'L1', 'nodes': ['a4', 'a5', 'a5x', 'a6', 'a7', 'a7x', 'a7e'], 'kr': '접미 두 자리', 'en': 'Two suffixes', 'fold': True,
+ {'id': 'L1', 'nodes': ['a7', 'a8', 'a8x', 'a9', 'a10', 'a10x', 'a10e'], 'kr': '접미 두 자리', 'en': 'Two suffixes', 'fold': True,
   'goal': K('자리 막기 훼손 + 접미 시전 속도·치명타 확률·치명타 피해 1티어 중 먼저 뜬 것', 'Desecrated blocker + whichever T1 cast speed, crit chance or crit damage suffix lands first'),
   'goalBy': {'high': K('자리 막기 훼손 + 접미 시전 속도·치명타 확률·치명타 피해 1티어 중 먼저 뜬 것', 'Desecrated blocker + whichever T1 cast speed, crit chance or crit damage suffix lands first'),
              'bal': K('자리 막기 훼손 + 접미 시전 속도·치명타 확률·치명타 피해 1~2티어 중 먼저 뜬 것', 'Desecrated blocker + whichever T1–2 cast speed, crit chance or crit damage suffix lands first')},
-  'steps': [K('우측 강령술의 징조 + 보존된 빗장뼈로 접미 훼손', 'Omen of Dextral Necromancy + Preserved Collarbone on a suffix') | {'node': 'a4'},
-            K('심연의 메아리 공개 — 생명력 재생·능력치·저항으로 자리 막기, 하나도 없으면 빛의 징조 + 소멸의 오브로 다시', 'Reveal with Abyssal Echoes: life regen, attribute or resistance blocks; none of them, Omen of Light + Annulment and again') | {'node': 'a5'},
-            K('달리는 기폭제로 속도 퀄리티 40%', 'Skittering Catalyst to 40% speed quality') | {'node': 'a6'},
-            K('촉진하는 찬미 + 우측 찬미 + 완벽한 엑잘티드 오브', 'Catalysing + Dextral Exaltation + Perfect Exalted Orb') | {'node': 'a7'},
-            K('빗나가면 소멸의 오브, 자리 막기가 지워지면 훼손부터', 'A miss: Orb of Annulment; blocker gone, desecrate again') | {'node': 'a7x'},
-            K('최대 퀄리티가 지워지면 좌측 결정화 + 균열의 에센스', 'Max quality gone: Sinistral Crystallisation + Essence of the Breach') | {'node': 'a7e'}],
+  'steps': [K('우측 강령술의 징조 + 보존된 빗장뼈로 접미 훼손', 'Omen of Dextral Necromancy + Preserved Collarbone on a suffix') | {'node': 'a7'},
+            K('심연의 메아리 공개 — 생명력 재생·능력치·저항으로 자리 막기, 하나도 없으면 빛의 징조 + 소멸의 오브로 다시', 'Reveal with Abyssal Echoes: life regen, attribute or resistance blocks; none of them, Omen of Light + Annulment and again') | {'node': 'a8'},
+            K('달리는 기폭제로 속도 퀄리티 40%', 'Skittering Catalyst to 40% speed quality') | {'node': 'a9'},
+            K('촉진하는 찬미 + 우측 찬미 + 완벽한 엑잘티드 오브', 'Catalysing + Dextral Exaltation + Perfect Exalted Orb') | {'node': 'a10'},
+            K('빗나가면 소멸의 오브, 자리 막기가 지워지면 훼손부터', 'A miss: Orb of Annulment; blocker gone, desecrate again') | {'node': 'a10x'},
+            K('최대 퀄리티가 지워지면 좌측 결정화 + 균열의 에센스', 'Max quality gone: Sinistral Crystallisation + Essence of the Breach') | {'node': 'a10e'}],
   'worst': {'kr': '모든 주문 스킬 레벨 +3이 지워지면 카오스 스팸부터', 'en': '+3 Spell Skills gone: back to the chaos spam', 'to': 'cz'},
   'item': [SP, SD2, MQ, SL, DEX, CS]},
- {'id': 'L2', 'nodes': ['a9', 'a8', 'a8e', 'a10'], 'kr': '접두 촉진 엑잘', 'en': 'Catalysed prefix', 'fold': True,
+ {'id': 'L2', 'nodes': ['a11', 'a11x', 'a11e', 'a12'], 'kr': '접두 촉진 엑잘', 'en': 'Catalysed prefix', 'fold': True,
   'goal': K('접두 마나 최대치·최대 마나 %·주문 피해 1티어 중 먼저 뜬 것', 'Whichever T1 flat mana, % mana or spell damage prefix lands first'),
   'goalBy': {'high': K('접두 마나 최대치·최대 마나 %·주문 피해 1티어 중 먼저 뜬 것', 'Whichever T1 flat mana, % mana or spell damage prefix lands first'),
              'bal': K('접두 마나 최대치·최대 마나 %·주문 피해 1~2티어 중 먼저 뜬 것', 'Whichever T1–2 flat mana, % mana or spell damage prefix lands first')},
-  'steps': [K('신경 기폭제로 마나 퀄리티 40%', 'Neural Catalyst to 40% mana quality') | {'node': 'a9'},
-            K('좌측 소멸의 징조 + 소멸의 오브로 잡옵 접두 지우기', 'Omen of Sinistral Annulment + Annulment on the junk prefix') | {'node': 'a8'},
-            K('최대 퀄리티가 지워지면 좌측 결정화 + 균열의 에센스', 'Max quality gone: Sinistral Crystallisation + Essence of the Breach') | {'node': 'a8e'},
-            K('촉진하는 찬미 + 완벽한 엑잘티드 오브, 빗나가면 기폭제부터 다시', 'Catalysing Exaltation + Perfect Exalted Orb; a miss goes back to the catalyst') | {'node': 'a10'}],
+  'steps': [K('신경 기폭제로 마나 퀄리티 40%', 'Neural Catalyst to 40% mana quality') | {'node': 'a11'},
+            K('좌측 소멸의 징조 + 소멸의 오브로 잡옵 접두 지우기', 'Omen of Sinistral Annulment + Annulment on the junk prefix') | {'node': 'a11x'},
+            K('최대 퀄리티가 지워지면 좌측 결정화 + 균열의 에센스', 'Max quality gone: Sinistral Crystallisation + Essence of the Breach') | {'node': 'a11e'},
+            K('촉진하는 찬미 + 완벽한 엑잘티드 오브, 빗나가면 기폭제부터 다시', 'Catalysing Exaltation + Perfect Exalted Orb; a miss goes back to the catalyst') | {'node': 'a12'}],
   'item': [SP, MF, MQ, SL, DEX, CS]},
- {'id': 'L3', 'nodes': ['a14', 'a15', 'a15x'], 'kr': '쿠르갈 공개', 'en': 'Kurgal reveal'},
+ {'id': 'L3', 'nodes': ['a16', 'a17', 'a17x'], 'kr': '쿠르갈 공개', 'en': 'Kurgal reveal'},
 ]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)

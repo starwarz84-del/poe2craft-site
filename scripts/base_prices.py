@@ -58,6 +58,7 @@ BASEPRICE = {
   'lilbotq-boots': None,
   'lilbotq-emerald': None,
   'mastert-timelost-emerald': None,
+  'mastert-timelost-emerald-v2': 94, 'mastert-timelost-emerald-v2-bal': 94,   # 영상 매물 93~95 div(공격 치명타 확률 분열 오래된 에메랄드)
   'mazbro-sceptre': None,
   'mazbro-spell5-amulet': None,
   'noble-timelost-sapphire': None,

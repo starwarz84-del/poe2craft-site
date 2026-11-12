@@ -90,7 +90,7 @@ A(id='r1', kind='act', group='main', pos=[0, 7.4], act='reveal', omens=['Omen_of
   goal=K('접미 이동 속도', 'Movement speed suffix'), show=['ms'],
   edges=[{'if': {'added': 'ms'}, 'to': 'x1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   over=[{'param': {'v': 2}, 'set': {'want': 'revB', 'show': REVB,
-         'goal': K('접미 좋은 옵션 — 공격 속도·활 공격 속도·이동 속도·주요·소형 패시브 효과 중 먼저 뜬 것', 'A good suffix: whichever of attack speed, bow attack speed, movement speed, notable or small passive effect lands first'),
+         'goal': K('접미 좋은 옵션 — 다섯 중 먼저 뜬 것', 'A good suffix: whichever of the five lands first'),
          'edges': [{'if': {'added': 'revB'}, 'to': 'x1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}]}}],
   item=[CS, FRC, CD, MS])
 A(id='r1x', kind='act', group='main', pos=[1, 7.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
@@ -101,7 +101,8 @@ A(id='x1', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb',
   edges=[{'if': {'has': 'contS'}, 'to': 'x1', 'res': 'fail', 'hide': True}, {'to': 'e2', 'res': 'ok'}], item=[J('p'), FRC, CD, MS])
 A(id='e2', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 두번째 옵션', 'Second prefix'), showText=[K('랜덤 옵션 1개', 'One random option')],
-  edges=[{'if': {'has': 'pre'}, 'to': 'l2', 'res': 'ok', 'hide': True}, {'to': 'c2'}], item=[J('p'), J('p'), FRC, CD, MS])
+  edges=[{'if': {'has': 'pre'}, 'to': 'l2', 'hide': True, 'label': K('좋은 접두가 붙음 — 카오스 건너뜀', 'A good prefix landed: skip Chaos')},
+         {'to': 'c2', 'label': K('좋은 접두 없음', 'No good prefix')}], item=[J('p'), J('p'), FRC, CD, MS])
 A(id='c2', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접두 상태 이상의 강도 — 감전의 강도와 함께 먼저 뜬 것', 'Magnitude of Ailments prefix: or Magnitude of Shock, whichever lands first'),
   showText=[K('접미가 한도를 넘어 접두만 바뀜', 'Suffixes are over the limit: only prefixes change')], show=['p6', 'p62'],

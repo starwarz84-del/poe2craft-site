@@ -12,7 +12,7 @@ mt_plusS=textT('+1 Suffix Modifier allowed','x','p'); mt_vl=textT('Upgrades Radi
 assert 'Spear' not in cd(c)['groups'][mt_cd]['t'][0][5] and 'Damaging' not in cd(c)['groups'][mt_ail]['t'][0][5]
 MT_PRE=[{'gi':mt_ail},{'gi':mt_shock}]
 R.append({
- 'id':'mastert-timelost-emerald','cls':c,'base':0,'ilvl':81,'cap':{'p':2,'s':2},'difficulty':4,'budget':'high','unknownW':True,
+ 'id':'mastert-timelost-emerald','cls':c,'base':0,'ilvl':80,'cap':{'p':2,'s':2},'difficulty':4,'budget':'high','unknownW':True,
  'buildTags':[K('주얼','Jewel'),K('오래된 주얼','Time-Lost jewel'),K('공격 치명타','Attack crit'),K('이동 속도','Movement speed')],'patch':'0.5','created':'2026-11-09','author':MT5,
  'source':{'url':'https://www.youtube.com/watch?v=GNNkhSENp6Q','title':'How To Craft INSANE Endgame 5 Mod Jewels For ANY Build - Beginner Friendly Craft Guide - PoE 2','channel':'Master T'},
  'title':K('공격 치명타 분열 + 접미 옵션 3개 + 매우 넓은 반경 5옵션','fractured attack crit, three suffixes + Very Large radius, five mods'),

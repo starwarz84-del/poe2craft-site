@@ -156,7 +156,7 @@ A(id='d1r', kind='act', group='main', pos=[0, 13], act='reveal', missPick='lvl',
   goal=K('접미 자리 막기 — 가장 높은 레벨 옵션', 'Suffix blocker: the highest-level option'),
   showText=[{'s': 's', 'kr': '가장 높은 레벨 옵션 (모든 투사체 +1은 레벨 5라 받지 않음)', 'en': 'Highest-level option (+1 projectile skills is level 5, not taken)'}],
   edges=R({'w1': {}}), item=[LF, PH, PS, CA, CD, BL1])   # 8:32 공개 3개(투사체 +1·처치 시 생명력·이동 중 투사체 2개) → 레벨 65 훼손 옵션
-A(id='w1', kind='act', group='main', pos=[0, 14], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], trim={'side': 'p', 'keep': 'pre', 'keepDes': True},
+A(id='w1', kind='act', group='main', pos=[0, 14], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'pre', 'keepDes': True},
   label=K('카오스', 'Chaos'), goal=K('접두 잡옵 다시 — 남은 접두 옵션', 'Reroll the junk prefix: the other prefix'), show=['pspd', 'bow'],
   edges=R({'f1': {'res': 'ok'}, 'r1': {'res': 'fail'}}), item=[LF, BW, PS, CA, CD, BL2])   # 8:50 '절사로 접두 옵션을 돌릴 수 있다. 완벽한 카오스', 8:58 냉기 2티어(레벨 65), 10:38~10:54 활 스킬 피해 57%
 A(id='r1', kind='act', group='main', pos=[1, 14], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
