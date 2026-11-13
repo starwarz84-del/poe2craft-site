@@ -33,6 +33,7 @@ g = {
           '의뢰인 요청으로 힘(12:00~13:06: 상위 카오스·소멸·완벽한 엑잘 반복, 최종 힘 2티어·냉기 저항 → 공허 유동체 카오스 저항 2티어) → '
           '접두 완벽한 엑잘 빗나감(방어도+기절 한계치, 13:38) → 좌측 결정화 + 심연의 에센스로 징표(13:42) → 완벽한 엑잘 이동 속도 35% 1티어(13:50) → '
           '징표에 고대 갈비뼈 + 심연의 메아리 공개(15:30~16:10, 생명력 87 3티어 — 빗나감) → 빛의 징조 + 소멸의 오브(16:24) → 빈자리에 고대 갈비뼈 공개 생명력 133 1티어(16:30). '
+          '새 정책 A(11-13 14:17): 완성 카드·상자·칸은 성공 회차 옵션(접두 엑잘 = 이동 속도 13:50, 훼손 공개 = 생명력 최대치 16:30, 접미 = 힘·냉기 저항 → 카오스 저항), 판정은 묶음(anyOf) 그대로, 반대 순서는 꿀팁. '
           '내부 결정: 접미 둘째·셋째 자리는 힘·원소 저항 중 먼저 뜬 것(영상은 의뢰인 요청으로 힘을 상위 카오스로 나중에 넣음), 접두 엑잘·훼손은 이동 속도·생명력 중 먼저 뜬 것과 남은 것.'),
  'params': {
   'strT': {'kr': '힘 목표', 'en': 'Strength target', 'values': {'2': K('1~2티어', 'T1–2'), '3': K('1~3티어', 'T1–3')}},
@@ -53,10 +54,10 @@ g = {
   'ms': {'gi': 12}, 'life': {'gi': 5},
   'msD': {'gi': 12, 'tmax': '$desT'}, 'lifeD': {'gi': 5, 'tmax': '$desT'},
   'msD1': {'gi': 12, 'tmax': 1}, 'lifeD1': {'gi': 5, 'tmax': 1}, 'msD2': {'gi': 12, 'tmax': 2}, 'lifeD2': {'gi': 5, 'tmax': 2},
-  'PRE': {'anyOf': ['ms', 'life'], 'label': K('이동 속도·생명력 최대치', 'Movement speed or maximum Life')},
-  'PRED': {'anyOf': ['msD', 'lifeD']},
-  'PREDh': {'anyOf': ['msD1', 'lifeD1'], 'label': K('이동 속도·생명력 최대치 1티어', 'T1 movement speed or maximum Life')},
-  'PREDb': {'anyOf': ['msD2', 'lifeD2'], 'label': K('이동 속도·생명력 최대치 1~2티어', 'T1–2 movement speed or maximum Life')},
+  'PRE': {'anyOf': ['ms', 'life'], 'shown': 'ms', 'label': K('이동 속도·생명력 최대치', 'Movement speed or maximum Life')},
+  'PRED': {'anyOf': ['msD', 'lifeD'], 'shown': 'lifeD'},
+  'PREDh': {'anyOf': ['msD1', 'lifeD1'], 'shown': 'lifeD1', 'label': K('이동 속도·생명력 최대치 1티어', 'T1 movement speed or maximum Life')},
+  'PREDb': {'anyOf': ['msD2', 'lifeD2'], 'shown': 'lifeD2', 'label': K('이동 속도·생명력 최대치 1~2티어', 'T1–2 movement speed or maximum Life')},
   'mark': {'gi': 47},
  },
  'conds': {'sufDone': {'all': [{'has': 'armEle'}, {'has': 'str'}, {'has': 'chaosR'}]}},
@@ -64,7 +65,7 @@ g = {
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 2]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 2]}],
  'start': 'b0',
- 'finals': [
+ 'finals': [   # 묶음 태그 줄(판정 = 이동 속도·생명력 아무 순서), 화면은 태그 shown = 성공 회차(이동 속도 엑잘, 생명력 훼손) + 다른 순서 꿀팁 줄(S4)
   {'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
    'lines': [{'tag': 'armP', 'fr': True}, {'tag': 'PRE'}, {'tag': 'PREDh', 'des': True}, {'tag': 'armEle'}, {'tag': 'strH'}, {'tag': 'chaosRH'}]},
   {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
@@ -112,7 +113,7 @@ A(id='s1', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb',
 # 접미 반복(영상 10:27~13:06): 우측 찬미 + 완벽한 엑잘, 원소 저항이면 공허 유동체로 카오스 저항, 빗나가면 소멸의 오브
 A(id='s2', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접미 힘·원소 저항 — 남은 옵션 중 먼저 뜬 것', 'Strength or an elemental resistance suffix: whichever is still missing lands first'),
-  show=['str', 'fire', 'cold', 'light'],
+  show=['str', 'cold'],
   edges=[{'if': {'all': [{'added': 'ELE'}, {'not': {'has': 'chaosR'}}]}, 'to': 'sf', 'res': 'ok', 'label': K('원소 저항', 'Elemental resistance')},
          {'if': {'ref': 'sufDone'}, 'to': 'p1', 'res': 'ok'},
          {'if': {'any': [{'added': 'str'}, {'added': 'chaosR'}]}, 'to': 's2', 'res': 'ok', 'hide': True},
@@ -131,7 +132,7 @@ A(id='s0', kind='cleanup', group='main', pos=[2, 10.4], keep=[], maxJunk=1, labe
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 's1'}])
 # 접두 엑잘(영상 13:10~13:50): 빗나가면 좌측 결정화 + 심연의 에센스로 징표, 징표를 둔 채 다시 엑잘(14:00~14:45 설명: 또 빗나가면 징표 훼손 → 빛의 징조 + 소멸 → 다시 징표)
 A(id='p1', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두 번째 옵션 — 이동 속도·생명력 최대치 중 먼저 뜬 것', 'Second prefix: movement speed or maximum Life, whichever lands first'), show=['ms', 'life'],
+  goal=K('접두 두 번째 옵션 — 이동 속도·생명력 최대치 중 먼저 뜬 것', 'Second prefix: movement speed or maximum Life, whichever lands first'), show=['ms'],
   edges=[{'if': {'added': 'PRE'}, 'to': 'p2', 'res': 'ok', 'hide': True}, {'to': 'q1', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[ARM, MS, ELE, STR, CHR])
 A(id='q1', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Essence_of_the_Abyss', ess='mark', mark=True,
@@ -139,7 +140,7 @@ A(id='q1', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Essence_
   goal=K('빗나간 접두를 지우고 심연의 군주의 징표', 'The missed prefix goes for the Mark of the Abyssal Lord'),
   showText=[{'s': 'p', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=[{'to': 'q4'}], item=[ARM, MARK, ELE, STR, CHR])
 A(id='q4', kind='act', group='main', pos=[1, 12.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('징표를 둔 채 접두 이동 속도·생명력 최대치', 'Movement speed or maximum Life prefix, the Mark kept'), show=['ms', 'life'],
+  goal=K('징표를 둔 채 접두 이동 속도·생명력 최대치', 'Movement speed or maximum Life prefix, the Mark kept'), show=['ms'],
   edges=[{'if': {'added': 'PRE'}, 'to': 'p8m', 'res': 'ok'}, {'to': 'q4b', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[ARM, MS, MARK, ELE, STR, CHR])
 A(id='q4b', kind='act', group='main', pos=[2, 12.4], act='desecrate', cur='Preserved_Rib', fromMark=True, label=K('훼손', 'Desecrate'),
@@ -155,7 +156,7 @@ A(id='p2', kind='act', group='main', pos=[1, 14.4], act='desecrate', cur='Ancien
   goal=K('빈 접두에 고대 갈비뼈', 'Ancient Rib on the empty prefix'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'p3'}])
 A(id='p3', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='PRED', label=K('공개', 'Reveal'),
-  goal=K('접두 세 번째 옵션(훼손) — 남은 이동 속도·생명력 최대치', 'Third prefix (desecrated): the remaining movement speed or maximum Life'), show=['life', 'ms'],
+  goal=K('접두 세 번째 옵션(훼손) — 남은 이동 속도·생명력 최대치', 'Third prefix (desecrated): the remaining movement speed or maximum Life'), show=['life'],
   edges=[{'if': {'added': 'PRED'}, 'to': 'ok', 'res': 'ok'}, {'to': 'p3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[ARM, MS, LIFE, ELE, STR, CHR])
 A(id='p3x', kind='act', group='main', pos=[1, 15.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
