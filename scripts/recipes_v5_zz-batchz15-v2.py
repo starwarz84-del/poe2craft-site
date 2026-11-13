@@ -2,10 +2,7 @@
 def _mz5(r, t):
     _drop(r,'z9b')   # 촉진 + 완벽한 엑잘로 주문 +3·시전 속도를 같이 노리는 방법은 영상에서 20번에 1번 — 뺌
     _node(r,'z11')['omens']=['Omen_of_Sinistral_Crystallisation']   # 영상: 좌측 결정화 + 룬 합금
-    if t=='bal':
-        _drop(r,'z14','z15','z16','z17')   # 밸런스: 축성 없이 판매 (영상: 축성 전 시세 약 450~600 div)
-        z13=_node(r,'z13'); z13.pop('fail',None); z13['br']=KEEP
-for _t in ('high','bal'): _grade8('mazbro-spell5-amulet','mazbro-spell5-amulet-v2',_t,_mz5)
+for _t in ('high',): _grade8('mazbro-spell5-amulet','mazbro-spell5-amulet-v2',_t,_mz5)   # 2026-11-13 P13 새 정책 D: 하이엔드 404.2 / 밸런스 369.4 div(8.6%) → 하이엔드만
 
 def _gold(r, t):
     p1=_node(r,'p1'); p1.pop('fail',None)

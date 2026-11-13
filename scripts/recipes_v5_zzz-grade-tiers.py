@@ -16,7 +16,7 @@ def _any32(r, nid):
     n=next(x for x in r['nodes'] if x['id']==nid); n['target']['anyReveal']=True; n.pop('fail',None)
     n['br']={'kr':'공개 결과 그대로, 다시 하지 않음','en':'Keep whatever the reveal gives'}
 for _id,_n in [('mastert-timelost-emerald-v2-bal','t6'),('noble-timelost-sapphire-v2-bal','n11'),
-               ('sl-5mod-jewel-v2-bal','s7'),('vodnarg-timelost-emerald-v2-ess','v4'),('zenm-timelost-sapphire-v2-ess','z5'),('mazbro-spell5-amulet-v2-bal','z13')]:
+               ('sl-5mod-jewel-v2-bal','s7'),('vodnarg-timelost-emerald-v2-ess','v4'),('zenm-timelost-sapphire-v2-ess','z5')]:
     _any32(_rid32(_id),_n)
 for _t,_tm in (('bal',2),('ess',3)):
     if _t=='bal': _r=_rid32('diztoh-socket-gloves-v2-'+_t); _tm32(_r,'d10',_tm); _tm32(_r,'dm3',_tm)   # 2026-11-13 P8: 에센셜 뺌(밸런스만)

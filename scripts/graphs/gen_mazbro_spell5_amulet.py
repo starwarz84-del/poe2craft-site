@@ -21,7 +21,6 @@ CS = L('s', '시전 속도 (25—28)% 증가 (훼손)', '(25—28)% increased Ca
 J = lambda s='x': L(s, '잡옵', 'Junk', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')
 ANN = K('소멸의 오브 사용', 'Use an Orb of Annulment')
-V1 = {'param': {'v': 1}}
 
 FIN = K('시전 속도·치명타 확률·치명타 피해·모든 원소 저항·희귀도 1티어·모든 스킬의 퀄리티',
         'T1 cast speed, critical chance, critical damage, all elemental resistances, rarity or quality of all skills')
@@ -35,11 +34,10 @@ g = {
           '+3은 17:32 카오스) → 좌측 찬미 + 상위 엑잘(에너지 보호막 4티어, 27:17) → 좌측 결정화 + 룬 합금(29:13 화면 룬 수호 10%) → 고대 빗장뼈(29:20) → 공개 시전 속도 1티어(29:31). '
           '촉진 엑잘 실험(17:40~24:00)·실험 목걸이 정리(24:00~28:00)는 꿀팁 후보. 완벽한 유동체·완벽한 쥬얼러·신성한 오브(30:00~37:50)는 정책 14장대로 뺌. '
           '축성(축성의 징조 + 신성한 오브, 37:45 Hypnotic Noose +5)은 영상 제목이라 사용자 결정(2026-11-13 06:40)대로 완성 뒤 선택 단계(점선 상자, 비용 미포함). 성유(30:12 자로크의 선물)는 축성 뒤엔 못 하므로 같은 상자에 그 전에 한다고만 적음.'),
- 'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video'), '2': K('결과 그대로', 'As it comes')}}},
- 'strategies': [{'id': 'high', 'params': {'v': 1}}, {'id': 'bal', 'params': {'v': 2}}],
+ # 2026-11-13 P13 새 정책 D: 하이엔드 404.2 / 밸런스 369.4 div(차이 8.6%) → 하이엔드만
+ 'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video')}}},
+ 'strategies': [{'id': 'high', 'params': {'v': 1}}],
  'versions': [
-   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 2}, 'tier': 'bal',
-    'desc': K('마지막 접미 훼손 공개 결과 그대로', 'Last suffix: the reveal is kept as it comes')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'v': 1}, 'tier': 'high',
     'desc': K('영상: 마지막 접미는 좋은 옵션 1티어, 빗나가면 빛의 징조로 다시', 'Video: a good T1 last suffix, Light retries a miss')}],
  'tags': {
@@ -55,9 +53,7 @@ g = {
  'start': 'z1',
  'finals': [
    {'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-    'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'rw', 'ess': True}, {'tag': 'spell'}, {'tag': 'fin', 'des': True}]},
-   {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-    'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'rw', 'ess': True}, {'tag': 'spell'}, {'side': 's', 'random': True}]}],
+    'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'rw', 'ess': True}, {'tag': 'spell'}, {'tag': 'fin', 'des': True}]}],
  'finalItem': {'quality': 40, 'sockets': 0},
 }
 
@@ -124,8 +120,7 @@ A(id='z12', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancie
 A(id='z13', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='fin', label=K('공개', 'Reveal'),
   goal=K('접미 시전 속도 1티어 — 좋은 접미 여섯 중 먼저 뜬 것', 'T1 cast speed suffix: whichever of the six good suffixes lands first'),
   show=['cs', 'cr', 'cd', 'ar', 'rs', 'kq'],
-  edges=[{'if': {'added': 'fin'}, 'to': 'ok', 'res': 'ok'}, {'if': V1, 'to': 'z13x', 'res': 'fail', 'label': K('빗나감', 'Miss')},
-         {'to': 'ok', 'res': 'fail', 'hide': True}],
+  edges=[{'if': {'added': 'fin'}, 'to': 'ok', 'res': 'ok'}, {'to': 'z13x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[SP, RW, SL, CS])
 A(id='z13x', kind='act', group='main', pos=[1, 15.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'z12', 'label': K('다시 훼손', 'Desecrate again')}])
