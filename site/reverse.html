@@ -345,6 +345,8 @@ async function parse(txt){
   const exceptional = /exceptional|특출난/i.test(nameLines.join(' '));
   const sockL = all.find(l=>/^(Sockets|소켓)\s*:/i.test(l)); const sockets = sockL ? (sockL.split(':')[1].match(/S/gi)||[]).length : null;
   const ilIdx = secs.findIndex(s=>s.some(l=>/^(Item Level|아이템 레벨)\s*:/i.test(l)));
+  /* 고정 옵션 구역(2026-11-13 W1): 여러 줄 고정 옵션은 일반 복사에서 마지막 줄에만 (implicit)이 붙음(예: 부재 목걸이 '-1 Prefix Modifier allowed') → 같은 구역의 못 읽은 줄은 고정 옵션으로 */
+  const impSec = new Set((ilIdx>=0 ? secs.slice(ilIdx+1) : secs.slice(1)).filter(sc=>sc.some(l=>tagOf(l)==='implicit') && !sc.some(l=>/\((fractured|desecrated|crafted)\)\s*$/i.test(l))).flat());
   const lines = (ilIdx>=0 ? secs.slice(ilIdx+1) : secs.slice(1)).flat()
     .filter(l=>!/^(Sanctified|축성됨|축성|Corrupted|타락|Unidentified|미확인|Mirrored|복제됨)$/i.test(l) && !/^(Note|노트|Sockets|소켓)\s*:/i.test(l) && !/^".*"$/.test(l));
   const MX = matcher(D), mods=[], other=[], used=new Set(); let hint=null;
@@ -359,7 +361,7 @@ async function parse(txt){
     if(tag==='implicit' || hint?.imp){ other.push({k:'imp', l:cleanLine(l0)}); hint=null; continue; }
     if(tag==='rune'){ other.push({k:'rune', l:cleanLine(l0)}); hint=null; continue; }
     if(/unrevealed|공개되지 않은|미공개/i.test(l0)){ mods.push({unrev:true, side:hint?.side || null, l:l0}); hint=null; continue; }
-    const l = cleanLine(l0); let best=null;
+    const l = cleanLine(l0); let best=null; const bySide={};
     for(const c of MX){
       if(tag==='enchant' ? c.s!=='c' : c.s==='c') continue;
       const vals=[]; let ok=true;
@@ -375,9 +377,13 @@ async function parse(txt){
       if((tag==='desecrated'||hint?.des) && c.s!=='d') sc+=0.5;
       if(hint?.name && (t[2]===hint.name || t[3]===hint.name || t[2].replace(/^-\s*/,'')===hint.name)) sc-=5;
       if(hint?.tier && c.ti+1===hint.tier) sc-=0.3;
-      if(!best || sc<best.sc) best={sc,c,vals:bv,raw:vals,ranges,boost};
+      /* 분열·훼손 표시는 아이템당 옵션 하나 → 이어진 표시 줄을 한 번에 채우는 여러 줄 옵션이 맞음(2026-11-13 W1: 일반 복사의 울트레드 분열 장화가 두 옵션으로 갈라졌음) */
+      if(c.lines.length>1 && (tag==='fractured' || tag==='desecrated') && Array.from({length:c.lines.length-1},(_,k)=>tagOf(lines[i+1+k]||'')).every(x=>x===tag)) sc-=3;
+      const cand = {sc,c,vals:bv,raw:vals,ranges,boost};
+      if(!best || sc<best.sc) best=cand;
+      if(!bySide[g.g] || sc<bySide[g.g].sc) bySide[g.g]=cand;
     }
-    if(!best){ other.push({k:'?', l:l0}); hint=null; continue; }
+    if(!best){ other.push({k: impSec.has(l0) && !hint ? 'imp' : '?', l:l0}); hint=null; continue; }
     const {c,vals,ranges,boost}=best;
     if(c.s==='c'){ other.push({k:'ench', l}); i+=c.lines.length-1; hint=null; continue; }
     const text = [l, ...Array.from({length:c.lines.length-1},(_,k)=>cleanLine(lines[i+1+k]||''))].join('\n');
@@ -400,9 +406,20 @@ async function parse(txt){
         hint=null; continue; }
     }
     used.add(c.gi);
-    mods.push({gi:c.gi, ti:c.ti, side:D.groups[c.gi].g, q:boost>1, fr: tag==='fractured' || !!hint?.fr, desTag: tag==='desecrated' || !!hint?.des, crafted: tag==='crafted', roll, out, l:text, hintTier:hint?.tier||null});
+    const oSd = D.groups[c.gi].g==='p'?'s':'p', alt = !hint?.side && bySide[oSd] && bySide[oSd].c.lines.length===c.lines.length && fitScore(bySide[oSd].ranges, bySide[oSd].vals)===0 ? bySide[oSd] : null;
+    mods.push({gi:c.gi, ti:c.ti, side:D.groups[c.gi].g, q:boost>1, fr: tag==='fractured' || !!hint?.fr, desTag: tag==='desecrated' || !!hint?.des, crafted: tag==='crafted', roll, out, l:text, hintTier:hint?.tier||null, ...(alt?{_alt:alt}:{})});
     i += c.lines.length-1; hint=null;
   }
+  /* 쪽 맞추기(2026-11-13 W1): 일반 복사엔 접두·접미 표시가 없어 양쪽에 다 있는 옵션(아이템 희귀도 등)이 한쪽으로 몰림.
+     한쪽이 자리를 넘고 반대쪽에 빈자리가 있으면, 반대쪽에도 같은 줄로 맞는 옵션을 그쪽으로 옮김 */
+  { const jw = S.index.groups.find(g=>g.classes.some(c=>c.id===hit.cls))?.id==='jewel', capR = {p:(jw?2:3)+(b.pd||0), s:(jw?2:3)+(b.sd||0)};
+    if(rarity==='magic'){ capR.p=1; capR.s=1; }
+    const n = sd => mods.filter(m=>m.side===sd).length;
+    for(let guard=0; guard<6; guard++){ const sd = ['p','s'].find(x=>n(x)>capR[x] && n(x==='p'?'s':'p')<capR[x==='p'?'s':'p']); if(!sd) break;
+      const mv = mods.filter(m=>m.side===sd && m._alt && !mods.some(y=>y!==m && y.gi===m._alt.c.gi)).sort((a,b2)=>a._alt.sc-b2._alt.sc)[0]; if(!mv) break;
+      const A=mv._alt, rg=A.ranges, f0=rg.findIndex(r=>r[0]!==r[1]); let roll=null; if(f0>=0){ const v=Math.abs(+A.vals[f0]), a=Math.min(...rg[f0]), bb=Math.max(...rg[f0]); roll=Math.max(0,Math.min(1,bb===a?1:(v-a)/(bb-a))); }
+      used.delete(mv.gi); used.add(A.c.gi); Object.assign(mv, {gi:A.c.gi, ti:A.c.ti, side:D.groups[A.c.gi].g, roll}); delete mv._alt; } }
+  mods.forEach(m=>{ delete m._alt; });
   /* 줄 하나씩 맞춘 결과에 범위 초과(퀄리티 영향 아님)·인식 못 한 옵션 줄·자리 초과가 있으면 합쳐진 줄로 보고 전체를 다시 풂 (고급 복사는 옵션마다 따로 나와 해당 없음) */
   { const advanced = lines.some(l=>l.startsWith('{')), unk = other.filter(o=>o.k==='?'), capS = {p:Math.max(0,(D.groups.length?3:3)+(b.pd||0)), s:Math.max(0,3+(b.sd||0))};
     const catJ = S.index.groups.find(g=>g.classes.some(c=>c.id===hit.cls))?.id==='jewel'; if(catJ){ capS.p=2+(b.pd||0); capS.s=2+(b.sd||0); }
@@ -505,9 +522,12 @@ function analyse(it){
   if(it.rarity==='rare' && !it.corrupted && (open.p>0 || open.s>0)) tr.push({c:'var(--ok)', t:L(`<b>남은 자리</b> — 접두 ${open.p} · 접미 ${open.s}. 아직 엑잘이나 훼손으로 채울 수 있음.`,`<b>Open slots</b> — ${open.p} prefix · ${open.s} suffix, still free for an exalt or a desecration.`)});
   // two or more desecrated lines: taken to be an Omen of Putrefaction item (one desecration turns every line into up to 6 unrevealed ones and corrupts it),
   // which has no step-by-step recipe (사용자 확정 2026-11-09)
+  /* 인식 못 한 옵션 줄(2026-11-13 W1): 초안이 그 줄을 만들 수 없음 → 맨 위 경고 + 원문, 초안은 '잡옵으로 보고 진행' 체크 뒤에만 */
+  const unrec = (it.other||[]).filter(o=>o.k==='?');
+  if(unrec.length) tr.unshift({c:'var(--warn)', t:L(`<b>인식 못 한 옵션 ${unrec.length}개</b> — ${unrec.map(o=>'「'+esc(o.l)+'」').join(', ')}. 옵션 데이터에서 찾지 못한 줄이라 초안이 만들 수 없음. 잡옵 자리로 보고 진행하려면 아래에서 확인 체크.`,`<b>${unrec.length} line(s) not recognised</b> — ${unrec.map(o=>'“'+esc(o.l)+'”').join(', ')}. Not found in the modifier data, so the draft cannot make them. Tick the box below to treat them as junk slots.`)});
   const nDes = rows.filter(r=>r.unrev || r.how==='d').length, putrid = it.rarity==='rare' && nDes>=2;
   if(putrid) tr.unshift({c:'var(--warn)', t:L(`<b>레시피 작성 불가</b> — 훼손 옵션 ${nDes}개. ${esc(curName('Omen_of_Putrefaction'))}로 만든 아이템이라 단계별 레시피를 만들 수 없음.`,`<b>No recipe</b> — ${nDes} desecrated lines. This item was made with ${esc(curName('Omen_of_Putrefaction', true))}, so there is no step-by-step recipe.`)});
-  return {cap, cnt, rows, tr, flat, putrid, nDes};
+  return {cap, cnt, rows, tr, flat, putrid, nDes, unrec:unrec.length};
 }
 function short(r){ const s=(locLine(r.m.l||'', r.t)||'').split('\n')[0]; return s.length>34 ? s.slice(0,33)+'…' : s; }
 function rareCls(p){ return p==null ? '' : p>=0.2 ? 'r0' : p>=0.05 ? 'r1' : p>=0.01 ? 'r2' : 'r3'; }
@@ -1263,7 +1283,9 @@ function makeDraft(it, an, opt){
     const cs = (E.omens||[]).find(o=>/Crystallisation/.test(o)), csd = cs ? (/Sinistral/.test(cs)?'p':'s') : x.r.m.side;
     if(E.fail?.goto && !E.fail.via && E.target.chance<1) E.fail = {...E.fail, via:{cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[csd]]}};
     for(let j=i-1;j>0 && nodes[j].phase==='ess';j--) if(nodes[j].do==='exalt' && nodes[j].target?.junk){ nodes[j].target = {...nodes[j].target, skipHas:x.r.m.gi}; break; } }
-  return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff2, ...(tier?{priceTier:tier.id}:{}), ...(market>0?{marketPrice:market}:{}), ...(nComp?{compromises:nComp}:{}),
+  /* 같은 옵션 두 줄(일반 + 훼손, 2026-11-13 W1): 플로우차트 완성 조건이 그 수만큼 요구하도록 graphify에 넘김 */
+  const dupGi = {}; an.rows.forEach(r=>{ if(!r.unrev && r.m.gi!=null) dupGi[r.m.gi]=(dupGi[r.m.gi]||0)+1; }); Object.keys(dupGi).forEach(k=>{ if(dupGi[k]<2) delete dupGi[k]; });
+  return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(Object.keys(dupGi).length?{dupGi}:{}), ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff2, ...(tier?{priceTier:tier.id}:{}), ...(market>0?{marketPrice:market}:{}), ...(nComp?{compromises:nComp}:{}),
     author:{kr:'아이템 역산 초안', en:'Reverse-engineered draft'}, title:{kr:featK.join(' + ')||'역산 초안', en:featE.join(' + ')||'Draft'},
     buildTags:[], start, phases, nodes, ...(prep?{prep}:{}), src:{text:S.txt||''} };
 }
@@ -1365,8 +1387,13 @@ function verifyDraft(it, an, d){
   // the finished draft should hold exactly the pasted item's lines
   const fk = gi => grp(gi).g+':'+grp(gi).f.join('+');   // an essence group and the regular group of the same family give the same line
   const want = an.rows.filter(r=>!r.unrev && r.m.gi!=null && r.how!=='x').map(r=>r.m.gi), have = mods.filter(m=>m.gi!=null).map(m=>m.gi);
-  const miss = want.filter(gi=>!have.some(h=>h===gi || fk(h)===fk(gi))), extra = have.filter(gi=>!want.some(w=>w===gi || fk(w)===fk(gi)));
-  if(miss.length) add('err',`완성 상태에 빠진 옵션: ${miss.map(nameOf).join(', ')}`,`Missing from the finished item: ${miss.map(nameOf).join(', ')}`);
+  /* 한 줄씩 짝지음(2026-11-13 W1): 같은 계열 두 줄(일반 + 훼손 화염 저항 최대치)을 초안이 하나만 만들어도 통과하던 것 */
+  const pairUp = (A, B) => { const left=B.slice(); return A.filter(gi=>{ let k=left.indexOf(gi); if(k<0) k=left.findIndex(h=>fk(h)===fk(gi)); if(k<0) return true; left.splice(k,1); return false; }); };
+  const miss = pairUp(want, have), extra = pairUp(have, want).filter(gi=>!want.some(w=>w===gi || fk(w)===fk(gi)));
+  if(miss.length) add('err',`완성 상태에 빠진 옵션: ${miss.map(nameOf).join(', ')}${miss.some(gi=>want.filter(w=>w===gi).length>1)?' (같은 옵션 두 줄 중 하나)':''}`,`Missing from the finished item: ${miss.map(nameOf).join(', ')}`);
+  /* 쪽마다 옵션 수(2026-11-13 W1): 붙여 넣은 아이템에서 목표로 고른 옵션 수만큼 초안 완성 상태에 그쪽 옵션이 있어야 함 */
+  ['p','s'].forEach(sd=>{ const w=an.rows.filter(r=>!r.unrev && r.m.gi!=null && r.how!=='x' && r.m.side===sd).length, h=mods.filter(m=>m.gi!=null && m.side===sd).length;
+    if(h<w && !miss.length) add('err',`완성 상태의 ${sd==='p'?'접두':'접미'} 목표 옵션 ${h}개, 붙여 넣은 아이템은 ${w}개`,`The finished draft has ${h} target ${sideEn(sd)}(es); the pasted item has ${w}.`); });
   if(extra.length) add('warn',`붙여 넣은 아이템에 없는 옵션이 남음: ${extra.map(nameOf).join(', ')}`,`Lines not on the pasted item: ${extra.map(nameOf).join(', ')}`);
   // every step with odds below 100% says what happens on a miss: fail (goto/via/lost), a fallback step, or a branch
   d.nodes.forEach((n,i)=>{ if(n.do==='base' || n.fallbackFor || n.onLost || n.branch?.when==='miss') return; const t=n.target||{};
@@ -1386,7 +1413,9 @@ function verifyDraft(it, an, d){
   const unk = an.rows.filter(r=>r.unknown && !r.m.fr); if(unk.length) add('warn',`가중치를 모르는 옵션 ${unk.length}개(${unk.map(r=>cutW(lk(r),24)).join(', ')}) — 해당 단계 확률 계산 불가`,`${unk.length} line(s) with unknown weights (${unk.map(r=>cutW(lk(r),28)).join(', ')}); those steps have no odds.`);
   /* 인식 못 한 옵션 줄(2026-11-13 RV0): 초안에 없는 줄이 있을 수 있어 '완성 상태 = 붙여 넣은 아이템'으로 보지 않음 */
   const unrec = (it.other||[]).filter(o=>o.k==='?');
-  if(unrec.length) add('warn',`인식하지 못한 옵션 ${unrec.length}개(${unrec.map(o=>cutW(o.l,24)).join(', ')}) — 초안에 빠졌을 수 있음`,`${unrec.length} line(s) not recognised (${unrec.map(o=>cutW(o.l,28)).join(', ')}); the draft may be missing them.`);
+  /* 2026-11-13 W1: '잡옵으로 보고 진행'을 체크하지 않았으면 오류, 체크했으면 그 줄은 잡옵 자리로 보고 주의 */
+  if(unrec.length) add(S.unkOk?'warn':'err', S.unkOk ? `인식 못 한 옵션 ${unrec.length}개(${unrec.map(o=>cutW(o.l,24)).join(', ')})는 잡옵 자리로 봄 — 그 줄은 초안에 없음` : `인식 못 한 옵션 ${unrec.length}개(${unrec.map(o=>cutW(o.l,24)).join(', ')}) — 초안이 만들 수 없는 줄`,
+    S.unkOk ? `${unrec.length} unrecognised line(s) (${unrec.map(o=>cutW(o.l,28)).join(', ')}) are treated as junk slots; the draft does not make them.` : `${unrec.length} line(s) not recognised (${unrec.map(o=>cutW(o.l,28)).join(', ')}); the draft cannot make them.`);
   if(!out.some(o=>o.lv==='err') && !unrec.length) add('ok','완성 상태 = 붙여 넣은 아이템 · 모든 단계가 규칙에 맞음','The finished state matches the pasted item and every step follows the rules.');
   return out;
 }
@@ -1513,6 +1542,8 @@ function render(){
       (()=>{ const an0=String(r.t[KR()?2:3]||'').replace(/^-\s*/,''); return !an0 || (KR() && an0===r.t[3] && /^[\x00-\x7F]+$/.test(an0)) ? '' : `<span class="tag">${esc(an0)}</span>`; })()].join('');   /* 접미 이름 앞 '- ' 빼고, 한글 이름이 없는(영어 그대로인) 증강물 옵션 이름은 숨김(2026-11-13 RV0) */
     const tierT = r.g.s==='n' ? L(`T${r.tierNo} · Lv ${r.t[0]}`,`T${r.tierNo} · lvl ${r.t[0]}`) : L(`Lv ${r.t[0]}`,`lvl ${r.t[0]}`);
     const ri = an.rows.indexOf(r), soft = !m.fr && S.soft?.has(ri), on = m.fr || S.need.has(ri) || soft;
+    /* 필수 훼손 옵션 = 맞을 때까지 반복(정책 13장 사용자 확정 2026-11-13 20:22: 빛의 징조 또는 아스트리드의 창의성 + 제작 옵션 2개). 유효는 한 번만 */
+    const desRep = r.how==='d' && !m.fr && S.need.has(ri) ? `<span class="tag d" title="${esc(L('맞을 때까지 다시 훼손·공개(빛의 징조 또는 아스트리드의 창의성)','Desecrate and reveal again until it lands (Omen of Light or Astrid\'s Creativity)'))}">${L('훼손 반복','Desecration loop')}</span>` : '';
     const nOrd = [...S.need].indexOf(ri)+1;
     const needH = m.fr ? `<div class="need"><span class="tsel big tfix">${L(`T${r.tierNo} 고정`,`T${r.tierNo} fixed`)}</span><span class="needb lock" aria-pressed="true">${L('✓ 필수 · 분열','✓ Must-have · fractured')}</span></div>`
       : (()=>{ /* 사용자 확정 2026-11-12: 필수·유효 버튼 바로 옆에 티어 선택, 잡옵 버튼 없음(아무것도 안 고르면 잡옵), 베이스에 포함 체크 없음.
@@ -1523,17 +1554,18 @@ function render(){
           const sh = on && isN ? tierShareR(it, r, cur) : null;
           const sel = on && opts.length>1 ? /* 2026-11-12(사용자: 필수·유효를 눌러도 티어가 안 나옴): 증강물(콜르 등)·훼손 전용처럼 티어가 여럿인 옵션도 티어 선택 — 확률 숫자는 일반 옵션만 */ `<select class="tsel" title="${esc(L('이 티어나 더 좋은 티어면 성공','This tier or better counts'))}" data-tier="${ri}">${opts.map(k=>`<option value="${k}" ${k===cur?'selected':''}>${tl(k)}</option>`).join('')}</select>${sh!=null?`<span class="tshare" title="${esc(L('새 옵션 하나가 이 옵션의 이 티어 이상일 확률','Chance one new line is this modifier at this tier or better'))}">${sh}</span>`:''}` : '';
           return `<div class="need"><span class="lvg" role="group" aria-label="${esc(L('옵션 구분','Modifier level'))}"><button type="button" class="needb lv" data-lv="${ri}:must" aria-pressed="${S.need.has(ri)}">${S.need.has(ri)?L(`✓ 필수 ${nOrd}`,`✓ Must ${nOrd}`):L('필수','Must')}</button><button type="button" class="needb lv" data-lv="${ri}:soft" aria-pressed="${soft}">${soft?L('✓ 유효','✓ Useful'):L('유효','Useful')}</button></span>${sel}</div>`; })();
-    return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml" ${KR()&&locLine(m.l,r.t)!==m.l?`title="${esc(m.l)}"`:''}>${esc(locLine(m.l,r.t))}</div><div class="tags">${tags}<span class="tag">${tierT}</span></div></div>${needH}</div>`;
+    return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml" ${KR()&&locLine(m.l,r.t)!==m.l?`title="${esc(m.l)}"`:''}>${esc(locLine(m.l,r.t))}</div><div class="tags">${tags}<span class="tag">${tierT}</span>${desRep}</div></div>${needH}</div>`;
   }).join('');
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
   const otherHTML = it.other.length ? `<div class="other">${it.other.map(o=>`<div class="${o.k==='?'?'bad':''}"><span class="k">${kName[o.k]}</span>${esc(locOther(it, o.l))}</div>`).join('')}</div>` : '';
   const canDraft = it.rarity!=='normal' && an.rows.some(r=>!r.unrev) && !an.putrid;
-  const runes = it.other.filter(o=>o.k==='rune'), nNeed = an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length, ready = nNeed>0 && S.okQR;
+  const runes = it.other.filter(o=>o.k==='rune'), nNeed = an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length, ready = nNeed>0 && S.okQR && (!an.unrec || S.unkOk);
   const confirmH = canDraft ? `<div class="confirm"><b>${L('리버스 전 확인','Before reverse-engineering')}</b>
     <div class="cr">${L('① 필수 옵션','① Must-have modifiers')}: <b>${nNeed}${L('개','')}</b> <span class="hint">${L('— 위 옵션 오른쪽에서 필수·유효·잡옵 선택 · 티어 범위 설정','— mark each line above Must, Useful or Junk and set a tier range.')}</span></div>
     <div class="cr">${L('② 퀄리티','② Quality')} <input type="number" id="qin" min="0" max="75" value="${it.qual||0}">%${it.qualType?` (${esc(qtName(it))})`:''} <span class="hint">${L('— 기폭제 퀄리티는 옵션 값을 올려 티어 판단이 달라짐','— catalyst quality raises modifier values, which changes the tier read.')}</span></div>
     <div class="cr">${L('③ 룬','③ Runes')}: ${runes.length ? runes.map(o=>esc(locOther(it, o.l))).join(' · ') : L('없음','none')}</div>
     <label class="cr"><input type="checkbox" id="qrok" ${S.okQR?'checked':''}> ${L('퀄리티와 룬 확인 완료','I checked the quality and runes')}</label>
+    ${an.unrec?`<label class="cr"><input type="checkbox" id="unkok" ${S.unkOk?'checked':''}> ${L(`인식 못 한 옵션 ${an.unrec}개를 잡옵으로 보고 진행`,`Treat the ${an.unrec} unrecognised line(s) as junk`)}</label>`:''}
     ${nNeed && S.prices ? (()=>{ const fd=v=>v==null?'—':v>=100?Math.round(v).toLocaleString():v>=10?v.toFixed(0):v.toFixed(1);
         // compared with no compromise (사용자 2026-11-11 테스트): with compromises a wider tier range could look dearer
         let bought = null;
@@ -1545,12 +1577,12 @@ function render(){
         const v0=c(0), v2=nT>=2?c(2):null, v3=nT>=3?c(3):null;
         /* 매직 베이스로 시작하면 그 베이스 값이 비용에서 빠져 0에 가깝게 보임 → 무엇을 사야 하는지 같이 보여 줌 (2026-11-12) */
         return `<div class="cr">${L('예상 비용 (필수 옵션을 모두 맞출 때)','Est. cost (all must-haves hit)')}: <b>${L('지금 선택','As chosen')} ${fd(v0)} div</b> ${nT>=2?` · ${L('모두 T2 이상','All T2+')} ${fd(v2)} div`:''}${nT>=3?` · ${L('모두 T3 이상','All T3+')} ${fd(v3)} div`:''}${bought&&bought.length?`<br><span class="hint">${L('+ 매직 베이스 구입비 별도','+ the magic base, bought separately')}: ${esc(bought.join(' · '))}</span>`:''}</div>`; })() : ''}
-    ${ready?'':`<span class="hint">${L('필수 옵션 1개 이상 선택 + 퀄리티·룬 확인 → 초안 만들기','Mark at least one must-have and confirm quality and runes to make the draft.')}</span>`}</div>` : '';
+    ${ready?'':`<span class="hint">${an.unrec?L('필수 옵션 1개 이상 선택 + 퀄리티·룬 확인 + 인식 못 한 옵션 확인 → 초안 만들기','Mark a must-have, confirm quality and runes and the unrecognised lines to make the draft.'):L('필수 옵션 1개 이상 선택 + 퀄리티·룬 확인 → 초안 만들기','Mark at least one must-have and confirm quality and runes to make the draft.')}</span>`}</div>` : '';
   $('#mods').innerHTML = `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3>${canDraft?`<span class="needguide">${L('<b>필수</b> 끝까지 맞춤 · <b>유효</b> 한 번만 노리고 빗나가면 그대로 · 고르지 않으면 잡옵','<b>Must</b> hit it · <b>Useful</b> one try, keep a miss · unmarked = junk')}</span>`:''}</div>${rowsHTML}${otherHTML}${canDraft?similarHTML(it, an):''}` + (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올림: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산함.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary ${ready?'':'soft'}" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '');
 }
 
 async function run(){
-  await S.ready; S.draft=null; S.sent=false; S.need=new Set(); S.soft=new Set(); S.okQR=false; S.tsel={}; S.buy=new Set(); $('#fb').hidden=true;
+  await S.ready; S.draft=null; S.sent=false; S.need=new Set(); S.soft=new Set(); S.okQR=false; S.unkOk=false; S.tsel={}; S.buy=new Set(); $('#fb').hidden=true;
   const txt = $('#txt').value; if(!txt.trim()){ S.last=null; render(); return; }
   if(!S.index) [S.index, S.craft] = await Promise.all([fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json())]);
   if(!S.priority) S.priority = await fetch('data/priority.json').then(r=>r.json()).catch(()=>null);
@@ -1609,8 +1641,8 @@ $('#b-go').addEventListener('click', ()=>{ try{ if(parent!==window){ parent.loca
 $('#fb-go').addEventListener('click', ()=>{ const t=$('#fb-txt').value.trim(); if(!t) return; try{ const k='poe2r:feedback', a=JSON.parse(localStorage.getItem(k)||'[]'); a.unshift({at:Date.now(), text:t.slice(0,2000), draft:S.draft?.id||null, item:($('#txt').value||'').slice(0,4000)}); localStorage.setItem(k, JSON.stringify(a.slice(0,50))); }catch(_){}
   $('#fb-txt').value=''; $('#fb-msg').textContent=L('저장 완료 · 이 기기에 보관, 서버가 열리면 함께 전송','Thanks! Saved on this device; it will be sent once the server is live.'); });
 $('#mods').addEventListener('click', e=>{
-  if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const an=S.last.an, nNeed=an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length; if(!nNeed || !S.okQR){ const m=$('#mkmsg'); if(m) m.innerHTML=`<div class="mkwarn">${!nNeed?L('먼저 위 옵션에서 \'필수 옵션\'을 1개 이상 선택','Pick at least one must-have line above first.'):L('\'퀄리티와 룬을 확인했어요\'에 체크','Tick “I checked the quality and runes”.')}</div>`;
-    const tgt = !nNeed ? document.querySelector('[data-need]') : document.getElementById('qrok'); if(tgt){ tgt.scrollIntoView({block:'center', behavior:'smooth'}); const box=tgt.closest('label,.need')||tgt; box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash'); } return; }
+  if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const an=S.last.an, nNeed=an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length; const unkNo = an.unrec && !S.unkOk; if(!nNeed || !S.okQR || unkNo){ const m=$('#mkmsg'); if(m) m.innerHTML=`<div class="mkwarn">${!nNeed?L('먼저 위 옵션에서 \'필수 옵션\'을 1개 이상 선택','Pick at least one must-have line above first.'):!S.okQR?L('\'퀄리티와 룬 확인 완료\'에 체크','Tick “I checked the quality and runes”.'):L('\'인식 못 한 옵션을 잡옵으로 보고 진행\'에 체크','Tick “Treat the unrecognised lines as junk”.')}</div>`;
+    const tgt = !nNeed ? document.querySelector('[data-need]') : document.getElementById(!S.okQR?'qrok':'unkok'); if(tgt){ tgt.scrollIntoView({block:'center', behavior:'smooth'}); const box=tgt.closest('label,.need')||tgt; box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash'); } return; }
     const an2 = needAn(an, 0, S.last.it);   // must-haves and useful lines (at their tier range) are targets; the rest is junk (사용자 확정 2026-11-11)
     if(S.busy) return; S.busy=true; const mp=+($('#mp')?.value||0), it=S.last.it, bs=buySet(an), btn=e.target.closest('#mk'), msg=$('#mkmsg'); if(btn) btn.disabled=true;
     // 사용자 확정 2026-11-11: 초안은 최소 10초 동안 여러 경우의 수를 계산해 가장 좋은 것으로(무거운 아이템은 더 오래). 플로우차트를 먼저 만들고 시뮬로 확인한 뒤 그 플로우차트 기준으로 등급별 레시피
@@ -1629,7 +1661,7 @@ $('#mods').addEventListener('click', e=>{
     if(inShell){ try{ window.parent.postMessage({type:'poe2-draft', recipe:r, stay:true}, '*'); }catch(_){} }   // stay here; the list picks it up (사용자 확정 2026-11-11)
     S.sent=true; $('#fb').hidden=false; renderStatic();
     $('#pvact').innerHTML = `<span class="ok">${L('크래프팅 목록에 등록됨','Added to the Crafting list.')}</span>${inShell?`<button type="button" class="btn" id="pvgo">${L('크래프팅에서 보기 →','Open in Crafting →')}</button>`:''}<button type="button" class="btn" id="pvdone">${L('완료','Done')}</button>`; return; }
-  if(e.target.closest('#pvdone')){ /* 완료(사용자 2026-11-12): 전송 뒤 처음 상태로 */ S.draft=null; S.check=null; S.flow=null; S.sent=false; S.need=new Set(); S.soft=new Set(); S.okQR=false; S.tsel={}; S.buy=new Set(); S.last=null; $('#txt').value=''; $('#fb').hidden=true; const m=$('#mkmsg'); if(m) m.innerHTML=''; render(); window.scrollTo({top:0, behavior:'smooth'}); $('#txt').focus({preventScroll:true}); return; }
+  if(e.target.closest('#pvdone')){ /* 완료(사용자 2026-11-12): 전송 뒤 처음 상태로 */ S.draft=null; S.check=null; S.flow=null; S.sent=false; S.need=new Set(); S.soft=new Set(); S.okQR=false; S.unkOk=false; S.tsel={}; S.buy=new Set(); S.last=null; $('#txt').value=''; $('#fb').hidden=true; const m=$('#mkmsg'); if(m) m.innerHTML=''; render(); window.scrollTo({top:0, behavior:'smooth'}); $('#txt').focus({preventScroll:true}); return; }
   if(e.target.closest('#pvgo') && S.draft){ try{ window.parent.postMessage({type:'poe2-goto', id:S.draft.id}, '*'); }catch(_){} return; }
   if(e.target.closest('#discard') && S.draft){ S.draft=null; S.check=null; S.flow=null; S.sent=false; renderStatic();
     $('#mkmsg').innerHTML = `<span class="ok">${L('초안 삭제됨 · 아쉬운 점을 아래에 남기면 다음 초안에 반영','Draft deleted. Tell us what was off below so the next one is better.')}</span>`; $('#fb').hidden=false; return; }
@@ -1764,6 +1796,7 @@ window.addEventListener('message', e=>{ const d=e.data||{}, f=document.getElemen
   if(d.type==='poe2-full' && f && e.source===f.contentWindow){ f.classList.toggle('pvfull', !!d.on); document.body.classList.toggle('pvfull-on', !!d.on); try{ parent!==window && parent.postMessage({type:'poe2-full', on:!!d.on}, '*'); }catch(_){} } });
 $('#mods').addEventListener('change', e=>{
   if(e.target.id==='qrok'){ S.okQR=e.target.checked; render(); return; }
+  if(e.target.id==='unkok'){ S.unkOk=e.target.checked; S.draft=null; render(); return; }
   if(e.target.dataset?.buy!=null && S.last?.an){ const i=+e.target.dataset.buy, sd=S.last.an.rows[i].m.side;
     if(e.target.checked){ if(diff3(S.last.an)) [...S.buy].forEach(j=>{ if(S.last.an.rows[j]?.m.side===sd) S.buy.delete(j); }); S.buy.add(i); } else S.buy.delete(i); S.draft=null; S.sent=false; render(); return; }   // one prefix + one suffix
   if(e.target.dataset?.tier!=null){ S.tsel[+e.target.dataset.tier]=+e.target.value; if(!S.soft.has(+e.target.dataset.tier)) S.need.add(+e.target.dataset.tier); S.draft=null; S.sent=false; render(); return; }

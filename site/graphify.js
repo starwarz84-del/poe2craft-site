@@ -218,7 +218,9 @@ function fromDraft(d, D, opt={}){
   const cmpTags = new Set(mainOut.filter(o=>o.edges.some(e=>e.if?.param?.cmp)).flatMap(o=>[...(o.show||[]), targetTag(byId[o.id]?.target)].filter(Boolean)));
   const finalTags = cur.filter(l=>l.tags).map(l=>l.tags[0]);
   const reqHas = [...new Set(finalTags)].filter(t=>!softTags.has(t) && !(tags[t]?.gi!=null && G[tags[t].gi].f.includes('ItemMaxQuality')));
-  const need1 = t => chainN[t] ? {count:{tag:t, min:chainN[t]}} : {has:t};
+  /* 같은 태그 두 줄(일반 + 훼손 같은 옵션, 2026-11-13 W1): 완성품에 그 수만큼 있어야 완성 */
+  const occ = t => tags[t]?.gi!=null ? (d.dupGi?.[tags[t].gi]||0) : 0;   /* 붙여 넣은 아이템의 줄 수(완성 카드 줄은 중복이 생길 수 있어 쓰지 않음) */
+  const need1 = t => { const n=Math.max(chainN[t]||0, occ(t)); return chainN[t] || n>1 ? {count:{tag:t, min:n}} : {has:t}; };
   const require = {all: reqHas.map(t=> cmpTags.has(t) ? {any:[need1(t),{param:{cmp:'settle'}}]} : need1(t))};
   const desc = v => { const p=P[v], ws=[...loopGi].filter(gi=>p['t'+gi]!=='1'); const parts=[];
     if(ws.length) parts.push(K(`반복으로 찾는 옵션 ${ws.length}개를 넓은 티어로`, `${ws.length} looped line(s) at wider tiers`)); else parts.push(K('고른 티어 그대로','The tiers you picked'));
