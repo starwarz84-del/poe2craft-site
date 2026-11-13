@@ -3,26 +3,26 @@
  "recipe": "fubgun-phys-bow-v2",
  "cls": "Bows",
  "base": "Warmonger Bow",
- "ilvl": 75,
- "note": "Fubgun 가성비 물리 활(0.5.5 빌드 글, 비치명타) — 물리 피해 % 매직(확장까지) 구입 → 상위 마모의 에센스 → 좌측 강령술 + 보존된 턱뼈 → 공개(원소 피해 추가, 냉기가 가장 좋음) → 상위 찬미 + 엑잘로 접미 2개. 아이템 레벨 75라 물리 피해 % 1티어(82)·원소 피해 추가 1티어(81)는 안 나옴 — 화면 티어는 이 레벨에서 나오는 것 기준.",
+ "ilvl": 77,
+ "note": "2026-11-13 G10 글 전체 다시 대조(mobalytics Fubgun 0.5.5 Ice Shot Deadeye, Crafting Guide의 Non-crit Bow - ilvl 75 1~3단계, 캡처 guide-noncrit-bow-steps-1-3). 글: 물리 피해 %가 높은 매직 활(확장까지, 구입 또는 진화·확장, 베이스 절멸자 활·전쟁광 활) → ① 상위 마모의 에센스(물리 피해 추가 3티어) ② 좌측 강령술 + 턱뼈로 접두 훼손, 시세에 따라 심연의 메아리, 높은 원소 피해 추가(냉기가 가장 좋음) ③ 상위 찬미 + 상위·완벽한 엑잘로 남은 2자리. 확정 옵션(정책 11장): 공개 = 냉기 피해 추가(글 'cold is best', 장비 미리보기 활도 냉기). 내부 결정: 베이스 = 전쟁광 활, 아이템 레벨 77(전쟁광 활 베이스 레벨이 77이라 글의 75로는 못 나옴, 75~77 사이 달라지는 접두·접미는 정확도·처치당 생명력뿐), 물리 피해 %는 구입 매직의 이 레벨 최고 티어(2티어, 정책 10장 C15 베이스에 있는 옵션), 턱뼈 = 보존된 턱뼈. 등급(난이도 2 → 밸런스·에센셜, C17): 밸런스 = 메아리 + 빛의 징조로 냉기 피해 추가 2~3티어(1티어는 레벨 81이라 못 나옴 — C17의 1~2티어를 이 아이템 레벨에서 나오는 상위 두 티어로 읽음, 2티어만이면 275 div), 완벽한 엑잘, 에센셜 = 공개 결과 그대로(메아리 없음), 상위 엑잘.",
  "params": {
-  "aT": {
-   "kr": "물리 피해 %",
-   "en": "% physical",
+  "cT": {
+   "kr": "냉기 피해 추가",
+   "en": "Flat cold",
    "values": {
-    "2": {
-     "kr": "2티어",
-     "en": "T2"
+    "3": {
+     "kr": "2~3티어 (이 아이템 레벨의 상위 두 티어)",
+     "en": "T2–3 (top two tiers at this item level)"
     },
-    "4": {
-     "kr": "2~4티어",
-     "en": "T2–4"
+    "5": {
+     "kr": "나오는 대로",
+     "en": "As it comes"
     }
    }
   },
   "L": {
-   "kr": "훼손 공개",
-   "en": "Desecration reveal",
+   "kr": "반복",
+   "en": "Retries",
    "values": {
     "1": {
      "kr": "빛의 징조로 다시",
@@ -30,21 +30,7 @@
     },
     "0": {
      "kr": "결과 그대로",
-     "en": "Keep whatever comes"
-    }
-   }
-  },
-  "eT": {
-   "kr": "원소 피해 추가",
-   "en": "Flat elemental",
-   "values": {
-    "3": {
-     "kr": "2~3티어",
-     "en": "T2–3"
-    },
-    "5": {
-     "kr": "2~5티어",
-     "en": "T2–5"
+     "en": "Keep what comes"
     }
    }
   }
@@ -53,17 +39,15 @@
   {
    "id": "bal",
    "params": {
-    "aT": 2,
-    "L": 1,
-    "eT": 3
+    "cT": 3,
+    "L": 1
    }
   },
   {
    "id": "ess",
    "params": {
-    "aT": 4,
-    "L": 0,
-    "eT": 5
+    "cT": 5,
+    "L": 0
    }
   }
  ],
@@ -73,13 +57,13 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "aT": 4,
-    "L": 0,
-    "eT": 5
+    "cT": 5,
+    "L": 0
    },
+   "tier": "ess",
    "desc": {
-    "kr": "물리 피해 % 2~4티어 구입, 공개 결과 그대로",
-    "en": "Buy T2–4 % physical; keep the reveal"
+    "kr": "공개 결과 그대로, 마무리 상위 엑잘",
+    "en": "Reveal kept as it comes, Greater Exalts to finish"
    }
   },
   {
@@ -87,39 +71,31 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "aT": 2,
-    "L": 1,
-    "eT": 3
+    "cT": 3,
+    "L": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "물리 피해 % 2티어 구입, 원소 피해 추가 2~3티어까지 빛의 징조로 다시",
-    "en": "Buy T2 % physical; retry with Light until T2–3 flat elemental"
+    "kr": "냉기 피해 추가 2~3티어까지 빛의 징조로 다시, 마무리 완벽한 엑잘",
+    "en": "Omen of Light until T2–3 flat cold, Perfect Exalts to finish"
    }
   }
  ],
  "tags": {
   "pp": {
    "gi": 7,
-   "tmax": "$aT"
+   "tmax": 2
   },
   "flat": {
    "gi": 39
   },
-  "ele": {
-   "anyOf": [
-    {
-     "gi": 3,
-     "tmax": "$eT"
-    },
-    {
-     "gi": 4,
-     "tmax": "$eT"
-    },
-    {
-     "gi": 6,
-     "tmax": "$eT"
-    }
-   ]
+  "cold": {
+   "gi": 4,
+   "tmax": "$cT"
+  },
+  "cold3": {
+   "gi": 4,
+   "tmax": 3
   }
  },
  "require": {
@@ -135,6 +111,18 @@
    },
    {
     "full": "s"
+   },
+   {
+    "any": [
+     {
+      "param": {
+       "L": 0
+      }
+     },
+     {
+      "has": "cold"
+     }
+    ]
    }
   ]
  },
@@ -158,19 +146,7 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "b3",
-    "b4",
-    "b4x"
-   ],
-   "kr": "접두 세번째 옵션(훼손)",
-   "en": "Third prefix (desecrated)"
-  }
- ],
+ "start": "pn",
  "finals": [
   {
    "id": "bal",
@@ -178,19 +154,13 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "pp",
-     "tmax": 2
+     "tag": "pp"
     },
     {
-     "tag": "flat",
-     "tmax": 1
+     "tag": "flat"
     },
     {
-     "side": "p",
-     "label": {
-      "kr": "화염·냉기·번개 피해 추가",
-      "en": "Flat elemental"
-     }
+     "tag": "cold3"
     },
     {
      "side": "s",
@@ -212,19 +182,14 @@
    "en": "Essential",
    "lines": [
     {
-     "tag": "pp",
-     "tmax": 4
+     "tag": "pp"
     },
     {
-     "tag": "flat",
-     "tmax": 1
+     "tag": "flat"
     },
     {
      "side": "p",
-     "label": {
-      "kr": "공개 결과 그대로",
-      "en": "Reveal as it comes"
-     }
+     "random": true
     },
     {
      "side": "s",
@@ -242,37 +207,39 @@
   }
  ],
  "finalItem": {
-  "quality": 20,
+  "quality": 0,
   "sockets": 2
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "pn",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "b2",
+   "next": "pe",
    "start": {
     "rar": "magic",
     "mods": [
-     "pp",
+     {
+      "tag": "pp"
+     },
      {
       "junk": "s"
      }
     ]
    },
    "label": {
-    "kr": "물리 피해 % 매직 활 구입 (접미 아무 옵션)",
-    "en": "Buy a magic bow with % physical (any suffix)"
+    "kr": "물리 피해 % 2티어 매직 전쟁광 활 구입 (확장까지, 아이템 레벨 77)",
+    "en": "Buy a magic Warmonger Bow with T2 % physical (augmented, item level 77)"
    },
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
@@ -287,7 +254,7 @@
    ]
   },
   {
-   "id": "b2",
+   "id": "pe",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -295,14 +262,23 @@
     1
    ],
    "act": "essence",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접두 물리 피해 추가",
-    "en": "Upgrade to rare + flat physical prefix"
-   },
+   "cur": "Greater_Essence_of_Abrasion",
+   "ess": "flat",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "레어 + 접두 물리 피해 추가",
+    "en": "Rare + flat physical prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (16—24)~(28—42) 추가 (제작 옵션)",
+     "en": "Adds (16—24) to (28—42) Physical Damage (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "ms"
@@ -311,18 +287,12 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
      ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     },
     {
      "s": "p",
@@ -332,17 +302,14 @@
      "tags": [
       "flat"
      ]
-    }
-   ],
-   "cur": "Greater_Essence_of_Abrasion",
-   "showText": [
+    },
     {
-     "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)"
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
-   ],
-   "ess": "flat"
+   ]
   },
   {
    "id": "ms",
@@ -350,9 +317,9 @@
    "group": "main",
    "pos": [
     0,
-    1.5
+    2.4
    ],
-   "next": "b3",
+   "next": "pd",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -360,18 +327,12 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
      ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     },
     {
      "s": "p",
@@ -381,46 +342,57 @@
      "tags": [
       "flat"
      ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ]
   },
   {
-   "id": "b3",
+   "id": "pd",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    3.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접두 세번째 옵션(훼손)",
-    "en": "Third prefix (desecrated)"
-   },
+   "cur": "Preserved_Jawbone",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
-     "to": "b4"
+     "to": "pv"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
      ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     },
     {
      "s": "p",
@@ -433,78 +405,81 @@
     },
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
+     "m": "u"
+    },
     {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {
-   "id": "b4",
+   "id": "pv",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    4.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "cold",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 냉기 피해 추가 2~3티어",
+    "en": "T2–3 flat cold prefix"
+   },
+   "show": [
+    "cold"
+   ],
    "edges": [
     {
      "if": {
-      "added": "ele"
+      "has": "cold"
      },
-     "to": "b5",
+     "to": "px",
      "res": "ok"
     },
     {
      "if": {
       "param": {
-       "L": 1
+       "L": 0
       }
      },
-     "to": "b4x",
-     "res": "fail"
+     "to": "px",
+     "res": "ok",
+     "label": {
+      "kr": "나오는 대로",
+      "en": "Keep what comes"
+     }
     },
     {
-     "to": "b5",
+     "to": "pl",
      "res": "fail",
-     "hide": true
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
      ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     },
     {
      "s": "p",
@@ -517,29 +492,82 @@
     },
     {
      "s": "p",
-     "kr": "화염·냉기·번개 피해 추가",
-     "en": "Flat fire, cold or lightning",
-     "m": "n",
+     "kr": "냉기 피해 (55—69)~(83—106) 추가",
+     "en": "Adds (55—69) to (83—106) Cold Damage",
+     "m": "d",
      "tags": [
-      "ele"
+      "cold"
      ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ],
-   "want": "ele",
-   "show": [
-    "ele"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "omens": [],
+      "goal": {
+       "kr": "훼손 옵션 공개 — 나오는 대로",
+       "en": "Reveal the desecration: keep what comes"
+      },
+      "show": [],
+      "showText": [
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option"
+       }
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "물리 피해 (155—169)% 증가",
+        "en": "(155—169)% increased Physical Damage",
+        "m": "n",
+        "tags": [
+         "pp"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "물리 피해 (16—24)~(28—42) 추가 (제작 옵션)",
+        "en": "Adds (16—24) to (28—42) Physical Damage (crafted)",
+        "m": "c",
+        "tags": [
+         "flat"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       }
+      ]
+     }
+    }
    ]
   },
   {
-   "id": "b4x",
+   "id": "pl",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    3
+    4.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -556,32 +584,46 @@
    },
    "target": {
     "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "en": "Remove the desecrated option"
    },
    "edges": [
     {
-     "to": "b3",
-     "port": "right"
+     "to": "pd",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
   {
-   "id": "b5",
+   "id": "px",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    5.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 두번째·세번째 옵션",
-    "en": "Second and third suffixes"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 두번째·세번째 옵션 — 나오는 대로",
+    "en": "Second and third suffixes: keep what comes"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
    "edges": [
     {
      "to": "ok"
@@ -590,18 +632,12 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
      ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     },
     {
      "s": "p",
@@ -614,30 +650,31 @@
     },
     {
      "s": "p",
-     "kr": "화염·냉기·번개 피해 추가",
-     "en": "Flat fire, cold or lightning",
-     "m": "n",
+     "kr": "냉기 피해 (55—69)~(83—106) 추가",
+     "en": "Adds (55—69) to (83—106) Cold Damage",
+     "m": "d",
      "tags": [
-      "ele"
+      "cold"
      ]
     },
     {
      "s": "s",
-     "kr": "랜덤 옵션 2개",
-     "en": "2 random lines",
+     "kr": "잡옵",
+     "en": "Junk",
      "m": "j"
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
+    },
     {
      "s": "s",
-     "kr": "랜덤 옵션 2개 — 결과 그대로",
-     "en": "Two random lines — keep whatever comes"
+     "kr": "랜덤 옵션",
+     "en": "Random option",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션",
+     "en": "Random option",
+     "m": "j"
     }
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
    ],
    "over": [
     {
@@ -645,7 +682,51 @@
       "L": 0
      },
      "set": {
-      "cur": "Greater_Exalted_Orb"
+      "cur": "Greater_Exalted_Orb",
+      "item": [
+       {
+        "s": "p",
+        "kr": "물리 피해 (155—169)% 증가",
+        "en": "(155—169)% increased Physical Damage",
+        "m": "n",
+        "tags": [
+         "pp"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "물리 피해 (16—24)~(28—42) 추가 (제작 옵션)",
+        "en": "Adds (16—24) to (28—42) Physical Damage (crafted)",
+        "m": "c",
+        "tags": [
+         "flat"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
      }
     }
    ]
@@ -656,12 +737,24 @@
    "group": "main",
    "pos": [
     0,
-    5
+    6.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "pd",
+    "pv",
+    "pl"
+   ],
+   "kr": "접두 세번째 옵션(훼손)",
+   "en": "Third prefix (desecrated)"
   }
  ]
 }
