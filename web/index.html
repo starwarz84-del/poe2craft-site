@@ -204,8 +204,17 @@ body.toolfull main{position:fixed;inset:0;z-index:200;border:0;max-width:none;ma
     let ty=null; doc.addEventListener('touchstart', ev=>{ ty=ev.touches[0]?.clientY; }, {passive:true});
     doc.addEventListener('touchmove', ev=>{ const y=ev.touches[0]?.clientY; if(ty!=null && y-ty>30 && !f.hidden && upAtTop(ev.target)){ f._top=0; setCompact(false); ty=null; } }, {passive:true});
   }
-  // wheel up on the shell itself (banner, tab bar, side margins) also unfolds
-  if(FOLD) window.addEventListener('wheel', ev=>{ if(ev.deltaY<0) setCompact(false); }, {passive:true});
+  // wheel on the shell itself (banner, tab bar, side margins) scrolls the open tool page; down folds the banner so the tab bar sits at the top,
+  // up to the top unfolds it (사용자 2026-11-14: 안쪽 영역 밖에서 굴리면 스크롤이 안 됨, 길어지면 메뉴를 상단에 고정 — poe2filter.com/tier-list 참고)
+  window.addEventListener('wheel', ev=>{
+    const f = Object.values(frames).find(x=>!x.hidden); let se=null; try{ const d=f?.contentDocument; se = d && (d.scrollingElement||d.documentElement); }catch(e){}
+    if(!se){ if(FOLD && ev.deltaY<0) setCompact(false); return; }
+    const k = ev.deltaMode===1 ? 16 : ev.deltaMode===2 ? se.clientHeight : 1;
+    se.scrollBy({top:ev.deltaY*k, left:0});
+    if(!FOLD) return;
+    if(ev.deltaY>0 && se.scrollHeight-se.clientHeight>120) setCompact(true);
+    else if(ev.deltaY<0 && se.scrollTop - Math.abs(ev.deltaY*k) < 6) setCompact(false);
+  }, {passive:true});
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type==='poe2-full' && Object.values(frames).some(f=>f.contentWindow===e.source)) document.body.classList.toggle('toolfull', !!d.on); });
   window.addEventListener('message', e=>{ const d=e.data||{}; if(d.type!=='poe2-route') return; const f=['recipes','mirror'].map(k=>frames[k]).find(f=>f && e.source===f.contentWindow); if(!f) return;
     f._ext = !!d.extreme; extreme = !!frames.recipes?._ext; document.body.classList.toggle('extreme', !f.hidden && f._ext); });
