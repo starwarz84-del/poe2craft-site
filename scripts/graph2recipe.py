@@ -1416,8 +1416,14 @@ def fc_numbers(W, sim, src, vid):
         SL = srcL.get(L.get('id')) or {}
         steps = (SL.get('stepsBy') or {}).get(vid) or (L.get('stepsBy') or {}).get(vid) or SL.get('steps') or L.get('steps') or []   # stepsBy: 등급별 순서 줄(goalBy·itemBy처럼, 2026-11-13 S8)
         order = [s.get('node') for s in steps if s.get('node') and s.get('node') not in gone]   # 이 등급이 거치지 않는 순서 줄은 번호에서 뺌(플로우차트 fcFold와 같게)
+        extra = len(order)
         for j, i in enumerate(L['nodes']):
             k = order.index(i) + 1 if i in order else None if order else j + 1   # 순서 줄에 없는 상자(소멸 a8x 등)는 번호 없음 — 다른 줄 번호(7-3)와 겹치던 것(2026-11-13 S7, R-E1)
+            if k is None and order and j and (by.get(i) or {}).get('kind') == 'act' and (by.get(i) or {}).get('act') != 'annul':
+                # 순서 줄에 없는 작업 상자(셉터 bd 다시 훼손) — 레시피에서 위치 번호(15)로 보이던 것(W11, '10-4 → 15 → 10-5'): 같은 행동(act·cur)의 순서 줄 상자 번호를 같이 씀, 없으면 순서 줄 뒤 번호
+                same = [q for q, x in enumerate(order) if (by.get(x) or {}).get('act') == by[i].get('act') and (by.get(x) or {}).get('cur') == by[i].get('cur')]
+                if same: k = same[0] + 1
+                else: extra += 1; k = extra
             if k is not None: member[i] = (L['nodes'][0], k)
             if j: folded.add(i)
     steps = sorted([n for n in nodes if n['id'] not in gone and n['id'] not in folded and n.get('kind') in ('act', 'cleanup')], key=lambda n: (n['pos'][1], n['pos'][0]))

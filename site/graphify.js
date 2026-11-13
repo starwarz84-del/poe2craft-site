@@ -40,8 +40,8 @@ function fluxPlan(d, G, opt){ if(d.noFlux || opt.noFlux) return null; const N=d.
 
 /* 등록 레시피 틀(W9, 리버스 13장 사용자 확정 11-13 20:28 '비슷한 등록 레시피를 틀로 쓴 후보를 먼저'): 초안이 틀 그래프(tplRewrite 결과)를 갖고 있으면
    새로 만들지 않고 그 그래프를 그대로 씀 — 등급은 opt.grades와 겹치는 것만(겹치는 게 없으면 틀의 등급 그대로) */
-function fromTemplate(d, opt){ const g=JSON.parse(JSON.stringify(d.tplGraph)); g.id=d.id; g.recipe=d.id;
-  const want=new Set(opt.grades||[]), keep=g.strategies.filter(s=>want.has(s.id)); if(keep.length && keep.length<g.strategies.length){ const ids=new Set(keep.map(s=>s.id));
+function fromTemplate(d, opt){ const g=JSON.parse(JSON.stringify(d.tplGraph)); g.id=d.id; g.recipe=d.id; const ORD=['high','bal','ess'];
+  const want=new Set((opt.grades||[]).filter(v=>!opt.top || ORD.indexOf(v)>=ORD.indexOf(opt.top))), keep=g.strategies.filter(s=>want.has(s.id)); if(keep.length && keep.length<g.strategies.length){ const ids=new Set(keep.map(s=>s.id));
     g.strategies=keep; g.versions=(g.versions||[]).filter(v=>ids.has(v.id)); g.finals=(g.finals||[]).filter(f=>ids.has(f.id)); }
   return g; }
 /* 틀 다시 쓰기: map = {옛 gi: 새 gi}(같은 클래스 파일). 태그의 gi만 바꾸고 흐름·티어·등급은 그대로, 상자 글의 옵션 이름은 새 옵션 이름으로.
@@ -130,11 +130,15 @@ function fromDraft(d, D, opt={}){ if(d.tplGraph) return fromTemplate(d, opt);
     if(t.removeGi!=null) note(t.removeGi); if(t.dropGi!=null) note(t.dropGi); });
   // the start (bought / fractured) lines are cheap: never widened (정책 32)
   (d.start.mods||[]).forEach(m=>{ if(m.gi!=null) loopGi.delete(m.gi); });
-  const grades = opt.grades || gradesFor(d.difficulty||2);
+  /* 결과 등급 = 사용자가 고른 필수 티어(리버스 13장 사용자 확정 11-14 04:17, W11): opt.top(1티어 → 하이엔드, 1~2티어 → 밸런스, 1~4티어 → 에센셜)이 있으면
+     그 등급이 맨 위 — 위 등급은 만들지 않고, 그 등급의 티어는 고른 티어 그대로(넓히지 않음), 아래 등급만 C17로 넓힘 */
+  const ORD=['high','bal','ess'], top = ORD.includes(opt.top) ? opt.top : null;
+  let grades = opt.grades || gradesFor(d.difficulty||2);
+  if(top){ grades = grades.filter(v=>ORD.indexOf(v)>=ORD.indexOf(top)); if(!grades.includes(top)) grades=[top, ...grades]; grades.sort((x,y)=>ORD.indexOf(x)-ORD.indexOf(y)); }
   /* 등급별 티어(정책 10장 C17-1, 리버스 13장 사용자 확정 11-13 20:28, W5): 반복으로 찾는 자리만 — 하이엔드 = 사용자가 고른 티어, 밸런스 = 그 티어와 1~2티어 중 넓은 쪽,
      에센셜 = 1~4티어 중 넓은 쪽. '1티어' = 아이템 레벨로 붙을 수 있는 가장 좋은 티어(lo). 예전엔 등급 순번만큼(+0/+1/+2) 넓힘 */
   const loTier = gi => Math.max(1, G[gi].t.findIndex(t=>t[0]<=d.ilvl)+1), WIDE = {high:0, bal:1, ess:3};
-  const P = {}; grades.forEach(v=>{ const p={}; for(const gi of loopGi){ const t0=tmaxOf[gi]||1; p['t'+gi] = String(Math.min(G[gi].t.length, Math.max(t0, loTier(gi) + (WIDE[v]??0)))); } P[v]=p; });
+  const P = {}; grades.forEach(v=>{ const p={}; for(const gi of loopGi){ const t0=tmaxOf[gi]||1; p['t'+gi] = String(Math.min(G[gi].t.length, Math.max(t0, loTier(gi) + (v===top ? 0 : WIDE[v]??0)))); } P[v]=p; });
   for(const gi in tmaxOf){ const k='g'+gi; tags[k].tmax = loopGi.has(+gi) ? '$t'+gi : tmaxOf[gi]; }
   for(const gi of Object.keys(tags).map(k=>+k.slice(1))) if(tags['g'+gi].tmax==null && tmaxOf[gi]==null) delete tags['g'+gi].tmax;
   let anyN=0; const anyMemo={}; const anyTag = list => { const ks=[...new Set(list.map(x=>tagOf(x.gi)))]; if(ks.length===1) return ks[0]; const key=ks.slice().sort().join('|'); if(anyMemo[key]) return anyMemo[key]; const k='a'+(++anyN); tags[k]={anyOf:ks}; return anyMemo[key]=k; };
@@ -195,7 +199,9 @@ function fromDraft(d, D, opt={}){ if(d.tplGraph) return fromTemplate(d, opt);
   const LABEL = {transmute:K('진화','Transmute'), augment:K('확장','Augment'), regal:K('제왕','Regal'), exalt:K('엑잘','Exalt'), chaos:K('카오스','Chaos'), essence:K('에센스','Essence'), desecrate:K('훼손','Desecrate'), reveal:K('공개','Reveal'), annul:K('소멸','Annul'), quality:K('퀄리티','Quality'), rune:K('룬','Rune'), divine:K('신성','Divine'), fracture:K('분열','Fracture')};
   const sideWord = s => s==='p' ? K('접두','Prefix') : s==='s' ? K('접미','Suffix') : K('','');
   function goalOf(n, a){ const t=n.target||{}, tg=targetTag(t);
-    const sd = t.side || (t.junk && typeof t.junk==='string' ? t.junk : null) || omSide(n.omens, /Exaltation|Coronation|Necromancy|Crystallisation|Erasure|Annulment/) || (t.gi!=null ? G[t.gi].g : t.unrev || null);
+    /* 자리 = 목표 옵션 그룹 쪽이 먼저(W11, V2-하이엔드 셉터 9번: 좌측 결정화 + 에센스가 접미 합금 자리를 '접두 옵션'으로 씀) — 결정화·말소·소멸 징조의 좌측·우측은 지우는 쪽이라 목표 쪽이 없을 때만 */
+    const tgi = t.gi ?? t.anyOf?.[0]?.gi ?? t.reveal?.gi ?? t.reveal?.anyOf?.[0]?.gi;
+    const sd = t.side || (t.junk && typeof t.junk==='string' ? t.junk : null) || (tgi!=null && G[tgi] ? G[tgi].g : null) || omSide(n.omens, /Exaltation|Coronation|Necromancy|Crystallisation|Erasure|Annulment/) || t.unrev || null;
     const w=sideWord(sd);
     if(a==='reveal') return K('훼손 옵션 확인','Reveal the desecrated modifier');
     if(a==='desecrate') return K(`${w.kr} 옵션(훼손)`.trim(), `${w.en} (desecrated)`.trim());
@@ -213,7 +219,7 @@ function fromDraft(d, D, opt={}){ if(d.tplGraph) return fromTemplate(d, opt);
   const reEx = (maker, pos) => { if(maker!==firstChaos || pos==null) return null; const i0=N.findIndex(x=>x.id===maker), tg=targetTag(byId[maker]?.target); if(!tg) return null;
     const X=N.slice(i0+1, pos).find(x=>x.do==='exalt' && !x.fallbackFor && !x.branch && targetTag(x.target)===tg); return X ? X.id : null; };
   const cleanTo = (maker, pos) => { if(maker!==firstChaos) return maker; const rx=reEx(maker, pos); if(rx) return rx; const id='cl'+maker;
-    if(!extra.some(x=>x.id===id)) extra.push({id, kind:'cleanup', group:'main', keep:[], maxJunk:1, label:K('소멸의 오브 사용','Use an Orb of Annulment'), goal:K('잡옵 정리','Clear the junk'), target:K('분열 옵션 + 잡옵 1개만 남기고 다시 카오스','Keep the fracture and one junk line, then Chaos again'), edges:[{to:maker}], _row:2, _col:3});
+    if(!extra.some(x=>x.id===id)) extra.push({id, kind:'cleanup', group:'main', keep:[], maxJunk:1, label:K('소멸의 오브 사용','Use an Orb of Annulment'), goal:K('잡옵 정리','Clear the junk'), target:K('분열 옵션 + 잡옵 1개만 남기고 다시 카오스','Keep the fracture and one junk line, then Chaos again'), edges:[{to:maker}], _row:2, _col:2});   /* 칸 2(W11: 칸 3은 그림 오른쪽 밖으로 잘림) */
     return id; };
   /* 자리를 늘리는 옵션(경멸: +1 접미 허용)을 일부러 지운 뒤(dropGi)에 그쪽 옵션을 잃으면 그쪽 자리가 모자라 만든 단계로 돌아가도 다시 못 붙임 → 새 베이스(W7, LilBotQ 에메랄드가 끝나지 않던 원인) */
   const slotDrop = N.findIndex(n=>{ const g=n.target?.dropGi; return g!=null && (n.target?.slots || N.some(x=>x.target?.gi===g && x.target?.slots)); });
@@ -284,6 +290,8 @@ function fromDraft(d, D, opt={}){ if(d.tplGraph) return fromTemplate(d, opt);
     if(a==='quality'){ o.count=t.quality||20; o.q=t.quality||20; }
     if(a==='rune'){ const rn=t.rune || (t.runeSwap||[])[0]; if(rn) o.rune=rn; if(t.slots) o.slots=t.slots; if(n.label) o.goal=n.label; }
     if(n.extra) o.extraUse=n.extra;
+    /* 잡옵 상자 본문(W11, V2-하이엔드 8번 본문 빈칸): 목표 줄이 없으니 '잡옵 1개 — 나오는 대로' */
+    if(t.junk && !o.show && ['exalt','chaos','regal','augment','transmute'].includes(a)){ const w=sideWord(typeof t.junk==='string' ? t.junk : omSide(n.omens,/Exaltation|Coronation/)); o.target=K(`${w.kr} 잡옵 1개 — 나오는 대로`.trim(), `${w.en ? w.en+' ' : ''}junk line — whatever comes`.trim()); }
     /* 에센셜 접두 마무리(랜덤 옵션 채우기) = 상위 엑잘(리버스 13장 사용자 확정 11-13 20:22, W5): 다른 등급은 초안 오브 그대로 */
     if(n.junkFill && a==='exalt' && t.junk==='p' && n.cur!=='Greater_Exalted_Orb' && grades.includes('ess')){ o.fillEss=true; o.over=[{param:{fx:'g'}, set:{cur:'Greater_Exalted_Orb'}}]; hasFx=true; }
     /* K40(2026-11-12): 절사 반복 — 시뮬이 그때그때 절사·절사 + 말소·말소만(1/2)을 고름(잡옵이 지킬 옵션보다 높으면 말소만) */
@@ -438,14 +446,16 @@ function fromDraft(d, D, opt={}){ if(d.tplGraph) return fromTemplate(d, opt);
   const need1 = t => { const n=Math.max(chainN[t]||0, occ(t)); return chainN[t] || n>1 ? {count:{tag:t, min:n}} : {has:t}; };
   const require = {all: reqHas.map(t=> cmpTags.has(t) ? {any:[need1(t), ...['cmp','cmpl'].filter(k=>cmpT[k].has(t)).map(k=>({param:{[k]:'settle'}}))]} : need1(t))};
   const desc = v => { const p=P[v], ws=[...loopGi].filter(gi=>p['t'+gi]!=='1'); const parts=[];
-    if(ws.length) parts.push(K(`반복으로 찾는 옵션 ${ws.length}개를 넓은 티어로`, `${ws.length} looped line(s) at wider tiers`)); else parts.push(K('고른 티어 그대로','The tiers you picked'));
+    if(ws.length && v!==top) parts.push(K(`반복으로 찾는 옵션 ${ws.length}개를 넓은 티어로`, `${ws.length} looped line(s) at wider tiers`)); else parts.push(K('고른 티어 그대로','The tiers you picked'));
     if(p.cmp==='settle' || p.cmpl==='settle') parts.push(p.cmp==='settle' ? K('빗나가면 결과 그대로','keep a miss as it comes') : K('마지막 옵션은 결과 그대로','keep the last line as it comes'));
     return K(parts.map(x=>x.kr).join(' · '), parts.map(x=>x.en).join(' · ')); };
   /* 규칙 K(2026-11-13 W4): 빗나가도 그대로 두는 등급(cmp settle)에서 그 갈림길이 만든 자리는 완성 카드에 '랜덤 옵션' — 목표 옵션이 늘 붙는 것처럼 보이지 않게 */
   const settleLine = (v, l) => l.tags && [l.tags[0], l.rep, l._k].some(t=>t && settleOf(v, t));
   /* 완성 카드 줄 중복 빼기(W5, MazBro 시전자 목걸이: 공개 성공·빗나감 갈래가 같은 묶음 옵션을 둘 다 아이템 칸에 넣어 마나 최대치가 두 번 — 접두 4개): 같은 옵션 태그 줄은 붙여 넣은 줄 수(dupGi)까지 */
+  /* 티어가 하나뿐인 제작 옵션(합금 등, W11 V2-하이엔드 '합금 줄 S1 → S'): 완성 카드에 티어를 적지 않음 */
+  const oneTier = k => { const gi=tags[k]?.gi; return gi!=null && G[gi] && !['n','d'].includes(G[gi].s) && (G[gi].t||[]).length<=1; };
   const curF = (()=>{ const seen={}; return cur.filter(l=>{ const k=l.rep && l.rep!==l.tags?.[0] ? l.rep : null; const gi=k ? tags[k]?.gi : null; if(gi==null) return true; seen[k]=(seen[k]||0)+1; return seen[k] <= Math.max(1, d.dupGi?.[gi]||0); }); })();
-  const finals = grades.map(v=>({id:v, kr:VN[v].kr+' 옵션', en:VN[v].en, lines: curF.map(l=>{ if(!l.tags) return l; const k = chainN[l.tags[0]] && l.rep ? l.rep : l.tags[0]; return {...l, _k:k}; }).map(l=> settleLine(v, l) ? {side:l.s, random:true, ...(l.m==='d'?{des:true}:{})} : l.tags ? {tag:l._k, tmax: tags[l._k].tmax && String(tags[l._k].tmax)[0]==='$' ? +P[v][String(tags[l._k].tmax).slice(1)] : tags[l._k].tmax, ...(l.m==='f'?{fr:true}:{}), ...(l.m==='d'?{des:true}:{})} : l.m==='r' ? null : {side:l.s, random:true, ...(l.m==='d'?{des:true}:{})}).filter(Boolean)}));
+  const finals = grades.map(v=>({id:v, kr:VN[v].kr+' 옵션', en:VN[v].en, lines: curF.map(l=>{ if(!l.tags) return l; const k = chainN[l.tags[0]] && l.rep && !(tags[l.tags[0]]?.shown?.length && tags[l.tags[0]].anyOf?.length>(tags[l.tags[0]].shown.length)) ? l.rep : l.tags[0];   /* 묶음에 붙여 넣은 옵션 말고 다른 유효 옵션(칩)이 있으면 묶음 태그 그대로 — 완성 카드가 성공 회차 옵션 + '대신 …도 성공으로 침' 꿀팁을 그림(W11, V2-하이엔드 접미 묶음 꿀팁 빠짐) */ return {...l, _k:k}; }).map(l=> settleLine(v, l) ? {side:l.s, random:true, ...(l.m==='d'?{des:true}:{})} : l.tags ? {tag:l._k, tmax: oneTier(l._k) ? undefined : tags[l._k].tmax && String(tags[l._k].tmax)[0]==='$' ? +P[v][String(tags[l._k].tmax).slice(1)] : tags[l._k].tmax, ...(l.m==='f'?{fr:true}:{}), ...(l.m==='d'?{des:true}:{})} : l.m==='r' ? null : {side:l.s, random:true, ...(l.m==='d'?{des:true}:{})}).filter(Boolean)}));
   const g={id:d.id, recipe:d.id, cls:d.cls, base:base.en||d.base, ilvl:d.ilvl, note:'리버스 크래프팅 초안에서 만든 플로우차트', params,
     strategies:grades.map(v=>({id:v, params:P[v]})), versions:[...grades].reverse().map(v=>({id:v, kr:VN[v].kr, en:VN[v].en, params:P[v], desc:desc(v)})),
     tags, require, groups:[{id:'prep',kr:'베이스템 완성',en:'Finished base',cols:[0,1]},{id:'main',kr:'옵션 추가 작업',en:'Adding modifiers',cols:[0,1]}],
@@ -461,7 +471,7 @@ function fromDraft(d, D, opt={}){ if(d.tplGraph) return fromTemplate(d, opt);
   return g; }
 
 // the drawing data the flowchart view reads (same fields as tools/sim/run.js writes)
-function view(graph, D){ const tv={}; for(const [k,t] of Object.entries(graph.tags||{})){ if(t.anyOf){ tv[k]={anyOf:t.anyOf}; if(t.label){ tv[k].label=t.label; tv[k].s=t.side; } if(t.shown!=null) tv[k].shown=t.shown; if(t.shownBy) tv[k].shownBy=t.shownBy; continue; }   /* anyOf 묶음의 이름·성공 회차 옵션(tools/sim/run.js와 같은 칸, 2026-11-13 W4) */ const g=D.groups[t.gi]; if(!g) continue; const lo = graph.ilvl ? Math.max(1, g.t.findIndex(x=>x[0]<=graph.ilvl)+1) : 1; tv[k]={s:g.g, sec:g.s, tmax:t.tmax, gi:t.gi, tiers:g.t.slice(0,Math.max(5,lo+4)).map(x=>[x[4],x[5]]), ...(lo>1?{lo}:{})}; }   /* lo: 아이템 레벨로 붙을 수 있는 가장 좋은 티어(레벨 81 저항 = 2티어, 사용자 2026-11-12) */
+function view(graph, D){ const tv={}; for(const [k,t] of Object.entries(graph.tags||{})){ if(t.anyOf){ tv[k]={anyOf:t.anyOf}; if(t.label){ tv[k].label=t.label; tv[k].s=t.side; } if(t.shown!=null) tv[k].shown=t.shown; if(t.shownBy) tv[k].shownBy=t.shownBy; continue; }   /* anyOf 묶음의 이름·성공 회차 옵션(tools/sim/run.js와 같은 칸, 2026-11-13 W4) */ const g=D.groups[t.gi]; if(!g) continue; const lo = graph.ilvl ? Math.max(1, g.t.findIndex(x=>x[0]<=graph.ilvl)+1) : 1; tv[k]={s:g.g, sec:g.s, tmax:(!['n','d'].includes(g.s) && g.t.length<=1) ? undefined : t.tmax, gi:t.gi, tiers:g.t.slice(0,Math.max(5,lo+4)).map(x=>[x[4],x[5]]), ...(lo>1?{lo}:{})}; }   /* lo: 아이템 레벨로 붙을 수 있는 가장 좋은 티어(레벨 81 저항 = 2티어, 사용자 2026-11-12) */
   const pOnly=c=>{ if(!c) return; if(c.param) return c.param; if(c.all){ const o={}; c.all.forEach(x=>x.param&&Object.assign(o,x.param)); return Object.keys(o).length?o:undefined; } };
   return {tags:tv, finals:graph.finals, finalItem:graph.finalItem, basePrice:graph.basePrice, params:graph.params, groups:graph.groups, start:graph.start, loops:graph.loops, versions:graph.versions,
     /* 상자 칸은 tools/sim/run.js가 쓰는 것과 같게(2026-11-13 W4): 레시피를 플로우차트에서 읽는 fcread.js가 이 그림 데이터를 씀 */

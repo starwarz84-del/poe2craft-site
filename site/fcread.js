@@ -1577,8 +1577,12 @@
       const SL = own(srcL, nz(L.id)) || {};
       const steps = or_(g(SL.stepsBy || {}, vid), g(L.stepsBy || {}, vid), g(SL, 'steps'), g(L, 'steps'), []);
       const ord = steps.filter(s => T(s.node) && !gone.has(s.node)).map(s => s.node);
+      let extra = ord.length;
       L.nodes.forEach((i, j) => {
-        const k = ord.includes(i) ? ord.indexOf(i) + 1 : (ord.length ? null : j + 1);
+        let k = ord.includes(i) ? ord.indexOf(i) + 1 : (ord.length ? null : j + 1);
+        if (k === null && ord.length && j && (own(by, i) || {}).kind === 'act' && (own(by, i) || {}).act !== 'annul') {   /* graph2recipe fc_numbers와 같음(W11): 같은 행동 상자 번호, 없으면 순서 줄 뒤 */
+          const q = ord.findIndex(x => (own(by, x) || {}).act === by[i].act && (own(by, x) || {}).cur === by[i].cur);
+          if (q >= 0) k = q + 1; else { extra += 1; k = extra; } }
         if (k !== null) member[i] = [L.nodes[0], k];
         if (j) folded.add(i);
       });
