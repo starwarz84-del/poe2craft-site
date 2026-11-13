@@ -394,7 +394,7 @@ const isLiq = g => g.sub && g.sub[1]==='Liquid Emotions';
 /* slots a liquid line opens (Potent Liquid Contempt: "+1 Suffix Modifier allowed"), read from every slot so maxOf does not recurse */
 function liqSlots(){ const o={p:0,s:0}; for(const g of ['p','s']) (S.slots?.[g]||[]).forEach(v=>{ if(!v) return; const gr=S.data.groups[v.gi]; if(!isLiq(gr)) return;
   for(const m of String(gr.t[v.ti][5]).matchAll(/([+-]\d+) (Prefix|Suffix) Modifiers? allowed/g)) o[m[2]==='Prefix'?'p':'s'] += +m[1]; }); return o; }   // extra crafted modifiers raise a limit instead of adding slots
-const KIND = {rune:['룬벼림·룬숙련','Runeforged / Runemastered'], mod:['접두·접미 개수 변경','Modifier count'], breach:['균열','Breach'], unique:['고유 전용·스킬 생성','Unique-only / skill']};
+const KIND = {rune:['룬벼림·룬숙련','Runeforged / Runemastered'], mod:['접두·접미 개수 변경','Modifier count'], ring:['특수 반지','Special rings'], breach:['균열','Breach'], unique:['고유 전용·스킬 생성','Unique-only / skill']};
 // exceptional base = one more rune socket (사용자 확정 2026-11-11: quality is not an exceptional option)
 const excSock = () => S.exc==='sock' && baseSockets() ? 1 : 0;
 const sockets = () => baseSockets() + excSock() + (S.corr===2 && baseSockets() ? 1 : 0);

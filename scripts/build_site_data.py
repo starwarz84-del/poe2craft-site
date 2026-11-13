@@ -12,7 +12,12 @@ for key,v in rp.items():
     if v.get('domain')=='item': rp_by[v['name']].append((key.split('/')[-1],v))
 SOCKET_IMPL={'Gloves':'gloves','Helmet':'helmet','Boots':'boots'}
 RUNE_SRC={'gloves':'Gloves_str','helmet':'Helmets_str','boots':'Boots_str'}
+# 반지 일반·특수 구분(사용자 확정 2026-11-13 22:34, 에뮬레이터·속성부여): 균열 반지는 일반, 특수 고정 옵션 반지 6종은 특수('ring')
+NORMAL_BASES={'Breach Ring','Refined Breach Ring'}
+SPECIAL_RINGS={'Biostatic Ring','Oneiric Ring','Vitalic Ring','Mnemonic Ring','Kinetic Ring','Grasping Ring'}
 def base_kind(name, implicit_en):
+    if name in NORMAL_BASES: return ''
+    if name in SPECIAL_RINGS: return 'ring'
     ents=rp_by.get(name,[])
     keys=[k for k,_ in ents]; tags=set(t for _,v in ents for t in v['tags']); rs={v['release_state'] for _,v in ents}
     if 'runeforged' in tags: return 'rune'
