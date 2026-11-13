@@ -13,10 +13,10 @@ def L(s, kr, en, m='n', tags=None):
 
 CCn = L('s', '반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 (3—7)% 증가도 부여', 'Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Attacks', 'n', ['cc'])
 CC = L('s', '반경 내 주요 패시브 스킬이 공격 치명타 명중 확률 (3—7)% 증가도 부여', 'Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Attacks', 'f', ['cc'])
-CDS = L('s', '반경 내 주요 패시브 스킬이 창 사용 시 치명타 피해 보너스 (5—10)% 증가도 부여', 'Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus with Spears', 'n', ['s65'])
+CDS = L('s', '반경 내 주요 패시브 스킬이 창 사용 시 치명타 피해 보너스 (5—10)% 증가도 부여', 'Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus with Spears', 'n', ['suf'])
 CONT = L('p', '접미어 속성 부여의 최대 개수 +1개', '+1 Suffix Modifier allowed', 'c', ['contS'])
-AS = L('s', '반경 내 주요 패시브 스킬이 공격 속도 (1—2)% 증가도 부여', 'Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed', 'd', ['s11'])
-PS = L('p', '반경 내 주요 패시브 스킬이 투사체 속도 (2—3)% 증가도 부여', 'Notable Passive Skills in Radius also grant (2—3)% increased Projectile Speed', 'n', ['p55'])
+AS = L('s', '반경 내 주요 패시브 스킬이 공격 속도 (1—2)% 증가도 부여', 'Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed', 'd', ['rev'])
+PS = L('p', '반경 내 주요 패시브 스킬이 투사체 속도 (2—3)% 증가도 부여', 'Notable Passive Skills in Radius also grant (2—3)% increased Projectile Speed', 'n', ['pre'])
 RAD = L('p', '반경이 매우 넓은 반경으로 업그레이드', 'Upgrades Radius to Very Large', 'c', ['rad'])
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')
@@ -79,7 +79,7 @@ A(id='pc', kind='cleanup', group='prep', pos=[0, 3], keep=[], maxJunk=1, label=A
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 4.4], next='c2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[J('p'), CC])
 A(id='c2', kind='act', group='main', pos=[0, 5.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 두 번째 옵션 — 창·공격 치명타 피해 보너스 중 먼저 뜬 것', 'Second suffix: crit damage bonus with spears or for attacks, whichever lands first'), show=['s65', 's9'],
+  goal=K('접미 두 번째 옵션', 'Second suffix'), show=['suf'],
   edges=[{'if': {'has': 'suf'}, 'to': 'c3', 'res': 'ok'}, {'to': 'c2', 'res': 'fail', 'hide': True}], item=[CC, CDS])
 A(id='c3', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 옵션 2개', 'Two prefixes'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개씩', 'en': 'One random option each'}],
@@ -96,8 +96,8 @@ A(id='c5', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Preserv
   goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'c6'}], item=[J('p'), CONT, CC, CDS, UN('s')])
 A(id='c6', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),
-  goal=K('접미 공격 속도 — 아래 옵션 중 먼저 뜬 것', 'Attack speed suffix: whichever listed option lands first'),
-  show=['s11', 's9', 's64', 's3'],
+  goal=K('접미 공격 속도', 'Attack speed suffix'),
+  show=['rev'],
   edges=[{'if': {'added': 'rev'}, 'to': 'c7', 'res': 'ok'}, {'to': 'c6x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[J('p'), CONT, CC, CDS, AS])
 A(id='c6x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
@@ -109,7 +109,7 @@ A(id='c8', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Exalted_Or
   goal=K('접두 채우기', 'Fill the prefixes'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개씩', 'en': 'One random option each'}],
   edges=[{'if': {'full': 'p'}, 'to': 'c9'}, {'to': 'c8', 'hide': True}], item=[J('p'), J('p'), CC, CDS, AS])
 A(id='c9', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접두 투사체 속도 — 투사체 피해·공격 피해와 함께 먼저 뜬 것', 'Projectile speed prefix: or projectile damage or attack damage, whichever lands first'), show=['p55', 'p54', 'p10'],
+  goal=K('접두 투사체 속도', 'Projectile speed prefix'), show=['pre'],
   edges=[{'if': {'has': 'pre'}, 'to': 'c10', 'res': 'ok'}, {'to': 'c9', 'res': 'fail', 'hide': True}], item=[PS, J('p'), CC, CDS, AS])
 A(id='c10', kind='act', group='main', pos=[0, 13.4], act='essence', cur='Ancient_Potent_Liquid_Melancholy', ess='rad', liquid=True,
   label=K('액체', 'Liquid'), goal=K('고대 위력적인 액체 우울', 'Ancient Potent Liquid Melancholy'),

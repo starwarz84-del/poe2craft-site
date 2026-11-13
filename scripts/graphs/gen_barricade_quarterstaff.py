@@ -14,10 +14,10 @@ def L(s, kr, en, m='n', tags=None):
 CRn = L('s', '치명타 확률 +(4.41—5)%', '+(4.41—5)% to Critical Hit Chance', 'n', ['crit'])
 CR = L('s', '치명타 확률 +(4.41—5)% (분열)', '+(4.41—5)% to Critical Hit Chance (fractured)', 'f', ['crit'])
 ME = L('s', '모든 근접 스킬 레벨 +5', '+5 to Level of all Melee Skills', 'n', ['melee'])
-AS = L('s', '공격 속도 (26—28)% 증가 (훼손)', '(26—28)% increased Attack Speed (desecrated)', 'd', ['as'])
+AS = L('s', '공격 속도 (26—28)% 증가 (훼손)', '(26—28)% increased Attack Speed (desecrated)', 'd', ['rev'])
 EA = L('p', '공격 스킬의 원소 피해 (120—139)% 증가', '(120—139)% increased Elemental Damage with Attacks', 'n', ['eatk'])
-FI = L('p', '화염 피해 (135—156)~(205—236) 추가', 'Adds (135—156) to (205—236) Fire Damage', 'n', ['fire'])
-CO = L('p', '냉기 피해 (112—124)~(168—189) 추가', 'Adds (112—124) to (168—189) Cold Damage', 'n', ['cold'])
+FI = L('p', '화염 피해 (135—156)~(205—236) 추가', 'Adds (135—156) to (205—236) Fire Damage', 'n', ['ele'])
+CO = L('p', '냉기 피해 (112—124)~(168—189) 추가', 'Adds (112—124) to (168—189) Cold Damage', 'n', ['ele'])
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
 R = lambda s: L(s, '랜덤 옵션', 'Random option', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')
@@ -44,12 +44,12 @@ g = {
                'desc': K('영상: 원소 피해 접두 1티어 3개 + 훼손 공격 속도 1티어', 'Video: three T1 elemental prefixes + T1 desecrated attack speed')}],
  'tags': {'crit': {'gi': 18, 'tmax': 1}, 'melee': {'gi': 10, 'tmax': 1},
           'as': {'gi': 16, 'tmax': '$rT'}, 'cdmg': {'gi': 19, 'tmax': '$rT'},
-          'rev': {'anyOf': ['as', 'cdmg'], 'label': K('공격 속도·치명타 피해', 'Attack speed or critical damage bonus')},
+          'rev': {'anyOf': ['as', 'cdmg'], 'shown': 'as', 'label': K('공격 속도·치명타 피해', 'Attack speed or critical damage bonus')},
           'as1': {'gi': 16, 'tmax': 1}, 'cdmg1': {'gi': 19, 'tmax': 1}, 'as2': {'gi': 16, 'tmax': 2}, 'cdmg2': {'gi': 19, 'tmax': 2},
           'rev1': {'anyOf': ['as1', 'cdmg1'], 'shown': 'as1', 'label': K('공격 속도·치명타 피해 보너스 1티어', 'T1 attack speed or critical damage bonus')},
           'rev2': {'anyOf': ['as2', 'cdmg2'], 'shown': 'as2', 'label': K('공격 속도·치명타 피해 보너스 1~2티어', 'T1–2 attack speed or critical damage bonus')},
           'eatk': {'gi': 23, 'tmax': '$eT'}, 'fire': {'gi': 4, 'tmax': '$eT'}, 'cold': {'gi': 5, 'tmax': '$eT'}, 'lflat': {'gi': 7, 'tmax': '$eT'},
-          'ele': {'anyOf': ['eatk', 'fire', 'cold', 'lflat'], 'label': K('공격 스킬의 원소 피해·화염·냉기·번개 피해 추가', 'Elemental damage with attacks or added fire, cold or lightning damage')},
+          'ele': {'anyOf': ['eatk', 'fire', 'cold', 'lflat'], 'shown': ['fire', 'cold'], 'label': K('공격 스킬의 원소 피해·화염·냉기·번개 피해 추가', 'Elemental damage with attacks or added fire, cold or lightning damage')},
           'eatk1': {'gi': 23, 'tmax': 1}, 'fire1': {'gi': 4, 'tmax': 1}, 'cold1': {'gi': 5, 'tmax': 1}, 'lflat1': {'gi': 7, 'tmax': 1},
           'eatk2': {'gi': 23, 'tmax': 2}, 'fire2': {'gi': 4, 'tmax': 2}, 'cold2': {'gi': 5, 'tmax': 2}, 'lflat2': {'gi': 7, 'tmax': 2},
           'ele1': {'anyOf': ['eatk1', 'fire1', 'cold1', 'lflat1'], 'shown': ['eatk1', 'fire1', 'cold1'], 'label': K('공격 스킬의 원소 피해·화염·냉기·번개 피해 추가 1티어', 'T1 elemental damage with attacks or added fire, cold or lightning damage')},
@@ -112,8 +112,8 @@ A(id='b1', kind='act', group='main', pos=[0, 15], act='desecrate', cur='Preserve
   label=K('훼손', 'Desecrate'), goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'rv'}], item=[CR, ME, UN('s')])
 A(id='rv', kind='act', group='main', pos=[0, 16], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),
-  goal=K('접미 공격 속도 1티어 — 치명타 피해 보너스 1티어와 함께 먼저 뜬 것', 'T1 attack speed suffix: or T1 critical damage bonus, whichever lands first'),
-  show=['as', 'cdmg'],
+  goal=K('접미 공격 속도', 'Attack speed suffix'),
+  show=['rev'],
   edges=[{'if': {'added': 'rev'}, 'to': 'p1', 'res': 'ok'}, {'to': 'rvx', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[CR, ME, AS])
 A(id='rvx', kind='act', group='main', pos=[1, 16], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'b1', 'label': K('다시 훼손', 'Desecrate again')}])
@@ -121,18 +121,18 @@ A(id='p1', kind='act', group='main', pos=[0, 17], act='exalt', cur='Perfect_Exal
   goal=K('접두 옵션 2개', 'Two prefixes'), showText=[{'s': 'p', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   edges=[{'if': {'count': {'tag': 'ele', 'min': 2}}, 'to': 'p4', 'res': 'ok'}, {'to': 'p2', 'res': 'fail'}], item=[EA, J('p'), CR, ME, AS])
 A(id='p2', kind='act', group='main', pos=[0, 18], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'keep'}, label=K('절사 + 카오스', 'Whittling + Chaos'),
-  goal=K('가장 낮은 접두를 원소 피해로 — 먼저 뜬 것', 'The lowest prefix into elemental damage: whichever lands first'),
-  show=['fire', 'cold', 'lflat', 'eatk'],
+  goal=K('가장 낮은 접두를 원소 피해로', 'The lowest prefix into elemental damage'),
+  show=['ele'],
   edges=[{'if': {'count': {'tag': 'ele', 'min': 2}}, 'to': 'p4', 'res': 'ok'}, {'to': 'p2', 'res': 'fail', 'hide': True}], item=[EA, FI, CR, ME, AS])
 A(id='p4', kind='act', group='main', pos=[0, 19], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 세 번째 옵션', 'Third prefix'), show=['cold', 'lflat', 'fire', 'eatk'],
+  goal=K('접두 세 번째 옵션', 'Third prefix'), show=['ele'],
   edges=[{'if': {'count': {'tag': 'ele', 'min': 3}}, 'to': 'ok', 'res': 'ok'},
          {'if': {'all': [{'param': {'eT': 1}}, {'whittleSafe': {'tag': 'keep'}}]}, 'to': 'p5', 'res': 'fail'},
          {'if': {'param': {'eT': 1}}, 'to': 'p5x', 'res': 'fail'},
          {'to': 'ok', 'res': 'fail', 'label': K('랜덤 옵션', 'Random option')}],
   item=[EA, FI, CO, CR, ME, AS])
 A(id='p5', kind='act', group='main', pos=[1, 19], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
-  goal=K('가장 낮은 접두를 원소 피해로', 'The lowest prefix into elemental damage'), show=['cold', 'lflat', 'fire', 'eatk'],
+  goal=K('가장 낮은 접두를 원소 피해로', 'The lowest prefix into elemental damage'), show=['ele'],
   edges=[{'if': {'count': {'tag': 'ele', 'min': 3}}, 'to': 'ok', 'res': 'ok'},
          {'if': {'whittleSafe': {'tag': 'keep'}}, 'to': 'p5', 'res': 'fail'},
          {'to': 'p5x', 'res': 'fail'}])
@@ -144,8 +144,8 @@ g['nodes'] = N
 g['loops'] = [
  {'id': 'L1', 'nodes': ['b1', 'rv', 'rvx'], 'kr': '훼손 공개', 'en': 'Reveal'},
  {'id': 'L2', 'nodes': ['p4', 'p5', 'p5x'], 'kr': '접두 세 번째 옵션', 'en': 'Third prefix', 'fold': True,
-  'goal': K('접두 원소 피해 1티어 세 번째 — 냉기·번개·화염 피해 추가·공격 스킬의 원소 피해 중 먼저 뜬 것', 'A third T1 elemental prefix: whichever of added cold, lightning, fire or elemental damage with attacks lands first'),
-  'goalBy': {'high': K('접두 원소 피해 1티어 세 번째 — 냉기·번개·화염 피해 추가·공격 스킬의 원소 피해 중 먼저 뜬 것', 'A third T1 elemental prefix: whichever of added cold, lightning, fire or elemental damage with attacks lands first'),
+  'goal': K('접두 세 번째 옵션 — 냉기 피해 추가 1티어', 'Third prefix: T1 added cold damage'),
+  'goalBy': {'high': K('접두 세 번째 옵션 — 냉기 피해 추가 1티어', 'Third prefix: T1 added cold damage'),
              'bal': K('접두 세 번째 옵션 — 완벽한 엑잘 한 번, 랜덤 옵션', 'Third prefix: one Perfect Exalt, a random option')},
   'steps': [K('완벽한 엑잘로 접두 세 번째 옵션', 'Perfect Exalt for the third prefix') | {'node': 'p4'},
             K('빗나간 접두가 가장 낮은 옵션이면 절사 + 완벽한 카오스 반복', 'Missed prefix is the lowest option: Whittling + Perfect Chaos, again and again') | {'node': 'p5'},
