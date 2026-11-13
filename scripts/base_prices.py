@@ -54,7 +54,7 @@ BASEPRICE = {
   'sane-resist-belt-v2-bal': None, 'sane-resist-belt-v2-ess': None,
   'diztoh-budget-mace-v2-bal': None, 'diztoh-budget-mace-v2-ess': None,
   'lilbotq-budget-boots-v2-bal': None, 'lilbotq-budget-boots-v2-ess': None,
-  'icesly-budget-wand-v2-bal': None, 'icesly-budget-wand-v2-ess': None,
+  'icesly-budget-wand-v2-bal': 13, 'icesly-budget-wand-v2-ess': 13,   # 2026-11-13 G12: 영상 1:18 거래소 번개 +5 매직 결투 마법봉(아이템 레벨 81) 13 div, 1:42에 그 마법봉
   'farmer-starter-staff-v2': 0.11, 'farmer-starter-staff-v2-bal': 0.11, 'farmer-starter-staff-v2-ess': 0.11,   # 사용자 2026-11-10 거래소: 번개 주문 +6 매직 지팡이 카오스 오브 1개(≈0.11 div)
   'icesly-budget-wand': None,
   'lilbotq-armour-shield': None,

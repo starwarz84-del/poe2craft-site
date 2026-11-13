@@ -58,10 +58,10 @@ for _t in ('bal','ess'): _grade('lilbotq-budget-boots','lilbotq-budget-boots-v2'
 #    밸런스 = 영상 티어 + 남은 훼손이 빗나가면 빛의 징조, 에센셜 = 번개 +5 1~2티어·접두 목표 넓힘·결과 그대로.
 def _wand(r, t):
     xT,yT=(2,3) if t=='bal' else (4,5)
-    r['start']['mods'][0]['tmax']=1 if t=='bal' else 2
+    r['start']['mods'][0]['tmax']=1   # 2026-11-13 G12: 두 등급 모두 영상 베이스(번개 +5 1티어 매직 구입) — 단계는 플로우차트(gen_icesly_budget_wand.py)에서 읽음
     pre=[{'gi':ic_lin,'tmax':yT},{'gi':ic_spell,'tmax':yT},{'gi':ic_xL,'tmax':xT},{'gi':ic_xC,'tmax':xT},{'gi':ic_xF,'tmax':xT}]
     i1=_node(r,'i1'); i3=_node(r,'i3'); i7=_node(r,'i7')
-    i1['note']=K('모든 번개 주문 스킬 레벨 +5 매직 완드(접두 잡옵 1개, 아이템 레벨 81). 화염·냉기 등 다른 원소 +5도 같은 방법.','A magic wand with +5 to all lightning spell skills (one junk prefix, item level 81). Other elements work the same way.')
+    i1['note']=K('모든 번개 주문 스킬 레벨 +5 매직 결투 마법봉(접두 잡옵 1개, 아이템 레벨 81). 화염·냉기 등 다른 원소 +5도 같은 방법.','A magic Dueling Wand with +5 to all lightning spell skills (one junk prefix, item level 81). Other elements work the same way.')
     miss=K('번개·주문·추가 피해 획득이면 다음, 빗나가면 그대로 두고 {#i8}에서 좌측 결정화의 징조 + 천공의 합금으로 그 옵션을 지움. 소멸의 오브는 안 씀',
            'Lightning, spell or extra damage → next; a miss stays and the Celestial Alloy eats it at {#i8} (Sinistral Crystallisation) — no Annulment')
     nodes=[i1,
