@@ -16,7 +16,7 @@ PJ = L('s', '모든 투사체 스킬 레벨 +4', '+4 to Level of all Projectile 
 LPK = L('s', '처치한 적 하나당 생명력 획득', 'Gain Life per enemy killed', 'j')
 AS = L('s', '공격 속도 (20—22)% 증가', '(20—22)% increased Attack Speed', 'n', ['as3'])
 PHj = L('p', '물리 피해 추가 (낮은 티어)', 'Adds Physical Damage (low tier)', 'j')
-SOV = L('s', '장착된 증강물 효과 (20—30)% 증가 (군주의 합금)', '(20—30)% increased effect of Socketed Augment Items (Sovereign Alloy)', 'c', ['sov'])
+SOV = L('s', '장착된 아이템의 효과 (20—30)% 증가 (군주의 합금)', '(20—30)% increased effect of Socketed Augment Items (Sovereign Alloy)', 'c', ['sov'])
 CEL = L('p', '정확도 +(327—427), 공격 속도 (5—8)% 증가 (천상의 합금)', '+(327—427) to Accuracy Rating, (5—8)% increased Attack Speed (Celestial Alloy)', 'c', ['cel'])
 UN = L('p', '접두 훼손 옵션 (미공개)', 'Prefix desecration (unrevealed)', 'n')
 PH5 = L('p', '물리 피해 (10—15)~(18—26) 추가', 'Adds (10—15) to (18—26) Physical Damage', 'n')   # 태그 없음: 엑잘은 나오는 대로
@@ -68,8 +68,8 @@ A(id='e1', kind='act', group='main', pos=[0, 3.4], act='exalt', cur='Greater_Exa
   goal=K('합금이 지울 접두', 'The prefix for the alloy to remove'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'y1'}], item=[PHj, PJ, AS, AST])
 A(id='y1', kind='act', group='main', pos=[0, 4.4], act='essence', cur='Sovereign_Alloy', ess='sov', omens=['Omen_of_Sinistral_Crystallisation'], label=K('합금', 'Alloy'),
-  goal=K('접두 잡옵을 지우고 접미 장착된 증강물 효과', 'Clear the junk prefix for the socketed augment effect suffix'),
-  showText=[{'s': 's', 'kr': '장착된 증강물 효과 (20—30)% 증가 (제작 옵션)', 'en': '(20—30)% increased effect of Socketed Augment Items (crafted)'}],
+  goal=K('접두 잡옵을 지우고 접미 장착된 아이템의 효과', 'Clear the junk prefix for the socketed augment effect suffix'),
+  showText=[{'s': 's', 'kr': '장착된 아이템의 효과 (20—30)% 증가 (제작 옵션)', 'en': '(20—30)% increased effect of Socketed Augment Items (crafted)'}],
   edges=[{'to': 'e2'}], item=[PJ, AS, SOV, AST])
 A(id='e2', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('합금이 지울 접두', 'The prefix for the alloy to remove'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],

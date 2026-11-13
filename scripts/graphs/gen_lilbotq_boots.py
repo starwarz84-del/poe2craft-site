@@ -62,7 +62,7 @@ g = {
     'desc': K('영상: 빛의 징조로 회피 구르기 거리까지 다시 공개', 'Video: Omen of Light until dodge roll distance')}],
  'tags': {
    'ms': {'gi': 55, 'tmax': 1}, 'fr': {'gi': 1, 'tmax': 1}, 'cr': {'gi': 2, 'tmax': 1}, 'lt': {'gi': 3, 'tmax': 1},
-   'res': {'anyOf': ['fr', 'cr', 'lt'], 'shown': 'lt', 'label': K('화염·냉기·번개 저항 1티어', 'T1 fire, cold or lightning resistance')}, 'ra': {'gi': 44}, 'sp': {'gi': 51}, 'dg': {'gi': 57},
+   'res': {'anyOf': ['fr', 'cr', 'lt'], 'shown': 'lt', 'label': K('화염·냉기·번개 저항 1티어', 'T1 fire, cold or lightning resistance')}, 'ra': {'gi': 44}, 'sp': {'gi': 51}, 'dg': {'gi': 57, 'tmax': 2},
    'good': {'anyOf': ['ms', 'res'], 'label': K('이동 속도·둔화 감소 1티어, 원소 저항 1티어', 'T1 movement speed with slow reduction, T1 elemental resistance')},
  },
  'require': {'all': [{'has': 'ms'}, {'has': 'res'}, {'has': 'ra'}, {'has': 'sp'}, {'full': 'p'}, {'any': [V2, {'has': 'dg'}]}]},
