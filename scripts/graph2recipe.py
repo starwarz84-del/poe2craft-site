@@ -572,6 +572,38 @@ def _simp(c, P):
     return c
 
 
+def _neg_atoms(c, CD):
+    """조건의 반대를 조건 조각(모두 참)으로: 단순 조건은 반대, any(a, b)는 a 반대 + b 반대. all의 반대는 한 줄로 못 써서 None"""
+    if not isinstance(c, dict): return None
+    if 'not' in c:
+        a = CD.atoms(c['not']); return a or None
+    if 'all' in c: return None
+    if 'any' in c:
+        out = []
+        for x in c['any']:
+            a = _neg_atoms(x, CD)
+            if a is None: return None
+            out += a
+        return out
+    return CD.atoms({'not': c}) or None
+
+
+def _rest_atoms(W, n, r, G_, CD):
+    """라우터 마지막 선(조건 없음 = 앞 선이 모두 맞지 않음)의 조건 글 재료: 시뮬에서 지난 앞 선 조건의 반대, 가까운 선부터(2026-11-13 S8)"""
+    se = (G_.srcn.get(n['id']) or {}).get('edges') or []
+    i = r.get('_i', 999)
+    if not (0 <= i < len(se)) or se[i].get('if') is not None: return None
+    out = []; ks = set()
+    for e in reversed(se[:i]):
+        c = _simp(e.get('if'), G_.params)
+        if c is False or c is None: continue
+        if c is True: return None   # 앞에 늘 맞는 선이 있으면 이 선은 지나지 않음
+        if not (W.E.get(n['id'] + '>' + str(e.get('to'))) or 0) > 0: continue
+        for a in _neg_atoms(c, CD) or []:
+            if a[0] not in ks: ks.add(a[0]); out.append(a)
+    return out or None
+
+
 def _routes(W, n, valid, G_=None, CD=None):
     """단계 칩: 상자에서 나가는 선을 끝까지 따라가 실제 단계 번호로(지우기 상자·표시 상자는 건너뜀), 비율은 시뮬에서 그 선을 지난 횟수.
     라우터 선(아이템 상태마다 다음 단계를 고르는 숨은 선)은 '아이템 상태에 맞는 단계'로 묶지 않고 조건 글 + 단계 번호로(2026-11-12)"""
@@ -745,6 +777,10 @@ def _routes(W, n, valid, G_=None, CD=None):
             if isinstance(oc, dict):
                 na = CD.atoms({'not': oc}) if CD else None
                 if na: bare[0]['_a'] = na
+            if not bare[0].get('_a') and cl == 'ok' and CD and G_: bare[0]['_a'] = _rest_atoms(W, n, bare[0], G_, CD)   # 다른 선 조건이 all이라 반대를 못 쓰면 앞 선 반대 모음(S8)
+        elif len(bare) == 1 and cl == 'ok' and CD and G_:   # 라우터의 마지막 '나머지' 선(조건 없음)이 셋 이상 갈래 중 하나: 앞 선(시뮬에서 지난 선) 조건의 반대를 모음 — '성공 (44%) → 10-1번'·'성공 (3.9%) → 12.A번'처럼 보이던 것(2026-11-13 S8)
+            na = _rest_atoms(W, n, bare[0], G_, CD)
+            if na: bare[0]['_a'] = na
         for r in need:
             lb = _label(r.get('_a'), () if r.get('_c') else common)
             if lb:
@@ -820,6 +856,23 @@ def _routes(W, n, valid, G_=None, CD=None):
         if hasf: h['keepAll'] = True
         for r in rn:
             if r is not h: rs.remove(r)
+    # 확정 단계(실패 갈래 없음)에서 도착이 둘 이상인데 이름 없는 성공 갈래가 남으면 '성공'이 아니라 '그 밖' — 여러 '그 밖'은 한 줄로(2026-11-13 S8: BiS 갑옷 15번 '성공 (3.9%) → 12.A번')
+    rk = [r for r in rs if not r.get('skip') and not (r['to'] == 'self' and not r.get('via'))]
+    if rk and all(r['cls'] == 'ok' for r in rs) and len({r['to'] for r in rk}) >= 2 and any(r.get('lab') or r.get('keepAll') for r in rk):
+        for r in rk:   # 실패가 없는 단계라 '성공, ' 머리도 뗌
+            lb = r.get('lab') or {}
+            if (lb.get('kr') or '').startswith('성공, '): r['lab'] = {'kr': lb['kr'][4:], 'en': re.sub(r'^Hit, ', '', lb.get('en') or '')}; r['lab']['en'] = r['lab']['en'][:1].upper() + r['lab']['en'][1:]
+        for r in rk:
+            if not r.get('lab') and not r.get('keepAll'): r['lab'] = {'kr': '그 밖', 'en': 'Otherwise'}
+        ot = sorted([r for r in rk if (r.get('lab') or {}).get('kr') == '그 밖'], key=lambda r: -(r['share'] or 0))
+        if len(ot) >= 2:
+            h = ot[0]; ds = [h['to']] + [d for d in (h.get('toAlt') or [])]
+            for r in ot[1:]:
+                for d in [r['to']] + list(r.get('toAlt') or []):
+                    if d not in ds: ds.append(d)
+                h['share'] += r['share'] or 0; h['n'] = (h.get('n') or 0) + (r.get('n') or 0) or None; rs.remove(r)
+            h['to'] = ds[0]; h['toAlt'] = ds[1:4] or None
+            if len({json.dumps(r.get('via'), sort_keys=True) for r in ot}) > 1: h.pop('via', None); h.pop('vo', None)
     # 순서: 성공(많은 것부터) → 실패(그래프 선 순서 = 플로우차트 흐름, 같으면 많은 것부터) → 그 밖 (2026-11-12: '1번째·2번째·3번째 빗나감'이 거꾸로 읽히던 것)
     rs.sort(key=lambda r: (r['cls'] != 'ok', r.get('skip', False), r.get('exit', False), (r.get('lab') or {}).get('kr') == '그 밖', r.get('_i', 999) if r['cls'] != 'ok' else 0, r['to'] != 'self', -(r['share'] or 0)))
     for r in rs: r['share'] = round(r['share'], 5); r.pop('_a', None); r.pop('_c', None); r.pop('_e0', None); r.pop('_pr', None); r.pop('_i', None); r.pop('_if', None); r.pop('_ap', None)
@@ -1279,7 +1332,8 @@ def fc_numbers(W, sim, src, vid):
     member = {}; folded = set()
     for L in loops:
         if not (L.get('fold') or (srcL.get(L.get('id')) or {}).get('fold')): continue
-        steps = (srcL.get(L.get('id')) or {}).get('steps') or L.get('steps') or []
+        SL = srcL.get(L.get('id')) or {}
+        steps = (SL.get('stepsBy') or {}).get(vid) or (L.get('stepsBy') or {}).get(vid) or SL.get('steps') or L.get('steps') or []   # stepsBy: 등급별 순서 줄(goalBy·itemBy처럼, 2026-11-13 S8)
         order = [s.get('node') for s in steps if s.get('node') and s.get('node') not in gone]   # 이 등급이 거치지 않는 순서 줄은 번호에서 뺌(플로우차트 fcFold와 같게)
         for j, i in enumerate(L['nodes']):
             k = order.index(i) + 1 if i in order else None if order else j + 1   # 순서 줄에 없는 상자(소멸 a8x 등)는 번호 없음 — 다른 줄 번호(7-3)와 겹치던 것(2026-11-13 S7, R-E1)

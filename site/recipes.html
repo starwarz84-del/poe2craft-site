@@ -1467,7 +1467,8 @@ function flowHTML(r){
             : g.kd==='b-ok' ? L(`${no}번 성공 시 (${pct(o.p)})`,`If step ${no} succeeds (${pct(o.p)})`)
             : g.kd==='lost' ? L(`${no}번에서 원하는 옵션이 지워지면${o.lose>0?` (${pct(o.lose)})`:''}`,`If step ${no} takes a wanted line${o.lose>0?` (${pct(o.lose)})`:''}`)
             : g.alt ? (()=>{ const lb=tx(g.alt), sh=g.alt.share>0 && g.alt.share<0.995 ? ` (${pct(g.alt.share)})` : ''; return lb ? L(`${no}번 결과: ${lb}${sh}`,`Step ${no} result: ${lb}${sh}`) : L(`${no}번 성공 시${sh}`,`If step ${no} succeeds${sh}`); })()
-            : miss>=0.0005 ? L(`${no}번 실패 시 (${pct(miss)})`,`If step ${no} misses (${pct(miss)})`) : L(`${no}번 다음`,`After step ${no}`);
+            : (()=>{ const ids=new Set(g.xs.map(y=>y.n.id)), rt=(n.routes||[]).filter(x=>x.cls==='no' && [x.to,...(x.toAlt||[])].some(t=>ids.has(t))), into=rt.reduce((t,x)=>t+(x.share||0),0), m=rt.length && into>0 ? into : miss;   /* 플로우차트 읽기: 이 묶음으로 가는 실패 갈래 비율 — 실패 전체(96%)가 실제로 14-2로 가는 15%와 헷갈리던 것(2026-11-13 S8, BiS 갑옷 14-1) */
+                return m>=0.0005 ? L(`${no}번 실패 시 (${pct(m)})`,`If step ${no} misses (${pct(m)})`) : L(`${no}번 다음`,`After step ${no}`); })();
           const foot = g.kd==='retry' ? L(`→ ${no}번으로 돌아가 다시 공개`,`→ back to step ${no} to reveal again`) : '';
           html += `<div class="grp ${g.kd==='b-ok' || g.alt?'okg':'failg'}"><div class="gh">${g.kd==='b-ok'?'✓':'↳'} ${head}</div>${run(g.xs)}${foot?`<div class="gf">${foot}</div>`:''}</div>`;
         }
@@ -2019,7 +2020,7 @@ function fcFold(g, res, vid){ const Ls=(g.loops||[]).filter(L=>L.fold && L.nodes
     L.nodes.forEach(id=>(byId[id]?.edges||[]).forEach(e=>{ if(e.res!=='ok' || e.hide || mem.has(e.to) || e.to===wt) return; if(!ok.some(x=>x.to===e.to)) ok.push({...e}); }));
     ok.forEach(e=>{ if(L.nodes.some(id=>id!==h && res?.edges?.[id+'>'+e.to])){ let c=0; L.nodes.forEach(id=>{ c+=res?.edges?.[id+'>'+e.to]||0; }); edges[h+'>'+e.to]=c; } });
     const es=[...ok]; if(wt && !mem.has(wt)){ es.push({to:wt, res:'fail'});   /* 최악의 경우 글은 상자 안에 있으니 선 이름표는 없음 */ let c=0; L.nodes.forEach(id=>{ c+=res?.edges?.[id+'>'+wt]||0; }); edges[h+'>'+wt]=c; }
-    heads[h]={...H, kind:H.kind==='cleanup'?'act':H.kind, fold:{...L, goal:L.goalBy?.[vid]||L.goal, steps:(L.steps||[]).filter(x=>!x.node || !res?.nodes || res.nodes[x.node])},   /* 이 등급이 거치지 않는 순서 줄은 뺌 — 레시피 번호(7-1·7-2…)와 같게(2026-11-13 S2, G1 보고: 3-1, 3-3) */ edges:es, next:undefined, skipTo:undefined, item:L.itemBy?.[vid]||L.item||H.item}; });   /* itemBy: 등급별 왼쪽 아이템 칸(goalBy처럼, 2026-11-12 시한 투구) */
+    heads[h]={...H, kind:H.kind==='cleanup'?'act':H.kind, fold:{...L, goal:L.goalBy?.[vid]||L.goal, steps:(L.stepsBy?.[vid]||L.steps||[]).filter(x=>!x.node || !res?.nodes || res.nodes[x.node])},   /* 이 등급이 거치지 않는 순서 줄은 뺌 — 레시피 번호(7-1·7-2…)와 같게(2026-11-13 S2, G1 보고: 3-1, 3-3) — stepsBy:{high:[…]}면 등급별 순서 줄(goalBy·itemBy처럼, 2026-11-13 S8) */ edges:es, next:undefined, skipTo:undefined, item:L.itemBy?.[vid]||L.item||H.item}; });   /* itemBy: 등급별 왼쪽 아이템 칸(goalBy처럼, 2026-11-12 시한 투구) */
   const re=to=>gone[to]||to;
   const nodes=g.nodes.filter(n=>!gone[n.id]).map(n=>heads[n.id] || (n.edges?.some(e=>gone[e.to]) || gone[n.next] ? {...n, edges:(n.edges||[]).map(e=>gone[e.to]?{...e, to:re(e.to)}:e), next:n.next&&re(n.next)} : n));
   return {g:{...g, nodes, loops:(g.loops||[]).map(L=>L.fold && heads[L.nodes[0]] ? {...L, nodes:[L.nodes[0]], allNodes:L.nodes} : L)}, res:{...res, edges}}; }
