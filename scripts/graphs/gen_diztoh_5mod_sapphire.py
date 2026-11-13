@@ -12,7 +12,7 @@ def L(s, kr, en, m='n', tags=None):
     return d
 
 SCC = L('s', '주문 치명타 명중 확률 (5—15)% 증가', '(5—15)% increased Critical Hit Chance for Spells', 'n', ['scc'])
-CC = L('s', '치명타 확률 (5—15)% 증가', '(5—15)% increased Critical Hit Chance', 'n', ['cc'])
+CC = L('s', '치명타 확률 (5—15)% 증가', '(5—15)% increased Critical Hit Chance', 'n', ['c2'])
 CAST = L('s', '시전 속도 (2—4)% 증가', '(2—4)% increased Cast Speed', 'd', ['cast'])
 CONT = L('p', '접미어 속성 부여의 최대 개수 +1개', '+1 Suffix Modifier allowed', 'c', ['contS'])
 COLD = L('p', '냉기 피해 (5—15)% 증가', '(5—15)% increased Cold Damage', 'n', ['cold'])
@@ -30,7 +30,9 @@ g = {
           '심연의 메아리 공개(3:38 빗나감 → 빛의 징조 + 소멸의 오브 반복, 4:38 시전 속도) → 좌측 소멸의 징조 + 소멸의 오브로 경멸 옵션(5:12) → 상위 엑잘(5:16) → '
           '카오스로 접두 냉기 피해(6:05~6:58, 접미가 한도를 넘어 접두만 바뀜) → 위력적인 액체 흉포함(7:05 최대 에너지 보호막이 지워짐) → 완성(7:12). '
           '영상과 다르게 정한 점: 5:50 첫 흉포함(카오스 전 시범, 그 옵션은 카오스로 지워짐)은 뺌, 신성한 오브·제련된 달리는 기폭제(8:00~8:18)는 마무리라 뺌, '
-          '좌측 소멸의 징조가 좋은 접두를 지운 경우는 영상에 없어 같은 징조로 다시(내부 결정), 시작 정리는 옵션 1개까지(영상은 모두 지운 뒤 카오스 — 화면 편집으로 확인 못 함).'),
+          '좌측 소멸의 징조가 좋은 접두를 지운 경우는 영상에 없어 같은 징조로 다시(내부 결정), 시작 정리는 옵션 1개까지(영상은 모두 지운 뒤 카오스 — 화면 편집으로 확인 못 함). '
+          '11-13 오후 새 정책(P12, 정책 3장 아무거나): 두 번째 접미는 치명타 확률 또는 치명타 피해 보너스(묶음 c2) — 첫 회차(1:50 주문 치명타 14% + 치명타 피해 보너스 14%)를 그대로 엑잘 2번(1:58)·경멸(2:02)까지 이어 가서 화면 근거가 있는 두 옵션만. '
+          '화면은 성공 회차 치명타 확률(shown). 첫 접미(주문 치명타 명중 확률, 두 회차 모두)·공개(시전 속도)·접두(냉기 피해)는 다른 옵션을 받은 화면이 없어 그대로.'),
  'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video'), '2': K('결과 그대로', 'As it comes')}}},
  'strategies': [{'id': 'bal', 'params': {'v': 1}}, {'id': 'ess', 'params': {'v': 2}}],
  'versions': [
@@ -38,9 +40,10 @@ g = {
     'desc': K('공개 결과 그대로, 접두 카오스 없이 흉포함 한 번', 'Keep the reveal, one Ferocity without the prefix Chaos')},
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
     'desc': K('영상: 빛의 징조로 다시 공개, 냉기 피해까지 카오스', 'Video: Omen of Light on a missed reveal, Chaos until cold damage')}],
- 'tags': {'scc': {'gi': 48}, 'cc': {'gi': 10}, 'cast': {'gi': 3}, 'cold': {'gi': 6}, 'fer': {'gi': 101},
+ 'tags': {'scc': {'gi': 48}, 'cc': {'gi': 10}, 'cdb': {'gi': 11},
+          'c2': {'anyOf': ['cc', 'cdb'], 'shown': 'cc', 'label': K('치명타 확률·치명타 피해 보너스', 'Critical Hit Chance or Critical Damage Bonus')}, 'cast': {'gi': 3}, 'cold': {'gi': 6}, 'fer': {'gi': 101},
           'contS': {'gi': 103, 'slot': {'s': 1}}, 'contP': {'gi': 104, 'slot': {'p': 1}}},
- 'require': {'all': [{'has': 'scc'}, {'has': 'cc'}, {'has': 'fer'}, {'not': {'has': 'contS'}},
+ 'require': {'all': [{'has': 'scc'}, {'has': 'c2'}, {'has': 'fer'}, {'not': {'has': 'contS'}},
                      {'any': [{'all': [{'has': 'cast'}, {'has': 'cold'}]}, {'param': {'v': 2}}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
@@ -48,9 +51,9 @@ g = {
  'cap': {'p': 2, 's': 2},   # 주얼: 접두 2 · 접미 2(정책 8장)
  'finals': [
    {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-    'lines': [{'tag': 'cold'}, {'tag': 'fer'}, {'tag': 'scc'}, {'tag': 'cc'}, {'tag': 'cast', 'des': True}]},
+    'lines': [{'tag': 'cold'}, {'tag': 'fer'}, {'tag': 'scc'}, {'tag': 'c2'}, {'tag': 'cast', 'des': True}]},
    {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
-    'lines': [{'side': 'p', 'random': True}, {'tag': 'fer'}, {'tag': 'scc'}, {'tag': 'cc'}, {'side': 's', 'random': True, 'des': True}]}],
+    'lines': [{'side': 'p', 'random': True}, {'tag': 'fer'}, {'tag': 'scc'}, {'tag': 'c2'}, {'side': 's', 'random': True, 'des': True}]}],
  'finalItem': {'quality': 0, 'sockets': 0},
 }
 
@@ -68,8 +71,8 @@ A(id='a1', kind='act', group='main', pos=[0, 3.4], act='chaos', cur='Chaos_Orb',
   goal=K('접미 주문 치명타 명중 확률', 'Spell Critical Hit Chance suffix'), show=['scc'],
   edges=[{'if': {'has': 'scc'}, 'to': 'a2', 'res': 'ok'}, {'to': 'a1', 'res': 'fail', 'hide': True}], item=[SCC])
 A(id='a2', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 치명타 확률', 'Critical Hit Chance suffix'), show=['cc'],
-  edges=[{'if': {'has': 'cc'}, 'to': 'a3', 'res': 'ok'}, {'to': 'a2x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[SCC, CC])
+  goal=K('접미 치명타 확률', 'Critical Hit Chance suffix'), show=['c2'],
+  edges=[{'if': {'has': 'c2'}, 'to': 'a3', 'res': 'ok'}, {'to': 'a2x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[SCC, CC])
 A(id='a2x', kind='cleanup', group='main', pos=[1, 4.4], keep=['scc'], maxJunk=0, label=ANN, goal=ANN,
   target=K('빗나간 접미 지우기', 'Remove the missed suffix'),
   edges=[{'lost': 'scc', 'to': 'a1', 'label': K('주문 치명타 명중 확률이 지워짐 — 다시 카오스', 'Spell crit chance gone: Chaos again')},
@@ -83,7 +86,7 @@ A(id='a4', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Exalted_Orb
 A(id='k1', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Potent_Liquid_Contempt', ess='contS', alt='contP', liquid=True,
   label=K('액체', 'Liquid'), goal=K('접미어 속성 부여의 최대 개수 +1개', '+1 Suffix Modifier allowed'),
   showText=[K('접두 잡옵이 지워지면 성공, 접미가 지워지면 실패', 'A junk prefix goes: success; a suffix goes: miss')],
-  edges=[{'if': {'all': [{'has': 'contS'}, {'has': 'scc'}, {'has': 'cc'}]}, 'to': 'd1', 'res': 'ok'},
+  edges=[{'if': {'all': [{'has': 'contS'}, {'has': 'scc'}, {'has': 'c2'}]}, 'to': 'd1', 'res': 'ok'},
          {'to': 'k1x', 'res': 'fail', 'label': K('접미가 지워짐', 'A suffix removed')}],
   item=[J('p'), CONT, SCC, CC])
 A(id='k1x', kind='cleanup', group='main', pos=[1, 7.4], keep=[], maxJunk=1, label=ANN, goal=ANN,
@@ -96,19 +99,18 @@ A(id='r1', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of
   goal=K('접미 시전 속도', 'Cast Speed suffix'), show=['cast'],
   edges=[{'if': {'added': 'cast'}, 'to': 'n1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   over=[{'param': {'v': 2}, 'set': {'goal': K('접미 세 번째 옵션 — 공개 결과 그대로', 'Third suffix: keep the reveal'), 'show': [],
-         'item': [J('p'), CONT, SCC, CC, RS('s')],
-         'edges': [{'if': {'added': 'cast'}, 'to': 'n1', 'res': 'ok'}, {'to': 'n1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
+                  'edges': [{'if': {'added': 'cast'}, 'to': 'n1', 'res': 'ok'}, {'to': 'n1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
   item=[J('p'), CONT, SCC, CC, CAST])
 A(id='r1x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 지우고 다시 훼손', 'Remove the desecrated option, desecrate again'), edges=[{'to': 'd1', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='n1', kind='act', group='main', pos=[0, 10.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Sinistral_Annulment'], label=K('소멸', 'Annul'),
   goal=K('접미어 속성 부여의 최대 개수 +1개 지우기 (접두 2개 중 하나)', 'Remove +1 Suffix Modifier allowed (one of two prefixes)'),
   edges=[{'if': {'has': 'contS'}, 'to': 'n1', 'res': 'fail', 'label': K('다른 접두가 지워짐 — 다시', 'The other prefix went: again')}, {'to': 'g1', 'res': 'ok'}],
-  item=[J('p'), SCC, CC, CAST], over=[{'param': {'v': 2}, 'set': {'item': [J('p'), SCC, CC, RS('s')]}}])
+  item=[J('p'), SCC, CC, CAST])
 A(id='g1', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 두 번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 한도를 넘어 접두로)', 'en': 'One random option (suffixes over the limit)'}],
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'g1', 'hide': True}, {'to': 'c1'}],
-  item=[J('p'), J('p'), SCC, CC, CAST], over=[{'param': {'v': 2}, 'set': {'item': [J('p'), J('p'), SCC, CC, RS('s')]}}])
+  item=[J('p'), J('p'), SCC, CC, CAST])
 A(id='c1', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접두 냉기 피해', 'Cold Damage prefix'), show=['cold'],
   showText=[K('접미가 한도를 넘어 접두만 바뀜', 'Suffixes are over the limit: only prefixes change')],
@@ -121,7 +123,7 @@ A(id='f1', kind='act', group='main', pos=[0, 13.4], act='essence', cur='Potent_L
   showText=[K('접두 잡옵이 지워지면 성공, 냉기 피해가 지워지면 실패', 'The junk prefix goes: success; cold damage goes: miss')],
   edges=[{'if': {'has': 'cold'}, 'to': 'ok', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'label': K('냉기 피해가 지워짐 — 다시 카오스', 'Cold damage gone: Chaos again')}],
   over=[{'param': {'v': 2}, 'set': {'showText': [K('접두 하나가 지워짐 — 결과 그대로', 'One prefix goes: keep the result')], 'edges': [{'to': 'ok', 'res': 'ok'}],
-         'item': [RS('p'), FER, SCC, CC, RS('s')]}}],
+         'item': [J('p'), FER, SCC, CC, CAST]}}],
   item=[COLD, FER, SCC, CC, CAST])
 A(id='ok', kind='done', group='main', pos=[0, 14.4], label=K('완성', 'Finished'))
 g['nodes'] = N

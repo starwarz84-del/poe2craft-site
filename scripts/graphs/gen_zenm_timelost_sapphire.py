@@ -14,8 +14,8 @@ def L(s, kr, en, m='n', tags=None):
 
 NP = '반경 내 주요 패시브 스킬이 '
 NE = 'Notable Passive Skills in Radius also grant '
-CD = L('s', NP + '치명타 피해 보너스 (5—10)% 증가도 부여', NE + '(5—10)% increased Critical Damage Bonus', 'n', ['cd'])
-SCC = L('s', NP + '주문 치명타 명중 확률 (3—7)% 증가도 부여', NE + '(3—7)% increased Critical Hit Chance for Spells', 'd', ['scc'])
+CD = L('s', NP + '치명타 피해 보너스 (5—10)% 증가도 부여', NE + '(5—10)% increased Critical Damage Bonus', 'n', ['crit'])
+SCC = L('s', NP + '주문 치명타 명중 확률 (3—7)% 증가도 부여', NE + '(3—7)% increased Critical Hit Chance for Spells', 'd', ['crit'])
 RAD = L('p', '반경이 매우 넓은 반경으로 업그레이드', 'Upgrades Radius to Very Large', 'n', ['rad'])
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')
@@ -28,7 +28,7 @@ g = {
           '옵션 1개 매직 오래된 사파이어(2:00 감전의 강도, 5 카오스) → 제왕의 오브(2:28) → 소멸의 오브로 옵션 1개(2:30) → 카오스로 치명타 피해 보너스(3:02) → '
           '우측 강령술의 징조 + 보존된 두개골(4:26~4:42) → 심연의 메아리 공개(5:05 주문 치명타 명중 확률, 빗나가면 징조 없는 소멸의 오브 1/2 — 6:17·6:40, 좋은 접미가 지워지면 카오스부터 6:50) → '
           '엑잘 2번(9:20~9:30, 중형 반경이 뜨면 소멸의 오브 9:35·10:30·14:00) → 고대 위력적인 액체 우울(9:50) → 완성(15:18, 아이템 레벨 61). '
-          '영상은 치명타 계열 6종(치명타 확률·치명타 피해·주문 치명타 확률·주문 치명타 피해·소환수 치명타 확률·소환수 치명타 피해) 중 아무거나 받았지만 확정 옵션 규칙(11장)대로 성공 회차의 두 옵션으로 적음.'),
+          '11-13 오후 새 정책(P12, 정책 3장 아무거나): 영상(0:00~1:55 설명)이 노리는 접미는 치명타 계열 6종(치명타 확률·치명타 피해 보너스·주문 치명타 명중 확률·주문 치명타 피해 보너스·소환수 치명타 명중 확률·소환수 치명타 피해 보너스) 아무거나라 카오스·공개 성공 조건을 그 묶음(crit)으로, 화면은 성공 회차 옵션(치명타 피해 보너스·주문 치명타 명중 확률, shown), 나머지는 자동 꿀팁 줄.'),
  'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video'), '2': K('결과 그대로', 'As it comes')}}},
  'strategies': [{'id': 'bal', 'params': {'v': 1}}, {'id': 'ess', 'params': {'v': 2}}],
  'versions': [
@@ -36,18 +36,21 @@ g = {
     'desc': K('공개 결과 그대로', 'Keep the reveal')},
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
     'desc': K('영상: 공개가 빗나가면 징조 없는 소멸의 오브로 다시', 'Video: a plain Orb of Annulment on a missed reveal')}],
- 'tags': {'cd': {'gi': 15}, 'scc': {'gi': 50}, 'rad': {'gi': 82}, 'radM': {'gi': 0}, 'radL': {'gi': 1},
+ 'tags': {'cc': {'gi': 14}, 'cd': {'gi': 15}, 'csd': {'gi': 16}, 'mcc': {'gi': 40}, 'mcd': {'gi': 41}, 'scc': {'gi': 50},
+          'crit': {'anyOf': ['cd', 'scc', 'cc', 'csd', 'mcc', 'mcd'], 'shown': ['cd', 'scc'],
+                   'label': K('치명타 계열 접미 6종', 'One of six critical suffixes')},
+          'rad': {'gi': 82}, 'radM': {'gi': 0}, 'radL': {'gi': 1},
           'radLo': {'anyOf': ['radM', 'radL'], 'label': K('반경 중형·대형 업그레이드', 'Radius to Medium or Large')}},
- 'require': {'all': [{'has': 'cd'}, {'has': 'rad'}, {'full': 's'}, {'any': [{'has': 'scc'}, {'param': {'v': 2}}]}]},
+ 'require': {'all': [{'has': 'crit'}, {'has': 'rad'}, {'full': 's'}, {'any': [{'count': {'tag': 'crit', 'min': 2}}, {'param': {'v': 2}}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0',
  'cap': {'p': 2, 's': 2},   # 주얼: 접두 2 · 접미 2(정책 8장)
  'finals': [
    {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-    'lines': [{'side': 'p', 'random': True}, {'tag': 'rad'}, {'tag': 'cd'}, {'tag': 'scc', 'des': True}]},
+    'lines': [{'side': 'p', 'random': True}, {'tag': 'rad'}, {'tag': 'crit'}, {'tag': 'crit', 'des': True}]},
    {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
-    'lines': [{'side': 'p', 'random': True}, {'tag': 'rad'}, {'tag': 'cd'}, {'side': 's', 'random': True, 'des': True}]}],
+    'lines': [{'side': 'p', 'random': True}, {'tag': 'rad'}, {'tag': 'crit'}, {'side': 's', 'random': True, 'des': True}]}],
  'finalItem': {'quality': 0, 'sockets': 0},
 }
 
@@ -64,21 +67,21 @@ A(id='pc', kind='cleanup', group='prep', pos=[0, 2], keep=[], maxJunk=1, label=A
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 3.4], next='c1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[J('x')])
 A(id='c1', kind='act', group='main', pos=[0, 4.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 치명타 피해 보너스', 'Critical Damage Bonus suffix'), show=['cd'],
-  edges=[{'if': {'has': 'cd'}, 'to': 'd1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}], item=[CD])
+  goal=K('접미 치명타 피해 보너스', 'Critical Damage Bonus suffix'), show=['crit'],
+  edges=[{'if': {'has': 'crit'}, 'to': 'd1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}], item=[CD])
 A(id='d1', kind='act', group='main', pos=[0, 5.4], act='desecrate', cur='Preserved_Cranium', omens=['Omen_of_Dextral_Necromancy'],
   label=K('훼손', 'Desecrate'), goal=K('접미 두 번째 옵션(훼손)', 'Second suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'r1'}], item=[CD, UN('s')])
-A(id='r1', kind='act', group='main', pos=[0, 6.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='scc', label=K('공개', 'Reveal'),
-  goal=K('접미 주문 치명타 명중 확률', 'Spell Critical Hit Chance suffix'), show=['scc'],
-  edges=[{'if': {'added': 'scc'}, 'to': 'x1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
+A(id='r1', kind='act', group='main', pos=[0, 6.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='crit', label=K('공개', 'Reveal'),
+  goal=K('접미 주문 치명타 명중 확률', 'Spell Critical Hit Chance suffix'), show=['crit'],
+  edges=[{'if': {'added': 'crit'}, 'to': 'x1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   over=[{'param': {'v': 2}, 'set': {'goal': K('접미 두 번째 옵션 — 공개 결과 그대로', 'Second suffix: keep the reveal'), 'show': [],
-         'edges': [{'if': {'added': 'scc'}, 'to': 'x1', 'res': 'ok'}, {'to': 'x1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
+         'edges': [{'if': {'added': 'crit'}, 'to': 'x1', 'res': 'ok'}, {'to': 'x1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
   item=[CD, SCC])
 A(id='r1x', kind='act', group='main', pos=[1, 6.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
   target=K('둘 중 하나 지우기 — 훼손 옵션이면 다시 훼손', 'One of two goes: the desecrated one means desecrate again'),
-  edges=[{'if': {'has': 'cd'}, 'to': 'd1', 'res': 'ok', 'label': K('훼손 옵션이 지워짐 — 다시 훼손', 'Desecrated option gone: desecrate again')},
-         {'to': 'c1', 'res': 'fail', 'label': K('치명타 피해 보너스가 지워짐 — 다시 카오스', 'Critical Damage Bonus gone: Chaos again')}])
+  edges=[{'if': {'has': 'crit'}, 'to': 'd1', 'res': 'ok', 'label': K('훼손 옵션이 지워짐 — 다시 훼손', 'Desecrated option gone: desecrate again')},
+         {'to': 'c1', 'res': 'fail', 'label': K('좋은 접미가 지워짐 — 다시 카오스', 'The good suffix gone: Chaos again')}])
 A(id='x1', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 첫 번째 옵션', 'First prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
   edges=[{'to': 'x2'}], item=[J('p'), CD, SCC])
@@ -90,10 +93,10 @@ A(id='x2', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Exalted_Orb
   item=[J('p'), J('p'), CD, SCC])
 A(id='xr', kind='act', group='main', pos=[1, 8.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
   target=K('반경 업그레이드 옵션 지우기 (옵션 4개 중 하나)', 'Remove the radius upgrade (one of four options)'),
-  edges=[{'if': {'not': {'all': [{'has': 'cd'}, {'has': 'scc'}]}}, 'to': 'xz', 'res': 'fail', 'label': K('좋은 접미가 지워짐', 'A good suffix gone')},
+  edges=[{'if': {'not': {'count': {'tag': 'crit', 'min': 2}}}, 'to': 'xz', 'res': 'fail', 'label': K('좋은 접미가 지워짐', 'A good suffix gone')},
          {'if': {'has': 'radLo'}, 'to': 'xr', 'res': 'fail', 'hide': True},
          {'to': 'x2', 'res': 'ok', 'label': K('다시 엑잘', 'Exalt again')}],
-  over=[{'param': {'v': 2}, 'set': {'edges': [{'if': {'not': {'has': 'cd'}}, 'to': 'xz', 'res': 'fail', 'label': K('좋은 접미가 지워짐', 'A good suffix gone')},
+  over=[{'param': {'v': 2}, 'set': {'edges': [{'if': {'not': {'has': 'crit'}}, 'to': 'xz', 'res': 'fail', 'label': K('좋은 접미가 지워짐', 'A good suffix gone')},
          {'if': {'has': 'radLo'}, 'to': 'xr', 'res': 'fail', 'hide': True},
          {'if': {'full': 's'}, 'to': 'x2', 'res': 'ok', 'label': K('다시 엑잘', 'Exalt again')},
          {'to': 'xz', 'res': 'fail', 'hide': True}]}}])
@@ -104,14 +107,7 @@ A(id='m1', kind='act', group='main', pos=[0, 9.4], act='essence', cur='Ancient_P
   showText=[K('접두가 꽉 차 접두 하나가 지워짐', 'Prefixes are full: one prefix goes')], edges=[{'to': 'ok'}],
   item=[J('p'), RAD, CD, SCC])
 A(id='ok', kind='done', group='main', pos=[0, 10.4], label=K('완성', 'Finished'))
-# 에센셜: 공개 결과 그대로 → 왼쪽 아이템 칸의 두 번째 접미는 랜덤 옵션
-RS = L('s', '랜덤 옵션', 'Random option', 'j')
-for n in N:
-    if n['id'] in ('r1', 'x1', 'x2', 'm1'):
-        ess_item = [RS if x is SCC else x for x in n['item']]
-        o = next((x for x in n.get('over', []) if x['param'] == {'v': 2}), None)
-        if o: o['set']['item'] = ess_item
-        else: n.setdefault('over', []).append({'param': {'v': 2}, 'set': {'item': ess_item}})
+# 에센셜: 공개 결과 그대로 — 왼쪽 아이템 칸·상자는 영상 결과 옵션(과정 표시, 마스터 기준 K), 완성 카드만 랜덤 옵션
 g['nodes'] = N
 g['loops'] = [{'id': 'L1', 'nodes': ['d1', 'r1', 'r1x'], 'kr': '훼손 공개', 'en': 'Reveal'}]
 

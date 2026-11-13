@@ -7,7 +7,7 @@
  "basePrice": {
   "Chaos_Orb": 5
  },
- "note": "2026-11-13 G8 영상 전체 화면 대조(근거 scratchpad review/G8/zenm-timelost-sapphire-v2/timeline.md). 주얼 5개를 같이 만들고 레시피는 1번 주얼(Hypnotic Spark) 한 줄: 옵션 1개 매직 오래된 사파이어(2:00 감전의 강도, 5 카오스) → 제왕의 오브(2:28) → 소멸의 오브로 옵션 1개(2:30) → 카오스로 치명타 피해 보너스(3:02) → 우측 강령술의 징조 + 보존된 두개골(4:26~4:42) → 심연의 메아리 공개(5:05 주문 치명타 명중 확률, 빗나가면 징조 없는 소멸의 오브 1/2 — 6:17·6:40, 좋은 접미가 지워지면 카오스부터 6:50) → 엑잘 2번(9:20~9:30, 중형 반경이 뜨면 소멸의 오브 9:35·10:30·14:00) → 고대 위력적인 액체 우울(9:50) → 완성(15:18, 아이템 레벨 61). 영상은 치명타 계열 6종(치명타 확률·치명타 피해·주문 치명타 확률·주문 치명타 피해·소환수 치명타 확률·소환수 치명타 피해) 중 아무거나 받았지만 확정 옵션 규칙(11장)대로 성공 회차의 두 옵션으로 적음.",
+ "note": "2026-11-13 G8 영상 전체 화면 대조(근거 scratchpad review/G8/zenm-timelost-sapphire-v2/timeline.md). 주얼 5개를 같이 만들고 레시피는 1번 주얼(Hypnotic Spark) 한 줄: 옵션 1개 매직 오래된 사파이어(2:00 감전의 강도, 5 카오스) → 제왕의 오브(2:28) → 소멸의 오브로 옵션 1개(2:30) → 카오스로 치명타 피해 보너스(3:02) → 우측 강령술의 징조 + 보존된 두개골(4:26~4:42) → 심연의 메아리 공개(5:05 주문 치명타 명중 확률, 빗나가면 징조 없는 소멸의 오브 1/2 — 6:17·6:40, 좋은 접미가 지워지면 카오스부터 6:50) → 엑잘 2번(9:20~9:30, 중형 반경이 뜨면 소멸의 오브 9:35·10:30·14:00) → 고대 위력적인 액체 우울(9:50) → 완성(15:18, 아이템 레벨 61). 11-13 오후 새 정책(P12, 정책 3장 아무거나): 영상(0:00~1:55 설명)이 노리는 접미는 치명타 계열 6종(치명타 확률·치명타 피해 보너스·주문 치명타 명중 확률·주문 치명타 피해 보너스·소환수 치명타 명중 확률·소환수 치명타 피해 보너스) 아무거나라 카오스·공개 성공 조건을 그 묶음(crit)으로, 화면은 성공 회차 옵션(치명타 피해 보너스·주문 치명타 명중 확률, shown), 나머지는 자동 꿀팁 줄.",
  "params": {
   "v": {
    "kr": "진행",
@@ -67,11 +67,41 @@
   }
  ],
  "tags": {
+  "cc": {
+   "gi": 14
+  },
   "cd": {
    "gi": 15
   },
+  "csd": {
+   "gi": 16
+  },
+  "mcc": {
+   "gi": 40
+  },
+  "mcd": {
+   "gi": 41
+  },
   "scc": {
    "gi": 50
+  },
+  "crit": {
+   "anyOf": [
+    "cd",
+    "scc",
+    "cc",
+    "csd",
+    "mcc",
+    "mcd"
+   ],
+   "shown": [
+    "cd",
+    "scc"
+   ],
+   "label": {
+    "kr": "치명타 계열 접미 6종",
+    "en": "One of six critical suffixes"
+   }
   },
   "rad": {
    "gi": 82
@@ -96,7 +126,7 @@
  "require": {
   "all": [
    {
-    "has": "cd"
+    "has": "crit"
    },
    {
     "has": "rad"
@@ -107,7 +137,10 @@
    {
     "any": [
      {
-      "has": "scc"
+      "count": {
+       "tag": "crit",
+       "min": 2
+      }
      },
      {
       "param": {
@@ -158,10 +191,10 @@
      "tag": "rad"
     },
     {
-     "tag": "cd"
+     "tag": "crit"
     },
     {
-     "tag": "scc",
+     "tag": "crit",
      "des": true
     }
    ]
@@ -180,7 +213,7 @@
      "tag": "rad"
     },
     {
-     "tag": "cd"
+     "tag": "crit"
     },
     {
      "side": "s",
@@ -346,12 +379,12 @@
     "en": "Critical Damage Bonus suffix"
    },
    "show": [
-    "cd"
+    "crit"
    ],
    "edges": [
     {
      "if": {
-      "has": "cd"
+      "has": "crit"
      },
      "to": "d1",
      "res": "ok"
@@ -369,7 +402,7 @@
      "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus",
      "m": "n",
      "tags": [
-      "cd"
+      "crit"
      ]
     }
    ]
@@ -414,7 +447,7 @@
      "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus",
      "m": "n",
      "tags": [
-      "cd"
+      "crit"
      ]
     },
     {
@@ -437,7 +470,7 @@
    "omens": [
     "Omen_of_Abyssal_Echoes"
    ],
-   "want": "scc",
+   "want": "crit",
    "label": {
     "kr": "공개",
     "en": "Reveal"
@@ -447,12 +480,12 @@
     "en": "Spell Critical Hit Chance suffix"
    },
    "show": [
-    "scc"
+    "crit"
    ],
    "edges": [
     {
      "if": {
-      "added": "scc"
+      "added": "crit"
      },
      "to": "x1",
      "res": "ok"
@@ -480,7 +513,7 @@
       "edges": [
        {
         "if": {
-         "added": "scc"
+         "added": "crit"
         },
         "to": "x1",
         "res": "ok"
@@ -493,23 +526,6 @@
          "en": "Miss: keep it"
         }
        }
-      ],
-      "item": [
-       {
-        "s": "s",
-        "kr": "반경 내 주요 패시브 스킬이 치명타 피해 보너스 (5—10)% 증가도 부여",
-        "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus",
-        "m": "n",
-        "tags": [
-         "cd"
-        ]
-       },
-       {
-        "s": "s",
-        "kr": "랜덤 옵션",
-        "en": "Random option",
-        "m": "j"
-       }
       ]
      }
     }
@@ -521,7 +537,7 @@
      "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus",
      "m": "n",
      "tags": [
-      "cd"
+      "crit"
      ]
     },
     {
@@ -530,7 +546,7 @@
      "en": "Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Spells",
      "m": "d",
      "tags": [
-      "scc"
+      "crit"
      ]
     }
    ]
@@ -561,7 +577,7 @@
    "edges": [
     {
      "if": {
-      "has": "cd"
+      "has": "crit"
      },
      "to": "d1",
      "res": "ok",
@@ -574,8 +590,8 @@
      "to": "c1",
      "res": "fail",
      "label": {
-      "kr": "치명타 피해 보너스가 지워짐 — 다시 카오스",
-      "en": "Critical Damage Bonus gone: Chaos again"
+      "kr": "좋은 접미가 지워짐 — 다시 카오스",
+      "en": "The good suffix gone: Chaos again"
      }
     }
    ]
@@ -623,7 +639,7 @@
      "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus",
      "m": "n",
      "tags": [
-      "cd"
+      "crit"
      ]
     },
     {
@@ -632,40 +648,8 @@
      "en": "Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Spells",
      "m": "d",
      "tags": [
-      "scc"
+      "crit"
      ]
-    }
-   ],
-   "over": [
-    {
-     "param": {
-      "v": 2
-     },
-     "set": {
-      "item": [
-       {
-        "s": "p",
-        "kr": "잡옵",
-        "en": "Junk",
-        "m": "j"
-       },
-       {
-        "s": "s",
-        "kr": "반경 내 주요 패시브 스킬이 치명타 피해 보너스 (5—10)% 증가도 부여",
-        "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus",
-        "m": "n",
-        "tags": [
-         "cd"
-        ]
-       },
-       {
-        "s": "s",
-        "kr": "랜덤 옵션",
-        "en": "Random option",
-        "m": "j"
-       }
-      ]
-     }
     }
    ]
   },
@@ -740,7 +724,7 @@
      "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus",
      "m": "n",
      "tags": [
-      "cd"
+      "crit"
      ]
     },
     {
@@ -749,46 +733,8 @@
      "en": "Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Spells",
      "m": "d",
      "tags": [
-      "scc"
+      "crit"
      ]
-    }
-   ],
-   "over": [
-    {
-     "param": {
-      "v": 2
-     },
-     "set": {
-      "item": [
-       {
-        "s": "p",
-        "kr": "잡옵",
-        "en": "Junk",
-        "m": "j"
-       },
-       {
-        "s": "p",
-        "kr": "잡옵",
-        "en": "Junk",
-        "m": "j"
-       },
-       {
-        "s": "s",
-        "kr": "반경 내 주요 패시브 스킬이 치명타 피해 보너스 (5—10)% 증가도 부여",
-        "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus",
-        "m": "n",
-        "tags": [
-         "cd"
-        ]
-       },
-       {
-        "s": "s",
-        "kr": "랜덤 옵션",
-        "en": "Random option",
-        "m": "j"
-       }
-      ]
-     }
     }
    ]
   },
@@ -819,14 +765,10 @@
     {
      "if": {
       "not": {
-       "all": [
-        {
-         "has": "cd"
-        },
-        {
-         "has": "scc"
-        }
-       ]
+       "count": {
+        "tag": "crit",
+        "min": 2
+       }
       }
      },
      "to": "xz",
@@ -863,7 +805,7 @@
        {
         "if": {
          "not": {
-          "has": "cd"
+          "has": "crit"
          }
         },
         "to": "xz",
@@ -987,7 +929,7 @@
      "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus",
      "m": "n",
      "tags": [
-      "cd"
+      "crit"
      ]
     },
     {
@@ -996,49 +938,8 @@
      "en": "Notable Passive Skills in Radius also grant (3—7)% increased Critical Hit Chance for Spells",
      "m": "d",
      "tags": [
-      "scc"
+      "crit"
      ]
-    }
-   ],
-   "over": [
-    {
-     "param": {
-      "v": 2
-     },
-     "set": {
-      "item": [
-       {
-        "s": "p",
-        "kr": "잡옵",
-        "en": "Junk",
-        "m": "j"
-       },
-       {
-        "s": "p",
-        "kr": "반경이 매우 넓은 반경으로 업그레이드",
-        "en": "Upgrades Radius to Very Large",
-        "m": "n",
-        "tags": [
-         "rad"
-        ]
-       },
-       {
-        "s": "s",
-        "kr": "반경 내 주요 패시브 스킬이 치명타 피해 보너스 (5—10)% 증가도 부여",
-        "en": "Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus",
-        "m": "n",
-        "tags": [
-         "cd"
-        ]
-       },
-       {
-        "s": "s",
-        "kr": "랜덤 옵션",
-        "en": "Random option",
-        "m": "j"
-       }
-      ]
-     }
     }
    ]
   },
