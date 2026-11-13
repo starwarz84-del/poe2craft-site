@@ -1,5 +1,5 @@
 # W34 2026-11-13: Unstoppable BTW 회피 갑옷(swF5mwXmZ0k 40:00~46:30) 플로우차트 생성기 — 영상 성공 회차 한 줄
-# 근거: scratchpad review/W34-unstoppable/timeline.md, frames/ (영상 화면 대조)
+# 근거: scratchpad review/W34-unstoppable/timeline.md, frames/ (영상 화면 대조), H2 11-13 review/H2/unstoppable-slipstrike-vest-v2/ (40:00~45:02 화면)
 # 실행: cd scripts/graphs && python3 gen_unstoppable_slipstrike_vest.py  → unstoppable-slipstrike-vest-v2.json (gen_batch27.py 끝에서 자동 호출)
 import json, os, sys
 H = os.path.dirname(os.path.abspath(__file__))
@@ -35,7 +35,8 @@ g = {
           '신성한 오브·바알 오브·퀄리티 30%·네 번째 소켓 도박(46:30~48:40)은 정책 14장대로 뺌. '
           'H1 11-13: 하이엔드 튕겨내기는 1티어(C17-1 — 절사 카오스 반복으로 찾는 옵션). 영상 완성품은 튕겨내기 2티어(21%)라 하이엔드는 절사 카오스를 한 번 더(튕겨내기 2티어가 접미에서 레벨 66으로 가장 낮음). '
           '8번 엑잘은 두 등급 모두 튕겨내기 1~2티어면 다음으로(sGE). 9번의 k3e·k3d(절사 카오스 새 옵션이 접두로 갔을 때)는 영상에 없음 — 접두가 비어 있는 동안 절사 카오스가 접두에 옵션을 붙이면 '
-          '접미 빈자리가 생겨 끝나지 않으므로 넣은 무한 반복 방지 단계. 아이템 레벨 83(41:08)으로 레시피 파일도 맞춤.'),
+          '접미 빈자리가 생겨 끝나지 않으므로 넣은 무한 반복 방지 단계. 아이템 레벨 83(41:08)으로 레시피 파일도 맞춤. '
+          'H2 11-13 화면 대조(근거 scratchpad review/H2/unstoppable-slipstrike-vest-v2/): 40:00~40:55는 앞 아이템(회피·에너지 보호막 갑옷), 40:58 매직(회피 증가 없음) → 41:00 매직 회피 101% 1티어 → 41:01 확장으로 능력치 요구사항 → 41:12 레어(생명력 +200, 접두 미공개 훼손) → 41:15 분열 + 능력치 요구사항만 남김 → 41:15~41:23 카오스 반복, 41:23 화염 저항 → 41:26 상위 찬미 툴팁, 41:29 채팅 우측 찬미·상위 찬미 소모 + 튕겨내기 21%·점화 → 42:32 좌측 결정화, 42:39 심연의 메아리, 42:46 보존된 갈비뼈 → 43:20 공개 +211 회피(낮은 티어) → 43:36 빛의 징조로 제거 → 43:40 엑잘 정신력(빗나감) → 43:48 공개 가시·회피 선택지 → 44:04 생명력 막기 + 엑잘 회피 복합 2티어(하이엔드 빗나감) → 44:30 채팅 메아리·빛·좌측 결정화 소모 → 44:40 가시 막기 → 45:02 생명력 +165 막기. 단계 흐름은 그대로 맞음, 엑잘·카오스 오브 등급은 화면에 안 나옴.'),
  'params': {
    'pT': {'kr': '접두 회피', 'en': 'Evasion prefixes', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
    'rT': {'kr': '마지막 접미', 'en': 'Last suffix', 'values': {'1': K('냉기 저항 1티어', 'T1 cold resistance'), '2': K('랜덤 옵션', 'Random option')}}},
@@ -62,7 +63,8 @@ g = {
    'sG1': {'anyOf': ['fr', 'cr', 'lr', 'dfl1'], 'label': K('저항·튕겨내기 1티어', 'T1 resistance or deflection')},
    'sG2': {'anyOf': ['fr2', 'cr2', 'lr2', 'dfl2'], 'label': K('저항·튕겨내기 1~2티어', 'T1–2 resistance or deflection')},
    'blk': {'anyOf': [{'gi': 5}, {'gi': 12}], 'label': K('생명력 최대치·물리 가시 피해', 'Maximum life or physical thorns')},
-   'mkP': {'gi': 45}},
+   'mkP': {'gi': 45},
+   'lifeB': {'gi': 5}},   # H2 11-13: 자리 막기 성공 회차 옵션(45:02 생명력 +165)
  'conds': {'sDone': {'any': [{'all': [{'param': {'rT': 2}}, {'has': 'res1'}, {'count': {'tag': 'sG', 'min': 2}}, {'full': 's'}]},
                              {'all': [{'has': 'res1'}, {'count': {'tag': 'resT', 'min': 2}}, {'count': {'tag': 'sG', 'min': 3}}]}]}},
  'require': {'all': [{'has': 'evP'}, {'count': {'tag': 'gp', 'min': 2}}, {'ref': 'sDone'}]},
@@ -155,12 +157,12 @@ A(id='uc', kind='cleanup', group='prep', pos=[0, 6], keep=[], maxJunk=1, label=A
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 7.4], next='k1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[EV, J('s')])
 A(id='k1', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 화염 저항 1티어 — 저항 셋 중 먼저 뜬 것', 'T1 fire resistance suffix: whichever of the three resistances lands first'), show=['fr', 'cr', 'lr'],
+  goal=K('접미 화염 저항 1티어 — 저항 셋 중 먼저 뜬 것', 'T1 fire resistance suffix: whichever of the three resistances lands first'), show=['fr'],
   skipIf={'has': 'res1'}, skipTo='k2', skipHide=True,
   edges=[{'if': {'has': 'res1'}, 'to': 'k2', 'res': 'ok'}, {'to': 'k1', 'res': 'fail', 'hide': True}], item=[EV, FR])
 A(id='k2', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation', 'Omen_of_Dextral_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접미 옵션 2개 — 튕겨내기 1~2티어 + 잡옵', 'Two suffixes: T1–2 deflection + junk'),
-  show=['fr', 'cr', 'lr', 'dfl2'],
+  show=['dfl2'],
   edges=SR({'k3': {'res': 'ok', 'label': K('좋은 접미 2개 + 잡옵', 'Two good suffixes + junk')},
             'k2x': {'res': 'fail', 'label': K('좋은 접미 1개뿐', 'Only one good suffix')}}),
   item=[EV, FR, DF, J('s')])
@@ -168,20 +170,20 @@ A(id='k2x', kind='cleanup', group='main', pos=[1, 9.4], keep=[], maxJunk=1, labe
   target=K('분열 + 옵션 1개까지 지우기', 'Annul down to the fracture + one option'),
   edges=[{'to': 'k1', 'label': K('카오스부터', 'Back to Chaos')}])
 A(id='k3', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
-  goal=K('접미 냉기 저항 1티어 — 가장 낮은 레벨 잡옵 바꾸기', 'T1 cold resistance suffix: reroll the lowest-level junk'), show=['frT', 'crT', 'lrT', 'dfl'],
+  goal=K('접미 냉기 저항 1티어 — 가장 낮은 레벨 잡옵 바꾸기', 'T1 cold resistance suffix: reroll the lowest-level junk'), show=['cr'],
   edges=SR({'q2': {'res': 'ok'}, 'k3e': {'res': 'fail', 'label': K('새 옵션이 접두로', 'New option went to a prefix')},
             'k3d': {'res': 'fail', 'label': K('접두에 옵션 있음', 'A prefix option is there')}}),
   item=[EV, FR, CR, DF1])
 A(id='k3d', kind='act', group='main', pos=[2, 10.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling', 'Omen_of_Dextral_Erasure'],
   label=K('절사 + 우측 말소 + 카오스', 'Whittling + Dextral Erasure + Chaos'),
-  goal=K('접두에 옵션이 있으면 접미 잡옵만 바꾸기', 'With a prefix option present: reroll only the suffix junk'), show=['frT', 'crT', 'lrT', 'dfl'],
+  goal=K('접두에 옵션이 있으면 접미 잡옵만 바꾸기', 'With a prefix option present: reroll only the suffix junk'), show=['cr'],
   edges=SR({}))
 A(id='k3e', kind='act', group='main', pos=[1, 10.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('빈 접미 채우기', 'Fill the empty suffix'), show=['frT', 'crT', 'lrT', 'dfl'], edges=SR({}))
+  goal=K('빈 접미 채우기', 'Fill the empty suffix'), show=['cr'], edges=SR({}))
 # 접두: 엑잘 → 빗나가면 징표 → 훼손 → 자리 막기 → 다시 엑잘 (영상 42:10~45:02)
 A(id='q2', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 회피 1티어 — 회피·회피 복합 중 먼저 뜬 것', 'T1 flat evasion prefix: flat or hybrid evasion, whichever lands first'),
-  show=['evF', 'hyb'], edges=PR({'r0': {'res': 'ok'}, 'q3': {'res': 'fail'}}), item=[EV, FL, FR, CR, DF1],
+  show=['evF'], edges=PR({'r0': {'res': 'ok'}, 'q3': {'res': 'fail'}}), item=[EV, FL, FR, CR, DF1],
   over=[{'param': {'rT': 2}, 'set': {'item': [EV, FL, FR, DF, J('s')]}}])
 A(id='q3', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Essence_of_the_Abyss', ess='mkP', mark=True, omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('빗나간 접두를 지우고 심연의 군주의 징표', 'The missed prefix goes for the Mark of the Abyssal Lord'),
@@ -192,7 +194,7 @@ A(id='q5', kind='act', group='main', pos=[1, 12.4], act='desecrate', cur='Preser
   goal=K('접두 징표 훼손', 'Desecrate the prefix Mark'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=PR({'q1': {}}))
 A(id='q1', kind='act', group='main', pos=[2, 12.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='blk', label=K('공개', 'Reveal'),
-  goal=K('생명력 최대치로 자리 막기 — 생명력·물리 가시 피해 중 먼저 뜬 것', 'Block with maximum life: life or thorns, whichever shows first'), show=['blk'],
+  goal=K('생명력 최대치로 자리 막기 — 생명력·물리 가시 피해 중 먼저 뜬 것', 'Block with maximum life: life or thorns, whichever shows first'), show=['lifeB'],
   edges=PR({'q2': {'label': K('자리 막기 완료 — 엑잘', 'Blocker in place: exalt')}, 'q3': {'label': K('접두가 꽉 참 — 다시 징표', 'Prefixes full: Mark again')}}))
 # 접두 두 번째 옵션: 막기 제거 → 고대 갈비뼈 → 공개 (영상 45:32~46:05)
 A(id='r0', kind='act', group='main', pos=[0, 13.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
@@ -203,7 +205,7 @@ A(id='r1', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancien
   edges=PR({'r2': {}}), item=[EV, FL, UN('p'), FR, CR, DF1],
   over=[{'param': {'rT': 2}, 'set': {'item': [EV, FL, UN('p'), FR, DF, J('s')]}}])
 A(id='r2', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='gp', label=K('공개', 'Reveal'),
-  goal=K('접두 회피 복합 1티어', 'T1 hybrid evasion prefix'), show=['hyb', 'evF'],
+  goal=K('접두 회피 복합 1티어', 'T1 hybrid evasion prefix'), show=['hyb'],
   edges=PR({'ok': {'res': 'ok'}, 'r0': {'res': 'fail', 'label': K('빗나감', 'Miss')}}), item=[EV, FL, HB, FR, CR, DF1],
   over=[{'param': {'rT': 2}, 'set': {'item': [EV, FL, HB, FR, DF, J('s')]}}])
 A(id='ok', kind='done', group='main', pos=[0, 16.4], label=K('완성', 'Finished'))
@@ -240,9 +242,9 @@ g['loops'] = [
 ]
 g['finals'] = [
  {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-  'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF1'}, {'tag': 'hyb1', 'des': True}, {'tag': 'res1'}, {'tag': 'res1'}, {'tag': 'sG1'}]},
+  'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF1'}, {'tag': 'hyb1', 'des': True}, {'tag': 'fr'}, {'tag': 'cr'}, {'tag': 'dfl1'}]},   # H2 11-13: 카드는 성공 회차 옵션(정책 11장 11-13 14:17)
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF2'}, {'tag': 'hyb2', 'des': True}, {'tag': 'res1'}, {'tag': 'sG2'}, {'side': 's', 'random': True}]},
+  'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF2'}, {'tag': 'hyb2', 'des': True}, {'tag': 'fr'}, {'tag': 'dfl2'}, {'side': 's', 'random': True}]},
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

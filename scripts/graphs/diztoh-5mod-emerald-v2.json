@@ -7,7 +7,7 @@
  "basePrice": {
   "Divine_Orb": 65
  },
- "note": "2026-11-13 G8 영상 화면 대조(근거 scratchpad review/G8/diztoh-5mod-emerald-v2/timeline.md). 에메랄드 2개 중 첫 번째(Behemoth Delirium, 아이템 레벨 80) 성공 회차 한 줄: 분열 공격 치명타 피해 보너스 19% + 원소 피해 접두 레어 에메랄드 구입(0:36 65 div) → 소멸의 오브로 원소 피해(1:20) → 우측 찬미 + 엑잘 육척봉 공격 속도(1:28) → 엑잘 2번 접두 → 위력적인 액체 경멸(2:48 툴팁, 2:52 성공) → 보존된 두개골(3:23, 접두가 꽉 차 접미로) → 심연의 메아리 공개(빛의 징조 반복, 4:30 빛의 징조를 다 씀, 6:02 공격 속도) → 좌측 소멸의 징조 + 소멸의 오브로 경멸 옵션(6:02 채팅) → 엑잘 접두(6:02 위험 피해) → 카오스로 접두 공격 피해(접미가 한도를 넘어 접두만, 6:00~9:35) → 위력적인 액체 흉포함(8:00 실패 = 공격 피해가 지워짐 → 카오스 다시, 9:48 원소 피해가 지워지고 성공). 신성한 오브·제련된 강탈자 기폭제(11:30)·두 번째 에메랄드(12:30~)·타락(26:00~)은 뺌. 내부 결정: 우측 찬미의 징조는 화면으로 확인 못 함(옛 기록), 경멸 실패 처리는 첫 에메랄드에 없어 옵션 정리 후 엑잘부터, 좌측 소멸이 좋은 접두를 지우면 같은 징조로 다시.",
+ "note": "2026-11-13 G8 영상 화면 대조(근거 scratchpad review/G8/diztoh-5mod-emerald-v2/timeline.md). 에메랄드 2개 중 첫 번째(Behemoth Delirium, 아이템 레벨 80) 성공 회차 한 줄: 분열 공격 치명타 피해 보너스 19% + 원소 피해 접두 레어 에메랄드 구입(0:36 65 div) → 카오스 반복으로 육척봉 공격 속도(1:19 카오스 오브, 1:24 결과) → 엑잘 2번 접두(2:49 회피·투사체 피해, 2:51 \"옵션 자리 없음\" 채팅) → 위력적인 액체 경멸(2:48 툴팁, 2:52 성공) → 보존된 두개골(3:23, 접두가 꽉 차 접미로) → 심연의 메아리 공개(빛의 징조 반복, 4:30 빛의 징조를 다 씀, 6:02 공격 속도) → 좌측 소멸의 징조 + 소멸의 오브로 경멸 옵션(6:02 채팅) → 엑잘 접두(6:02 위험 피해) → 카오스로 접두 공격 피해(접미가 한도를 넘어 접두만, 6:00~9:35) → 위력적인 액체 흉포함(8:00 실패 = 공격 피해가 지워짐 → 카오스 다시, 9:48 원소 피해가 지워지고 성공). 신성한 오브·제련된 강탈자 기폭제(11:30)·두 번째 에메랄드(12:30~)·타락(26:00~)은 뺌. H2 11-13 화면 대조(근거 scratchpad review/H2/diztoh-5mod-emerald-v2/): 시작은 소멸·우측 찬미가 아니라 카오스 반복(1:19~1:24), 경멸 실패 처리는 세 번째 에메랄드 16:02~16:10 화면대로 분열 + 옵션 1개로 줄인 뒤 카오스부터, 흉포함 실패(8:17 육척봉 피해가 지워짐)는 카오스 다시. 카오스 접두 목표는 영상이 받아들인 피해 접두 셋 중 하나(공격 피해·육척봉 사용 시 피해·희귀 및 고유 적 명중 시 피해, 정책 11장 11-13 14:17), 화면·카드는 성공 회차의 공격 피해. 내부 결정: 좌측 소멸이 좋은 접두를 지우면 같은 징조로 다시.",
  "params": {
   "v": {
    "kr": "진행",
@@ -82,6 +82,23 @@
   "fer": {
    "gi": 117
   },
+  "qsd": {
+   "gi": 53
+  },
+  "rare": {
+   "gi": 10
+  },
+  "pd": {
+   "anyOf": [
+    "atk",
+    "qsd",
+    "rare"
+   ],
+   "label": {
+    "kr": "공격 피해·육척봉 사용 시 피해·희귀 및 고유 적 명중 시 피해",
+    "en": "Attack damage, quarterstaff damage or damage against rare and unique enemies"
+   }
+  },
   "contS": {
    "gi": 119,
    "slot": {
@@ -119,7 +136,7 @@
         "has": "as"
        },
        {
-        "has": "atk"
+        "has": "pd"
        }
       ]
      },
@@ -224,7 +241,7 @@
     0,
     0
    ],
-   "next": "pc",
+   "next": "ms",
    "start": {
     "rar": "rare",
     "mods": [
@@ -260,51 +277,12 @@
    ]
   },
   {
-   "id": "pc",
-   "kind": "cleanup",
-   "group": "prep",
-   "pos": [
-    0,
-    1
-   ],
-   "keep": [],
-   "maxJunk": 0,
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "분열 옵션만 남기기",
-    "en": "Keep only the fractured option"
-   },
-   "edges": [
-    {
-     "to": "ms"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
-     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
-     "m": "f",
-     "tags": [
-      "critD"
-     ]
-    }
-   ]
-  },
-  {
    "id": "ms",
    "kind": "mark",
    "group": "main",
    "pos": [
     0,
-    2.4
+    1.4
    ],
    "next": "a2",
    "label": {
@@ -312,6 +290,12 @@
     "en": "Item crafting starts"
    },
    "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
     {
      "s": "s",
      "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
@@ -329,16 +313,13 @@
    "group": "main",
    "pos": [
     0,
-    3.4
+    2.4
    ],
-   "act": "exalt",
-   "cur": "Exalted_Orb",
-   "omens": [
-    "Omen_of_Dextral_Exaltation"
-   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
    "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
+    "kr": "카오스",
+    "en": "Chaos"
    },
    "goal": {
     "kr": "접미 육척봉 공격 속도",
@@ -346,6 +327,12 @@
    },
    "show": [
     "qas"
+   ],
+   "showText": [
+    {
+     "kr": "분열 옵션은 그대로, 다른 옵션 1개만 바뀜",
+     "en": "The fracture stays; only the other option changes"
+    }
    ],
    "edges": [
     {
@@ -356,12 +343,9 @@
      "res": "ok"
     },
     {
-     "to": "a2x",
+     "to": "a2",
      "res": "fail",
-     "label": {
-      "kr": "빗나감",
-      "en": "Miss"
-     }
+     "hide": true
     }
    ],
    "item": [
@@ -386,44 +370,12 @@
    ]
   },
   {
-   "id": "a2x",
-   "kind": "cleanup",
-   "group": "main",
-   "pos": [
-    1,
-    3.4
-   ],
-   "keep": [],
-   "maxJunk": 0,
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "빗나간 접미 지우기 (분열 옵션만 남음)",
-    "en": "Remove the missed suffix (only the fracture is left)"
-   },
-   "edges": [
-    {
-     "to": "a2",
-     "label": {
-      "kr": "다시 엑잘",
-      "en": "Exalt again"
-     }
-    }
-   ]
-  },
-  {
    "id": "a3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4.4
+    3.4
    ],
    "act": "exalt",
    "cur": "Exalted_Orb",
@@ -480,7 +432,7 @@
    "group": "main",
    "pos": [
     0,
-    5.4
+    4.4
    ],
    "act": "exalt",
    "cur": "Exalted_Orb",
@@ -553,7 +505,7 @@
    "group": "main",
    "pos": [
     0,
-    6.4
+    5.4
    ],
    "act": "essence",
    "cur": "Potent_Liquid_Contempt",
@@ -640,10 +592,10 @@
    "group": "main",
    "pos": [
     1,
-    6.4
+    5.4
    ],
    "keep": [],
-   "maxJunk": 0,
+   "maxJunk": 1,
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -653,12 +605,16 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "분열 옵션만 남기고 엑잘부터",
-    "en": "Keep only the fracture, Exalt again"
+    "kr": "분열 + 옵션 1개만 남기고 카오스부터",
+    "en": "Keep only the fracture + one option, back to Chaos"
    },
    "edges": [
     {
-     "to": "a2"
+     "to": "a2",
+     "label": {
+      "kr": "카오스부터",
+      "en": "Back to Chaos"
+     }
     }
    ]
   },
@@ -668,7 +624,7 @@
    "group": "main",
    "pos": [
     0,
-    7.4
+    6.4
    ],
    "act": "desecrate",
    "cur": "Preserved_Cranium",
@@ -740,7 +696,7 @@
    "group": "main",
    "pos": [
     0,
-    8.4
+    7.4
    ],
    "act": "reveal",
    "omens": [
@@ -898,7 +854,7 @@
    "group": "main",
    "pos": [
     1,
-    8.4
+    7.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -933,7 +889,7 @@
    "group": "main",
    "pos": [
     0,
-    9.4
+    8.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1048,7 +1004,7 @@
    "group": "main",
    "pos": [
     0,
-    10.4
+    9.4
    ],
    "act": "exalt",
    "cur": "Exalted_Orb",
@@ -1177,7 +1133,7 @@
    "group": "main",
    "pos": [
     0,
-    11.4
+    10.4
    ],
    "act": "chaos",
    "cur": "Chaos_Orb",
@@ -1209,7 +1165,7 @@
      "if": {
       "all": [
        {
-        "has": "atk"
+        "has": "pd"
        },
        {
         "has": "fer"
@@ -1222,7 +1178,7 @@
     },
     {
      "if": {
-      "has": "atk"
+      "has": "pd"
      },
      "to": "f1",
      "res": "ok"
@@ -1284,7 +1240,7 @@
    "group": "main",
    "pos": [
     0,
-    12.4
+    11.4
    ],
    "act": "essence",
    "cur": "Potent_Liquid_Ferocity",
@@ -1307,7 +1263,7 @@
    "edges": [
     {
      "if": {
-      "has": "atk"
+      "has": "pd"
      },
      "to": "ok",
      "res": "ok"
@@ -1437,7 +1393,7 @@
    "group": "main",
    "pos": [
     0,
-    13.4
+    12.4
    ],
    "label": {
     "kr": "완성",
