@@ -552,7 +552,7 @@ const sideKr = sd => sd==='p'?'접두':'접미', sideEn = sd => sd==='p'?'prefix
 // currency, omen and bone names in notes always come from the game data (official Korean / English names)
 const curName = (id, en) => { for(const k in S.craft||{}) for(const x of S.craft[k]) if(x.id===id) return en ? x.en : x.kr; return id.replace(/_/g,' '); };
 const nk = id => curName(id), ne = id => curName(id, true);
-function boneFor(cat){ return cat==='jewel' ? 'Preserved_Cranium' : ['jewellery'].includes(cat) ? 'Preserved_Collarbone' : ['weapon','weapon2'].includes(cat) || cat==='offhand' ? 'Preserved_Jawbone' : 'Preserved_Rib'; }
+function boneFor(cat, cls){ return cat==='jewel' ? 'Preserved_Cranium' : ['jewellery'].includes(cat) ? 'Preserved_Collarbone' : ['weapon','weapon2'].includes(cat) || cls==='Quivers' ? 'Preserved_Jawbone' : 'Preserved_Rib'; }   /* 턱뼈 = 무기·화살통, 갈비뼈 = 방어구(방패·버클러·집중구 포함, crafting.json 설명 · 에뮬레이터 PART와 같음 — W6) */
 const lk = r => (r.t?.[4]||r.m.l||'').split('\n')[0], le = r => (r.t?.[5]||r.m.l||'').split('\n')[0];
 // difficulty 0-5 (입문·쉬움·보통·어려움·전문가·극한) guessed from the pasted item: the draft has no author's pick.
 // It decides when crafted lines go on (policy 17): up to Hard (3) first, Expert (4)+ after the good lines.
@@ -834,8 +834,8 @@ function makeDraft(it, an, opt){
     baseQ = it.qual>20 ? {kr:`퀄리티 ${it.qual}% (20%까지 ${nk(sc)}, 넘는 부분은 ${nk(vi)} — 첫 번째는 실패하지 않고 이후 한 번마다 실패 확률이 늘어남)`, en:`quality ${it.qual}% (${ne(sc)} to 20%, then ${ne(vi)}; the first cannot fail, each later one is riskier)`}
       : {kr:`퀄리티 ${it.qual}% (${nk(sc)})`, en:`quality ${it.qual}% (${ne(sc)})`}; }
   const start = {rar:'normal', mods:[], ...(baseQ?{quality:it.qual}:{})}; const junk = {p:0, s:0}; let looseJunk = false;   /* 징조 없이 붙인 잡옵(전환·확장·제왕): 실제로는 어느 쪽에 붙을지 모름 */
-  // 사용자 확정 2026-11-11: 분열 베이스에도 '베이스에 포함' — 고른 옵션은 분열과 함께 이미 붙어 있는 베이스를 사는 것으로 보고 단계에 넣지 않음(분열 과정은 설명하지 않음)
-  const boughtFr = frs.length && opt?.buy ? rnd.filter(r=>opt.buy.has(r.m) && cnt[r.m.side] + frs.filter(x=>x.m.side===r.m.side).length < cap[r.m.side]) : [];
+  /* 분열 베이스의 '베이스에 포함'(11-11)은 없앰 — 분열 과정을 플로우차트 준비 구역에 넣음(리버스 13장 사용자 확정 11-13 20:16, W6: graphify fracPrep) */
+  const boughtFr = [];
   if(frs.length){ start.rar='rare'; start.mods = frs.map(r=>({...tm(r), fr:true, ...(r.g?.s==='e'?{crafted:true}:{})})); /* 분열된 제작 옵션도 제작 옵션(사용자 확정 2026-11-11): 한도 1개에 포함 */ frs.forEach(r=>cnt[r.m.side]++); rar='rare';
     boughtFr.forEach(r=>{ start.mods.push(one(tm(r))); cnt[r.m.side]++; rnd.splice(rnd.indexOf(r),1); });
     const need = {p:rows.filter(r=>!r.m.fr && r.m.side==='p').length, s:rows.filter(r=>!r.m.fr && r.m.side==='s').length};
@@ -849,6 +849,11 @@ function makeDraft(it, an, opt){
     magicEss.forEach(({r,e})=>{ start.mods.push({...tm(r), crafted:true}); cnt[r.m.side]++; ks.push(`${lk(r)}(${e.kr})`); es.push(`${le(r)} (${e.en})`); });
     magicEss.length=0; const b0=nodes[0];
     b0.note = note(b0.note.kr+` 에센스 옵션 ${ks.join(', ')}${josa(ks.at(-1),'은','는')} 매직 단계에서 분열 전에 붙여 둔 상태(제작 옵션).`, b0.note.en+` The essence line ${es.join(', ')} was added at the magic stage, before the fracture (crafted).`); }
+  /* 분열 과정(W6): 분열 옵션 하나 + 잡옵만으로 시작하는 분열 베이스는 준비 구역(매직 베이스 구입 → 제왕 → 뼈 → 분열 1/3 → 소멸)을 graphify가 그림.
+     분열 옵션이 매직용 에센스 옵션이면 그 에센스가 제왕 자리(잡옵 2개 매직 베이스 → 에센스). 희귀용(완벽한) 에센스 옵션이 분열됐거나 매직 단계 에센스 옵션이 함께 있는 베이스는 아직 예전처럼 '분열 베이스 구입' */
+  const fracPrep = (()=>{ if(frs.length!==1 || !start.mods.every(m=>m.fr || m.junk)) return null; const F=frs[0], bone=boneFor(it.cat, it.cls);
+    if(F.g?.s!=='e') return {bone};
+    const e = craft.essences.find(x=>x.en===F.t?.[3]) || craft.essences.find(x=>x.en===F.g.t[0][3]); return e && e.mode==='magic' ? {bone, ess:e.id} : null; })();
   // a rune or soul core that unlocks its own modifiers goes in before rolling them
   if(augPre.length){ start.runes = augPre.map(en=>({kr:rows.find(x=>x.core && x.g.sub[1]===en).g.sub[0], en}));
     const b0=nodes[0], k=start.runes.map(x=>`「${x.kr}」`).join(', '), e=start.runes.map(x=>x.en).join(', ');
@@ -1086,7 +1091,7 @@ function makeDraft(it, an, opt){
     qPend=null; if(vaalQ){ vaalQ(); vaalQ=null; } }
   let mqGone = false; const mqLive = () => mqGi>=0 && !mqGone && nodes.some(n=>n.target?.gi===mqGi);
   // every essence line is crafted, the magic-stage ones included
-  let crafted = essRows.length - rareEss.length + subCraft + frs.filter(r=>r.g?.s==='e').length; const essDone = new Set(), bone = boneFor(it.cat), desDone = new Set(), k42Ess = new Set();
+  let crafted = essRows.length - rareEss.length + subCraft + frs.filter(r=>r.g?.s==='e').length; const essDone = new Set(), bone = boneFor(it.cat, it.cls), desDone = new Set(), k42Ess = new Set();
   if(craftFirst && mqGi<0 && !j5?.B && !opt?.frSide && !opt?.k42) essPass(null, true);   /* k42: 에센스·합금을 빗나간 엑잘 자리에 쓰려고 미뤄 둠 */   /* frSide: 분열 쪽을 다 채울 때까지 반대쪽을 비워 둬야 엑잘 실패를 징조 없는 소멸로 지움 */
   // policy 18 (bought magic base): a side one line short is finished by a desecration (the reveal picks from 3), then
   // Greater Exaltation + Perfect Exalted Orb puts two lines on the other side; up to here is the guaranteed part.
@@ -1302,7 +1307,7 @@ function makeDraft(it, an, opt){
   /* 타협 한도의 가격 등급·난이도(W5, 13장 · 10장 난이도 표): 타협 없이 끝까지 맞추는 초안을 하이엔드로 시뮬해 비용 = revCost, 난이도 = 표(graphify diffOf).
      후보 비교(market 1e9 = 한도 없음)에서는 시뮬하지 않음. 시뮬이 없으면 예전 규칙 추정(estDiff·tryDiff·draftCost) */
   const market = +(opt?.market ?? S.market ?? 0) || 0, nSoft = softPass(an, nodes); let diff2 = diff, tier = null, pre = null;
-  if(S.prices && market < 1e8 && window.POE2GRAPH && window.POE2SIM){ try{ const d0 = {id:'pre', cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), start, nodes:JSON.parse(JSON.stringify(nodes)), difficulty:diff};
+  if(S.prices && market < 1e8 && window.POE2GRAPH && window.POE2SIM){ try{ const d0 = {id:'pre', cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(fracPrep?{fracPrep}:{}), ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), start, nodes:JSON.parse(JSON.stringify(nodes)), difficulty:diff};
       const g0 = POE2GRAPH.fromDraft(d0, it.D, {craft:S.craft, grades:['high']}), c0 = POE2GRAPH.check(g0, it.D, S.craft, S.prices, POE2SIM, 60, 1e5), r0 = c0.strategies[0]?.res;
       if(r0){ const cost = revCost(it, d0, r0), df = POE2GRAPH.diffOf(r0, g0, {expensive:EXP_OM(), mirror:mirrorDiv(), cost}); pre = r0; diff2 = df.d; tier = tierOf(market>0 ? market : cost); } }catch(_){ } }
   if(!pre){ const td = tryDiff(it, an, nodes, start); diff2 = Math.max(diff, td.d); tier = S.prices ? tierOf(market>0 ? market : draftCost(it, an, {nodes}, true)) : null; }
@@ -1329,7 +1334,7 @@ function makeDraft(it, an, opt){
   const dupGi = {}; an.rows.forEach(r=>{ if(!r.unrev && r.m.gi!=null) dupGi[r.m.gi]=(dupGi[r.m.gi]||0)+1; }); Object.keys(dupGi).forEach(k=>{ if(dupGi[k]<2) delete dupGi[k]; });
   return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(Object.keys(dupGi).length?{dupGi}:{}), ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff2, ...(tier?{priceTier:tier.id}:{}), ...(market>0?{marketPrice:market}:{}), ...(nComp?{compromises:nComp}:{}),
     author:{kr:'아이템 역산 초안', en:'Reverse-engineered draft'}, title:{kr:featK.join(' + ')||'역산 초안', en:featE.join(' + ')||'Draft'},
-    buildTags:[], start, phases, nodes, ...(prep?{prep}:{}), src:{text:S.txt||''} };
+    buildTags:[], start, phases, nodes, ...(fracPrep?{fracPrep}:{}), ...(prep?{prep}:{}), src:{text:S.txt||''} };
 }
 
 

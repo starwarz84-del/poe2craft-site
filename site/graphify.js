@@ -244,9 +244,34 @@ function fromDraft(d, D, opt={}){
   const startItem = (d.start.mods||[]).map(m=> m.junk ? J(m.junk) : m.unrev ? UN(m.unrev) : lineOf(m.gi, m.fr?'f':'n'));
   const first = mainOut[0]?.id || 'ok';
   const baseLabel = d.start.rar==='magic' ? K('매직 베이스 구입','Buy a magic base') : (d.start.mods||[]).some(m=>m.fr) ? K('분열 베이스 구입','Buy a fractured base') : K('베이스 구입','Buy a base');
-  const nodes=[{id:'h1', kind:'base', group:'prep', pos:[0,0], next:'ms', start:{rar:d.start.rar||'normal', mods:(d.start.mods||[]).map(m=> m.junk ? {junk:m.junk} : m.unrev ? {unrev:m.unrev} : (m.fr ? {tag:tagOf(m.gi), fr:true} : tagOf(m.gi)))}, label:baseLabel, item:startItem},
-    {id:'ms', kind:'mark', group:'main', pos:[0,0.6], next:first, label:K('아이템 제작 시작','Item crafting starts'), item:startItem},
-    ...all, {id:'ok', kind:'done', group:'main', pos:[0,row], label:K('완성','Finished')}];
+  /* 분열 과정(W6, 리버스 13장 사용자 확정 11-13 20:16·22:37): 분열 옵션은 등록 레시피처럼 준비 구역에서 만듦 — 분열 대상 옵션 + 반대쪽 잡옵이 붙은 매직 베이스 구입 →
+     제왕의 오브(옵션 3개) → 보존된 뼈(미공개 훼손, 분열되지 않음 → 옵션 4개) → 분열의 오브(공개된 옵션 3개 중 하나, 1/3) → 소멸의 오브로 분열 + 옵션 1개.
+     빗나가면 규칙 G: 분열 아이템은 난이도가 늘 어려움 이상(평균 베이스 3개)이라 새 베이스로 처음부터. 비용 = 베이스 값 제외, 이 과정의 커런시는 포함 */
+  const FP = d.fracPrep && (d.start.mods||[]).filter(m=>m.fr).length===1 ? d.fracPrep : null;
+  let prepNodes = [], PRE = 0;
+  if(FP){ const F=(d.start.mods||[]).find(m=>m.fr), T=tagOf(F.gi), sd=G[F.gi].g, oth=sd==='p'?'s':'p', boneK=cn(FP.bone);
+    const lT = lineOf(F.gi,'n'), lF = lineOf(F.gi,'f'), it0 = FP.ess ? [J('p'), J('s')] : [lT, J(oth)], it1 = FP.ess ? [J('p'), J('s'), lineOf(F.gi,'n',K('에센스','essence'))] : [lT, J(oth), J('x')], it2=[...it1, UN('x')];
+    /* 분열 옵션이 에센스 옵션이면(SaVeQ 집중구 '상위 주문의 에센스' 분열) 잡옵 2개 매직 베이스 → 그 에센스(매직 → 희귀 + 그 옵션)가 제왕 자리 */
+    const up = FP.ess ? {id:'hr', kind:'act', group:'prep', pos:[0,1], act:'essence', cur:FP.ess, ess:T, label:LABEL.essence, goal:K('희귀 + 분열할 옵션 (에센스)','Rare + the line to fracture (essence)'), edges:[{to:'hb'}], item:it1}
+      : {id:'hr', kind:'act', group:'prep', pos:[0,1], act:'regal', cur:'Regal_Orb', label:LABEL.regal, goal:K('세 번째 옵션 — 희귀로','Third line: to rare'), showText:[K('나오는 대로, 분열 조건 옵션 4개를 채우는 잡옵','As it comes: a junk line toward the four the fracture needs')], edges:[{to:'hb'}], item:it1};
+    prepNodes = [
+      {id:'h1', kind:'base', group:'prep', pos:[0,0], next:'hr', start:{rar:'magic', mods: FP.ess ? [{junk:'p'}, {junk:'s'}] : [T, {junk:oth}], ...(d.start.quality?{quality:d.start.quality}:{})}, label:K('매직 베이스 구입','Buy a magic base'),
+        note: FP.ess ? K('옵션 2개 매직 베이스','A magic base with two lines') : K('분열할 옵션이 붙은 매직 베이스(옵션 2개)','A magic base with the line to fracture (two lines)'), item:it0},
+      up,
+      {id:'hb', kind:'act', group:'prep', pos:[0,2], act:'desecrate', cur:FP.bone, label:LABEL.desecrate, goal:K('네 번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth option (desecrated): the fracture needs four'),
+        showText:[K(`${boneK.kr}: 훼손 옵션 (미공개, 분열되지 않음)`,`${boneK.en}: desecration (unrevealed, cannot fracture)`)], edges:[{to:'hf'}], item:it2},
+      {id:'hf', kind:'act', group:'prep', pos:[0,3], act:'fracture', cur:'Fracturing_Orb', label:K('분열','Fracture'), goal:K('분열 (공개된 옵션 3개 중 하나)','Fracture (one of the three revealed options)'),
+        showText:[K(`성공: ${lT.kr} 분열`, `Success: ${lT.en} fractures`)], ask:K('어느 옵션이 분열?','Which option fractured?'),
+        edges:[{if:{fractured:T}, to:'hc', res:'ok', label:K('분열 성공','Fractured')}, {to:'hx', res:'fail', label:K('다른 옵션 분열','Another line fractured')}], item: FP.ess ? [J('p'), J('s'), lF, UN('x')] : [lF, J(oth), J('x'), UN('x')]},
+      {id:'hx', kind:'exit', group:'prep', pos:[1,3], simTo:'h1', variant:'fail', label:K('다른 옵션 분열 — 새 베이스','Another line fractured: new base'), note:K('새 베이스로 처음부터','Start over on a new base')},
+      {id:'hc', kind:'cleanup', group:'prep', pos:[0,4], keep:[], maxJunk:1, label:K('소멸의 오브 사용','Use an Orb of Annulment'), goal:K('소멸의 오브 사용','Use an Orb of Annulment'), target:K('분열 + 옵션 1개만 남기기','Keep only the fracture + one option'), edges:[{to:'hu'}], item:[lF, J('x')]},
+      /* 남은 옵션이 준비용 미공개 훼손이면(약 1/3) 지우고 엑잘로 잡옵 하나 — 그대로 두면 본 작업의 훼손·공개가 이 줄에 걸림(시한 차유라 목걸이 완성 68%) */
+      {id:'hu', kind:'act', group:'prep', pos:[0,5], act:'annul', cur:'Orb_of_Annulment', skipIf:{unrev:false}, skipTo:'ms', skipNote:K('남은 옵션이 일반 옵션','The line left is a regular one'), label:K('소멸의 오브 사용','Use an Orb of Annulment'), goal:K('남은 미공개 훼손 옵션 지우기','Remove the leftover unrevealed desecration'), target:K('남은 옵션이 미공개 훼손이면 지우기 (일반 옵션이면 건너뜀)','If the line left is the unrevealed desecration, remove it (skip otherwise)'), edges:[{to:'he'}], item:[lF]},
+      {id:'he', kind:'act', group:'prep', pos:[0,6], act:'exalt', cur:'Exalted_Orb', label:LABEL.exalt, goal:K('잡옵 1개 다시 붙이기','Add one junk line back'), target:K('잡옵 1개 다시 붙이기 (나오는 대로)','Add one junk line back (as it comes)'), showText:[K('나오는 대로','As it comes')], edges:[{to:'ms'}], item:[lF, J('x')]}];
+    PRE = 7; all.forEach(o=>{ o.pos=[o.pos[0], o.pos[1]+PRE]; }); }
+  const nodes=[...(FP ? prepNodes : [{id:'h1', kind:'base', group:'prep', pos:[0,0], next:'ms', start:{rar:d.start.rar||'normal', mods:(d.start.mods||[]).map(m=> m.junk ? {junk:m.junk} : m.unrev ? {unrev:m.unrev} : (m.fr ? {tag:tagOf(m.gi), fr:true} : tagOf(m.gi)))}, label:baseLabel, item:startItem}]),
+    {id:'ms', kind:'mark', group:'main', pos:[0,PRE+0.6], next:first, label:K('아이템 제작 시작','Item crafting starts'), item:startItem},
+    ...all, {id:'ok', kind:'done', group:'main', pos:[0,row+PRE], label:K('완성','Finished')}];
   /* 묶음(anyOf) 태그의 성공 회차 옵션 = 붙여 넣은 옵션(2026-11-13 W4, 규칙 K·S4): 아이템 칸·완성 카드에 그 줄이 실제로 들어간 옵션(rep) 순서대로.
      화면은 'A 또는 B'(목표처럼 읽힘) 대신 붙여 넣은 옵션을 보여 주고, 레시피 글은 '대신 …도 성공으로 침' 꿀팁을 붙임. 시뮬은 shown을 읽지 않음 */
   { const sh={}; const take = l => { const k=l?.tags?.[0]; if(!k || !tags[k]?.anyOf || !l.rep || l.rep===k) return; (sh[k]=sh[k]||[]); if(!sh[k].includes(l.rep)) sh[k].push(l.rep); };
