@@ -18,7 +18,10 @@
 # C1 사용자 확정(2026-11-13 15:21 ①): 하이엔드는 영상에 없어도 훼손 공개 빛의 징조 반복 유지 → 위 (B) 되돌림. 세 번째 접두 = 남은 카틀라 접두 1티어(영상 완성품 상태 이상의 강도), 카드도 그 옵션.
 #   (E) 베이스 가격이 영상에 없음 → 미정(옛 12 div는 MazBro 장갑 그래프 값을 빌린 것). (A) 슬라이드 5·8·9·11·12번 '원하는 1티어'는 카틀라 접두 묶음·접미 묶음(anyOf) 그대로, 화면은 툴팁 순서(shown).
 # 접두 3개·접미 2개는 같은 카틀라 1티어 묶음이라 '남은 옵션 중 먼저 뜬 것'(정책 11장 붙는 순서 예외, K39). 화면 순서는 슬라이드 툴팁 순서 — 실제 붙은 순서는 영상에 없음.
-# 등급: 난이도 극한 → 하이엔드만(정책 10장 C11). 카틀라의 순흑 옵션 가중치는 공개되지 않아 일반 티어 평균으로 추정(xroll).
+# 등급: 난이도 표 4 전문가 → 하이엔드·밸런스(정책 10장 C11, 사용자 확정 2026-11-13 15:42 ①). 카틀라의 순흑 옵션 가중치는 공개되지 않아 일반 티어 평균으로 추정(xroll).
+# 밸런스(2026-11-13 D2, C17): 분열 뒤 카오스(싼 단계)와 매직 단계는 1티어 그대로, 반복 단계(접두 엑잘 + 소멸, 접미 엑잘 + 우측 소멸 2개)는 1~2티어.
+#   세 번째 접두 훼손 공개는 슬라이드에 다시 하는 말이 없어 빛의 징조 반복 없이 결과 그대로(카틀라 접두가 보이면 고름, 카드는 랜덤 옵션 · 훼손),
+#   접미 마지막 옵션은 절사 + 우측 말소 + 완벽한 카오스 도박 없이 나오는 대로(C17-2, 카드 랜덤 옵션).
 import json, sys
 OUT = sys.argv[1] if len(sys.argv) > 1 else '/home/claude/poe2craft-site/scripts/graphs/sl-blacksteel-gauntlets-v2.json'
 CLS = 'Gloves_str_dex'
@@ -56,19 +59,27 @@ g = {
           '→ 완벽한 진화·확장 + 소멸(매직 저주 강도 1티어 + 카틀라 접두 1티어) → 완벽한 제왕 → 보존된 갈비뼈 + 분열(저주 강도) → 분열 + 옵션 1개 → 카오스 오브(카틀라 접두 1티어) '
           '→ 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸) → 좌측 강령술 + 고대 갈비뼈 → 공개(남은 카틀라 접두, 빗나가면 빛의 징조) → 상위 찬미 + 완벽한 엑잘(접미, 빗나가면 우측 소멸의 징조 2개) '
           '→ 절사 + 우측 말소 + 완벽한 카오스(남은 접미 1티어). 하이엔드만(극한). 카틀라 옵션 가중치는 추정.'),
- 'params': {'t': {'kr': '반복 목표', 'en': 'Loop target', 'values': {'1': K('1티어', 'T1')}}},
- 'strategies': [{'id': 'high', 'params': {'t': 1}}],
- 'versions': [{'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'t': 1},
+ 'params': {'t': {'kr': '반복 목표', 'en': 'Loop target', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
+ 'strategies': [{'id': 'high', 'params': {'t': 1}}, {'id': 'bal', 'params': {'t': 2}}],
+ 'versions': [{'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'t': 2}, 'tier': 'bal',
+               'desc': K('접두 두 번째·접미 엑잘 1~2티어, 세 번째 접두 공개와 마지막 접미는 나오는 대로', 'Second prefix and suffix exalt at T1–2; the third prefix reveal and the last suffix as they come')},
+              {'id': 'high', 'tier': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'t': 1},
                'desc': K('영상 슬라이드: 카틀라 옵션·화염 저항 모두 1티어', 'Video slide: every Katla line and fire resistance at T1')}],
  'tags': {
    'am1': {'gi': 85, 'tmax': 1}, 'ig1': {'gi': 82, 'tmax': 1}, 'fa1': {'gi': 86, 'tmax': 1},
    'mp': {'anyOf': ['am1', 'ig1', 'fa1'], 'shown': ['fa1', 'ig1', 'am1'], 'label': K('상태 이상의 강도·점화 강도·피해 가속 1티어', 'T1 ailment magnitude, ignite magnitude or faster ailments')},
    'cu1': {'gi': 92, 'tmax': 1}, 'wi1': {'gi': 91, 'tmax': 1}, 'fr1': {'gi': 2, 'tmax': 1},
    's2': {'anyOf': ['wi1', 'fr1'], 'shown': ['fr1', 'wi1'], 'label': K('위축 강도·화염 저항 1티어', 'T1 withered magnitude or fire resistance')},
+   'amT': {'gi': 85, 'tmax': '$t'}, 'igT': {'gi': 82, 'tmax': '$t'}, 'faT': {'gi': 86, 'tmax': '$t'}, 'ig2': {'gi': 82, 'tmax': 2},
+   'mpT': {'anyOf': ['amT', 'igT', 'faT'], 'shownBy': {'high': ['fa1', 'ig1', 'am1'], 'bal': 'ig2'}, 'label': K('상태 이상의 강도·점화 강도·피해 가속', 'Ailment magnitude, ignite magnitude or faster ailments')},
+   'wiT': {'gi': 91, 'tmax': '$t'}, 'frT': {'gi': 2, 'tmax': '$t'}, 'fr2': {'gi': 2, 'tmax': 2},
+   's2T': {'anyOf': ['wiT', 'frT'], 'shownBy': {'high': ['fr1', 'wi1'], 'bal': 'fr2'}, 'label': K('위축 강도·화염 저항', 'Withered magnitude or fire resistance')},
    'magicGood': {'anyOf': ['mp', 'cu1'], 'label': K('카틀라 접두·저주 강도 1티어', 'T1 Katla prefix or curse magnitude')},
  },
  'conds': {'magicDone': {'all': [{'has': 'mp'}, {'has': 'cu1'}]}},
- 'require': {'all': [{'has': 'cu1'}, {'count': {'tag': 'mp', 'min': 3}}, {'count': {'tag': 's2', 'min': 2}}]},
+ 'require': {'all': [{'has': 'cu1'}, {'full': 'p'}, {'full': 's'},
+                     {'any': [{'all': [{'param': {'t': 1}}, {'count': {'tag': 'mp', 'min': 3}}, {'count': {'tag': 's2', 'min': 2}}]},
+                              {'all': [{'param': {'t': 2}}, {'count': {'tag': 'mpT', 'min': 2}}, {'has': 's2T'}]}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 2]}, {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'h1', 'xsub': ["Katla's Gloom"], 'xroll': True,
  'finalItem': {'quality': 29, 'sockets': 2, 'exceptional': True},
@@ -120,23 +131,28 @@ A(id='k1', kind='act', group='main', pos=[0, 10], act='chaos', cur='Chaos_Orb', 
   show=['mp'], skipIf={'has': 'mp'}, skipTo='k2', skipNote=K('남은 옵션이 카틀라 접두 1티어면 건너뜀', 'Skip if the option left is a T1 Katla prefix'),
   edges=[{'if': {'has': 'mp'}, 'to': 'k2', 'res': 'ok'}, {'to': 'k1', 'res': 'fail'}], item=[KAT, FA, CU])
 A(id='k2', kind='act', group='main', pos=[0, 11], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두 번째 옵션', 'Second prefix'), show=['mp'],
-  edges=[{'if': {'count': {'tag': 'mp', 'min': 2}}, 'to': 'k5', 'res': 'ok'}, {'to': 'k2x', 'res': 'fail', 'label': K('빗나감 — 소멸의 오브', 'Miss: Orb of Annulment')}], item=[KAT, FA, IG, CU])
+  goal=K('접두 두 번째 옵션', 'Second prefix'), show=['mpT'],
+  edges=[{'if': {'count': {'tag': 'mpT', 'min': 2}}, 'to': 'k5', 'res': 'ok'}, {'to': 'k2x', 'res': 'fail', 'label': K('빗나감 — 소멸의 오브', 'Miss: Orb of Annulment')}], item=[KAT, FA, IG, CU])
 A(id='k2x', kind='act', group='main', pos=[1, 11], act='annul', cur='Orb_of_Annulment', omens=[], label=K('소멸의 오브 사용', 'Use an Orb of Annulment'),
   goal=K('소멸의 오브 사용', 'Use an Orb of Annulment'), target=K('빗나간 접두 지우기', 'Remove the missed prefix'),
-  edges=[{'if': {'has': 'mp'}, 'to': 'k2', 'res': 'ok', 'label': K('빗나간 접두 지워짐 — 다시 엑잘', 'Missed prefix gone: exalt again')},
+  edges=[{'if': {'has': 'mpT'}, 'to': 'k2', 'res': 'ok', 'label': K('빗나간 접두 지워짐 — 다시 엑잘', 'Missed prefix gone: exalt again')},
          {'to': 'k1', 'res': 'fail', 'label': K('카틀라 접두가 지워짐 — 카오스부터', 'Katla prefix gone: back to Chaos')}])
 A(id='k5', kind='act', group='main', pos=[0, 12], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
   goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[K('훼손 옵션 (미공개)', 'Desecrated (unrevealed)')], edges=[{'to': 'k6'}], item=[KAT, FA, IG, UN('p'), CU])
 A(id='k6', kind='act', group='main', pos=[0, 13], act='reveal', label=K('공개', 'Reveal'), goal=K('훼손 옵션 확인', 'Reveal the desecrated modifier'),
-  want='mp', show=['mp'],
-  edges=[{'if': {'added': 'mp'}, 'to': 'k3', 'res': 'ok'}, {'to': 'k6x', 'res': 'fail'}], item=[KAT, FA, IG, AM, CU])
+  want='mpT', show=['mpT'],
+  edges=[{'if': {'added': 'mpT'}, 'to': 'k3', 'res': 'ok'}, {'to': 'k6x', 'res': 'fail'}], item=[KAT, FA, IG, AM, CU],
+  over=[{'param': {'t': 2}, 'set': {'goal': K('훼손 옵션 확인 (나오는 대로)', 'Reveal the desecrated modifier (keep what comes)'), 'show': [],
+                                   'showText': [K('카틀라 접두가 보이면 고르고, 없으면 나온 옵션 그대로', 'Pick a Katla prefix if one shows, otherwise keep what comes')],
+                                   'edges': [{'to': 'k3', 'res': 'ok'}]}}])
 A(id='k6x', kind='act', group='main', pos=[1, 13], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=K('소멸의 오브 사용', 'Use an Orb of Annulment'),
   goal=K('소멸의 오브 사용', 'Use an Orb of Annulment'), target=K('훼손 옵션 제거', 'Remove the desecrated modifier'),
   edges=[{'to': 'k5', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='k3', kind='act', group='main', pos=[0, 14], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접미 두 번째·세 번째 옵션', 'Second and third suffixes'), show=['s2'],
   edges=[{'if': {'has': 's2'}, 'to': 'k4', 'res': 'ok'}, {'to': 'k3x', 'res': 'fail', 'label': K('빗나감 — 우측 소멸의 징조', 'Miss: Omen of Dextral Annulment')}],
+  over=[{'param': {'t': 2}, 'set': {'show': ['s2T'], 'showText': [K('남은 접미는 나오는 대로', 'The other suffix as it comes')],
+                                   'edges': [{'if': {'has': 's2T'}, 'to': 'ok', 'res': 'ok'}, {'to': 'k3x', 'res': 'fail', 'label': K('빗나감 — 우측 소멸의 징조', 'Miss: Omen of Dextral Annulment')}]}}],
   item=[KAT, FA, IG, AM, CU, FR, L('s', '랜덤 옵션 1개', 'One random option', 'j')])
 A(id='k3x', kind='act', group='main', pos=[1, 14], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=K('소멸의 오브 사용', 'Use an Orb of Annulment'),
   goal=K('소멸의 오브 사용', 'Use an Orb of Annulment'), target=K('빗나간 접미 2개 지우기', 'Remove both missed suffixes'),
@@ -152,6 +168,8 @@ g['loops'] = [
   {'id': 'L1', 'nodes': ['k5', 'k6', 'k6x'], 'kr': '훼손 공개', 'en': 'Reveal'},
 ]
 g['finals'] = [{'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-                'lines': [{'tag': 'mp'}, {'tag': 'mp'}, {'tag': 'mp', 'des': True}, {'tag': 'cu1', 'fr': True}, {'tag': 's2'}, {'tag': 's2'}]}]
+                'lines': [{'tag': 'mp'}, {'tag': 'mp'}, {'tag': 'mp', 'des': True}, {'tag': 'cu1', 'fr': True}, {'tag': 's2'}, {'tag': 's2'}]},
+               {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
+                'lines': [{'tag': 'mp'}, {'tag': 'mpT'}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'cu1', 'fr': True}, {'tag': 's2T'}, {'side': 's', 'random': True}]}]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

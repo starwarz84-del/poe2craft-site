@@ -18,7 +18,9 @@
 #   4 분열 전 훼손·정리 훼손의 뼈 = 보존된 갈비뼈(공개하지 않음), 관통 훼손 = 고대 갈비뼈(관통 1티어 레벨 75). 영상 화면에서 뼈 종류는 확인 못 함.
 #   5 퀄리티는 옆 상자(비용 미포함), 접두 엑잘의 징조는 빈자리 2개면 상위 찬미 + 좌측 찬미, 1개면 좌측 찬미(화면 확인 못 함), 심연의 메아리 없음.
 # 접두 세 옵션은 같은 방법(카오스·엑잘)으로 채우는 완성품 옵션이라 '남은 옵션 중 먼저 뜬 것'(정책 11장 붙는 순서 예외). 화면 순서는 성공 회차(속도 → 피해 → 마나).
-# 등급: 난이도 극한 → 하이엔드만(정책 10장 C11).
+# 등급: 난이도 표 4 전문가 → 하이엔드·밸런스(정책 10장 C11, 사용자 확정 2026-11-13 15:42 ①).
+# 밸런스(2026-11-13 D2, C17): 준비 구역·분열 뒤 카오스(싼 단계)는 1티어 그대로, 반복 단계(접두 엑잘 + 소멸, 접미 치명타 확률 루프, 관통 공개)는 1~2티어.
+#   세 번째 접두는 마지막 접두라 다른 옵션으로 바꾸는 도박 없이 나오는 대로(C17-2, 카드 랜덤 옵션). 관통 공개는 영상(16:32~17:20)이 빛의 징조로 다시 하니 밸런스도 반복(C17-3).
 import json, sys
 OUT = sys.argv[1] if len(sys.argv) > 1 else '/home/claude/poe2craft-site/scripts/graphs/sl-proj7-gloves-v2.json'
 CLS = 'Gloves_int'
@@ -58,9 +60,11 @@ g = {
           '→ 보존된 갈비뼈 → 분열(투사체 +2) → 분열 + 옵션 1개 → 세를의 승리 → 카오스 오브(접두 1티어) → 상위·좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) '
           '→ 상위 찬미 + 완벽한 엑잘(접미 치명타 확률, 잡옵마다 우측 결정화 + 심연의 에센스 → 보존된 갈비뼈 → 빛의 징조 + 소멸) → 우측 결정화 + 팽창하는 합금(1/2) '
           '→ 고대 갈비뼈 → 공개(관통 1티어, 빗나가면 빛의 징조 + 소멸). 하이엔드만(극한).'),
- 'params': {'t': {'kr': '반복 목표', 'en': 'Loop target', 'values': {'1': K('1티어', 'T1')}}},
- 'strategies': [{'id': 'high', 'params': {'t': 1}}],
- 'versions': [{'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'t': 1},
+ 'params': {'t': {'kr': '반복 목표', 'en': 'Loop target', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
+ 'strategies': [{'id': 'high', 'params': {'t': 1}}, {'id': 'bal', 'params': {'t': 2}}],
+ 'versions': [{'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'t': 2}, 'tier': 'bal',
+               'desc': K('투사체 피해·속도·치명타 확률·관통 1~2티어, 세 번째 접두는 나오는 대로', 'T1–2 projectile damage, speed, crit chance and pierce; the third prefix as it comes')},
+              {'id': 'high', 'tier': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'t': 1},
                'desc': K('영상: 접두 3개·치명타 확률·관통 모두 1티어', 'Video: three prefixes, crit chance and pierce all T1')}],
  'tags': {
    'proj': {'gi': 82}, 'pd1': {'gi': 71, 'tmax': 1}, 'ps1': {'gi': 73, 'tmax': 1}, 'mf1': {'gi': 7, 'tmax': 1},
@@ -68,10 +72,16 @@ g = {
    'third': {'anyOf': ['ph1', 'fi1', 'co1', 'li1', 'es1', 'esp1', 'mf1'], 'shown': 'mf1', 'label': K('공격 시 피해 추가·에너지 보호막·마나 최대치 1티어', 'T1 flat attack damage, energy shield or maximum mana')},
    'pgood': {'anyOf': ['pd1', 'ps1', 'third'], 'label': K('투사체 피해·투사체 속도·세 번째 접두 1티어', 'T1 projectile damage, projectile speed or a third prefix')},
    'cr1': {'gi': 74, 'tmax': 1}, 'pie1': {'gi': 75, 'tmax': 1}, 'pieAny': {'gi': 75},
+   'pdT': {'gi': 71, 'tmax': '$t'}, 'psT': {'gi': 73, 'tmax': '$t'}, 'crT': {'gi': 74, 'tmax': '$t'}, 'pieT': {'gi': 75, 'tmax': '$t'},
+   'pd2': {'gi': 71, 'tmax': 2}, 'ps2': {'gi': 73, 'tmax': 2}, 'cr2': {'gi': 74, 'tmax': 2}, 'pie2': {'gi': 75, 'tmax': 2},
+   'pgoodT': {'anyOf': ['pdT', 'psT', 'third']},
    'rem': {'gi': 65}, 'mkS': {'gi': 61},
  },
- 'conds': {'pDone': {'all': [{'has': 'pd1'}, {'has': 'ps1'}, {'has': 'third'}]}, 'sClean': {'sideLt': {'side': 's', 'n': 2}}},
- 'require': {'all': [{'has': 'proj'}, {'has': 'pd1'}, {'has': 'ps1'}, {'has': 'third'}, {'has': 'cr1'}, {'has': 'pie1'}, {'has': 'rem'}]},
+ 'conds': {'pDone': {'any': [{'all': [{'param': {'t': 1}}, {'has': 'pd1'}, {'has': 'ps1'}, {'has': 'third'}]},
+                             {'all': [{'param': {'t': 2}}, {'has': 'pdT'}, {'has': 'psT'}, {'full': 'p'}]}]},
+           'sClean': {'sideLt': {'side': 's', 'n': 2}}},
+ 'require': {'all': [{'has': 'proj'}, {'has': 'pdT'}, {'has': 'psT'}, {'full': 'p'}, {'has': 'crT'}, {'has': 'pieT'}, {'has': 'rem'},
+                     {'any': [{'param': {'t': 2}}, {'all': [{'has': 'pd1'}, {'has': 'ps1'}, {'has': 'third'}, {'has': 'cr1'}, {'has': 'pie1'}]}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]}, {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0', 'xsub': ["Kolr's Hunt"], 'xroll': True,
  'finalItem': {'quality': 25, 'sockets': 2, 'exceptional': True},
@@ -120,22 +130,25 @@ A(id='c1', kind='act', group='main', pos=[0, 10], act='chaos', cur='Chaos_Orb', 
 A(id='e1', kind='act', group='main', pos=[0, 11], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation', 'Omen_of_Sinistral_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접두 두 번째·세 번째 옵션', 'Second and third prefixes'), show=['pd1', 'mf1'], showText=REST,
   edges=[{'if': {'ref': 'pDone'}, 'to': 's1', 'res': 'ok'}, {'to': 'e1x', 'res': 'fail', 'label': K('빗나감 — 소멸의 오브', 'Miss: Orb of Annulment')}],
-  item=[KOL, SER, PS, PD, MF, PR])
+  item=[KOL, SER, PS, PD, MF, PR],
+  over=[{'param': {'t': 2}, 'set': {'show': ['pd2'], 'showText': [K('세 번째 접두는 나오는 대로', 'The third prefix as it comes')]}}])
 A(id='e1x', kind='act', group='main', pos=[1, 11], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
   target=K('빗나간 접두 지우기', 'Remove the missed prefix'),
-  edges=[{'if': {'not': {'has': 'pgood'}}, 'to': 'kz', 'res': 'fail', 'label': K('좋은 접두가 모두 지워짐 — 카오스부터', 'Every good prefix gone: back to Chaos')},
+  edges=[{'if': {'not': {'has': 'pgoodT'}}, 'to': 'kz', 'res': 'fail', 'label': K('좋은 접두가 모두 지워짐 — 카오스부터', 'Every good prefix gone: back to Chaos')},
          {'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'e1', 'res': 'ok', 'label': K('접두 빈자리 2개 — 상위 찬미 + 좌측 찬미', 'Two prefixes free: Greater + Sinistral Exaltation')},
          {'to': 'e2', 'res': 'ok', 'label': K('접두 빈자리 1개 — 좌측 찬미', 'One prefix free: Sinistral Exaltation')}])
 A(id='e2', kind='act', group='main', pos=[1, 12], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접두 세 번째 옵션', 'Third prefix'), show=['mf1'], showText=[THIRD],
-  edges=[{'if': {'ref': 'pDone'}, 'to': 's1', 'res': 'ok'}, {'to': 'e1x', 'res': 'fail', 'label': K('빗나감 — 소멸의 오브', 'Miss: Orb of Annulment')}])
+  edges=[{'if': {'ref': 'pDone'}, 'to': 's1', 'res': 'ok'}, {'to': 'e1x', 'res': 'fail', 'label': K('빗나감 — 소멸의 오브', 'Miss: Orb of Annulment')}],
+  over=[{'param': {'t': 2}, 'set': {'goal': K('남은 접두 옵션', 'The prefix left'), 'show': [],
+                                   'showText': [K('투사체 피해·속도 중 빠진 것 1~2티어, 둘 다 있으면 나오는 대로', 'The missing one of projectile damage or speed at T1–2; with both on, keep what comes')]}}])
 A(id='kz', kind='cleanup', group='main', pos=[2, 11], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('분열 + 옵션 1개만 남기기', 'Keep the fracture + one option'), edges=[{'to': 'c1'}])
 I_S = [KOL, SER, PS, PD, MF, PR]
 A(id='s1', kind='act', group='main', pos=[0, 13], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접미 두 번째 옵션', 'Second suffix'), show=['cr1'], showText=[K('잡옵 1개가 함께 붙음', 'One junk line comes with it')],
-  edges=[{'if': {'has': 'cr1'}, 'to': 'a1', 'res': 'ok'}, {'to': 'mA', 'res': 'fail', 'label': K('빗나감 — 우측 결정화 + 심연의 에센스', 'Miss: Dextral Crystallisation + Essence of the Abyss')}],
-  item=I_S + [CR, J('s')])
+  edges=[{'if': {'has': 'crT'}, 'to': 'a1', 'res': 'ok'}, {'to': 'mA', 'res': 'fail', 'label': K('빗나감 — 우측 결정화 + 심연의 에센스', 'Miss: Dextral Crystallisation + Essence of the Abyss')}],
+  item=I_S + [CR, J('s')], over=[{'param': {'t': 2}, 'set': {'show': ['cr2']}}])
 A(id='mA', kind='act', group='main', pos=[1, 13], act='essence', cur='Essence_of_the_Abyss', omens=['Omen_of_Dextral_Crystallisation'], ess='mkS', mark=True,
   label=K('심연', 'Abyss'), goal=K('접미 잡옵을 지우고 심연의 군주의 징표', 'A junk suffix goes for the Mark of the Abyssal Lord'),
   showText=[{'s': 's', 'kr': '심연의 군주의 징표', 'en': 'Mark of the Abyssal Lord'}], edges=[{'to': 'mB'}], item=I_S + [MK])
@@ -149,7 +162,7 @@ A(id='mL', kind='act', group='main', pos=[1, 15], act='annul', cur='Orb_of_Annul
 A(id='a1', kind='act', group='main', pos=[0, 14], act='essence', cur='Expansive_Alloy', omens=['Omen_of_Dextral_Crystallisation'], ess='rem',
   label=K('합금', 'Alloy'), goal=K('접미 잡옵을 지우고 잔류물 획득 거리', 'The junk suffix goes for remnant pickup range'),
   showText=[K('치명타 확률이 남으면 성공, 1/2', 'Success if crit chance stays, 1/2')],
-  edges=[{'if': {'all': [{'has': 'cr1'}, {'not': {'has': 'pieAny'}}]}, 'to': 'd1', 'res': 'ok'},
+  edges=[{'if': {'all': [{'has': 'crT'}, {'not': {'has': 'pieAny'}}]}, 'to': 'd1', 'res': 'ok'},
          {'to': 'sR', 'res': 'fail', 'label': K('치명타 확률이 지워짐 — 우측 소멸의 징조', 'Crit chance gone: Omen of Dextral Annulment')}],
   item=I_S + [CR, RM])
 A(id='sR', kind='act', group='main', pos=[1, 16], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=ANN, goal=ANN,
@@ -160,8 +173,8 @@ A(id='d1', kind='act', group='main', pos=[0, 17], act='desecrate', cur='Ancient_
   goal=K('접미 네 번째 옵션(훼손)', 'Fourth suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'd2'}], item=I_S + [CR, UN('s'), RM])
 A(id='d2', kind='act', group='main', pos=[0, 18], act='reveal', label=K('공개', 'Reveal'), goal=K('훼손 옵션 확인', 'Reveal the desecrated modifier'),
-  want='pie1', show=['pie1'], edges=[{'if': {'added': 'pie1'}, 'to': 'ok', 'res': 'ok'}, {'to': 'd2x', 'res': 'fail'}],
-  item=I_S + [CR, PI, RM])
+  want='pieT', show=['pie1'], edges=[{'if': {'added': 'pieT'}, 'to': 'ok', 'res': 'ok'}, {'to': 'd2x', 'res': 'fail'}],
+  item=I_S + [CR, PI, RM], over=[{'param': {'t': 2}, 'set': {'show': ['pie2']}}])
 A(id='d2x', kind='act', group='main', pos=[1, 18], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'd1', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='ok', kind='done', group='main', pos=[0, 19], label=K('완성', 'Finished'))
@@ -170,6 +183,7 @@ g['loops'] = [
   {'id': 'L0', 'nodes': ['m2', 'm2x'], 'kr': '투사체 +2 맞추기', 'en': '+2 projectile'},
   {'id': 'L1', 'nodes': ['e1', 'e1x', 'e2'], 'kr': '접두 1티어 3개', 'en': 'Three T1 prefixes', 'fold': True,
    'goal': K('접두 투사체 피해·투사체 속도 1티어 + 세 번째 접두(공격 시 피해 추가·에너지 보호막·마나 최대치 중 먼저 뜬 것) 1티어, 남은 옵션 중 먼저 뜬 것', 'T1 projectile damage and speed + a T1 third prefix (flat attack damage, energy shield or maximum mana), whichever lands first'),
+   'goalBy': {'bal': K('접두 투사체 피해·투사체 속도 1~2티어, 세 번째 접두는 나오는 대로', 'T1–2 projectile damage and speed; the third prefix as it comes')},
    'steps': [K('상위 찬미 + 좌측 찬미 + 완벽한 엑잘티드 오브로 접두 2개', 'Greater + Sinistral Exaltation + Perfect Exalted Orb for two prefixes') | {'node': 'e1'},
              K('빗나간 접두는 징조 없는 소멸의 오브로 지움', 'A missed prefix goes with a plain Orb of Annulment') | {'node': 'e1x'},
              K('접두 빈자리가 1개면 좌측 찬미 + 완벽한 엑잘티드 오브', 'One prefix free: Sinistral Exaltation + Perfect Exalted Orb') | {'node': 'e2'}],
@@ -177,6 +191,7 @@ g['loops'] = [
    'item': [KOL, SER, PS, PD, MF, PR]},
   {'id': 'L2', 'nodes': ['s1', 'mA', 'mB', 'mL', 'a1', 'sR'], 'kr': '접미 치명타 확률 + 합금', 'en': 'Crit chance suffix + alloy', 'fold': True,
    'goal': K('접미 치명타 확률 1티어 + 잔류물 획득 거리(팽창하는 합금)', 'T1 crit chance suffix + remnant pickup range (Expansive Alloy)'),
+   'goalBy': {'bal': K('접미 치명타 확률 1~2티어 + 잔류물 획득 거리(팽창하는 합금)', 'T1–2 crit chance suffix + remnant pickup range (Expansive Alloy)')},
    'steps': [K('상위 찬미 + 완벽한 엑잘티드 오브로 접미 2개', 'Greater Exaltation + Perfect Exalted Orb for two suffixes') | {'node': 's1'},
              K('치명타 확률이 없으면 잡옵마다 우측 결정화 + 심연의 에센스', 'No crit chance: Dextral Crystallisation + Essence of the Abyss on each junk line') | {'node': 'mA'},
              K('보존된 갈비뼈로 징표를 훼손 옵션으로', 'Preserved Rib turns the Mark into a desecration') | {'node': 'mB'},
@@ -187,6 +202,8 @@ g['loops'] = [
   {'id': 'L3', 'nodes': ['d1', 'd2', 'd2x'], 'kr': '훼손 공개', 'en': 'Reveal'},
 ]
 g['finals'] = [{'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-                'lines': [{'tag': 'pd1'}, {'tag': 'ps1'}, {'tag': 'third'}, {'tag': 'proj', 'fr': True}, {'tag': 'cr1'}, {'tag': 'pie1', 'des': True}, {'tag': 'rem', 'ess': True}]}]
+                'lines': [{'tag': 'pd1'}, {'tag': 'ps1'}, {'tag': 'third'}, {'tag': 'proj', 'fr': True}, {'tag': 'cr1'}, {'tag': 'pie1', 'des': True}, {'tag': 'rem', 'ess': True}]},
+               {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
+                'lines': [{'tag': 'pd2'}, {'tag': 'ps2'}, {'side': 'p', 'random': True}, {'tag': 'proj', 'fr': True}, {'tag': 'cr2'}, {'tag': 'pie2', 'des': True}, {'tag': 'rem', 'ess': True}]}]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

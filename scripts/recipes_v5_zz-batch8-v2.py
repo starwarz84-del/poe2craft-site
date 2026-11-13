@@ -59,4 +59,4 @@ def _dzstaff(r, t):
     s5=_node(r,'s5'); s5['cur']='Greater_Exalted_Orb'; _asIs(s5, s5['target']['anyOf'], 's')
     s7['target']['reveal']={'anyOf':[dict(x,tmax=3) for x in s7['target']['reveal']['anyOf']]}
     _drop(r,'s4b','s5b')
-for _t in ('high','bal'): _grade8('diztoh-endgame-quarterstaff','diztoh-endgame-quarterstaff-v2',_t,_dzstaff)
+for _t in ('high',): _grade8('diztoh-endgame-quarterstaff','diztoh-endgame-quarterstaff-v2',_t,_dzstaff)   # 2026-11-13 D2: 하이엔드 4,433 vs 밸런스 4,618 = 10% 이내 → 하이엔드 하나(사용자 확정 15:42 ⑤)

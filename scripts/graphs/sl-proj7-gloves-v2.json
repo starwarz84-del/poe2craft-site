@@ -13,6 +13,10 @@
     "1": {
      "kr": "1티어",
      "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
     }
    }
   }
@@ -23,11 +27,31 @@
    "params": {
     "t": 1
    }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "t": 2
+   }
   }
  ],
  "versions": [
   {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "t": 2
+   },
+   "tier": "bal",
+   "desc": {
+    "kr": "투사체 피해·속도·치명타 확률·관통 1~2티어, 세 번째 접두는 나오는 대로",
+    "en": "T1–2 projectile damage, speed, crit chance and pierce; the third prefix as it comes"
+   }
+  },
+  {
    "id": "high",
+   "tier": "high",
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
@@ -117,6 +141,45 @@
   "pieAny": {
    "gi": 75
   },
+  "pdT": {
+   "gi": 71,
+   "tmax": "$t"
+  },
+  "psT": {
+   "gi": 73,
+   "tmax": "$t"
+  },
+  "crT": {
+   "gi": 74,
+   "tmax": "$t"
+  },
+  "pieT": {
+   "gi": 75,
+   "tmax": "$t"
+  },
+  "pd2": {
+   "gi": 71,
+   "tmax": 2
+  },
+  "ps2": {
+   "gi": 73,
+   "tmax": 2
+  },
+  "cr2": {
+   "gi": 74,
+   "tmax": 2
+  },
+  "pie2": {
+   "gi": 75,
+   "tmax": 2
+  },
+  "pgoodT": {
+   "anyOf": [
+    "pdT",
+    "psT",
+    "third"
+   ]
+  },
   "rem": {
    "gi": 65
   },
@@ -126,15 +189,42 @@
  },
  "conds": {
   "pDone": {
-   "all": [
+   "any": [
     {
-     "has": "pd1"
+     "all": [
+      {
+       "param": {
+        "t": 1
+       }
+      },
+      {
+       "has": "pd1"
+      },
+      {
+       "has": "ps1"
+      },
+      {
+       "has": "third"
+      }
+     ]
     },
     {
-     "has": "ps1"
-    },
-    {
-     "has": "third"
+     "all": [
+      {
+       "param": {
+        "t": 2
+       }
+      },
+      {
+       "has": "pdT"
+      },
+      {
+       "has": "psT"
+      },
+      {
+       "full": "p"
+      }
+     ]
     }
    ]
   },
@@ -151,22 +241,50 @@
     "has": "proj"
    },
    {
-    "has": "pd1"
+    "has": "pdT"
    },
    {
-    "has": "ps1"
+    "has": "psT"
    },
    {
-    "has": "third"
+    "full": "p"
    },
    {
-    "has": "cr1"
+    "has": "crT"
    },
    {
-    "has": "pie1"
+    "has": "pieT"
    },
    {
     "has": "rem"
+   },
+   {
+    "any": [
+     {
+      "param": {
+       "t": 2
+      }
+     },
+     {
+      "all": [
+       {
+        "has": "pd1"
+       },
+       {
+        "has": "ps1"
+       },
+       {
+        "has": "third"
+       },
+       {
+        "has": "cr1"
+       },
+       {
+        "has": "pie1"
+       }
+      ]
+     }
+    ]
    }
   ]
  },
@@ -992,6 +1110,24 @@
       "proj"
      ]
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "t": 2
+     },
+     "set": {
+      "show": [
+       "pd2"
+      ],
+      "showText": [
+       {
+        "kr": "세 번째 접두는 나오는 대로",
+        "en": "The third prefix as it comes"
+       }
+      ]
+     }
+    }
    ]
   },
   {
@@ -1021,7 +1157,7 @@
     {
      "if": {
       "not": {
-       "has": "pgood"
+       "has": "pgoodT"
       }
      },
      "to": "kz",
@@ -1101,6 +1237,26 @@
       "en": "Miss: Orb of Annulment"
      }
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "t": 2
+     },
+     "set": {
+      "goal": {
+       "kr": "남은 접두 옵션",
+       "en": "The prefix left"
+      },
+      "show": [],
+      "showText": [
+       {
+        "kr": "투사체 피해·속도 중 빠진 것 1~2티어, 둘 다 있으면 나오는 대로",
+        "en": "The missing one of projectile damage or speed at T1–2; with both on, keep what comes"
+       }
+      ]
+     }
+    }
    ]
   },
   {
@@ -1164,7 +1320,7 @@
    "edges": [
     {
      "if": {
-      "has": "cr1"
+      "has": "crT"
      },
      "to": "a1",
      "res": "ok"
@@ -1241,6 +1397,18 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "t": 2
+     },
+     "set": {
+      "show": [
+       "cr2"
+      ]
+     }
     }
    ]
   },
@@ -1507,7 +1675,7 @@
      "if": {
       "all": [
        {
-        "has": "cr1"
+        "has": "crT"
        },
        {
         "not": {
@@ -1763,14 +1931,14 @@
     "kr": "훼손 옵션 확인",
     "en": "Reveal the desecrated modifier"
    },
-   "want": "pie1",
+   "want": "pieT",
    "show": [
     "pie1"
    ],
    "edges": [
     {
      "if": {
-      "added": "pie1"
+      "added": "pieT"
      },
      "to": "ok",
      "res": "ok"
@@ -1856,6 +2024,18 @@
       "rem"
      ]
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "t": 2
+     },
+     "set": {
+      "show": [
+       "pie2"
+      ]
+     }
+    }
    ]
   },
   {
@@ -1930,6 +2110,12 @@
    "goal": {
     "kr": "접두 투사체 피해·투사체 속도 1티어 + 세 번째 접두(공격 시 피해 추가·에너지 보호막·마나 최대치 중 먼저 뜬 것) 1티어, 남은 옵션 중 먼저 뜬 것",
     "en": "T1 projectile damage and speed + a T1 third prefix (flat attack damage, energy shield or maximum mana), whichever lands first"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접두 투사체 피해·투사체 속도 1~2티어, 세 번째 접두는 나오는 대로",
+     "en": "T1–2 projectile damage and speed; the third prefix as it comes"
+    }
    },
    "steps": [
     {
@@ -2020,6 +2206,12 @@
    "goal": {
     "kr": "접미 치명타 확률 1티어 + 잔류물 획득 거리(팽창하는 합금)",
     "en": "T1 crit chance suffix + remnant pickup range (Expansive Alloy)"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접미 치명타 확률 1~2티어 + 잔류물 획득 거리(팽창하는 합금)",
+     "en": "T1–2 crit chance suffix + remnant pickup range (Expansive Alloy)"
+    }
    },
    "steps": [
     {
@@ -2158,6 +2350,39 @@
     },
     {
      "tag": "pie1",
+     "des": true
+    },
+    {
+     "tag": "rem",
+     "ess": true
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "pd2"
+    },
+    {
+     "tag": "ps2"
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "proj",
+     "fr": true
+    },
+    {
+     "tag": "cr2"
+    },
+    {
+     "tag": "pie2",
      "des": true
     },
     {

@@ -24,7 +24,6 @@ J = lambda s: L(s, '잡옵', 'Junk', 'j')
 ANN = K('소멸의 오브 사용', 'Use an Orb of Annulment')
 
 P1H = K('물리 피해 추가 1~3티어·물리 피해 증가 1티어·물리 피해 증가와 정확도 1티어', 'T1–3 flat physical, T1 % physical or T1 % physical and accuracy')
-P1B = K('물리 피해 추가 1~3티어·물리 피해 증가 1~2티어·물리 피해 증가와 정확도 1~2티어', 'T1–3 flat physical, T1–2 % physical or T1–2 % physical and accuracy')
 
 g = {
  'id': 'diztoh-endgame-quarterstaff-v2', 'recipe': 'diztoh-endgame-quarterstaff-v2', 'cls': 'Quarterstaves', 'base': 'Sinister Quarterstaff', 'ilvl': 82,
@@ -36,38 +35,33 @@ g = {
           '우측 말소 + 상위 카오스 반복(9:50 구입, 9:59 툴팁) → 공격 속도 4티어(10:06) → 엑잘(10:20, 오브 등급 확인 못 함) → 고대 턱뼈 + 우측 강령술(11:28, 접미 꽉 참 — 처치당 생명력이 지워짐) → '
           '공개 빗나감(11:58 생명력 흡수) → 빛의 징조 + 소멸 → 다시 훼손(12:10) → 심연의 메아리 공개 빗나감(12:48 공격 효율) → 우측 소멸의 징조 + 소멸 50:50(13:08~13:24, 영상: 빛의 징조보다 싸서) → 다시 훼손 → 공개 치명타 피해 보너스 1티어(13:42). '
           '11-13 오후 새 정책 F(P14, 사용자 결정 "영상에 나온 대로가 예전 개별 결정보다 우선"): 11-13 오전 사용자 결정(엑잘 10:20을 빼고 빈 접미 자리에 훼손, 공개 빗나감은 항상 빛의 징조, 접미가 잡옵으로 꽉 차면 우측 소멸로 하나 지우는 단계)을 되돌려 영상 방식대로 — 엑잘로 접미를 채운 뒤 훼손이 하나를 밀어내고, 첫 빗나감은 빛의 징조 + 소멸, 두 번째 빗나감부터 우측 소멸 50:50. '
-          '단 하이엔드는 사용자 확정 15:21(빛의 징조 반복 유지)대로 두 번째 빗나감부터도 빛의 징조 + 소멸(밸런스만 영상의 우측 소멸 50:50). '
+          '단 하이엔드는 사용자 확정 15:21(빛의 징조 반복 유지)대로 두 번째 빗나감부터도 빛의 징조 + 소멸. 밸런스(영상의 우측 소멸 50:50, 4,618 div)는 하이엔드(4,433 div)와 10% 이내라 사용자 확정 15:42 ⑤대로 빼고 하이엔드 하나만 남김(2026-11-13 D2). '
           '영상은 치명타 확률을 노렸지만 치명타 피해 보너스를 받아들임(13:35). 룬(완벽한 철 룬)·신성한 오브·바알 대장장이의 주입기 퀄리티 30%(14:00~17:20)는 정책 9·14장대로 뺌. '
           '등급 C17: 하이엔드 = 물리 % 1티어·공격 속도/치명타 확률 1티어·훼손 1티어, 세 번째 접두는 가장 낮은 레벨일 때만 절사 + 완벽한 카오스(영상 8:38), '
-          '밸런스 = 1~2티어, 세 번째 접두는 결과 그대로. 세 번째 접두는 두 등급 모두 랜덤 옵션(절사가 물리 접두와 같은 레벨이면 영상처럼 멈춤 — 정책 10장 2번 예외).'),
+          '세 번째 접두는 랜덤 옵션(절사가 물리 접두와 같은 레벨이면 영상처럼 멈춤 — 정책 10장 2번 예외).'),
  'params': {
-   'xT': {'kr': '물리 피해 증가·복합', 'en': '% physical / hybrid', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
-   'sT': {'kr': '공격 속도·치명타 확률', 'en': 'Attack speed / crit chance', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
-   'dT': {'kr': '훼손 치명타', 'en': 'Desecrated crit', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
-   'g': {'kr': '세 번째 접두', 'en': 'Third prefix', 'values': {'1': K('가장 낮은 레벨이면 절사로 다시', 'Whittle while it is the lowest'), '0': K('랜덤 옵션', 'Random option')}}},
- 'strategies': [{'id': 'high', 'params': {'xT': 1, 'sT': 1, 'dT': 1, 'g': 1}}, {'id': 'bal', 'params': {'xT': 2, 'sT': 2, 'dT': 2, 'g': 0}}],
+   'xT': {'kr': '물리 피해 증가·복합', 'en': '% physical / hybrid', 'values': {'1': K('1티어', 'T1')}},
+   'sT': {'kr': '공격 속도·치명타 확률', 'en': 'Attack speed / crit chance', 'values': {'1': K('1티어', 'T1')}},
+   'dT': {'kr': '훼손 치명타', 'en': 'Desecrated crit', 'values': {'1': K('1티어', 'T1')}},
+   'g': {'kr': '세 번째 접두', 'en': 'Third prefix', 'values': {'1': K('가장 낮은 레벨이면 절사로 다시', 'Whittle while it is the lowest')}}},
+ 'strategies': [{'id': 'high', 'params': {'xT': 1, 'sT': 1, 'dT': 1, 'g': 1}}],
  'versions': [
-   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'xT': 2, 'sT': 2, 'dT': 2, 'g': 0}, 'tier': 'bal',
-    'desc': K('물리 피해 증가·공격 속도·훼손 치명타 1~2티어, 세 번째 접두는 나오는 대로', 'T1–2 % physical, attack speed and desecrated crit; third prefix as it comes')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'xT': 1, 'sT': 1, 'dT': 1, 'g': 1}, 'tier': 'high',
     'desc': K('물리 피해 증가·공격 속도·훼손 치명타 1티어, 세 번째 접두는 가장 낮은 레벨일 때 절사로 다시', 'T1 % physical, attack speed and desecrated crit; whittle the third prefix while it is the lowest')}],
  'tags': {
    'melee': {'gi': 10, 'tmax': 1},
    'pflat': {'gi': 3, 'tmax': 3}, 'ppct': {'gi': 8, 'tmax': '$xT'}, 'hyb': {'gi': 9, 'tmax': '$xT'},
-   'ppct1': {'gi': 8, 'tmax': 1}, 'hyb1': {'gi': 9, 'tmax': 1}, 'ppct2': {'gi': 8, 'tmax': 2}, 'hyb2': {'gi': 9, 'tmax': 2},
+   'ppct1': {'gi': 8, 'tmax': 1}, 'hyb1': {'gi': 9, 'tmax': 1},
    'p1': {'anyOf': ['pflat', 'ppct', 'hyb'], 'label': K('물리 피해 추가 1~3티어·물리 피해 증가·물리 피해 증가와 정확도', 'T1–3 flat physical, % physical or % physical and accuracy')},
    'p1H': {'anyOf': ['pflat', 'ppct1', 'hyb1'], 'shown': ['pflat', 'ppct1'], 'label': P1H},
-   'p1B': {'anyOf': ['pflat', 'ppct2', 'hyb2'], 'shown': ['pflat', 'ppct2'], 'label': P1B},
    'as': {'gi': 16, 'tmax': '$sT'}, 'crit': {'gi': 18, 'tmax': '$sT'},
-   'as1': {'gi': 16, 'tmax': 1}, 'crit1': {'gi': 18, 'tmax': 1}, 'as2': {'gi': 16, 'tmax': 2}, 'crit2': {'gi': 18, 'tmax': 2},
+   'as1': {'gi': 16, 'tmax': 1}, 'crit1': {'gi': 18, 'tmax': 1},
    'sg': {'anyOf': ['as', 'crit'], 'label': K('공격 속도·치명타 확률', 'Attack speed or crit chance')},
    'sgH': {'anyOf': ['as1', 'crit1'], 'shown': 'as1', 'label': K('공격 속도·치명타 확률 1티어', 'T1 attack speed or crit chance')},
-   'sgB': {'anyOf': ['as2', 'crit2'], 'shown': 'as2', 'label': K('공격 속도·치명타 확률 1~2티어', 'T1–2 attack speed or crit chance')},
    'critD': {'gi': 18, 'tmax': '$dT'}, 'cdmg': {'gi': 19, 'tmax': '$dT'},
-   'critD1': {'gi': 18, 'tmax': 1}, 'cdmg1': {'gi': 19, 'tmax': 1}, 'critD2': {'gi': 18, 'tmax': 2}, 'cdmg2': {'gi': 19, 'tmax': 2},
+   'critD1': {'gi': 18, 'tmax': 1}, 'cdmg1': {'gi': 19, 'tmax': 1},
    'cr': {'anyOf': ['critD', 'cdmg'], 'label': K('치명타 확률·치명타 피해 보너스', 'Crit chance or crit damage bonus')},
    'crH': {'anyOf': ['critD1', 'cdmg1'], 'shown': 'cdmg1', 'label': K('치명타 확률·치명타 피해 보너스 1티어', 'T1 crit chance or crit damage bonus')},
-   'crB': {'anyOf': ['critD2', 'cdmg2'], 'shown': 'cdmg2', 'label': K('치명타 확률·치명타 피해 보너스 1~2티어', 'T1–2 crit chance or crit damage bonus')},
    'asc': {'anyOf': ['as', 'crit', 'cdmg']},
    'keepW': {'anyOf': ['p1', 'melee', 'sg']}},
  'conds': {'sDone': {'all': [{'added': 'cr'}, {'has': 'sg'}, {'count': {'tag': 'asc', 'min': 2}}]}},
@@ -107,8 +101,7 @@ A(id='e2', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Perfect_Exa
   edges=[{'if': {'all': [{'param': {'g': 1}}, {'not': {'count': {'tag': 'p1', 'min': 3}}}, {'whittleSafe': {'tag': 'keepW'}}]}, 'to': 'e2b', 'res': 'fail',
           'label': K('가장 낮은 레벨이면 절사', 'Lowest level: Whittling')},
          {'to': 's0', 'res': 'ok'}],
-  item=[FLAT, PCT, FIRE, ML],
-  over=[{'param': {'g': 0}, 'set': {'goal': K('접두 세 번째 옵션 (나오는 대로)', 'Third prefix option (keep what comes)'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}]}}])
+  item=[FLAT, PCT, FIRE, ML])
 A(id='e2b', kind='act', group='main', pos=[1, 5.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
   goal=K('가장 낮은 레벨 옵션 다시 (물리 피해 접두와 같은 레벨이면 멈춤)', 'Reroll the lowest-level option (stop if it ties with a physical prefix)'), show=['hyb'],
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 3}}, 'to': 'e2', 'res': 'fail', 'label': K('새 옵션이 접미로 — 다시 엑잘', 'New option on the suffix: exalt again')},
@@ -142,7 +135,8 @@ A(id='r1', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_o
          {'if': {'not': {'has': 'sg'}}, 'to': 's1', 'res': 'fail', 'label': K('공격 속도가 지워짐 — 접미 카오스부터', 'Attack speed gone: back to the suffix Chaos')},
          {'to': 'lx', 'res': 'fail', 'label': K('첫 빗나감', 'First miss')}],
   item=[FLAT, PCT, FIRE, ML, AS, CD])
-# 영상 12:05 첫 빗나감 = 빛의 징조 + 소멸, 13:08 두 번째 빗나감 = 우측 소멸의 징조 50:50(새 정책 F, 11-13 P14)
+# 영상 12:05 첫 빗나감 = 빛의 징조 + 소멸, 13:08 두 번째 빗나감 = 우측 소멸의 징조 50:50(새 정책 F, 11-13 P14).
+# 2026-11-13 D2(사용자 확정 15:42 ⑤): 하이엔드(빛의 징조, 4,433) vs 밸런스(우측 소멸 50:50, 4,618)가 10% 이내 → 하이엔드 하나만 남김. 하이엔드는 두 번째 빗나감부터도 빛의 징조라 ax 상자를 빼고 lx로 돌아감(우측 소멸 50:50은 꿀팁 후보)
 A(id='lx', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'd2', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='d2', kind='act', group='main', pos=[1, 11.4], act='desecrate', cur='Ancient_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
@@ -152,36 +146,25 @@ A(id='r2', kind='act', group='main', pos=[1, 12.4], act='reveal', omens=['Omen_o
   goal=K('접미 치명타 확률·치명타 피해 보너스', 'Crit chance or crit damage bonus suffix'), show=['critD', 'cdmg'],
   edges=[{'if': {'ref': 'sDone'}, 'to': 'ok', 'res': 'ok'},
          {'if': {'not': {'has': 'sg'}}, 'to': 's1', 'res': 'fail', 'hide': True},
-         {'to': 'ax', 'res': 'fail', 'label': K('두 번째 빗나감부터', 'From the second miss')}], item=[FLAT, PCT, FIRE, ML, AS, CD])
-A(id='ax', kind='act', group='main', pos=[2, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=ANN, goal=ANN,
-  target=K('접미 하나 지우기 (훼손 옵션·공격 속도 1/2)', 'Remove one suffix (the desecration or attack speed, 1 in 2)'),
-  edges=[{'if': {'removed': 'sg'}, 'to': 's1', 'res': 'fail', 'label': K('공격 속도가 지워짐 — 접미 카오스부터', 'Attack speed gone: back to the suffix Chaos')},
-         {'to': 'd2', 'res': 'ok', 'label': K('훼손 옵션이 지워짐 — 다시 훼손', 'Desecration gone: desecrate again')}],
-  # 사용자 확정 15:21(L①): 하이엔드는 훼손 공개 빛의 징조 반복 유지 — 두 번째 빗나감부터도 빛의 징조 + 소멸(공격 속도를 잃지 않음)
-  over=[{'param': {'g': 1}, 'set': {'omens': ['Omen_of_Light'], 'target': K('훼손 옵션 제거', 'Remove the desecrated option'),
-                                   'edges': [{'to': 'd2', 'res': 'ok', 'label': K('다시 훼손', 'Desecrate again')}]}}])
+         {'to': 'lx', 'res': 'fail', 'label': K('다시 빗나감', 'Missed again')}], item=[FLAT, PCT, FIRE, ML, AS, CD])
 A(id='ok', kind='done', group='main', pos=[0, 13.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L3', 'nodes': ['d1', 'r1', 'lx', 'd2', 'r2', 'ax'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal', 'fold': True,
+ {'id': 'L3', 'nodes': ['d1', 'r1', 'lx', 'd2', 'r2'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal', 'fold': True,
   'goal': K('접미 치명타 피해 보너스 (훼손) — 치명타 확률·치명타 피해 보너스 중 먼저 뜬 것', 'Desecrated crit damage bonus suffix: crit chance or crit damage bonus, whichever lands first'),
-  'goalBy': {'high': K('접미 치명타 피해 보너스 1티어 (훼손) — 치명타 확률·치명타 피해 보너스 1티어 중 먼저 뜬 것', 'T1 desecrated crit damage bonus: T1 crit chance or crit damage bonus, whichever lands first'),
-             'bal': K('접미 치명타 피해 보너스 1~2티어 (훼손) — 치명타 확률·치명타 피해 보너스 1~2티어 중 먼저 뜬 것', 'T1–2 desecrated crit damage bonus: T1–2 crit chance or crit damage bonus, whichever lands first')},
+  'goalBy': {'high': K('접미 치명타 피해 보너스 1티어 (훼손) — 치명타 확률·치명타 피해 보너스 1티어 중 먼저 뜬 것', 'T1 desecrated crit damage bonus: T1 crit chance or crit damage bonus, whichever lands first')},
   'steps': [K('고대 턱뼈 + 우측 강령술의 징조로 접미 훼손 — 접미가 꽉 차 있어 하나가 밀려나고, 공격 속도가 밀려나면 우측 말소 + 카오스부터', 'Ancient Jawbone + Dextral Necromancy on a suffix: the full suffixes lose one, and losing attack speed sends you back to Dextral Erasure + Chaos') | {'node': 'd1'},
             K('심연의 메아리의 징조로 공개', 'Reveal with Abyssal Echoes') | {'node': 'r1'},
-            K('첫 빗나감은 빛의 징조 + 소멸의 오브로 훼손 옵션만 지움', 'First miss: Omen of Light + Orb of Annulment removes only the desecration') | {'node': 'lx'},
+            K('빗나가면 빛의 징조 + 소멸의 오브로 훼손 옵션만 지움', 'On a miss, Omen of Light + Orb of Annulment removes only the desecration') | {'node': 'lx'},
             K('고대 턱뼈로 다시 훼손', 'Desecrate again with an Ancient Jawbone') | {'node': 'd2'},
-            K('심연의 메아리의 징조로 다시 공개', 'Reveal again with Abyssal Echoes') | {'node': 'r2'},
-            K('두 번째 빗나감부터 소멸의 오브 — 밸런스는 우측 소멸의 징조로 훼손 옵션과 공격 속도 중 하나가 지워지고(1/2), 하이엔드는 빛의 징조로 훼손 옵션만 지움', 'From the second miss: Orb of Annulment — Balance uses Dextral Annulment (the desecration or attack speed, 1 in 2), High-end uses Omen of Light (only the desecration)') | {'node': 'ax'}],
+            K('심연의 메아리의 징조로 다시 공개, 빗나가면 다시 빛의 징조 + 소멸의 오브', 'Reveal again with Abyssal Echoes; another miss goes back to Omen of Light + Annulment') | {'node': 'r2'}],
   'worst': {'kr': '공격 속도가 지워지면 우측 말소 + 카오스부터', 'en': 'Attack speed gone: back to Dextral Erasure + Chaos', 'to': 's1'},
   'item': [FLAT, PCT, FIRE, ML, AS, CD]},
 ]
 g['finals'] = [
  {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
   'lines': [{'tag': 'p1H'}, {'tag': 'p1H'}, {'side': 'p', 'random': True}, {'tag': 'melee', 'fr': True}, {'tag': 'sgH'}, {'tag': 'crH', 'des': True}]},
- {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'p1B'}, {'tag': 'p1B'}, {'side': 'p', 'random': True}, {'tag': 'melee', 'fr': True}, {'tag': 'sgB'}, {'tag': 'crB', 'des': True}]},
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

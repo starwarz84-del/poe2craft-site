@@ -11,5 +11,6 @@ for _t in ('high','bal','ess'): _grade8('easybabi-spiny-talisman','easybabi-spin
 
 # 2. SL 딜용 장갑 — 2026-11-13 W13: 영상 전체 화면 대조로 새 기준 재작성(scripts/graphs/gen_sl_blacksteel_gauntlets.py). 난이도 극한 → 하이엔드만(정책 10장 C11).
 #    등급 레시피 단계는 플로우차트를 읽어 만듦(graph2recipe), 옛 단계 고치기는 쓰지 않음
+#    2026-11-13 D2: 난이도 표 4 전문가 → 하이엔드·밸런스(사용자 확정 15:42 ①), 밸런스는 생성기 versions에 C17 기준으로 추가
 def _sgl(r, t): return
-for _t in ('high',): _grade8('sl-blacksteel-gauntlets','sl-blacksteel-gauntlets-v2',_t,_sgl)
+for _t in ('high','bal'): _grade8('sl-blacksteel-gauntlets','sl-blacksteel-gauntlets-v2',_t,_sgl)

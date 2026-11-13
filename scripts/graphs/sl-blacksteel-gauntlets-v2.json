@@ -13,6 +13,10 @@
     "1": {
      "kr": "1티어",
      "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
     }
    }
   }
@@ -23,11 +27,31 @@
    "params": {
     "t": 1
    }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "t": 2
+   }
   }
  ],
  "versions": [
   {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "t": 2
+   },
+   "tier": "bal",
+   "desc": {
+    "kr": "접두 두 번째·접미 엑잘 1~2티어, 세 번째 접두 공개와 마지막 접미는 나오는 대로",
+    "en": "Second prefix and suffix exalt at T1–2; the third prefix reveal and the last suffix as they come"
+   }
+  },
+  {
    "id": "high",
+   "tier": "high",
    "kr": "하이엔드",
    "en": "High-end",
    "params": {
@@ -94,6 +118,70 @@
     "en": "T1 withered magnitude or fire resistance"
    }
   },
+  "amT": {
+   "gi": 85,
+   "tmax": "$t"
+  },
+  "igT": {
+   "gi": 82,
+   "tmax": "$t"
+  },
+  "faT": {
+   "gi": 86,
+   "tmax": "$t"
+  },
+  "ig2": {
+   "gi": 82,
+   "tmax": 2
+  },
+  "mpT": {
+   "anyOf": [
+    "amT",
+    "igT",
+    "faT"
+   ],
+   "shownBy": {
+    "high": [
+     "fa1",
+     "ig1",
+     "am1"
+    ],
+    "bal": "ig2"
+   },
+   "label": {
+    "kr": "상태 이상의 강도·점화 강도·피해 가속",
+    "en": "Ailment magnitude, ignite magnitude or faster ailments"
+   }
+  },
+  "wiT": {
+   "gi": 91,
+   "tmax": "$t"
+  },
+  "frT": {
+   "gi": 2,
+   "tmax": "$t"
+  },
+  "fr2": {
+   "gi": 2,
+   "tmax": 2
+  },
+  "s2T": {
+   "anyOf": [
+    "wiT",
+    "frT"
+   ],
+   "shownBy": {
+    "high": [
+     "fr1",
+     "wi1"
+    ],
+    "bal": "fr2"
+   },
+   "label": {
+    "kr": "위축 강도·화염 저항",
+    "en": "Withered magnitude or fire resistance"
+   }
+  },
   "magicGood": {
    "anyOf": [
     "mp",
@@ -123,16 +211,53 @@
     "has": "cu1"
    },
    {
-    "count": {
-     "tag": "mp",
-     "min": 3
-    }
+    "full": "p"
    },
    {
-    "count": {
-     "tag": "s2",
-     "min": 2
-    }
+    "full": "s"
+   },
+   {
+    "any": [
+     {
+      "all": [
+       {
+        "param": {
+         "t": 1
+        }
+       },
+       {
+        "count": {
+         "tag": "mp",
+         "min": 3
+        }
+       },
+       {
+        "count": {
+         "tag": "s2",
+         "min": 2
+        }
+       }
+      ]
+     },
+     {
+      "all": [
+       {
+        "param": {
+         "t": 2
+        }
+       },
+       {
+        "count": {
+         "tag": "mpT",
+         "min": 2
+        }
+       },
+       {
+        "has": "s2T"
+       }
+      ]
+     }
+    ]
    }
   ]
  },
@@ -931,13 +1056,13 @@
     "en": "Second prefix"
    },
    "show": [
-    "mp"
+    "mpT"
    ],
    "edges": [
     {
      "if": {
       "count": {
-       "tag": "mp",
+       "tag": "mpT",
        "min": 2
       }
      },
@@ -1015,7 +1140,7 @@
    "edges": [
     {
      "if": {
-      "has": "mp"
+      "has": "mpT"
      },
      "to": "k2",
      "res": "ok",
@@ -1125,14 +1250,14 @@
     "kr": "훼손 옵션 확인",
     "en": "Reveal the desecrated modifier"
    },
-   "want": "mp",
+   "want": "mpT",
    "show": [
-    "mp"
+    "mpT"
    ],
    "edges": [
     {
      "if": {
-      "added": "mp"
+      "added": "mpT"
      },
      "to": "k3",
      "res": "ok"
@@ -1184,6 +1309,32 @@
      "tags": [
       "cu1"
      ]
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "t": 2
+     },
+     "set": {
+      "goal": {
+       "kr": "훼손 옵션 확인 (나오는 대로)",
+       "en": "Reveal the desecrated modifier (keep what comes)"
+      },
+      "show": [],
+      "showText": [
+       {
+        "kr": "카틀라 접두가 보이면 고르고, 없으면 나온 옵션 그대로",
+        "en": "Pick a Katla prefix if one shows, otherwise keep what comes"
+       }
+      ],
+      "edges": [
+       {
+        "to": "k3",
+        "res": "ok"
+       }
+      ]
+     }
     }
    ]
   },
@@ -1260,6 +1411,41 @@
      "label": {
       "kr": "빗나감 — 우측 소멸의 징조",
       "en": "Miss: Omen of Dextral Annulment"
+     }
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "t": 2
+     },
+     "set": {
+      "show": [
+       "s2T"
+      ],
+      "showText": [
+       {
+        "kr": "남은 접미는 나오는 대로",
+        "en": "The other suffix as it comes"
+       }
+      ],
+      "edges": [
+       {
+        "if": {
+         "has": "s2T"
+        },
+        "to": "ok",
+        "res": "ok"
+       },
+       {
+        "to": "k3x",
+        "res": "fail",
+        "label": {
+         "kr": "빗나감 — 우측 소멸의 징조",
+         "en": "Miss: Omen of Dextral Annulment"
+        }
+       }
+      ]
      }
     }
    ],
@@ -1549,6 +1735,36 @@
     },
     {
      "tag": "s2"
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "mp"
+    },
+    {
+     "tag": "mpT"
+    },
+    {
+     "side": "p",
+     "random": true,
+     "des": true
+    },
+    {
+     "tag": "cu1",
+     "fr": true
+    },
+    {
+     "tag": "s2T"
+    },
+    {
+     "side": "s",
+     "random": true
     }
    ]
   }
