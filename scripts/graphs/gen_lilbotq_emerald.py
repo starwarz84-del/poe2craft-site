@@ -31,20 +31,22 @@ g = {
  'note': ('2026-11-13 G9 영상 전체 대조(근거 scratchpad review/G9/lilbotq-emerald-v2/timeline.md). 고급 제작(9:10~21:30) 중 끝까지 간 에메랄드(Luminous Delirium) 한 줄: '
           '공격 치명타 피해 보너스 + 이동 속도 접미, 접두 잡옵 2개(전령 스킬 피해·육척봉 피해) 희귀 에메랄드 구입(15:00, 2~3 div) → 위력적인 액체 경멸(15:26, 전령 피해가 지워지고 +1 접미 허용 — 실패면 버림, 영상 4개 중 1개 성공) → '
           '우측 강령술 + 보존된 두개골(15:34) → 심연의 메아리 공개(16:00 빗나감, 빛의 징조 반복 17:20~18:00, 공격 치명타 명중 확률) → 좌측 소멸의 징조 + 소멸의 오브(19:15, 빗나가 육척봉 피해가 지워짐) → '
-          '좌측 말소의 징조 + 카오스(19:25, +1 접미 허용이 지워짐) → 엑잘(19:35) → 카오스 반복(접미가 한도를 넘어 접두만 바뀜, 20:40 공격 피해) → 위력적인 액체 흉포함(20:45 50:50 성공). 신성한 오브(21:10 말만)는 뺌.'),
+          '좌측 말소의 징조 + 카오스(19:25, +1 접미 허용이 지워짐) → 엑잘(19:35) → 카오스 반복(접미가 한도를 넘어 접두만 바뀜, 20:40 공격 피해) → 위력적인 액체 흉포함(20:45 50:50 성공). 신성한 오브(21:10 말만)는 뺌. '
+          '11-13 오후 새 정책 A: 공개 목표 = 공격 치명타 명중 확률·공격 속도 중 하나(18:00 자막: 메아리로 공격 속도도 나왔지만 치명타 확률을 고름 — 둘 다 받는 옵션). 화면·카드는 성공 회차의 공격 치명타 명중 확률.'),
  'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video')}}},
  'strategies': [{'id': 'bal', 'params': {'v': 1}}],
  'versions': [{'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
                'desc': K('영상: 빛의 징조로 다시 공개, 좌측 소멸의 징조로 경멸 옵션 제거, 카오스로 공격 피해 → 액체 흉포함', 'Video: Light retries, Sinistral Annulment for the contempt line, Chaos for attack damage, then Ferocity')}],
- 'tags': {'critD': {'gi': 5}, 'ms': {'gi': 45}, 'critA': {'gi': 4}, 'atk': {'gi': 6},
+ 'tags': {'critD': {'gi': 5}, 'ms': {'gi': 45}, 'critA': {'gi': 4}, 'as': {'gi': 7},
+          'rev': {'anyOf': ['critA', 'as'], 'shown': 'critA', 'label': K('공격 치명타 명중 확률 증가·공격 속도 증가', 'Attack crit chance or attack speed')}, 'atk': {'gi': 6},
           'contS': {'gi': 119, 'slot': {'s': 1}}, 'contP': {'gi': 120, 'slot': {'p': 1}}, 'fer': {'gi': 117}},
- 'require': {'all': [{'has': 'critD'}, {'has': 'ms'}, {'has': 'critA'}, {'has': 'atk'}, {'has': 'fer'}]},
+ 'require': {'all': [{'has': 'critD'}, {'has': 'ms'}, {'has': 'rev'}, {'has': 'atk'}, {'has': 'fer'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'j0',
  'cap': {'p': 2, 's': 2},
  'finals': [{'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-             'lines': [{'tag': 'atk'}, {'tag': 'fer'}, {'tag': 'critD'}, {'tag': 'ms'}, {'tag': 'critA', 'des': True}]}],
+             'lines': [{'tag': 'atk'}, {'tag': 'fer'}, {'tag': 'critD'}, {'tag': 'ms'}, {'tag': 'rev', 'des': True}]}],
  'finalItem': {'quality': 0, 'sockets': 0},
 }
 
@@ -69,9 +71,9 @@ A(id='j2', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserv
   label=K('훼손', 'Desecrate'), goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'j3'}],
   item=[QST, CONT, CD, MS, UN('s')])
-A(id='j3', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='critA',
-  label=K('공개', 'Reveal'), goal=K('접미 공격 치명타 명중 확률', 'Attack crit chance suffix'), show=['critA'],
-  edges=[{'if': {'added': 'critA'}, 'to': 'j4', 'res': 'ok'}, {'to': 'j3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
+A(id='j3', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev',
+  label=K('공개', 'Reveal'), goal=K('접미 공격 치명타 명중 확률', 'Attack crit chance suffix'), show=['rev'],
+  edges=[{'if': {'added': 'rev'}, 'to': 'j4', 'res': 'ok'}, {'to': 'j3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[QST, CONT, CD, MS, CC])
 A(id='j3x', kind='act', group='main', pos=[1, 4.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 지우고 다시 훼손', 'Remove the desecrated option, desecrate again'), edges=[{'to': 'j2', 'label': K('다시 훼손', 'Desecrate again')}])

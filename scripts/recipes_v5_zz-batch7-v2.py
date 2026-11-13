@@ -53,7 +53,7 @@ def _focus(r, t):
         _node(r,'v6')['br']=KEEP
     else:
         _node(r,'vr3')['target']['reveal']={'anyOf':rev}
-for _t in ('bal','ess'): _grade('saveq-alloy-focus','saveq-alloy-focus-v2',_t,_focus)
+for _t in ('bal',): _grade('saveq-alloy-focus','saveq-alloy-focus-v2',_t,_focus)
 
 # 5. 탱정 키타바 방패 — 난이도 4(사용자 확정 2026-11-12) = 하이엔드(영상) + 밸런스. 단계·확률·준비 과정은 플로우차트(graph2recipe)가 다시 쓰고, 여기서는 베이스 설명·분기 줄만 정함.
 #    영상 시각은 build_recipes.py FC_TS(2026-11-12 W5 영상 전체 재대조, 근거 scratchpad review/W5-kitava-shield/timeline.md).

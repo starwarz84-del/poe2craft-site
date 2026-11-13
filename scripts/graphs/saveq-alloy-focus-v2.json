@@ -7,19 +7,15 @@
  "basePrice": {
   "Divine_Orb": 3.5
  },
- "note": "2026-11-13 G9 영상 전체 대조(근거 scratchpad review/G9/saveq-alloy-focus-v2/timeline.md). 집중구 3개 중 1번(5:00~8:36) 한 줄: 에너지 보호막 최대치 3티어 + 모든 주문 스킬 +2 매직 타살리안 집중구 구입(아이템 레벨 84, 약 3.5 div) → 상위 추구의 에센스(5:29) → 좌측 강령술 + 고대 갈비뼈(5:38) → 분열의 오브 = 에너지 보호막 최대치(6:00) → 심연의 메아리 공개 = 에너지 보호막 95%(6:46) → 소켓 + 아스트리드의 창의성(7:00) → 좌측 찬미 + 완벽한 엑잘 = 마나 2티어(7:25) → 좌측 결정화 + 초월의 합금(7:45, 1/2에서 공개 옵션이 지워짐) → 고대 갈비뼈 다시 + 메아리 공개 = 에너지 보호막 95%(8:24). 분열이 다른 옵션에 걸리면 새 베이스(내부 결정 — 영상 2·3번은 그대로 진행했지만 그 뒤 합금이 주문 피해를 지움). 합금이 엑잘 옵션을 지우면 완벽한 엑잘로 빈 접두(영상 2번 10:20과 같은 처리). 에센셜 = 영상(공개·엑잘 결과 그대로), 밸런스 = 공개를 빛의 징조로 다시(C17-3).",
+ "note": "2026-11-13 G9 영상 전체 대조(근거 scratchpad review/G9/saveq-alloy-focus-v2/timeline.md). 집중구 3개 중 1번(5:00~8:36) 한 줄: 에너지 보호막 최대치 3티어 + 모든 주문 스킬 +2 매직 타살리안 집중구 구입(아이템 레벨 84, 약 3.5 div) → 상위 추구의 에센스(5:29) → 좌측 강령술 + 고대 갈비뼈(5:38) → 분열의 오브 = 에너지 보호막 최대치(6:00) → 심연의 메아리 공개 = 에너지 보호막 95%(6:46) → 소켓 + 아스트리드의 창의성(7:00) → 좌측 찬미 + 완벽한 엑잘 = 마나 2티어(7:25) → 좌측 결정화 + 초월의 합금(7:45, 1/2에서 공개 옵션이 지워짐) → 고대 갈비뼈 다시 + 메아리 공개 = 에너지 보호막 95%(8:24). 분열이 다른 옵션에 걸려도 그 베이스로 계속(사용자 확정 2026-11-13 14:33 — 보통이라 영상 2·3번 집중구처럼 진행, 그 뒤 합금이 접두 3개 중 하나를 지움). 합금이 훼손 옵션이 아닌 접두를 지우면 완벽한 엑잘로 빈 접두(영상 2번 10:20과 같은 처리). 11-13 오후 새 정책: 영상 공개 두 번 모두 한 번에 1티어라 빛의 징조 반복 없음(B) → 밸런스·에센셜 과정이 같아 밸런스 하나만(D). 공개는 심연의 메아리로 에너지 보호막 %·주문 피해가 있으면 고르고, 없으면 결과 그대로.",
  "params": {
-  "rT": {
-   "kr": "공개 목표",
-   "en": "Reveal target",
+  "v": {
+   "kr": "진행",
+   "en": "Route",
    "values": {
-    "0": {
-     "kr": "결과 그대로",
-     "en": "As it comes"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
+    "1": {
+     "kr": "영상",
+     "en": "Video"
     }
    }
   }
@@ -28,41 +24,22 @@
   {
    "id": "bal",
    "params": {
-    "rT": 2
-   }
-  },
-  {
-   "id": "ess",
-   "params": {
-    "rT": 0
+    "v": 1
    }
   }
  ],
  "versions": [
   {
-   "id": "ess",
-   "kr": "에센셜",
-   "en": "Essential",
-   "params": {
-    "rT": 0
-   },
-   "tier": "ess",
-   "desc": {
-    "kr": "영상: 공개·엑잘 결과 그대로",
-    "en": "Video: keep the reveal and Exalt results"
-   }
-  },
-  {
    "id": "bal",
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "rT": 2
+    "v": 1
    },
    "tier": "bal",
    "desc": {
-    "kr": "공개는 에너지 보호막 %·주문 피해 1~2티어까지 빛의 징조로 다시",
-    "en": "Reveal again with Omen of Light until T1–2 % Energy Shield or spell damage"
+    "kr": "영상: 분열이 다른 옵션이어도 계속, 공개·엑잘 결과 그대로",
+    "en": "Video: carry on whatever fractures, keep the reveal and Exalt results"
    }
   }
  ],
@@ -102,6 +79,7 @@
     "esp2",
     "spell2"
    ],
+   "shown": "esp2",
    "label": {
     "kr": "에너지 보호막 % 증가·주문 피해 증가 1~2티어",
     "en": "T1–2 % Energy Shield or spell damage"
@@ -110,9 +88,6 @@
  },
  "require": {
   "all": [
-   {
-    "has": "esf"
-   },
    {
     "has": "lvl"
    },
@@ -342,32 +317,18 @@
     "en": "Fracture"
    },
    "goal": {
-    "kr": "분열 — 공개된 옵션 3개 중 접두 에너지 보호막 최대치",
-    "en": "Fracture: the flat Energy Shield prefix, one of three revealed options"
+    "kr": "분열 — 공개된 옵션 3개 중 하나, 영상은 접두 에너지 보호막 최대치",
+    "en": "Fracture: one of three revealed options, the video got the flat Energy Shield prefix"
    },
-   "ask": {
-    "kr": "어느 옵션이 분열?",
-    "en": "Which option fractured?"
-   },
+   "showText": [
+    {
+     "kr": "다른 옵션이 분열돼도 이 베이스로 계속",
+     "en": "Carry on with this base whatever fractures"
+    }
+   ],
    "edges": [
     {
-     "if": {
-      "fractured": "esf"
-     },
-     "to": "s4",
-     "res": "ok",
-     "label": {
-      "kr": "에너지 보호막 최대치 분열",
-      "en": "Flat Energy Shield fractured"
-     }
-    },
-    {
-     "to": "sx",
-     "res": "fail",
-     "label": {
-      "kr": "다른 옵션 분열",
-      "en": "Another option fractured"
-     }
+     "to": "s4"
     }
    ],
    "item": [
@@ -407,25 +368,6 @@
    ]
   },
   {
-   "id": "sx",
-   "kind": "exit",
-   "group": "prep",
-   "pos": [
-    1,
-    3
-   ],
-   "simTo": "s0",
-   "variant": "fail",
-   "label": {
-    "kr": "다른 옵션 분열 — 새 베이스",
-    "en": "Another option fractured: new base"
-   },
-   "note": {
-    "kr": "합금이 에너지 보호막 최대치를 지울 수 있어 새 베이스로 처음부터, 이 아이템은 판매",
-    "en": "The Alloy could remove the flat Energy Shield: sell this one and start over"
-   }
-  },
-  {
    "id": "s4",
    "kind": "act",
    "group": "prep",
@@ -443,40 +385,15 @@
     "en": "Reveal"
    },
    "goal": {
-    "kr": "접두 에너지 보호막 % 증가 — 주문 피해와 함께 먼저 뜬 것",
-    "en": "% Energy Shield prefix: or spell damage, whichever lands"
+    "kr": "접두 훼손 옵션 공개 — 결과 그대로",
+    "en": "Reveal the prefix: keep what comes"
    },
    "show": [
-    "rev"
+    "esp1"
    ],
    "edges": [
     {
-     "if": {
-      "added": "rev"
-     },
-     "to": "ms",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "param": {
-       "rT": 2
-      }
-     },
-     "to": "s4x",
-     "res": "fail",
-     "label": {
-      "kr": "빗나감 — 빛의 징조로 다시",
-      "en": "Miss: again with Omen of Light"
-     }
-    },
-    {
-     "to": "ms",
-     "res": "fail",
-     "label": {
-      "kr": "빗나감 — 그대로",
-      "en": "Miss: keep it"
-     }
+     "to": "ms"
     }
    ],
    "item": [
@@ -515,75 +432,6 @@
      "tags": [
       "critE"
      ]
-    }
-   ]
-  },
-  {
-   "id": "s4x",
-   "kind": "act",
-   "group": "prep",
-   "pos": [
-    1,
-    4
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 지우고 다시 훼손",
-    "en": "Remove the desecrated option, desecrate again"
-   },
-   "edges": [
-    {
-     "to": "s4d"
-    }
-   ]
-  },
-  {
-   "id": "s4d",
-   "kind": "act",
-   "group": "prep",
-   "pos": [
-    1,
-    4.6
-   ],
-   "act": "desecrate",
-   "cur": "Ancient_Rib",
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
-   ],
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "goal": {
-    "kr": "다시 접두 훼손",
-    "en": "Desecrate the prefix again"
-   },
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션 (미공개)",
-     "en": "Desecrated (unrevealed)"
-    }
-   ],
-   "edges": [
-    {
-     "to": "s4",
-     "label": {
-      "kr": "다시 공개",
-      "en": "Reveal again"
-     }
     }
    ]
   },
@@ -842,8 +690,8 @@
      "to": "s10",
      "res": "ok",
      "label": {
-      "kr": "엑잘 옵션이 지워짐",
-      "en": "The Exalted option went"
+      "kr": "훼손 옵션이 남음",
+      "en": "The desecrated option stays"
      }
     },
     {
@@ -1011,40 +859,15 @@
     "en": "Reveal"
    },
    "goal": {
-    "kr": "접두 에너지 보호막 % 증가 — 주문 피해와 함께 먼저 뜬 것",
-    "en": "% Energy Shield prefix: or spell damage, whichever lands"
+    "kr": "접두 훼손 옵션 공개 — 결과 그대로",
+    "en": "Reveal the prefix: keep what comes"
    },
    "show": [
-    "rev"
+    "esp1"
    ],
    "edges": [
     {
-     "if": {
-      "added": "rev"
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "param": {
-       "rT": 2
-      }
-     },
-     "to": "s9x",
-     "res": "fail",
-     "label": {
-      "kr": "빗나감 — 빛의 징조로 다시",
-      "en": "Miss: again with Omen of Light"
-     }
-    },
-    {
-     "to": "ok",
-     "res": "fail",
-     "label": {
-      "kr": "빗나감 — 그대로",
-      "en": "Miss: keep it"
-     }
+     "to": "ok"
     }
    ],
    "item": [
@@ -1108,41 +931,6 @@
    ]
   },
   {
-   "id": "s9x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    10.0
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 지우고 다시 훼손",
-    "en": "Remove the desecrated option, desecrate again"
-   },
-   "edges": [
-    {
-     "to": "s8",
-     "label": {
-      "kr": "다시 훼손",
-      "en": "Desecrate again"
-     }
-    }
-   ]
-  },
-  {
    "id": "s10",
    "kind": "act",
    "group": "main",
@@ -1187,65 +975,13 @@
    }
   }
  ],
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "s4",
-    "s4x",
-    "s4d"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  },
-  {
-   "id": "L2",
-   "nodes": [
-    "s8",
-    "s9",
-    "s9x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  }
- ],
+ "loops": [],
  "finals": [
   {
    "id": "bal",
    "tier": "bal",
    "kr": "밸런스 옵션",
    "en": "Balance",
-   "lines": [
-    {
-     "tag": "esf",
-     "fr": true
-    },
-    {
-     "tag": "rev",
-     "des": true
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "tag": "lvl"
-    },
-    {
-     "tag": "critE",
-     "ess": true
-    },
-    {
-     "tag": "cs",
-     "ess": true
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "tier": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
    "lines": [
     {
      "tag": "esf",

@@ -32,12 +32,11 @@ g = {
           '완벽한 확장 = 화염 저항 최대치(4:05) → 상위 강화의 에센스(4:32) → 좌측 강령술 + 보존된 갈비뼈(4:48) → 신성한 오브(5:00, 방어도 277) → 분열의 오브 = 방어도(5:14) → '
           '소멸의 오브로 옵션 1개만(5:40) → 카오스 오브 = 방어도 % 1티어(7:36) → 좌측 강령술 + 고대 갈비뼈 + 심연의 메아리 공개(7:50 3티어 → 빛의 징조로 다시, 8:38 1티어) → '
           '상위 찬미 + 완벽한 엑잘(9:44) → 완벽한 엑잘(10:05). 6:00~7:30의 곁가지(카오스로 먼저 뜬 복합 1티어를 두고 훼손 → 69% 공개 → 소멸의 오브가 복합을 지움 → 카오스 다시)는 영상도 선택이라 꿀팁 후보로. '
-          '완벽한 철 룬 2개·신성한 오브 마무리(8:30~9:00)는 정책 9장대로 뺌. 밸런스 = 공개 복합 1~2티어까지 빛의 징조, 에센셜 = 공개 결과 그대로(C17-3).'),
- 'params': {'hT': {'kr': '공개 복합 옵션', 'en': 'Revealed hybrid', 'values': {'2': K('1~2티어', 'T1–2'), '6': K('결과 그대로', 'As it comes')}}},
- 'strategies': [{'id': 'bal', 'params': {'hT': 2}}, {'id': 'ess', 'params': {'hT': 6}}],
+          '완벽한 철 룬 2개·신성한 오브 마무리(8:30~9:00)는 정책 9장대로 뺌. 밸런스 = 공개 복합 1~2티어까지 빛의 징조(영상 7:50~8:38 빛의 징조로 다시, C17-3). '
+          '11-13 오후 새 정책 D: 에센셜(공개 결과 그대로) 72.2 div와 밸런스 74.4 div가 3% 차이라 밸런스 하나만.'),
+ 'params': {'hT': {'kr': '공개 복합 옵션', 'en': 'Revealed hybrid', 'values': {'2': K('1~2티어', 'T1–2')}}},
+ 'strategies': [{'id': 'bal', 'params': {'hT': 2}}],
  'versions': [
-   {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'hT': 6}, 'tier': 'ess',
-    'desc': K('공개 결과 그대로 (판매용)', 'Keep the reveal (to sell)')},
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'hT': 2}, 'tier': 'bal',
     'desc': K('공개 복합 옵션 1~2티어까지 빛의 징조로 다시 (영상은 1티어)', 'Reveal again with Omen of Light until a T1–2 hybrid (the video went to T1)')}],
  'tags': {'flat': {'gi': 6, 'tmax': 1}, 'pct': {'gi': 7, 'tmax': 1}, 'essP': {'gi': 38},
@@ -48,13 +47,10 @@ g = {
  'start': 'k0',
  'finals': [
    {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-    'lines': [{'tag': 'flat', 'fr': True}, {'tag': 'pct'}, {'tag': 'hyb2', 'des': True}, {'side': 's', 'random': True}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]},
-   {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
-    'lines': [{'tag': 'flat', 'fr': True}, {'tag': 'pct'}, {'side': 'p', 'random': True, 'des': True}, {'side': 's', 'random': True}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]}],
+    'lines': [{'tag': 'flat', 'fr': True}, {'tag': 'pct'}, {'tag': 'hyb2', 'des': True}, {'side': 's', 'random': True}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]}],
  'finalItem': {'quality': 28, 'sockets': 2},
 }
 
-BAL = {'param': {'hT': 2}}
 N = []
 A = lambda **kw: N.append(kw)
 
@@ -106,8 +102,7 @@ A(id='k10', kind='act', group='main', pos=[0, 11.4], act='desecrate', cur='Ancie
 A(id='k11', kind='act', group='main', pos=[0, 12.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='hyb',
   label=K('공개', 'Reveal'), goal=K('접두 방어도 % 증가 + 기절 한계치', '% armour + stun threshold prefix'), show=['hyb'],
   edges=[{'if': {'added': 'hyb'}, 'to': 'k12', 'res': 'ok'},
-         {'if': BAL, 'to': 'k11x', 'res': 'fail', 'label': K('빗나감 — 빛의 징조로 다시', 'Miss: again with Omen of Light')},
-         {'to': 'k12', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}],
+         {'to': 'k11x', 'res': 'fail', 'label': K('빗나감 — 빛의 징조로 다시', 'Miss: again with Omen of Light')}],
   item=[FLr, PC, HY])
 A(id='k11x', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 지우고 다시 훼손', 'Remove the desecrated option, desecrate again'), edges=[{'to': 'k10', 'label': K('다시 훼손', 'Desecrate again')}])

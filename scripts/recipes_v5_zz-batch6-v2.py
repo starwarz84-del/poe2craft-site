@@ -41,7 +41,7 @@ def _shield(r, t):
     if t=='ess':
         l4.pop('fail',None); l4['br']=K('판매용은 나온 티어로 타협','Settle for the tier you get (to sell)')
         for nid in ('l7','l8'): _node(r,nid)['cur']='Greater_Exalted_Orb'
-for _t in ('bal','ess'): _grade('lilbotq-armour-shield','lilbotq-armour-shield-v2',_t,_shield)
+for _t in ('bal',): _grade('lilbotq-armour-shield','lilbotq-armour-shield-v2',_t,_shield)
 
 # 4. Diztoh 정신력 로브 — 영상 화면·자막 전체 확인 2026-11-12(작업자3): 상위 카오스 오브로 최대치 → 좌측 찬미 + 상위 엑잘(빗나가면 소멸의 오브)로 단일 % →
 #    아스트리드의 창의성 → 갈비뼈 + 빛 없이 다시 굴리기 → 상위 찬미 + 완벽한 엑잘 → (밸런스) 우측 소멸 + 절사 카오스로 저항 → 완벽한 엑잘(접미 세 번째).
