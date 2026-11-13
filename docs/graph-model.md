@@ -227,3 +227,13 @@
 - 증강물 옵션(룬이 여는 옵션, 그룹 s 'x') 단계는 플로우차트 읽기 레시피에서도 `가중치 추정`(시뮬 추정 가중치).
 - `patch_shown.js`: 선 이름(label, 같은 순서·도착·결과일 때)과 상자 목표 글(`target {kr,en}`)도 옮김.
 - `engine.js`: 엔진이 확률 0으로 막힌 단계(룬이 여는 증강물 옵션을 카오스로 노림 등)는 비용 0으로 빠졌음 → 그 단계만 시뮬 확률을 기대 횟수로 넣어 다시 계산, `mode: 'engine+sim(단계 id…)'`(MazBro 투사체 장갑 30 → 97 div, 카오스 0 → 484개).
+
+## fcread.js — graph2recipe의 JS판 (2026-11-13 W3)
+
+리버스 화면도 등록 레시피와 같은 방법으로 플로우차트에서 등급 레시피를 읽게 하려고 `scripts/graph2recipe.py`를 `site/fcread.js`로 옮겼어요(node·브라우저 공용, `module.exports` 또는 `self.FcRead`). 아직 어디에도 연결하지 않음 — 리버스 `runFlow` 연결은 W4(`docs/reverse-pipeline.md`).
+
+- 부르는 법: `FcRead.readRecipe(레시피, 시뮬 파일, 원본 그래프, 등급 목록, {inherit, groups})` → `{nodes, phases, start, fcRead}` 또는 `null`. 인자는 `read_recipe(r, sim, src, tiers, inherit)`와 같고, 클래스 파일은 파일을 직접 읽지 않고 `groups`(클래스 이름 → `data/c/<cls>.json`의 groups 배열, 함수 또는 객체)로 받음. 그 밖에 `fc_numbers`·`start_of`·`has_prep`·`shown_leaves`도 내보냄.
+- 옮긴 범위: 파일 전체(`G`·`_target`·`_state`·`Walk`·`Cond`·`_label`·`_simp`·`_rest_atoms`·`_routes`·`_fcs`·`_via_use`·`_grade_note`·`read_recipe`·`fc_numbers`·`start_of`). 함수 이름과 순서를 파이썬과 같게 둬서 한 줄씩 대조할 수 있음.
+- 파이썬과 같은 값을 내려고 흉내 내는 것: 참·거짓(빈 목록·빈 객체 = 거짓, `or`는 첫 참 값), `None` = `null`(값이 `None`인 키도 그대로 남김), `round` = 실제 2진 값 기준 가장 가까운 짝수(`pyRound`, 파이썬 round와 10만 개 대조 차이 0), `list.remove`·`in` = 값이 같은지로, 정렬 = 안정 정렬 + 튜플 비교, `json.dumps` 비교 키, `str()`(None → 'None'). 파이썬이 집합(set) 순서로 더하는 곳(curIf 오브 비율)만 넣은 순서로 셈(파이썬도 실행마다 순서가 달라질 수 있는 곳).
+- 점검 `node tools/test/_fcparity.js [그래프 id…]`: 등록 그래프 76개 × 완성 카드 등급(128경우) × inherit 켬·끔에서 파이썬 결과(`tools/test/_fcparity_py.py`가 같은 입력으로 만듦)와 JS 결과 전체를 비교하고, JS 결과를 recipes.json 레시피 121개(nodes·phases·fcRead, 꿀팁 `tips`·영상 시각 `ts` 제외)와도 비교. 끝 줄 '차이 0'. 약 3초, 테스트 서버 필요 없음. `release.sh`에 들어 있음(차이가 있으면 '!!'). recipes.json만 다르면 빌드를 다시 안 돌린 것(그래프·시뮬이 recipes.json보다 새것).
+- 규칙: **graph2recipe.py를 고치면 fcread.js도 같은 커밋에서 고치고 `_fcparity.js` 차이 0**. 나중에 build_recipes가 node로 fcread.js를 부르게 바꾸면 하나로 합칠 수 있음(지금은 하지 않음).

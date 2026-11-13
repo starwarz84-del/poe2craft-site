@@ -26,6 +26,7 @@ bash tools/test/serve.sh stop >/dev/null 2>&1; bash tools/test/serve.sh start >/
   echo "$r" | grep -q "검산 오류 0" || echo "!! 리버스 빠른 점검 실패(검산 오류)"
   node _score.js >/dev/null && node skipcheck.js > skipcheck.txt; tail -1 skipcheck.txt
 ) | tee /tmp/poe2-release.log; BAD=$((BAD + $(grep -c '^!!' /tmp/poe2-release.log)))
+node tools/test/_fcparity.js | tail -1 | tee /tmp/poe2-fcparity.log; grep -q "차이 0" /tmp/poe2-fcparity.log || fail "graph2recipe.py ≠ site/fcread.js — node tools/test/_fcparity.js (파이썬을 고쳤으면 fcread.js도 같이)"
 python3 tools/test/fc_noinput.py | tail -1
 python3 tools/test/fc_noinput.py | tail -1 | grep -q " 0$" || fail "들어오는 선 없는 상자 있음 — python3 tools/test/fc_noinput.py"
 python3 tools/test/essence_tier.py | tail -1
