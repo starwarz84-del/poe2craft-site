@@ -6,7 +6,7 @@
      sim      = site/data/sim/<id>.json, srcGraph = scripts/graphs/<id>.json, tiers = 같은 그래프 등급 레시피의 tier 목록
      groups   = 클래스 이름 → 클래스 파일 groups 배열(site/data/c/<cls>.json의 groups)을 돌려주는 함수 또는 {cls: groups}
    파이썬과 같은 결과를 내려고 파이썬 규칙을 흉내 냄: 참·거짓(빈 목록·빈 객체 = 거짓), None = null, round(반올림 = 가장 가까운 짝수),
-   list.remove(값이 같은 첫 원소). 아직 어디에도 연결하지 않음(연결은 W4). */
+   list.remove(값이 같은 첫 원소). 리버스(발굴 탭 reverse.html runFlow)가 등급 레시피를 읽을 때 씀(2026-11-13 W4). */
 (function (root) {
   'use strict';
   const HAS = Object.prototype.hasOwnProperty;

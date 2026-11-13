@@ -179,11 +179,17 @@ function fromDraft(d, D, opt={}){
     const t=n.target||{}, a=o.act, sdOm=omSide(n.omens, /Erasure|Crystallisation|Necromancy|Annulment/);
     if(t.removeGi!=null) dropOne(l=>l.tags?.includes(tagOf(t.removeGi)));
     if(t.dropGi!=null) dropOne(l=>l.tags?.includes(tagOf(t.dropGi)));
+    /* 건너뛰는 단계(skipIf: 그 옵션이 이미 있음)가 노리는 옵션이 아이템 칸에 이미 다 있으면 같은 줄을 또 넣지 않음 — 완성 카드에 같은 옵션이 두 번 찍히던 것(2026-11-13 W4, 부재 목걸이 g16).
+       같은 옵션 두 줄(붙여 넣은 아이템에 두 번, dupGi)은 그 수까지 */
+    const full = gi => gi!=null && o.skipIf?.has===tagOf(gi) && cur.filter(l=>l.rep===tagOf(gi)).length >= Math.max(1, d.dupGi?.[gi]||0);
+    if(full(t.gi) && ['chaos','transmute','augment','regal','exalt'].includes(a)){ o.item = cur.map(x=>({...x})); mainOut.push(o); row++; continue; }
     if(a==='chaos'){ if(t.removeGi==null) (dropJunk(sdOm)||dropJunk(null)); if(t.gi!=null) cur.push(lineOf(t.gi,'n',null,chainOf[n.id]?.tag)); else if(t.anyOf) cur.push(lineOf(pickGi(t.anyOf),'n',null,chainOf[n.id]?.tag || anyTag(t.anyOf))); else cur.push(RND(sdOm||'p')); }
     else if(['transmute','augment','regal','exalt'].includes(a)){ const sd=omSide(n.omens,/Exaltation|Coronation/); const k=(n.omens||[]).includes('Omen_of_Greater_Exaltation')?2:1;
       for(let i=0;i<k;i++){ if(i===0 && (t.gi!=null || t.anyOf)) cur.push(lineOf(t.gi??pickGi(t.anyOf),'n',null,chainOf[n.id]?.tag || (t.anyOf?anyTag(t.anyOf):null))); else cur.push(t.junk ? J(typeof t.junk==='string'?t.junk:(sd||'p')) : RND(sd||'p')); } }
-    else if(a==='essence'){ if(t.removeGi==null){ const s=omSide(n.omens,/Crystallisation/); if(s) dropJunk(s); }
-      const gi=t.mark ? t.mark.gi : t.gi; if(gi!=null) cur.push(lineOf(gi, t.mark?'c':'c', K(t.mark?'징표':'제작 옵션', t.mark?'mark':'crafted'))); }
+    else if(a==='essence'){ const gi=t.mark ? t.mark.gi : t.gi;
+      if(t.removeGi==null){ const s=omSide(n.omens,/Crystallisation/); if(s) dropJunk(s);
+        /* 징조 없이 꽉 찬 쪽에 붙이면 그쪽 옵션 하나가 바뀜 — 성공 회차(잡옵이 바뀜)대로 잡옵 한 줄을 뺌. 접미가 4/3으로 보이던 것(2026-11-13 W4, Seek 장화) */
+        else if(gi!=null){ const sd=G[gi].g, capS=(d.cap?.[sd]) ?? (3+((sd==='p'?base.pd:base.sd)||0)); if(cur.filter(l=>l.s===sd && l.m!=='r').length >= capS) dropJunk(sd); } } if(gi!=null) cur.push(lineOf(gi, t.mark?'c':'c', K(t.mark?'징표':'제작 옵션', t.mark?'mark':'crafted'))); }
     else if(a==='desecrate'){ const s=t.unrev||sdOm||'s'; if(t.fromMark) dropOne(l=>/징표/.test(l.kr)); cur.push(UN(s)); }
     else if(a==='reveal'){ const i=cur.findIndex(l=>l.m==='u'); const gi=t.reveal?.gi ?? (t.reveal?.anyOf ? pickGi(t.reveal.anyOf) : null); if(i>=0) cur.splice(i,1, gi!=null ? lineOf(gi,'d',null,targetTag(t)) : {...UN(cur[i].s), m:'d'}); }
     else if(a==='annul'){ if(t.removeDes) dropOne(l=>l.m==='d'||l.m==='u'); else if(t.dropGi==null) dropJunk(sdOm); }
@@ -209,6 +215,11 @@ function fromDraft(d, D, opt={}){
   const nodes=[{id:'h1', kind:'base', group:'prep', pos:[0,0], next:'ms', start:{rar:d.start.rar||'normal', mods:(d.start.mods||[]).map(m=> m.junk ? {junk:m.junk} : m.unrev ? {unrev:m.unrev} : (m.fr ? {tag:tagOf(m.gi), fr:true} : tagOf(m.gi)))}, label:baseLabel, item:startItem},
     {id:'ms', kind:'mark', group:'main', pos:[0,0.6], next:first, label:K('아이템 제작 시작','Item crafting starts'), item:startItem},
     ...all, {id:'ok', kind:'done', group:'main', pos:[0,row], label:K('완성','Finished')}];
+  /* 묶음(anyOf) 태그의 성공 회차 옵션 = 붙여 넣은 옵션(2026-11-13 W4, 규칙 K·S4): 아이템 칸·완성 카드에 그 줄이 실제로 들어간 옵션(rep) 순서대로.
+     화면은 'A 또는 B'(목표처럼 읽힘) 대신 붙여 넣은 옵션을 보여 주고, 레시피 글은 '대신 …도 성공으로 침' 꿀팁을 붙임. 시뮬은 shown을 읽지 않음 */
+  { const sh={}; const take = l => { const k=l?.tags?.[0]; if(!k || !tags[k]?.anyOf || !l.rep || l.rep===k) return; (sh[k]=sh[k]||[]); if(!sh[k].includes(l.rep)) sh[k].push(l.rep); };
+    nodes.forEach(n=>(n.item||[]).forEach(take)); cur.forEach(take);
+    for(const [k,v] of Object.entries(sh)) if(v.length) tags[k].shown = v; }
   // the start lines' tiers are fixed (cheap: bought or fractured)
   // ---------- versions, strategies, finals, require
   const params={}; for(const gi of loopGi) params['t'+gi]={kr:'티어', en:'Tier', values:{}};
@@ -226,7 +237,9 @@ function fromDraft(d, D, opt={}){
     if(ws.length) parts.push(K(`반복으로 찾는 옵션 ${ws.length}개를 넓은 티어로`, `${ws.length} looped line(s) at wider tiers`)); else parts.push(K('고른 티어 그대로','The tiers you picked'));
     if(p.cmp==='settle') parts.push(K('빗나가면 결과 그대로','keep a miss as it comes'));
     return K(parts.map(x=>x.kr).join(' · '), parts.map(x=>x.en).join(' · ')); };
-  const finals = grades.map(v=>({id:v, kr:VN[v].kr+' 옵션', en:VN[v].en, lines: cur.map(l=>{ if(!l.tags) return l; const k = chainN[l.tags[0]] && l.rep ? l.rep : l.tags[0]; return {...l, _k:k}; }).map(l=> l.tags ? {tag:l._k, tmax: tags[l._k].tmax && String(tags[l._k].tmax)[0]==='$' ? +P[v][String(tags[l._k].tmax).slice(1)] : tags[l._k].tmax, ...(l.m==='f'?{fr:true}:{}), ...(l.m==='d'?{des:true}:{})} : l.m==='r' ? null : {side:l.s, random:true}).filter(Boolean)}));
+  /* 규칙 K(2026-11-13 W4): 빗나가도 그대로 두는 등급(cmp settle)에서 그 갈림길이 만든 자리는 완성 카드에 '랜덤 옵션' — 목표 옵션이 늘 붙는 것처럼 보이지 않게 */
+  const settleLine = (v, l) => P[v].cmp==='settle' && l.tags && [l.tags[0], l.rep, l._k].some(t=>t && cmpTags.has(t));
+  const finals = grades.map(v=>({id:v, kr:VN[v].kr+' 옵션', en:VN[v].en, lines: cur.map(l=>{ if(!l.tags) return l; const k = chainN[l.tags[0]] && l.rep ? l.rep : l.tags[0]; return {...l, _k:k}; }).map(l=> settleLine(v, l) ? {side:l.s, random:true, ...(l.m==='d'?{des:true}:{})} : l.tags ? {tag:l._k, tmax: tags[l._k].tmax && String(tags[l._k].tmax)[0]==='$' ? +P[v][String(tags[l._k].tmax).slice(1)] : tags[l._k].tmax, ...(l.m==='f'?{fr:true}:{}), ...(l.m==='d'?{des:true}:{})} : l.m==='r' ? null : {side:l.s, random:true}).filter(Boolean)}));
   const g={id:d.id, recipe:d.id, cls:d.cls, base:base.en||d.base, ilvl:d.ilvl, note:'리버스 크래프팅 초안에서 만든 플로우차트', params,
     strategies:grades.map(v=>({id:v, params:P[v]})), versions:[...grades].reverse().map(v=>({id:v, kr:VN[v].kr, en:VN[v].en, params:P[v], desc:desc(v)})),
     tags, require, groups:[{id:'prep',kr:'베이스템 완성',en:'Finished base',cols:[0,1]},{id:'main',kr:'옵션 추가 작업',en:'Adding modifiers',cols:[0,1]}],
@@ -242,11 +255,13 @@ function fromDraft(d, D, opt={}){
   return g; }
 
 // the drawing data the flowchart view reads (same fields as tools/sim/run.js writes)
-function view(graph, D){ const tv={}; for(const [k,t] of Object.entries(graph.tags||{})){ if(t.anyOf){ tv[k]={anyOf:t.anyOf}; continue; } const g=D.groups[t.gi]; if(!g) continue; const lo = graph.ilvl ? Math.max(1, g.t.findIndex(x=>x[0]<=graph.ilvl)+1) : 1; tv[k]={s:g.g, sec:g.s, tmax:t.tmax, gi:t.gi, tiers:g.t.slice(0,Math.max(5,lo+4)).map(x=>[x[4],x[5]]), ...(lo>1?{lo}:{})}; }   /* lo: 아이템 레벨로 붙을 수 있는 가장 좋은 티어(레벨 81 저항 = 2티어, 사용자 2026-11-12) */
+function view(graph, D){ const tv={}; for(const [k,t] of Object.entries(graph.tags||{})){ if(t.anyOf){ tv[k]={anyOf:t.anyOf}; if(t.label){ tv[k].label=t.label; tv[k].s=t.side; } if(t.shown!=null) tv[k].shown=t.shown; if(t.shownBy) tv[k].shownBy=t.shownBy; continue; }   /* anyOf 묶음의 이름·성공 회차 옵션(tools/sim/run.js와 같은 칸, 2026-11-13 W4) */ const g=D.groups[t.gi]; if(!g) continue; const lo = graph.ilvl ? Math.max(1, g.t.findIndex(x=>x[0]<=graph.ilvl)+1) : 1; tv[k]={s:g.g, sec:g.s, tmax:t.tmax, gi:t.gi, tiers:g.t.slice(0,Math.max(5,lo+4)).map(x=>[x[4],x[5]]), ...(lo>1?{lo}:{})}; }   /* lo: 아이템 레벨로 붙을 수 있는 가장 좋은 티어(레벨 81 저항 = 2티어, 사용자 2026-11-12) */
   const pOnly=c=>{ if(!c) return; if(c.param) return c.param; if(c.all){ const o={}; c.all.forEach(x=>x.param&&Object.assign(o,x.param)); return Object.keys(o).length?o:undefined; } };
   return {tags:tv, finals:graph.finals, finalItem:graph.finalItem, basePrice:graph.basePrice, params:graph.params, groups:graph.groups, start:graph.start, loops:graph.loops, versions:graph.versions,
-    nodes:graph.nodes.map(n=>({id:n.id, kind:n.kind, act:n.act, cur:n.cur, omens:n.omens, group:n.group, pos:n.pos, label:n.label, item:n.item, goal:n.goal, show:n.show, rune:n.rune, next:n.next, start:n.start,
-      edges:(n.edges||[]).map(e=>({to:e.to, label:e.label, lost:e.lost, res:e.res, hide:e.hide, when:pOnly(e.if)}))}))}; }
+    /* 상자 칸은 tools/sim/run.js가 쓰는 것과 같게(2026-11-13 W4): 레시피를 플로우차트에서 읽는 fcread.js가 이 그림 데이터를 씀 */
+    nodes:graph.nodes.map(n=>({id:n.id, kind:n.kind, act:n.act, cur:n.cur, curIf:n.curIf?.map(c=>c.cur), omens:n.omens, trim:n.trim?{side:n.trim.side,keepDes:n.trim.keepDes}:undefined, group:n.group, pos:n.pos, label:n.label,
+      param:n.param, options:n.options, optStyle:n.optStyle, item:n.item, curRows:n.curRows, target:n.target, pAll:n.pAll, ask:n.ask, goal:n.goal, goalBy:n.goalBy, show:n.show, showText:n.showText, rune:n.rune, swapAstrid:n.swapAstrid, count:n.act==='rune'?n.count:undefined, fill:n.fill, showIf:n.showIf, over:n.over, once:n.once, skipNote:n.skipNote, skipLabel:n.skipLabel, skipHide:n.skipHide, gapBefore:n.gapBefore, variant:n.variant, note:n.note, attach:n.attach, tiers:n.kind==='side'?n.tiers:undefined, edgeLabels:n.edgeLabels, next:n.next, skipTo:n.skipTo, start:n.start,
+      edges:(n.edges||[]).map(e=>({to:e.to, label:e.label, lost:e.lost, res:e.res, dash:e.dash, p:e.p, hide:e.hide, port:e.port, enter:e.enter, lane:e.lane, turn:e.turn, when:pOnly(e.if)}))}))}; }
 
 // run every grade; problems a recipe must not have (a step with no way on, a finished item missing a must-have) come back in `issues`
 function check(graph, D, craft, prices, SIM, N=2000, maxSteps=3e5){ const strategies=[], issues=[]; graph={...graph, maxSteps};

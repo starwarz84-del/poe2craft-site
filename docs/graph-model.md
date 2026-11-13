@@ -230,10 +230,13 @@
 
 ## fcread.js — graph2recipe의 JS판 (2026-11-13 W3)
 
-리버스 화면도 등록 레시피와 같은 방법으로 플로우차트에서 등급 레시피를 읽게 하려고 `scripts/graph2recipe.py`를 `site/fcread.js`로 옮겼어요(node·브라우저 공용, `module.exports` 또는 `self.FcRead`). 아직 어디에도 연결하지 않음 — 리버스 `runFlow` 연결은 W4(`docs/reverse-pipeline.md`).
+리버스 화면도 등록 레시피와 같은 방법으로 플로우차트에서 등급 레시피를 읽게 하려고 `scripts/graph2recipe.py`를 `site/fcread.js`로 옮겼어요(node·브라우저 공용, `module.exports` 또는 `self.FcRead`). 리버스 `runFlow`가 씀(W4, 아래).
 
 - 부르는 법: `FcRead.readRecipe(레시피, 시뮬 파일, 원본 그래프, 등급 목록, {inherit, groups})` → `{nodes, phases, start, fcRead}` 또는 `null`. 인자는 `read_recipe(r, sim, src, tiers, inherit)`와 같고, 클래스 파일은 파일을 직접 읽지 않고 `groups`(클래스 이름 → `data/c/<cls>.json`의 groups 배열, 함수 또는 객체)로 받음. 그 밖에 `fc_numbers`·`start_of`·`has_prep`·`shown_leaves`도 내보냄.
 - 옮긴 범위: 파일 전체(`G`·`_target`·`_state`·`Walk`·`Cond`·`_label`·`_simp`·`_rest_atoms`·`_routes`·`_fcs`·`_via_use`·`_grade_note`·`read_recipe`·`fc_numbers`·`start_of`). 함수 이름과 순서를 파이썬과 같게 둬서 한 줄씩 대조할 수 있음.
 - 파이썬과 같은 값을 내려고 흉내 내는 것: 참·거짓(빈 목록·빈 객체 = 거짓, `or`는 첫 참 값), `None` = `null`(값이 `None`인 키도 그대로 남김), `round` = 실제 2진 값 기준 가장 가까운 짝수(`pyRound`, 파이썬 round와 10만 개 대조 차이 0), `list.remove`·`in` = 값이 같은지로, 정렬 = 안정 정렬 + 튜플 비교, `json.dumps` 비교 키, `str()`(None → 'None'). 파이썬이 집합(set) 순서로 더하는 곳(curIf 오브 비율)만 넣은 순서로 셈(파이썬도 실행마다 순서가 달라질 수 있는 곳).
 - 점검 `node tools/test/_fcparity.js [그래프 id…]`: 등록 그래프 76개 × 완성 카드 등급(128경우) × inherit 켬·끔에서 파이썬 결과(`tools/test/_fcparity_py.py`가 같은 입력으로 만듦)와 JS 결과 전체를 비교하고, JS 결과를 recipes.json 레시피 121개(nodes·phases·fcRead, 꿀팁 `tips`·영상 시각 `ts` 제외)와도 비교. 끝 줄 '차이 0'. 약 3초, 테스트 서버 필요 없음. `release.sh`에 들어 있음(차이가 있으면 '!!'). recipes.json만 다르면 빌드를 다시 안 돌린 것(그래프·시뮬이 recipes.json보다 새것).
 - 규칙: **graph2recipe.py를 고치면 fcread.js도 같은 커밋에서 고치고 `_fcparity.js` 차이 0**. 나중에 build_recipes가 node로 fcread.js를 부르게 바꾸면 하나로 합칠 수 있음(지금은 하지 않음).
+- **리버스 연결(2026-11-13 W4)**: 발굴 탭 `runFlow`가 초안 그래프(`graphify.fromDraft`) → 등급마다 시뮬 → `POE2GRAPH.view`(tools/sim/run.js와 같은 상자 칸) → 등급마다 `FcRead.readRecipe`로 단계·번호(`fcNo`)·확률·사용량·갈래(`nodes`·`phases`·`start`·`fcRead`)를 읽고, 완성 카드는 `fcCardOf`(build_recipes.py `r.fc`와 같은 계산: 성공 회차 옵션·고르는 줄·훼손 자리·퀄리티)로. 예전 `gradeRecipe`(초안 단계의 티어만 바꾼 등급 레시피)는 없앰. 그래서 레시피 = 플로우차트(빛의 징조 반복·되돌아가기 포함), 미리보기 합계·베이스 수 = 시뮬, 0회 상자는 레시피에서 빠짐. 초안 끝 안내 줄(`do:'note'`)은 완성 줄로 옮기지 않음('완성.').
+  graphify 쪽: 묶음(anyOf) 태그에 `shown` = 아이템 칸에 실제로 들어간 붙여 넣은 옵션(왼쪽 칸·카드·레시피 글이 'A 또는 B' 대신 그 옵션, 시뮬은 shown을 읽지 않음), 건너뛰는 단계(skipIf)가 이미 있는 옵션을 노리면 아이템 칸에 또 넣지 않음(카드 중복 줄), 징조 없는 에센스·합금이 꽉 찬 쪽에 붙으면 잡옵 한 줄을 뺌(접미 4/3), 규칙 K: 빗나가도 그대로 두는 등급(`cmp: settle`)에서 그 갈림길이 만든 자리는 완성 카드에 '랜덤 옵션'.
+  점검: 등급 레시피마다 `analyse` 합계 = `fcRead.useDiv`, 미리보기 오류 0(`poe2-preview-st`), 초안 그래프 fincheck(카드 옵션 99.9%).

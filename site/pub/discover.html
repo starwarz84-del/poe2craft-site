@@ -230,6 +230,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 
 <script src="sim.js"></script>
 <script src="graphify.js"></script>
+<script src="fcread.js"></script>
 <script>
 const S = { lang:'en', index:null, cache:{}, last:null, txt:'', itab:'item', need:new Set(), soft:new Set(), okQR:false, tsel:{}, buy:new Set() };
 try{ const u=new URLSearchParams(location.search).get('lang'); S.lang = u || localStorage.getItem('poe2lang') || 'en'; }catch(e){}
@@ -689,14 +690,18 @@ const MAGIC_ORB = {transmute:['Perfect_Orb_of_Transmutation','Greater_Orb_of_Tra
 function magicDiv(it, d){ const st=d?.start, ms=(st?.mods||[]).filter(m=>m && (m.gi!=null || m.anyOf));
   if(!st || st.rar!=='magic' || !ms.length || (st.mods||[]).some(m=>m?.fr) || !window.POE2GRAPH || !window.POE2SIM || !S.prices) return 0;
   const key=[d.cls, d.base, d.ilvl, JSON.stringify(ms)].join('|'), C=S.magC=S.magC||{}; if(C[key]!=null) return C[key];
-  const tg = m => m.anyOf ? {anyOf:m.anyOf} : {gi:m.gi, ...(m.tmax?{tmax:m.tmax}:{})};
-  const sim = (a, b) => { const nodes=[{id:'m0', phase:'base', do:'base', cost:'base'}, {id:'m1', phase:'magic', do:'transmute', cur:a, target:tg(ms[0]), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}}}];
-    if(b) nodes.push({id:'m2', phase:'magic', do:'augment', cur:b, target:tg(ms[1]), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}, lost:'m1'}});
+  /* 매직 굴림 목표 = 그 티어 이상(tmax만) — 산 베이스 표시용 tmin(정확한 티어)은 쓰지 않음(2026-11-13 W4) */
+  const tg = m => m.anyOf ? {anyOf:m.anyOf.map(x=>({gi:x.gi, ...(x.tmax?{tmax:x.tmax}:{})}))} : {gi:m.gi, ...(m.tmax?{tmax:m.tmax}:{})};
+  let ord = ms;
+  const sim = (a, b) => { const nodes=[{id:'m0', phase:'base', do:'base', cost:'base'}, {id:'m1', phase:'magic', do:'transmute', cur:a, target:tg(ord[0]), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}}}];
+    if(b) nodes.push({id:'m2', phase:'magic', do:'augment', cur:b, target:tg(ord[1]), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}, lost:'m1'}});
     try{ const g=POE2GRAPH.fromDraft({id:'mag', cls:d.cls, base:d.base, ilvl:d.ilvl, start:{rar:'normal', mods:[]}, nodes, difficulty:0}, it.D, {craft:S.craft, grades:['high']}), r=POE2SIM.simulate({...g, maxSteps:2e4}, it.D, S.craft, S.prices, g.strategies[0].params, 200, 3);
       return r.reqOk>=0.98 ? r.useDiv : Infinity; }catch(_){ return Infinity; } };
-  const B = ms.length>1 ? MAGIC_ORB.augment[0] : null; let a0=MAGIC_ORB.transmute[0], v=Infinity;
-  for(const a of MAGIC_ORB.transmute){ const x=sim(a, B); if(x<v){ v=x; a0=a; } }
-  if(B) for(const b of MAGIC_ORB.augment.slice(1)){ const x=sim(a0, b); if(x<v) v=x; }
+  const B = ms.length>1 ? MAGIC_ORB.augment[0] : null; let v=Infinity;
+  for(const o of (ms.length>1 ? [ms, [ms[1], ms[0]]] : [ms])){ ord=o; let a0=MAGIC_ORB.transmute[0], w=Infinity;   /* 옵션 2개면 어느 쪽을 진화로 먼저 굴릴지 둘 다 재 봄 */
+    for(const a of MAGIC_ORB.transmute){ const x=sim(a, B); if(x<w){ w=x; a0=a; } }
+    if(B) for(const b of MAGIC_ORB.augment.slice(1)){ const x=sim(a0, b); if(x<w) w=x; }
+    if(w<v) v=w; }
   return C[key] = isFinite(v) ? v : 0; }
 const revCost = (it, d, res) => res ? (res.useDiv ?? res.mean) + magicDiv(it, d) : null;
 // 초안 만들기(사용자 확정 2026-11-11): 여러 경우의 수를 플로우차트 시뮬로 계산해 가장 싼 것을 초안으로. 최소 minMs(화면은 10초) 동안 계산하고,
@@ -1689,7 +1694,32 @@ $('#mods').addEventListener('click', e=>{
 // the draft → a graph (graphify.js) → every grade simulated (sim.js) → issues (a step with no way on, too many repeats, finished items missing a must-have)
 // → only then the grade recipes: the draft is the top grade, lower grades widen the looped lines' tiers (정책 32) with the same step ids
 const slimRes = r => ({mean:r.mean, median:r.median, p90:r.p90, p10:r.p10, bases:r.bases, baseDiv:r.baseDiv, use:r.use, useDiv:r.useDiv, useMedian:r.useMedian, useP90:r.useP90, ...(r.magDiv?{magDiv:r.magDiv}:{}), reqOk:r.reqOk, missing:r.missing,
-  nodes:Object.fromEntries(Object.entries(r.nodes).map(([k,v])=>[k,{reach:v.reach, visits:v.visits, use:v.use, skips:v.skips, byCur:v.byCur, div:v.div}])), edges:r.edges});
+  nodes:Object.fromEntries(Object.entries(r.nodes).map(([k,v])=>[k,{reach:v.reach, visits:v.visits, use:v.use, skips:v.skips, byCur:v.byCur, div:v.div}])), edges:r.edges, edgesI:r.edgesI, desStat:r.desStat});   /* edgesI·desStat: 레시피 갈래 비율·완성 카드 훼손 자리(fcread.js, 2026-11-13 W4) */
+/* 완성 카드 = 플로우차트의 그 등급 완성품 카드(build_recipes.py r.fc와 같은 계산: _shownlines·_anyline·_ds_slot, 2026-11-13 W4)
+   묶음 줄은 성공 회차 옵션(shown)으로, 고르는 줄은 옵션 목록(any)으로, 훼손 색은 시뮬 desStat + 마지막으로 훼손으로 보인 줄 */
+function fcCardOf(sim, tier, gs){ const g=sim.graph||{}, GT=g.tags||{}, F=(g.finals||[]).find(f=>(f.tier||f.id)===tier); if(!F) return null;
+  const V=(g.versions||[]).find(v=>v.id===F.id)||null, S=V && (sim.strategies||[]).find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params?.[k])===String(v)));
+  const tags={}; for(const l of F.lines||[]) if(l.tag && GT[l.tag]){ const t=GT[l.tag]; tags[l.tag]={gi:t.gi??null, s:t.s??null, sec:t.sec??null, tmax:t.tmax??null}; }
+  for(const T of Object.values(tags)) if(typeof T.tmax==='string' && T.tmax[0]==='$' && V){ const n=parseInt(V.params[T.tmax.slice(1)]); T.tmax = Number.isFinite(n) ? n : null; }
+  const vid=V?.id||F.id, P=V?.params||{}, SL=t=>t && FcRead.shown_leaves(GT, t, vid, P), lines=[], allsh={}; let k={};
+  for(const l of F.lines||[]){ const t=l.tag, sl=t && !l.label && !l.random ? SL(t) : null; if(sl){ const i=k[t]||0; k[t]=i+1; (allsh[t]=allsh[t]||[]).push(i<sl.length ? sl[i].gi : null); } }
+  k={};
+  for(const l of F.lines||[]){ const t=l.tag, sl=t && !l.label && !l.random ? SL(t) : null; if(!sl){ lines.push(l); continue; }
+    const i=k[t]||0; k[t]=i+1; if(i>=sl.length){ lines.push(l); continue; }
+    const x=sl[i], G0=gs[x.gi]||{}, pt=`${t}~${i}`; tags[pt]={gi:x.gi, s:G0.g??null, sec:G0.s??null, tmax:x.tmax||l.tmax||null};
+    if(tags[pt].tmax==null){ const lt=GT[t]?.tmax; tags[pt].tmax = Number.isInteger(lt) ? lt : null; }
+    const o={...l}; delete o.tag; delete o.label; delete o.any; lines.push({...o, ...(x.tmin?{tmin:x.tmin}:{}), tag:pt, of:t, sh:true, alt:FcRead.leaf_gis(GT, t).filter(gi=>!(allsh[t]||[]).filter(y=>y!=null).includes(gi))}); }
+  const gis=(t, seen=[])=>{ if(typeof t==='string') return seen.includes(t) ? [] : gis(GT[t], [...seen, t]); if(!t || typeof t!=='object') return []; if(t.gi!=null) return [t.gi]; return (t.anyOf||[]).flatMap(x=>gis(x, seen)); };
+  const anyLine = l=>{ const T0=l.tag ? GT[l.tag] : null;
+    if(!l.label && !l.random && T0 && T0.gi==null && T0.anyOf){ const o={...l}; delete o.tag; return {...o, label:T0.label||{kr:'랜덤 옵션', en:'Random modifier'}, any:gis(T0)}; }
+    if(!l.label || l.random) return l;
+    const T=l.tag ? GT[l.tag] : Object.values(GT).find(t=>t && t.anyOf && t.label?.kr===l.label.kr), a=T ? gis(T) : []; return a.length ? {...l, any:a} : l; };
+  const ds0=S?.res?.desStat; let ds=ds0;
+  if(ds0){ let best=null; for(const n of g.nodes||[]){ if(!Array.isArray(n.item) || !n.pos || n.kind==='mark') continue; const c={};
+      for(const l of n.item){ const tg=l.tags||[]; if(tg.length!==1) continue; const t=tg[0], q=c[t]||0; c[t]=q+1; if(l.m==='d' && (!best || n.pos[1]>=best[0])) best=[n.pos[1], t, q]; } }
+    ds={...ds0, slot: best ? {of:best[1], k:best[2]} : null}; }
+  const fc={lines:lines.map(anyLine), tags, ds}; if(g.finalItem){ const fi={}; for(const q of ['quality','sockets']) if(g.finalItem[q]!=null) fi[q]=g.finalItem[q]; fc.fi=fi; }
+  return fc; }
 function runFlow(it, d){ try{
   if(!window.POE2GRAPH || !window.POE2SIM || !S.prices) return {err:L('시뮬레이터 불러오기 실패','The simulator did not load.')};
   const g = POE2GRAPH.fromDraft(d, it.D, {craft:S.craft, grades:['high','bal','ess']});   // all three grades: the picked tiers, one step wider, two steps wider + keep a miss (사용자 2026-11-11: 티어를 넓히면 얼마나 싸지는지)
@@ -1705,17 +1735,24 @@ function runFlow(it, d){ try{
       const hit = kept.find(k=>fin(k)===fin(st.id) || JSON.stringify(g.strategies.find(x=>x.id===k).params)===JSON.stringify(st.params) || (meanOf(k)>0 && meanOf(st.id)>0 && Math.abs(meanOf(st.id)-meanOf(k)) <= 0.1*Math.max(meanOf(k), meanOf(st.id))));
       if(hit) merged[st.id]=hit; else kept.push(st.id); } }
   const strategies = c.strategies.filter(x=>x.res && !bad.has(x.id) && !merged[x.id]).map(x=>({id:x.id, params:x.params, hidden:false, res:slimRes(x.res)}));
-  const sim = {id:d.id, recipe:d.id, runs:c.strategies[0]?.res?.N||0, generated:new Date().toISOString().slice(0,10), graph:POE2GRAPH.view(g, it.D), strategies};
+  const sim0 = {id:d.id, recipe:d.id, runs:c.strategies[0]?.res?.N||0, generated:new Date().toISOString().slice(0,10), graph:POE2GRAPH.view(g, it.D), strategies};
+  /* 그림·레시피에 남는 등급만(합친 등급·진행 불가 등급의 버전과 완성 카드는 뺌) */
+  const sim = strategies.length===c.strategies.length ? sim0 : {...sim0, graph:{...sim0.graph, versions:sim0.graph.versions.filter(v=>strategies.some(s=>s.id===v.id)), finals:sim0.graph.finals.filter(f=>strategies.some(s=>s.id===f.id))}};
   const out = {g, res:c.strategies, issues:c.issues, merged};
-  /* 2026-11-12(사용자: 균열 반지 — 하이엔드가 사실상 불가능하면 밸런스·에센셜도 안 나오고 올리기 버튼도 없었음): 계산이 된 등급만으로 레시피를 만듦 */
-  const okSt = g.strategies.filter(st=>strategies.some(x=>x.id===st.id) && !bad.has(st.id));
-  if(okSt.length) { const st0 = okSt[0], lead = st0.id===g.strategies[0].id ? {...d, tierGroup:d.id, tier:st0.id, sim:1} : {...gradeRecipe(d, g, st0), id:d.id}; out.lead = {...lead, ...tierBy(st0.id), simInline: strategies.length===c.strategies.length ? sim : {...sim, graph:{...sim.graph, versions:sim.graph.versions.filter(v=>strategies.some(s=>s.id===v.id)), finals:sim.graph.finals.filter(f=>strategies.some(s=>s.id===f.id))}}}; }
-  if(out.lead && c.issues.every(x=>x.v)) out.group = {...out.lead, grades: okSt.slice(1).map(st=>({...gradeRecipe(d, g, st), ...tierBy(st.id)}))};   /* 가격 등급 = 그 등급 시뮬 비용(W2) */
+  /* 2026-11-12(사용자: 균열 반지 — 하이엔드가 사실상 불가능하면 밸런스·에센셜도 안 나오고 올리기 버튼도 없었음): 계산이 된 등급만으로 레시피를 만듦
+     2026-11-13 W4: 등급 레시피 = 그 등급 플로우차트를 읽은 것(등록 레시피와 같은 fcread.js — graph2recipe의 JS판). 단계·번호·확률·사용량·갈래·완성 카드가 모두 플로우차트·시뮬 값 */
+  const okSt = g.strategies.filter(st=>strategies.some(x=>x.id===st.id) && !bad.has(st.id)), tiers = okSt.map(st=>st.id);
+  const readGrade = (st, id) => { const r = {...d, id, tierGroup:d.id, tier:st.id, sim:1}; delete r.grades;
+    /* 초안 끝의 안내 줄(예: '괜찮은 옵션이면 그대로 두고 진행')은 등급을 모르고 쓴 글이라 완성 줄로 옮기지 않음 — 완성 줄은 '완성.' */
+    const nd = (d.nodes||[]).slice(); while(nd.length && nd[nd.length-1].do==='note' && !nd[nd.length-1].optional) nd.pop();
+    const rd = FcRead.readRecipe({...r, nodes:nd}, sim, g, tiers, {inherit:true, groups:{[d.cls]: it.D.groups}});
+    if(!rd) throw new Error(L(`${st.id} 등급 플로우차트를 레시피로 읽지 못함`, `could not read the ${st.id} flowchart as a recipe`));
+    Object.assign(r, {nodes:rd.nodes, phases:rd.phases, start:rd.start, fcRead:rd.fcRead}); const fc=fcCardOf(sim, st.id, it.D.groups); if(fc) r.fc=fc;
+    if(r.prep && FcRead.has_prep(sim)) delete r.prep;   /* 준비 단계를 플로우차트가 그리면 옛 접힌 준비는 뺌(build_recipes.py와 같음 — 합계를 두 번 셈) */
+    return {...r, ...tierBy(st.id)}; };
+  if(okSt.length){ out.lead = {...readGrade(okSt[0], d.id), simInline: sim};
+    if(c.issues.every(x=>x.v)) out.group = {...out.lead, grades: okSt.slice(1).map(st=>readGrade(st, d.id+st.id))}; }   /* 가격 등급 = 그 등급 시뮬 비용(W2) */
   return out; }catch(e){ return {err:String(e.message||e)}; } }
-function gradeRecipe(d, g, st){ const p=st.params, w = x => { if(!x || x.gi==null) return x; const v=p['t'+x.gi]; return v!=null ? {...x, tmax:+v} : x; };
-  const nodes = d.nodes.map(n=>{ if(!n.target) return n; const t={...n.target}; if(t.gi!=null){ const v=p['t'+t.gi]; if(v!=null && n.do!=='essence') t.tmax=+v; }
-    if(t.anyOf) t.anyOf=t.anyOf.map(w); if(t.reveal) t.reveal = t.reveal.anyOf ? {...t.reveal, anyOf:t.reveal.anyOf.map(w)} : w(t.reveal); return {...n, target:t}; });
-  return {...d, id:d.id+st.id, tierGroup:d.id, tier:st.id, sim:1, nodes}; }
 function flowHTML(F){ const VN={high:L('하이엔드','High-end'), bal:L('밸런스','Balance'), ess:L('에센셜','Essential')}, fd = v => v==null ? '—' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
   if(F.err) return `<div class="flow bad"><b>${L('플로우차트','Flowchart')}</b><p class="iss">${esc(F.err)}</p></div>`;
   const rows = F.res.map(x=> x.res ? `<tr><td>${VN[x.id]||x.id}${F.merged?.[x.id] ? ` <small>(${L(`${VN[F.merged[x.id]]}와 같은 결과 · 합침`,`same result as ${VN[F.merged[x.id]]}, merged`)})</small>` : ''}</td><td>${fd(x.cost ?? x.res.mean)}</td><td>${fd(x.res.useMedian!=null ? x.res.useMedian+(x.res.magDiv||0) : x.res.median)}</td><td>${fd(x.res.useP90!=null ? x.res.useP90+(x.res.magDiv||0) : x.res.p90)}</td><td>${x.res.bases.toFixed(1)}</td><td>${x.res.reqOk>=0.98?'✓':Math.round(x.res.reqOk*100)+'%'}</td></tr>` : `<tr><td>${VN[x.id]||x.id}</td><td colspan="5">${L('진행 불가','No way through')}</td></tr>`).join('');
@@ -1825,6 +1862,6 @@ $('#mods').addEventListener('change', e=>{
   if(e.target.dataset?.tier!=null){ S.tsel[+e.target.dataset.tier]=+e.target.value; if(!S.soft.has(+e.target.dataset.tier)) S.need.add(+e.target.dataset.tier); S.draft=null; S.sent=false; render(); return; }
   if(e.target.id==='qin' && S.last?.it){ const v=Math.max(0, Math.min(75, Math.round(+e.target.value||0))); S.last.it.qual=v; S.last.an=analyse(S.last.it); S.draft=null; S.okQR=true; render(); }   // quality changes the tier read
 });
-window.__rev = Object.assign(S, {solveLines, matcher, tplRe, cleanLine, tagOf, parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost, magicDiv, revCost, needAn, essSwap, desSwap, bestDraft, bestDraftAsync});
+window.__rev = Object.assign(S, {solveLines, matcher, tplRe, cleanLine, tagOf, parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost, magicDiv, revCost, runFlow, fcCardOf, needAn, essSwap, desSwap, bestDraft, bestDraftAsync});
 render();
 </script>

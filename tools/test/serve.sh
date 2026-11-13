@@ -9,7 +9,7 @@ ln -sfn $ROOT/site/data data
 ln -sfn $ROOT/site/img img   # 카드 머리 모서리 그림(img/tt) 등 — 실제 사이트와 같게(2026-11-12)
 (echo '<meta charset="utf-8">'; cat $ROOT/site/app.html) > app.html
 for f in recipes discover emulator builder bases; do cp $ROOT/site/pub/$f.html .; done
-cp $ROOT/site/sim.js $ROOT/site/graphify.js .
+cp $ROOT/site/sim.js $ROOT/site/graphify.js $ROOT/site/fcread.js .
 # expose engine internals to the Playwright scripts
 sed -i "s/if(location.search.includes('debug')) window.__rec/window.__rec/; s/window.__rec = Object.assign(S, {renderBoard:()=>renderBoard()\(, [^}]*\)\?});/window.__rec = Object.assign(S, {renderBoard:()=>renderBoard()\1, analyse, prepRecipe});/" recipes.html
 # 검사 스크립트는 모든 레시피를 엔진으로 계산하니 클래스 파일을 처음에 다 받음(실제 사이트는 목록 요약만, ?lite 로 실제와 같게)
