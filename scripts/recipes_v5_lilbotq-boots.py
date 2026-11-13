@@ -28,7 +28,7 @@ R.append({
   {'id':'b5','phase':'pre','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':lb_light,'tmax':2},'side':'s','bone':'Preserved_Rib'},'fail':{'goto':'b3','via':LBB_LIGHT},'ts':'3:14',
    'br':K('대박 → 완성, 실패: 빛의 징조 + 소멸의 오브로 다시 훼손 (접두가 별로면 처음부터)','hit → done; miss: Omen of Light + Annulment and desecrate again (poor prefixes: start over)')},
   {'id':'b6','phase':'fin','do':'note','label':K('방어구 장인의 고철 · 숙련공의 오브',"Armourer's Scrap and Artificer's Orb"),'ts':'3:39',
-   'note':K('퀄리티 20%, 소켓 추가.','20% quality and a socket.')},
+   'note':K('퀄리티 20%.','20% quality.')},
  ]})
 
 # high end: exceptional base, Uhtred's Sidereus, fractured movement speed / slow hybrid

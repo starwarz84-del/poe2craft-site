@@ -37,8 +37,8 @@ UN = L('p', '접두 훼손 옵션 (미공개)', 'Prefix desecration (unrevealed)
 g = {
  'id': 'farmer-starter-staff-v2', 'recipe': 'farmer-starter-staff-v2', 'cls': CLS, 'base': 'Sanctified Staff', 'ilvl': 73,
  'basePrice': {'Chaos_Orb': 1},   # 사용자 2026-11-10 거래소: 번개 주문 매직 지팡이 카오스 오브 1개(영상 11:45 매물은 엑잘 1개)
- 'note': ('XTheFarmerX 리그 초반 번개 지팡이(ITBexsgq2NI 10:00~15:40, 2026-11-13 G13 영상 화면 대조) — 추가 화염 피해 2티어 + 번개 주문 +5 매직 신성한 지팡이(아이템 레벨 73) '
-          '→ 상위 마법의 에센스(레어 + 주문 피해) → 좌측 강령술의 징조 + 보존된 턱뼈 → 심연의 메아리의 징조로 공개(영상은 추가 카오스 피해) → 엑잘티드 오브로 접미 두 개 나오는 대로. '
+ 'note': ('XTheFarmerX 리그 초반 번개 지팡이(ITBexsgq2NI 10:00~15:40, 2026-11-13 G13 영상 화면 대조) — 추가 화염 피해 2티어 + 번개 주문 +5 매직 축성된 지팡이(아이템 레벨 73) '
+          '→ 상위 마술의 에센스(레어 + 주문 피해) → 좌측 강령술의 징조 + 보존된 턱뼈 → 심연의 메아리의 징조로 공개(영상은 추가 카오스 피해) → 엑잘티드 오브로 접미 두 개 나오는 대로. '
           '쉬움이라 에센셜 하나: 공개·엑잘 모두 결과 그대로.'),
  'params': {'v': {'kr': '흐름', 'en': 'Flow', 'values': {'1': K('영상', 'Video')}}},
  'strategies': [{'id': 'ess', 'params': {'v': 1}}],
@@ -56,7 +56,7 @@ N = []
 A = lambda **kw: N.append(kw)
 # ---------------- 베이스템 완성 (영상 11:00~12:25) ----------------
 A(id='f0', kind='base', group='prep', pos=[0, 0], next='f1', start={'rar': 'magic', 'mods': [{'tag': 'fire'}, {'tag': 'l5'}], 'quality': 0},
-  label=K('추가 화염 피해 + 번개 주문 레벨 매직 신성한 지팡이 구입 (아이템 레벨 73)', 'Buy a magic Sanctified Staff with extra fire damage + lightning spell levels (item level 73)'),
+  label=K('추가 화염 피해 + 번개 주문 레벨 매직 축성된 지팡이 구입 (아이템 레벨 73)', 'Buy a magic Sanctified Staff with extra fire damage + lightning spell levels (item level 73)'),
   item=[FIRE, L5])
 A(id='f1', kind='act', group='prep', pos=[0, 1], act='essence', cur='Greater_Essence_of_Sorcery', ess='spell', label=K('에센스', 'Essence'),
   goal=K('레어 + 접두 주문 피해', 'Rare + spell damage prefix'),
