@@ -61,3 +61,6 @@ g22('breach-ring-phys-v2',c,'Breach Ring',82,
   FIN(VBE,lambda v:[{'tag':'phys','fr':True},{'tag':'fire','tmax':3,'alt':K('또는 냉기·번개','or cold / lightning')} if v=='bal' else {'side':'p','random':True},{'tag':'cold','tmax':3,'alt':K('또는 화염·번개','or fire / lightning')} if v=='bal' else {'side':'p','random':True},
                     {'tag':'allres','tmax':1},{'tag':'fres','tmax':2 if v=='bal' else 3},{'tag':'alloy'}]),
   {'quality':60,'sockets':0},{'all':[{'has':'phys'},{'has':'allres'},{'has':'alloy'},{'any':[{'count':{'tag':'ele','min':2}},{'param':{'v':2}}]},{'any':[{'has':'fres'},{'param':{'v':2}}]}]},VBE)
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_breach_ring_phys.py'): _sp.run([_sy.executable, f'{H}/gen_breach_ring_phys.py'], check=True)   # 2026-11-13 G6: 새 기준 전용 생성기가 덮어씀

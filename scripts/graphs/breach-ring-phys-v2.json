@@ -4,7 +4,7 @@
  "cls": "Rings",
  "base": "Breach Ring",
  "ilvl": 82,
- "note": "균열 반지 물리 플랫 분열 + 원소 플랫(사이트 운영자 제작 방식) — 카오스 오브(모든 원소 저항) → 좌측 결정화 + 균열의 에센스 → 조프의 기폭제 60% → 촉진 + 우측 찬미 + 완벽한 엑잘(화염 저항) → 강탈자 기폭제 60% → 절사 + 카오스 오브(최대 퀄리티 지우기, 접미로 가면 접미 잡옵 절사·말소 카오스로 자리 비움) → 좌측 찬미 + 완벽한 엑잘 → 좌측 결정화 + 재빠른 합금 → 원소 피해 접두 훼손 공개.",
+ "note": "균열 반지 물리 플랫 분열 + 원소 플랫(사이트 운영자 제작 방식, 영상 없음) — 카오스 오브(모든 원소 저항) → 좌측 결정화 + 균열의 에센스 → 조프의 기폭제 60% → 촉진 + 우측 찬미 + 완벽한 엑잘(화염 저항) → 강탈자 기폭제 60% → 절사 + 카오스 오브(최대 퀄리티 지우기, 접미로 가면 접미 잡옵 절사·말소 카오스로 자리 비움) → 좌측 찬미 + 완벽한 엑잘 → 좌측 결정화 + 재빠른 합금 → 접두 원소 피해 두 개(엑잘·절사 카오스·훼손 공개). 2026-11-13 G6 새 기준: 반복 세 곳 접음.",
  "params": {
   "eT": {
    "kr": "공격 시 원소 피해",
@@ -80,7 +80,8 @@
    "desc": {
     "kr": "접두 훼손 한 번, 공개 결과 그대로, 화염 저항 빗나가도 그대로",
     "en": "One prefix desecration kept as revealed, fire res kept on a miss"
-   }
+   },
+   "tier": "ess"
   },
   {
    "id": "bal",
@@ -94,7 +95,8 @@
    "desc": {
     "kr": "공격 시 원소 피해 2개(1~3티어), 화염 저항 1~2티어",
     "en": "Two elemental attack lines (T1–3), fire res T1–2"
-   }
+   },
+   "tier": "bal"
   }
  ],
  "tags": {
@@ -133,7 +135,11 @@
     "fire",
     "cold",
     "light"
-   ]
+   ],
+   "label": {
+    "kr": "공격 시 화염·냉기·번개 피해 추가",
+    "en": "Adds fire, cold or lightning damage to attacks"
+   }
   },
   "keepS": {
    "anyOf": [
@@ -148,6 +154,37 @@
     "cold",
     "light"
    ]
+  },
+  "fire3": {
+   "gi": 15,
+   "tmax": 3
+  },
+  "cold3": {
+   "gi": 17,
+   "tmax": 3
+  },
+  "light3": {
+   "gi": 19,
+   "tmax": 3
+  },
+  "ele3": {
+   "anyOf": [
+    "fire3",
+    "cold3",
+    "light3"
+   ],
+   "label": {
+    "kr": "공격 시 화염·냉기·번개 피해 추가 1~3티어",
+    "en": "T1–3 added fire, cold or lightning attack damage"
+   }
+  },
+  "fres2": {
+   "gi": 4,
+   "tmax": 2
+  },
+  "fres3": {
+   "gi": 4,
+   "tmax": 3
   }
  },
  "require": {
@@ -215,17 +252,269 @@
   {
    "id": "L1",
    "nodes": [
+    "b5",
+    "b6",
+    "b6x"
+   ],
+   "kr": "접미 두번째 옵션",
+   "en": "Second suffix",
+   "fold": true,
+   "goal": {
+    "kr": "접미 화염 저항 1~2티어",
+    "en": "T1–2 fire resistance suffix"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접미 화염 저항 1~2티어",
+     "en": "T1–2 fire resistance suffix"
+    },
+    "ess": {
+     "kr": "접미 두번째 옵션 — 촉진 엑잘 결과 그대로",
+     "en": "Second suffix: keep the catalysed exalt"
+    }
+   },
+   "steps": [
+    {
+     "kr": "조프의 기폭제 60개로 화염 퀄리티 60%",
+     "en": "60 Xoph’s Catalysts for 60% fire quality",
+     "node": "b5"
+    },
+    {
+     "kr": "촉진하는 찬미의 징조 + 우측 찬미의 징조 + 완벽한 엑잘티드 오브",
+     "en": "Omen of Catalysing Exaltation + Omen of Dextral Exaltation + Perfect Exalted Orb",
+     "node": "b6"
+    },
+    {
+     "kr": "빗나가면 우측 소멸의 징조 + 소멸의 오브",
+     "en": "A miss: Omen of Dextral Annulment + Orb of Annulment",
+     "node": "b6x"
+    }
+   ],
+   "worst": {
+    "kr": "모든 원소 저항이 지워지면 새 베이스",
+    "en": "All resistances gone: a new base",
+    "to": "h1"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (균열의 에센스)",
+     "en": "+20% to Maximum Quality (Essence of the Breach)",
+     "m": "c",
+     "tags": [
+      "maxq"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(15—16)%",
+     "en": "+(15—16)% to all Elemental Resistances",
+     "m": "n",
+     "tags": [
+      "allres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 +(36—40)%",
+     "en": "+(36—40)% to Fire Resistance",
+     "m": "n",
+     "tags": [
+      "fres"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "b8",
+    "b8s"
+   ],
+   "kr": "최대 퀄리티 지우기",
+   "en": "Remove maximum quality",
+   "fold": true,
+   "goal": {
+    "kr": "최대 퀄리티를 다른 옵션으로, 접미 자리 하나 비우기",
+    "en": "Maximum quality into another option, one suffix slot free"
+   },
+   "steps": [
+    {
+     "kr": "절사의 징조 + 카오스 오브로 최대 퀄리티(레벨이 가장 낮음)를 바꿈",
+     "en": "Omen of Whittling + Chaos Orb turns maximum quality (lowest level) into another option",
+     "node": "b8"
+    },
+    {
+     "kr": "새 옵션이 접미로 가면 절사·우측 말소의 징조 + 상위 카오스 오브로 접미 잡옵을 접두로",
+     "en": "A new suffix: Whittling or Dextral Erasure + Greater Chaos Orb until the junk moves to the prefixes",
+     "node": "b8s"
+    }
+   ],
+   "worst": {
+    "kr": "모든 원소 저항·화염 저항이 지워지면 새 베이스",
+    "en": "Resistances gone: a new base",
+    "to": "h1"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random line",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(15—16)%",
+     "en": "+(15—16)% to all Elemental Resistances",
+     "m": "n",
+     "tags": [
+      "allres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 +(36—40)%",
+     "en": "+(36—40)% to Fire Resistance",
+     "m": "n",
+     "tags": [
+      "fres"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "L3",
+   "nodes": [
+    "e1",
+    "e2",
     "d1",
     "d2",
     "d2x"
    ],
-   "kr": "원소 피해 훼손 공개",
-   "en": "Elemental reveal"
+   "kr": "접두 원소 피해 두 개",
+   "en": "Two elemental attack prefixes",
+   "fold": true,
+   "goal": {
+    "kr": "접두 공격 시 원소 피해 1~3티어 두 개",
+    "en": "Two T1–3 elemental attack prefixes"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접두 공격 시 원소 피해 1~3티어 두 개",
+     "en": "Two T1–3 elemental attack prefixes"
+    },
+    "ess": {
+     "kr": "빈 접두에 훼손 한 번 — 공개 결과 그대로",
+     "en": "One desecration on the free prefix: keep the reveal"
+    }
+   },
+   "steps": [
+    {
+     "kr": "좌측 찬미의 징조 + 완벽한 엑잘티드 오브로 빈 접두",
+     "en": "Omen of Sinistral Exaltation + Perfect Exalted Orb on the free prefix",
+     "node": "e1"
+    },
+    {
+     "kr": "원소 피해가 아니면 절사·좌측 말소의 징조 + 완벽한 카오스 오브",
+     "en": "No elemental line: Whittling or Sinistral Erasure + Perfect Chaos Orb",
+     "node": "e2"
+    },
+    {
+     "kr": "좌측 강령술의 징조 + 고대 빗장뼈 — 원소 피해와 잡옵 중 하나가 지워짐",
+     "en": "Omen of Sinistral Necromancy + Ancient Collarbone: the elemental line or the junk goes",
+     "node": "d1"
+    },
+    {
+     "kr": "심연의 메아리의 징조로 공개",
+     "en": "Reveal with the Omen of Abyssal Echoes",
+     "node": "d2"
+    },
+    {
+     "kr": "원소 피해 두 개가 아니면 빛의 징조 + 소멸의 오브",
+     "en": "Not two elemental lines: Omen of Light + Orb of Annulment",
+     "node": "d2x"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "f",
+     "tags": [
+      "phys"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 화염 피해 (13—19)~(27—32) 추가",
+     "en": "Adds (13—19) to (27—32) Fire damage to Attacks",
+     "m": "n",
+     "tags": [
+      "fire"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "공격 시 냉기 피해 (14—15)~(22—24) 추가",
+     "en": "Adds (14—15) to (22—24) Cold damage to Attacks",
+     "m": "n",
+     "tags": [
+      "cold"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(15—16)%",
+     "en": "+(15—16)% to all Elemental Resistances",
+     "m": "n",
+     "tags": [
+      "allres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 +(36—40)%",
+     "en": "+(36—40)% to Fire Resistance",
+     "m": "n",
+     "tags": [
+      "fres"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (7—9)% 증가 (재빠른 합금)",
+     "en": "(7—9)% increased Attack Speed (Swift Alloy)",
+     "m": "c",
+     "tags": [
+      "alloy"
+     ]
+    }
+   ]
   }
  ],
  "finals": [
   {
    "id": "bal",
+   "tier": "bal",
    "kr": "밸런스 옵션",
    "en": "Balance",
    "lines": [
@@ -234,36 +523,27 @@
      "fr": true
     },
     {
-     "tag": "fire",
-     "tmax": 3,
-     "alt": {
-      "kr": "또는 냉기·번개",
-      "en": "or cold / lightning"
-     }
+     "tag": "ele3"
     },
     {
-     "tag": "cold",
-     "tmax": 3,
-     "alt": {
-      "kr": "또는 화염·번개",
-      "en": "or fire / lightning"
-     }
+     "tag": "ele3"
     },
     {
      "tag": "allres",
      "tmax": 1
     },
     {
-     "tag": "fres",
-     "tmax": 2
+     "tag": "fres2"
     },
     {
-     "tag": "alloy"
+     "tag": "alloy",
+     "ess": true
     }
    ]
   },
   {
    "id": "ess",
+   "tier": "ess",
    "kr": "에센셜 옵션",
    "en": "Essential",
    "lines": [
@@ -277,18 +557,20 @@
     },
     {
      "side": "p",
-     "random": true
+     "random": true,
+     "des": true
     },
     {
      "tag": "allres",
      "tmax": 1
     },
     {
-     "tag": "fres",
-     "tmax": 3
+     "side": "s",
+     "random": true
     },
     {
-     "tag": "alloy"
+     "tag": "alloy",
+     "ess": true
     }
    ]
   }
@@ -730,13 +1012,11 @@
      },
      "to": "h1",
      "res": "fail",
-     "lost": "allres",
-     "port": "right"
+     "lost": "allres"
     },
     {
      "to": "b5",
-     "res": "ok",
-     "port": "right"
+     "res": "ok"
     }
    ]
   },
@@ -1086,8 +1366,8 @@
    ],
    "act": "essence",
    "goal": {
-    "kr": "접미 세번째 옵션",
-    "en": "Third suffix"
+    "kr": "접미 세번째 옵션 — 접두 둘 중 하나가 지워짐",
+    "en": "Third suffix: one of the two prefixes goes"
    },
    "label": {
     "kr": "합금",
@@ -1166,8 +1446,8 @@
    "showText": [
     {
      "s": "s",
-     "kr": "공격 속도 (7—9)% 증가 (제작 옵션) — 접두 둘 중 하나가 지워짐",
-     "en": "(7—9)% increased Attack Speed (crafted) — one of the two prefixes goes"
+     "kr": "공격 속도 (7—9)% 증가 (제작 옵션)",
+     "en": "(7—9)% increased Attack Speed (crafted)"
     }
    ],
    "ess": "alloy",
@@ -1180,8 +1460,8 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    1,
-    9
+    0,
+    10
    ],
    "act": "exalt",
    "goal": {
@@ -1239,8 +1519,8 @@
    "kind": "act",
    "group": "main",
    "pos": [
-    2,
-    9
+    1,
+    10
    ],
    "act": "chaos",
    "goal": {
@@ -1282,7 +1562,7 @@
    "group": "main",
    "pos": [
     0,
-    10
+    11
    ],
    "act": "desecrate",
    "goal": {
@@ -1369,12 +1649,12 @@
    "group": "main",
    "pos": [
     0,
-    11
+    12
    ],
    "act": "reveal",
    "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
+    "kr": "접두 원소 피해(훼손) 공개",
+    "en": "Reveal the elemental attack prefix"
    },
    "label": {
     "kr": "공개",
@@ -1477,7 +1757,7 @@
    "group": "main",
    "pos": [
     1,
-    11
+    12
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -1502,13 +1782,11 @@
       "has": "ele"
      },
      "to": "d1",
-     "res": "ok",
-     "port": "right"
+     "res": "ok"
     },
     {
      "to": "e1",
-     "res": "fail",
-     "port": "right"
+     "res": "fail"
     }
    ]
   },
@@ -1518,7 +1796,7 @@
    "group": "main",
    "pos": [
     0,
-    12
+    13
    ],
    "label": {
     "kr": "완성",
