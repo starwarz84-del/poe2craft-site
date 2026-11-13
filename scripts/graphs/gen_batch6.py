@@ -196,3 +196,4 @@ import os as _os, subprocess as _sp, sys as _sy
 if _os.path.exists(f'{H}/gen_belton_plus8_wand.py'): _sp.run([_sy.executable, f'{H}/gen_belton_plus8_wand.py'], check=True)   # 2026-11-13 G7: 새 기준 전용 생성기가 덮어씀
 if _os.path.exists(f'{H}/gen_diztoh_es_helmet.py'): _sp.run([_sy.executable, f'{H}/gen_diztoh_es_helmet.py'], check=True)   # 2026-11-13 G11: 새 기준 전용 생성기가 덮어씀
 if _os.path.exists(f'{H}/gen_lilbotq_armour_shield.py'): _sp.run([_sy.executable, f'{H}/gen_lilbotq_armour_shield.py'], check=True)   # 2026-11-13 G9: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_diztoh_talisman.py'): _sp.run([_sy.executable, f'{H}/gen_diztoh_talisman.py'], check=True)   # 2026-11-13 G11: 새 기준 전용 생성기가 덮어씀
