@@ -170,3 +170,16 @@
 - 자동 꿀팁 줄: 같은 묶음의 다른 유효 옵션(카드·아이템 칸에 이미 있는 옵션은 뺌)을 `💡 <보이는 옵션> 대신 <다른 유효 옵션>도 성공으로 침` 한 줄로 단계(`stepTipsHTML`)·상자(`fcWant`)·완성 카드(`altCardHTML`, 개요 완성 카드와 플로우차트 완성품 카드)에 붙임. 문구는 `scripts/tips_text.py` `ALT_TIP` → tips.json `altTip`, 옵션 이름은 클래스 파일 1티어 글에서 수치를 뺀 것(`optClean`·`optNm`, 복합 옵션은 '와/과').
 - 시뮬 파일: run.js가 shown·shownBy를 sim 파일 graph.tags에 옮김. 시뮬을 다시 돌리지 않을 땐 `node tools/sim/patch_shown.js <그래프 id…>`(태그 shown·shownBy, 완성 카드 finals, 상자 show만 옮김, 파일 형식은 run.js와 같음) → build_recipes.
 - 순서: 생성기 태그에 shown 추가 → 생성기 실행 → patch_shown.js(또는 run.js) → build_recipes → `_fccardsame` 0.
+
+## 2026-11-13 공용 수정 (S6)
+
+- 베이스 가격이 없는 그래프(`basePrice` 없음·빈 값, 정책 10장 ③): 플로우차트 '베이스템 완성' 구역 머리는 `평균 제작 n div · 베이스 가격 미정`(제작 비용이 거의 0이면 `· 베이스 가격 미정`만) — 예전엔 `평균 0.01 div`처럼 보였음(fmtDiv 하한). 레시피 탭 준비 구간 머리도 베이스 값이 없으면 끝에 `· 베이스 가격 미정`(`phaseSumHTML` 세 번째 인자).
+- 자동 꿀팁 줄(`altTipTx`) 옵션 이름: 모든 이름이 같은 앞 문구(2단어 이상)와 뒤 문구(2단어까지)를 쓰고 길면(합 60자 이상, 줄어드는 글자 20자 이상) 틀을 맨 앞에 한 번 — `반경 내 주요 패시브 스킬이 … 증가도 부여: A 대신 B·C도 성공으로 침`. 일부만 같은 틀이면 그 이름끼리 `앞 문구 m1·m2 뒤 문구`로 묶고 목록은 ', '로(`altGroup`, 예: `공격 시 물리·화염·냉기·번개 피해 추가`). 한 이름이 다른 이름의 끝부분이면(공격 속도 · 활 사용 시 공격 속도) 묶지 않음. 비슷한 이름('방어도'·'방어도 증가')이 한 줄에 같이 나오면 % 옵션에 '%'를 남김(`방어도 % 증가`, `optNm(r, gi, pct)`), '…도 부여도'가 되지 않게 끝이 '도 부여'면 '옵션도'. 영문은 앞 문구 틀만(뒤 문구 없어도 됨), 묶음·% 표시는 한글만. 점검 `scratchpad/review/S6/alts.js [kr|en]`(모든 묶음 태그의 꿀팁 줄).
+- 상자 글(`showText`) 중 '💡'로 시작하는 꿀팁 줄은 graph2recipe가 단계 `tipTx`로 옮겨 목표가 있어도 레시피 단계 꿀팁 칸에 나옴(`stepTipsHTML`). 예전엔 목표가 있으면 note를 쓰지 않아 빠졌음(MazBro 시전자 목걸이 a10 '💡 노린 옵션'). 꿀팁 줄은 단계 note·공개 목표 글(`revealTx`)로 쓰지 않음(`_is_tip`).
+- 완성 카드 훼손 색(`fcCardState`): 그래프에 `des`가 없고 쪽 통계(desStat.side 100%)로 칠할 때, 성공 회차 옵션 줄(`sh`)이 여럿이면 왼쪽 아이템 칸에서 마지막으로 훼손(m 'd')으로 보인 묶음 태그 줄의 순번(`fcDesSlot` = build_recipes `_ds_slot`, `ds.slot = {of, k}`)과 같은 줄에 칠함. 그 순번 줄이 그 카드에 없으면(그 자리가 랜덤 옵션인 등급) 그쪽 랜덤 옵션 줄. 예전엔 그쪽 첫 줄(검은강철 장갑 접두 첫 줄)에 칠했음 — 생성기의 `des:True` 우회는 그대로 둬도 같은 결과. 지금 데이터에서 바뀐 카드 0(점검 `scratchpad/review/S6/desdiff.js`·`des.js`).
+- `tools/test/_gradesame.js`: 레시피에 플로우차트 완성 카드(`r.fc`)가 있으면 그 카드 줄(태그 gi·티어, 랜덤 옵션·이름표 줄, 분열·훼손·제작 옵션 표시, 퀄리티·소켓)로 비교. 엔진 완성 상태는 '결과 그대로' 자리도 목표 옵션으로 채워 밸런스 = 에센셜로 보였음(7쌍) → 남은 같은 쌍은 MasterT 오래된 에메랄드 하이엔드 = 밸런스 1쌍(카드 5줄 모두 같음).
+- 엔진 비교 파일: 그래프가 엔진 파일보다 나중에 바뀐 42개(작업 중인 D1~D4 그래프 제외)를 가장 높은 등급 레시피 id로 다시 만들고 시뮬 파일 `engine` 필드도 갱신(`scratchpad/review/S6/engall.sh`). 크게 바뀐 것: Diztoh 치명타 투구 106 → 3,495(시뮬 하이엔드 3,852), 시한 차유라 투구 117 → 41, 차유라 마법봉 328 → 156.
+- build_recipes `FC_TS`: 그래프에 없는 상자 키(SL 화염파 지팡이 s3, SL 방어도 투구 b4x, BigDaddy 마법봉 d2x·d4x)와 쓰이지 않는 '-bal' 별칭 10줄을 지움(시각은 그래프 id로만 찾음). 점검 `python3 scratchpad/review/S6/fcts.py [-a] [-v]`(-v = 같은 열 상자 순서와 영상 시각 역전).
+- 일반 상자 `goalBy`: 화면(`fcGoalBy`)은 이미 읽었지만 `run.js`가 시뮬 파일에 상자 필드를 옮길 때 goalBy를 빼서 플로우차트 상자 제목에 반영되지 않았음 → run.js·`patch_shown.js` 둘 다 goalBy를 옮김(시뮬을 다시 돌리지 않을 땐 `node tools/sim/patch_shown.js <그래프 id>`). 이제 `over` 우회 없이 goalBy를 써도 됨. 일반 상자 goalBy를 쓰는 그래프: diztoh-iceshot-bow(e1·d2·x2)·mazbro-bis-chest(s1)·mazbro-sceptre(e1·b3).
+- 플로우차트 버전 버튼과 완성품 카드 순서 = 하이엔드 > 밸런스 > 에센셜(그래프 `versions`·`finals` 순서와 상관없이, 데이터는 그대로). 예: SaVeQ 부재 목걸이·균열 반지 물리가 '밸런스, 하이엔드'로 나오던 것.
+- build_recipes `FC_TS`(추가, D2 보고): Diztoh 엔드게임 육척봉 'ax' 키와 '-bal' 별칭 줄도 지움. SL 투사체 장갑·SL 검은강철 장갑 밸런스는 같은 그래프 id로 찾아서 별칭이 필요 없음.

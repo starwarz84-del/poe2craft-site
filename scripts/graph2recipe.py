@@ -74,6 +74,10 @@ def vid_of(g, params):
     return next((v['id'] for v in g.get('versions') or [] if all(str((params or {}).get(k)) == str(x) for k, x in (v.get('params') or {}).items())), None)
 
 
+def _is_tip(x):   # 상자 글 중 꿀팁 줄(💡로 시작)
+    return isinstance(x, dict) and str(x.get('kr') or '').lstrip().startswith('💡')
+
+
 def shown_leaves(tags, tag, vid, params=None):
     """성공 회차 옵션(S4, 2026-11-13): 묶음 태그(anyOf)의 shown(또는 shownBy[버전 id]) → [{gi, tmax, tag?}]. 없으면 None.
     값 = 잎 태그 이름 · gi 숫자 · {gi, tmax} 하나 또는 목록(같은 묶음 줄이 여러 개면 순서대로). 화면 표시만 바꾸고 판정(anyOf)은 그대로."""
@@ -291,7 +295,7 @@ def _target(G_, n, prev, cur, last_bone):
         if getattr(G_, '_lord', None): t['lord'] = G_._lord
         if not sp:   # 고르는 옵션을 태그로 적지 않은 공개(가장 높은 레벨 옵션·아무거나): 상자 글을 목표 글로 — '선택지 3개 중:'으로 끝나던 것(2026-11-13 S2)
             t['asIs'] = True; t['anyReveal'] = True   # 엔진(engine.js)도 확정 공개로 셈 — 빈 목표로 멈추던 것
-            tx_ = next((x for x in (n.get('showText') or sn.get('showText') or []) if isinstance(x, dict) and x.get('kr')), None) or n.get('goal') or sn.get('goal')
+            tx_ = next((x for x in (n.get('showText') or sn.get('showText') or []) if isinstance(x, dict) and x.get('kr') and not _is_tip(x)), None) or n.get('goal') or sn.get('goal')
             # 결과 그대로 두는 공개(등급이 show를 비움·늘 맞는 성공 선)는 상자 글 대신 '공개: 결과 그대로' — '선택지 3개 중: 공개 결과 그대로/랜덤 옵션'·다른 등급 목표 글이 들어가던 것(2026-11-13 S3 23·29·32번)
             if asis_v: t['keepReveal'] = True
             elif tx_: t['revealTx'] = {'kr': tx_['kr'], 'en': tx_.get('en') or tx_['kr']}
@@ -1101,7 +1105,10 @@ def read_recipe(r, sim, src, tiers, inherit=True):
         o['fcs'] = _fcs(W, n, fold_ids)
         o['routes'] = _routes(W, n, placed, G_, CD)
         if not o.get('cur') and (n.get('goal') or n.get('label')): o['label'] = n.get('goal') or n.get('label')
-        if not t and n.get('showText'): o['note'] = n['showText'][0]
+        st_ = [x for x in n.get('showText') or [] if not _is_tip(x)]
+        tp_ = [{'kr': x['kr'], 'en': x.get('en') or x['kr']} for x in n.get('showText') or [] if _is_tip(x)]
+        if tp_: o['tipTx'] = tp_   # 상자의 꿀팁 줄('💡 노린 옵션: …')은 목표가 있어도 레시피 단계에(2026-11-13 S6 — 목표가 있으면 note를 안 써서 빠지던 것, MazBro 시전자 목걸이 a10)
+        if not t and st_: o['note'] = st_[0]
         elif not t and getattr(G_, '_marktx', None): o['note'] = G_._marktx
         G_._marktx = None
         back = max([x for x in o['routes'] if x['cls'] == 'no' and x['to'] not in ('done', 'self', 'restart', 'state')], key=lambda x: x.get('share') or 0, default=None)
