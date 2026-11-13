@@ -210,7 +210,7 @@ function simulate(graph, D, craft, prices, params, N=5000, seed=1){
   const ex = id => id==='Exalted_Orb' ? 1 : prices.p[id]!=null ? +prices.p[id] : null, missing=new Set();
   const div = use => { let v=0; for(const k in use){ const e=ex(k); if(e==null) missing.add(k); else v+=use[k]*e; } return v/prices.divine; };
   const baseDiv = div(graph.basePrice||{});
-  const tot={}, nodeUse={}, visits={}, skips={}, byCur={}, reach={}, edges={}, edgesI={}, costs=[], c1={}; let bases=0, ok=0, okReq=0;
+  const tot={}, nodeUse={}, visits={}, skips={}, byCur={}, reach={}, edges={}, edgesI={}, costs=[], uCosts=[], c1={}; let bases=0, ok=0, okReq=0;
   // 완성품의 어느 옵션이 훼손으로 얻은 것인지(사용자 확정 2026-11-11: 옵션 종류가 아니라 제작 과정으로 판단) — 태그별 훼손 비율, 면별 훼손 옵션 평균 개수
   const leafT=Object.entries(graph.tags||{}).filter(([k,t])=>t && t.gi!=null).map(([k,t])=>[k,t.gi]);
   const dsT={}, dsSide={p:0,s:0};
@@ -224,13 +224,13 @@ function simulate(graph, D, craft, prices, params, N=5000, seed=1){
     run(rnd, {tally});
     seen.forEach(id=>reach[id]=(reach[id]||0)+1);
     for(const k in runUse) tot[k]=(tot[k]||0)+runUse[k]; bases+=runBases;
-    costs.push(div(runUse)+runBases*baseDiv); }
-  costs.sort((a,b)=>a-b);
+    costs.push(div(runUse)+runBases*baseDiv); uCosts.push(div(runUse)); }
+  costs.sort((a,b)=>a-b); uCosts.sort((a,b)=>a-b);   /* uCosts: 베이스 구입비를 뺀 회차 비용(리버스 비용 기준 useDiv의 분포, 2026-11-13 W2) */
   const q = f => costs[Math.min(costs.length-1, Math.floor(f*costs.length))];
   const avg = o => { const x={}; for(const k in o) x[k]=o[k]/N; return x; };
   const nodes={}; for(const id in visits){ const u=avg(nodeUse[id]||{}); nodes[id]={reach:reach[id]/N, visits:visits[id]/N, use:u, skips:(skips[id]||0)/N, byCur:byCur[id], div:div(u) + (graph.nodes.find(n=>n.id===id)?.kind==='base' ? visits[id]/N*baseDiv : 0)}; }
   const e2={}; for(const k in edges) e2[k]=edges[k]/N; const eI={}; for(const k in edgesI) eI[k]=edgesI[k]/N;   /* per-edge counts (a#index): two edges to the same box (success and failure both to 완성) stay apart — 2026-11-11 */
-  return {N, seed, mean:costs.reduce((s,x)=>s+x,0)/N, median:q(0.5), p90:q(0.9), p10:q(0.1), bases:bases/N, baseDiv, use:avg(tot), useDiv:div(avg(tot)), nodes, edges:e2, edgesI:eI, reqOk:okReq/Math.max(1,ok), c1:Object.fromEntries(Object.entries(c1).map(([k,v])=>[k,v/N])), missing:[...missing], desStat:{tag:Object.fromEntries(Object.entries(dsT).map(([k,x])=>[k,x.d/x.n])), side:{p:dsSide.p/Math.max(1,ok), s:dsSide.s/Math.max(1,ok)}}};
+  return {N, seed, mean:costs.reduce((s,x)=>s+x,0)/N, median:q(0.5), p90:q(0.9), p10:q(0.1), bases:bases/N, baseDiv, use:avg(tot), useDiv:div(avg(tot)), useMedian:uCosts[Math.min(N-1, Math.floor(0.5*N))], useP90:uCosts[Math.min(N-1, Math.floor(0.9*N))], nodes, edges:e2, edgesI:eI, reqOk:okReq/Math.max(1,ok), c1:Object.fromEntries(Object.entries(c1).map(([k,v])=>[k,v/N])), missing:[...missing], desStat:{tag:Object.fromEntries(Object.entries(dsT).map(([k,x])=>[k,x.d/x.n])), side:{p:dsSide.p/Math.max(1,ok), s:dsSide.s/Math.max(1,ok)}}};
 }
 const api={rng, make, simulate, fluxTarget, FLUX};
 if(typeof module!=='undefined' && module.exports) module.exports=api; else root.POE2SIM=api;

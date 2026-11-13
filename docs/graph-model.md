@@ -71,7 +71,7 @@
 
 `{id, recipe, runs, generated, graph:{그리기용 노드·간선·묶음·옵션}, strategies:[{id, params, hidden, res}], engine}`
 
-`res` = 완성 1개 기준: `mean`·`median`·`p10`·`p90`(div), `bases`, `use`(커런시별 평균), `nodes:{id:{reach(완성품 중 거친 비율), visits(평균 방문), use, div}}`, `edges:{"a>b": 평균 통과}`, `reqOk`(완성 조건 만족 비율).
+`res` = 완성 1개 기준: `mean`·`median`·`p10`·`p90`(div), `bases`, `use`(커런시별 평균), `nodes:{id:{reach(완성품 중 거친 비율), visits(평균 방문), use, div}}`, `edges:{"a>b": 평균 통과}`, `reqOk`(완성 조건 만족 비율), `useDiv`·`useMedian`·`useP90`(베이스 구입비를 뺀 평균·중앙값·90% — 리버스 비용 기준, 2026-11-13 W2).
 `engine` = 같은 레시피를 지금 엔진으로 계산한 값(`node tools/sim/engine.js <id> > tools/sim/engine/<id>.json`, 테스트 서버 필요): `total`(확정까지 + 준비 + 베이스), `totalAll`(선택 단계 포함).
 
 ## 기존 레시피 형식 → 간선 자동 변환 규칙 (2차에서 구현)
