@@ -4,34 +4,27 @@
  "cls": "Bows",
  "base": "Warmonger Bow",
  "ilvl": 82,
- "note": "라그나 아샷 활(영상 방식) — 물리 % 매직 구입 → 상위 마모의 에센스 → 좌측 찬미 + 엑잘(접두 결과 그대로) → 보존된 턱뼈 + 군왕의 징조(아마나무) → 상위 엑잘(접미 결과 그대로) → 공개: 군왕의 징조라 아마나무 접미 3개(공격 속도·관통·정신력 효율)가 전부 나와서 공격 속도 확정(영상 5:06 확인). 마지막 엑잘에서 일반 공격 속도가 뜨면 같은 계열이라 훼손은 관통·정신력 효율 중 하나. 밸런스 = 영상(물리 % 1티어), 에센셜 = 물리 % 1~3티어 베이스.",
+ "basePrice": {
+  "Divine_Orb": 10
+ },
+ "note": "라그나 아샷 활(m0eHw6nq24Q, 2026-11-13 G13 영상 전체 화면 대조) — 물리 피해 % 1티어 매직 전쟁광 활(아이템 레벨 82, 퀄리티 20%) → 상위 마모의 에센스(레어 + 물리 피해 추가) → 좌측 찬미의 징조 + 상위 엑잘티드 오브(접두 나오는 대로) → 군왕의 징조 + 보존된 턱뼈(접미 아마나무 훼손) → 상위 엑잘티드 오브(접미 나오는 대로) → 영혼의 우물 공개: 아마나무 3개가 모두 나와 공격 속도 + 반려수 공격 속도. 영상에 반복이 없어 에센셜(난이도 쉬움) 하나. 소켓 룬은 뺌.",
  "params": {
-  "pT": {
-   "kr": "물리 피해 %",
-   "en": "% physical",
+  "v": {
+   "kr": "흐름",
+   "en": "Flow",
    "values": {
     "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
+     "kr": "영상",
+     "en": "Video"
     }
    }
   }
  },
  "strategies": [
   {
-   "id": "bal",
-   "params": {
-    "pT": 1
-   }
-  },
-  {
    "id": "ess",
    "params": {
-    "pT": 3
+    "v": 1
    }
   }
  ],
@@ -41,68 +34,43 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "pT": 3
+    "v": 1
    },
+   "tier": "ess",
    "desc": {
-    "kr": "물리 % 1~3티어 매직 구입",
-    "en": "Buy a T1–3 % physical magic bow"
-   }
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "pT": 1
-   },
-   "desc": {
-    "kr": "물리 % 1티어 매직 구입 (영상)",
-    "en": "Buy a T1 % physical magic bow (as the video)"
+    "kr": "영상 그대로: 엑잘 두 번은 나오는 대로, 공개는 아마나무 공격 속도",
+    "en": "As the video: both exalts kept, the reveal takes Amanamu attack speed"
    }
   }
  ],
  "tags": {
   "pct": {
    "gi": 7,
-   "tmax": "$pT"
+   "tmax": 1
   },
   "flat": {
    "gi": 39
   },
   "as": {
    "gi": 29
-  },
-  "asn": {
-   "gi": 15
-  },
-  "anyas": {
-   "anyOf": [
-    "as",
-    "asn"
-   ]
-  },
-  "anyam": {
-   "anyOf": [
-    "as",
-    {
-     "gi": 28
-    },
-    {
-     "gi": 30
-    }
-   ]
   }
  },
  "require": {
   "all": [
    {
-    "has": "anyas"
+    "has": "pct"
+   },
+   {
+    "has": "flat"
    },
    {
     "full": "p"
    },
    {
     "full": "s"
+   },
+   {
+    "desSide": "s"
    }
   ]
  },
@@ -126,102 +94,42 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [],
- "finals": [
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "pct",
-     "tmax": 1
-    },
-    {
-     "tag": "flat",
-     "tmax": 1
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "tag": "as",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "tag": "pct",
-     "tmax": 3
-    },
-    {
-     "tag": "flat",
-     "tmax": 1
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "tag": "as",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  }
- ],
+ "start": "b0",
  "finalItem": {
   "quality": 20,
-  "sockets": 0
+  "sockets": 2
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "w2",
+   "next": "e1",
    "start": {
     "rar": "magic",
     "mods": [
-     "pct"
+     {
+      "tag": "pct"
+     },
+     {
+      "junk": "s"
+     }
     ],
-    "random": 1
+    "quality": 20
    },
    "label": {
-    "kr": "물리 피해 % 증가 매직 전쟁광 활 구입",
-    "en": "Buy a magic Warmonger Bow with % physical"
+    "kr": "물리 피해 % 1티어 매직 전쟁광 활 구입 (아이템 레벨 82, 퀄리티 20%)",
+    "en": "Buy a magic Warmonger Bow with T1 % physical damage (item level 82, quality 20%)"
    },
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pct"
@@ -229,14 +137,14 @@
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
      "m": "j"
     }
    ]
   },
   {
-   "id": "w2",
+   "id": "e1",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -244,14 +152,23 @@
     1
    ],
    "act": "essence",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접두 물리 피해 추가",
-    "en": "Upgrade to rare + flat physical prefix"
-   },
+   "cur": "Greater_Essence_of_Abrasion",
+   "ess": "flat",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "레어 + 접두 물리 피해 추가",
+    "en": "Rare + flat physical damage prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (16—24)~(28—42) 추가 (제작 옵션)",
+     "en": "Adds (16—24) to (28—42) Physical Damage (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "ms"
@@ -260,38 +177,29 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pct"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (16—24)~(28—42) 추가",
+     "en": "Adds (16—24) to (28—42) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
-    }
-   ],
-   "cur": "Greater_Essence_of_Abrasion",
-   "showText": [
+    },
     {
-     "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)"
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
+     "m": "j"
     }
-   ],
-   "ess": "flat"
+   ]
   },
   {
    "id": "ms",
@@ -299,9 +207,9 @@
    "group": "main",
    "pos": [
     0,
-    1.5
+    1.4
    ],
-   "next": "w3",
+   "next": "x1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -309,267 +217,264 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pct"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (16—24)~(28—42) 추가",
+     "en": "Adds (16—24) to (28—42) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
+    },
+    {
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
+     "m": "j"
     }
    ]
   },
   {
-   "id": "w3",
+   "id": "x1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    2.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 세번째 옵션",
-    "en": "Third prefix option"
-   },
+   "cur": "Greater_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션 — 나오는 대로",
+    "en": "Third prefix: keep what lands"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
-     "to": "w4"
+     "to": "d1"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pct"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
+     "s": "p",
+     "kr": "물리 피해 (45—54)% 증가 / 정확도 +(98—123)",
+     "en": "(45—54)% increased Physical Damage / +(98—123) to Accuracy Rating",
      "m": "j"
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (16—24)~(28—42) 추가",
+     "en": "Adds (16—24) to (28—42) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
     },
     {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
      "m": "j"
     }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개 (원소 플랫이면 좋음) — 결과 그대로",
-     "en": "One random line (an elemental flat is good) — keep whatever comes"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
-   "id": "w4",
+   "id": "d1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    3.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 두번째 옵션(훼손)",
-    "en": "Second suffix option (desecrated)"
-   },
+   "cur": "Preserved_Jawbone",
+   "omens": [
+    "Omen_of_the_Liege"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접미 두번째 옵션(아마나무 훼손)",
+    "en": "Second suffix (Amanamu desecration)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "아마나무 훼손 옵션 (미공개)",
+     "en": "Amanamu desecration (unrevealed)"
+    }
+   ],
    "edges": [
     {
-     "if": {
-      "unrev": true
-     },
-     "to": "w5"
+     "to": "x2"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pct"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
+     "s": "p",
+     "kr": "물리 피해 (45—54)% 증가 / 정확도 +(98—123)",
+     "en": "(45—54)% increased Physical Damage / +(98—123) to Accuracy Rating",
      "m": "j"
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (16—24)~(28—42) 추가",
+     "en": "Adds (16—24) to (28—42) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
     },
     {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
      "m": "j"
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
+     "kr": "접미 훼손 옵션 (미공개)",
+     "en": "Suffix desecration (unrevealed)",
+     "m": "u"
     }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "아마나무 훼손 옵션(미공개)",
-     "en": "Amanamu desecration (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_the_Liege"
    ]
   },
   {
-   "id": "w5",
+   "id": "x2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    4.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 세번째 옵션 (일반 공격 속도 먼저 노림)",
-    "en": "Third suffix (a normal attack speed first)"
-   },
+   "cur": "Greater_Exalted_Orb",
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 세번째 옵션 — 나오는 대로",
+    "en": "Third suffix: keep what lands"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
-     "to": "w6"
+     "to": "v1"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pct"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
+     "s": "p",
+     "kr": "물리 피해 (45—54)% 증가 / 정확도 +(98—123)",
+     "en": "(45—54)% increased Physical Damage / +(98—123) to Accuracy Rating",
      "m": "j"
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (16—24)~(28—42) 추가",
+     "en": "Adds (16—24) to (28—42) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
     },
     {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
      "m": "j"
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
+     "kr": "접미 훼손 옵션 (미공개)",
+     "en": "Suffix desecration (unrevealed)",
+     "m": "u"
     },
     {
      "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
+     "kr": "물리 공격 피해의 (9—9.9)%를 생명력으로 흡수",
+     "en": "Leeches (9—9.9)% of Physical Damage as Life",
      "m": "j"
     }
-   ],
-   "cur": "Greater_Exalted_Orb",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 1개 (레벨 35+) — 공격 속도가 뜨면 훼손은 다른 아마나무 옵션으로",
-     "en": "One random line (level 35+) — attack speed here frees the desecration for another Amanamu line"
-    }
-   ],
-   "skipIf": {
-    "full": "s"
-   },
-   "skipTo": "w6"
+   ]
   },
   {
-   "id": "w6",
+   "id": "v1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    5.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인 (아마나무 3개 전부 나옴)",
-    "en": "Reveal (all three Amanamu lines show)"
-   },
+   "want": "as",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접미 공격 속도 + 반려수 공격 속도 (아마나무, 훼손)",
+    "en": "Attack speed + companion attack speed suffix (Amanamu, desecrated)"
+   },
+   "show": [
+    "as"
+   ],
    "edges": [
     {
      "to": "ok"
@@ -578,58 +483,50 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (170—179)% 증가",
+     "en": "(170—179)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pct"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
+     "s": "p",
+     "kr": "물리 피해 (45—54)% 증가 / 정확도 +(98—123)",
+     "en": "(45—54)% increased Physical Damage / +(98—123) to Accuracy Rating",
      "m": "j"
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (16—24)~(28—42) 추가",
+     "en": "Adds (16—24) to (28—42) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
     },
     {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
      "m": "j"
     },
     {
      "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "공격 속도 + 반려수 공격 속도 (아마나무)",
-     "en": "Attack speed + companion attack speed (Amanamu)",
-     "m": "n",
+     "kr": "공격 속도 (12—18)% 증가 / 반려수의 공격 속도 (12—18)% 증가",
+     "en": "(12—18)% increased Attack Speed / Companions have (12—18)% increased Attack Speed",
+     "m": "d",
      "tags": [
       "as"
      ]
-    }
-   ],
-   "showText": [
+    },
     {
      "s": "s",
-     "kr": "공격 속도 + 반려수 공격 속도 (일반 공격 속도가 있으면 관통·정신력 효율 중 하나)",
-     "en": "Attack speed + companion attack speed (with a normal attack speed: pierce or spirit efficiency)"
+     "kr": "물리 공격 피해의 (9—9.9)%를 생명력으로 흡수",
+     "en": "Leeches (9—9.9)% of Physical Damage as Life",
+     "m": "j"
     }
-   ],
-   "want": "as"
+   ]
   },
   {
    "id": "ok",
@@ -637,12 +534,46 @@
    "group": "main",
    "pos": [
     0,
-    6
+    6.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [],
+ "finals": [
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "pct"
+    },
+    {
+     "tag": "flat",
+     "ess": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "as",
+     "des": true
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
   }
  ]
 }

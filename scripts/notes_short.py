@@ -155,6 +155,7 @@ TIPREF = {('unstoppable-vile-robe','t1'):['omens-for-last-line','whittle-safe-to
  ('diztoh-as-spear','a7'):['thrud-last'], ('diztoh-as-spear','a3'):['side-omen-save'], ('lilbotq-emerald','l1'):['cheap-jewel-liquid-gamble'], ('lilbotq-emerald','l5'):['plus-one-erasure'], ('lilbotq-emerald','l7'):['jewel-five-mods'],
  ('noble-timelost-sapphire','n1'):['spell-tag-fracture'], ('noble-timelost-sapphire','n4'):['contempt-fill-prefixes','jewel-five-mods'], ('noble-timelost-sapphire','n5'):['contempt-line-annulled'], ('noble-timelost-sapphire','n6'):['plus-one-erasure'],
  ('zenm-timelost-sapphire','z1'):['timelost-profit-batch'], ('diztoh-talisman','t3'):['liege-omen-resist-jewellery'], ('lilbotq-budget-boots','b1'):['cheap-resist-essence'], ('lilbotq-boots','h2'):['augment-rune-before-chaos']}
+TIPREF[('ragna-ashot-bow','x2')]=['min-level-lock-tier']   # 2026-11-13 G13: 새 플로우차트 상자 id(접미 상위 엑잘)
 _old = lambda r: _OLD.get(r.get('tierGroup') or r['id'], r['id'])
 for _r in R:
     for _n in _r['nodes']:

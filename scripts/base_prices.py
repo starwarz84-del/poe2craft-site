@@ -50,7 +50,7 @@ BASEPRICE = {
   'farmer-budget-armour': None,
   'farmer-starter-staff': None,
   'farmer-budget-armour-v2': None,
-  'ragna-ashot-bow-v2-bal': None, 'ragna-ashot-bow-v2-ess': None,
+  'ragna-ashot-bow-v2-bal': None, 'ragna-ashot-bow-v2-ess': 10,   # 2026-11-13 G13: 영상 1:30 자막 '8딥, 10딥, 15딥 정도'(물리 % 매직 활 거래소 가격, 화면 1:40 매물은 5티어 절멸자 활 8 div) — 가운데 10 div
   'sane-resist-belt-v2-bal': None, 'sane-resist-belt-v2-ess': None,
   'diztoh-budget-mace-v2-bal': None, 'diztoh-budget-mace-v2-ess': None,
   'lilbotq-budget-boots-v2-bal': None, 'lilbotq-budget-boots-v2-ess': None,

@@ -180,3 +180,6 @@ graph('icesly-budget-wand-v2','Wands','Dueling Wand',81,
   [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'l5','tmax':a},{'tag':'trans','tmax':1},{'side':'s','random':True},{'side':'p','label':K('번개 피해·주문 피해·추가 피해 획득','Lightning, spell or extra damage')},{'side':'p','label':K('번개 피해·주문 피해·추가 피해 획득','Lightning, spell or extra damage')},{'tag':'cel','tmax':1}]} for v,kr,en,a in (('bal','밸런스 옵션','Balance',1),('ess','에센셜 옵션','Essential',2))],
   {'quality':20,'sockets':1},{'all':[{'has':'cel'},{'has':'trans'},{'has':'l5'},{'full':'p'}]})
 print('wrote 5 graphs')
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_ragna_ashot_bow.py'): _sp.run([_sy.executable, f'{H}/gen_ragna_ashot_bow.py'], check=True)   # 2026-11-13 G13: 새 기준 전용 생성기가 덮어씀

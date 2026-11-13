@@ -11,7 +11,7 @@ def _node(r, nid): return next(n for n in r['nodes'] if n['id']==nid)
 
 # 1. 라그나 아샷 활 — Balance = video (T1 % physical bought), Essential = T1–3 % physical base
 def _bow(r, t):
-    r['start']['mods'][0]['tmax'] = 1 if t=='bal' else 3
+    r['start']['mods'][0]['tmax'] = 1   # 2026-11-13 G13: 쉬움이라 에센셜만, 에센셜 = 영상(물리 % 1티어 구입)
     r['nodes']=[n for n in r['nodes'] if n['id']!='w7']
     w6=_node(r,'w6'); w6.pop('fail',None)   # the Liege shows all three Amanamu suffixes (영상 5:06): attack speed is sure
     am=[gi for gi,gr in enumerate(cd(r['cls'])['groups']) if gr['s']=='d' and gr['g']=='s' and 'amanamu_mod' in gr['tg']]
