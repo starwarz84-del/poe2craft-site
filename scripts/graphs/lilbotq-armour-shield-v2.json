@@ -4,33 +4,19 @@
  "cls": "Shields_str",
  "base": "Tawhoan Tower Shield",
  "ilvl": 81,
- "note": "LilBotQ 방어도 2000 방패(영상 자막 확인 2026-11-10) — 방어도 1티어 분열 + 잡옵 1개(퀄리티 28%) → 카오스 오브로 방어도 % → 좌측 강령술 + 고대 갈비뼈 → 공개(방어도 % + 기절 한계치, 심연의 메아리) → 접미 옵션 3개 아무거나. 밸런스 = 영상(자기 템: 1티어까지 빛의 징조), 에센셜 = 팔 템 방식(방어도 % 1~2티어, 복합 1~3티어, 공개는 결과 그대로, 접미는 상위 엑잘티드 오브).",
+ "note": "2026-11-13 G9 영상 전체 대조(근거 scratchpad review/G9/lilbotq-armour-shield-v2/timeline.md). 성공 회차 한 줄: 특출난 타호아의 거대 방패(홈 2개, 아이템 레벨 81, 퀄리티 20%, 1:02) → 바알 방어구 장인의 주입기 2개로 28%(1:28) → 완벽한 진화 = 방어도 1티어(1:36, 한 번에 성공) → 완벽한 확장 = 화염 저항 최대치(4:05) → 상위 강화의 에센스(4:32) → 좌측 강령술 + 보존된 갈비뼈(4:48) → 신성한 오브(5:00, 방어도 277) → 분열의 오브 = 방어도(5:14) → 소멸의 오브로 옵션 1개만(5:40) → 카오스 오브 = 방어도 % 1티어(7:36) → 좌측 강령술 + 고대 갈비뼈 + 심연의 메아리 공개(7:50 3티어 → 빛의 징조로 다시, 8:38 1티어) → 상위 찬미 + 완벽한 엑잘(9:44) → 완벽한 엑잘(10:05). 6:00~7:30의 곁가지(카오스로 먼저 뜬 복합 1티어를 두고 훼손 → 69% 공개 → 소멸의 오브가 복합을 지움 → 카오스 다시)는 영상도 선택이라 꿀팁 후보로. 완벽한 철 룬 2개·신성한 오브 마무리(8:30~9:00)는 정책 9장대로 뺌. 밸런스 = 공개 복합 1~2티어까지 빛의 징조, 에센셜 = 공개 결과 그대로(C17-3).",
  "params": {
-  "pT": {
-   "kr": "방어도 %",
-   "en": "% armour",
+  "hT": {
+   "kr": "공개 복합 옵션",
+   "en": "Revealed hybrid",
    "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
-    }
-   }
-  },
-  "hT": {
-   "kr": "방어도 % + 기절 한계치",
-   "en": "% armour + stun threshold",
-   "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
     },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
+    "6": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
     }
    }
   }
@@ -39,15 +25,13 @@
   {
    "id": "bal",
    "params": {
-    "pT": 1,
-    "hT": 1
+    "hT": 2
    }
   },
   {
    "id": "ess",
    "params": {
-    "pT": 2,
-    "hT": 3
+    "hT": 6
    }
   }
  ],
@@ -57,12 +41,12 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "pT": 2,
-    "hT": 3
+    "hT": 6
    },
+   "tier": "ess",
    "desc": {
-    "kr": "나온 티어로 타협 (판매용)",
-    "en": "Settle for the tier you get (to sell)"
+    "kr": "공개 결과 그대로 (판매용)",
+    "en": "Keep the reveal (to sell)"
    }
   },
   {
@@ -70,12 +54,12 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "pT": 1,
-    "hT": 1
+    "hT": 2
    },
+   "tier": "bal",
    "desc": {
-    "kr": "1티어까지 빛의 징조로 다시 (영상)",
-    "en": "Light until T1 (as the video)"
+    "kr": "공개 복합 옵션 1~2티어까지 빛의 징조로 다시 (영상은 1티어)",
+    "en": "Reveal again with Omen of Light until a T1–2 hybrid (the video went to T1)"
    }
   }
  ],
@@ -86,11 +70,22 @@
   },
   "pct": {
    "gi": 7,
-   "tmax": "$pT"
+   "tmax": 1
+  },
+  "essP": {
+   "gi": 38
   },
   "hyb": {
    "gi": 8,
    "tmax": "$hT"
+  },
+  "hyb1": {
+   "gi": 8,
+   "tmax": 1
+  },
+  "hyb2": {
+   "gi": 8,
+   "tmax": 2
   }
  },
  "require": {
@@ -129,36 +124,24 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "l4",
-    "l4x",
-    "l4d"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  }
- ],
+ "start": "k0",
  "finals": [
   {
    "id": "bal",
+   "tier": "bal",
    "kr": "밸런스 옵션",
    "en": "Balance",
    "lines": [
     {
      "tag": "flat",
-     "tmax": 1
+     "fr": true
     },
     {
-     "tag": "pct",
-     "tmax": 1
+     "tag": "pct"
     },
     {
-     "tag": "hyb",
-     "tmax": 1
+     "tag": "hyb2",
+     "des": true
     },
     {
      "side": "s",
@@ -176,20 +159,21 @@
   },
   {
    "id": "ess",
+   "tier": "ess",
    "kr": "에센셜 옵션",
    "en": "Essential",
    "lines": [
     {
      "tag": "flat",
-     "tmax": 1
+     "fr": true
     },
     {
-     "tag": "pct",
-     "tmax": 2
+     "tag": "pct"
     },
     {
-     "tag": "hyb",
-     "tmax": 3
+     "side": "p",
+     "random": true,
+     "des": true
     },
     {
      "side": "s",
@@ -212,35 +196,210 @@
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "k0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "k1",
    "start": {
-    "rar": "rare",
-    "mods": [
-     {
-      "tag": "flat",
-      "fr": true
-     },
-     {
-      "junk": "s"
-     }
-    ]
+    "rar": "normal",
+    "mods": [],
+    "quality": 20
    },
    "label": {
-    "kr": "방어도 1티어 분열 + 잡옵 1개 (퀄리티 28%)",
-    "en": "Fractured T1 flat armour + one junk line (28% quality)"
+    "kr": "노멀 특출난 타호아의 거대 방패 구입 (아이템 레벨 81, 홈 2개, 퀄리티 20%)",
+    "en": "Buy a normal exceptional Tawhoan Tower Shield (item level 81, two sockets, 20% quality)"
    },
+   "item": []
+  },
+  {
+   "id": "k1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "quality",
+   "cur": "Vaal_Armourers_Infuser",
+   "count": 2,
+   "q": 28,
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "goal": {
+    "kr": "퀄리티 28%",
+    "en": "Quality 28%"
+   },
+   "showText": [
+    {
+     "kr": "바알 방어구 장인의 주입기 2개",
+     "en": "2 Vaal Armourer’s Infusers"
+    }
+   ],
+   "edges": [
+    {
+     "to": "k2"
+    }
+   ],
+   "item": []
+  },
+  {
+   "id": "k2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "transmute",
+   "cur": "Perfect_Orb_of_Transmutation",
+   "label": {
+    "kr": "진화",
+    "en": "Transmute"
+   },
+   "goal": {
+    "kr": "접두 방어도 1티어",
+    "en": "T1 flat armour prefix"
+   },
+   "show": [
+    "flat"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "flat"
+     },
+     "to": "k3",
+     "res": "ok"
+    },
+    {
+     "to": "k2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
    "item": [
     {
      "s": "p",
-     "kr": "방어도 (분열)",
-     "en": "Flat armour (fractured)",
+     "kr": "방어도 +(249—277)",
+     "en": "+(249—277) to Armour",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "k2x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    1,
+    2
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "옵션을 지우고 완벽한 확장의 오브로 다시",
+    "en": "Clear it and try again with a Perfect Augmentation"
+   },
+   "edges": [
+    {
+     "to": "k2a"
+    }
+   ]
+  },
+  {
+   "id": "k2a",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    1,
+    2.6
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "goal": {
+    "kr": "접두 방어도 1티어",
+    "en": "T1 flat armour prefix"
+   },
+   "show": [
+    "flat"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "flat"
+     },
+     "to": "k3",
+     "res": "ok"
+    },
+    {
+     "to": "k2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "goal": {
+    "kr": "접미 옵션 하나 — 결과 그대로",
+    "en": "One suffix: keep whatever comes"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "k4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 +(249—277)",
+     "en": "+(249—277) to Armour",
      "m": "n",
      "tags": [
       "flat"
@@ -248,11 +407,293 @@
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
+     "kr": "화염 저항 최대치 +3%",
+     "en": "+3% to Maximum Fire Resistance",
      "m": "j"
     }
    ]
+  },
+  {
+   "id": "k4",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "essence",
+   "cur": "Greater_Essence_of_Enhancement",
+   "ess": "essP",
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "레어 + 접두 방어도·회피·에너지 보호막 % 증가 (제작 옵션)",
+    "en": "Rare + % armour, evasion and energy shield prefix (crafted)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "k5"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 +(249—277)",
+     "en": "+(249—277) to Armour",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (상위 강화의 에센스)",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield (Greater Essence of Enhancement)",
+     "m": "c",
+     "tags": [
+      "essP"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 최대치 +3%",
+     "en": "+3% to Maximum Fire Resistance",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "k5",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Rib",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "네번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Fourth option (desecrated): the fracture needs four"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecrated (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "k6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 +(249—277)",
+     "en": "+(249—277) to Armour",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (상위 강화의 에센스)",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield (Greater Essence of Enhancement)",
+     "m": "c",
+     "tags": [
+      "essP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 최대치 +3%",
+     "en": "+3% to Maximum Fire Resistance",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "k6",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "divine",
+   "cur": "Divine_Orb",
+   "count": 2,
+   "label": {
+    "kr": "수치 올리기",
+    "en": "Divine the values"
+   },
+   "goal": {
+    "kr": "분열 전에 방어도 수치 올리기",
+    "en": "Raise the armour value before the fracture"
+   },
+   "showText": [
+    {
+     "kr": "신성한 오브 2개 (영상: 방어도 277)",
+     "en": "Two Divine Orbs (the video: 277 armour)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "k7"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 +(249—277)",
+     "en": "+(249—277) to Armour",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (상위 강화의 에센스)",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield (Greater Essence of Enhancement)",
+     "m": "c",
+     "tags": [
+      "essP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 최대치 +3%",
+     "en": "+3% to Maximum Fire Resistance",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "k7",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 — 공개된 옵션 3개 중 접두 방어도",
+    "en": "Fracture: the flat armour prefix, one of three revealed options"
+   },
+   "ask": {
+    "kr": "어느 옵션이 분열?",
+    "en": "Which option fractured?"
+   },
+   "edges": [
+    {
+     "if": {
+      "fractured": "flat"
+     },
+     "to": "ms",
+     "res": "ok",
+     "label": {
+      "kr": "방어도 분열",
+      "en": "Flat armour fractured"
+     }
+    },
+    {
+     "to": "kx",
+     "res": "fail",
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 +(249—277) (분열)",
+     "en": "+(249—277) to Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (상위 강화의 에센스)",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield (Greater Essence of Enhancement)",
+     "m": "c",
+     "tags": [
+      "essP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 최대치 +3%",
+     "en": "+3% to Maximum Fire Resistance",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "kx",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    7
+   ],
+   "simTo": "k0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured: new base"
+   },
+   "note": {
+    "kr": "에센스 옵션이 남아 있어 완전히 버리지는 않음, 이 레시피는 새 베이스로 처음부터",
+    "en": "The essence line keeps it usable; for this recipe start over on a new base"
+   }
   },
   {
    "id": "ms",
@@ -260,9 +701,9 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    8.4
    ],
-   "next": "l2",
+   "next": "k8",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -270,9 +711,69 @@
    "item": [
     {
      "s": "p",
-     "kr": "방어도 (분열)",
-     "en": "Flat armour (fractured)",
-     "m": "n",
+     "kr": "방어도 +(249—277) (분열)",
+     "en": "+(249—277) to Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (상위 강화의 에센스)",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield (Greater Essence of Enhancement)",
+     "m": "c",
+     "tags": [
+      "essP"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "화염 저항 최대치 +3%",
+     "en": "+3% to Maximum Fire Resistance",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "k8",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    0,
+    9.4
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "분열 옵션 + 잡옵 1개만 남기기",
+    "en": "Keep the fractured line and one junk option"
+   },
+   "target": {
+    "kr": "소멸의 오브로 옵션 1개만 남김",
+    "en": "Annul down to one option"
+   },
+   "edges": [
+    {
+     "to": "k9"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 +(249—277) (분열)",
+     "en": "+(249—277) to Armour (fractured)",
+     "m": "f",
      "tags": [
       "flat"
      ]
@@ -286,96 +787,108 @@
    ]
   },
   {
-   "id": "l2",
+   "id": "k9",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    1
+    10.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix option"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접두 방어도 % 증가 1티어",
+    "en": "T1 % armour prefix"
+   },
+   "show": [
+    "pct"
+   ],
    "edges": [
     {
      "if": {
       "has": "pct"
      },
-     "to": "l3",
+     "to": "k10",
      "res": "ok"
     },
     {
-     "to": "l2",
-     "res": "fail"
+     "to": "k9",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "방어도 (분열)",
-     "en": "Flat armour (fractured)",
-     "m": "n",
+     "kr": "방어도 +(249—277) (분열)",
+     "en": "+(249—277) to Armour (fractured)",
+     "m": "f",
      "tags": [
       "flat"
      ]
     },
     {
      "s": "p",
-     "kr": "방어도 % 증가",
-     "en": "% armour",
+     "kr": "방어도 (101—110)% 증가",
+     "en": "(101—110)% increased Armour",
      "m": "n",
      "tags": [
       "pct"
      ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "pct"
    ]
   },
   {
-   "id": "l3",
+   "id": "k10",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    11.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접두 세번째 옵션(훼손)",
-    "en": "Third prefix (desecrated)"
-   },
+   "cur": "Ancient_Rib",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
-     "to": "l4"
+     "to": "k11"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "방어도 (분열)",
-     "en": "Flat armour (fractured)",
-     "m": "n",
+     "kr": "방어도 +(249—277) (분열)",
+     "en": "+(249—277) to Armour (fractured)",
+     "m": "f",
      "tags": [
       "flat"
      ]
     },
     {
      "s": "p",
-     "kr": "방어도 % 증가",
-     "en": "% armour",
+     "kr": "방어도 (101—110)% 증가",
+     "en": "(101—110)% increased Armour",
      "m": "n",
      "tags": [
       "pct"
@@ -383,76 +896,80 @@
     },
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
      "m": "n"
     }
-   ],
-   "cur": "Ancient_Rib",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {
-   "id": "l4",
+   "id": "k11",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    12.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "hyb",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 방어도 % 증가 + 기절 한계치",
+    "en": "% armour + stun threshold prefix"
+   },
+   "show": [
+    "hyb"
+   ],
    "edges": [
     {
      "if": {
       "added": "hyb"
      },
-     "to": "l7",
+     "to": "k12",
      "res": "ok"
     },
     {
      "if": {
       "param": {
-       "hT": 1
+       "hT": 2
       }
      },
-     "to": "l4x",
-     "res": "fail"
+     "to": "k11x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 빛의 징조로 다시",
+      "en": "Miss: again with Omen of Light"
+     }
     },
     {
-     "to": "l7",
-     "res": "fail"
+     "to": "k12",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 그대로",
+      "en": "Miss: keep it"
+     }
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "방어도 (분열)",
-     "en": "Flat armour (fractured)",
-     "m": "n",
+     "kr": "방어도 +(249—277) (분열)",
+     "en": "+(249—277) to Armour (fractured)",
+     "m": "f",
      "tags": [
       "flat"
      ]
     },
     {
      "s": "p",
-     "kr": "방어도 % 증가",
-     "en": "% armour",
+     "kr": "방어도 (101—110)% 증가",
+     "en": "(101—110)% increased Armour",
      "m": "n",
      "tags": [
       "pct"
@@ -460,29 +977,22 @@
     },
     {
      "s": "p",
-     "kr": "방어도 % + 기절 한계치",
-     "en": "% armour + stun threshold",
-     "m": "n",
+     "kr": "방어도 (39—42)% 증가, 기절 한계치 +(95—136) (훼손)",
+     "en": "(39—42)% increased Armour, +(95—136) to Stun Threshold (desecrated)",
+     "m": "d",
      "tags": [
-      "hyb"
+      "hyb1"
      ]
     }
-   ],
-   "want": "hyb",
-   "show": [
-    "hyb"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
-   "id": "l4x",
+   "id": "k11x",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    3
+    12.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -498,179 +1008,119 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "훼손 옵션 지우고 다시 훼손",
+    "en": "Remove the desecrated option, desecrate again"
    },
    "edges": [
     {
-     "to": "l4d",
-     "port": "right"
-    }
-   ]
-  },
-  {
-   "id": "l4d",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    3.6
-   ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "다시 훼손",
-    "en": "Desecrate again"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "edges": [
-    {
-     "to": "l4",
-     "port": "right"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "방어도 (분열)",
-     "en": "Flat armour (fractured)",
-     "m": "n",
-     "tags": [
-      "flat"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "방어도 % 증가",
-     "en": "% armour",
-     "m": "n",
-     "tags": [
-      "pct"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Ancient_Rib",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
-   ]
-  },
-  {
-   "id": "l7",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    4
-   ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접미 옵션 2개",
-    "en": "Two suffixes"
-   },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
-   "edges": [
-    {
-     "to": "l8"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "방어도 (분열)",
-     "en": "Flat armour (fractured)",
-     "m": "n",
-     "tags": [
-      "flat"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "방어도 % 증가",
-     "en": "% armour",
-     "m": "n",
-     "tags": [
-      "pct"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "방어도 % + 기절 한계치",
-     "en": "% armour + stun threshold",
-     "m": "n",
-     "tags": [
-      "hyb"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 2개 — 결과 그대로",
-     "en": "Two random lines — keep whatever comes"
-    }
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
-   ],
-   "over": [
-    {
-     "param": {
-      "hT": 3
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
+     "to": "k10",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
      }
     }
    ]
   },
   {
-   "id": "l8",
+   "id": "k12",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    13.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 세번째 옵션",
-    "en": "Third suffix"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 옵션 2개 — 결과 그대로",
+    "en": "Two suffixes: keep whatever comes"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
+   "edges": [
+    {
+     "to": "k13"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 +(249—277) (분열)",
+     "en": "+(249—277) to Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도 (101—110)% 증가",
+     "en": "(101—110)% increased Armour",
+     "m": "n",
+     "tags": [
+      "pct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도 (39—42)% 증가, 기절 한계치 +(95—136) (훼손)",
+     "en": "(39—42)% increased Armour, +(95—136) to Stun Threshold (desecrated)",
+     "m": "d",
+     "tags": [
+      "hyb1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "카오스 저항 +(24—27)%",
+     "en": "+(24—27)% to Chaos Resistance",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "냉기 저항 +(26—30)%",
+     "en": "+(26—30)% to Cold Resistance",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "k13",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    14.4
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접미 세번째 옵션 — 결과 그대로",
+    "en": "Third suffix: keep whatever comes"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
      "to": "ok"
@@ -679,17 +1129,17 @@
    "item": [
     {
      "s": "p",
-     "kr": "방어도 (분열)",
-     "en": "Flat armour (fractured)",
-     "m": "n",
+     "kr": "방어도 +(249—277) (분열)",
+     "en": "+(249—277) to Armour (fractured)",
+     "m": "f",
      "tags": [
       "flat"
      ]
     },
     {
      "s": "p",
-     "kr": "방어도 % 증가",
-     "en": "% armour",
+     "kr": "방어도 (101—110)% 증가",
+     "en": "(101—110)% increased Armour",
      "m": "n",
      "tags": [
       "pct"
@@ -697,48 +1147,30 @@
     },
     {
      "s": "p",
-     "kr": "방어도 % + 기절 한계치",
-     "en": "% armour + stun threshold",
-     "m": "n",
+     "kr": "방어도 (39—42)% 증가, 기절 한계치 +(95—136) (훼손)",
+     "en": "(39—42)% increased Armour, +(95—136) to Stun Threshold (desecrated)",
+     "m": "d",
      "tags": [
-      "hyb"
+      "hyb1"
      ]
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
+     "kr": "카오스 저항 +(24—27)%",
+     "en": "+(24—27)% to Chaos Resistance",
+     "m": "n"
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
+     "kr": "냉기 저항 +(26—30)%",
+     "en": "+(26—30)% to Cold Resistance",
+     "m": "n"
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 1개 — 결과 그대로",
-     "en": "One random line — keep whatever comes"
-    }
-   ],
-   "over": [
-    {
-     "param": {
-      "hT": 3
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
-     }
+     "kr": "받는 물리 피해 8% 추가 감소",
+     "en": "8% additional Physical Damage Reduction",
+     "m": "n"
     }
    ]
   },
@@ -748,12 +1180,33 @@
    "group": "main",
    "pos": [
     0,
-    6
+    15.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L0",
+   "nodes": [
+    "k2x",
+    "k2a"
+   ],
+   "kr": "매직 옵션",
+   "en": "Magic option"
+  },
+  {
+   "id": "L1",
+   "nodes": [
+    "k10",
+    "k11",
+    "k11x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
   }
  ]
 }
