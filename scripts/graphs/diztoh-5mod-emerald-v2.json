@@ -4,7 +4,10 @@
  "cls": "Emerald",
  "base": "Emerald",
  "ilvl": 80,
- "note": "Diztoh 5옵션 에메랄드(원본 레시피 기록) — 공격 치명타 피해 + 잡옵 → 우측 찬미 + 엑잘(공격 속도, 빗나가면 소멸의 오브) → 엑잘(접두) → 위력적인 액체 경멸 → 보존된 두개골 → 공개(공격 속도) → 좌측 소멸의 징조로 경멸 옵션 제거 → 엑잘 → 카오스 오브(공격·육척봉 피해) → 위력적인 액체 흉포함. 제련된 강탈자 기폭제(퀄리티)는 마무리라 시뮬에서 뺌.",
+ "basePrice": {
+  "Divine_Orb": 65
+ },
+ "note": "2026-11-13 G8 영상 화면 대조(근거 scratchpad review/G8/diztoh-5mod-emerald-v2/timeline.md). 에메랄드 2개 중 첫 번째(Behemoth Delirium, 아이템 레벨 80) 성공 회차 한 줄: 분열 공격 치명타 피해 보너스 19% + 원소 피해 접두 레어 에메랄드 구입(0:36 65 div) → 소멸의 오브로 원소 피해(1:20) → 우측 찬미 + 엑잘 육척봉 공격 속도(1:28) → 엑잘 2번 접두 → 위력적인 액체 경멸(2:48 툴팁, 2:52 성공) → 보존된 두개골(3:23, 접두가 꽉 차 접미로) → 심연의 메아리 공개(빛의 징조 반복, 4:30 빛의 징조를 다 씀, 6:02 공격 속도) → 좌측 소멸의 징조 + 소멸의 오브로 경멸 옵션(6:02 채팅) → 엑잘 접두(6:02 위험 피해) → 카오스로 접두 공격 피해(접미가 한도를 넘어 접두만, 6:00~9:35) → 위력적인 액체 흉포함(8:00 실패 = 공격 피해가 지워짐 → 카오스 다시, 9:48 원소 피해가 지워지고 성공). 신성한 오브·제련된 강탈자 기폭제(11:30)·두 번째 에메랄드(12:30~)·타락(26:00~)은 뺌. 내부 결정: 우측 찬미의 징조는 화면으로 확인 못 함(옛 기록), 경멸 실패 처리는 첫 에메랄드에 없어 옵션 정리 후 엑잘부터, 좌측 소멸이 좋은 접두를 지우면 같은 징조로 다시.",
  "params": {
   "v": {
    "kr": "진행",
@@ -43,9 +46,10 @@
    "params": {
     "v": 2
    },
+   "tier": "ess",
    "desc": {
-    "kr": "공개 결과 그대로, 경멸 옵션은 두고 액체 흉포함 한 번",
-    "en": "Keep the reveal, leave the contempt line, Ferocity once"
+    "kr": "공개 결과 그대로, 접두 카오스 없이 흉포함 한 번",
+    "en": "Keep the reveal, one Ferocity without the prefix Chaos"
    }
   },
   {
@@ -55,9 +59,10 @@
    "params": {
     "v": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상: 빛의 징조로 다시 공개, 좌측 소멸의 징조로 경멸 옵션 제거, 카오스 오브로 좋은 접두 → 액체 흉포함",
-    "en": "Video: Light retries, Sinistral Annulment for the contempt line, Chaos for a good prefix, then Ferocity"
+    "kr": "영상: 빛의 징조로 다시 공개, 공격 피해까지 카오스",
+    "en": "Video: Omen of Light on a missed reveal, Chaos until attack damage"
    }
   }
  ],
@@ -71,31 +76,11 @@
   "as": {
    "gi": 7
   },
-  "asAny": {
-   "anyOf": [
-    "qas",
-    "as"
-   ],
-   "label": {
-    "kr": "공격 속도 (육척봉 포함)",
-    "en": "Attack speed (or with quarterstaves)"
-   }
-  },
   "atk": {
    "gi": 6
   },
-  "qd": {
-   "gi": 53
-  },
-  "pre": {
-   "anyOf": [
-    "atk",
-    "qd"
-   ],
-   "label": {
-    "kr": "공격 피해·육척봉 피해",
-    "en": "Attack or quarterstaff damage"
-   }
+  "fer": {
+   "gi": 117
   },
   "contS": {
    "gi": 119,
@@ -108,9 +93,6 @@
    "slot": {
     "p": 1
    }
-  },
-  "fer": {
-   "gi": 117
   }
  },
  "require": {
@@ -119,10 +101,34 @@
     "has": "critD"
    },
    {
-    "has": "asAny"
+    "has": "qas"
    },
    {
     "has": "fer"
+   },
+   {
+    "not": {
+     "has": "contS"
+    }
+   },
+   {
+    "any": [
+     {
+      "all": [
+       {
+        "has": "as"
+       },
+       {
+        "has": "atk"
+       }
+      ]
+     },
+     {
+      "param": {
+       "v": 2
+      }
+     }
+    ]
    }
   ]
  },
@@ -146,55 +152,40 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "c2",
-    "c3",
-    "c3x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  },
-  {
-   "id": "L3",
-   "nodes": [
-    "c6",
-    "f1"
-   ],
-   "kr": "흉포함",
-   "en": "Ferocity"
-  }
- ],
+ "start": "b0",
+ "cap": {
+  "p": 2,
+  "s": 2
+ },
  "finals": [
   {
    "id": "bal",
+   "tier": "bal",
    "kr": "밸런스 옵션",
    "en": "Balance",
    "lines": [
     {
-     "tag": "pre"
+     "tag": "atk"
     },
     {
-     "tag": "fer",
-     "tmax": 1
+     "tag": "fer"
     },
     {
      "tag": "critD",
-     "tmax": 1
+     "fr": true
     },
     {
-     "tag": "asAny"
+     "tag": "qas"
     },
     {
-     "tag": "asAny"
+     "tag": "as",
+     "des": true
     }
    ]
   },
   {
    "id": "ess",
+   "tier": "ess",
    "kr": "에센셜 옵션",
    "en": "Essential",
    "lines": [
@@ -203,139 +194,54 @@
      "random": true
     },
     {
-     "tag": "fer",
-     "tmax": 1
+     "tag": "fer"
     },
     {
      "tag": "critD",
-     "tmax": 1
+     "fr": true
     },
     {
-     "tag": "asAny"
+     "tag": "qas"
     },
     {
      "side": "s",
-     "random": true
+     "random": true,
+     "des": true
     }
    ]
   }
  ],
  "finalItem": {
-  "quality": 20,
+  "quality": 0,
   "sockets": 0
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "pc",
    "start": {
     "rar": "rare",
     "mods": [
-     "critD",
+     {
+      "tag": "critD",
+      "fr": true
+     },
      {
       "junk": "p"
      }
     ]
    },
    "label": {
-    "kr": "공격 치명타 피해 접미 + 잡옵 1개 희귀 에메랄드",
-    "en": "Rare Emerald: attack crit damage suffix + one junk line"
+    "kr": "분열 공격 치명타 피해 보너스 + 접두 1개 레어 에메랄드 구입 (아이템 레벨 80)",
+    "en": "Buy a rare Emerald: fractured attack crit damage + one prefix (item level 80)"
    },
    "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "critD"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ]
-  },
-  {
-   "id": "ms",
-   "kind": "mark",
-   "group": "main",
-   "pos": [
-    0,
-    0.6
-   ],
-   "next": "e2",
-   "label": {
-    "kr": "아이템 제작 시작",
-    "en": "Item crafting starts"
-   },
-   "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "critD"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ]
-  },
-  {
-   "id": "e2",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    1
-   ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix"
-   },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
-   "edges": [
-    {
-     "if": {
-      "has": "asAny"
-     },
-     "to": "e3",
-     "res": "ok"
-    },
-    {
-     "to": "e2x",
-     "res": "fail"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "critD"
-     ]
-    },
     {
      "s": "p",
      "kr": "잡옵",
@@ -344,35 +250,24 @@
     },
     {
      "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
-     "m": "n",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
      "tags": [
-      "asAny"
+      "critD"
      ]
     }
-   ],
-   "cur": "Exalted_Orb",
-   "show": [
-    "qas",
-    "as"
-   ],
-   "omens": [
-    "Omen_of_Dextral_Exaltation"
    ]
   },
   {
-   "id": "e2x",
+   "id": "pc",
    "kind": "cleanup",
-   "group": "main",
+   "group": "prep",
    "pos": [
-    1,
+    0,
     1
    ],
-   "keep": [
-    "critD",
-    "asAny"
-   ],
+   "keep": [],
    "maxJunk": 0,
    "label": {
     "kr": "소멸의 오브 사용",
@@ -383,187 +278,123 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접미 지우기",
-    "en": "Remove the missed suffix"
+    "kr": "분열 옵션만 남기기",
+    "en": "Keep only the fractured option"
    },
    "edges": [
     {
-     "lost": "critD",
-     "to": "h1",
-     "port": "right"
-    },
+     "to": "ms"
+    }
+   ],
+   "item": [
     {
-     "to": "e2",
-     "port": "bottom"
+     "s": "s",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
+     "tags": [
+      "critD"
+     ]
     }
    ]
   },
   {
-   "id": "e3",
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    2.4
+   ],
+   "next": "a2",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
+     "tags": [
+      "critD"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "a2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    3.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
-   },
+   "cur": "Exalted_Orb",
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 육척봉 공격 속도",
+    "en": "Attack Speed with Quarterstaves suffix"
+   },
+   "show": [
+    "qas"
+   ],
    "edges": [
     {
      "if": {
-      "full": "p"
+      "has": "qas"
      },
-     "to": "c1"
+     "to": "a3",
+     "res": "ok"
     },
     {
-     "to": "e3",
-     "hide": true
+     "to": "a2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
     {
      "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
      "tags": [
       "critD"
      ]
     },
     {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
+     "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed with Quarterstaves",
      "m": "n",
      "tags": [
-      "asAny"
+      "qas"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
     }
    ]
   },
   {
-   "id": "c1",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    3
-   ],
-   "act": "essence",
-   "goal": {
-    "kr": "위력적인 액체 경멸 (50%로 +1 접미 허용)",
-    "en": "Potent Liquid Contempt (50%: +1 suffix allowed)"
-   },
-   "label": {
-    "kr": "액체",
-    "en": "Liquid"
-   },
-   "edges": [
-    {
-     "if": {
-      "has": "contS"
-     },
-     "to": "c2",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "has": "critD"
-     },
-     "to": "c1x",
-     "res": "fail"
-    },
-    {
-     "to": "h1",
-     "res": "fail",
-     "port": "right"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "critD"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
-     "m": "n",
-     "tags": [
-      "asAny"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
-     "tags": [
-      "contS"
-     ]
-    }
-   ],
-   "cur": "Potent_Liquid_Contempt",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "+1 접미 허용 (아니면 +1 접두 허용 → 접미가 지워짐)",
-     "en": "+1 suffix allowed (else +1 prefix allowed takes a suffix)"
-    }
-   ],
-   "ess": "contS",
-   "liquid": true,
-   "alt": "contP"
-  },
-  {
-   "id": "c1x",
-   "kind": "act",
+   "id": "a2x",
+   "kind": "cleanup",
    "group": "main",
    "pos": [
     1,
-    3
+    3.4
    ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [],
+   "keep": [],
+   "maxJunk": 0,
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -573,72 +404,295 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "+1 접두 허용 옵션 지우기 (접두는 잡옵뿐 — 공격 치명타 피해가 지워지면 새 베이스)",
-    "en": "Remove +1 prefix allowed (prefixes are junk — losing crit damage means a new base)"
+    "kr": "빗나간 접미 지우기 (분열 옵션만 남음)",
+    "en": "Remove the missed suffix (only the fracture is left)"
    },
    "edges": [
     {
-     "if": {
-      "not": {
-       "has": "critD"
-      }
-     },
-     "to": "h1",
-     "port": "right"
-    },
-    {
-     "if": {
-      "has": "contP"
-     },
-     "to": "c1x"
-    },
-    {
-     "to": "e2",
-     "port": "right"
+     "to": "a2",
+     "label": {
+      "kr": "다시 엑잘",
+      "en": "Exalt again"
+     }
     }
    ]
   },
   {
-   "id": "c2",
+   "id": "a3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    4.4
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개 (접미가 꽉 차 접두로)",
+     "en": "One random option (suffixes are full)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "a4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed with Quarterstaves",
+     "m": "n",
+     "tags": [
+      "qas"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "a4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5.4
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개 (접미가 꽉 차 접두로)",
+     "en": "One random option (suffixes are full)"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     },
+     "to": "a4",
+     "hide": true
+    },
+    {
+     "to": "k1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed with Quarterstaves",
+     "m": "n",
+     "tags": [
+      "qas"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "k1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6.4
+   ],
+   "act": "essence",
+   "cur": "Potent_Liquid_Contempt",
+   "ess": "contS",
+   "alt": "contP",
+   "liquid": true,
+   "label": {
+    "kr": "액체",
+    "en": "Liquid"
+   },
+   "goal": {
+    "kr": "접미어 속성 부여의 최대 개수 +1개",
+    "en": "+1 Suffix Modifier allowed"
+   },
+   "showText": [
+    {
+     "kr": "접두 잡옵이 지워지면 성공, 접미가 지워지면 실패",
+     "en": "A junk prefix goes: success; a suffix goes: miss"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "contS"
+       },
+       {
+        "has": "qas"
+       }
+      ]
+     },
+     "to": "d1",
+     "res": "ok"
+    },
+    {
+     "to": "k1x",
+     "res": "fail",
+     "label": {
+      "kr": "육척봉 공격 속도가 지워짐",
+      "en": "Quarterstaff attack speed removed"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
+     "tags": [
+      "contS"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed with Quarterstaves",
+     "m": "n",
+     "tags": [
+      "qas"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "k1x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    6.4
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 옵션만 남기고 엑잘부터",
+    "en": "Keep only the fracture, Exalt again"
+   },
+   "edges": [
+    {
+     "to": "a2"
+    }
+   ]
+  },
+  {
+   "id": "d1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 세번째 옵션(훼손)",
-    "en": "Third suffix (desecrated)"
-   },
+   "cur": "Preserved_Cranium",
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개) — 접두가 꽉 차 접미로",
+     "en": "Desecrated (unrevealed): prefixes are full, so a suffix"
+    }
+   ],
    "edges": [
     {
-     "to": "c3"
+     "to": "r1"
     }
    ],
    "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "critD"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
-     "m": "n",
-     "tags": [
-      "asAny"
-     ]
-    },
     {
      "s": "p",
      "kr": "잡옵",
@@ -647,119 +701,79 @@
     },
     {
      "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
      "tags": [
       "contS"
      ]
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Cranium",
-   "showText": [
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
+     "tags": [
+      "critD"
+     ]
+    },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
+     "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed with Quarterstaves",
+     "m": "n",
+     "tags": [
+      "qas"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
     }
    ]
   },
   {
-   "id": "c3",
+   "id": "r1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    8.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "as",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접미 공격 속도",
+    "en": "Attack Speed suffix"
+   },
+   "show": [
+    "as"
+   ],
    "edges": [
     {
      "if": {
-      "added": "asAny"
+      "added": "as"
      },
-     "to": "c4",
+     "to": "n1",
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
-     "to": "c3x",
-     "res": "fail"
-    },
-    {
-     "to": "c4",
-     "res": "fail"
+     "to": "r1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "critD"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
-     "m": "n",
-     "tags": [
-      "asAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "asAny"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
-     "tags": [
-      "contS"
-     ]
-    }
-   ],
-   "want": "asAny",
-   "show": [
-    "qas",
-    "as"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ],
    "over": [
     {
@@ -767,30 +781,124 @@
       "v": 2
      },
      "set": {
+      "goal": {
+       "kr": "접미 세번째 옵션 — 공개 결과 그대로",
+       "en": "Third suffix: keep the reveal"
+      },
+      "show": [],
+      "item": [
+       {
+        "s": "p",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "p",
+        "kr": "접미어 속성 부여의 최대 개수 +1개",
+        "en": "+1 Suffix Modifier allowed",
+        "m": "c",
+        "tags": [
+         "contS"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+        "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+        "m": "f",
+        "tags": [
+         "critD"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+        "en": "(2—4)% increased Attack Speed with Quarterstaves",
+        "m": "n",
+        "tags": [
+         "qas"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ],
       "edges": [
        {
         "if": {
-         "added": "asAny"
+         "added": "as"
         },
-        "to": "f1",
+        "to": "n1",
         "res": "ok"
        },
        {
-        "to": "f1",
-        "res": "fail"
+        "to": "n1",
+        "res": "fail",
+        "label": {
+         "kr": "빗나감 — 그대로",
+         "en": "Miss: keep it"
+        }
        }
       ]
      }
     }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
+     "tags": [
+      "contS"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed with Quarterstaves",
+     "m": "n",
+     "tags": [
+      "qas"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed",
+     "m": "d",
+     "tags": [
+      "as"
+     ]
+    }
    ]
   },
   {
-   "id": "c3x",
+   "id": "r1x",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    5
+    8.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -806,299 +914,333 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "훼손 옵션 지우고 다시 훼손",
+    "en": "Remove the desecrated option, desecrate again"
    },
    "edges": [
     {
-     "to": "c2",
-     "port": "right"
+     "to": "d1",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
   {
-   "id": "c4",
+   "id": "n1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    6
+    9.4
    ],
    "act": "annul",
-   "goal": {
-    "kr": "+1 접미 허용 옵션 제거 (접두 옵션 2개 중 하나)",
-    "en": "Remove the +1 suffix line (one of the two prefixes)"
-   },
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Sinistral_Annulment"
+   ],
    "label": {
     "kr": "소멸",
     "en": "Annul"
+   },
+   "goal": {
+    "kr": "접미어 속성 부여의 최대 개수 +1개 지우기 (접두 2개 중 하나)",
+    "en": "Remove +1 Suffix Modifier allowed (one of two prefixes)"
    },
    "edges": [
     {
      "if": {
       "has": "contS"
      },
-     "to": "c4e",
-     "res": "fail"
+     "to": "n1",
+     "res": "fail",
+     "label": {
+      "kr": "다른 접두가 지워짐 — 다시",
+      "en": "The other prefix went: again"
+     }
     },
     {
-     "to": "c5",
+     "to": "g1",
      "res": "ok"
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
      "tags": [
       "critD"
      ]
     },
     {
      "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
+     "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed with Quarterstaves",
      "m": "n",
      "tags": [
-      "asAny"
+      "qas"
      ]
     },
     {
      "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
+     "kr": "공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed",
+     "m": "d",
      "tags": [
-      "asAny"
+      "as"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
    ],
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Sinistral_Annulment"
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+        "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+        "m": "f",
+        "tags": [
+         "critD"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+        "en": "(2—4)% increased Attack Speed with Quarterstaves",
+        "m": "n",
+        "tags": [
+         "qas"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
+    }
    ]
   },
   {
-   "id": "c4e",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    6
-   ],
-   "act": "chaos",
-   "goal": {
-    "kr": "남은 +1 접미 허용 옵션 바꾸기",
-    "en": "Reroll the remaining +1 suffix line"
-   },
-   "label": {
-    "kr": "카오스",
-    "en": "Chaos"
-   },
-   "edges": [
-    {
-     "to": "c5",
-     "port": "right"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "critD"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
-     "m": "n",
-     "tags": [
-      "asAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "asAny"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Chaos_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개 (접두가 그 옵션뿐이라 확정)",
-     "en": "One random line (it is the only prefix, so it is sure)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Erasure"
-   ]
-  },
-  {
-   "id": "c5",
+   "id": "g1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7
+    10.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
-   },
+   "cur": "Exalted_Orb",
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개 (접미가 한도를 넘어 접두로)",
+     "en": "One random option (suffixes over the limit)"
+    }
+   ],
    "edges": [
     {
-     "to": "c6"
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     },
+     "to": "g1",
+     "hide": true
+    },
+    {
+     "to": "c1"
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
      "tags": [
       "critD"
      ]
     },
     {
      "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
+     "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed with Quarterstaves",
      "m": "n",
      "tags": [
-      "asAny"
+      "qas"
      ]
     },
     {
      "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
+     "kr": "공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed",
+     "m": "d",
      "tags": [
-      "asAny"
+      "as"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
     }
    ],
-   "cur": "Exalted_Orb",
-   "showText": [
+   "over": [
     {
-     "s": "p",
-     "kr": "랜덤 옵션 1개 (접미가 한도를 넘어 접두로만)",
-     "en": "One random line (suffixes are over the limit)"
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "p",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+        "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+        "m": "f",
+        "tags": [
+         "critD"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+        "en": "(2—4)% increased Attack Speed with Quarterstaves",
+        "m": "n",
+        "tags": [
+         "qas"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
     }
    ]
   },
   {
-   "id": "c6",
+   "id": "c1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    8
+    11.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "좋은 접두 (접미가 한도를 넘어 접두만 바뀜)",
-    "en": "A good prefix (only prefixes change)"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접두 공격 피해",
+    "en": "Attack Damage prefix"
+   },
+   "show": [
+    "atk"
+   ],
+   "showText": [
+    {
+     "kr": "접미가 한도를 넘어 접두만 바뀜",
+     "en": "Suffixes are over the limit: only prefixes change"
+    }
+   ],
+   "skipIf": {
+    "param": {
+     "v": 2
+    }
+   },
+   "skipTo": "f1",
    "edges": [
     {
      "if": {
-      "has": "pre"
+      "all": [
+       {
+        "has": "atk"
+       },
+       {
+        "has": "fer"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "atk"
      },
      "to": "f1",
      "res": "ok"
     },
     {
-     "to": "c6",
-     "res": "fail"
+     "to": "c1",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
-     "m": "n",
-     "tags": [
-      "critD"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
-     "m": "n",
-     "tags": [
-      "asAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "asAny"
-     ]
-    },
-    {
      "s": "p",
-     "kr": "좋은 접두",
-     "en": "Good prefix",
+     "kr": "공격 피해 (5—15)% 증가",
+     "en": "(5—15)% increased Attack Damage",
      "m": "n",
      "tags": [
-      "pre"
+      "atk"
      ]
     },
     {
@@ -1106,12 +1248,34 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
+     "tags": [
+      "critD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed with Quarterstaves",
+     "m": "n",
+     "tags": [
+      "qas"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed",
+     "m": "d",
+     "tags": [
+      "as"
+     ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "atk",
-    "qd"
    ]
   },
   {
@@ -1120,97 +1284,152 @@
    "group": "main",
    "pos": [
     0,
-    9
+    12.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "위력적인 액체 흉포함 (접두 하나가 지워짐)",
-    "en": "Potent Liquid Ferocity (one prefix goes)"
-   },
+   "cur": "Potent_Liquid_Ferocity",
+   "ess": "fer",
+   "liquid": true,
    "label": {
     "kr": "액체",
     "en": "Liquid"
    },
+   "goal": {
+    "kr": "접미어 효과 (40—60)% 증가",
+    "en": "(40—60)% increased Effect of Suffixes"
+   },
+   "showText": [
+    {
+     "kr": "접두 잡옵이 지워지면 성공, 공격 피해가 지워지면 실패",
+     "en": "The junk prefix goes: success; attack damage goes: miss"
+    }
+   ],
    "edges": [
     {
      "if": {
-      "param": {
-       "v": 2
-      }
+      "has": "atk"
      },
      "to": "ok",
      "res": "ok"
     },
     {
-     "if": {
-      "has": "pre"
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "to": "c6",
+     "to": "c1",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "공격 피해가 지워짐 — 다시 카오스",
+      "en": "Attack damage gone: Chaos again"
+     }
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "showText": [
+       {
+        "kr": "접두 하나가 지워짐 — 결과 그대로",
+        "en": "One prefix goes: keep the result"
+       }
+      ],
+      "edges": [
+       {
+        "to": "ok",
+        "res": "ok"
+       }
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "p",
+        "kr": "접미어 효과 (40—60)% 증가",
+        "en": "(40—60)% increased Effect of Suffixes",
+        "m": "c",
+        "tags": [
+         "fer"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+        "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+        "m": "f",
+        "tags": [
+         "critD"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+        "en": "(2—4)% increased Attack Speed with Quarterstaves",
+        "m": "n",
+        "tags": [
+         "qas"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "공격 치명타 피해 보너스",
-     "en": "Attack crit damage bonus",
+     "s": "p",
+     "kr": "공격 피해 (5—15)% 증가",
+     "en": "(5—15)% increased Attack Damage",
      "m": "n",
+     "tags": [
+      "atk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "접미어 효과 (40—60)% 증가",
+     "en": "(40—60)% increased Effect of Suffixes",
+     "m": "c",
+     "tags": [
+      "fer"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 피해의 치명타 피해 보너스 (10—20)% 증가",
+     "en": "(10—20)% increased Critical Damage Bonus for Attack Damage",
+     "m": "f",
      "tags": [
       "critD"
      ]
     },
     {
      "s": "s",
-     "kr": "공격 속도",
-     "en": "Attack speed",
+     "kr": "육척봉 사용 시 공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed with Quarterstaves",
      "m": "n",
      "tags": [
-      "asAny"
+      "qas"
      ]
     },
     {
      "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
+     "kr": "공격 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Attack Speed",
+     "m": "d",
      "tags": [
-      "asAny"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "좋은 접두",
-     "en": "Good prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "접미 효과 증가",
-     "en": "Increased effect of suffixes",
-     "m": "n",
-     "tags": [
-      "fer"
+      "as"
      ]
     }
-   ],
-   "cur": "Potent_Liquid_Ferocity",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "접미 효과 증가",
-     "en": "Increased effect of suffixes"
-    }
-   ],
-   "ess": "fer",
-   "liquid": true
+   ]
   },
   {
    "id": "ok",
@@ -1218,7 +1437,7 @@
    "group": "main",
    "pos": [
     0,
-    10
+    13.4
    ],
    "label": {
     "kr": "완성",
@@ -1226,8 +1445,25 @@
    }
   }
  ],
- "cap": {
-  "p": 2,
-  "s": 2
- }
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "d1",
+    "r1",
+    "r1x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "c1",
+    "f1"
+   ],
+   "kr": "흉포함",
+   "en": "Ferocity"
+  }
+ ]
 }
