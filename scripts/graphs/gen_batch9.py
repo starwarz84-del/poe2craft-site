@@ -120,3 +120,4 @@ print('wrote 4 graphs (batch 9)')
 import os as _os, subprocess as _sp, sys as _sy
 for _g in ('gen_zenm_timelost_sapphire.py', 'gen_diztoh_5mod_sapphire.py', 'gen_diztoh_5mod_emerald.py'):   # 2026-11-13 G8: 새 기준 전용 생성기가 덮어씀
     if _os.path.exists(f'{H}/{_g}'): _sp.run([_sy.executable, f'{H}/{_g}'], check=True)
+if _os.path.exists(f'{H}/gen_lilbotq_emerald.py'): _sp.run([_sy.executable, f'{H}/gen_lilbotq_emerald.py'], check=True)   # 2026-11-13 G9: 새 기준 전용 생성기가 덮어씀
