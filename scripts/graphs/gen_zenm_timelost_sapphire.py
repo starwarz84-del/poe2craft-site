@@ -83,11 +83,11 @@ A(id='r1x', kind='act', group='main', pos=[1, 6.4], act='annul', cur='Orb_of_Ann
   edges=[{'if': {'has': 'crit'}, 'to': 'd1', 'res': 'ok', 'label': K('훼손 옵션이 지워짐 — 다시 훼손', 'Desecrated option gone: desecrate again')},
          {'to': 'c1', 'res': 'fail', 'label': K('좋은 접미가 지워짐 — 다시 카오스', 'The good suffix gone: Chaos again')}])
 A(id='x1', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 첫 번째 옵션', 'First prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
+  goal=K('접두 첫 번째 옵션', 'First prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'x2'}], item=[J('p'), CD, SCC])
 A(id='x2', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 두 번째 옵션 — 우울이 지울 자리', 'Second prefix: the slot Melancholy takes'),
-  showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
+  showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'if': {'has': 'radLo'}, 'to': 'xr', 'res': 'fail', 'label': K('반경 중형·대형 업그레이드', 'Radius to Medium or Large')},
          {'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'x2', 'hide': True}, {'to': 'm1', 'res': 'ok'}],
   item=[J('p'), J('p'), CD, SCC])

@@ -68,12 +68,13 @@ A(id='c2', kind='act', group='prep', pos=[0, 2], act='essence', cur='Transcenden
   edges=[{'to': 'ms'}], item=[L5, MK, TR])
 # ---------------- 옵션 추가 작업 (영상 3:12~5:56) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 3.4], next='c3', label=K('아이템 제작 시작', 'Item crafting starts'), item=[L5, MK, TR])
+# R3-12(11-13): 성공 선을 param 조건으로 — 레시피 글 목표가 1티어 글('번개 피해 (105—119)%')이 아니라 '아무 옵션 1개'(결과 그대로)
 A(id='c3', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 첫 번째 옵션 — 번개 피해 증가', 'First prefix: increased lightning damage'),
-  showText=[K('결과 그대로', 'Keep whatever comes')], edges=[{'to': 'c4'}], item=[LD, L5, MK, TR])
+  showText=[K('결과 그대로', 'Keep whatever comes')], edges=[{'if': {'param': {'v': 1}}, 'to': 'c4', 'res': 'ok'}], item=[LD, L5, MK, TR])
 A(id='c4', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 두 번째 옵션 — 추가 번개 피해', 'Second prefix: extra lightning damage'),
-  showText=[K('결과 그대로', 'Keep whatever comes')], edges=[{'to': 'c5'}], item=[LD, XL, L5, MK, TR])
+  showText=[K('결과 그대로', 'Keep whatever comes')], edges=[{'if': {'param': {'v': 1}}, 'to': 'c5', 'res': 'ok'}], item=[LD, XL, L5, MK, TR])
 A(id='c5', kind='act', group='main', pos=[0, 6.4], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
   goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'c6'}], item=[LD, XL, UN, L5, MK, TR])
