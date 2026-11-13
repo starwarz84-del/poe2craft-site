@@ -70,7 +70,7 @@
 | belton-plus8-wand-v2 | j0FeuX0NZQI | bal 38, ess 12 | 0 | 대기 |  |  |
 | sihan-chayula-sceptre-v2 | -F7pV0Y7BMA | bal 36, ess 13 | 0 | 대기 |  |  |
 | diztoh-onehand-mace-v2 | WDEkEIQFgT4 | bal 693, ess 60 | 0 | 검수 대기 11-13 | G3(Opus 5.5) | 새 기준 재작성(G3): 영상 전체(0:00~8:00) 화면 대조, 전용 생성기 gen_diztoh_onehand_mace.py. 준비 구역(노멀 특출난 철퇴 3 div·퀄리티 26% → 완벽한 진화·확장 + 소멸로 치명타 확률 1티어 + 접두 잡옵 → 상위 가속의 에센스) 펼침, 아스트리드 → 좌측 결정화 + 완벽한 전투의 에센스 → 상위 엑잘(옛 그래프의 완벽한 엑잘은 틀림, 창고 II 개수로 확인) → 밸런스는 좌측 말소 + 상위 카오스로 물리 접두 1~2티어(영상 3~4번, 시뮬 31번 × 말소 20 div가 비용 대부분) → 검은 피의 징조 + 보존된 턱뼈 → 상위 엑잘 → 공개(쿠르갈 3개 모두라 물리 피해 증가가 거의 확정) → 절사 + 상위 카오스(가장 낮은 레벨일 때만). 33 → 693/60 |
-| sihan-chayula-helmet-v2 | z_r1uAYIusk | bal 31, ess 15 | 0 | 진행 중 11-13 · G1 | G1(Opus 5.5) |  |
+| sihan-chayula-helmet-v2 | z_r1uAYIusk | bal 87, ess 13 | 0 | 검수 대기 11-13 | G1(Opus 5.5) | 새 기준 재작성(G1): 영상 전체 화면 대조(근거 scratchpad review/G1/sihan-chayula-helmet-v2), 전용 생성기 gen_sihan_chayula_helmet.py. 영상은 분열이 세 번 실패해(3:30~4:05) 분열 없이 완성 — 플로우차트는 영상 방법 설명(0:40·4:10 '원래는')대로 회피 및 에너지 보호막 % 1티어 분열 베이스, 옵션은 성공 회차대로: 카오스 튕겨내기 → 상위·우측 찬미 + 완벽한 엑잘 접미 2개(5:16) → 완벽한 엑잘 접두 = 회피 및 ES % + 생명력(9:26, 빗나가면 소멸·튕겨내기 잃으면 카오스부터 — 접힌 상자) → 고대 갈비뼈 → 메아리 공개 = 회피·ES 최대치(10:48), 빗나가면 빛의 징조. 옛 그래프의 좌측 강령술·좌측 찬미·퀄리티 20%는 영상에 없어 뺌. 31/15 → 87/13(밸런스 상승 = 접두 엑잘·공개를 묶음 대신 영상 옵션 하나로) |
 | fubgun-phys-bow-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 28, ess ? | 3 | 대기 |  |  |
 | lilbotq-armour-shield-v2 | 4YOSSAa53UU | bal 27, ess 7 | 0 | 대기 |  |  |
 | sihan-chayula-gloves-v2 | Sf-2cvWhQY0 | bal 27, ess 23 | 1 | 대기 |  |  |
