@@ -3,26 +3,26 @@
  "recipe": "fubgun-crit-bow-v2",
  "cls": "Bows",
  "base": "Warmonger Bow",
- "ilvl": 75,
- "note": "Fubgun 가성비 치명타 활(0.5.5 빌드 글) — 물리 피해 % 매직(확장까지) 구입 → 상위 추구의 에센스(치명타 확률) → 좌측 강령술 + 보존된 턱뼈 → 공개(물리 피해 추가가 가장 좋고 원소 피해 추가도 됨) → 상위 찬미 + 엑잘로 남은 2자리.",
+ "ilvl": 77,
+ "note": "2026-11-13 G10 글 전체 다시 대조(mobalytics Fubgun 0.5.5 Ice Shot Deadeye, Crafting Guide의 Crit Bow - ilvl 75 1~3단계, 캡처 guide-crit-bow-steps-1-3). 글: 물리 피해 %가 높은 매직 활(확장까지, 구입 또는 진화·확장, 베이스 절멸자 활·전쟁광 활) → ① 상위 추구의 에센스(치명타 확률 3티어) ② 좌측 강령술 + 턱뼈로 접두 훼손, 시세에 따라 심연의 메아리(리그 초반엔 고대 턱뼈도 쌈), 높은 물리 피해 추가(높은 원소 피해 추가도 됨) ③ 상위 찬미 + 상위·완벽한 엑잘로 남은 2자리. 확정 옵션(정책 11장): 공개 = 물리 피해 추가(글이 먼저 꼽은 옵션). 내부 결정: 베이스 = 전쟁광 활, 아이템 레벨 77(전쟁광 활 베이스 레벨 77), 물리 피해 %는 구입 매직의 이 레벨 최고 2티어(C15), 턱뼈 = 보존된 턱뼈. 등급(난이도 2 → 밸런스·에센셜, C17): 밸런스 = 메아리 + 빛의 징조로 물리 피해 추가 1~2티어, 완벽한 엑잘, 에센셜 = 공개 결과 그대로(메아리 없음), 상위 엑잘.",
  "params": {
-  "aT": {
-   "kr": "물리 피해 %",
-   "en": "% physical",
+  "fT": {
+   "kr": "물리 피해 추가",
+   "en": "Flat physical",
    "values": {
     "2": {
-     "kr": "2티어",
-     "en": "T2"
+     "kr": "1~2티어",
+     "en": "T1–2"
     },
     "4": {
-     "kr": "2~4티어",
-     "en": "T2–4"
+     "kr": "나오는 대로",
+     "en": "As it comes"
     }
    }
   },
   "L": {
-   "kr": "훼손 공개",
-   "en": "Desecration reveal",
+   "kr": "반복",
+   "en": "Retries",
    "values": {
     "1": {
      "kr": "빛의 징조로 다시",
@@ -30,21 +30,7 @@
     },
     "0": {
      "kr": "결과 그대로",
-     "en": "Keep whatever comes"
-    }
-   }
-  },
-  "fT": {
-   "kr": "피해 추가",
-   "en": "Flat damage",
-   "values": {
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    },
-    "4": {
-     "kr": "1~4티어",
-     "en": "T1–4"
+     "en": "Keep what comes"
     }
    }
   }
@@ -53,17 +39,15 @@
   {
    "id": "bal",
    "params": {
-    "aT": 2,
-    "L": 1,
-    "fT": 2
+    "fT": 2,
+    "L": 1
    }
   },
   {
    "id": "ess",
    "params": {
-    "aT": 4,
-    "L": 0,
-    "fT": 4
+    "fT": 4,
+    "L": 0
    }
   }
  ],
@@ -73,13 +57,13 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "aT": 4,
-    "L": 0,
-    "fT": 4
+    "fT": 4,
+    "L": 0
    },
+   "tier": "ess",
    "desc": {
-    "kr": "물리 피해 % 2~4티어 구입, 공개 결과 그대로",
-    "en": "Buy T2–4 % physical; keep the reveal"
+    "kr": "공개 결과 그대로, 마무리 상위 엑잘",
+    "en": "Reveal kept as it comes, Greater Exalts to finish"
    }
   },
   {
@@ -87,43 +71,31 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "aT": 2,
-    "L": 1,
-    "fT": 2
+    "fT": 2,
+    "L": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "물리 피해 % 2티어 구입, 피해 추가 1~2티어까지 빛의 징조로 다시",
-    "en": "Buy T2 % physical; retry with Light until T1–2 flat damage"
+    "kr": "물리 피해 추가 1~2티어까지 빛의 징조로 다시, 마무리 완벽한 엑잘",
+    "en": "Omen of Light until T1–2 flat physical, Perfect Exalts to finish"
    }
   }
  ],
  "tags": {
   "pp": {
    "gi": 7,
-   "tmax": "$aT"
+   "tmax": 2
   },
   "crit": {
    "gi": 49
   },
-  "fl": {
-   "anyOf": [
-    {
-     "gi": 2,
-     "tmax": "$fT"
-    },
-    {
-     "gi": 3,
-     "tmax": "$fT"
-    },
-    {
-     "gi": 4,
-     "tmax": "$fT"
-    },
-    {
-     "gi": 6,
-     "tmax": "$fT"
-    }
-   ]
+  "fp": {
+   "gi": 2,
+   "tmax": "$fT"
+  },
+  "fp2": {
+   "gi": 2,
+   "tmax": 2
   }
  },
  "require": {
@@ -139,6 +111,18 @@
    },
    {
     "full": "s"
+   },
+   {
+    "any": [
+     {
+      "param": {
+       "L": 0
+      }
+     },
+     {
+      "has": "fp"
+     }
+    ]
    }
   ]
  },
@@ -162,19 +146,7 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "b3",
-    "b4",
-    "b4x"
-   ],
-   "kr": "접두 두번째 옵션(훼손)",
-   "en": "Second prefix (desecrated)"
-  }
- ],
+ "start": "cn",
  "finals": [
   {
    "id": "bal",
@@ -182,23 +154,17 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "pp",
-     "tmax": 2
+     "tag": "pp"
     },
     {
-     "side": "p",
-     "label": {
-      "kr": "물리 피해 추가 또는 원소 피해 추가",
-      "en": "Flat physical or elemental"
-     }
+     "tag": "fp2"
     },
     {
      "side": "p",
      "random": true
     },
     {
-     "tag": "crit",
-     "tmax": 1
+     "tag": "crit"
     },
     {
      "side": "s",
@@ -216,23 +182,18 @@
    "en": "Essential",
    "lines": [
     {
-     "tag": "pp",
-     "tmax": 4
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "공개 결과 그대로",
-      "en": "Reveal as it comes"
-     }
+     "tag": "pp"
     },
     {
      "side": "p",
      "random": true
     },
     {
-     "tag": "crit",
-     "tmax": 1
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "crit"
     },
     {
      "side": "s",
@@ -246,37 +207,39 @@
   }
  ],
  "finalItem": {
-  "quality": 20,
+  "quality": 0,
   "sockets": 2
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "cn",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "b2",
+   "next": "ce",
    "start": {
     "rar": "magic",
     "mods": [
-     "pp",
+     {
+      "tag": "pp"
+     },
      {
       "junk": "s"
      }
     ]
    },
    "label": {
-    "kr": "물리 피해 % 매직 활 구입 (접미 아무 옵션)",
-    "en": "Buy a magic bow with % physical (any suffix)"
+    "kr": "물리 피해 % 2티어 매직 전쟁광 활 구입 (확장까지, 아이템 레벨 77)",
+    "en": "Buy a magic Warmonger Bow with T2 % physical (augmented, item level 77)"
    },
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
@@ -291,7 +254,7 @@
    ]
   },
   {
-   "id": "b2",
+   "id": "ce",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -299,14 +262,23 @@
     1
    ],
    "act": "essence",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접미 치명타 확률",
-    "en": "Upgrade to rare + crit chance suffix"
-   },
+   "cur": "Greater_Essence_of_Seeking",
+   "ess": "crit",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "레어 + 접미 치명타 확률",
+    "en": "Rare + crit chance suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(3.11—3.8)% (제작 옵션)",
+     "en": "+(3.11—3.8)% to Critical Hit Chance (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "ms"
@@ -315,8 +287,8 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
@@ -337,16 +309,7 @@
       "crit"
      ]
     }
-   ],
-   "cur": "Greater_Essence_of_Seeking",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "치명타 확률 (제작 옵션)",
-     "en": "Crit chance (crafted)"
-    }
-   ],
-   "ess": "crit"
+   ]
   },
   {
    "id": "ms",
@@ -354,9 +317,9 @@
    "group": "main",
    "pos": [
     0,
-    1.5
+    2.4
    ],
-   "next": "b3",
+   "next": "cd",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -364,8 +327,8 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
@@ -389,36 +352,53 @@
    ]
   },
   {
-   "id": "b3",
+   "id": "cd",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    3.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접두 두번째 옵션(훼손)",
-    "en": "Second prefix (desecrated)"
-   },
+   "cur": "Preserved_Jawbone",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 두번째 옵션(훼손)",
+    "en": "Second prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
-     "to": "b4"
+     "to": "cv"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
      ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
     },
     {
      "s": "s",
@@ -434,74 +414,80 @@
      "tags": [
       "crit"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
     }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {
-   "id": "b4",
+   "id": "cv",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    4.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "fp",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 물리 피해 추가 1~2티어",
+    "en": "T1–2 flat physical prefix"
+   },
+   "show": [
+    "fp"
+   ],
    "edges": [
     {
      "if": {
-      "added": "fl"
+      "has": "fp"
      },
-     "to": "b5",
+     "to": "cx",
      "res": "ok"
     },
     {
      "if": {
       "param": {
-       "L": 1
+       "L": 0
       }
      },
-     "to": "b4x",
-     "res": "fail"
+     "to": "cx",
+     "res": "ok",
+     "label": {
+      "kr": "나오는 대로",
+      "en": "Keep what comes"
+     }
     },
     {
-     "to": "b5",
+     "to": "cl",
      "res": "fail",
-     "hide": true
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "d",
+     "tags": [
+      "fp"
      ]
     },
     {
@@ -518,32 +504,70 @@
      "tags": [
       "crit"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "물리 피해 추가 또는 원소 피해 추가",
-     "en": "Flat physical or flat elemental",
-     "m": "n",
-     "tags": [
-      "fl"
-     ]
     }
    ],
-   "want": "fl",
-   "show": [
-    "fl"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "omens": [],
+      "goal": {
+       "kr": "훼손 옵션 공개 — 나오는 대로",
+       "en": "Reveal the desecration: keep what comes"
+      },
+      "show": [],
+      "showText": [
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option"
+       }
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "물리 피해 (155—169)% 증가",
+        "en": "(155—169)% increased Physical Damage",
+        "m": "n",
+        "tags": [
+         "pp"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "치명타 확률 +(3.11—3.8)% (제작 옵션)",
+        "en": "+(3.11—3.8)% to Critical Hit Chance (crafted)",
+        "m": "c",
+        "tags": [
+         "crit"
+        ]
+       }
+      ]
+     }
+    }
    ]
   },
   {
-   "id": "b4x",
+   "id": "cl",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    3
+    4.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -560,32 +584,45 @@
    },
    "target": {
     "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "en": "Remove the desecrated option"
    },
    "edges": [
     {
-     "to": "b3",
-     "port": "right"
+     "to": "cd",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
   {
-   "id": "b5",
+   "id": "cx",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    5.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "남은 접두·접미 1개씩",
-    "en": "The last prefix and suffix"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "남은 접두·접미 1개씩 — 나오는 대로",
+    "en": "The last prefix and suffix: keep what comes"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
    "edges": [
     {
      "to": "ok"
@@ -594,12 +631,27 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 (170—179)% 증가",
-     "en": "(170—179)% increased Physical Damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "pp"
      ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (26—39)~(44—66) 추가",
+     "en": "Adds (26—39) to (44—66) Physical Damage",
+     "m": "d",
+     "tags": [
+      "fp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 옵션",
+     "en": "Random option",
+     "m": "j"
     },
     {
      "s": "s",
@@ -617,36 +669,11 @@
      ]
     },
     {
-     "s": "p",
-     "kr": "물리 피해 추가 또는 원소 피해 추가",
-     "en": "Flat physical or flat elemental",
-     "m": "n",
-     "tags": [
-      "fl"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    },
-    {
      "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
+     "kr": "랜덤 옵션",
+     "en": "Random option",
      "m": "j"
     }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
-    {
-     "kr": "랜덤 옵션 2개 — 결과 그대로",
-     "en": "Two random lines — keep whatever comes"
-    }
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
    ],
    "over": [
     {
@@ -654,7 +681,51 @@
       "L": 0
      },
      "set": {
-      "cur": "Greater_Exalted_Orb"
+      "cur": "Greater_Exalted_Orb",
+      "item": [
+       {
+        "s": "p",
+        "kr": "물리 피해 (155—169)% 증가",
+        "en": "(155—169)% increased Physical Damage",
+        "m": "n",
+        "tags": [
+         "pp"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "치명타 확률 +(3.11—3.8)% (제작 옵션)",
+        "en": "+(3.11—3.8)% to Critical Hit Chance (crafted)",
+        "m": "c",
+        "tags": [
+         "crit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
      }
     }
    ]
@@ -665,12 +736,24 @@
    "group": "main",
    "pos": [
     0,
-    5
+    6.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "cd",
+    "cv",
+    "cl"
+   ],
+   "kr": "접두 두번째 옵션(훼손)",
+   "en": "Second prefix (desecrated)"
   }
  ]
 }

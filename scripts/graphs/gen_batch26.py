@@ -188,3 +188,4 @@ if _os.path.exists(f'{H}/gen_fubgun_proj_amulet.py'): _sp.run([_sy.executable, f
 if _os.path.exists(f'{H}/gen_fubgun_quiver.py'): _sp.run([_sy.executable, f'{H}/gen_fubgun_quiver.py'], check=True)   # 2026-11-13 G10: 새 기준 전용 생성기가 덮어씀
 if _os.path.exists(f'{H}/gen_fubgun_es_helmet.py'): _sp.run([_sy.executable, f'{H}/gen_fubgun_es_helmet.py'], check=True)   # 2026-11-13 G11: 새 기준 전용 생성기가 덮어씀
 if _os.path.exists(f'{H}/gen_fubgun_phys_bow.py'): _sp.run([_sy.executable, f'{H}/gen_fubgun_phys_bow.py'], check=True)   # 2026-11-13 G10: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_fubgun_crit_bow.py'): _sp.run([_sy.executable, f'{H}/gen_fubgun_crit_bow.py'], check=True)   # 2026-11-13 G10: 새 기준 전용 생성기가 덮어씀

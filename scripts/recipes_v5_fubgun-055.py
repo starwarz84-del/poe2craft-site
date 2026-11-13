@@ -37,7 +37,7 @@ _fub('fubgun-phys-bow',c,'Warmonger Bow',77,2,K('물리 피해 % + 물리 피해
 
 # 3. 가성비 치명타 활
 _CRIT_FL=[{'gi':2,'tmax':2},{'gi':3,'tmax':2},{'gi':4,'tmax':2},{'gi':6,'tmax':2}]
-_fub('fubgun-crit-bow',c,'Warmonger Bow',77,2,K('물리 피해 % + 치명타 확률 + 피해 추가 훼손','% physical + crit chance + flat damage desecration'),
+_fub('fubgun-crit-bow',c,'Warmonger Bow',77,2,K('물리 피해 % + 치명타 확률 + 물리 피해 추가 훼손','% physical + crit chance + flat physical desecration'),
   [K('활','Bow'),K('치명타','Critical'),K('리그 초반','League start')],
   {'rar':'magic','mods':[{'gi':7,'tmax':2},{'junk':'s'}]},PH,[
   {'id':'b1','phase':'base','do':'base','cost':'base','note':K('물리 피해 % 매직 활(확장의 오브까지 쓴 상태).','A magic bow with % physical (already augmented).')},
