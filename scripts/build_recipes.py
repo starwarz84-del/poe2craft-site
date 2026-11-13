@@ -591,6 +591,9 @@ for _r in R:
 exec(open('/home/claude/poe2data/scripts/difficulty.py').read())   # 난이도 재산정 표(시도량 기준)
 for _r in R:
     if _r['id'] in DIFFSET: _r['difficulty']=DIFFSET[_r['id']]
+# DIFFSET 키는 옛 id라 새 등급 레시피(-v2·-v2-bal·-v2-ess)에는 붙지 않음 — 값은 생성기(작업자)가 정한 그대로 두고 다른 것만 알림(2026-11-13 S3 3·15번: 사용자 결정 대기)
+_dm = [(_r['id'], _r.get('difficulty'), DIFFSET[_k]) for _r in R for _k in [_re.sub(r'-v2(-bal|-ess)?$', '', _r['id'])] if _k != _r['id'] and _k in DIFFSET and DIFFSET[_k] != _r.get('difficulty')]
+if _dm: print('difficulty differs from DIFFSET (kept):', ', '.join(f'{a} {b}≠{c}' for a, b, c in _dm))
 # grades by difficulty (사용자 확정 2026-11-10): 극한(5) = High-end only, 전문가(4) = High-end + Balance, 보통·어려움(2~3) = Balance + Essential, 쉬움 이하(≤1) = Essential only
 _gd={}
 for x in R:   # the group's difficulty: its High-end recipe's, else its other grades'

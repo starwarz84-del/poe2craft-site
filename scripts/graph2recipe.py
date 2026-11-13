@@ -148,7 +148,7 @@ def _target(G_, n, prev, cur, last_bone):
     if act in ('chaos', 'exalt', 'transmute', 'augment', 'regal'):
         tagged = [l for l in new if l.get('tags')]
         if okc and not tagged and G_.spec(okc): tagged = [{'tags': okc, 's': None}]
-        junk = [l for l in new if l.get('m') == 'j' and not l.get('tags')]
+        junk = [l for l in new if l.get('m') in ('j', 'n', None) and not l.get('tags')]   # 태그 없는 일반 줄(m 'n')도 아무 옵션 — 상위 찬미로 붙은 접미 줄을 빼고 '1개 (접두)'로 쓰던 것(2026-11-13 S3 63번)
         if tagged:
             show = [x for x in (n.get('show') or []) if isinstance(x, str)]
             if len(tagged) > 1:
@@ -190,6 +190,7 @@ def _target(G_, n, prev, cur, last_bone):
             else: G_._marktx = {'kr': mk.get('kr') or '', 'en': mk.get('en') or mk.get('kr') or ''}
     elif act == 'desecrate':
         sd = _side_of_omens(om, 'Necromancy') or next((l.get('s') for l in new), None) or next((l.get('s') for l in n.get('showText') or [] if l.get('s') in ('p', 's')), None) or 'p'
+        G_._lord = 'amanamu' if 'Omen_of_the_Liege' in om else 'ulaman' if 'Omen_of_the_Sovereign' in om else 'kurgal' if 'Omen_of_the_Blackblooded' in om else None   # 군주 징조 → 다음 공개 target.lord(2026-11-13 S3 51번: 엔진이 일반 공개로 '한 번 볼 때 8.1%')
         G_._lus = sd   # 다음 공개 상자의 쪽(접힌 상자는 아이템 칸이 없어 공개 쪽을 못 읽음, 2026-11-13 S1)
         t = {'unrev': sd}
         if sn.get('fromMark') or (sn.get('target') or {}).get('fromMark'): t['fromMark'] = True
@@ -208,6 +209,7 @@ def _target(G_, n, prev, cur, last_bone):
         sd = (nl or {}).get('s') or getattr(G_, '_lus', None) or ws or next((l.get('s') for l in gone), None) or 'p'
         t = {'reveal': sp or {'anyOf': []}, 'side': sd}
         if last_bone: t['bone'] = last_bone
+        if getattr(G_, '_lord', None): t['lord'] = G_._lord
         if not sp:   # 고르는 옵션을 태그로 적지 않은 공개(가장 높은 레벨 옵션·아무거나): 상자 글을 목표 글로 — '선택지 3개 중:'으로 끝나던 것(2026-11-13 S2)
             t['asIs'] = True; t['anyReveal'] = True   # 엔진(engine.js)도 확정 공개로 셈 — 빈 목표로 멈추던 것
             tx_ = next((x for x in (n.get('showText') or sn.get('showText') or []) if isinstance(x, dict) and x.get('kr')), None) or n.get('goal') or sn.get('goal')
@@ -258,7 +260,7 @@ def _state(G_, lines, final_tags):
         if tm: e['tmax'] = tm
         if m == 'f': e['fr'] = True
         if m == 'd': e['des'] = True
-        if m == 'c': e['ess'] = True
+        if m == 'c' or (G_.tags.get(tag) or {}).get('sec') == 'e' or re.search(r'(에센스|합금|Essence[^)]*|Alloy)\)', l.get('kr') or ''): e['ess'] = True   # 에센스·합금 줄은 제작 옵션 색(m 값이 'n'이어도, 2026-11-13 S3 59·64번)
         out.append(e); cnt[sd] += 1
     return out
 
@@ -517,7 +519,7 @@ def _routes(W, n, valid, G_=None, CD=None):
             if W.via(to):
                 vo = list(T.get('omens') or [])
                 if T.get('kind') == 'cleanup': vo += [k for k in ('Omen_of_Sinistral_Annulment', 'Omen_of_Dextral_Annulment') if ((W.st(to) or {}).get('use') or {}).get(k) and k not in vo]
-                nv.append({'cur': T.get('cur') or 'Orb_of_Annulment', **({'omens': vo} if vo else {})})
+                nv.append({'cur': T.get('cur') or 'Orb_of_Annulment', **({'omens': vo} if vo else {}), 'vid': to})   # vid → 플로우차트 번호(9.A)로 바꿈(S3 17번)
             walk(T, sh, fx, px, nv, depth + 1, seen | {to})
     walk(n, 1.0, None, [], [], 0, {n['id']})
     multi = {}
@@ -691,9 +693,11 @@ def _routes(W, n, valid, G_=None, CD=None):
                    'share': t['skips'] / max(1e-9, t.get('visits') or 1), 'skip': True})
     # 성공·빗나감이 모두 같은 단계로 가면(에센셜 '빗나감 — 그대로') 한 줄 '→ n번' — '성공 → 8번'과 '빗나감 — 그대로 → 8번'이 같이 나오던 것(2026-11-13 S3 40번)
     rn = [r for r in rs if not r.get('skip')]
-    if len(rn) >= 2 and len({r['to'] for r in rn}) == 1 and rn[0]['to'] != 'self' and not any(r.get('via') or r.get('toAlt') for r in rn) and any(r['cls'] == 'ok' for r in rn):
-        h = next(r for r in rn if r['cls'] == 'ok')
-        h['share'] = sum(r['share'] or 0 for r in rn); h['n'] = sum(r.get('n') or 0 for r in rn) or h.get('n'); h['lab'] = None; h['keepAll'] = True
+    hasf = any(r['cls'] != 'ok' for r in rn)
+    if len(rn) >= 2 and len({r['to'] for r in rn}) == 1 and rn[0]['to'] != 'self' and not any(r.get('via') or r.get('toAlt') for r in rn) and any(r['cls'] == 'ok' for r in rn) and (not hasf or getattr(W, 'vid', None) == 'ess'):
+        h = next(r for r in rn if r['cls'] == 'ok')   # 성공 갈래끼리(분열 '같은 흐름으로 가정' 34%·66%, S3 34번)는 한 줄 성공, 에센셜의 '빗나감 — 그대로'가 섞이면 '결과 그대로'
+        h['share'] = sum(r['share'] or 0 for r in rn); h['n'] = sum(r.get('n') or 0 for r in rn) or h.get('n'); h['lab'] = None
+        if hasf: h['keepAll'] = True
         for r in rn:
             if r is not h: rs.remove(r)
     # 순서: 성공(많은 것부터) → 실패(그래프 선 순서 = 플로우차트 흐름, 같으면 많은 것부터) → 그 밖 (2026-11-12: '1번째·2번째·3번째 빗나감'이 거꾸로 읽히던 것)
@@ -716,6 +720,35 @@ def _repeats(W, n):
     return False
 
 
+def _via_use(W, nid):
+    """이 상자에서 '먼저: 소멸' 지우기 상자(레시피 단계가 아님)로 간 몫의 사용량 — 구간 합계에 지우기 비용이 빠지던 것(2026-11-13 S3 31·46·52번)"""
+    if not hasattr(W, '_vu'):
+        acc = {}
+        def give(src, use, k, depth=0):
+            if depth > 6: return
+            if W.via(src) and src != nid0:
+                ins = [(a['id'], W.cnt(a['id'], src)) for a in W.nodes if W.cnt(a['id'], src) > 0 and a['id'] != src]
+                tot = sum(c for _, c in ins)
+                for a, c in ins: give(a, use, k * c / tot, depth + 1)
+                return
+            d = acc.setdefault(src, {})
+            for cur_, v in use.items(): d[cur_] = d.get(cur_, 0) + v * k
+        for V in W.nodes:
+            if not W.via(V['id']): continue
+            u = (W.st(V['id']) or {}).get('use') or {}
+            if not u: continue
+            nid0 = None
+            ins = [(a['id'], W.cnt(a['id'], V['id'])) for a in W.nodes if a['id'] != V['id'] and W.cnt(a['id'], V['id']) > 0]
+            tot = sum(c for _, c in ins)
+            for a, c in ins:
+                if W.via(a): give(a, u, c / tot, 1)
+                else:
+                    d = acc.setdefault(a, {})
+                    for cur_, v in u.items(): d[cur_] = d.get(cur_, 0) + v * c / tot
+        W._vu = acc
+    return {k: round(v, 4) for k, v in (W._vu.get(nid) or {}).items() if v >= 0.0005}
+
+
 def _keep_all(W, n):
     """이 등급에서 성공·빗나감이 모두 같은 상자로 감(빗나감 — 그대로): 목표가 없는 '결과 그대로' 상자(2026-11-13 S3 40·44번)"""
     if getattr(W, 'vid', None) != 'ess': return False   # 에센셜(반복 없음, 랜덤 옵션 허용)만 — 밸런스의 '한 번 시도하고 그대로'는 목표가 있음
@@ -729,12 +762,17 @@ def _fcs(W, n, fold_ids=frozenset()):
     tries = (t.get('visits') or 0) - (0 if n.get('kind') == 'cleanup' else (t.get('skips') or 0))
     outs = W.outs(n)
     has_res = any(x[3] for x in outs)
-    ok = [x for x in outs if x[3] == 'ok' and (n.get('pAll') or not x[0].get('dash') or (W.by.get(x[1]) or {}).get('kind') == 'assume' or ((W.by.get(x[1]) or {}).get('kind') == 'exit' and (W.by.get(x[1]) or {}).get('variant') == 'ok'))]   # '같은 흐름으로 가정'(assume) 갈래도 성공(2026-11-13 S2, G7 보고: Belton 분열 34%)
+    def goes_on(T):   # 이어 가는 버림 상자: 분열 바꿔 가정(swapFracture)이거나 simTo가 베이스가 아닌 상자 — 새 베이스로 처음부터(simTo 베이스)는 성공이 아님(2026-11-13 S3 58번: Diztoh ES 투구 분열 65% → 32%)
+        return T.get('kind') == 'exit' and T.get('variant') == 'ok' and (T.get('swapFracture') or (T.get('simTo') and (W.by.get(T['simTo']) or {}).get('kind') != 'base'))
+    ok = [x for x in outs if x[3] == 'ok' and (n.get('pAll') or not x[0].get('dash') or (W.by.get(x[1]) or {}).get('kind') == 'assume' or goes_on(W.by.get(x[1]) or {}))]   # '같은 흐름으로 가정'(assume) 갈래도 성공(2026-11-13 S2, G7 보고: Belton 분열 34%)
     if has_res and not any(x[3] == 'ok' for x in outs): ok = [x for x in outs if not x[3] and x[1] != n['id']]   # 실패선만 표시된 상자: 나머지 선이 성공
     okc = sum(W.ec(n['id'], x, outs) for x in ok)
     if has_res and okc <= 0 and tries > 0:   # 상태마다 다른 단계로 보내는 상자: 표시된 성공선을 안 거치고 숨은 선으로 나아감 → 실패·반복이 아닌 선 모두
         okc = sum(W.ec(n['id'], x, outs) for x in outs if x[3] != 'fail' and x[1] != n['id'])
     p = min(1.0, okc / tries) if has_res and tries > 0 else 1.0
+    if not has_res and tries > 0:   # 결과 표시가 없는 상자: 자기 반복·원하는 옵션이 지워지는(lost) 선은 실패(2026-11-13 S3 43·57번: 탈리스만 소멸 '확정', 사파이어 3.A)
+        bad = sum(W.ec(n['id'], x, outs) for x in outs if x[1] == n['id'] or x[0].get('lost'))
+        if bad > 0: p = max(0.0, (tries - bad) / tries)
     if n.get('act') == 'flux' or _keep_all(W, n): p = 1.0   # 유동체는 늘 바뀜(확정 변환) — 뒤 선은 변환 뒤 상태로 고르는 갈래라 성공 확률이 아님(2026-11-13 S1: 시한 장화 6.8%)
     rows = None
     if n.get('curRows') and t.get('byCur'):
@@ -757,7 +795,8 @@ def _fcs(W, n, fold_ids=frozenset()):
             rows.append({'kr': LB[k][0], 'en': LB[k][1], 'ids': [n.get('cur')] + k.split('+'), 'p': round(b['ok'] / b['t'], 5)})
         rows = rows or None
     if p <= 0 and tries > 0: p = None   # 이 상자에서 바로 성공하는 일은 없고 결과에 따라 다음 상자로 갈림
-    return {'p': round(p, 6) if p is not None else None, 'tries': round(tries, 4), 'use': {k: round(v, 4) for k, v in (t.get('use') or {}).items() if v >= 0.0005},
+    uv = _via_use(W, n['id'])
+    return {'p': round(p, 6) if p is not None else None, 'tries': round(tries, 4), 'use': {k: round(v, 4) for k, v in (t.get('use') or {}).items() if v >= 0.0005}, **({'useVia': uv} if uv else {}),
             'div': round(t.get('div') or 0, 4), 'reach': round(t.get('reach') or 0, 4), **({'rows': rows} if rows else {}), **({'loop': True} if n['id'] in fold_ids else {}), **({'once': True} if n.get('once') or (n.get('kind') != 'cleanup' and n['id'] not in fold_ids and p is not None and p < 0.995 and (not _repeats(W, n) or (p > 0 and tries * p < 0.9 * (t.get('reach') or 1)))) else {})}   # 다시 하지 않는 상자: 레시피 글은 '1회 시도' — 접힌 반복 안 상자는 반복이 다시 부르니 빼고 시뮬 사용량 그대로(2026-11-13 S2: 화살통 엑잘 '1회 시도 0.3%')
 
 
@@ -959,6 +998,9 @@ def read_recipe(r, sim, src, tiers, inherit=True):
             cs = [o['cur']] + [c if isinstance(c, str) else c.get('cur') for c in n['curIf'] if (c if isinstance(c, str) else c.get('cur'))]
             top = max(cs, key=lambda c: u.get(c) or 0)
             if (u.get(top) or 0) > (u.get(o['cur']) or 0): o['cur'] = top
+            tot_ = sum(u.get(c) or 0 for c in set(cs))
+            mix = sorted([(c, (u.get(c) or 0) / tot_) for c in set(cs) if tot_ and (u.get(c) or 0) / tot_ >= 0.02], key=lambda x: -x[1])
+            if len(mix) > 1: o['curMix'] = [{'cur': c, 'share': round(v, 3)} for c, v in mix]   # 오브를 상태마다 고르는 상자: 둘 다 비율과 함께(2026-11-13 S3 53번)
         if n.get('kind') == 'cleanup':   # 좌측·우측 소멸의 징조를 같이 쓰는 정리 상자(그래프 side): 시뮬 사용량에 있는 징조를 커런시 줄에(2026-11-12, 활 14.A)
             u = (W.st(n['id']) or {}).get('use') or {}
             om = om + [k for k in ('Omen_of_Sinistral_Annulment', 'Omen_of_Dextral_Annulment') if (u.get(k) or 0) > 0 and k not in om]
@@ -1006,7 +1048,7 @@ def read_recipe(r, sim, src, tiers, inherit=True):
             if key != cur_ph:
                 cur_ph = key
                 tl = (groups.get('prep') or {'kr': '베이스 준비', 'en': 'Base preparation'}) if gp else L or n.get('goal') or n.get('label') or {'kr': '', 'en': ''}
-                phases.append({'id': f'f{len(phases)}', 'kr': tl['kr'], 'en': tl['en']})
+                phases.append({'id': f'f{len(phases)}', 'kr': tl['kr'], 'en': tl['en'], **({'prep': True} if gp else {})})   # 준비 구역 구간: 화면 합계에 베이스 값을 더함(S3 4번)
             o['phase'] = phases[-1]['id']
         ph_of[n['id']] = o['phase']
         # 접힌 루프(그래프 loops fold)의 머리 단계: 목표·최악의 경우 한 줄씩(2026-11-12)
@@ -1057,6 +1099,13 @@ def read_recipe(r, sim, src, tiers, inherit=True):
     for o in out:
         if o.get('do') == 'base' or o.get('optional') or o['id'] == 'done': continue
         if o['id'] in fno: o['fcNo'] = fno[o['id']]
+    # '먼저: 소멸' 지우기 상자의 플로우차트 번호(9.A) — 레시피 글 번호가 9 → 10으로 건너뛰어 보이던 것(2026-11-13 S3 17번)
+    for o in out:
+        for x in o.get('routes') or []:
+            for v in [x.get('via')] + list((x.get('via') or {}).get('then') or []):
+                if isinstance(v, dict) and 'vid' in v:
+                    k = v.pop('vid')
+                    if fno.get(k): v['no'] = fno[k]
     res = S['res']
     return {'nodes': out, 'phases': phases, 'start': start_of(r, sim, src, V['params']),
             'fcRead': {k: res.get(k) for k in ('mean', 'median', 'p90', 'bases', 'baseDiv', 'use', 'useDiv')} | {'version': V['id']}}
