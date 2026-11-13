@@ -33,16 +33,16 @@ g = {
           '카오스로 접두(8:02 상태 이상의 강도, 목표 카오스·주문·상태 이상 강도·점화 강도) → 좌측 찬미 + 엑잘, 빗나가면 소멸의 오브(8:05~8:21 카오스 피해) → 엑잘 접미 잡옵 → '
           '위력적인 액체 경멸 1/3(8:44 접미 잡옵이 지워지고 접두어 +1개) → 보존된 두개골(자막) + 심연의 메아리 공개(9:07 주문 피해) → 우측 소멸의 징조 + 소멸의 오브로 경멸 옵션 제거(9:35) → '
           '엑잘 접미 잡옵(9:48) → 위력적인 액체 흉포함(10:22 접두어 효과 43%). 흉포함 수치 다시 굴리기(카오스 → 흉포함, 10:20~10:40)·신성한 오브·카오스 기폭제 퀄리티(10:50)·바알 오브(11:30)는 뺌. '
-          '내부 결정: 공개 빗나감은 영상에 없어 밸런스 = 빛의 징조로 다시(C17-3), 에센셜 = 그대로. 경멸 실패 처리(분열 + 옵션 1개로 되돌려 카오스부터)는 영상에 없음.'),
- 'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video'), '2': K('결과 그대로', 'As it comes')}}},
- 'strategies': [{'id': 'bal', 'params': {'v': 1}}, {'id': 'ess', 'params': {'v': 2}}],
+          '내부 결정: 경멸 실패 처리(분열 + 옵션 1개로 되돌려 카오스부터)는 영상에 없음. '
+          '11-13 오후 새 정책(P11): (B) 영상 공개는 9:07 한 번에 성공해 빛의 징조로 다시 하는 장면이 없어 빛의 징조 반복을 뺌, 공개 결과 그대로(카드 랜덤 옵션) '
+          '(D) 그러면 밸런스·에센셜의 과정·완성품이 같아 밸런스 하나만(옛 시뮬 167.7/104.6).'),
+ 'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video')}}},
+ 'strategies': [{'id': 'bal', 'params': {'v': 1}}],
  'versions': [
-   {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'v': 2}, 'tier': 'ess',
-    'desc': K('공개 결과 그대로', 'Keep the reveal')},
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
-    'desc': K('공개가 빗나가면 빛의 징조로 다시', 'Omen of Light on a missed reveal')}],
+    'desc': K('영상 그대로: 훼손 공개 한 번, 결과 그대로', 'As the video: one reveal, kept as it comes')}],
  'tags': {'ail': {'gi': 24}, 'p29': {'gi': 29}, 'p1': {'gi': 1}, 'p49': {'gi': 49}, 'p4': {'gi': 4},
-          'pre': {'anyOf': PRE, 'shown': ['p1', 'p4'], 'label': PRE_LABEL}, 'preD': {'anyOf': PRE, 'shown': 'p49', 'label': PRE_LABEL},   # preD = 공개로 얻는 세 번째 접두(카드 훼손 색을 그 줄에만)
+          'pre': {'anyOf': PRE, 'shown': ['p1', 'p4'], 'label': PRE_LABEL},
           'contP': {'gi': 104, 'slot': {'p': 1}}, 'contS': {'gi': 103, 'slot': {'s': 1}}, 'fer': {'gi': 102}},
  'require': {'all': [{'has': 'ail'}, {'count': {'tag': 'pre', 'min': 2}}, {'has': 'fer'}, {'not': {'has': 'contP'}}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
@@ -51,8 +51,6 @@ g = {
  'cap': {'p': 2, 's': 2},
  'finals': [
    {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-    'lines': [{'tag': 'pre'}, {'tag': 'pre'}, {'tag': 'preD', 'des': True}, {'tag': 'ail', 'fr': True}, {'tag': 'fer'}]},
-   {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
     'lines': [{'tag': 'pre'}, {'tag': 'pre'}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'ail', 'fr': True}, {'tag': 'fer'}]}],
  'finalItem': {'quality': 0, 'sockets': 0},
 }
@@ -100,14 +98,11 @@ A(id='s5x', kind='cleanup', group='main', pos=[1, 7.4], keep=[], maxJunk=1, labe
 A(id='s6', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Preserved_Cranium', label=K('훼손', 'Desecrate'),
   goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 's7'}], item=[MAG, CHA, UN('p'), AIL, CP])
-A(id='s7', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='preD', label=K('공개', 'Reveal'),
-  goal=K('접두 주문 피해 — 남은 옵션 중 먼저 뜬 것', 'Spell damage prefix: whichever remaining option lands first'), show=PRE,
-  edges=[{'if': {'added': 'preD'}, 'to': 's8', 'res': 'ok'}, {'to': 's7x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  over=[{'param': {'v': 2}, 'set': {'goal': K('접두 세 번째 옵션 — 공개 결과 그대로', 'Third prefix: keep the reveal'),
-         'edges': [{'if': {'added': 'preD'}, 'to': 's8', 'res': 'ok'}, {'to': 's8', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
-  item=[MAG, CHA, SPL, AIL, CP])
-A(id='s7x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('훼손 옵션 지우고 다시 훼손', 'Remove the desecrated option, desecrate again'), edges=[{'to': 's6', 'label': K('다시 훼손', 'Desecrate again')}])
+A(id='s7', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], label=K('공개', 'Reveal'),
+  goal=K('접두 훼손 옵션 공개 — 나오는 대로', 'Reveal the prefix desecration: keep what comes'),
+  showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}],
+  edges=[{'to': 's8'}],
+  item=[MAG, CHA, SPL, AIL, CP])   # 2026-11-13 P11 새 정책 B: 영상 9:07 공개 한 번에 성공(주문 피해), 빛의 징조 반복 없음
 A(id='s8', kind='act', group='main', pos=[0, 10.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=K('소멸', 'Annul'),
   goal=K('접두어 속성 부여의 최대 개수 +1개 지우기', 'Remove +1 Prefix Modifier allowed'),
   showText=[K('접미에 분열 말고 이 옵션뿐이라 확정', 'The only non-fractured suffix: certain')], edges=[{'to': 's9'}], item=[MAG, CHA, SPL, AIL])
@@ -119,7 +114,7 @@ A(id='s11', kind='act', group='main', pos=[0, 12.4], act='essence', cur='Potent_
   showText=[K('접미 잡옵이 지워지고 붙음', 'The junk suffix goes')], edges=[{'to': 'ok'}], item=[MAG, CHA, SPL, AIL, FER])
 A(id='ok', kind='done', group='main', pos=[0, 13.4], label=K('완성', 'Finished'))
 g['nodes'] = N
-g['loops'] = [{'id': 'L1', 'nodes': ['s6', 's7', 's7x'], 'kr': '훼손 공개', 'en': 'Reveal'}]
+g['loops'] = []
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

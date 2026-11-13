@@ -35,12 +35,14 @@ g = {
           '우트레드의 성좌 장착(4:30) → 카오스로 충전 미소모(5:40~6:03) → 좌측 찬미 + 상위 찬미 + 완벽한 엑잘 접두 2개(6:30~6:45) → 좌측 결정화 + 신비한 합금 정신력(7:15~7:55). '
           '마무리 두 방법: 사도 레깅스 = 좌측 찬미 + 상위 찬미 + 완벽한 엑잘 → 좌측 강령술 + 보존된 갈비뼈 → 메아리 공개 방어도·에너지 보호막(7:30~8:50, 에센셜), '
           '충실한 레깅스 = 세를의 승리 → 우측 강령술 + 보존된 갈비뼈 → 메아리 공개, 빛의 징조 + 소멸로 다시 → 스킬 효과 지속시간 2티어(8:50~10:45) → 좌측 찬미 + 상위 찬미 + 완벽한 엑잘 접두 2개, 이동 속도 계열이 나와도 타협(10:50~11:40, 밸런스). '
-          '회오리바람 합금(지속시간)은 정신력 대신 고를 수 있는 길로 영상에서 말만 함 — 꿀팁 후보.'),
+          '회오리바람 합금(지속시간)은 정신력 대신 고를 수 있는 길로 영상에서 말만 함 — 꿀팁 후보. '
+          '11-13 오후 새 정책(P11): (C) 에센셜 시작 베이스를 영상 가성비 방법의 장화인 사도 레깅스로(0850, 그래프 베이스·시뮬은 충실한 레깅스와 같은 일반 베이스라 비용 같음 — b0 상자 글과 레시피 베이스만 바꿈). '
+          '빛의 징조 반복은 영상 9:35~10:45 충실한 레깅스에서 빛의 징조 + 소멸로 다시 하는 장면이 있어 밸런스에 그대로.'),
  'params': {'v': {'kr': '마무리', 'en': 'Finish', 'values': {'1': K('세를의 승리 + 접미 훼손', 'Serle’s Triumph + suffix desecration'), '2': K('접두 훼손 (가성비)', 'Prefix desecration (budget)')}}},
  'strategies': [{'id': 'bal', 'params': {'v': 1}}, {'id': 'ess', 'params': {'v': 2}}],
  'versions': [
    {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'v': 2}, 'tier': 'ess',
-    'desc': K('영상 가성비 마무리: 접두 훼손 한 번, 공개 결과 그대로', 'Video budget finish: one prefix desecration, keep the reveal')},
+    'desc': K('영상 가성비 마무리(사도 레깅스): 접두 훼손 한 번, 공개 결과 그대로', 'Video budget finish (Apostle Leggings): one prefix desecration, keep the reveal')},
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
     'desc': K('영상: 세를의 승리 + 접미 훼손, 지속시간까지 빛의 징조로 다시', 'Video: Serle’s Triumph + suffix desecration, Omen of Light until duration')}],
  'tags': {'ele': {'gi': 20, 'tmax': 1}, 'chg': {'gi': 60, 'tmax': 2}, 'spirit': {'gi': 53}, 'dur': {'gi': 55, 'tmax': 2}, 'aes': {'gi': 8},
@@ -66,6 +68,7 @@ A = lambda **kw: N.append(kw)
 # ---------------- 베이스템 완성 ----------------
 A(id='b0', kind='base', group='prep', pos=[0, 0], next='p1', start={'rar': 'rare', 'mods': ['ele', {'junk': 'p'}, {'junk': 's'}]},
   label=K('방어도의 원소 피해 적용 + 옵션 2개 레어 충실한 레깅스 구입 (특출난 베이스, 홈 2개)', 'Buy a rare Faithful Leggings: armour applies to elemental + two options (exceptional, two sockets)'),
+  over=[{'param': {'v': 2}, 'set': {'label': K('방어도의 원소 피해 적용 + 옵션 2개 레어 사도 레깅스 구입 (특출난 베이스, 홈 2개)', 'Buy a rare Apostle Leggings: armour applies to elemental + two options (exceptional, two sockets)')}}],   # 2026-11-13 P11 정책 C: 영상 에센셜(가성비) 방법은 사도 레깅스(0850)
   item=[J('p'), ELEn, J('s')])
 A(id='p1', kind='act', group='prep', pos=[0, 1], act='desecrate', cur='Preserved_Rib', label=K('훼손', 'Desecrate'),
   goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),

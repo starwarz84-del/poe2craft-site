@@ -15,6 +15,7 @@ def _sgloves(r, t):
 for _t in ('bal',): _grade8('diztoh-socket-gloves','diztoh-socket-gloves-v2',_t,_sgloves)   # 2026-11-13 P8 새 정책 D: 에센셜 241.4 vs 밸런스 255.4 div(6%) → 밸런스만
 def _seek(r, t):
     if t=='ess':
+        r['base']=base(r['cls'],'Apostle Leggings')   # 2026-11-13 P11 정책 C: 영상 가성비(에센셜) 마무리는 사도 레깅스(0850)
         _drop(r,'k6','k7','k8','k9'); k10=_node(r,'k10'); _asIs(k10, k10['target']['anyOf'], 'p')
         k10['br']=K('영상의 가성비 마무리 — 결과 그대로','The video’s budget finish — keep it')
     else: _drop(r,'k6')

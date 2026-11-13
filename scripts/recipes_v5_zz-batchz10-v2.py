@@ -2,8 +2,8 @@
 # ---- 2026-11-10 batch 10 (남은 레시피 쉬운 것부터): 어려움 → Balance (video) + Essential (results kept). Matches scripts/graphs/gen_batch10.py. ----
 def _sl5(r, t):
     _drop(r,'s10','s12')   # Divine values and the finishing catalyst quality are left out (정책 23)
-    if t=='ess': s7=_node(r,'s7'); s7.pop('fail',None); s7['br']=KEEP
-for _t in ('bal','ess'): _grade8('sl-5mod-jewel','sl-5mod-jewel-v2',_t,_sl5)
+    s7=_node(r,'s7'); s7.pop('fail',None); s7['br']=KEEP   # 2026-11-13 P11 새 정책 B: 영상 9:07 공개 한 번에 성공, 빛의 징조 반복 없음
+for _t in ('bal',): _grade8('sl-5mod-jewel','sl-5mod-jewel-v2',_t,_sl5)   # 2026-11-13 P11 새 정책 B·D: 밸런스 = 에센셜 → 밸런스만
 def _vod(r, t):
     if t=='ess':
         v4=_node(r,'v4'); v4.pop('fail',None); v4['br']=KEEP

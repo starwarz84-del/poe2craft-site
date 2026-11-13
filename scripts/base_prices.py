@@ -86,7 +86,7 @@ BASEPRICE = {
   'sihan-attack-flat-ring-v2-bal': 75, 'sihan-attack-flat-ring-v2-ess': 75,
   'sihan-attack-flat-ring': 75,     # 영상 9:23 — 1티어 플랫 분열 매물 75 div 구입
   'sl-5mod-jewel': None,
-  'sl-5mod-jewel-v2-bal': 5, 'sl-5mod-jewel-v2-ess': 5,   # 영상 3:40 자막 — 상태 이상 가속 7% 사파이어 매물 5 div부터
+  'sl-5mod-jewel-v2-bal': 5,   # 영상 3:40 자막 — 상태 이상 가속 7% 사파이어 매물 5 div부터
   'sl-flamewave-ring': None,
   'sl-flamewave-staff': None,
   'sl-proj7-gloves': None,
