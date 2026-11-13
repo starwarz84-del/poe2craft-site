@@ -140,3 +140,6 @@ print('wrote 4 graphs (batch 10)')
 import os as _os, subprocess as _sp, sys as _sy
 if _os.path.exists(f'{H}/gen_vodnarg_timelost_emerald.py'): _sp.run([_sy.executable, f'{H}/gen_vodnarg_timelost_emerald.py'], check=True)   # 2026-11-13 G4: 새 기준 전용 생성기가 덮어씀
 if _os.path.exists(f'{H}/gen_sl_5mod_jewel.py'): _sp.run([_sy.executable, f'{H}/gen_sl_5mod_jewel.py'], check=True)   # 2026-11-13 G4: 새 기준 전용 생성기가 덮어씀
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_mazbro_caster_ring.py'): _sp.run([_sy.executable, f'{H}/gen_mazbro_caster_ring.py'], check=True)   # 2026-11-13 G2: 새 기준 전용 생성기가 덮어씀
