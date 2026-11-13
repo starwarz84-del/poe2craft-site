@@ -4,7 +4,7 @@
  "cls": "Wands",
  "base": "Dueling Wand",
  "ilvl": 81,
- "note": "BigDaddyGaming 번개 +5 마법봉(0.5 글, 가성비 길) — 번개 주문 +5 분열 → 카오스 오브로 주문 치명타(분열 외 유일한 옵션) → 좌측 찬미 + 엑잘(접두 잡옵) → 좌측 결정화 + 초월의 합금 → 보존된 턱뼈 + 공개로 마나 최대치를 접두 자리 막기 → 상위 찬미 + 엑잘(접두 2개, 마나가 막혀 피해 옵션이 잘 뜸) → 빛의 징조 + 소멸의 오브로 막기 제거 → 보존된 턱뼈 → 마지막 접두 공개. 글의 비싼 길(+7, 아스트리드 + 천공의 합금)은 꿀팁으로만.",
+ "note": "2026-11-13 G7 글(6/22판) 전체 + 글에 붙은 영상(3Ux1lq8OaFk, 10:09) 전체 화면 대조. 글의 가성비 길(+6) 한 줄: 결투 마법봉 아이템 레벨 81, 번개 주문 +5와 옵션 2개 + 턱뼈 훼손으로 옵션 4개를 만들어 분열 1/3(글·영상 1:30 말로만, 화면 없음) → 분열 + 옵션 1개만 남기고 카오스 오브로 주문 치명타(영상 2:20 1티어 60%) → 좌측 찬미 + 엑잘로 접두 하나(2:40 주문 피해) → 좌측 결정화 + 초월의 합금(2:48~3:12) → 보존된 턱뼈 + 심연의 메아리로 마나 최대치를 공개해 접두 자리 막기 → 상위 찬미 + 엑잘로 접두 2개 → 빛의 징조 + 소멸의 오브로 막기 제거 → 보존된 턱뼈 → 마지막 접두 공개(글 Prefix cheap 1~6, 영상 3:28~3:55 말로만). 영상 4:00~9:30은 글의 비싼 길(+7: 아스트리드의 창의성 → 완벽한 엑잘 = 주문 피해·마나 복합 → 좌측 결정화 + 천공의 합금 → 턱뼈로 복합 막기 → 완벽한 엑잘 → 빛의 징조 → 고대 턱뼈 공개 = 추가 번개 2티어)이라 플로우차트에 넣지 않고 꿀팁 후보로만. 분열 전 +5 매직 마법봉을 어떻게 만드는지는 글·영상에 없어 +5 매직 구입으로 정함(내부 결정, 정책 1장 매직 구입 시작). 등급(정책 10장): 난이도 3 → 밸런스·에센셜. 카오스 주문 치명타는 카오스 오브 반복이라 두 등급 모두 1티어(C15, 영상도 1티어). 밸런스 = 마나 막기·마지막 공개를 빛의 징조로 다시, 마지막 접두 1~2티어, 완벽한 엑잘. 에센셜 = 공개 결과 그대로, 상위 엑잘(글: Greater/Perfect).",
  "params": {
   "L": {
    "kr": "훼손 공개",
@@ -29,8 +29,8 @@
      "en": "T1–2"
     },
     "4": {
-     "kr": "1~4티어",
-     "en": "T1–4"
+     "kr": "나오는 대로",
+     "en": "As it comes"
     }
    }
   }
@@ -60,9 +60,10 @@
     "L": 0,
     "pT": 4
    },
+   "tier": "ess",
    "desc": {
-    "kr": "공개 결과 그대로, 엑잘은 상위 엑잘티드 오브",
-    "en": "Keep both reveals; greater exalts"
+    "kr": "훼손 공개 결과 그대로, 접두 2개는 상위 엑잘티드 오브",
+    "en": "Keep both reveals; Greater Exalted Orbs for the two prefixes"
    }
   },
   {
@@ -73,9 +74,10 @@
     "L": 1,
     "pT": 2
    },
+   "tier": "bal",
    "desc": {
-    "kr": "마나 막기·마지막 접두 모두 빛의 징조로 다시, 엑잘은 완벽한 엑잘티드 오브",
-    "en": "Retry both reveals with Light; perfect exalts"
+    "kr": "마나 막기·마지막 접두 1~2티어까지 빛의 징조로 다시, 완벽한 엑잘티드 오브",
+    "en": "Retry the mana blocker and a T1–2 last prefix with Omen of Light; Perfect Exalted Orbs"
    }
   }
  ],
@@ -94,28 +96,60 @@
   "blk": {
    "gi": 1
   },
+  "sd": {
+   "gi": 3,
+   "tmax": "$pT"
+  },
+  "ld": {
+   "gi": 7,
+   "tmax": "$pT"
+  },
+  "hy": {
+   "gi": 4,
+   "tmax": "$pT"
+  },
+  "xl": {
+   "gi": 28,
+   "tmax": "$pT"
+  },
   "gp": {
    "anyOf": [
-    {
-     "gi": 3,
-     "tmax": "$pT"
-    },
-    {
-     "gi": 7,
-     "tmax": "$pT"
-    },
-    {
-     "gi": 4,
-     "tmax": "$pT"
-    },
-    {
-     "gi": 28,
-     "tmax": "$pT"
-    }
+    "sd",
+    "ld",
+    "hy",
+    "xl"
    ],
    "label": {
-    "kr": "주문 피해·번개 피해·주문 피해 + 마나·번개 피해 추가 획득",
+    "kr": "주문 피해·번개 피해·주문 피해와 마나·추가 번개 피해",
     "en": "Spell, lightning, spell + mana or extra lightning damage"
+   }
+  },
+  "sd2": {
+   "gi": 3,
+   "tmax": 2
+  },
+  "ld2": {
+   "gi": 7,
+   "tmax": 2
+  },
+  "hy2": {
+   "gi": 4,
+   "tmax": 2
+  },
+  "xl2": {
+   "gi": 28,
+   "tmax": 2
+  },
+  "gp2": {
+   "anyOf": [
+    "sd2",
+    "ld2",
+    "hy2",
+    "xl2"
+   ],
+   "label": {
+    "kr": "주문 피해·번개 피해·주문 피해와 마나·추가 번개 피해 1~2티어",
+    "en": "T1–2 spell, lightning, spell + mana or extra lightning damage"
    }
   }
  },
@@ -132,6 +166,18 @@
    },
    {
     "full": "p"
+   },
+   {
+    "any": [
+     {
+      "param": {
+       "L": 0
+      }
+     },
+     {
+      "has": "gp"
+     }
+    ]
    }
   ]
  },
@@ -155,14 +201,1195 @@
    ]
   }
  ],
- "start": "h1",
+ "start": "b0",
+ "finalItem": {
+  "quality": 0,
+  "sockets": 1
+ },
+ "nodes": [
+  {
+   "id": "b0",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "a1",
+   "start": {
+    "rar": "magic",
+    "mods": [
+     "l5"
+    ]
+   },
+   "label": {
+    "kr": "모든 번개 주문 스킬 레벨 +5 매직 결투 마법봉 구입 (아이템 레벨 81)",
+    "en": "Buy a magic Dueling Wand with +5 lightning spell skills (item level 81)"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "a1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "goal": {
+    "kr": "접두 랜덤 옵션 1개 — 분열 조건 옵션 4개",
+    "en": "One random prefix: the fracture needs four options"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "skipIf": {
+    "full": "p"
+   },
+   "skipTo": "rg",
+   "skipHide": true,
+   "edges": [
+    {
+     "to": "rg"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rg",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "regal",
+   "cur": "Perfect_Regal_Orb",
+   "label": {
+    "kr": "제왕",
+    "en": "Regal"
+   },
+   "goal": {
+    "kr": "레어",
+    "en": "Rare"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "ds"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ds",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Jawbone",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "네번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Fourth option (desecrated): the fracture needs four"
+   },
+   "showText": [
+    {
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecration (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "fr"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5",
+     "en": "+5 to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "fr",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 (공개된 옵션 3개 중 하나)",
+    "en": "Fracture (one of the three revealed options)"
+   },
+   "showText": [
+    {
+     "kr": "번개 주문 +5가 분열되면 성공",
+     "en": "Success when the +5 lightning spell skills fractures"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "fractured": "l5"
+     },
+     "to": "pc",
+     "res": "ok",
+     "label": {
+      "kr": "번개 주문 +5 분열",
+      "en": "+5 lightning spells fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "x",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    4
+   ],
+   "simTo": "b0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured: new base"
+   },
+   "note": {
+    "kr": "번개 주문 +5가 아닌 옵션이 분열되면 새 베이스로 처음부터",
+    "en": "Another option fractured: start over on a new base"
+   }
+  },
+  {
+   "id": "pc",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one option"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    6.4
+   ],
+   "next": "c1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "goal": {
+    "kr": "접미 주문 치명타 명중 확률 — 분열 외 유일한 옵션",
+    "en": "Spell crit chance suffix: the only option besides the fracture"
+   },
+   "show": [
+    "crit"
+   ],
+   "skipIf": {
+    "has": "crit"
+   },
+   "skipTo": "e1",
+   "skipHide": true,
+   "edges": [
+    {
+     "if": {
+      "has": "crit"
+     },
+     "to": "e1",
+     "res": "ok"
+    },
+    {
+     "to": "c1",
+     "res": "fail",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+     "en": "(60—73)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8.4
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 잡옵 1개 — 합금이 지울 자리",
+    "en": "One junk prefix for the alloy to remove"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "al"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (65—74)% 증가",
+     "en": "(65—74)% increased Spell Damage",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+     "en": "(60—73)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "al",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9.4
+   ],
+   "act": "essence",
+   "cur": "Transcendent_Alloy",
+   "ess": "trans",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "goal": {
+    "kr": "접두 잡옵을 지우고 접미 세번째 옵션",
+    "en": "The junk prefix goes, third suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "시전 속도 · 원소 피해의 %를 추가 냉기 피해로 획득 (제작 옵션)",
+     "en": "Cast speed · elemental damage as extra cold (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "d1"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+     "en": "(60—73)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 · 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed · Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "trans"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10.4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Jawbone",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접두 자리 막기(훼손)",
+    "en": "Prefix slot blocker (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "d2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+     "en": "(60—73)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 · 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed · Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "trans"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11.4
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "blk",
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "goal": {
+    "kr": "접두 마나 최대치(훼손) — 주문 피해와 마나 복합이 아닌 마나 최대치로 다음 엑잘의 마나 자리 막기",
+    "en": "Maximum mana prefix (desecrated): plain mana, not the spell + mana hybrid, so the next exalts cannot roll mana"
+   },
+   "show": [
+    "blk"
+   ],
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "goal": {
+       "kr": "접두 자리 막기 공개 — 나오는 대로",
+       "en": "Reveal the blocker: keep what comes"
+      },
+      "showText": [
+       {
+        "s": "p",
+        "kr": "랜덤 옵션 1개 (훼손)",
+        "en": "One random option (desecrated)"
+       }
+      ],
+      "show": []
+     }
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "any": [
+       {
+        "added": "blk"
+       },
+       {
+        "param": {
+         "L": 0
+        }
+       }
+      ]
+     },
+     "to": "e2",
+     "res": "ok"
+    },
+    {
+     "to": "d2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 (훼손)",
+     "en": "Maximum Mana (desecrated)",
+     "m": "d",
+     "tags": [
+      "blk"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+     "en": "(60—73)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 · 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed · Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "trans"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    11.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated option"
+   },
+   "edges": [
+    {
+     "to": "d1",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    12.4
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 두번째·세번째 옵션 — 마나가 막혀 피해 옵션이 잘 뜸",
+    "en": "Second and third prefixes: mana is blocked"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "cur": "Greater_Exalted_Orb"
+     }
+    }
+   ],
+   "edges": [
+    {
+     "to": "lx"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 (훼손)",
+     "en": "Maximum Mana (desecrated)",
+     "m": "d",
+     "tags": [
+      "blk"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+     "en": "(60—73)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 · 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed · Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "trans"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lx",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    13.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "자리 막기 훼손 옵션 제거",
+    "en": "Remove the blocking desecrated option"
+   },
+   "target": {
+    "kr": "자리 막기 훼손 옵션 제거",
+    "en": "Remove the blocking desecrated option"
+   },
+   "edges": [
+    {
+     "to": "d3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+     "en": "(60—73)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 · 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed · Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "trans"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    14.4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Jawbone",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접두 마지막 옵션(훼손)",
+    "en": "Last prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "d4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+     "en": "(60—73)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 · 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed · Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "trans"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    15.4
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "gp",
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "goal": {
+    "kr": "접두 추가 번개 피해(훼손) — 주문·번개 피해 증가, 주문 피해와 마나 중 먼저 뜬 것",
+    "en": "Extra lightning prefix (desecrated): or spell, lightning or spell + mana damage, whichever shows first"
+   },
+   "show": [
+    "gp"
+   ],
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "goal": {
+       "kr": "접두 마지막 옵션 공개 — 나오는 대로",
+       "en": "Reveal the last prefix: keep what comes"
+      },
+      "showText": [
+       {
+        "s": "p",
+        "kr": "랜덤 옵션 1개 (훼손)",
+        "en": "One random option (desecrated)"
+       }
+      ],
+      "show": []
+     }
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "any": [
+       {
+        "added": "gp"
+       },
+       {
+        "param": {
+         "L": 0
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "d4x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "피해의 (25—27)%를 추가 번개 피해로 획득 (훼손)",
+     "en": "Gain (25—27)% of Damage as Extra Lightning Damage (desecrated)",
+     "m": "d",
+     "tags": [
+      "xl2"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +5 (분열)",
+     "en": "+5 to Level of all Lightning Spell Skills (fractured)",
+     "m": "f",
+     "tags": [
+      "l5"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
+     "en": "(60—73)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가 · 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed · Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "trans"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d4x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    15.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated option"
+   },
+   "edges": [
+    {
+     "to": "d3",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    16.4
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
  "loops": [
   {
    "id": "L1",
    "nodes": [
-    "w4",
-    "w5",
-    "w5x"
+    "d1",
+    "d2",
+    "d2x"
    ],
    "kr": "접두 자리 막기",
    "en": "Prefix blocker"
@@ -170,9 +1397,9 @@
   {
    "id": "L2",
    "nodes": [
-    "w8",
-    "w9",
-    "w9x"
+    "d3",
+    "d4",
+    "d4x"
    ],
    "kr": "접두 마지막 옵션(훼손)",
    "en": "Last prefix (desecrated)"
@@ -181,11 +1408,13 @@
  "finals": [
   {
    "id": "bal",
+   "tier": "bal",
    "kr": "밸런스 옵션",
    "en": "Balance",
    "lines": [
     {
-     "tag": "gp"
+     "tag": "gp2",
+     "des": true
     },
     {
      "side": "p",
@@ -200,17 +1429,17 @@
      "fr": true
     },
     {
-     "tag": "crit",
-     "tmax": 1
+     "tag": "crit"
     },
     {
      "tag": "trans",
-     "tmax": 1
+     "ess": true
     }
    ]
   },
   {
    "id": "ess",
+   "tier": "ess",
    "kr": "에센셜 옵션",
    "en": "Essential",
    "lines": [
@@ -231,812 +1460,13 @@
      "fr": true
     },
     {
-     "tag": "crit",
-     "tmax": 1
+     "tag": "crit"
     },
     {
      "tag": "trans",
-     "tmax": 1
+     "ess": true
     }
    ]
-  }
- ],
- "finalItem": {
-  "quality": 20,
-  "sockets": 1
- },
- "nodes": [
-  {
-   "id": "h1",
-   "kind": "base",
-   "group": "prep",
-   "pos": [
-    0,
-    0
-   ],
-   "next": "ms",
-   "start": {
-    "rar": "rare",
-    "mods": [
-     {
-      "tag": "l5",
-      "fr": true
-     },
-     {
-      "junk": "s"
-     }
-    ]
-   },
-   "label": {
-    "kr": "모든 번개 주문 스킬 레벨 +5 분열 결투 마법봉 (잡옵 1개)",
-    "en": "Dueling Wand with fractured +5 lightning spells (one junk line)"
-   },
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +5",
-     "en": "+5 to Level of all Lightning Spell Skills",
-     "m": "f",
-     "tags": [
-      "l5"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ]
-  },
-  {
-   "id": "ms",
-   "kind": "mark",
-   "group": "main",
-   "pos": [
-    0,
-    0.6
-   ],
-   "next": "w1",
-   "label": {
-    "kr": "아이템 제작 시작",
-    "en": "Item crafting starts"
-   },
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +5",
-     "en": "+5 to Level of all Lightning Spell Skills",
-     "m": "f",
-     "tags": [
-      "l5"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ]
-  },
-  {
-   "id": "w1",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    1
-   ],
-   "act": "chaos",
-   "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix"
-   },
-   "label": {
-    "kr": "카오스",
-    "en": "Chaos"
-   },
-   "edges": [
-    {
-     "if": {
-      "has": "crit"
-     },
-     "to": "w2",
-     "res": "ok"
-    },
-    {
-     "to": "w1",
-     "res": "fail"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +5",
-     "en": "+5 to Level of all Lightning Spell Skills",
-     "m": "f",
-     "tags": [
-      "l5"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
-     "en": "(60—73)% increased Critical Hit Chance for Spells",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "crit"
-   ]
-  },
-  {
-   "id": "w2",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    2
-   ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접두에 잡옵 1개",
-    "en": "A junk prefix"
-   },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
-   "edges": [
-    {
-     "to": "w3"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +5",
-     "en": "+5 to Level of all Lightning Spell Skills",
-     "m": "f",
-     "tags": [
-      "l5"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
-     "en": "(60—73)% increased Critical Hit Chance for Spells",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "잡옵 (아무 옵션)",
-     "en": "Junk (any line)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
-   ]
-  },
-  {
-   "id": "w3",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    3
-   ],
-   "act": "essence",
-   "goal": {
-    "kr": "접두 잡옵을 지우고 접미 세번째 옵션",
-    "en": "Remove the junk prefix, third suffix"
-   },
-   "label": {
-    "kr": "합금",
-    "en": "Alloy"
-   },
-   "edges": [
-    {
-     "to": "w4"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +5",
-     "en": "+5 to Level of all Lightning Spell Skills",
-     "m": "f",
-     "tags": [
-      "l5"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
-     "en": "(60—73)% increased Critical Hit Chance for Spells",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "시전 속도 (26—31)% 증가 / 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (제작 옵션)",
-     "en": "(26—31)% increased Cast Speed / Gain (7—11)% of Elemental Damage as Extra Cold Damage (crafted)",
-     "m": "c",
-     "tags": [
-      "trans"
-     ]
-    }
-   ],
-   "cur": "Transcendent_Alloy",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "초월의 합금 옵션 (제작 옵션)",
-     "en": "Transcendent Alloy line (crafted)"
-    }
-   ],
-   "ess": "trans",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
-   ]
-  },
-  {
-   "id": "w4",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    4
-   ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "접두 자리 막기(훼손)",
-    "en": "Block a prefix slot (desecrate)"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "edges": [
-    {
-     "to": "w5"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +5",
-     "en": "+5 to Level of all Lightning Spell Skills",
-     "m": "f",
-     "tags": [
-      "l5"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
-     "en": "(60—73)% increased Critical Hit Chance for Spells",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "시전 속도 (26—31)% 증가 / 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (제작 옵션)",
-     "en": "(26—31)% increased Cast Speed / Gain (7—11)% of Elemental Damage as Extra Cold Damage (crafted)",
-     "m": "c",
-     "tags": [
-      "trans"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ]
-  },
-  {
-   "id": "w5",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    5
-   ],
-   "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
-   "label": {
-    "kr": "공개",
-    "en": "Reveal"
-   },
-   "edges": [
-    {
-     "if": {
-      "added": "blk"
-     },
-     "to": "w6",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "param": {
-       "L": 1
-      }
-     },
-     "to": "w5x",
-     "res": "fail"
-    },
-    {
-     "to": "w6",
-     "res": "fail",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +5",
-     "en": "+5 to Level of all Lightning Spell Skills",
-     "m": "f",
-     "tags": [
-      "l5"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
-     "en": "(60—73)% increased Critical Hit Chance for Spells",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "시전 속도 (26—31)% 증가 / 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (제작 옵션)",
-     "en": "(26—31)% increased Cast Speed / Gain (7—11)% of Elemental Damage as Extra Cold Damage (crafted)",
-     "m": "c",
-     "tags": [
-      "trans"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 (훼손, 자리 막기)",
-     "en": "Max mana (desecrated, slot blocker)",
-     "m": "d",
-     "tags": [
-      "blk"
-     ]
-    }
-   ],
-   "want": "blk",
-   "show": [
-    "blk"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
-   ]
-  },
-  {
-   "id": "w5x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    5
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
-   },
-   "edges": [
-    {
-     "to": "w4",
-     "port": "right"
-    }
-   ]
-  },
-  {
-   "id": "w6",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    6
-   ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접두 두번째·세번째 옵션",
-    "en": "Second and third prefixes"
-   },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
-   "edges": [
-    {
-     "to": "w7"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +5",
-     "en": "+5 to Level of all Lightning Spell Skills",
-     "m": "f",
-     "tags": [
-      "l5"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
-     "en": "(60—73)% increased Critical Hit Chance for Spells",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "시전 속도 (26—31)% 증가 / 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (제작 옵션)",
-     "en": "(26—31)% increased Cast Speed / Gain (7—11)% of Elemental Damage as Extra Cold Damage (crafted)",
-     "m": "c",
-     "tags": [
-      "trans"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "마나 최대치 (훼손, 자리 막기)",
-     "en": "Max mana (desecrated, slot blocker)",
-     "m": "d",
-     "tags": [
-      "blk"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "주문 피해 / 번개 피해 / 주문 피해·마나 복합 / 번개 피해 추가 획득",
-     "en": "Spell, lightning, hybrid spell/mana or extra lightning damage",
-     "m": "n",
-     "tags": [
-      "gp"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 2개 — 결과 그대로",
-     "en": "Two random lines — keep whatever comes"
-    }
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
-   ],
-   "over": [
-    {
-     "param": {
-      "L": 0
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
-     }
-    }
-   ]
-  },
-  {
-   "id": "w7",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    7
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "자리 막기 훼손 옵션 제거",
-    "en": "Remove the blocking desecrated line"
-   },
-   "edges": [
-    {
-     "to": "w8"
-    }
-   ]
-  },
-  {
-   "id": "w8",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    8
-   ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "접두 마지막 옵션(훼손)",
-    "en": "Last prefix (desecrated)"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "edges": [
-    {
-     "to": "w9"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +5",
-     "en": "+5 to Level of all Lightning Spell Skills",
-     "m": "f",
-     "tags": [
-      "l5"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
-     "en": "(60—73)% increased Critical Hit Chance for Spells",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "시전 속도 (26—31)% 증가 / 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (제작 옵션)",
-     "en": "(26—31)% increased Cast Speed / Gain (7—11)% of Elemental Damage as Extra Cold Damage (crafted)",
-     "m": "c",
-     "tags": [
-      "trans"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "주문 피해 / 번개 피해 / 주문 피해·마나 복합 / 번개 피해 추가 획득",
-     "en": "Spell, lightning, hybrid spell/mana or extra lightning damage",
-     "m": "n",
-     "tags": [
-      "gp"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ]
-  },
-  {
-   "id": "w9",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    9
-   ],
-   "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
-   "label": {
-    "kr": "공개",
-    "en": "Reveal"
-   },
-   "edges": [
-    {
-     "if": {
-      "added": "gp"
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "param": {
-       "L": 1
-      }
-     },
-     "to": "w9x",
-     "res": "fail"
-    },
-    {
-     "to": "ok",
-     "res": "fail",
-     "hide": true
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +5",
-     "en": "+5 to Level of all Lightning Spell Skills",
-     "m": "f",
-     "tags": [
-      "l5"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 명중 확률 (60—73)% 증가",
-     "en": "(60—73)% increased Critical Hit Chance for Spells",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "시전 속도 (26—31)% 증가 / 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (제작 옵션)",
-     "en": "(26—31)% increased Cast Speed / Gain (7—11)% of Elemental Damage as Extra Cold Damage (crafted)",
-     "m": "c",
-     "tags": [
-      "trans"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "주문 피해 / 번개 피해 / 주문 피해·마나 복합 / 번개 피해 추가 획득",
-     "en": "Spell, lightning, hybrid spell/mana or extra lightning damage",
-     "m": "n",
-     "tags": [
-      "gp"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "주문 피해 / 번개 피해 / 주문 피해·마나 복합 / 번개 피해 추가 획득",
-     "en": "Spell, lightning, hybrid spell/mana or extra lightning damage",
-     "m": "n",
-     "tags": [
-      "gp"
-     ]
-    }
-   ],
-   "want": "gp",
-   "show": [
-    "gp"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
-   ]
-  },
-  {
-   "id": "w9x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    9
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
-   },
-   "edges": [
-    {
-     "to": "w8",
-     "port": "right"
-    }
-   ]
-  },
-  {
-   "id": "ok",
-   "kind": "done",
-   "group": "main",
-   "pos": [
-    0,
-    10
-   ],
-   "label": {
-    "kr": "완성",
-    "en": "Finished"
-   }
   }
  ]
 }

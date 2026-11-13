@@ -181,3 +181,6 @@ g22('fubgun-es-helmet-v2',c,'Kamasan Tiara',78,
   tags,nodes,LIGHT_LOOP(['e3','e4','e4x'],'접두 세번째 옵션(훼손)','Third prefix (desecrated)'),
   FIN(VB,lambda v:[{'tag':'esf','tmax':1},{'tag':'enh','tmax':1},{'side':'p','label':K('에너지 보호막 % 복합' if v=='bal' else '공개 결과 그대로','Hybrid % energy shield' if v=='bal' else 'Reveal as it comes')},{'side':'s','random':True},{'side':'s','random':True},{'side':'s','random':True}]),
   {'quality':20,'sockets':1},{'all':[{'has':'esf'},{'has':'enh'},{'full':'p'},{'full':'s'}]},VB)
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_bigdaddy_lightning_wand.py'): _sp.run([_sy.executable, f'{H}/gen_bigdaddy_lightning_wand.py'], check=True)   # 2026-11-13 G7: 새 기준 전용 생성기가 덮어씀
