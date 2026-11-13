@@ -3,8 +3,8 @@
  "recipe": "diztoh-5mod-sapphire-v2",
  "cls": "Sapphire",
  "base": "Sapphire",
- "ilvl": 82,
- "note": "Diztoh 5옵션 사파이어(원본 레시피 기록) — 카오스 오브(치명타 접미) → 우측 찬미 + 엑잘(다른 치명타, 빗나가면 소멸의 오브) → 접두 옵션 2개(영상은 엑잘 2개, 그림은 상위 찬미로 표시) → 위력적인 액체 경멸 → 보존된 두개골 → 공개(시전 속도) → 좌측 소멸의 징조로 경멸 옵션 제거 → 상위 엑잘 → 카오스 오브(냉기·주문·원소 피해) → 위력적인 액체 흉포함.",
+ "ilvl": 79,
+ "note": "2026-11-13 G8 영상 전체 화면 대조(근거 scratchpad review/G8/diztoh-5mod-sapphire-v2/timeline.md). 주얼 하나(Apocalypse Shine, 아이템 레벨 79) 성공 회차 한 줄: 옵션 4개 레어 사파이어(0:08) → 소멸의 오브로 정리 → 카오스 접미(0:20~1:50, 성공 회차 2:42 주문 치명타 명중 확률 14%) → 우측 찬미 + 엑잘로 치명타 확률(빗나가면 소멸의 오브 0:47·1:02) → 엑잘 2번 접두(2:50) → 위력적인 액체 경멸(2:02 툴팁, 2:32 실패 = 접두어 +1개 → 모두 지우고 카오스부터, 3:03 성공) → 보존된 두개골(3:16, 접두가 꽉 차 접미로) → 심연의 메아리 공개(3:38 빗나감 → 빛의 징조 + 소멸의 오브 반복, 4:38 시전 속도) → 좌측 소멸의 징조 + 소멸의 오브로 경멸 옵션(5:12) → 상위 엑잘(5:16) → 카오스로 접두 냉기 피해(6:05~6:58, 접미가 한도를 넘어 접두만 바뀜) → 위력적인 액체 흉포함(7:05 최대 에너지 보호막이 지워짐) → 완성(7:12). 영상과 다르게 정한 점: 5:50 첫 흉포함(카오스 전 시범, 그 옵션은 카오스로 지워짐)은 뺌, 신성한 오브·제련된 달리는 기폭제(8:00~8:18)는 마무리라 뺌, 좌측 소멸의 징조가 좋은 접두를 지운 경우는 영상에 없어 같은 징조로 다시(내부 결정), 시작 정리는 옵션 1개까지(영상은 모두 지운 뒤 카오스 — 화면 편집으로 확인 못 함).",
  "params": {
   "v": {
    "kr": "진행",
@@ -43,9 +43,10 @@
    "params": {
     "v": 2
    },
+   "tier": "ess",
    "desc": {
-    "kr": "공개 결과 그대로, 경멸 옵션은 두고 액체 흉포함 한 번",
-    "en": "Keep the reveal, leave the contempt line, Ferocity once"
+    "kr": "공개 결과 그대로, 접두 카오스 없이 흉포함 한 번",
+    "en": "Keep the reveal, one Ferocity without the prefix Chaos"
    }
   },
   {
@@ -55,66 +56,28 @@
    "params": {
     "v": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상: 빛의 징조로 다시 공개, 좌측 소멸의 징조로 경멸 옵션 제거, 카오스 오브로 좋은 접두 → 액체 흉포함",
-    "en": "Video: Light retries, Sinistral Annulment for the contempt line, Chaos for a good prefix, then Ferocity"
+    "kr": "영상: 빛의 징조로 다시 공개, 냉기 피해까지 카오스",
+    "en": "Video: Omen of Light on a missed reveal, Chaos until cold damage"
    }
   }
  ],
  "tags": {
-  "scrit": {
+  "scc": {
    "gi": 48
   },
-  "crit": {
+  "cc": {
    "gi": 10
-  },
-  "cdmg": {
-   "gi": 11
-  },
-  "critAny": {
-   "anyOf": [
-    "scrit",
-    "crit",
-    "cdmg"
-   ],
-   "label": {
-    "kr": "치명타 접미",
-    "en": "Crit suffix"
-   }
   },
   "cast": {
    "gi": 3
   },
-  "rev": {
-   "anyOf": [
-    "cast",
-    "cdmg",
-    "scrit"
-   ],
-   "label": {
-    "kr": "시전 속도·치명타",
-    "en": "Cast speed or crit"
-   }
-  },
   "cold": {
    "gi": 6
   },
-  "spell": {
-   "gi": 49
-  },
-  "ele": {
-   "gi": 20
-  },
-  "pre": {
-   "anyOf": [
-    "cold",
-    "spell",
-    "ele"
-   ],
-   "label": {
-    "kr": "냉기·주문·원소 피해",
-    "en": "Cold, spell or elemental damage"
-   }
+  "fer": {
+   "gi": 101
   },
   "contS": {
    "gi": 103,
@@ -127,21 +90,42 @@
    "slot": {
     "p": 1
    }
-  },
-  "fer": {
-   "gi": 101
   }
  },
  "require": {
   "all": [
    {
-    "count": {
-     "tag": "critAny",
-     "min": 2
-    }
+    "has": "scc"
+   },
+   {
+    "has": "cc"
    },
    {
     "has": "fer"
+   },
+   {
+    "not": {
+     "has": "contS"
+    }
+   },
+   {
+    "any": [
+     {
+      "all": [
+       {
+        "has": "cast"
+       },
+       {
+        "has": "cold"
+       }
+      ]
+     },
+     {
+      "param": {
+       "v": 2
+      }
+     }
+    ]
    }
   ]
  },
@@ -165,134 +149,155 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "c2",
-    "c3",
-    "c3x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  },
-  {
-   "id": "L3",
-   "nodes": [
-    "c6",
-    "f1"
-   ],
-   "kr": "흉포함",
-   "en": "Ferocity"
-  }
- ],
+ "start": "b0",
+ "cap": {
+  "p": 2,
+  "s": 2
+ },
  "finals": [
   {
    "id": "bal",
+   "tier": "bal",
    "kr": "밸런스 옵션",
    "en": "Balance",
    "lines": [
     {
-     "side": "p",
-     "label": {
-      "kr": "냉기·주문·원소 피해",
-      "en": "Cold, spell or elemental damage"
-     }
+     "tag": "cold"
     },
     {
-     "tag": "fer",
-     "tmax": 1
+     "tag": "fer"
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "치명타 접미",
-      "en": "Crit suffix"
-     }
+     "tag": "scc"
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "치명타 접미",
-      "en": "Crit suffix"
-     }
+     "tag": "cc"
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "시전 속도·치명타",
-      "en": "Cast speed or crit"
-     }
+     "tag": "cast",
+     "des": true
     }
    ]
   },
   {
    "id": "ess",
+   "tier": "ess",
    "kr": "에센셜 옵션",
    "en": "Essential",
    "lines": [
     {
      "side": "p",
-     "label": {
-      "kr": "+1 접미 허용 또는 랜덤",
-      "en": "+1 suffix allowed or random"
-     }
-    },
-    {
-     "tag": "fer",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "label": {
-      "kr": "치명타 접미",
-      "en": "Crit suffix"
-     }
-    },
-    {
-     "side": "s",
-     "label": {
-      "kr": "치명타 접미",
-      "en": "Crit suffix"
-     }
-    },
-    {
-     "side": "s",
      "random": true
+    },
+    {
+     "tag": "fer"
+    },
+    {
+     "tag": "scc"
+    },
+    {
+     "tag": "cc"
+    },
+    {
+     "side": "s",
+     "random": true,
+     "des": true
     }
    ]
   }
  ],
  "finalItem": {
-  "quality": 20,
+  "quality": 0,
   "sockets": 0
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "pc",
    "start": {
     "rar": "rare",
     "mods": [
+     {
+      "junk": "s"
+     },
+     {
+      "junk": "p"
+     },
+     {
+      "junk": "p"
+     },
      {
       "junk": "s"
      }
     ]
    },
    "label": {
-    "kr": "희귀 사파이어 (소멸의 오브로 옵션 1개만 남김)",
-    "en": "Rare Sapphire (annulled down to one line)"
+    "kr": "옵션 4개 레어 사파이어",
+    "en": "Rare Sapphire with four options"
    },
    "item": [
     {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
      "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "pc",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "옵션 1개만 남기기",
+    "en": "Keep only one option"
+   },
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "x",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
@@ -305,16 +310,16 @@
    "group": "main",
    "pos": [
     0,
-    0.6
+    2.4
    ],
-   "next": "j1",
+   "next": "a1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
    },
    "item": [
     {
-     "s": "s",
+     "s": "x",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
@@ -322,126 +327,124 @@
    ]
   },
   {
-   "id": "j1",
+   "id": "a1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    1
+    3.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "접미 첫번째 옵션",
-    "en": "First suffix"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접미 주문 치명타 명중 확률",
+    "en": "Spell Critical Hit Chance suffix"
+   },
+   "show": [
+    "scc"
+   ],
    "edges": [
     {
      "if": {
-      "has": "critAny"
+      "has": "scc"
      },
-     "to": "j2",
+     "to": "a2",
      "res": "ok"
     },
     {
-     "to": "j1",
-     "res": "fail"
+     "to": "a1",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
      "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
      "m": "n",
      "tags": [
-      "critAny"
+      "scc"
      ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "scrit",
-    "crit",
-    "cdmg"
    ]
   },
   {
-   "id": "j2",
+   "id": "a2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    1.5
+    4.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 두번째 옵션",
-    "en": "Second suffix"
-   },
+   "cur": "Exalted_Orb",
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 치명타 확률",
+    "en": "Critical Hit Chance suffix"
+   },
+   "show": [
+    "cc"
+   ],
    "edges": [
     {
      "if": {
-      "count": {
-       "tag": "critAny",
-       "min": 2
-      }
+      "has": "cc"
      },
-     "to": "j3",
+     "to": "a3",
      "res": "ok"
     },
     {
-     "to": "j2x",
-     "res": "fail"
+     "to": "a2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
     {
      "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
      "m": "n",
      "tags": [
-      "critAny"
+      "scc"
      ]
     },
     {
      "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
+     "kr": "치명타 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance",
      "m": "n",
      "tags": [
-      "critAny"
+      "cc"
      ]
     }
-   ],
-   "cur": "Exalted_Orb",
-   "show": [
-    "scrit",
-    "crit",
-    "cdmg"
-   ],
-   "omens": [
-    "Omen_of_Dextral_Exaltation"
    ]
   },
   {
-   "id": "j2x",
+   "id": "a2x",
    "kind": "cleanup",
    "group": "main",
    "pos": [
     1,
-    1.5
+    4.4
    ],
    "keep": [
-    "critAny"
+    "scc"
    ],
    "maxJunk": 0,
    "label": {
@@ -458,136 +461,120 @@
    },
    "edges": [
     {
-     "lost": "critAny",
-     "to": "j1",
-     "port": "right"
+     "lost": "scc",
+     "to": "a1",
+     "label": {
+      "kr": "주문 치명타 명중 확률이 지워짐 — 다시 카오스",
+      "en": "Spell crit chance gone: Chaos again"
+     }
     },
     {
-     "to": "j2",
-     "port": "bottom"
+     "to": "a2",
+     "label": {
+      "kr": "다시 엑잘",
+      "en": "Exalt again"
+     }
     }
    ]
   },
   {
-   "id": "j3",
+   "id": "a3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    5.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 옵션 2개",
-    "en": "Two prefixes"
-   },
+   "cur": "Exalted_Orb",
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 첫번째 옵션",
+    "en": "First prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개 (접미가 꽉 차 접두로)",
+     "en": "One random option (suffixes are full)"
+    }
+   ],
    "edges": [
     {
-     "to": "c1"
+     "to": "a4"
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
      "s": "p",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
     },
     {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "scc"
+     ]
+    },
     {
-     "s": "p",
-     "kr": "랜덤 옵션 2개 (엑잘티드 오브 2개)",
-     "en": "Two random lines (two Exalted Orbs)"
+     "s": "s",
+     "kr": "치명타 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
     }
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
    ]
   },
   {
-   "id": "c1",
+   "id": "a4",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    6.4
    ],
-   "act": "essence",
-   "goal": {
-    "kr": "위력적인 액체 경멸 (50%로 +1 접미 허용)",
-    "en": "Potent Liquid Contempt (50%: +1 suffix allowed)"
-   },
+   "act": "exalt",
+   "cur": "Exalted_Orb",
    "label": {
-    "kr": "액체",
-    "en": "Liquid"
+    "kr": "엑잘",
+    "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개 (접미가 꽉 차 접두로)",
+     "en": "One random option (suffixes are full)"
+    }
+   ],
    "edges": [
     {
      "if": {
-      "has": "contS"
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
      },
-     "to": "c2",
-     "res": "ok"
+     "to": "a4",
+     "hide": true
     },
     {
-     "to": "c1x",
-     "res": "fail"
-    },
-    {
-     "to": "h1",
-     "res": "fail",
-     "port": "right"
+     "to": "k1"
     }
    ],
    "item": [
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
     {
      "s": "p",
      "kr": "잡옵",
@@ -596,36 +583,130 @@
     },
     {
      "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
      "m": "n",
+     "tags": [
+      "scc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "k1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
+   ],
+   "act": "essence",
+   "cur": "Potent_Liquid_Contempt",
+   "ess": "contS",
+   "alt": "contP",
+   "liquid": true,
+   "label": {
+    "kr": "액체",
+    "en": "Liquid"
+   },
+   "goal": {
+    "kr": "접미어 속성 부여의 최대 개수 +1개",
+    "en": "+1 Suffix Modifier allowed"
+   },
+   "showText": [
+    {
+     "kr": "접두 잡옵이 지워지면 성공, 접미가 지워지면 실패",
+     "en": "A junk prefix goes: success; a suffix goes: miss"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "contS"
+       },
+       {
+        "has": "scc"
+       },
+       {
+        "has": "cc"
+       }
+      ]
+     },
+     "to": "d1",
+     "res": "ok"
+    },
+    {
+     "to": "k1x",
+     "res": "fail",
+     "label": {
+      "kr": "접미가 지워짐",
+      "en": "A suffix removed"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
      "tags": [
       "contS"
      ]
-    }
-   ],
-   "cur": "Potent_Liquid_Contempt",
-   "showText": [
+    },
     {
-     "s": "p",
-     "kr": "+1 접미 허용 (아니면 +1 접두 허용 → 접미가 지워짐)",
-     "en": "+1 suffix allowed (else +1 prefix allowed takes a suffix)"
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "scc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
     }
-   ],
-   "ess": "contS",
-   "liquid": true,
-   "alt": "contP"
+   ]
   },
   {
-   "id": "c1x",
+   "id": "k1x",
    "kind": "cleanup",
    "group": "main",
    "pos": [
     1,
-    3
+    7.4
    ],
    "keep": [],
-   "maxJunk": 0,
+   "maxJunk": 1,
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -635,57 +716,50 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "소멸의 오브로 모두 지우고 접미부터 다시 (영상)",
-    "en": "Annul everything and chaos for the suffix again (video)"
+    "kr": "옵션 1개만 남기고 카오스부터",
+    "en": "Keep one option, Chaos again"
    },
    "edges": [
     {
-     "to": "j1",
-     "port": "right"
+     "to": "a1",
+     "label": {
+      "kr": "다시 카오스",
+      "en": "Chaos again"
+     }
     }
    ]
   },
   {
-   "id": "c2",
+   "id": "d1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    8.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 세번째 옵션(훼손)",
-    "en": "Third suffix (desecrated)"
-   },
+   "cur": "Preserved_Cranium",
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개) — 접두가 꽉 차 접미로",
+     "en": "Desecrated (unrevealed): prefixes are full, so a suffix"
+    }
+   ],
    "edges": [
     {
-     "to": "c3"
+     "to": "r1"
     }
    ],
    "item": [
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
     {
      "s": "p",
      "kr": "잡옵",
@@ -694,120 +768,79 @@
     },
     {
      "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
      "tags": [
       "contS"
      ]
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Cranium",
-   "showText": [
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "scc"
+     ]
+    },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
+     "kr": "치명타 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
     }
    ]
   },
   {
-   "id": "c3",
+   "id": "r1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    9.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "cast",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접미 시전 속도",
+    "en": "Cast Speed suffix"
+   },
+   "show": [
+    "cast"
+   ],
    "edges": [
     {
      "if": {
-      "added": "rev"
+      "added": "cast"
      },
-     "to": "c4",
+     "to": "n1",
      "res": "ok"
     },
     {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
-     "to": "c3x",
-     "res": "fail"
-    },
-    {
-     "to": "c4",
-     "res": "fail"
+     "to": "r1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "+1 접미 허용",
-     "en": "+1 suffix allowed",
-     "m": "n",
-     "tags": [
-      "contS"
-     ]
-    }
-   ],
-   "want": "rev",
-   "show": [
-    "cast",
-    "cdmg",
-    "scrit"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ],
    "over": [
     {
@@ -815,30 +848,124 @@
       "v": 2
      },
      "set": {
+      "goal": {
+       "kr": "접미 세번째 옵션 — 공개 결과 그대로",
+       "en": "Third suffix: keep the reveal"
+      },
+      "show": [],
+      "item": [
+       {
+        "s": "p",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "p",
+        "kr": "접미어 속성 부여의 최대 개수 +1개",
+        "en": "+1 Suffix Modifier allowed",
+        "m": "c",
+        "tags": [
+         "contS"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+        "en": "(5—15)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "치명타 확률 (5—15)% 증가",
+        "en": "(5—15)% increased Critical Hit Chance",
+        "m": "n",
+        "tags": [
+         "cc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ],
       "edges": [
        {
         "if": {
-         "added": "rev"
+         "added": "cast"
         },
-        "to": "f1",
+        "to": "n1",
         "res": "ok"
        },
        {
-        "to": "f1",
-        "res": "fail"
+        "to": "n1",
+        "res": "fail",
+        "label": {
+         "kr": "빗나감 — 그대로",
+         "en": "Miss: keep it"
+        }
        }
       ]
      }
     }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "접미어 속성 부여의 최대 개수 +1개",
+     "en": "+1 Suffix Modifier allowed",
+     "m": "c",
+     "tags": [
+      "contS"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "scc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Cast Speed",
+     "m": "d",
+     "tags": [
+      "cast"
+     ]
+    }
    ]
   },
   {
-   "id": "c3x",
+   "id": "r1x",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    5
+    9.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -854,213 +981,176 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "훼손 옵션 지우고 다시 훼손",
+    "en": "Remove the desecrated option, desecrate again"
    },
    "edges": [
     {
-     "to": "c2",
-     "port": "right"
+     "to": "d1",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
   {
-   "id": "c4",
+   "id": "n1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    6
+    10.4
    ],
    "act": "annul",
-   "goal": {
-    "kr": "+1 접미 허용 옵션 제거 (접두 옵션 2개 중 하나)",
-    "en": "Remove the +1 suffix line (one of the two prefixes)"
-   },
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Sinistral_Annulment"
+   ],
    "label": {
     "kr": "소멸",
     "en": "Annul"
+   },
+   "goal": {
+    "kr": "접미어 속성 부여의 최대 개수 +1개 지우기 (접두 2개 중 하나)",
+    "en": "Remove +1 Suffix Modifier allowed (one of two prefixes)"
    },
    "edges": [
     {
      "if": {
       "has": "contS"
      },
-     "to": "c4e",
-     "res": "fail"
+     "to": "n1",
+     "res": "fail",
+     "label": {
+      "kr": "다른 접두가 지워짐 — 다시",
+      "en": "The other prefix went: again"
+     }
     },
     {
-     "to": "c5",
+     "to": "g1",
      "res": "ok"
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
-    },
-    {
      "s": "p",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "scc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Cast Speed",
+     "m": "d",
+     "tags": [
+      "cast"
+     ]
     }
    ],
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Sinistral_Annulment"
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+        "en": "(5—15)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "치명타 확률 (5—15)% 증가",
+        "en": "(5—15)% increased Critical Hit Chance",
+        "m": "n",
+        "tags": [
+         "cc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
+    }
    ]
   },
   {
-   "id": "c4e",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    6
-   ],
-   "act": "chaos",
-   "goal": {
-    "kr": "남은 +1 접미 허용 옵션 바꾸기",
-    "en": "Reroll the remaining +1 suffix line"
-   },
-   "label": {
-    "kr": "카오스",
-    "en": "Chaos"
-   },
-   "edges": [
-    {
-     "to": "c5",
-     "port": "right"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Chaos_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개 (접두가 그 옵션뿐이라 확정)",
-     "en": "One random line (it is the only prefix, so it is sure)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Erasure"
-   ]
-  },
-  {
-   "id": "c5",
+   "id": "g1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7
+    11.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
-   },
+   "cur": "Greater_Exalted_Orb",
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 두번째 옵션",
+    "en": "Second prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개 (접미가 한도를 넘어 접두로)",
+     "en": "One random option (suffixes over the limit)"
+    }
+   ],
    "edges": [
     {
-     "to": "c6"
+     "if": {
+      "sideLt": {
+       "side": "p",
+       "n": 2
+      }
+     },
+     "to": "g1",
+     "hide": true
+    },
+    {
+     "to": "c1"
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
-    },
-    {
      "s": "p",
      "kr": "잡옵",
      "en": "Junk",
@@ -1071,82 +1161,153 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "scc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Cast Speed",
+     "m": "d",
+     "tags": [
+      "cast"
+     ]
     }
    ],
-   "cur": "Greater_Exalted_Orb",
-   "showText": [
+   "over": [
     {
-     "s": "p",
-     "kr": "랜덤 옵션 1개 (접미가 한도를 넘어 접두로만)",
-     "en": "One random line (suffixes are over the limit)"
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "p",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+        "en": "(5—15)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "치명타 확률 (5—15)% 증가",
+        "en": "(5—15)% increased Critical Hit Chance",
+        "m": "n",
+        "tags": [
+         "cc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
     }
    ]
   },
   {
-   "id": "c6",
+   "id": "c1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    8
+    12.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "좋은 접두 (접미가 한도를 넘어 접두만 바뀜)",
-    "en": "A good prefix (only prefixes change)"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접두 냉기 피해",
+    "en": "Cold Damage prefix"
+   },
+   "show": [
+    "cold"
+   ],
+   "showText": [
+    {
+     "kr": "접미가 한도를 넘어 접두만 바뀜",
+     "en": "Suffixes are over the limit: only prefixes change"
+    }
+   ],
+   "skipIf": {
+    "param": {
+     "v": 2
+    }
+   },
+   "skipTo": "f1",
    "edges": [
     {
      "if": {
-      "has": "pre"
+      "all": [
+       {
+        "has": "cold"
+       },
+       {
+        "has": "fer"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "cold"
      },
      "to": "f1",
      "res": "ok"
     },
     {
-     "to": "c6",
-     "res": "fail"
+     "to": "c1",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
-    },
-    {
      "s": "p",
-     "kr": "좋은 접두",
-     "en": "Good prefix",
+     "kr": "냉기 피해 (5—15)% 증가",
+     "en": "(5—15)% increased Cold Damage",
      "m": "n",
      "tags": [
-      "pre"
+      "cold"
      ]
     },
     {
@@ -1154,13 +1315,34 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "scc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Cast Speed",
+     "m": "d",
+     "tags": [
+      "cast"
+     ]
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "cold",
-    "spell",
-    "ele"
    ]
   },
   {
@@ -1169,97 +1351,152 @@
    "group": "main",
    "pos": [
     0,
-    9
+    13.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "위력적인 액체 흉포함 (접두 하나가 지워짐)",
-    "en": "Potent Liquid Ferocity (one prefix goes)"
-   },
+   "cur": "Potent_Liquid_Ferocity",
+   "ess": "fer",
+   "liquid": true,
    "label": {
     "kr": "액체",
     "en": "Liquid"
    },
+   "goal": {
+    "kr": "접미어 효과 (40—60)% 증가",
+    "en": "(40—60)% increased Effect of Suffixes"
+   },
+   "showText": [
+    {
+     "kr": "접두 잡옵이 지워지면 성공, 냉기 피해가 지워지면 실패",
+     "en": "The junk prefix goes: success; cold damage goes: miss"
+    }
+   ],
    "edges": [
     {
      "if": {
-      "param": {
-       "v": 2
-      }
+      "has": "cold"
      },
      "to": "ok",
      "res": "ok"
     },
     {
-     "if": {
-      "has": "pre"
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "to": "c6",
+     "to": "c1",
      "res": "fail",
-     "port": "right"
+     "label": {
+      "kr": "냉기 피해가 지워짐 — 다시 카오스",
+      "en": "Cold damage gone: Chaos again"
+     }
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "showText": [
+       {
+        "kr": "접두 하나가 지워짐 — 결과 그대로",
+        "en": "One prefix goes: keep the result"
+       }
+      ],
+      "edges": [
+       {
+        "to": "ok",
+        "res": "ok"
+       }
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "p",
+        "kr": "접미어 효과 (40—60)% 증가",
+        "en": "(40—60)% increased Effect of Suffixes",
+        "m": "c",
+        "tags": [
+         "fer"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+        "en": "(5—15)% increased Critical Hit Chance for Spells",
+        "m": "n",
+        "tags": [
+         "scc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "치명타 확률 (5—15)% 증가",
+        "en": "(5—15)% increased Critical Hit Chance",
+        "m": "n",
+        "tags": [
+         "cc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
+     "s": "p",
+     "kr": "냉기 피해 (5—15)% 증가",
+     "en": "(5—15)% increased Cold Damage",
      "m": "n",
      "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "치명타 접미",
-     "en": "Crit suffix",
-     "m": "n",
-     "tags": [
-      "critAny"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공개 접미",
-     "en": "Revealed suffix",
-     "m": "n",
-     "tags": [
-      "rev"
+      "cold"
      ]
     },
     {
      "s": "p",
-     "kr": "좋은 접두",
-     "en": "Good prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "접미 효과 증가",
-     "en": "Increased effect of suffixes",
-     "m": "n",
+     "kr": "접미어 효과 (40—60)% 증가",
+     "en": "(40—60)% increased Effect of Suffixes",
+     "m": "c",
      "tags": [
       "fer"
      ]
-    }
-   ],
-   "cur": "Potent_Liquid_Ferocity",
-   "showText": [
+    },
     {
-     "s": "p",
-     "kr": "접미 효과 증가",
-     "en": "Increased effect of suffixes"
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance for Spells",
+     "m": "n",
+     "tags": [
+      "scc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (5—15)% 증가",
+     "en": "(5—15)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "cc"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (2—4)% 증가",
+     "en": "(2—4)% increased Cast Speed",
+     "m": "d",
+     "tags": [
+      "cast"
+     ]
     }
-   ],
-   "ess": "fer",
-   "liquid": true
+   ]
   },
   {
    "id": "ok",
@@ -1267,7 +1504,7 @@
    "group": "main",
    "pos": [
     0,
-    10
+    14.4
    ],
    "label": {
     "kr": "완성",
@@ -1275,8 +1512,25 @@
    }
   }
  ],
- "cap": {
-  "p": 2,
-  "s": 2
- }
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "d1",
+    "r1",
+    "r1x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "c1",
+    "f1"
+   ],
+   "kr": "흉포함",
+   "en": "Ferocity"
+  }
+ ]
 }

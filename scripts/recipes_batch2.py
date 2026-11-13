@@ -352,7 +352,7 @@ jw_scrit=g(c,'Critical Hit Chance for Spells','n','s'); jw_cdmg=g(c,'(10—20)% 
 jw_cold=g(c,'increased Cold Damage','n','p'); jw_spell=g(c,'(5—15)% increased Spell Damage','n','p'); jw_ele=g(c,'increased Elemental Damage','n','p')
 jw_plus=g(c,'+1 Suffix Modifier allowed','x','p'); jw_eff=g(c,'Effect of Suffixes','x','p')
 R.append({
- 'id':'diztoh-5mod-sapphire','cls':c,'base':0,'ilvl':82,'cap':{'p':2,'s':2},'difficulty':3,'budget':'medium','unknownW':True,
+ 'id':'diztoh-5mod-sapphire','cls':c,'base':0,'ilvl':79,'cap':{'p':2,'s':2},'difficulty':3,'budget':'medium','unknownW':True,
  'buildTags':[K('주얼','Jewel'),K('치명타','Crit'),K('주문','Spell')],'patch':'0.5','created':'2026-11-08','author':DZ,
  'source':src('-YZm55-QuoQ','New 5-Mod Jewel Crafting Tech Explained | PoE 2 0.5','Diztoh'),
  'title':K('접미 옵션 3개 5옵션 사파이어','five-mod sapphire with three suffixes'),
