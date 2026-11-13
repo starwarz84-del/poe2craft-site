@@ -73,15 +73,15 @@ A(id='a1', kind='act', group='main', pos=[0, 3.4], act='chaos', cur='Chaos_Orb',
 A(id='a2', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접미 치명타 확률', 'Critical Hit Chance suffix'), show=['c2'],
   edges=[{'if': {'has': 'c2'}, 'to': 'a3', 'res': 'ok'}, {'to': 'a2x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[SCC, CC])
-A(id='a2x', kind='cleanup', group='main', pos=[1, 4.4], keep=['scc'], maxJunk=0, label=ANN, goal=ANN,
+A(id='a2x', kind='act', group='main', pos=[1, 4.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,   # F2a 11-13: 정리 상자(확정)였지만 접미 둘 중 하나라 절반은 주문 치명타가 지워짐 → 확률 상자
   target=K('빗나간 접미 지우기', 'Remove the missed suffix'),
-  edges=[{'lost': 'scc', 'to': 'a1', 'label': K('주문 치명타 명중 확률이 지워짐 — 다시 카오스', 'Spell crit chance gone: Chaos again')},
-         {'to': 'a2', 'label': K('다시 엑잘', 'Exalt again')}])
+  edges=[{'if': {'not': {'has': 'scc'}}, 'to': 'a1', 'res': 'fail', 'label': K('주문 치명타 명중 확률이 지워짐 — 다시 카오스', 'Spell crit chance gone: Chaos again')},
+         {'to': 'a2', 'res': 'ok', 'port': 'right', 'label': K('다시 엑잘', 'Exalt again')}])
 A(id='a3', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 첫 번째 옵션', 'First prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
+  goal=K('접두 첫 번째 옵션', 'First prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 — 접미가 꽉 차서 접두로', 'en': 'One random option: suffixes are full'}],
   edges=[{'to': 'a4'}], item=[J('p'), SCC, CC])
 A(id='a4', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두 번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
+  goal=K('접두 두 번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 — 접미가 꽉 차서 접두로', 'en': 'One random option: suffixes are full'}],
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'a4', 'hide': True}, {'to': 'k1'}], item=[J('p'), J('p'), SCC, CC])
 A(id='k1', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Potent_Liquid_Contempt', ess='contS', alt='contP', liquid=True,
   label=K('액체', 'Liquid'), goal=K('접미어 속성 부여의 최대 개수 +1개', '+1 Suffix Modifier allowed'),
@@ -93,30 +93,30 @@ A(id='k1x', kind='cleanup', group='main', pos=[1, 7.4], keep=[], maxJunk=1, labe
   target=K('옵션 1개만 남기고 카오스부터', 'Keep one option, Chaos again'), edges=[{'to': 'a1', 'label': K('다시 카오스', 'Chaos again')}])
 A(id='d1', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Preserved_Cranium', label=K('훼손', 'Desecrate'),
   goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
-  showText=[{'s': 's', 'kr': '훼손 옵션 (미공개) — 접두가 꽉 차 접미로', 'en': 'Desecrated (unrevealed): prefixes are full, so a suffix'}],
+  showText=[{'s': 's', 'kr': '미공개 훼손 옵션 — 접두가 꽉 차서 접미로', 'en': 'Unrevealed desecration: prefixes are full, so a suffix'}],
   edges=[{'to': 'r1'}], item=[J('p'), CONT, SCC, CC, UN('s')])
 A(id='r1', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cast', label=K('공개', 'Reveal'),
   goal=K('접미 시전 속도', 'Cast Speed suffix'), show=['cast'],
   edges=[{'if': {'added': 'cast'}, 'to': 'n1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  over=[{'param': {'v': 2}, 'set': {'goal': K('접미 세 번째 옵션 — 공개 결과 그대로', 'Third suffix: keep the reveal'), 'show': [],
+  over=[{'param': {'v': 2}, 'set': {'goal': K('접미 세 번째 옵션 공개', 'Reveal the third suffix'), 'show': [],
                   'edges': [{'if': {'added': 'cast'}, 'to': 'n1', 'res': 'ok'}, {'to': 'n1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
   item=[J('p'), CONT, SCC, CC, CAST])
 A(id='r1x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 지우고 다시 훼손', 'Remove the desecrated option, desecrate again'), edges=[{'to': 'd1', 'label': K('다시 훼손', 'Desecrate again')}])
-A(id='n1', kind='act', group='main', pos=[0, 10.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Sinistral_Annulment'], label=K('소멸', 'Annul'),
-  goal=K('접미어 속성 부여의 최대 개수 +1개 지우기 (접두 2개 중 하나)', 'Remove +1 Suffix Modifier allowed (one of two prefixes)'),
+A(id='n1', kind='act', group='main', pos=[0, 10.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Sinistral_Annulment'], label=K('소멸', 'Annul'), goal=ANN,   # F2a 11-13: 제목과 목표가 같은 괄호 글이던 것
+  target=K('접두 둘 중 접미어 속성 부여의 최대 개수 +1개 지우기', 'Remove +1 Suffix Modifier allowed, one of the two prefixes'),
   edges=[{'if': {'has': 'contS'}, 'to': 'n1', 'res': 'fail', 'label': K('다른 접두가 지워짐 — 다시', 'The other prefix went: again')}, {'to': 'g1', 'res': 'ok'}],
   item=[J('p'), SCC, CC, CAST])
 A(id='g1', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두 번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 한도를 넘어 접두로)', 'en': 'One random option (suffixes over the limit)'}],
+  goal=K('접두 두 번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 — 접미가 한도를 넘어 접두로', 'en': 'One random option: suffixes are over the limit'}],
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'g1', 'hide': True}, {'to': 'c1'}],
   item=[J('p'), J('p'), SCC, CC, CAST])
 A(id='c1', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접두 냉기 피해', 'Cold Damage prefix'), show=['cold'],
   showText=[K('접미가 한도를 넘어 접두만 바뀜', 'Suffixes are over the limit: only prefixes change')],
   skipIf={'param': {'v': 2}}, skipTo='f1',
-  edges=[{'if': {'all': [{'has': 'cold'}, {'has': 'fer'}]}, 'to': 'ok', 'res': 'ok', 'hide': True},
-         {'if': {'has': 'cold'}, 'to': 'f1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}],
+  edges=[{'if': {'all': [{'has': 'cold'}, {'has': 'fer'}]}, 'to': 'ok', 'res': 'ok', 'hide': True, 'label': K('접미어 효과 증가가 남아 있으면 완성', 'Suffix effect still there: finished')},
+         {'if': {'has': 'cold'}, 'to': 'f1', 'res': 'ok', 'label': K('흉포함 차례', 'Ferocity next')}, {'to': 'c1', 'res': 'fail', 'hide': True}],
   item=[COLD, J('p'), SCC, CC, CAST])
 A(id='f1', kind='act', group='main', pos=[0, 13.4], act='essence', cur='Potent_Liquid_Ferocity', ess='fer', liquid=True,
   label=K('액체', 'Liquid'), goal=K('접미어 효과 (40—60)% 증가', '(40—60)% increased Effect of Suffixes'),

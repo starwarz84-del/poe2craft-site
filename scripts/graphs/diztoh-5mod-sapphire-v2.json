@@ -451,16 +451,15 @@
   },
   {
    "id": "a2x",
-   "kind": "cleanup",
+   "kind": "act",
    "group": "main",
    "pos": [
     1,
     4.4
    ],
-   "keep": [
-    "scc"
-   ],
-   "maxJunk": 0,
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -475,8 +474,13 @@
    },
    "edges": [
     {
-     "lost": "scc",
+     "if": {
+      "not": {
+       "has": "scc"
+      }
+     },
      "to": "a1",
+     "res": "fail",
      "label": {
       "kr": "주문 치명타 명중 확률이 지워짐 — 다시 카오스",
       "en": "Spell crit chance gone: Chaos again"
@@ -484,6 +488,8 @@
     },
     {
      "to": "a2",
+     "res": "ok",
+     "port": "right",
      "label": {
       "kr": "다시 엑잘",
       "en": "Exalt again"
@@ -512,8 +518,8 @@
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 옵션 1개 (접미가 꽉 차 접두로)",
-     "en": "One random option (suffixes are full)"
+     "kr": "랜덤 옵션 1개 — 접미가 꽉 차서 접두로",
+     "en": "One random option: suffixes are full"
     }
    ],
    "edges": [
@@ -569,8 +575,8 @@
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 옵션 1개 (접미가 꽉 차 접두로)",
-     "en": "One random option (suffixes are full)"
+     "kr": "랜덤 옵션 1개 — 접미가 꽉 차서 접두로",
+     "en": "One random option: suffixes are full"
     }
    ],
    "edges": [
@@ -764,8 +770,8 @@
    "showText": [
     {
      "s": "s",
-     "kr": "훼손 옵션 (미공개) — 접두가 꽉 차 접미로",
-     "en": "Desecrated (unrevealed): prefixes are full, so a suffix"
+     "kr": "미공개 훼손 옵션 — 접두가 꽉 차서 접미로",
+     "en": "Unrevealed desecration: prefixes are full, so a suffix"
     }
    ],
    "edges": [
@@ -863,8 +869,8 @@
      },
      "set": {
       "goal": {
-       "kr": "접미 세 번째 옵션 — 공개 결과 그대로",
-       "en": "Third suffix: keep the reveal"
+       "kr": "접미 세 번째 옵션 공개",
+       "en": "Reveal the third suffix"
       },
       "show": [],
       "edges": [
@@ -985,8 +991,12 @@
     "en": "Annul"
    },
    "goal": {
-    "kr": "접미어 속성 부여의 최대 개수 +1개 지우기 (접두 2개 중 하나)",
-    "en": "Remove +1 Suffix Modifier allowed (one of two prefixes)"
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "접두 둘 중 접미어 속성 부여의 최대 개수 +1개 지우기",
+    "en": "Remove +1 Suffix Modifier allowed, one of the two prefixes"
    },
    "edges": [
     {
@@ -1062,8 +1072,8 @@
    "showText": [
     {
      "s": "p",
-     "kr": "랜덤 옵션 1개 (접미가 한도를 넘어 접두로)",
-     "en": "One random option (suffixes over the limit)"
+     "kr": "랜덤 옵션 1개 — 접미가 한도를 넘어 접두로",
+     "en": "One random option: suffixes are over the limit"
     }
    ],
    "edges": [
@@ -1170,14 +1180,22 @@
      },
      "to": "ok",
      "res": "ok",
-     "hide": true
+     "hide": true,
+     "label": {
+      "kr": "접미어 효과 증가가 남아 있으면 완성",
+      "en": "Suffix effect still there: finished"
+     }
     },
     {
      "if": {
       "has": "cold"
      },
      "to": "f1",
-     "res": "ok"
+     "res": "ok",
+     "label": {
+      "kr": "흉포함 차례",
+      "en": "Ferocity next"
+     }
     },
     {
      "to": "c1",

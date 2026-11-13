@@ -55,13 +55,13 @@ g = {
    'fr2': {'gi': 1, 'tmax': 2}, 'cr2': {'gi': 2, 'tmax': 2}, 'lr2': {'gi': 3, 'tmax': 2},
    'frT': {'gi': 1, 'tmax': '$rT'}, 'crT': {'gi': 2, 'tmax': '$rT'}, 'lrT': {'gi': 3, 'tmax': '$rT'},
    'dfl': {'gi': 18, 'tmax': '$pT'}, 'dfl2': {'gi': 18, 'tmax': 2}, 'dfl1': {'gi': 18, 'tmax': 1},
-   'res1': {'anyOf': ['fr', 'cr', 'lr'], 'label': K('화염·냉기·번개 저항 1티어', 'T1 fire, cold or lightning resistance')},
+   'res1': {'anyOf': ['fr', 'cr', 'lr'], 'shownBy': {'high': ['fr', 'cr'], 'bal': 'fr'}, 'label': K('화염·냉기·번개 저항 1티어', 'T1 fire, cold or lightning resistance')},
    'res2': {'anyOf': ['fr2', 'cr2', 'lr2'], 'label': K('화염·냉기·번개 저항 1~2티어', 'T1–2 fire, cold or lightning resistance')},
    'resT': {'anyOf': ['frT', 'crT', 'lrT']},
    'sG': {'anyOf': ['frT', 'crT', 'lrT', 'dfl']},
    'sGE': {'anyOf': ['frT', 'crT', 'lrT', 'dfl2']},   # H1 11-13: 접미 세 번째 옵션 반복에 들어가는 조건은 두 등급 모두 튕겨내기 1~2티어(영상 41:35 튕겨내기 2티어)
-   'sG1': {'anyOf': ['fr', 'cr', 'lr', 'dfl1'], 'label': K('저항·튕겨내기 1티어', 'T1 resistance or deflection')},
-   'sG2': {'anyOf': ['fr2', 'cr2', 'lr2', 'dfl2'], 'label': K('저항·튕겨내기 1~2티어', 'T1–2 resistance or deflection')},
+   'sG1': {'anyOf': ['fr', 'cr', 'lr', 'dfl1'], 'shown': 'dfl1', 'label': K('저항·튕겨내기 1티어', 'T1 resistance or deflection')},
+   'sG2': {'anyOf': ['fr2', 'cr2', 'lr2', 'dfl2'], 'shown': 'dfl2', 'label': K('저항·튕겨내기 1~2티어', 'T1–2 resistance or deflection')},
    'blk': {'anyOf': [{'gi': 5}, {'gi': 12}], 'label': K('생명력 최대치·물리 가시 피해', 'Maximum life or physical thorns')},
    'mkP': {'gi': 45},
    'lifeB': {'gi': 5}},   # H2 11-13: 자리 막기 성공 회차 옵션(45:02 생명력 +165)
@@ -242,9 +242,9 @@ g['loops'] = [
 ]
 g['finals'] = [
  {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-  'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF1'}, {'tag': 'hyb1', 'des': True}, {'tag': 'fr'}, {'tag': 'cr'}, {'tag': 'dfl1'}]},   # H2 11-13: 카드는 성공 회차 옵션(정책 11장 11-13 14:17)
+  'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF1'}, {'tag': 'hyb1', 'des': True}, {'tag': 'res1'}, {'tag': 'res1'}, {'tag': 'sG1'}]},   # F2a 11-13: sDone(저항 1티어 2개 + 저항·튕겨내기 1티어)과 같은 묶음 태그, 화면은 shownBy 성공 회차(화염·냉기·튕겨내기)
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF2'}, {'tag': 'hyb2', 'des': True}, {'tag': 'fr'}, {'tag': 'dfl2'}, {'side': 's', 'random': True}]},
+  'lines': [{'tag': 'evP', 'fr': True}, {'tag': 'evF2'}, {'tag': 'hyb2', 'des': True}, {'tag': 'res1'}, {'tag': 'sG2'}, {'side': 's', 'random': True}]},   # F2a 11-13: sDone(저항 1티어 + 저항·튕겨내기 1~2티어 2개)과 같은 묶음, 화면은 화염·튕겨내기
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

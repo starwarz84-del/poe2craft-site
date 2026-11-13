@@ -119,9 +119,9 @@ A(id='xs', kind='assume', group='prep', pos=[1, 5], next='f4', swapFracture='arm
 A(id='fg', kind='side', group='prep', pos=[1, 6.5], attach=['f2', 'f4'], cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('한 번 도박, 선택 — 1티어 두 옵션이면 팔기', 'One gamble, optional: two T1 options means a sale'))
 A(id='f4', kind='cleanup', group='prep', pos=[0, 7], keep=[], maxJunk=1, label=ANN, goal=ANN,
-  target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'ms'}], item=[J('p'), AEf])
+  target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'ms'}], item=[AEf, RAe])   # F2a 11-13: 남는 옵션을 지운 줄 중 하나(희귀도)로 — 세 옵션을 모두 지우고 '잡옵'을 새로 보이던 것(정리 장면은 영상 편집, 무엇이 남는지는 무작위)
 # ---------------- 옵션 추가 작업 (영상 7:05~10:52) ----------------
-A(id='ms', kind='mark', group='main', pos=[0, 8], next='b1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[J('p'), AEf])
+A(id='ms', kind='mark', group='main', pos=[0, 8], next='b1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[AEf, RAe])
 A(id='b1', kind='act', group='main', pos=[0, 9], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접두 첫 번째 옵션 — 생명력 최대치·방어도·방어도 % 증가 1티어 중 먼저 뜬 것', 'First prefix: T1 life, flat armour or % armour, whichever lands first'), show=['life1', 'flat1', 'armP1'],
   edges=[{'if': {'added': 'P3c'}, 'to': 'b2', 'res': 'ok'}, {'to': 'b1', 'res': 'fail', 'hide': True}], item=[LF, AEf])
@@ -135,12 +135,13 @@ A(id='b2x', kind='cleanup', group='main', pos=[1, 10], keep=['P3c'], maxJunk=0, 
 A(id='b3', kind='act', group='main', pos=[0, 11], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
   goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'b4'}], item=[LF, FA, UN('p'), AEf])
-A(id='b4', kind='act', group='main', pos=[0, 12], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='P3', label=K('공개', 'Reveal'),
+A(id='b4', kind='act', group='main', pos=[0, 12], act='reveal', omens=['Omen_of_Abyssal_Echoes'], show=[], label=K('공개', 'Reveal'),   # F2a 11-13: want 'P3' 뺌 — 결과 그대로 단계에 '선택지 3개 중: 방어도 % 증가' 목표 글이 붙던 것
   goal=K('접두 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep the reveal'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}],
   edges=[{'to': 's1'}], item=[LF, FA, APd, AEf])
 A(id='s1', kind='act', group='main', pos=[0, 13], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접미 두 번째·세 번째 옵션 — 저항 하나', 'Second and third suffix: one resistance'), show=['fire', 'cold', 'light'],
+  goalBy={'bal': K('접미 두 번째·세 번째 옵션 — 저항 하나', 'Second and third suffix: one resistance'), 'ess': K('접미 두 번째·세 번째 옵션', 'Second and third suffix')},   # F2a 11-13: 에센셜 9번 제목
   edges=[{'if': {'has': 'RES'}, 'to': 'sf', 'res': 'ok'}, {'if': V2, 'to': 'sf', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')},
          {'to': 's1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[LF, FA, APd, AEf, CO, J('s')])
 A(id='s1x', kind='act', group='main', pos=[1, 13], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=ANN, goal=ANN,
