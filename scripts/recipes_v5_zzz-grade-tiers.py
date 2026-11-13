@@ -19,7 +19,7 @@ for _id,_n in [('mastert-timelost-emerald-v2-bal','t6'),('noble-timelost-sapphir
                ('sl-5mod-jewel-v2-ess','s7'),('vodnarg-timelost-emerald-v2-ess','v4'),('zenm-timelost-sapphire-v2-ess','z5'),('mazbro-spell5-amulet-v2-bal','z13')]:
     _any32(_rid32(_id),_n)
 for _t,_tm in (('bal',2),('ess',3)):
-    _r=_rid32('diztoh-socket-gloves-v2-'+_t); _tm32(_r,'d10',_tm); _tm32(_r,'dm3',_tm)
+    if _t=='bal': _r=_rid32('diztoh-socket-gloves-v2-'+_t); _tm32(_r,'d10',_tm); _tm32(_r,'dm3',_tm)   # 2026-11-13 P8: 에센셜 뺌(밸런스만)
     _r=_rid32('sihan-chayula-gloves-v2-'+_t); _tm32(_r,'g3',_tm-1); _tm32(_r,'g4',_tm-1)   # 카틀라 옵션은 2티어뿐: 밸런스(완벽한 엑잘) 1티어 · 에센셜(상위 엑잘) 1~2티어
 _r=_rid32('gold-amulet-6line-v2-bal'); _tm32(_r,'s1',3); _tm32(_r,'d2',3)
 _r=_rid32('mazbro-caster-amulet-v2-bal')
@@ -28,7 +28,7 @@ _r=_rid32('mazbro-proj-gloves-v2-bal'); _tm32(_r,'g10',2,{73}); _tm32(_r,'g16',2
 
 # 2026-11-11 사용자 지적(창 밸런스 = 에센셜): 에센셜에서 한 번만 하는 단계는 플로우차트 완성품 카드처럼 '결과 그대로' = 랜덤 옵션
 # (공개 → anyReveal, 결과 그대로 엑잘 → target.rand: 카드엔 노린 옵션 대신 랜덤 옵션)
-for _id,_rv,_ex in [('diztoh-as-spear-v2-ess',[],['a10']),('fubgun-proj-amulet-v2-ess',['a9'],[]),
+for _id,_rv,_ex in [('fubgun-proj-amulet-v2-ess',['a9'],[]),   # 2026-11-13 P8: diztoh-as-spear-v2-ess 뺌(밸런스만)
                     ('lilbotq-boots-v2-ess',['h6'],['h4'])]:
     _r=_rid32(_id)
     for _n in _rv: _any32(_r,_n)

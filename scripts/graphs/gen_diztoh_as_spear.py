@@ -33,17 +33,15 @@ g = {
           '투사체 +4 분열 + 처치당 생명력 아코야의 창(아이템 레벨 82, 아스트리드의 창의성 장착, 0:02) → 카오스 오브 반복 → 공격 속도 3티어 20%(0:16 툴팁, 1:28) → '
           '좌측 찬미 + 상위 엑잘로 접두 잡옵(1:34~1:36) → 좌측 결정화 + 군주의 합금, 접두 잡옵이 지워지고 장착 증강 효과 28%(2:16~2:22) → 상위 엑잘(징조 없음) 접두 잡옵(2:46) → '
           '좌측 결정화 + 천상의 합금, 정확도 + 공격 속도(2:36·2:54) → 아스트리드를 스루드의 완력으로 교체(3:12~3:20) → 고대 턱뼈 접두 훼손(3:30) → 상위 엑잘 세 번째 접두(물리 피해 추가 5티어, 3:52) → '
-          '심연의 메아리 공개, 다시 뽑기로 명시된 속도 옵션 효과 29%(4:06~4:12). 신성한 오브(5:26~5:40), 절사 + 좌측 말소 + 상위 카오스로 세 번째 접두 다시(5:52~6:17, 번개 6티어로 나빠짐 — 마지막 옵션 도박이라 뺌, 꿀팁 후보), 바알·타락(6:20~9:18)은 뺌. '
-          '내부 결정: 공격 속도는 영상대로 1~3티어(\'최소 16%\'), 마지막 접두 다시 굴리기는 등급 기준(10장 2번)대로 랜덤 옵션 — 영상도 한 번 굴리고 나빠진 결과를 받음. 공개 빗나감은 밸런스만 빛의 징조 + 소멸 → 다시 훼손(영상은 한 번에 성공). '
-          '등급(난이도 2): 밸런스 = 스루드 공개까지 빛의 징조로 다시 / 에센셜 = 공개 한 번 결과 그대로.'),
- 'params': {
-   'g': {'kr': '스루드 공개', 'en': 'Thrud reveal', 'values': {'1': K('빛의 징조로 다시', 'Omen of Light retries'), '0': K('한 번', 'Once')}}},
- 'strategies': [{'id': 'bal', 'params': {'g': 1}}, {'id': 'ess', 'params': {'g': 0}}],
+          '심연의 메아리 공개, 다시 뽑기로 명시된 속도 옵션 효과 29%(4:06~4:12, 빛의 징조로 다시 하는 장면 없음). 신성한 오브(5:26~5:40), 절사 + 좌측 말소 + 상위 카오스로 세 번째 접두 다시(5:52~6:17, 번개 6티어로 나빠짐 — 마지막 옵션 도박이라 뺌, 꿀팁 후보), 바알·타락(6:20~9:18)은 뺌. '
+          '내부 결정: 공격 속도는 영상대로 1~3티어(\'최소 16%\'), 마지막 접두 다시 굴리기는 등급 기준(10장 2번)대로 랜덤 옵션 — 영상도 한 번 굴리고 나빠진 결과를 받음. '
+          '11-13 오후 새 정책(P8): (B) 영상은 공개를 메아리 다시 뽑기 한 번으로 끝내고 빛의 징조로 다시 하지 않아 빛의 징조 반복을 뺌, 공개 결과 그대로(카드 랜덤 옵션) '
+          '(D) 그러면 밸런스·에센셜의 과정·완성품이 같아 밸런스 하나만(옛 시뮬 55.5/27.6).'),
+ 'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video')}}},
+ 'strategies': [{'id': 'bal', 'params': {'v': 1}}],
  'versions': [
-   {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'g': 0}, 'tier': 'ess',
-    'desc': K('훼손 공개 한 번, 결과 그대로', 'One reveal, kept as it comes')},
-   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'g': 1}, 'tier': 'bal',
-    'desc': K('스루드 옵션(명시된 속도 옵션 효과)이 나올 때까지 빛의 징조로 다시', 'Omen of Light retries until the Thrud speed-magnitude option')}],
+   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
+    'desc': K('영상 그대로: 훼손 공개 한 번(메아리로 다시 뽑기), 결과 그대로', 'As the video: one reveal (Abyssal Echoes reroll), kept as it comes')}],
  'tags': {
    'proj': {'gi': 11, 'tmax': 1}, 'as3': {'gi': 17, 'tmax': 3}, 'sov': {'gi': 63}, 'cel': {'gi': 64}, 'thrud': {'gi': 74}},
  'require': {'all': [{'has': 'proj'}, {'has': 'as3'}, {'has': 'sov'}, {'has': 'cel'}, {'full': 'p'}, {'desSide': 'p'}]},
@@ -91,28 +89,18 @@ A(id='d1', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Ancient
 A(id='e3', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 세 번째 옵션', 'Third prefix option'), showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
   edges=[{'to': 'v1'}], item=[CEL, UN, PH5, PJ, AS, SOV, THR])
-A(id='v1', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='thrud', label=K('공개', 'Reveal'),
-  goal=K('접두 명시된 속도 옵션 효과 (스루드, 훼손)', 'Explicit speed magnitudes prefix (Thrud, desecrated)'), show=['thrud'],
-  edges=[{'if': {'added': 'thrud'}, 'to': 'ok', 'res': 'ok'}, {'if': {'param': {'g': 0}}, 'to': 'ok', 'res': 'ok', 'hide': True},
-         {'to': 'vx', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  item=[CEL, TH, PH5, PJ, AS, SOV, THR])
-A(id='vx', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'vd', 'label': K('다시 훼손', 'Desecrate again')}])
-A(id='vd', kind='act', group='main', pos=[1, 11.4], act='desecrate', cur='Ancient_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('빈 접두에 다시 훼손', 'Desecrate the empty prefix again'),
-  showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
-  edges=[{'to': 'v1', 'label': K('다시 공개', 'Reveal again')}])
+A(id='v1', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], label=K('공개', 'Reveal'),
+  goal=K('접두 훼손 옵션 공개 — 나오는 대로', 'Reveal the prefix desecration: keep what comes'),
+  showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}],
+  edges=[{'to': 'ok'}],
+  item=[CEL, TH, PH5, PJ, AS, SOV, THR])   # 2026-11-13 P8 새 정책 B: 영상 4:06~4:12 메아리 다시 뽑기 한 번, 빛의 징조 반복 없음
 # 영상 5:52~6:17 절사 + 좌측 말소 + 상위 카오스(세 번째 접두 다시, 번개 6티어로 나빠짐)는 마지막 옵션 도박이라 등급 기준(10장 2번)대로 뺌 — 꿀팁 후보
 A(id='ok', kind='done', group='main', pos=[0, 12.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
-g['loops'] = [
- {'id': 'L1', 'nodes': ['v1', 'vx', 'vd'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal'},
-]
+g['loops'] = []
 g['finals'] = [
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'cel', 'ess': True}, {'tag': 'thrud', 'des': True}, {'side': 'p', 'random': True}, {'tag': 'proj', 'fr': True}, {'tag': 'as3'}, {'tag': 'sov', 'ess': True}]},
- {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
   'lines': [{'tag': 'cel', 'ess': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True}, {'tag': 'proj', 'fr': True}, {'tag': 'as3'}, {'tag': 'sov', 'ess': True}]},
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)

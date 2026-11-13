@@ -39,23 +39,22 @@ g = {
           '룬 교체(페누무스 회전의 룬)·바알 방어구 장인의 주입기·타락(6:32~8:50)은 정책 9·14장대로 뺌. '
           '내부 결정: 분열은 세 옵션 중 무엇이 분열돼도 같은 흐름(영상 = 희귀도, 의도 = 투사체 +2)이라 카드에 분열 표시를 하지 않음. '
           '경악의 에센스가 에너지 보호막 최대치를 지우면(영상은 지우지 않음) 새 베이스. 두 번째 훼손부터 강령술 징조는 접미가 꽉 차 뺌. '
-          '등급(난이도 3): 밸런스 = 훼손 공개 투사체 피해·ES % 1~2티어까지 빛의 징조로 다시(영상: 3티어 ES를 버리고 2티어 투사체 피해), 엑잘 접두는 랜덤 옵션 / 에센셜 = 공개 한 번, 결과 그대로.'),
+          '등급(난이도 3): 밸런스 = 훼손 공개 투사체 피해·ES % 1~2티어까지 빛의 징조로 다시(영상: 3티어 ES를 버리고 2티어 투사체 피해), 엑잘 접두는 랜덤 옵션. '
+          '11-13 오후 새 정책(P8): (D) 에센셜(공개 한 번, 결과 그대로)은 시뮬 241.4 div로 밸런스 255.4와 6% 차이라 뺌, 밸런스 하나만 '
+          '(A) 공개 자리는 투사체 피해·ES % 중 하나면 성공, 화면은 영상 성공 회차 옵션 투사체 피해 증가(shown).'),
  'params': {
-   'dT': {'kr': '훼손 접두', 'en': 'Desecrated prefix', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('1~4티어, 한 번', 'T1–4, once')}},
-   'g': {'kr': '훼손 다시', 'en': 'Redo the desecration', 'values': {'1': K('빛의 징조로 다시', 'Omen of Light retries'), '0': K('한 번', 'Once')}}},
- 'strategies': [{'id': 'bal', 'params': {'dT': 2, 'g': 1}}, {'id': 'ess', 'params': {'dT': 4, 'g': 0}}],
+   'dT': {'kr': '훼손 접두', 'en': 'Desecrated prefix', 'values': {'2': K('1~2티어', 'T1–2')}}},
+ 'strategies': [{'id': 'bal', 'params': {'dT': 2}}],
  'versions': [
-   {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'dT': 4, 'g': 0}, 'tier': 'ess',
-    'desc': K('훼손 공개 한 번, 결과 그대로', 'One reveal, kept as it comes')},
-   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'dT': 2, 'g': 1}, 'tier': 'bal',
+   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'dT': 2}, 'tier': 'bal',
     'desc': K('훼손 접두 투사체 피해·에너지 보호막 % 1~2티어까지 빛의 징조로 다시', 'Omen of Light retries until a T1–2 projectile damage or % ES desecration')}],
  'tags': {
    'esf': {'gi': 8, 'tmax': 1}, 'proj2': {'gi': 82, 'tmax': 1}, 'rar': {'gi': 57, 'tmax': 1}, 'sock': {'gi': 59},
    'magicGood': {'anyOf': ['esf', 'proj2'], 'label': K('에너지 보호막 최대치 1티어·모든 투사체 스킬 레벨 +2', 'T1 flat energy shield or +2 projectile skills')},
    'pdmg': {'gi': 71, 'tmax': '$dT'}, 'esp': {'gi': 9, 'tmax': '$dT'}, 'pspd': {'gi': 73},
    'pdmg2': {'gi': 71, 'tmax': 2}, 'esp2': {'gi': 9, 'tmax': 2},
-   'rev': {'anyOf': ['pdmg', 'esp'], 'label': K('투사체 피해 증가·에너지 보호막 % 증가', 'Projectile damage or % energy shield')},
-   'revB': {'anyOf': ['pdmg2', 'esp2'], 'label': REV_B}},
+   'rev': {'anyOf': ['pdmg', 'esp'], 'shown': 'pdmg', 'label': K('투사체 피해 증가·에너지 보호막 % 증가', 'Projectile damage or % energy shield')},
+   'revB': {'anyOf': ['pdmg2', 'esp2'], 'shown': 'pdmg2', 'label': REV_B}},
  'conds': {'magicDone': {'all': [{'has': 'esf'}, {'has': 'proj2'}]}},
  'require': {'all': [{'has': 'esf'}, {'has': 'proj2'}, {'has': 'rar'}, {'has': 'sock'}, {'full': 'p'}, {'desSide': 'p'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 2]},
@@ -125,8 +124,8 @@ A(id='m3', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Ancient
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=[{'to': 'm4'}], item=[UN, ES, PROJ, RARf, SOCK, KOLR, AST])
 A(id='m4', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),
-  goal=K('접두 에너지 보호막 % 증가 — 빗나가면 아무 옵션이나 받아 자리 막기', '% energy shield prefix: on a miss take any option as a blocker'),
-  show=['esp', 'pdmg'],
+  goal=K('접두 투사체 피해 증가 (훼손) — 빗나가면 아무 옵션이나 받아 자리 막기', 'Projectile damage prefix (desecrated): on a miss take any option as a blocker'),
+  show=['rev'],
   edges=[{'if': {'added': 'rev'}, 'to': 'm5h', 'res': 'ok', 'label': K('목표 옵션', 'wanted option')},
          {'to': 'm5', 'res': 'fail', 'label': K('빗나감 — 자리 막기', 'Miss: keep as a blocker')}],
   item=[ES, BLK, PROJ, RARf, SOCK, KOLR, AST])
@@ -136,7 +135,7 @@ A(id='m5h', kind='act', group='main', pos=[1, 10.9], act='exalt', cur='Perfect_E
 A(id='m5', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 세 번째 옵션', 'Third prefix option'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
-  edges=[{'if': {'param': {'g': 0}}, 'to': 'ok', 'res': 'ok'}, {'to': 'm6', 'res': 'ok'}],
+  edges=[{'to': 'm6', 'res': 'ok'}],
   item=[ES, BLK, PSPD, PROJ, RARf, SOCK, KOLR, AST])
 A(id='m6', kind='act', group='main', pos=[0, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('자리 막기 훼손 옵션 제거', 'Remove the blocker desecration'), edges=[{'to': 'm7'}],
@@ -146,8 +145,8 @@ A(id='m7', kind='act', group='main', pos=[0, 13.4], act='desecrate', cur='Ancien
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=[{'to': 'm8'}], item=[ES, UN, PSPD, PROJ, RARf, SOCK, KOLR, AST])
 A(id='m8', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),
-  goal=K('접두 투사체 피해 증가 2티어 (훼손) — 투사체 피해·에너지 보호막 % 중 먼저 뜬 것', 'T2 projectile damage prefix (desecrated): projectile damage or % ES, whichever lands first'),
-  show=['pdmg', 'esp'],
+  goal=K('접두 투사체 피해 증가 1~2티어 (훼손)', 'T1–2 projectile damage prefix (desecrated)'),
+  show=['rev'],
   edges=[{'if': {'added': 'rev'}, 'to': 'ok', 'res': 'ok'}, {'to': 'm9', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[ES, PDMG, PSPD, PROJ, RARf, SOCK, KOLR, AST])
 A(id='m9', kind='act', group='main', pos=[1, 14.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
@@ -158,8 +157,7 @@ g['nodes'] = N
 g['loops'] = [
  {'id': 'L1', 'nodes': ['h2', 'h2x', 'h3', 'h3x', 'h3y'], 'kr': '매직 옵션 맞추기', 'en': 'Magic options'},
  {'id': 'L2', 'nodes': ['m7', 'm8', 'm9'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal', 'fold': True,
-  'goal': K('접두 투사체 피해 증가 2티어 (훼손) — 투사체 피해·에너지 보호막 % 중 먼저 뜬 것', 'T2 projectile damage prefix (desecrated): projectile damage or % ES, whichever lands first'),
-  'goalBy': {'bal': K('접두 투사체 피해 증가 2티어 (훼손) — 투사체 피해·에너지 보호막 % 1~2티어 중 먼저 뜬 것', 'T2 projectile damage prefix (desecrated): T1–2 projectile damage or % ES, whichever lands first')},
+  'goal': K('접두 투사체 피해 증가 1~2티어 (훼손)', 'T1–2 projectile damage prefix (desecrated)'),
   'steps': [K('고대 갈비뼈로 빈 접두에 훼손', 'Ancient Rib into the empty prefix') | {'node': 'm7'},
             K('심연의 메아리의 징조로 공개', 'Reveal with Abyssal Echoes') | {'node': 'm8'},
             K('빗나가면 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 다시 훼손', 'On a miss, Omen of Light + Orb of Annulment removes only the desecration; desecrate again') | {'node': 'm9'}],
@@ -168,8 +166,6 @@ g['loops'] = [
 g['finals'] = [
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
   'lines': [{'tag': 'esf'}, {'side': 'p', 'random': True}, {'tag': 'revB', 'des': True}, {'tag': 'proj2'}, {'tag': 'rar', 'ess': True}, {'tag': 'sock', 'ess': True}]},
- {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
-  'lines': [{'tag': 'esf'}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True}, {'tag': 'proj2'}, {'tag': 'rar', 'ess': True}, {'tag': 'sock', 'ess': True}]},
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')
