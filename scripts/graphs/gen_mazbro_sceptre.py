@@ -1,6 +1,9 @@
 # W16 2026-11-13: MazBro BiS 셉터(UwzsARlgaFM) 플로우차트 생성기 — 영상 성공 회차 한 줄
 # 근거: scratchpad review/W16-sceptre/timeline.md, frames/ (영상 0:00~59:50 화면 대조, 14:00~41:00 실패 회차는 자막 + 일부 화면)
 # 실행: cd scripts/graphs && python3 gen_mazbro_sceptre.py  → mazbro-sceptre-v2.json (gen_batch21.py의 이 아이템 구간을 대신함)
+# C4 2026-11-13(사용자 확정 15:21 ①): 하이엔드는 영상에 없어도 훼손 공개 빛의 징조 반복 유지 → 공개(b3)가 좋은 접미 1티어가 아니면
+#   빛의 징조 + 소멸의 오브(bx)로 훼손 옵션만 지우고 보존된 턱뼈로 다시 훼손(bd) → 공개. 영상의 '빗나가면 자리 막기'(50:56·56:35)는 꿀팁 후보로 보고.
+#   이 레시피는 하이엔드 하나뿐이라 등급별 처리(over)는 필요 없음.
 import json, os, sys
 H = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/mazbro-sceptre-v2.json'
@@ -31,7 +34,8 @@ g = {
           '접미는 완벽한 엑잘 하나씩, 빗나가면 우측 결정화 + 군왕의 합금·우측 결정화 + 심연의 에센스(징표 → 보존된 턱뼈 → 심연의 메아리 공개)·우측 소멸의 징조 + 소멸의 오브(48:40~57:52) → '
           '마나 재생 속도 1티어(훼손 공개 57:45)·아군 시전 속도 1티어(완벽한 엑잘 57:52)·장착 증강 효과(합금)로 완성. '
           '신성한 오브(8:40·9:30 분열 전 아군 피해 119%, 58:50 마무리)·바알 신비학자의 식각기·완벽한 유동체·완벽한 쥬얼러 오브(59:20~59:40)는 정책 14장대로 뺌. '
-          '사용자 결정 11-13: 영상 계획대로 정신력은 정신력 증가·정신력과 마나 최대치 1티어 중 먼저 뜬 것, 접미는 마나 재생 속도·시전 속도·존재 범위·치명타 확률·치명타 피해 1티어 중 둘(3:00·16:00 계획). 상자·왼쪽 칸은 성공 회차 옵션.'),
+          '사용자 결정 11-13: 영상 계획대로 정신력은 정신력 증가·정신력과 마나 최대치 1티어 중 먼저 뜬 것, 접미는 마나 재생 속도·시전 속도·존재 범위·치명타 확률·치명타 피해 1티어 중 둘(3:00·16:00 계획). 상자·왼쪽 칸은 성공 회차 옵션. '
+          '훼손 공개가 좋은 접미 1티어가 아니면 하이엔드라 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 다시 훼손(사용자 확정 11-13 15:21, 영상은 빗나간 공개를 자리 막기로 둠).'),
  'params': {'pT': {'kr': '목표 티어', 'en': 'Target tier', 'values': {'1': K('1티어', 'T1')}}},
  'strategies': [{'id': 'high', 'params': {'pT': 1}}],
  'versions': [{'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'pT': 1}, 'tier': 'high',
@@ -133,21 +137,27 @@ A(id='b2', kind='act', group='main', pos=[1, 13.4], act='desecrate', cur='Preser
   goal=K('접미 징표 훼손', 'Desecrate the suffix Mark'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=RS({'b3': {}}), item=[DM, MA, SP, AUG, UN('s'), AS])
 A(id='b3', kind='act', group='main', pos=[1, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='sg', label=K('공개', 'Reveal'),
-  goal=K('접미 좋은 옵션 1티어 — 빗나가면 자리 막기', 'A good T1 suffix: a miss stays as the blocker'), show=['regen', 'cs', 'aoe'],
-  edges=RS({'s1': {}}), item=[DM, MA, SP, AUG, RG, AS])
+  goal=K('접미 좋은 옵션 1티어 — 마나 재생 속도·시전 속도·존재 범위·치명타 중 먼저 뜬 것', 'A good T1 suffix: whichever of mana regeneration, cast speed, presence area or critical lands first'), show=['regen', 'cs', 'aoe'],
+  edges=[{'if': {'not': {'added': 'sg'}}, 'to': 'bx', 'res': 'fail', 'label': K('빗나감', 'Miss')}] + RS({'s1': {'res': 'ok'}}), item=[DM, MA, SP, AUG, RG, AS])
+A(id='bx', kind='act', group='main', pos=[2, 14.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
+  target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'bd', 'label': K('다시 훼손', 'Desecrate again')}])
+A(id='bd', kind='act', group='main', pos=[2, 13.4], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
+  goal=K('접미 빈자리 훼손', 'Desecrate the free suffix'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  edges=[{'to': 'b3'}], item=[DM, MA, SP, AUG, UN('s'), AS])
 A(id='da', kind='act', group='main', pos=[2, 11.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=ANN, goal=ANN,
   target=K('접미 하나 지우기', 'Remove one suffix'), edges=RS({'s1': {'res': 'ok'}}))
 A(id='ok', kind='done', group='main', pos=[0, 15.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L1', 'nodes': ['s1', 'aL', 'mA', 'b2', 'b3', 'da'], 'kr': '접미 세 자리', 'en': 'Three suffixes', 'fold': True,
+ {'id': 'L1', 'nodes': ['s1', 'aL', 'mA', 'b2', 'b3', 'bx', 'bd', 'da'], 'kr': '접미 세 자리', 'en': 'Three suffixes', 'fold': True,
   'goal': K('접미 좋은 옵션 1티어 2개 + 장착 증강 아이템 효과 — 마나 재생 속도·시전 속도·존재 범위·치명타 중 먼저 뜬 것', 'Two good T1 suffixes + socketed augment effect: whichever of mana regeneration, cast speed, presence area or critical lands first'),
   'steps': [K('완벽한 엑잘로 접미 하나 — 남은 옵션 중 먼저 뜬 것', 'Perfect Exalt one suffix: whichever wanted option lands first') | {'node': 's1'},
             K('빗나감에 장착 증강 효과가 없으면 우측 결정화 + 군왕의 합금', 'On a miss without the augment effect: Dextral Crystallisation + Sovereign Alloy') | {'node': 'aL'},
             K('훼손 옵션이 없으면 우측 결정화 + 심연의 에센스로 징표', 'No desecration yet: Dextral Crystallisation + Essence of the Abyss for the Mark') | {'node': 'mA'},
             K('보존된 턱뼈로 징표 훼손', 'Preserved Jawbone on the Mark') | {'node': 'b2'},
-            K('심연의 메아리 공개 — 좋은 접미가 아니면 자리 막기', 'Reveal with Abyssal Echoes: anything else stays as the blocker') | {'node': 'b3'},
+            K('심연의 메아리 공개 — 좋은 접미 1티어 중 먼저 뜬 것', 'Reveal with Abyssal Echoes: whichever good T1 suffix lands first') | {'node': 'b3'},
+            K('빗나가면 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 보존된 턱뼈로 다시 훼손', 'A miss: Omen of Light + Orb of Annulment removes only the desecration, then Preserved Jawbone again') | {'node': 'bx'},
             K('그 밖의 빗나감은 우측 소멸의 징조 + 소멸의 오브', 'Any other miss: Omen of Dextral Annulment + Orb of Annulment') | {'node': 'da'}],
   'item': [DM, MA, SP, AUG, RG, CS, AS]},
 ]
