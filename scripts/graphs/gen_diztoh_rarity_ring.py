@@ -76,7 +76,7 @@ g['nodes'] = N
 g['loops'] = []
 g['finals'] = [
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'rarP'}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
+  'lines': [{'tag': 'rarP', 'tmin': 3}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
             {'tag': 'cres'}, {'tag': 'rarE', 'ess': True}, {'side': 's', 'random': True}]},
 ]
 
