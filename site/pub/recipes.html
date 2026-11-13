@@ -1254,7 +1254,9 @@ function cardHTML(r){
       <div class="cost">${divineChip(r)}</div>
     </div>`;
 }
-const specText = (r, s) => specList(s).map((x,k)=>{ const l=modLine(r,x.gi,x.tmax); return `<span class="mod">${esc(l.txt)}</span> <span class="tier ${l.g.g}">${esc(l.tag)}</span>`; }).join(` <b>${L('또는','or')}</b> `);
+/* 티어 상관없는 긴 anyOf(3개 넘음): 수치를 빼고 이름만, 묶음 이름(label)이 있으면 그 이름 — 최고 티어 수치 7개가 '또는'으로 이어지던 것(2026-11-13 S3 27번) */
+const specText = (r, s) => s && s.anyOf && s.anyOf.length > 3 && s.anyOf.every(x=>!x.tmax) ? (s.label ? `<span class="mod">${esc(tx(s.label))}</span> <small>(${L('티어 상관없음','any tier')})</small>` : `<span class="mod">${s.anyOf.map(x=>esc(modLine(r,x.gi).txt.replace(/[+\-]?\(\d[\d.]*—\d[\d.]*\)%?|[+\-]?\d[\d.]*%?/g,'').replace(/\s+/g,' ').trim())).join(' · ')}</span> <small>(${L('티어 상관없음','any tier')})</small>`) : specText0(r, s);
+const specText0 = (r, s) => specList(s).map((x,k)=>{ const l=modLine(r,x.gi,x.tmax); return `<span class="mod">${esc(l.txt)}</span> <span class="tier ${l.g.g}">${esc(l.tag)}</span>`; }).join(` <b>${L('또는','or')}</b> `);
 // compact item state after a node: prefixes then suffixes, with free slots
 function stateHTML(r, o){
   const row = m => m.unrev ? `<div class="sm des">${L('훼손 (미공개)','Desecrated (hidden)')}</div>`
@@ -1308,6 +1310,7 @@ function nodeHTML(r, o, i, idx){
   else if(n.do==='fracture') tgt=`${L('분열 목표','Fracture onto')}: ${t.gi!=null || t.anyOf ? specText(r,t) : L('옵션 하나(무작위)','one modifier (random)')}${n.alsoUseful?` · ${L('다른 레시피용','usable elsewhere')}: ${specText(r,{anyOf:n.alsoUseful})}`:''}`;
   else if(t.all) tgt=`${L('목표 모두','All of')}: `+t.all.map(s=>specText(r,s)).join(' <b>+</b> ');
   else if(t.gi!=null || t.anyOf) tgt=`${L('목표','Target')}: ${specText(r,t)}`;
+  else if(t.reveal && t.keepReveal && !(t.reveal.gi!=null || t.reveal.anyOf?.length)) tgt=L(`${t.side==='p'?'접두':'접미'} 공개: 결과 그대로`,`${t.side==='p'?'Prefix':'Suffix'} reveal: keep the result`);   /* 2026-11-13 S3 23·29·32번 */
   else if(t.reveal) tgt=`${t.side==='p'?L('접두','Prefix'):L('접미','Suffix')} ${L('공개 선택지 3개 중','reveal, among 3 options')}: ${(t.reveal.gi!=null || t.reveal.anyOf?.length) ? specText(r,t.reveal) : t.revealTx ? esc(tx(t.revealTx)) : L('아무 옵션','any option')}${o.q!=null && o.q!==o.p && !o.pUnknown && !(r.fcRead && !(o.q>0))?` <small>(${L('한 번 볼 때','one look')} ${pct(o.q)})</small>`:''}`;
   else if(t.unrev){ const sl=sideLbl(n,o,t.unrev); tgt=sl.any ? L('공개하지 않은 훼손 옵션 추가 (접두·접미 무관)','Adds an unrevealed desecrated modifier (prefix or suffix)') : L(`${sl.kr} 자리에 공개하지 않은 훼손 옵션 추가${sl.left?' (남은 자리)':''}`,`Adds an unrevealed desecrated ${sl.en}${sl.left?' (the free slot)':''}`); }
   else if(Array.isArray(t.junk) && t.anySide) tgt=L(`아무 옵션 ${t.junk.length}개 추가 (접두·접미 무관)`,`Adds ${t.junk.length} random modifiers (prefix or suffix)`);
@@ -1336,7 +1339,9 @@ function nodeHTML(r, o, i, idx){
   const fcRows = n.fcs?.rows ? `<div class="fcrows">${n.fcs.rows.map(w=>`<div><span class="rw">${esc(tx(w))} →</span>${w.ids.map(x=>`${icon(x,r)}`).join('')}<span>${esc(w.ids.map(x=>nm(cur(x))).join(' + '))}</span>${w.p!=null?`<small>${pct(w.p)} · ${L('평균','avg')} ${fmt(1/w.p)}${L('회','×')}</small>`:''}</div>`).join('')}</div>` : '';
   const TN={high:L('하이엔드','High-end'), bal:L('밸런스','Balance'), ess:L('에센셜','Essential')};
   const gtx = s => esc(s).replace(/@([A-Za-z_]+)(로)?/g, (m,id,ro)=>{ const x=nm(cur(id)); if(!ro) return x; const c=x.charCodeAt(x.length-1)-0xAC00, j=c>=0 && c<11172 ? c%28 : 0; return x+(j && j!==8 ? '으로' : '로'); });   /* 받침에 따라 '으로/로' — '군왕의 합금로'(2026-11-13 S2, G1 보고) */
-  const grade = n.grade ? `<div class="grd"><span class="gk">${L('등급 갈림','Grades split')}</span>${n.grade.map(g=>`<span class="${g.tiers.includes(r.tier||'high')?'me':''}"><b>${g.tiers.map(t=>TN[t]).join('·')}</b> ${gtx(tx(g))}</span>`).join('')}</div>` : '';
+  /* 등급 갈림: 보고 있는 등급 줄만(다른 등급 글은 마우스를 올리면) — 두 등급 글이 모두 나와 길던 것(2026-11-13 S3 33번) */
+  const gMe = n.grade && (n.grade.find(g=>g.tiers.includes(r.tier||'high')) || null), gOt = n.grade ? n.grade.filter(g=>g!==gMe) : [];
+  const grade = gMe ? `<div class="grd" title="${esc(gOt.map(g=>g.tiers.map(t=>TN[t]).join('·')+': '+gtx(tx(g))).join(' / '))}"><span class="gk">${L('등급 갈림','Grades split')}</span><span class="me"><b>${gMe.tiers.map(t=>TN[t]).join('·')}</b> ${gtx(tx(gMe))}</span></div>` : '';
   const showP = o.p<0.995 && !t.reroll;
   const ts = n.ts && r.source?.url ? `<a class="ts" href="${esc(r.source.url)}&t=${n.ts.split(':').reduce((s,x)=>s*60+(+x),0)}s" target="_blank" rel="noopener">▶ ${esc(n.ts)}</a>` : '';
   const viaOne = v => `${icon(v.cur,r)}${esc(nm(cur(v.cur)))}${(v.omens||[]).map(x=>` + ${icon(x,r)}${esc(nm(cur(x)))}`).join('')}`;
@@ -1398,11 +1403,11 @@ function routeHTML(r, o, i, via){
   const out=[];
   if(n.routes){   /* 플로우차트 읽기: 상자에서 나가는 선 그대로, 비율은 시뮬 */
     const dst = (to, x) => x?.toAlt?.length ? (()=>{ const ts=[to,...x.toAlt], nums=ts.filter(t=>t!=='done').sort((a,b)=>(a==='self'?stepNo(r,n.id):stepNo(r,a))-(b==='self'?stepNo(r,n.id):stepNo(r,b))).map(t=>t==='self'?stepLbl(r,n.id):stepLbl(r,t)), dn=ts.includes('done'); /* 여러 도착: 번호만 '번'을 붙이고 완성은 따로 — '11·13·12·완성번'(2026-11-13 S2) */ return nums.length ? L(`${nums.join('·')}번${dn?' 또는 완성':''}`,`step${nums.length>1?'s':''} ${nums.join(', ')}${dn?' or done':''}`) : L('완성','done'); })() : to==='state' ? L('아이템 상태에 맞는 단계','the step that fits the item') : to==='self' ? L('다시','again') : to==='done' ? L('완성','done') : to==='restart' ? L('버리고 처음부터','discard, start over') : L(`${stepLbl(r,to)}번`,`step ${stepLbl(r,to)}`);
-    const viaT = v => [v, ...(v.then||[])].map(w=>[w.cur, ...(w.omens||[])].map(x=>`${icon(x,r)}${esc(nm(cur(x)))}`).join(' + ')+(w.n>1.05?` ×${fmt(w.n)}`:'')).join(' → ');   /* then = 지우기 상자를 둘 이상 거침, n = 같은 지우기를 평균 몇 번(2026-11-12) */
+    const viaT = v => [v, ...(v.then||[])].reduce((a,w)=>{ const k=[w.cur,...(w.omens||[])].join('+'), last=a[a.length-1]; if(last && last.k===k){ last.n=(last.n||1)+(w.n||1); } else a.push({...w, k}); return a; },[]).map(   /* 같은 지우기가 이어지면 한 번으로 합쳐 ×n — '소멸의 오브 ×1.7 → 소멸의 오브'(2026-11-13 S3 40번) */w=>[w.cur, ...(w.omens||[])].map(x=>`${icon(x,r)}${esc(nm(cur(x)))}`).join(' + ')+(w.n>1.05?` ×${fmt(w.n)}`:'')).join(' → ');   /* then = 지우기 상자를 둘 이상 거침, n = 같은 지우기를 평균 몇 번(2026-11-12) */
     const rs=n.routes.filter(x=>!(x.to==='self' && !x.via)), oks=rs.filter(x=>x.cls==='ok' && !x.skip);   /* 같은 커런시를 목표가 나올 때까지 되풀이하는 선은 줄로 쓰지 않음 — 확률·평균 개수가 이미 보여 줌(2026-11-12) */
     if(!rs.length) return '';
     if(rs.length===1 && rs[0].cls==='ok' && (rs[0].to==='done' ? i===r.nodes.length-2 : stepNo(r,rs[0].to)===i+2)) return '';
-    rs.forEach(x=>{ const lab = x.lab ? esc(tx(x.lab).replace(/^[a-z]/,c=>c.toUpperCase())) : x.cls==='ok' ? L('성공','Success') : L('실패','Miss');
+    rs.forEach(x=>{ const lab = x.lab ? esc(tx(x.lab).replace(/^[a-z]/,c=>c.toUpperCase())) : x.keepAll ? L('결과 그대로','Keep the result') : x.cls==='ok' ? L('성공','Success') : L('실패','Miss');
       const okSum=oks.reduce((t,y)=>t+(y.share||0),0), rel = x.cls==='ok' && !x.skip && oks.length>1 && okSum>0 && okSum<0.995;   /* 성공 갈래가 여럿이면 성공 중 비율(시도당 비율이 0.05%처럼 작게 보이던 것, 2026-11-12 활 9번) */
       const sh = x.share!=null && x.share<0.995 && x.to!=='self' && !(x.cls==='ok' && !x.skip && oks.length===1) ? (rel ? ` (${L('성공의','of hits')} ${pct(x.share/okSum)})` : ` (${pct(x.share)})`) : '';
       const back = !['self','done','restart','state'].includes(x.to) && stepNo(r,x.to)<i+1, lostS = x.lost || (x.vo && back && x.alt);
@@ -1675,6 +1680,7 @@ function simStrategy(d){ const vis=d.strategies.filter(s=>!s.hidden), keys=Objec
 function nodeCur(n){ const ids=[...(n.curIf||[]), n.cur, ...(n.omens||[])].filter(Boolean);
   if(n.kind==='cleanup') ids.unshift('Orb_of_Annulment');
   if(n.act==='rune' && n.rune){ const t=tx(n.rune); return {html: esc(t), title: t}; }   // a socketed rune: its name (사용자 확정 2026-11-10)
+  if(n.act==='reveal' && !ids.length){ const t=L('영혼의 우물에서 공개','Reveal at the Well of Souls'); return {html: esc(t), title: t}; }   /* 공개 상자 커런시 칸이 비던 것(2026-11-13 S3 25번) */
   // Whittling / Erasure chosen by the item (policy 23 ④): both omens by their full names
   const tr=n.trim ? ['Omen_of_Whittling', n.trim.side==='p'?'Omen_of_Sinistral_Erasure':'Omen_of_Dextral_Erasure'] : [];
   const uniq=[...new Set(ids)], txt=uniq.map(id=>nm(cur(id))).join(' + ') + (tr.length ? ' + '+tr.map(id=>nm(cur(id))).join(L(' 또는 ',' or ')) : '');
@@ -1860,7 +1866,7 @@ function fcLabels(list, rects, lines=[]){ // list: [{pts, w, ...}] → x,y per l
     if(!best){ const a=pts[0]; best={x:a[0],y:a[1],R:[a[0]-w/2,a[1]-H/2,a[0]+w/2,a[1]+H/2]}; }
     placed.push(best.R); L0.x=best.x; L0.y=best.y; }); }
 const fcUse = (u, n=3) => Object.entries(u||{}).filter(([,v])=>v>=0.005).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k,v])=>`<span class="ci" title="${esc(nm(cur(k)))}">${icon(k)}${fmt(v)}</span>`).join('');
-function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
+function fcItem(g, lines, prev, params, dsd){ const fx_=a=>dsd && a ? a.map(l=>l.s==='x' && (l.m==='d'||l.m==='u') ? {...l, s:dsd} : l) : a; lines=fx_(lines); prev=fx_(prev);   /* 쪽이 정해지지 않은 훼손 줄(s 'x')은 강령술 징조 쪽으로 — 'P/S'로 나오던 것(2026-11-13 S3 49번) */ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
   const side=s=>s==='p'?'P':s==='s'?'S':s==='r'?'R':'P/S', mk={};
   // fractured lines show by colour only (no tail text): graph items mark them in the label "(분열…)" / "(fractured…)"
   const isFr=l=>l.m==='f' || /\((분열|fractured)/i.test((l.kr||'')+' '+(l.en||''));
@@ -1875,7 +1881,7 @@ function fcItem(g, lines, prev, params){ const key=l=>l.s+'|'+l.kr+'|'+(l.m||'')
   const isCr=l=>l.m==='c' || /제작 옵션|에센스\)|합금\)|징표|crafted|Essence of [^)]*\)|Alloy\)|Abyssal Lord/i.test((l.kr||'')+' '+(l.en||'')) || (l.tags||[]).some(t=>g.tags?.[t]?.sec==='e');
   const cl=l=>isFr(l)?'f':isDes(l)?'d':isCr(l)?'c':(l.m||'n');
   const row=(l,cls)=>{ const x=text(l), plain=x.t.replace(/<[^>]+>/g,'').replace(/&amp;/g,'&')+(x.tier?' '+x.tier:''); return `<li class="m-${cl(l)} ${cls}" title="${esc(plain)}"><i class="sd-${l.s}">${side(l.s)}</i><span>${x.t}${x.tier?` <em>${x.tier}</em>`:''}${mk[l.m]?` <small>${mk[l.m]}</small>`:''}</span></li>`; };
-  const gone=(prev||[]).filter(l=>!now.has(key(l)) && !lines.some(x=>x.s===l.s && x.kr===l.kr));
+  const gone=(prev||[]).filter(l=>!now.has(key(l)) && !lines.some(x=>x.s===l.s && (x.kr===l.kr || noFr(x.kr||'').trim()===noFr(l.kr||'').trim() || (isFr(x) && !isFr(l) && l.m!=='j' && l.tags && x.tags && l.tags.join()===x.tags.join()))));   /* 분열한 줄이 지운 줄로 한 번 더 보이던 것(2026-11-13 S3 45번) */
   const ord=s=>s==='p'?0:s==='s'?2:s==='r'?3:1;   // 사용자 확정 2026-11-10: 접두(P)가 위, 접미(S)가 아래
   return [...lines.map(l=>[l, had.has(key(l))?'':'new']), ...gone.map(l=>[l,'gone'])].map((x,i)=>[...x,i]).sort((a,b)=>ord(a[0].s)-ord(b[0].s)||a[2]-b[2]).map(([l,c])=>row(l,c)).join(''); }
 // finished items (best / settle / budget) in the recipe's item-card format
@@ -1939,8 +1945,10 @@ function fcFold(g, res, vid){ const Ls=(g.loops||[]).filter(L=>L.fold && L.nodes
 /* 상자가 다시 쓰이는지: 이 상자에서 나가는 선을 따라가 베이스·완성·버림을 거치지 않고 이 상자로 돌아올 수 있으면 반복 */
 function fcRepeats(g, id){ const by=Object.fromEntries(g.nodes.map(n=>[n.id,n])), nx=n=>[...(n.edges||[]).map(e=>e.to), n.next, n.skipTo, ...Object.values(n.options||{})].filter(Boolean);
   const seen=new Set(), q=[...nx(by[id]||{})]; while(q.length){ const x=q.shift(); if(x===id) return true; if(seen.has(x)) continue; seen.add(x); const N=by[x]; if(!N || /^(base|done|exit)$/.test(N.kind)) continue; q.push(...nx(N)); } return false; }
+/* 상자 목표 글을 등급(버전 id)마다: 상자 goalBy:{ess:{kr,en}} — 접힌 루프에만 있던 goalBy를 일반 상자에도(2026-11-13 S3 44번) */
+function fcGoalBy(g, vid){ return !vid || !g.nodes.some(n=>n.goalBy?.[vid]) ? g : {...g, nodes:g.nodes.map(n=>n.goalBy?.[vid] ? {...n, goal:n.goalBy[vid]} : n)}; }
 function fcOver(g, params){ return {...g, nodes:g.nodes.map(n=>{ const o=(n.over||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); return o ? {...n, ...o.set} : n; })}; }   // per-version node fields (same rule as sim.js)
-function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.graph, s.params), vid=(d.graph.versions||[]).find(v=>Object.entries(v.params).every(([k,x])=>String(s.params[k])===String(x)))?.id, {g, res}=fcFold(fcIlvl(fcPrune(g0, s.res, vid), r), s.res, vid), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
+function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.graph, s.params), vid=(d.graph.versions||[]).find(v=>Object.entries(v.params).every(([k,x])=>String(s.params[k])===String(x)))?.id, {g, res}=fcFold(fcIlvl(fcPrune(fcGoalBy(g0, vid), s.res, vid), r), s.res, vid), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
   const n0=Object.fromEntries(g0.nodes.map(n=>[n.id,n]));   /* 선 순번(sim edgesI 'id#i')은 정리(prune) 전 상자의 edges 순서 */
   const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : p>0 ? (p*100).toFixed(2)+'%' : '0%';
   const st = id => res.nodes[id], ecount = (a,b) => res.edges?.[a+'>'+b]||0;
@@ -1983,7 +1991,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
     const b=Lay.box[n.id], rows=Math.max(1, n.item.length + (prev||[]).filter(l=>!n.item.some(x=>x.s===l.s&&x.kr===l.kr)).length), h=16+rows*24;
     const D=Lay.dia[n.id], bot=D?D.y+D.h:b.y+b.h, nx=Object.values(Lay.box).filter(x=>x.col===Lay.colIds[0] && x.y>b.y).sort((p2,q)=>p2.y-q.y)[0], mid = nx ? (bot+nx.y)/2 : bot+24;
     const top=Math.max(mid-h/2, yLast+10), cy=top+h/2;
-    lane+=`<div class="fcit" style="left:${FX.PAD}px;top:${top}px;width:${FX.LANE}px"><ul>${n.item.length||rows>1||prev?fcItem(g, n.item, prev, s.params):`<li class="m-n"><i>·</i><span>${L('옵션 없음 (노멀)','No modifiers (normal)')}</span></li>`}</ul></div>`
+    lane+=`<div class="fcit" style="left:${FX.PAD}px;top:${top}px;width:${FX.LANE}px"><ul>${n.item.length||rows>1||prev?fcItem(g, n.item, prev, s.params, (()=>{ const ds=g.nodes.filter(x=>x.act==='desecrate' && x.pos && n.pos && x.pos[1]<=n.pos[1]).sort((a,b)=>a.pos[1]-b.pos[1]).pop(), om=(ds?.omens||[]).join(' '); return /Dextral_Necromancy/.test(om)?'s':/Sinistral_Necromancy/.test(om)?'p':null; })()):`<li class="m-n"><i>·</i><span>${L('옵션 없음 (노멀)','No modifiers (normal)')}</span></li>`}</ul></div>`
       + `<svg class="fcitl" style="left:${FX.PAD+FX.LANE}px;top:${cy-1}px" width="${b.x+b.w/2-8-FX.PAD-FX.LANE}" height="2"><line x1="0" y1="1" x2="${b.x+b.w/2-8-FX.PAD-FX.LANE}" y2="1"/></svg>`;
     yLast=top+h; prev=n.item; });
   const fcH=Math.max(Lay.Ht, yLast+FX.PAD+20);
@@ -2028,6 +2036,9 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
     if(byI){ const anyOk=eds.some(x=>x.res==='ok'); okN = anyOk ? sumI(x=>x.res==='ok' && (n.pAll || !x.dash)) : sumI(x=>!x.res && x.to!==n.id);
       if(okN<=0 && tries>0) okN=sumI(x=>x.res!=='fail' && x.to!==n.id); }
     else okN = okE.reduce((s2,e)=>s2+(R2?.edges?.[e.a+'>'+e.b]||0),0);
+    /* 에센셜에서 성공·빗나감이 모두 같은 상자로 가면(빗나감 — 그대로) 목표 없는 '결과 그대로' 상자: 확정 — '1~2티어 56%'로 보이던 것(2026-11-13 S3 44번, graph2recipe _keep_all과 같은 규칙) */
+    const usedTo = byI ? [...new Set(eds.map((x,i)=>ei(i)>0?x.to:null).filter(Boolean))] : [], keepAll = vid==='ess' && byI && usedTo.length===1 && usedTo[0]!==n.id && M.byId[usedTo[0]]?.kind!=='cleanup' && eds.some(x=>x.res==='ok' && x.to===usedTo[0]) && eds.some((x,i)=>x.res==='fail' && ei(i)>0);
+    if(keepAll) okN=tries;
     const pS0 = !t || !tries ? null : hasRes && n.act!=='flux' ? Math.min(1, okN/tries) : 1, pS = pS0===0 && byI ? null : pS0, split = byI && pS0===0;
     // the totals stay available on hover; the box itself shows only the goal, the currency and the chance
     const LH=M.loopHead[n.id]; let tip=tx(n.label)+' — '+c.title;
@@ -2037,7 +2048,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
     /* 다시 하지 않는 상자(빗나가도 이 상자로 돌아오지 않음, 사용자 2026-11-12 방패 1번): 확률은 '1회 시도', 개수는 시뮬의 실제 사용량(완성 1개당) */
     /* 선 구조로는 되돌아올 수 있어도 이 버전 시뮬에서 빗나감이 이 상자로 돌아오지 않으면(거친 아이템 1개당 성공 수 = 시도 × 확률 ÷ 도달 < 0.9) 1회 시도로 — 1/확률 개수는 실제 사용량과 다름(2026-11-13 S1: MazBro 시전자 목걸이 밸런스 10번 '평균 7.8개' vs 실제 1회) */
     const once1 = !!t && n.kind!=='cleanup' && (n.once || !fcRepeats(g, n.id) || (pS>0 && pS<0.995 && tries*pS<0.9*(t.reach||1))), used1 = t ? (t.use?.[n.cur] ?? tries) : 0;
-    const want=fcWant(g, n, s.params), per = !t ? 0 : n.kind==='cleanup' ? (t.use?.Orb_of_Annulment||0)/Math.max(1e-9,t.visits) : (n.group==='prep' && pS>=0.995 && t ? (t.use?.[n.cur] ?? t.visits ?? 1) / (n.count>1 ? n.count : 1) : n.once ? 1 : pS>0 ? 1/pS : 0) * (n.count>1 ? n.count : 1);   /* 준비 구역 확정 상자는 완성 1개당 사용량(베이스를 여러 개 쓰면 그만큼, 2026-11-13 S2 G6 보고) */   /* 상자 count(숫돌 4개·기폭제 40개)는 한 번에 쓰는 개수 — 시뮬 사용량과 같게(2026-11-13 S2) */   // per success of this step (once: used one time whatever happens — the miss goes elsewhere)
+    const want=keepAll ? [`<b class="sd">${L('목표','Goal')}</b> : ${L('결과 그대로','Keep the result')}`] : fcWant(g, n, s.params), per = !t ? 0 : n.kind==='cleanup' ? (t.use?.Orb_of_Annulment||0)/Math.max(1e-9,t.visits) : (n.group==='prep' && pS>=0.995 && t ? (t.use?.[n.cur] ?? t.visits ?? 1) / (n.count>1 ? n.count : 1) : n.once ? 1 : pS>0 ? 1/pS : 0) * (n.count>1 ? n.count : 1);   /* 준비 구역 확정 상자는 완성 1개당 사용량(베이스를 여러 개 쓰면 그만큼, 2026-11-13 S2 G6 보고) */   /* 상자 count(숫돌 4개·기폭제 40개)는 한 번에 쓰는 개수 — 시뮬 사용량과 같게(2026-11-13 S2) */   // per success of this step (once: used one time whatever happens — the miss goes elsewhere)
     return `<div class="fcn k-task ${n.kind==='cleanup'?'k-clean':''} ${t?'':'off'}" style="${pos}" title="${esc(tip)}" data-fcn="${esc(n.id)}">
       <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b title="${esc(tx(n.goal||n.label))}">${esc(tx(n.goal||n.label))}</b></div>
       ${want.length?`<div class="fcw">${want.map(h=>`<p>${h}</p>`).join('')}</div>`:''}

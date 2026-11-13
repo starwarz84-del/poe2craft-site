@@ -93,7 +93,7 @@ class G:
         out = []
         for x in T.get('anyOf') or []:
             if isinstance(x, str) and x not in seen: out += self.leaves(x, seen + (tag,))
-            elif isinstance(x, dict) and x.get('gi') is not None: out.append((x['gi'], x.get('tmax')))   # 태그 안에 바로 적은 옵션 {gi} — 이름표 태그(label) 공개 목표가 비던 것(2026-11-13 S2: MazBro 시전자 목걸이 a8, Unstoppable q1)
+            elif isinstance(x, dict) and x.get('gi') is not None: out.append((x['gi'], self.tmax(None, x['tmax']) if x.get('tmax') is not None else None))   # '$pT' 같은 등급 파라미터도 풂(2026-11-13 S3 1번: 레시피에 '$pT'가 남아 엔진 확률 0)   # 태그 안에 바로 적은 옵션 {gi} — 이름표 태그(label) 공개 목표가 비던 것(2026-11-13 S2: MazBro 시전자 목걸이 a8, Unstoppable q1)
         if T.get('tmax') is not None:
             t = self.tmax(tag); out = [(gi, t if tm is None else min(tm, t) if t else tm) for gi, tm in out]
         return out
@@ -104,7 +104,20 @@ class G:
             for gi, tm in self.leaves(self.name(t)):
                 if gi not in [x['gi'] for x in xs]: xs.append({'gi': gi, **({'tmax': tm} if tm else {})})
         if not xs: return None
-        return xs[0] if len(xs) == 1 else {'anyOf': xs}
+        if len(xs) == 1: return xs[0]
+        out = {'anyOf': xs}
+        lb = [self.tags.get(self.name(t), {}).get('label') for t in tags]
+        if len(tags) == 1 and isinstance(lb[0], dict) and lb[0].get('kr'): out['label'] = {'kr': lb[0]['kr'], 'en': lb[0].get('en') or lb[0]['kr']}   # 묶음 이름(티어 상관없는 긴 목록은 이름으로, 2026-11-13 S3 27번)
+        return out
+
+
+def _room(G_, prev):
+    """앞 아이템 칸에서 아직 자리가 있는 쪽(그래프 cap, 없으면 3/3) — 한쪽이 꽉 차면 '접두·접미 무관'이 아니라 남은 쪽(2026-11-13 S3 2·13번)"""
+    cap = G_.g.get('cap') or (G_.src or {}).get('cap') or {}
+    n = {'p': 0, 's': 0}
+    for l in prev or []:
+        if l.get('s') in n: n[l['s']] += 1
+    return [sd for sd in ('p', 's') if n[sd] < (cap.get(sd) or 3)]
 
 
 def _target(G_, n, prev, cur, last_bone):
@@ -120,10 +133,17 @@ def _target(G_, n, prev, cur, last_bone):
     okc = [G_.name(x) for x in okc if G_.name(x) in G_.tags]
     new = [l for l in new if l.get('s') in ('p', 's')]
     # 이 등급에선 늘 맞는 성공 선(param만, 예: 에센셜 '나오는 대로')이 있으면 목표 옵션 없이 '아무 옵션'(2026-11-13 S2, G5 보고)
-    keep_any = any(e.get('res') == 'ok' and e.get('if') is not None and _simp(e['if'], G_.params) is True for e in sn.get('edges') or [])
+    keep_any = any(e.get('res') == 'ok' and e.get('if') is not None and _simp(e['if'], G_.params) is True for e in sn.get('edges') or []) or getattr(G_, '_kall', False)
     if keep_any and act in ('chaos', 'exalt', 'transmute', 'augment', 'regal'):
-        sd = next((l.get('s') for l in new), None) or _side_of_omens(om, 'Exaltation') or _side_of_omens(om, 'Coronation') or 'p'
-        t = {'junk': sd} if act != 'chaos' else {'asIs': True, 'junk': sd}
+        rm = _room(G_, prev)
+        sd = next((l.get('s') for l in new), None) or _side_of_omens(om, 'Exaltation') or _side_of_omens(om, 'Coronation') or (rm[0] if len(rm) == 1 else 'p')
+        k = 2 if act == 'exalt' and 'Omen_of_Greater_Exaltation' in om else 1   # 상위 찬미 = 옵션 2개(2026-11-13 S3 30번: '아무 옵션 1개'로 나오던 것)
+        if k > 1:
+            ns = [l.get('s') for l in new if l.get('s') in ('p', 's')]
+            t = {'junk': ns if len(ns) == k else [sd] * k}
+            if not (_side_of_omens(om, 'Exaltation') or _side_of_omens(om, 'Coronation')) and len(rm) > 1: t['anySide'] = True
+        else:
+            t = {'junk': sd} if act != 'chaos' else {'asIs': True, 'junk': sd}
         return act, om, t, last_bone
     if act in ('chaos', 'exalt', 'transmute', 'augment', 'regal'):
         tagged = [l for l in new if l.get('tags')]
@@ -145,14 +165,20 @@ def _target(G_, n, prev, cur, last_bone):
         elif junk:
             sides = [l['s'] for l in junk]
             t = {'junk': sides if len(sides) > 1 else sides[0]}
-            if len(sides) > 1 and not (_side_of_omens(om, 'Exaltation') or _side_of_omens(om, 'Coronation')): t['anySide'] = True   # 징조 없이 여러 개: 앞 결과에 따라 쪽이 달라짐 — '(접두 2)'로 단정하지 않음(2026-11-13 S2, G10 보고)
+            if len(sides) > 1 and not (_side_of_omens(om, 'Exaltation') or _side_of_omens(om, 'Coronation')) and len(_room(G_, prev)) > 1: t['anySide'] = True   # 징조 없이 여러 개: 앞 결과에 따라 쪽이 달라짐 — '(접두 2)'로 단정하지 않음(2026-11-13 S2, G10 보고)
         elif act == 'chaos':
             t = {'asIs': True, 'junk': next((l.get('s') for l in gone if l.get('s') in ('p', 's')), 'p')}
         else:
-            sd = _side_of_omens(om, 'Exaltation') or _side_of_omens(om, 'Coronation') or 'p'
+            rm = _room(G_, prev)
+            # 쪽: 징조 → 새로 붙은 줄의 쪽(태그 없는 일반 줄 m='n'도) → 남은 쪽이 하나면 그쪽 → 접두 — 접미 엑잘이 '(접두)'로 나오던 것(2026-11-13 S3 12번)
+            sd = _side_of_omens(om, 'Exaltation') or _side_of_omens(om, 'Coronation') or next((l.get('s') for l in new if l.get('s') in ('p', 's')), None) or (rm[0] if len(rm) == 1 else 'p')
             k = 2 if 'Omen_of_Greater_Exaltation' in om else 1
-            t = {'junk': [sd] * k if k > 1 else sd}
-            if k > 1 and not (_side_of_omens(om, 'Exaltation') or _side_of_omens(om, 'Coronation')): t['anySide'] = True
+            if k > 1 and not (_side_of_omens(om, 'Exaltation') or _side_of_omens(om, 'Coronation')):
+                ns = [l.get('s') for l in new if l.get('s') in ('p', 's')]
+                t = {'junk': ns if len(ns) == k else [sd] * k}
+                if len(rm) > 1: t['anySide'] = True
+            else:
+                t = {'junk': [sd] * k if k > 1 else sd}
     elif act == 'essence':
         nl = next((l for l in new if l.get('tags')), None)
         if nl: t = dict(G_.spec(nl['tags']) or {})
@@ -185,7 +211,9 @@ def _target(G_, n, prev, cur, last_bone):
         if not sp:   # 고르는 옵션을 태그로 적지 않은 공개(가장 높은 레벨 옵션·아무거나): 상자 글을 목표 글로 — '선택지 3개 중:'으로 끝나던 것(2026-11-13 S2)
             t['asIs'] = True; t['anyReveal'] = True   # 엔진(engine.js)도 확정 공개로 셈 — 빈 목표로 멈추던 것
             tx_ = next((x for x in (n.get('showText') or sn.get('showText') or []) if isinstance(x, dict) and x.get('kr')), None) or n.get('goal') or sn.get('goal')
-            if tx_: t['revealTx'] = {'kr': tx_['kr'], 'en': tx_.get('en') or tx_['kr']}
+            # 결과 그대로 두는 공개(등급이 show를 비움·늘 맞는 성공 선)는 상자 글 대신 '공개: 결과 그대로' — '선택지 3개 중: 공개 결과 그대로/랜덤 옵션'·다른 등급 목표 글이 들어가던 것(2026-11-13 S3 23·29·32번)
+            if asis_v: t['keepReveal'] = True
+            elif tx_: t['revealTx'] = {'kr': tx_['kr'], 'en': tx_.get('en') or tx_['kr']}
     elif act in ('annul', 'remove'):
         if any(l.get('m') in ('d', 'u') or '훼손' in (l.get('kr') or '') for l in gone): t = {'removeDes': True}
         else:
@@ -246,8 +274,8 @@ def _version(sim, tier):
 class Walk:
     """한 등급(버전)으로 본 플로우차트: 상자, 나가는 선, 시뮬 값"""
     def __init__(self, sim, V, S):
-        self.P = V['params']; self.res = S['res']
-        self.nodes = _over(sim['graph']['nodes'], self.P)
+        self.P = V['params']; self.res = S['res']; self.sim = sim; self.vid = V.get('id')
+        self.nodes = [dict(n, goal=n['goalBy'][V.get('id')]) if isinstance(n.get('goalBy'), dict) and n['goalBy'].get(V.get('id')) else n for n in _over(sim['graph']['nodes'], self.P)]   # 상자 goalBy(등급별 목표 글, 2026-11-13 S3 44번)
         self.by = {n['id']: n for n in self.nodes}
         self.E = self.res.get('edges') or {}
         self.EI = self.res.get('edgesI') or {}   # 선마다 센 값(a#순번, 2026-11-11) — 같은 상자로 가는 성공·실패 선을 따로 셈
@@ -661,6 +689,13 @@ def _routes(W, n, valid, G_=None, CD=None):
             sl = _label(CD.atoms(sc) or []) if isinstance(sc, dict) else None
         rs.append({'cls': 'ok', 'lab': sl or {'kr': '건너뜀', 'en': 'Skip'}, 'to': dest(n['skipTo']),
                    'share': t['skips'] / max(1e-9, t.get('visits') or 1), 'skip': True})
+    # 성공·빗나감이 모두 같은 단계로 가면(에센셜 '빗나감 — 그대로') 한 줄 '→ n번' — '성공 → 8번'과 '빗나감 — 그대로 → 8번'이 같이 나오던 것(2026-11-13 S3 40번)
+    rn = [r for r in rs if not r.get('skip')]
+    if len(rn) >= 2 and len({r['to'] for r in rn}) == 1 and rn[0]['to'] != 'self' and not any(r.get('via') or r.get('toAlt') for r in rn) and any(r['cls'] == 'ok' for r in rn):
+        h = next(r for r in rn if r['cls'] == 'ok')
+        h['share'] = sum(r['share'] or 0 for r in rn); h['n'] = sum(r.get('n') or 0 for r in rn) or h.get('n'); h['lab'] = None; h['keepAll'] = True
+        for r in rn:
+            if r is not h: rs.remove(r)
     # 순서: 성공(많은 것부터) → 실패(그래프 선 순서 = 플로우차트 흐름, 같으면 많은 것부터) → 그 밖 (2026-11-12: '1번째·2번째·3번째 빗나감'이 거꾸로 읽히던 것)
     rs.sort(key=lambda r: (r['cls'] != 'ok', r.get('skip', False), (r.get('lab') or {}).get('kr') == '그 밖', r.get('_i', 999) if r['cls'] != 'ok' else 0, r['to'] != 'self', -(r['share'] or 0)))
     for r in rs: r['share'] = round(r['share'], 5); r.pop('_a', None); r.pop('_c', None); r.pop('_e0', None); r.pop('_i', None); r.pop('_if', None); r.pop('_ap', None)
@@ -681,6 +716,14 @@ def _repeats(W, n):
     return False
 
 
+def _keep_all(W, n):
+    """이 등급에서 성공·빗나감이 모두 같은 상자로 감(빗나감 — 그대로): 목표가 없는 '결과 그대로' 상자(2026-11-13 S3 40·44번)"""
+    if getattr(W, 'vid', None) != 'ess': return False   # 에센셜(반복 없음, 랜덤 옵션 허용)만 — 밸런스의 '한 번 시도하고 그대로'는 목표가 있음
+    outs = W.outs(n)
+    used = [x for x in outs if W.ec(n['id'], x, outs) > 0]
+    return bool(used) and len({x[1] for x in used}) == 1 and used[0][1] != n['id'] and any(x[3] == 'ok' for x in outs if x[1] == used[0][1]) and any(x[3] == 'fail' for x in used) and not W.via(used[0][1])
+
+
 def _fcs(W, n, fold_ids=frozenset()):
     t = W.st(n['id']) or {}
     tries = (t.get('visits') or 0) - (0 if n.get('kind') == 'cleanup' else (t.get('skips') or 0))
@@ -692,7 +735,7 @@ def _fcs(W, n, fold_ids=frozenset()):
     if has_res and okc <= 0 and tries > 0:   # 상태마다 다른 단계로 보내는 상자: 표시된 성공선을 안 거치고 숨은 선으로 나아감 → 실패·반복이 아닌 선 모두
         okc = sum(W.ec(n['id'], x, outs) for x in outs if x[3] != 'fail' and x[1] != n['id'])
     p = min(1.0, okc / tries) if has_res and tries > 0 else 1.0
-    if n.get('act') == 'flux': p = 1.0   # 유동체는 늘 바뀜(확정 변환) — 뒤 선은 변환 뒤 상태로 고르는 갈래라 성공 확률이 아님(2026-11-13 S1: 시한 장화 6.8%)
+    if n.get('act') == 'flux' or _keep_all(W, n): p = 1.0   # 유동체는 늘 바뀜(확정 변환) — 뒤 선은 변환 뒤 상태로 고르는 갈래라 성공 확률이 아님(2026-11-13 S1: 시한 장화 6.8%)
     rows = None
     if n.get('curRows') and t.get('byCur'):
         rows = []
@@ -740,19 +783,32 @@ def _ntiers(cls, gi):
     a = _NT[cls]; return a[gi] if 0 <= gi < len(a) else None
 
 
+_TL = {}
+def _top_tier(cls, gi, ilvl):
+    """그 아이템 레벨에서 나올 수 있는 가장 높은 티어 번호(1 = 1티어) — 등급 갈림 글 '2~3티어'(2026-11-13 S3 48번)"""
+    if not ilvl: return 1
+    if cls not in _TL:
+        try: _TL[cls] = [[(t[0] if isinstance(t, list) else (t.get('l') or t.get('lvl') or 0)) for t in (g.get('t') or [])] for g in json.load(open(f'/home/claude/poe2data/site/data/c/{cls}.json'))['groups']]
+        except Exception: _TL[cls] = []
+    a = _TL[cls]
+    if not (0 <= gi < len(a)): return 1
+    return next((i + 1 for i, lv in enumerate(a[gi]) if isinstance(lv, (int, float)) and lv <= ilvl), 1)
+
+
 def _sig(W, n, G_, cls=None):
     """등급 비교용: 이 상자를 이 등급은 어떻게 지나가나"""
     if not n or not W.seen(n['id']): return None
-    tiers = []
+    tiers = []; tops = []
     for t in (n.get('show') or []):
         for gi, tm in G_.leaves(G_.name(t)):
             nt = _ntiers(cls, gi) if cls else None
             try: tm = int(tm) if tm is not None else None
             except Exception: tm = None
             tiers.append(99 if (tm and nt and tm >= nt) else (tm or 0))   # 티어 한도가 그 옵션의 최저 티어 이상 = 나오는 대로(2026-11-13 S2, G3 보고: '1~9티어')
+            tops.append(_top_tier(cls, gi, W.sim['graph'].get('ilvl') or (G_.src or {}).get('ilvl')) if cls else 1)
     fails = sorted({(json.dumps(x[2], ensure_ascii=False, sort_keys=True) if x[2] else '', x[1] if not W.via(x[1]) else 'via')
                     for x in _miss(W, n)})
-    return {'tiers': tiers, 'fails': fails, 'cur': n.get('cur')}
+    return {'tiers': tiers, 'fails': fails, 'cur': n.get('cur'), 'top': min(tops) if tops else 1}
 
 
 def _grade_note(sim, src, nid, tiers, cls=None):
@@ -778,12 +834,16 @@ def _grade_note(sim, src, nid, tiers, cls=None):
             if diff_t and s['tiers'] and max(s['tiers']):
                 tm = max(s['tiers'])
                 if tm >= 99: kr.append('티어 상관없음'); en.append('any tier')
-                else: kr.append('1티어' if tm == 1 else f'1~{tm}티어'); en.append('T1' if tm == 1 else f'T1–{tm}')
+                else:
+                    t0 = min(s.get('top') or 1, tm)   # 아이템 레벨로 못 붙는 위 티어는 빼고(1티어 레벨 81, 아이템 레벨 77 → '2~3티어')
+                    kr.append(f'{tm}티어' if tm == t0 else f'{t0}~{tm}티어'); en.append(f'T{tm}' if tm == t0 else f'T{t0}–{tm}')
             if diff_c and n.get('cur'): kr.append('@' + n['cur']); en.append('@' + n['cur'])
             if diff_f:
                 fl = _miss(W, n)
                 if not fl: kr.append('결과 그대로 다음'); en.append('keep the result')
                 else:
+                    # 갈래가 여럿이면 플로우차트 읽는 순서(도착 상자 위치)로 첫 번째 — 선 순서의 첫 번째라 접힌 상자 순서와 다르던 것(2026-11-13 S3 24번: 시한 장갑 분광 먼저)
+                    fl = sorted(fl, key=lambda x: tuple((W.by.get(x[1]) or {}).get('pos') or (0, 0))[::-1] if x[1] != n['id'] else (-1e9, 0))   # 같은 상자 다시는 맨 앞(예전처럼)
                     e, to, lab, cls, raw = fl[0][:5]; T = W.by.get(to) or {}
                     # 선 이름 앞의 '빗나감'·'실패'는 뗌 — '빗나가면 빗나감'(2026-11-13 S2: MazBro +5 목걸이·노블 오래된 사파이어)
                     lk = re.sub(r'^(빗나감|실패)\s*([—,:·-]\s*)?', '', (lab or {}).get('kr') or '').strip()
@@ -889,6 +949,7 @@ def read_recipe(r, sim, src, tiers, inherit=True):
         # 옆 상자 앞의 지우기 상자(k2 → k3 '빈 접미 엑잘'), 이 등급에서 늘 건너뛰는 상자(밸런스 유동체 → q1)
         vin = [m for m in W.nodes if m.get('item') and ((n['pos'][0] != 0 and W.via(m['id'])) or W.skipall(m['id'])) and any(e.get('to') == n['id'] for e in m.get('edges') or [])]
         if vin: pv = vin[0]['item']
+        G_._kall = _keep_all(W, n)
         act, om, t, last_bone = _target(G_, n, pv, cur, last_bone)
         o = {'id': n['id'], 'do': ACT.get(act, act) or 'manual'}
         if n.get('cur'): o['cur'] = n['cur']
@@ -950,6 +1011,13 @@ def read_recipe(r, sim, src, tiers, inherit=True):
         ph_of[n['id']] = o['phase']
         # 접힌 루프(그래프 loops fold)의 머리 단계: 목표·최악의 경우 한 줄씩(2026-11-12)
         FL = next((x for x in (src or {}).get('loops') or [] if x.get('fold') and (x.get('nodes') or [None])[0] == n['id']), None)
+        # 이 등급에서 반복이 없는 루프(에센셜: 한 번 지나감 = 소속 상자에서 같은·앞 소속 상자로 되돌아간 통과 0)면 '반복 목표'·'최악의 경우' 줄을 붙이지 않음(2026-11-13 S3 22·37번)
+        if FL:
+            mem = [x for x in FL.get('nodes') or []]
+            back = sum(W.cnt(a, b) for i, a in enumerate(mem) for b in mem[:i + 1])
+            via_back = sum(W.cnt(a, v['id']) * 1 for a in mem for v in W.nodes if W.via(v['id']) and any(e.get('to') in mem for e in v.get('edges') or []))
+            wto = (FL.get('worst') or {}).get('to')
+            if back + via_back <= 1e-6: FL = dict(FL, goal=None, goalBy=None, worst=FL.get('worst') if wto and sum(W.cnt(a, wto) for a in mem) > 1e-6 else None)
         if FL:
             ln = {'goal': (FL.get('goalBy') or {}).get(V['id']) or FL.get('goal'), 'worst': {'kr': FL['worst']['kr'], 'en': FL['worst']['en']} if FL.get('worst') else None}
             ln = {k: v for k, v in ln.items() if v}
