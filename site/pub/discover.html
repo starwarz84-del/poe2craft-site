@@ -613,7 +613,8 @@ function softPass(an, nodes){ const soft = new Set(an.rows.filter(r=>r.soft).map
     if(!nodes.some(x=>x.fallbackFor===n.id && x.do==='note')){ const i=nodes.indexOf(n); let j=i+1; while(nodes[j] && (nodes[j].fallbackFor===n.id || nodes[j].retryFor===n.id)) j++;
       nodes.splice(j, 0, {id:n.id+'c', phase:n.phase, do:'note', fallbackFor:n.id, compromise:true, label:{kr:'유효 옵션: 그대로 진행', en:'Useful line: keep going'}, note:{kr:'빗나간 옵션은 그대로 두고 진행. 다시 하지 않음.', en:'Keep the missed line and move on; no retry.'}}); } }
   return n0; }
-function budgetPass(it, an, nodes, diff, market, tier){
+/* res(W5): 타협 없는 초안의 하이엔드 시뮬 — 있으면 반복 비용·비싼 징조 수를 시뮬 값(그 단계 + 실패 정리 상자, 완성 1개당)으로 재고, 없으면 예전 추정(estChance) */
+function budgetPass(it, an, nodes, diff, market, tier, res){
   if(tier?.id==='mirror') return 0;
   const lv = S.budget?.levels?.[diff], limD = market>0 ? market : (tier ? tierMax(tier) : null), limO = lv?.omens ?? null;
   if(!S.prices || (limD==null && limO==null)) return 0;
@@ -625,22 +626,28 @@ function budgetPass(it, an, nodes, diff, market, tier){
   let n0 = 0;
   for(const n of [...nodes]){ if(n.branch || n.optional || n.compromise || n.onLost || n.do==='note') continue; const f=n.fail;
     if(!n.fallbackFor && f?.via && [f.via.cur, ...(f.via.omens||[]), ...(f.via.also||[]).flatMap(x=>[x.cur, ...(x.omens||[])])].some(id=>exp.has(id))){
-      const p = estChance(it, an, n); if(!(p>0 && p<1)) continue;
       const i = nodes.indexOf(n), j = f.goto && f.goto!=='self' && f.goto!=='restart' ? nodes.findIndex(x=>x.id===f.goto) : i;
       const span = (j>=0 && j<=i ? nodes.slice(j, i+1) : [n]).filter(x=>!x.fallbackFor && !x.onLost && !x.optional);
-      const c = costOf([f.via, ...(f.via.also||[]), ...span]);
-      if(!over(1/p-1, c)) continue;
+      if(res){ const sv = simOver(res, n.id, span.map(x=>x.id), exp, dv); if(!sv || !((limD!=null && sv.div > limD) || (limO!=null && sv.om > limO + 1e-9))) continue; }
+      else { const p = estChance(it, an, n); if(!(p>0 && p<1)) continue;
+        const c = costOf([f.via, ...(f.via.also||[]), ...span]);
+        if(!over(1/p-1, c)) continue; }
       n.compromise = {fail:f}; delete n.fail; n0++;
       if(n.note) n.note = {kr:n.note.kr.replace(/\s*(안 나오면|실패하면|안 뜨면)[^]*$/,''), en:n.note.en.replace(/[;.]\s*(otherwise|on a miss)[^]*$/i,'.')};
       n.br = {kr:'실패: 타협(그대로 진행)', en:'Miss: settle and keep going'};
       settle(n, n.do==='reveal' ? '괜찮은 옵션이면 그대로 두고 진행. 다시 하지 않음.' : '빗나간 옵션은 그대로 두고 진행. 다시 하지 않음.', n.do==='reveal' ? 'Keep a decent line and move on; no retry.' : 'Keep the missed line and move on; no retry.');
       continue; }
     if(n.fallbackFor && f?.goto==='self' && (n.omens||[]).some(id=>exp.has(id))){
-      const p = estChance(it, an, n); if(!(p>0 && p<1)) continue;
-      if(!over(1/p, costOf([n]))) continue;
+      if(res){ const sv = simOver(res, n.id, [n.id], exp, dv); if(!sv || !((limD!=null && sv.div > limD) || (limO!=null && sv.om > limO + 1e-9))) continue; }
+      else { const p = estChance(it, an, n); if(!(p>0 && p<1)) continue;
+        if(!over(1/p, costOf([n]))) continue; }
       n.optional = true; n0++; const pr = nodes.find(x=>x.id===n.fallbackFor);
       if(pr){ pr.br = {kr:'실패: 타협(그대로 진행) / 계속 돌리기(선택)', en:'Miss: settle, or keep rolling (optional)'}; settle(pr, '빗나간 옵션은 그대로 두고 진행.', 'Keep the missed line and move on.'); } } }
   return n0; }
+/* 시뮬로 본 한 반복의 비용: 그 단계와 실패 정리 상자(graphify failPath의 'v<n><id>')·되돌아가는 구간 상자의 완성 1개당 div, 그 단계·정리 상자의 비싼 징조 수 */
+function simOver(res, id, span, exp, dv){ const N=res.nodes||{}, via=Object.keys(N).filter(k=>new RegExp('^v\\d+'+id.replace(/[^\w]/g,'')+'$').test(k)), own=[id, ...via];
+  if(!N[id]) return null; let div=0, om=0; for(const k of new Set([...span, ...via])) div += N[k]?.div||0;
+  for(const k of own) for(const [c,v] of Object.entries(N[k]?.use||{})) if(exp.has(c)) om += v; return {div, om}; }
 // policy 22: difficulty from how much trying the draft takes (proposed thresholds, docs/game-rules.md): the largest single-step average uses
 // (1/p of a repeat) and the expected expensive-omen uses, each mapped to 0-5; a fractured start is at least Hard. Never below the item guess.
 const TRY_U = [5, 30, 150, 1000, 3000], TRY_O = [0.5, 3, 15, 60, 300];
@@ -685,25 +692,18 @@ function simCost(it, d, N){ try{ const g=POE2GRAPH.fromDraft(d, it.D, {craft:S.c
   return c.issues.length || !c.strategies[0]?.res ? Infinity : revCost(it, d, c.strategies[0].res); }catch(_){ return Infinity; } }
 /* 비용 기준 하나(W2, 13장 사용자 확정 11-13 20:16·20:28): 시뮬 useDiv(베이스 구입비를 뺀 모든 커런시, 준비 구역 포함) + 매직 베이스로 시작하면 그 매직 옵션을 노멀 베이스에서 굴리는 비용.
    화면 비용·후보 비교·등급 합치기·가격 등급·리버스 점수(_revscore, 등록 쪽 _regcard도 같은 계산)가 모두 이 값 */
-const MAGIC_ORB = {transmute:['Perfect_Orb_of_Transmutation','Greater_Orb_of_Transmutation','Orb_of_Transmutation'], augment:['Perfect_Orb_of_Augmentation','Greater_Orb_of_Augmentation','Orb_of_Augmentation']};
-/* 매직 굴림 = 진화(첫 옵션) → 확장(둘째 옵션), 빗나가면 소멸의 오브로 지우고 같은 베이스에 다시(새 베이스로 다시 하면 베이스 값이 빠져 0에 가깝게 보임). 오브 등급은 시뮬로 가장 싼 것 */
+/* 매직 굴림(W5, 13장 사용자 확정 11-13 21:45): graphify.js magicCost — 먼저 붙는 목표를 첫 옵션으로, 단일 원소 저항은 다른 원소도 성공 + 유동체(시세 포함), 빗나가면 소멸의 오브로 같은 베이스에 다시.
+   새 노멀 베이스로 다시 시작하는 방식(베이스 수 따로)은 참고값으로만 S.magRef에 남김(화면 표시는 사용자 결정 대기) */
 function magicDiv(it, d){ const st=d?.start, ms=(st?.mods||[]).filter(m=>m && (m.gi!=null || m.anyOf));
   if(!st || st.rar!=='magic' || !ms.length || (st.mods||[]).some(m=>m?.fr) || !window.POE2GRAPH || !window.POE2SIM || !S.prices) return 0;
   const key=[d.cls, d.base, d.ilvl, JSON.stringify(ms)].join('|'), C=S.magC=S.magC||{}; if(C[key]!=null) return C[key];
   /* 매직 굴림 목표 = 그 티어 이상(tmax만) — 산 베이스 표시용 tmin(정확한 티어)은 쓰지 않음(2026-11-13 W4) */
   const tg = m => m.anyOf ? {anyOf:m.anyOf.map(x=>({gi:x.gi, ...(x.tmax?{tmax:x.tmax}:{})}))} : {gi:m.gi, ...(m.tmax?{tmax:m.tmax}:{})};
-  let ord = ms;
-  const sim = (a, b) => { const nodes=[{id:'m0', phase:'base', do:'base', cost:'base'}, {id:'m1', phase:'magic', do:'transmute', cur:a, target:tg(ord[0]), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}}}];
-    if(b) nodes.push({id:'m2', phase:'magic', do:'augment', cur:b, target:tg(ord[1]), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}, lost:'m1'}});
-    try{ const g=POE2GRAPH.fromDraft({id:'mag', cls:d.cls, base:d.base, ilvl:d.ilvl, start:{rar:'normal', mods:[]}, nodes, difficulty:0}, it.D, {craft:S.craft, grades:['high']}), r=POE2SIM.simulate({...g, maxSteps:2e4}, it.D, S.craft, S.prices, g.strategies[0].params, 200, 3);
-      return r.reqOk>=0.98 ? r.useDiv : Infinity; }catch(_){ return Infinity; } };
-  const B = ms.length>1 ? MAGIC_ORB.augment[0] : null; let v=Infinity;
-  for(const o of (ms.length>1 ? [ms, [ms[1], ms[0]]] : [ms])){ ord=o; let a0=MAGIC_ORB.transmute[0], w=Infinity;   /* 옵션 2개면 어느 쪽을 진화로 먼저 굴릴지 둘 다 재 봄 */
-    for(const a of MAGIC_ORB.transmute){ const x=sim(a, B); if(x<w){ w=x; a0=a; } }
-    if(B) for(const b of MAGIC_ORB.augment.slice(1)){ const x=sim(a0, b); if(x<w) w=x; }
-    if(w<v) v=w; }
-  return C[key] = isFinite(v) ? v : 0; }
-const revCost = (it, d, res) => res ? (res.useDiv ?? res.mean) + magicDiv(it, d) : null;
+  const r={cls:d.cls, base:d.base, ilvl:d.ilvl}, v=POE2GRAPH.magicCost(it.D, S.craft, S.prices, POE2SIM, r, ms.map(tg));
+  const ref=POE2GRAPH.magicCost(it.D, S.craft, S.prices, POE2SIM, r, ms.map(tg), 'restart'); (S.magRef=S.magRef||{})[key] = {annul:v, restart:ref};
+  return C[key] = v ? v.div : 0; }
+/* 비용(13장 사용자 확정 11-13 22:37): 매직 2옵션까지는 '매직 베이스 구입'이 기본이라 매직 굴림(magicDiv)은 비용에 넣지 않고 참고값으로만(검사 표 아래 '직접 굴리면 약 n div') */
+const revCost = (it, d, res) => res ? (res.useDiv ?? res.mean) : null;
 // 초안 만들기(사용자 확정 2026-11-11): 여러 경우의 수를 플로우차트 시뮬로 계산해 가장 싼 것을 초안으로. 최소 minMs(화면은 10초) 동안 계산하고,
 // 남는 시간에는 상위 후보를 더 많이 돌려 값을 다듬음. 무거운 아이템은 1차 계산만으로 그 시간을 넘김. 후보 = 노하우(K5·K6) × 복구 방법·면 순서·반복 생략 × 엑잘 등급
 async function bestDraftAsync(it, an, opt, tick, minMs){ const t0=performance.now(), nap = ms => new Promise(r=>setTimeout(r, ms||0)), el = () => performance.now()-t0;
@@ -712,7 +712,7 @@ async function bestDraftAsync(it, an, opt, tick, minMs){ const t0=performance.no
   const sig = d => JSON.stringify(d.nodes.map(n=>[n.do,n.cur,n.omens,n.target,n.fail])), seen=new Set(), C=[]; let runs=0;
   const say = ph => tick && tick({phase:ph, n:C.length, runs, ms:el()});
   for(const K of kn) for(const v of RV) for(const x of EX){ try{ const o={...v.o, ...x.o}, d=makeDraft(it, K.a, {...(opt||{}), ...o, market:1e9}); if(!d) continue; const sg=sig(d); if(seen.has(sg)) continue; seen.add(sg);
-      if(verifyDraft(it, K.a, d).some(z=>z.lv==='err')) continue; C.push({K, o, k:[v.k, x.k].filter(Boolean).join('+'), g:POE2GRAPH.fromDraft(d, it.D, {craft:S.craft, grades:['high']}), mag:magicDiv(it, d), sum:0, n:0, bad:false}); }catch(_){ } }
+      if(verifyDraft(it, K.a, d).some(z=>z.lv==='err')) continue; C.push({K, o, k:[v.k, x.k].filter(Boolean).join('+'), g:POE2GRAPH.fromDraft(d, it.D, {craft:S.craft, grades:['high']}), mag:0, sum:0, n:0, bad:false}); }catch(_){ } }
   say('make'); await nap(30);
   const roll = (c, N, seed) => { try{ const st=c.g.strategies[0], r=POE2SIM.simulate({...c.g, maxSteps:1e5}, it.D, S.craft, S.prices, st.params, N, seed); if(r.reqOk<0.98){ c.bad=true; return; } c.sum+=(r.useDiv+c.mag)*N; c.n+=N; runs+=N;   /* 비용 기준 = revCost(W2) */ }catch(_){ c.bad=true; } };
   const mean = c => c.bad || !c.n ? Infinity : c.sum/c.n;
@@ -912,9 +912,10 @@ function makeDraft(it, an, opt){
       made.push({r, id:n.id}); cnt[r.m.side]++; return n; };
     // policy 18: up to Hard (no fracture), buy a magic base that already has the core lines of this class/base (priority.json),
     // one prefix + one suffix, the highest-ranked ones on the pasted item (ties: the rarer one)
-    const buy = (()=>{ if(!PRI || diff>3 || j5?.B || mqGi>=0) return null;
+    /* 사용자 확정 11-13 22:37: 매직 2옵션(접두 1 + 접미 1)까지 맞추는 시작은 '매직 베이스 구입'이 기본(거래소가 직접 굴리기보다 쌈) — 난이도·핵심 옵션 조건을 없앰. 굴림 비용은 참고값(magicDiv) */
+    const buy = (()=>{ if(j5?.B || mqGi>=0) return null;
       const ub = opt?.buy, pick = sd => rnd.filter(r=>r.m.side===sd && r.how==='n').sort((a,b)=>(ub ? (ub.has(b.m)?1:0)-(ub.has(a.m)?1:0) : 0) || coreRank(a)-coreRank(b) || (a.pAny??1)-(b.pAny??1))[0];   // the user can say which must-haves the bought magic base has
-      const L = ['p','s'].map(pick).filter(Boolean); return L.some(r=>coreRank(r)<99 || ub?.has(r.m)) ? L : null; })();
+      const L = ['p','s'].map(pick).filter(Boolean); return L.length ? L : null; })();
     if(buy){ start.rar='magic'; start.mods = buy.map(r=>({gi:r.m.gi, tmax:Math.max(1,r.tierNo)}));
       buy.forEach(r=>{ cnt[r.m.side]++; made.push({r, id:nodes[0].id}); rnd.splice(rnd.indexOf(r),1); });
       nodes[0].note = note(`${buy.map(lk).join(' + ')} 매직 베이스 구입.${baseQ?` ${baseQ.kr}.`:''}`, `Buy a magic base with ${buy.map(le).join(' + ')}.${baseQ?` ${baseQ.en}.`:''}`); }
@@ -1158,6 +1159,13 @@ function makeDraft(it, an, opt){
     else if(cnt[sd] < cap[sd] && remO===0 && cnt[oth] < cap[oth]){ cs = oth;
       push({phase:'ess', do:'exalt', cur:'Exalted_Orb', preCnt:cnt[oth], ...(room(sd)?{omens:[SIDE_OMEN.exalt[oth]]}:{}), target:{junk:oth}, note:note(`${sideKr(oth)}에 버릴 옵션 하나. 에센스는 무작위로 옵션 하나를 지우니, 이미 만든 ${sideKr(sd)} 대신 이 옵션이 지워지게 반대쪽에 만듦.`, `A throwaway ${sideEn(oth)}: the essence removes a random line, so it goes here instead of a ${sideEn(sd)} already made.`)});
       cnt[sd]++; why = note(`${sideKr(oth)}엔 분열 옵션과 방금 만든 버릴 옵션뿐이라 그 옵션이 지워지고, ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음.`, `The throwaway ${sideEn(oth)} is the only removable one there, so it goes and ${le(r)} lands on the ${sideEn(sd)}.`); }
+    else if((()=>{ /* W5(Seek 장화 초안: 그쪽에 잡옵을 엑잘로 넣고 징조 없이 합금 → 좋은 옵션이 지워질 위험 1/2): 반대쪽에 자리가 있고 반대쪽 버릴 옵션 하나를 결정화로 지우는 쪽이
+        좋은 옵션을 잃을 위험이 더 작으면 그쪽으로 — 반대쪽에 잡옵 하나를 엑잘로 넣고 반대쪽 결정화의 징조 + 에센스·합금 */
+        if(junk[sd] || cnt[oth] >= cap[oth] || cnt[sd] >= cap[sd]) return false; const remS = cnt[sd] - frs.filter(x=>x.m.side===sd).length, goodS = remS - junk[sd], goodO = remO - junk[oth];
+        const riskS = goodS/(remS+1), riskO = goodO/(remO+1); return riskO < riskS; })()){ cs = oth;
+      push({phase:'ess', do:'exalt', cur:'Exalted_Orb', preCnt:cnt[oth], ...(room(sd)?{omens:[SIDE_OMEN.exalt[oth]]}:{}), target:{junk:oth}, note:note(`${sideKr(oth)}에 버릴 옵션 하나. ${sideKr(sd)}엔 이미 만든 옵션이 있어 그쪽 대신 이 옵션이 지워지게 반대쪽에 만듦.`, `A throwaway ${sideEn(oth)}: the ${sideEn(sd)}es already made stay, so this line is the one to go.`)});
+      const goodO = remO - junk[oth]; pBet = 1 - goodO/(remO+1); backB = pBet<1 ? [...made].reverse().find(x=>x.r.m.side===oth) : null;
+      cnt[sd]++; why = note(`${sideKr(oth)}의 버릴 옵션이 지워지고 ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음.`, `The throwaway ${sideEn(oth)} goes and ${le(r)} lands on the ${sideEn(sd)}.`); }
     else { if(!junk[sd]){ push({phase:'ess', do:'exalt', cur:'Exalted_Orb', preCnt:cnt[sd], ...(room(other(sd))?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${e.kr}${josa(e.kr,'이','가')} 바꿀 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${e.en} to replace.`)}); cnt[sd]++; junk[sd]++; }
       // a full side: the essence line has nowhere else to go, so it always replaces a line on that side (no omen needed), any removable one
       if(cnt[sd] >= cap[sd]){ const remS = cnt[sd] - frs.filter(x=>x.m.side===sd).length, pS = remS ? junk[sd]/remS : 1, back = [...made].reverse().find(x=>x.r.m.side===sd);
@@ -1257,7 +1265,7 @@ function makeDraft(it, an, opt){
   }
   /* 사용자 2026-11-12(균열 반지): 붙여 넣은 아이템엔 있지만 고르지 않은 옵션(잡옵) 자리가 비어 있으면 마지막에 완벽한 엑잘로 랜덤 옵션을 채움 */
   for(const sd of ['s','p']){ const want = Math.min(cap[sd], an.cnt?.[sd] ?? 0); while(cnt[sd] < want){ const oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
-      push({phase:'fin', do:'exalt', cur:'Perfect_Exalted_Orb', ...(om.length?{omens:om}:{}), target:{junk:sd}, label:{kr:`${sideKr(sd)} 랜덤 옵션`, en:`Random ${sideEn(sd)}`},
+      push({phase:'fin', do:'exalt', cur:'Perfect_Exalted_Orb', junkFill:true, ...(om.length?{omens:om}:{}), target:{junk:sd}, label:{kr:`${sideKr(sd)} 랜덤 옵션`, en:`Random ${sideEn(sd)}`},
         note:note(`${om.length?nk(om[0])+' + ':''}완벽한 엑잘티드 오브로 남은 ${sideKr(sd)} 자리에 랜덤 옵션.`, `${om.length?ne(om[0])+' + ':''}Perfect Exalted Orb fills the free ${sideEn(sd)} with a random line.`)}); cnt[sd]++; } }
   if(!qDone && (it.qTag || (it.cat==='jewellery' && it.qual>20) || an.rows.some(r=>r.m.out))){ const tg = new Set(an.rows.filter(r=>r.m.out && r.g).flatMap(r=>r.g.tg)); const cat = craft.cats.find(c=>(it.cat==='jewel' ? /^Refined/.test(c.id) : !/^Refined/.test(c.id)) && (it.qTag ? c.tag===it.qTag : tg.has(c.tag)));
     const q0 = Math.min(it.qual||20, 20 + impMaxQ(it.b)); if(cat) push({phase:'q', do:'quality', cur:cat.id, target:{quality:q0}, note:note(`${cat.kr}로 퀄리티 ${q0}%.`, `${cat.en} to ${q0}% quality.`)}); }
@@ -1291,8 +1299,14 @@ function makeDraft(it, an, opt){
       nodes:[{id:'q0', phase:'prep', do:'base', note:note(`${lk(F)} + 잡옵 2개 + 미공개 훼손 옵션 1개 희귀.`, `A rare with ${le(F)} + two junk lines + one unrevealed desecrated line.`)},
         ...(baseQ ? [{id:'q1', phase:'prep', do:'manual', label:{kr:`퀄리티 ${it.qual}%`, en:`Quality ${it.qual}%`}, note:note(baseQ.kr, baseQ.en)}] : []),
         {id:'q2', phase:'prep', do:'fracture', cur:'Fracturing_Orb', target:tm(F), fail:{goto:'restart'}, note:note(`훼손 옵션은 분열되지 않아 나머지 옵션 3개 중 ${lk(F)}${josa(lk(F),'이','가')} 분열될 확률 1/3.`, `The desecrated line cannot fracture: ${le(F)} is 1 in 3.`)}]}; }
-  const td = tryDiff(it, an, nodes, start), diff2 = Math.max(diff, td.d);
-  const market = +(opt?.market ?? S.market ?? 0) || 0, tier = S.prices ? tierOf(market>0 ? market : draftCost(it, an, {nodes}, true)) : null, nSoft = softPass(an, nodes), nComp = budgetPass(it, an, nodes, diff2, market, tier) + nSoft;
+  /* 타협 한도의 가격 등급·난이도(W5, 13장 · 10장 난이도 표): 타협 없이 끝까지 맞추는 초안을 하이엔드로 시뮬해 비용 = revCost, 난이도 = 표(graphify diffOf).
+     후보 비교(market 1e9 = 한도 없음)에서는 시뮬하지 않음. 시뮬이 없으면 예전 규칙 추정(estDiff·tryDiff·draftCost) */
+  const market = +(opt?.market ?? S.market ?? 0) || 0, nSoft = softPass(an, nodes); let diff2 = diff, tier = null, pre = null;
+  if(S.prices && market < 1e8 && window.POE2GRAPH && window.POE2SIM){ try{ const d0 = {id:'pre', cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), start, nodes:JSON.parse(JSON.stringify(nodes)), difficulty:diff};
+      const g0 = POE2GRAPH.fromDraft(d0, it.D, {craft:S.craft, grades:['high']}), c0 = POE2GRAPH.check(g0, it.D, S.craft, S.prices, POE2SIM, 60, 1e5), r0 = c0.strategies[0]?.res;
+      if(r0){ const cost = revCost(it, d0, r0), df = POE2GRAPH.diffOf(r0, g0, {expensive:EXP_OM(), mirror:mirrorDiv(), cost}); pre = r0; diff2 = df.d; tier = tierOf(market>0 ? market : cost); } }catch(_){ } }
+  if(!pre){ const td = tryDiff(it, an, nodes, start); diff2 = Math.max(diff, td.d); tier = S.prices ? tierOf(market>0 ? market : draftCost(it, an, {nodes}, true)) : null; }
+  const nComp = budgetPass(it, an, nodes, diff2, market, tier, pre) + nSoft;
   const day = new Date(); const ymd = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
   /* K41(사용자 2026-11-12, 균열 반지): 묶음이 모두 '공격에 ~ 피해 추가'면 같은 쪽의 다른 공격 피해 추가 옵션(물리·화염·냉기·번개)도 받음 — 이미 있는 계열(분열 냉기 등)은 빼고, 티어는 묶음에서 가장 넓은 순위까지 */
   const ATK = /^Adds .* (Physical|Fire|Cold|Lightning) [Dd]amage to Attacks$/;
@@ -1509,7 +1523,7 @@ const GRADE_N = () => ({high:L('하이엔드','High-end'), bal:L('밸런스','Ba
 const DIFF_N = () => [L('입문','Starter'),L('쉬움','Easy'),L('보통','Normal'),L('어려움','Hard'),L('전문가','Expert'),L('극한','Extreme')];
 async function loadBoard(){ if(S.boardR!==undefined) return S.boardR; try{ const b=await fetch('data/board.json').then(r=>r.ok?r.json():null); S.boardR=b?.r||null; }catch(_){ S.boardR=null; } return S.boardR; }
 async function simMean(g, tr, rid){ S.simC=S.simC||{}; const k=g+'|'+tr; if(k in S.simC) return S.simC[k]; S.simC[k]=null;
-  try{ const d=await fetch(`data/sim/${encodeURIComponent(g)}.json`).then(r=>r.ok?r.json():null); const st=d && (d.strategies.find(x=>x.id===tr && !x.hidden) || d.strategies.find(x=>!x.hidden)); S.simC[k]=st?.res ? (st.res.useDiv ?? st.res.mean) + await regMagic(rid) : null; }catch(_){} return S.simC[k]; }
+  try{ const d=await fetch(`data/sim/${encodeURIComponent(g)}.json`).then(r=>r.ok?r.json():null); const st=d && (d.strategies.find(x=>x.id===tr && !x.hidden) || d.strategies.find(x=>!x.hidden)); S.simC[k]=st?.res ? (st.res.useDiv ?? st.res.mean) : null;   /* 매직 굴림은 비용에 넣지 않음(13장 22:37) */ }catch(_){} return S.simC[k]; }
 /* 등록 레시피가 매직 베이스를 사서 시작하면 초안과 같은 기준으로 그 매직 옵션 굴림 비용을 더함(W2, 같은 클래스라 it.D를 씀) */
 async function regMagic(rid){ try{ const it=S.last?.it; if(!it) return 0;
   if(!S.recAll){ if(!S.recLoad) S.recLoad = fetch('data/recipes.json').then(r=>r.ok?r.json():null).then(j=>{ S.recAll = (j && (j.recipes||j)) || []; }).catch(()=>{ S.recAll=[]; }); await S.recLoad; }
@@ -1726,23 +1740,32 @@ function runFlow(it, d){ try{
   let t=performance.now(), c = POE2GRAPH.check(g, it.D, S.craft, S.prices, POE2SIM, 150);
   const dt=performance.now()-t; if(!c.issues.length && dt<600) c = POE2GRAPH.check(g, it.D, S.craft, S.prices, POE2SIM, Math.min(3000, Math.max(300, Math.round(150*1500/Math.max(dt,1)))));
   const bad = new Set(c.issues.map(x=>x.v).filter(Boolean));
-  /* 비용 = revCost(W2): 등급마다 시뮬 useDiv + 매직 베이스 굴림. 표·합치기·가격 등급이 모두 이 값 */
+  /* 비용 = revCost: 등급마다 시뮬 useDiv(베이스 값 제외). 매직 굴림은 참고값 res.magDiv(13장 22:37). 표·합치기·가격 등급이 모두 이 값 */
   const mag = magicDiv(it, d); c.strategies.forEach(x=>{ if(!x.res) return; x.cost = revCost(it, d, x.res); if(mag) x.res.magDiv = mag; });
   const costOf = id => c.strategies.find(x=>x.id===id)?.cost, tierBy = id => { const v=costOf(id); return v!=null ? {priceTier:tierOf(v).id} : {}; };
+  /* 등급 수 = 난이도 표(정책 10장 C11·난이도 표, 리버스 13장 사용자 확정 11-13 20:28, W5): 가장 높은 등급(하이엔드 = 고른 티어) 시뮬로 난이도를 재고
+     극한 = 하이엔드 · 전문가 = 하이엔드·밸런스 · 보통·어려움 = 밸런스·에센셜 · 쉬움 이하 = 에센셜. 표에 있는 등급이 모두 진행 불가면 계산된 가장 높은 등급 하나 */
+  const top = ['high','bal','ess'].map(id=>c.strategies.find(x=>x.id===id)).find(x=>x?.res);
+  const diff = top ? POE2GRAPH.diffOf(top.res, g, {expensive:EXP_OM(), mirror:mirrorDiv(), cost:top.cost}) : null;
+  const want = diff ? POE2GRAPH.gradesFor(diff.d) : ['high','bal','ess'], off = {};
+  if(!c.strategies.some(x=>want.includes(x.id) && x.res && !bad.has(x.id))){ const h=c.strategies.find(x=>x.res && !bad.has(x.id)); if(h) want.push(h.id); }
+  c.strategies.forEach(x=>{ if(!want.includes(x.id)) off[x.id]=true; });
   /* 같은 내용 등급 걸러내기(정책 10장 C17-4·D·J, 리버스에도 같음 — 13장 11-13 20:16): 완성 카드가 같거나 비용이 10% 이내면 높은 등급 하나만 */
   const merged = {}; { const kept=[], fin = id => JSON.stringify((g.finals.find(f=>f.id===id)||{}).lines||[]), meanOf = costOf;
-    for(const st of g.strategies){ const r=c.strategies.find(x=>x.id===st.id); if(!r?.res || bad.has(st.id)) continue;
+    for(const st of g.strategies){ const r=c.strategies.find(x=>x.id===st.id); if(!r?.res || bad.has(st.id) || off[st.id]) continue;
       const hit = kept.find(k=>fin(k)===fin(st.id) || JSON.stringify(g.strategies.find(x=>x.id===k).params)===JSON.stringify(st.params) || (meanOf(k)>0 && meanOf(st.id)>0 && Math.abs(meanOf(st.id)-meanOf(k)) <= 0.1*Math.max(meanOf(k), meanOf(st.id))));
       if(hit) merged[st.id]=hit; else kept.push(st.id); } }
-  const strategies = c.strategies.filter(x=>x.res && !bad.has(x.id) && !merged[x.id]).map(x=>({id:x.id, params:x.params, hidden:false, res:slimRes(x.res)}));
+  const strategies = c.strategies.filter(x=>x.res && !bad.has(x.id) && !merged[x.id] && !off[x.id]).map(x=>({id:x.id, params:x.params, hidden:false, res:slimRes(x.res)}));
   const sim0 = {id:d.id, recipe:d.id, runs:c.strategies[0]?.res?.N||0, generated:new Date().toISOString().slice(0,10), graph:POE2GRAPH.view(g, it.D), strategies};
   /* 그림·레시피에 남는 등급만(합친 등급·진행 불가 등급의 버전과 완성 카드는 뺌) */
   const sim = strategies.length===c.strategies.length ? sim0 : {...sim0, graph:{...sim0.graph, versions:sim0.graph.versions.filter(v=>strategies.some(s=>s.id===v.id)), finals:sim0.graph.finals.filter(f=>strategies.some(s=>s.id===f.id))}};
-  const out = {g, res:c.strategies, issues:c.issues, merged};
+  /* 표에 없는 등급의 검사 문제는 레시피를 막지 않음(그 등급은 만들지 않음) */
+  const issues = c.issues.filter(x=>!x.v || !off[x.v]);
+  const out = {g, res:c.strategies, issues, merged, off, diff};
   /* 2026-11-12(사용자: 균열 반지 — 하이엔드가 사실상 불가능하면 밸런스·에센셜도 안 나오고 올리기 버튼도 없었음): 계산이 된 등급만으로 레시피를 만듦
      2026-11-13 W4: 등급 레시피 = 그 등급 플로우차트를 읽은 것(등록 레시피와 같은 fcread.js — graph2recipe의 JS판). 단계·번호·확률·사용량·갈래·완성 카드가 모두 플로우차트·시뮬 값 */
   const okSt = g.strategies.filter(st=>strategies.some(x=>x.id===st.id) && !bad.has(st.id)), tiers = okSt.map(st=>st.id);
-  const readGrade = (st, id) => { const r = {...d, id, tierGroup:d.id, tier:st.id, sim:1}; delete r.grades;
+  const readGrade = (st, id) => { const r = {...d, id, tierGroup:d.id, tier:st.id, sim:1, ...(diff?{difficulty:diff.d}:{})}; delete r.grades;
     /* 초안 끝의 안내 줄(예: '괜찮은 옵션이면 그대로 두고 진행')은 등급을 모르고 쓴 글이라 완성 줄로 옮기지 않음 — 완성 줄은 '완성.' */
     const nd = (d.nodes||[]).slice(); while(nd.length && nd[nd.length-1].do==='note' && !nd[nd.length-1].optional) nd.pop();
     const rd = FcRead.readRecipe({...r, nodes:nd}, sim, g, tiers, {inherit:true, groups:{[d.cls]: it.D.groups}});
@@ -1751,14 +1774,14 @@ function runFlow(it, d){ try{
     if(r.prep && FcRead.has_prep(sim)) delete r.prep;   /* 준비 단계를 플로우차트가 그리면 옛 접힌 준비는 뺌(build_recipes.py와 같음 — 합계를 두 번 셈) */
     return {...r, ...tierBy(st.id)}; };
   if(okSt.length){ out.lead = {...readGrade(okSt[0], d.id), simInline: sim};
-    if(c.issues.every(x=>x.v)) out.group = {...out.lead, grades: okSt.slice(1).map(st=>readGrade(st, d.id+st.id))}; }   /* 가격 등급 = 그 등급 시뮬 비용(W2) */
+    if(issues.every(x=>x.v)) out.group = {...out.lead, grades: okSt.slice(1).map(st=>readGrade(st, d.id+st.id))}; }   /* 가격 등급 = 그 등급 시뮬 비용(W2) */
   return out; }catch(e){ return {err:String(e.message||e)}; } }
 function flowHTML(F){ const VN={high:L('하이엔드','High-end'), bal:L('밸런스','Balance'), ess:L('에센셜','Essential')}, fd = v => v==null ? '—' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
   if(F.err) return `<div class="flow bad"><b>${L('플로우차트','Flowchart')}</b><p class="iss">${esc(F.err)}</p></div>`;
-  const rows = F.res.map(x=> x.res ? `<tr><td>${VN[x.id]||x.id}${F.merged?.[x.id] ? ` <small>(${L(`${VN[F.merged[x.id]]}와 같은 결과 · 합침`,`same result as ${VN[F.merged[x.id]]}, merged`)})</small>` : ''}</td><td>${fd(x.cost ?? x.res.mean)}</td><td>${fd(x.res.useMedian!=null ? x.res.useMedian+(x.res.magDiv||0) : x.res.median)}</td><td>${fd(x.res.useP90!=null ? x.res.useP90+(x.res.magDiv||0) : x.res.p90)}</td><td>${x.res.bases.toFixed(1)}</td><td>${x.res.reqOk>=0.98?'✓':Math.round(x.res.reqOk*100)+'%'}</td></tr>` : `<tr><td>${VN[x.id]||x.id}</td><td colspan="5">${L('진행 불가','No way through')}</td></tr>`).join('');
+  const rows = F.res.map(x=> x.res ? `<tr><td>${VN[x.id]||x.id}${F.off?.[x.id] ? ` <small>(${L('난이도 표에 없는 등급','not a grade at this difficulty')})</small>` : F.merged?.[x.id] ? ` <small>(${L(`${VN[F.merged[x.id]]}와 같은 결과 · 합침`,`same result as ${VN[F.merged[x.id]]}, merged`)})</small>` : ''}</td><td>${fd(x.cost ?? x.res.mean)}</td><td>${fd(x.res.useMedian!=null ? x.res.useMedian : x.res.median)}</td><td>${fd(x.res.useP90!=null ? x.res.useP90 : x.res.p90)}</td><td>${x.res.bases.toFixed(1)}</td><td>${x.res.reqOk>=0.98?'✓':Math.round(x.res.reqOk*100)+'%'}</td></tr>` : `<tr><td>${VN[x.id]||x.id}</td><td colspan="5">${L('진행 불가','No way through')}</td></tr>`).join('');
   return `<div class="flow ${F.issues.length?'bad':''}"><div class="ch-h"><b>${L('플로우차트 검사','Flowchart check')}</b><span>${F.issues.length ? L('통과 실패 · 아래 문제를 고쳐야 레시피 생성 가능','Not passed — these need fixing before a recipe is made') : L(`단계 ${F.g.nodes.filter(n=>n.kind==='act').length}개를 실제 확률로 ${(F.res[0]?.res?.N||0).toLocaleString()}번씩 끝까지 진행 · 막힘 없음`,`Ran the ${F.g.nodes.filter(n=>n.kind==='act').length} steps to the end ${(F.res[0]?.res?.N||0).toLocaleString()} times each with real odds. No dead ends`)}</span></div>
     <table><thead><tr><th>${L('등급','Grade')}</th><th>${L('평균','Mean')}</th><th>${L('중앙값','Median')}</th><th>${L('운 나쁠 때(90%)','Unlucky (90%)')}</th><th>${L('베이스','Bases')}</th><th>${L('필수 옵션','Must-haves')}</th></tr></thead><tbody>${rows}</tbody></table>
-    <span class="hint">${F.res.some(x=>x.res?.magDiv) ? L('완성 1개당 제작 비용(div) · 베이스 값 제외 · 매직 베이스 옵션 굴림 포함','Crafting cost per finished item (div), base value not included, rolling the magic base included') : L('완성 1개당 제작 비용(div) · 베이스 값 제외','Crafting cost per finished item (div), base value not included')}</span>${(()=>{ const a0=S.last; if(!a0?.it) return ''; const same=similarRecipes(a0.it, a0.an).filter(x=>x.same); const mine=F.res?.find(x=>x.res)?.cost;
+    <span class="hint">${L('완성 1개당 제작 비용(div) · 베이스 값 제외','Crafting cost per finished item (div), base value not included')}${(()=>{ const m=F.res.find(x=>x.res?.magDiv)?.res.magDiv; return m ? ' · '+L(`매직 베이스를 직접 굴리면 약 ${m>=10?Math.round(m):m.toFixed(1)} div 추가`, `rolling the magic base yourself adds about ${m>=10?Math.round(m):m.toFixed(1)} div`) : ''; })()}${F.diff ? ' · '+L('난이도 ','Difficulty ')+DIFF_N()[F.diff.d]+' → '+POE2GRAPH.gradesFor(F.diff.d).map(v=>VN[v]).join(KR()?'·':', ') : ''}</span>${(()=>{ const a0=S.last; if(!a0?.it) return ''; const same=similarRecipes(a0.it, a0.an).filter(x=>x.same); const mine=F.res?.find(x=>x.res && !F.off?.[x.id] && !F.merged?.[x.id])?.cost;
       const best=same.map(x=>({x, m:S.simC?.[x.b.g+'|'+x.b.tr]})).filter(y=>y.m!=null).sort((p,q)=>p.m-q.m)[0]; if(!best || mine==null) return '';
       const r=mine/best.m, nm=esc(best.x.b.ti?.[KR()?'kr':'en']||best.x.id);
       return r>1.1 ? `<p class="iss">${L(`같은 구조 등록 레시피 「${nm}」가 이 초안보다 ${r.toFixed(1)}배 쌈 → 그 레시피를 따르는 것을 권장`,`The same-structure recipe "${nm}" is ${r.toFixed(1)}× cheaper than this draft; follow it instead.`)}</p>` : `<p class="hint">${L(`같은 구조 등록 레시피 「${nm}」와 비용 비슷하거나 더 쌈`,`About as cheap as or cheaper than "${nm}"`)}</p>`; })()}
@@ -1768,7 +1791,7 @@ function showCheck(){
   const c=S.check||[], nE=c.filter(x=>x.lv==='err').length, nW=c.filter(x=>x.lv==='warn').length;
   const ic = {err:'✗', warn:'!', ok:'✓'};
   /* 비용 숫자는 플로우차트 시뮬 하나(W2): 예전 '예상 비용'(규칙 추정 draftCost)은 없애고, 시세를 넣었을 때만 하이엔드(가장 위 등급) 시뮬 비용과 비교 */
-  const F=S.flow||{}, dc = F.res?.find(x=>x.cost!=null)?.cost ?? null, mp = S.draft.marketPrice, fd = v => v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
+  const F=S.flow||{}, dc = F.res?.find(x=>x.cost!=null && !F.off?.[x.id])?.cost ?? null, mp = S.draft.marketPrice, fd = v => v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
   const costL = !mp || dc==null ? '' : `<p class="costl ${dc>mp ? 'over' : ''}">${L('시세','Market')} ${fd(mp)} div${dc>mp?` — ${L('제작 비용이 시세보다 큼, 구입 권장','crafting costs more than buying it')}`:''}${S.draft.compromises?` · ${L(`타협 갈림길 ${S.draft.compromises}곳`,`${S.draft.compromises} settle fork(s)`)}`:''}</p>`;
   const fl = F.wait ? `<div class="flow"><b>${L('플로우차트','Flowchart')}</b><span class="wait">${L('초안으로 플로우차트를 만들고 시뮬레이션으로 끝까지 진행해 보는 중…','Building the flowchart from the draft and running it to the end…')}</span></div>` : (F.res || F.err) ? flowHTML(F) : '';
   const okFlow = !!F.group, label = F.wait ? L('플로우차트 확인 중…','Checking the flowchart…') : !okFlow ? L('플로우차트 검사 통과 실패 · 올리기 불가','The flowchart did not pass, so it cannot be added') : nE ? L('오류가 있어도 만족 — 크래프팅 목록에 올리기','Add to Crafting anyway') : L('만족 — 크래프팅 목록에 올리기','Looks good — add to Crafting');

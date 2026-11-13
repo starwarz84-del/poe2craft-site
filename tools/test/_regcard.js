@@ -8,16 +8,10 @@ const divOf=use=>{ let v=0; for(const k in use) v+=use[k]*(k==='Exalted_Orb'?1:(
 const topUse=use=>Object.entries(use).map(([k,v])=>[k,v,v*(k==='Exalted_Orb'?1:(prices.p[k]||0))/prices.divine]).sort((a,b)=>b[2]-a[2]).slice(0,4).map(([k,v,d])=>`${nm(k)} ${v>=10?Math.round(v):v.toFixed(1)}개(${d>=10?Math.round(d):d.toFixed(1)} div)`);
 /* 비용 기준(W2, 13장 사용자 확정 11-13 20:16·20:28) = 시뮬 useDiv(베이스 구입비만 뺀 모든 커런시, 준비 구역의 분열 과정 포함) + 매직 베이스를 사서 시작하면 그 매직 옵션 굴림 비용.
    리버스 화면(reverse.html magicDiv·revCost)과 같은 계산: 진화 → 확장, 빗나가면 소멸의 오브로 지우고 같은 베이스에 다시, 오브 등급은 시뮬로 가장 싼 것 */
-const GRAPH=require(ROOT+'/site/graphify.js'), MO={transmute:['Perfect_Orb_of_Transmutation','Greater_Orb_of_Transmutation','Orb_of_Transmutation'], augment:['Perfect_Orb_of_Augmentation','Greater_Orb_of_Augmentation','Orb_of_Augmentation']};
+const GRAPH=require(ROOT+'/site/graphify.js');
+/* W5(11-13 21:45): 리버스와 같은 graphify.js magicCost — 먼저 붙는 목표를 첫 옵션으로, 단일 원소 저항은 다른 원소도 성공 + 유동체 */
 function magicDiv(D, r, ms){ if(!ms.length) return 0; const tg = m => m.anyOf ? {anyOf:m.anyOf} : {gi:m.gi, ...(m.tmax?{tmax:m.tmax}:{})};
-  const sim = (a, b) => { const nodes=[{id:'m0', phase:'base', do:'base', cost:'base'}, {id:'m1', phase:'magic', do:'transmute', cur:a, target:tg(ms[0]), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}}}];
-    if(b) nodes.push({id:'m2', phase:'magic', do:'augment', cur:b, target:tg(ms[1]), fail:{goto:'self', via:{cur:'Orb_of_Annulment'}, lost:'m1'}});
-    try{ const g=GRAPH.fromDraft({id:'mag', cls:r.cls, base:r.base, ilvl:r.ilvl, start:{rar:'normal', mods:[]}, nodes, difficulty:0}, D, {craft, grades:['high']}), x=SIM.simulate({...g, maxSteps:2e4}, D, craft, prices, g.strategies[0].params, 200, 3);
-      return x.reqOk>=0.98 ? x.useDiv : Infinity; }catch(_){ return Infinity; } };
-  const B = ms.length>1 ? MO.augment[0] : null; let a0=MO.transmute[0], v=Infinity;
-  for(const a of MO.transmute){ const x=sim(a, B); if(x<v){ v=x; a0=a; } }
-  if(B) for(const b of MO.augment.slice(1)){ const x=sim(a0, b); if(x<v) v=x; }
-  return isFinite(v) ? v : 0; }
+  const v=GRAPH.magicCost(D, craft, prices, SIM, {cls:r.cls, base:r.base, ilvl:r.ilvl}, ms.map(tg)); return v ? v.div : 0; }
 function goals(r){ const gid=r.simId||r.tierGroup||r.id, g=JSON.parse(fs.readFileSync(`${ROOT}/scripts/graphs/${gid}.json`)), D=JSON.parse(fs.readFileSync(`${ROOT}/site/data/c/${g.cls}.json`)), G=D.groups;
   const dropped=new Set(r.nodes.flatMap(n=>[n.target?.removeGi, n.target?.dropGi]).filter(x=>x!=null));
   const card=[], seen=new Set(), put=(opts, fl)=>{ opts=opts.filter(o=>o && o.gi!=null && !dropped.has(o.gi) && !(G[o.gi].f||[]).includes('ItemMaxQuality')); if(!opts.length) return; const k=opts.map(o=>o.gi).sort().join(','); if(seen.has(k)) return; if(opts.length===1 && [...seen].some(x=>x.split(',').includes(String(opts[0].gi)))) return; seen.add(k); card.push({...fl, opts:opts.map(o=>({gi:o.gi, tmax:o.tmax||null}))}); };
@@ -61,6 +55,6 @@ function registered(r, N=1500, card){ const gid=r.simId||r.tierGroup||r.id, g=JS
   // 카드 옵션별로 완성품이 그 옵션을 갖는 비율(등록 레시피가 '대표 옵션' 하나만 카드에 적고 실제로는 여러 옵션 중 하나를 받는 자리를 찾음)
   const per=card.map(()=>0); let nDone=0; { const run=SIM.make(g2,D,craft,st.params), rnd=SIM.rng(5); for(let i=0;i<500;i++) run(rnd,{tally:{visit(){},use(){},base(){},skip(){},byCur(){},edge(){},c1(){},done:(it,cond)=>{ nDone++; card.forEach((_,k)=>{ if(cond({has:'q'+k})) per[k]++; }); }}}); }
   const txt=l=>l.opts.map(o=>(G[o.gi].t[0][4]||'').split('\n')[0]+(o.tmax?` T1${o.tmax>1?'~'+o.tmax:''}`:'')).join(' 또는 ');
-  return {gid, card, cardTxt:card.map(l=>(l.fr?'[분열] ':l.des?'[훼손] ':'')+txt(l)), rnd, per:per.map(x=>x/Math.max(1,nDone)), div:res.useDiv+mag, mag, all:res.mean, bases:res.bases, match:res.reqOk, fromReq, rtags, rreq, om:EXP.reduce((s,k)=>s+(use[k]||0),0), top:topUse(use), qt};
+  return {gid, card, cardTxt:card.map(l=>(l.fr?'[분열] ':l.des?'[훼손] ':'')+txt(l)), rnd, per:per.map(x=>x/Math.max(1,nDone)), div:res.useDiv, mag,   /* 매직 굴림은 비용에 넣지 않고 참고(13장 11-13 22:37) */ all:res.mean, bases:res.bases, match:res.reqOk, fromReq, rtags, rreq, om:EXP.reduce((s,k)=>s+(use[k]||0),0), top:topUse(use), qt};
 }
 module.exports={goals, registered, magicDiv, nm, divOf, topUse, EXP, KT, TK, DIFF, craft, prices, ROOT};

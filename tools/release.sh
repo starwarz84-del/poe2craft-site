@@ -29,6 +29,7 @@ bash tools/test/serve.sh stop >/dev/null 2>&1; bash tools/test/serve.sh start >/
   node _score.js >/dev/null && node skipcheck.js > skipcheck.txt; tail -1 skipcheck.txt
 ) | tee /tmp/poe2-release.log; BAD=$((BAD + $(grep -c '^!!' /tmp/poe2-release.log)))
 node tools/test/_fcparity.js | tail -1 | tee /tmp/poe2-fcparity.log; grep -q "차이 0" /tmp/poe2-fcparity.log || fail "graph2recipe.py ≠ site/fcread.js — node tools/test/_fcparity.js (파이썬을 고쳤으면 fcread.js도 같이)"
+node tools/test/_revgrades.js | tail -1 | tee /tmp/poe2-revgrades.log; grep -q "문제 0" /tmp/poe2-revgrades.log || fail "난이도 표 JS(graphify diffOf) ≠ _difftable.py — node tools/test/_revgrades.js"   # W5 2026-11-13
 python3 tools/test/fc_noinput.py | tail -1
 python3 tools/test/fc_noinput.py | tail -1 | grep -q " 0$" || fail "들어오는 선 없는 상자 있음 — python3 tools/test/fc_noinput.py"
 python3 tools/test/essence_tier.py | tail -1

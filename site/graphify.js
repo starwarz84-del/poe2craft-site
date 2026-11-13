@@ -34,8 +34,10 @@ function fromDraft(d, D, opt={}){
   // the start (bought / fractured) lines are cheap: never widened (정책 32)
   (d.start.mods||[]).forEach(m=>{ if(m.gi!=null) loopGi.delete(m.gi); });
   const grades = opt.grades || gradesFor(d.difficulty||2);
-  const tierCnt = gi => G[gi].t.filter(t=>t[0]<=d.ilvl).length || G[gi].t.length;
-  const P = {}; grades.forEach((v,i)=>{ const p={}; for(const gi of loopGi){ const t0=tmaxOf[gi]||1; p['t'+gi] = String(Math.min(tierCnt(gi), t0 + i)); } P[v]=p; });
+  /* 등급별 티어(정책 10장 C17-1, 리버스 13장 사용자 확정 11-13 20:28, W5): 반복으로 찾는 자리만 — 하이엔드 = 사용자가 고른 티어, 밸런스 = 그 티어와 1~2티어 중 넓은 쪽,
+     에센셜 = 1~4티어 중 넓은 쪽. '1티어' = 아이템 레벨로 붙을 수 있는 가장 좋은 티어(lo). 예전엔 등급 순번만큼(+0/+1/+2) 넓힘 */
+  const loTier = gi => Math.max(1, G[gi].t.findIndex(t=>t[0]<=d.ilvl)+1), WIDE = {high:0, bal:1, ess:3};
+  const P = {}; grades.forEach(v=>{ const p={}; for(const gi of loopGi){ const t0=tmaxOf[gi]||1; p['t'+gi] = String(Math.min(G[gi].t.length, Math.max(t0, loTier(gi) + (WIDE[v]??0)))); } P[v]=p; });
   for(const gi in tmaxOf){ const k='g'+gi; tags[k].tmax = loopGi.has(+gi) ? '$t'+gi : tmaxOf[gi]; }
   for(const gi of Object.keys(tags).map(k=>+k.slice(1))) if(tags['g'+gi].tmax==null && tmaxOf[gi]==null) delete tags['g'+gi].tmax;
   let anyN=0; const anyMemo={}; const anyTag = list => { const ks=[...new Set(list.map(x=>tagOf(x.gi)))]; if(ks.length===1) return ks[0]; const key=ks.slice().sort().join('|'); if(anyMemo[key]) return anyMemo[key]; const k='a'+(++anyN); tags[k]={anyOf:ks}; return anyMemo[key]=k; };
@@ -45,7 +47,9 @@ function fromDraft(d, D, opt={}){
   const chainOf={}, chainN={}; { const ROLL=['exalt','chaos','regal','transmute','augment'], setOf = n => { const t=n.target||{}; return t.junk ? [] : t.anyOf ? t.anyOf.map(x=>x.gi) : t.gi!=null ? [t.gi] : []; };
     const cand = N.filter(n=>ROLL.includes(n.do) && !n.fallbackFor && !n.onLost && !n.optional && setOf(n).length);
     cand.forEach((S,i)=>{ if(chainOf[S.id] || !S.target.anyOf || S.target.anyOf.length<2) return; const L=new Set(setOf(S)), root=anyTag(S.target.anyOf); let k=1;
-      for(const T of cand.slice(i+1)){ if(chainOf[T.id] || (T.branch?.of||'')!==(S.branch?.of||'')) continue; const st=setOf(T); if((st.length<L.size || (S.pool && T.pool && st.length===L.size)) && st.every(g=>L.has(g))){ if(k===1) chainOf[S.id]={tag:root, idx:0}; chainOf[T.id]={tag:root, idx:k++}; } }
+      /* 같은 갈래(공개 성공 / 빗나감)끼리만 묶음(W5) — 예전엔 같은 갈래 주인이면 성공·빗나감 갈래 단계도 한 묶음이라 둘째 단계가 '이미 1개'로 건너뛰었음(MazBro 시전자 목걸이 하이엔드 0%) */
+      const lnOf = x => x.branch ? x.branch.of+':'+x.branch.when : 'main';
+      for(const T of cand.slice(i+1)){ if(chainOf[T.id] || lnOf(T)!==lnOf(S)) continue; const st=setOf(T); if((st.length<L.size || (S.pool && T.pool && st.length===L.size)) && st.every(g=>L.has(g))){ if(k===1) chainOf[S.id]={tag:root, idx:0}; chainOf[T.id]={tag:root, idx:k++}; } }
       if(k>1) chainN[root]=Math.min(k, L.size); });
     /* 묶음(K39): 묶음을 노리는 단계(굴림 + 훼손 공개) 수만큼 세어 완성 조건·완성품 칸에 씀 */
     const pc={}; N.forEach(n=>{ if(!n.pool || n.fallbackFor || n.onLost || n.optional || n.branch) return; const L=n.do==='reveal' ? n.target?.reveal?.anyOf : ROLL.includes(n.do) ? n.target?.anyOf : null; if(!L) return; const tg=anyTag(L); pc[tg]={k:(pc[tg]?.k||0)+1, n:L.length}; });
@@ -118,12 +122,24 @@ function fromDraft(d, D, opt={}){
     if(!F.via) return go;
     const id='v'+(++vN)+n.id, v=F.via, a = v.cur==='Orb_of_Annulment' ? 'annul' : /Bone|Jawbone|Rib|Collarbone|Cranium/.test(v.cur||'') ? 'desecrate' : 'annul';
     const lostTo = F.lost ? (byId[F.lost]?.do==='base' ? 'h1' : cleanTo(F.lost)) : null, lostTag = F.lost ? (keep.find(k=>k.maker===F.lost)?.tag || targetTag(byId[F.lost]?.target)) : null;
-    const edges=[...(lostTo && lostTag ? [{if:{removed:lostTag}, to:lostTo, res:'fail', lost:lostTag}] : []), ...lostEdges({id}, keep).filter(e=>e.if.removed!==lostTag), {to:go}];
+    /* 지운 옵션 확인 순서(W5): 낱개 옵션(산 베이스 옵션 등) 먼저, 그 단계가 노린 옵션은 뒤 — 묶음 태그(anyOf)가 산 옵션을 품으면(K39 희귀도 반지: 산 희귀도 접두가 묶음에 들어감)
+       그 옵션이 지워져도 '노린 옵션이 지워짐'으로 읽혀 새 베이스 대신 엑잘로 돌아가고 완성품에 산 옵션이 없었음(33%) */
+    const le=lostEdges({id}, keep).filter(e=>e.if.removed!==lostTag), lt = lostTo && lostTag ? [{if:{removed:lostTag}, to:lostTo, res:'fail', lost:lostTag}] : [];
+    const edges = tags[lostTag]?.anyOf ? [...le, ...lt, {to:go}] : [...lt, ...le, {to:go}];
     extra.push({id, kind:'act', group:'main', act:a, cur:v.cur, omens:v.omens, label: a==='annul' ? K('소멸의 오브 사용','Use an Orb of Annulment') : LABEL[a],
       goal: (v.omens||[]).includes('Omen_of_Light') ? K('훼손 옵션 제거','Remove the desecrated modifier') : K('소멸의 오브 사용','Use an Orb of Annulment'), edges, _row:r, _col:2});
     return id; }
 
-  let hasCmp=false; const softTags=new Set();
+  /* 갈래 주인(공개 등) 뒤, 첫 갈래 단계 전에 본선 단계가 있으면(MazBro 시전자 목걸이: 공개 → 퀄리티·엑잘(본선) → 공개 결과로 갈래) 예전엔 공개에서 바로 갈래로 건너뛰어
+     본선 단계를 거치지 않았고(접두 옵션 하나 덜 만듦, 하이엔드 완성 조건 0%) 본선 끝은 갈래를 모른 채 완성으로 갔음 → 공개 뒤 본선으로 이어 가고 본선 끝에서 공개 결과(원하는 옵션 있음)로 갈래 */
+  const deferOf={}, joinOf={}; N.forEach((n,i)=>{ if(n.branch || !N.some(x=>x.branch?.of===n.id)) return; const b0=N.findIndex(x=>x.branch?.of===n.id);
+    const mids=N.slice(i+1, b0).filter(m=>isMainish(m) && !m.branch && m.do!=='note' && DO2ACT[m.do]); if(!mids.length) return;
+    deferOf[n.id]={next:mids[0].id}; joinOf[mids[mids.length-1].id]={owner:n, ok:branchFirst(n.id,'ok'), miss:branchFirst(n.id,'miss')}; });
+  let hasCmp=false, hasCmpL=false, hasFx=false; const softTags=new Set();
+  /* 그쪽 마지막 옵션: 이 단계 뒤 본선에 같은 쪽 옵션을 굴려 노리는 단계(엑잘·카오스·공개 등)가 없음 — 에센스·합금처럼 확정으로 붙는 단계는 세지 않음 */
+  const sideOfT = t => { if(!t) return null; if(t.side) return t.side; const gi = t.gi ?? t.anyOf?.[0]?.gi ?? t.reveal?.gi ?? t.reveal?.anyOf?.[0]?.gi; return gi!=null && G[gi] ? G[gi].g : (typeof t.junk==='string' ? t.junk : t.unrev || null); };
+  const lastOfSide = n => { const sd=sideOfT(n.target); if(!sd) return false; const i=N.indexOf(n);
+    return !N.slice(i+1).some(m=>isMainish(m) && !m.optional && m.do!=='note' && ['exalt','chaos','reveal','regal','augment','transmute'].includes(m.do) && !(m.target||{}).junk && sideOfT(m.target)===sd); };
   const retry0 = n => n.fail || n.compromise || (fb[n.id]||[]).length || N.some(x=>x.branch?.of===n.id);
   const emit = (n, r, col) => {
     const a = DO2ACT[n.do]; if(!a) return null;
@@ -141,12 +157,15 @@ function fromDraft(d, D, opt={}){
     if(a==='quality'){ o.count=t.quality||20; o.q=t.quality||20; }
     if(a==='rune'){ const rn=t.rune || (t.runeSwap||[])[0]; if(rn) o.rune=rn; if(t.slots) o.slots=t.slots; if(n.label) o.goal=n.label; }
     if(n.extra) o.extraUse=n.extra;
+    /* 에센셜 접두 마무리(랜덤 옵션 채우기) = 상위 엑잘(리버스 13장 사용자 확정 11-13 20:22, W5): 다른 등급은 초안 오브 그대로 */
+    if(n.junkFill && a==='exalt' && t.junk==='p' && n.cur!=='Greater_Exalted_Orb' && grades.includes('ess')){ o.fillEss=true; o.over=[{param:{fx:'g'}, set:{cur:'Greater_Exalted_Orb'}}]; hasFx=true; }
     /* K40(2026-11-12): 절사 반복 — 시뮬이 그때그때 절사·절사 + 말소·말소만(1/2)을 고름(잡옵이 지킬 옵션보다 높으면 말소만) */
     if(n.trim && a==='chaos'){ const kp = n.trim.keep?.length ? anyTag(n.trim.keep) : null; o.trim = {side:n.trim.side, ...(kp?{keep:kp}:{})}; o.omens=(o.omens||[]).filter(x=>!/Whittling|Erasure/.test(x)); if(!o.omens.length) delete o.omens; }
     // success condition
     const okIf = tg && !t.junk && ['transmute','augment','regal','exalt','chaos','reveal'].includes(a) ? (a==='reveal' && !n.pool ? {any:[{added:tg},{has:tg}]} : {added:tg}) : (a==='essence' && o.liquid && o.alt ? {added:tg} : null);   // a reveal: the wanted line may already be on the item
-    const nxt = n.branch==null && N.some(x=>x.branch?.of===n.id) ? (branchFirst(n.id,'ok')||nextMain(n)) : nextMain(n);
-    const missTo = N.some(x=>x.branch?.of===n.id) ? branchFirst(n.id,'miss') : null;
+    const dj = deferOf[n.id];   /* 갈래 결정을 뒤로 미룸(W5): 갈래 전에 본선 단계가 더 있으면 성공·빗나감 모두 그 단계로, 갈래는 그 본선 끝(join)에서 */
+    const nxt = dj ? dj.next : n.branch==null && N.some(x=>x.branch?.of===n.id) ? (branchFirst(n.id,'ok')||nextMain(n)) : nextMain(n);
+    const missTo = dj ? dj.next : N.some(x=>x.branch?.of===n.id) ? branchFirst(n.id,'miss') : null;
     o.edges.push(...lostEdges(n, keep));
     const Fx = n.fail || n.compromise?.fail; if(okIf && retry0(n) && (a==='reveal' || (a!=='chaos' && !(fb[n.id]||[]).some(x=>x.do!=='note') && !Fx?.via))) o.edges.push({if:{famBlock:tg}, to:'h1', res:'fail', hide:true});   // nothing on the way back can clear the blocking line   // another line already holds the wanted family: a new base
     if(okIf) o.edges.push({if:okIf, to:nxt, res:'ok'});
@@ -157,14 +176,22 @@ function fromDraft(d, D, opt={}){
     const retry = missTo || (reals.length ? reals[0].id : failPath(n, F, keep, r));
     if(okIf || missTo){
       if(n.compromise?.soft && !missTo){ softTags.add(tg); o.edges.push({to:nxt, res:'fail'}); }   // 유효 옵션(사용자 확정 2026-11-11): 한 번만 시도하고 빗나가면 모든 등급에서 그대로
-      else if((n.compromise || notes.length) && retry && !missTo){ hasCmp=true; o.edges.push({if:{param:{cmp:'retry'}}, to:retry, res:'fail'}, {to:nxt, res:'fail'}); }
+      else if((n.compromise || notes.length) && retry && !missTo){
+        /* 갈림(W5, 정책 10장 C17-2·리버스 13장 20:22): 필수 훼손 공개는 등급과 상관없이 다시(빛의 징조·아스트리드), 그쪽 마지막 옵션(뒤에 그쪽을 굴리는 단계가 없음)은
+           하이엔드만 다시 하고 밸런스·에센셜은 그대로(cmpl), 그 밖의 타협은 에센셜만 그대로(cmp) */
+        const kind = a==='reveal' ? 'des' : lastOfSide(n) ? 'cmpl' : 'cmp';
+        if(kind==='des') o.edges.push({to:retry, res:'fail'});
+        else { (kind==='cmpl' ? (hasCmpL=true) : (hasCmp=true)); o.edges.push({if:{param:{[kind]:'retry'}}, to:retry, res:'fail'}, {to:nxt, res:'fail'}); } }
       else if(retry) o.edges.push({to:retry, res:'fail'});
       else o.edges.push({to:nxt, res:'fail'}); }
     // already done (a line that came back after a loss): skip the step
     if(t.skipHas!=null && !n.k42){ const c={has:tagOf(t.skipHas)}; o.skipIf = n.preCnt!=null && typeof t.junk==='string' ? {any:[c, {not:{sideLt:{side:t.junk, n:n.preCnt+1}}}]} : c; o.skipTo=nxt; }   /* K42: 빗나간 엑잘 자리에 이미 붙은 에센스 — 버릴 옵션·에센스 단계를 건너뜀 */
     else if(ch){ o.skipIf={count:{tag:ch.tag, min:ch.idx+1}}; o.skipTo=nxt; }
     else if(tg && !t.junk && !t.anyOf && a!=='reveal' && (okIf || a==='essence')) { o.skipIf={has:tg}; o.skipTo=nxt; }   // anyOf (policy 6: any single resistance) may already be met by another line
-    else if(t.junk && ['exalt','chaos'].includes(a)){ const s=typeof t.junk==='string' ? t.junk : omSide(n.omens,/Exaltation/); if(s && a==='exalt'){ o.skipIf={full:s}; o.skipTo=nxt; } }
+    else if(t.junk && ['exalt','chaos'].includes(a)){ const s=typeof t.junk==='string' ? t.junk : omSide(n.omens,/Exaltation/); if(s && a==='exalt'){ o.skipIf={full:s}; o.skipTo=nxt;
+        /* 붙여 넣은 옵션 수만큼 채우는 엑잘(junkFill)인데 그쪽이 이미 꽉 참(앞 단계 카오스·타협이 반대쪽 대신 그쪽에 붙임) → 반대쪽 자리를 채우는 엑잘로(W5, MazBro 시전자 목걸이 밸런스 59%가 옵션 5개로 끝남) */
+        if(n.junkFill){ const os = s==='p' ? 's' : 'p', tw={id:n.id+'o', kind:'act', group:'main', act:'exalt', cur:o.cur, label:o.label, goal:K(`${sideWord(os).kr} 랜덤 옵션`, `Random ${sideWord(os).en.toLowerCase()}`), skipIf:{full:os}, skipTo:nxt, edges:[{to:nxt, res:'ok'}], _row:r, _col:1};
+          if(o.over) tw.over=o.over; extra.push(tw); o.skipTo=tw.id; } } }
     else if(a==='desecrate' && !t.fromMark){ const rv=N.slice(N.indexOf(n)+1).find(x=>x.do==='reveal'); const rt=rv && targetTag(rv.target); o.skipIf = rt ? {any:[{unrev:true}, rv.pool ? {count:{tag:rt, min:rv.pool}} : {has:rt}]} : {unrev:true}; o.skipTo=nxt; }
     o._row=r; o._col=col;
     return o; };
@@ -206,6 +233,11 @@ function fromDraft(d, D, opt={}){
     if(n.k42){ o.edges = o.edges.map(e=>e.res==='ok' ? {...e, to:X.id} : e); const rest=(fb[X.id]||[]).filter(x=>x!==n && x.do!=='note' && !skipNode(x));
       o.skipTo = rest.length ? rest[0].id : (failPath(X, X.fail, keepBefore(X), xo._row) || xn); }
     fbOut.push(o); }
+  /* 미룬 갈래의 본선 끝(join): 그 단계의 다음(성공) 선을 공개 결과 갈래로 둘로 나눔 — 원하는 옵션이 있으면 성공 갈래, 없으면 빗나감 갈래 */
+  for(const o of mainOut){ const J=joinOf[o.id]; if(!J) continue; const T=targetTag(J.owner.target), j0=nextMain(byId[o.id]);
+    o.edges = o.edges.flatMap(e=>{ if(e.to!==j0 || e.hide || e.if?.removed) return [e]; const out=[];
+      if(J.ok) out.push({...e, if: e.if ? {all:[e.if, {has:T}]} : {has:T}, to:J.ok}); out.push({...e, to:J.miss||J.ok||e.to}); return out; });
+    if(o.skipTo===j0) o.skipTo = J.miss||J.ok||o.skipTo; }
   const all=[...mainOut, ...fbOut, ...extra];
   // positions: main lane rows, the rest to the right (one column per kind), sharing the row of the step they serve
   const taken={}; all.forEach(o=>{ let c=o._col||0; if(c>0){ while(taken[c+'|'+o._row]) c++; taken[c+'|'+o._row]=1; } o.pos=[c, o._row]; delete o._row; delete o._col; });
@@ -224,22 +256,30 @@ function fromDraft(d, D, opt={}){
   // ---------- versions, strategies, finals, require
   const params={}; for(const gi of loopGi) params['t'+gi]={kr:'티어', en:'Tier', values:{}};
   grades.forEach(v=>{ for(const gi of loopGi){ const x=P[v]['t'+gi]; const lo=Math.max(1, G[gi].t.findIndex(t=>t[0]<=d.ilvl)+1), n=+x; params['t'+gi].values[x]=K(n<=lo?`${lo}티어`:`${lo}~${n}티어`, n<=lo?`T${lo}`:`T${lo}–${n}`); } });
-  if(hasCmp){ params.cmp={kr:'빗나가면', en:'On a miss', values:{retry:K('다시 작업','Rework'), settle:K('타협 (그대로)','Settle (keep it)')}};
-    grades.forEach((v,i)=>{ P[v].cmp = i===grades.length-1 && grades.length>1 ? 'settle' : 'retry'; }); if(grades.length===1) P[grades[0]].cmp='retry'; }
-  const cmpTags = new Set(mainOut.filter(o=>o.edges.some(e=>e.if?.param?.cmp)).flatMap(o=>[...(o.show||[]), targetTag(byId[o.id]?.target)].filter(Boolean)));
+  /* 갈림 등급(W5): cmp = 에센셜만 그대로, cmpl(그쪽 마지막 옵션) = 하이엔드만 다시(C17-2). 등급 이름으로 정함 — 예전엔 등급 목록의 마지막 하나만 그대로 */
+  if(hasCmp){ params.cmp={kr:'빗나가면', en:'On a miss', values:{retry:K('다시 작업','Rework'), settle:K('타협 (그대로)','Settle (keep it)')}}; grades.forEach(v=>{ P[v].cmp = v==='ess' ? 'settle' : 'retry'; }); }
+  if(hasCmpL){ params.cmpl={kr:'마지막 옵션이 빗나가면', en:'Last line missed', values:{retry:K('다시 굴림','Roll again'), settle:K('그대로','Keep it')}}; grades.forEach(v=>{ P[v].cmpl = v==='high' ? 'retry' : 'settle'; }); }
+  if(hasFx){ params.fx={kr:'마무리 엑잘', en:'Finishing exalt', values:{p:K('초안 오브','Draft orb'), g:K('상위 엑잘티드 오브','Greater Exalted Orb')}}; grades.forEach(v=>{ P[v].fx = v==='ess' ? 'g' : 'p'; }); }
+  const cmpBy = k => new Set(mainOut.filter(o=>o.edges.some(e=>e.if?.param?.[k])).flatMap(o=>[...(o.show||[]), targetTag(byId[o.id]?.target)].filter(Boolean)));
+  const cmpT = {cmp:cmpBy('cmp'), cmpl:cmpBy('cmpl')}, cmpTags = new Set([...cmpT.cmp, ...cmpT.cmpl]);
+  const settleOf = (v, t) => (P[v].cmp==='settle' && cmpT.cmp.has(t)) || (P[v].cmpl==='settle' && cmpT.cmpl.has(t));
   const finalTags = cur.filter(l=>l.tags).map(l=>l.tags[0]);
   const reqHas = [...new Set(finalTags)].filter(t=>!softTags.has(t) && !(tags[t]?.gi!=null && G[tags[t].gi].f.includes('ItemMaxQuality')));
   /* 같은 태그 두 줄(일반 + 훼손 같은 옵션, 2026-11-13 W1): 완성품에 그 수만큼 있어야 완성 */
-  const occ = t => tags[t]?.gi!=null ? (d.dupGi?.[tags[t].gi]||0) : 0;   /* 붙여 넣은 아이템의 줄 수(완성 카드 줄은 중복이 생길 수 있어 쓰지 않음) */
+  /* 같은 묶음(anyOf) 태그 두 줄(예: 아무 원소 저항 두 개, 2026-11-13 W5): 완성 카드에 그 태그 줄이 둘이면 완성 조건도 두 개(fincheck와 같음) */
+  const leafN = t => new Set((tags[t]?.anyOf||[]).map(k=>tags[k]?.gi).filter(x=>x!=null)).size;   /* 묶음 잎 옵션 수 — 갈래(성공·빗나감 경로)가 같은 아이템 칸에 둘 다 쌓이면 줄이 잎 수보다 많아질 수 있음 */
+  const occ = t => tags[t]?.gi!=null ? (d.dupGi?.[tags[t].gi]||0) : tags[t]?.anyOf ? Math.min(leafN(t), cur.filter(l=>l.tags?.[0]===t).length) : 0;   /* 붙여 넣은 아이템의 줄 수(완성 카드 줄은 중복이 생길 수 있어 쓰지 않음) */
   const need1 = t => { const n=Math.max(chainN[t]||0, occ(t)); return chainN[t] || n>1 ? {count:{tag:t, min:n}} : {has:t}; };
-  const require = {all: reqHas.map(t=> cmpTags.has(t) ? {any:[need1(t),{param:{cmp:'settle'}}]} : need1(t))};
+  const require = {all: reqHas.map(t=> cmpTags.has(t) ? {any:[need1(t), ...['cmp','cmpl'].filter(k=>cmpT[k].has(t)).map(k=>({param:{[k]:'settle'}}))]} : need1(t))};
   const desc = v => { const p=P[v], ws=[...loopGi].filter(gi=>p['t'+gi]!=='1'); const parts=[];
     if(ws.length) parts.push(K(`반복으로 찾는 옵션 ${ws.length}개를 넓은 티어로`, `${ws.length} looped line(s) at wider tiers`)); else parts.push(K('고른 티어 그대로','The tiers you picked'));
-    if(p.cmp==='settle') parts.push(K('빗나가면 결과 그대로','keep a miss as it comes'));
+    if(p.cmp==='settle' || p.cmpl==='settle') parts.push(p.cmp==='settle' ? K('빗나가면 결과 그대로','keep a miss as it comes') : K('마지막 옵션은 결과 그대로','keep the last line as it comes'));
     return K(parts.map(x=>x.kr).join(' · '), parts.map(x=>x.en).join(' · ')); };
   /* 규칙 K(2026-11-13 W4): 빗나가도 그대로 두는 등급(cmp settle)에서 그 갈림길이 만든 자리는 완성 카드에 '랜덤 옵션' — 목표 옵션이 늘 붙는 것처럼 보이지 않게 */
-  const settleLine = (v, l) => P[v].cmp==='settle' && l.tags && [l.tags[0], l.rep, l._k].some(t=>t && cmpTags.has(t));
-  const finals = grades.map(v=>({id:v, kr:VN[v].kr+' 옵션', en:VN[v].en, lines: cur.map(l=>{ if(!l.tags) return l; const k = chainN[l.tags[0]] && l.rep ? l.rep : l.tags[0]; return {...l, _k:k}; }).map(l=> settleLine(v, l) ? {side:l.s, random:true, ...(l.m==='d'?{des:true}:{})} : l.tags ? {tag:l._k, tmax: tags[l._k].tmax && String(tags[l._k].tmax)[0]==='$' ? +P[v][String(tags[l._k].tmax).slice(1)] : tags[l._k].tmax, ...(l.m==='f'?{fr:true}:{}), ...(l.m==='d'?{des:true}:{})} : l.m==='r' ? null : {side:l.s, random:true}).filter(Boolean)}));
+  const settleLine = (v, l) => l.tags && [l.tags[0], l.rep, l._k].some(t=>t && settleOf(v, t));
+  /* 완성 카드 줄 중복 빼기(W5, MazBro 시전자 목걸이: 공개 성공·빗나감 갈래가 같은 묶음 옵션을 둘 다 아이템 칸에 넣어 마나 최대치가 두 번 — 접두 4개): 같은 옵션 태그 줄은 붙여 넣은 줄 수(dupGi)까지 */
+  const curF = (()=>{ const seen={}; return cur.filter(l=>{ const k=l.rep && l.rep!==l.tags?.[0] ? l.rep : null; const gi=k ? tags[k]?.gi : null; if(gi==null) return true; seen[k]=(seen[k]||0)+1; return seen[k] <= Math.max(1, d.dupGi?.[gi]||0); }); })();
+  const finals = grades.map(v=>({id:v, kr:VN[v].kr+' 옵션', en:VN[v].en, lines: curF.map(l=>{ if(!l.tags) return l; const k = chainN[l.tags[0]] && l.rep ? l.rep : l.tags[0]; return {...l, _k:k}; }).map(l=> settleLine(v, l) ? {side:l.s, random:true, ...(l.m==='d'?{des:true}:{})} : l.tags ? {tag:l._k, tmax: tags[l._k].tmax && String(tags[l._k].tmax)[0]==='$' ? +P[v][String(tags[l._k].tmax).slice(1)] : tags[l._k].tmax, ...(l.m==='f'?{fr:true}:{}), ...(l.m==='d'?{des:true}:{})} : l.m==='r' ? null : {side:l.s, random:true}).filter(Boolean)}));
   const g={id:d.id, recipe:d.id, cls:d.cls, base:base.en||d.base, ilvl:d.ilvl, note:'리버스 크래프팅 초안에서 만든 플로우차트', params,
     strategies:grades.map(v=>({id:v, params:P[v]})), versions:[...grades].reverse().map(v=>({id:v, kr:VN[v].kr, en:VN[v].en, params:P[v], desc:desc(v)})),
     tags, require, groups:[{id:'prep',kr:'베이스템 완성',en:'Finished base',cols:[0,1]},{id:'main',kr:'옵션 추가 작업',en:'Adding modifiers',cols:[0,1]}],
@@ -273,6 +313,47 @@ function check(graph, D, craft, prices, SIM, N=2000, maxSteps=3e5){ const strate
         : {v:s.id, kr:`${VN[s.id].kr}: 진행이 막힘 (${m})`, en:`${VN[s.id].en}: the flow gets stuck (${m})`}); } }
   return {strategies, issues}; }
 
-const api={fromDraft, view, check, gradesFor};
+/* 난이도 표(정책 10장, 사용자 확정 2026-11-13 14:43 '난이도는 표로 통일' — tools/test/_difftable.py와 같은 경곗값, W5 2026-11-13).
+   시뮬 결과 하나(가장 높은 등급)로: 가장 많이 한 단계(act 상자)의 시도 수, 비싼 징조 수, 평균 비용(div) 셋 중 가장 높은 단계.
+   분열 상자가 있고 평균 베이스 2개 이상이면 최소 어려움(3). 리버스는 cost에 revCost(베이스 값 제외 + 매직 굴림)를 넘김 */
+const DIFF_STEPS=[5,10,150,1500,20000], DIFF_OMENS=[0.5,1,15,25,300], DIFF_COST=[1,5,100,500,null];
+function diffOf(res, graph, o={}){ if(!res) return null; const kinds={}; (graph?.nodes||[]).forEach(n=>kinds[n.id]=n.kind); const exp=new Set(o.expensive||EXP);
+  let mx=0, mn=''; for(const [id,v] of Object.entries(res.nodes||{})){ if(['act','side'].includes(kinds[id]) && v.visits>mx){ mx=v.visits; mn=id; } }
+  let om=0; for(const [k,v] of Object.entries(res.use||{})) if(exp.has(k)) om+=v;
+  const cost = o.cost!=null ? o.cost : res.mean, C=[...DIFF_COST]; C[4]=o.mirror!=null ? o.mirror : Infinity;
+  let lv=0; for(let i=0;i<5;i++) if(mx>=DIFF_STEPS[i] || om>=DIFF_OMENS[i] || cost>=C[i]) lv=i+1;
+  const frac=(graph?.nodes||[]).some(n=>n.act==='fracture'); if(frac && (res.bases||1)>=2) lv=Math.max(lv,3);
+  return {d:lv, steps:mx, node:mn, omens:om, cost, bases:res.bases||1}; }
+
+/* 매직 베이스 굴림 비용(W2 → W5, 리버스 13장 사용자 확정 11-13 20:28·21:45): 노멀 베이스에서 진화 → 확장으로 산 매직 옵션을 만드는 기대 비용(div).
+   ① 목표 옵션 둘 중 먼저 붙는 쪽을 첫 옵션으로 받고 확장은 남은 쪽을 노림(진화·확장 둘 다 '둘 중 아무거나' 묶음)
+   ② 단일 원소 저항(화염·냉기·번개)은 같은 티어의 다른 원소 저항도 성공 → 끝에 유동체 단계(목표 원소가 아니면 사용, 시세 그대로)
+   mode 'annul'(기본) = 빗나가면 소멸의 오브로 지우고 같은 베이스에 다시, 'restart' = 새 노멀 베이스로 처음부터(베이스 수 따로 — 참고값).
+   오브 등급(일반·상위·완벽한)은 시뮬로 가장 싼 것. 결과 {div, bases} 또는 null */
+const ELEM_F = {FireResistance:'Blazing_Flux', ColdResistance:'Chilling_Flux', LightningResistance:'Crackling_Flux'};
+const MAGIC_ORB = {transmute:['Perfect_Orb_of_Transmutation','Greater_Orb_of_Transmutation','Orb_of_Transmutation'], augment:['Perfect_Orb_of_Augmentation','Greater_Orb_of_Augmentation','Orb_of_Augmentation']};
+function magicCost(D, craft, prices, SIM, r, ms, mode='annul'){ ms=(ms||[]).filter(m=>m && (m.gi!=null || m.anyOf)); if(!ms.length || ms.length>2) return null;
+  const G=D.groups, isEl = gi => { const g=G[gi]; return g && g.s==='n' && (g.f||[]).length===1 && ELEM_F[g.f[0]]; };
+  const leaves = m => { const L=(m.anyOf || [m]).map(x=>({gi:x.gi, ...(x.tmax?{tmax:x.tmax}:{})})), out=[...L];
+    if(!m.anyOf && isEl(m.gi)) G.forEach((g,gi)=>{ if(gi!==m.gi && isEl(gi) && g.g===G[m.gi].g && !out.some(x=>x.gi===gi)) out.push({gi, ...(m.tmax?{tmax:m.tmax}:{})}); });
+    return out; };
+  const all = ms.flatMap(leaves), two = ms.length>1, flux = ms.filter(m=>!m.anyOf && isEl(m.gi)).map(m=>({gi:m.gi, cur:ELEM_F[G[m.gi].f[0]]}));
+  const fail = lost => mode==='restart' ? {goto:'restart'} : {goto:'self', via:{cur:'Orb_of_Annulment'}, ...(lost?{lost}:{})};
+  const sim = (a, b) => { const nodes=[{id:'m0', phase:'base', do:'base', cost:'base'}, {id:'m1', phase:'magic', do:'transmute', cur:a, target:{anyOf:all}, ...(two?{pool:2}:{}), fail:fail()}];
+    if(b) nodes.push({id:'m2', phase:'magic', do:'augment', cur:b, target:{anyOf:all}, pool:2, fail:fail('m1')});
+    try{ const g=fromDraft({id:'mag', cls:r.cls, base:r.base, ilvl:r.ilvl, start:{rar:'normal', mods:[]}, nodes, difficulty:0}, D, {craft, grades:['high']});
+      /* 유동체: 목표 원소가 아니면 바꿈(이미 목표 원소면 건너뜀) — 완성 직전에 끼움 */
+      flux.forEach((f,i)=>{ const id='fx'+i, tg='g'+f.gi, nx = i+1<flux.length ? 'fx'+(i+1) : 'ok'; if(!g.tags[tg]) g.tags[tg]={gi:f.gi};
+        g.nodes.forEach(n=>{ (n.edges||[]).forEach(e=>{ if(e.to==='ok' && i===0) e.to='fx0'; }); if(n.skipTo==='ok' && i===0) n.skipTo='fx0'; });
+        g.nodes.splice(g.nodes.length-1, 0, {id, kind:'act', group:'main', act:'flux', cur:f.cur, label:{kr:'유동체',en:'Flux'}, skipIf:{has:tg}, skipTo:nx, edges:[{to:nx, res:'ok'}], pos:[0,8+i]}); });
+      if(flux.length) g.require = {all:[...(g.require?.all||[]), ...flux.map(f=>({has:'g'+f.gi}))]};
+      const x=SIM.simulate({...g, maxSteps:2e4}, D, craft, prices, g.strategies[0].params, 200, 3);
+      return x.reqOk>=0.98 ? {div:x.useDiv, bases:x.bases} : null; }catch(_){ return null; } };
+  const B = two ? MAGIC_ORB.augment[0] : null; let a0=MAGIC_ORB.transmute[0], v=null;
+  for(const a of MAGIC_ORB.transmute){ const x=sim(a, B); if(x && (!v || x.div<v.div)){ v=x; a0=a; } }
+  if(B) for(const b of MAGIC_ORB.augment.slice(1)){ const x=sim(a0, b); if(x && (!v || x.div<v.div)) v=x; }
+  return v; }
+
+const api={fromDraft, view, check, gradesFor, diffOf, magicCost};
 if(typeof module!=='undefined' && module.exports) module.exports=api; else root.POE2GRAPH=api;
 })(typeof window!=='undefined' ? window : globalThis);
