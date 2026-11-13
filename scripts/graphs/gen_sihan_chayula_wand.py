@@ -52,7 +52,7 @@ g = {
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0',
- 'finalItem': {'quality': 20, 'sockets': 2},
+ 'finalItem': {'quality': 0, 'sockets': 2},   # 영상 8:08 완성품 툴팁에 퀄리티 줄 없음(RV4 11-13)
  'finals': [
   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
    'lines': [{'tag': 'chaos', 'fr': True}, {'tag': 'cel', 'ess': True}, {'tag': 'ula', 'des': True},
