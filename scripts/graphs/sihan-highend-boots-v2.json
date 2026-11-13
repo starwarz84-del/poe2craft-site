@@ -15,9 +15,9 @@
      "kr": "1~2티어",
      "en": "T1–2"
     },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
     }
    }
   },
@@ -29,9 +29,9 @@
      "kr": "1~2티어",
      "en": "T1–2"
     },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
     }
    }
   },
@@ -46,6 +46,24 @@
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  },
+  "pk": {
+   "kr": "접두 두 번째·세 번째 옵션",
+   "en": "Second and third prefixes",
+   "values": {
+    "1": {
+     "kr": "징표·빛의 징조로 다시",
+     "en": "Again with the Mark and Omen of Light"
+    },
+    "0": {
+     "kr": "엑잘·공개 결과 그대로",
+     "en": "Keep the exalt and the reveal as they land"
     }
    }
   }
@@ -56,32 +74,60 @@
    "params": {
     "strT": 2,
     "resT": 2,
-    "desT": 1
+    "desT": 1,
+    "pk": 1
    }
   },
   {
    "id": "bal",
    "params": {
-    "strT": 3,
-    "resT": 3,
-    "desT": 2
+    "strT": 2,
+    "resT": 2,
+    "desT": 2,
+    "pk": 1
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "strT": 4,
+    "resT": 4,
+    "desT": 4,
+    "pk": 0
    }
   }
  ],
  "versions": [
   {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "strT": 4,
+    "resT": 4,
+    "desT": 4,
+    "pk": 0
+   },
+   "tier": "ess",
+   "desc": {
+    "kr": "힘·카오스 저항 1~4티어, 접두 엑잘·훼손 공개 결과 그대로",
+    "en": "Strength and Chaos Resistance T1–4, prefix exalt and desecration reveal kept as they land"
+   }
+  },
+  {
    "id": "bal",
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "strT": 3,
-    "resT": 3,
-    "desT": 2
+    "strT": 2,
+    "resT": 2,
+    "desT": 2,
+    "pk": 1
    },
    "tier": "bal",
    "desc": {
-    "kr": "마지막 접두(훼손) 1~2티어, 힘·카오스 저항 1~3티어",
-    "en": "Last prefix (desecrated) T1–2, Strength and Chaos Resistance T1–3"
+    "kr": "마지막 접두(훼손) 1~2티어, 힘·카오스 저항 1~2티어",
+    "en": "Last prefix (desecrated) T1–2, Strength and Chaos Resistance T1–2"
    }
   },
   {
@@ -91,7 +137,8 @@
    "params": {
     "strT": 2,
     "resT": 2,
-    "desT": 1
+    "desT": 1,
+    "pk": 1
    },
    "tier": "high",
    "desc": {
@@ -119,7 +166,11 @@
   },
   "strB": {
    "gi": 0,
-   "tmax": 3
+   "tmax": 2
+  },
+  "strE": {
+   "gi": 0,
+   "tmax": 4
   },
   "fire": {
    "gi": 1
@@ -140,7 +191,11 @@
   },
   "chaosRB": {
    "gi": 4,
-   "tmax": 3
+   "tmax": 2
+  },
+  "chaosRE": {
+   "gi": 4,
+   "tmax": 4
   },
   "ELE": {
    "anyOf": [
@@ -253,13 +308,26 @@
     "has": "chaosR"
    },
    {
-    "count": {
-     "tag": "PRE",
-     "min": 2
-    }
-   },
-   {
-    "has": "PRED"
+    "any": [
+     {
+      "param": {
+       "pk": 0
+      }
+     },
+     {
+      "all": [
+       {
+        "count": {
+         "tag": "PRE",
+         "min": 2
+        }
+       },
+       {
+        "has": "PRED"
+       }
+      ]
+     }
+    ]
    },
    {
     "full": "p"
@@ -339,6 +407,35 @@
     },
     {
      "tag": "chaosRB"
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "armP",
+     "fr": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true,
+     "des": true
+    },
+    {
+     "tag": "armEle"
+    },
+    {
+     "tag": "strE"
+    },
+    {
+     "tag": "chaosRE"
     }
    ]
   }
@@ -1223,6 +1320,25 @@
       "chaosR"
      ]
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "pk": 0
+     },
+     "set": {
+      "goal": {
+       "kr": "접두 두 번째 옵션 — 나오는 대로",
+       "en": "Second prefix: keep what comes"
+      },
+      "edges": [
+       {
+        "to": "p2",
+        "res": "ok"
+       }
+      ]
+     }
+    }
    ]
   },
   {
@@ -1580,6 +1696,72 @@
     {
      "to": "p3"
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "pk": 0
+     },
+     "set": {
+      "pos": [
+       0,
+       13.4
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "방어도 (92—100)% 증가 (분열)",
+        "en": "(92—100)% increased Armour (fractured)",
+        "m": "f",
+        "tags": [
+         "armP"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "이동 속도 35% 증가",
+        "en": "35% increased Movement Speed",
+        "m": "n",
+        "tags": [
+         "ms"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "훼손 옵션 (미공개)",
+        "en": "Desecrated (unrevealed)",
+        "m": "n"
+       },
+       {
+        "s": "s",
+        "kr": "방어도의 +(38—43)%가 원소 피해에도 적용",
+        "en": "+(38—43)% of Armour also applies to Elemental Damage",
+        "m": "n",
+        "tags": [
+         "armEle"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "힘 +(28—30)",
+        "en": "+(28—30) to Strength",
+        "m": "n",
+        "tags": [
+         "str"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "카오스 저항 +(20—23)% (공허 유동체)",
+        "en": "+(20—23)% to Chaos Resistance (Void Flux)",
+        "m": "n",
+        "tags": [
+         "chaosR"
+        ]
+       }
+      ]
+     }
+    }
    ]
   },
   {
@@ -1678,6 +1860,25 @@
       "chaosR"
      ]
     }
+   ],
+   "over": [
+    {
+     "param": {
+      "pk": 0
+     },
+     "set": {
+      "goal": {
+       "kr": "접두 세 번째 옵션(훼손) — 공개 결과 그대로",
+       "en": "Third prefix (desecrated): keep what the reveal gives"
+      },
+      "edges": [
+       {
+        "to": "ok",
+        "res": "ok"
+       }
+      ]
+     }
+    }
    ]
   },
   {
@@ -1747,8 +1948,12 @@
      "en": "T1–2 Strength + Chaos Resistance suffixes: whichever lands first"
     },
     "bal": {
-     "kr": "접미 힘 + 카오스 저항 1~3티어 — 먼저 뜬 것부터",
-     "en": "T1–3 Strength + Chaos Resistance suffixes: whichever lands first"
+     "kr": "접미 힘 + 카오스 저항 1~2티어 — 먼저 뜬 것부터",
+     "en": "T1–2 Strength + Chaos Resistance suffixes: whichever lands first"
+    },
+    "ess": {
+     "kr": "접미 힘 + 카오스 저항 1~4티어 — 먼저 뜬 것부터",
+     "en": "T1–4 Strength + Chaos Resistance suffixes: whichever lands first"
     }
    },
    "steps": [
@@ -1832,6 +2037,12 @@
    "goal": {
     "kr": "접두 이동 속도·생명력 최대치 — 먼저 뜬 것",
     "en": "Movement speed or maximum Life prefix: whichever lands first"
+   },
+   "goalBy": {
+    "ess": {
+     "kr": "접두 두 번째 옵션 — 엑잘 결과 그대로",
+     "en": "Second prefix: keep what the exalt gives"
+    }
    },
    "steps": [
     {
@@ -1940,6 +2151,10 @@
     "bal": {
      "kr": "접두 생명력 최대치 1~2티어(훼손) — 남은 이동 속도·생명력 최대치",
      "en": "T1–2 maximum Life prefix (desecrated): the remaining movement speed or maximum Life"
+    },
+    "ess": {
+     "kr": "접두 세 번째 옵션(훼손) — 공개 결과 그대로",
+     "en": "Third prefix (desecrated): keep what the reveal gives"
     }
    },
    "steps": [

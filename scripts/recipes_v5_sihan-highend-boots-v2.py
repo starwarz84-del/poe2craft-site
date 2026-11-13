@@ -59,4 +59,5 @@ def sh_boots(tier):
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'magic','kr':'매직 만들기','en':'Make it magic'},{'id':'rare','kr':'레어 전환','en':'To rare'},
            {'id':'fracture','kr':'분열','en':'Fracture'},{'id':'suffix','kr':'접미 첫 번째~세 번째 옵션','en':'Suffix options 1–3'},{'id':'prefix','kr':'접두 두 번째·세 번째 옵션','en':'Prefix options 2–3'}],
  'nodes':nodes})
-for _t in ('high','bal'): sh_boots(_t)   # 난이도 4 = 하이엔드 + 밸런스(사용자 확정 2026-11-12), 에센셜은 밸런스와 같은 결과라 뺌(정책 10장 C17)
+for _t in ('high','bal','ess'): sh_boots(_t)   # D4 2026-11-13: 난이도 표 3 → 밸런스·에센셜(C11, 15:42 ②), 단계는 플로우차트(graph2recipe)
+#   # 난이도 4 = 하이엔드 + 밸런스(사용자 확정 2026-11-12), 에센셜은 밸런스와 같은 결과라 뺌(정책 10장 C17)

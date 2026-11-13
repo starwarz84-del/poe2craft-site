@@ -39,9 +39,12 @@ g = {
           '절사의 징조 + 완벽한 카오스 오브(4:09·4:20, 성공 회차 4:19 화염 5티어 → 0:31 냉기 2티어). 룬 교체·퀄리티·신성한 오브는 정책 9·14장대로 뺌. '
           '등급 C17: 하이엔드 = 원소 피해 접두 1티어(절사·공개), 밸런스 = 1~2티어. 엑잘로 붙은 접두가 빗나가도 가장 낮은 레벨이 아니면 절사를 못 써서 그대로 둠(영상 4:30 타협) — 카드의 엑잘 접두 2개는 랜덤 옵션(정책 10장 2번 예외, 시뮬에서 두 개 다 원소 피해인 비율 하이엔드 18%·밸런스 47%).'),
  'params': {
-   'pT': {'kr': '원소 피해 접두', 'en': 'Elemental prefixes', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
- 'strategies': [{'id': 'high', 'params': {'pT': 1}}, {'id': 'bal', 'params': {'pT': 2}}],
+   'pT': {'kr': '원소 피해 접두', 'en': 'Elemental prefixes', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2'), '4': K('1~4티어', 'T1–4')}}},
+ 'strategies': [{'id': 'high', 'params': {'pT': 1}}, {'id': 'bal', 'params': {'pT': 2}}, {'id': 'ess', 'params': {'pT': 4}}],
  'versions': [
+   # D4 2026-11-13: 난이도 표 3(어려움) → 밸런스·에센셜(C11, 사용자 확정 15:42 ②). 에센셜 = C17: 빛의 징조 없음(두 번째 공개도 결과 그대로), 절사 반복 목표 1~4티어
+   {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'pT': 4}, 'tier': 'ess',
+    'desc': K('두 공개 모두 결과 그대로, 절사로 원소 피해 접두 1~4티어', 'Both reveals kept as they land, Whittling for T1–4 elemental prefixes')},
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'pT': 2}, 'tier': 'bal',
     'desc': K('원소 피해 접두 1~2티어', 'T1–2 elemental prefixes')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'pT': 1}, 'tier': 'high',
@@ -55,7 +58,7 @@ g = {
    'pgH': {'anyOf': [t + '1' for t in ELEM], 'shown': 'light1', 'label': PG_H},
    'pgB': {'anyOf': [t + '2' for t in ELEM], 'shown': 'light2', 'label': PG_B},
    'keepW': {'anyOf': ['pg', 'crit', 'as', 'battle']}},
- 'require': {'all': [{'has': 'crit'}, {'has': 'as'}, {'has': 'battle'}, {'full': 'p'}, {'count': {'tag': 'pg', 'min': 1}}, {'desSide': 'p'}]},
+ 'require': {'all': [{'has': 'crit'}, {'has': 'as'}, {'has': 'battle'}, {'full': 'p'}, {'any': [{'param': {'pT': 4}}, {'count': {'tag': 'pg', 'min': 1}}]}, {'desSide': 'p'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0',
@@ -92,6 +95,7 @@ A(id='bd1', kind='act', group='main', pos=[0, 5.4], act='desecrate', cur='Preser
 # 11-13 오후 정책 B·L①: 첫 공개(정확도 막기)는 영상에 빗나감 처리가 없음(빛의 징조 카드 4:00은 두 번째 공개)
 #   → 밸런스는 반복 없이 결과 그대로, 하이엔드만 빛의 징조 + 소멸로 다시(사용자 확정 15:21: 하이엔드는 영상에 없어도 유지)
 HIGH = {'param': {'pT': 1}}
+ESS = {'param': {'pT': 4}}   # D4: 에센셜은 두 번째 공개도 결과 그대로(빛의 징조 없음, C17-3)
 A(id='bv1', kind='act', group='main', pos=[0, 6.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='acc', label=K('공개', 'Reveal'),
   goal=K('접두 정확도 (훼손)', 'Accuracy prefix (desecrated)'), show=['acc'],
   edges=[{'if': {'added': 'acc'}, 'to': 'ex1', 'res': 'ok'},
@@ -111,8 +115,11 @@ A(id='bd2', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Preser
   edges=[{'to': 'bv2'}], item=[EATK, FIRE, UN, CRIT, AS, BAT, RUNE])
 A(id='bv2', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pg', label=K('공개', 'Reveal'),
   goal=K('접두 번개 피해 추가 (훼손) — 남은 원소 피해 접두 중 먼저 뜬 것', 'Desecrated added lightning prefix: whichever remaining elemental prefix lands first'),
+  over=[{'param': {'pT': 4}, 'set': {'goal': K('접두 세 번째 옵션 (훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep what the reveal gives')}}],   # 상자 goalBy는 run.js가 sim 파일에 안 옮겨 over로
   show=ELEM,
-  edges=[{'if': {'added': 'pg'}, 'to': 'wc1', 'res': 'ok'}, {'to': 'bl3', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
+  edges=[{'if': {'added': 'pg'}, 'to': 'wc1', 'res': 'ok'},
+         {'if': ESS, 'to': 'wc1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')},
+         {'to': 'bl3', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[EATK, FIRE, LIGHT, CRIT, AS, BAT, RUNE])
 A(id='bl3', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'bd2', 'label': K('다시 훼손', 'Desecrate again')}])
@@ -137,7 +144,8 @@ g['loops'] = [
  {'id': 'L2', 'nodes': ['bd2', 'bv2', 'bl3'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal', 'fold': True,
   'goal': K('접두 번개 피해 추가 (훼손) — 남은 원소 피해 접두 중 먼저 뜬 것', 'Desecrated added lightning prefix: whichever remaining elemental prefix lands first'),
   'goalBy': {'high': K('접두 원소 피해 1티어 (훼손) — 남은 원소 피해 접두 1티어 중 먼저 뜬 것', 'T1 desecrated elemental prefix: whichever remaining T1 elemental prefix lands first'),
-             'bal': K('접두 원소 피해 1~2티어 (훼손) — 남은 원소 피해 접두 1~2티어 중 먼저 뜬 것', 'T1–2 desecrated elemental prefix: whichever remaining T1–2 elemental prefix lands first')},
+             'bal': K('접두 원소 피해 1~2티어 (훼손) — 남은 원소 피해 접두 1~2티어 중 먼저 뜬 것', 'T1–2 desecrated elemental prefix: whichever remaining T1–2 elemental prefix lands first'),
+             'ess': K('접두 세 번째 옵션 (훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep what the reveal gives')},
   'steps': [K('보존된 턱뼈로 접두 훼손', 'Preserved Jawbone on the prefix') | {'node': 'bd2'},
             K('심연의 메아리의 징조로 공개', 'Reveal with Abyssal Echoes') | {'node': 'bv2'},
             K('빗나가면 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 다시 훼손', 'On a miss, Omen of Light + Orb of Annulment removes only the desecration; desecrate again') | {'node': 'bl3'}],
@@ -148,6 +156,8 @@ g['finals'] = [
   'lines': [{'side': 'p', 'random': True}, {'side': 'p', 'random': True}, {'tag': 'pgH', 'des': True}, {'tag': 'crit'}, {'tag': 'as', 'ess': True}, {'tag': 'battle', 'ess': True}]},
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
   'lines': [{'side': 'p', 'random': True}, {'side': 'p', 'random': True}, {'tag': 'pgB', 'des': True}, {'tag': 'crit'}, {'tag': 'as', 'ess': True}, {'tag': 'battle', 'ess': True}]},
+ {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
+  'lines': [{'side': 'p', 'random': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'crit'}, {'tag': 'as', 'ess': True}, {'tag': 'battle', 'ess': True}]},
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

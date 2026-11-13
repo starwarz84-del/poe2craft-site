@@ -82,5 +82,9 @@ g['loops'] = []
 # 규칙 J(사용자 확정 2026-11-13 14:43, S5): 밸런스·에센셜 완성품 카드가 같아 밸런스 하나로 합침 — 에센셜(메아리 없이 공개, 상위 엑잘)은 뺌
 g['strategies'] = [x for x in g['strategies'] if x['id'] != 'ess']; g['versions'] = [x for x in g['versions'] if x['id'] != 'ess']; g['finals'] = [x for x in g['finals'] if x['id'] != 'ess']
 g['params']['L']['values'] = {'1': g['params']['L']['values']['1']}
+# D4 2026-11-13: 난이도 표 1(쉬움) → 에센셜만(정책 10장 C11·사용자 확정 15:42 ④) — 남은 등급(메아리 공개·완벽한 엑잘) 내용은 그대로, 이름만 에센셜로
+for _x in g['strategies'] + g['versions'] + g['finals']: _x['id'] = 'ess'
+for _x in g['versions']: _x.update(tier='ess', kr='에센셜', en='Essential')
+for _x in g['finals']: _x.update(tier='ess', kr='에센셜 옵션', en='Essential')
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

@@ -36,8 +36,8 @@ g = {
           '11-13 오후 새 정책: (A) 공개 목표 = 에너지 보호막 % 복합(생명력·마나) 아무 티어 중 하나 — 공개 선택지 3개에 있으면 고름, 상자·카드는 글 장비 미리보기의 생명력 복합 (B) 글에 빗나감 처리가 없어 빛의 징조 반복 없음, 공개 결과 그대로 '
           '(D) 그러면 밸런스·에센셜 비용이 같아(10% 이내) 밸런스 하나만. 다음 단계 오브는 복합 1티어일 때만 완벽한 엑잘(글 5단계).'),
  'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('글', 'Guide')}}},
- 'strategies': [{'id': 'bal', 'params': {'v': 1}}],
- 'versions': [{'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
+ 'strategies': [{'id': 'ess', 'params': {'v': 1}}],   # D4 2026-11-13: 난이도 표 0(입문) → 에센셜만(C11·15:42 ④), 내용은 그대로 이름만
+ 'versions': [{'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'v': 1}, 'tier': 'ess',
                'desc': K('글: 공개 선택지에 에너지 보호막 % 복합이 있으면 고르고, 없으면 결과 그대로', 'Guide: take a hybrid % energy shield if the reveal offers one, otherwise keep what comes')}],
  'tags': {'esf': {'gi': 7, 'tmax': 1}, 'enh': {'gi': 34},
           'hybL': {'gi': 9}, 'hybM': {'gi': 10},
@@ -47,7 +47,7 @@ g = {
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'k0',
- 'finals': [{'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
+ 'finals': [{'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
              'lines': [{'tag': 'esf'}, {'tag': 'enh'}, {'side': 'p', 'random': True}, {'side': 's', 'random': True}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]}],
  'finalItem': {'quality': 0, 'sockets': 1},
 }

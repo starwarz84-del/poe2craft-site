@@ -36,20 +36,25 @@ g = {
           '새 정책 A(11-13 14:17): 완성 카드·상자·칸은 성공 회차 옵션(접두 엑잘 = 이동 속도 13:50, 훼손 공개 = 생명력 최대치 16:30, 접미 = 힘·냉기 저항 → 카오스 저항), 판정은 묶음(anyOf) 그대로, 반대 순서는 꿀팁. '
           '내부 결정: 접미 둘째·셋째 자리는 힘·원소 저항 중 먼저 뜬 것(영상은 의뢰인 요청으로 힘을 상위 카오스로 나중에 넣음), 접두 엑잘·훼손은 이동 속도·생명력 중 먼저 뜬 것과 남은 것.'),
  'params': {
-  'strT': {'kr': '힘 목표', 'en': 'Strength target', 'values': {'2': K('1~2티어', 'T1–2'), '3': K('1~3티어', 'T1–3')}},
-  'resT': {'kr': '카오스 저항 목표', 'en': 'Chaos Resistance target', 'values': {'2': K('1~2티어', 'T1–2'), '3': K('1~3티어', 'T1–3')}},
-  'desT': {'kr': '훼손 접두 목표', 'en': 'Desecrated prefix target', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
+  'strT': {'kr': '힘 목표', 'en': 'Strength target', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('1~4티어', 'T1–4')}},
+  'resT': {'kr': '카오스 저항 목표', 'en': 'Chaos Resistance target', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('1~4티어', 'T1–4')}},
+  'desT': {'kr': '훼손 접두 목표', 'en': 'Desecrated prefix target', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2'), '4': K('1~4티어', 'T1–4')}},
+  'pk': {'kr': '접두 두 번째·세 번째 옵션', 'en': 'Second and third prefixes', 'values': {'1': K('징표·빛의 징조로 다시', 'Again with the Mark and Omen of Light'), '0': K('엑잘·공개 결과 그대로', 'Keep the exalt and the reveal as they land')}},
  },
- 'strategies': [{'id': 'high', 'params': {'strT': 2, 'resT': 2, 'desT': 1}}, {'id': 'bal', 'params': {'strT': 3, 'resT': 3, 'desT': 2}}],
+ # D4 2026-11-13: 난이도 표 3(어려움) → 밸런스·에센셜(C11, 사용자 확정 15:42 ②). 밸런스 = C17 반복 목표 1~2티어(힘·카오스 저항 1~3 → 1~2), 에센셜 = 반복 목표 1~4티어, 빛의 징조 없음(접두 엑잘·훼손 공개 결과 그대로)
+ 'strategies': [{'id': 'high', 'params': {'strT': 2, 'resT': 2, 'desT': 1, 'pk': 1}}, {'id': 'bal', 'params': {'strT': 2, 'resT': 2, 'desT': 2, 'pk': 1}},
+                {'id': 'ess', 'params': {'strT': 4, 'resT': 4, 'desT': 4, 'pk': 0}}],
  'versions': [
-  {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'strT': 3, 'resT': 3, 'desT': 2}, 'tier': 'bal',
-   'desc': K('마지막 접두(훼손) 1~2티어, 힘·카오스 저항 1~3티어', 'Last prefix (desecrated) T1–2, Strength and Chaos Resistance T1–3')},
-  {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'strT': 2, 'resT': 2, 'desT': 1}, 'tier': 'high',
+  {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'strT': 4, 'resT': 4, 'desT': 4, 'pk': 0}, 'tier': 'ess',
+   'desc': K('힘·카오스 저항 1~4티어, 접두 엑잘·훼손 공개 결과 그대로', 'Strength and Chaos Resistance T1–4, prefix exalt and desecration reveal kept as they land')},
+  {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'strT': 2, 'resT': 2, 'desT': 2, 'pk': 1}, 'tier': 'bal',
+   'desc': K('마지막 접두(훼손) 1~2티어, 힘·카오스 저항 1~2티어', 'Last prefix (desecrated) T1–2, Strength and Chaos Resistance T1–2')},
+  {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'strT': 2, 'resT': 2, 'desT': 1, 'pk': 1}, 'tier': 'high',
    'desc': K('영상: 마지막 접두(훼손) 1티어, 힘·카오스 저항 1~2티어', 'Video: last prefix (desecrated) T1, Strength and Chaos Resistance T1–2')}],
  'tags': {
   'armP': {'gi': 8, 'tmax': 1}, 'armEle': {'gi': 18, 'tmax': 1},
-  'str': {'gi': 0, 'tmax': '$strT'}, 'strH': {'gi': 0, 'tmax': 2}, 'strB': {'gi': 0, 'tmax': 3},
-  'fire': {'gi': 1}, 'cold': {'gi': 2}, 'light': {'gi': 3}, 'chaosR': {'gi': 4, 'tmax': '$resT'}, 'chaosRH': {'gi': 4, 'tmax': 2}, 'chaosRB': {'gi': 4, 'tmax': 3},
+  'str': {'gi': 0, 'tmax': '$strT'}, 'strH': {'gi': 0, 'tmax': 2}, 'strB': {'gi': 0, 'tmax': 2}, 'strE': {'gi': 0, 'tmax': 4},
+  'fire': {'gi': 1}, 'cold': {'gi': 2}, 'light': {'gi': 3}, 'chaosR': {'gi': 4, 'tmax': '$resT'}, 'chaosRH': {'gi': 4, 'tmax': 2}, 'chaosRB': {'gi': 4, 'tmax': 2}, 'chaosRE': {'gi': 4, 'tmax': 4},
   'ELE': {'anyOf': ['fire', 'cold', 'light']},
   'ms': {'gi': 12}, 'life': {'gi': 5},
   'msD': {'gi': 12, 'tmax': '$desT'}, 'lifeD': {'gi': 5, 'tmax': '$desT'},
@@ -61,7 +66,7 @@ g = {
   'mark': {'gi': 47},
  },
  'conds': {'sufDone': {'all': [{'has': 'armEle'}, {'has': 'str'}, {'has': 'chaosR'}]}},
- 'require': {'all': [{'has': 'armP'}, {'has': 'armEle'}, {'has': 'str'}, {'has': 'chaosR'}, {'count': {'tag': 'PRE', 'min': 2}}, {'has': 'PRED'}, {'full': 'p'}]},
+ 'require': {'all': [{'has': 'armP'}, {'has': 'armEle'}, {'has': 'str'}, {'has': 'chaosR'}, {'any': [{'param': {'pk': 0}}, {'all': [{'count': {'tag': 'PRE', 'min': 2}}, {'has': 'PRED'}]}]}, {'full': 'p'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 2]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 2]}],
  'start': 'b0',
@@ -69,7 +74,9 @@ g = {
   {'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
    'lines': [{'tag': 'armP', 'fr': True}, {'tag': 'PRE'}, {'tag': 'PREDh', 'des': True}, {'tag': 'armEle'}, {'tag': 'strH'}, {'tag': 'chaosRH'}]},
   {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-   'lines': [{'tag': 'armP', 'fr': True}, {'tag': 'PRE'}, {'tag': 'PREDb', 'des': True}, {'tag': 'armEle'}, {'tag': 'strB'}, {'tag': 'chaosRB'}]}],
+   'lines': [{'tag': 'armP', 'fr': True}, {'tag': 'PRE'}, {'tag': 'PREDb', 'des': True}, {'tag': 'armEle'}, {'tag': 'strB'}, {'tag': 'chaosRB'}]},
+  {'id': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
+   'lines': [{'tag': 'armP', 'fr': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'armEle'}, {'tag': 'strE'}, {'tag': 'chaosRE'}]}],
  'finalItem': {'sockets': 2},
 }
 
@@ -134,7 +141,8 @@ A(id='s0', kind='cleanup', group='main', pos=[2, 10.4], keep=[], maxJunk=1, labe
 A(id='p1', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 두 번째 옵션 — 이동 속도·생명력 최대치 중 먼저 뜬 것', 'Second prefix: movement speed or maximum Life, whichever lands first'), show=['ms'],
   edges=[{'if': {'added': 'PRE'}, 'to': 'p2', 'res': 'ok', 'hide': True}, {'to': 'q1', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  item=[ARM, MS, ELE, STR, CHR])
+  item=[ARM, MS, ELE, STR, CHR],
+  over=[{'param': {'pk': 0}, 'set': {'goal': K('접두 두 번째 옵션 — 나오는 대로', 'Second prefix: keep what comes'), 'edges': [{'to': 'p2', 'res': 'ok'}]}}])
 A(id='q1', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Essence_of_the_Abyss', ess='mark', mark=True,
   omens=['Omen_of_Sinistral_Crystallisation'], label=K('에센스', 'Essence'),
   goal=K('빗나간 접두를 지우고 심연의 군주의 징표', 'The missed prefix goes for the Mark of the Abyssal Lord'),
@@ -154,11 +162,13 @@ A(id='p8m', kind='act', group='main', pos=[0, 13.4], act='desecrate', cur='Ancie
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'p3'}], item=[ARM, MS, UN('p'), ELE, STR, CHR])
 A(id='p2', kind='act', group='main', pos=[1, 14.4], act='desecrate', cur='Ancient_Rib', label=K('훼손', 'Desecrate'),
   goal=K('빈 접두에 고대 갈비뼈', 'Ancient Rib on the empty prefix'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
-  edges=[{'to': 'p3'}])
+  edges=[{'to': 'p3'}],
+  over=[{'param': {'pk': 0}, 'set': {'pos': [0, 13.4], 'item': [ARM, MS, UN('p'), ELE, STR, CHR]}}])   # 에센셜: 징표 상자가 없어 그 자리에(선 교차 없음)
 A(id='p3', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='PRED', label=K('공개', 'Reveal'),
   goal=K('접두 세 번째 옵션(훼손) — 남은 이동 속도·생명력 최대치', 'Third prefix (desecrated): the remaining movement speed or maximum Life'), show=['life'],
   edges=[{'if': {'added': 'PRED'}, 'to': 'ok', 'res': 'ok'}, {'to': 'p3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  item=[ARM, MS, LIFE, ELE, STR, CHR])
+  item=[ARM, MS, LIFE, ELE, STR, CHR],
+  over=[{'param': {'pk': 0}, 'set': {'goal': K('접두 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep what the reveal gives'), 'edges': [{'to': 'ok', 'res': 'ok'}]}}])
 A(id='p3x', kind='act', group='main', pos=[1, 15.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('빗나간 훼손 옵션 지우기', 'Remove the missed desecration'), edges=[{'to': 'p2'}])
 A(id='ok', kind='done', group='main', pos=[0, 16.4], label=K('완성', 'Finished'))
@@ -168,7 +178,8 @@ g['loops'] = [
  {'id': 'L2', 'nodes': ['s2', 'sf', 's2x', 's0'], 'kr': '접미 두 자리', 'en': 'Two more suffixes', 'fold': True,
   'goal': K('접미 힘 + 카오스 저항 1~2티어 — 먼저 뜬 것부터', 'T1–2 Strength + Chaos Resistance suffixes: whichever lands first'),
   'goalBy': {'high': K('접미 힘 + 카오스 저항 1~2티어 — 먼저 뜬 것부터', 'T1–2 Strength + Chaos Resistance suffixes: whichever lands first'),
-             'bal': K('접미 힘 + 카오스 저항 1~3티어 — 먼저 뜬 것부터', 'T1–3 Strength + Chaos Resistance suffixes: whichever lands first')},
+             'bal': K('접미 힘 + 카오스 저항 1~2티어 — 먼저 뜬 것부터', 'T1–2 Strength + Chaos Resistance suffixes: whichever lands first'),
+             'ess': K('접미 힘 + 카오스 저항 1~4티어 — 먼저 뜬 것부터', 'T1–4 Strength + Chaos Resistance suffixes: whichever lands first')},
   'steps': [K('우측 찬미의 징조 + 완벽한 엑잘티드 오브로 접미 하나', 'Omen of Dextral Exaltation + Perfect Exalted Orb for one suffix') | {'node': 's2'},
             K('화염·냉기·번개 저항이면 공허 유동체로 카오스 저항', 'Fire, cold or lightning resistance: Void Flux turns it into Chaos Resistance') | {'node': 'sf'},
             K('빗나가면 소멸의 오브', 'A miss: Orb of Annulment') | {'node': 's2x'},
@@ -177,6 +188,7 @@ g['loops'] = [
   'item': [ARM, ELE, STR, CHR]},
  {'id': 'L4', 'nodes': ['p1', 'q1', 'q4', 'q4b', 'q4l'], 'kr': '접두 두 번째 옵션', 'en': 'Second prefix', 'fold': True,
   'goal': K('접두 이동 속도·생명력 최대치 — 먼저 뜬 것', 'Movement speed or maximum Life prefix: whichever lands first'),
+  'goalBy': {'ess': K('접두 두 번째 옵션 — 엑잘 결과 그대로', 'Second prefix: keep what the exalt gives')},
   'steps': [K('완벽한 엑잘티드 오브로 접두 하나', 'Perfect Exalted Orb for one prefix') | {'node': 'p1'},
             K('빗나가면 좌측 결정화의 징조 + 심연의 에센스로 징표', 'A miss: Omen of Sinistral Crystallisation + Essence of the Abyss for the Mark') | {'node': 'q1'},
             K('징표를 둔 채 완벽한 엑잘티드 오브', 'Perfect Exalted Orb with the Mark kept') | {'node': 'q4'},
@@ -186,7 +198,8 @@ g['loops'] = [
  {'id': 'L5', 'nodes': ['p8m', 'p2', 'p3', 'p3x'], 'kr': '접두 세 번째 옵션(훼손)', 'en': 'Third prefix (desecrated)', 'fold': True,
   'goal': K('접두 생명력 최대치 1티어(훼손) — 남은 이동 속도·생명력 최대치', 'T1 maximum Life prefix (desecrated): the remaining movement speed or maximum Life'),
   'goalBy': {'high': K('접두 생명력 최대치 1티어(훼손) — 남은 이동 속도·생명력 최대치', 'T1 maximum Life prefix (desecrated): the remaining movement speed or maximum Life'),
-             'bal': K('접두 생명력 최대치 1~2티어(훼손) — 남은 이동 속도·생명력 최대치', 'T1–2 maximum Life prefix (desecrated): the remaining movement speed or maximum Life')},
+             'bal': K('접두 생명력 최대치 1~2티어(훼손) — 남은 이동 속도·생명력 최대치', 'T1–2 maximum Life prefix (desecrated): the remaining movement speed or maximum Life'),
+             'ess': K('접두 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep what the reveal gives')},
   'steps': [K('징표에 고대 갈비뼈 — 한 티어 높게', 'Ancient Rib on the Mark: one tier higher') | {'node': 'p8m'},
             K('심연의 메아리의 징조로 공개', 'Reveal with the Omen of Abyssal Echoes') | {'node': 'p3'},
             K('빗나가면 빛의 징조 + 소멸의 오브', 'A miss: Omen of Light + Orb of Annulment') | {'node': 'p3x'},

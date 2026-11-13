@@ -18,6 +18,10 @@
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
     }
    }
   }
@@ -34,9 +38,28 @@
    "params": {
     "pT": 2
    }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "pT": 4
+   }
   }
  ],
  "versions": [
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "pT": 4
+   },
+   "tier": "ess",
+   "desc": {
+    "kr": "두 공개 모두 결과 그대로, 절사로 원소 피해 접두 1~4티어",
+    "en": "Both reveals kept as they land, Whittling for T1–4 elemental prefixes"
+   }
+  },
   {
    "id": "bal",
    "kr": "밸런스",
@@ -188,10 +211,19 @@
     "full": "p"
    },
    {
-    "count": {
-     "tag": "pg",
-     "min": 1
-    }
+    "any": [
+     {
+      "param": {
+       "pT": 4
+      }
+     },
+     {
+      "count": {
+       "tag": "pg",
+       "min": 1
+      }
+     }
+    ]
    },
    {
     "desSide": "p"
@@ -971,6 +1003,19 @@
     "kr": "접두 번개 피해 추가 (훼손) — 남은 원소 피해 접두 중 먼저 뜬 것",
     "en": "Desecrated added lightning prefix: whichever remaining elemental prefix lands first"
    },
+   "over": [
+    {
+     "param": {
+      "pT": 4
+     },
+     "set": {
+      "goal": {
+       "kr": "접두 세 번째 옵션 (훼손) — 공개 결과 그대로",
+       "en": "Third prefix (desecrated): keep what the reveal gives"
+      }
+     }
+    }
+   ],
    "show": [
     "eatk",
     "cold",
@@ -984,6 +1029,19 @@
      },
      "to": "wc1",
      "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "pT": 4
+      }
+     },
+     "to": "wc1",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 그대로",
+      "en": "Miss: keep it"
+     }
     },
     {
      "to": "bl3",
@@ -1338,6 +1396,10 @@
     "bal": {
      "kr": "접두 원소 피해 1~2티어 (훼손) — 남은 원소 피해 접두 1~2티어 중 먼저 뜬 것",
      "en": "T1–2 desecrated elemental prefix: whichever remaining T1–2 elemental prefix lands first"
+    },
+    "ess": {
+     "kr": "접두 세 번째 옵션 (훼손) — 공개 결과 그대로",
+     "en": "Third prefix (desecrated): keep what the reveal gives"
     }
    },
    "steps": [
@@ -1463,6 +1525,38 @@
     },
     {
      "tag": "pgB",
+     "des": true
+    },
+    {
+     "tag": "crit"
+    },
+    {
+     "tag": "as",
+     "ess": true
+    },
+    {
+     "tag": "battle",
+     "ess": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true,
      "des": true
     },
     {
