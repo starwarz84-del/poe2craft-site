@@ -4,19 +4,24 @@
  "cls": "Boots_str",
  "base": "Tasalian Greaves",
  "ilvl": 82,
- "note": "LilBotQ 고급 장화(원본 레시피 기록) — 우트레드의 성좌 장착 + 이동 속도 분열 + 번개 저항 + 희귀도 + 미공개 훼손 → 아스트리드 → 좌측 결정화 + 신비한 합금(정신력) → 완벽한 엑잘(방어도·생명력, 밸런스는 빗나가면 좌측 말소의 징조 + 카오스 오브) → 고대 갈비뼈 → 공개(우트레드 구르기 거리, 밸런스 = 빛의 징조로 다시). 우트레드 옵션은 공개 가중치가 없어 훼손 전용 옵션과 같은 기준으로 추정.",
+ "basePrice": {},
+ "xsub": [
+  "Uhtred's Sidereus"
+ ],
+ "xroll": true,
+ "note": "LilBotQ 고급 장화(S-7YHuq3-P4, 2026-11-13 G6 영상 4:00~13:00 화면 대조) — 노멀 특출난 타살리오의 각반(홈 2개) → 방어구 장인의 고철 20% → 바알 방어구 장인의 주입기 4개 26% → 우트레드의 성좌 → 완벽한 진화·확장 + 소멸 반복(이동 속도·둔화 감소 1티어 + 번개 저항 1티어) → 상위 풍요의 에센스(레어 + 희귀도) → 좌측 강령술 + 보존된 갈비뼈 → 분열(이동 속도, 1/3, 실패하면 새 베이스) → 아스트리드의 창의성 → 좌측 결정화 + 신비한 합금(미공개 훼손을 지우고 정신력) → 완벽한 엑잘(접두, 결과 그대로) → 고대 갈비뼈 → 심연의 메아리 공개(회피 구르기 거리, 밸런스는 빛의 징조 + 소멸로 다시). 우트레드 옵션은 가중치가 없어 엑잘·진화 풀은 일반 티어 평균, 공개 풀은 훼손 전용 옵션과 같은 무게로 추정. 신성한 오브·마지막 룬 교체는 뺌.",
  "params": {
   "v": {
-   "kr": "진행",
-   "en": "Route",
+   "kr": "회피 구르기 거리 공개",
+   "en": "Dodge roll reveal",
    "values": {
     "1": {
-     "kr": "영상",
-     "en": "Video"
+     "kr": "빛의 징조로 다시 (영상)",
+     "en": "Retry with Omen of Light (video)"
     },
     "2": {
      "kr": "결과 그대로",
-     "en": "As it comes"
+     "en": "Keep it"
     }
    }
   }
@@ -43,9 +48,10 @@
    "params": {
     "v": 2
    },
+   "tier": "ess",
    "desc": {
-    "kr": "엑잘·공개 결과 그대로",
-    "en": "Keep the exalt and the reveal"
+    "kr": "훼손 공개 결과 그대로",
+    "en": "Keep the first reveal"
    }
   },
   {
@@ -55,52 +61,40 @@
    "params": {
     "v": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상: 접두 말소 반복, 구르기 거리까지 빛의 징조",
-    "en": "Video: Erasure for the prefix, Light until dodge roll"
+    "kr": "영상: 빛의 징조로 회피 구르기 거리까지 다시 공개",
+    "en": "Video: Omen of Light until dodge roll distance"
    }
   }
  ],
  "tags": {
   "ms": {
-   "gi": 55
+   "gi": 55,
+   "tmax": 1
   },
-  "lres": {
+  "lt": {
    "gi": 3,
    "tmax": 1
   },
-  "rar": {
+  "ra": {
    "gi": 44
   },
-  "spirit": {
+  "sp": {
    "gi": 51
   },
-  "flat": {
-   "gi": 7,
-   "tmax": 1
+  "dg": {
+   "gi": 57
   },
-  "pct": {
-   "gi": 8,
-   "tmax": 2
-  },
-  "life": {
-   "gi": 5,
-   "tmax": 2
-  },
-  "pre": {
+  "good": {
    "anyOf": [
-    "flat",
-    "pct",
-    "life"
+    "ms",
+    "lt"
    ],
    "label": {
-    "kr": "방어도·생명력 접두",
-    "en": "Armour or life prefix"
+    "kr": "이동 속도·둔화 감소 1티어, 번개 저항 1티어",
+    "en": "T1 movement speed with slow reduction, T1 lightning resistance"
    }
-  },
-  "dodge": {
-   "gi": 57,
-   "tmax": 2
   }
  },
  "require": {
@@ -109,13 +103,28 @@
     "has": "ms"
    },
    {
-    "has": "spirit"
+    "has": "lt"
+   },
+   {
+    "has": "ra"
+   },
+   {
+    "has": "sp"
    },
    {
     "full": "p"
    },
    {
-    "full": "s"
+    "any": [
+     {
+      "param": {
+       "v": 2
+      }
+     },
+     {
+      "has": "dg"
+     }
+    ]
    }
   ]
  },
@@ -139,129 +148,444 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "h5",
-    "h6",
-    "h6x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  }
- ],
- "finals": [
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "ms",
-     "tmax": 1,
-     "fr": true
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "방어도·생명력 접두",
-      "en": "Armour or life prefix"
-     }
-    },
-    {
-     "tag": "dodge",
-     "tmax": 2
-    },
-    {
-     "tag": "lres",
-     "tmax": 1
-    },
-    {
-     "tag": "rar",
-     "tmax": 1
-    },
-    {
-     "tag": "spirit",
-     "tmax": 1
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "tag": "ms",
-     "tmax": 1,
-     "fr": true
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "tag": "lres",
-     "tmax": 1
-    },
-    {
-     "tag": "rar",
-     "tmax": 1
-    },
-    {
-     "tag": "spirit",
-     "tmax": 1
-    }
-   ]
-  }
- ],
+ "start": "b0",
  "finalItem": {
   "quality": 26,
-  "sockets": 3
+  "sockets": 2
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "q1",
    "start": {
-    "rar": "rare",
-    "mods": [
-     {
-      "tag": "ms",
-      "fr": true
-     },
-     "lres",
-     {
-      "tag": "rar",
-      "ess": true
-     },
-     {
-      "unrev": "p",
-      "bone": "Ancient_Rib"
-     }
-    ]
+    "rar": "normal",
+    "mods": [],
+    "quality": 0
    },
    "label": {
-    "kr": "우트레드의 성좌 장착, 이동 속도 분열 + 번개 저항 + 희귀도 + 미공개 훼손 (퀄리티 26%, 특출난 베이스)",
-    "en": "Uhtred socketed: fractured movement speed + lightning res + rarity + unrevealed desecration (26% quality, exceptional)"
+    "kr": "노멀 특출난 타살리오의 각반 구입 (아이템 레벨 82, 홈 2개)",
+    "en": "Buy a normal exceptional Tasalian Greaves (item level 82, two sockets)"
    },
+   "item": []
+  },
+  {
+   "id": "q1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "quality",
+   "cur": "Armourers_Scrap",
+   "count": 19,
+   "q": 20,
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "goal": {
+    "kr": "퀄리티 20%",
+    "en": "Quality 20%"
+   },
+   "showText": [
+    {
+     "kr": "방어구 장인의 고철 19개",
+     "en": "19 Armourer’s Scraps"
+    }
+   ],
+   "edges": [
+    {
+     "to": "q2"
+    }
+   ],
+   "item": []
+  },
+  {
+   "id": "q2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "quality",
+   "cur": "Vaal_Armourers_Infuser",
+   "count": 4,
+   "q": 26,
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "goal": {
+    "kr": "퀄리티 26%",
+    "en": "Quality 26%"
+   },
+   "showText": [
+    {
+     "kr": "바알 방어구 장인의 주입기 4개",
+     "en": "4 Vaal Armourer’s Infusers"
+    }
+   ],
+   "edges": [
+    {
+     "to": "u1"
+    }
+   ],
+   "item": []
+  },
+  {
+   "id": "u1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "rune",
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "goal": {
+    "kr": "우트레드의 성좌 장착",
+    "en": "Socket Uhtred's Sidereus"
+   },
+   "showText": [
+    {
+     "kr": "시간술 옵션이 붙을 수 있음 (뺄 수 없음)",
+     "en": "Chronomancy modifiers can roll (cannot be removed)"
+    }
+   ],
+   "rune": {
+    "kr": "우트레드의 성좌",
+    "en": "Uhtred's Sidereus"
+   },
+   "edges": [
+    {
+     "to": "m1"
+    }
+   ],
+   "item": [
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "m1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "transmute",
+   "cur": "Perfect_Orb_of_Transmutation",
+   "label": {
+    "kr": "진화",
+    "en": "Transmute"
+   },
+   "goal": {
+    "kr": "이동 속도·둔화 감소 1티어, 번개 저항 1티어 중 먼저 뜬 것",
+    "en": "T1 movement speed with slow reduction or T1 lightning resistance, whichever lands first"
+   },
+   "show": [
+    "ms",
+    "lt"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "good"
+     },
+     "to": "m2",
+     "res": "ok"
+    },
+    {
+     "to": "m1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
    "item": [
     {
      "s": "p",
-     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
-     "en": "Movement speed + slow reduction (fractured, Uhtred)",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "m1x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    1,
+    4
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "옵션을 모두 지우고 다시 진화",
+    "en": "Clear the options and transmute again"
+   },
+   "edges": [
+    {
+     "to": "m1"
+    }
+   ]
+  },
+  {
+   "id": "m2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "goal": {
+    "kr": "남은 옵션 — 이동 속도·둔화 감소 1티어 또는 번개 저항 1티어",
+    "en": "The other one: T1 movement speed with slow reduction or T1 lightning resistance"
+   },
+   "show": [
+    "ms",
+    "lt"
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "ms"
+       },
+       {
+        "has": "lt"
+       }
+      ]
+     },
+     "to": "e1",
+     "res": "ok"
+    },
+    {
+     "to": "m2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "lt"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "m2x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    1,
+    5
+   ],
+   "keep": [
+    "good"
+   ],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 옵션 지우기",
+    "en": "Remove the missed option"
+   },
+   "edges": [
+    {
+     "lost": "good",
+     "to": "m1x",
+     "label": {
+      "kr": "좋은 옵션이 지워짐",
+      "en": "The good option went"
+     }
+    },
+    {
+     "to": "m2",
+     "label": {
+      "kr": "다시 확장",
+      "en": "Augment again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "essence",
+   "cur": "Greater_Essence_of_Opulence",
+   "ess": "ra",
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "레어 + 접미 희귀도 1티어",
+    "en": "Rare + T1 rarity suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가 (제작 옵션)",
+     "en": "(15—18)% increased Rarity of Items found (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "d1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "lt"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가",
+     "en": "(15—18)% increased Rarity of Items found",
+     "m": "c",
+     "tags": [
+      "ra"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "d1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    7
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Rib",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "네번째 옵션(훼손) — 분열 확률 1/3",
+    "en": "Fourth option (desecrated): fracture odds 1/3"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecration (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "f1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
      "m": "n",
      "tags": [
       "ms"
@@ -269,39 +593,151 @@
     },
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
-     "m": "n"
+     "m": "u"
     },
     {
      "s": "s",
-     "kr": "번개 저항 1티어",
-     "en": "T1 lightning resistance",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "lres"
+      "lt"
      ]
     },
     {
      "s": "s",
-     "kr": "희귀도 (제작 옵션)",
-     "en": "Rarity (crafted)",
-     "m": "n",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가",
+     "en": "(15—18)% increased Rarity of Items found",
+     "m": "c",
      "tags": [
-      "rar"
+      "ra"
      ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "ms",
+   "id": "f1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    8
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 (공개된 옵션 3개 중 하나)",
+    "en": "Fracture (one of the three revealed options)"
+   },
+   "showText": [
+    {
+     "kr": "이동 속도·둔화 감소가 분열되면 성공",
+     "en": "Success when the movement speed line fractures"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "fractured": "ms"
+     },
+     "to": "ms0",
+     "res": "ok",
+     "label": {
+      "kr": "이동 속도 분열",
+      "en": "Movement speed fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "f",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "lt"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가",
+     "en": "(15—18)% increased Rarity of Items found",
+     "m": "c",
+     "tags": [
+      "ra"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    8
+   ],
+   "simTo": "b0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured: new base"
+   },
+   "note": {
+    "kr": "이동 속도·둔화 감소가 아닌 옵션이 분열되면 새 베이스로 처음부터",
+    "en": "Another option fractured: start over on a new base"
+   }
+  },
+  {
+   "id": "ms0",
    "kind": "mark",
    "group": "main",
    "pos": [
     0,
-    0.6
+    9.4
    ],
-   "next": "h2",
+   "next": "a1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -309,96 +745,62 @@
    "item": [
     {
      "s": "p",
-     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
-     "en": "Movement speed + slow reduction (fractured, Uhtred)",
-     "m": "n",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "f",
      "tags": [
       "ms"
      ]
     },
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
-     "m": "n"
+     "m": "u"
     },
     {
      "s": "s",
-     "kr": "번개 저항 1티어",
-     "en": "T1 lightning resistance",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "lres"
+      "lt"
      ]
     },
     {
      "s": "s",
-     "kr": "희귀도 (제작 옵션)",
-     "en": "Rarity (crafted)",
-     "m": "n",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가",
+     "en": "(15—18)% increased Rarity of Items found",
+     "m": "c",
      "tags": [
-      "rar"
+      "ra"
      ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "h2",
+   "id": "a1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    1
+    10.4
    ],
    "act": "rune",
-   "goal": {
-    "kr": "아스트리드의 창의성 장착",
-    "en": "Socket Astrid’s Creativity"
-   },
    "label": {
     "kr": "룬",
     "en": "Rune"
    },
-   "edges": [
-    {
-     "to": "h3"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
-     "en": "Movement speed + slow reduction (fractured, Uhtred)",
-     "m": "n",
-     "tags": [
-      "ms"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    },
-    {
-     "s": "s",
-     "kr": "번개 저항 1티어",
-     "en": "T1 lightning resistance",
-     "m": "n",
-     "tags": [
-      "lres"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "희귀도 (제작 옵션)",
-     "en": "Rarity (crafted)",
-     "m": "n",
-     "tags": [
-      "rar"
-     ]
-    }
-   ],
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid's Creativity"
+   },
    "showText": [
     {
      "kr": "제작 옵션 하나 더",
@@ -408,366 +810,353 @@
    "rune": {
     "kr": "아스트리드의 창의성",
     "en": "Astrid's Creativity"
-   }
+   },
+   "edges": [
+    {
+     "to": "a2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "f",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "lt"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가",
+     "en": "(15—18)% increased Rarity of Items found",
+     "m": "c",
+     "tags": [
+      "ra"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid's Creativity",
+     "m": "r"
+    }
+   ]
   },
   {
-   "id": "h3",
+   "id": "a2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    11.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "미공개 훼손 접두를 지우고 접미 정신력",
-    "en": "Swap the unrevealed prefix for Spirit"
-   },
+   "cur": "Mystic_Alloy",
+   "ess": "sp",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
    "label": {
     "kr": "합금",
     "en": "Alloy"
    },
+   "goal": {
+    "kr": "미공개 훼손 접두를 지우고 접미 정신력",
+    "en": "The unrevealed desecrated prefix goes for a Spirit suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "정신력 +(10—15) (제작 옵션)",
+     "en": "+(10—15) to Spirit (crafted)"
+    }
+   ],
    "edges": [
     {
-     "to": "h4"
+     "to": "p1"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
-     "en": "Movement speed + slow reduction (fractured, Uhtred)",
-     "m": "n",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "f",
      "tags": [
       "ms"
      ]
     },
     {
      "s": "s",
-     "kr": "번개 저항 1티어",
-     "en": "T1 lightning resistance",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "lres"
+      "lt"
      ]
     },
     {
      "s": "s",
-     "kr": "희귀도 (제작 옵션)",
-     "en": "Rarity (crafted)",
-     "m": "n",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가",
+     "en": "(15—18)% increased Rarity of Items found",
+     "m": "c",
      "tags": [
-      "rar"
+      "ra"
      ]
     },
     {
      "s": "s",
-     "kr": "정신력 (합금)",
-     "en": "Spirit (alloy)",
-     "m": "n",
+     "kr": "정신력 +(10—15)",
+     "en": "+(10—15) to Spirit",
+     "m": "c",
      "tags": [
-      "spirit"
+      "sp"
      ]
-    }
-   ],
-   "cur": "Mystic_Alloy",
-   "showText": [
+    },
     {
-     "s": "s",
-     "kr": "정신력 (제작 옵션)",
-     "en": "Spirit (crafted)"
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid's Creativity",
+     "m": "r"
     }
-   ],
-   "ess": "spirit",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
    ]
   },
   {
-   "id": "h4",
+   "id": "p1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    12.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 두번째 옵션",
-    "en": "Second prefix"
-   },
+   "cur": "Perfect_Exalted_Orb",
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
-   "edges": [
-    {
-     "if": {
-      "has": "pre"
-     },
-     "to": "h5",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "param": {
-       "v": 1
-      }
-     },
-     "to": "h4b",
-     "res": "fail"
-    },
-    {
-     "to": "h5",
-     "res": "fail"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
-     "en": "Movement speed + slow reduction (fractured, Uhtred)",
-     "m": "n",
-     "tags": [
-      "ms"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "방어도·생명력 접두",
-     "en": "Armour or life prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "번개 저항 1티어",
-     "en": "T1 lightning resistance",
-     "m": "n",
-     "tags": [
-      "lres"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "희귀도 (제작 옵션)",
-     "en": "Rarity (crafted)",
-     "m": "n",
-     "tags": [
-      "rar"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "정신력 (합금)",
-     "en": "Spirit (alloy)",
-     "m": "n",
-     "tags": [
-      "spirit"
-     ]
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "show": [
-    "flat",
-    "pct",
-    "life"
-   ]
-  },
-  {
-   "id": "h4b",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    3
-   ],
-   "act": "chaos",
    "goal": {
-    "kr": "접두 다시",
-    "en": "Reroll the prefix"
+    "kr": "접두 두번째 옵션 — 나오는 대로",
+    "en": "Second prefix: keep what lands"
    },
-   "label": {
-    "kr": "카오스",
-    "en": "Chaos"
-   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
-     "if": {
-      "has": "pre"
-     },
-     "to": "h5",
-     "res": "ok"
-    },
-    {
-     "to": "h4b",
-     "res": "fail"
+     "to": "p2"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
-     "en": "Movement speed + slow reduction (fractured, Uhtred)",
-     "m": "n",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "f",
      "tags": [
       "ms"
      ]
     },
     {
      "s": "p",
-     "kr": "방어도·생명력 접두",
-     "en": "Armour or life prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "번개 저항 1티어",
-     "en": "T1 lightning resistance",
-     "m": "n",
-     "tags": [
-      "lres"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "희귀도 (제작 옵션)",
-     "en": "Rarity (crafted)",
-     "m": "n",
-     "tags": [
-      "rar"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "정신력 (합금)",
-     "en": "Spirit (alloy)",
-     "m": "n",
-     "tags": [
-      "spirit"
-     ]
-    }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "flat",
-    "pct",
-    "life"
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Erasure"
-   ]
-  },
-  {
-   "id": "h5",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    4
-   ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "접두 세번째 옵션(훼손)",
-    "en": "Third prefix (desecrated)"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "edges": [
-    {
-     "to": "h6"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
-     "en": "Movement speed + slow reduction (fractured, Uhtred)",
-     "m": "n",
-     "tags": [
-      "ms"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "방어도·생명력 접두",
-     "en": "Armour or life prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
+     "kr": "방어도 +(160—190)",
+     "en": "+(160—190) to Armour",
      "m": "n"
     },
     {
      "s": "s",
-     "kr": "번개 저항 1티어",
-     "en": "T1 lightning resistance",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "lres"
+      "lt"
      ]
     },
     {
      "s": "s",
-     "kr": "희귀도 (제작 옵션)",
-     "en": "Rarity (crafted)",
-     "m": "n",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가",
+     "en": "(15—18)% increased Rarity of Items found",
+     "m": "c",
      "tags": [
-      "rar"
+      "ra"
      ]
     },
     {
      "s": "s",
-     "kr": "정신력 (합금)",
-     "en": "Spirit (alloy)",
-     "m": "n",
+     "kr": "정신력 +(10—15)",
+     "en": "+(10—15) to Spirit",
+     "m": "c",
      "tags": [
-      "spirit"
+      "sp"
      ]
-    }
-   ],
-   "cur": "Ancient_Rib",
-   "showText": [
+    },
     {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid's Creativity",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "h6",
+   "id": "p2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    13.4
+   ],
+   "act": "desecrate",
+   "cur": "Ancient_Rib",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "빈 접두에 고대 갈비뼈",
+    "en": "Ancient Rib on the empty prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "p3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "f",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도 +(160—190)",
+     "en": "+(160—190) to Armour",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "lt"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가",
+     "en": "(15—18)% increased Rarity of Items found",
+     "m": "c",
+     "tags": [
+      "ra"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "정신력 +(10—15)",
+     "en": "+(10—15) to Spirit",
+     "m": "c",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid's Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    14.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "dg",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "show": [
+    "dg"
+   ],
    "edges": [
     {
      "if": {
-      "added": "dodge"
+      "has": "dg"
      },
      "to": "ok",
      "res": "ok"
@@ -778,85 +1167,95 @@
        "v": 1
       }
      },
-     "to": "h6x",
-     "res": "fail"
+     "to": "p3x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     },
     {
      "to": "ok",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 그대로",
+      "en": "Miss: keep it"
+     }
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "이동 속도·둔화 감소 (분열, 우트레드)",
-     "en": "Movement speed + slow reduction (fractured, Uhtred)",
-     "m": "n",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "f",
      "tags": [
       "ms"
      ]
     },
     {
      "s": "p",
-     "kr": "방어도·생명력 접두",
-     "en": "Armour or life prefix",
-     "m": "n",
-     "tags": [
-      "pre"
-     ]
+     "kr": "방어도 +(160—190)",
+     "en": "+(160—190) to Armour",
+     "m": "n"
     },
     {
      "s": "p",
-     "kr": "구르기 거리 (우트레드)",
-     "en": "Dodge roll distance (Uhtred)",
-     "m": "n",
+     "kr": "회피 구르기 거리 +(0.3—0.4)미터",
+     "en": "+(0.3—0.4) metres to Dodge Roll distance",
+     "m": "d",
      "tags": [
-      "dodge"
+      "dg"
      ]
     },
     {
      "s": "s",
-     "kr": "번개 저항 1티어",
-     "en": "T1 lightning resistance",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "lres"
+      "lt"
      ]
     },
     {
      "s": "s",
-     "kr": "희귀도 (제작 옵션)",
-     "en": "Rarity (crafted)",
-     "m": "n",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가",
+     "en": "(15—18)% increased Rarity of Items found",
+     "m": "c",
      "tags": [
-      "rar"
+      "ra"
      ]
     },
     {
      "s": "s",
-     "kr": "정신력 (합금)",
-     "en": "Spirit (alloy)",
-     "m": "n",
+     "kr": "정신력 +(10—15)",
+     "en": "+(10—15) to Spirit",
+     "m": "c",
      "tags": [
-      "spirit"
+      "sp"
      ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid's Creativity",
+     "m": "r"
     }
-   ],
-   "want": "dodge",
-   "show": [
-    "dodge"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
-   "id": "h6x",
+   "id": "p3x",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    5
+    14.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -872,13 +1271,12 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "빗나간 훼손 옵션 지우기",
+    "en": "Remove the missed desecration"
    },
    "edges": [
     {
-     "to": "h5",
-     "port": "right"
+     "to": "p2"
     }
    ]
   },
@@ -888,7 +1286,7 @@
    "group": "main",
    "pos": [
     0,
-    6
+    15.4
    ],
    "label": {
     "kr": "완성",
@@ -896,7 +1294,243 @@
    }
   }
  ],
- "xsub": [
-  "Uhtred's Sidereus"
+ "loops": [
+  {
+   "id": "L0",
+   "nodes": [
+    "m1",
+    "m1x",
+    "m2",
+    "m2x"
+   ],
+   "kr": "매직 옵션 두 개",
+   "en": "Two magic options",
+   "fold": true,
+   "goal": {
+    "kr": "접두 이동 속도·둔화 감소 1티어 + 접미 번개 저항 1티어 — 먼저 뜬 것부터",
+    "en": "T1 movement speed with slow reduction prefix + T1 lightning resistance suffix: whichever lands first"
+   },
+   "steps": [
+    {
+     "kr": "완벽한 진화의 오브",
+     "en": "Perfect Orb of Transmutation",
+     "node": "m1"
+    },
+    {
+     "kr": "완벽한 확장의 오브로 남은 옵션",
+     "en": "Perfect Orb of Augmentation for the other one",
+     "node": "m2"
+    },
+    {
+     "kr": "빗나가면 소멸의 오브",
+     "en": "A miss: Orb of Annulment",
+     "node": "m2x"
+    },
+    {
+     "kr": "좋은 옵션이 지워지면 모두 지우고 다시 진화",
+     "en": "The good option gone: clear it and transmute again",
+     "node": "m1x"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "n",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "lt"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "L1",
+   "nodes": [
+    "p2",
+    "p3",
+    "p3x"
+   ],
+   "kr": "접두 세번째 옵션(훼손)",
+   "en": "Third prefix (desecrated)",
+   "fold": true,
+   "goal": {
+    "kr": "접두 회피 구르기 거리(훼손)",
+    "en": "Dodge roll distance prefix (desecrated)"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접두 회피 구르기 거리(훼손) — 빛의 징조로 다시",
+     "en": "Dodge roll distance prefix (desecrated): Omen of Light retries"
+    },
+    "ess": {
+     "kr": "접두 세번째 옵션(훼손) — 공개 결과 그대로",
+     "en": "Third prefix (desecrated): keep the reveal"
+    }
+   },
+   "steps": [
+    {
+     "kr": "빈 접두에 고대 갈비뼈",
+     "en": "Ancient Rib on the empty prefix",
+     "node": "p2"
+    },
+    {
+     "kr": "심연의 메아리의 징조로 공개",
+     "en": "Reveal with the Omen of Abyssal Echoes",
+     "node": "p3"
+    },
+    {
+     "kr": "빗나가면 빛의 징조 + 소멸의 오브",
+     "en": "A miss: Omen of Light + Orb of Annulment",
+     "node": "p3x"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "이동 속도 (30—32)% 증가 / 디버프의 감속 효력 (21—25)% 감소",
+     "en": "(30—32)% increased Movement Speed / (21—25)% reduced Slowing Potency of Debuffs on You",
+     "m": "f",
+     "tags": [
+      "ms"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도 +(160—190)",
+     "en": "+(160—190) to Armour",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "회피 구르기 거리 +(0.3—0.4)미터",
+     "en": "+(0.3—0.4) metres to Dodge Roll distance",
+     "m": "d",
+     "tags": [
+      "dg"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "lt"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가",
+     "en": "(15—18)% increased Rarity of Items found",
+     "m": "c",
+     "tags": [
+      "ra"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "정신력 +(10—15)",
+     "en": "+(10—15) to Spirit",
+     "m": "c",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "우트레드의 성좌",
+     "en": "Uhtred's Sidereus",
+     "m": "r"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid's Creativity",
+     "m": "r"
+    }
+   ]
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "ms",
+     "fr": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "dg",
+     "des": true,
+     "tmax": 2
+    },
+    {
+     "tag": "lt"
+    },
+    {
+     "tag": "ra",
+     "ess": true
+    },
+    {
+     "tag": "sp",
+     "ess": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "ms",
+     "fr": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true,
+     "des": true
+    },
+    {
+     "tag": "lt"
+    },
+    {
+     "tag": "ra",
+     "ess": true
+    },
+    {
+     "tag": "sp",
+     "ess": true
+    }
+   ]
+  }
  ]
 }
