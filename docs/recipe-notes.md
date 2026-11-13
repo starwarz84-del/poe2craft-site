@@ -533,3 +533,4 @@ RV10 독립 검수(2026-11-13, G10 3개, 7장 기준, 출처가 mobalytics 글�
 - R-E1 독립 검수(2026-11-13): MazBro 시전자 목걸이 90점 완료(세 번째 접미 반복 복원 = 영상 6B 메모·두 번째 목걸이와 맞음, 7-4 '가중치 추정' 맞음, 공용 문제: 7-2 갈래 줄 번호·엔진 0개 집계), Chiba 오래된 에메랄드 95점 완료(밸런스 하나 = 정책 D 9.2%), 시한 하이엔드 장화 93점 완료(밸런스 C17·에센셜 새로). 점검 c1check·fclabel·essence_tier·style_lint·runerules·fc_noinput·_fclines·_foldlines·_fccardsame·fincheck 모두 0
 - 2026-11-13 F1: mastert 오래된 에메랄드 등급 카드 같음 해소(밸런스 shown = 12:15 활 사용 시 공격 속도, 합치지 않음 — 하이엔드 554 / 밸런스 185 div), EasyBabi ru1 2:22·Seek x1 8:04 FC_TS 시각 고침, FC_TS '-bal' 별칭 2개(시한 장화·EasyBabi) 지움.
 - 2026-11-13 R-D2 독립 검수(D2 36d3452): SL 투사체 장갑 94 · SL 딜용 장갑 94 · Diztoh 엔드게임 육척봉 96 — 세 개 완료. 밸런스 두 개는 C17에 맞음, 육척봉 ax 제거 뒤 선·FC_TS·레시피 글 정상. 공용 문제: graph2recipe 등급 갈림 '티어 상관없음'(anyOf 잎 중 하나라도 티어 2개면), 성공 조건이 ref인 상자의 레시피 목표가 아이템 칸 태그
+- 2026-11-13 R-D4 검수: EasyBabi 부적 95(에센셜 새로·룬 2:22)·Master T 오래된 에메랄드 96 완료, Fubgun 활 2개·ES 투구 에센셜 id 변경 깨짐 없음(기존 96점 유지, 완료)
