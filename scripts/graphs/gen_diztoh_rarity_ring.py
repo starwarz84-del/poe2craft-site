@@ -1,0 +1,102 @@
+# G12 2026-11-13: Diztoh 희귀도 황금 반지(GDLDxn6yxEs, 10:08) 플로우차트 생성기 — 영상 성공 회차(첫 반지, 자기 장비) 한 줄
+# 근거: scratchpad review/G12/diztoh-rarity-ring-v2/timeline.md, frames/ (영상 0:00~10:08 화면 대조)
+# 실행: cd scripts/graphs && python3 gen_diztoh_rarity_ring.py  → diztoh-rarity-ring-v2.json
+# 상자 id는 옛 레시피(recipes_v5_diztoh-rarity-ring-v2.py, g1~g7)·옛 그래프(h1·g2~g6·g4x)와 겹치지 않게 q0~q6으로 지음.
+import json, os, sys
+H = os.path.dirname(os.path.abspath(__file__))
+OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/diztoh-rarity-ring-v2.json'
+K = lambda kr, en: {'kr': kr, 'en': en}
+
+def L(s, kr, en, m='n', tags=None):
+    d = {'s': s, 'kr': kr, 'en': en, 'm': m}
+    if tags: d['tags'] = tags
+    return d
+
+# 아이템 칸 — 영상 첫 반지(성공 회차)에 실제로 나온 옵션
+RP = L('p', '발견하는 아이템 희귀도 (8—11)% 증가', '(8—11)% increased Rarity of Items found', 'n', ['rp'])          # 1:06·1:35 접두 3티어 11%
+CR = L('s', '냉기 저항 +(36—40)%', '+(36—40)% to Cold Resistance', 'n', ['cres'])                                       # 1:06·1:35 접미 2티어 +40%
+RE = L('s', '발견하는 아이템 희귀도 (15—18)% 증가 (상위 풍요의 에센스)', '(15—18)% increased Rarity of Items found (Greater Essence of Opulence)', 'c', ['rarE'])   # 1:46 16%
+UN = L('s', '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')                                                     # 2:40
+AR = L('s', '모든 원소 저항 +(6—8)%', '+(6—8)% to all Elemental Resistances', 'd', ['allres'])        # 3:35 공개 4티어 +8%
+CA = L('p', '공격 시 냉기 피해 (9—10)~(15—17) 추가', 'Adds (9—10) to (15—17) Cold damage to Attacks', 'j')            # 5:30 5티어 10~17
+EV = L('p', '회피 +(108—141)', '+(108—141) to Evasion Rating', 'j')                                                    # 5:30 4티어 122
+LIGHT = K('소멸의 오브 + 빛의 징조', 'Orb of Annulment + Omen of Light')
+V_ESS = {'param': {'L': 0}}
+V_ANY = {'any': [{'param': {'L': 0}}, {'param': {'L': 1}}]}   # 두 등급 모두 결과 그대로(레시피 글 '아무 옵션')
+DUALL = K('화염·냉기·번개 중 하나 및 카오스 저항 +(13—17)%', '+(13—17)% to Fire, Cold or Lightning and Chaos Resistances')
+WANTL = K('모든 원소 저항 1~2티어 또는 화염·냉기·번개 중 하나 및 카오스 저항', 'T1–2 all elemental resistances or a fire, cold or lightning and chaos resistance')
+
+g = {
+ 'id': 'diztoh-rarity-ring-v2', 'recipe': 'diztoh-rarity-ring-v2', 'cls': 'Rings', 'base': 'Gold Ring', 'ilvl': 81,
+ 'basePrice': {'Divine_Orb': 5},   # 1:06 거래소 '까치의 얼음 황금 반지(아이템 레벨 81, 희귀도 14% 내재 · 11% · 냉기 저항 +40%) ~b/o 5 divine', 1:35에 그 반지
+ 'note': ('2026-11-13 G12 영상 전체(0:00~10:08) 화면 대조. 성공 회차 = 첫 반지(자기 장비, 0:30~5:45): 접두 희귀도 3티어(11%) + 접미 냉기 저항 2티어(+40%) 매직 황금 반지 구입(아이템 레벨 81, 5 div, 1:06·1:35) → '
+          '상위 풍요의 에센스(1:35 거래소 1:3 카오스) = 레어 + 접미 희귀도 16%(1:46, 접두에 희귀도가 있어서 접미로 감 — 6:10 자막) → 우측 강령술의 징조(2:32 툴팁, 10 → 9) + 보존된 빗장뼈(2:37 툴팁) = 접미 미공개 훼손(2:40) → '
+          '심연의 메아리의 징조 + 공개(3:35 선택지: 마나 회복 2% / 생명력 17 / 모든 원소 저항 +8%, 채팅 메아리 소모, 다시 굴리지 않음) = 모든 원소 저항 +8%(4티어, 그대로 받음 — 3:55 자막) → '
+          '툴의 기폭제로 냉기 퀄리티 20%(4:32 툴팁, 5:22 툴팁) → 촉진하는 찬미의 징조 + 상위 찬미의 징조(5:10 툴팁) + 상위 엑잘티드 오브(자막 5:00) = 접두 공격 시 냉기 피해 추가 10~17(5티어) · 회피 122(4티어), 그대로(5:30). '
+          '6:20~8:50 두번째 반지(판매용, 좌측 강령술 + 빗장뼈, 상위 엑잘 2개, 오싹한 유동체로 번개 → 냉기)와 9:00~10:00 우상은 꿀팁 후보. '
+          '등급(정책 10장): 난이도 2 → 밸런스·에센셜(옛 하이엔드는 뺌). 반복 구간은 공개 하나: 밸런스 = 빗나가면 빛의 징조 + 소멸의 오브 → 우측 강령술 + 보존된 빗장뼈 다시(모든 원소 저항 1~2티어 또는 카오스 듀얼 저항 — 사용자 확정 11-10), '
+          '에센셜 = 영상 그대로 결과 그대로. 마지막 접두 2개는 두 등급 모두 결과 그대로(C17-2). 촉진하는 찬미의 징조 효과(냉기 옵션 쪽으로 기울임)는 시뮬에 없음 — 결과를 그대로 받아 비용엔 영향 없음.'),
+ 'params': {
+  'L': {'kr': '훼손 공개', 'en': 'Desecration reveal', 'values': {'1': K('빛의 징조로 다시', 'Retry with Omen of Light'), '0': K('결과 그대로', 'Keep whatever comes')}}},
+ 'strategies': [{'id': 'bal', 'params': {'L': 1}}, {'id': 'ess', 'params': {'L': 0}}],
+ 'versions': [
+  {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'L': 0}, 'tier': 'ess',
+   'desc': K('영상 그대로: 공개·엑잘 결과 그대로', 'As the video: keep the reveal and the exalt as they come')},
+  {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'L': 1}, 'tier': 'bal',
+   'desc': K('공개가 빗나가면 빛의 징조로 다시, 모든 원소 저항 1~2티어 또는 카오스 듀얼 저항', 'Omen of Light retries a missed reveal: T1–2 all res or a chaos dual res')}],
+ 'tags': {
+  'rarP': {'gi': 28, 'tmax': 3}, 'rp': {'gi': 28}, 'cres': {'gi': 5, 'tmax': 2}, 'rarE': {'gi': 66}, 'allres': {'gi': 7},
+  'ar2': {'gi': 7, 'tmax': 2},
+  'dual': {'anyOf': [{'gi': 44}, {'gi': 49}, {'gi': 52}], 'side': 's', 'label': DUALL},
+  'bw': {'anyOf': ['ar2', 'dual'], 'label': WANTL},
+ },
+ 'require': {'all': [{'has': 'rarP'}, {'has': 'cres'}, {'has': 'rarE'}, {'full': 'p'}, {'full': 's'}]},
+ 'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
+            {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
+ 'start': 'q0',
+ 'finalItem': {'quality': 0, 'sockets': 0},
+}
+
+N = []
+A = lambda **kw: N.append(kw)
+# ---------------- 베이스템 완성 (영상 1:06~1:46) ----------------
+A(id='q0', kind='base', group='prep', pos=[0, 0], next='q1', start={'rar': 'magic', 'mods': ['rarP', 'cres']},
+  label=K('접두 희귀도 + 접미 냉기 저항 매직 황금 반지 구입 (아이템 레벨 81)', 'Buy a magic Gold Ring with prefix rarity + suffix cold resistance (item level 81)'),
+  item=[RP, CR])
+A(id='q1', kind='act', group='prep', pos=[0, 1], act='essence', cur='Greater_Essence_of_Opulence', ess='rarE', label=K('에센스', 'Essence'),
+  goal=K('레어 + 접미 희귀도', 'Rare + rarity suffix'),
+  showText=[{'s': 's', 'kr': '발견하는 아이템 희귀도 (제작 옵션)', 'en': 'Item rarity (crafted)'}], edges=[{'to': 'ms'}], item=[RP, CR, RE])
+# ---------------- 옵션 추가 작업 (영상 2:20~5:30) ----------------
+A(id='ms', kind='mark', group='main', pos=[0, 2.4], next='q2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[RP, CR, RE])
+A(id='q2', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
+  goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'),
+  showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'q3'}], item=[RP, CR, RE, UN])
+A(id='q3', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='bw', label=K('공개', 'Reveal'),
+  goal=K('접미 세번째 옵션(훼손) — 모든 원소 저항', 'Third suffix (desecrated): all elemental resistances'), show=['bw'],
+  over=[{'param': {'L': 0}, 'set': {'goal': K('접미 세번째 옵션 공개 — 나오는 대로', 'Reveal the third suffix: keep what comes'),
+                                     'showText': [{'s': 's', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}], 'show': []}}],
+  edges=[{'if': {'any': [{'added': 'bw'}, V_ESS]}, 'to': 'q4', 'res': 'ok'},
+         {'to': 'q3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
+  item=[RP, CR, RE, AR])
+A(id='q3x', kind='act', group='main', pos=[1, 4.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
+  target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'q2', 'label': K('다시 훼손', 'Desecrate again')}])
+A(id='q4', kind='act', group='main', pos=[0, 5.4], act='quality', cur='Tuls_Catalyst', count=20, q=20, label=K('퀄리티', 'Quality'),
+  goal=K('냉기 퀄리티 20%', '20% cold quality'), edges=[{'to': 'q5'}], item=[RP, CR, RE, AR])
+A(id='q5', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Greater_Exaltation'],
+  label=K('엑잘', 'Exalt'), goal=K('접두 두번째·세번째 옵션 — 공격 시 냉기 피해 추가·회피', 'Second and third prefixes: cold damage to attacks, evasion'),
+  showText=[K('랜덤 옵션 2개', 'Two random options')], edges=[{'to': 'ok'}], item=[RP, CA, EV, CR, RE, AR])
+A(id='ok', kind='done', group='main', pos=[0, 7.4], label=K('완성', 'Finished'))
+g['nodes'] = N
+
+g['loops'] = [{'id': 'L1', 'nodes': ['q2', 'q3', 'q3x'], 'kr': '훼손 공개', 'en': 'Reveal'}]
+g['finals'] = [
+ {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
+  'lines': [{'tag': 'rarP'}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
+            {'tag': 'cres'}, {'tag': 'rarE', 'ess': True}, {'tag': 'bw', 'des': True}]},
+ {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
+  'lines': [{'tag': 'rarP'}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
+            {'tag': 'cres'}, {'tag': 'rarE', 'ess': True}, {'side': 's', 'random': True}]},
+]
+
+json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
+print('wrote', OUT, len(N), 'nodes')
