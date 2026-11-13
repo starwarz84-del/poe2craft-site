@@ -5,8 +5,8 @@ UNS=K('Unstoppable BTW 영상 기반','Based on Unstoppable BTW')
 UNSRC={'url':'https://www.youtube.com/watch?v=swF5mwXmZ0k','title':'How to Craft the Best Body Armours and Sell Them for Big Profit in Path of Exile 2','channel':'Unstoppable BTW'}
 LIGHTU={'cur':'Orb_of_Annulment','omens':['Omen_of_Light']}
 WH=['Omen_of_Whittling','Omen_of_Dextral_Erasure']
-def _uns(id, c, bname, title, tags, start, nodes):
-    R.append({'id':id,'cls':c,'base':base(c,bname),'ilvl':82,'sockets':2,'exceptional':{'sockets':1},'difficulty':4,'budget':'high','buildTags':tags,
+def _uns(id, c, bname, title, tags, start, nodes, ilvl=82):   # H1 11-13: 조끼는 영상 41:08 아이템 레벨 83
+    R.append({'id':id,'cls':c,'base':base(c,bname),'ilvl':ilvl,'sockets':2,'exceptional':{'sockets':1},'difficulty':4,'budget':'high','buildTags':tags,
               'patch':'0.5.5','created':'2026-11-11','author':UNS,'source':UNSRC,'title':title,'start':start,
               'phases':[{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'suf','kr':'접미','en':'Suffixes'}],'nodes':nodes})
 
@@ -32,7 +32,7 @@ _RD=[{'gi':1,'tmax':1},{'gi':2,'tmax':1},{'gi':3,'tmax':1},{'gi':18,'tmax':1}]
 _uns('unstoppable-slipstrike-vest','Body_Armours_dex','Slipstrike Vest',K('회피 증가 분열 + 회피 접두 2개 + 저항 2개·굴절','fractured % evasion + two evasion prefixes + two resistances and deflection'),
   [K('회피','Evasion'),K('저항','Resistances'),K('판매용','For sale')],
   {'rar':'rare','mods':[{'gi':7,'tmax':1,'fr':True},{'junk':'s'}]},[
-  {'id':'v0','phase':'suf','do':'base','cost':'base','note':K('회피 증가 1티어 분열 + 잡옵 1개, 아이템 레벨 82 룬 소켓 3개.','Fractured T1 % evasion + one junk line, item level 82, three rune sockets.')},
+  {'id':'v0','phase':'suf','do':'base','cost':'base','note':K('회피 증가 1티어 분열 + 잡옵 1개, 아이템 레벨 83 룬 소켓 3개.','Fractured T1 % evasion + one junk line, item level 83, three rune sockets.')},
   {'id':'e1','phase':'suf','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Greater_Exaltation','Omen_of_Dextral_Exaltation'],'target':{'junk':['s','s']}},
   {'id':'t1','phase':'suf','do':'chaos','cur':'Perfect_Chaos_Orb','omens':WH,'target':{'anyOf':_RD,'replace':'s'},'fail':{'goto':'self'},
    'br':K('저항 2개 + 굴절이 될 때까지','Until two resistances and deflection')},
@@ -43,4 +43,4 @@ _uns('unstoppable-slipstrike-vest','Body_Armours_dex','Slipstrike Vest',K('회�
   {'id':'w1','phase':'pre','do':'remove','cur':'Orb_of_Annulment','omens':['Omen_of_Light'],'target':{'removeDes':True}},
   {'id':'d3','phase':'pre','do':'desecrate','cur':'Ancient_Rib','omens':['Omen_of_Sinistral_Necromancy'],'target':{'unrev':'p'}},
   {'id':'d4','phase':'pre','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':_GE},'side':'p','bone':'Ancient_Rib'},'fail':{'goto':'d3','via':LIGHTU}},
-  {'id':'d5','phase':'pre','do':'note','note':K('완성.','Done.')}])
+  {'id':'d5','phase':'pre','do':'note','note':K('완성.','Done.')}], ilvl=83)
