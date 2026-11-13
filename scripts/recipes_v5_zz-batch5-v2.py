@@ -45,9 +45,7 @@ for _t in ('bal','ess'): _grade('diztoh-budget-mace','diztoh-budget-mace-v2',_t,
 
 # 4. LilBotQ 가성비 장화 — Balance = video, Essential = T1–2 movement speed + T1–3 cold res bought, lightning res T1–4
 def _boots(r, t):
-    lt=2
-    if t=='ess':
-        r['start']['mods'][0]['tmax']=2; r['start']['mods'][1]['tmax']=3; lt=4
+    lt=2   # 2026-11-13 G13: 베이스는 모든 등급 영상대로 1티어(C15), 단계 글은 플로우차트에서 읽음
     # 사용자 확정 2026-11-10: the reveal also stops on a chaos dual resist (3 kinds) or T1–3 chaos res — far likelier, cheaper
     b5=_node(r,'b5'); b5['target']['reveal']={'anyOf':[{'gi':3,'tmax':lt},{'gi':23},{'gi':24},{'gi':33},{'gi':4,'tmax':3}]}
     b5['br']=K('번개 저항·카오스 듀얼 저항·카오스 저항 1~3티어 중 하나 → 완성, 실패: 빛의 징조 + 소멸의 오브로 다시 훼손','Lightning res, a chaos dual res or T1–3 chaos res → done; miss: Light + Annulment and desecrate again')
