@@ -789,7 +789,9 @@ async function tplDrafts(it, an, base0, TOP){ const out=[]; if(!base0) return ou
   const why=S.tplWhy={};
   for(const m of tplMatch(it, an)){ const g0=await loadTplGraph(m.t.g); if(!g0){ why[m.t.g]='그래프 없음'; continue; }
     /* 그 등급의 틀(W11, 13장 11-14 04:17): 결과 등급(사용자가 고른 티어)과 그 아래 등급만 — 틀에 그 등급이 없으면 쓰지 않음 */
-    const keep=new Set(m.grades.filter(v=>!TOP || ORD.indexOf(v)>=ORD.indexOf(TOP))); if(TOP && !keep.has(TOP)){ why[m.t.g]='그 등급 틀 없음'; continue; }
+    if(TOP && !m.grades.includes(TOP)){ why[m.t.g]=why[m.t.g]||'그 등급 틀 없음'; continue; }
+    /* 아래 등급은 자리 모양이 달라도(밸런스만 훼손 옵션을 빗나가면 그대로 등) 틀 그래프에 있으면 같이 — C17로 넓힌 등급이라 결과 등급만 짝짓기 검사(W11: 탱정 방패 하이엔드만 남던 것) */
+    const keep=new Set((g0.strategies||[]).map(x=>x.id).filter(v=>TOP ? ORD.indexOf(v)>=ORD.indexOf(TOP) : m.grades.includes(v)));
     const graph={...g0, strategies:g0.strategies.filter(x=>keep.has(x.id)), versions:(g0.versions||[]).filter(v=>keep.has(v.id)), finals:(g0.finals||[]).filter(f=>keep.has(f.id))};
     /* 티어: 틀의 맨 위 등급이 붙여 넣은 필수 옵션(고른 티어)보다 낮은 티어까지 받으면 틀이 아님 */
     /* 하이엔드 등급만 비교(밸런스·에센셜은 등록 레시피도 C17로 넓힌 등급) */
