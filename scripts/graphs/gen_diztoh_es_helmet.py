@@ -38,21 +38,21 @@ g = {
           '분열의 오브(1:45~1:52, 최대치 분열 — 툴팁 색, 창고 2→1) → 우측 찬미의 징조 + 상위 엑잘(2:42~2:50, 에너지 보호막 재충전 속도, 상위 70→69) → 상위 엑잘(3:03, 에너지 보호막 % 3티어 78%, 상위 69→68) → '
           '심연의 메아리의 징조 + 공개(3:45, 접두 희귀도 1티어) → 방어구 장인의 고철로 퀄리티 20%(3:54~4:16). 곰 우상(4:32)·완벽한 사막 룬(5:08)은 마무리 룬이라 뺌(정책 9장), 5:20~8:01 사원 타락(소켓)은 레시피 밖. '
           '내부 결정(영상에 없음): 매직 빗나감은 소멸의 오브로 지우고 다시(치명타 투구와 같은 틀), 분열이 희귀도·지능이면 새 베이스, 접두 엑잘 빗나감은 좌측 소멸의 징조 + 소멸의 오브(영상 2:05 말: 소멸 또는 카오스) — '
-          '훼손 옵션이 지워지면 고대 갈비뼈로 다시, 공개 빗나감은 빛의 징조 + 소멸의 오브 → 고대 갈비뼈(밸런스만), 고철 개수 20개(희귀 아이템 1%씩 가정). '
-          '접두 엑잘은 영상 말(2:52 희귀도나 에너지 보호막 %)대로 둘 중 먼저 뜬 것, 공개가 남은 것(붙는 순서 예외, 정책 11장). 등급(분열 시작 → 어려움, 밸런스·에센셜): 밸런스 = 접두 에너지 보호막 % 1~3티어(영상 결과 3티어)·접두 희귀도까지 다시, 에센셜 = 접두 엑잘·공개 결과 그대로.'),
+          '훼손 옵션이 지워지면 고대 갈비뼈로 다시, 공개는 결과 그대로(11-13 오후 새 정책 B: 영상 공개가 한 번에 성공해 빗나감 장면이 없음 → 빛의 징조 반복 없음, 심연의 메아리로 고르는 옵션 = 접두 묶음 남은 것), 고철 개수 20개(희귀 아이템 1%씩 가정). '
+          '접두 엑잘은 영상 말(2:52 희귀도나 에너지 보호막 %)대로 둘 중 먼저 뜬 것, 공개가 남은 것(붙는 순서 예외, 정책 11장). 등급(분열 시작 → 어려움, 밸런스·에센셜): 밸런스 = 접두 엑잘을 에너지 보호막 % 1~3티어·접두 희귀도 중 하나까지 다시(영상 결과 에너지 보호막 % 3티어, 공개 결과 아이템 희귀도 1티어), 에센셜 = 접두 엑잘·공개 결과 그대로.'),
  'params': {'L': {'kr': '접두 엑잘·공개', 'en': 'Prefix exalt and reveal', 'values': {'1': K('원하는 옵션까지 다시', 'Retry for the wanted options'), '0': K('결과 그대로', 'Keep what comes')}}},
  'strategies': [{'id': 'bal', 'params': {'L': 1}}, {'id': 'ess', 'params': {'L': 0}}],
  'versions': [{'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'L': 0}, 'tier': 'ess',
                'desc': K('접두 엑잘·훼손 공개 결과 그대로', 'Keep the prefix exalt and the reveal as they come')},
               {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'L': 1}, 'tier': 'bal',
-               'desc': K('영상 완성품: 접두 에너지 보호막 % 1~3티어, 접두 희귀도까지 다시', 'The video item: T1–3 % energy shield and prefix rarity, retried')}],
+               'desc': K('영상 완성품: 접두 엑잘을 에너지 보호막 % 1~3티어·접두 희귀도 중 하나까지 다시, 공개는 결과 그대로', 'The video item: retry the prefix exalt for T1–3 % energy shield or prefix rarity, keep the reveal')}],
  'tags': {'esf': {'gi': 7, 'tmax': 1}, 'rarS': {'gi': 16, 'tmax': 1},
           'magicGood': {'anyOf': ['esf', 'rarS'], 'label': K('에너지 보호막 최대치 1티어·아이템 희귀도 1티어', 'T1 flat energy shield or T1 item rarity')},
           'int': {'gi': 38}, 'esp3': {'gi': 8, 'tmax': 3}, 'rarP': {'gi': 17, 'tmax': 1},
-          'pre2': {'anyOf': ['esp3', 'rarP'], 'label': K('에너지 보호막 % 증가 1~3티어·접두 아이템 희귀도', 'T1–3 % energy shield or prefix item rarity')}},
- 'conds': {'magicDone': {'all': [{'has': 'esf'}, {'has': 'rarS'}]}, 'preDone': {'all': [{'has': 'esp3'}, {'has': 'rarP'}]}},
+          'pre2': {'anyOf': ['esp3', 'rarP'], 'shown': 'esp3', 'label': K('에너지 보호막 % 증가 1~3티어·접두 아이템 희귀도', 'T1–3 % energy shield or prefix item rarity')}},
+ 'conds': {'magicDone': {'all': [{'has': 'esf'}, {'has': 'rarS'}]}},
  'require': {'all': [{'has': 'esf'}, {'has': 'rarS'}, {'has': 'int'}, {'full': 'p'}, {'full': 's'},
-                     {'any': [{'param': {'L': 0}}, {'all': [{'has': 'esp3'}, {'has': 'rarP'}]}]}]},
+                     {'any': [{'param': {'L': 0}}, {'has': 'pre2'}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 2]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 2]}],
  'start': 'b0',
@@ -107,7 +107,7 @@ A(id='x1', kind='act', group='main', pos=[0, 8], act='exalt', cur='Greater_Exalt
   goal=K('접미 세 번째 옵션', 'Third suffix'),
   showText=[{'s': 's', 'kr': '랜덤 옵션', 'en': 'Random option'}], edges=[{'to': 'x2'}], item=[ESF, UN, RARS, INT, REC])
 A(id='x2', kind='act', group='main', pos=[0, 9], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 세 번째 옵션 — 에너지 보호막 % 증가 1~3티어·접두 아이템 희귀도 중 먼저 뜬 것(영상: 에너지 보호막 %)', 'Third prefix: T1–3 % energy shield or prefix rarity, whichever comes first (the video: % energy shield)'), show=['esp3', 'rarP'],
+  goal=K('접두 세 번째 옵션 — 에너지 보호막 % 증가 1~3티어·접두 아이템 희귀도 중 먼저 뜬 것(영상: 에너지 보호막 %)', 'Third prefix: T1–3 % energy shield or prefix rarity, whichever comes first (the video: % energy shield)'), show=['pre2'],
   edges=[{'if': {'added': 'pre2'}, 'to': 'r1', 'res': 'ok'}, {'if': {'param': {'L': 0}}, 'to': 'r1', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'x2x', 'res': 'fail'}], item=[ESF, ESP, UN, RARS, INT, REC],
   over=[{'param': {'L': 0}, 'set': {'goal': K('접두 세 번째 옵션 — 에너지 보호막 % 노림, 나오는 대로', 'Third prefix: aiming for % energy shield, keep what comes'), 'show': [],
@@ -121,16 +121,10 @@ A(id='x2d', kind='act', group='main', pos=[2, 9], act='desecrate', cur='Ancient_
   goal=K('접두 훼손 옵션 다시', 'Desecrate the prefix again'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'x2', 'label': K('다시 엑잘', 'exalt again')}])
 A(id='r1', kind='act', group='main', pos=[0, 10], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pre2', label=K('공개', 'Reveal'),
-  goal=K('접두 남은 옵션 — 영상: 아이템 희귀도', 'The remaining prefix (the video: item rarity)'), show=['rarP'],
-  edges=[{'if': {'ref': 'preDone'}, 'to': 'q1', 'res': 'ok'}, {'if': {'param': {'L': 0}}, 'to': 'q1', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
-         {'to': 'r1x', 'res': 'fail'}], item=[ESF, ESP, RARP, RARS, INT, REC],
+  goal=K('접두 남은 옵션 — 선택지에 있으면 아이템 희귀도·에너지 보호막 % 중 남은 것(영상: 아이템 희귀도), 없으면 결과 그대로', 'The remaining prefix: the other of rarity or % energy shield if offered (the video: item rarity), otherwise keep what comes'), show=['rarP'],
+  edges=[{'to': 'q1'}], item=[ESF, ESP, RARP, RARS, INT, REC],
   over=[{'param': {'L': 0}, 'set': {'goal': K('접두 훼손 옵션 공개 — 나오는 대로', 'Reveal the prefix desecration: keep what comes'), 'show': [],
                                     'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}], 'item': [ESF, RP, RPD, RARS, INT, REC]}}])
-A(id='r1x', kind='act', group='main', pos=[1, 10], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'r1d'}])
-A(id='r1d', kind='act', group='main', pos=[1, 10.6], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접두 훼손 옵션 다시', 'Desecrate the prefix again'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
-  edges=[{'to': 'r1', 'label': K('다시 공개', 'reveal again')}])
 A(id='q1', kind='act', group='main', pos=[0, 11.4], act='quality', cur='Armourers_Scrap', count=20, q=20, label=K('퀄리티', 'Quality'),
   goal=K('퀄리티 20%', 'Quality 20%'), showText=[K('방어구 장인의 고철 20개', '20 Armourer’s Scraps')], edges=[{'to': 'ok'}],
   item=[ESF, ESP, RARP, RARS, INT, REC], over=[{'param': {'L': 0}, 'set': {'item': [ESF, RP, RPD, RARS, INT, REC]}}])
@@ -144,11 +138,10 @@ g['loops'] = [
              {'kr': '빗나가면 좌측 소멸의 징조 + 소멸의 오브', 'en': 'On a miss: Sinistral Annulment + Orb of Annulment', 'node': 'x2x'},
              {'kr': '미공개 훼손 옵션이 지워졌으면 좌측 강령술의 징조 + 고대 갈비뼈로 다시 훼손', 'en': 'If the unrevealed desecration went: Sinistral Necromancy + Ancient Rib again', 'node': 'x2d'}],
    'item': [ESF, ESP, UN, RARS, INT, REC]},
-  {'id': 'L3', 'nodes': ['r1', 'r1x', 'r1d'], 'kr': '훼손 공개', 'en': 'Reveal'},
 ]
 g['finals'] = [
   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-   'lines': [{'tag': 'esf', 'fr': True}, {'tag': 'esp3'}, {'tag': 'rarP'}, {'tag': 'rarS'}, {'tag': 'int'}, {'side': 's', 'random': True}]},
+   'lines': [{'tag': 'esf', 'fr': True}, {'tag': 'pre2'}, {'side': 'p', 'random': True}, {'tag': 'rarS'}, {'tag': 'int'}, {'side': 's', 'random': True}]},
   {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
    'lines': [{'tag': 'esf', 'fr': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True}, {'tag': 'rarS'}, {'tag': 'int'}, {'side': 's', 'random': True}]},
 ]

@@ -10,4 +10,4 @@ def _web26(start_t, reveals, exalts):
     return ed
 for _id,_st,_rv,_ex in (('fubgun-quiver',{0:2},['q4'],['q5']),('fubgun-phys-bow',{0:4},['b4'],['b5']),('fubgun-crit-bow',{0:4},['b4'],['b5']),
                          ('fubgun-proj-amulet',{},['a9'],[]),('fubgun-es-helmet',{},['e4'],[]),('bigdaddy-lightning-wand',{},['w5','w9'],['w6'])):
-    for _t in ('bal','ess'): _grade8(_id,_id+'-v2',_t,_web26(_st,_rv,_ex))
+    for _t in (('bal',) if _id=='fubgun-es-helmet' else ('bal','ess')): _grade8(_id,_id+'-v2',_t,_web26(_st,_rv,_ex))   # 2026-11-13 P2: ES 투구는 빛의 징조 반복을 빼니 밸런스 = 에센셜 비용(10% 이내) → 밸런스만(정책 D)

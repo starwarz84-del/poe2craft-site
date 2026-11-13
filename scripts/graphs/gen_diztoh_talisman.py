@@ -35,15 +35,20 @@ g = {
           '여유가 있으면: 좌측 소멸의 징조 + 소멸의 오브 3번으로 접두 3개 모두 지움(3:28~3:44, 징조 4→1) → 완벽한 엑잘 = 번개 피해 2티어(3:56, 별로면 좌측 말소의 징조 + 카오스 오브) → 상위 찬미 + 완벽한 엑잘 = 물리·냉기 피해 3티어(4:18~4:28) → '
           '세를의 승리(4:44) → 완벽한 엑잘 = 정확도·시야 반경(5:05~5:16, 치명타 피해 노림, 그대로 둠). 5:20 이후 사원 타락·건축가의 오브(가시 부적이 됨)는 레시피 밖. '
           '내부 결정: 턱뼈 등급 = 보존된 턱뼈(화면 이름 확인 못 함), 숫돌 개수 20개(희귀 1%씩 가정), 철 룬·신성한 오브는 마무리라 뺌(정책 9장, 신성한 오브는 선택 상자), 말소 카오스 = 카오스 오브(자막 그대로, 등급 확인 못 함). '
-          '등급(밸런스·에센셜): 밸런스 = 영상 완성품 길, 첫 접두를 번개 피해 1~2티어까지 좌측 말소 + 카오스로 다시(영상 결과 2티어, 확정 옵션 규칙), 에센셜 = 영상 3:20의 가성비 길(첫 상위 찬미 엑잘 결과 그대로, 접두 지우기 건너뜀).'),
- 'params': {'L': {'kr': '첫 접두', 'en': 'First prefix', 'values': {'1': K('번개 피해 1~2티어까지 다시', 'Reroll to T1–2 lightning'), '0': K('나오는 대로', 'Keep what comes')}}},
+          '등급(밸런스·에센셜): 밸런스 = 영상 완성품 길, 첫 접두를 피해 접두 7개 중 하나 1~2티어까지 좌측 말소 + 카오스로 다시(11-13 오후 새 정책 A: 영상 3:56 "별로면" = 좋은 피해 옵션이면 받아들임, 카드는 영상 결과 번개 피해 2티어), 에센셜 = 영상 3:20의 가성비 길(첫 상위 찬미 엑잘 결과 그대로, 접두 지우기 건너뜀).'),
+ 'params': {'L': {'kr': '첫 접두', 'en': 'First prefix', 'values': {'1': K('피해 접두 1~2티어까지 다시', 'Reroll to a T1–2 damage prefix'), '0': K('나오는 대로', 'Keep what comes')}}},
  'strategies': [{'id': 'bal', 'params': {'L': 1}}, {'id': 'ess', 'params': {'L': 0}}],
  'versions': [{'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'L': 0}, 'tier': 'ess',
                'desc': K('영상 3:20 가성비 길: 첫 상위 찬미 엑잘 결과 그대로, 세를의 승리 + 엑잘', 'The video’s budget path (3:20): keep the first double exalt, then Serle’s Triumph + exalt')},
               {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'L': 1}, 'tier': 'bal',
-               'desc': K('영상 완성품: 첫 접두 번개 피해 1~2티어까지 좌측 말소 + 카오스', 'The video item: Sinistral Erasure + Chaos until T1–2 lightning')}],
- 'tags': {'melee': {'gi': 10, 'tmax': 1}, 'fire3': {'gi': 4, 'tmax': 3}, 'crit': {'gi': 51}, 'as': {'gi': 32}, 'light2': {'gi': 7, 'tmax': 2}},
- 'require': {'all': [{'has': 'melee'}, {'has': 'crit'}, {'has': 'as'}, {'full': 'p'}, {'full': 's'}, {'any': [{'param': {'L': 0}}, {'has': 'light2'}]}]},
+               'desc': K('영상 완성품: 첫 접두가 피해 옵션 1~2티어가 될 때까지 좌측 말소 + 카오스', 'The video item: Sinistral Erasure + Chaos until the first prefix is a T1–2 damage modifier')}],
+ 'tags': {'melee': {'gi': 10, 'tmax': 1}, 'fire3': {'gi': 4, 'tmax': 3}, 'crit': {'gi': 51}, 'as': {'gi': 32}, 'light2': {'gi': 7, 'tmax': 2},
+          # 11-13 오후 새 정책 A: 3:56 '별로면 좌측 말소 + 카오스' = 피해 접두면 받아들임 → 성공 조건은 피해 접두 7개 중 하나(1~2티어). 상자·카드는 영상 성공 회차의 번개 피해(light2)
+          'phys2': {'gi': 3, 'tmax': 2}, 'fire2': {'gi': 4, 'tmax': 2}, 'cold2': {'gi': 5, 'tmax': 2}, 'pinc2': {'gi': 8, 'tmax': 2}, 'pacc2': {'gi': 9, 'tmax': 2}, 'aele2': {'gi': 23, 'tmax': 2},
+          'dmg2': {'anyOf': ['light2', 'phys2', 'fire2', 'cold2', 'pinc2', 'pacc2', 'aele2'],
+                   'shown': 'light2',   # 성공 회차 옵션(S4 shown): 영상 3:56 번개 피해 2티어
+                   'label': K('피해 접두 1~2티어(번개·물리·화염·냉기 추가, 물리 %, 물리 % + 정확도, 공격 원소 %)', 'T1–2 damage prefix (added lightning, physical, fire or cold, physical %, physical % + accuracy, attack elemental %)')}},
+ 'require': {'all': [{'has': 'melee'}, {'has': 'crit'}, {'has': 'as'}, {'full': 'p'}, {'full': 's'}, {'any': [{'param': {'L': 0}}, {'has': 'dmg2'}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0',
@@ -81,14 +86,14 @@ A(id='a1', kind='act', group='main', pos=[0, 7.4], act='annul', cur='Orb_of_Annu
   showText=[{'s': 'p', 'kr': '접두 3개 제거 (3번)', 'en': 'Remove all three prefixes (three times)'}],
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 1}}, 'to': 'x2'}, {'to': 'a1', 'hide': True}], item=[MEL, CRIT, AS])
 A(id='x2', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 첫 번째 옵션 — 번개 피해 추가 1~2티어', 'First prefix: T1–2 added lightning'), show=['light2'],
-  edges=[{'if': {'added': 'light2'}, 'to': 'x3', 'res': 'ok'}, {'if': {'param': {'L': 0}}, 'to': 'x3', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
+  goal=K('접두 첫 번째 옵션 — 번개 피해 추가 1~2티어', 'First prefix: T1–2 added lightning'), show=['dmg2'],
+  edges=[{'if': {'added': 'dmg2'}, 'to': 'x3', 'res': 'ok'}, {'if': {'param': {'L': 0}}, 'to': 'x3', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'x2c', 'res': 'fail'}], item=[LT, MEL, CRIT, AS],
   over=[{'param': {'L': 0}, 'set': {'goal': K('접두 첫 번째 옵션 — 나오는 대로', 'First prefix: keep what comes'), 'show': [],
                                     'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}], 'item': [RP, MEL, CRIT, AS]}}])
 A(id='x2c', kind='act', group='main', pos=[1, 8.4], act='chaos', cur='Chaos_Orb', omens=['Omen_of_Sinistral_Erasure'], label=K('좌측 말소 + 카오스', 'Sinistral Erasure + Chaos'),
-  goal=K('접두 다시 굴리기', 'Reroll the prefix'), show=['light2'],
-  edges=[{'if': {'has': 'light2'}, 'to': 'x3', 'res': 'ok'}, {'to': 'x2c', 'res': 'fail', 'hide': True}])
+  goal=K('접두 다시 굴리기', 'Reroll the prefix'), show=['dmg2'],
+  edges=[{'if': {'has': 'dmg2'}, 'to': 'x3', 'res': 'ok'}, {'to': 'x2c', 'res': 'fail', 'hide': True}])
 A(id='x3', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 두 번째·세 번째 옵션', 'Second and third prefixes'), showText=[{'s': 'p', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   edges=[{'to': 'rn'}], item=[LT, RPJ, RPJ, MEL, CRIT, AS], over=[{'param': {'L': 0}, 'set': {'item': [RP, RPJ, RPJ, MEL, CRIT, AS]}}])
@@ -103,7 +108,7 @@ g['nodes'] = N
 g['loops'] = [{'id': 'L1', 'nodes': ['x2', 'x2c'], 'kr': '접두 첫 번째 옵션', 'en': 'First prefix'}]
 g['finals'] = [
   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-   'lines': [{'tag': 'light2'}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
+   'lines': [{'tag': 'dmg2'}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
              {'tag': 'melee'}, {'tag': 'crit'}, {'tag': 'as', 'des': True}, {'side': 's', 'random': True}]},
   {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
    'lines': [{'tag': 'fire3'}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
