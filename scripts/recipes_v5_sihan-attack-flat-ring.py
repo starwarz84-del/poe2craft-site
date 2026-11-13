@@ -27,5 +27,5 @@ R.append({
    'br':K('마음에 드는 2개가 나올 때까지 소멸의 오브 + 다시, 플랫이 지워지면 카오스 오브부터','Repeat with Annulment until both are good (lost a flat → back to the Chaos step)')},
   {'id':'f8','phase':'fin','do':'desecrate','cur':'Ancient_Collarbone','target':{'unrev':'p'},'ts':'16:45'},
   {'id':'f9','phase':'fin','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':SF_FLAT},'side':'p','bone':'Ancient_Collarbone'},'fail':{'goto':'f8','via':LIGHT},'ts':'17:28'},
-  {'id':'f10','phase':'fin','do':'note','ts':'18:30','note':K('완성. 공격 추가 피해 3개 + 공격 속도.','Done: three attack flats plus attack speed.')},
+  {'id':'f10','phase':'fin','do':'note','ts':'18:30','note':K('완성.','Done.')},
  ]})
