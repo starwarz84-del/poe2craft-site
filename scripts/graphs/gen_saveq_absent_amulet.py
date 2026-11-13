@@ -113,6 +113,7 @@ A(id='v8', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancien
   edges=[{'to': 'v9'}], item=[DEF, UN('p'), CR, ML])
 A(id='v9', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='spirit2', label=K('공개', 'Reveal'),
   goal=K('접두 정신력', 'Spirit prefix'), show=['spirit2'],
+  goalBy={'high': K('접두 정신력 1티어', 'T1 Spirit prefix'), 'bal': K('접두 정신력 1~2티어', 'T1–2 Spirit prefix')},   # 등급별 상자 제목(2026-11-13 S7)
   edges=[{'if': {'added': 'spirit'}, 'to': 'ok', 'res': 'ok'}, {'if': {'param': {'spT': 4}}, 'to': 'ok', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'v9x', 'res': 'fail'}], item=[DEF, SP, CR, ML],
   over=[{'param': {'spT': 1}, 'set': {'want': 'spirit1', 'show': ['spirit1'], 'goal': K('접두 정신력 1티어', 'T1 Spirit prefix')}},

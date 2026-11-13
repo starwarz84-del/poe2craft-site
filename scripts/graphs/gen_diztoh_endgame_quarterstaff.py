@@ -88,7 +88,7 @@ A(id='c1', kind='act', group='main', pos=[0, 3.4], act='chaos', cur='Greater_Cha
   show=['pflat', 'ppct', 'hyb'],
   edges=[{'if': {'has': 'p1'}, 'to': 'e1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}], item=[FLAT, ML])
 A(id='e1', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 물리 피해 증가 2티어 — 남은 물리 피해 접두 중 먼저 뜬 것', 'T2 % physical prefix: whichever remaining physical prefix lands first'),
+  goal=K('접두 물리 피해 증가 — 남은 물리 피해 접두 중 먼저 뜬 것', '% physical prefix: whichever remaining physical prefix lands first'),   # 티어는 상자 줄(1티어)에 — 성공 회차 2티어를 제목에 적어 목표와 어긋나던 것(2026-11-13 S7 R-D2)
   show=['ppct', 'hyb', 'pflat'],
   edges=[{'if': {'count': {'tag': 'p1', 'min': 2}}, 'to': 'e2', 'res': 'ok'}, {'to': 'e1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[FLAT, PCT, ML])
