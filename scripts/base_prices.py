@@ -4,7 +4,7 @@
 # build_recipes.py copies it to recipe.basePrice.
 BASEPRICE = {
   'mazbro-caster-amulet-v2': 5, 'mazbro-caster-amulet-v2-bal': 5,   # 영상 2:30: 정신력 50 태양 목걸이 약 5 div
-  'noble-timelost-sapphire-v2': 1, 'noble-timelost-sapphire-v2-bal': 1,   # 영상 1:38 매직 1 div
+  'noble-timelost-sapphire-v2': 1,   # 영상 1:38 매직 1 div
   'mirror-bow-video': None,
   'mirror-bow-video-v2': 35,   # 영상 7:30: 퀄리티 30% 전쟁광 활 30~40 div(사용자 확정 11-13: 특출난 그대로, 35 div)
   'absent-amulet-video': None,

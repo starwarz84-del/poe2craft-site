@@ -34,12 +34,11 @@ g = {
           '좌측 말소의 징조 + 카오스로 경멸 옵션 지우기(8:43) → 엑잘(9:13) → 반경 정리 카오스 → 고대 위력적인 액체 우울(9:26) → 보존된 두개골(9:47) → '
           '심연의 메아리 공개(10:07 빗나감 → 카오스로 훼손 옵션이 지워질 때까지 → 우울 → 두개골 반복, 11:54 최대 마나). '
           '영상과 다르게 정한 점: 두개골에 좌측 강령술의 징조(영상 화면엔 징조 활성 표시 없음, 시뮬이 한도를 넘은 접미에도 뼈를 넣어서 쪽 고정), '
-          '재련된 쇳소리 기폭제 20개(12:00~13:06 퀄리티 20%)는 뺌. 2026-11-10 사용자 확정 "경멸 전 엑잘 2번"은 영상(1번)대로 되돌림 — 보고서 참고.'),
- 'params': {'v': {'kr': '최대 마나', 'en': 'Maximum mana', 'values': {'1': K('나올 때까지 다시', 'Retry until it lands'), '2': K('공개 결과 그대로', 'Keep the reveal')}}},
- 'strategies': [{'id': 'high', 'params': {'v': 1}}, {'id': 'bal', 'params': {'v': 2}}],
+          '재련된 쇳소리 기폭제 20개(12:00~13:06 퀄리티 20%)는 뺌. 2026-11-10 사용자 확정 "경멸 전 엑잘 2번"은 영상(1번)대로 되돌림 — 보고서 참고. '
+          '11-13 오후 새 정책(P14): (D) 하이엔드 592.1 / 밸런스 563.8 div(4.8%)라 하이엔드 하나만 남김(영상이 최대 마나가 나올 때까지 다시 함).'),
+ 'params': {'v': {'kr': '최대 마나', 'en': 'Maximum mana', 'values': {'1': K('나올 때까지 다시', 'Retry until it lands')}}},
+ 'strategies': [{'id': 'high', 'params': {'v': 1}}],
  'versions': [
-   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 2}, 'tier': 'bal',
-    'desc': K('훼손 공개 결과 그대로, 나머지는 영상대로', 'Keep the reveal, the rest as in the video')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'v': 1}, 'tier': 'high',
     'desc': K('영상: 최대 마나가 나올 때까지 카오스로 훼손 옵션을 지우고 다시', 'Video: Chaos the desecrated line away and retry until maximum mana')}],
  'tags': {'cc': {'gi': 50}, 'scd': {'gi': 16}, 'cd': {'gi': 15},
@@ -53,9 +52,7 @@ g = {
  'start': 'b0',
  'finals': [
    {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-    'lines': [{'tag': 'mana', 'des': True}, {'tag': 'rad'}, {'tag': 'cc', 'fr': True}, {'tag': 'scd'}, {'tag': 'cd'}]},
-   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-    'lines': [{'side': 'p', 'random': True}, {'tag': 'rad'}, {'tag': 'cc', 'fr': True}, {'tag': 'scd'}, {'tag': 'cd'}]}],
+    'lines': [{'tag': 'mana', 'des': True}, {'tag': 'rad'}, {'tag': 'cc', 'fr': True}, {'tag': 'scd'}, {'tag': 'cd'}]}],
  'finalItem': {'quality': 0, 'sockets': 0},
  'cap': {'p': 2, 's': 2},   # 주얼: 접두 2 · 접미 2(정책 8장)
 }
@@ -144,14 +141,7 @@ A(id='m4', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_o
   edges=[{'if': {'all': [{'added': 'mana'}, {'has': 'rad'}]}, 'to': 'ok', 'res': 'ok'},
          {'if': {'added': 'mana'}, 'to': 'm2', 'res': 'ok', 'label': K('반경이 지워짐 — 우울 다시 (1/2)', 'Radius gone: Melancholy again (1 in 2)')},
          {'to': 'm1', 'res': 'fail', 'label': K('빗나감 — 카오스로 훼손 옵션 지우기', 'Miss: Chaos the desecrated line away')}],
-  item=[MANA, RAD, CC, SCD, CD],
-  over=[{'param': {'v': 2}, 'set': {'edges': [{'if': {'has': 'rad'}, 'to': 'ok', 'res': 'ok'},
-                                             {'to': 'm5', 'res': 'fail', 'label': K('반경이 지워짐', 'Radius gone')}],
-                                   'show': [], 'showText': [{'s': 'p', 'kr': '공개 결과 그대로', 'en': 'Keep the reveal'}]}}])
-A(id='m5', kind='act', group='main', pos=[1, 15.4], act='essence', cur='Ancient_Potent_Liquid_Melancholy', ess='rad', liquid=True,
-  label=K('액체', 'Liquid'), goal=K('고대 위력적인 액체 우울 다시', 'Ancient Potent Liquid Melancholy again'),
-  showText=[{'s': 'p', 'kr': '반경이 매우 넓은 반경으로 업그레이드', 'en': 'Upgrades Radius to Very Large'}],
-  edges=[{'to': 'ok'}])
+  item=[MANA, RAD, CC, SCD, CD])
 A(id='ok', kind='done', group='main', pos=[0, 16.6], label=K('완성', 'Finished'))
 g['nodes'] = N
 
@@ -164,16 +154,13 @@ g['loops'] = [
             K('경멸 옵션이 지워지면 카오스 오브로 빗나간 접미를 접두로 넘기고 경멸 다시', 'The Contempt line went: Chaos moves the missed suffix to a prefix, then Contempt again') | {'node': 'k5c'}],
   'worst': K('주문 치명타 피해 보너스가 지워지면 소멸의 오브로 분열 + 옵션 1개 → 카오스부터', 'Spell crit damage gone: annul to the fracture + one option, back to Chaos') | {'to': 'k4x'},
   'item': [CONT, CC, SCD, CD]},
- {'id': 'L2', 'nodes': ['m1', 'm2', 'm3', 'm4', 'm5'], 'kr': '반경 + 최대 마나', 'en': 'Radius + maximum mana', 'fold': True,
+ {'id': 'L2', 'nodes': ['m1', 'm2', 'm3', 'm4'], 'kr': '반경 + 최대 마나', 'en': 'Radius + maximum mana', 'fold': True,
   'goal': K('접두 매우 넓은 반경 + 최대 마나 % 증가(훼손)', 'Very Large radius + maximum mana % prefix (desecrated)'),
-  'goalBy': {'high': K('접두 매우 넓은 반경 + 최대 마나 % 증가(훼손)', 'Very Large radius + maximum mana % prefix (desecrated)'),
-             'bal': K('접두 매우 넓은 반경 + 공개 결과 그대로', 'Very Large radius + whatever the reveal gives')},
   'steps': [K('반경 중형·대형이나 훼손 옵션이 있으면 카오스 오브로 지우기', 'Chaos away a Medium/Large radius or a desecrated line') | {'node': 'm1'},
             K('고대 위력적인 액체 우울로 매우 넓은 반경 — 공개 뒤 반경이 지워졌으면 다시', 'Ancient Potent Liquid Melancholy for the Very Large radius; again if the reveal finds it gone') | {'node': 'm2'},
             K('좌측 강령술의 징조 + 보존된 두개골 — 접두 하나가 지워짐', 'Sinistral Necromancy + Preserved Cranium: one prefix goes') | {'node': 'm3'},
             K('심연의 메아리의 징조로 공개 — 최대 마나 % 증가 노림', 'Reveal with Abyssal Echoes, aiming at maximum mana %') | {'node': 'm4'}],
-  'item': [MANA, RAD, CC, SCD, CD],
-  'itemBy': {'high': [MANA, RAD, CC, SCD, CD], 'bal': [L('p', '랜덤 옵션', 'Random option', 'j'), RAD, CC, SCD, CD]}},
+  'item': [MANA, RAD, CC, SCD, CD]},
 ]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)

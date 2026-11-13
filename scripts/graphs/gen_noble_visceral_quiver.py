@@ -43,7 +43,8 @@ g = {
           '빛의 징조 + 소멸의 오브로 막기 옵션 제거 → 보존된 턱뼈 + 공개로 모든 투사체(10:56~11:20). '
           '0.5 데이터에는 영상의 모든 투사체 +2(훼손)가 없어 일반 옵션 모든 투사체 +1(레벨 5)을 마지막 공개로 찾음 — 레벨이 가장 낮아 절사보다 먼저 붙이면 안 되므로 첫 공개는 투사체가 나와도 막기 옵션으로 받음(내부 결정). '
           '첫 접미는 영상 계획(5:20 화면 자막: 치명타 확률·치명타 피해·투사체 중 하나)대로 셋 중 먼저 뜬 것(사용자 결정 2026-11-13 06:40) — 모든 투사체 +1이 먼저 뜨면 치명타 둘을 엑잘로 채워 접미가 차므로 막기·마지막 공개를 건너뜀, 완성 카드의 투사체 줄은 훼손 표시 없이. '
-          '신성한 오브(2:15 매직 단계 번개 피해 최대치)는 비용에서 뺌. 하이엔드 = 영상(모두 1티어), 밸런스 = 1~2티어, 마지막 접두·접미는 랜덤 옵션.'),
+          '신성한 오브(2:15 매직 단계 번개 피해 최대치)는 비용에서 뺌. 하이엔드 = 영상(모두 1티어), 밸런스 = 1~2티어, 마지막 접두·접미는 랜덤 옵션. '
+          '11-13 오후 새 정책(P14): (A) 첫 접미 상자(s1)와 접두 엑잘 상자(e1)는 성공 회차 옵션(공격 치명타 확률 7:38·투사체 속도 8:14)으로 보이고 다른 유효 옵션은 자동 꿀팁 줄, 판정은 anyOf 그대로.'),
  'params': {'cT': {'kr': '공격 치명타 확률', 'en': 'Attack crit chance', 'values': TV({'1': ('1티어', 'T1'), '2': ('1~2티어', 'T1–2')})},
             'dT': {'kr': '치명타 피해', 'en': 'Crit damage', 'values': TV({'1': ('1티어', 'T1'), '2': ('1~2티어', 'T1–2')})},
             'pT': {'kr': '접두 (투사체 속도·활 스킬 피해)', 'en': 'Prefixes', 'values': TV({'1': ('1티어', 'T1'), '2': ('1~2티어', 'T1–2')})},
@@ -56,11 +57,11 @@ g = {
  'tags': {'light': {'gi': 8, 'tmax': 1},
           'critA': {'gi': 14, 'tmax': '$cT'}, 'critD': {'gi': 15, 'tmax': '$dT'},
           'critA1': {'gi': 14, 'tmax': 1}, 'critD1': {'gi': 15, 'tmax': 1}, 'critA2': {'gi': 14, 'tmax': 2}, 'critD2': {'gi': 15, 'tmax': 2},
-          'sf1': {'anyOf': ['critA', 'critD', 'proj'], 'label': K('공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스·모든 투사체 스킬 레벨', 'Attack critical hit chance, critical damage bonus or projectile skill levels')},   # 첫 접미 = 영상 계획(5:20)의 셋 중 먼저 뜬 것(사용자 결정 2026-11-13 06:40)
+          'sf1': {'anyOf': ['critA', 'critD', 'proj'], 'shown': 'critA', 'label': K('공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스·모든 투사체 스킬 레벨', 'Attack critical hit chance, critical damage bonus or projectile skill levels')},   # 첫 접미 = 영상 계획(5:20)의 셋 중 먼저 뜬 것(사용자 결정 2026-11-13 06:40)
           'suf': {'anyOf': ['critA', 'critD'], 'label': K('공격 치명타 명중 확률·공격 피해의 치명타 피해 보너스', 'Attack critical hit chance or critical damage bonus')},
           'pspd': {'gi': 18, 'tmax': '$pT'}, 'bow': {'gi': 19, 'tmax': '$pT'},
           'pspd1': {'gi': 18, 'tmax': 1}, 'bow1': {'gi': 19, 'tmax': 1}, 'pspd2': {'gi': 18, 'tmax': 2}, 'bow2': {'gi': 19, 'tmax': 2},
-          'pre': {'anyOf': ['pspd', 'bow'], 'label': K('투사체 속도·활 스킬로 주는 피해', 'Projectile speed or bow skill damage')},
+          'pre': {'anyOf': ['pspd', 'bow'], 'shown': 'pspd', 'label': K('투사체 속도·활 스킬로 주는 피해', 'Projectile speed or bow skill damage')},
           'pre2': {'anyOf': ['pspd2', 'bow2'], 'shown': 'pspd2', 'label': K('투사체 속도·활 스킬로 주는 피해 1~2티어', 'T1–2 projectile speed or bow skill damage')},
           'proj': {'gi': 9},
           'keep': {'anyOf': ['critA', 'critD', 'pspd', 'bow']}},
@@ -140,8 +141,8 @@ A(id='pc', kind='cleanup', group='prep', pos=[0, 6], keep=[], maxJunk=1, label=A
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 7.4], next='s1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[LF, J('p')])
 A(id='s1', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 첫 옵션 — 공격 치명타 확률·치명타 피해·모든 투사체 스킬 레벨 중 먼저 뜬 것', 'First suffix: attack crit chance, crit damage or projectile skill levels, whichever lands first'), show=['critA', 'critD', 'proj'],
-  edges=R({'s2': {'res': 'ok'}}), item=[LF, CA])   # 5:20 계획 자막, 7:20~7:34 카오스 반복 화면
+  goal=K('접미 첫 옵션 — 공격 치명타 확률·치명타 피해·모든 투사체 스킬 레벨 중 먼저 뜬 것', 'First suffix: attack crit chance, crit damage or projectile skill levels, whichever lands first'), show=['sf1'],
+  edges=R({'s2': {'res': 'ok'}}), item=[LF, CA])   # 5:20 계획 자막, 7:20~7:34 카오스 반복 화면, 7:38 성공 회차 = 공격 치명타 확률(새 정책 A 11-13 P14: 상자는 성공 회차 옵션, 나머지는 자동 꿀팁 줄)
 A(id='s2', kind='act', group='main', pos=[1, 8.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('남은 접미 치명타 옵션 — 투사체가 먼저 떴으면 치명타 둘', 'The remaining crit suffix: both if projectile levels came first'), show=['critA', 'critD'],
   edges=R({'d1': {'res': 'ok'}, 's2x': {'res': 'fail', 'label': K('빗나감 — 소멸', 'Miss: annul')}}), item=[LF, CA, CD])   # 7:36 공격 치명타 확률 36%(1티어), 7:48 치명타 피해 38%(1티어)
@@ -152,8 +153,8 @@ A(id='d1', kind='act', group='main', pos=[0, 11], act='desecrate', cur='Preserve
   goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=R({'e1': {}}), item=[LF, CA, CD, UN('s')])   # 8:02 '우측 강령술+ 보존된 턱뼈로 접미에 훼손을 미리 입히자'
 A(id='e1', kind='act', group='main', pos=[0, 12], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두 개 — 투사체 속도·활 스킬 피해 중 먼저 뜬 것', 'Two prefixes: projectile speed or bow damage, whichever lands first'), show=['pspd', 'bow'],
-  edges=R({'d1r': {}}), item=[LF, PH, PS, CA, CD, UN('s')])   # 8:11 완벽한 엑잘 → 물리 피해, 8:14 → 투사체 속도 42%(1티어)
+  goal=K('접두 두 개 — 투사체 속도·활 스킬 피해 중 먼저 뜬 것', 'Two prefixes: projectile speed or bow damage, whichever lands first'), show=['pre'],
+  edges=R({'d1r': {}}), item=[LF, PH, PS, CA, CD, UN('s')])   # 새 정책 A(11-13 P14): 성공 회차 = 투사체 속도(8:14), 활 스킬 피해는 자동 꿀팁 줄   # 8:11 완벽한 엑잘 → 물리 피해, 8:14 → 투사체 속도 42%(1티어)
 A(id='d1r', kind='act', group='main', pos=[0, 13], act='reveal', missPick='lvl', label=K('공개', 'Reveal'),
   goal=K('접미 자리 막기 — 가장 높은 레벨 옵션', 'Suffix blocker: the highest-level option'),
   showText=[{'s': 's', 'kr': '가장 높은 레벨 옵션 (모든 투사체 +1은 레벨 5라 받지 않음)', 'en': 'Highest-level option (+1 projectile skills is level 5, not taken)'}],

@@ -8,7 +8,7 @@ def _noble(r, t):
     n11=_node(r,'n11')
     if t=='bal': n11.pop('fail',None); n11['br']=KEEP
     else: n11['fail']={'goto':'n9','via':{'cur':'Chaos_Orb'}}
-for _t in ('high','bal'): _grade8('noble-timelost-sapphire','noble-timelost-sapphire-v2',_t,_noble)
+for _t in ('high',): _grade8('noble-timelost-sapphire','noble-timelost-sapphire-v2',_t,_noble)   # 2026-11-13 P14 새 정책 D: 하이엔드 592.1 / 밸런스 563.8 div(4.8%) → 하이엔드만
 def _mzgloves(r, t):
     _drop(r,'g17')   # rune swap and Divine values are taste (정책 23)
     r['ilvl']=80   # 2026-11-12 영상 18:38 완성품 툴팁 '아이템 레벨 80'(분열에 성공한 네 번째 장갑)
