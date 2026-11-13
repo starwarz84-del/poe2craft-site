@@ -11,8 +11,8 @@ out = [f"초안 {len(d)}개 · 평균 {sum(r['score'] for r in d) / len(d):.1f}�
        '', '| 점수 | 등록 레시피 | 초안 / 등록(div) | 고른 후보 | 감점 이유 |', '|---|---|---|---|---|']
 for r in rows:
     if r['score'] >= 90: continue
-    out.append(f"| {r['score']} | `{r['id']}` | {f(r.get('div'))} / {f(r.get('orig'))} | {(r.get('pick') or {}).get('k', '-')} | {'; '.join(r['why']) or '-'} |")
-out += ['', f"90점 이상 {sum(r['score'] >= 90 for r in d)}개는 표에서 뺐어요. 고른 후보: plain = 징조 없는 소멸의 오브, noloop = 절사·말소 반복 생략, flip = 면 순서 바꿈, gex = 상위 엑잘티드 오브."]
+    out.append(f"| {r['score']} | `{r['id']}` | {f(r.get('div'))} / {f(r.get('orig'))} | {(r.get('pick') or {}).get('k') or ('틀 ' + r['pick']['tpl'] if (r.get('pick') or {}).get('tpl') else '-')} | {'; '.join(r['why']) or '-'} |")
+out += ['', f"90점 이상 {sum(r['score'] >= 90 for r in d)}개는 표에서 뺐어요. 고른 후보: plain = 징조 없는 소멸의 오브, noloop = 절사·말소 반복 생략, flip = 접두·접미 순서 바꿈, gex = 상위 엑잘티드 오브."]
 A, B = '<!-- 리버스 점수표: 시작 -->', '<!-- 리버스 점수표: 끝 -->'
 p = f'{ROOT}/docs/recipe-notes.md'; s = open(p).read()
 if A not in s:

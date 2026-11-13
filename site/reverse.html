@@ -176,7 +176,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .flow{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .flow.bad{border-color:var(--warn)}
 .flow table{border-collapse:collapse;font-size:12.5px;width:100%;max-width:640px}.flow th,.flow td{padding:4px 8px;text-align:right;border-bottom:1px solid var(--line)}.flow th:first-child,.flow td:first-child{text-align:left}
-.flow th{color:var(--muted);font-weight:500}.flow .iss{color:var(--warn);font-size:13px;margin:0;padding-left:18px}.flow .wait{color:var(--muted);font-size:13px}
+.flow th{color:var(--muted);font-weight:500;white-space:nowrap}.flow th.wr{white-space:normal}.flow td .gn{white-space:nowrap}.flow td small{color:var(--muted);word-break:keep-all}@media (max-width:520px){.flow table{font-size:11.5px}.flow th,.flow td{padding:4px 3px}.flow td small{display:block}}.flow .iss{color:var(--warn);font-size:13px;margin:0;padding-left:18px}.flow .wait{color:var(--muted);font-size:13px}
 .check li.err .ic{color:var(--warn)}.check li.warn .ic,.wn{color:var(--rare)}.check li.ok .ic{color:var(--ok)}
 </style>
 
@@ -246,16 +246,19 @@ function tplRe(line){ const ranges=[]; let src='';
     if(m){ ranges.push([+m[1],+m[2]]); src+=NUM; } else src += reEsc(part).replace(/\d+(?:\.\d+)?/g, x=>{ ranges.push([+x,+x]); return NUM; }); });
   return {re:new RegExp('^'+src.replace(/\\\+(?=\()/g,'\\+?')+'$','i'), ranges}; }
 /* 한글 화면에선 붙여 넣은 영문 옵션 줄을 DB의 한글 문구에 실제 수치를 넣어 보여 줌(사용자 2026-11-12) — 영문 문구 틀과 맞춰 수치를 순서대로 옮김, 못 맞추면 원문 */
-function xferLine(l, en, kr){ const mm=cleanLine(l).match(tplRe(en).re); if(!mm || !kr) return null; const v=mm.slice(1); let i=0;
-  const out=kr.split(/(\(\d+(?:\.\d+)?—\d+(?:\.\d+)?\))/).map(part=>/^\(\d/.test(part) && /—/.test(part) ? (v[i++] ?? part) : part.replace(/\d+(?:\.\d+)?/g, x=>v[i++] ?? x)).join('');
-  return i===v.length ? out : null; }
+/* 범위 수치는 범위끼리 차례로, 고정 수치는 영문 틀에도 같은 수가 있을 때만 옮김 — 한글에만 있는 수('1초마다 생명력 … 재생')는 그대로(W10) */
+function xferLine(l, en, kr){ const mm=cleanLine(l).match(tplRe(en).re); if(!mm || !kr) return null; const v=mm.slice(1), R=[], F=[]; let k=0;
+  en.split(/(\(\d+(?:\.\d+)?—\d+(?:\.\d+)?\))/).forEach(part=>{ if(/^\(\d/.test(part) && /—/.test(part)) R.push(v[k++]); else (part.match(/\d+(?:\.\d+)?/g)||[]).forEach(x=>F.push([+x, v[k++]])); });
+  let ri=0, fi=0;
+  const out=kr.split(/(\(\d+(?:\.\d+)?—\d+(?:\.\d+)?\))/).map(part=>/^\(\d/.test(part) && /—/.test(part) ? (R[ri++] ?? part) : part.replace(/\d+(?:\.\d+)?/g, x=>{ const f=F[fi]; if(f && Math.abs(+x)===Math.abs(f[0])){ fi++; return f[1]; } return x; })).join('');
+  return ri===R.length && F.slice(fi).every(f=>Math.abs(+f[1])===f[0]) ? out.replace(/\+-(?=\d)/g,'-') : null; }
 function locLine(l, t){ if(!KR() || !t?.[4] || !t?.[5] || /[ㄱ-힝]/.test(l)) return l; if(l.includes('\n')) return l.split('\n').map(x=>locLine(x,t)).join('\n');
   const E=t[5].split('\n'), K=t[4].split('\n'); for(let j=0;j<E.length;j++){ const o=xferLine(l, E[j], K[j]); if(o!=null) return o; } return l; }
 /* 고정 옵션·룬 줄(it.other)도 한글로: 베이스 고정 옵션과 룬 효과·결속 문구에서 찾음(2026-11-12) */
 function locOther(it, l){ if(!KR() || /[ㄱ-힝]/.test(l)) return l; const BD=/^Bonded\s*:\s*/i, bond=BD.test(l), x=l.replace(BD,'');
-  const pairs=[]; try{ const ri=it.b?.imp||[[],[]], imp = Array.isArray(ri) ? ri : JSON.parse(String(ri).replace(/'/g,'"')); (imp[0]||[]).forEach((e,i)=>pairs.push([e, imp[1]?.[i]])); }catch(_){}
+  const pairs=[]; try{ const ri=it.b?.imp||[[],[]], imp = Array.isArray(ri) ? ri : JSON.parse(String(ri).replace(/'/g,'"')); (imp[0]||[]).forEach((e,i)=>{ const K=String(imp[1]?.[i]||'').split('\n'); String(e||'').split('\n').forEach((x,j)=>pairs.push([x, K[j]])); }); }catch(_){}   /* 여러 줄 고정 옵션은 줄마다(부재 목걸이 '-1 Prefix…\n-1 Suffix…', W10) */
   for(const r of [...(it.D?.runes||[]), ...Object.values(it.D?.runesBy||{}).flat()]) for(const t of r.t||[]){ const a=(t[3]||'').split('\n'), b=(t[2]||'').split('\n'), c=(t[5]||'').split('\n'), d=(t[4]||'').split('\n'); a.forEach((e,i)=>pairs.push([e,b[i]])); c.forEach((e,i)=>pairs.push([e,d[i]])); }
-  for(const [e,k] of pairs){ if(!e || !k) continue; const o=xferLine(x, e, k); if(o!=null) return (bond?'결속: ':'')+o; } return l; }
+  for(const [e,k] of pairs){ if(!e || !k) continue; const o=xferLine(x, e, k); if(o!=null) return (bond?'결속: ':'')+o.replace(/\+-(?=\d)/g,'-'); } return l; }
 const QTKR = {attack:'공격',caster:'시전',life:'생명력',mana:'마나',defences:'방어',physical:'물리',fire:'화염',cold:'냉기',lightning:'번개',chaos:'카오스',speed:'속도',attribute:'능력치',minion:'소환수'};
 const qtName = it => KR() && it.qTag && QTKR[it.qTag] ? `${QTKR[it.qTag]} 옵션` : it.qualType;
 function matcher(data){ if(data._mx) return data._mx; const list=[];
@@ -332,7 +335,7 @@ async function parse(txt){
   const head = secs[0]||[];
   const rl = head.find(l=>/^(Rarity|.*희귀도)\s*:/i.test(l)); const rv=(rl||'').split(':').slice(1).join(':').trim().toLowerCase();
   const rarity = /rare|희귀/.test(rv)?'rare':/magic|마법/.test(rv)?'magic':/unique|고유/.test(rv)?'unique':'normal';
-  if(rarity==='unique') return {err:L('고유 아이템은 제작 아이템이 아니라서 역산 불가','Unique items are not crafted, so there is nothing to reverse.')};
+  if(rarity==='unique') return {err:L('고유 아이템은 제작으로 만드는 아이템이 아님 · 역산 불가','Unique items are not crafted, so there is nothing to reverse.')};
   const nameLines = head.filter(l=>!/:/.test(l));
   const hit = findBase(nameLines.length?nameLines:head);
   if(!hit) return {err:L('베이스 아이템 이름 없음 · 아이템 이름 줄까지 필요','Base item not found. Paste the whole item text, including the name lines.')};
@@ -661,7 +664,8 @@ function buySet(an){ const b=new Set([...S.buy].filter(i=>S.need.has(i)).map(i=>
 // 사용자 확정 2026-11-11: 옵션마다 필수 / 유효 / 잡옵 — 유효 옵션은 노리되 한 번만 시도하고 빗나가면 그대로(반복·비싼 징조 없음)
 function needAn(an, floor, it){ const a = {...an, rows: an.rows.flatMap((r,i)=>{ if(r.m.fr) return [r]; if(r.unrev || !(S.need.has(i) || S.soft?.has(i))) return [];
   const t = Math.max(S.tsel[i] || r.tierNo, floor ? Math.min(floor, r.tierCnt) : 0), soft = !S.need.has(i), alt = altOf(an, i, it);
-  return [t===r.tierNo && !soft && !alt ? r : {...r, tierNo:t, ...(soft?{soft:true}:{}), ...(alt?altRow(it, r, alt):{})}]; })};
+  const pick = !!S.alt?.[i]?.length;   /* 칩으로 묶음을 직접 고름(다른 줄과 겹쳐 altOf가 비어도) — K41 자동 추가를 막는 데 씀(W10) */
+  return [t===r.tierNo && !soft && !alt && !pick ? r : {...r, tierNo:t, ...(soft?{soft:true}:{}), ...(alt?altRow(it, r, alt):{}), ...(pick?{altPick:true}:{})}]; })};
   return a; }
 /* 유효 옵션군(W8, 로드맵 2-④ 사용자 2026-11-12 18:38): 그 자리에 고른 다른 옵션 [{gi,tmax}] — 일반 옵션 자리만, 다른 줄에 이미 있는 계열은 뺌 */
 function altOf(an, i, it){ const L=S.alt?.[i], r=an.rows[i]; if(!L?.length || !r || r.m.fr || r.unrev || !r.g || (r.how!=='n' && r.how!=='d')) return null;
@@ -1408,7 +1412,7 @@ function makeDraft(it, an, opt){
     return it.D.groups.map((g,gi)=>({g,gi})).filter(({g,gi})=>g.s==='n' && g.g===sd && !P.some(r=>r.m.gi===gi) && ATK.test((g.t[0]?.[5]||'').split('\n')[0]) && !(g.f||[]).some(f=>used.has(f)) && g.t.some(t=>t[0]<=it.ilvl && t[1]>0))
       .filter(({g},_,A)=>!A.some(o=>o.g!==g && (o.g.f||[]).some(f=>(g.f||[]).includes(f)) && (o.g.t[0]?.[0]||0)>(g.t[0]?.[0]||0)))   /* 같은 계열의 낮은 레벨 그룹(Adds (1—2) to 3 …)은 빼고 본 그룹만 */
       .map(({g,gi})=>{ const lo=Math.max(0, g.t.findIndex(t=>t[0]<=it.ilvl)); return {gi, tmax:Math.min(g.t.length, lo+tm)}; }); };
-  for(const sd of ['p','s']){ const P=POOL[sd]; if(!P) continue; const ext=atkExtra(P, sd), gis=new Set(P.map(r=>r.m.gi)), altG=new Set(P.flatMap(r=>(r.alt||[]).map(x=>x.gi))) /* W8: 고른 유효 옵션군은 묶음에 남김 */, all0=anyOf(P), mem=(all0.anyOf||[all0]).filter(x=>gis.has(x.gi) || altG.has(x.gi)) /* 묶음 밖 대체 옵션(아무 저항 등)은 빼야 '묶음 3개'가 정확함 — 2026-11-12 등록 Slipstrike Vest: 번개 저항이 튕겨내기 자리를 차지했음 */, all = {anyOf:[...mem, ...ext]};
+  for(const sd of ['p','s']){ const P=POOL[sd]; if(!P) continue; const ext=P.some(r=>r.altPick) ? [] : atkExtra(P, sd) /* W10: '다른 옵션도 성공' 칩으로 묶음을 직접 고르면 그 묶음만(K41 자동 추가 안 함 — 균열 반지 밸런스가 물리 피해로 완성돼 원소 3개 조건 18%) */, gis=new Set(P.map(r=>r.m.gi)), altG=new Set(P.flatMap(r=>(r.alt||[]).map(x=>x.gi))) /* W8: 고른 유효 옵션군은 묶음에 남김 */, all0=anyOf(P), mem=(all0.anyOf||[all0]).filter(x=>gis.has(x.gi) || altG.has(x.gi)) /* 묶음 밖 대체 옵션(아무 저항 등)은 빼야 '묶음 3개'가 정확함 — 2026-11-12 등록 Slipstrike Vest: 번개 저항이 튕겨내기 자리를 차지했음 */, all = {anyOf:[...mem, ...ext]};
     const hit = t => t && ((t.gi!=null && gis.has(t.gi)) || (t.anyOf||[]).some(x=>gis.has(x.gi)));
     for(const n of nodes){ const t=n.target; if(!t) continue;
       if(hit(t)){ const {gi, tmax, anyOf:_a, ...rest} = t; n.target = {...rest, ...all}; n.pool=P.length; }
@@ -1526,7 +1530,7 @@ function verifyDraft(it, an, d){ if(d?.tplGraph) return [{lv:'ok', kr:`등록 �
   /* 한 줄씩 짝지음(2026-11-13 W1): 같은 계열 두 줄(일반 + 훼손 화염 저항 최대치)을 초안이 하나만 만들어도 통과하던 것 */
   const pairUp = (A, B) => { const left=B.slice(); return A.filter(gi=>{ let k=left.indexOf(gi); if(k<0) k=left.findIndex(h=>fk(h)===fk(gi)); if(k<0) return true; left.splice(k,1); return false; }); };
   const miss = pairUp(want, have), extra = pairUp(have, want).filter(gi=>!want.some(w=>w===gi || fk(w)===fk(gi)));
-  if(miss.length) add('err',`완성 상태에 빠진 옵션: ${miss.map(nameOf).join(', ')}${miss.some(gi=>want.filter(w=>w===gi).length>1)?' (같은 옵션 두 줄 중 하나)':''}`,`Missing from the finished item: ${miss.map(nameOf).join(', ')}`);
+  if(miss.length) add('err',`완성 상태에 빠진 옵션: ${miss.map(nameOf).join(', ')}${miss.some(gi=>want.filter(w=>w===gi).length>1)?' (같은 옵션 2개 중 하나)':''}`,`Missing from the finished item: ${miss.map(nameOf).join(', ')}`);
   /* 쪽마다 옵션 수(2026-11-13 W1): 붙여 넣은 아이템에서 목표로 고른 옵션 수만큼 초안 완성 상태에 그쪽 옵션이 있어야 함 */
   ['p','s'].forEach(sd=>{ const w=an.rows.filter(r=>!r.unrev && r.m.gi!=null && r.how!=='x' && r.m.side===sd).length, h=mods.filter(m=>m.gi!=null && m.side===sd).length;
     if(h<w && !miss.length) add('err',`완성 상태의 ${sd==='p'?'접두':'접미'} 목표 옵션 ${h}개, 붙여 넣은 아이템은 ${w}개`,`The finished draft has ${h} target ${sideEn(sd)}(es); the pasted item has ${w}.`); });
@@ -1546,11 +1550,11 @@ function verifyDraft(it, an, d){ if(d?.tplGraph) return [{lv:'ok', kr:`등록 �
   ['p','s'].forEach(sd=>{ if(count(sd)>cap[sd]) add('err',`${sd==='p'?'접두':'접미'} 옵션 ${count(sd)}개로 최대 옵션 ${cap[sd]}개을 넘음`,'Too many lines on one side.'); });
   if(it.sockets!=null && it.sockets < (d.sockets||0)) add('warn',`붙여 넣은 아이템은 룬 소켓 ${it.sockets}개인데 초안은 ${d.sockets}개가 필요`,`The pasted item has ${it.sockets} socket(s); the draft needs ${d.sockets}.`);
   const cutW = (x,n) => { x=String(x||'').split('\n')[0]; if(x.length<=n) return x; const c=x.slice(0,n).replace(/[\s,·]+\S*$/,''); return (c||x.slice(0,n))+'…'; };   /* 단어 중간에서 자르지 않음 */
-  const unk = an.rows.filter(r=>r.unknown && !r.m.fr); if(unk.length) add('warn',`가중치를 모르는 옵션 ${unk.length}개(${unk.map(r=>cutW(lk(r),24)).join(', ')}) — 해당 단계 확률 계산 불가`,`${unk.length} line(s) with unknown weights (${unk.map(r=>cutW(lk(r),28)).join(', ')}); those steps have no odds.`);
+  const unk = an.rows.filter(r=>r.unknown && !r.m.fr); if(unk.length) add('warn',`가중치를 모르는 옵션 ${unk.length}개(${unk.map(r=>cutW(lk(r),24)).join(', ')}) — 해당 단계 확률 계산 불가`,`${unk.length} line(s) with unknown weights (${unk.map(r=>cutW(le(r),28)).join(', ')}); those steps have no odds.`);
   /* 인식 못 한 옵션 줄(2026-11-13 RV0): 초안에 없는 줄이 있을 수 있어 '완성 상태 = 붙여 넣은 아이템'으로 보지 않음 */
   const unrec = (it.other||[]).filter(o=>o.k==='?');
   /* 2026-11-13 W1: '잡옵으로 보고 진행'을 체크하지 않았으면 오류, 체크했으면 그 줄은 잡옵 자리로 보고 주의 */
-  if(unrec.length) add(S.unkOk?'warn':'err', S.unkOk ? `인식 못 한 옵션 ${unrec.length}개(${unrec.map(o=>cutW(o.l,24)).join(', ')})는 잡옵 자리로 봄 — 그 줄은 초안에 없음` : `인식 못 한 옵션 ${unrec.length}개(${unrec.map(o=>cutW(o.l,24)).join(', ')}) — 초안이 만들 수 없는 줄`,
+  if(unrec.length) add(S.unkOk?'warn':'err', S.unkOk ? `인식 못 한 옵션 ${unrec.length}개(${unrec.map(o=>cutW(o.l,24)).join(', ')})는 잡옵 자리로 봄 — 그 옵션은 초안에 없음` : `인식 못 한 옵션 ${unrec.length}개(${unrec.map(o=>cutW(o.l,24)).join(', ')}) — 초안이 만들 수 없는 옵션`,
     S.unkOk ? `${unrec.length} unrecognised line(s) (${unrec.map(o=>cutW(o.l,28)).join(', ')}) are treated as junk slots; the draft does not make them.` : `${unrec.length} line(s) not recognised (${unrec.map(o=>cutW(o.l,28)).join(', ')}); the draft cannot make them.`);
   if(!out.some(o=>o.lv==='err') && !unrec.length) add('ok','완성 상태 = 붙여 넣은 아이템 · 모든 단계가 규칙에 맞음','The finished state matches the pasted item and every step follows the rules.');
   return out;
@@ -1578,7 +1582,7 @@ function runesOf(it){ const RL=(it.other||[]).filter(o=>o.k==='rune').map(o=>o.l
 function renderStatic(){
   document.documentElement.lang = KR()?'ko':'en';
   $('#h1').textContent = L('리버스 크래프팅','Reverse crafting');
-  $('#beta').textContent = L('완성도 약 60% · 데이터가 쌓일수록 정교해지는 중','About 60% complete · gets sharper as data grows');
+  $('#beta').textContent = L('완성도 약 80% · 데이터가 쌓일수록 정교해지는 중','About 80% complete · gets sharper as data grows');
   const ST=[[L('입력','Input'),L('영상·글 주소, 경매장 아이템, 또는 옵션 조합','Video/post link, a trade item, or a modifier set')],[L('리버스 엔지니어링','Reverse engineering'),L('옵션 출처·티어 분석 → 제작 순서 초안 → 검산','Sources & tiers → draft order → verification')],[L('크래프팅 목록에 올리기','Add to Crafting'),L('결과 확인 후 올리기 결정','Decide whether to publish it')],[L('아쉬운 점 남기기','Leave feedback'),L('틀린 단계·더 나은 방법 제보','Tell us what was off')]];
   const stage = S.sent ? 3 : S.draft ? 2 : S.last && !S.last.err ? 1 : 0;
   $('#rsteps').innerHTML = ST.map(([t,d],i)=>`<li class="${i<stage?'done':i===stage?'on':''}"><span><b>${esc(t)}</b>${esc(d)}</span></li>`).join('');
@@ -1605,7 +1609,7 @@ function renderStatic(){
   $('#hint').textContent = L('붙여 넣으면 바로 분석','Analyses as soon as you paste');
   $('#mpl').textContent = L('이 아이템 시세(디바인, 선택)','Market price (div, optional)');
   $('#samples').innerHTML = `<span class="hint" style="align-self:center">${L('예시','Samples')}:</span>` + SAMPLES.map((s,i)=>`<button type="button" class="chip" data-sample="${i}">${esc(s.n[KR()?0:1])}</button>`).join('')
-    + (S.recSamples?.length ? `<select id="recs" aria-label="${L('등록된 레시피의 완성템','Finished item of a registered recipe')}"><option value="">${L('등록된 레시피 완성템 불러오기…','Load a registered recipe\'s finished item…')}</option>${S.recSamples.map((x,i)=>`<option value="${i}"${S.recIdx===i?' selected':''}>${esc(KR()?x.base.kr:x.base.en)} | ${esc(KR()?x.title.kr:x.title.en)}</option>`).join('')}</select>` : '');
+    + (S.recSamples?.length ? `<select id="recs" aria-label="${L('등록된 레시피의 완성템','Finished item of a registered recipe')}"><option value="">${L('등록된 레시피 완성템 불러오기…','Load a registered recipe\'s finished item…')}</option>${S.recSamples.map((x,i)=>`<option value="${i}"${S.recIdx===i?' selected':''}>${esc(KR()?x.base.kr:x.base.en)} | ${esc(KR()?x.title.kr:x.title.en)} · ${/-bal$/.test(x.id)?L('밸런스','Balance'):/-ess$/.test(x.id)?L('에센셜','Essential'):L('하이엔드','High-end')}</option>`).join('')}</select>` : '');
 }
 /* 속성부여 tierShare와 같은 계산: 같은 쪽 일반 옵션 가중치 합 중 이 그룹의 1~k티어 몫 */
 function tierShareR(it, r, k){ if(!r.g || r.g.s!=='n') return null; const G=it.D.groups, side=r.g.g, il=it.ilvl||82; let tot=0, w=0;
@@ -1706,7 +1710,7 @@ function render(){
       `<span class="tag ${how[0]}">${how[1]}</span>`,
       m.fr && r.g.s!=='n' ? `<span class="tag ${r.g.s}">${SRC[r.g.s][KR()?0:1]}</span>` : '',
       r.lord ? `<span class="tag d">${L(LORDS[r.lord][0]+' 전용', LORDS[r.lord][1]+' only')}</span>` : '',
-      m.out ? `<span class="tag q">${L('범위 초과','Above range')}</span>` : '', m.split ? `<span class="tag q" title="${esc(L(`게임에선 여러 옵션이 한 줄(${m.split})로 합쳐 보임`,`Shown in game as one summed line (${m.split})`))}">${m.merged?L('합쳐진 줄','Summed line'):L('접두+접미 합산','Prefix+suffix sum')}</span>` : '', m.q ? `<span class="tag q">${L('퀄리티 적용','Quality applied')}</span>` : '',
+      m.out ? `<span class="tag q">${L('범위 초과','Above range')}</span>` : '', m.split ? `<span class="tag q" title="${esc(L(`게임에선 여러 옵션이 한 줄(${m.split})로 합쳐 보임`,`Shown in game as one summed line (${m.split})`))}">${m.merged?L('합쳐진 옵션','Summed line'):L('접두+접미 합산','Prefix+suffix sum')}</span>` : '', m.q ? `<span class="tag q">${L('퀄리티 적용','Quality applied')}</span>` : '',
       (()=>{ const an0=String(r.t[KR()?2:3]||'').replace(/^-\s*/,''); return !an0 || (KR() && an0===r.t[3] && /^[\x00-\x7F]+$/.test(an0)) ? '' : `<span class="tag">${esc(an0)}</span>`; })()].join('');   /* 접미 이름 앞 '- ' 빼고, 한글 이름이 없는(영어 그대로인) 증강물 옵션 이름은 숨김(2026-11-13 RV0) */
     const tierT = r.g.s==='n' ? L(`T${r.tierNo} · Lv ${r.t[0]}`,`T${r.tierNo} · lvl ${r.t[0]}`) : L(`Lv ${r.t[0]}`,`lvl ${r.t[0]}`);
     const ri = an.rows.indexOf(r), soft = !m.fr && S.soft?.has(ri), on = m.fr || S.need.has(ri) || soft;
@@ -1903,9 +1907,9 @@ function runFlow(it, d){ try{
   return out; }catch(e){ return {err:String(e.message||e)}; } }
 function flowHTML(F){ const VN={high:L('하이엔드','High-end'), bal:L('밸런스','Balance'), ess:L('에센셜','Essential')}, fd = v => v==null ? '—' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
   if(F.err) return `<div class="flow bad"><b>${L('플로우차트','Flowchart')}</b><p class="iss">${esc(F.err)}</p></div>`;
-  const rows = F.res.map(x=> x.res ? `<tr><td>${VN[x.id]||x.id}${F.off?.[x.id] ? ` <small>(${L('난이도 표에 없는 등급','not a grade at this difficulty')})</small>` : F.merged?.[x.id] ? ` <small>(${L(`${VN[F.merged[x.id]]}와 같은 결과 · 합침`,`same result as ${VN[F.merged[x.id]]}, merged`)})</small>` : ''}</td><td>${fd(x.cost ?? x.res.mean)}</td><td>${fd(x.res.useMedian!=null ? x.res.useMedian : x.res.median)}</td><td>${fd(x.res.useP90!=null ? x.res.useP90 : x.res.p90)}</td><td>${x.res.bases.toFixed(1)}</td><td>${x.res.reqOk>=0.98?'✓':Math.round(x.res.reqOk*100)+'%'}</td></tr>` : `<tr><td>${VN[x.id]||x.id}</td><td colspan="5">${L('진행 불가','No way through')}</td></tr>`).join('');
+  const rows = F.res.map(x=> x.res ? `<tr><td><span class="gn">${VN[x.id]||x.id}</span>${F.off?.[x.id] ? ` <small>(${L('난이도 표에 없는 등급','not a grade at this difficulty')})</small>` : F.merged?.[x.id] ? ` <small>(${L(`${VN[F.merged[x.id]]}와 같은 결과 · 합침`,`same result as ${VN[F.merged[x.id]]}, merged`)})</small>` : ''}</td><td>${fd(x.cost ?? x.res.mean)}</td><td>${fd(x.res.useMedian!=null ? x.res.useMedian : x.res.median)}</td><td>${fd(x.res.useP90!=null ? x.res.useP90 : x.res.p90)}</td><td>${x.res.bases.toFixed(1)}</td><td>${x.res.reqOk>=0.98?'✓':Math.round(x.res.reqOk*100)+'%'}</td></tr>` : `<tr><td>${VN[x.id]||x.id}</td><td colspan="5">${L('진행 불가','No way through')}</td></tr>`).join('');
   return `<div class="flow ${F.issues.length?'bad':''}"><div class="ch-h"><b>${L('플로우차트 검사','Flowchart check')}</b><span>${F.issues.length ? L('통과 실패 · 아래 문제를 고쳐야 레시피 생성 가능','Not passed — these need fixing before a recipe is made') : L(`단계 ${F.g.nodes.filter(n=>n.kind==='act').length}개를 실제 확률로 ${(F.res[0]?.res?.N||0).toLocaleString()}번씩 끝까지 진행 · 막힘 없음`,`Ran the ${F.g.nodes.filter(n=>n.kind==='act').length} steps to the end ${(F.res[0]?.res?.N||0).toLocaleString()} times each with real odds. No dead ends`)}</span></div>
-    <table><thead><tr><th>${L('등급','Grade')}</th><th>${L('평균','Mean')}</th><th>${L('중앙값','Median')}</th><th>${L('운 나쁠 때(90%)','Unlucky (90%)')}</th><th>${L('베이스','Bases')}</th><th>${L('필수 옵션','Must-haves')}</th></tr></thead><tbody>${rows}</tbody></table>
+    <table><thead><tr><th>${L('등급','Grade')}</th><th>${L('평균','Mean')}</th><th>${L('중앙값','Median')}</th><th class="wr">${L('운 나쁠 때(90%)','Unlucky (90%)')}</th><th>${L('베이스','Bases')}</th><th>${L('필수 옵션','Must-haves')}</th></tr></thead><tbody>${rows}</tbody></table>
     <span class="hint">${L('완성 1개당 제작 비용(div) · 베이스 값 제외','Crafting cost per finished item (div), base value not included')}${(()=>{ const m=F.res.find(x=>x.res?.magDiv)?.res.magDiv; return m ? ' · '+L(`매직 베이스를 직접 굴리면 약 ${m>=10?Math.round(m):m.toFixed(1)} div 추가`, `rolling the magic base yourself adds about ${m>=10?Math.round(m):m.toFixed(1)} div`) : ''; })()}${F.diff ? ' · '+L('난이도 ','Difficulty ')+DIFF_N()[F.diff.d]+' → '+POE2GRAPH.gradesFor(F.diff.d).map(v=>VN[v]).join(KR()?'·':', ') : ''}</span>${(()=>{ const a0=S.last; if(!a0?.it) return ''; const same=similarRecipes(a0.it, a0.an).filter(x=>x.same && x.b.g!==S.draft?.tpl?.g); const mine=F.res?.find(x=>x.res && !F.off?.[x.id] && !F.merged?.[x.id])?.cost;
       const best=same.map(x=>({x, m:S.simC?.[x.b.g+'|'+x.b.tr]})).filter(y=>y.m!=null).sort((p,q)=>p.m-q.m)[0]; if(!best || mine==null) return '';
       const r=mine/best.m, nm=esc(best.x.b.ti?.[KR()?'kr':'en']||best.x.id);

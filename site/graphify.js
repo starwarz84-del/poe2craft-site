@@ -70,7 +70,7 @@ function tplRewrite(graph, D, map, o={}){ const G=D.groups, g=JSON.parse(JSON.st
     en:s=>String(s||'').replace(/\s*\((fractured|desecrated|essence|alloy)[^)]*\)\s*$/i,'').replace(/^T\d+([–-]\d+)?\s+/,'').replace(/\s+(prefix|suffix)$/i,'').trim()};
   const seenOld=new Set();
   for(const n of graph.nodes||[]) for(const l of n.item||[]){ if(!l.tags || l.tags.length!==1) continue; const t=graph.tags?.[l.tags[0]]; if(t?.gi==null || !ch.includes(t.gi) || !names[map[t.gi]]) continue;
-    const kr=strip.kr(l.kr), en=strip.en(l.en), key=kr+'|'+en; if(seenOld.has(key) || kr.length<2) continue; seenOld.add(key); rep.push({kr, en, to:names[map[t.gi]]}); }
+    const kr=strip.kr(l.kr), en=strip.en(l.en), key=kr+'|'+en; if(seenOld.has(key) || kr.length<2) continue; seenOld.add(key); const to=names[map[t.gi]]; rep.push({kr, en, to:{kr:to.kr, en:String(to.en||'').replace(/^to\s+/i,'')}}); }
   /* 옵션 이름(수치 뺀 것)과 끝 동사(추가·증가·감소)를 뺀 짧은 이름도(이름표가 '공격 시 물리 피해 1티어'처럼 줄여 쓰는 경우) */
   const clean=t=>String(t||'').split('\n').join(' / ').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\s*~\s*/g,' ').replace(/\s+/g,' ').trim();
   const tail=t=>t.replace(/\s+(추가|증가|감소)$/,'').trim();
@@ -81,7 +81,30 @@ function tplRewrite(graph, D, map, o={}){ const G=D.groups, g=JSON.parse(JSON.st
   for(const n of g.nodes||[]) for(const l of n.item||[]){ if(!l.tags || l.tags.length!==1) continue; const t0=graph.tags?.[l.tags[0]]; if(t0?.gi==null || !ch.includes(t0.gi)) continue;
     const A=G[t0.gi], B=G[map[t0.gi]], base=String(l.kr||'').replace(/\s*\([^)]*\)\s*$/,''), suf=String(l.kr||'').slice(base.length), sufE=(String(l.en||'').match(/\s*\([^)]*\)\s*$/)||[''])[0];
     const i=A.t.findIndex(x=>(x[4]||'').replace(/\n/g,' / ')===base); if(i<0) continue; const x=B.t[Math.min(i, B.t.length-1)]; l.kr=(x[4]||'').replace(/\n/g,' / ')+suf; l.en=(x[5]||'').replace(/\n/g,' / ')+sufE; l._tpl=1; }
-  const fix=x=>{ if(Array.isArray(x)) return x.forEach(fix); if(!x || typeof x!=='object') return; if(typeof x.kr==='string' && typeof x.en==='string'){ for(const r of rep){ if(x.kr.includes(r.kr)) x.kr=x.kr.split(r.kr).join(r.to.kr); if(r.en.length>=3 && x.en.includes(r.en)) x.en=x.en.split(r.en).join(r.to.en); } }
+  /* 영문 상자 글은 등록 그래프가 줄여 쓴 이름('crit chance', 'flat armour')이라 DB 이름으로는 안 맞음(W10) → 같은 규칙으로 줄인 이름을 옛·새 옵션 둘 다 만들어 짝으로 바꿈.
+     한글이 바뀐 글에서만(그 글이 바꾼 옵션을 가리킨다는 표시), 대소문자 무시·단어 경계, 긴 것부터 */
+  const enForms=t=>{ const s0=clean(t).replace(/^(\+|-|%|\s)+/,'').replace(/^Adds\s+to\s+/i,'Adds ').trim(), out=[];
+    const core=s0.replace(/^(Adds|to|increased|reduced|additional|more|less)\s+/i,'').replace(/^Level of all (.+) Skills$/i,'$1 skills').replace(/^all\s+/i,'').trim();
+    const nomax=core.replace(/^maximum\s+/i,''), abbr=nomax.replace(/Critical Hit/i,'crit').replace(/\s+Rating$/i,'').replace(/Resistances?$/i,m=>/s$/.test(m)?'resistances':'resistance');
+    const noun=abbr.replace(/\s+Damage$/i,'').replace(/\s+skills$/i,' skills');
+    const atk=core.replace(/\s+Damage(\s+to\s+(Attacks|Spells))?$/i,''), lvl=(core.match(/^(.+) skills$/i)||[])[1];
+    [s0.replace(/^to\s+/i,''), core, nomax, abbr, noun, abbr.replace(/resistances?$/i,'res'), nomax.replace(/Critical Hit/i,'critical'), abbr.replace(/Energy Shield/i,'ES'),
+     /^Adds\b/i.test(s0) ? atk+' flat' : '', /^Adds\b/i.test(s0) ? 'flat '+atk : '', /^all\s/i.test(s0.replace(/^to\s+/i,'')) ? 'all res' : '', lvl ? lvl+' skill levels' : '',
+     /^Rarity of Items found$/i.test(core) ? 'item rarity' : '', /\s+for Spells$/i.test(abbr) ? 'Spell '+abbr.replace(/\s+for Spells$/i,'') : '', /\s+Damage with Attacks$/i.test(core) ? 'attack '+core.replace(/\s+Damage with Attacks$/i,'') : ''].forEach((f,i)=>{ out[i]=f; });
+    /* 새 옵션 쪽에 그 형태가 없으면(힘 같은 짧은 이름) 가장 짧은 이름으로 */ return out; };
+  const enRep=[]; for(const a of ch){ const A=G[a], B=G[map[a]]; if(!A || !B) continue; const fa=enForms((A.t[0]||[])[5]), fb=enForms((B.t[0]||[])[5]);
+    fa.forEach((f,i)=>{ if(f && f.length>=4 && !enRep.some(r=>r.from.toLowerCase()===f.toLowerCase())) enRep.push({from:f, to:fb[i]||fb[4]||fb[1]||''}); }); }
+  enRep.sort((a,b)=>b.from.length-a.from.length);
+  const reEsc=t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), capLike=(src,to)=>/^[A-Z]/.test(src) ? to.charAt(0).toUpperCase()+to.slice(1) : /^[a-z]/.test(src) && !/^[A-Z]{2}/.test(to) ? to.charAt(0).toLowerCase()+to.slice(1) : to;
+  const enFix=e=>{ let out=e; for(const r of enRep){ if(!r.to) continue; const re=new RegExp('(^|[^A-Za-z])('+reEsc(r.from)+')(?![A-Za-z])','gi'); if(re.test(out)){ out=out.replace(re,(m,p,w)=>p+'\u0000'+capLike(w, r.to)+'\u0001'); } }
+    return out.replace(/\u0000|\u0001/g,''); };
+  /* 한글 조사: 바꾼 이름 뒤 이/가·을/를·은/는·와/과·으로/로를 새 이름 받침에 맞춤('힘가 분열되면' → '힘이') */
+  const jong=w=>{ const c=(w||'').trim().slice(-1).charCodeAt(0); return c>=0xAC00 && c<=0xD7A3 ? (c-0xAC00)%28 : /[0-9)%]$/.test(w) ? 1 : 0; };
+  const J={이:['이','가'],가:['이','가'],을:['을','를'],를:['을','를'],은:['은','는'],는:['은','는'],과:['과','와'],와:['과','와']};
+  const krFix=(k, r)=>k.split(r.kr).map((part,i)=>{ if(!i) return part; const m=part.match(/^(으로|로|이|가|을|를|은|는|과|와)(?![가-힣])/); if(!m) return part; const j=jong(r.to.kr), x=m[1];
+      const y = x==='으로'||x==='로' ? (j && j!==8 ? '으로' : '로') : J[x][j?0:1]; return y+part.slice(x.length); }).join(r.to.kr);
+  const fix=x=>{ if(Array.isArray(x)) return x.forEach(fix); if(!x || typeof x!=='object') return; if(typeof x.kr==='string' && typeof x.en==='string'){ const k0=x.kr, e0=x.en; for(const r of rep){ if(x.kr.includes(r.kr)) x.kr=krFix(x.kr, r); if(r.en.length>=3 && x.en.includes(r.en)) x.en=x.en.split(r.en).join(r.to.en); }
+      if(x.kr!==k0 && x.en===e0) x.en=enFix(x.en); }
     for(const [k,v] of Object.entries(x)) if(k!=='tags' && v && typeof v==='object') fix(v); };
   const fixN=n=>{ for(const [k,v] of Object.entries(n)) if(k!=='item' && v && typeof v==='object') fix(v); };
   if(rep.length){ (g.nodes||[]).forEach(fixN); for(const t of Object.values(g.tags||{})) if(t.label) fix(t.label); fix(g.versions); }

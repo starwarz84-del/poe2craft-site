@@ -45,9 +45,10 @@ function registered(r, N=1500, card){ const gid=r.simId||r.tierGroup||r.id, g=JS
   const g2={...g, tags:{...g.tags, ...qt}};
   /* 같은 완성 조건을 리버스 초안 그래프에 옮겨 쓸 수 있게 태그 이름에 R_를 붙이고 $매개변수를 값으로 바꿈 */
   const PS=x=>typeof x==='string'&&x[0]==='$'?st.params[x.slice(1)]:x, rtags={};
-  for(const [k,t] of Object.entries(g.tags)){ const o={...t}; if(o.tmax!=null) o.tmax=P(o.tmax); if(o.anyOf) o.anyOf=o.anyOf.map(x=>typeof x==='string'?'R_'+x:{...x, ...(x.tmax!=null?{tmax:P(x.tmax)}:{})}); rtags['R_'+k]=o; }
-  const ren=c=>{ if(!c || typeof c!=='object') return c; if(c.full || c.sideLt) return {all:[]}; /* 빈 자리를 랜덤 옵션으로 채우는 마무리는 초안 그래프에 없어 비교에서 뺌 */ if(c.ref) return ren((g.conds||{})[c.ref]); const o={};
-    for(const [k,v] of Object.entries(c)){ if(k==='all'||k==='any') o[k]=v.map(ren); else if(k==='not') o[k]=ren(v); else if(k==='has'||k==='allMods') o[k]='R_'+PS(v); else if(k==='count'||k==='sideAll') o[k]={...v, tag:'R_'+PS(v.tag)}; else o[k]=v; } return o; };
+  /* C17=1(진단용, W10): 등록 완성 조건의 티어를 리버스 등급 티어(밸런스 1~2·에센셜 1~4)까지 넓혀 봄 — 완성 조건 미달이 티어 차이 때문인지 보기 */ const W17={bal:2, ess:4}[r.tier||'high'], PW=x=>{ const v=P(x); return process.env.C17 && W17 && typeof v==='number' ? Math.max(v, W17) : v; };
+  for(const [k,t] of Object.entries(g.tags)){ const o={...t}; if(o.tmax!=null) o.tmax=PW(o.tmax); if(o.anyOf) o.anyOf=o.anyOf.map(x=>typeof x==='string'?'R_'+x:{...x, ...(x.tmax!=null?{tmax:PW(x.tmax)}:{})}); rtags['R_'+k]=o; }
+  const ren=c=>{ if(!c || typeof c!=='object') return c; if(c.full || c.sideLt) return {all:[]}; /* 등급 매개변수 조건({param})은 초안 그래프에 같은 매개변수가 없어 등록 등급 값으로 미리 풀어 둠(W10: zenm 오래된 사파이어 에센셜 '치명타 옵션 2개 또는 v=2'가 초안에서 늘 2개를 요구해 17%) */ if(c.param) return Object.entries(c.param).every(([k,v])=>st.params[k]===v) ? {all:[]} : {any:[]}; /* 빈 자리를 랜덤 옵션으로 채우는 마무리는 초안 그래프에 없어 비교에서 뺌 */ if(c.ref) return ren((g.conds||{})[c.ref]); const o={};
+    for(const [k,v] of Object.entries(c)){ if(k==='all'||k==='any') o[k]=v.map(ren); else if(k==='not') o[k]=ren(v); else if(k==='has'||k==='allMods') o[k]='R_'+PS(v); else if(k==='count'||k==='sideAll') o[k]={...v, tag:'R_'+PS(v.tag), ...(v.min!=null?{min:PS(v.min)}:{})}; else o[k]=v; } return o; };
   const rreq=ren(g.require);
   const res=SIM.simulate(g2, D, craft, prices, st.params, N, 7);
   /* 예전(~11-13): 준비 구역(prep) 상자를 뺀 사용량 → 초안(베이스 포함 평균)과 기준이 달랐음. 이제 양쪽 모두 useDiv(준비 포함, 베이스 제외) + 매직 굴림 */
