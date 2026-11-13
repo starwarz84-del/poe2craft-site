@@ -16,6 +16,8 @@ FRC = L('s', N_ + '공격 치명타 명중 확률 7% 증가도 부여 (분열)',
 CD = L('s', N_ + '공격 피해의 치명타 피해 보너스 (5—10)% 증가도 부여', 'Notable Passive Skills in Radius also grant (5—10)% increased Critical Damage Bonus for Attack Damage', 'n', ['cd'])
 CS = L('p', '접미어 속성 부여의 최대 개수 +1개', '+1 Suffix Modifier allowed', 'c', ['contS'])
 MS = L('s', N_ + '이동 속도 1% 증가도 부여', 'Notable Passive Skills in Radius also grant 1% increased Movement Speed', 'd', ['ms'])
+# 밸런스 성공 회차(F1 11-13): 영상 12:15 첫 공개에서 메아리로 고른 활 사용 시 공격 속도 2%(캡처 1235) — 다섯 중 하나라 밸런스는 여기서 끝남. 묶음 태그 revB의 shown
+MSB = L('s', N_ + '활 사용 시 공격 속도 (1—2)% 증가도 부여', 'Notable Passive Skills in Radius also grant (1—2)% increased Attack Speed with Bows', 'd', ['revB'])
 AIL = L('p', N_ + '플레이어가 유발하는 상태 이상의 강도 (3—7)% 증가도 부여', 'Notable Passive Skills in Radius also grant (3—7)% increased Magnitude of Ailments you inflict', 'n', ['pre'])
 RAD = L('p', '반경이 매우 넓은 반경으로 업그레이드', 'Upgrades Radius to Very Large', 'c', ['rad'])
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
@@ -46,7 +48,7 @@ g = {
           'contS': {'gi': 101, 'slot': {'s': 1}}, 'contP': {'gi': 102, 'slot': {'p': 1}},
           'p6': {'gi': 6}, 'p62': {'gi': 62}, 's11': {'gi': 11}, 's17': {'gi': 17}, 's3': {'gi': 3}, 's2': {'gi': 2},
           'pre': {'anyOf': ['p6', 'p62'], 'shown': 'p6', 'label': PRE_LABEL},   # 영상 18:00 계획: 감전의 강도 또는 상태 이상의 강도, 먼저 뜬 것
-          'revB': {'anyOf': REVB, 'shown': 'ms', 'label': REVB_LABEL}},
+          'revB': {'anyOf': REVB, 'shown': 's17', 'label': REVB_LABEL}},   # F1 11-13: 밸런스 카드가 하이엔드(이동 속도)와 같게 보이던 것 — 밸런스 성공 회차는 12:15 활 사용 시 공격 속도
  'require': {'all': [{'has': 'cc'}, {'has': 'cd'}, {'has': 'pre'}, {'has': 'rad'}, {'has': 'revB'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
@@ -90,7 +92,7 @@ RV_OK = {'res': 'ok'}
 A(id='r1', kind='act', group='main', pos=[0, 7.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='ms', label=K('공개', 'Reveal'),
   goal=K('접미 이동 속도', 'Movement speed suffix'), show=['ms'],
   edges=[{'if': {'added': 'ms'}, 'to': 'x1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  over=[{'param': {'v': 2}, 'set': {'want': 'revB', 'show': ['revB'],
+  over=[{'param': {'v': 2}, 'set': {'want': 'revB', 'show': ['revB'], 'goal': K('접미 좋은 옵션 1개', 'One good suffix'), 'item': [CS, FRC, CD, MSB],
          'edges': [{'if': {'added': 'revB'}, 'to': 'x1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}]}}],
   item=[CS, FRC, CD, MS])
 A(id='r1x', kind='act', group='main', pos=[1, 7.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
@@ -114,6 +116,10 @@ A(id='l2', kind='act', group='main', pos=[0, 11.4], act='essence', cur='Ancient_
   edges=[{'if': {'has': 'pre'}, 'to': 'ok', 'res': 'ok'}, {'to': 'c2', 'res': 'fail', 'label': K('좋은 접두가 지워짐 — 다시 카오스', 'Good prefix gone: Chaos again')}],
   item=[AIL, RAD, FRC, CD, MS])
 A(id='ok', kind='done', group='main', pos=[0, 12.4], label=K('완성', 'Finished'))
+# 밸런스: 공개 뒤 아이템 칸의 이동 속도 줄 → 성공 회차 옵션(활 사용 시 공격 속도, F1 11-13)
+for n in N:
+    if n['id'] in ('x1', 'e2', 'c2', 'l2') and MS in (n.get('item') or []):
+        n.setdefault('over', []).append({'param': {'v': 2}, 'set': {'item': [MSB if l is MS else l for l in n['item']]}})
 g['nodes'] = N
 g['loops'] = [{'id': 'L1', 'nodes': ['d1', 'r1', 'r1x'], 'kr': '훼손 공개', 'en': 'Reveal'},
               {'id': 'L2', 'nodes': ['c2', 'l2'], 'kr': '우울', 'en': 'Melancholy'}]
