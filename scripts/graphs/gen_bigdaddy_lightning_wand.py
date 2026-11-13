@@ -106,7 +106,7 @@ A(id='d1', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Preser
   goal=K('접두 자리 막기(훼손)', 'Prefix slot blocker (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'd2'}], item=[UN('p'), L5, CR, AL])
 A(id='d2', kind='act', group='main', pos=[0, 11.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='blk', label=K('공개', 'Reveal'),
-  goal=K('접두 마나 최대치(훼손) — 주문 피해와 마나 복합이 아닌 마나 최대치로 다음 엑잘의 마나 자리 막기', 'Maximum mana prefix (desecrated): plain mana, not the spell + mana hybrid, so the next exalts cannot roll mana'), show=['blk'],
+  goal=K('접두 마나 최대치(훼손) — 복합 말고 마나로 자리 막기', 'Maximum mana prefix (desecrated): plain mana, not the hybrid, blocks mana'), show=['blk'],
   over=[{'param': {'L': 0}, 'set': {'goal': K('접두 자리 막기 공개 — 나오는 대로', 'Reveal the blocker: keep what comes'), 'showText': [{'s': 'p', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}], 'show': []}}],
   edges=[{'if': {'any': [{'added': 'blk'}, V_ESS]}, 'to': 'e2', 'res': 'ok'},
          {'to': 'd2x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
