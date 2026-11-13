@@ -3,6 +3,10 @@
 # 실행: cd scripts/graphs && python3 gen_mazbro_caster_amulet.py  → mazbro-caster-amulet-v2.json (gen_batch14.py 끝에서 자동 호출, 그 구간을 대신함)
 # C1 2026-11-13(사용자 확정 15:21 ②): 세 번째 접미는 메모가 시전 속도·치명타 확률·치명타 피해를 노렸지만 성공 회차는 마나 재생 1티어(16:43)로 타협했고 다시 하지 않음
 #   → 촉진 엑잘 반복(a10x·a10e, 되돌아가는 cz)을 지우고 결과 그대로. 왼쪽 칸은 영상 결과(마나 재생), 상자는 랜덤 옵션 + '노린 옵션' 한 줄, 완성 카드는 랜덤 옵션. 쿠르갈 공개 빛의 징조 반복은 그대로(15:21 ①).
+# E1 2026-11-13(사용자 확정 15:42 (M)⑥ '영상과 동일하게'): 두 번째 목걸이(29:40~33:40)처럼 빗나가면 소멸로 지우고 다시 엑잘하다가 타협한 옵션을 받음
+#   → 반복(a10x·a10e·cz) 복원. '몇 번 해 보고 타협'은 모델로 못 세서 성공 조건을 영상이 받아들인 옵션으로 넓힘:
+#     노린 시전 속도·치명타 확률·치명타 피해 + 타협한 마나 재생(첫 목걸이 16:43, 62% 1티어)·접미 희귀도(두 번째 목걸이 33:40, 1티어). 티어는 등급 기준($pT).
+#   왼쪽 칸·상자 = 성공 회차 옵션(마나 재생, shown), 완성 카드 = 랜덤 옵션 + 상자 '💡 노린 옵션' 한 줄.
 import json, os, sys
 H = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/mazbro-caster-amulet-v2.json'
@@ -22,13 +26,14 @@ MF = L('p', '마나 최대치 +(180—189)', '+(180—189) to maximum Mana', 'n'
 SD = L('p', '주문 피해 (27—30)% 증가', '(27—30)% increased Spell Damage', 'n', ['sd'])
 SL = L('s', '모든 주문 스킬 레벨 +3', '+3 to Level of all Spell Skills', 'n', ['spell'])
 DEX = L('s', '민첩 +(31—33) (훼손, 자리 막기)', '+(31—33) to Dexterity (desecrated, blocker)', 'd')
-MR = L('s', '마나 재생 속도 (60—69)% 증가', '(60—69)% increased Mana Regeneration Rate', 'n')   # 성공 회차 세 번째 접미(16:43, 62%) — 결과 그대로
+MR = L('s', '마나 재생 속도 (60—69)% 증가', '(60—69)% increased Mana Regeneration Rate', 'n', ['gs'])   # 성공 회차 세 번째 접미(16:43, 62%) — 타협한 옵션(E1: 묶음 gs의 성공 회차 옵션)
 KQ = L('s', '모든 스킬의 퀄리티 +(3—5)%', '+(3—5)% to Quality of all Skills', 'd', ['kq'])
 J = lambda s='x': L(s, '잡옵', 'Junk', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')
 ANN = K('소멸의 오브 사용', 'Use an Orb of Annulment')
 
 GP = K('마나 최대치·최대 마나 %·주문 피해', 'maximum Mana, % maximum Mana or Spell Damage')
+GS = K('시전 속도·치명타 확률·치명타 피해·마나 재생·희귀도', 'Cast Speed, Critical Hit Chance, Critical Damage, Mana Regeneration or Rarity')
 AIM = K('💡 노린 옵션: 시전 속도·치명타 확률·치명타 피해 1티어', '💡 Aimed for: T1 cast speed, crit chance or crit damage')
 
 g = {
@@ -42,7 +47,8 @@ g = {
           '좌측 결정화 + 균열의 에센스(주문 피해 2티어를 지움) → 촉진 + 완벽한 엑잘(마나 최대치 1티어, 20:30) → 쇳소리 기폭제 40%(24:18) → '
           '절사 + 완벽한 카오스 반복, 필요할 때 좌측 말소(25:40)로 주문 피해 1티어(26:38) → 빛의 징조 + 소멸(민첩) → 검은 피 + 고대 빗장뼈 → 메아리 공개 반복 → 모든 스킬의 퀄리티(28:05). '
           '신성한 오브·축복받은 자의 징조(28:15~29:00)는 정책 14장대로 뺌. 두 번째 목걸이(29:00~38:40)는 같은 방법, 접미는 희귀도 1티어로 타협(33:40) — 꿀팁 후보. '
-          '세 번째 접미는 메모가 노린 시전 속도·치명타 확률·치명타 피해 대신 성공 회차의 마나 재생으로 타협해 다시 하지 않음 — 결과 그대로(사용자 확정 2026-11-13 15:21), '
+          '세 번째 접미는 메모가 시전 속도·치명타 확률·치명타 피해를 노렸고, 빗나가면 소멸로 지우고 다시 엑잘하다가(두 번째 목걸이 29:40~33:40) 타협한 옵션을 받음 — '
+          '성공 조건 = 노린 세 옵션 + 영상이 받아들인 마나 재생(16:43)·접미 희귀도(33:40)(사용자 확정 2026-11-13 15:42), '
           '밸런스도 쿠르갈 공개가 빗나가면 빛의 징조로 다시(정책 10장 C17-3).'),
  'params': {
    'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video'), '2': K('결과 그대로', 'As it comes')}},
@@ -50,11 +56,15 @@ g = {
  'strategies': [{'id': 'high', 'params': {'v': 1, 'pT': 1}}, {'id': 'bal', 'params': {'v': 2, 'pT': 2}}],
  'versions': [
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 2, 'pT': 2}, 'tier': 'bal',
-    'desc': K('접두 촉진 엑잘 1~2티어, 접미 촉진 엑잘은 나오는 대로, 절사 카오스 한 번(랜덤 옵션), 쿠르갈 공개는 빛의 징조로 다시', 'Catalysed prefix exalt at T1–2, the suffix exalt as it comes, one Whittling chaos (random option), Light retries the Kurgal reveal')},
+    'desc': K('촉진 엑잘 1~2티어(접미는 타협 옵션 포함), 절사 카오스 한 번(랜덤 옵션), 쿠르갈 공개는 빛의 징조로 다시', 'Catalysed exalts at T1–2 (the suffix takes a fallback too), one Whittling chaos (random option), Light retries the Kurgal reveal')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'v': 1, 'pT': 1}, 'tier': 'high',
-    'desc': K('영상: 접두 촉진 엑잘·절사 카오스 1티어, 접미 촉진 엑잘은 나오는 대로, 쿠르갈 공개는 빛의 징조로 다시', 'Video: T1 catalysed prefix exalt and Whittling chaos, the suffix exalt as it comes, Light retries the Kurgal reveal')}],
+    'desc': K('영상: 촉진 엑잘·절사 카오스 1티어(접미는 타협 옵션 포함), 쿠르갈 공개는 빛의 징조로 다시', 'Video: T1 catalysed exalts and Whittling chaos (the suffix takes a fallback too), Light retries the Kurgal reveal')}],
  'tags': {
    'spirit': {'gi': 28, 'tmax': 1}, 'spell': {'gi': 17, 'tmax': 1}, 'mq': {'gi': 81},
+   'cs': {'gi': 32, 'tmax': '$pT'}, 'cr': {'gi': 24, 'tmax': '$pT'}, 'cd': {'gi': 25, 'tmax': '$pT'},
+   'mr': {'gi': 22, 'tmax': '$pT'}, 'rs': {'gi': 26, 'tmax': '$pT'},
+   # 세 번째 접미: 노린 시전 속도·치명타 확률·치명타 피해 + 영상이 타협해 받은 마나 재생·접미 희귀도(E1, 사용자 확정 15:42 ⑥) — 성공 회차 = 마나 재생
+   'gs': {'anyOf': ['cs', 'cr', 'cd', 'mr', 'rs'], 'label': GS, 'shown': 'mr'},
    'mp': {'gi': 12, 'tmax': '$pT'}, 'mf': {'gi': 11, 'tmax': '$pT'}, 'sd': {'gi': 31, 'tmax': '$pT'},
    'gp': {'anyOf': ['mp', 'mf', 'sd'], 'label': GP},
    'keep': {'anyOf': ['gp']},
@@ -67,7 +77,7 @@ g = {
    'blk': {'anyOf': [{'gi': 21}, {'gi': 0}, {'gi': 1}, {'gi': 2}, {'gi': 4}, {'gi': 5}, {'gi': 6}, {'gi': 3}],
            'label': K('생명력 재생·힘·민첩·지능·화염·냉기·번개 저항·모든 능력치', 'Life regeneration, Str, Dex, Int, fire, cold or lightning res, all Attributes')},
    'kq': {'gi': 46}},
- 'require': {'all': [{'has': 'spell'}, {'has': 'gp'}, {'full': 's'}]},
+ 'require': {'all': [{'has': 'spell'}, {'has': 'gs'}, {'has': 'gp'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 2]}],
  'start': 'a1',
@@ -86,8 +96,12 @@ V1 = {'param': {'v': 1}}
 # 접미 두 자리 구간(영상 5·6·6B단계): 단계마다 아이템 상태를 다시 봄. vis = 그릴 선
 def R1(vis):
     out = []
-    for e in [{'if': {'unrevSide': 's'}, 'to': 'a8'},
+    for e in [{'if': {'not': {'has': 'spell'}}, 'to': 'cz'},
+              {'if': {'not': {'has': 'mq'}}, 'to': 'a10e'},
+              {'if': {'unrevSide': 's'}, 'to': 'a8'},
               {'if': {'all': [{'des': False}, {'sideLt': {'side': 's', 'n': 3}}]}, 'to': 'a7'},
+              {'if': {'all': [{'has': 'gs'}, {'des': True}]}, 'to': 'a11'},
+              {'if': {'full': 's'}, 'to': 'a10x'},
               {'to': 'a9'}]:
         v = vis.get(e['to'])
         out.append({**e, **v} if v is not None else {**e, 'hide': True})
@@ -113,6 +127,8 @@ A(id='pc', kind='cleanup', group='prep', pos=[0, 3], keep=[], maxJunk=1, label=A
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'ms'}], item=[SP, J('x')])
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 4.4], next='a4', label=K('아이템 제작 시작', 'Item crafting starts'), item=[SP, J('x')])
+A(id='cz', kind='cleanup', group='main', pos=[1, 4.9], keep=[], maxJunk=1, label=ANN, goal=ANN,
+  target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'a4'}])
 # 2단계: 카오스 스팸 + 반대쪽 엑잘(접힌 상자 L0)
 A(id='a4', kind='act', group='main', pos=[0, 5.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접미 모든 주문 스킬 레벨 +3', '+3 to Level of all Spell Skills suffix'), show=['spell'],
@@ -146,9 +162,14 @@ A(id='a8x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Ann
 A(id='a9', kind='act', group='main', pos=[1, 10.4], act='quality', cur='Skittering_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('속도 퀄리티 40%', 'Speed quality 40%'), edges=[{'to': 'a10'}])
 A(id='a10', kind='act', group='main', pos=[1, 11.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'],
-  cat='csCat', label=K('엑잘', 'Exalt'), goal=K('접미 세 번째 옵션 — 나오는 대로', 'Third suffix: keep what comes'),
-  showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}, AIM],
-  edges=[{'to': 'a11', 'res': 'ok'}])   # 성공 회차는 마나 재생 1티어로 타협, 다시 하지 않음(C1, 사용자 확정 15:21 ②)
+  cat='csCat', label=K('엑잘', 'Exalt'), goal=K('접미 세 번째 옵션', 'Third suffix'), show=['gs'], showText=[AIM],
+  edges=[{'if': {'added': 'gs'}, 'to': 'a11', 'res': 'ok'}, {'to': 'a10x', 'res': 'fail', 'label': K('빗나감', 'Miss')}])   # 성공 회차는 마나 재생 1티어로 타협(E1, 사용자 확정 15:42 ⑥)
+A(id='a10x', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
+  target=K('빗나간 접미 지우기', 'Remove the missed suffix'),
+  edges=R1({'a9': {'res': 'ok'}, 'cz': {'res': 'fail'}, 'a10e': {'res': 'fail'}, 'a7': {'res': 'fail'}}))
+A(id='a10e', kind='act', group='main', pos=[1, 13.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
+  label=K('에센스', 'Essence'), goal=K('접두 하나를 지우고 최대 퀄리티', 'A prefix goes for max quality'),
+  showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=R1({'a9': {}}))
 # 7·7B단계: 접두 촉진 엑잘(접힌 상자 L2)
 A(id='a11', kind='act', group='main', pos=[0, 9.4], act='quality', cur='Neural_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('마나 퀄리티 40%', 'Mana quality 40%'), edges=[{'to': 'a11x'}], item=[SP, MF, MQ, SL, DEX, MR])
@@ -192,12 +213,17 @@ g['loops'] = [
             K('빗나가면 상위 카오스 오브, 접두 1티어가 남아 있으면 다시', 'A miss: Greater Chaos Orb, again while the T1 prefix stays') | {'node': 'c3'},
             K('접두 1티어가 지워지면 소멸의 오브로 옵션 1개 남기고 카오스부터', 'T1 prefix gone: Orb of Annulment down to one option, then Chaos again') | {'node': 'c4'}],
   'item': [SP, RAR, SL]},
- {'id': 'L1', 'nodes': ['a7', 'a8', 'a8x', 'a9', 'a10'], 'kr': '접미 두 자리', 'en': 'Two suffixes', 'fold': True,
-  'goal': K('자리 막기 훼손 + 접미 랜덤 옵션 1개', 'Desecrated blocker + one random suffix'),
+ {'id': 'L1', 'nodes': ['a7', 'a8', 'a8x', 'a9', 'a10', 'a10x', 'a10e'], 'kr': '접미 두 자리', 'en': 'Two suffixes', 'fold': True,
+  'goal': K('자리 막기 훼손 + 접미 시전 속도·치명타 확률·치명타 피해 1티어, 안 뜨면 마나 재생·희귀도로 타협', 'Desecrated blocker + a T1 cast speed, crit chance or crit damage suffix, or settle for mana regeneration or rarity'),
+  'goalBy': {'high': K('자리 막기 훼손 + 접미 시전 속도·치명타 확률·치명타 피해 1티어, 안 뜨면 마나 재생·희귀도로 타협', 'Desecrated blocker + a T1 cast speed, crit chance or crit damage suffix, or settle for mana regeneration or rarity'),
+             'bal': K('자리 막기 훼손 + 접미 시전 속도·치명타 확률·치명타 피해 1~2티어, 안 뜨면 마나 재생·희귀도로 타협', 'Desecrated blocker + a T1–2 cast speed, crit chance or crit damage suffix, or settle for mana regeneration or rarity')},
   'steps': [K('우측 강령술의 징조 + 보존된 빗장뼈로 접미 훼손', 'Omen of Dextral Necromancy + Preserved Collarbone on a suffix') | {'node': 'a7'},
             K('심연의 메아리 공개 — 생명력 재생·능력치·저항으로 자리 막기, 하나도 없으면 빛의 징조 + 소멸의 오브로 다시', 'Reveal with Abyssal Echoes: life regen, attribute or resistance blocks; none of them, Omen of Light + Annulment and again') | {'node': 'a8'},
             K('달리는 기폭제로 속도 퀄리티 40%', 'Skittering Catalyst to 40% speed quality') | {'node': 'a9'},
-            K('촉진하는 찬미 + 우측 찬미 + 완벽한 엑잘티드 오브로 접미는 나오는 대로, 노린 옵션은 시전 속도·치명타 확률·치명타 피해 1티어', 'Catalysing + Dextral Exaltation + Perfect Exalted Orb, the suffix as it comes; aimed for T1 cast speed, crit chance or crit damage') | {'node': 'a10'}],
+            K('촉진하는 찬미 + 우측 찬미 + 완벽한 엑잘티드 오브', 'Catalysing + Dextral Exaltation + Perfect Exalted Orb') | {'node': 'a10'},
+            K('빗나가면 소멸의 오브, 자리 막기가 지워지면 훼손부터', 'A miss: Orb of Annulment; blocker gone, desecrate again') | {'node': 'a10x'},
+            K('최대 퀄리티가 지워지면 좌측 결정화 + 균열의 에센스', 'Max quality gone: Sinistral Crystallisation + Essence of the Breach') | {'node': 'a10e'}],
+  'worst': {'kr': '모든 주문 스킬 레벨 +3이 지워지면 카오스 스팸부터', 'en': '+3 Spell Skills gone: back to the chaos spam', 'to': 'cz'},
   'item': [SP, SD2, MQ, SL, DEX, MR]},
  {'id': 'L2', 'nodes': ['a11', 'a11x', 'a11e', 'a12'], 'kr': '접두 촉진 엑잘', 'en': 'Catalysed prefix', 'fold': True,
   'goal': K('접두 마나 최대치·최대 마나 %·주문 피해 1티어 중 먼저 뜬 것', 'Whichever T1 flat mana, % mana or spell damage prefix lands first'),
