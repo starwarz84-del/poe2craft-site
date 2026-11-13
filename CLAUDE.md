@@ -167,6 +167,13 @@ capabilities는 생략(저장된 `{downloads, user, db(rules 2개)}` 유지 — 
 - **Maxroll 제작 가이드**(사용자 제공 2026-11-09, `private/maxroll-how-to-craft.txt`, 저장소 밖): 규칙만 우리 말로 `docs/game-rules.md` "Maxroll 가이드로 확인한 규칙"에 정리. 문장·표는 옮기지 않음. 일관된 제작 정책을 세울 때 참고.
 - 유튜브 자막·화면 수집: 내장 브라우저(사용자 컴퓨터)로 영상 재생, 음소거·광고 건너뛰기 후 timedtext(json3) 수집. pot 토큰이 영상마다 달라서 실제 재생이 필요. **탭은 `tabs_create` → `navigate`로 열고 열자마자 음소거**(`preview_start`는 기존 탭을 재사용해서 음소거 전에 소리가 난 적 있음, 2026-11-09). 하위 작업 브리프 예: 영상 하나 → recipes_v5 파일 하나, 꿀팁 후보는 보고로만.
 
+## 알고리즘 두 개 — 따로 관리 (사용자 확정 2026-11-14 05:09)
+
+- **크래프팅(등록 레시피)**: 제작자가 있는 레시피를 따라 하면 그 아이템을 거의 그대로 만듦. 원본 = 플로우차트 그래프(`scripts/graphs/`) → `scripts/graph2recipe.py`(레시피 탭) · 기준 문서 `docs/policies.md` 1~12장, `docs/graph-model.md`, 점수 `scripts/score_recipes.py`.
+- **리버스 크래프팅(발굴 탭)**: 아이템 정보만으로 대략 만드는 방법을 찾음(필수·유효 옵션군 지정). 원본 = 초안 → `site/graphify.js` 그래프 → `site/fcread.js`(graph2recipe의 JS판, `_fcparity.js` 차이 0) · 기준 문서 `docs/policies.md` 13장·15장, `docs/reverse-pipeline.md`(W1~W11), 점수 `tools/test/_revscore.js`·`_revcompare.js`(관대한 기준, 사용자 확정 11-14 04:20).
+- 두 알고리즘은 다른 개념이라 하나로 맞추지 않음(11-14 04:17). 공용 부품(sim.js, graph2recipe/fcread 쌍)을 고치면 양쪽 점검(크래프팅 release 점수 + 리버스 기준 세트)을 같이 돌림.
+- 다음 작업(사용자 예고 11-14): 리버스 알고리즘 테스팅.
+
 ## 남은 일
 
 끝난 일의 기록은 `docs/recipe-notes.md` "배치 기록".
