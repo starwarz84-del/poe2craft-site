@@ -6,6 +6,4 @@ DIFFSET = {'absent-amulet-spell6-v2': 4, 'absent-amulet-video-v2': 4, 'banzino-m
 # 등급 수 규칙(10장 C11)을 이 묶음만 따로 정함: {그래프 id: 남길 등급}
 GRADEKEEP = {
  # 표 난이도로 등급 수가 바뀌지만 새 등급(하이엔드)을 만들 때까지 지금 등급 그대로 — 하이엔드를 생성기에 넣으면 이 줄을 뺌(S5 보고, 하이엔드는 영상에 없어도 빛의 징조 반복 유지 15:21)
- 'saveq-absent-amulet-v2': ('bal', 'ess'),   # P10 — 표 4(전문가) → 하이엔드·밸런스
- 'breach-ring-phys-v2': ('bal', 'ess'),   # P9 — 표 4(전문가) → 하이엔드·밸런스
 }

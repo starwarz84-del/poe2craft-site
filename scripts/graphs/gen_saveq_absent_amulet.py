@@ -1,7 +1,8 @@
 # G5 2026-11-13: SaVeQ 부재 목걸이(S4sflKbsA8A, 20:20, 0.5.5) 플로우차트 생성기 — 영상 성공 회차(근접 목걸이 'Pain Scarab') 한 줄
 # 근거: scratchpad review/G5/saveq-absent-amulet-v2/timeline.md, frames/ (영상 0:00~20:20 화면 대조)
 # 실행: cd scripts/graphs && python3 gen_saveq_absent_amulet.py  → saveq-absent-amulet-v2.json
-# 등급: 난이도 3(어려움, scripts/difficulty.py) → 밸런스·에센셜(정책 10장 C11). 하이엔드는 build_recipes가 어차피 뺌.
+# 등급: 난이도 표 4(전문가, scripts/difficulty.py DIFFSET) → 하이엔드·밸런스(정책 10장 C11, 사용자 확정 11-13 15:42). 에센셜은 build_recipes가 뺌.
+# D3 2026-11-13: 하이엔드 새로 — 정신력 1티어까지 빛의 징조 + 소멸의 오브로 다시(영상도 1티어를 노림, 15:18). 치명타 피해·근접·투사체는 모든 등급 1티어(싼 카오스 반복).
 import json, os, sys
 H = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/saveq-absent-amulet-v2.json'
@@ -33,21 +34,25 @@ g = {
           '공격 퀄리티 40%(12:33 27%·12:40 40%, 기폭제 이름 툴팁은 못 봄 — 품질 종류 Attack Modifiers라 강탈자 기폭제) → 절사의 징조(12:45 채팅) + 카오스 오브로 최대 퀄리티 제거·새 접두(자막: 마나) → 좌측 결정화 + 완벽한 강화의 에센스(12:48 툴팁)로 전역 방어 22%, 근접 +4(12:53) → '
           '고대 빗장뼈(자막 13:40·15:00, 툴팁은 못 봄) 훼손 + 심연의 메아리 공개(14:26 채팅) 정신력, 빗나가면 빛의 징조 + 소멸의 오브(15:18 채팅, 14:44 소멸의 오브 툴팁) — 두 목걸이 합쳐 약 28번(17:35 자막). '
           '두 번째 목걸이(투사체 +3)는 같은 흐름에 방어 퀄리티(13:20 Defence Modifiers 36%) — 꿀팁 후보. 완벽한 유동체·신성한 오브(18:00~19:10)는 정책 14장대로 뺌, 축성(19:30 둘 다 실패)은 완성 뒤 선택 상자(비용 미포함). '
-          '내부 결정: 카오스 목표 = 근접·투사체 +3 중 먼저 뜬 것(영상 10:00 자막 "둘 중 아무거나"), 11-13 오후 새 정책(P10) A: 상자·아이템 칸·카드는 성공 회차 근접 +3(shown), 투사체는 꿀팁 줄. B: 정신력 공개는 영상이 빛의 징조로 다시 해서(15:18, 약 28번) 밸런스 반복 유지. D: 밸런스 780 vs 에센셜 683(12.5%), 카드의 정신력 줄이 달라 둘 다 유지. 분열 준비 엑잘 등급·징조와 첫 훼손 뼈 등급은 화면에 없어 가정.'),
- 'params': {'spT': {'kr': '정신력', 'en': 'Spirit', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('공개 한 번, 나오는 대로', 'One reveal, keep what comes')}}},
- 'strategies': [{'id': 'bal', 'params': {'spT': 2}}, {'id': 'ess', 'params': {'spT': 4}}],
+          '내부 결정: 카오스 목표 = 근접·투사체 +3 중 먼저 뜬 것(영상 10:00 자막 "둘 중 아무거나"), 11-13 오후 새 정책(P10) A: 상자·아이템 칸·카드는 성공 회차 근접 +3(shown), 투사체는 꿀팁 줄. B: 정신력 공개는 영상이 빛의 징조로 다시 해서(15:18, 약 28번) 밸런스 반복 유지. D: 밸런스 780 vs 에센셜 683(12.5%), 카드의 정신력 줄이 달라 둘 다 유지. 11-13 15:42 난이도 표 4(전문가) → 하이엔드(정신력 1티어, 영상이 노린 티어)·밸런스(1~2티어). 분열 준비 엑잘 등급·징조와 첫 훼손 뼈 등급은 화면에 없어 가정.'),
+ 'params': {'spT': {'kr': '정신력', 'en': 'Spirit', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2'), '4': K('공개 한 번, 나오는 대로', 'One reveal, keep what comes')}}},
+ 'strategies': [{'id': 'high', 'params': {'spT': 1}}, {'id': 'bal', 'params': {'spT': 2}}, {'id': 'ess', 'params': {'spT': 4}}],
  'versions': [{'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'spT': 4}, 'tier': 'ess',
                'desc': K('접두 훼손 공개 한 번, 빛의 징조 없음', 'One prefix reveal, no Omen of Light')},
               {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'spT': 2}, 'tier': 'bal',
-               'desc': K('정신력 1~2티어까지 빛의 징조로 다시 (영상은 1티어)', 'Spirit T1–2 with Omen of Light retries (the video went for T1)')}],
+               'desc': K('정신력 1~2티어까지 빛의 징조로 다시 (영상은 1티어)', 'Spirit T1–2 with Omen of Light retries (the video went for T1)')},
+              {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'spT': 1}, 'tier': 'high',
+               'desc': K('정신력 1티어까지 빛의 징조로 다시 (영상과 같은 목표)', 'Spirit T1 with Omen of Light retries (the video goal)')}],
  'tags': {'crit': {'gi': 25, 'tmax': 1}, 'melee': {'gi': 19, 'tmax': 1}, 'proj': {'gi': 20, 'tmax': 1},
           'SK': {'anyOf': ['melee', 'proj'], 'shown': 'melee', 'label': SKL},
-          'maxQ': {'gi': 81}, 'def': {'gi': 74}, 'spirit': {'gi': 28, 'tmax': '$spT'}, 'spirit2': {'gi': 28, 'tmax': 2}},
+          'maxQ': {'gi': 81}, 'def': {'gi': 74}, 'spirit': {'gi': 28, 'tmax': '$spT'}, 'spirit2': {'gi': 28, 'tmax': 2}, 'spirit1': {'gi': 28, 'tmax': 1}},
  'require': {'all': [{'has': 'crit'}, {'has': 'SK'}, {'has': 'def'}, {'any': [{'has': 'spirit'}, {'param': {'spT': 4}}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'h0',
- 'finals': [{'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
+ 'finals': [{'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
+             'lines': [{'tag': 'def'}, {'tag': 'spirit1', 'des': True}, {'tag': 'crit', 'fr': True}, {'tag': 'SK'}]},
+            {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
              'lines': [{'tag': 'def'}, {'tag': 'spirit2', 'des': True}, {'tag': 'crit', 'fr': True}, {'tag': 'SK'}]},
             {'id': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
              'lines': [{'tag': 'def'}, {'side': 'p', 'random': True}, {'tag': 'crit', 'fr': True}, {'tag': 'SK'}]}],
@@ -110,7 +115,8 @@ A(id='v9', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_o
   goal=K('접두 정신력', 'Spirit prefix'), show=['spirit2'],
   edges=[{'if': {'added': 'spirit'}, 'to': 'ok', 'res': 'ok'}, {'if': {'param': {'spT': 4}}, 'to': 'ok', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'v9x', 'res': 'fail'}], item=[DEF, SP, CR, ML],
-  over=[{'param': {'spT': 4}, 'set': {'goal': K('접두 훼손 옵션 공개 — 나오는 대로', 'Reveal the prefix desecration: keep what comes'), 'show': [],
+  over=[{'param': {'spT': 1}, 'set': {'want': 'spirit1', 'show': ['spirit1'], 'goal': K('접두 정신력 1티어', 'T1 Spirit prefix')}},
+        {'param': {'spT': 4}, 'set': {'goal': K('접두 훼손 옵션 공개 — 나오는 대로', 'Reveal the prefix desecration: keep what comes'), 'show': [],
          'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}], 'item': [DEF, L('p', '랜덤 옵션', 'Random option', 'd'), CR, ML]}}])
 A(id='v9x', kind='act', group='main', pos=[1, 15.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'v8', 'label': K('다시 훼손', 'Desecrate again')}])

@@ -31,7 +31,7 @@ _grade('diztoh-budget-crossbow','diztoh-budget-crossbow-v2','ess',_xbow)
 
 # 3. Diztoh 한손 둔기 — bought magic crit base (정책 18), no Sinistral Erasure loop (about 470 div in the sim); Balance keeps the Whittling fix
 def _mace1(r, t):
-    r['start']={'rar':'magic','quality':20,'mods':[{'gi':om_crit,'tmax':2 if t=='bal' else 3}]}
+    r['start']={'rar':'magic','quality':20,'mods':[{'gi':om_crit,'tmax':{'high':1,'bal':2}.get(t,3)}]}
     _node(r,'m1')['note']=K('노멀 특출난 약탈하는 철퇴 구입(영상 3 div, 퀄리티 26%).','Buy a normal exceptional Marauding Mace (3 div in the video, 26% quality).')   # G3 2026-11-13: 새 플로우차트는 노멀부터
     m7=_node(r,'m7'); m7['target']={'anyOf':OM_PHYS,'asIs':True,'side':'p'}; m7['br']=K('안 나와도 그대로, 좌측 말소의 징조 반복은 뺌','A miss stays (the Sinistral Erasure loop is left out)')
     _drop(r,'m2','m7b','m12','m13','m14')   # m14 타락은 정책 14장대로 뺌(G3 2026-11-13)
@@ -39,6 +39,8 @@ def _mace1(r, t):
         _drop(r,'m11'); m9=_node(r,'m9'); m9['target']={'anyOf':OM_FLAT,'asIs':True,'side':'p'}; m9['br']=KEEP
         for nid in ('m7','m9'): _node(r,nid)['cur']='Greater_Exalted_Orb'
 for _t in ('bal','ess'): _grade('diztoh-onehand-mace','diztoh-onehand-mace-v2',_t,_mace1)
+# D3 2026-11-13(사용자 확정 15:42, 난이도 표 4 전문가 = 하이엔드·밸런스): 하이엔드 새로 — 단계·확률은 플로우차트(gen_diztoh_onehand_mace.py 'high')
+_r=_cp.deepcopy(_orig('diztoh-onehand-mace')); _r.update(id='diztoh-onehand-mace-v2',tierGroup='diztoh-onehand-mace-v2',tier='high',tierLabel=K('하이엔드','High-end')); _r.pop('note',None); _mace1(_r,'high'); R.append(_r)
 
 # 4. SaVeQ 합금 집중구 — Balance = video (Light until T1, Sinistral Annulment on a missed exalt), Essential = looser, results kept, Greater Exalts
 def _focus(r, t):

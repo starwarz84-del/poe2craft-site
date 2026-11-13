@@ -1,6 +1,8 @@
 # G3 2026-11-13: Diztoh 한손 둔기 — 제작 옵션 2개(WDEkEIQFgT4) 플로우차트 생성기 — 영상 성공 회차 한 줄
 # 근거: scratchpad review/G3/diztoh-onehand-mace-v2/timeline.md, frames/ (영상 0:00~8:00 화면 대조)
 # 실행: cd scripts/graphs && python3 gen_diztoh_onehand_mace.py  → diztoh-onehand-mace-v2.json (gen_batch7.py 끝에서 자동 호출)
+# D3 2026-11-13(사용자 확정 15:42, 난이도 표 4 전문가 = 하이엔드·밸런스): 하이엔드 새로 — 첫 물리 접두 1티어까지 좌측 말소 + 상위 카오스, 세 번째 접두는 가장 낮은 레벨일 때 절사로 피해 추가 1티어까지.
+#   훼손 공개 빛의 징조 반복(15:21 ①)은 이 레시피에선 빗나갈 수 없음: 검은 피의 징조로 쿠르갈 접두 3개가 모두 보이고 그중 물리 피해 증가를 고름(같은 계열 물리 피해 증가가 접두에 있을 때만 막힘 — 그땐 빛의 징조로 다시 해도 같음).
 import json, os, sys
 H = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/diztoh-onehand-mace-v2.json'
@@ -25,8 +27,8 @@ FIRE = L('p', '화염 피해 (88—101)~(133—154) 추가', 'Adds (88—101) to
 AST = L('r', '아스트리드의 창의성', 'Astrid’s Creativity', 'r')
 ANN = K('소멸의 오브 사용', 'Use an Orb of Annulment')
 
-PB = K('물리 피해 증가와 정확도·물리 피해 추가 1~2티어', 'T1–2 % physical with accuracy or flat physical')
-FB = K('물리·화염·냉기·번개 피해 추가 1~2티어', 'T1–2 added physical, fire, cold or lightning damage')
+PB = K('물리 피해 증가와 정확도·물리 피해 추가', '% physical with accuracy or flat physical')
+FB = K('물리·화염·냉기·번개 피해 추가', 'Added physical, fire, cold or lightning damage')
 
 g = {
  'id': 'diztoh-onehand-mace-v2', 'recipe': 'diztoh-onehand-mace-v2', 'cls': 'One_Hand_Maces', 'base': 'Marauding Mace', 'ilvl': 82,
@@ -40,21 +42,24 @@ g = {
           '내부 결정: 접두 물리 옵션은 물리 피해 증가와 정확도·물리 피해 추가만 셈(물리 피해 증가는 쿠르갈 물리 피해와 같은 계열이라 공개를 막음). 검은 피의 징조 공개는 접두 쿠르갈 옵션이 3개뿐이라 늘 물리 피해 증가가 나옴(같은 계열이 있을 때만 빗나감, 그대로 진행). '
           '완성 카드의 훼손 줄은 쿠르갈 접두 셋 묶음(세 번째 접두 엑잘이 물리 피해 증가를 붙이면 같은 계열이라 공개에 물리 피해가 안 나옴 — 시뮬 밸런스 97%·에센셜 96%가 물리 피해). '
           '11-13 오후 새 정책(P8, A 표시): 물리 접두·쿠르갈 공개·피해 추가 묶음은 판정은 묶음 그대로, 화면은 영상 성공 회차 옵션(물리 피해 증가와 정확도·물리 피해 증가와 공격 속도 감소·화염 피해 추가, shown), 나머지는 꿀팁 줄. '
-          '등급(난이도 3): 밸런스 = 첫 물리 접두 1~2티어까지 좌측 말소 + 상위 카오스, 세 번째 접두는 가장 낮은 레벨일 때만 절사 + 상위 카오스 / 에센셜 = 상위 엑잘 결과 그대로.'),
+          '등급(난이도 표 4 전문가, 11-13 15:42): 하이엔드 = 첫 물리 접두 1티어까지 좌측 말소 + 상위 카오스, 세 번째 접두는 가장 낮은 레벨일 때 절사 + 상위 카오스로 피해 추가 1티어까지(그렇지 않으면 랜덤 옵션 — 말소는 물리·쿠르갈 옵션을 지울 수 있어 C17-2 예외) / 밸런스 = 첫 물리 접두 1~2티어까지 좌측 말소 + 상위 카오스, 세 번째 접두는 가장 낮은 레벨일 때만 절사 + 상위 카오스 / 에센셜 = 상위 엑잘 결과 그대로.'),
  'params': {
-   'pT': {'kr': '첫 물리 접두', 'en': 'First physical prefix', 'values': {'2': K('1~2티어까지 좌측 말소로 다시', 'Sinistral Erasure until T1–2'), '0': K('나오는 대로', 'As it comes')}},
-   'g': {'kr': '세 번째 접두', 'en': 'Third prefix', 'values': {'1': K('가장 낮은 레벨이면 절사로 다시', 'Whittle while it is the lowest'), '0': K('나오는 대로', 'As it comes')}}},
- 'strategies': [{'id': 'bal', 'params': {'pT': 2, 'g': 1}}, {'id': 'ess', 'params': {'pT': 0, 'g': 0}}],
+   'pT': {'kr': '첫 물리 접두', 'en': 'First physical prefix', 'values': {'1': K('1티어까지 좌측 말소로 다시', 'Sinistral Erasure until T1'), '2': K('1~2티어까지 좌측 말소로 다시', 'Sinistral Erasure until T1–2'), '0': K('나오는 대로', 'As it comes')}},
+   'g': {'kr': '세 번째 접두', 'en': 'Third prefix', 'values': {'2': K('가장 낮은 레벨이면 절사로 피해 추가 1티어까지', 'Whittle while it is the lowest, until T1 added damage'), '1': K('가장 낮은 레벨이면 절사로 다시', 'Whittle while it is the lowest'), '0': K('나오는 대로', 'As it comes')}},
+   'fT': {'kr': '피해 추가 티어', 'en': 'Added damage tier', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
+ 'strategies': [{'id': 'high', 'params': {'pT': 1, 'g': 2, 'fT': 1}}, {'id': 'bal', 'params': {'pT': 2, 'g': 1, 'fT': 2}}, {'id': 'ess', 'params': {'pT': 0, 'g': 0, 'fT': 2}}],
  'versions': [
-   {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'pT': 0, 'g': 0}, 'tier': 'ess',
+   {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'pT': 1, 'g': 2, 'fT': 1}, 'tier': 'high',
+    'desc': K('첫 물리 접두 1티어까지 좌측 말소, 세 번째 접두는 가장 낮은 레벨일 때 절사로 피해 추가 1티어까지', 'Sinistral Erasure until a T1 physical prefix; whittle the third prefix while it is the lowest, until T1 added damage')},
+   {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'pT': 0, 'g': 0, 'fT': 2}, 'tier': 'ess',
     'desc': K('상위 엑잘 결과 그대로', 'Greater Exalts kept as they come')},
-   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'pT': 2, 'g': 1}, 'tier': 'bal',
+   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'pT': 2, 'g': 1, 'fT': 2}, 'tier': 'bal',
     'desc': K('첫 물리 접두 1~2티어까지 좌측 말소, 세 번째 접두는 가장 낮은 레벨일 때 절사로 다시', 'Sinistral Erasure until a T1–2 physical prefix; whittle the third prefix while it is the lowest')}],
  'tags': {
    'crit': {'gi': 17, 'tmax': 1}, 'as': {'gi': 44}, 'atk': {'gi': 54}, 'kp': {'gi': 25},
-   'hyb': {'gi': 8, 'tmax': 2}, 'pflat': {'gi': 2, 'tmax': 2},
+   'hyb': {'gi': 8, 'tmax': '$pT'}, 'pflat': {'gi': 2, 'tmax': '$pT'},
    'phys': {'anyOf': ['hyb', 'pflat'], 'shown': 'hyb', 'label': PB},
-   'fl2': {'gi': 2, 'tmax': 2}, 'fire1': {'gi': 3, 'tmax': 1}, 'fire2': {'gi': 3, 'tmax': 2}, 'cold2': {'gi': 4, 'tmax': 2}, 'light2': {'gi': 6, 'tmax': 2},
+   'fl2': {'gi': 2, 'tmax': '$fT'}, 'fire1': {'gi': 3, 'tmax': 1}, 'fire2': {'gi': 3, 'tmax': '$fT'}, 'cold2': {'gi': 4, 'tmax': '$fT'}, 'light2': {'gi': 6, 'tmax': '$fT'},
    'flat': {'anyOf': ['fl2', 'fire2', 'cold2', 'light2'], 'shown': 'fire2', 'label': FB},
    'ke': {'gi': 26}, 'kc': {'gi': 27},
    'kAny': {'anyOf': ['kp', 'ke', 'kc'], 'shown': 'kp', 'label': K('쿠르갈 접두 — 물리 피해 증가와 공격 속도 감소·강화 공격 피해·냉기 관통', 'Kurgal prefix: % physical with reduced attack speed, Empowered Attack damage or cold penetration')},
@@ -102,13 +107,16 @@ A(id='k2', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Perfect_E
   edges=[{'to': 'k3'}], item=[CRIT, AS, ATK, AST])
 A(id='k3', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 물리 피해 증가와 정확도 1~2티어', 'T1–2 % physical with accuracy prefix'),
+  
   show=['phys'],
   edges=[{'if': {'any': [{'has': 'phys'}, {'param': {'pT': 0}}]}, 'to': 'k5', 'res': 'ok'},
          {'to': 'k4', 'res': 'fail', 'label': K('빗나감 — 좌측 말소', 'Miss: Sinistral Erasure')}],
   item=[FIREj, CRIT, AS, ATK, AST],
-  over=[{'param': {'pT': 0}, 'set': {'goal': K('접두 첫 번째 옵션 (나오는 대로)', 'First prefix option (keep what comes)'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}]}}])
+  over=[{'param': {'pT': 1}, 'set': {'goal': K('접두 물리 피해 증가와 정확도 1티어', 'T1 % physical with accuracy prefix')}},
+        {'param': {'pT': 0}, 'set': {'goal': K('접두 첫 번째 옵션 (나오는 대로)', 'First prefix option (keep what comes)'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}]}}])
 A(id='k4', kind='act', group='main', pos=[1, 8.4], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Sinistral_Erasure'], label=K('좌측 말소 + 카오스', 'Sinistral Erasure + Chaos'),
   goal=K('접두 다시 — 물리 피해 증가와 정확도 1~2티어', 'Reroll the prefix: T1–2 % physical with accuracy'), show=['phys'],
+  over=[{'param': {'pT': 1}, 'set': {'goal': K('접두 다시 — 물리 피해 증가와 정확도 1티어', 'Reroll the prefix: T1 % physical with accuracy')}}],
   edges=[{'if': {'has': 'phys'}, 'to': 'k5', 'res': 'ok'}, {'to': 'k4', 'res': 'fail', 'hide': True}],
   item=[HYB, CRIT, AS, ATK, AST])
 A(id='k5', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_the_Blackblooded'], label=K('훼손', 'Desecrate'),
@@ -123,6 +131,7 @@ A(id='k7', kind='act', group='main', pos=[0, 11.4], act='reveal', want='kp', lab
   edges=[{'to': 'k8', 'res': 'ok'}], item=[HYB, KP, LIGHTj, CRIT, AS, ATK, AST])
 A(id='k8', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
   goal=K('세 번째 접두를 화염 피해 추가 1~2티어로', 'Third prefix into T1–2 added fire damage'),
+  over=[{'param': {'pT': 1}, 'set': {'goal': K('세 번째 접두를 화염 피해 추가 1티어로', 'Third prefix into T1 added fire damage')}}],
   show=['flat'],
   skipIf={'any': [{'param': {'g': 0}}, {'has': 'flat'}, {'not': WS}]}, skipTo='ok', skipHide=True,
   skipNote=K('피해 추가가 이미 있거나 세 번째 접두가 가장 낮은 레벨이 아니면 건너뜀', 'Skipped when added damage is there or the third prefix is not the lowest level'),
@@ -135,6 +144,8 @@ g['loops'] = [
  {'id': 'L1', 'nodes': ['h2', 'h2x', 'h2b'], 'kr': '매직 옵션 맞추기', 'en': 'Magic options'},
 ]
 g['finals'] = [
+ {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
+  'lines': [{'tag': 'phys'}, {'tag': 'kAny', 'des': True}, {'side': 'p', 'random': True}, {'tag': 'crit'}, {'tag': 'as', 'ess': True}, {'tag': 'atk', 'ess': True}]},
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
   'lines': [{'tag': 'phys'}, {'tag': 'kAny', 'des': True}, {'side': 'p', 'random': True}, {'tag': 'crit'}, {'tag': 'as', 'ess': True}, {'tag': 'atk', 'ess': True}]},
  {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',

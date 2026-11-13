@@ -1,6 +1,7 @@
 # ---- SaVeQ "I made over 2 mirrors with that Craft poe2 0.5.5" (youtu.be/S4sflKbsA8A) — grade recipes (policy 25) ----
 # Rewrites 'saveq-absent-amulet' (REPLACES) from scripts/graphs/saveq-absent-amulet-v2.json. Steps as the video (subtitles 6:11–17:50);
 # the fracture prep (ilvl 79 one-line rare → chaos for T1 crit damage → divine → fill + desecrate → fracture 1/3) is cut into the base prep (FRSTART).
+# D3 2026-11-13: difficulty table 4 (expert) → High-end (Spirit T1, Light retries) + Balance; Essential is dropped by build_recipes.
 # G5 2026-11-13: grades by difficulty 3 (policy 10 C11) = Balance (Spirit T1–2, Light retries) + Essential (one reveal, no Light, C17-3). Steps are read from the flowchart (fcRead); ts below follow the video screen check.
 c='Amulets'
 def _sa(t, sec, side=None):
@@ -46,4 +47,4 @@ def sv_amulet(tier):
   {'id':'vs','phase':'fin','do':'note','optional':True,'label':K('축성 (선택)','Sanctify (optional)'),'ts':'19:30',
    'br':K('축성 성공 → 스킬 레벨 상승, 실패해도 판매 가능','Sanctify hit → higher skill level; misses still sell')},
  ]})
-for _t in ('bal','ess'): sv_amulet(_t)
+for _t in ('high','bal','ess'): sv_amulet(_t)   # D3 2026-11-13: 난이도 표 4(전문가) → 하이엔드 추가(에센셜은 build_recipes가 뺌)

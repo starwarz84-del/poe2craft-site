@@ -9,6 +9,7 @@
 # RV6 검수 11-13: 합금 상자(b9) 아이템 칸을 원소 피해 확정(I7)에서 남은 접두 랜덤(I8)으로 — 레시피 글 합금 목표가 화염 피해로 나오던 것.
 # C2 11-13(RV6 감점 정리): 최악의 경우 선을 맨 위 베이스 대신 상자 옆 '새 베이스' 버림 상자(xw1·xw2)로, 합금 상자는 확정(원소 피해 남음/지워짐 갈래 이름표), 에센셜 화염 저항·공개는 결과 그대로(성공), 9.A 소멸 갈래 이름표.
 # 바뀐 곳(옛 그래프 대비): 반복 세 곳을 상자 하나로 접음(옛 9.A·9.A.a 라우터 선과 5.A → 시작 긴 선이 교차하던 것), 완성 카드의 '또는' 줄을 묶음 태그로, 에센셜 훼손 색.
+# D3 11-13(사용자 확정 15:42, 난이도 표 4 전문가 = 하이엔드·밸런스): 하이엔드 새로(C17 + 15:21 ①) — 반복 목표 모두 1티어: 화염 저항 1티어(우측 소멸 반복), 접두 공격 시 원소 피해 두 개 1티어(엑잘·절사 카오스·훼손 공개, 빗나가면 빛의 징조 + 소멸 반복). 흐름은 밸런스와 같음.
 import os, json, sys
 H = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/breach-ring-phys-v2.json'
@@ -17,14 +18,17 @@ _H0 = H
 import tempfile
 H = tempfile.mkdtemp()   # graph8은 H 폴더에 쓰므로 임시 폴더에서 만든 뒤 OUT으로 옮김(다른 아이템 JSON을 건드리지 않음)
 
-c = 'Rings'; P = {'bal': {'eT': 3, 'fT': 2, 'v': 1}, 'ess': {'eT': 4, 'fT': 3, 'v': 2}}
+c = 'Rings'; P = {'high': {'eT': 1, 'fT': 1, 'v': 1}, 'bal': {'eT': 3, 'fT': 2, 'v': 1}, 'ess': {'eT': 4, 'fT': 3, 'v': 2}}
 tags = {'phys': {'gi': 13, 'tmax': 1}, 'allres': {'gi': 7, 'tmax': 1}, 'fres': {'gi': 4, 'tmax': '$fT'}, 'maxq': {'gi': 71}, 'alloy': {'gi': 73},
         'fire': {'gi': 15, 'tmax': '$eT'}, 'cold': {'gi': 17, 'tmax': '$eT'}, 'light': {'gi': 19, 'tmax': '$eT'},
         'ele': {'anyOf': ['fire', 'cold', 'light'], 'label': K('공격 시 화염·냉기·번개 피해 추가', 'Adds fire, cold or lightning damage to attacks')},
         'keepS': {'anyOf': ['allres', 'fres', 'alloy']}, 'keepP': {'anyOf': ['fire', 'cold', 'light']},
         'fire3': {'gi': 15, 'tmax': 3}, 'cold3': {'gi': 17, 'tmax': 3}, 'light3': {'gi': 19, 'tmax': 3},
         'ele3': {'anyOf': ['fire3', 'cold3', 'light3'], 'label': K('공격 시 화염·냉기·번개 피해 추가 1~3티어', 'T1–3 added fire, cold or lightning attack damage')},
-        'fres2': {'gi': 4, 'tmax': 2}, 'fres3': {'gi': 4, 'tmax': 3}}
+        'fres2': {'gi': 4, 'tmax': 2}, 'fres3': {'gi': 4, 'tmax': 3},
+        'fire1': {'gi': 15, 'tmax': 1}, 'cold1': {'gi': 17, 'tmax': 1}, 'light1': {'gi': 19, 'tmax': 1},
+        'ele1': {'anyOf': ['fire1', 'cold1', 'light1'], 'label': K('공격 시 화염·냉기·번개 피해 추가 1티어', 'T1 added fire, cold or lightning attack damage')},
+        'fres1': {'gi': 4, 'tmax': 1}}
 V1 = {'param': {'v': 1}}
 PH = itg('p', c, 13, ['phys'], 'f'); AR = itg('s', c, 7, ['allres']); FR = itg('s', c, 4, ['fres'], ti=1)
 MQ = itg('p', c, 71, ['maxq'], 'c', suffix=('균열의 에센스', 'Essence of the Breach')); AL = itg('s', c, 73, ['alloy'], 'c', suffix=('재빠른 합금', 'Swift Alloy'))
@@ -67,20 +71,20 @@ nodes = [base('ms', {'rar': 'rare', 'mods': [{'tag': 'phys', 'fr': True}, {'junk
  done([0, 13])]
 g22('breach-ring-phys-v2', c, 'Breach Ring', 82,
   '균열 반지 물리 플랫 분열 + 원소 플랫(사이트 운영자 제작 방식, 영상 없음) — 카오스 오브(모든 원소 저항) → 좌측 결정화 + 균열의 에센스 → 조프의 기폭제 60% → 촉진 + 우측 찬미 + 완벽한 엑잘(화염 저항) → 강탈자 기폭제 60% → 절사 + 카오스 오브(최대 퀄리티 지우기, 접미로 가면 접미 잡옵 절사·말소 카오스로 자리 비움) → 좌측 찬미 + 완벽한 엑잘 → 좌측 결정화 + 재빠른 합금 → 접두 원소 피해 두 개(엑잘·절사 카오스·훼손 공개). 2026-11-13 G6 새 기준: 반복 세 곳 접음.',
-  {'eT': {'kr': '공격 시 원소 피해', 'en': 'Elemental attack damage', 'values': TV({'3': ('1~3티어', 'T1–3'), '4': ('1~4티어', 'T1–4')})},
-   'fT': {'kr': '화염 저항', 'en': 'Fire res', 'values': TV({'2': ('1~2티어', 'T1–2'), '3': ('1~3티어', 'T1–3')})},
+  {'eT': {'kr': '공격 시 원소 피해', 'en': 'Elemental attack damage', 'values': TV({'1': ('1티어', 'T1'), '3': ('1~3티어', 'T1–3'), '4': ('1~4티어', 'T1–4')})},
+   'fT': {'kr': '화염 저항', 'en': 'Fire res', 'values': TV({'1': ('1티어', 'T1'), '2': ('1~2티어', 'T1–2'), '3': ('1~3티어', 'T1–3')})},
    'v': {'kr': '진행', 'en': 'Route', 'values': TV({'1': ('원소 피해 2개까지', 'Until two elemental lines'), '2': ('결과 그대로', 'As it comes')})}}, P,
-  {'bal': K('공격 시 원소 피해 2개(1~3티어), 화염 저항 1~2티어', 'Two elemental attack lines (T1–3), fire res T1–2'), 'ess': K('접두 훼손 한 번, 공개 결과 그대로, 화염 저항 빗나가도 그대로', 'One prefix desecration kept as revealed, fire res kept on a miss')},
+  {'high': K('공격 시 원소 피해 2개(1티어), 화염 저항 1티어', 'Two elemental attack lines (T1), fire res T1'), 'bal': K('공격 시 원소 피해 2개(1~3티어), 화염 저항 1~2티어', 'Two elemental attack lines (T1–3), fire res T1–2'), 'ess': K('접두 훼손 한 번, 공개 결과 그대로, 화염 저항 빗나가도 그대로', 'One prefix desecration kept as revealed, fire res kept on a miss')},
   tags, nodes, [],
-  FIN(VBE, lambda v: []),
-  {'quality': 60, 'sockets': 0}, {'all': [{'has': 'phys'}, {'has': 'allres'}, {'has': 'alloy'}, {'any': [{'count': {'tag': 'ele', 'min': 2}}, {'param': {'v': 2}}]}, {'any': [{'has': 'fres'}, {'param': {'v': 2}}]}]}, VBE)
+  FIN(('high',) + VBE, lambda v: []),
+  {'quality': 60, 'sockets': 0}, {'all': [{'has': 'phys'}, {'has': 'allres'}, {'has': 'alloy'}, {'any': [{'count': {'tag': 'ele', 'min': 2}}, {'param': {'v': 2}}]}, {'any': [{'has': 'fres'}, {'param': {'v': 2}}]}]}, ('high',) + VBE)
 g = json.load(open(f'{H}/breach-ring-phys-v2.json'))
 H = _H0
 for v in g['versions']: v['tier'] = v['id']
 g['loops'] = [
  {'id': 'L1', 'nodes': ['b5', 'b6', 'b6x'], 'kr': '접미 두 번째 옵션', 'en': 'Second suffix', 'fold': True,
   'goal': K('접미 화염 저항 1~2티어', 'T1–2 fire resistance suffix'),
-  'goalBy': {'bal': K('접미 화염 저항 1~2티어', 'T1–2 fire resistance suffix'), 'ess': K('접미 두 번째 옵션 — 촉진 엑잘 결과 그대로', 'Second suffix: keep the catalysed exalt')},
+  'goalBy': {'high': K('접미 화염 저항 1티어', 'T1 fire resistance suffix'), 'bal': K('접미 화염 저항 1~2티어', 'T1–2 fire resistance suffix'), 'ess': K('접미 두 번째 옵션 — 촉진 엑잘 결과 그대로', 'Second suffix: keep the catalysed exalt')},
   'steps': [K('조프의 기폭제 60개로 화염 퀄리티 60%', '60 Xoph’s Catalysts for 60% fire quality') | {'node': 'b5'},
             K('촉진하는 찬미의 징조 + 우측 찬미의 징조 + 완벽한 엑잘티드 오브', 'Omen of Catalysing Exaltation + Omen of Dextral Exaltation + Perfect Exalted Orb') | {'node': 'b6'},
             K('빗나가면 우측 소멸의 징조 + 소멸의 오브', 'A miss: Omen of Dextral Annulment + Orb of Annulment') | {'node': 'b6x'}],
@@ -94,7 +98,7 @@ g['loops'] = [
   'item': I5},
  {'id': 'L3', 'nodes': ['e1', 'e2', 'd1', 'd2', 'd2x'], 'kr': '접두 원소 피해 두 개', 'en': 'Two elemental attack prefixes', 'fold': True,
   'goal': K('접두 공격 시 원소 피해 1~3티어 두 개', 'Two T1–3 elemental attack prefixes'),
-  'goalBy': {'bal': K('접두 공격 시 원소 피해 1~3티어 두 개', 'Two T1–3 elemental attack prefixes'), 'ess': K('빈 접두에 훼손 한 번 — 공개 결과 그대로', 'One desecration on the free prefix: keep the reveal')},
+  'goalBy': {'high': K('접두 공격 시 원소 피해 1티어 두 개', 'Two T1 elemental attack prefixes'), 'bal': K('접두 공격 시 원소 피해 1~3티어 두 개', 'Two T1–3 elemental attack prefixes'), 'ess': K('빈 접두에 훼손 한 번 — 공개 결과 그대로', 'One desecration on the free prefix: keep the reveal')},
   'steps': [K('좌측 찬미의 징조 + 완벽한 엑잘티드 오브로 빈 접두', 'Omen of Sinistral Exaltation + Perfect Exalted Orb on the free prefix') | {'node': 'e1'},
             K('원소 피해가 아니면 절사·좌측 말소의 징조 + 완벽한 카오스 오브', 'No elemental line: Whittling or Sinistral Erasure + Perfect Chaos Orb') | {'node': 'e2'},
             K('좌측 강령술의 징조 + 고대 빗장뼈 — 원소 피해와 잡옵 중 하나가 지워짐', 'Omen of Sinistral Necromancy + Ancient Collarbone: the elemental line or the junk goes') | {'node': 'd1'},
@@ -103,6 +107,8 @@ g['loops'] = [
   'item': I9},
 ]
 g['finals'] = [
+ {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
+  'lines': [{'tag': 'phys', 'fr': True}, {'tag': 'ele1'}, {'tag': 'ele1'}, {'tag': 'allres', 'tmax': 1}, {'tag': 'fres1'}, {'tag': 'alloy', 'ess': True}]},
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
   'lines': [{'tag': 'phys', 'fr': True}, {'tag': 'ele3'}, {'tag': 'ele3'}, {'tag': 'allres', 'tmax': 1}, {'tag': 'fres2'}, {'tag': 'alloy', 'ess': True}]},
  {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',

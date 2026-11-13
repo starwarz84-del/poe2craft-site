@@ -10,6 +10,10 @@
    "kr": "공격 시 원소 피해",
    "en": "Elemental attack damage",
    "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
     "3": {
      "kr": "1~3티어",
      "en": "T1–3"
@@ -24,6 +28,10 @@
    "kr": "화염 저항",
    "en": "Fire res",
    "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
@@ -50,6 +58,14 @@
   }
  },
  "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "eT": 1,
+    "fT": 1,
+    "v": 1
+   }
+  },
   {
    "id": "bal",
    "params": {
@@ -97,6 +113,21 @@
     "en": "Two elemental attack lines (T1–3), fire res T1–2"
    },
    "tier": "bal"
+  },
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "eT": 1,
+    "fT": 1,
+    "v": 1
+   },
+   "desc": {
+    "kr": "공격 시 원소 피해 2개(1티어), 화염 저항 1티어",
+    "en": "Two elemental attack lines (T1), fire res T1"
+   },
+   "tier": "high"
   }
  ],
  "tags": {
@@ -185,6 +216,33 @@
   "fres3": {
    "gi": 4,
    "tmax": 3
+  },
+  "fire1": {
+   "gi": 15,
+   "tmax": 1
+  },
+  "cold1": {
+   "gi": 17,
+   "tmax": 1
+  },
+  "light1": {
+   "gi": 19,
+   "tmax": 1
+  },
+  "ele1": {
+   "anyOf": [
+    "fire1",
+    "cold1",
+    "light1"
+   ],
+   "label": {
+    "kr": "공격 시 화염·냉기·번개 피해 추가 1티어",
+    "en": "T1 added fire, cold or lightning attack damage"
+   }
+  },
+  "fres1": {
+   "gi": 4,
+   "tmax": 1
   }
  },
  "require": {
@@ -264,6 +322,10 @@
     "en": "T1–2 fire resistance suffix"
    },
    "goalBy": {
+    "high": {
+     "kr": "접미 화염 저항 1티어",
+     "en": "T1 fire resistance suffix"
+    },
     "bal": {
      "kr": "접미 화염 저항 1~2티어",
      "en": "T1–2 fire resistance suffix"
@@ -417,6 +479,10 @@
     "en": "Two T1–3 elemental attack prefixes"
    },
    "goalBy": {
+    "high": {
+     "kr": "접두 공격 시 원소 피해 1티어 두 개",
+     "en": "Two T1 elemental attack prefixes"
+    },
     "bal": {
      "kr": "접두 공격 시 원소 피해 1~3티어 두 개",
      "en": "Two T1–3 elemental attack prefixes"
@@ -512,6 +578,35 @@
   }
  ],
  "finals": [
+  {
+   "id": "high",
+   "tier": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "phys",
+     "fr": true
+    },
+    {
+     "tag": "ele1"
+    },
+    {
+     "tag": "ele1"
+    },
+    {
+     "tag": "allres",
+     "tmax": 1
+    },
+    {
+     "tag": "fres1"
+    },
+    {
+     "tag": "alloy",
+     "ess": true
+    }
+   ]
+  },
   {
    "id": "bal",
    "tier": "bal",
