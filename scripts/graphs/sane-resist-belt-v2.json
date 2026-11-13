@@ -4,50 +4,27 @@
  "cls": "Belts",
  "base": "Fine Belt",
  "ilvl": 81,
- "note": "TheSaneExile 저항 벨트(영상 방식) — 생명력 + 번개 저항 매직 구입 → 상위 폐허의 에센스(카오스 저항) → 우측 강령술 + 군주의 징조(울라만) + 보존된 빗장뼈 → 공개(번개 및 카오스 저항, 심연의 메아리), 실패 시 빛의 징조 + 소멸의 오브 → 상위 찬미의 징조 + 상위 엑잘로 접두 2자리 랜덤 마무리(사용자 확정 2026-11-10). 밸런스 = 영상(생명력 1티어·번개 저항 1~2티어), 에센셜 = 둘 다 1~3티어 베이스.",
+ "basePrice": {
+  "Divine_Orb": 1
+ },
+ "note": "2026-11-13 G12 영상 전체(0:00~6:11) 화면 대조. 성공 회차 = 룬 자물쇠 섬세한 허리띠 한 줄: 생명력 1티어(+161) + 번개 저항 2티어(+38%) 매직 섬세한 허리띠(부적 칸 2개, 0:14 툴팁, 아이템 레벨 81 — 3:20 시세 도구) → 상위 폐허의 에센스(1:30 툴팁) = 레어 + 접미 카오스 저항 +16% → 우측 강령술의 징조(1:35 툴팁) + 군주의 징조 + 보존된 빗장뼈(1:38 툴팁) = 접미 미공개 훼손(1:40, 채팅 두 징조 소모) → 심연의 메아리의 징조 + 공개(2:40 선택지: 번개 및 카오스 저항 13% / 중독 지속시간 26% 감소 / 힘과 민첩 +13, 채팅 메아리 소모) = 번개 및 카오스 저항 +13%(3:06) → 접두 두 자리 = 마나 최대치 +46(6티어) · 플라스크 생명력 회복 8%(6티어)(4:15 툴팁, 엑잘 장면은 3:52~3:54 편집으로 안 보임). 접두 마무리는 사용자 확정(11-10) 상위 찬미의 징조 + 엑잘을 따르되 오브는 일반 엑잘티드 오브: 나온 두 옵션이 레벨 25·1이라 상위 엑잘티드 오브(최소 레벨 35)로는 붙을 수 없음. 5:20~6:00 반지(자수정 반지, 메아리 없이 처치 시 생명력 회복이 붙음)는 꿀팁 후보. 등급(정책 10장): 난이도 1 → 에센셜만. 영상에 반복이 없음(군주의 징조로 울라만 접미 4개 중 3개가 보이고 메아리로 한 번 더) — 공개는 결과 그대로(빛의 징조 없음, C17-3).",
  "params": {
-  "lT": {
-   "kr": "생명력",
-   "en": "Life",
+  "L": {
+   "kr": "훼손 공개",
+   "en": "Desecration reveal",
    "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
-    }
-   }
-  },
-  "rT": {
-   "kr": "번개 저항",
-   "en": "Lightning res",
-   "values": {
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
+    "0": {
+     "kr": "결과 그대로",
+     "en": "Keep whatever comes"
     }
    }
   }
  },
  "strategies": [
   {
-   "id": "bal",
-   "params": {
-    "lT": 1,
-    "rT": 2
-   }
-  },
-  {
    "id": "ess",
    "params": {
-    "lT": 3,
-    "rT": 3
+    "L": 0
    }
   }
  ],
@@ -57,36 +34,29 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "lT": 3,
-    "rT": 3
+    "L": 0
    },
+   "tier": "ess",
    "desc": {
-    "kr": "생명력·번개 저항 1~3티어 매직 구입",
-    "en": "Buy T1–3 life and lightning res"
-   }
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "lT": 1,
-    "rT": 2
-   },
-   "desc": {
-    "kr": "생명력 1티어 + 번개 저항 1~2티어 매직 구입 (영상)",
-    "en": "Buy T1 life + T1–2 lightning res (as the video)"
+    "kr": "영상 그대로: 공개·엑잘 결과 그대로",
+    "en": "As the video: keep the reveal and the exalt as they come"
    }
   }
  ],
  "tags": {
   "life": {
    "gi": 5,
-   "tmax": "$lT"
+   "tmax": 1
   },
   "lres": {
    "gi": 3,
-   "tmax": "$rT"
+   "tmax": 2
+  },
+  "lf": {
+   "gi": 5
+  },
+  "lr": {
+   "gi": 3
   },
   "cres": {
    "gi": 40
@@ -98,7 +68,13 @@
  "require": {
   "all": [
    {
-    "has": "ul"
+    "has": "life"
+   },
+   {
+    "has": "lres"
+   },
+   {
+    "has": "cres"
    },
    {
     "full": "p"
@@ -128,97 +104,21 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "b3",
-    "b4",
-    "b4x"
-   ],
-   "kr": "접미 세번째 옵션(훼손)",
-   "en": "Third suffix (desecrated)"
-  }
- ],
- "finals": [
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "life",
-     "tmax": 1
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "tag": "lres",
-     "tmax": 2
-    },
-    {
-     "tag": "cres",
-     "tmax": 1
-    },
-    {
-     "tag": "ul",
-     "tmax": 1
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "tag": "life",
-     "tmax": 3
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "tag": "lres",
-     "tmax": 3
-    },
-    {
-     "tag": "cres",
-     "tmax": 1
-    },
-    {
-     "tag": "ul",
-     "tmax": 1
-    }
-   ]
-  }
- ],
+ "start": "t0",
  "finalItem": {
-  "quality": 20,
+  "quality": 0,
   "sockets": 0
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "t0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "b2",
+   "next": "t1",
    "start": {
     "rar": "magic",
     "mods": [
@@ -227,32 +127,32 @@
     ]
    },
    "label": {
-    "kr": "생명력 + 번개 저항 매직 허리띠 구입",
-    "en": "Buy a magic belt with life + lightning res"
+    "kr": "생명력 + 번개 저항 매직 섬세한 허리띠 구입 (부적 칸 2개)",
+    "en": "Buy a magic Fine Belt with life + lightning resistance (two charm slots)"
    },
    "item": [
     {
      "s": "p",
-     "kr": "생명력 최대치",
-     "en": "Max life",
+     "kr": "생명력 최대치 +(150—174)",
+     "en": "+(150—174) to maximum Life",
      "m": "n",
      "tags": [
-      "life"
+      "lf"
      ]
     },
     {
      "s": "s",
-     "kr": "번개 저항",
-     "en": "Lightning res",
+     "kr": "번개 저항 +(36—40)%",
+     "en": "+(36—40)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "lres"
+      "lr"
      ]
     }
    ]
   },
   {
-   "id": "b2",
+   "id": "t1",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -260,14 +160,23 @@
     1
    ],
    "act": "essence",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접미 카오스 저항",
-    "en": "Upgrade to rare + chaos res suffix"
-   },
+   "cur": "Greater_Essence_of_Ruin",
+   "ess": "cres",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "레어 + 접미 카오스 저항",
+    "en": "Rare + chaos resistance suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "카오스 저항 (제작 옵션)",
+     "en": "Chaos resistance (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "ms"
@@ -276,41 +185,32 @@
    "item": [
     {
      "s": "p",
-     "kr": "생명력 최대치",
-     "en": "Max life",
+     "kr": "생명력 최대치 +(150—174)",
+     "en": "+(150—174) to maximum Life",
      "m": "n",
      "tags": [
-      "life"
+      "lf"
      ]
     },
     {
      "s": "s",
-     "kr": "번개 저항",
-     "en": "Lightning res",
+     "kr": "번개 저항 +(36—40)%",
+     "en": "+(36—40)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "lres"
+      "lr"
      ]
     },
     {
      "s": "s",
-     "kr": "카오스 저항 (제작 옵션)",
-     "en": "Chaos res (crafted)",
-     "m": "n",
+     "kr": "카오스 저항 +(16—19)% (상위 폐허의 에센스)",
+     "en": "+(16—19)% to Chaos Resistance (Greater Essence of Ruin)",
+     "m": "c",
      "tags": [
       "cres"
      ]
     }
-   ],
-   "cur": "Greater_Essence_of_Ruin",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "카오스 저항 (제작 옵션)",
-     "en": "Chaos res (crafted)"
-    }
-   ],
-   "ess": "cres"
+   ]
   },
   {
    "id": "ms",
@@ -318,9 +218,9 @@
    "group": "main",
    "pos": [
     0,
-    1.5
+    2.4
    ],
-   "next": "b3",
+   "next": "t2",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -328,27 +228,27 @@
    "item": [
     {
      "s": "p",
-     "kr": "생명력 최대치",
-     "en": "Max life",
+     "kr": "생명력 최대치 +(150—174)",
+     "en": "+(150—174) to maximum Life",
      "m": "n",
      "tags": [
-      "life"
+      "lf"
      ]
     },
     {
      "s": "s",
-     "kr": "번개 저항",
-     "en": "Lightning res",
+     "kr": "번개 저항 +(36—40)%",
+     "en": "+(36—40)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "lres"
+      "lr"
      ]
     },
     {
      "s": "s",
-     "kr": "카오스 저항 (제작 옵션)",
-     "en": "Chaos res (crafted)",
-     "m": "n",
+     "kr": "카오스 저항 +(16—19)% (상위 폐허의 에센스)",
+     "en": "+(16—19)% to Chaos Resistance (Greater Essence of Ruin)",
+     "m": "c",
      "tags": [
       "cres"
      ]
@@ -356,200 +256,176 @@
    ]
   },
   {
-   "id": "b3",
+   "id": "t2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    3.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 세번째 옵션(훼손)",
-    "en": "Third suffix option (desecrated)"
-   },
+   "cur": "Preserved_Collarbone",
+   "omens": [
+    "Omen_of_Dextral_Necromancy",
+    "Omen_of_the_Sovereign"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손, 울라만)",
+    "en": "Third suffix (desecrated, Ulaman)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개, 울라만)",
+     "en": "Desecrated (unrevealed, Ulaman)"
+    }
+   ],
    "edges": [
     {
-     "to": "b4"
+     "to": "t3"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "생명력 최대치",
-     "en": "Max life",
+     "kr": "생명력 최대치 +(150—174)",
+     "en": "+(150—174) to maximum Life",
      "m": "n",
      "tags": [
-      "life"
+      "lf"
      ]
     },
     {
      "s": "s",
-     "kr": "번개 저항",
-     "en": "Lightning res",
+     "kr": "번개 저항 +(36—40)%",
+     "en": "+(36—40)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "lres"
+      "lr"
      ]
     },
     {
      "s": "s",
-     "kr": "카오스 저항 (제작 옵션)",
-     "en": "Chaos res (crafted)",
-     "m": "n",
+     "kr": "카오스 저항 +(16—19)% (상위 폐허의 에센스)",
+     "en": "+(16—19)% to Chaos Resistance (Greater Essence of Ruin)",
+     "m": "c",
      "tags": [
       "cres"
      ]
     },
     {
      "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
+     "kr": "훼손 옵션 (미공개, 울라만)",
+     "en": "Desecrated (unrevealed, Ulaman)",
      "m": "n"
     }
-   ],
-   "cur": "Preserved_Collarbone",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "울라만 훼손 옵션(미공개)",
-     "en": "Ulaman desecration (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Dextral_Necromancy",
-    "Omen_of_the_Sovereign"
    ]
   },
   {
-   "id": "b4",
+   "id": "t3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    4.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "ul",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손) — 번개 및 카오스 저항",
+    "en": "Third suffix (desecrated): lightning and chaos resistance"
+   },
+   "show": [
+    "ul"
+   ],
    "edges": [
     {
      "if": {
-      "added": "ul"
+      "param": {
+       "L": 0
+      }
      },
-     "to": "b5",
+     "to": "t4",
      "res": "ok"
-    },
-    {
-     "to": "b4x",
-     "res": "fail"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "생명력 최대치",
-     "en": "Max life",
+     "kr": "생명력 최대치 +(150—174)",
+     "en": "+(150—174) to maximum Life",
      "m": "n",
      "tags": [
-      "life"
+      "lf"
      ]
     },
     {
      "s": "s",
-     "kr": "번개 저항",
-     "en": "Lightning res",
+     "kr": "번개 저항 +(36—40)%",
+     "en": "+(36—40)% to Lightning Resistance",
      "m": "n",
      "tags": [
-      "lres"
+      "lr"
      ]
     },
     {
      "s": "s",
-     "kr": "카오스 저항 (제작 옵션)",
-     "en": "Chaos res (crafted)",
-     "m": "n",
-     "tags": [
-      "cres"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "번개 및 카오스 저항 (울라만)",
-     "en": "Lightning and chaos res (Ulaman)",
-     "m": "n",
+     "kr": "번개 및 카오스 저항 +(13—17)%",
+     "en": "+(13—17)% to Lightning and Chaos Resistances",
+     "m": "d",
      "tags": [
       "ul"
      ]
-    }
-   ],
-   "want": "ul",
-   "show": [
-    "ul"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
-   ]
-  },
-  {
-   "id": "b4x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    3
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
-   },
-   "edges": [
+    },
     {
-     "to": "b3",
-     "port": "right"
+     "s": "s",
+     "kr": "카오스 저항 +(16—19)% (상위 폐허의 에센스)",
+     "en": "+(16—19)% to Chaos Resistance (Greater Essence of Ruin)",
+     "m": "c",
+     "tags": [
+      "cres"
+     ]
     }
    ]
   },
   {
-   "id": "b5",
+   "id": "t4",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    5.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두 두번째·세번째 옵션",
-    "en": "Second and third prefix options"
-   },
+   "cur": "Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 두번째·세번째 옵션 — 마나 최대치·플라스크 생명력 회복",
+    "en": "Second and third prefixes: maximum mana, flask life recovery"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
    "edges": [
     {
      "to": "ok"
@@ -558,57 +434,52 @@
    "item": [
     {
      "s": "p",
-     "kr": "생명력 최대치",
-     "en": "Max life",
+     "kr": "생명력 최대치 +(150—174)",
+     "en": "+(150—174) to maximum Life",
      "m": "n",
      "tags": [
-      "life"
+      "lf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(35—54)",
+     "en": "+(35—54) to maximum Mana",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "플라스크 생명력 회복 속도 (5—10)% 증가",
+     "en": "(5—10)% increased Flask Life Recovery rate",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(36—40)%",
+     "en": "+(36—40)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "lr"
      ]
     },
     {
      "s": "s",
-     "kr": "번개 저항",
-     "en": "Lightning res",
-     "m": "n",
-     "tags": [
-      "lres"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "카오스 저항 (제작 옵션)",
-     "en": "Chaos res (crafted)",
-     "m": "n",
-     "tags": [
-      "cres"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "번개 및 카오스 저항 (울라만)",
-     "en": "Lightning and chaos res (Ulaman)",
-     "m": "n",
+     "kr": "번개 및 카오스 저항 +(13—17)%",
+     "en": "+(13—17)% to Lightning and Chaos Resistances",
+     "m": "d",
      "tags": [
       "ul"
      ]
     },
     {
-     "s": "p",
-     "kr": "랜덤 옵션 2개",
-     "en": "Two random lines",
-     "m": "j"
+     "s": "s",
+     "kr": "카오스 저항 +(16—19)% (상위 폐허의 에센스)",
+     "en": "+(16—19)% to Chaos Resistance (Greater Essence of Ruin)",
+     "m": "c",
+     "tags": [
+      "cres"
+     ]
     }
-   ],
-   "cur": "Greater_Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 2개 — 결과 그대로",
-     "en": "Two random lines — keep whatever comes"
-    }
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
    ]
   },
   {
@@ -617,12 +488,45 @@
    "group": "main",
    "pos": [
     0,
-    5
+    6.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [],
+ "finals": [
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "life"
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "lres"
+    },
+    {
+     "tag": "cres",
+     "ess": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
   }
  ]
 }

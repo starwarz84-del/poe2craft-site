@@ -21,7 +21,7 @@ for _t in ('bal','ess'): _grade('ragna-ashot-bow','ragna-ashot-bow-v2',_t,_bow)
 
 # 2. TheSaneExile 저항 벨트 — Balance = video (T1 life + T1–2 lightning res), Essential = both T1–3
 def _belt(r, t):
-    r['start']['mods'][0]['tmax'] = 1 if t=='bal' else 3; r['start']['mods'][1]['tmax'] = 2 if t=='bal' else 3
+    r['start']['mods'][0]['tmax'] = 1; r['start']['mods'][1]['tmax'] = 2   # 2026-11-13 G12: 쉬움이라 에센셜만, 에센셜 = 영상 베이스(생명력 1티어·번개 저항 2티어) — 단계는 플로우차트(gen_sane_resist_belt.py)에서 읽음
     # 사용자 확정 2026-11-10: finish the two empty prefixes with Greater Exaltation + Greater Exalted Orb (keep whatever comes)
     _node(r,'b4')['br']=K('울라만 저항 → 접두 마무리, 실패: 빛의 징조 + 소멸의 오브로 지우고 다시 훼손','Ulaman resist → finish the prefixes; miss: Light + Annulment and desecrate again')
     r['nodes']=[n for n in r['nodes'] if n['id']!='b5']+[

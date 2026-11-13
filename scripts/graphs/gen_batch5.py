@@ -187,3 +187,4 @@ if _os.path.exists(f'{H}/gen_ragna_ashot_bow.py'): _sp.run([_sy.executable, f'{H
 import os as _os, subprocess as _sp, sys as _sy
 if _os.path.exists(f'{H}/gen_icesly_budget_wand.py'): _sp.run([_sy.executable, f'{H}/gen_icesly_budget_wand.py'], check=True)   # 2026-11-13 G12: 새 기준 전용 생성기가 덮어씀
 if _os.path.exists(f'{H}/gen_lilbotq_budget_boots.py'): _sp.run([_sy.executable, f'{H}/gen_lilbotq_budget_boots.py'], check=True)   # 2026-11-13 G13: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_sane_resist_belt.py'): _sp.run([_sy.executable, f'{H}/gen_sane_resist_belt.py'], check=True)   # 2026-11-13 G12: 새 기준 전용 생성기가 덮어씀

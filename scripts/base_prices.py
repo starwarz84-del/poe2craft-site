@@ -51,7 +51,7 @@ BASEPRICE = {
   'farmer-starter-staff': None,
   'farmer-budget-armour-v2': 0.0028, 'farmer-budget-armour-v2-ess': 0.0028,   # 2026-11-13 G14: 영상 3:16 거래소 매물 1 엑잘티드 오브(1 ÷ 363 ≈ 0.0028 div) — 에너지 보호막 최대치 3티어 매직 흐르는 의복, 아이템 레벨 79
   'ragna-ashot-bow-v2-bal': None, 'ragna-ashot-bow-v2-ess': 10,   # 2026-11-13 G13: 영상 1:30 자막 '8딥, 10딥, 15딥 정도'(물리 % 매직 활 거래소 가격, 화면 1:40 매물은 5티어 절멸자 활 8 div) — 가운데 10 div
-  'sane-resist-belt-v2-bal': None, 'sane-resist-belt-v2-ess': None,
+  'sane-resist-belt-v2-bal': None, 'sane-resist-belt-v2-ess': 1,   # 2026-11-13 G12: 영상 4:10 자막 '벨트 베이스는 저 같은 경우 1 디바인'
   'diztoh-budget-mace-v2-bal': None, 'diztoh-budget-mace-v2-ess': None,
   'lilbotq-budget-boots-v2-bal': 1, 'lilbotq-budget-boots-v2-ess': 1,   # 2026-11-13 G13: 영상 0:10 자막 '신성한 오브 1개에 구입'(이동 속도 + 냉기 저항 1티어 매직 샌들)
   'icesly-budget-wand-v2-bal': 13, 'icesly-budget-wand-v2-ess': 13,   # 2026-11-13 G12: 영상 1:18 거래소 번개 +5 매직 결투 마법봉(아이템 레벨 81) 13 div, 1:42에 그 마법봉
