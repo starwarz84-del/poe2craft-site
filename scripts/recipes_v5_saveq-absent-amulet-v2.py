@@ -19,7 +19,8 @@ def sv_amulet(tier):
     R.append({
  'id':rid,'tierGroup':'saveq-absent-amulet-v2','tier':tier,'tierLabel':{'high':K('하이엔드','High-end'),'bal':K('밸런스','Balance'),'ess':K('에센셜','Essential')}[tier],
  'cls':c,'base':base(c,'Absent Amulet'),'ilvl':79,'difficulty':3,'budget':'high',
- 'imp':[K('스킬 부여: 레벨 18 영원한 격노','Grants Skill: Level 18 Eternal Rage'),K('접두어 속성 부여의 최대 개수 -1개\n접미어 속성 부여의 최대 개수 -1개','-1 Prefix Modifier allowed\n-1 Suffix Modifier allowed')],
+ 'imp':[K('스킬 부여: 레벨 17 영원한 격노','Grants Skill: Level 17 Eternal Rage'),   # 11-13 사용자 결정: 레벨 17로 시작(영상 완성품은 18 — 나중에 유동체로 맞출 수 있음, 유동체 단계는 정책 14장대로 뺌)
+ K('접두어 속성 부여의 최대 개수 -1개\n접미어 속성 부여의 최대 개수 -1개','-1 Prefix Modifier allowed\n-1 Suffix Modifier allowed')],
  'buildTags':[K('영원한 격노','Eternal Rage'),K('근접','Melee'),K('정신력','Spirit')],'patch':'0.5.5','created':'2026-11-09','author':K('SaVeQ 영상 기반','Based on SaVeQ'),
  'source':{'url':'https://www.youtube.com/watch?v=S4sflKbsA8A','title':'I made over 2 mirrors with that Craft poe2 0.5.5','channel':'SaVeQ'},
  'title':K('치명타 피해 보너스 분열 + 근접 스킬 +4(공격 퀄리티) + 정신력','fractured crit damage bonus + melee skills +4 (attack quality) + Spirit'),
