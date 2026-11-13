@@ -14,8 +14,32 @@ const EXP = ['Omen_of_Whittling','Omen_of_Sinistral_Erasure','Omen_of_Dextral_Er
 // grades a group keeps by difficulty (정책 30): 5 = high, 4 = high + bal, 2–3 = bal + ess, ≤1 = ess
 function gradesFor(diff){ return diff>=5 ? ['high'] : diff>=4 ? ['high','bal'] : diff>=2 ? ['bal','ess'] : ['ess']; }
 
+/* 유동체 경로(W7, 리버스 13장 사용자 확정 11-13 21:45): 원소 저항(화염·냉기·번개 — 일반·최대치)은 유동체로 바꿀 수 있으니 굴림·공개에서 같은 티어의 다른 원소 저항도 성공으로 보고
+   완성 직전에 유동체 한 번(목표 원소가 아닌 줄을 모두 목표 원소로). 같은 옵션 두 줄(탱정 방패 화염 저항 최대치: 하나는 냉기·번개 저항 최대치 훼손 공개 뒤 맹렬한 유동체)은
+   이 길이 아니면 공개 풀에 같은 계열이 없어 만들 수 없음. 유동체는 다른 원소 저항을 모두 바꾸니, 목표 원소 저항이 한 원소일 때만(다른 원소 저항이 목표면 쓰지 않음).
+   바꾸는 단계 = 목표가 그 옵션 하나(gi, 한 옵션짜리 묶음, 공개). 에센스·합금·산 옵션은 그대로. d.noFlux = 쓰지 않는 후보 */
+const RES_RE = /^(Maximum)?(Fire|Cold|Lightning|Chaos)(And(?:Fire|Cold|Lightning|Chaos))?(?:Damage)?Resist(?:ance)?$/;
+const resOf = g => { if(!g || (g.f||[]).length!==1) return null; const m=RES_RE.exec(g.f[0]); return m ? {el:m[2], key:(m[1]||'')+'|'+(m[3]||'')} : null; };
+const FLUX_TO = {Fire:'Blazing_Flux', Cold:'Chilling_Flux', Lightning:'Crackling_Flux'};
+function fluxPlan(d, G, opt){ if(d.noFlux || opt.noFlux) return null; const N=d.nodes||[];
+  const gisOf = t => !t ? [] : [t.gi, ...(t.anyOf||[]).map(x=>x.gi), t.reveal?.gi, ...(t.reveal?.anyOf||[]).map(x=>x.gi), t.mark?.gi].filter(x=>x!=null);
+  const want = new Set([...(d.start.mods||[]).filter(m=>m.gi!=null && !m.fr).map(m=>m.gi), ...N.flatMap(n=>gisOf(n.target))]);
+  const els = new Set([...want].map(gi=>resOf(G[gi])).filter(r=>r && r.el!=='Chaos').map(r=>r.el)); if(els.size!==1) return null;
+  const el=[...els][0], cur=FLUX_TO[el];
+  if([...want].some(gi=>{ const r=resOf(G[gi]); return r && r.el!==el && r.el!=='Chaos'; })) return null;
+  const sibs = gi => { const g=G[gi], r=resOf(g); if(!r || r.el!==el || g.s!=='n' || r.key.endsWith('And'+el)) return null;
+    const out=[]; G.forEach((x,i)=>{ if(i===gi || x.s!==g.s || x.g!==g.g) return; const q=resOf(x); if(q && q.key===r.key && q.el!==el && q.el!=='Chaos') out.push(i); }); return out.length ? out : null; };
+  const wide = (spec) => { if(!spec) return null; const one = spec.gi!=null ? spec : spec.anyOf?.length===1 ? spec.anyOf[0] : null; if(!one) return null; const sb=sibs(one.gi); if(!sb) return null;
+    return {E:one.gi, list:[{gi:one.gi, ...(one.tmax?{tmax:one.tmax}:{})}, ...sb.map(gi=>({gi, ...(one.tmax?{tmax:one.tmax}:{})}))]}; };
+  const Es=new Set(); let k=0;
+  const nodes = N.map(n=>{ const t=n.target; if(!t || n.do==='essence' || n.do==='base' || t.mark) return n;
+    if(['transmute','augment','regal','exalt','chaos'].includes(n.do)){ const w=wide(t); if(!w) return n; Es.add(w.E); k++; const t2={...t, anyOf:w.list}; delete t2.gi; delete t2.tmax; return {...n, target:t2}; }
+    if(n.do==='reveal' && t.reveal){ const w=wide(t.reveal); if(!w) return n; Es.add(w.E); k++; return {...n, target:{...t, reveal:{anyOf:w.list}}}; }
+    return n; });
+  return k ? {nodes, el, cur, Es} : null; }
+
 function fromDraft(d, D, opt={}){
-  const G=D.groups, N=d.nodes, byId={}; N.forEach(n=>byId[n.id]=n);
+  const G=D.groups, FX=fluxPlan(d, G, opt), N=FX ? FX.nodes : d.nodes, byId={}; N.forEach(n=>byId[n.id]=n);
   const base=D.bases[d.base]||{};
   // ---------- tags: one per modifier group (gi); lines made by a loop get a per-grade tier parameter
   const tags={}, tagOf = gi => { const k='g'+gi; if(!tags[k]) tags[k]={gi}; return k; };
@@ -82,7 +106,7 @@ function fromDraft(d, D, opt={}){
   const lineOf = (gi, m, extra, tag) => { const g=G[gi], tm=tmaxOf[gi]||1, t=g.t[Math.min(g.t.length-1, Math.max(0,tm-1))]; const kr=(t?.[4]||'').replace(/\n/g,' / '), en=(t?.[5]||'').replace(/\n/g,' / ');
     return {s:g.g, kr: kr + (extra?' ('+extra.kr+')':''), en: en + (extra?' ('+extra.en+')':''), m, tags:[tag||tagOf(gi)], rep:tagOf(gi)}; };
   /* 묶음(anyOf) 목표: 아이템 칸에는 아직 없는 옵션을 차례로 보여 줌(사용자 2026-11-12: 같은 옵션 3개로 보였음) */
-  const pickGi = list => { const have=new Set(cur.map(l=>l.rep).filter(Boolean)); return (list.find(x=>!have.has(tagOf(x.gi)))||list[0]).gi; };
+  const pickGi = list => { if(FX && FX.Es.has(list[0]?.gi)) return list[0].gi; const have=new Set(cur.map(l=>l.rep).filter(Boolean)); return (list.find(x=>!have.has(tagOf(x.gi)))||list[0]).gi; };
   const J = s => ({s, kr:'잡옵', en:'Junk', m:'j'}), UN = s => ({s, kr:'훼손 옵션(미공개)', en:'Desecrated (unrevealed)', m:'u'});
   const RND = s => ({s, kr:'랜덤 옵션 1개', en:'One random line', m:'j'});
   let cur = (d.start.mods||[]).map(m=> m.junk ? J(m.junk) : m.unrev ? UN(m.unrev) : lineOf(m.gi, m.fr?'f':'n'));
@@ -115,16 +139,43 @@ function fromDraft(d, D, opt={}){
   const cleanTo = maker => { if(maker!==firstChaos) return maker; const id='cl'+maker;
     if(!extra.some(x=>x.id===id)) extra.push({id, kind:'cleanup', group:'main', keep:[], maxJunk:1, label:K('소멸의 오브 사용','Use an Orb of Annulment'), goal:K('잡옵 정리','Clear the junk'), target:K('분열 옵션 + 잡옵 1개만 남기고 다시 카오스','Keep the fracture and one junk line, then Chaos again'), edges:[{to:maker}], _row:2, _col:3});
     return id; };
-  function lostEdges(n, keep){ // a kept line removed by this step → back to the step that made it
-    return keep.filter(k=>k.maker!==n.id).map(k=>({if:{removed:k.tag}, to:cleanTo(k.maker), res:'fail', lost:k.tag, hide:true})); }
+  /* 자리를 늘리는 옵션(경멸: +1 접미 허용)을 일부러 지운 뒤(dropGi)에 그쪽 옵션을 잃으면 그쪽 자리가 모자라 만든 단계로 돌아가도 다시 못 붙임 → 새 베이스(W7, LilBotQ 에메랄드가 끝나지 않던 원인) */
+  const slotDrop = N.findIndex(n=>{ const g=n.target?.dropGi; return g!=null && (n.target?.slots || N.some(x=>x.target?.gi===g && x.target?.slots)); });
+  const slotSide = slotDrop>=0 ? (()=>{ const g=N[slotDrop].target.dropGi, mk=N.find(x=>x.target?.gi===g && x.target?.slots); return mk ? Object.keys(mk.target.slots)[0] : null; })() : null;
+  const sideOfTag = tg => { const t=tags[tg]; if(!t) return null; const gi = t.gi ?? tags[t.anyOf?.[0]]?.gi; return gi!=null ? G[gi].g : null; };
+  function lostEdges(n, keep, pos){ // a kept line removed by this step → back to the step that made it
+    const at = pos ?? N.indexOf(n), late = slotSide && slotDrop>=0 && at>slotDrop;
+    return keep.filter(k=>k.maker!==n.id).map(k=>({if:{removed:k.tag}, to: late && sideOfTag(k.tag)===slotSide && N.findIndex(x=>x.id===k.maker)<slotDrop ? 'h1' : cleanTo(k.maker), res:'fail', lost:k.tag, hide:true})); }
   let vN=0;
+  /* 필수 훼손 반복 — 징표 방법(W7, 리버스 13장 사용자 확정 11-13 20:22: 빛의 징조로 다시 공개하거나 아스트리드의 창의성 룬으로 제작 옵션 2개):
+     공개가 빗나가면 빛의 징조 + 소멸 대신 그쪽 결정화의 징조 + 심연의 에센스(그쪽 옵션 하나를 지우고 심연 군주의 징표) → 같은 뼈로 징표 자리 훼손 → 다시 공개(징표 자리는 한 티어 높게).
+     지운 옵션이 좋은 옵션이면 그 옵션을 만든 단계로. 징표도 제작 옵션이라 이미 제작 옵션이 있으면 아스트리드의 창의성(룬 소켓 필요)이 있어야 하고 제작 옵션이 2개면 못 씀(5장 C1).
+     반대쪽이 꽉 찼을 때만(그래야 징표가 지운 쪽에 붙음 — 반대쪽에 자리가 있으면 접두·접미 반반). d.desLoop==='mark' 후보 */
+  function markLoop(n, F, keep, r){ if(d.desLoop!=='mark' || n.do!=='reveal' || !(F.via?.omens||[]).includes('Omen_of_Light')) return null;
+    const sd=n.target?.side, oth = sd==='p' ? 's' : 'p'; if(!sd) return null;
+    const mkGi=G.findIndex(g=>g.s==='e' && g.g===sd && /Abyssal Lord/.test(g.t[0]?.[5]||'')); if(mkGi<0) return null;
+    const capO=(d.cap?.[oth]) ?? (3+((oth==='p'?base.pd:base.sd)||0)); if(cur.filter(l=>l.s===oth).length < capO) return null;
+    const crafted=cur.filter(l=>l.m==='c').length, hasA=/Astrid/.test(JSON.stringify(d.start.runes||[])) || N.slice(0, N.indexOf(n)).some(x=>/Astrid/.test(x.target?.rune?.en||''));
+    if(crafted>=2 || (crafted===1 && !hasA && !(d.sockets>0))) return null;
+    const bone=byId[F.goto]?.cur; if(!bone) return null;
+    const id='mk'+n.id, CR = sd==='p' ? 'Omen_of_Sinistral_Crystallisation' : 'Omen_of_Dextral_Crystallisation', le=lostEdges({id}, keep, N.indexOf(n));
+    if(crafted===1 && !hasA) extra.push({id:id+'a', kind:'act', group:'main', act:'rune', rune:{kr:'아스트리드의 창의성', en:'Astrid’s Creativity'}, label:LABEL.rune, goal:K('아스트리드의 창의성 장착','Socket Astrid’s Creativity'),
+      showText:[K('제작 옵션이 이미 있어 징표(제작 옵션)를 붙이려면 필요. 제작이 끝나면 원하는 룬으로 교체','A crafted line is already there, so the Mark (also crafted) needs it. Swap it for the rune you want once crafting is done')],
+      skipIf:{rune:'Astrid'}, skipTo:id, skipHide:true, skipNote:K('이미 장착돼 있으면 건너뜀','Skipped when already socketed'), edges:[{to:id}], _row:r, _col:2});
+    extra.push({id, kind:'act', group:'main', act:'essence', cur:'Essence_of_the_Abyss', omens:[CR], ess:tagOf(mkGi), mark:true, label:LABEL.essence, goal:K(`${sideWord(sd).kr} 징표`, `${sideWord(sd).en} Mark`),
+      showText:[K(`${cn(CR).kr}: 빗나간 ${sideWord(sd).kr} 하나를 지우고 심연 군주의 징표 (빛의 징조 대신)`, `${cn(CR).en}: removes a ${sideWord(sd).en.toLowerCase()} (the miss, hopefully) and adds the Mark (instead of Omen of Light)`)],
+      edges:[...le, {to:id+'b'}], _row:r, _col:crafted===1 && !hasA ? 3 : 2});
+    extra.push({id:id+'b', kind:'act', group:'main', act:'desecrate', cur:bone, fromMark:true, label:LABEL.desecrate, goal:K('징표 자리 훼손','Desecrate the Mark'),
+      showText:[K('징표 자리가 미공개 훼손 옵션으로 (한 티어 높게)','The Mark becomes an unrevealed desecration (one tier higher)')], edges:[{to:n.id}], _row:r+0.5, _col:2});
+    return crafted===1 && !hasA ? id+'a' : id; }
   function failPath(n, F, keep, r){ if(!F) return null; const go = F.goto==='self' ? n.id : (F.goto==='restart' || byId[F.goto]?.do==='base') ? 'h1' : F.goto;
     if(!F.via) return go;
+    const mk = markLoop(n, F, keep, r); if(mk) return mk;
     const id='v'+(++vN)+n.id, v=F.via, a = v.cur==='Orb_of_Annulment' ? 'annul' : /Bone|Jawbone|Rib|Collarbone|Cranium/.test(v.cur||'') ? 'desecrate' : 'annul';
     const lostTo = F.lost ? (byId[F.lost]?.do==='base' ? 'h1' : cleanTo(F.lost)) : null, lostTag = F.lost ? (keep.find(k=>k.maker===F.lost)?.tag || targetTag(byId[F.lost]?.target)) : null;
     /* 지운 옵션 확인 순서(W5): 낱개 옵션(산 베이스 옵션 등) 먼저, 그 단계가 노린 옵션은 뒤 — 묶음 태그(anyOf)가 산 옵션을 품으면(K39 희귀도 반지: 산 희귀도 접두가 묶음에 들어감)
        그 옵션이 지워져도 '노린 옵션이 지워짐'으로 읽혀 새 베이스 대신 엑잘로 돌아가고 완성품에 산 옵션이 없었음(33%) */
-    const le=lostEdges({id}, keep).filter(e=>e.if.removed!==lostTag), lt = lostTo && lostTag ? [{if:{removed:lostTag}, to:lostTo, res:'fail', lost:lostTag}] : [];
+    const le=lostEdges({id}, keep, N.indexOf(n)).filter(e=>e.if.removed!==lostTag), lt = lostTo && lostTag ? [{if:{removed:lostTag}, to:lostTo, res:'fail', lost:lostTag}] : [];
     const edges = tags[lostTag]?.anyOf ? [...le, ...lt, {to:go}] : [...lt, ...le, {to:go}];
     extra.push({id, kind:'act', group:'main', act:a, cur:v.cur, omens:v.omens, label: a==='annul' ? K('소멸의 오브 사용','Use an Orb of Annulment') : LABEL[a],
       goal: (v.omens||[]).includes('Omen_of_Light') ? K('훼손 옵션 제거','Remove the desecrated modifier') : K('소멸의 오브 사용','Use an Orb of Annulment'), edges, _row:r, _col:2});
@@ -218,7 +269,7 @@ function fromDraft(d, D, opt={}){
         /* 징조 없이 꽉 찬 쪽에 붙이면 그쪽 옵션 하나가 바뀜 — 성공 회차(잡옵이 바뀜)대로 잡옵 한 줄을 뺌. 접미가 4/3으로 보이던 것(2026-11-13 W4, Seek 장화) */
         else if(gi!=null){ const sd=G[gi].g, capS=(d.cap?.[sd]) ?? (3+((sd==='p'?base.pd:base.sd)||0)); if(cur.filter(l=>l.s===sd && l.m!=='r').length >= capS) dropJunk(sd); } } if(gi!=null) cur.push(lineOf(gi, t.mark?'c':'c', K(t.mark?'징표':'제작 옵션', t.mark?'mark':'crafted'))); }
     else if(a==='desecrate'){ const s=t.unrev||sdOm||'s'; if(t.fromMark) dropOne(l=>/징표/.test(l.kr)); cur.push(UN(s)); }
-    else if(a==='reveal'){ const i=cur.findIndex(l=>l.m==='u'); const gi=t.reveal?.gi ?? (t.reveal?.anyOf ? pickGi(t.reveal.anyOf) : null); if(i>=0) cur.splice(i,1, gi!=null ? lineOf(gi,'d',null,targetTag(t)) : {...UN(cur[i].s), m:'d'}); }
+    else if(a==='reveal'){ const i=cur.findIndex(l=>l.m==='u'); const gi=t.reveal?.gi ?? (t.reveal?.anyOf ? pickGi(t.reveal.anyOf) : null); if(i>=0) cur.splice(i,1, gi!=null ? lineOf(gi,'d',null,targetTag(t)) : {s:cur[i].s, kr:'훼손 옵션 (결과 그대로)', en:'Desecrated (as it comes)', m:'d'}); }
     else if(a==='annul'){ if(t.removeDes) dropOne(l=>l.m==='d'||l.m==='u'); else if(t.dropGi==null) dropJunk(sdOm); }
     else if(a==='rune' && o.rune) cur.push({s:'r', kr:o.rune.kr, en:o.rune.en, m:'r'});
     o.item = cur.map(x=>({...x}));
@@ -243,7 +294,7 @@ function fromDraft(d, D, opt={}){
   const taken={}; all.forEach(o=>{ let c=o._col||0; if(c>0){ while(taken[c+'|'+o._row]) c++; taken[c+'|'+o._row]=1; } o.pos=[c, o._row]; delete o._row; delete o._col; });
   const startItem = (d.start.mods||[]).map(m=> m.junk ? J(m.junk) : m.unrev ? UN(m.unrev) : lineOf(m.gi, m.fr?'f':'n'));
   const first = mainOut[0]?.id || 'ok';
-  const baseLabel = d.start.rar==='magic' ? K('매직 베이스 구입','Buy a magic base') : (d.start.mods||[]).some(m=>m.fr) ? K('분열 베이스 구입','Buy a fractured base') : K('베이스 구입','Buy a base');
+  const baseLabel = d.start.rar==='magic' ? K('매직 베이스 구입','Buy a magic base') : d.start.rar==='rare' && !(d.start.mods||[]).some(m=>m.fr) ? K('희귀 베이스 구입','Buy a rare base') : (d.start.mods||[]).some(m=>m.fr) ? K('분열 베이스 구입','Buy a fractured base') : K('베이스 구입','Buy a base');
   /* 분열 과정(W6, 리버스 13장 사용자 확정 11-13 20:16·22:37): 분열 옵션은 등록 레시피처럼 준비 구역에서 만듦 — 분열 대상 옵션 + 반대쪽 잡옵이 붙은 매직 베이스 구입 →
      제왕의 오브(옵션 3개) → 보존된 뼈(미공개 훼손, 분열되지 않음 → 옵션 4개) → 분열의 오브(공개된 옵션 3개 중 하나, 1/3) → 소멸의 오브로 분열 + 옵션 1개.
      빗나가면 규칙 G: 분열 아이템은 난이도가 늘 어려움 이상(평균 베이스 3개)이라 새 베이스로 처음부터. 비용 = 베이스 값 제외, 이 과정의 커런시는 포함 */
@@ -271,7 +322,17 @@ function fromDraft(d, D, opt={}){
     PRE = 7; all.forEach(o=>{ o.pos=[o.pos[0], o.pos[1]+PRE]; }); }
   const nodes=[...(FP ? prepNodes : [{id:'h1', kind:'base', group:'prep', pos:[0,0], next:'ms', start:{rar:d.start.rar||'normal', mods:(d.start.mods||[]).map(m=> m.junk ? {junk:m.junk} : m.unrev ? {unrev:m.unrev} : (m.fr ? {tag:tagOf(m.gi), fr:true} : tagOf(m.gi)))}, label:baseLabel, item:startItem}]),
     {id:'ms', kind:'mark', group:'main', pos:[0,PRE+0.6], next:first, label:K('아이템 제작 시작','Item crafting starts'), item:startItem},
-    ...all, {id:'ok', kind:'done', group:'main', pos:[0,row+PRE], label:K('완성','Finished')}];
+    ...all, {id:'ok', kind:'done', group:'main', pos:[0,row+PRE+(FX?1:0)], label:K('완성','Finished')}];
+  /* 유동체 단계(W7, fluxPlan): 완성으로 가는 선을 모두 유동체 상자로 — 목표 원소 줄이 이미 다 있으면 건너뜀. 완성 칸·완성 조건은 목표 원소 옵션 그대로 */
+  if(FX){ const isW = k => { const L=tags[k]?.anyOf; return !!L && L.some(x=>FX.Es.has(tags[x]?.gi)) && L.every(x=>{ const r=resOf(G[tags[x]?.gi]); return r && r.el!=='Chaos'; }); };
+    cur.forEach(l=>{ if(l.tags && isW(l.tags[0]) && l.rep && FX.Es.has(tags[l.rep]?.gi)) l.tags=[l.rep]; });
+    const need = [...FX.Es].map(gi=>({gi, n:Math.max(1, cur.filter(l=>l.tags?.[0]===tagOf(gi)).length)}));
+    nodes.forEach(n=>{ (n.edges||[]).forEach(e=>{ if(e.to==='ok') e.to='fx'; }); if(n.skipTo==='ok') n.skipTo='fx'; if(n.next==='ok') n.next='fx'; });
+    const fc=cn(FX.cur), el=K({Fire:'화염',Cold:'냉기',Lightning:'번개'}[FX.el], FX.el);
+    nodes.splice(nodes.length-1, 0, {id:'fx', kind:'act', group:'main', pos:[0,row+PRE], act:'flux', cur:FX.cur, label:K('유동체','Flux'), goal:K(`다른 원소 저항 → ${el.kr} 저항`, `Other elements → ${el.en}`),
+      showText:[K(`${fc.kr}: 다른 원소 저항 옵션을 같은 티어의 ${el.kr} 저항으로`, `${fc.en}: other elemental resistances become ${el.en} at the same tier`)],
+      skipIf: need.length===1 ? {count:{tag:tagOf(need[0].gi), min:need[0].n}} : {all:need.map(x=>({count:{tag:tagOf(x.gi), min:x.n}}))}, skipTo:'ok', skipNote:K(`이미 ${el.kr} 저항`, `Already ${el.en}`),
+      edges:[{to:'ok', res:'ok'}], item:cur.map(x=>({...x}))}); }
   /* 묶음(anyOf) 태그의 성공 회차 옵션 = 붙여 넣은 옵션(2026-11-13 W4, 규칙 K·S4): 아이템 칸·완성 카드에 그 줄이 실제로 들어간 옵션(rep) 순서대로.
      화면은 'A 또는 B'(목표처럼 읽힘) 대신 붙여 넣은 옵션을 보여 주고, 레시피 글은 '대신 …도 성공으로 침' 꿀팁을 붙임. 시뮬은 shown을 읽지 않음 */
   { const sh={}; const take = l => { const k=l?.tags?.[0]; if(!k || !tags[k]?.anyOf || !l.rep || l.rep===k) return; (sh[k]=sh[k]||[]); if(!sh[k].includes(l.rep)) sh[k].push(l.rep); };
@@ -304,7 +365,7 @@ function fromDraft(d, D, opt={}){
   const settleLine = (v, l) => l.tags && [l.tags[0], l.rep, l._k].some(t=>t && settleOf(v, t));
   /* 완성 카드 줄 중복 빼기(W5, MazBro 시전자 목걸이: 공개 성공·빗나감 갈래가 같은 묶음 옵션을 둘 다 아이템 칸에 넣어 마나 최대치가 두 번 — 접두 4개): 같은 옵션 태그 줄은 붙여 넣은 줄 수(dupGi)까지 */
   const curF = (()=>{ const seen={}; return cur.filter(l=>{ const k=l.rep && l.rep!==l.tags?.[0] ? l.rep : null; const gi=k ? tags[k]?.gi : null; if(gi==null) return true; seen[k]=(seen[k]||0)+1; return seen[k] <= Math.max(1, d.dupGi?.[gi]||0); }); })();
-  const finals = grades.map(v=>({id:v, kr:VN[v].kr+' 옵션', en:VN[v].en, lines: curF.map(l=>{ if(!l.tags) return l; const k = chainN[l.tags[0]] && l.rep ? l.rep : l.tags[0]; return {...l, _k:k}; }).map(l=> settleLine(v, l) ? {side:l.s, random:true, ...(l.m==='d'?{des:true}:{})} : l.tags ? {tag:l._k, tmax: tags[l._k].tmax && String(tags[l._k].tmax)[0]==='$' ? +P[v][String(tags[l._k].tmax).slice(1)] : tags[l._k].tmax, ...(l.m==='f'?{fr:true}:{}), ...(l.m==='d'?{des:true}:{})} : l.m==='r' ? null : {side:l.s, random:true}).filter(Boolean)}));
+  const finals = grades.map(v=>({id:v, kr:VN[v].kr+' 옵션', en:VN[v].en, lines: curF.map(l=>{ if(!l.tags) return l; const k = chainN[l.tags[0]] && l.rep ? l.rep : l.tags[0]; return {...l, _k:k}; }).map(l=> settleLine(v, l) ? {side:l.s, random:true, ...(l.m==='d'?{des:true}:{})} : l.tags ? {tag:l._k, tmax: tags[l._k].tmax && String(tags[l._k].tmax)[0]==='$' ? +P[v][String(tags[l._k].tmax).slice(1)] : tags[l._k].tmax, ...(l.m==='f'?{fr:true}:{}), ...(l.m==='d'?{des:true}:{})} : l.m==='r' ? null : {side:l.s, random:true, ...(l.m==='d'?{des:true}:{})}).filter(Boolean)}));
   const g={id:d.id, recipe:d.id, cls:d.cls, base:base.en||d.base, ilvl:d.ilvl, note:'리버스 크래프팅 초안에서 만든 플로우차트', params,
     strategies:grades.map(v=>({id:v, params:P[v]})), versions:[...grades].reverse().map(v=>({id:v, kr:VN[v].kr, en:VN[v].en, params:P[v], desc:desc(v)})),
     tags, require, groups:[{id:'prep',kr:'베이스템 완성',en:'Finished base',cols:[0,1]},{id:'main',kr:'옵션 추가 작업',en:'Adding modifiers',cols:[0,1]}],
@@ -366,7 +427,7 @@ function magicCost(D, craft, prices, SIM, r, ms, mode='annul'){ ms=(ms||[]).filt
   const fail = lost => mode==='restart' ? {goto:'restart'} : {goto:'self', via:{cur:'Orb_of_Annulment'}, ...(lost?{lost}:{})};
   const sim = (a, b) => { const nodes=[{id:'m0', phase:'base', do:'base', cost:'base'}, {id:'m1', phase:'magic', do:'transmute', cur:a, target:{anyOf:all}, ...(two?{pool:2}:{}), fail:fail()}];
     if(b) nodes.push({id:'m2', phase:'magic', do:'augment', cur:b, target:{anyOf:all}, pool:2, fail:fail('m1')});
-    try{ const g=fromDraft({id:'mag', cls:r.cls, base:r.base, ilvl:r.ilvl, start:{rar:'normal', mods:[]}, nodes, difficulty:0}, D, {craft, grades:['high']});
+    try{ const g=fromDraft({id:'mag', cls:r.cls, base:r.base, ilvl:r.ilvl, start:{rar:'normal', mods:[]}, nodes, difficulty:0}, D, {craft, grades:['high'], noFlux:true});
       /* 유동체: 목표 원소가 아니면 바꿈(이미 목표 원소면 건너뜀) — 완성 직전에 끼움 */
       flux.forEach((f,i)=>{ const id='fx'+i, tg='g'+f.gi, nx = i+1<flux.length ? 'fx'+(i+1) : 'ok'; if(!g.tags[tg]) g.tags[tg]={gi:f.gi};
         g.nodes.forEach(n=>{ (n.edges||[]).forEach(e=>{ if(e.to==='ok' && i===0) e.to='fx0'; }); if(n.skipTo==='ok' && i===0) n.skipTo='fx0'; });
@@ -379,6 +440,6 @@ function magicCost(D, craft, prices, SIM, r, ms, mode='annul'){ ms=(ms||[]).filt
   if(B) for(const b of MAGIC_ORB.augment.slice(1)){ const x=sim(a0, b); if(x && (!v || x.div<v.div)) v=x; }
   return v; }
 
-const api={fromDraft, view, check, gradesFor, diffOf, magicCost};
+const api={fromDraft, view, check, gradesFor, diffOf, magicCost, fluxPlan:(d,D)=>!!fluxPlan(d, D.groups, {})};
 if(typeof module!=='undefined' && module.exports) module.exports=api; else root.POE2GRAPH=api;
 })(typeof window!=='undefined' ? window : globalThis);

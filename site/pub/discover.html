@@ -708,13 +708,13 @@ const revCost = (it, d, res) => res ? (res.useDiv ?? res.mean) : null;
 // 남는 시간에는 상위 후보를 더 많이 돌려 값을 다듬음. 무거운 아이템은 1차 계산만으로 그 시간을 넘김. 후보 = 노하우(K5·K6) × 복구 방법·면 순서·반복 생략 × 엑잘 등급
 async function bestDraftAsync(it, an, opt, tick, minMs){ const t0=performance.now(), nap = ms => new Promise(r=>setTimeout(r, ms||0)), el = () => performance.now()-t0;
   const kn=[{k:[], a:an}]; { const e=essSwap(it, an), d=desSwap(it, an); if(e!==an) kn.push({k:['K5'], a:e}); if(d!==an) kn.push({k:['K6'], a:d}); if(e!==an){ const ed=desSwap(it, e); if(ed!==e) kn.push({k:['K5','K6'], a:ed}); } }
-  const RV=[{k:'', o:{}}, ...REC_VARIANTS, {k:'flip+plain', o:{flip:1, rec:'plain'}}, {k:'flip+noloop', o:{flip:1, noLoop:1}}, {k:'noloop-p', o:{noLoop:'p'}}, {k:'noloop-s', o:{noLoop:'s'}}, {k:'frside', o:{frSide:1}}, {k:'frside+noloop', o:{frSide:1, noLoop:1}}, {k:'k42', o:{k42:1}}, {k:'k42+noloop', o:{k42:1, noLoop:1}}, {k:'frside+k42', o:{frSide:1, k42:1}}, {k:'frside+noloop+k42', o:{frSide:1, noLoop:1, k42:1}}], EX=[{k:'', o:{}}, {k:'gex', o:{ex:'Greater_Exalted_Orb'}}];
-  const sig = d => JSON.stringify(d.nodes.map(n=>[n.do,n.cur,n.omens,n.target,n.fail])), seen=new Set(), C=[]; let runs=0;
+  const RV=[{k:'', o:{}}, ...REC_VARIANTS, {k:'flip+plain', o:{flip:1, rec:'plain'}}, {k:'flip+noloop', o:{flip:1, noLoop:1}}, {k:'noloop-p', o:{noLoop:'p'}}, {k:'noloop-s', o:{noLoop:'s'}}, {k:'frside', o:{frSide:1}}, {k:'frside+noloop', o:{frSide:1, noLoop:1}}, {k:'k42', o:{k42:1}}, {k:'k42+noloop', o:{k42:1, noLoop:1}}, {k:'frside+k42', o:{frSide:1, k42:1}}, {k:'frside+noloop+k42', o:{frSide:1, noLoop:1, k42:1}}, {k:'mark', o:{desLoop:'mark'}}, {k:'noloop+mark', o:{noLoop:1, desLoop:'mark'}}, {k:'noflux', o:{noFlux:1}}, {k:'rarebuy', o:{rareBuy:1}}], EX=[{k:'', o:{}}, {k:'gex', o:{ex:'Greater_Exalted_Orb'}}];
+  const sig = d => JSON.stringify([d.desLoop||0, d.noFlux||0, d.nodes.map(n=>[n.do,n.cur,n.omens,n.target,n.fail])]), seen=new Set(), C=[]; let runs=0;
   const say = ph => tick && tick({phase:ph, n:C.length, runs, ms:el()});
-  for(const K of kn) for(const v of RV) for(const x of EX){ try{ const o={...v.o, ...x.o}, d=makeDraft(it, K.a, {...(opt||{}), ...o, market:1e9}); if(!d) continue; const sg=sig(d); if(seen.has(sg)) continue; seen.add(sg);
+  for(const K of kn) for(const v of RV) for(const x of EX){ try{ const o={...v.o, ...x.o}, d=makeDraft(it, K.a, {...(opt||{}), ...o, market:1e9}); if(!d) continue; if(o.desLoop && !d.nodes.some(n=>n.do==='reveal' && (n.fail?.via?.omens||[]).includes('Omen_of_Light'))) continue; if(o.noFlux && !POE2GRAPH.fluxPlan(d, it.D)) continue; if(o.rareBuy && d.start.rar!=='rare') continue;   /* W7: 징표 반복은 필수 훼손 공개가 있을 때만, 유동체 빼기는 유동체 경로가 있을 때만 */ const sg=sig(d); if(seen.has(sg)) continue; seen.add(sg);
       if(verifyDraft(it, K.a, d).some(z=>z.lv==='err')) continue; C.push({K, o, k:[v.k, x.k].filter(Boolean).join('+'), g:POE2GRAPH.fromDraft(d, it.D, {craft:S.craft, grades:['high']}), mag:0, sum:0, n:0, bad:false}); }catch(_){ } }
   say('make'); await nap(30);
-  const roll = (c, N, seed) => { try{ const st=c.g.strategies[0], r=POE2SIM.simulate({...c.g, maxSteps:1e5}, it.D, S.craft, S.prices, st.params, N, seed); if(r.reqOk<0.98){ c.bad=true; return; } c.sum+=(r.useDiv+c.mag)*N; c.n+=N; runs+=N;   /* 비용 기준 = revCost(W2) */ }catch(_){ c.bad=true; } };
+  const roll = (c, N, seed) => { try{ const st=c.g.strategies[0], r=POE2SIM.simulate({...c.g, maxSteps:1e5}, it.D, S.craft, S.prices, st.params, N, seed); if(r.reqOk<0.98 || (c.o.desLoop && Object.keys(r.c1||{}).length)){ c.bad=true; return; }   /* 징표 후보: 제작 옵션 한도(5장 C1) 위반이면 뺌 */ c.sum+=(r.useDiv+c.mag)*N; c.n+=N; runs+=N;   /* 비용 기준 = revCost(W2) */ }catch(_){ c.bad=true; } };
   const mean = c => c.bad || !c.n ? Infinity : c.sum/c.n;
   for(const c of C){ const t=performance.now(); roll(c, 30, 7); c.ms=performance.now()-t; say('sim'); await nap(); }
   // 다듬기: 상위 후보 3개를 번갈아 더 돌림(한 번에 0.4초 안쪽). 1차가 이미 오래 걸린 후보는 한 번만 더
@@ -918,12 +918,16 @@ function makeDraft(it, an, opt){
     // policy 18: up to Hard (no fracture), buy a magic base that already has the core lines of this class/base (priority.json),
     // one prefix + one suffix, the highest-ranked ones on the pasted item (ties: the rarer one)
     /* 사용자 확정 11-13 22:37: 매직 2옵션(접두 1 + 접미 1)까지 맞추는 시작은 '매직 베이스 구입'이 기본(거래소가 직접 굴리기보다 쌈) — 난이도·핵심 옵션 조건을 없앰. 굴림 비용은 참고값(magicDiv) */
-    const buy = (()=>{ if(j5?.B || mqGi>=0) return null;
-      const ub = opt?.buy, pick = sd => rnd.filter(r=>r.m.side===sd && r.how==='n').sort((a,b)=>(ub ? (ub.has(b.m)?1:0)-(ub.has(a.m)?1:0) : 0) || coreRank(a)-coreRank(b) || (a.pAny??1)-(b.pAny??1))[0];   // the user can say which must-haves the bought magic base has
-      const L = ['p','s'].map(pick).filter(Boolean); return L.length ? L : null; })();
-    if(buy){ start.rar='magic'; start.mods = buy.map(r=>({gi:r.m.gi, tmax:Math.max(1,r.tierNo)}));
+    /* 경멸 주얼(j5, 3줄 쪽 B): 예전엔 매직 베이스 구입을 막아 B쪽 귀한 옵션(LilBotQ 에메랄드 이동 속도, 가중치 23)을 진화로 굴려 132배였음(W7) → B쪽 옵션 하나 + 반대쪽 잡옵 매직 베이스 구입 */
+    const buy = (()=>{ if(mqGi>=0) return null;
+      const ub = opt?.buy, pick = sd => rnd.filter(r=>r.m.side===sd && r.how==='n').sort((a,b)=>(ub ? (ub.has(b.m)?1:0)-(ub.has(a.m)?1:0) : 0) || (j5?.B ? (a.pAny??1)-(b.pAny??1) : 0) || coreRank(a)-coreRank(b) || (a.pAny??1)-(b.pAny??1))[0];   /* 경멸 주얼은 한 줄만 사니 가장 귀한 옵션 */   // the user can say which must-haves the bought magic base has
+      /* rareBuy 후보(W7, LilBotQ 에메랄드 등록 레시피): 경멸 주얼은 B쪽 옵션 2개 + 반대쪽 잡옵 2개 희귀 주얼을 삼(매직은 한쪽 옵션 1개까지라 같은 쪽 2개는 희귀로만) */
+      if(j5?.B && opt?.rareBuy){ const c=rnd.filter(r=>r.m.side===j5.B && r.how==='n').sort((a,b)=>(a.pAny??1)-(b.pAny??1)).slice(0,2); if(c.length===2) return c; }
+      const L = (j5?.B ? [j5.B] : ['p','s']).map(pick).filter(Boolean); return L.length ? L : null; })();
+    const rb = !!(buy && j5?.B && opt?.rareBuy && buy.length===2);
+    if(buy){ start.rar = rb ? 'rare' : 'magic'; start.mods = buy.map(r=>({gi:r.m.gi, tmax:Math.max(1,r.tierNo)})); if(j5?.B){ for(let i=0;i<(rb?2:1);i++){ start.mods.push({junk:j5.A}); cnt[j5.A]++; junk[j5.A]++; } }
       buy.forEach(r=>{ cnt[r.m.side]++; made.push({r, id:nodes[0].id}); rnd.splice(rnd.indexOf(r),1); });
-      nodes[0].note = note(`${buy.map(lk).join(' + ')} 매직 베이스 구입.${baseQ?` ${baseQ.kr}.`:''}`, `Buy a magic base with ${buy.map(le).join(' + ')}.${baseQ?` ${baseQ.en}.`:''}`); }
+      nodes[0].note = rb ? note(`${buy.map(lk).join(' + ')} + 잡옵 2개 희귀 베이스 구입.`, `Buy a rare base with ${buy.map(le).join(' + ')} + two junk lines.`) : note(`${buy.map(lk).join(' + ')}${j5?.B?' + 잡옵':''} 매직 베이스 구입.${baseQ?` ${baseQ.kr}.`:''}`, `Buy a magic base with ${buy.map(le).join(' + ')}${j5?.B?' + a junk line':''}.${baseQ?` ${baseQ.en}.`:''}`); }
     const A = buy ? null : takeRare(r=>!X || r.m.side!==X);
     if(buy);
     else if(A) roll('transmute', A);
@@ -933,9 +937,10 @@ function makeDraft(it, an, opt){
     if(buy);
     else if(fs && (!X || fs!==X)){ const B = takeRare(r=>r.m.side===fs); if(B) roll('augment', B); }
     else if(fs && X===fs && !magicEss.length){ push({phase:'magic', do:'augment', cur:'Orb_of_Augmentation', target:{junk:fs}, note:note(`${sideKr(fs)}에 아무 옵션(나중에 에센스가 바꿀 자리).`, `Any ${sideEn(fs)} (the slot an essence replaces later).`)}); cnt[fs]++; junk[fs]++; looseJunk=true; }
-    const sub = buy && !magicEss.length && !essRows.length ? essSub() : null;
+    const sub = buy && !rb && !magicEss.length && !essRows.length ? essSub() : null;
     if(sub){ const {r,e,gi,ti,lvl}=sub; push({phase:'magic', do:'essence', cur:e.id, target:{gi, tmax:ti+1}, note:note(`${e.kr}${josa(e.kr,'으로','로')} 희귀 + ${lk(r)}.`, `${e.en}: rare + ${le(r)}.`)});
       made.push({r, id:nodes[nodes.length-1].id, lvl}); cnt[r.m.side]++; rnd.splice(rnd.indexOf(r),1); subCraft=1; rar='rare'; }
+    else if(rb) rar='rare';
     else if(magicEss.length){ const {r,e}=magicEss.shift(); push({phase:'magic', do:'essence', cur:e.id, target:tm(r), note:note(`${e.kr}${josa(e.kr,'으로','로')} 희귀로 올리며 ${lk(r)} 확정.`, `${e.en} upgrades to rare with ${le(r)}.`)}); made.push({r, id:nodes[nodes.length-1].id}); cnt[r.m.side]++; rar='rare'; }
     else {
       const C = take(r=>cnt[r.m.side] < cap[r.m.side]-resv[r.m.side] && (!X || r.m.side!==X) && (r.how==='n'));
@@ -1012,6 +1017,13 @@ function makeDraft(it, an, opt){
     let want = rnd.filter(r=>r.m.side===sd); const oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
     const wl = it.cat==='jewellery' && qCap>0 ? null : whittleTarget(sd, want);
     const keepR = made.filter(x=>x.r.m.side===sd).map(x=>x.r);
+    /* 경멸 주얼(j5)에서 '+1 허용' 옵션을 지운 뒤: B쪽이 한도를 넘어(3/2) 카오스 오브는 A쪽 옵션만 바꿈(sim over, Diztoh 5옵션 주얼·LilBotQ 에메랄드 등록 레시피) →
+       엑잘 한 번, 빗나가면 징조 없는 카오스 오브를 뜰 때까지(W7: 예전엔 좌측 소멸의 징조 + 소멸 + 엑잘 반복으로 등록 대비 20배) */
+    if(j5?.over && sd===j5.A){ const cc='Chaos_Orb', tK = want.length>1 ? `원하는 옵션 중 하나(${names(want, x=>lkA(x))})` : `${lkA(want[0])} (T${want[0].tierNo} 이상)`, tE = want.length>1 ? `any of ${names(want, x=>leA(x))}` : `${leA(want[0])} (tier ${want[0].tierNo}+)`;
+      const ex = push({phase:'ex', do:'exalt', cur:'Exalted_Orb', target:anyOf(want), br:note(`실패: ${nk(cc)}`, `Miss: ${ne(cc)}`), note:note(`${sideKr(sd)}에 ${tK}.`, `A ${sideEn(sd)}: ${tE}.`)}); cnt[sd]++;
+      push({phase:'ex', do:'chaos', cur:cc, fallbackFor:ex.id, target:{...anyOf(want), replace:sd}, fail:{goto:'self'},
+        note:note(`${sideKr(j5.B)}가 한도를 넘은 상태라 ${nk(cc)}${josa(nk(cc),'은','는')} ${sideKr(sd)}만 바꿈. ${tK}${josa('나','이','가')} 뜰 때까지.`, `The ${sideEn(j5.B)} side is over its limit, so ${ne(cc)} only rerolls the ${sideEn(sd)} side: repeat until ${tE} lands.`)});
+      made.push({r:want[0], id:ex.id}); rnd.splice(rnd.indexOf(want[0]),1); continue; }
     if(wl && !noL(sd) && !(want.length===1 && !keepR.length)){
       // policy 14/17: every line already on this side is at the top level, so a missed exalt is just the filler for Whittling.
       // One exalt at the lines (no retry), then Whittling + Chaos swaps that filler until one lands; the higher-level lines go first, the lowest last
@@ -1136,7 +1148,7 @@ function makeDraft(it, an, opt){
         else rest.forEach(r=>rnd.push(r)); } } }
   const split = firstSd && !augLate.length && !j5?.B;
   exaltPass(split ? firstSd : null);
-  if(split){ if(!opt?.k42) essPass(firstSd); desPass(firstSd); exaltPass(); }   /* k42: 먼저 채운 쪽의 에센스·합금도 미뤄서 반대쪽 엑잘이 빗나간 자리에 씀(MazBro 투사체 장갑 영상 순서) */
+  if(split){ if(!opt?.k42) essPass(firstSd); if(opt?.desLoop!=='mark') desPass(firstSd); exaltPass(); }   /* 징표 반복(W7): 훼손은 반대쪽을 다 채운 뒤 — 반대쪽이 꽉 차야 징표가 지운 쪽에 붙음 */   /* k42: 먼저 채운 쪽의 에센스·합금도 미뤄서 반대쪽 엑잘이 빗나간 자리에 씀(MazBro 투사체 장갑 영상 순서) */
   finishQ();
   // 6. guaranteed lines last: throwaway line + Crystallisation + essence (a second crafted line needs Astrid's Creativity)
   // policy 17, up to Hard: a crafted line goes on early, while its removal can only take junk (or nothing worth keeping)
@@ -1204,7 +1216,7 @@ function makeDraft(it, an, opt){
       note:note(`심연의 메아리의 징조로 공개해 ${lk(r)} (T${r.tierNo} 이상). 안 나오면 빛의 징조 + 소멸의 오브로 지우고 다시.`, `Reveal with Abyssal Echoes for ${le(r)} (tier ${r.tierNo}+); otherwise Light + Annulment and retry.`)}); desNeed[sd]--; } }
   const doJ5 = () => { if(!j5?.done) return; const {A,B}=j5;
     push({phase:'j5', do:'remove', cur:'Orb_of_Annulment', omens:[SIDE_OMEN.annul[A]], target:{dropGi:j5.gi}, note:note(`${nk(SIDE_OMEN.annul[A])} + 소멸의 오브로 "${sideKr(B)} 속성 부여 +1개 허용" 옵션 제거. ${sideKr(A)}엔 그 옵션과 잡옵뿐이라 1/2, 잡옵이 지워지면 한 번 더. ${sideKr(B)} 옵션 3개는 그대로 남음.`, `${ne(SIDE_OMEN.annul[A])} + Orb of Annulment removes the "+1 ${sideEn(B)} allowed" line (1/2: the ${sideEn(A)} side holds only it and a junk line; if the junk goes, once more). The 3 ${sideEn(B)}es stay.`)});
-    cnt[A]--; rnd.push(...j5.held); j5.held=[]; exaltPass(); };
+    cnt[A]--; rnd.push(...j5.held); j5.held=[]; j5.over=true; exaltPass(); };
   // the "+1 allowed" line goes first only when a desecration lands on its side: a bone on a full side replaces a line at random
   // no wanted line takes the maximum quality slot: once the quality is done, annul it while it is the only removable line on its side
   if(mqLive() && !R0){ const ms = it.D.groups[mqGi].g; if(cnt[ms] - frs.filter(x=>x.m.side===ms).length <= 1){ finishQ();
@@ -1269,6 +1281,13 @@ function makeDraft(it, an, opt){
       forks(ex, MS); }
   }
   /* 사용자 2026-11-12(균열 반지): 붙여 넣은 아이템엔 있지만 고르지 않은 옵션(잡옵) 자리가 비어 있으면 마지막에 완벽한 엑잘로 랜덤 옵션을 채움 */
+  /* 훼손 속성 그대로(리버스 13장 사용자 확정 11-13 20:22, W7): 고르지 않은 옵션(잡옵)이라도 붙여 넣은 아이템에서 훼손 옵션이었으면 그 자리는 엑잘 대신 훼손 + 공개(결과 그대로).
+     예전엔 엑잘로 채워 완성품에 훼손 옵션이 없었음(Farmer 갑옷 에센셜: 등록 완성 조건 '접두 훼손 옵션' 0%) */
+  const jd = {p:0, s:0}; it.mods.forEach(m=>{ if(m.unrev || m.fr || m.gi==null) return; const g=it.D.groups[m.gi]; if(!(m.desTag || g?.s==='d')) return; if(rows.some(r=>r.m===m)) return; jd[m.side]++; });
+  if(desRows.length || nodes.some(n=>n.do==='desecrate')) jd.p = jd.s = 0;   /* 훼손은 아이템당 하나(6장) */
+  for(const sd of ['s','p']){ const want = Math.min(cap[sd], an.cnt?.[sd] ?? 0); while(cnt[sd] < want && jd[sd] > 0 && !nodes.some(n=>n.do==='desecrate')){ const oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.necro[sd]] : [];
+      push({phase:'fin', do:'desecrate', cur:bone, ...(om.length?{omens:om}:{}), target:{unrev:sd}, note:note(`${om.length?nk(om[0])+' + ':''}${nk(bone)}${josa(nk(bone),'으로','로')} ${sideKr(sd)}에 훼손 (붙여 넣은 아이템의 훼손 옵션 자리).`, `${om.length?ne(om[0])+' + ':''}${ne(bone)} desecrates a ${sideEn(sd)} (the pasted item's desecrated slot).`)});
+      push({phase:'fin', do:'reveal', target:{side:sd, bone, asIs:true}, label:{kr:'훼손 옵션 공개', en:'Reveal'}, note:note('공개. 결과 그대로(고른 옵션이 아님).', 'Reveal and keep whatever comes (not a picked line).')}); cnt[sd]++; jd[sd]--; } }
   for(const sd of ['s','p']){ const want = Math.min(cap[sd], an.cnt?.[sd] ?? 0); while(cnt[sd] < want){ const oth=other(sd), om = cnt[oth] < cap[oth] ? [SIDE_OMEN.exalt[sd]] : [];
       push({phase:'fin', do:'exalt', cur:'Perfect_Exalted_Orb', junkFill:true, ...(om.length?{omens:om}:{}), target:{junk:sd}, label:{kr:`${sideKr(sd)} 랜덤 옵션`, en:`Random ${sideEn(sd)}`},
         note:note(`${om.length?nk(om[0])+' + ':''}완벽한 엑잘티드 오브로 남은 ${sideKr(sd)} 자리에 랜덤 옵션.`, `${om.length?ne(om[0])+' + ':''}Perfect Exalted Orb fills the free ${sideEn(sd)} with a random line.`)}); cnt[sd]++; } }
@@ -1332,7 +1351,7 @@ function makeDraft(it, an, opt){
     for(let j=i-1;j>0 && nodes[j].phase==='ess';j--) if(nodes[j].do==='exalt' && nodes[j].target?.junk){ nodes[j].target = {...nodes[j].target, skipHas:x.r.m.gi}; break; } }
   /* 같은 옵션 두 줄(일반 + 훼손, 2026-11-13 W1): 플로우차트 완성 조건이 그 수만큼 요구하도록 graphify에 넘김 */
   const dupGi = {}; an.rows.forEach(r=>{ if(!r.unrev && r.m.gi!=null) dupGi[r.m.gi]=(dupGi[r.m.gi]||0)+1; }); Object.keys(dupGi).forEach(k=>{ if(dupGi[k]<2) delete dupGi[k]; });
-  return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(Object.keys(dupGi).length?{dupGi}:{}), ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff2, ...(tier?{priceTier:tier.id}:{}), ...(market>0?{marketPrice:market}:{}), ...(nComp?{compromises:nComp}:{}),
+  return { id:'draft-'+Date.now().toString(36), madeAt:Date.now(), draft:true, cls:it.cls, base:it.bi, ilvl:it.ilvl, sockets, ...(opt?.desLoop?{desLoop:opt.desLoop}:{}), ...(opt?.noFlux?{noFlux:1}:{}), ...(Object.keys(dupGi).length?{dupGi}:{}), ...(cap.serle?{cap:{p:cap.p, s:cap.s}}: it.cat==='jewel'?{cap:{p:2, s:2}}:{}), ...(exc && sockets>baseSock?{exceptional:{sockets:sockets-baseSock}}:{}), patch:'0.5.5', created:ymd, difficulty:diff2, ...(tier?{priceTier:tier.id}:{}), ...(market>0?{marketPrice:market}:{}), ...(nComp?{compromises:nComp}:{}),
     author:{kr:'아이템 역산 초안', en:'Reverse-engineered draft'}, title:{kr:featK.join(' + ')||'역산 초안', en:featE.join(' + ')||'Draft'},
     buildTags:[], start, phases, nodes, ...(fracPrep?{fracPrep}:{}), ...(prep?{prep}:{}), src:{text:S.txt||''} };
 }
@@ -1421,7 +1440,7 @@ function verifyDraft(it, an, d){
       if(!ok) add('err','이 아이템 종류에 맞지 않는 뼈','Wrong bone for this item class.',st);
       if(om.some(o=>/Blackblooded|Liege|Sovereign/.test(o)) && !(isJew || ['weapon','weapon2'].includes(it.cat))) add('err','검은 피의 징조·군왕의 징조·군주의 징조는 무기·장신구 훼손에만 적용','Lord omens only work on weapons and jewellery.',st);
       mods.push({junk:true, unrev:true, side:sd}); return; }
-    if(n.do==='reveal'){ const k=mods.findIndex(m=>m.unrev && m.side===t.side); if(k<0){ add('err','공개할 훼손 옵션이 없음','No unrevealed modifier to reveal.',st); return; } mods.splice(k,1); addLine(t.reveal, L('공개','Reveal')); return; }
+    if(n.do==='reveal'){ const k=mods.findIndex(m=>m.unrev && m.side===t.side); if(k<0){ add('err','공개할 훼손 옵션이 없음','No unrevealed modifier to reveal.',st); return; } mods.splice(k,1); if(t.asIs && !t.reveal){ mods.push({junk:true, side:t.side, des:true}); return; } addLine(t.reveal, L('공개','Reveal')); return; }
     if(n.do==='quality'){ const cat=S.craft.cats.find(c=>c.id===n.cur);
       if(cat){ if(!isJew && !isJewel) add('err','기폭제는 장신구·주얼 전용','Catalysts only work on jewellery and jewels.',st);
         const iq = impMaxQ(it.b), hasB = mods.some(m=>m.gi!=null && grp(m.gi).f.includes('LocalMaximumQuality')), cap2 = 20 + iq + (hasB ? 20 : 0);
