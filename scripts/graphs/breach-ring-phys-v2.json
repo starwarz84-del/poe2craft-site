@@ -293,7 +293,7 @@
    "worst": {
     "kr": "모든 원소 저항이 지워지면 새 베이스",
     "en": "All resistances gone: a new base",
-    "to": "h1"
+    "to": "xw1"
    },
    "item": [
     {
@@ -362,7 +362,7 @@
    "worst": {
     "kr": "모든 원소 저항·화염 저항이 지워지면 새 베이스",
     "en": "Resistances gone: a new base",
-    "to": "h1"
+    "to": "xw2"
    },
    "item": [
     {
@@ -929,7 +929,7 @@
     },
     {
      "to": "b7",
-     "res": "fail"
+     "res": "ok"
     }
    ],
    "item": [
@@ -1010,13 +1010,42 @@
      "if": {
       "removed": "allres"
      },
-     "to": "h1",
+     "to": "xw1",
      "res": "fail",
      "lost": "allres"
     },
     {
      "to": "b5",
      "res": "ok"
+    }
+   ]
+  },
+  {
+   "id": "xw1",
+   "kind": "exit",
+   "group": "main",
+   "pos": [
+    1,
+    4
+   ],
+   "simTo": "h1",
+   "variant": "fail",
+   "label": {
+    "kr": "모든 원소 저항이 지워짐 — 새 베이스",
+    "en": "All resistances removed — new base"
+   },
+   "note": {
+    "kr": "새 베이스로 처음부터",
+    "en": "Start over on a new base"
+   },
+   "over": [
+    {
+     "param": {
+      "v": 2
+     },
+     "set": {
+      "kind": "mark"
+     }
     }
    ]
   },
@@ -1111,10 +1140,9 @@
      "if": {
       "removed": "allres"
      },
-     "to": "h1",
+     "to": "xw2",
      "res": "fail",
-     "lost": "allres",
-     "hide": true
+     "lost": "allres"
     },
     {
      "if": {
@@ -1129,7 +1157,7 @@
        }
       ]
      },
-     "to": "h1",
+     "to": "xw2",
      "res": "fail",
      "lost": "fres",
      "hide": true
@@ -1225,7 +1253,7 @@
      "if": {
       "removed": "allres"
      },
-     "to": "h1",
+     "to": "xw2",
      "res": "fail",
      "lost": "allres",
      "hide": true
@@ -1243,7 +1271,7 @@
        }
       ]
      },
-     "to": "h1",
+     "to": "xw2",
      "res": "fail",
      "lost": "fres",
      "hide": true
@@ -1379,7 +1407,11 @@
       "has": "ele"
      },
      "to": "d1",
-     "res": "ok"
+     "res": "ok",
+     "label": {
+      "kr": "원소 피해가 남음",
+      "en": "Elemental line kept"
+     }
     },
     {
      "if": {
@@ -1388,11 +1420,15 @@
       }
      },
      "to": "e1",
-     "res": "fail"
+     "res": "ok",
+     "label": {
+      "kr": "원소 피해가 지워짐",
+      "en": "Elemental line removed"
+     }
     },
     {
      "to": "d1",
-     "res": "fail"
+     "res": "ok"
     }
    ],
    "item": [
@@ -1679,7 +1715,7 @@
     },
     {
      "to": "ok",
-     "res": "fail"
+     "res": "ok"
     }
    ],
    "item": [
@@ -1779,13 +1815,40 @@
       "has": "ele"
      },
      "to": "d1",
-     "res": "ok"
+     "res": "ok",
+     "label": {
+      "kr": "훼손 옵션만 지워짐 — 다시 훼손",
+      "en": "Only the desecrated line removed: desecrate again"
+     }
     },
     {
      "to": "e1",
-     "res": "fail"
+     "res": "fail",
+     "label": {
+      "kr": "남은 원소 피해가 지워짐",
+      "en": "The kept elemental line removed"
+     }
     }
    ]
+  },
+  {
+   "id": "xw2",
+   "kind": "exit",
+   "group": "main",
+   "pos": [
+    1,
+    7
+   ],
+   "simTo": "h1",
+   "variant": "fail",
+   "label": {
+    "kr": "저항이 지워짐 — 새 베이스",
+    "en": "Resistance removed — new base"
+   },
+   "note": {
+    "kr": "새 베이스로 처음부터",
+    "en": "Start over on a new base"
+   }
   },
   {
    "id": "ok",
