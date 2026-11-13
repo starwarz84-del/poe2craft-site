@@ -30,7 +30,7 @@ g = {
  'id': 'diztoh-as-spear-v2', 'recipe': 'diztoh-as-spear-v2', 'cls': 'Spears', 'base': 'Akoyan Spear', 'ilvl': 82,
  'xsub': ["Thrud's Might"], 'astrid': True,
  'note': ('2026-11-13 G3 영상 전체 화면 대조(근거 scratchpad review/G3/diztoh-as-spear-v2/timeline.md). 성공 회차 한 줄(영상은 창 하나): '
-          '투사체 +4 분열 + 처치당 생명력 아코얀 창(아이템 레벨 82, 아스트리드의 창의성 장착, 0:02) → 카오스 오브 반복 → 공격 속도 3티어 20%(0:16 툴팁, 1:28) → '
+          '투사체 +4 분열 + 처치당 생명력 아코야의 창(아이템 레벨 82, 아스트리드의 창의성 장착, 0:02) → 카오스 오브 반복 → 공격 속도 3티어 20%(0:16 툴팁, 1:28) → '
           '좌측 찬미 + 상위 엑잘로 접두 잡옵(1:34~1:36) → 좌측 결정화 + 군주의 합금, 접두 잡옵이 지워지고 장착 증강 효과 28%(2:16~2:22) → 상위 엑잘(징조 없음) 접두 잡옵(2:46) → '
           '좌측 결정화 + 천상의 합금, 정확도 + 공격 속도(2:36·2:54) → 아스트리드를 스루드의 완력으로 교체(3:12~3:20) → 고대 턱뼈 접두 훼손(3:30) → 상위 엑잘 세번째 접두(물리 피해 추가 5티어, 3:52) → '
           '심연의 메아리 공개, 다시 뽑기로 명시된 속도 옵션 효과 29%(4:06~4:12). 신성한 오브(5:26~5:40), 절사 + 좌측 말소 + 상위 카오스로 세번째 접두 다시(5:52~6:17, 번개 6티어로 나빠짐 — 마지막 옵션 도박이라 뺌, 꿀팁 후보), 바알·타락(6:20~9:18)은 뺌. '
@@ -58,7 +58,7 @@ A = lambda **kw: N.append(kw)
 # ---------------- 베이스템 완성 ----------------
 A(id='h1', kind='base', group='prep', pos=[0, 0], next='ms',
   start={'rar': 'rare', 'mods': [{'tag': 'proj', 'fr': True}, {'junk': 's'}], 'runes': [K('아스트리드의 창의성', 'Astrid’s Creativity')]},
-  label=K('투사체 스킬 +4 분열 아코얀 창 구입 (아이템 레벨 82, 아스트리드의 창의성 장착)', 'Buy an Akoyan Spear with fractured +4 projectile skills (item level 82, Astrid’s Creativity socketed)'),
+  label=K('투사체 스킬 +4 분열 아코야의 창 구입 (아이템 레벨 82, 아스트리드의 창의성 장착)', 'Buy an Akoyan Spear with fractured +4 projectile skills (item level 82, Astrid’s Creativity socketed)'),
   item=[PJ, LPK, AST])
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 1.4], next='c1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[PJ, LPK, AST])

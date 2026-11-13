@@ -22,7 +22,7 @@ for _t in ('bal','ess'): _grade('diztoh-budget-crossbow','diztoh-budget-crossbow
 # 3. Diztoh 한손 둔기 — bought magic crit base (정책 18), no Sinistral Erasure loop (about 470 div in the sim); Balance keeps the Whittling fix
 def _mace1(r, t):
     r['start']={'rar':'magic','quality':20,'mods':[{'gi':om_crit,'tmax':2 if t=='bal' else 3}]}
-    _node(r,'m1')['note']=K('노멀 특출난 약탈의 철퇴 구입(영상 3 div, 퀄리티 26%).','Buy a normal exceptional Marauding Mace (3 div in the video, 26% quality).')   # G3 2026-11-13: 새 플로우차트는 노멀부터
+    _node(r,'m1')['note']=K('노멀 특출난 약탈하는 철퇴 구입(영상 3 div, 퀄리티 26%).','Buy a normal exceptional Marauding Mace (3 div in the video, 26% quality).')   # G3 2026-11-13: 새 플로우차트는 노멀부터
     m7=_node(r,'m7'); m7['target']={'anyOf':OM_PHYS,'asIs':True,'side':'p'}; m7['br']=K('안 나와도 그대로, 좌측 말소의 징조 반복은 뺌','A miss stays (the Sinistral Erasure loop is left out)')
     _drop(r,'m2','m7b','m12','m13','m14')   # m14 타락은 정책 14장대로 뺌(G3 2026-11-13)
     if t=='ess':

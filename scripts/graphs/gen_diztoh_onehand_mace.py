@@ -32,7 +32,7 @@ g = {
  'id': 'diztoh-onehand-mace-v2', 'recipe': 'diztoh-onehand-mace-v2', 'cls': 'One_Hand_Maces', 'base': 'Marauding Mace', 'ilvl': 82,
  'basePrice': {'Divine_Orb': 3},
  'note': ('2026-11-13 G3 영상 전체 화면 대조(근거 scratchpad review/G3/diztoh-onehand-mace-v2/timeline.md). 성공 회차 한 줄: '
-          '노멀 특출난 약탈의 철퇴 구입(3 div, 아이템 레벨 82, 퀄리티 26%) → 완벽한 진화·확장 + 소멸 반복(0:13~1:43) → 치명타 확률 1티어(1:43) + 접두 잡옵(1:52) → '
+          '노멀 특출난 약탈하는 철퇴 구입(3 div, 아이템 레벨 82, 퀄리티 26%) → 완벽한 진화·확장 + 소멸 반복(0:13~1:43) → 치명타 확률 1티어(1:43) + 접두 잡옵(1:52) → '
           '상위 가속의 에센스로 레어 + 공격 속도(2:08) → 아스트리드의 창의성(2:35) → 좌측 결정화 + 완벽한 전투의 에센스로 접두 지우고 공격 스킬 +2(2:45~3:10) → '
           '상위 엑잘 빗나감(3:17 화염 낮은 티어) → 좌측 말소 + 상위 카오스 반복 → 물리 피해 증가와 정확도 2티어(3:42~3:51) → 검은 피의 징조 + 보존된 턱뼈(4:26~4:30) → '
           '상위 엑잘(4:41 번개 낮은 티어) → 공개, 쿠르갈 물리 피해 113%(4:50) → 절사의 징조 + 상위 카오스 2번 → 화염 피해 추가 1티어(5:00~5:09). '
@@ -71,7 +71,7 @@ A = lambda **kw: N.append(kw)
 WS = {'whittleSafe': {'tag': 'keepW', 'keepDes': True}}
 # ---------------- 베이스템 완성 ----------------
 A(id='h1', kind='base', group='prep', pos=[0, 0], next='h2', start={'rar': 'normal', 'mods': [], 'quality': 26},
-  label=K('노멀 특출난 약탈의 철퇴 구입 (아이템 레벨 82, 퀄리티 26%)', 'Buy a normal exceptional Marauding Mace (item level 82, quality 26%)'), item=[])
+  label=K('노멀 특출난 약탈하는 철퇴 구입 (아이템 레벨 82, 퀄리티 26%)', 'Buy a normal exceptional Marauding Mace (item level 82, quality 26%)'), item=[])
 A(id='h2', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation',
   label=K('매직 첫번째 옵션', 'First magic option'), goal=K('접미 치명타 확률 1티어', 'T1 crit chance suffix'), show=['crit'],
   edges=[{'if': {'has': 'crit'}, 'to': 'h3', 'res': 'ok', 'label': K('성공', 'hit')},
