@@ -120,7 +120,7 @@ graph('lilbotq-armour-shield-v2','Shields_str','Tawhoan Tower Shield',81,
 P={'bal':{'sT':4,'fT':2,'eT':2,'g':1},'ess':{'sT':4,'fT':4,'eT':4,'g':0}}
 # 밸런스 원소 저항 '2~3티어' = 아이템 레벨 81이라 1티어(레벨 82)가 붙지 않아, 붙을 수 있는 위 두 티어를 C17의 1~2티어로 봄(마스터 확정 2026-11-12, 영상 결과 냉기 3티어)
 tags={'spirit':{'gi':14,'tmax':'$sT'},'esf':{'gi':6,'tmax':'$fT'},'esp':{'gi':7,'tmax':'$eT'},'res':{'gi':21},'seek':{'gi':43},'mark':{'gi':45},
-      'fire':{'gi':1,'tmax':3},'cold':{'gi':2,'tmax':3},'light':{'gi':3,'tmax':3},'anyres':{'anyOf':['fire','cold','light'],'label':K('원소 저항 2~3티어','Elemental resistance T2–3')},'keepR':{'anyOf':['spirit','esf','esp','res']}}
+      'fire':{'gi':1,'tmax':3},'cold':{'gi':2,'tmax':3},'light':{'gi':3,'tmax':3},'anyres':{'anyOf':['fire','cold','light'], 'shown': 'cold','label':K('원소 저항 2~3티어','Elemental resistance T2–3')},'keepR':{'anyOf':['spirit','esf','esp','res']}}
 SP=it('p','정신력 (분열)','Spirit (fractured)',['spirit'],'f'); EF=it('p','에너지 보호막 최대치','Flat energy shield',['esf']); EP=it('p','에너지 보호막 % 증가','% energy shield',['esp'])
 RE=it('s','스킬의 정신력 점유 효율 (아마나무)','Spirit reservation efficiency (Amanamu)',['res'],'d'); AR=it('s','원소 저항','Elemental resistance',['anyres'])
 IP=[SP,J('p'),J('p')]; I0=[SP,J('p')]; I1=[SP,EF]; I2=I1+[EP]; I3=I2+[UN('s')]; I4=I2+[RE]; I5=I4+[J('s'),J('s')]; I6=I4+[AR]; I8=I6+[J('s')]

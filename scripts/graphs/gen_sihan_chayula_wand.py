@@ -48,7 +48,7 @@ g = {
   'chaos': {'gi': 8, 'tmax': 1}, 'scrit': {'gi': 20, 'tmax': '$cT'}, 'scrit2': {'gi': 20, 'tmax': 2}, 'scrit4': {'gi': 20, 'tmax': 4},
   'int': {'gi': 0, 'tmax': 2}, 'cdmg': {'gi': 21, 'tmax': 2}, 'mreg': {'gi': 16, 'tmax': 2},
   # 새 정책 A(11-13 14:17): 영상 1:00·2:20 '지능·치명타 피해·마나 재생 중 마음에 드는 것' — 성공 조건은 셋 중 하나, 상자·칸·카드는 성공 회차 지능(5:26)
-  'suf2': {'anyOf': ['int', 'cdmg', 'mreg'], 'label': K('지능·주문 치명타 피해 보너스·마나 재생 속도 1~2티어', 'T1–2 intelligence, spell critical damage bonus or mana regeneration rate')},
+  'suf2': {'anyOf': ['int', 'cdmg', 'mreg'], 'shown': 'int', 'label': K('지능·주문 치명타 피해 보너스·마나 재생 속도 1~2티어', 'T1–2 intelligence, spell critical damage bonus or mana regeneration rate')},
   'sp3': {'gi': 50}, 'cel': {'gi': 59}, 'ula': {'gi': 43},
  },
  'require': {'all': [{'has': 'chaos'}, {'has': 'scrit'}, {'has': 'sp3'}, {'has': 'cel'}, {'has': 'ula'}, {'any': [{'not': V1}, {'has': 'suf2'}]}]},
@@ -59,7 +59,7 @@ g = {
  'finals': [
   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
    'lines': [{'tag': 'chaos', 'fr': True}, {'tag': 'cel', 'ess': True}, {'tag': 'ula', 'des': True},
-             {'tag': 'scrit2'}, {'tag': 'int'}, {'tag': 'sp3', 'ess': True}]},
+             {'tag': 'scrit2'}, {'tag': 'suf2'}, {'tag': 'sp3', 'ess': True}]},
   {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
    'lines': [{'tag': 'chaos', 'fr': True}, {'tag': 'cel', 'ess': True}, {'tag': 'ula', 'des': True},
              {'tag': 'scrit4'}, {'side': 's', 'random': True}, {'tag': 'sp3', 'ess': True}]}],
@@ -90,7 +90,7 @@ A(id='w2', kind='act', group='main', pos=[0, 2.4], act='chaos', cur='Chaos_Orb',
   edges=[{'if': {'has': 'scrit'}, 'to': 'w3', 'res': 'ok'}, {'to': 'w2', 'res': 'fail', 'hide': True}], item=[CH, SC])
 # 3:20 우측 찬미 + 3:36 완벽한 엑잘(처치 시 마나 = 빗나감) → 3:37 소멸 → … 5:01 우측 찬미 + 완벽한 엑잘 → 5:26 지능 +28
 A(id='w3', kind='act', group='main', pos=[0, 3.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'],
-  label=K('엑잘', 'Exalt'), goal=K('접미 두 번째 옵션 — 지능', 'Second suffix: intelligence'), show=['int'],
+  label=K('엑잘', 'Exalt'), goal=K('접미 두 번째 옵션 — 지능', 'Second suffix: intelligence'), show=['suf2'],
   over=[{'param': {'v': 2}, 'set': {'goal': K('접미 두 번째 옵션', 'Second suffix'), 'show': [], 'showText': [{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}]}}],
   edges=[{'if': {'param': {'v': 2}}, 'to': 'w4', 'res': 'ok', 'hide': True}, {'if': {'has': 'suf2'}, 'to': 'w4', 'res': 'ok'},
          {'to': 'w3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],

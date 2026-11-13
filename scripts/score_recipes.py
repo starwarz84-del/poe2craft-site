@@ -18,6 +18,8 @@
   G 과정 10        skipcheck 문제 하나마다 -5
   H 정책 준수 10   제작 옵션 한도 위반(tools/sim/c1check.json) 단계 하나마다 -5
   I 비용 효율 5    리버스 초안(tools/test/revscore.json)이 같은 완성품을 20% 넘게 싸게 만들면 0
+영상 없는 운영자 레시피(사용자 확정 2026-11-13: author '사용자 제작 방식'처럼 근거 주소가 원래 없는 레시피)는 F를 빼고
+나머지 90점 만점을 100점으로 환산(합계 × 100 ÷ 90) — 근거 주소가 없어서 깎이지 않게
 """
 import json, os, re
 
@@ -99,8 +101,11 @@ for r in R:
         if same: why.append('E 다른 등급과 비용이 같음')
     else:
         pts['E'] = 5
-    pts['F'] = 10 if (r.get('source') or {}).get('url') else 0
-    if not pts['F']: why.append('F 근거 주소 없음')
+    oper = not (r.get('source') or {}).get('url') and ((r.get('author') or {}).get('kr') or '').startswith('사용자')   # 영상 없는 운영자 레시피
+    if oper: why.append('F 영상 없는 운영자 레시피(F 빼고 환산)')
+    else:
+        pts['F'] = 10 if (r.get('source') or {}).get('url') else 0
+        if not pts['F']: why.append('F 근거 주소 없음')
     nsk = len(re.findall(rf'^{re.escape(r["id"])}\b', SKIP, re.M))
     pts['G'] = max(0, 10 - 5 * nsk)
     if nsk: why.append(f'G skipcheck {nsk}건')
@@ -116,7 +121,7 @@ for r in R:
     cheaper = not loose and rv.get('k') is not None and rv['k'] < 0.8 and not (rv.get('pts') or {}).get('sim', 20) < 20 and (rv.get('pts') or {}).get('ver')
     pts['I'] = 0 if cheaper else 5
     if cheaper: why.append(f'I 리버스 초안이 더 쌈({rv["div"]:.0f} vs {rv["orig"]:.0f} div)')
-    rows.append({'id': r['id'], 'tier': r.get('tier'), 'score': sum(pts.values()), 'why': why,
+    rows.append({'id': r['id'], 'tier': r.get('tier'), 'score': round(sum(pts.values()) * 100 / 90) if oper else sum(pts.values()), 'why': why,
                  'cost': em, 'sim': res and res['main'], 'title': (r.get('title') or {}).get('kr', '')})
 
 rows.sort(key=lambda x: (x['score'], x['id']))
@@ -130,6 +135,7 @@ for x in rows:
 cnt = {}
 for x in rows:
     for w in x['why']:
+        if '환산' in w: continue   # 감점이 아님
         cnt[w[0]] = cnt.get(w[0], 0) + 1
 out += ['', '감점 종류별 레시피 수와 먼저 해 볼 해결책:', '']
 out += [f'- **{k}** {v}개 — {FIX[k]}' for k, v in sorted(cnt.items(), key=lambda z: -z[1])]

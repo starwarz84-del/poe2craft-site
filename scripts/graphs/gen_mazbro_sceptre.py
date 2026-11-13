@@ -39,8 +39,8 @@ g = {
  'tags': {'dmg': {'gi': 10, 'tmax': 1}, 'mana': {'gi': 3, 'tmax': 1}, 'sp': {'gi': 19, 'tmax': 1},
           'hyb': {'gi': 20, 'tmax': 1}, 'regen': {'gi': 13, 'tmax': 1}, 'cs': {'gi': 15, 'tmax': 1}, 'aoe': {'gi': 21, 'tmax': 1},
           'cr': {'gi': 16, 'tmax': 1}, 'cd': {'gi': 17, 'tmax': 1}, 'aug': {'gi': 34}, 'mkS': {'gi': 28},
-          'spi': {'anyOf': ['sp', 'hyb'], 'label': K('정신력 증가·정신력과 마나 최대치 1티어', 'T1 increased Spirit or Spirit and Mana')},
-          'sg': {'anyOf': ['regen', 'cs', 'aoe', 'cr', 'cd'], 'label': K('마나 재생 속도·시전 속도·존재 범위·치명타 확률·치명타 피해 1티어', 'T1 mana regeneration, cast speed, presence area, critical chance or critical damage')},
+          'spi': {'anyOf': ['sp', 'hyb'], 'shown': 'sp', 'label': K('정신력 증가·정신력과 마나 최대치 1티어', 'T1 increased Spirit or Spirit and Mana')},
+          'sg': {'anyOf': ['regen', 'cs', 'aoe', 'cr', 'cd'], 'shown': ['regen', 'cs'], 'label': K('마나 재생 속도·시전 속도·존재 범위·치명타 확률·치명타 피해 1티어', 'T1 mana regeneration, cast speed, presence area, critical chance or critical damage')},
           'keepS': {'anyOf': ['regen', 'cs', 'aoe', 'cr', 'cd', 'aug']}},   # 사용자 결정 11-13: 영상 계획대로 넓게, 먼저 뜬 것
  'require': {'all': [{'has': 'dmg'}, {'has': 'mana'}, {'has': 'spi'}, {'has': 'aug'}, {'count': {'tag': 'sg', 'min': 2}}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},

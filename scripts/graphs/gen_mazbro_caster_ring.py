@@ -54,7 +54,7 @@ g = {
  'tags': {
   'cast': {'gi': 34, 'tmax': 1}, 'maxq': {'gi': 71}, 'mk': {'gi': 69},
   'regen': {'gi': 21, 'tmax': 1}, 'rarS': {'gi': 27, 'tmax': 1}, 'res': {'gi': 7, 'tmax': 1},
-  'good': {'anyOf': ['regen', 'rarS', 'res'], 'label': GOOD},
+  'good': {'anyOf': ['regen', 'rarS', 'res'], 'shown': 'regen', 'label': GOOD},
   'pmana': {'gi': 67}, 'rarP': {'gi': 28, 'tmax': '$gT'}, 'mana': {'gi': 10, 'tmax': '$gT'},
  },
  'require': {'all': [{'has': 'cast'}, {'has': 'good'}, {'has': 'pmana'}, {'full': 'p'}, {'full': 's'}]},

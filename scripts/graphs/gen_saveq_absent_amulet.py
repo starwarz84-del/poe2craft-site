@@ -41,7 +41,7 @@ g = {
               {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'spT': 2}, 'tier': 'bal',
                'desc': K('정신력 1~2티어까지 빛의 징조로 다시 (영상은 1티어)', 'Spirit T1–2 with Omen of Light retries (the video went for T1)')}],
  'tags': {'crit': {'gi': 25, 'tmax': 1}, 'melee': {'gi': 19, 'tmax': 1}, 'proj': {'gi': 20, 'tmax': 1},
-          'SK': {'anyOf': ['melee', 'proj'], 'label': SKL},
+          'SK': {'anyOf': ['melee', 'proj'], 'shown': 'melee', 'label': SKL},
           'maxQ': {'gi': 81}, 'def': {'gi': 74}, 'spirit': {'gi': 28, 'tmax': '$spT'}, 'spirit2': {'gi': 28, 'tmax': 2}},
  'require': {'all': [{'has': 'crit'}, {'has': 'SK'}, {'has': 'def'}, {'any': [{'has': 'spirit'}, {'param': {'spT': 4}}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},

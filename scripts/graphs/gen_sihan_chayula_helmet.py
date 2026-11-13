@@ -46,7 +46,7 @@ g = {
   'hyb': {'gi': 10, 'tmax': 2}, 'flat': {'gi': 8, 'tmax': 2}, 'life': {'gi': 6, 'tmax': 2}, 'mana': {'gi': 7, 'tmax': 2},
   # 새 정책 A(11-13 14:17): 접두 엑잘은 영상이 마나 최대치도 받음(7:38 "그냥 갈게요", 1:30 '마음에 안 들면 지우고 다시') — 성공 조건은 셋 중 하나, 상자·칸·카드는 성공 회차 회피 및 ES % + 생명력(9:26).
   # 회피·ES 최대치(gi 8)는 마지막 훼손 공개 목표라 빼고, 공개 빗나감(8:32 회피 및 ES % + 마나)은 영상이 빗나감으로 봐서 뺌
-  'pre2': {'anyOf': ['hyb', 'life', 'mana'], 'label': K('회피 및 에너지 보호막 % + 생명력·생명력 최대치·마나 최대치 1~2티어', 'T1–2 evasion/ES % + life, maximum life or maximum mana')},
+  'pre2': {'anyOf': ['hyb', 'life', 'mana'], 'shown': 'hyb', 'label': K('회피 및 에너지 보호막 % + 생명력·생명력 최대치·마나 최대치 1~2티어', 'T1–2 evasion/ES % + life, maximum life or maximum mana')},
  },
  'require': {'all': [{'has': 'pct'}, {'has': 'defl'}, {'full': 'p'}, {'full': 's'}, {'any': [V2, {'all': [{'has': 'pre2'}, {'has': 'flat'}]}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
@@ -55,7 +55,7 @@ g = {
  'finalItem': {'quality': 0, 'sockets': 1},
  'finals': [
   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-   'lines': [{'tag': 'pct', 'fr': True}, {'tag': 'hyb'}, {'tag': 'flat', 'des': True},
+   'lines': [{'tag': 'pct', 'fr': True}, {'tag': 'pre2'}, {'tag': 'flat', 'des': True},
              {'tag': 'defl2'}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]},
   {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
    'lines': [{'tag': 'pct', 'fr': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
@@ -94,7 +94,7 @@ A(id='h7', kind='act', group='main', pos=[0, 3.4], act='exalt', cur='Perfect_Exa
   showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}], edges=[{'to': 'h4'}], item=[PC, DF, RS, RS])
 # 7:32 완벽한 엑잘(접두, 마나 최대치 빗나감) → 9:00 소멸의 오브(마나 지워짐) → 9:26 완벽한 엑잘 = 회피 및 에너지 보호막 % + 생명력 1티어
 A(id='h4', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두 번째 옵션 — 회피 및 에너지 보호막 % + 생명력', 'Second prefix: evasion/ES % + life'), show=['hyb'],
+  goal=K('접두 두 번째 옵션 — 회피 및 에너지 보호막 % + 생명력', 'Second prefix: evasion/ES % + life'), show=['pre2'],
   over=[{'param': {'v': 2}, 'set': {'goal': K('접두 두 번째 옵션', 'Second prefix'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}]}}],
   edges=[{'if': V2, 'to': 'h5', 'res': 'ok', 'hide': True}, {'if': {'has': 'pre2'}, 'to': 'h5', 'res': 'ok'},
          {'to': 'h4x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],

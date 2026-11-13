@@ -44,7 +44,7 @@ g = {
  'tags': {
   'pois': {'gi': 88, 'tmax': 1}, 'curse': {'gi': 99, 'tmax': 1}, 'fast': {'gi': 90, 'tmax': 2},
   'rward': {'gi': 73}, 'pen': {'gi': 71},
-  'craft': {'anyOf': ['rward', 'pen'], 'label': K('룬 수호 증가·원소 저항 관통 중 남은 제작 옵션', 'Whichever crafted line stays: runic ward or elemental penetration')},
+  'craft': {'anyOf': ['rward', 'pen'], 'shown': 'rward', 'label': K('룬 수호 증가·원소 저항 관통 중 남은 제작 옵션', 'Whichever crafted line stays: runic ward or elemental penetration')},
   'pkeep': {'anyOf': ['pois', 'rward', 'pen']},
  },
  'require': {'all': [{'has': 'pois'}, {'has': 'curse'}, {'has': 'craft'}, {'full': 'p'}, {'full': 's'}, {'any': [V2, {'has': 'fast'}]}]},
@@ -55,10 +55,10 @@ g = {
  # 새 정책 A(11-13 14:17): 카드는 성공 회차(9:20)에 남은 룬 수호 — 갈비뼈가 원소 저항 관통 대신 룬 수호를 지우는 경우는 꿀팁
  'finals': [
   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-   'lines': [{'tag': 'pois', 'fr': True}, {'tag': 'fast', 'des': True}, {'tag': 'rward', 'ess': True, 'des': False},
+   'lines': [{'tag': 'pois', 'fr': True}, {'tag': 'fast', 'des': True}, {'tag': 'craft', 'ess': True, 'des': False},
              {'tag': 'curse'}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]},
   {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
-   'lines': [{'tag': 'pois', 'fr': True}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'rward', 'ess': True, 'des': False},
+   'lines': [{'tag': 'pois', 'fr': True}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'craft', 'ess': True, 'des': False},
              {'tag': 'curse'}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]}],
 }
 

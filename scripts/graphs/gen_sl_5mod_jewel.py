@@ -42,7 +42,7 @@ g = {
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
     'desc': K('공개가 빗나가면 빛의 징조로 다시', 'Omen of Light on a missed reveal')}],
  'tags': {'ail': {'gi': 24}, 'p29': {'gi': 29}, 'p1': {'gi': 1}, 'p49': {'gi': 49}, 'p4': {'gi': 4},
-          'pre': {'anyOf': PRE, 'label': PRE_LABEL}, 'preD': {'anyOf': PRE, 'label': PRE_LABEL},   # preD = 공개로 얻는 세 번째 접두(카드 훼손 색을 그 줄에만)
+          'pre': {'anyOf': PRE, 'shown': ['p1', 'p4'], 'label': PRE_LABEL}, 'preD': {'anyOf': PRE, 'shown': 'p49', 'label': PRE_LABEL},   # preD = 공개로 얻는 세 번째 접두(카드 훼손 색을 그 줄에만)
           'contP': {'gi': 104, 'slot': {'p': 1}}, 'contS': {'gi': 103, 'slot': {'s': 1}}, 'fer': {'gi': 102}},
  'require': {'all': [{'has': 'ail'}, {'count': {'tag': 'pre', 'min': 2}}, {'has': 'fer'}, {'not': {'has': 'contP'}}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},

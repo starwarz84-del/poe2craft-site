@@ -40,10 +40,10 @@ g = {
     'desc': K('영상: 접두 투사체 속도까지 카오스, 우울이 지우면 다시', 'Video: Chaos until projectile speed, again if Melancholy takes it')}],
  'tags': {'cc': {'gi': 8}, 'contS': {'gi': 101, 'slot': {'s': 1}}, 'contP': {'gi': 102, 'slot': {'p': 1}}, 'rad': {'gi': 99},
           's3': {'gi': 3}, 's9': {'gi': 9}, 's11': {'gi': 11}, 's64': {'gi': 64}, 's65': {'gi': 65},
-          'suf': {'anyOf': ['s65', 's9'], 'label': K('창 치명타 피해 보너스·공격 치명타 피해 보너스', 'Critical Damage Bonus with Spears or for Attack Damage')},
-          'rev': {'anyOf': ['s11', 's9', 's64', 's3'], 'label': K('공격 속도·공격 치명타 피해 보너스·창 공격 속도·주요 패시브 스킬 효과', 'Attack Speed, Critical Damage Bonus for Attack Damage, Attack Speed with Spears or Notable Passive effect')},
+          'suf': {'anyOf': ['s65', 's9'], 'shown': 's65', 'label': K('창 치명타 피해 보너스·공격 치명타 피해 보너스', 'Critical Damage Bonus with Spears or for Attack Damage')},
+          'rev': {'anyOf': ['s11', 's9', 's64', 's3'], 'shown': 's11', 'label': K('공격 속도·공격 치명타 피해 보너스·창 공격 속도·주요 패시브 스킬 효과', 'Attack Speed, Critical Damage Bonus for Attack Damage, Attack Speed with Spears or Notable Passive effect')},
           'p55': {'gi': 55}, 'p54': {'gi': 54}, 'p10': {'gi': 10},
-          'pre': {'anyOf': ['p55', 'p54', 'p10'], 'label': K('투사체 속도·투사체 피해·공격 피해', 'Projectile Speed, Projectile Damage or Attack Damage')}},   # 5:00·6:30·10:40 영상 계획대로, 먼저 뜬 것
+          'pre': {'anyOf': ['p55', 'p54', 'p10'], 'shown': 'p55', 'label': K('투사체 속도·투사체 피해·공격 피해', 'Projectile Speed, Projectile Damage or Attack Damage')}},   # 5:00·6:30·10:40 영상 계획대로, 먼저 뜬 것
  'require': {'all': [{'has': 'cc'}, {'has': 'suf'}, {'has': 'rev'}, {'has': 'rad'}, {'has': 'pre'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],

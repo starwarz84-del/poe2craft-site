@@ -44,8 +44,8 @@ g = {
  'tags': {'cc': {'gi': 8}, 'cd': {'gi': 9}, 'ms': {'gi': 48}, 'rad': {'gi': 99},
           'contS': {'gi': 101, 'slot': {'s': 1}}, 'contP': {'gi': 102, 'slot': {'p': 1}},
           'p6': {'gi': 6}, 'p62': {'gi': 62}, 's11': {'gi': 11}, 's17': {'gi': 17}, 's3': {'gi': 3}, 's2': {'gi': 2},
-          'pre': {'anyOf': ['p6', 'p62'], 'label': PRE_LABEL},   # 영상 18:00 계획: 감전의 강도 또는 상태 이상의 강도, 먼저 뜬 것
-          'revB': {'anyOf': REVB, 'label': REVB_LABEL}},
+          'pre': {'anyOf': ['p6', 'p62'], 'shown': 'p6', 'label': PRE_LABEL},   # 영상 18:00 계획: 감전의 강도 또는 상태 이상의 강도, 먼저 뜬 것
+          'revB': {'anyOf': REVB, 'shown': 'ms', 'label': REVB_LABEL}},
  'require': {'all': [{'has': 'cc'}, {'has': 'cd'}, {'has': 'pre'}, {'has': 'rad'}, {'has': 'revB'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],

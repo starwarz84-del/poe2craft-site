@@ -542,6 +542,11 @@ tip('cheap-resist-essence','trade','armour',['절연의 에센스','풍요의 �
   [('why','장화·장갑은 방어 수치가 낮아 방어 에센스보다 저항이 이득. 장갑은 희귀도 풍요의 에센스도 선택지','Low defences make resists better than defence essences; gloves can also take a rarity essence')], detail=('장화·장갑','Boots & gloves')),
 ]
 
+# ---------- 성공 회차 옵션 꿀팁 줄(사용자 확정 2026-11-13 14:17, 정책 3장 '아무거나') ----------
+# 그래프 묶음 태그(anyOf)에 shown·shownBy(성공 회차에 실제로 나온 옵션)가 있으면 왼쪽 칸·상자·완성 카드는 그 옵션으로 보이고,
+# 같은 묶음의 다른 유효 옵션은 그 단계·상자·카드에 이 한 줄로 자동으로 붙음(recipes.html altTipTx). {a} = 보이는 옵션, {b} = 다른 유효 옵션('·'로 이음)
+ALT_TIP = ('{a} 대신 {b}도 성공으로 침', '{b} also counts instead of {a}')
+
 # ---------- 상황으로 자동 연결(사용자 확정 2026-11-12) ----------
 # 레시피 단계마다 엔진이 아는 아이템 상태로 확인. 규칙 하나 안의 조건은 모두 맞아야 함(규칙끼리는 아무거나).
 #  do: 단계 행동 · use: 쓰는 커런시·징조 중 하나 · noUse: 이것들을 안 씀 · pre: 단계 전 상태

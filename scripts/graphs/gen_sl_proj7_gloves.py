@@ -65,7 +65,7 @@ g = {
  'tags': {
    'proj': {'gi': 82}, 'pd1': {'gi': 71, 'tmax': 1}, 'ps1': {'gi': 73, 'tmax': 1}, 'mf1': {'gi': 7, 'tmax': 1},
    'es1': {'gi': 8, 'tmax': 1}, 'esp1': {'gi': 9, 'tmax': 1}, 'ph1': {'gi': 13, 'tmax': 1}, 'fi1': {'gi': 15, 'tmax': 1}, 'co1': {'gi': 17, 'tmax': 1}, 'li1': {'gi': 19, 'tmax': 1},
-   'third': {'anyOf': ['ph1', 'fi1', 'co1', 'li1', 'es1', 'esp1', 'mf1'], 'label': K('공격 시 피해 추가·에너지 보호막·마나 최대치 1티어', 'T1 flat attack damage, energy shield or maximum mana')},
+   'third': {'anyOf': ['ph1', 'fi1', 'co1', 'li1', 'es1', 'esp1', 'mf1'], 'shown': 'mf1', 'label': K('공격 시 피해 추가·에너지 보호막·마나 최대치 1티어', 'T1 flat attack damage, energy shield or maximum mana')},
    'pgood': {'anyOf': ['pd1', 'ps1', 'third'], 'label': K('투사체 피해·투사체 속도·세 번째 접두 1티어', 'T1 projectile damage, projectile speed or a third prefix')},
    'cr1': {'gi': 74, 'tmax': 1}, 'pie1': {'gi': 75, 'tmax': 1}, 'pieAny': {'gi': 75},
    'rem': {'gi': 65}, 'mkS': {'gi': 61},

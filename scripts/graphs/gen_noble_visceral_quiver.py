@@ -61,7 +61,7 @@ g = {
           'pspd': {'gi': 18, 'tmax': '$pT'}, 'bow': {'gi': 19, 'tmax': '$pT'},
           'pspd1': {'gi': 18, 'tmax': 1}, 'bow1': {'gi': 19, 'tmax': 1}, 'pspd2': {'gi': 18, 'tmax': 2}, 'bow2': {'gi': 19, 'tmax': 2},
           'pre': {'anyOf': ['pspd', 'bow'], 'label': K('투사체 속도·활 스킬로 주는 피해', 'Projectile speed or bow skill damage')},
-          'pre2': {'anyOf': ['pspd2', 'bow2'], 'label': K('투사체 속도·활 스킬로 주는 피해 1~2티어', 'T1–2 projectile speed or bow skill damage')},
+          'pre2': {'anyOf': ['pspd2', 'bow2'], 'shown': 'pspd2', 'label': K('투사체 속도·활 스킬로 주는 피해 1~2티어', 'T1–2 projectile speed or bow skill damage')},
           'proj': {'gi': 9},
           'keep': {'anyOf': ['critA', 'critD', 'pspd', 'bow']}},
  'require': {'all': [{'has': 'light'}, S2, {'full': 's'},

@@ -53,7 +53,7 @@ g = {
    'fr': {'gi': 1, 'tmax': 1}, 'cr': {'gi': 2, 'tmax': 1}, 'lr': {'gi': 3, 'tmax': 1},
    'fr2': {'gi': 1, 'tmax': 2}, 'cr2': {'gi': 2, 'tmax': 2}, 'lr2': {'gi': 3, 'tmax': 2},
    'frT': {'gi': 1, 'tmax': '$rT'}, 'crT': {'gi': 2, 'tmax': '$rT'}, 'lrT': {'gi': 3, 'tmax': '$rT'},
-   'res1': {'anyOf': ['fr', 'cr', 'lr'], 'label': K('화염·냉기·번개 저항 1티어', 'T1 fire, cold or lightning resistance')},
+   'res1': {'anyOf': ['fr', 'cr', 'lr'], 'shown': ['fr', 'cr'], 'label': K('화염·냉기·번개 저항 1티어', 'T1 fire, cold or lightning resistance')},
    'res2': {'anyOf': ['fr2', 'cr2', 'lr2'], 'label': K('화염·냉기·번개 저항 1~2티어', 'T1–2 fire, cold or lightning resistance')},
    'resT': {'anyOf': ['frT', 'crT', 'lrT']},
    'blk': {'anyOf': [{'gi': 5}, {'gi': 12}], 'label': K('생명력 최대치·물리 가시 피해', 'Maximum life or physical thorns')},

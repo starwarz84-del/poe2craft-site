@@ -46,7 +46,7 @@ g = {
    'spirit': {'gi': 28, 'tmax': 1}, 'spell': {'gi': 17, 'tmax': 1}, 'mq': {'gi': 81}, 'rw': {'gi': 82},
    'cs': {'gi': 32, 'tmax': 1}, 'cr': {'gi': 24, 'tmax': 1}, 'cd': {'gi': 25, 'tmax': 1},
    'ar': {'gi': 7, 'tmax': 1}, 'rs': {'gi': 26, 'tmax': 1}, 'kq': {'gi': 46},
-   'fin': {'anyOf': ['cs', 'cr', 'cd', 'ar', 'rs', 'kq'], 'label': FIN},
+   'fin': {'anyOf': ['cs', 'cr', 'cd', 'ar', 'rs', 'kq'], 'shown': 'cs', 'label': FIN},
    # 카오스 단계에서 우측 찬미 + 상위 엑잘을 시도할 접미(영상 화면 메모 3단계: T1 Cast Speed/CritHit/CritDmg)
    'anc': {'anyOf': ['cs', 'cr', 'cd'], 'label': K('시전 속도·치명타 확률·치명타 피해 1티어', 'T1 cast speed, critical chance or critical damage')}},
  'require': {'all': [{'has': 'spell'}, {'has': 'rw'}]},

@@ -478,7 +478,7 @@ T+=[
 for t in T: t['recipes']=[r for r in t.get('recipes',[]) if r not in ('gold-amulet-6line',)]   # 내린 레시피(build_recipes.py REMOVED)
 # 공통 형식으로 다시 씀(사용자 확정 2026-11-12) — 글은 tips_text.py, 출처·레시피·패치는 위 T(합친 꿀팁은 모두 모음)
 import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from tips_text import TIPS, STAGES, PARTS, NOTE, AUTO
+from tips_text import TIPS, STAGES, PARTS, NOTE, AUTO, ALT_TIP
 OLD = {t['id']:t for t in T}; SK = {k:(kr,en) for k,kr,en in STAGES}
 NEW = []
 for x in TIPS:
@@ -493,5 +493,5 @@ for x in TIPS:
                 'source':srcs[0] if srcs else None, 'sources':srcs, 'recipes':recs, **({'auto':AUTO[x['id']]} if x['id'] in AUTO else {})})
 order = {k:i for i,(k,_,_) in enumerate(STAGES)}; NEW.sort(key=lambda t: order[t['stage']])
 T = NEW
-json.dump({'v':2,'stages':[{'id':k,'kr':kr,'en':en} for k,kr,en in STAGES],'parts':[{'id':k,'kr':v[0],'en':v[1]} for k,v in PARTS.items()],'notes':{k:K(*v) for k,v in NOTE.items()},'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
+json.dump({'v':2,'stages':[{'id':k,'kr':kr,'en':en} for k,kr,en in STAGES],'parts':[{'id':k,'kr':v[0],'en':v[1]} for k,v in PARTS.items()],'notes':{k:K(*v) for k,v in NOTE.items()},'altTip':K(*ALT_TIP),'tips':T},open(D+'tips.json','w'),ensure_ascii=False)
 print(len(T),'tips')

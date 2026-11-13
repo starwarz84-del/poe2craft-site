@@ -159,3 +159,14 @@
 - 엔진(recipes.html analyse): `all` 목표(상위 찬미 2개)에서 멈추던 것(`missState`·`pushSpec`·`liquidSpec`) — 엔진 비교 파일 27개를 가장 높은 등급 레시피 id로 다시 만들어 모두 `mode:'engine'`(시뮬 파일 `engine` 필드도 run.js와 같은 반올림으로 갱신).
 - 카오스 상자(옵션 하나만 바뀜)는 아이템 칸에서 바뀐 줄이 둘이어도 '목표 모두'가 아니라 고르는 옵션(show) 중 하나, 접힌 상자(아이템 칸 없음)도 show가 목표이고 말소 징조 쪽을 바꿈(조끼 9-1·9-3, 66번).
 - 생성기·그래프·시뮬 파일의 '두번째' 등 → '두 번째'(style_lint 규칙 '띄어쓰기 n 번째'). build_recipes는 DIFFSET(옛 id)과 다른 v2 등급 레시피 난이도를 알림만(값은 그대로, 사용자 결정 대기).
+
+## 2026-11-13 공용 수정 (S4, 성공 회차 옵션 `shown`)
+
+정책 3장 '아무거나'(사용자 확정 2026-11-13 14:17): 영상이 여러 옵션을 다 받는 자리는 성공 조건을 유효 옵션 묶음(anyOf)으로 두고, 화면은 성공 회차에 실제로 나온 옵션으로 보여 줌.
+
+- 필드: 묶음 태그(gi 없이 `anyOf`인 태그)에 `shown`(모든 등급) 또는 `shownBy:{<버전 id>: …}`(등급별, 있으면 shown보다 먼저). 값 = 잎 태그 이름 · gi 숫자 · `{gi, tmax}`. 같은 묶음 줄이 완성 카드에 여러 개면 목록(`['p1','p4']`, 카드의 그 태그 줄 순서대로).
+- 판정은 그대로: 간선·require·상자 show·카드 lines에는 묶음 태그를 그대로 적음. 시뮬(`sim.js`)·엔진(`analyse`)은 anyOf로 계산하고 shown은 읽지 않음.
+- 화면: 완성 카드(플로우차트 `fcFinalsHTML` = `fcShowLines`, 레시피 탭 = build_recipes `_shownlines`, 같은 규칙 — 가짜 태그 `태그~순번`, `of`·`sh`·`alt`) · 왼쪽 아이템 칸(`fcItem` → `fcTagText(…, k)`, 그 태그 줄의 순번) · 상자 목표(`fcWant`, 상자 아이템 칸의 마지막 그 태그 줄 순번) · 레시피 단계 목표(graph2recipe `G.spec`이 `target.shown`·`alt`를 붙이고 `specText`가 shown을 보여 줌) · 단계 뒤 아이템(`_state`)이 모두 성공 회차 옵션.
+- 자동 꿀팁 줄: 같은 묶음의 다른 유효 옵션(카드·아이템 칸에 이미 있는 옵션은 뺌)을 `💡 <보이는 옵션> 대신 <다른 유효 옵션>도 성공으로 침` 한 줄로 단계(`stepTipsHTML`)·상자(`fcWant`)·완성 카드(`altCardHTML`, 개요 완성 카드와 플로우차트 완성품 카드)에 붙임. 문구는 `scripts/tips_text.py` `ALT_TIP` → tips.json `altTip`, 옵션 이름은 클래스 파일 1티어 글에서 수치를 뺀 것(`optClean`·`optNm`, 복합 옵션은 '와/과').
+- 시뮬 파일: run.js가 shown·shownBy를 sim 파일 graph.tags에 옮김. 시뮬을 다시 돌리지 않을 땐 `node tools/sim/patch_shown.js <그래프 id…>`(태그 shown·shownBy, 완성 카드 finals, 상자 show만 옮김, 파일 형식은 run.js와 같음) → build_recipes.
+- 순서: 생성기 태그에 shown 추가 → 생성기 실행 → patch_shown.js(또는 run.js) → build_recipes → `_fccardsame` 0.

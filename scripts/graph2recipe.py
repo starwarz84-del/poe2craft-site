@@ -69,11 +69,62 @@ def _strip(lab):
     return {k: re.sub(r'\s*→\s*[\dA-Z.]+$', '', v) for k, v in lab.items()}
 
 
+def vid_of(g, params):
+    """전략 파라미터 → 버전 id(등급)"""
+    return next((v['id'] for v in g.get('versions') or [] if all(str((params or {}).get(k)) == str(x) for k, x in (v.get('params') or {}).items())), None)
+
+
+def shown_leaves(tags, tag, vid, params=None):
+    """성공 회차 옵션(S4, 2026-11-13): 묶음 태그(anyOf)의 shown(또는 shownBy[버전 id]) → [{gi, tmax, tag?}]. 없으면 None.
+    값 = 잎 태그 이름 · gi 숫자 · {gi, tmax} 하나 또는 목록(같은 묶음 줄이 여러 개면 순서대로). 화면 표시만 바꾸고 판정(anyOf)은 그대로."""
+    T = (tags or {}).get(tag)
+    if not isinstance(T, dict) or T.get('gi') is not None or not T.get('anyOf'): return None
+    s = (T.get('shownBy') or {}).get(vid) if isinstance(T.get('shownBy'), dict) else None
+    if s is None: s = T.get('shown')
+    if s is None: return None
+    P = params or {}
+    def tm(v):
+        if isinstance(v, str) and v.startswith('$'): v = P.get(v[1:])
+        try: return int(v) if v not in (None, '') else None
+        except Exception: return None
+    out = []
+    for x in (s if isinstance(s, list) else [s]):
+        if isinstance(x, bool): continue
+        if isinstance(x, int): out.append({'gi': x, 'tmax': None})
+        elif isinstance(x, str):
+            L = tags.get(x)
+            if isinstance(L, dict) and L.get('gi') is not None: out.append({'gi': L['gi'], 'tmax': tm(L.get('tmax')), 'tag': x})
+        elif isinstance(x, dict) and x.get('gi') is not None: out.append({'gi': x['gi'], 'tmax': tm(x.get('tmax'))})
+    return out or None
+
+
+def leaf_gis(tags, tag, seen=()):
+    T = (tags or {}).get(tag) if isinstance(tag, str) else tag
+    if isinstance(tag, str) and tag in seen: return []
+    if not isinstance(T, dict): return []
+    if T.get('gi') is not None: return [T['gi']]
+    out = []
+    for x in T.get('anyOf') or []:
+        for g in leaf_gis(tags, x, seen + ((tag,) if isinstance(tag, str) else ())):
+            if g not in out: out.append(g)
+    return out
+
+
 class G:
     def __init__(self, sim, src, params):
         self.g = sim['graph']; self.src = src or {}; self.params = params
         self.tags = self.g.get('tags') or {}
         self.srcn = {n['id']: n for n in _over(self.src.get('nodes') or [], params)}
+        self.vid = vid_of(self.g, params); self._cur = None
+
+    def shown(self, tag, k=0):
+        """이 등급에서 묶음 태그가 보일 옵션(k번째 줄) — 없으면 None"""
+        sl = shown_leaves(self.tags, self.name(tag), self.vid, self.params)
+        return sl[min(k, len(sl) - 1)] if sl else None
+
+    def nth(self, tag, lines):
+        """아이템 칸에서 그 태그 줄이 몇 개인지 - 1(마지막으로 붙은 줄의 순번)"""
+        return max(0, sum(1 for l in lines or [] if tag in [self.name(x) for x in l.get('tags') or []]) - 1)
 
     def name(self, t):
         if isinstance(t, str) and t.startswith('$'): return self.params.get(t[1:], t)
@@ -108,6 +159,13 @@ class G:
         out = {'anyOf': xs}
         lb = [self.tags.get(self.name(t), {}).get('label') for t in tags]
         if len(tags) == 1 and isinstance(lb[0], dict) and lb[0].get('kr'): out['label'] = {'kr': lb[0]['kr'], 'en': lb[0].get('en') or lb[0]['kr']}   # 묶음 이름(티어 상관없는 긴 목록은 이름으로, 2026-11-13 S3 27번)
+        if len(tags) == 1:   # 성공 회차 옵션(shown, S4 2026-11-13): 목표 글은 그 옵션, 나머지 유효 옵션은 꿀팁 줄(alt) — 판정(anyOf)은 그대로
+            sh = self.shown(tags[0], self.nth(self.name(tags[0]), self._cur))
+            if sh and sh['gi'] in [x['gi'] for x in xs]:
+                x0 = next(x for x in xs if x['gi'] == sh['gi'])
+                out['shown'] = {'gi': sh['gi'], **({'tmax': sh['tmax']} if sh.get('tmax') else {'tmax': x0['tmax']} if x0.get('tmax') else {})}
+                on = {lv[0][0] for l in self._cur or [] if l.get('m') != 'j' for tg in (l.get('tags') or [])[:1] for lv in [self.leaves(tg)] if len(lv) == 1}   # 아이템 칸에 이미 있는 옵션은 뺌
+                out['alt'] = [x['gi'] for x in xs if x['gi'] != sh['gi'] and x['gi'] not in on]
         return out
 
 
@@ -123,6 +181,7 @@ def _room(G_, prev):
 def _target(G_, n, prev, cur, last_bone):
     """상자 하나 → 엔진 목표(목표 글에만 씀, 확률은 시뮬 값)"""
     sn = G_.srcn.get(n['id'], {})
+    G_._cur = cur   # 묶음 태그의 몇 번째 줄인지(shown 목록 순번)
     act = n.get('act') or ('remove' if n.get('kind') == 'cleanup' else None)
     new, gone = _diff(prev, cur)
     om = list(n.get('omens') or [])
@@ -223,7 +282,10 @@ def _target(G_, n, prev, cur, last_bone):
         if sp and sp.get('anyOf'):   # 이미 아이템에 있는 옵션 그룹은 공개 후보에서 뺌(같은 그룹 두 번 안 붙음, 2026-11-13 S3 10번)
             have = {gi for l in (prev or []) if l.get('m') not in ('j', 'u') for tg in (l.get('tags') or []) for gi, _ in G_.leaves(G_.name(tg)) if len(G_.leaves(G_.name(tg))) == 1}
             xs = [x for x in sp['anyOf'] if x.get('gi') not in have]
-            if xs and len(xs) < len(sp['anyOf']): sp = dict(xs[0]) if len(xs) == 1 else {**sp, 'anyOf': xs}
+            if xs and len(xs) < len(sp['anyOf']):
+                sp = dict(xs[0]) if len(xs) == 1 else {**sp, 'anyOf': xs}
+                if sp.get('alt'): sp['alt'] = [g for g in sp['alt'] if g not in have]
+                if sp.get('shown') and sp['shown']['gi'] in have: sp.pop('shown', None); sp.pop('alt', None)
         t = {'reveal': sp or {'anyOf': []}, 'side': sd}
         if last_bone: t['bone'] = last_bone
         if getattr(G_, '_lord', None): t['lord'] = G_._lord
@@ -260,7 +322,7 @@ def _target(G_, n, prev, cur, last_bone):
 
 def _state(G_, lines, final_tags):
     """아이템 칸 → 엔진 상태(오른쪽 아이템 카드)"""
-    out = []; cnt = {'p': 0, 's': 0}
+    out = []; cnt = {'p': 0, 's': 0}; seen_ = {}
     for l in lines:
         if l.get('s') == 'r': continue
         sd = l.get('s')
@@ -270,6 +332,10 @@ def _state(G_, lines, final_tags):
         if m == 'u': out.append({'unrev': True, 'junk': True, 'side': sd}); cnt[sd] += 1; continue
         tag = next((x for x in tags if x in final_tags), tags[0] if tags else None)
         lv = G_.leaves(tag) if tag else []
+        if tag and m != 'j':   # 묶음 태그 줄은 성공 회차 옵션으로(shown, S4 2026-11-13)
+            k = seen_.get(tag, 0); seen_[tag] = k + 1
+            sh = G_.shown(tag, k)
+            if sh: lv = [(sh['gi'], sh.get('tmax') or next((tm for gi, tm in lv if gi == sh['gi']), None))]
         if m == 'j' or not lv:
             out.append({'junk': True, 'side': sd, **({'des': True} if m == 'd' else {})}); cnt[sd] += 1; continue
         gi, tm = lv[0]

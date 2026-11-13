@@ -439,6 +439,7 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .tiprow{grid-column:2/4;display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 0}
 .tipin{position:relative;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:color-mix(in srgb,var(--panel) 70%,transparent);cursor:pointer;max-width:100%}
 .tipin>.tipt{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--fg)}
+.altl{font-size:12px;color:var(--muted);line-height:1.45}.tiprow>.altl{flex-basis:100%;padding:0 2px}.fcalt{margin:6px 2px 0}.ovw .fcalt{margin:6px 0 0}
 .tipin.save{border-color:color-mix(in srgb,var(--rare) 55%,var(--line))}.tipin.save>.tipt{color:var(--rare)}
 .tippop{display:none;position:absolute;left:0;top:calc(100% + 6px);z-index:30;width:min(440px,86vw);padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);box-shadow:0 8px 24px rgba(0,0,0,.45);cursor:auto;white-space:normal;font-size:12.5px}
 .tippop::before{content:"";position:absolute;left:0;right:0;top:-8px;height:8px}
@@ -1215,7 +1216,7 @@ function overviewHTML(r){
   return `<section class="ovw"><div class="otags">${infoTags(r)}</div>
     <div class="ostart" data-pair><div><p class="olab"><i class="dot"></i>${L('시작 아이템','Starting item')}</p>${tip(st,true)}</div>
       <div class="oarrow" aria-hidden="true">→</div>
-      <div><p class="olab"><i class="dot fin"></i>${L('완성 아이템','Final item')}</p>${tip(fin)}</div></div>
+      <div><p class="olab"><i class="dot fin"></i>${L('완성 아이템','Final item')}</p>${tip(fin)}${altCardHTML(r, FO.state)}</div></div>
     ${statTiles(r)}</section>`;
 }
 function restartLine(r){
@@ -1260,7 +1261,7 @@ function cardHTML(r){
     </div>`;
 }
 /* 티어 상관없는 긴 anyOf(3개 넘음): 수치를 빼고 이름만, 묶음 이름(label)이 있으면 그 이름 — 최고 티어 수치 7개가 '또는'으로 이어지던 것(2026-11-13 S3 27번) */
-const specText = (r, s) => s && s.anyOf && s.anyOf.length > 3 && s.anyOf.every(x=>!x.tmax) ? (s.label ? `<span class="mod">${esc(tx(s.label))}</span> <small>(${L('티어 상관없음','any tier')})</small>` : `<span class="mod">${s.anyOf.map(x=>esc(modLine(r,x.gi).txt.replace(/[+\-]?\(\d[\d.]*—\d[\d.]*\)%?|[+\-]?\d[\d.]*%?/g,'').replace(/\s+/g,' ').trim())).join(' · ')}</span> <small>(${L('티어 상관없음','any tier')})</small>`) : specText0(r, s);
+const specText = (r, s) => s && s.shown && s.shown.gi!=null ? specText0(r, s.shown) : s && s.anyOf && s.anyOf.length > 3 && s.anyOf.every(x=>!x.tmax) ? (s.label ? `<span class="mod">${esc(tx(s.label))}</span> <small>(${L('티어 상관없음','any tier')})</small>` : `<span class="mod">${s.anyOf.map(x=>esc(modLine(r,x.gi).txt.replace(/[+\-]?\(\d[\d.]*—\d[\d.]*\)%?|[+\-]?\d[\d.]*%?/g,'').replace(/\s+/g,' ').trim())).join(' · ')}</span> <small>(${L('티어 상관없음','any tier')})</small>`) : specText0(r, s);
 const specText0 = (r, s) => specList(s).map((x,k)=>{ const l=modLine(r,x.gi,x.tmax); return `<span class="mod">${esc(l.txt)}</span> <span class="tier ${l.g.g}">${esc(l.tag)}</span>`; }).join(` <b>${L('또는','or')}</b> `);
 // compact item state after a node: prefixes then suffixes, with free slots
 function stateHTML(r, o){
@@ -1298,8 +1299,9 @@ function stepTipsHTML(r, o){ const n=o.n||{}, out=[], seen=new Set();
   const auto=[]; for(const t of S.tips){ if(!t.auto || seen.has(t.id)) continue; const hit=t.auto.find(rule=>tipAutoHit(r,o,rule)); if(hit) auto.push({t, save:!!hit.save, w:Object.keys(hit).length}); }
   auto.sort((a,b)=>(b.save-a.save)||(b.w-a.w)).slice(0,2).forEach(x=>add(x.t, x.save));
   const NK=S.tipMeta?.notes||{};
-  if(!out.length) return '';
-  return `<div class="tiprow">${out.map(({t,save})=>{ const tt=`${save?'💰 '+L('더 저렴한 방법','Cheaper option'):'💡'} <span class="tipno">#${S.tips.indexOf(t)+1}</span> ${esc(tx(t.title))}`;
+  const t0=n.target||{}, sp=[t0, t0.reveal, ...(t0.all||[])].find(x=>x && x.shown && x.alt?.length), alt=sp ? altLineHTML(r, [sp.shown.gi], sp.alt) : '';   /* 성공 회차 옵션 + 다른 유효 옵션 꿀팁 줄(S4) */
+  if(!out.length) return alt ? `<div class="tiprow">${alt}</div>` : '';
+  return `<div class="tiprow">${alt}${out.map(({t,save})=>{ const tt=`${save?'💰 '+L('더 저렴한 방법','Cheaper option'):'💡'} <span class="tipno">#${S.tips.indexOf(t)+1}</span> ${esc(tx(t.title))}`;
     return `<span class="tipin ${save?'save':''}" data-tipkey="${esc(t.id)}" tabindex="0" role="button" aria-expanded="false"><span class="tipt">${tt}</span><span class="tippop" role="tooltip"><p class="tpt">${tt}</p>${t.when?`<p class="twhen">${esc(tx(t.when))}</p><ol class="tsteps">${(t.steps||[]).map(x=>`<li>${esc(tx(x))}</li>`).join('')}</ol>${(t.notes||[]).map(x=>`<p class="tnote ${x.k}"><b>${esc(tx(NK[x.k]||{kr:'',en:''}))}</b>${esc(tx(x))}</p>`).join('')}`:`<p>${esc(tx(t.body))}</p>`}</span></span>`; }).join('')}</div>`; }
 function nodeHTML(r, o, i, idx){
   const n=o.n, t=n.target||{}; CUR_R=r;
@@ -1720,19 +1722,55 @@ function fcModel(g, params={}){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
   const dec={}, multi={}; g.nodes.forEach(n=>{ if(n.kind!=='act' && n.kind!=='cleanup') return; if(new Set(E.filter(e=>e.a===n.id && !e.skip).map(e=>e.b)).size>=3) multi[n.id]=true; });   // simple two-way outcomes are just two coloured lines
   const loopOf={}, loopHead={}; (g.loops||[]).forEach((Lp,i)=>{ Lp.no=i+1; Lp.nodes.forEach(id=>{ if(!loopOf[id]) loopOf[id]=Lp; }); loopHead[Lp.nodes[0]]=Lp; });
   return {byId, E, dec, multi, loopOf, loopHead, selfE}; }
+/* 성공 회차 옵션(S4, 2026-11-13, 정책 3장 '아무거나'): 묶음 태그(anyOf)의 shown(또는 shownBy[버전 id]) = 화면(왼쪽 칸·상자·완성 카드)에 보일 옵션.
+   값 = 잎 태그 이름 · gi · {gi,tmax}, 같은 묶음 줄이 여러 개면 목록(순서대로). 판정(시뮬·엔진)은 anyOf 그대로, 나머지 유효 옵션은 꿀팁 한 줄(altTipTx) — graph2recipe.shown_leaves와 같은 규칙 */
+const fcVidOf = (g, params) => (g.versions||[]).find(v=>Object.entries(v.params||{}).every(([k,x])=>String(params?.[k])===String(x)))?.id;
+function fcShownLeaves(tags, tag, vid, params){ const T=tags?.[tag]; if(!T || T.gi!=null || !T.anyOf) return null; let s=T.shownBy && T.shownBy[vid]!=null ? T.shownBy[vid] : T.shown; if(s==null) return null;
+  const tm=v=>{ if(typeof v==='string' && v[0]==='$') v=params?.[v.slice(1)]; v=parseInt(v); return isNaN(v)?null:v; };
+  const out=(Array.isArray(s)?s:[s]).map(x=>typeof x==='number' ? {gi:x, tmax:null} : typeof x==='string' ? (tags[x] && tags[x].gi!=null ? {gi:tags[x].gi, tmax:tm(tags[x].tmax), tag:x} : null) : x && x.gi!=null ? {gi:x.gi, tmax:tm(x.tmax)} : null).filter(Boolean);
+  return out.length ? out : null; }
+function fcLeafGis(tags, t, seen=[]){ const T=typeof t==='string' ? (seen.includes(t)?null:tags?.[t]) : t; if(!T) return []; if(T.gi!=null) return [T.gi]; const out=[]; (T.anyOf||[]).forEach(x=>fcLeafGis(tags, x, typeof t==='string'?[...seen,t]:seen).forEach(g=>{ if(!out.includes(g)) out.push(g); })); return out; }
+/* 옵션 이름(수치 뺌) — 꿀팁 줄용. 복합 옵션은 '와/과'로 */
+const josaWa = w => { const c=(w||'').trim().slice(-1).charCodeAt(0); return c>=0xAC00 && c<=0xD7A3 && (c-0xAC00)%28 ? '과' : '와'; };
+const optClean = t => String(t||'').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)(\s*(?:~|to)\s*[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\))?%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\bAdds\s+to\b/g,'Adds').replace(/[ \t]+/g,' ').replace(/ ?~ ?/g,' ').replace(/[ \t]+/g,' ').trim()
+  .replace(/피해의\s*를\s*추가 (.+?) 피해로 획득/g,'추가 $1 피해').replace(/(^|\s)의\s+확률로\s+/g,'$1').replace(/(^|\s)[의를을]\s+/g,'$1').replace(/\s만큼\s/g,' ').replace(/(^|\n)\s*(?:to|of)\s+/gi,'$1').replace(/\bGain\s+of\s+Damage\s+as\s+Extra\s+(\w+)\s+Damage\b/gi,'Extra $1 Damage').replace(/^chance to /i,'').trim();   /* 수치가 빠져 남은 조사·틀 정리(추가 냉기 피해, 적 관통) */
+function optNm(r, gi){ let G; try{ G=grp(r,gi); }catch(e){ return ''; } const t=G?.t?.[0]; if(!t) return ''; const parts=optClean(KR()?t[4]:t[5]).split(/\n/).map(x=>x.trim()).filter(Boolean); return KR() ? parts.reduce((a,b)=>a?a+josaWa(a)+' '+b:b,'') : parts.join(' and '); }
+function altTipTx(r, shown, alts){ const A=[...new Set(shown.map(g=>optNm(r,g)).filter(Boolean))], B=[...new Set(alts.map(g=>optNm(r,g)).filter(Boolean))].filter(x=>!A.includes(x)); if(!A.length || !B.length) return '';
+  const T=S.tipMeta?.altTip || {kr:'{a} 대신 {b}도 성공으로 침', en:'{b} also counts instead of {a}'};
+  return tx(T).replace('{a}', A.join(KR()?'·':' and ')).replace('{b}', B.join(KR()?'·':' or ')); }
+const altLineHTML = (r, shown, alts, cls='') => { const t=altTipTx(r, shown, alts); return t ? `<p class="altl ${cls}">💡 ${esc(t)}</p>` : ''; };
+/* 완성 카드 줄: 묶음 태그 줄 → 성공 회차 옵션 줄(가짜 태그 '태그~순번', of = 원래 태그, alt = 다른 유효 옵션) — build_recipes._shownlines와 같은 규칙 */
+function fcShowLines(tags, lines, vid, params, r){ const sl=t=>fcShownLeaves(tags, t, vid, params), k={}, all={}, ext={};
+  lines.forEach(l=>{ const t=l.tag, L0=t && !l.label && !l.random ? sl(t) : null; if(!L0) return; const i=k[t]||0; k[t]=i+1; (all[t]=all[t]||[]).push(i<L0.length?L0[i].gi:null); });
+  const k2={}; const out=lines.map(l=>{ const t=l.tag, L0=t && !l.label && !l.random ? sl(t) : null; if(!L0) return l; const i=k2[t]||0; k2[t]=i+1; if(i>=L0.length) return l;
+    const x=L0[i]; let G=null; try{ G=r?grp(r,x.gi):null; }catch(e){} const pt=`${t}~${i}`, lt=tags[t]?.tmax;
+    ext[pt]={gi:x.gi, s:G?.g, sec:G?.s, tmax:x.tmax || l.tmax || (typeof lt==='number'?lt:null)};
+    const {tag, label, any, ...rest}=l; return {...rest, tag:pt, of:t, sh:true, alt:fcLeafGis(tags,t).filter(g=>!(all[t]||[]).includes(g))}; });
+  return {lines:out, tags:{...tags, ...ext}}; }
+/* 카드 아래 꿀팁 줄: 성공 회차 옵션으로 바꾼 줄(sh)마다 원래 묶음 태그별로 한 줄 */
+function altCardHTML(r, state){ const by={}, on=new Set((state||[]).map(m=>m.gi).filter(g=>g!=null)); (state||[]).forEach(m=>{ if(!m.sh || m.gi==null) return; const b=by[m.of]=by[m.of]||{shown:[], alt:m.alt||[]}; b.shown.push(m.gi); });
+  return Object.values(by).map(b=>altLineHTML(r, b.shown, b.alt.filter(g=>!on.has(g)), 'fcalt')).join(''); }   /* 카드에 이미 있는 옵션은 다른 유효 옵션에서 뺌(같은 계열은 두 번 안 붙음) */
 // what a step is after: tag → "side : text - Tn" (tiers merged into one range when the step accepts several)
-function fcTagText(g, tag, params){ if(typeof tag==='string' && tag[0]==='$') return fcTagText(g, params[tag.slice(1)], params); const T=g.tags?.[tag]; if(T && T.label) return {s:T.s, txt:tx(T.label), tier:''}; if(T && T.anyOf && !T.tiers){ const v=T.anyOf.map(x=>typeof x==='string'?fcTagText(g,x,params):null).filter(Boolean); return v.length ? {s:v[0].s, txt:v.map(x=>x.txt+(x.tier?' - '+x.tier:'')).join(L(' 또는 ',' or ')), tier:''} : null; } if(!T || !T.tiers) return null; let tm=T.tmax; if(typeof tm==='string' && tm[0]==='$') tm=+params[tm.slice(1)]||1;
+function fcTagText(g, tag, params, k=0){ if(typeof tag==='string' && tag[0]==='$') return fcTagText(g, params[tag.slice(1)], params, k); const T=g.tags?.[tag];
+  { const sh=T && fcShownLeaves(g.tags, tag, fcVidOf(g, params), params); if(sh){ const x=sh[Math.min(k, sh.length-1)];   /* 성공 회차 옵션(S4) */
+      if(x.tag && g.tags[x.tag]?.tiers) return fcTagText(g, x.tag, params);
+      if(g._r){ try{ const l=modLine(g._r, x.gi, x.tmax); return {s:l.g.g, txt:l.txt.replace(/\n/g,' · '), tier:l.tag.replace(/^[PS]/,'T').replace(/^T$/,''), sec:l.g.s}; }catch(e){} } } }
+  if(T && T.label) return {s:T.s, txt:tx(T.label), tier:''}; if(T && T.anyOf && !T.tiers){ const v=T.anyOf.map(x=>typeof x==='string'?fcTagText(g,x,params):null).filter(Boolean); return v.length ? {s:v[0].s, txt:v.map(x=>x.txt+(x.tier?' - '+x.tier:'')).join(L(' 또는 ',' or ')), tier:''} : null; } if(!T || !T.tiers) return null; let tm=T.tmax; if(typeof tm==='string' && tm[0]==='$') tm=+params[tm.slice(1)]||1;
   const lo=T.lo||1, t1=tx({kr:T.tiers[lo-1][0], en:T.tiers[lo-1][1]}); let txt=t1;   /* lo = 아이템 레벨로 붙을 수 있는 가장 좋은 티어 */
   if(tm>lo && T.tiers[tm-1]){ const lq=[...tx({kr:T.tiers[tm-1][0], en:T.tiers[tm-1][1]}).matchAll(/\((\d+)—(\d+)\)/g)]; let i=0;
     const merged=t1.replace(/\((\d+)—(\d+)\)/g, (m,a,b)=>{ const q=lq[i++]; return q?`(${q[1]}—${b})`:m; }); if(i===lq.length) txt=merged; }
   const gt=i=>T.gt?.[i-1]||i;   /* 에센스 그룹: 게임 티어 번호(essGameTier) */
   return {s:T.s, txt:txt.replace(/\n/g,' · '), tier: tm ? (tm>lo?`T${gt(lo)}~T${gt(tm)}`:`T${gt(lo)}`) : (T.gt && T.sec==='e' && T.gt[lo-1] ? `T${T.gt[lo-1]}` : ''), sec:T.sec}; }
 function fcWant(g, n, params){ const out=[]; const ov=(n.showIf||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); if(ov) n={...n, show:ov.show, showText:ov.showText};   // per-version wording
-  if(n.show){ const flat=n.show.map(t=>typeof t==='string'&&t[0]==='$'?params[t.slice(1)]:t).flatMap(t=>g.tags?.[t]?.anyOf || [t]), bySide={};
-    flat.forEach(t=>{ const v=fcTagText(g,t,params); if(!v) return; (bySide[v.s]=bySide[v.s]||[]).push(v); });
+  const vid=fcVidOf(g, params), alts=[];
+  if(n.show){ const nth=t=>Math.max(0,(n.item||[]).filter(l=>(l.tags||[]).includes(t)).length-1);   /* 묶음 태그 줄이 여럿이면 이 상자 뒤 아이템 칸의 마지막 줄 순번(S4) */
+    const flat=n.show.map(t=>typeof t==='string'&&t[0]==='$'?params[t.slice(1)]:t).flatMap(t=>{ const sh=typeof t==='string' && fcShownLeaves(g.tags, t, vid, params); if(sh){ const x=sh[Math.min(nth(t), sh.length-1)], on=new Set((n.item||[]).flatMap(l=>(l.tags||[]).length===1 && l.m!=='j' ? fcLeafGis(g.tags,l.tags[0]).slice(0,1).filter(()=>fcLeafGis(g.tags,l.tags[0]).length===1) : []));
+      alts.push([x.gi, fcLeafGis(g.tags,t).filter(y=>y!==x.gi && !on.has(y))]); return [[t, nth(t)]]; }   /* 아이템 칸에 이미 있는 옵션은 뺌 */ return (g.tags?.[t]?.anyOf || [t]).map(x=>[x,0]); }), bySide={};
+    flat.forEach(([t,k])=>{ const v=fcTagText(g,t,params,k); if(!v) return; (bySide[v.s]=bySide[v.s]||[]).push(v); });
     for(const sd of ['p','s']) if(bySide[sd]){ const vs=bySide[sd]; vs.forEach((v,i)=>out.push(`${i?'<span class="ind"></span>':`<b class="sd">${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : `}${esc(v.txt)}${v.tier?` <i>- ${v.tier}</i>`:''}${i<vs.length-1?` <u>${L('또는','or')}</u>`:''}`)); } }
   if(n.target) out.push(`<b class="sd">${L('목표','Goal')}</b> : ${esc(tx(n.target))}`);
   (n.showText||[]).forEach(t=>out.push(t.s ? `<b class="sd">${t.s==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${esc(tx(t))}` : esc(tx(t))));
+  if(g._r) alts.forEach(([a,b])=>{ const t=altTipTx(g._r, [a], b); if(t) out.push(`<span class="altl">💡 ${esc(t)}</span>`); });
   return out; }
 const fcFoldRows = (n, W) => n.fold.steps.map(x=>Math.max(1,Math.ceil(fcLen(tx(x))*0.93/Math.max(120, W-26-150))));   /* 접힌 루프 상자의 순서 줄마다 몇 줄인지(오른쪽 150px = 커런시·평균 개수) */
 function fcSize(n, M, g, params, cap){ let W = n.pos[0]===0 ? FX.W : FX.WB;
@@ -1877,7 +1915,7 @@ function fcLabels(list, rects, lines=[]){ // list: [{pts, w, ...}] → x,y per l
     if(!best){ const a=pts[0]; best={x:a[0],y:a[1],R:[a[0]-w/2,a[1]-H/2,a[0]+w/2,a[1]+H/2]}; }
     placed.push(best.R); L0.x=best.x; L0.y=best.y; }); }
 const fcUse = (u, n=3) => Object.entries(u||{}).filter(([,v])=>v>=0.005).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k,v])=>`<span class="ci" title="${esc(nm(cur(k)))}">${icon(k)}${fmt(v)}</span>`).join('');
-function fcItem(g, lines, prev, params, dsd){ const fx_=a=>dsd && a ? a.map(l=>l.s==='x' && (l.m==='d'||l.m==='u') ? {...l, s:dsd} : l) : a; lines=fx_(lines); prev=fx_(prev);   /* 쪽이 정해지지 않은 훼손 줄(s 'x')은 강령술 징조 쪽으로 — 'P/S'로 나오던 것(2026-11-13 S3 49번) */ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
+function fcItem(g, lines, prev, params, dsd){ const ord_={}; const fx_=a=>dsd && a ? a.map(l=>l.s==='x' && (l.m==='d'||l.m==='u') ? {...l, s:dsd} : l) : a; lines=fx_(lines); prev=fx_(prev);   /* 쪽이 정해지지 않은 훼손 줄(s 'x')은 강령술 징조 쪽으로 — 'P/S'로 나오던 것(2026-11-13 S3 49번) */ const key=l=>l.s+'|'+l.kr+'|'+(l.m||''), had=new Set((prev||[]).map(key)), now=new Set(lines.map(key));
   const side=s=>s==='p'?'P':s==='s'?'S':s==='r'?'R':'P/S', mk={};
   // fractured lines show by colour only (no tail text): graph items mark them in the label "(분열…)" / "(fractured…)"
   const isFr=l=>l.m==='f' || /\((분열|fractured)/i.test((l.kr||'')+' '+(l.en||''));
@@ -1885,7 +1923,7 @@ function fcItem(g, lines, prev, params, dsd){ const fx_=a=>dsd && a ? a.map(l=>l
   const text=l=>{ if(!l.tags) return {t:esc(noFr(tx(l))).replace(/ ?1티어$/,' T1'), tier:''};
     /* 줄 글이 그 태그의 어느 티어 문구와 똑같으면 그 티어로(태그 범위로 다시 그리면 2티어 줄이 1티어 수치로 보임, 2026-11-13 S2 G6 보고) */
     if(l.tags.length===1){ const T=g.tags?.[l.tags[0]], kr=noFr(l.kr||'').trim(), en=noFr(l.en||'').trim(), i=T?.tiers && T.tmax==null ? T.tiers.findIndex(x=>x[0]===kr || x[1]===en) : -1; if(i>=0) return {t:esc(tx({kr:T.tiers[i][0], en:T.tiers[i][1]})).replace(/\n/g,' · '), tier:`T${T.gt?.[i]||i+1}`}; }
-    const v=l.tags.map(t=>fcTagText(g,t,params)).filter(Boolean);
+    const v=l.tags.map(t=>fcTagText(g,t,params,(ord_[t]=(ord_[t]??-1)+1))).filter(Boolean);   /* 같은 묶음 태그 줄의 순번(성공 회차 옵션 목록, S4) */
     return {t: v.map(x=>esc(x.txt)).join(` <u>${L('또는','or')}</u> `), tier: v[0]?.tier||''}; };
   // 사용자 확정 2026-11-10: 제작(에센스·합금·징표)·훼손 옵션도 색으로 — m 값이 없으면 이름·태그로 판단
   const isDes=l=>l.m==='d' || l.m==='u' || /훼손|desecrat/i.test((l.kr||'')+' '+(l.en||''));
@@ -1903,11 +1941,12 @@ function fcCardState(tags, lines, ds, revOnly=()=>false, r=null){
   const sideOf=gi=>{ const t=Object.values(tags||{}).find(t=>t&&t.gi===gi&&t.s); if(t) return t.s; try{ return r?grp(r,gi)?.g:undefined; }catch(e){ return undefined; } };
   lines=lines.map(l=>{ const T=tags?.[l.tag]; if(l.random || l.label || !T || T.gi!=null || !T.anyOf) return l; const g=leafGi(T); return {...l, side:l.side||sideOf(g[0]), label:T.label||{kr:'랜덤 옵션',en:'Random modifier'}, any:g}; });
   const state=lines.map(l=>{ if(l.random || l.label) return {gi:null, side:l.side||(l.any?.length?sideOf(l.any[0]):undefined), label:l.label||{kr:'랜덤 옵션',en:'Random modifier'}, des:!!l.des, rnd:!!l.random, fr:!!l.fr, ess:!!l.ess || tags?.[l.tag]?.sec==='e',   /* 묶음 줄의 제작 옵션 표시(청록) — 빠져 파랑이던 것(2026-11-13 S2, G1 보고) */ ...((l.tmax||typeof tags?.[l.tag]?.tmax==='number')?{tmax:l.tmax||tags[l.tag].tmax}:{}), ...(l.any?.length?{any:l.any}:tags?.[l.tag]?.anyOf?{any:tags[l.tag].anyOf.map(x=>x.gi)}:{})}; const T=tags?.[l.tag]; if(!T || T.gi==null) return null;
+    if(l.sh) return {gi:T.gi, side:T.s||sideOf(T.gi), tmax:typeof T.tmax==='number'?T.tmax:(l.tmax||null), tmin:l.tmin||null, fr:!!l.fr, des:!!l.des, dsf:0, ess:!!l.ess || T.sec==='e' || tags?.[l.of]?.sec==='e', hybrid:!!l.hybrid, sh:true, of:l.of, alt:l.alt||[]};   /* 성공 회차 옵션 줄(S4): 훼손 색은 예전 묶음 줄처럼 쪽 통계로만 */
     return {gi:T.gi, side:T.s, tmax:l.tmax||(typeof T.tmax==='number'?T.tmax:null), tmin:l.tmin||null, fr:!!l.fr, des:!!l.des || (ds ? false : (T.sec==='d' || revOnly(l.tag))), dsf:ds ? (ds.tag?.[l.tag]||0) : 0, ess:!!l.ess || T.sec==='e', hybrid:!!l.hybrid}; }).filter(Boolean);
   /* 시뮬 훼손 비율로 칠하는 건 모든 완성품에서 훼손일 때만(99.9% 이상) — 81%처럼 다른 경로(먼저 뜬 일반 옵션)가 있으면 일반 색(2026-11-13 S1: 노블 화살통 투사체 +1) */
   if(ds && !state.some(m=>m.des)){ const t=state.filter(m=>m.gi!=null && m.dsf>=0.999).sort((a,b)=>b.dsf-a.dsf)[0];
     if(t) t.des=true; else { const sd=['p','s'].filter(x=>(ds.side?.[x]||0)>=0.999).sort((a,b)=>(ds.side[b]||0)-(ds.side[a]||0))[0];
-      const c=sd && (state.find(m=>m.side===sd && m.gi==null && !m.rnd) || state.find(m=>m.side===sd && m.gi==null && m.rnd)); if(c) c.des=true; } }
+      const c=sd && (state.find(m=>m.side===sd && (m.gi==null || m.sh) && !m.rnd) || state.find(m=>m.side===sd && m.gi==null && m.rnd)); if(c) c.des=true; } }
   { let one=false; for(const m of state) if(m.des){ if(one) m.des=false; one=true; } }
   return state; }
 /* 완성품 카드 룬 칸(정책 9장, 사용자 2026-11-12): 제작에 쓰인 룬만 — 시작 상태의 룬, 그 등급이 거친 룬 장착 상자, 증강물 전용 옵션(그룹 s:'x', sub = 룬 이름)을 주는 룬. 마무리 룬은 그래프에 없으면 안 보임 */
@@ -1931,10 +1970,10 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
     // 훼손 여부 = 제작 과정에서 훼손으로 얻었는지(사용자 확정 2026-11-11): 시뮬 완성품 통계 desStat — 태그별 훼손 비율, 면별 훼손 옵션 수(잡옵도 훼손일 수 있음). 통계가 없을 때만 옵션 종류로 추정
     const tgV=Object.fromEntries(Object.entries(g.tags||{}).map(([k,T])=>[k, T && typeof T.tmax==='string' && T.tmax[0]==='$' ? {...T, tmax:+(V?.params?.[T.tmax.slice(1)])||null} : T]));   /* 등급 파라미터 티어('$gT')를 그 카드 등급 값으로(2026-11-13 S3 8번) */
-    const state=fcCardState(tgV, F.lines, S2?.res?.desStat, revOnly, r);
+    const SL=fcShowLines(tgV, F.lines, F.id, V?.params, r), state=fcCardState(SL.tags, SL.lines, S2?.res?.desStat, revOnly, r);   /* 묶음 줄 → 성공 회차 옵션(S4) */
     const go=r.tierGroup && tierSibs(r).find(x=>x.tier===(F.tier||F.id));   // 완성품 카드 → 그 등급 레시피 탭 (사용자 확정 2026-11-11)
     return `<div class="fcfin ${on?'on':''} ${go?'go':''}" ${go?`data-rtab="${esc(go.id)}" role="button" tabindex="0" title="${esc(L('이 완성품의 제작 과정 보기','Open the crafting steps for this item'))}"`:''}><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${(()=>{ let O=null; if(go){ try{ O=finCardO(go, state); }catch(e){ O=null; } }   /* 그 등급 레시피가 있으면 레시피 탭 완성 카드와 같은 값 */
-      return O ? itemTipHTML(go, O, {showQual:!!O.qual?.v, final:true}) : itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:fcRunes(r, g, S2, state, fi)}, {final:true}); })()}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');
+      return O ? itemTipHTML(go, O, {showQual:!!O.qual?.v, final:true}) : itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:fcRunes(r, g, S2, state, fi)}, {final:true}); })()}${altCardHTML(r, state)}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');
   return `<section class="fcfins"><p class="sec">${L('완성품','Finished items')}</p><div class="fcfinrow">${cards}</div></section>`; }
 /* 아이템 레벨로 붙을 수 없는 티어는 목표 글에서 뺌: 태그마다 lo = 붙을 수 있는 가장 좋은 티어(리버스 graphify view와 같은 규칙, 2026-11-12) */
 function fcIlvl(g, r){ let gs; try{ gs=C(r).groups; }catch(e){ return g; } if(!gs || !r?.ilvl) return g;
@@ -1962,7 +2001,7 @@ function fcGoalBy(g, vid){ return !vid || !g.nodes.some(n=>n.goalBy?.[vid]) ? g 
 /* 이어 가는 버림 상자(성공으로 셈): 분열을 바꿔 가정하거나 simTo가 베이스가 아님 — 새 베이스로 처음부터는 성공이 아님(2026-11-13 S3 58번, graph2recipe goes_on과 같음) */
 const fcGoesOn = (T, by) => !!T && T.kind==='exit' && T.variant==='ok' && (!!T.swapFracture || (!!T.simTo && by[T.simTo]?.kind!=='base'));
 function fcOver(g, params){ return {...g, nodes:g.nodes.map(n=>{ const o=(n.over||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); return o ? {...n, ...o.set} : n; })}; }   // per-version node fields (same rule as sim.js)
-function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.graph, s.params), vid=(d.graph.versions||[]).find(v=>Object.entries(v.params).every(([k,x])=>String(s.params[k])===String(x)))?.id, {g, res}=fcFold(fcIlvl(fcPrune(fcGoalBy(g0, vid), s.res, vid), r), s.res, vid), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);
+function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.graph, s.params), vid=(d.graph.versions||[]).find(v=>Object.entries(v.params).every(([k,x])=>String(s.params[k])===String(x)))?.id, {g, res}=fcFold(fcIlvl(fcPrune(fcGoalBy(g0, vid), s.res, vid), r), s.res, vid), _gr=(g._r=r), M=fcModel(g, s.params), Lay=fcLayout(g, M, s.params);   /* g._r: 성공 회차 옵션 글(S4) */
   if(g.tags) g.tags=Object.fromEntries(Object.entries(g.tags).map(([k,T])=>T && T.gi!=null && T.tiers && !T.gt && (()=>{ try{ return grp(r,T.gi)?.s==='e'; }catch(e){ return false; } })() ? [k,{...T, sec:'e', gt:T.tiers.map((_,i)=>essGameTier(r,T.gi,i)||null)}] : [k,T]));   /* 에센스 티어 = 게임 표기(S3 14번) */
   const n0=Object.fromEntries(g0.nodes.map(n=>[n.id,n]));   /* 선 순번(sim edgesI 'id#i')은 정리(prune) 전 상자의 edges 순서 */
   const pct1 = p => p>=0.995 ? '100%' : p>=0.1 ? Math.round(p*100)+'%' : p>=0.001 ? (p*100).toFixed(1)+'%' : p>0 ? (p*100).toFixed(2)+'%' : '0%';
@@ -2683,7 +2722,7 @@ async function boot(){
   [S.prices, S.budget, S.trade, S.boardRaw] = await Promise.all(['prices','budget','trade','board'].map(f=>fetch(`data/${f}.json`).then(r=>r.ok?r.json():null).catch(()=>null)));
   // 요약이 지금 레시피와 같을 때만 씀(레시피 내용 해시 비교), 사용자가 비용을 바꾼 레시피는 원래 계산
   S.board={}; if(S.boardRaw?.r) for(const r of rec.recipes){ const b=S.boardRaw.r[r.id]; if(b && b.h===recHash(r) && !store.get('cost:'+r.id,null)) S.board[r.id]=b; }
-  S.tips = tips.tips||[]; S.tipMeta = {stages:tips.stages||[], parts:tips.parts||[], notes:tips.notes||{}};
+  S.tips = tips.tips||[]; S.tipMeta = {stages:tips.stages||[], parts:tips.parts||[], notes:tips.notes||{}, altTip:tips.altTip||null};
   S.index=idx; S.craft=craft; for(const k in craft) for(const x of craft[k]) S.byId[x.id]=x;
   S.recipes = rec.recipes.map(r=>({likes:0, success:0, ...r}));
   const drafts = PREVIEW ? [] : store.get('drafts',[]).filter(r=>r && /^draft-/.test(r.id) && Array.isArray(r.nodes)).flatMap(unpackDraft);

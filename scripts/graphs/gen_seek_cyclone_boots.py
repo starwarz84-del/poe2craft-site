@@ -45,7 +45,7 @@ g = {
     'desc': K('영상: 세를의 승리 + 접미 훼손, 지속시간까지 빛의 징조로 다시', 'Video: Serle’s Triumph + suffix desecration, Omen of Light until duration')}],
  'tags': {'ele': {'gi': 20, 'tmax': 1}, 'chg': {'gi': 60, 'tmax': 2}, 'spirit': {'gi': 53}, 'dur': {'gi': 55, 'tmax': 2}, 'aes': {'gi': 8},
           'r2': {'gi': 2, 'tmax': 2}, 'r3': {'gi': 3, 'tmax': 2}, 'r4': {'gi': 4, 'tmax': 2},
-          'rev': {'anyOf': ['dur', 'r2', 'r3', 'r4'], 'label': K('스킬 효과 지속시간·화염 저항·냉기 저항·번개 저항', 'Skill Effect Duration, Fire, Cold or Lightning Resistance')}},   # 9:30 자막: 저항을 챙겨도 되고 지속시간이 가장 좋음
+          'rev': {'anyOf': ['dur', 'r2', 'r3', 'r4'], 'shown': 'dur', 'label': K('스킬 효과 지속시간·화염 저항·냉기 저항·번개 저항', 'Skill Effect Duration, Fire, Cold or Lightning Resistance')}},   # 9:30 자막: 저항을 챙겨도 되고 지속시간이 가장 좋음
  'require': {'all': [{'has': 'ele'}, {'has': 'chg'}, {'has': 'spirit'}, {'full': 'p'}, {'full': 's'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
