@@ -72,7 +72,7 @@ BASEPRICE = {
   'saveq-absent-amulet': None,
   'saveq-absent-amulet-v2': None, 'saveq-absent-amulet-v2-bal': None, 'saveq-absent-amulet-v2-ess': None,
   'saveq-alloy-focus': None,
-  'saveq-alloy-focus-v2-bal': 3.5, 'saveq-alloy-focus-v2-ess': 3.5,   # 2026-11-13 G9: 영상 2:20 '4 div 또는 3 div' 에너지 보호막 최대치 3티어 + 모든 주문 +2 매직 집중구
+  'saveq-alloy-focus-v2-bal': 3.5,   # 2026-11-13 G9: 영상 2:20 '4 div 또는 3 div' 에너지 보호막 최대치 3티어 + 모든 주문 +2 매직 집중구
   'saveq-focus': None,
   'unstoppable-vile-robe-v2': 17.5, 'unstoppable-vile-robe-v2-bal': 17.5,   # 영상 1:30·2:30: 아이템 레벨 82 3소켓 끔찍한 로브 15~20 div
   'saveq-focus-v2': 6, 'saveq-focus-v2-bal': 6,   # 영상 6:00: 특출난 타살리안 집중구(아이템 레벨 79+, 2소켓) 5~7 div, 매물 약 6
