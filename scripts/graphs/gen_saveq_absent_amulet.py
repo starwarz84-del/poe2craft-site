@@ -33,7 +33,7 @@ g = {
           '공격 퀄리티 40%(12:33 27%·12:40 40%, 기폭제 이름 툴팁은 못 봄 — 품질 종류 Attack Modifiers라 강탈자 기폭제) → 절사의 징조(12:45 채팅) + 카오스 오브로 최대 퀄리티 제거·새 접두(자막: 마나) → 좌측 결정화 + 완벽한 강화의 에센스(12:48 툴팁)로 전역 방어 22%, 근접 +4(12:53) → '
           '고대 빗장뼈(자막 13:40·15:00, 툴팁은 못 봄) 훼손 + 심연의 메아리 공개(14:26 채팅) 정신력, 빗나가면 빛의 징조 + 소멸의 오브(15:18 채팅, 14:44 소멸의 오브 툴팁) — 두 목걸이 합쳐 약 28번(17:35 자막). '
           '두 번째 목걸이(투사체 +3)는 같은 흐름에 방어 퀄리티(13:20 Defence Modifiers 36%) — 꿀팁 후보. 완벽한 유동체·신성한 오브(18:00~19:10)는 정책 14장대로 뺌, 축성(19:30 둘 다 실패)은 완성 뒤 선택 상자(비용 미포함). '
-          '내부 결정: 카오스 목표 = 근접·투사체 +3 중 먼저 뜬 것(영상 10:00 자막 "둘 중 아무거나", 카드도 같은 묶음), 분열 준비 엑잘 등급·징조와 첫 훼손 뼈 등급은 화면에 없어 가정.'),
+          '내부 결정: 카오스 목표 = 근접·투사체 +3 중 먼저 뜬 것(영상 10:00 자막 "둘 중 아무거나"), 11-13 오후 새 정책(P10) A: 상자·아이템 칸·카드는 성공 회차 근접 +3(shown), 투사체는 꿀팁 줄. B: 정신력 공개는 영상이 빛의 징조로 다시 해서(15:18, 약 28번) 밸런스 반복 유지. D: 밸런스 780 vs 에센셜 683(12.5%), 카드의 정신력 줄이 달라 둘 다 유지. 분열 준비 엑잘 등급·징조와 첫 훼손 뼈 등급은 화면에 없어 가정.'),
  'params': {'spT': {'kr': '정신력', 'en': 'Spirit', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('공개 한 번, 나오는 대로', 'One reveal, keep what comes')}}},
  'strategies': [{'id': 'bal', 'params': {'spT': 2}}, {'id': 'ess', 'params': {'spT': 4}}],
  'versions': [{'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'spT': 4}, 'tier': 'ess',
@@ -86,7 +86,7 @@ A(id='f4', kind='cleanup', group='prep', pos=[0, 6], keep=[], maxJunk=1, label=L
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 7.4], next='v2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[J('p'), CR])
 A(id='v2', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 두 번째 옵션 — 모든 근접·투사체 스킬 레벨 +3 중 먼저 뜬 것', 'Second suffix: +3 Melee or Projectile Skills, whichever comes first'), show=['SK'],
+  goal=K('접미 두 번째 옵션 — 모든 근접 스킬 레벨 +3', 'Second suffix: +3 to Level of all Melee Skills'), show=['SK'],   # 11-13 P10 새 정책 A: 성공 조건은 근접·투사체 묶음(SK), 화면은 성공 회차 근접(shown), 투사체는 자동 꿀팁 줄
   edges=[{'if': {'has': 'SK'}, 'to': 'v3', 'res': 'ok'}, {'to': 'v2', 'res': 'fail', 'hide': True}], item=[CR, ML])
 A(id='v3', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 잡옵', 'A junk prefix'), showText=[{'s': 'p', 'kr': '잡옵', 'en': 'Junk'}], edges=[{'to': 'v4'}], item=[J('p'), CR, ML])

@@ -45,32 +45,27 @@ g = {
           '공개 = 마나 재생 64% 1티어(5:45~5:49) → 완벽한 엑잘 마지막 접두 = 카오스 피해 84% 3티어, 그대로 둠(6:25~6:55). '
           '7:30~33:42는 설명(+4가 분열됐을 때 카오스로 주문 피해, Craft of Exile 시뮬, 룬 +1·알두르 +2로 +8, 노멀 마법봉에 진화·확장으로 +4 만들기 비용, 분열 기대값)이라 꿀팁 후보. '
           '분열 결과가 +4나 천공의 합금이면 같은 비용으로 이어 간다고 가정(영상 25:30 "셋 다 가치 있음", 분열 실패 = 없음). '
-          '등급(정책 10장): 난이도 3 → 밸런스·에센셜. 밸런스 = 막기·접미 공개를 빛의 징조로 다시, 세 번째 접두 1~2티어(좌측 소멸의 징조로 다시), 마지막 접두는 나오는 대로(C17 2번, 영상도 3티어 그대로). '
+          '등급(정책 10장): 난이도 3 → 밸런스·에센셜. 밸런스 = 세 번째 접두 1~2티어(좌측 소멸의 징조로 다시), 접미 공개·마지막 접두는 나오는 대로(C17 2번, 영상도 3티어 그대로). '
+          '11-13 오후 새 정책(P10): (B) 영상 5:43~5:49 접미 공개는 메아리 다시 뽑기 한 번으로 받고 빛의 징조로 다시 하지 않아 접미 공개 빛의 징조 반복(옛 13.A)을 뺌 — 두 등급 모두 결과 그대로(카드 랜덤 옵션). 막기 제거(빛의 징조 + 소멸)는 영상 장면이라 그대로. (D) 그러면 밸런스 95.1 vs 에센셜 87.1 div(약 8%)라 밸런스 하나만(옛 시뮬 106.7/87.1, 에센셜 = 반복 없이 상위 엑잘). '
           '에센셜 = 반복 없음, 공개·엑잘 결과 그대로, 엑잘은 상위 엑잘티드 오브.'),
  'params': {
   'L': {'kr': '반복', 'en': 'Repeats', 'values': {'1': K('빛의 징조·소멸의 징조로 다시', 'Retry with Light / Annulment omens'), '0': K('결과 그대로', 'Keep whatever comes')}},
-  'xT': {'kr': '세 번째 접두·접미 공개', 'en': 'Third prefix / suffix reveal', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('나오는 대로', 'As it comes')}}},
- 'strategies': [{'id': 'bal', 'params': {'L': 1, 'xT': 2}}, {'id': 'ess', 'params': {'L': 0, 'xT': 4}}],
+  'xT': {'kr': '세 번째 접두', 'en': 'Third prefix', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('나오는 대로', 'As it comes')}}},
+ 'strategies': [{'id': 'bal', 'params': {'L': 1, 'xT': 2}}],
  'versions': [
-  {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'L': 0, 'xT': 4}, 'tier': 'ess',
-   'desc': K('반복 없이 공개·엑잘 결과 그대로, 상위 엑잘티드 오브', 'No repeats, keep each reveal and exalt; Greater Exalted Orbs')},
   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'L': 1, 'xT': 2}, 'tier': 'bal',
-   'desc': K('영상: 막기·접미 공개는 빛의 징조로 다시, 세 번째 접두 1~2티어, 마지막 접두는 나오는 대로', 'Video: Light retries the blocker and suffix reveals, T1–2 third prefix, last prefix as it comes')}],
+   'desc': K('세 번째 접두 1~2티어까지 다시, 접미 공개·마지막 접두는 영상처럼 나오는 대로', 'Third prefix retried to T1–2; suffix reveal and last prefix kept as the video')}],
  'tags': {
   'l4': {'gi': 10, 'tmax': 1}, 'trans': {'gi': 60}, 'cel': {'gi': 59}, 'sorc': {'gi': 44}, 'blk': {'gi': 30},
   'xF': {'gi': 26, 'tmax': '$xT'}, 'xC': {'gi': 27, 'tmax': '$xT'}, 'xL': {'gi': 28, 'tmax': '$xT'}, 'sd': {'gi': 3, 'tmax': '$xT'}, 'hy': {'gi': 4, 'tmax': '$xT'},
   'pre': {'anyOf': ['xF', 'xC', 'xL', 'sd', 'hy'], 'shown': 'xC', 'label': PREL},
-  'rg': {'gi': 16, 'tmax': '$xT'}, 'cr': {'gi': 20, 'tmax': '$xT'}, 'cd': {'gi': 21, 'tmax': '$xT'},
-  'suf': {'anyOf': ['rg', 'cr', 'cd'], 'shown': 'rg', 'label': SUFL},
   # 아이템 칸·완성 카드용(고정 티어)
   'xC2': {'gi': 27, 'tmax': 2}, 'rg1': {'gi': 16, 'tmax': 1},
   'xF2': {'gi': 26, 'tmax': 2}, 'xL2': {'gi': 28, 'tmax': 2}, 'sd2': {'gi': 3, 'tmax': 2}, 'hy2': {'gi': 4, 'tmax': 2},
   'pre2': {'anyOf': ['xF2', 'xC2', 'xL2', 'sd2', 'hy2'], 'shown': 'xC2', 'label': K('추가 화염·냉기·번개 피해, 주문 피해, 주문 피해와 마나 1~2티어', 'T1–2 extra fire, cold or lightning damage, spell damage, or spell damage + mana')},
-  'rg2': {'gi': 16, 'tmax': 2}, 'cr2': {'gi': 20, 'tmax': 2}, 'cd2': {'gi': 21, 'tmax': 2},
-  'suf2': {'anyOf': ['rg2', 'cr2', 'cd2'], 'shown': 'rg2', 'label': K('마나 재생 속도·주문 치명타 명중 확률·주문 치명타 피해 보너스 1~2티어', 'T1–2 mana regeneration, spell crit chance or spell crit damage bonus')},
  },
  'require': {'all': [{'has': 'l4'}, {'has': 'trans'}, {'has': 'cel'}, {'full': 'p'}, {'full': 's'},
-                     {'any': [V_ESS, {'all': [{'has': 'pre'}, {'has': 'suf'}]}]}]},
+                     {'any': [V_ESS, {'has': 'pre'}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 2]}],
  'start': 'z0',
@@ -139,13 +134,10 @@ A(id='n3', kind='act', group='main', pos=[0, 11.4], act='annul', cur='Orb_of_Ann
 A(id='n4', kind='act', group='main', pos=[0, 12.4], act='desecrate', cur='Ancient_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
   goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'n5'}], item=[CE, XC, L4, AL, UN('s'), RN])
-A(id='n5', kind='act', group='main', pos=[0, 13.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='suf', label=K('공개', 'Reveal'),
-  goal=K('접미 마나 재생 속도(훼손) — 주문 치명타 확률·피해와 함께 먼저 뜬 것', 'Mana regeneration suffix (desecrated): or spell crit chance or damage, whichever shows first'), show=['suf'],
-  over=[{'param': {'L': 0}, 'set': {'goal': K('접미 세 번째 옵션 공개 — 나오는 대로', 'Reveal the third suffix: keep what comes'), 'showText': [{'s': 's', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}], 'show': []}}],
-  edges=[{'if': {'any': [{'added': 'suf'}, V_ESS]}, 'to': 'n6', 'res': 'ok'}, {'to': 'n5x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  item=[CE, XC, L4, AL, MR, RN])
-A(id='n5x', kind='act', group='main', pos=[1, 13.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'n4', 'label': K('다시 훼손', 'Desecrate again')}])
+A(id='n5', kind='act', group='main', pos=[0, 13.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], label=K('공개', 'Reveal'),
+  goal=K('접미 세 번째 옵션 공개 — 나오는 대로', 'Reveal the third suffix: keep what comes'),
+  showText=[{'s': 's', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}],
+  edges=[{'to': 'n6'}], item=[CE, XC, L4, AL, MR, RN])   # 11-13 P10 새 정책 B: 영상 5:43~5:49 메아리 다시 뽑기 한 번, 빛의 징조 반복 없음
 A(id='n6', kind='act', group='main', pos=[0, 14.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 마지막 옵션 — 나오는 대로', 'Last prefix: keep what comes'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   over=[{'param': {'L': 0}, 'set': {'cur': 'Greater_Exalted_Orb'}}],
@@ -161,14 +153,10 @@ g['loops'] = [
             K('천공의 합금이 지워지면 좌측 결정화의 징조 + 천공의 합금', 'Celestial Alloy gone: Omen of Sinistral Crystallisation + Celestial Alloy') | {'node': 'n2c'}],
   'worst': K('원소 피해 막기 옵션이 지워지면 다시 훼손', 'Elemental damage blocker gone: desecrate again') | {'to': 'n1d'},
   'item': [CE, ED, XC, L4, AL, RN]},
- {'id': 'L3', 'nodes': ['n4', 'n5', 'n5x'], 'kr': '접미 훼손 공개', 'en': 'Suffix reveal'},
 ]
 g['finals'] = [
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
   'lines': [{'tag': 'cel', 'ess': True}, {'tag': 'pre2'}, {'side': 'p', 'random': True},
-            {'tag': 'l4'}, {'tag': 'trans', 'fr': True}, {'tag': 'suf2', 'des': True}]},
- {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
-  'lines': [{'tag': 'cel', 'ess': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
             {'tag': 'l4'}, {'tag': 'trans', 'fr': True}, {'side': 's', 'random': True}]},
 ]
 

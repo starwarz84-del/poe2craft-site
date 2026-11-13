@@ -16,7 +16,7 @@ SP = L('p', '정신력 +(47—50)', '+(47—50) to Spirit', 'f', ['spirit'])    
 SL = L('s', '모든 주문 스킬 레벨 +3', '+3 to Level of all Spell Skills', 'n', ['spell'])
 MQ = L('p', '최대 퀄리티 +20%', '+20% to Maximum Quality', 'c', ['maxQ'])
 CS = L('s', '시전 속도 (22—24)% 증가', '(22—24)% increased Cast Speed', 'n', ['cast'])          # 2:01 영상 결과 23% 2티어
-SD = L('p', '주문 피해 (18—22)% 증가', '(18—22)% increased Spell Damage', 'd', ['sdmg'])        # 3:18 공개 결과 19% 3티어
+SD = L('p', '주문 피해 (18—22)% 증가', '(18—22)% increased Spell Damage', 'd')        # 3:18 공개 결과 19% 3티어
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'u')
 RP = L('p', '랜덤 옵션', 'Random option', 'n')
@@ -32,23 +32,24 @@ g = {
           '접두 훼손(2:16, 뼈 등급 툴팁은 못 봄 — 2:18 화폐 교환 목록의 보존된 빗장뼈) → 쇳소리 기폭제 시전 퀄리티(2:32 15%, 3:18 40%) → 심연의 메아리 공개 한 번에 주문 피해 19% 3티어(3:18, 빛의 징조 없음) → '
           '절사의 징조(2:18 구입) + 상위 카오스 오브(3:15 툴팁)로 최대 퀄리티를 에너지 보호막 최대치 34% 3티어로(3:27). '
           '내부 결정: 밸런스는 정책 C17대로 시전 속도·주문 피해 1~2티어까지 다시(시전 속도는 영상에 다시 하는 장면이 없어 우측 소멸의 징조 + 소멸의 오브 → 기폭제 다시 — 모든 주문 +3이 지워지면 새 베이스, 주문 피해는 빛의 징조), '
-          '에센셜은 영상처럼 결과 그대로. 정신력은 베이스에 있는 옵션이라 두 등급 모두 1티어(C15). 마지막 접두(절사 카오스)는 두 등급 모두 랜덤 옵션.'),
+          '에센셜은 영상처럼 결과 그대로. 정신력은 베이스에 있는 옵션이라 두 등급 모두 1티어(C15). 마지막 접두(절사 카오스)는 두 등급 모두 랜덤 옵션. '
+          '11-13 오후 새 정책(P10): (B) 영상은 공개를 메아리로 한 번에 받고 빛의 징조로 다시 하지 않아 밸런스의 주문 피해 빛의 징조 반복(옛 9.A·8.A)을 뺌 — 두 등급 모두 공개 결과 그대로(카드 랜덤 옵션). 시전 속도 반복(C17-1)은 그대로라 등급 둘 유지(옛 시뮬 113/26.5).'),
  'params': {'cT': {'kr': '시전 속도', 'en': 'Cast speed', 'values': {'2': K('1~2티어까지 다시', 'Retry to T1–2'), '9': K('결과 그대로', 'Keep what comes')}},
-            'dT': {'kr': '주문 피해', 'en': 'Spell damage', 'values': {'2': K('1~2티어까지 다시', 'Retry to T1–2'), '9': K('공개 한 번, 결과 그대로', 'One reveal, keep what comes')}}},
- 'strategies': [{'id': 'bal', 'params': {'cT': 2, 'dT': 2}}, {'id': 'ess', 'params': {'cT': 9, 'dT': 9}}],
- 'versions': [{'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'cT': 9, 'dT': 9}, 'tier': 'ess',
+            },
+ 'strategies': [{'id': 'bal', 'params': {'cT': 2}}, {'id': 'ess', 'params': {'cT': 9}}],
+ 'versions': [{'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'cT': 9}, 'tier': 'ess',
                'desc': K('영상처럼 시전 속도·주문 피해 결과 그대로', 'As the video: cast speed and spell damage kept as they come')},
-              {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'cT': 2, 'dT': 2}, 'tier': 'bal',
-               'desc': K('시전 속도·주문 피해 1~2티어까지 다시', 'Cast speed and spell damage retried to T1–2')}],
+              {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'cT': 2}, 'tier': 'bal',
+               'desc': K('시전 속도 1~2티어까지 다시, 주문 피해 공개는 영상처럼 한 번', 'Cast speed retried to T1–2, one spell damage reveal as the video')}],
  'tags': {'spirit': {'gi': 28, 'tmax': 1}, 'spell': {'gi': 17, 'tmax': 1}, 'maxQ': {'gi': 81},
-          'cast': {'gi': 32, 'tmax': '$cT'}, 'sdmg': {'gi': 31, 'tmax': '$dT'}, 'cast2': {'gi': 32, 'tmax': 2}, 'sdmg2': {'gi': 31, 'tmax': 2}},
+          'cast': {'gi': 32, 'tmax': '$cT'}, 'cast2': {'gi': 32, 'tmax': 2}},
  'require': {'all': [{'has': 'spirit'}, {'has': 'spell'}, {'full': 'p'}, {'full': 's'},
-                     {'any': [{'param': {'cT': 9}}, {'has': 'cast'}]}, {'any': [{'param': {'dT': 9}}, {'has': 'sdmg'}]}]},
+                     {'any': [{'param': {'cT': 9}}, {'has': 'cast'}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'h0',
  'finals': [{'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-             'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'sdmg2', 'des': True}, {'side': 'p', 'random': True},
+             'lines': [{'tag': 'spirit', 'fr': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
                        {'tag': 'spell'}, {'tag': 'cast2'}, {'side': 's', 'random': True}]},
             {'id': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
              'lines': [{'tag': 'spirit', 'fr': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
@@ -90,26 +91,18 @@ A(id='g7', kind='act', group='main', pos=[0, 8.2], act='desecrate', cur='Preserv
 A(id='g8', kind='act', group='main', pos=[0, 9.2], act='quality', cur='Sibilant_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('시전 퀄리티 40% — 모든 주문 스킬 +4', 'Caster quality 40%: all Spell Skills +4'), showText=[K('쇳소리 기폭제 40개', '40 Sibilant Catalysts')],
   edges=[{'to': 'g9'}], item=[SP, MQ, UN('p'), SL, J('s'), CS], over=ESS([SP, MQ, UN('p'), SL, J('s'), CS]))
-A(id='g9', kind='act', group='main', pos=[0, 10.2], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='sdmg2', label=K('공개', 'Reveal'),
-  goal=K('접두 주문 피해', 'Spell damage prefix'), show=['sdmg2'],
-  edges=[{'if': {'added': 'sdmg'}, 'to': 'g10', 'res': 'ok'}, {'if': {'param': {'dT': 9}}, 'to': 'g10', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
-         {'to': 'g9x', 'res': 'fail'}], item=[SP, MQ, SD, SL, J('s'), CS],
-  over=[{'param': {'dT': 9}, 'set': {'goal': K('접두 훼손 옵션 공개 — 주문 피해 노림, 나오는 대로', 'Reveal the prefix desecration: aiming for spell damage, keep what comes'),
-                                     'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
-                                     'item': [SP, MQ, L('p', '랜덤 옵션', 'Random option', 'd'), SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])
-A(id='g9x', kind='act', group='main', pos=[1, 10.2], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
-  target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'g7r'}])
-A(id='g7r', kind='act', group='main', pos=[1, 9.2], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('다시 훼손 — 퀄리티는 그대로', 'Desecrate again: the quality stays'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
-  edges=[{'to': 'g9', 'label': K('다시 공개', 'Reveal again')}])
+A(id='g9', kind='act', group='main', pos=[0, 10.2], act='reveal', omens=['Omen_of_Abyssal_Echoes'], label=K('공개', 'Reveal'),
+  goal=K('접두 훼손 옵션 공개 — 주문 피해 노림, 나오는 대로', 'Reveal the prefix desecration: aiming for spell damage, keep what comes'),
+  showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
+  edges=[{'to': 'g10'}], item=[SP, MQ, SD, SL, J('s'), CS],
+  over=[{'param': {'cT': 9}, 'set': {'item': [SP, MQ, L('p', '랜덤 옵션', 'Random option', 'd'), SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])   # 11-13 P10 새 정책 B: 영상 2:58~3:18 메아리 공개 한 번, 빛의 징조 없음
 A(id='g10', kind='act', group='main', pos=[0, 11.2], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
   goal=K('최대 퀄리티를 지우고 접두 랜덤 옵션', 'Maximum Quality out, a random prefix in'), showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
   edges=[{'to': 'ok'}], item=[SP, SD, RP, SL, J('s'), CS],
-  over=[{'param': {'dT': 9}, 'set': {'item': [SP, L('p', '랜덤 옵션', 'Random option', 'd'), RP, SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])
+  over=[{'param': {'cT': 9}, 'set': {'item': [SP, L('p', '랜덤 옵션', 'Random option', 'd'), RP, SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])
 A(id='ok', kind='done', group='main', pos=[0, 12.2], label=K('완성', 'Finished'))
 g['nodes'] = N
-g['loops'] = [{'id': 'L1', 'nodes': ['g5b', 'g6', 'g6x'], 'kr': '시전 속도', 'en': 'Cast speed'},
-              {'id': 'L2', 'nodes': ['g9', 'g9x', 'g7r'], 'kr': '훼손 공개', 'en': 'Reveal'}]
+g['loops'] = [{'id': 'L1', 'nodes': ['g5b', 'g6', 'g6x'], 'kr': '시전 속도', 'en': 'Cast speed'}]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

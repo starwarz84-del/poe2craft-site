@@ -30,7 +30,7 @@ def _belton(r, t):
     if t=='ess':
         b3.pop('fail',None); b3['target']['asIs']=True; b3['br']=KEEP
         b6.pop('fail',None); b6['br']=KEEP; b7['cur']='Greater_Exalted_Orb'
-for _t in ('bal','ess'): _grade('belton-plus8-wand','belton-plus8-wand-v2',_t,_belton)
+for _t in ('bal',): _grade('belton-plus8-wand','belton-plus8-wand-v2',_t,_belton)   # 2026-11-13 P10 새 정책 B·D: 접미 공개 빛의 징조 반복을 빼니 밸런스 95.1 vs 에센셜 87.1 div(약 8%) → 밸런스만
 
 # 3. LilBotQ 방어도 방패 — Balance = video (own build: Light until T1), Essential = the selling route (settle the reveal), Greater Exalts for suffixes
 def _shield(r, t):
