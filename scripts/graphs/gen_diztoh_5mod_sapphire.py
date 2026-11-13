@@ -74,7 +74,7 @@ A(id='a2', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Exalted_Orb
   goal=K('접미 치명타 확률', 'Critical Hit Chance suffix'), show=['c2'],
   edges=[{'if': {'has': 'c2'}, 'to': 'a3', 'res': 'ok'}, {'to': 'a2x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[SCC, CC])
 A(id='a2x', kind='act', group='main', pos=[1, 4.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,   # F2a 11-13: 정리 상자(확정)였지만 접미 둘 중 하나라 절반은 주문 치명타가 지워짐 → 확률 상자
-  target=K('빗나간 접미 지우기', 'Remove the missed suffix'),
+  target=K('접미 둘 중 하나 지우기', 'Remove one of the two suffixes'),
   edges=[{'if': {'not': {'has': 'scc'}}, 'to': 'a1', 'res': 'fail', 'label': K('주문 치명타 명중 확률이 지워짐 — 다시 카오스', 'Spell crit chance gone: Chaos again')},
          {'to': 'a2', 'res': 'ok', 'port': 'right', 'label': K('다시 엑잘', 'Exalt again')}])
 A(id='a3', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),

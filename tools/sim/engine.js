@@ -7,7 +7,15 @@ const out=await p.evaluate((id)=>{ const S=__rec, r0=S.recipes.find(x=>x.id===id
   /* 플로우차트에서 읽은 레시피(fcRead)는 analyse가 확률·사용량을 시뮬 값으로 덮어써서, 그대로 계산하면 '엔진 값' = 지난번 시뮬 값이 됨(2026-11-13 S1: 시한 차유라 반지 엔진 197 = 옛 시뮬).
      엔진 비교값은 시뮬 값을 빼고(fcRead·fcs 없이) 엔진 계산으로, 막히면 예전처럼 */
   let r=r0, a, mode='engine';
-  if(r0.fcRead){ try { r={...JSON.parse(JSON.stringify(r0)), id:r0.id+'~engine', fcRead:null, _an:null, _prep:null}; r.nodes.forEach(n=>{ delete n.fcs; if(!n.fail && (n.routes||[]).some(x=>x.to==='self' && x.cls==='no')) n.fail={goto:'self'}; });   /* 플로우차트 '빗나가면 다시' 선 → 엔진의 같은 단계 반복 */ a=S.analyse(r); } catch(e){ r=r0; a=null; mode='fcRead('+String(e.message||e).slice(0,80)+')'; } }
+  if(r0.fcRead){ try { r={...JSON.parse(JSON.stringify(r0)), id:r0.id+'~engine', fcRead:null, _an:null, _prep:null}; r.nodes.forEach(n=>{ delete n.fcs; if(!n.fail && (n.routes||[]).some(x=>x.to==='self' && x.cls==='no')) n.fail={goto:'self'}; });   /* 플로우차트 '빗나가면 다시' 선 → 엔진의 같은 단계 반복 */ a=S.analyse(r);
+      /* 엔진이 확률 0으로 막힌 단계(룬이 열어 주는 증강물 옵션을 카오스로 노림 등 — 엔진은 그 옵션이 나올 수 없다고 봄)는 비용 0으로 빠져 합계가 작아짐(MazBro 투사체 장갑 30 div·카오스 0개).
+         그 단계만 시뮬 확률을 '기대 횟수'로 넣어 다시 계산하고 mode에 단계 id를 적음 — 완성품 거의 모두가 지나는 단계(시뮬 도달 90% 이상)만: 가끔 지나는 옆 갈래까지 넣으면 엔진이 주 경로로 세어 수만 div가 됨(2026-11-13 S9) */
+      const z=a.nodes.filter(o=>o.p===0 && ['chaos','exalt','essence','reveal','augment','transmute','regal','desecrate'].includes(o.n.do)).map(o=>o.n.id);
+      if(z.length){ const sp=Object.fromEntries(r0.nodes.map(n=>[n.id, (n.fcs?.reach??0)>=0.9 ? n.fcs?.p : null])); let k=0; r.nodes.forEach(n=>{ if(z.includes(n.id) && sp[n.id]>0){ n.unknownW=true; n.expect=1/sp[n.id]; k++; } }); if(k){ const a0=a; let use=z.filter(id=>sp[id]>0);
+          for(let it=0; it<3 && use.length; it++){ r.nodes.forEach(n=>{ if(z.includes(n.id) && !use.includes(n.id)){ delete n.unknownW; delete n.expect; } }); r._an=null; a=S.analyse({...r, id:r0.id+'~engine2'+it, _an:null});
+            /* 되돌아가기 안에 있는 단계(엔진 passes > 1.5)는 엔진이 구간 전체를 곱해서 수만 div가 됨 — 그 단계는 빼고 다시(MazBro +5 목걸이·시한 투구·Xeno 석궁) */
+            const bad=a.nodes.filter(o=>use.includes(o.n.id) && (o.passes||1)>1.5).map(o=>o.n.id); if(!bad.length) break; use=use.filter(id=>!bad.includes(id)); }
+          if(use.length) mode='engine+sim('+use.join(',')+')'; else a=a0; } } } catch(e){ r=r0; a=null; mode='fcRead('+String(e.message||e).slice(0,80)+')'; } }
   if(!a){ r=r0; a=S.analyse(r); if(r0.fcRead && mode==='engine') mode='fcRead'; } const pr=S.prepRecipe(r); const pa=pr?S.analyse(pr):null;
   const ex=k=>k==='Exalted_Orb'?1:(S.prices.p[k]??null), dv=u=>{let v=0; for(const k in u){ const e=ex(k); if(e!=null) v+=u[k]*e; } return v/S.prices.divine; };
   const nodes=x=>x.nodes.map(o=>({id:o.n.id, do:o.n.do, p:o.p, tries:o.useTries, passes:o.passes, use:o.use, lose:o.lose}));

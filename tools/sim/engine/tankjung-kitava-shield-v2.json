@@ -1,42 +1,44 @@
 {
- "mode": "engine",
- "total": 82.98149241744093,
- "totalAll": 83.89884778934176,
+ "mode": "engine+sim(m2,t7)",
+ "total": 395.65302364826266,
+ "totalAll": 396.5703790201635,
  "main": {
   "tot": {
    "Perfect_Orb_of_Transmutation": 1,
-   "Perfect_Orb_of_Augmentation": 2,
+   "Perfect_Orb_of_Augmentation": 8.716168459389806,
+   "Blazing_Flux": 2,
    "Perfect_Regal_Orb": 1,
    "Preserved_Rib": 1,
    "Fracturing_Orb": 1,
    "Orb_of_Annulment": 1,
-   "Chaos_Orb": 385.5,
-   "Ancient_Rib": 13.464862146236392,
-   "Omen_of_Dextral_Necromancy": 13.464862146236392,
-   "Omen_of_Abyssal_Echoes": 13.464862146236392,
-   "Blazing_Flux": 1,
+   "Ancient_Rib": 9.499094688780684,
+   "Omen_of_Dextral_Necromancy": 9.499094688780684,
+   "Omen_of_Abyssal_Echoes": 9.499094688780684,
    "Perfect_Exalted_Orb": 2,
-   "Omen_of_Greater_Exaltation": 1
+   "Omen_of_Greater_Exaltation": 1,
+   "Perfect_Chaos_Orb": 21.16357325770883,
+   "Omen_of_Whittling": 21.16357325770883
   },
   "totAll": {
    "Vaal_Armourers_Infuser": 1,
    "Perfect_Orb_of_Transmutation": 1,
-   "Perfect_Orb_of_Augmentation": 2,
+   "Perfect_Orb_of_Augmentation": 8.716168459389806,
+   "Blazing_Flux": 2,
    "Perfect_Regal_Orb": 1,
    "Preserved_Rib": 1,
    "Fracturing_Orb": 1,
    "Orb_of_Annulment": 1,
-   "Chaos_Orb": 385.5,
-   "Ancient_Rib": 13.464862146236392,
-   "Omen_of_Dextral_Necromancy": 13.464862146236392,
-   "Omen_of_Abyssal_Echoes": 13.464862146236392,
-   "Blazing_Flux": 1,
+   "Ancient_Rib": 9.499094688780684,
+   "Omen_of_Dextral_Necromancy": 9.499094688780684,
+   "Omen_of_Abyssal_Echoes": 9.499094688780684,
    "Perfect_Exalted_Orb": 2,
-   "Omen_of_Greater_Exaltation": 1
+   "Omen_of_Greater_Exaltation": 1,
+   "Perfect_Chaos_Orb": 21.16357325770883,
+   "Omen_of_Whittling": 21.16357325770883
   },
   "bases": 1,
-  "div": 82.98149241744093,
-  "divAll": 83.89884778934176,
+  "div": 395.65302364826266,
+  "divAll": 396.5703790201635,
   "nodes": [
    {
     "id": "b0",
@@ -59,7 +61,7 @@
    {
     "id": "m1",
     "do": "transmute",
-    "p": 0.051118210862619806,
+    "p": 0.09904153354632587,
     "tries": 1,
     "passes": 1,
     "use": {
@@ -69,17 +71,27 @@
    {
     "id": "m2",
     "do": "augment",
+    "p": 0.129598,
+    "tries": 7.716168459389806,
+    "passes": 1,
+    "use": {
+     "Perfect_Orb_of_Augmentation": 7.716168459389806
+    }
+   },
+   {
+    "id": "fl",
+    "do": "flux",
     "p": 1,
     "tries": 1,
     "passes": 1,
     "use": {
-     "Perfect_Orb_of_Augmentation": 1
+     "Blazing_Flux": 1
     }
    },
    {
     "id": "r1",
     "do": "augment",
-    "p": 0,
+    "p": 1,
     "tries": 1,
     "passes": 1,
     "use": {
@@ -129,32 +141,30 @@
    {
     "id": "t2",
     "do": "chaos",
-    "p": 0.0025940337224383916,
-    "tries": 385.5,
+    "p": 1,
+    "tries": 0,
     "passes": 1,
-    "use": {
-     "Chaos_Orb": 385.5
-    }
+    "use": {}
    },
    {
     "id": "t3",
     "do": "desecrate",
     "p": 1,
     "tries": 1,
-    "passes": 13.464862146236392,
+    "passes": 9.499094688780684,
     "use": {
-     "Ancient_Rib": 13.464862146236392,
-     "Omen_of_Dextral_Necromancy": 13.464862146236392
+     "Ancient_Rib": 9.499094688780684,
+     "Omen_of_Dextral_Necromancy": 9.499094688780684
     }
    },
    {
     "id": "t4",
     "do": "reveal",
-    "p": 0.07426737750000012,
+    "p": 0.10527319000000002,
     "tries": 1,
-    "passes": 13.464862146236392,
+    "passes": 9.499094688780684,
     "use": {
-     "Omen_of_Abyssal_Echoes": 13.464862146236392
+     "Omen_of_Abyssal_Echoes": 9.499094688780684
     }
    },
    {
@@ -191,10 +201,13 @@
    {
     "id": "t7",
     "do": "chaos",
-    "p": 0,
-    "tries": null,
+    "p": 0.047251,
+    "tries": 21.16357325770883,
     "passes": 1,
-    "use": {}
+    "use": {
+     "Perfect_Chaos_Orb": 21.16357325770883,
+     "Omen_of_Whittling": 21.16357325770883
+    }
    },
    {
     "id": "done",

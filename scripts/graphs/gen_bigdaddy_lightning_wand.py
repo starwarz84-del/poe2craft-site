@@ -49,7 +49,7 @@ g = {
  'tags': {
   'l5': {'gi': 13, 'tmax': 1}, 'crit': {'gi': 20, 'tmax': 1}, 'trans': {'gi': 60}, 'blk': {'gi': 1},
   'sd': {'gi': 3}, 'ld': {'gi': 7}, 'hy': {'gi': 4}, 'xl': {'gi': 28},
-  'gp': {'anyOf': ['sd', 'ld', 'hy', 'xl'], 'shown': 'xl', 'label': GPL},   # 성공 회차 = 영상 9:12 추가 번개 피해(11-13 오후 새 정책 A)
+  'gp': {'anyOf': ['sd', 'ld', 'hy', 'xl'], 'shown': {'gi': 28, 'tmax': 2, 'tmin': 2}, 'label': GPL},   # 성공 회차 = 영상 9:12 추가 번개 피해(11-13 오후 새 정책 A) — 26% = 2티어(tmin·tmax 2, 2026-11-13 S9 R3-6)
  },
  'require': {'all': [{'has': 'l5'}, {'has': 'crit'}, {'has': 'trans'}, {'full': 'p'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},

@@ -37,7 +37,7 @@ g = {
   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
    'desc': K('영상 그대로: 공개·엑잘 결과 그대로', 'As the video: keep the reveal and the exalt as they come')}],
  'tags': {
-  'rarP': {'gi': 28, 'tmax': 3}, 'rp': {'gi': 28}, 'cres': {'gi': 5, 'tmax': 2}, 'rarE': {'gi': 66}, 'allres': {'gi': 7},
+  'rarP': {'gi': 28, 'tmax': 3, 'tmin': 3}, 'rp': {'gi': 28}, 'cres': {'gi': 5, 'tmax': 2}, 'rarE': {'gi': 66}, 'allres': {'gi': 7},
  },
  'require': {'all': [{'has': 'rarP'}, {'has': 'cres'}, {'has': 'rarE'}, {'full': 'p'}, {'full': 's'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},

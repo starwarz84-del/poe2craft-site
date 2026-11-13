@@ -125,7 +125,7 @@ A(id='m1', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Chaos_Orb'
   skipIf={'not': {'any': [{'has': 'radLo'}, {'desSide': 'p'}]}}, skipTo='m2', skipHide=True, skipNote=K('지울 옵션이 없으면 건너뜀', 'Skip when nothing needs clearing'),
   edges=[{'if': {'any': [{'has': 'radLo'}, {'desSide': 'p'}]}, 'to': 'm1', 'res': 'fail', 'hide': True},
          {'if': {'has': 'rad'}, 'to': 'm3', 'label': K('매우 넓은 반경이 남음', 'Very Large radius kept')},
-         {'to': 'm2', 'res': 'ok'}],
+         {'to': 'm2', 'res': 'ok', 'label': K('반경·훼손 옵션이 모두 지워짐', 'Radius and desecrated lines all gone')}],   # 갈래 이름(2026-11-13 S9, R3-4: \'업그레이드 없음\')
   item=[J('p'), J('p'), CC, SCD, CD])
 A(id='m2', kind='act', group='main', pos=[0, 13.4], act='essence', cur='Ancient_Potent_Liquid_Melancholy', ess='rad', liquid=True,
   label=K('액체', 'Liquid'), goal=K('고대 위력적인 액체 우울 (접두 하나가 지워짐)', 'Ancient Potent Liquid Melancholy (one prefix goes)'),

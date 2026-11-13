@@ -227,6 +227,7 @@ ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .pr .ex2{color:var(--rare)!important}
 
 .node.opt{border-style:dashed}
+.node.via{border-style:dashed;opacity:.85}.node.via .tick{display:inline-block;min-width:2em;text-align:center;font-size:.85em}
 .phsum{display:block;margin-top:2px;font-size:11px;font-weight:400;color:var(--muted);letter-spacing:0}
 .prep{margin:-2px 0 2px 34px;font-size:12px;color:var(--muted)}
 .prep summary{cursor:pointer;color:var(--muted)}
@@ -1071,7 +1072,8 @@ function analyse(r){
   let bases = passes[0];
   if(r.fcRead){ const F=r.fcRead, uc2=userCost(r);
     out.forEach((o,i)=>{ const s=o.n.fcs; if(o.n.fst){ o.pre = i>0 ? out[i-1].state : o.pre; o.state=o.n.fst.map(m=>({...m})); } else if(i>0 && o.n.do==='note'){ o.pre=out[i-1].state; o.state=out[i-1].state.map(m=>({...m})); }
-      if(!s) return; o.p=s.p??1; o.tries=s.loop || s.pX ? s.tries : s.p>0?1/s.p:1; o.pX=s.pX||0; /* 다른 출구가 있으면 평균 횟수 = 시뮬 시도 수(1/확률이 아님, 2026-11-13 S7) */ /* 접힌 반복 안 상자: 반복이 다시 부르니 평균 횟수는 시뮬 사용량 그대로(2026-11-13 S2) */ o.R=null; o.p2=null; o.lose=0; o.lostRedo=null; o.pUnknown=false; o.pDep=s.p==null; if(s.p==null) o.pWhy=L('결과에 따라 갈림','depends on the result'); o.warn=null; o.liquid=false; /* 엔진의 '유동체로 바꿀 수 있어 원소 저항 모두 성공' 안내는 시뮬 값을 쓰는 단계엔 맞지 않음(2026-11-13 S2, G5 보고) */ if(o.fixedTries!=null) o.fixedTries=s.tries; o.use={...s.use}; o.passes=1; o.useTries=s.tries; o.settleK=null; });
+      if(!s) return; const wasX = !!o.pGuess || (o.pUnknown && (()=>{ try{ return specUnknown(r, o.n.target||{})==='x'; }catch(e){ return false; } })());   /* 증강물 옵션(콜르 등): 시뮬은 추정 가중치 — '가중치 추정' 표시가 빠지던 것(2026-11-13 S9, R3-13 소켓 장갑 2번) */
+      o.p=s.p??1; if(wasX && o.p<0.995){ o.pEst=true; o.pGuess=true; } o.tries=s.loop || s.pX ? s.tries : s.p>0?1/s.p:1; o.pX=s.pX||0; /* 다른 출구가 있으면 평균 횟수 = 시뮬 시도 수(1/확률이 아님, 2026-11-13 S7) */ /* 접힌 반복 안 상자: 반복이 다시 부르니 평균 횟수는 시뮬 사용량 그대로(2026-11-13 S2) */ o.R=null; o.p2=null; o.lose=0; o.lostRedo=null; o.pUnknown=false; o.pDep=s.p==null; if(s.p==null) o.pWhy=L('결과에 따라 갈림','depends on the result'); o.warn=null; o.liquid=false; /* 엔진의 '유동체로 바꿀 수 있어 원소 저항 모두 성공' 안내는 시뮬 값을 쓰는 단계엔 맞지 않음(2026-11-13 S2, G5 보고) */ if(o.fixedTries!=null) o.fixedTries=s.tries; o.use={...s.use}; o.passes=1; o.useTries=s.tries; o.settleK=null; });
     for(const k in tot) delete tot[k]; for(const k in totAll) delete totAll[k]; for(const k in manual) delete manual[k];
     Object.assign(tot, F.use||{}); Object.assign(totAll, F.use||{}); bases = F.bases||1;
     if(out[0]) out[0].passes = bases;
@@ -1214,7 +1216,7 @@ function overviewHTML(r){
   // both cards get the same rows (final item's slots and quality line) so they line up
   // the start card shows the base itself: junk slots it came with stay empty (an unrevealed desecration shows as one)
   const FO=finCardO(r);
-  const tip = (o, isStart) => isStart ? itemTipHTML(r,{...o, state:o.state.filter(m=>m.gi!=null || m.unrev), pre:o.state.filter(m=>m.gi!=null || m.unrev),   /* 미공개 훼손은 '훼손 옵션 (미공개)'로 보임 — 빈칸 'S'이던 것(2026-11-13 S2, G2 보고) */ cap:{...fin.cap}, sockets:FO.sockets}, {showQual:!!FO.qual?.v, final:false}) : itemTipHTML(r, FO, {showQual:!!FO.qual?.v, final:true});
+  const tip = (o, isStart) => isStart ? itemTipHTML(r,{...o, state:o.state, pre:o.state,   /* 시작 잡옵도 줄로(잡옵) — 'S 0/3'으로 보이던 것(2026-11-13 S9, R3-11) */   /* 미공개 훼손은 '훼손 옵션 (미공개)'로 보임 — 빈칸 'S'이던 것(2026-11-13 S2, G2 보고) */ cap:{...fin.cap}, sockets:FO.sockets}, {showQual:!!FO.qual?.v, final:false}) : itemTipHTML(r, FO, {showQual:!!FO.qual?.v, final:true});
   return `<section class="ovw"><div class="otags">${infoTags(r)}</div>
     <div class="ostart" data-pair><div><p class="olab"><i class="dot"></i>${L('시작 아이템','Starting item')}</p>${tip(st,true)}</div>
       <div class="oarrow" aria-hidden="true">→</div>
@@ -1264,7 +1266,12 @@ function cardHTML(r){
 }
 /* 티어 상관없는 긴 anyOf(3개 넘음): 수치를 빼고 이름만, 묶음 이름(label)이 있으면 그 이름 — 최고 티어 수치 7개가 '또는'으로 이어지던 것(2026-11-13 S3 27번) */
 const specText = (r, s) => s && s.shown && s.shown.gi!=null ? specText0(r, s.shown) : s && s.anyOf && s.anyOf.length > 3 && s.anyOf.every(x=>!x.tmax) ? (s.label ? `<span class="mod">${esc(tx(s.label))}</span> <small>(${L('티어 상관없음','any tier')})</small>` : `<span class="mod">${s.anyOf.map(x=>esc(modLine(r,x.gi).txt.replace(/[+\-]?\(\d[\d.]*—\d[\d.]*\)%?|[+\-]?\d[\d.]*%?/g,'').replace(/\s+/g,' ').trim())).join(' · ')}</span> <small>(${L('티어 상관없음','any tier')})</small>`) : specText0(r, s);
-const specText0 = (r, s) => specList(s).map((x,k)=>{ const l=modLine(r,x.gi,x.tmax); return `<span class="mod">${esc(l.txt)}</span> <span class="tier ${l.g.g}">${esc(l.tag)}</span>`; }).join(` <b>${L('또는','or')}</b> `);
+const specText0 = (r, s) => modGroup(specList(s).map(x=>{ const l=modLine(r,x.gi,x.tmax); return {txt:l.txt, tag:l.tag, g:l.g.g}; })).map(l=>`<span class="mod">${esc(l.txt)}</span> <span class="tier ${l.g}">${esc(l.tag)}</span>`).join(` <b>${L('또는','or')}</b> `);
+/* 같은 티어 표시에 한 낱말만 다른 옵션은 한 줄로 — '화염 저항 … 또는 냉기 저항 … 또는 번개 저항 …' → '화염·냉기·번개 저항 +(31—45)% S1–3'(2026-11-13 S9, R3-1 시한 투구 8-3) */
+function modGroup(ls){ if(ls.length<3) return ls; const out=[...ls];
+  for(;;){ let best=null; out.forEach((a,i)=>{ const w=a.txt.split(' '); w.forEach((_,k)=>{ const key=a.tag+'|'+w.length+'|'+w.map((x,j)=>j===k?'#':x).join(' '); const mem=out.filter(b=>{ const v=b.txt.split(' '); return b.tag===a.tag && !b.grp && v.length===w.length && v.every((x,j)=>j===k || x===w[j]); }); if(mem.length>=2 && !a.grp && (!best || mem.length>best.mem.length)) best={mem, k}; }); });
+    if(!best) break; const w=best.mem[0].txt.split(' '), m={...best.mem[0], grp:true, txt:w.map((x,j)=>j===best.k ? best.mem.map(b=>b.txt.split(' ')[j]).join(KR()?'·':'/') : x).join(' ')}; const at=out.indexOf(best.mem[0]); best.mem.forEach(b=>out.splice(out.indexOf(b),1)); out.splice(at,0,m); }
+  return out; }
 // compact item state after a node: prefixes then suffixes, with free slots
 function stateHTML(r, o){
   const row = m => m.unrev ? `<div class="sm des">${L('훼손 (미공개)','Desecrated (hidden)')}</div>`
@@ -1301,7 +1308,7 @@ function stepTipsHTML(r, o){ const n=o.n||{}, out=[], seen=new Set();
   const auto=[]; for(const t of S.tips){ if(!t.auto || seen.has(t.id)) continue; const hit=t.auto.find(rule=>tipAutoHit(r,o,rule)); if(hit) auto.push({t, save:!!hit.save, w:Object.keys(hit).length}); }
   auto.sort((a,b)=>(b.save-a.save)||(b.w-a.w)).slice(0,2).forEach(x=>add(x.t, x.save));
   const NK=S.tipMeta?.notes||{};
-  const t0=n.target||{}, sp=[t0, t0.reveal, ...(t0.all||[])].find(x=>x && x.shown && x.alt?.length), alt=sp ? altLineHTML(r, [sp.shown.gi], sp.alt) : '';   /* 성공 회차 옵션 + 다른 유효 옵션 꿀팁 줄(S4) */
+  const t0=n.target||{}, sp=t0.noMiss||t0.keepReveal ? null /* 나오는 대로·결과 그대로 단계는 성공 판정이 없으니 '대신 …도 성공으로 침' 없음(2026-11-13 S9, R4-2) */ : [t0, t0.reveal, ...(t0.all||[])].find(x=>x && x.shown && x.alt?.length), alt=sp ? altLineHTML(r, [sp.shown.gi], sp.alt) : '';   /* 성공 회차 옵션 + 다른 유효 옵션 꿀팁 줄(S4) */
   const tl=(Array.isArray(n.tipTx)?n.tipTx:[]).filter(x=>x && typeof x==='object').map(x=>`<p class="altl">${esc(tx(x))}</p>`).join('');   /* 플로우차트 상자의 꿀팁 줄(graph2recipe tipTx, '💡 노린 옵션: …' — 2026-11-13 S6) */
   if(!out.length) return alt||tl ? `<div class="tiprow">${alt}${tl}</div>` : '';
   return `<div class="tiprow">${alt}${tl}${out.map(({t,save})=>{ const tt=`${save?'💰 '+L('더 저렴한 방법','Cheaper option'):'💡'} <span class="tipno">#${S.tips.indexOf(t)+1}</span> ${esc(tx(t.title))}`;
@@ -1319,15 +1326,15 @@ function nodeHTML(r, o, i, idx){
   let tgt='';
   if(n.do==='base'){ const b=baseOf(r); tgt=`<span class="mod">${esc(KR()?b.kr:b.en)}</span>${r.exceptional?` · <b class="excw">${L('특출난','Exceptional')}</b> (${esc(excText(r))})`:''} · ${L('아이템 레벨','ilvl')} ${r.ilvl}${(r.start?.quality||r.quality)?` · ${L('퀄리티','quality')} ${r.start?.quality||r.quality}%${r.start?.quality?L(' 이상','+'):''}`:''}${r.sockets?` · ${L('소켓','sockets')} ${r.sockets}`:''}`; }
   else if(n.do==='fracture') tgt=`${L('분열 목표','Fracture onto')}: ${t.gi!=null || t.anyOf ? specText(r,t) : L('옵션 하나(무작위)','one modifier (random)')}${n.alsoUseful?` · ${L('다른 레시피용','usable elsewhere')}: ${specText(r,{anyOf:n.alsoUseful})}`:''}`;
-  else if(t.noMiss && !t.keepReveal) tgt = t.reveal ? L(`${t.side==='p'?'접두':'접미'} 공개: 나오는 대로`,`${t.side==='p'?'Prefix':'Suffix'} reveal: keep what comes`) : L('나오는 대로','Keep what comes')+(t.gi!=null||t.anyOf?` <small>(${L('영상','video')}: ${specText(r,t)})</small>`:'');   /* 이 등급은 빗나감 선이 없는 단계(graph2recipe keep, 2026-11-13 S7) */
+  else if(t.noMiss && !t.keepReveal && !(t.reveal && !(t.reveal.gi!=null || t.reveal.anyOf?.length) && t.revealTx && !/[(%+]/.test(tx(t.revealTx)))) tgt = t.reveal ? L(`${t.side==='p'?'접두':'접미'} 공개: 나오는 대로`,`${t.side==='p'?'Prefix':'Suffix'} reveal: keep what comes`)+((t.reveal.gi!=null||t.reveal.anyOf?.length)?` <small>(${L('영상','video')}: ${specText(r,t.reveal)})</small>`:t.revealTx?` <small>(${L('영상','video')}: ${esc(tx(t.revealTx))})</small>`:'') : L('나오는 대로','Keep what comes')+(t.gi!=null||t.anyOf?` <small>(${L('영상','video')}: ${specText(r,t)})</small>`:t.all?` <small>(${L('영상','video')}: ${t.all.map(s=>specText(r,s)).join(' + ')})</small>`:'');   /* 공개도 영상 결과(POLICY (N), 2026-11-13 S9) */   /* 이 등급은 빗나감 선이 없는 단계(graph2recipe keep, 2026-11-13 S7) */
   else if(t.all) tgt=`${L('목표 모두','All of')}: `+t.all.map(s=>specText(r,s)).join(' <b>+</b> ');
   else if(t.gi!=null || t.anyOf) tgt=`${L('목표','Target')}: ${specText(r,t)}`;
-  if(t.plusJunk && tgt) tgt+=` <b>+</b> ${L(`랜덤 옵션 ${t.plusJunk}개`,`${t.plusJunk} random modifier${t.plusJunk>1?'s':''}`)}`;   /* 등급이 줄인 목표 + 나머지는 나오는 대로(graph2recipe plusJunk, 2026-11-13 S7) */
   else if(t.reveal && t.keepReveal && !(t.reveal.gi!=null || t.reveal.anyOf?.length)) tgt=L(`${t.side==='p'?'접두':'접미'} 공개: 결과 그대로`,`${t.side==='p'?'Prefix':'Suffix'} reveal: keep the result`);   /* 2026-11-13 S3 23·29·32번 */
   else if(t.reveal) tgt=`${t.side==='p'?L('접두','Prefix'):L('접미','Suffix')} ${L('공개 선택지 3개 중','reveal, among 3 options')}: ${(t.reveal.gi!=null || t.reveal.anyOf?.length) ? specText(r,t.reveal) : t.revealTx ? esc(tx(t.revealTx)) : L('아무 옵션','any option')}${o.q!=null && o.q!==o.p && !o.pUnknown && !r.fcRead /* 플로우차트 읽기: 단계 확률은 시뮬, '한 번 볼 때'는 엔진 값이라 서로 맞지 않음 — 뺌(2026-11-13 S3 47번) */?` <small>(${L('한 번 볼 때','one look')} ${pct(o.q)})</small>`:''}`;
   else if(t.unrev){ const sl=sideLbl(n,o,t.unrev); tgt=sl.any ? L('공개하지 않은 훼손 옵션 추가 (접두·접미 무관)','Adds an unrevealed desecrated modifier (prefix or suffix)') : L(`${sl.kr} 자리에 공개하지 않은 훼손 옵션 추가${sl.left?' (남은 자리)':''}`,`Adds an unrevealed desecrated ${sl.en}${sl.left?' (the free slot)':''}`); }
   else if(Array.isArray(t.junk) && t.anySide) tgt=L(`아무 옵션 ${t.junk.length}개 추가 (접두·접미 무관)`,`Adds ${t.junk.length} random modifiers (prefix or suffix)`);
   else if(Array.isArray(t.junk)){ const np=t.junk.filter(x=>x==='p').length, ns=t.junk.length-np; tgt=L(`아무 옵션 ${t.junk.length}개 추가 (${[np?`접두 ${np}`:'',ns?`접미 ${ns}`:''].filter(Boolean).join(' · ')})`,`Adds ${t.junk.length} random modifiers (${[np?`${np} prefix`:'',ns?`${ns} suffix`:''].filter(Boolean).join(', ')})`); }
+  else if(t.junk && t.asIs && n.do==='chaos') tgt = n.fcTarget && tx(n.fcTarget) ? esc(tx(n.fcTarget)) : L('옵션 하나 다시 굴림 (나오는 대로)','Rerolls one modifier (keep what comes)');   /* 정리용 카오스: 옵션을 더하지 않고 바꿈 — \'아무 옵션 1개 추가 (접두, 남은 자리)\'(2026-11-13 S9, R3-4) */
   else if(t.junk){ const sl=sideLbl(n,o,t.junk); tgt=L(`아무 옵션 ${t.count||1}개 추가 (${sl.any?'접두·접미 무관':sl.kr+(sl.left?', 남은 자리':'')})`,`Adds ${t.count||1} random modifier${(t.count||1)>1?'s':''} (${sl.any?'prefix or suffix':sl.en+(sl.left?', the free slot':'')})`); }
   else if(t.rune && t.swapAstrid) tgt=L(`룬 교체: 아스트리드의 창의성 → <span class="mod">${esc(tx(t.rune))}</span>${t.runeFill?' (빈 소켓에도)':t.runeCount>1?` ${t.runeCount}개`:''}`,`Rune swap: Astrid’s Creativity → <span class="mod">${esc(tx(t.rune))}</span>${t.runeFill?' (empty sockets too)':t.runeCount>1?` ×${t.runeCount}`:''}`);
   else if(t.rune && n.label && tx(n.label).includes(tx(t.rune)) && !t.runeCount && !t.runeFill) tgt='';   /* 단계 제목이 이미 '… 장착'이면 같은 글을 두 번 쓰지 않음(2026-11-13 S3 65번) */
@@ -1337,6 +1344,8 @@ function nodeHTML(r, o, i, idx){
   else if(t.slots) tgt=L(`${t.slots.s?'접미':'접두'} 자리 +1`,`+1 ${t.slots.s?'suffix':'prefix'} slot`);
   else if(t.mark){ const l=modLine(r,t.mark.gi); const ms=grp(r,t.mark.gi).g; tgt=`${L('목표','Target')}: <span class="mod">${esc(l.txt)}</span> ${ms==='p'?L('접두에','on a prefix'):L('접미에','on a suffix')} <small>(${L('접두·접미 반반','50/50 prefix or suffix')})</small>`; }
   else if(t.roll){ const l=modLine(r,t.roll.gi,1); tgt=`${L('최댓값까지','To the max roll')}: <span class="mod">${esc(l.txt)}</span>`; }
+  if(t.orAlso && tgt && !t.noMiss) tgt+=` <u>${L('또는','or')}</u> ${specText(r,t.orAlso)}`;   /* 다른 성공 선의 옵션(graph2recipe orAlso, 2026-11-13 S9) */
+  if(t.plusJunk && tgt) tgt+=` <b>+</b> ${L(`랜덤 옵션 ${t.plusJunk}개`,`${t.plusJunk} random modifier${t.plusJunk>1?'s':''}`)}`;   /* 등급이 줄인 목표 + 나머지는 나오는 대로(graph2recipe plusJunk, 2026-11-13 S7) — S9: 예전엔 이 줄 뒤 else if 사슬이 이 if에 붙어 plusJunk가 없으면 공개 목표가 덮어씀 */
   if(t.keep && tgt) tgt += ` · ${L('남길 옵션','Must keep')}: ${specText(r,t.keep)}`;   /* 성공 = 이 옵션이 지워지지 않음(2026-11-13 S3 36번) */
   if(t.removeDes) tgt=L('훼손 옵션 제거','Removes the desecrated modifier');
   if(t.removeJunk) tgt = t.removeJunk==='any' ? L('잡옵 제거','Removes a junk modifier') : L(`${t.removeJunk==='p'?'접두':'접미'} 잡옵 제거`,`Removes the junk ${t.removeJunk==='p'?'prefix':'suffix'}`);
@@ -1356,7 +1365,7 @@ function nodeHTML(r, o, i, idx){
   const gtx = s => esc(s).replace(/@([A-Za-z_]+)(로)?/g, (m,id,ro)=>{ const x=nm(cur(id)); if(!ro) return x; const c=x.charCodeAt(x.length-1)-0xAC00, j=c>=0 && c<11172 ? c%28 : 0; return x+(j && j!==8 ? '으로' : '로'); });   /* 받침에 따라 '으로/로' — '군왕의 합금로'(2026-11-13 S2, G1 보고) */
   /* 등급 갈림: 보고 있는 등급 줄만(다른 등급 글은 마우스를 올리면) — 두 등급 글이 모두 나와 길던 것(2026-11-13 S3 33번) */
   const gMe = n.grade && (n.grade.find(g=>g.tiers.includes(r.tier||'high')) || null), gOt = n.grade ? n.grade.filter(g=>g!==gMe) : [];
-  const grade = gMe ? `<div class="grd" title="${esc(gOt.map(g=>g.tiers.map(t=>TN[t]).join('·')+': '+gtx(tx(g))).join(' / '))}"><span class="gk">${L('등급 갈림','Grades split')}</span><span class="me"><b>${gMe.tiers.map(t=>TN[t]).join('·')}</b> ${gtx(tx(gMe))}</span></div>` : '';
+  const grade = gMe && !(tx(gMe)===L('이 단계 씀','uses this step') && gOt.every(g=>/이 단계 없음|not used/.test(tx(g)))) /* 이 등급만 쓰는 단계: 등급 탭에선 뺌(2026-11-13 S9, R3-10·R3-13) */ ? `<div class="grd" title="${esc(gOt.map(g=>g.tiers.map(t=>TN[t]).join('·')+': '+gtx(tx(g))).join(' / '))}"><span class="gk">${L('등급 갈림','Grades split')}</span><span class="me"><b>${gMe.tiers.map(t=>TN[t]).join('·')}</b> ${gtx(tx(gMe))}</span></div>` : '';
   const showP = o.p<0.995 && !t.reroll;
   const ts = n.ts && r.source?.url ? `<a class="ts" href="${esc(r.source.url)}&t=${n.ts.split(':').reduce((s,x)=>s*60+(+x),0)}s" target="_blank" rel="noopener">▶ ${esc(n.ts)}</a>` : '';
   const viaOne = v => `${icon(v.cur,r)}${esc(nm(cur(v.cur)))}${(v.omens||[]).map(x=>` + ${icon(x,r)}${esc(nm(cur(x)))}`).join('')}`;
@@ -1367,7 +1376,7 @@ function nodeHTML(r, o, i, idx){
     return `<div class="costin"><label>${L(n.cost==='base'?'베이스 가격':'들어간 비용','Cost')} <input type="number" min="0" step="any" inputmode="decimal" data-cost="${esc(n.cost)}" value="${v.v??''}" placeholder="${n.cost==='base' ? (+r.basePrice>0 ? +r.basePrice : +r.fcRead?.baseDiv>0 ? +(+r.fcRead.baseDiv).toFixed(2) : L('미정','TBD')) : 0}"></label>
       <select data-unit="${esc(n.cost)}" aria-label="${esc(L('단위','Unit'))}">${units.map(u=>`<option value="${u}" ${(v.u||'Divine_Orb')===u?'selected':''}>${esc(nm(cur(u)))}</option>`).join('')}</select>
       ${o.passes>1.01?`<small>× ${fmt(o.passes)} ${r.nodes.some(x=>x.do==='fracture') ? L('(분열 실패로 다시 하는 횟수 포함)','(includes redoing after fracture misses)') : L('(새 베이스로 다시 하는 횟수 포함)','(includes starting over on a new base)')}</small>`:''}${n.cost==='base' ? (()=>{ const t=tradeURL(r); return t ? `<a class="tradeb" href="${esc(t.url)}" target="_blank" rel="noopener" title="${esc(L('거래소에서 이 베이스 조건으로 검색 · 로그인 뒤에도 조건 유지','Searches the trade site with this base. If a login page appears, the conditions come back after you log in.'))}">${L('베이스템 구입 ↗','Buy this base ↗')}</a>${t.miss||!t.typeOK?`<small>${L('일부 조건은 거래소에서 직접 입력','Some conditions need entering on the trade site')}</small>`:''}` : ''; })() : ''}</div>`; })() : '';
-  const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : n.compromise && !o.pUnknown && o.p<0.995 ? `<div class="pr">${L('타협 가능','Can settle')}<small>${L('1회 시도','1 attempt')} · ${pct(o.p)}</small>${o.settleK?`<small>${L('다시 하면 평균','retry avg')} ${fmt(o.settleK)}${L('회','×')}${(()=>{ const d=divOf(o.settleUse); return d && d.v>=0.005 ? ` · ${L('약','≈')} ${fmtDiv(d.v)} div` : ''; })()}</small>`:''}</div>` : o.pUnknown||o.pDep ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):t.noMiss?L('1회 시도','1 attempt'):L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산함. 일반 옵션은 원래 가중치 그대로.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${showP&&o.pX?`<small>${L('그 밖','other')} ${pct(o.pX)}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
+  const pr = n.do==='note'||n.do==='base'||n.do==='manual' ? '' : n.compromise && !o.pUnknown && o.p<0.995 ? `<div class="pr">${L('타협 가능','Can settle')}<small>${L('1회 시도','1 attempt')} · ${pct(o.p)}</small>${o.settleK?`<small>${L('다시 하면 평균','retry avg')} ${fmt(o.settleK)}${L('회','×')}${(()=>{ const d=divOf(o.settleUse); return d && d.v>=0.005 ? ` · ${L('약','≈')} ${fmtDiv(d.v)} div` : ''; })()}</small>`:''}</div>` : o.pUnknown||o.pDep ? `<div class="pr">—<small>${o.pWhy||L('가중치 미확인','weights unknown')}</small>${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>` : `<div class="pr">${showP?pct(o.p):'—'}<small>${showP?L('시도당 성공','per try'):t.noMiss?L('1회 시도','1 attempt'):n.fcs?.fixedN>1.01?L(`${fmt(n.fcs.fixedN)}회 사용`,`used ${fmt(n.fcs.fixedN)}×`) /* 정해진 횟수 반복(graph2recipe fixedN, 2026-11-13 S9) */:L('확정','certain')}</small>${showP&&o.pEst?`<small class="est" title="${esc(L('훼손 전용 옵션은 가중치가 공개되지 않아(데이터상 전부 1) 추정값으로 계산함. 일반 옵션은 원래 가중치 그대로.','Desecration-only modifiers have no published weight (all 1 in the data), so these odds are an estimate. Regular modifiers use their real weights.'))}">${L('가중치 추정','estimated weights')}</small>`:''}${showP?`<small>${singleTry(r,n)?L('1회 시도','1 attempt'):`${L('평균','avg')} ${fmt(o.R!=null?1+o.R:o.tries)}${L('회','×')}`}</small>`:''}${showP&&o.pX?`<small>${L('그 밖','other')} ${pct(o.pX)}</small>`:''}${o.p2!=null?`<small>${n.do==='reveal'?L('재시도 공개','retry reveal'):L('재시도','retry')} ${pct(o.p2)}</small>`:''}${n.expect?`<small class="ex2">${L('제작자 기준','author')} ${fmt(n.expect)}${L('회','×')}</small>`:''}</div>`;
   const dn = doneSet(r).has(n.id);
   return `<li class="node ${n.optional?'opt':''} ${dn?'done':''}" data-node="${esc(n.id)}"><div class="nbody"><span class="n"><button type="button" class="tick" data-done="${esc(n.id)}" aria-pressed="${dn}" title="${esc(L('완료 표시','Mark done'))}">${dn?'✓':tickLbl(r,n.id,idx)}</button></span><div class="what">${head}${n.optional?`<span class="optl">${L('선택','optional')}</span>`:''}${ts}</div>${pr}
     ${tgt?`<div class="tgt">${tgt}</div>`:''}${n.loopNote?`<div class="lpn">${n.loopNote.goal?`<div><b>${L('반복 목표','Loop goal')}</b> ${esc(tx(n.loopNote.goal))}</div>`:''}${n.loopNote.worst?`<div class="w"><b>${L('최악의 경우','Worst case')}</b> ${esc(tx(n.loopNote.worst))}</div>`:''}</div>`:''}${fcRows}${fail}${grade}${n.note && (n.do==='base' || !tgt)?`<div class="nt">${esc(tx(n.note))}</div>`:''}${n.br?`<div class="nt">${esc(tx(n.br))}</div>`:''}${stepTipsHTML(r,o)}${o.liquid?`<div class="nt liqt">💧 ${L('저항이 접미에 옵션 하나뿐이라 다른 원소 저항이 떠도 유동체로 바꿀 수 있어서, 화염·냉기·번개 모두 성공으로 계산','Only one resistance line, so any element counts: a Liquid can switch it afterwards.')}</div>`:''}${o.warn?`<div class="nt warnt">⚠ ${esc(o.warn)}</div>`:''}${costIn}${use?`<div class="use">${use}${divHTML(divOf(o.use))}</div>`:''}</div>
@@ -1420,15 +1429,16 @@ function routeHTML(r, o, i, via){
     const dst = (to, x) => x?.toAlt?.length ? (()=>{ const ts=[to,...x.toAlt], nums=ts.filter(t=>t!=='done').sort((a,b)=>(a==='self'?stepNo(r,n.id):stepNo(r,a))-(b==='self'?stepNo(r,n.id):stepNo(r,b))).map(t=>t==='self'?stepLbl(r,n.id):stepLbl(r,t)), dn=ts.includes('done'); /* 여러 도착: 번호만 '번'을 붙이고 완성은 따로 — '11·13·12·완성번'(2026-11-13 S2) */ return nums.length ? L(`${nums.join('·')}번${dn?' 또는 완성':''}`,`step${nums.length>1?'s':''} ${nums.join(', ')}${dn?' or done':''}`) : L('완성','done'); })() : to==='state' ? L('아이템 상태에 맞는 단계','the step that fits the item') : to==='self' ? L('다시','again') : to==='done' ? L('완성','done') : to==='restart' ? L('버리고 처음부터','discard, start over') : L(`${stepLbl(r,to)}번`,`step ${stepLbl(r,to)}`);
     const viaT = v => [v, ...(v.then||[])].reduce((a,w)=>{ const k=[w.cur,...(w.omens||[]),w.no||''].join('+'), last=a[a.length-1]; if(last && last.k===k){ last.n=(last.n||1)+(w.n||1); } else a.push({...w, k}); return a; },[]).map(   /* 같은 지우기가 이어지면 한 번으로 합쳐 ×n — '소멸의 오브 ×1.7 → 소멸의 오브'(2026-11-13 S3 40번) */w=>(w.no?`<b>${esc(w.no)}${L('번','')}</b> `:'')+[w.cur, ...(w.omens||[])].map(x=>`${icon(x,r)}${esc(nm(cur(x)))}`).join(' + ')+(w.n>1.05?` ×${fmt(w.n)}`:'')).join(' → ');   /* then = 지우기 상자를 둘 이상 거침, n = 같은 지우기를 평균 몇 번(2026-11-12) */
     const hasX=n.routes.some(x=>x.exit), rs=n.routes.filter(x=>!(x.to==='self' && !x.via && !hasX)), oks=rs.filter(x=>x.cls==='ok' && !x.skip && !x.exit);   /* 다른 출구가 있는 반복: 평균 개수가 1/확률이 아니니 '빗나감 → 다시'도 줄로(2026-11-13 S7) */   /* 같은 커런시를 목표가 나올 때까지 되풀이하는 선은 줄로 쓰지 않음 — 확률·평균 개수가 이미 보여 줌(2026-11-12) */
-    if(!rs.length) return '';
-    const nxt = r.nodes.slice(i+1).find(x=>!x.optional);   /* 바로 다음 단계(선택 단계는 건너뜀) — 퀄리티 단계에 '성공 → 6번'이 붙던 것(2026-11-13 S3 55번) */
-    if(rs.length===1 && rs[0].cls==='ok' && !rs[0].skip && (rs[0].to==='done' ? (i===r.nodes.length-2 || nxt?.id==='done') : (stepNo(r,rs[0].to)===i+2 || nxt?.id===rs[0].to))) return '';
+    const nxt = r.nodes.slice(i+1).find(x=>!x.optional);
+    { const ns=rs.filter(x=>!x.skip), x0=ns[0]; if(ns.length===1 && rs.length>1 && x0.cls==='ok' && !x0.lab && !x0.via && !x0.toAlt && x0.to!=='done' && (stepNo(r,x0.to)===i+2 || nxt?.id===x0.to)) rs.splice(rs.indexOf(x0),1); }   /* 다음 번호로 가는 성공 줄은 건너뜀 줄이 있어도 생략(2026-11-13 S9, R3-5 MazBro +5 목걸이 13번 '성공 → 14번') */
+    if(!rs.length) return '';   /* 바로 다음 단계(선택 단계는 건너뜀) — 퀄리티 단계에 '성공 → 6번'이 붙던 것(2026-11-13 S3 55번) */
+    if(rs.length===1 && rs[0].cls==='ok' && !rs[0].skip && !rs[0].via /* '먼저: 소멸'이 붙은 선은 남김 — 그 지우기 번호가 사라져 12-3 → 12-5로 건너뛰던 것(2026-11-13 S9, R3-5) */ && (rs[0].to==='done' ? (i===r.nodes.length-2 || nxt?.id==='done') : (stepNo(r,rs[0].to)===i+2 || nxt?.id===rs[0].to))) return '';
     rs.forEach(x=>{ const lab = x.lab ? esc(tx(x.lab).replace(/^[a-z]/,c=>c.toUpperCase())) : x.keepAll ? L('결과 그대로','Keep the result') : x.cls==='ok' ? L('성공','Success') : L('실패','Miss');
       const okSum=oks.reduce((t,y)=>t+(y.share||0),0), rel = x.cls==='ok' && !x.skip && !x.exit && oks.length>1 && okSum>0 && okSum<0.995;   /* 성공 갈래가 여럿이면 성공 중 비율(시도당 비율이 0.05%처럼 작게 보이던 것, 2026-11-12 활 9번) */
       const sh = x.share!=null && x.share<0.995 && (x.to!=='self' || hasX) && !(x.cls==='ok' && !x.skip && !x.exit && oks.length===1 && !hasX) ? (rel ? ` (${L('성공의','of hits')} ${pct(x.share/okSum)})` : ` (${pct(x.share)})`) : '';
       const back = !['self','done','restart','state'].includes(x.to) && stepNo(r,x.to)<i+1, lostS = x.lost || (x.vo && back && x.alt);
       const lab2 = x.vo && back && x.alt && (!x.lab || x.plab) ? L('원하는 옵션이 지워지면','Wanted mod removed') : lab;
-      if(lostS) out.push(chip('no', lab2+sh, L(/(번|완성)$/.test(dst(x.to,x)) ? `${dst(x.to,x)}으로` : dst(x.to,x), dst(x.to,x)),   /* '버리고 처음부터으로' 조사 오류(2026-11-13 S2, G6 보고) */ (x.n?` <small>(${L('평균','avg')} ${fmt(x.n)}${L('회','×')})</small>`:'')));
+      if(lostS) out.push(chip('no', lab2+sh, L(/(번|완성)$/.test(dst(x.to,x)) ? `${dst(x.to,x)}으로` : dst(x.to,x), dst(x.to,x)),   /* '버리고 처음부터으로' 조사 오류(2026-11-13 S2, G6 보고) */ (x.n?` <small>(${L('평균','avg')} ${fmt(x.n)}${L('회','×')})</small>`:'')+(x.via?` <small>(${L('먼저','first')}: ${viaT(x.via)})</small>`:'') /* 지워져 앞 단계로 가는 갈래도 '먼저: 소멸'(2026-11-13 S9, R3-12 ZenM 밸런스 5번) */));
       else if(x.to==='self' && x.via && /(^|—\s*)(다시|again|retry)/i.test(tx(x.lab||{kr:'',en:''}))) out.push(chip(x.cls, (lab.replace(/\s*—\s*(다시|again|retry).*$/i,'').replace(/^(다시|again|retry)(\s.*)?$/i,'') || (x.cls==='ok'?L('성공','Success'):L('빗나감','Miss')))+sh, L('다시','again'), ` <small>(${L('먼저','first')}: ${viaT(x.via)})</small>`));   /* '다시 엑잘 → 다시' 겹침(2026-11-13 S3 5번) */
       else out.push(chip(x.cls, lab+sh, dst(x.to,x), x.via?` <small>(${L('먼저','first')}: ${viaT(x.via)})</small>`:'')); });
     return out.length ? `<div class="routes">${out.join('')}</div>` : ''; }
@@ -1446,7 +1456,18 @@ function routeHTML(r, o, i, via){
 let _tipSeen=null;   // tips already shown in the current phase (a tip shows once per phase)
 function flowHTML(r){
   const a=analyse(r), byId=Object.fromEntries(a.nodes.map(o=>[o.n.id,o]));
-  const item = o => nodeHTML(r, o, a.nodes.indexOf(o), a.nodes.indexOf(o)+1);
+  /* 접힌 반복 안의 지우기 상자(앞 단계 갈래의 '먼저: 4-3번 소멸')는 레시피 단계가 아니라서 번호가 건너뛰던 것 — 그 자리에 지우기 한 줄(2026-11-13 S9, R3-4) */
+  const fnos=new Set(r.nodes.map(x=>x.fcNo).filter(Boolean)), vEmit=new Set();
+  const viaRow = no => { let v=null; const by=[];
+    for(const x of r.nodes) for(const rt of x.routes||[]){ const w=[rt.via, ...(rt.via?.then||[])].find(y=>y && y.no===no); if(w){ v=v||w; if(x.fcNo && !by.includes(x.fcNo)) by.push(x.fcNo); } }
+    if(!v) return '';
+    const c=[v.cur, ...(v.omens||[])].filter(Boolean).map(x=>`${icon(x,r)}<b>${esc(nm(cur(x)))}</b>`).join(' + ');
+    return `<li class="node via"><div class="nbody"><span class="n"><span class="tick">${esc(no)}</span></span><div class="what">${c}<div class="tgt">${L(`지우기 — ${by.join('·')}번 갈래에서 먼저 씀`,`Removal — used first by the branches of step${by.length>1?'s':''} ${by.join(', ')}`)}</div></div></div></li>`; };
+  const vMax={}; for(const x of r.nodes) for(const rt of x.routes||[]) for(const w of [rt.via, ...(rt.via?.then||[])]){ const m=/^(.+)-(\d+)$/.exec(w?.no||''); if(m) vMax[m[1]]=Math.max(vMax[m[1]]||0, +m[2]); }
+  const fMax={}; for(const x of r.nodes){ const m=/^(.+)-(\d+)$/.exec(x.fcNo||''); if(m) fMax[m[1]]=Math.max(fMax[m[1]]||0, +m[2]); }
+  const item = o => { let pre='', post=''; const m=/^(.+)-(\d+)$/.exec(o.n.fcNo||''); if(m){ for(let j=1;j<+m[2];j++){ const no=`${m[1]}-${j}`; if(!fnos.has(no) && !vEmit.has(no)){ vEmit.add(no); pre+=viaRow(no); } }
+      if(+m[2]===fMax[m[1]]) for(let j=+m[2]+1;j<=(vMax[m[1]]||0);j++){ const no=`${m[1]}-${j}`; if(!fnos.has(no) && !vEmit.has(no)){ vEmit.add(no); post+=viaRow(no); } } }   /* 마지막 단계 뒤의 지우기 상자(4-5)도 */
+    return pre+nodeHTML(r, o, a.nodes.indexOf(o), a.nodes.indexOf(o)+1)+post; };
   // render a run of nodes, folding side paths and back-loops into boxes
   function run(list){
     let html='', k=0;
@@ -1734,12 +1755,17 @@ function fcModel(g, params={}){ const byId={}; g.nodes.forEach(n=>byId[n.id]=n);
 const fcVidOf = (g, params) => (g.versions||[]).find(v=>Object.entries(v.params||{}).every(([k,x])=>String(params?.[k])===String(x)))?.id;
 function fcShownLeaves(tags, tag, vid, params){ const T=tags?.[tag]; if(!T || T.gi!=null || !T.anyOf) return null; let s=T.shownBy && T.shownBy[vid]!=null ? T.shownBy[vid] : T.shown; if(s==null) return null;
   const tm=v=>{ if(typeof v==='string' && v[0]==='$') v=params?.[v.slice(1)]; v=parseInt(v); return isNaN(v)?null:v; };
-  const out=(Array.isArray(s)?s:[s]).map(x=>typeof x==='number' ? {gi:x, tmax:null} : typeof x==='string' ? (tags[x] && tags[x].gi!=null ? {gi:tags[x].gi, tmax:tm(tags[x].tmax), tag:x} : null) : x && x.gi!=null ? {gi:x.gi, tmax:tm(x.tmax)} : null).filter(Boolean);
+  const out=(Array.isArray(s)?s:[s]).map(x=>typeof x==='number' ? {gi:x, tmax:null} : typeof x==='string' ? (tags[x] && tags[x].gi!=null ? {gi:tags[x].gi, tmax:tm(tags[x].tmax), tag:x} : null) : x && x.gi!=null ? {gi:x.gi, tmax:tm(x.tmax), ...(x.tmin?{tmin:tm(x.tmin)}:{})} : null).filter(Boolean);   /* tmin = 성공 회차의 정확한 티어(2026-11-13 S9) */
   return out.length ? out : null; }
+/* 아이템 칸에 이미 있는 옵션 gi: 잎 하나짜리 태그 줄 + 묶음 태그 줄의 성공 회차 옵션(순번) — skip 태그의 마지막 줄(지금 노리는 줄)은 뺌(2026-11-13 S9: Fubgun 화살통 3번 꿀팁에 이미 있는 투사체 스킬 레벨) */
+function fcOnGis(g, items, vid, params, skip){ const ls=(items||[]).filter(l=>l.m!=='j' && (l.tags||[]).length), k={}, out=new Set(); let last=-1; ls.forEach((l,i)=>{ if(l.tags[0]===skip) last=i; });
+  ls.forEach((l,i)=>{ const t=l.tags[0], j=k[t]||0; k[t]=j+1; if(i===last) return; const lv=fcLeafGis(g.tags,t); if(lv.length===1) out.add(lv[0]); else { const sh=fcShownLeaves(g.tags,t,vid,params); if(sh) out.add(sh[Math.min(j,sh.length-1)].gi); } }); return out; }
 function fcLeafGis(tags, t, seen=[]){ const T=typeof t==='string' ? (seen.includes(t)?null:tags?.[t]) : t; if(!T) return []; if(T.gi!=null) return [T.gi]; const out=[]; (T.anyOf||[]).forEach(x=>fcLeafGis(tags, x, typeof t==='string'?[...seen,t]:seen).forEach(g=>{ if(!out.includes(g)) out.push(g); })); return out; }
 /* 옵션 이름(수치 뺌) — 꿀팁 줄용. 복합 옵션은 '와/과'로 */
 const josaWa = w => { const c=(w||'').trim().slice(-1).charCodeAt(0); return c>=0xAC00 && c<=0xD7A3 && (c-0xAC00)%28 ? '과' : '와'; };
-const optClean = t => String(t||'').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)(\s*(?:~|to)\s*[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\))?%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\bAdds\s+to\b/g,'Adds').replace(/[ \t]+/g,' ').replace(/ ?~ ?/g,' ').replace(/[ \t]+/g,' ').trim()
+const optClean = t => { const keep=[]; let x=String(t||'').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)%?(?=[와과의만로에은는이가을를])/g, m=>{ keep.push(m); return String.fromCharCode(0xE000+keep.length-1); });   /* 바로 뒤에 조사가 붙은 수치는 남김 — '회피의 와 동일한'(2026-11-13 S9, F2a 보고) */
+  return optClean0(x).replace(/[\uE000-\uE0FF]/g,c=>keep[c.charCodeAt(0)-0xE000]); };
+const optClean0 = t => String(t||'').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)(\s*(?:~|to)\s*[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\))?%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\bAdds\s+to\b/g,'Adds').replace(/[ \t]+/g,' ').replace(/ ?~ ?/g,' ').replace(/[ \t]+/g,' ').trim()
   .replace(/피해의\s*를\s*추가 (.+?) 피해로 획득/g,'추가 $1 피해').replace(/(^|\s)의\s+확률로\s+/g,'$1').replace(/(^|\s)[의를을]\s+/g,'$1').replace(/\s만큼\s/g,' ').replace(/(^|\n)\s*(?:to|of)\s+/gi,'$1').replace(/\bGain\s+of\s+Damage\s+as\s+Extra\s+(\w+)\s+Damage\b/gi,'Extra $1 Damage').replace(/^chance to /i,'').trim();   /* 수치가 빠져 남은 조사·틀 정리(추가 냉기 피해, 적 관통) */
 function optNm(r, gi, pct){ let G; try{ G=grp(r,gi); }catch(e){ return ''; } const t=G?.t?.[0]; if(!t) return ''; let raw=KR()?t[4]:t[5]; if(pct) raw=String(raw||'').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)%/g,' % ').replace(/[+\-]?\d[\d.]*%/g,' % ');   /* pct: '%' 표시를 남김(비슷한 이름 구분용) */
   const parts=optClean(raw).replace(/[ \t]+/g,' ').split(/\n/).map(x=>x.trim()).filter(Boolean); return KR() ? parts.reduce((a,b)=>a?a+josaWa(a)+' '+b:b,'') : parts.join(' and '); }
@@ -1761,6 +1787,7 @@ function altGroup(L){ const out=[]; let rest=[...L], grouped=false;
   rest.forEach(x=>out.push({at:L.indexOf(x), t:x})); out.sort((p,q)=>p.at-q.at); return {list:out.map(x=>x.t), grouped}; }
 function altTipTx(r, shown, alts){ const N=altNames(r, [...new Set([...shown, ...alts])]), nm=g=>N.find(x=>x.g===g)?.n;
   let A=[...new Set(shown.map(nm).filter(Boolean))], B=[...new Set(alts.map(nm).filter(Boolean))].filter(x=>!A.includes(x)); if(!A.length || !B.length) return '';
+  B=B.map(b=>A.some(a=>a!==b && (a.endsWith(' '+b) || a.endsWith('와 '+b) || a.endsWith('과 '+b))) ? b+L(' 단독',' alone') : b);   /* 복합 옵션 이름 끝과 같은 단일 옵션 — '…증가와 생명력 최대치 대신 생명력 최대치'가 겹쳐 읽히던 것(2026-11-13 S9, R3-11) */
   const T=S.tipMeta?.altTip || {kr:'{a} 대신 {b}도 성공으로 침', en:'{b} also counts instead of {a}'};
   const all=[...A, ...B], F=altFrame(all), tot=all.reduce((t,n)=>t+n.length,0); let head='', jA=KR()?'·':' and ', jB=KR()?'·':' or ';
   if(F && tot>=60 && F.saved>=20){ head=KR() ? `${F.P} ~${F.Q?' '+F.Q:''} 옵션은 ` : `${F.P} …${F.Q?' '+F.Q:''}: `;   /* 한글: '… 증가도 부여:'가 잘린 글처럼 보여 '~ 증가도 부여 옵션은'으로(2026-11-13 S7, R-E1 Chiba) */ A=F.mid.slice(0,A.length); B=F.mid.slice(A.length); }   /* 모두 같은 틀이면 틀을 맨 앞에 한 번 */
@@ -1773,8 +1800,8 @@ function fcShowLines(tags, lines, vid, params, r){ const sl=t=>fcShownLeaves(tag
   lines.forEach(l=>{ const t=l.tag, L0=t && !l.label && !l.random ? sl(t) : null; if(!L0) return; const i=k[t]||0; k[t]=i+1; (all[t]=all[t]||[]).push(i<L0.length?L0[i].gi:null); });
   const k2={}; const out=lines.map(l=>{ const t=l.tag, L0=t && !l.label && !l.random ? sl(t) : null; if(!L0) return l; const i=k2[t]||0; k2[t]=i+1; if(i>=L0.length) return l;
     const x=L0[i]; let G=null; try{ G=r?grp(r,x.gi):null; }catch(e){} const pt=`${t}~${i}`, lt=tags[t]?.tmax;
-    ext[pt]={gi:x.gi, s:G?.g, sec:G?.s, tmax:x.tmax || l.tmax || (typeof lt==='number'?lt:null)};
-    const {tag, label, any, ...rest}=l; return {...rest, tag:pt, of:t, sh:true, alt:fcLeafGis(tags,t).filter(g=>!(all[t]||[]).includes(g))}; });
+    ext[pt]={gi:x.gi, s:G?.g, sec:G?.s, tmax:x.tmax || l.tmax || (typeof lt==='number'?lt:null), ...(x.tmin?{tmin:x.tmin}:{})};
+    const {tag, label, any, ...rest}=l; return {...rest, ...(x.tmin?{tmin:x.tmin}:{}), tag:pt, of:t, sh:true, alt:fcLeafGis(tags,t).filter(g=>!(all[t]||[]).includes(g))}; });
   return {lines:out, tags:{...tags, ...ext}}; }
 /* 카드 아래 꿀팁 줄: 성공 회차 옵션으로 바꾼 줄(sh)마다 원래 묶음 태그별로 한 줄 */
 function altCardHTML(r, state){ const by={}, on=new Set((state||[]).map(m=>m.gi).filter(g=>g!=null)); (state||[]).forEach(m=>{ if(!m.sh || m.gi==null) return; const b=by[m.of]=by[m.of]||{shown:[], alt:m.alt||[]}; b.shown.push(m.gi); });
@@ -1783,7 +1810,7 @@ function altCardHTML(r, state){ const by={}, on=new Set((state||[]).map(m=>m.gi)
 function fcTagText(g, tag, params, k=0){ if(typeof tag==='string' && tag[0]==='$') return fcTagText(g, params[tag.slice(1)], params, k); const T=g.tags?.[tag];
   { const sh=T && fcShownLeaves(g.tags, tag, fcVidOf(g, params), params); if(sh){ const x=sh[Math.min(k, sh.length-1)];   /* 성공 회차 옵션(S4) */
       if(x.tag && g.tags[x.tag]?.tiers) return fcTagText(g, x.tag, params);
-      if(g._r){ try{ const l=modLine(g._r, x.gi, x.tmax); return {s:l.g.g, txt:l.txt.replace(/\n/g,' · '), tier:l.tag.replace(/^[PS]/,'T').replace(/^T$/,''), sec:l.g.s}; }catch(e){} } } }
+      if(g._r){ try{ const l=modLine(g._r, x.gi, x.tmax, null, x.tmin); return {s:l.g.g, txt:l.txt.replace(/\n/g,' · '), tier:l.tag.replace(/^[PS]/,'T').replace(/^T$/,''), sec:l.g.s}; }catch(e){} } } }
   if(T && T.label) return {s:T.s, txt:tx(T.label), tier:''}; if(T && T.anyOf && !T.tiers){ const v=T.anyOf.map(x=>typeof x==='string'?fcTagText(g,x,params):null).filter(Boolean); return v.length ? {s:v[0].s, txt:v.map(x=>x.txt+(x.tier?' - '+x.tier:'')).join(L(' 또는 ',' or ')), tier:''} : null; } if(!T || !T.tiers) return null; let tm=T.tmax; if(typeof tm==='string' && tm[0]==='$') tm=+params[tm.slice(1)]||1;
   const lo=T.lo||1, t1=tx({kr:T.tiers[lo-1][0], en:T.tiers[lo-1][1]}); let txt=t1;   /* lo = 아이템 레벨로 붙을 수 있는 가장 좋은 티어 */
   if(tm>lo && T.tiers[tm-1]){ const lq=[...tx({kr:T.tiers[tm-1][0], en:T.tiers[tm-1][1]}).matchAll(/\((\d+(?:\.\d+)?)—(\d+(?:\.\d+)?)\)/g)]; let i=0;
@@ -1795,10 +1822,13 @@ function fcTagText(g, tag, params, k=0){ if(typeof tag==='string' && tag[0]==='$
 function fcWant(g, n, params){ const out=[]; const ov=(n.showIf||[]).find(o=>Object.entries(o.param||{}).every(([k,v])=>params[k]===v)); if(ov) n={...n, show:ov.show, showText:ov.showText};   // per-version wording
   const vid=fcVidOf(g, params), alts=[];
   if(n.show){ const nth=t=>Math.max(0,(n.item||[]).filter(l=>(l.tags||[]).includes(t)).length-1);   /* 묶음 태그 줄이 여럿이면 이 상자 뒤 아이템 칸의 마지막 줄 순번(S4) */
-    const flat=n.show.map(t=>typeof t==='string'&&t[0]==='$'?params[t.slice(1)]:t).flatMap(t=>{ const sh=typeof t==='string' && fcShownLeaves(g.tags, t, vid, params); if(sh){ const x=sh[Math.min(nth(t), sh.length-1)], on=new Set((n.item||[]).flatMap(l=>(l.tags||[]).length===1 && l.m!=='j' ? fcLeafGis(g.tags,l.tags[0]).slice(0,1).filter(()=>fcLeafGis(g.tags,l.tags[0]).length===1) : []));
+    const flat=n.show.map(t=>typeof t==='string'&&t[0]==='$'?params[t.slice(1)]:t).flatMap(t=>{ const sh=typeof t==='string' && fcShownLeaves(g.tags, t, vid, params); if(sh){ const x=sh[Math.min(nth(t), sh.length-1)], on=fcOnGis(g, n.item, vid, params, t);
       alts.push([x.gi, fcLeafGis(g.tags,t).filter(y=>y!==x.gi && !on.has(y))]); return [[t, nth(t)]]; }   /* 아이템 칸에 이미 있는 옵션은 뺌 */ return (g.tags?.[t]?.anyOf || [t]).map(x=>[x,0]); }), bySide={};
     flat.forEach(([t,k])=>{ const v=fcTagText(g,t,params,k); if(!v) return; (bySide[v.s]=bySide[v.s]||[]).push(v); });
-    for(const sd of ['p','s']) if(bySide[sd]){ const vs=bySide[sd]; vs.forEach((v,i)=>out.push(`${i?'<span class="ind"></span>':`<b class="sd">${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : `}${esc(v.txt)}${v.tier?` <i>- ${v.tier}</i>`:''}${i<vs.length-1?` <u>${L('또는','or')}</u>`:''}`)); } }
+    /* 빗나감 선이 없는 엑잘·카오스·공개(선 하나) = 나오는 대로: 고르는 옵션은 영상 결과로만(POLICY (N)②, graph2recipe noMiss와 같은 규칙, 2026-11-13 S9) */
+    const eds0=(n.edges||[]), one=['reveal','exalt','chaos'].includes(n.act) && eds0.length && new Set(eds0.map(e=>e.to)).size===1 && !eds0.some(e=>e.res==='fail' || e.to===n.id || e.lost);
+    for(const sd of ['p','s']) if(bySide[sd]){ const vs=bySide[sd]; if(one){ out.push(`<b class="sd">${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${L('나오는 대로','Keep what comes')} <small>(${L('영상','video')}: ${vs.map(v=>esc(v.txt)+(v.tier?` - ${v.tier}`:'')).join(L(' 또는 ',' or '))})</small>`); alts.length=0; continue; }
+      vs.forEach((v,i)=>out.push(`${i?'<span class="ind"></span>':`<b class="sd">${sd==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : `}${esc(v.txt)}${v.tier?` <i>- ${v.tier}</i>`:''}${i<vs.length-1?` <u>${L('또는','or')}</u>`:''}`)); } }
   if(n.target) out.push(`<b class="sd">${L('목표','Goal')}</b> : ${esc(tx(n.target))}`);
   (n.showText||[]).forEach(t=>out.push(t.s ? `<b class="sd">${t.s==='p'?L('접두','Prefix'):L('접미','Suffix')}</b> : ${esc(tx(t))}` : esc(tx(t))));
   if(g._r) alts.forEach(([a,b])=>{ const t=altTipTx(g._r, [a], b); if(t) out.push(`<span class="altl">💡 ${esc(t)}</span>`); });
@@ -1809,10 +1839,10 @@ function fcSize(n, M, g, params, cap){ let W = n.pos[0]===0 ? FX.W : FX.WB;
   if(n.curRows) W=Math.max(W, ...n.curRows.map(rw=>{ const ids=rw.ids||[rw.cur,...(n.omens||[])]; return fcText(tx(rw)+' → ', 12.5)+6+ids.length*18+fcText(ids.map(id=>nm(cur(id))).join(' + '), 12.5)+fcText('확률 25% · 평균 4.0개', 12.5)+24+28; })); if((n.kind==='act'||n.kind==='cleanup') && !n.curRows){ const c=nodeCur(n); W=Math.max(W, Math.min(n.pos[0]===0 ? FX.W : 1100, (n.pos[0]===0?16:60)+((n.cur?1:0)+(n.omens||[]).length+(n.trim?2:0))*18+fcText(c.title,12.5)*(n.pos[0]===0?1:1.1)+fcText('확률 25% · 평균 4.0개',12.5)), n.pos[0]===0 ? 0 : Math.min(1100, fcText(tx(n.goal||n.label||''),14)+76)); }
   // 사용자 확정 2026-11-10: a right-hand box (A, B …) with nothing further right on its row grows to fit its text; with an a-box beside it, it keeps the column width (ellipsis)
   if(cap) W=Math.min(W, FX.WB); if(n.kind==='base') return [W, 66]; if(n.kind==='mark') return [W, 52 + (n.item||[]).length*21]; if(n.kind==='done') return [212, 58]; if(n.kind==='choice') return [220, 54];
-  if(n.kind==='assume') return [222, 84];
-  if(n.kind==='exit') return [FX.WB, 78];
+  if(n.kind==='assume'){ const rl=t=>Math.max(1,Math.ceil(fcLen(tx(t||''))*1.02/(222-29))); return [222, Math.max(84, 26 + rl(n.label)*19 + (n.note?rl(n.note)*17:0))]; }   /* 별첨 글 길이만큼 높이 — '(비용은 같다고 가…'가 잘리던 것(2026-11-13 S9, R4-1) */
+  if(n.kind==='exit'){ const rl=t=>Math.max(1,Math.ceil(fcLen(tx(t||''))*1.02/(FX.WB-26))); return [FX.WB, Math.max(78, 22 + rl(n.label)*19 + (n.note?rl(n.note)*17:0))]; }
   const want=fcWant(g, n, params), per=(W-26)/1.12, lines=want.reduce((t,h)=>t+Math.max(1,Math.ceil(fcLen(h.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,'&'))*1.02/per)),0);
-  return [W, 40 + (want.length?Math.max(1,lines)*20+6:0) + 40 + (n.curRows?(n.curRows.length-1)*22:0) + (n.skipNote?18:0) - (n.kind==='side'?4:0)]; }
+  return [W, 40 + (want.length?Math.max(1,lines)*20+6:(n.kind==='act' && ['reveal','exalt','chaos'].includes(n.act) ? 26 : 0) /* 고르는 옵션이 없는 엑잘·공개 상자 = '목표 : 결과 그대로' 한 줄(keepAll) — 커런시 줄이 잘리던 것(2026-11-13 S9, R3-8 사파이어 에센셜 8번) */) + 40 + (n.curRows?(n.curRows.length-1)*22:0) + (n.skipNote?18:0) - (n.kind==='side'?4:0)]; }
 function fcLayout(g, M, params){ const items=g.nodes.some(n=>n.item), colIds=[...new Set(g.nodes.map(n=>n.pos[0]).filter(Number.isInteger))].sort((a,b)=>a-b);
   const capped=n=>n.pos[0]!==0 && Number.isInteger(n.pos[0]) && g.nodes.some(o=>o!==n && o.pos[1]===n.pos[1] && o.pos[0]>n.pos[0]);
   const size={}; g.nodes.forEach(n=>size[n.id]=fcSize(n, M, g, params, capped(n)));
@@ -1982,7 +2012,7 @@ function fcCardState(tags, lines, ds, revOnly=()=>false, r=null){
   if(ds && !state.some(m=>m.des)){ const t=state.filter(m=>m.gi!=null && m.dsf>=0.999).sort((a,b)=>b.dsf-a.dsf)[0];
     if(t) t.des=true; else { const sd=['p','s'].filter(x=>(ds.side?.[x]||0)>=0.999).sort((a,b)=>(ds.side[b]||0)-(ds.side[a]||0))[0];
       const sl=ds.slot, hit=sl && state.find(m=>m.sh && m.of===sl.of && m.k===sl.k && m.side===sd);   /* 성공 회차 옵션 줄이 여럿이면 왼쪽 아이템 칸에서 훼손(m 'd')으로 보인 그 줄(fcDesSlot) — 접두 첫 줄에 칠하던 것(2026-11-13 S6, 검은강철 장갑) */
-      const past=sl && !hit && state.some(m=>m.of===sl.of) && state.find(m=>m.side===sd && m.gi==null && m.rnd);   /* 그 순번 줄이 이 카드에 없으면(그 자리가 랜덤 옵션인 등급) 그쪽 랜덤 옵션 줄 */
+      const past=sl && !hit && state.find(m=>m.side===sd && m.gi==null && m.rnd);   /* S9: 그 묶음이 카드에 아예 없어도(에센셜) 랜덤 옵션 줄 — 성공 회차 줄(냉기)에 칠하던 것(R3-8 시한 반지 에센셜) */   /* 그 순번 줄이 이 카드에 없으면(그 자리가 랜덤 옵션인 등급) 그쪽 랜덤 옵션 줄 */
       const c=sd && (hit || past || state.find(m=>m.side===sd && (m.gi==null || m.sh) && !m.rnd) || state.find(m=>m.side===sd && m.gi==null && m.rnd)); if(c) c.des=true; } }
   { let one=false; for(const m of state) if(m.des){ if(one) m.des=false; one=true; } }
   return state; }
@@ -2069,7 +2099,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
   const zo=e=>!e.on?0:(e.dash||e.skip)?1:e.kind==='fwd'?2:e.kind==='fail'?3:4;
   const svgE=[...edges].sort((a,b)=>zo(a)-zo(b)).map(e=>`<path class="fce k-${e.kind}${e.on?'':' off'}${e.skip||e.dash?' skip':''}" d="${fcD(e.pts, e.sharp)}" marker-end="url(#fcm-${e.on?e.kind:'off'})"/>`).join('');
   /* 이름표: 갈래 셋 이상·분기·건너뛰기 선, 그리고 둘뿐인 갈래라도 성공이 아닌 선(실패·되돌림·결과별, 사용자 2026-11-12, 로브 3번 '빗나감 — 소멸'·3.A '다시 엑잘') */
-  const lab=edges.filter(e=>e.label && (e.on || e.opt) && (M.multi[e.a] || M.byId[e.a].kind==='choice' || e.skip || (e.kind!=='ok' && new Set(M.E.filter(x=>x.a===e.a && !x.skip).map(x=>x.b)).size>=2) || (e.a!==e.b && (()=>{ const pa=M.byId[e.a].pos, pb=M.byId[e.b].pos; return !!(pa && pb) && (pb[1]<pa[1] || (pb[1]===pa[1] && pb[0]<pa[0])); })()))).sort((a,b)=>(b.on-a.on)||(a.d0-b.d0)).map(e=>{ const t=tx(e.label)+(e.share!=null && e.share<0.995 && e.on ? (e.pFix ? ` · ${pct1(e.share)}` : e.cnt>=0.05 ? ` · ${fmt(e.cnt)}${L('회','×')}` : '') : '');   /* 되돌림 선(위쪽 상자나 같은 줄 왼쪽 상자로 돌아감)도 글이 있으면 이름표 — 초록 되돌림 선 포함(2026-11-12 균열 반지 11.A → 11) */   /* 선 위 숫자 = 완성 1개당 그 선을 지나는 평균 횟수(상자의 확률과 헷갈리지 않게, 사용자 2026-11-12). 그래프에 적은 고정 확률(p)만 % */ return {e, t, pts:e.pts, w:fcLen(t)+18}; });
+  const lab=edges.filter(e=>e.label && (e.on || e.opt) && (M.multi[e.a] || M.byId[e.a].kind==='choice' || e.skip || (e.kind==='fail' && (()=>{ const s=stAny(e.a); return !!s && s.visits>0 && eAny(e.a,e.b) < s.visits*0.995; })()) /* 그려진 선이 빗나감 하나뿐이고 나머지는 숨은 선으로 나가면 이름표(2026-11-13 S9, 조끼 밸런스 8 → 8.A '좋은 접미 1개뿐') */ || (e.kind!=='ok' && new Set(M.E.filter(x=>x.a===e.a && !x.skip).map(x=>x.b)).size>=2) || (e.a!==e.b && (()=>{ const pa=M.byId[e.a].pos, pb=M.byId[e.b].pos; return !!(pa && pb) && (pb[1]<pa[1] || (pb[1]===pa[1] && pb[0]<pa[0])); })()))).sort((a,b)=>(b.on-a.on)||(a.d0-b.d0)).map(e=>{ const t=tx(e.label)+(e.share!=null && e.share<0.995 && e.on ? (e.pFix ? ` · ${pct1(e.share)}` : e.cnt>=0.05 ? ` · ${fmt(e.cnt)}${L('회','×')}` : '') : '');   /* 되돌림 선(위쪽 상자나 같은 줄 왼쪽 상자로 돌아감)도 글이 있으면 이름표 — 초록 되돌림 선 포함(2026-11-12 균열 반지 11.A → 11) */   /* 선 위 숫자 = 완성 1개당 그 선을 지나는 평균 횟수(상자의 확률과 헷갈리지 않게, 사용자 2026-11-12). 그래프에 적은 고정 확률(p)만 % */ return {e, t, pts:e.pts, w:fcLen(t)+18}; });
   fcLabels(lab, [...Object.values(Lay.box), ...Object.values(Lay.dia)], edges.filter(e=>e.on||e.opt));
   window.__fcLast.labels=lab.map(L0=>({a:L0.e.a, b:L0.e.b, t:L0.t, x:L0.x, y:L0.y, w:L0.w}));   /* tools/test 이름표 점검용 */
   const labels=lab.map(({e,t,x,y})=>`<span class="fcl k-${e.kind}${e.on?'':' off'}" style="left:${x.toFixed(0)}px;top:${y.toFixed(0)}px">${esc(t)}</span>`).join('');
@@ -2135,7 +2165,9 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
     /* 결과 표시가 없는 상자: 같은 상자로 돌아가는 선(자기 반복)·원하는 옵션이 지워지는 선(lost)은 실패로 셈 — '확정'으로 보이던 것(2026-11-13 S3 43·57번, graph2recipe _fcs와 같음) */
     const badN = !hasRes && byI ? sumI(x=>x.to===n.id || !!x.lost) : 0;
     const hasRes2 = hasRes || badN>0; if(!hasRes && badN>0) okN = Math.max(0, tries-badN);
-    const pS0 = !t || !tries ? null : hasRes2 && n.act!=='flux' ? Math.min(1, okN/tries) : 1, pS = pS0===0 && byI && !xN ? null : pS0, split = byI && pS0===0 && !xN;
+    const fixN = byI && !hasRes && selfN>0 && g._r?.nodes?.find(x=>x.id===n.id)?.fcs?.fixedN ? tries/Math.max(1e-9, tries-selfN) : null;   /* 정해진 횟수 반복(graph2recipe fixedN): 확률 대신 'n회 사용'(2026-11-13 S9) */
+    if(fixN){ okN=tries; }
+    const pS0 = !t || !tries ? null : fixN ? 1 : hasRes2 && n.act!=='flux' ? Math.min(1, okN/tries) : 1, pS = pS0===0 && byI && !xN ? null : pS0, split = byI && pS0===0 && !xN;
     // the totals stay available on hover; the box itself shows only the goal, the currency and the chance
     const LH=M.loopHead[n.id]; let tip=tx(n.label)+' — '+c.title;
     if(t) tip+=`\n${L('평균','avg')} ${fmt(n.kind==='cleanup'?(t.use?.Orb_of_Annulment||0):tries)}${L('회','×')} · ${L('도달','reached')} ${pct1(t.reach)} · ≈ ${fmtDiv(t.div)} div`;
@@ -2144,7 +2176,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
     /* 다시 하지 않는 상자(빗나가도 이 상자로 돌아오지 않음, 사용자 2026-11-12 방패 1번): 확률은 '1회 시도', 개수는 시뮬의 실제 사용량(완성 1개당) */
     /* 선 구조로는 되돌아올 수 있어도 이 버전 시뮬에서 빗나감이 이 상자로 돌아오지 않으면(거친 아이템 1개당 성공 수 = 시도 × 확률 ÷ 도달 < 0.9) 1회 시도로 — 1/확률 개수는 실제 사용량과 다름(2026-11-13 S1: MazBro 시전자 목걸이 밸런스 10번 '평균 7.8개' vs 실제 1회) */
     const pX = xN>0 && tries ? xN/tries : 0, once1 = !!t && n.kind!=='cleanup' && (n.once || (!(pX && selfN>0)) && (!fcRepeats(g, n.id) || (pS>0 && pS<0.995 && tries*pS<0.9*(t.reach||1)))), used1 = t ? (t.use?.[n.cur] ?? tries) : 0;
-    const want=keepAll ? [`<b class="sd">${L('목표','Goal')}</b> : ${L('결과 그대로','Keep the result')}`] : fcWant(g, n, s.params), per = !t ? 0 : n.kind==='cleanup' ? (t.use?.Orb_of_Annulment||0)/Math.max(1e-9,t.visits) : (n.group==='prep' && pS>=0.995 && t ? (t.use?.[n.cur] ?? t.visits ?? 1) / (n.count>1 ? n.count : 1) : n.once ? 1 : pS>0 ? 1/pS : 0) * (n.count>1 ? n.count : 1);   /* 준비 구역 확정 상자는 완성 1개당 사용량(베이스를 여러 개 쓰면 그만큼, 2026-11-13 S2 G6 보고) */   /* 상자 count(숫돌 4개·기폭제 40개)는 한 번에 쓰는 개수 — 시뮬 사용량과 같게(2026-11-13 S2) */   // per success of this step (once: used one time whatever happens — the miss goes elsewhere)
+    const want=keepAll ? [`<b class="sd">${L('목표','Goal')}</b> : ${L('결과 그대로','Keep the result')}`] : fcWant(g, n, s.params), per = !t ? 0 : n.kind==='cleanup' ? (t.use?.Orb_of_Annulment||0)/Math.max(1e-9,t.visits) : (n.group==='prep' && pS>=0.995 && t ? (t.use?.[n.cur] ?? t.visits ?? 1) / (n.count>1 ? n.count : 1) : n.once ? 1 : fixN ? fixN : pS>0 ? 1/pS : 0) * (n.count>1 ? n.count : 1);   /* 준비 구역 확정 상자는 완성 1개당 사용량(베이스를 여러 개 쓰면 그만큼, 2026-11-13 S2 G6 보고) */   /* 상자 count(숫돌 4개·기폭제 40개)는 한 번에 쓰는 개수 — 시뮬 사용량과 같게(2026-11-13 S2) */   // per success of this step (once: used one time whatever happens — the miss goes elsewhere)
     return `<div class="fcn k-task ${n.kind==='cleanup'?'k-clean':''} ${t?'':'off'}" style="${pos}" title="${esc(tip)}" data-fcn="${esc(n.id)}">
       <div class="fch"><em>${no[n.id]}</em><span class="sep">|</span><b title="${esc(tx(n.goal||n.label))}">${esc(tx(n.goal||n.label))}</b></div>
       ${want.length?`<div class="fcw">${want.map(h=>`<p>${h}</p>`).join('')}</div>`:''}

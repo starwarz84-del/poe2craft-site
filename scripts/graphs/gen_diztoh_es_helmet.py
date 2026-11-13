@@ -47,7 +47,7 @@ g = {
               {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'L': 1}, 'tier': 'bal',
                'desc': K('영상 완성품: 접두 엑잘을 에너지 보호막 % 1~3티어·접두 희귀도 중 하나까지 다시, 공개는 결과 그대로', 'The video item: retry the prefix exalt for T1–3 % energy shield or prefix rarity, keep the reveal')}],
  'tags': {'esf': {'gi': 7, 'tmax': 1}, 'rarS': {'gi': 16, 'tmax': 1},
-          'magicGood': {'anyOf': ['esf', 'rarS'], 'label': K('에너지 보호막 최대치 1티어·아이템 희귀도 1티어', 'T1 flat energy shield or T1 item rarity')},
+          'magicGood': {'anyOf': ['esf', 'rarS'], 'shown': 'esf', 'label': K('에너지 보호막 최대치 1티어·아이템 희귀도 1티어', 'T1 flat energy shield or T1 item rarity')},
           'int': {'gi': 38}, 'esp3': {'gi': 8, 'tmax': 3}, 'rarP': {'gi': 17, 'tmax': 1},
           'pre2': {'anyOf': ['esp3', 'rarP'], 'shown': 'esp3', 'label': K('에너지 보호막 % 증가 1~3티어·접두 아이템 희귀도', 'T1–3 % energy shield or prefix item rarity')}},
  'conds': {'magicDone': {'all': [{'has': 'esf'}, {'has': 'rarS'}]}},
@@ -65,7 +65,7 @@ A = lambda **kw: N.append(kw)
 A(id='b0', kind='base', group='prep', pos=[0, 0], next='m1', start={'rar': 'normal', 'mods': []},
   label=K('특출난 카마사의 티아라 구입 (아이템 레벨 81)', 'Buy an exceptional Kamasan Tiara (item level 81)'), item=[])
 A(id='m1', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation', label=K('매직 첫 번째 옵션', 'First magic option'),
-  goal=K('접두 에너지 보호막 최대치 1티어', 'T1 flat energy shield prefix'), show=['esf'],
+  goal=K('접두 에너지 보호막 최대치 1티어', 'T1 flat energy shield prefix'), show=['magicGood'],
   edges=[{'if': {'added': 'magicGood'}, 'to': 'm2', 'res': 'ok', 'label': K('성공', 'hit')},
          {'to': 'm1x', 'res': 'fail', 'label': K('빗나감', 'miss')}], item=[ESFn])
 A(id='m1x', kind='cleanup', group='prep', pos=[1, 1], keep=[], maxJunk=0, label=ANN, goal=ANN,

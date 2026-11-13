@@ -18,6 +18,7 @@ HB = L('p', '회피 +(71—90), 회피 (39—42)% 증가 (훼손)', '+(71—90) 
 LB = L('p', '생명력 최대치 +(150—174) (훼손)', '+(150—174) to maximum Life (desecrated)', 'd')
 FR = L('s', '화염 저항 +(41—45)%', '+(41—45)% to Fire Resistance', 'n', ['fr'])
 CR = L('s', '냉기 저항 +(41—45)%', '+(41—45)% to Cold Resistance', 'n', ['cr'])
+CRv = L('s', '냉기 저항 +(41—45)%', '+(41—45)% to Cold Resistance', 'n', [])   # 밸런스 결과 그대로 자리 = 영상 결과(태그 없이, POLICY (N)①, 2026-11-13 S9)
 DF = L('s', '회피의 (21—23)%와 동일한 튕겨내기 평점 획득', 'Gain Deflection Rating equal to (21—23)% of Evasion Rating', 'n', ['dfl2'])
 DF1 = L('s', '회피의 (24—26)%와 동일한 튕겨내기 평점 획득', 'Gain Deflection Rating equal to (24—26)% of Evasion Rating', 'n', ['dfl1'])   # H1 11-13: 하이엔드 튕겨내기 1티어(C17-1)
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
@@ -230,7 +231,7 @@ g['loops'] = [
             K('막기가 남아 있으면 빛의 징조 + 소멸의 오브로 제거', 'Blocker still there: Omen of Light + Orb of Annulment') | {'node': 'q4'},
             K('보존된 갈비뼈로 징표 훼손', 'Preserved Rib on the Mark') | {'node': 'q5'},
             K('심연의 메아리 공개로 생명력 최대치 자리 막기 (없으면 물리 가시 피해) → 다시 엑잘', 'Reveal with Abyssal Echoes: block with maximum life (thorns if no life), then exalt again') | {'node': 'q1'}],
-  'item': [EV, LB, FL, FR, CR, DF1], 'itemBy': {'bal': [EV, LB, FL, FR, DF, J('s')]}},
+  'item': [EV, LB, FL, FR, CR, DF1], 'itemBy': {'bal': [EV, LB, FL, FR, DF, CRv]}},
  {'id': 'L3', 'nodes': ['r0', 'r1', 'r2'], 'kr': '접두 두 번째 옵션(훼손)', 'en': 'Second prefix (desecrated)', 'fold': True,
   'goal': K('접두 회피 복합 1티어 (훼손)', 'T1 hybrid evasion (desecrated)'),
   'goalBy': {'high': K('접두 회피 복합 1티어 (훼손) — 남은 회피 접두', 'T1 hybrid evasion (desecrated): the remaining evasion prefix'),
@@ -238,7 +239,7 @@ g['loops'] = [
   'steps': [K('빛의 징조 + 소멸의 오브로 막기 제거', 'Omen of Light + Orb of Annulment removes the blocker') | {'node': 'r0'},
             K('고대 갈비뼈로 빈 접두 자리 훼손', 'Ancient Rib into the empty prefix slot') | {'node': 'r1'},
             K('심연의 메아리 공개 — 빗나가면 빛의 징조 + 소멸의 오브로 다시', 'Reveal with Abyssal Echoes; on a miss Omen of Light + Orb of Annulment and again') | {'node': 'r2'}],
-  'item': [EV, FL, HB, FR, CR, DF1], 'itemBy': {'bal': [EV, FL, HB, FR, DF, J('s')]}},
+  'item': [EV, FL, HB, FR, CR, DF1], 'itemBy': {'bal': [EV, FL, HB, FR, DF, CRv]}},
 ]
 g['finals'] = [
  {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',

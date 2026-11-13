@@ -142,7 +142,7 @@ A(id='pc', kind='cleanup', group='prep', pos=[0, 6], keep=[], maxJunk=1, label=A
 A(id='ms', kind='mark', group='main', pos=[0, 7.4], next='s1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[LF, J('p')])
 A(id='s1', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접미 첫 옵션 — 공격 치명타 확률·치명타 피해·모든 투사체 스킬 레벨 중 먼저 뜬 것', 'First suffix: attack crit chance, crit damage or projectile skill levels, whichever lands first'), show=['sf1'],
-  edges=R({'s2': {'res': 'ok'}}), item=[LF, CA])   # 5:20 계획 자막, 7:20~7:34 카오스 반복 화면, 7:38 성공 회차 = 공격 치명타 확률(새 정책 A 11-13 P14: 상자는 성공 회차 옵션, 나머지는 자동 꿀팁 줄)
+  edges=[{**e, 'label': {'s2': K('좋은 접미 하나 — 엑잘', 'One good suffix: exalt'), 's2x': K('접미 잡옵 — 지우고 엑잘', 'Junk suffix: remove, then exalt')}[e['to']]} if e['to'] in ('s2', 's2x') else e for e in R({'s2': {'res': 'ok'}})], item=[LF, CA])   # 레시피 갈래 이름(2026-11-13 S9, R3-2: '성공, … 2개 미만'·'다시 엑잘')   # 5:20 계획 자막, 7:20~7:34 카오스 반복 화면, 7:38 성공 회차 = 공격 치명타 확률(새 정책 A 11-13 P14: 상자는 성공 회차 옵션, 나머지는 자동 꿀팁 줄)
 A(id='s2', kind='act', group='main', pos=[1, 8.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('남은 접미 치명타 옵션 — 투사체가 먼저 떴으면 치명타 둘', 'The remaining crit suffix: both if projectile levels came first'), show=['critA', 'critD'],
   edges=R({'d1': {'res': 'ok'}, 's2x': {'res': 'fail', 'label': K('빗나감 — 소멸', 'Miss: annul')}}), item=[LF, CA, CD])   # 7:36 공격 치명타 확률 36%(1티어), 7:48 치명타 피해 38%(1티어)

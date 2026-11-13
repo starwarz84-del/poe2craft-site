@@ -50,7 +50,7 @@ g = {
     'desc': K('훼손 접두 투사체 피해·에너지 보호막 % 1~2티어까지 빛의 징조로 다시', 'Omen of Light retries until a T1–2 projectile damage or % ES desecration')}],
  'tags': {
    'esf': {'gi': 8, 'tmax': 1}, 'proj2': {'gi': 82, 'tmax': 1}, 'rar': {'gi': 57, 'tmax': 1}, 'sock': {'gi': 59},
-   'magicGood': {'anyOf': ['esf', 'proj2'], 'label': K('에너지 보호막 최대치 1티어·모든 투사체 스킬 레벨 +2', 'T1 flat energy shield or +2 projectile skills')},
+   'magicGood': {'anyOf': ['esf', 'proj2'], 'shown': 'esf', 'label': K('에너지 보호막 최대치 1티어·모든 투사체 스킬 레벨 +2', 'T1 flat energy shield or +2 projectile skills')},
    'pdmg': {'gi': 71, 'tmax': '$dT'}, 'esp': {'gi': 9, 'tmax': '$dT'}, 'pspd': {'gi': 73},
    'pdmg2': {'gi': 71, 'tmax': 2}, 'esp2': {'gi': 9, 'tmax': 2},
    'rev': {'anyOf': ['pdmg', 'esp'], 'shown': 'pdmg', 'label': K('투사체 피해 증가·에너지 보호막 % 증가', 'Projectile damage or % energy shield')},
@@ -71,7 +71,7 @@ A(id='h1', kind='base', group='prep', pos=[0, 0], next='h2',
   label=K('특출난 사이렌비늘 장갑 구입 (아이템 레벨 81), 콜르의 사냥 장착, 퀄리티 20%', 'Buy exceptional Sirenscale Gloves (item level 81), socket Kolr’s Hunt, quality 20%'),
   item=[KOLR])
 A(id='h2', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation',
-  label=K('매직 첫 번째 옵션', 'First magic option'), goal=K('접두 에너지 보호막 최대치 1티어', 'T1 flat energy shield prefix'), show=['esf'],
+  label=K('매직 첫 번째 옵션', 'First magic option'), goal=K('접두 에너지 보호막 최대치 1티어', 'T1 flat energy shield prefix'), show=['magicGood'],
   edges=[{'if': {'added': 'magicGood'}, 'to': 'h3', 'res': 'ok', 'label': K('성공', 'hit')},
          {'to': 'h2x', 'res': 'fail', 'label': K('빗나감', 'miss')}],
   ask=K('원하는 옵션?', 'Wanted option?'), item=[ES, KOLR])

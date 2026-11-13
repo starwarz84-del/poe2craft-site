@@ -47,7 +47,8 @@ g = {
  'tags': {'pp': {'gi': 7, 'tmax': 1}, 'crit': {'gi': 17, 'tmax': 1}, 'flat': {'gi': 2, 'tmax': 1},
           'hyb': {'gi': 8, 'tmax': 1}, 'eatk': {'gi': 21, 'tmax': 1}, 'proj': {'gi': 9, 'tmax': 1},
           'arr': {'gi': 20, 'tmax': 1}, 'cdm': {'gi': 18, 'tmax': 1}, 'mkp': {'gi': 56}, 'mks': {'gi': 57},
-          'p3': {'anyOf': ['hyb', 'flat'], 'label': K('물리 피해 + 정확도 1티어 또는 물리 피해 추가 1티어', 'T1 physical + accuracy or T1 flat physical')},
+          'p3': {'anyOf': ['hyb', 'flat'], 'shown': 'hyb',   # 성공 회차 23:51 물리 피해 + 정확도(2026-11-13 S9 R3-1: 8번 목표 글에 물리 피해 추가도 성공이라는 꿀팁)
+          'label': K('물리 피해 + 정확도 1티어 또는 물리 피해 추가 1티어', 'T1 physical + accuracy or T1 flat physical')},
           'keepP': {'anyOf': ['pp', 'p3']},
           'keepS': {'anyOf': ['proj', 'arr', 'cdm']},
           'lastS': {'anyOf': ['arr', 'cdm'], 'label': K('추가 화살을 발사할 초과 확률·치명타 피해 보너스 1티어', 'T1 additional Arrow chance or Critical Damage Bonus')}},
@@ -158,13 +159,13 @@ A(id='k4x', kind='act', group='main', pos=[1, 11], act='annul', cur='Orb_of_Annu
   target=K('빗나간 훼손 옵션 제거', 'Remove the missed desecration'),
   edges=[{'if': {'all': [{'has': 'pp'}, {'not': {'des': True}}, {'not': {'has': 'eatk'}}, {'not': {'famBlock': 'eatk'}}]}, 'to': 'k2', 'label': K('다시 징표', 'Mark again')}] + route())
 A(id='q1', kind='act', group='main', pos=[0, 12], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 세 번째 옵션', 'Third prefix'), show=['hyb'],
+  goal=K('접두 세 번째 옵션', 'Third prefix'), show=['p3'],
   showText=[K('물리 피해 + 정확도 1티어·물리 피해 추가 1티어 중 먼저 뜬 것', 'T1 physical + accuracy or T1 flat physical, whichever comes first')],
   skipIf={'full': 'p'}, skipTo='q1w', skipNote=K('접두가 꽉 차 있으면 건너뜀', 'Skipped when the prefixes are full'),
   edges=[{'if': {'added': 'p3'}, 'to': 'u1', 'res': 'ok'}, {'to': 'q1w', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[PP, BLK, HY, CR])
 A(id='q1w', kind='act', group='main', pos=[1, 12], act='chaos', cur='Greater_Chaos_Orb', trim={'side': 'p', 'keep': 'keepP', 'keepDes': True}, label=K('카오스', 'Chaos'),
-  goal=K('접두 세 번째 옵션', 'Third prefix'), show=['hyb'],
+  goal=K('접두 세 번째 옵션', 'Third prefix'), show=['p3'],
   showText=[K('물리 피해 + 정확도 1티어·물리 피해 추가 1티어 중 먼저 뜬 것', 'T1 physical + accuracy or T1 flat physical, whichever comes first')],
   edges=[{'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}, {'des': True}, {'has': 'p3'}]}, 'to': 'u1', 'res': 'ok'},
          {'if': {'all': [{'has': 'pp'}, {'has': 'eatk'}, {'des': True}, {'full': 'p'}]}, 'to': 'q1w', 'res': 'fail', 'hide': True}] + route())

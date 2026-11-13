@@ -98,7 +98,7 @@ def shown_leaves(tags, tag, vid, params=None):
         elif isinstance(x, str):
             L = tags.get(x)
             if isinstance(L, dict) and L.get('gi') is not None: out.append({'gi': L['gi'], 'tmax': tm(L.get('tmax')), 'tag': x})
-        elif isinstance(x, dict) and x.get('gi') is not None: out.append({'gi': x['gi'], 'tmax': tm(x.get('tmax'))})
+        elif isinstance(x, dict) and x.get('gi') is not None: out.append({'gi': x['gi'], 'tmax': tm(x.get('tmax')), **({'tmin': tm(x['tmin'])} if x.get('tmin') else {})})   # tmin = 성공 회차의 정확한 티어(2026-11-13 S9, R3-6 BigDaddy 14번 2티어)
     return out or None
 
 
@@ -125,6 +125,21 @@ class G:
         """이 등급에서 묶음 태그가 보일 옵션(k번째 줄) — 없으면 None"""
         sl = shown_leaves(self.tags, self.name(tag), self.vid, self.params)
         return sl[min(k, len(sl) - 1)] if sl else None
+
+    def on_gis(self, lines, skip=None):
+        """아이템 칸에 이미 있는 옵션 gi: 잎 하나짜리 태그 줄 + 묶음 태그 줄의 성공 회차 옵션(shown 순번) — skip 태그의 마지막 줄(지금 노리는 줄)은 뺌"""
+        out, k = set(), {}
+        ls = [l for l in lines or [] if l.get('m') != 'j' and (l.get('tags') or [])]
+        last = max([i for i, l in enumerate(ls) if self.name(l['tags'][0]) == skip], default=None) if skip else None
+        for i, l in enumerate(ls):
+            tg = self.name(l['tags'][0]); j = k.get(tg, 0); k[tg] = j + 1
+            if i == last: continue
+            lv = self.leaves(tg)
+            if len(lv) == 1: out.add(lv[0][0])
+            else:
+                sh = self.shown(tg, j)
+                if sh: out.add(sh['gi'])
+        return out
 
     def nth(self, tag, lines):
         """아이템 칸에서 그 태그 줄이 몇 개인지 - 1(마지막으로 붙은 줄의 순번)"""
@@ -154,6 +169,10 @@ class G:
         return out
 
     def spec(self, tags):
+        if len(tags) > 1:   # 잎 태그 여러 개 = 성공 회차 옵션(shown)이 있는 묶음 태그와 같으면 그 묶음으로(접힌 상자 show ['crit','pierce'] → 'ss', 2026-11-13 S9 R3-6 MazBro 투사체 장갑 13-1)
+            nm_ = {self.name(t) for t in tags}
+            bt = next((k for k, T in self.tags.items() if isinstance(T, dict) and T.get('gi') is None and (T.get('shown') is not None or T.get('shownBy')) and isinstance(T.get('anyOf'), list) and all(isinstance(x, str) for x in T['anyOf']) and set(T['anyOf']) == nm_ and shown_leaves(self.tags, k, self.vid, self.params)), None)
+            if bt: tags = [bt]
         xs = []
         for t in tags:
             for gi, tm in self.leaves(self.name(t)):
@@ -165,10 +184,16 @@ class G:
         if len(tags) == 1 and isinstance(lb[0], dict) and lb[0].get('kr'): out['label'] = {'kr': lb[0]['kr'], 'en': lb[0].get('en') or lb[0]['kr']}   # 묶음 이름(티어 상관없는 긴 목록은 이름으로, 2026-11-13 S3 27번)
         if len(tags) == 1:   # 성공 회차 옵션(shown, S4 2026-11-13): 목표 글은 그 옵션, 나머지 유효 옵션은 꿀팁 줄(alt) — 판정(anyOf)은 그대로
             sh = self.shown(tags[0], self.nth(self.name(tags[0]), self._cur))
+            T0 = self.tags.get(self.name(tags[0])) or {}
+            lf = [x for x in T0.get('anyOf') or [] if isinstance(x, str)]
+            hit = [self.leaves(t_)[0][0] for l in self._cur or [] if l.get('m') != 'j' for t_ in (l.get('tags') or [])[:1] if t_ in lf and len(self.leaves(t_)) == 1]
+            if sh and hit and hit[-1] != sh['gi']:   # 상자 아이템 칸에 그 묶음의 잎 옵션이 있으면 그것(성공 회차의 그 단계 결과 — 유동체로 바뀌기 전 냉기, 2026-11-13 S9 R4-1 방어도 투구 9-1)
+                tm_ = next((tm for gi_, tm in self.leaves(tags[0]) if gi_ == hit[-1]), None)
+                sh = {'gi': hit[-1], **({'tmax': tm_} if tm_ else {})}
             if sh and sh['gi'] in [x['gi'] for x in xs]:
                 x0 = next(x for x in xs if x['gi'] == sh['gi'])
-                out['shown'] = {'gi': sh['gi'], **({'tmax': sh['tmax']} if sh.get('tmax') else {'tmax': x0['tmax']} if x0.get('tmax') else {})}
-                on = {lv[0][0] for l in self._cur or [] if l.get('m') != 'j' for tg in (l.get('tags') or [])[:1] for lv in [self.leaves(tg)] if len(lv) == 1}   # 아이템 칸에 이미 있는 옵션은 뺌
+                out['shown'] = {'gi': sh['gi'], **({'tmax': sh['tmax']} if sh.get('tmax') else {'tmax': x0['tmax']} if x0.get('tmax') else {}), **({'tmin': sh['tmin']} if sh.get('tmin') else {})}
+                on = self.on_gis(self._cur, skip=tags[0])   # 아이템 칸에 이미 있는 옵션은 뺌(묶음 줄은 그 줄의 성공 회차 옵션도, 2026-11-13 S9)
                 out['alt'] = [x['gi'] for x in xs if x['gi'] != sh['gi'] and x['gi'] not in on]
         return out
 
@@ -838,11 +863,22 @@ def _routes(W, n, valid, G_=None, CD=None):
         if not sl and CD and isinstance(sif, dict):   # 건너뛰는 조건 글(예: 접미 꽉 참) — '이미 있으면 건너뜀 → 완성'이 무엇이 있는지 안 보이던 것(2026-11-13 S2: MazBro +5 목걸이 Z12)
             sc = _simp(sif, G_.params) if G_ else sif
             sl = _label(CD.atoms(sc) or []) if isinstance(sc, dict) else None
+        if sl and re.search(r'있음$', sl.get('kr') or '') and not (sl.get('kr') or '').startswith('이미'):   # 건너뜀 조건 = 이미 붙어 있는 옵션(2026-11-13 S9, R3-8 '…·… 있음 (1.1%) → 6번')
+            sl = {'kr': '이미 ' + sl['kr'], 'en': 'Already ' + (sl.get('en') or sl['kr'])[:1].lower() + (sl.get('en') or sl['kr'])[1:]}
         rs.append({'cls': 'ok', 'lab': sl or {'kr': '건너뜀', 'en': 'Skip'}, 'to': dest(n['skipTo']),
                    'share': t['skips'] / max(1e-9, t.get('visits') or 1), 'skip': True})
-        nk = [r for r in rs[:-1]]
-        if len(nk) == 1 and nk[0]['cls'] == 'ok' and nk[0]['to'] == rs[-1]['to'] and not nk[0].get('lab') and not nk[0].get('via'): rs.remove(nk[0])   # 성공과 건너뜀이 같은 단계로: '성공 → 8-1번'과 '접미 꽉 참 (63%) → 8-1번' 두 줄(Diztoh 엔드게임 육척봉 7번, 2026-11-13 S7 R-D2) → 건너뜀 줄만
-        ks = 1 - rs[-1]['share']   # 건너뜀은 들어온 횟수 기준, 나머지 갈래는 시도 기준이라 합이 100%를 넘음(시한 장화 8-2: 93·6.6·18%) → 나머지를 시도한 비율만큼 줄여 들어온 횟수 기준으로(2026-11-13 S7, R-E1)
+        nk = [r for r in rs[:-1] if not (r['to'] == 'self' and not r.get('via'))]   # 자기 반복 선(줄로 안 씀)은 세지 않음(2026-11-13 S9, F2a 조끼 7번)
+        nko = [r for r in nk if r['cls'] == 'ok' and r['to'] == rs[-1]['to'] and not r.get('lab') and not r.get('via')]
+        if len(rs) == 2 and nko: rs.remove(nk[0])
+        elif len(nko) == 1 and len([r for r in nk if r['cls'] == 'ok']) == 1 and not n.get('skipNote'):   # 실패 갈래가 있어도 성공과 건너뜀이 같은 단계면 한 줄 '성공 또는 이미 … 있음'(2026-11-13 S9, R3-11 시한 차유라 장갑 7번)
+            sk = rs[-1]; ks0 = 1 - sk['share']; ok_ = nko[0]
+            sk['lab'] = {'kr': '성공 또는 ' + sk['lab']['kr'], 'en': 'Hit or ' + sk['lab']['en'][:1].lower() + sk['lab']['en'][1:]}
+            sk['share'] = sk['share'] + (ok_['share'] or 0) * ks0; sk['n'] = ok_.get('n'); sk.pop('skip', None); sk['_merged'] = True
+            rs.remove(ok_)
+            for r in rs:
+                if r is not sk and r.get('share') is not None: r['share'] *= ks0
+            rs.append(rs.pop(rs.index(sk)))   # 성공과 건너뜀이 같은 단계로: '성공 → 8-1번'과 '접미 꽉 참 (63%) → 8-1번' 두 줄(Diztoh 엔드게임 육척봉 7번, 2026-11-13 S7 R-D2) → 건너뜀 줄만
+        ks = 1 - rs[-1]['share'] if not rs[-1].get('_merged') else 1   # 건너뜀은 들어온 횟수 기준, 나머지 갈래는 시도 기준이라 합이 100%를 넘음(시한 장화 8-2: 93·6.6·18%) → 나머지를 시도한 비율만큼 줄여 들어온 횟수 기준으로(2026-11-13 S7, R-E1)
         for r in rs[:-1]:
             if r.get('share') is not None: r['share'] *= ks
     for r in rs:   # 성공 표시 선이라도 새 베이스로 처음부터(simTo 베이스)면 성공 갈래가 아님 — '희귀도 분열 (성공의 51%) → 버리고 처음부터'(2026-11-13 S3 58번)
@@ -873,9 +909,22 @@ def _routes(W, n, valid, G_=None, CD=None):
                 h['share'] += r['share'] or 0; h['n'] = (h.get('n') or 0) + (r.get('n') or 0) or None; rs.remove(r)
             h['to'] = ds[0]; h['toAlt'] = ds[1:4] or None
             if len({json.dumps(r.get('via'), sort_keys=True) for r in ot}) > 1: h.pop('via', None); h.pop('vo', None)
+    # 이름·도착·지우기가 같은 갈래는 한 줄(2026-11-13 S9, R3-4 시한 차유라 반지 4-4 '다른 옵션이 지워지면' 두 줄)
+    _mk = lambda r: json.dumps([r['cls'], (r.get('lab') or {}).get('kr'), r['to'], r.get('toAlt'), bool(r.get('via')), bool(r.get('skip')), bool(r.get('exit')), bool(r.get('lost'))], ensure_ascii=False, sort_keys=True)   # 지우기 경로(via)가 달라도 한 줄 — 많은 쪽의 '먼저:'를 씀
+    _seen = {}
+    for r in list(rs):
+        if r['to'] == 'self' and not r.get('via'): continue
+        k = _mk(r)
+        if k in _seen:
+            h = _seen[k]
+            if (r.get('share') or 0) > (h.get('share') or 0) and r.get('via'): h['via'] = r['via']
+            h['share'] = (h.get('share') or 0) + (r.get('share') or 0)
+            if r.get('n') or h.get('n'): h['n'] = (h.get('n') or 0) + (r.get('n') or 0)
+            rs.remove(r)
+        else: _seen[k] = r
     # 순서: 성공(많은 것부터) → 실패(그래프 선 순서 = 플로우차트 흐름, 같으면 많은 것부터) → 그 밖 (2026-11-12: '1번째·2번째·3번째 빗나감'이 거꾸로 읽히던 것)
     rs.sort(key=lambda r: (r['cls'] != 'ok', r.get('skip', False), r.get('exit', False), (r.get('lab') or {}).get('kr') == '그 밖', r.get('_i', 999) if r['cls'] != 'ok' else 0, r['to'] != 'self', -(r['share'] or 0)))
-    for r in rs: r['share'] = round(r['share'], 5); r.pop('_a', None); r.pop('_c', None); r.pop('_e0', None); r.pop('_pr', None); r.pop('_i', None); r.pop('_if', None); r.pop('_ap', None)
+    for r in rs: r['share'] = round(r['share'], 5); r.pop('_a', None); r.pop('_c', None); r.pop('_e0', None); r.pop('_pr', None); r.pop('_i', None); r.pop('_if', None); r.pop('_ap', None); r.pop('_merged', None)
     return [{k: v for k, v in r.items() if v is not None and v is not False} for r in rs]
 
 
@@ -930,7 +979,7 @@ def _keep_all(W, n):
     return bool(used) and len({x[1] for x in used}) == 1 and used[0][1] != n['id'] and any(x[3] == 'ok' for x in outs if x[1] == used[0][1]) and any(x[3] == 'fail' for x in used) and not W.via(used[0][1])
 
 
-def _fcs(W, n, fold_ids=frozenset()):
+def _fcs(W, n, fold_ids=frozenset(), srcn=None):
     t = W.st(n['id']) or {}
     tries = (t.get('visits') or 0) - (0 if n.get('kind') == 'cleanup' else (t.get('skips') or 0))
     outs = W.outs(n)
@@ -949,6 +998,22 @@ def _fcs(W, n, fold_ids=frozenset()):
     if not has_res and tries > 0:   # 결과 표시가 없는 상자: 자기 반복·원하는 옵션이 지워지는(lost) 선은 실패(2026-11-13 S3 43·57번: 탈리스만 소멸 '확정', 사파이어 3.A)
         bad = sum(W.ec(n['id'], x, outs) for x in outs if x[1] == n['id'] or x[0].get('lost'))
         if bad > 0: p = max(0.0, (tries - bad) / tries)
+    fixed_n = None
+    # 정해진 횟수 반복: 결과 표시 없는 자기 반복 선이 아이템 구조 조건(자리 수·개수)으로만 갈림 = 실패가 아니라 '몇 번 쓰는가'(탈리스만 소멸 3번 '확률 33%' → '3회', 2026-11-13 S9 R3-13·R4-1)
+    _STRUCT = ('sideLt', 'count', 'full', 'sideGe', 'empty')
+    def _structural(c):
+        if not isinstance(c, dict): return False
+        if any(k in c for k in ('all', 'any')): return all(_structural(y) for y in c.get('all') or c.get('any') or [])
+        if 'not' in c: return _structural(c['not'])
+        return any(k in c for k in _STRUCT)
+    if not has_res and tries > 0 and p < 0.995 and not any(x[0].get('lost') for x in outs):
+        se = (srcn or {}).get('edges') or []   # 시뮬 파일 그래프의 선에는 조건(if)이 없음 — 원본 그래프 선의 조건(도착으로 맞춤)
+        cond = lambda x: x[0].get('if') if x[0].get('if') is not None else next((e.get('if') for e in se if e.get('to') == x[0].get('to')), None)
+        selfs = [x for x in outs if x[1] == n['id']]
+        others = [x for x in outs if x[1] != n['id']]
+        if selfs and all(_structural(cond(x)) or (not cond(x) and others and all(_structural(cond(y)) for y in others)) for x in selfs):
+            ent = max(1e-9, tries - sum(W.ec(n['id'], x, outs) for x in selfs))
+            fixed_n = tries / ent; p = 1.0
     if n.get('act') == 'flux' or _keep_all(W, n): p = 1.0   # 유동체는 늘 바뀜(확정 변환) — 뒤 선은 변환 뒤 상태로 고르는 갈래라 성공 확률이 아님(2026-11-13 S1: 시한 장화 6.8%)
     rows = None
     if n.get('curRows') and t.get('byCur'):
@@ -974,7 +1039,7 @@ def _fcs(W, n, fold_ids=frozenset()):
     selfc = sum(W.ec(n['id'], x, outs) for x in outs if x[1] == n['id'])
     if p <= 0 and tries > 0 and not px: p = None   # 이 상자에서 바로 성공하는 일은 없고 결과에 따라 다음 상자로 갈림
     uv = _via_use(W, n['id'])
-    return {'p': round(p, 6) if p is not None else None, 'tries': round(tries, 4), 'use': {k: round(v, 4) for k, v in (t.get('use') or {}).items() if v >= 0.0005}, **({'useVia': uv} if uv else {}),
+    return {'p': round(p, 6) if p is not None else None, **({'fixedN': round(fixed_n, 3)} if fixed_n else {}), 'tries': round(tries, 4), 'use': {k: round(v, 4) for k, v in (t.get('use') or {}).items() if v >= 0.0005}, **({'useVia': uv} if uv else {}),
             'div': round(t.get('div') or 0, 4), 'reach': round(t.get('reach') or 0, 4), **({'rows': rows} if rows else {}), **({'loop': True} if n['id'] in fold_ids else {}), **({'pX': px} if px else {}), **({'once': True} if n.get('once') or (not (px and selfc > 0) and n.get('kind') != 'cleanup' and n['id'] not in fold_ids and p is not None and p < 0.995 and (not _repeats(W, n) or (p > 0 and tries * p < 0.9 * (t.get('reach') or 1)))) else {})}   # 다시 하지 않는 상자: 레시피 글은 '1회 시도' — 접힌 반복 안 상자는 반복이 다시 부르니 빼고 시뮬 사용량 그대로(2026-11-13 S2: 화살통 엑잘 '1회 시도 0.3%')
 
 
@@ -1085,6 +1150,9 @@ def _grade_note(sim, src, nid, tiers, cls=None):
                     elif tg: kr.append('빗나가면 ' + tg['kr']); en.append('on a miss: ' + (tg.get('en') or tg['kr']).lower())
                     else: kr.append('빗나가면 다른 작업'); en.append('another step on a miss')
         if '결과 그대로 다음' in kr and '나오는 대로' in kr: kr.remove('나오는 대로'); en.remove('keep what comes')   # 같은 뜻 두 번
+        if '결과 그대로 다음' in kr:   # 빗나감 선이 없으면 티어는 목표가 아님 — '1~2티어, 결과 그대로 다음'(2026-11-13 S9, R3-3 SL 화염파 지팡이 밸런스 11번)
+            ix = [i for i, x in enumerate(kr) if re.search(r'티어( 상관없음)?$', x)]
+            for i in reversed(ix): kr.pop(i); en.pop(i)
         if s and not kr: kr.append('이 단계 씀'); en.append('uses this step')
         parts.append({'tier': tr, 'kr': ', '.join(kr), 'en': ', '.join(en)})
     grp = []
@@ -1195,10 +1263,23 @@ def read_recipe(r, sim, src, tiers, inherit=True):
         if om: o['omens'] = om
         if t: o['target'] = t
         if n.get('trim'): o['trimFc'] = n['trim'].get('side') if isinstance(n['trim'], dict) else 'p'
-        o['fcs'] = _fcs(W, n, fold_ids)
+        o['fcs'] = _fcs(W, n, fold_ids, (G_.srcn.get(n['id']) if G_ else None))
         o['routes'] = _routes(W, n, placed, G_, CD)
         _sn = next((x for x in ((G_.src or {}).get('nodes') or []) if x.get('id') == n['id']), {}) if G_ else {}   # over를 풀기 전 원래 선
-        if t and act in ('exalt', 'chaos', 'reveal') and any(e.get('res') == 'fail' for e in _sn.get('edges') or []) and n.get('edges') and not any(e.get('res') == 'fail' or e.get('to') == n['id'] for e in n['edges']) and len({e.get('to') for e in n['edges']}) == 1:
+        # 선 하나뿐인 엑잘·카오스·공개(원래부터 빗나감 선 없음 — want가 있어도 시뮬은 확인하지 않음)도 나오는 대로: '선택지 3개 중: X 1티어'처럼 목표로 읽히던 것(2026-11-13 S9, R3-5·R3-9·R3-10·POLICY (N))
+        if t and act in ('chaos', 'exalt') and (t.get('gi') is not None or t.get('anyOf')) and G_:   # 다른 성공 선(다른 옵션이 뜨면 다른 단계로)의 옵션도 목표 글에 '또는'(2026-11-13 S9, R3-5 MazBro +5 목걸이 10-1: 목표 +3뿐인데 91% 갈래가 1티어)
+            shw = {G_.name(x) for x in n.get('show') or [] if isinstance(x, str)}
+            ex = []
+            for e in ((G_.srcn.get(n['id']) or {}).get('edges') or n.get('edges') or []):   # 시뮬 파일 그래프 선엔 조건이 없음 — 원본 그래프 선
+                c = e.get('if') or {}
+                tg = c.get('has') or c.get('added') if e.get('res') == 'ok' and e.get('to') not in ('done', n['id']) and isinstance(c, dict) and len(c) == 1 else None
+                if isinstance(tg, str) and G_.name(tg) not in shw and G_.name(tg) not in ex: ex.append(G_.name(tg))
+            tg_ = {x.get('gi') for x in ([t] if t.get('gi') is not None else t.get('anyOf') or [])}
+            ex = [x for x in ex if not ({gi for gi, _ in G_.leaves(x)} & tg_)]   # 목표를 포함한 묶음(같은 옵션의 다른 이름)은 빼고, 다른 옵션으로 가는 성공 선만
+            sx = G_.spec(ex) if ex and shw else None
+            if sx: t['orAlso'] = sx
+        _one = n.get('edges') and not any(e.get('res') == 'fail' or e.get('to') == n['id'] or e.get('lost') for e in n['edges']) and len({e.get('to') for e in n['edges']}) == 1
+        if t and act in ('exalt', 'chaos', 'reveal') and _one and (any(e.get('res') == 'fail' for e in _sn.get('edges') or []) or act == 'reveal' or (not t.get('asIs') and not t.get('junk') and (t.get('gi') is not None or t.get('anyOf') or t.get('all')))):
             t['noMiss'] = True   # 이 등급은 빗나감 선이 없음(over가 선을 하나로) = 나오는 대로 — '목표 X / 확정'으로 보이던 것(시한 장화 에센셜 9·11번, 2026-11-13 S7 R-E1)
         if not o.get('cur') and (n.get('goal') or n.get('label')): o['label'] = n.get('goal') or n.get('label')
         st_ = [x for x in n.get('showText') or [] if not _is_tip(x)]
@@ -1384,7 +1465,8 @@ def start_of(r, sim, src, params=None):
         if isinstance(m, str): m = {'tag': m}
         if 'tag' in m:
             sp = G_.spec([m['tag']]) or {}
-            if 'gi' in sp: mods.append({'gi': sp['gi'], **({'tmax': sp['tmax']} if sp.get('tmax') else {}), **({'fr': True} if m.get('fr') else {}), **({'ess': True} if m.get('ess') else {})})
+            tmn = m.get('tmin') or (G_.tags.get(G_.name(m['tag'])) or {}).get('tmin') or (((G_.src or {}).get('tags') or {}).get(G_.name(m['tag'])) or {}).get('tmin')   # 산 베이스의 정확한 티어(시작 카드 'P1–3 (8—19)%' → 'P3', 2026-11-13 S9 R3-5) — 화면 전용, 시뮬은 읽지 않음
+            if 'gi' in sp: mods.append({'gi': sp['gi'], **({'tmax': sp['tmax']} if sp.get('tmax') else {}), **({'tmin': tmn} if tmn else {}), **({'fr': True} if m.get('fr') else {}), **({'ess': True} if m.get('ess') else {})})
         elif 'junk' in m: mods.append({'junk': m['junk']})
         elif 'unrev' in m: mods.append({'unrev': m['unrev']})
     if mods: st['mods'] = mods
