@@ -32,7 +32,7 @@ g = {
           '좌측 결정화 + 완벽한 마술의 에센스로 접두 잡옵을 지우고 접미 주문 +3(6:10~6:28) → 아스트리드의 창의성(6:35) → 보존된 턱뼈로 접두 미공개 훼손(6:44~6:52) → '
           '좌측 결정화 + 천공의 합금으로 미공개 훼손을 지우고 마나 최대치·주문 +1(7:00~7:14) → 군주의 징조 + 보존된 턱뼈(7:32~7:40) → 심연의 메아리 공개, 추가 물리 23%(7:44~7:57). '
           '3:44~4:50 절사의 징조 + 카오스 데모는 영상에서 "절삭한 건 잊어 주세요"(5:30)라 넣지 않음. '
-          '등급(난이도 3 = 밸런스·에센셜, 정책 10장 C17): 밸런스 = 주문 치명타 1~2티어(영상 3:00 "1티어 혹은 2티어"), 접미 두 번째 옵션 = 지능 1~2티어 반복(영상 성공 회차) '
+          '등급(난이도 3 = 밸런스·에센셜, 정책 10장 C17): 밸런스 = 주문 치명타 1~2티어(영상 3:00 "1티어 혹은 2티어"), 접미 두 번째 옵션 = 지능·주문 치명타 피해 보너스·마나 재생 속도 중 하나 1~2티어 반복(새 정책 A 11-13: 영상 설명 "마음에 드는 것", 화면·카드는 성공 회차 지능) '
           '에센셜 = 주문 치명타 1~4티어(영상 8:00 "2티어 3티어도 괜찮습니다"), 접미 두 번째 옵션은 결과 그대로. 공개는 군주의 징조로 울라만 접두 3개 중 추가 물리 피해가 확정이라 두 등급 같음.'),
  'params': {
   'cT': {'kr': '주문 치명타 명중 확률', 'en': 'Spell crit chance', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('1~4티어', 'T1–4')}},
@@ -43,12 +43,15 @@ g = {
   {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'cT': 4, 'v': 2}, 'tier': 'ess',
    'desc': K('주문 치명타 1~4티어, 접미 두 번째 옵션 결과 그대로', 'T1–4 spell crit; second suffix kept as it comes')},
   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'cT': 2, 'v': 1}, 'tier': 'bal',
-   'desc': K('영상: 주문 치명타 1~2티어, 지능 1~2티어, 추가 물리 피해', 'Video: T1–2 spell crit, T1–2 intelligence, extra physical damage')}],
+   'desc': K('영상: 주문 치명타 1~2티어, 접미 두 번째 옵션 1~2티어, 추가 물리 피해', 'Video: T1–2 spell crit, T1–2 second suffix, extra physical damage')}],
  'tags': {
   'chaos': {'gi': 8, 'tmax': 1}, 'scrit': {'gi': 20, 'tmax': '$cT'}, 'scrit2': {'gi': 20, 'tmax': 2}, 'scrit4': {'gi': 20, 'tmax': 4},
-  'int': {'gi': 0, 'tmax': 2}, 'sp3': {'gi': 50}, 'cel': {'gi': 59}, 'ula': {'gi': 43},
+  'int': {'gi': 0, 'tmax': 2}, 'cdmg': {'gi': 21, 'tmax': 2}, 'mreg': {'gi': 16, 'tmax': 2},
+  # 새 정책 A(11-13 14:17): 영상 1:00·2:20 '지능·치명타 피해·마나 재생 중 마음에 드는 것' — 성공 조건은 셋 중 하나, 상자·칸·카드는 성공 회차 지능(5:26)
+  'suf2': {'anyOf': ['int', 'cdmg', 'mreg'], 'label': K('지능·주문 치명타 피해 보너스·마나 재생 속도 1~2티어', 'T1–2 intelligence, spell critical damage bonus or mana regeneration rate')},
+  'sp3': {'gi': 50}, 'cel': {'gi': 59}, 'ula': {'gi': 43},
  },
- 'require': {'all': [{'has': 'chaos'}, {'has': 'scrit'}, {'has': 'sp3'}, {'has': 'cel'}, {'has': 'ula'}, {'any': [{'not': V1}, {'has': 'int'}]}]},
+ 'require': {'all': [{'has': 'chaos'}, {'has': 'scrit'}, {'has': 'sp3'}, {'has': 'cel'}, {'has': 'ula'}, {'any': [{'not': V1}, {'has': 'suf2'}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0',
@@ -89,7 +92,7 @@ A(id='w2', kind='act', group='main', pos=[0, 2.4], act='chaos', cur='Chaos_Orb',
 A(id='w3', kind='act', group='main', pos=[0, 3.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접미 두 번째 옵션 — 지능', 'Second suffix: intelligence'), show=['int'],
   over=[{'param': {'v': 2}, 'set': {'goal': K('접미 두 번째 옵션', 'Second suffix'), 'show': [], 'showText': [{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}]}}],
-  edges=[{'if': {'param': {'v': 2}}, 'to': 'w4', 'res': 'ok', 'hide': True}, {'if': {'has': 'int'}, 'to': 'w4', 'res': 'ok'},
+  edges=[{'if': {'param': {'v': 2}}, 'to': 'w4', 'res': 'ok', 'hide': True}, {'if': {'has': 'suf2'}, 'to': 'w4', 'res': 'ok'},
          {'to': 'w3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[CH, SC, IN])
 A(id='w3x', kind='act', group='main', pos=[1, 3.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,

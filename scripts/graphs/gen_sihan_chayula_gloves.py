@@ -52,12 +52,13 @@ g = {
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0',
  'finalItem': {'quality': 20, 'sockets': 2},
+ # 새 정책 A(11-13 14:17): 카드는 성공 회차(9:20)에 남은 룬 수호 — 갈비뼈가 원소 저항 관통 대신 룬 수호를 지우는 경우는 꿀팁
  'finals': [
   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-   'lines': [{'tag': 'pois', 'fr': True}, {'tag': 'fast', 'des': True}, {'tag': 'craft', 'ess': True, 'des': False},
+   'lines': [{'tag': 'pois', 'fr': True}, {'tag': 'fast', 'des': True}, {'tag': 'rward', 'ess': True, 'des': False},
              {'tag': 'curse'}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]},
   {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
-   'lines': [{'tag': 'pois', 'fr': True}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'craft', 'ess': True, 'des': False},
+   'lines': [{'tag': 'pois', 'fr': True}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'rward', 'ess': True, 'des': False},
              {'tag': 'curse'}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]}],
 }
 

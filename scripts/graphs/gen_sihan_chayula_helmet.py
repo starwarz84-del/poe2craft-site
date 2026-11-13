@@ -29,7 +29,7 @@ g = {
           '성공 회차 순서: 회피 및 에너지 보호막 93% 1티어(4:53) → 상위 찬미 + 완벽한 엑잘로 접미 2개(5:13~5:22, 튕겨내기 22% 1티어 · 번개 저항 → 공허 유동체로 카오스 저항 7:00~7:12) → '
           '완벽한 엑잘 접두(7:32 마나 최대치 빗나감) → 고대 갈비뼈(8:06) → 메아리 공개 빗나감(8:16~8:32, 회피 및 에너지 보호막 % + 마나) → 소멸의 오브(9:00, 마나 지워짐) → 완벽한 엑잘(9:26 회피 및 에너지 보호막 % + 생명력 1티어) → '
           '빛의 징조 + 소멸, 고대 갈비뼈(10:00~10:16) → 메아리 공개(10:30~10:48, 회피·에너지 보호막 최대치 1티어). '
-          '튕겨내기는 영상 방법대로 카오스 오브(1:00), 성공 회차는 엑잘로 떴음. 등급(난이도 3 = 밸런스·에센셜, C17): 밸런스 = 튕겨내기·접두 엑잘·공개 1~2티어, 공개 빗나감은 빛의 징조로 다시. '
+          '튕겨내기는 영상 방법대로 카오스 오브(1:00), 성공 회차는 엑잘로 떴음. 등급(난이도 3 = 밸런스·에센셜, C17): 밸런스 = 튕겨내기·접두 엑잘·공개 1~2티어(접두 엑잘은 새 정책 A 11-13: 회피 및 에너지 보호막 % + 생명력·생명력·마나 최대치 중 하나, 7:38 마나 "그냥 갈게요"), 공개 빗나감은 빛의 징조로 다시. '
           '에센셜 = 튕겨내기 1~4티어, 접두 엑잘·공개 결과 그대로(빛의 징조 없음). 접미 나머지 두 옵션은 영상대로 랜덤(2:20).'),
  'params': {
   'dT': {'kr': '튕겨내기 평점', 'en': 'Deflection', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('1~4티어', 'T1–4')}},
@@ -43,9 +43,12 @@ g = {
    'desc': K('영상: 튕겨내기·회피 및 에너지 보호막 % + 생명력·회피와 에너지 보호막 최대치 1~2티어', 'Video: T1–2 deflection, evasion/ES % + life and flat evasion/ES')}],
  'tags': {
   'pct': {'gi': 9, 'tmax': 1}, 'defl': {'gi': 21, 'tmax': '$dT'}, 'defl2': {'gi': 21, 'tmax': 2}, 'defl4': {'gi': 21, 'tmax': 4},
-  'hyb': {'gi': 10, 'tmax': 2}, 'flat': {'gi': 8, 'tmax': 2},
+  'hyb': {'gi': 10, 'tmax': 2}, 'flat': {'gi': 8, 'tmax': 2}, 'life': {'gi': 6, 'tmax': 2}, 'mana': {'gi': 7, 'tmax': 2},
+  # 새 정책 A(11-13 14:17): 접두 엑잘은 영상이 마나 최대치도 받음(7:38 "그냥 갈게요", 1:30 '마음에 안 들면 지우고 다시') — 성공 조건은 셋 중 하나, 상자·칸·카드는 성공 회차 회피 및 ES % + 생명력(9:26).
+  # 회피·ES 최대치(gi 8)는 마지막 훼손 공개 목표라 빼고, 공개 빗나감(8:32 회피 및 ES % + 마나)은 영상이 빗나감으로 봐서 뺌
+  'pre2': {'anyOf': ['hyb', 'life', 'mana'], 'label': K('회피 및 에너지 보호막 % + 생명력·생명력 최대치·마나 최대치 1~2티어', 'T1–2 evasion/ES % + life, maximum life or maximum mana')},
  },
- 'require': {'all': [{'has': 'pct'}, {'has': 'defl'}, {'full': 'p'}, {'full': 's'}, {'any': [V2, {'all': [{'has': 'hyb'}, {'has': 'flat'}]}]}]},
+ 'require': {'all': [{'has': 'pct'}, {'has': 'defl'}, {'full': 'p'}, {'full': 's'}, {'any': [V2, {'all': [{'has': 'pre2'}, {'has': 'flat'}]}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0',
@@ -93,7 +96,7 @@ A(id='h7', kind='act', group='main', pos=[0, 3.4], act='exalt', cur='Perfect_Exa
 A(id='h4', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 두 번째 옵션 — 회피 및 에너지 보호막 % + 생명력', 'Second prefix: evasion/ES % + life'), show=['hyb'],
   over=[{'param': {'v': 2}, 'set': {'goal': K('접두 두 번째 옵션', 'Second prefix'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}]}}],
-  edges=[{'if': V2, 'to': 'h5', 'res': 'ok', 'hide': True}, {'if': {'has': 'hyb'}, 'to': 'h5', 'res': 'ok'},
+  edges=[{'if': V2, 'to': 'h5', 'res': 'ok', 'hide': True}, {'if': {'has': 'pre2'}, 'to': 'h5', 'res': 'ok'},
          {'to': 'h4x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[PC, HY, DF, RS, RS])
 A(id='h4x', kind='act', group='main', pos=[1, 4.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
