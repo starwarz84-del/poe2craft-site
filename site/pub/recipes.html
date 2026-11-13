@@ -499,7 +499,7 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .simbox .simsum{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;margin:2px 0 8px}
 .simbox .simsum b{color:var(--rare);font-weight:600}
 .simbox .simsum small,.simbox .simnote{color:var(--faint);font-size:11.5px}
-.fc.panning{cursor:grabbing;user-select:none}.fc{cursor:grab;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg);max-height:72vh}
+.fc.panning{cursor:grabbing;user-select:none}.fc{cursor:grab;overflow-x:auto;overflow-y:hidden;border:1px solid var(--line);border-radius:8px;background:var(--bg)}   /* 2026-11-14 사용자: 안쪽 영역만 세로로 스크롤돼 보기 어려움 → 세로는 플로우차트 전체 높이로 펼치고 페이지와 같이 스크롤, 가로만 안쪽 스크롤 */
 .fcin{position:relative}
 .fcsvg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .simopts{margin:-2px 0 6px}.simopts .simtop{margin:6px 0 0}
@@ -623,7 +623,7 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .fczoom .btn{min-width:30px;padding:4px 8px;font-variant-numeric:tabular-nums}
 .fczoom .zv{min-width:52px}
 .simbox.full{position:fixed;inset:0;z-index:1000;margin:0;border-radius:0;border:0;display:flex;flex-direction:column;overflow:hidden;padding:10px 12px}
-.simbox.full .fc{flex:1;max-height:none;min-height:0}
+.simbox.full .fc{flex:1;max-height:none;min-height:0;overflow:auto}
 .simbox.full .simdet,.simbox.full>.simnote{display:none}
 body.simfull{overflow:hidden}
 .simtab{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
@@ -2252,10 +2252,29 @@ document.addEventListener('scroll', ()=>requestAnimationFrame(syncFcProg), true)
 let headRO=null;
 document.addEventListener('toggle', e=>{ if(e.target.matches?.('[data-totbox]')) store.set('totOpen', e.target.open); }, true);
 // start and final cards: give matching rows the same height
+/* 2026-11-14 도과장(사용자: 카드 중간 선이 이상하게 표시): 예전엔 두 카드의 n번째 줄끼리 맞춰서, 룬 줄 수가 다르면 구분선이 옆 카드 블록 높이만큼 늘어났음.
+   이제 줄마다 구역 이름(룬 R·바알 V·개수·결속·접두 P·간격·접미 S)을 붙여 같은 이름끼리만 높이를 맞추고, 구역 첫 줄의 세로 위치를 맞춤(앞 구분선과 함께 내림). 구분선은 손대지 않음 */
+function pairKeys(body){ let st='R', cnt=false; const n={}, out=[];
+  for(const c of body.children){ const k=c.classList; let key=null;
+    if(k.contains('tt-art')||k.contains('tt-props')) key=c.className;
+    else if(k.contains('tt-sep')){ if(cnt && st!=='S') st='P'; else if(!cnt && n.R) st='V'; }
+    else if(k.contains('tt-cnt')){ cnt=true; key='cnt'; }
+    else if(k.contains('tt-ench')) key='ench';
+    else if(k.contains('tt-gap')){ st='S'; key='gap'; }
+    else if(k.contains('tt-sanct')) key='sanct';
+    else { n[st]=(n[st]||0)+1; key=st+':'+n[st]; }
+    if(key) out.push([key,c]); }
+  return out; }
 function pairRows(root=document){
   root.querySelectorAll('[data-pair]').forEach(box=>{ const [a,b]=[...box.querySelectorAll('.tt-body')]; if(!a||!b) return;
-    const ka=[...a.children], kb=[...b.children]; ka.concat(kb).forEach(e=>e.style.minHeight='');
-    for(let i=0;i<Math.min(ka.length,kb.length);i++){ const h=Math.max(ka[i].offsetHeight, kb[i].offsetHeight); ka[i].style.minHeight=kb[i].style.minHeight=h+'px'; } }); }
+    [...a.children, ...b.children].forEach(e=>{ e.style.minHeight=''; e.style.marginTop=''; });
+    const ka=pairKeys(a), kb=new Map(pairKeys(b));
+    for(const [key,ea] of ka){ const eb=kb.get(key); if(!eb) continue; const h=Math.max(ea.offsetHeight, eb.offsetHeight); ea.style.minHeight=eb.style.minHeight=h+'px'; }
+    const first=k=>/^(cnt|ench|gap|sanct)$|:1$/.test(k);
+    for(const [key,ea] of ka){ const eb=kb.get(key); if(!eb || !first(key)) continue;
+      const ya=ea.getBoundingClientRect().top, yb=eb.getBoundingClientRect().top; if(Math.abs(ya-yb)<1) continue;
+      const lo = ya<yb ? ea : eb, d=Math.abs(ya-yb), prev=lo.previousElementSibling, tgt = prev && prev.classList.contains('tt-sep') ? prev : lo;
+      tgt.style.marginTop = (parseFloat(getComputedStyle(tgt).marginTop)||0) + d + 'px'; } }); }
 function setHeadH(){ const h=document.querySelector('#detail [data-dhead]'); if(!h) return;
   document.documentElement.style.setProperty('--dh', h.offsetHeight+'px');
   if('ResizeObserver' in window){ headRO?.disconnect(); headRO=new ResizeObserver(()=>document.documentElement.style.setProperty('--dh', h.offsetHeight+'px')); headRO.observe(h); } }
@@ -2620,9 +2639,9 @@ $('#stats').addEventListener('mousedown', e=>{ if(e.target.closest('.slist')) e.
 /* 플로우차트 끌어서 움직이기(사용자 2026-11-12: 좌우 스크롤이 안 됨): 빈 곳을 누른 채 끌면 상하좌우로 이동, 버튼·링크·선택 상자는 그대로 */
 { let pan=null;
   document.addEventListener('pointerdown', e=>{ const fc=e.target.closest('.fc'); if(!fc || e.button!==0 || e.target.closest('button,a,select,input,textarea,[data-act],[data-rtab]')) return;
-    if(fc.scrollWidth<=fc.clientWidth && fc.scrollHeight<=fc.clientHeight) return; pan={fc, x:e.clientX, y:e.clientY, l:fc.scrollLeft, t:fc.scrollTop, moved:false}; });
+    if(fc.scrollWidth<=fc.clientWidth && fc.scrollHeight<=fc.clientHeight && !fc.closest('.simbox:not(.full)')) return; pan={fc, x:e.clientX, y:e.clientY, l:fc.scrollLeft, t:fc.scrollTop, wy:scrollY, moved:false}; });
   document.addEventListener('pointermove', e=>{ if(!pan) return; const dx=e.clientX-pan.x, dy=e.clientY-pan.y; if(!pan.moved && Math.hypot(dx,dy)<4) return;
-    pan.moved=true; pan.fc.classList.add('panning'); pan.fc.scrollLeft=pan.l-dx; pan.fc.scrollTop=pan.t-dy; e.preventDefault(); });
+    pan.moved=true; pan.fc.classList.add('panning'); pan.fc.scrollLeft=pan.l-dx; if(pan.fc.scrollHeight>pan.fc.clientHeight+1) pan.fc.scrollTop=pan.t-dy; else scrollTo(scrollX, pan.wy-dy); e.preventDefault(); });   /* 세로 안쪽 스크롤이 없으면 끌기로 페이지를 내림 */
   const end=()=>{ if(pan){ pan.fc.classList.remove('panning'); if(pan.moved){ const stop=ev=>{ ev.stopPropagation(); ev.preventDefault(); }; pan.fc.addEventListener('click', stop, {capture:true, once:true}); setTimeout(()=>pan&&0,0); } } pan=null; };
   document.addEventListener('pointerup', end); document.addEventListener('pointercancel', end); }
 $('#stats').addEventListener('click', e=>{ const p=e.target.closest('[data-spick]'); if(p){ statPick(+p.closest('[data-sbox]').dataset.sbox, p.dataset.spick); return; }
