@@ -4,47 +4,47 @@
  "cls": "Quivers",
  "base": "Visceral Quiver",
  "ilvl": 75,
- "note": "Fubgun 가성비 화살통(0.5.5 빌드 글) — 물리 피해 추가 + 투사체 +1 매직 구입 → 완벽한 제왕의 오브(좌측 대관식의 징조로 접두) → 우측 강령술 + 보존된 턱뼈 → 공개(치명타·공격 속도) → 상위 찬미 + 엑잘로 남은 2자리. 글은 제왕 결과가 접미면 더 좋다고 하지만 그러면 접미가 차서 턱뼈가 좋은 접미를 지울 수 있어 접두로 고정(가정). 베이스 이름은 글에 없어 본능적인 화살통으로 가정.",
+ "note": "2026-11-13 G10 글 전체 다시 대조(mobalytics Fubgun 0.5.5 Ice Shot Deadeye, Crafting Guide의 Quiver - ilvl 75 1~5단계, 캡처 guide-quiver-steps-1-5). 글: ① 완벽한 진화·확장으로 좋은 옵션 2개(접두 피해 추가 또는 활 스킬 피해, 접미 +1·치명타·공격 속도) ② 완벽한 제왕으로 세 번째 좋은 옵션(접미가 이상적) ③ 빗나가면 상위 카오스 오브로 그 옵션 교체 시도(2/3은 망함) ④ 우측 강령술 + 턱뼈, 좋은 옵션 3개면 심연의 메아리 ⑤ 좋은 접미가 뜨면 완벽한 엑잘 + 상위 찬미로 마무리. 확정 옵션(정책 11장): 매직 = 물리 피해 추가 1티어 + 모든 투사체 +1(옛 레시피·글의 비싼 방법 't1 Flat'), 제왕 = 접미 공격 속도, 공개 = 공격 치명타 확률(본능적인 화살통 설명의 치명타). 내부 결정(글에 없음): 베이스 = 본능적인 화살통(빌드 글 장비 설명), 매직 단계 빗나감은 새 베이스(소멸의 오브 147 ex보다 진화 + 확장이 쌈, 글 'until'), 상위 카오스 오브가 물리 피해 추가나 +1을 지우면 새 베이스, 턱뼈 = 보존된 턱뼈. 옛 그래프의 좌측 대관식의 징조(제왕을 접두로 고정)는 글과 반대라 뺌 — 접미 2개 상태의 우측 강령술 턱뼈는 빈자리로 들어가 좋은 접미를 지우지 않음. 등급(난이도 2~3 → 밸런스·에센셜, C17): 밸런스 = 공격 속도 1~2티어까지 상위 카오스 오브, 공개 치명타 1~2티어까지 빛의 징조로 다시(글의 비싼 방법), 에센셜 = 반복 없이 제왕·공개 결과 그대로(글: 좋은 옵션 3개가 아니면 메아리 없이), 마무리 상위 엑잘.",
  "params": {
-  "fT": {
-   "kr": "물리 피해 추가",
-   "en": "Flat physical",
-   "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    }
-   }
-  },
-  "L": {
-   "kr": "훼손 공개",
-   "en": "Desecration reveal",
-   "values": {
-    "1": {
-     "kr": "빛의 징조로 다시",
-     "en": "Retry with Omen of Light"
-    },
-    "0": {
-     "kr": "결과 그대로",
-     "en": "Keep whatever comes"
-    }
-   }
-  },
-  "gT": {
-   "kr": "치명타·공격 속도",
-   "en": "Crit / attack speed",
+  "aT": {
+   "kr": "공격 속도",
+   "en": "Attack speed",
    "values": {
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
     },
     "4": {
-     "kr": "1~4티어",
-     "en": "T1–4"
+     "kr": "나오는 대로",
+     "en": "As it comes"
+    }
+   }
+  },
+  "cT": {
+   "kr": "공격 치명타 확률",
+   "en": "Attack crit chance",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "나오는 대로",
+     "en": "As it comes"
+    }
+   }
+  },
+  "L": {
+   "kr": "반복",
+   "en": "Retries",
+   "values": {
+    "1": {
+     "kr": "다시",
+     "en": "Retry"
+    },
+    "0": {
+     "kr": "결과 그대로",
+     "en": "Keep what comes"
     }
    }
   }
@@ -53,17 +53,17 @@
   {
    "id": "bal",
    "params": {
-    "fT": 1,
-    "L": 1,
-    "gT": 2
+    "aT": 2,
+    "cT": 2,
+    "L": 1
    }
   },
   {
    "id": "ess",
    "params": {
-    "fT": 2,
-    "L": 0,
-    "gT": 4
+    "aT": 4,
+    "cT": 4,
+    "L": 0
    }
   }
  ],
@@ -73,13 +73,14 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "fT": 2,
-    "L": 0,
-    "gT": 4
+    "aT": 4,
+    "cT": 4,
+    "L": 0
    },
+   "tier": "ess",
    "desc": {
-    "kr": "물리 피해 추가 1~2티어 구입, 공개 결과 그대로",
-    "en": "Buy T1–2 flat physical; keep the reveal"
+    "kr": "제왕·공개 결과 그대로, 마무리 상위 엑잘",
+    "en": "Regal and reveal kept as they come, Greater Exalts to finish"
    }
   },
   {
@@ -87,57 +88,40 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "fT": 1,
-    "L": 1,
-    "gT": 2
+    "aT": 2,
+    "cT": 2,
+    "L": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "물리 피해 추가 1티어 구입, 공개는 빛의 징조로 다시",
-    "en": "Buy T1 flat physical; retry the reveal with Omen of Light"
+    "kr": "공격 속도 1~2티어까지 상위 카오스, 치명타 1~2티어까지 빛의 징조로 다시",
+    "en": "Greater Chaos until T1–2 attack speed, Omen of Light until T1–2 crit"
    }
   }
  ],
  "tags": {
   "flat": {
    "gi": 2,
-   "tmax": "$fT"
+   "tmax": 1
   },
   "proj": {
    "gi": 9
   },
-  "gp": {
-   "anyOf": [
-    {
-     "gi": 4
-    },
-    {
-     "gi": 6
-    },
-    {
-     "gi": 8
-    },
-    {
-     "gi": 19
-    }
-   ]
+  "as": {
+   "gi": 12,
+   "tmax": "$aT"
   },
-  "gs": {
-   "anyOf": [
-    {
-     "gi": 14,
-     "tmax": "$gT"
-    },
-    {
-     "gi": 12,
-     "tmax": "$gT"
-    },
-    {
-     "gi": 24
-    },
-    {
-     "gi": 25
-    }
-   ]
+  "crit": {
+   "gi": 14,
+   "tmax": "$cT"
+  },
+  "as2": {
+   "gi": 12,
+   "tmax": 2
+  },
+  "crit2": {
+   "gi": 14,
+   "tmax": 2
   }
  },
  "require": {
@@ -153,6 +137,25 @@
    },
    {
     "full": "s"
+   },
+   {
+    "any": [
+     {
+      "param": {
+       "L": 0
+      }
+     },
+     {
+      "all": [
+       {
+        "has": "as"
+       },
+       {
+        "has": "crit"
+       }
+      ]
+     }
+    ]
    }
   ]
  },
@@ -176,19 +179,7 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "q3",
-    "q4",
-    "q4x"
-   ],
-   "kr": "접미 두번째 옵션(훼손)",
-   "en": "Second suffix (desecrated)"
-  }
- ],
+ "start": "qn",
  "finals": [
   {
    "id": "bal",
@@ -196,15 +187,11 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "flat",
-     "tmax": 1
+     "tag": "flat"
     },
     {
      "side": "p",
-     "label": {
-      "kr": "공격 원소 피해 추가 또는 활 스킬 피해",
-      "en": "Flat elemental or bow damage"
-     }
+     "random": true
     },
     {
      "side": "p",
@@ -214,15 +201,10 @@
      "tag": "proj"
     },
     {
-     "side": "s",
-     "label": {
-      "kr": "치명타 확률 / 공격 속도",
-      "en": "Crit / attack speed"
-     }
+     "tag": "as2"
     },
     {
-     "side": "s",
-     "random": true
+     "tag": "crit2"
     }
    ]
   },
@@ -232,15 +214,11 @@
    "en": "Essential",
    "lines": [
     {
-     "tag": "flat",
-     "tmax": 2
+     "tag": "flat"
     },
     {
      "side": "p",
-     "label": {
-      "kr": "공격 원소 피해 추가 또는 활 스킬 피해",
-      "en": "Flat elemental or bow damage"
-     }
+     "random": true
     },
     {
      "side": "p",
@@ -251,10 +229,7 @@
     },
     {
      "side": "s",
-     "label": {
-      "kr": "공개 결과 그대로",
-      "en": "Reveal as it comes"
-     }
+     "random": true
     },
     {
      "side": "s",
@@ -264,30 +239,133 @@
   }
  ],
  "finalItem": {
-  "quality": 20,
+  "quality": 0,
   "sockets": 0
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "qn",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "q2",
+   "next": "qt",
    "start": {
-    "rar": "magic",
-    "mods": [
-     "flat",
-     "proj"
-    ]
+    "rar": "normal",
+    "mods": []
    },
    "label": {
-    "kr": "물리 피해 추가 + 투사체 스킬 레벨 +1 매직 화살통 구입",
-    "en": "Buy a magic quiver with flat physical + projectile skills +1"
+    "kr": "본능적인 화살통 구입 (노멀, 아이템 레벨 75)",
+    "en": "Buy a Visceral Quiver (normal, item level 75)"
    },
+   "item": []
+  },
+  {
+   "id": "qt",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "transmute",
+   "cur": "Perfect_Orb_of_Transmutation",
+   "label": {
+    "kr": "진화",
+    "en": "Transmute"
+   },
+   "goal": {
+    "kr": "매직 — 물리 피해 추가 1티어·모든 투사체 스킬 레벨 +1 중 먼저 뜬 것",
+    "en": "Magic: T1 flat physical or +1 projectile skills, whichever comes first"
+   },
+   "show": [
+    "flat",
+    "proj"
+   ],
+   "edges": [
+    {
+     "if": {
+      "any": [
+       {
+        "has": "flat"
+       },
+       {
+        "has": "proj"
+       }
+      ]
+     },
+     "to": "qa",
+     "res": "ok"
+    },
+    {
+     "to": "qx",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "qa",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "goal": {
+    "kr": "남은 옵션",
+    "en": "The other one"
+   },
+   "show": [
+    "flat",
+    "proj"
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "flat"
+       },
+       {
+        "has": "proj"
+       }
+      ]
+     },
+     "to": "ms",
+     "res": "ok"
+    },
+    {
+     "to": "qx",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
    "item": [
     {
      "s": "p",
@@ -310,70 +388,23 @@
    ]
   },
   {
-   "id": "q2",
-   "kind": "act",
+   "id": "qx",
+   "kind": "exit",
    "group": "prep",
    "pos": [
-    0,
-    1
+    1,
+    1.5
    ],
-   "act": "regal",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접두 두번째 옵션",
-    "en": "Upgrade to rare + second prefix"
-   },
+   "simTo": "qn",
+   "variant": "fail",
    "label": {
-    "kr": "제왕",
-    "en": "Regal"
+    "kr": "새 베이스",
+    "en": "New base"
    },
-   "edges": [
-    {
-     "to": "ms"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
-     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
-     "m": "n",
-     "tags": [
-      "flat"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +1",
-     "en": "+1 to Level of all Projectile Skills",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "공격에 화염·냉기·번개 피해 추가 또는 활 스킬 피해",
-     "en": "Flat fire, cold or lightning, or bow skill damage",
-     "m": "n",
-     "tags": [
-      "gp"
-     ]
-    }
-   ],
-   "cur": "Perfect_Regal_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "공격 원소 피해 추가 또는 활 스킬 피해 — 결과 그대로",
-     "en": "Flat elemental or bow damage — keep whatever comes"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Coronation"
-   ],
-   "show": [
-    "gp"
-   ]
+   "note": {
+    "kr": "진화·확장이 빗나가거나 상위 카오스 오브가 좋은 옵션을 지우면 새 베이스로",
+    "en": "A missed Transmute or Augment, or Greater Chaos taking a good option: a new base"
+   }
   },
   {
    "id": "ms",
@@ -381,9 +412,9 @@
    "group": "main",
    "pos": [
     0,
-    1.5
+    3.4
    ],
-   "next": "q3",
+   "next": "qr",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -406,125 +437,58 @@
      "tags": [
       "proj"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "공격에 화염·냉기·번개 피해 추가 또는 활 스킬 피해",
-     "en": "Flat fire, cold or lightning, or bow skill damage",
-     "m": "n",
-     "tags": [
-      "gp"
-     ]
     }
    ]
   },
   {
-   "id": "q3",
+   "id": "qr",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    4.4
    ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "접미 두번째 옵션(훼손)",
-    "en": "Second suffix (desecrated)"
-   },
+   "act": "regal",
+   "cur": "Perfect_Regal_Orb",
    "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
+    "kr": "제왕",
+    "en": "Regal"
    },
-   "edges": [
-    {
-     "to": "q4"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
-     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
-     "m": "n",
-     "tags": [
-      "flat"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 투사체 스킬 레벨 +1",
-     "en": "+1 to Level of all Projectile Skills",
-     "m": "n",
-     "tags": [
-      "proj"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "공격에 화염·냉기·번개 피해 추가 또는 활 스킬 피해",
-     "en": "Flat fire, cold or lightning, or bow skill damage",
-     "m": "n",
-     "tags": [
-      "gp"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Dextral_Necromancy"
-   ]
-  },
-  {
-   "id": "q4",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    3
-   ],
-   "act": "reveal",
    "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
+    "kr": "레어 + 접미 공격 속도 1~2티어",
+    "en": "Rare + T1–2 attack speed suffix"
    },
-   "label": {
-    "kr": "공개",
-    "en": "Reveal"
-   },
+   "show": [
+    "as"
+   ],
    "edges": [
     {
      "if": {
-      "added": "gs"
+      "has": "as"
      },
-     "to": "q5",
+     "to": "qd",
      "res": "ok"
     },
     {
      "if": {
       "param": {
-       "L": 1
+       "L": 0
       }
      },
-     "to": "q4x",
-     "res": "fail"
+     "to": "qd",
+     "res": "ok",
+     "label": {
+      "kr": "나오는 대로",
+      "en": "Keep what comes"
+     }
     },
     {
-     "to": "q5",
+     "to": "qc",
      "res": "fail",
-     "hide": true
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
@@ -547,39 +511,381 @@
      ]
     },
     {
-     "s": "p",
-     "kr": "공격에 화염·냉기·번개 피해 추가 또는 활 스킬 피해",
-     "en": "Flat fire, cold or lightning, or bow skill damage",
-     "m": "n",
-     "tags": [
-      "gp"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "공격 치명타 확률 / 공격 속도 / 투사체 치명타 확률 / 투사체 2개 추가 발사",
-     "en": "Attack crit / attack speed / projectile crit / two extra projectiles",
+     "kr": "공격 속도 (14—16)% 증가",
+     "en": "(14—16)% increased Attack Speed",
      "m": "n",
      "tags": [
-      "gs"
+      "as"
      ]
     }
    ],
-   "want": "gs",
-   "show": [
-    "gs"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "goal": {
+       "kr": "레어 + 세번째 옵션 — 나오는 대로",
+       "en": "Rare + a third option: keep what comes"
+      },
+      "show": [],
+      "showText": [
+       {
+        "kr": "랜덤 옵션 1개",
+        "en": "One random option"
+       }
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+        "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+        "m": "n",
+        "tags": [
+         "flat"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "모든 투사체 스킬 레벨 +1",
+        "en": "+1 to Level of all Projectile Skills",
+        "m": "n",
+        "tags": [
+         "proj"
+        ]
+       },
+       {
+        "s": "x",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
+    }
    ]
   },
   {
-   "id": "q4x",
+   "id": "qc",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    3
+    4.4
+   ],
+   "act": "chaos",
+   "cur": "Greater_Chaos_Orb",
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "goal": {
+    "kr": "빗나간 옵션 교체 시도 — 공격 속도가 뜰 때까지, 좋은 옵션이 지워지면 새 베이스",
+    "en": "Try to replace the miss: until attack speed, a lost good option means a new base"
+   },
+   "show": [
+    "as"
+   ],
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "all": [
+        {
+         "has": "flat"
+        },
+        {
+         "has": "proj"
+        }
+       ]
+      }
+     },
+     "to": "qx",
+     "res": "fail",
+     "label": {
+      "kr": "좋은 옵션 지워짐",
+      "en": "Good option lost"
+     }
+    },
+    {
+     "if": {
+      "has": "as"
+     },
+     "to": "qd",
+     "res": "ok"
+    },
+    {
+     "to": "qc",
+     "res": "fail",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "qd",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5.4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Jawbone",
+   "omens": [
+    "Omen_of_Dextral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접미 세번째 옵션(훼손)",
+    "en": "Third suffix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "qv"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +1",
+     "en": "+1 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (14—16)% 증가",
+     "en": "(14—16)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+        "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+        "m": "n",
+        "tags": [
+         "flat"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "모든 투사체 스킬 레벨 +1",
+        "en": "+1 to Level of all Projectile Skills",
+        "m": "n",
+        "tags": [
+         "proj"
+        ]
+       },
+       {
+        "s": "x",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "x",
+        "kr": "훼손 옵션 (미공개)",
+        "en": "Desecrated (unrevealed)",
+        "m": "u"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "qv",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6.4
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "crit",
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "goal": {
+    "kr": "접미 공격 치명타 명중 확률 1~2티어",
+    "en": "T1–2 attack crit chance suffix"
+   },
+   "show": [
+    "crit"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "crit"
+     },
+     "to": "qe",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "L": 0
+      }
+     },
+     "to": "qe",
+     "res": "ok",
+     "label": {
+      "kr": "나오는 대로",
+      "en": "Keep what comes"
+     }
+    },
+    {
+     "to": "ql",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+     "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+     "m": "n",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 투사체 스킬 레벨 +1",
+     "en": "+1 to Level of all Projectile Skills",
+     "m": "n",
+     "tags": [
+      "proj"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (14—16)% 증가",
+     "en": "(14—16)% increased Attack Speed",
+     "m": "n",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 치명타 명중 확률 (35—38)% 증가",
+     "en": "(35—38)% increased Critical Hit Chance for Attacks",
+     "m": "d",
+     "tags": [
+      "crit"
+     ]
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "omens": [],
+      "goal": {
+       "kr": "훼손 옵션 공개 — 나오는 대로",
+       "en": "Reveal the desecration: keep what comes"
+      },
+      "show": [],
+      "showText": [
+       {
+        "kr": "랜덤 옵션",
+        "en": "Random option"
+       }
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+        "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+        "m": "n",
+        "tags": [
+         "flat"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "모든 투사체 스킬 레벨 +1",
+        "en": "+1 to Level of all Projectile Skills",
+        "m": "n",
+        "tags": [
+         "proj"
+        ]
+       },
+       {
+        "s": "x",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "x",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "ql",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -596,32 +902,45 @@
    },
    "target": {
     "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "en": "Remove the desecrated option"
    },
    "edges": [
     {
-     "to": "q3",
-     "port": "right"
+     "to": "qd",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
   {
-   "id": "q5",
+   "id": "qe",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    7.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "남은 접두·접미 1개씩",
-    "en": "The last prefix and suffix"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "남은 두 자리 — 나오는 대로",
+    "en": "The last two slots: keep what comes"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
    "edges": [
     {
      "to": "ok"
@@ -638,6 +957,18 @@
      ]
     },
     {
+     "s": "p",
+     "kr": "랜덤 옵션",
+     "en": "Random option",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "랜덤 옵션",
+     "en": "Random option",
+     "m": "j"
+    },
+    {
      "s": "s",
      "kr": "모든 투사체 스킬 레벨 +1",
      "en": "+1 to Level of all Projectile Skills",
@@ -647,45 +978,23 @@
      ]
     },
     {
-     "s": "p",
-     "kr": "공격에 화염·냉기·번개 피해 추가 또는 활 스킬 피해",
-     "en": "Flat fire, cold or lightning, or bow skill damage",
+     "s": "s",
+     "kr": "공격 속도 (14—16)% 증가",
+     "en": "(14—16)% increased Attack Speed",
      "m": "n",
      "tags": [
-      "gp"
+      "as"
      ]
     },
     {
      "s": "s",
-     "kr": "공격 치명타 확률 / 공격 속도 / 투사체 치명타 확률 / 투사체 2개 추가 발사",
-     "en": "Attack crit / attack speed / projectile crit / two extra projectiles",
-     "m": "n",
+     "kr": "공격 치명타 명중 확률 (35—38)% 증가",
+     "en": "(35—38)% increased Critical Hit Chance for Attacks",
+     "m": "d",
      "tags": [
-      "gs"
+      "crit"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
     }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
-    {
-     "kr": "랜덤 옵션 2개 — 결과 그대로",
-     "en": "Two random lines — keep whatever comes"
-    }
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
    ],
    "over": [
     {
@@ -693,7 +1002,51 @@
       "L": 0
      },
      "set": {
-      "cur": "Greater_Exalted_Orb"
+      "cur": "Greater_Exalted_Orb",
+      "item": [
+       {
+        "s": "p",
+        "kr": "공격 시 물리 피해 (12—19)~(22—32) 추가",
+        "en": "Adds (12—19) to (22—32) Physical Damage to Attacks",
+        "m": "n",
+        "tags": [
+         "flat"
+        ]
+       },
+       {
+        "s": "x",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "x",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "모든 투사체 스킬 레벨 +1",
+        "en": "+1 to Level of all Projectile Skills",
+        "m": "n",
+        "tags": [
+         "proj"
+        ]
+       },
+       {
+        "s": "x",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "x",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
      }
     }
    ]
@@ -704,12 +1057,24 @@
    "group": "main",
    "pos": [
     0,
-    5
+    8.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "qd",
+    "qv",
+    "ql"
+   ],
+   "kr": "접미 세번째 옵션(훼손)",
+   "en": "Third suffix (desecrated)"
   }
  ]
 }

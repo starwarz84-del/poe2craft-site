@@ -11,10 +11,10 @@ PH=[{'id':'base','kr':'베이스','en':'Base'},{'id':'main','kr':'옵션 추가'
 
 # 1. 가성비 화살통
 c='Quivers'
-_fub('fubgun-quiver',c,'Visceral Quiver',75,2,K('물리 피해 추가 + 투사체 +1 + 원소 피해 접두 + 치명타·공격 속도 훼손','flat physical + projectile skills +1 + elemental prefix + crit or attack speed desecration'),
+_fub('fubgun-quiver',c,'Visceral Quiver',75,2,K('물리 피해 추가 + 투사체 +1 + 공격 속도 + 치명타 훼손','flat physical + projectile skills +1 + attack speed + crit desecration'),
   [K('활','Bow'),K('투사체','Projectile'),K('리그 초반','League start')],
   {'rar':'magic','mods':[{'gi':2,'tmax':1},{'gi':9,'tmax':1}]},PH,[
-  {'id':'q1','phase':'base','do':'base','cost':'base','note':K('물리 피해 추가 + 투사체 스킬 레벨 +1 매직 화살통.','A magic quiver with flat physical and projectile skills +1.')},
+  {'id':'q1','phase':'base','do':'base','cost':'base','note':K('노멀 본능적인 화살통(아이템 레벨 75).','A normal Visceral Quiver (item level 75).')},   # 2026-11-13 G10: 플로우차트는 노멀부터 진화·확장(글 1단계)
   {'id':'q2','phase':'base','do':'regal','cur':'Perfect_Regal_Orb','omens':['Omen_of_Sinistral_Coronation'],'target':{'anyOf':[{'gi':4},{'gi':6},{'gi':8},{'gi':19}],'asIs':True,'side':'p'},
    'br':K('원소 피해 추가·활 스킬 피해면 좋음, 아니면 그대로','Flat elemental or bow damage is good; otherwise keep it')},
   {'id':'q3','phase':'main','do':'desecrate','cur':'Preserved_Jawbone','omens':['Omen_of_Dextral_Necromancy'],'target':{'unrev':'s'}},
