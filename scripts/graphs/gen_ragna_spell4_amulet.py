@@ -20,8 +20,11 @@ SD = L('p', '주문 피해 (18—22)% 증가', '(18—22)% increased Spell Damag
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'u')
 RP = L('p', '랜덤 옵션', 'Random option', 'n')
+ES = L('p', '에너지 보호막 최대치 (33—38)% 증가', '(33—38)% increased maximum Energy Shield', 'n')   # 3:27 절사 카오스 결과 34% 3티어
+TX = lambda x: {'s': x['s'], 'kr': x['kr'], 'en': x['en']}   # 11-13 R3-6: 결과 그대로인 자리의 상자·아이템 칸 = 영상 결과 옵션(마스터 기준 K), 완성 카드만 랜덤 옵션
 RS = L('s', '랜덤 옵션', 'Random option', 'n')
-ESS = lambda item: [{'param': {'cT': 9}, 'set': {'item': [RS if x is CS else x for x in item]}}]
+CSN = L('s', CS['kr'], CS['en'], 'n')   # 에센셜 왼쪽 칸: 태그 없이 영상 결과(태그를 달면 1~9티어 범위로 보임)
+ESS = lambda item: [{'param': {'cT': 9}, 'set': {'item': [CSN if x is CS else x for x in item]}}]
 LIGHT = K('소멸의 오브 사용', 'Use an Orb of Annulment')
 
 g = {
@@ -79,8 +82,7 @@ A(id='g6', kind='act', group='main', pos=[0, 7.2], act='exalt', cur='Perfect_Exa
   edges=[{'if': {'added': 'cast'}, 'to': 'g7', 'res': 'ok'}, {'if': {'param': {'cT': 9}}, 'to': 'g7', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'g6x', 'res': 'fail'}], item=[SP, MQ, SL, J('s'), CS],
   over=[{'param': {'cT': 9}, 'set': {'goal': K('접미 세 번째 옵션 — 시전 속도 노림, 나오는 대로', 'Third suffix: aiming for cast speed, keep what comes'),
-                                     'show': [], 'showText': [{'s': 's', 'kr': '랜덤 옵션', 'en': 'Random option'}],
-                                     'item': [SP, MQ, SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])
+                                     'show': [], 'showText': [TX(CS)], 'item': [SP, MQ, SL, J('s'), CSN]}}])
 A(id='g6x', kind='cleanup', group='main', pos=[1, 7.2], keep=['spell'], maxJunk=1, side='s', label=LIGHT, goal=LIGHT,
   target=K('우측 소멸의 징조로 접미 하나 지우기 — 모든 주문 +3이 지워지면 새 베이스', 'Dextral Annulment removes one suffix: losing all Spell Skills +3 means a new base'),
   edges=[{'lost': 'spell', 'to': 'h0', 'label': K('모든 주문 +3 지워짐 — 새 베이스', 'All Spell Skills +3 lost: new base')},
@@ -93,13 +95,11 @@ A(id='g8', kind='act', group='main', pos=[0, 9.2], act='quality', cur='Sibilant_
   edges=[{'to': 'g9'}], item=[SP, MQ, UN('p'), SL, J('s'), CS], over=ESS([SP, MQ, UN('p'), SL, J('s'), CS]))
 A(id='g9', kind='act', group='main', pos=[0, 10.2], act='reveal', omens=['Omen_of_Abyssal_Echoes'], label=K('공개', 'Reveal'),
   goal=K('접두 훼손 옵션 공개 — 주문 피해 노림, 나오는 대로', 'Reveal the prefix desecration: aiming for spell damage, keep what comes'),
-  showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
-  edges=[{'to': 'g10'}], item=[SP, MQ, SD, SL, J('s'), CS],
-  over=[{'param': {'cT': 9}, 'set': {'item': [SP, MQ, L('p', '랜덤 옵션', 'Random option', 'd'), SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])   # 11-13 P10 새 정책 B: 영상 2:58~3:18 메아리 공개 한 번, 빛의 징조 없음
+  showText=[TX(SD)],
+  edges=[{'to': 'g10'}], item=[SP, MQ, SD, SL, J('s'), CS], over=ESS([SP, MQ, SD, SL, J('s'), CS]))   # 11-13 P10 새 정책 B: 영상 2:58~3:18 메아리 공개 한 번, 빛의 징조 없음
 A(id='g10', kind='act', group='main', pos=[0, 11.2], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
-  goal=K('최대 퀄리티를 지우고 접두 랜덤 옵션', 'Maximum Quality out, a random prefix in'), showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
-  edges=[{'to': 'ok'}], item=[SP, SD, RP, SL, J('s'), CS],
-  over=[{'param': {'cT': 9}, 'set': {'item': [SP, L('p', '랜덤 옵션', 'Random option', 'd'), RP, SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])
+  goal=K('최대 퀄리티를 지우고 접두 랜덤 옵션', 'Maximum Quality out, a random prefix in'), showText=[TX(ES)],
+  edges=[{'to': 'ok'}], item=[SP, SD, ES, SL, J('s'), CS], over=ESS([SP, SD, ES, SL, J('s'), CS]))
 A(id='ok', kind='done', group='main', pos=[0, 12.2], label=K('완성', 'Finished'))
 g['nodes'] = N
 g['loops'] = [{'id': 'L1', 'nodes': ['g5b', 'g6', 'g6x'], 'kr': '시전 속도', 'en': 'Cast speed'}]
