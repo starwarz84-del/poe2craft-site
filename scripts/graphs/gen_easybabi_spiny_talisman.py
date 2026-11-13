@@ -34,7 +34,7 @@ g = {
  'astrid': False,
  'note': ('2026-11-13 W33 영상 전체 화면 대조(근거 scratchpad review/W33-easybabi/timeline.md). 영상은 6분짜리 설명 영상으로, 방법 시연은 도깨비불붙이 전이(아이템 레벨 81, 0:31 오른쪽 = 절사 실패작), '
           '성공 회차는 성스러운 장악(아이템 레벨 82, 0:31 왼쪽·4:19~4:24). 흐름: 치명타 확률 1티어 매직 구입(1:18 거래소, 2:08 접두 1·접미 1) → 상위 가속의 에센스로 레어 + 공격 속도(2:09) → '
-          '아스트리드의 창의성(1:51 장착, 2:22 툴팁) → 좌측 결정화 + 완벽한 전투의 에센스로 접두 지우고 공격 스킬 +3(2:26) → 보존된 턱뼈로 접두 훼손(2:58·3:00) → 심연의 메아리 공개, 정확도(편집 자막 3:33: 물리 % + 정확도 말고 정확도만) → '
+          '아스트리드의 창의성(1:51 장착, 2:22 툴팁) → 좌측 결정화 + 완벽한 전투의 에센스로 접두 지우고 공격 스킬 +3(2:26) → 보존된 턱뼈로 접두 훼손(2:58·3:00) → 심연의 메아리 공개, 정확도(편집 자막 3:33: 물리 % + 정확도 말고 정확도만, 빗나감 처리는 영상에 없어 밸런스는 결과 그대로, 하이엔드는 빛의 징조로 다시 — 11-13 오후 정책 B·L①) → '
           '상위 찬미 + 완벽한 엑잘로 접두 2개(3:50 툴팁, 3:56 시연 결과) → 빛의 징조 + 소멸의 오브로 정확도 지우고 보존된 턱뼈 + 메아리 공개 반복(4:00 카드) → '
           '절사의 징조 + 완벽한 카오스 오브(4:09·4:20, 성공 회차 4:19 화염 5티어 → 0:31 냉기 2티어). 룬 교체·퀄리티·신성한 오브는 정책 9·14장대로 뺌. '
           '등급 C17: 하이엔드 = 원소 피해 접두 1티어(절사·공개), 밸런스 = 1~2티어. 엑잘로 붙은 접두가 빗나가도 가장 낮은 레벨이 아니면 절사를 못 써서 그대로 둠(영상 4:30 타협) — 카드의 엑잘 접두 2개는 랜덤 옵션(정책 10장 2번 예외, 시뮬에서 두 개 다 원소 피해인 비율 하이엔드 18%·밸런스 47%).'),
@@ -89,9 +89,14 @@ A(id='bd1', kind='act', group='main', pos=[0, 5.4], act='desecrate', cur='Preser
   goal=K('접두 훼손 — 정확도 자리 막기', 'Prefix desecration: block accuracy'),
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=[{'to': 'bv1'}], item=[UN, CRIT, AS, BAT, RUNE])
+# 11-13 오후 정책 B·L①: 첫 공개(정확도 막기)는 영상에 빗나감 처리가 없음(빛의 징조 카드 4:00은 두 번째 공개)
+#   → 밸런스는 반복 없이 결과 그대로, 하이엔드만 빛의 징조 + 소멸로 다시(사용자 확정 15:21: 하이엔드는 영상에 없어도 유지)
+HIGH = {'param': {'pT': 1}}
 A(id='bv1', kind='act', group='main', pos=[0, 6.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='acc', label=K('공개', 'Reveal'),
   goal=K('접두 정확도 (훼손)', 'Accuracy prefix (desecrated)'), show=['acc'],
-  edges=[{'if': {'added': 'acc'}, 'to': 'ex1', 'res': 'ok'}, {'to': 'bl1', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
+  edges=[{'if': {'added': 'acc'}, 'to': 'ex1', 'res': 'ok'},
+         {'if': {'not': HIGH}, 'to': 'ex1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')},
+         {'to': 'bl1', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[ACC, CRIT, AS, BAT, RUNE])
 A(id='bl1', kind='act', group='main', pos=[1, 6.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'bd1', 'label': K('다시 훼손', 'Desecrate again')}])
@@ -127,7 +132,7 @@ g['loops'] = [
   'goal': K('접두 정확도 (훼손) — 완벽한 엑잘에 잘 뜨는 정확도를 미리 막기', 'Desecrated accuracy prefix: block the accuracy that Perfect Exalts roll often'),
   'steps': [K('보존된 턱뼈로 접두 훼손', 'Preserved Jawbone on the prefix') | {'node': 'bd1'},
             K('심연의 메아리의 징조로 공개 — 정확도만 있는 옵션', 'Reveal with Abyssal Echoes: the accuracy-only option') | {'node': 'bv1'},
-            K('빗나가면 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 다시 훼손', 'On a miss, Omen of Light + Orb of Annulment removes only the desecration; desecrate again') | {'node': 'bl1'}],
+            K('빗나가면 하이엔드는 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 다시 훼손, 밸런스는 그대로', 'On a miss, High-end uses Omen of Light + Orb of Annulment to remove only the desecration and desecrate again; Balance keeps it') | {'node': 'bl1'}],
   'item': [ACC, CRIT, AS, BAT, RUNE]},
  {'id': 'L2', 'nodes': ['bd2', 'bv2', 'bl3'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal', 'fold': True,
   'goal': K('접두 번개 피해 추가 (훼손) — 남은 원소 피해 접두 중 먼저 뜬 것', 'Desecrated added lightning prefix: whichever remaining elemental prefix lands first'),
