@@ -73,7 +73,7 @@
 | sihan-chayula-helmet-v2 | z_r1uAYIusk | bal 87, ess 13 | 0 | 검수 대기 11-13 | G1(Opus 5.5) | 새 기준 재작성(G1): 영상 전체 화면 대조(근거 scratchpad review/G1/sihan-chayula-helmet-v2), 전용 생성기 gen_sihan_chayula_helmet.py. 영상은 분열이 세 번 실패해(3:30~4:05) 분열 없이 완성 — 플로우차트는 영상 방법 설명(0:40·4:10 '원래는')대로 회피 및 에너지 보호막 % 1티어 분열 베이스, 옵션은 성공 회차대로: 카오스 튕겨내기 → 상위·우측 찬미 + 완벽한 엑잘 접미 2개(5:16) → 완벽한 엑잘 접두 = 회피 및 ES % + 생명력(9:26, 빗나가면 소멸·튕겨내기 잃으면 카오스부터 — 접힌 상자) → 고대 갈비뼈 → 메아리 공개 = 회피·ES 최대치(10:48), 빗나가면 빛의 징조. 옛 그래프의 좌측 강령술·좌측 찬미·퀄리티 20%는 영상에 없어 뺌. 31/15 → 87/13(밸런스 상승 = 접두 엑잘·공개를 묶음 대신 영상 옵션 하나로) |
 | fubgun-phys-bow-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 28, ess ? | 3 | 대기 |  |  |
 | lilbotq-armour-shield-v2 | 4YOSSAa53UU | bal 27, ess 7 | 0 | 대기 |  |  |
-| sihan-chayula-gloves-v2 | Sf-2cvWhQY0 | bal 27, ess 23 | 1 | 진행 중 11-13 · G1 | G1(Opus 5.5) |  |
+| sihan-chayula-gloves-v2 | Sf-2cvWhQY0 | bal 66, ess 31 | 0 | 검수 대기 11-13 | G1(Opus 5.5) | 새 기준 재작성(G1): 영상 전체 화면 대조(근거 scratchpad review/G1/sihan-chayula-gloves-v2), 전용 생성기 gen_sihan_chayula_gloves.py. 옛 그래프(카오스 → 엑잘 랜덤 4개로 끝)에 없던 영상 후반을 넣음: 아스트리드(6:22) → 좌측 결정화 + 군왕의 합금(룬 수호)·분광 합금으로 접두 잡옵 덮기(6:26~7:02) → 좌측 강령술 + 보존된 갈비뼈 → 공개(상태 이상 피해 가속, 7:44), 빗나가면 합금으로 덮고 다시(접힌 상자). 베이스 아이템 레벨 83(영상), 카틀라의 순흑은 준비 구역 룬 상자. 남은 제작 옵션 줄은 갈비뼈가 둘 중 무작위로 지워 '룬 수호·원소 저항 관통 중 남은 것' 묶음(확정 옵션 규칙과 충돌 — 의문). 27/23 → 66/31 |
 | diztoh-budget-mace-v2 | ITbefGq6V18 | bal 23, ess 1 | 0 | 대기 |  |  |
 | diztoh-budget-crossbow-v2 | vk3pLFUov8U | bal 22, ess 1 | 0 | 대기 |  |  |
 | fubgun-es-helmet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 18, ess ? | 3 | 대기 |  |  |
