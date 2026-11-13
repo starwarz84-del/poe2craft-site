@@ -4,7 +4,7 @@
  "cls": "Helmets_int",
  "base": "Kamasan Tiara",
  "ilvl": 78,
- "note": "Fubgun 가성비 에너지 보호막 투구(0.5.5 빌드 글) — 에너지 보호막 최대치 1티어 매직 구입 → 상위 강화의 에센스 → 좌측 강령술 + 보존된 갈비뼈 → 공개(에너지 보호막 % 복합이면 아무 티어나) → 상위 찬미 + 상위 엑잘로 접미 2개. 베이스 이름은 글에 없어 카마사의 티아라로 가정. 마지막 바알 주입기(타락)는 정책 33으로 뺌.",
+ "note": "2026-11-13 G11 글 전체 다시 대조(mobalytics Fubgun 0.5.5 Ice Shot Deadeye, Crafting Guide의 Helmet - ilvl 78 - Cheap method 1~6단계, 화면 캡처 guide-helmet-cheap-1-6). 글: ① 에너지 보호막 최대치 1티어 매직 베이스 구입(또는 완벽한 진화·확장) ② 상위 강화의 에센스 ③ 좌측 강령술 + 보존된 갈비뼈 ④ 공개, 에너지 보호막 % 복합(생명력·마나)이면 아무 티어나 ⑤ 복합이 1티어면 완벽한 엑잘 + 상위 찬미, 아니면 상위 엑잘(+ 상위 찬미)로 접미 마무리 ⑥ 좋으면 바알 주입기(타락 — 정책상 뺌, 소켓 추가 조언도 뺌). 내부 결정(글에 없음): 베이스 = 카마사의 티아라(아이템 레벨 78에서 나오는 가장 높은 지능 투구 — 장비 미리보기의 선대의 티아라는 베이스 레벨 80이라 아이템 레벨 78엔 없음), 구입 매직 베이스의 접미는 잡옵 1개, 복합 목표 = 에너지 보호막 % + 생명력(확정 옵션 규칙 11-12 — 같은 글 장비 미리보기 투구의 복합 옵션, 생명력·마나 둘 다 받으면 더 쌈), 공개는 심연의 메아리 없이(글 그대로), 공개가 복합이 아니면 빛의 징조 + 소멸의 오브로 지우고 다시 훼손(밸런스만, 정책 4장). 등급(난이도 보통 → 밸런스·에센셜): 밸런스 = 복합 1~2티어까지 다시(C17 — 글은 아무 티어), 에센셜 = 공개 결과 그대로. 다음 단계 오브는 복합 1티어일 때만 완벽한 엑잘(글 5단계).",
  "params": {
   "L": {
    "kr": "훼손 공개",
@@ -16,21 +16,7 @@
     },
     "0": {
      "kr": "결과 그대로",
-     "en": "Keep whatever comes"
-    }
-   }
-  },
-  "hT": {
-   "kr": "에너지 보호막 복합",
-   "en": "Hybrid % energy shield",
-   "values": {
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    },
-    "6": {
-     "kr": "아무 티어",
-     "en": "Any tier"
+     "en": "Keep what comes"
     }
    }
   }
@@ -39,15 +25,13 @@
   {
    "id": "bal",
    "params": {
-    "L": 1,
-    "hT": 2
+    "L": 1
    }
   },
   {
    "id": "ess",
    "params": {
-    "L": 0,
-    "hT": 6
+    "L": 0
    }
   }
  ],
@@ -57,12 +41,12 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "L": 0,
-    "hT": 6
+    "L": 0
    },
+   "tier": "ess",
    "desc": {
-    "kr": "공개 결과 그대로 (글: 복합이면 아무 티어나)",
-    "en": "Keep the reveal (the guide takes any hybrid)"
+    "kr": "훼손 공개 결과 그대로, 접미 두 개는 나오는 대로",
+    "en": "Keep the reveal; the two suffixes come as they come"
    }
   },
   {
@@ -70,12 +54,12 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "L": 1,
-    "hT": 2
+    "L": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "복합 옵션 1~2티어까지 빛의 징조로 다시",
-    "en": "Retry with Light until a T1–2 hybrid"
+    "kr": "에너지 보호막 % 복합 1~2티어까지 빛의 징조로 다시",
+    "en": "Retry with Light until a T1–2 hybrid % energy shield"
    }
   }
  ],
@@ -87,17 +71,13 @@
   "enh": {
    "gi": 34
   },
-  "hyb": {
-   "anyOf": [
-    {
-     "gi": 9,
-     "tmax": "$hT"
-    },
-    {
-     "gi": 10,
-     "tmax": "$hT"
-    }
-   ]
+  "hyb2": {
+   "gi": 9,
+   "tmax": 2
+  },
+  "hyb1": {
+   "gi": 9,
+   "tmax": 1
   }
  },
  "require": {
@@ -113,6 +93,18 @@
    },
    {
     "full": "s"
+   },
+   {
+    "any": [
+     {
+      "param": {
+       "L": 0
+      }
+     },
+     {
+      "has": "hyb2"
+     }
+    ]
    }
   ]
  },
@@ -136,19 +128,7 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "e3",
-    "e4",
-    "e4x"
-   ],
-   "kr": "접두 세번째 옵션(훼손)",
-   "en": "Third prefix (desecrated)"
-  }
- ],
+ "start": "k0",
  "finals": [
   {
    "id": "bal",
@@ -156,19 +136,14 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "esf",
-     "tmax": 1
+     "tag": "esf"
     },
     {
-     "tag": "enh",
-     "tmax": 1
+     "tag": "enh"
     },
     {
-     "side": "p",
-     "label": {
-      "kr": "에너지 보호막 % 복합",
-      "en": "Hybrid % energy shield"
-     }
+     "tag": "hyb2",
+     "des": true
     },
     {
      "side": "s",
@@ -190,19 +165,14 @@
    "en": "Essential",
    "lines": [
     {
-     "tag": "esf",
-     "tmax": 1
+     "tag": "esf"
     },
     {
-     "tag": "enh",
-     "tmax": 1
+     "tag": "enh"
     },
     {
      "side": "p",
-     "label": {
-      "kr": "공개 결과 그대로",
-      "en": "Reveal as it comes"
-     }
+     "random": true
     },
     {
      "side": "s",
@@ -220,31 +190,33 @@
   }
  ],
  "finalItem": {
-  "quality": 20,
+  "quality": 0,
   "sockets": 1
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "k0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "e2",
+   "next": "ms",
    "start": {
     "rar": "magic",
     "mods": [
-     "esf",
+     {
+      "tag": "esf"
+     },
      {
       "junk": "s"
      }
     ]
    },
    "label": {
-    "kr": "에너지 보호막 최대치 1티어 매직 투구 구입 (접미 아무 옵션)",
-    "en": "Buy a magic helmet with T1 flat energy shield (any suffix)"
+    "kr": "에너지 보호막 최대치 1티어 매직 카마사의 티아라 구입 (아이템 레벨 78)",
+    "en": "Buy a magic Kamasan Tiara with T1 flat energy shield (item level 78)"
    },
    "item": [
     {
@@ -265,72 +237,14 @@
    ]
   },
   {
-   "id": "e2",
-   "kind": "act",
-   "group": "prep",
-   "pos": [
-    0,
-    1
-   ],
-   "act": "essence",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접두 두번째 옵션",
-    "en": "Upgrade to rare + second prefix"
-   },
-   "label": {
-    "kr": "에센스",
-    "en": "Essence"
-   },
-   "edges": [
-    {
-     "to": "ms"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "에너지 보호막 최대치 +(61—73)",
-     "en": "+(61—73) to maximum Energy Shield",
-     "m": "n",
-     "tags": [
-      "esf"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)",
-     "en": "(68—79)% increased Armour, Evasion and Energy Shield (crafted)",
-     "m": "c",
-     "tags": [
-      "enh"
-     ]
-    }
-   ],
-   "cur": "Greater_Essence_of_Enhancement",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "방어도·회피·에너지 보호막 증가 (제작 옵션)",
-     "en": "% armour, evasion and energy shield (crafted)"
-    }
-   ],
-   "ess": "enh"
-  },
-  {
    "id": "ms",
    "kind": "mark",
    "group": "main",
    "pos": [
     0,
-    1.5
+    1.4
    ],
-   "next": "e3",
+   "next": "k1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -350,38 +264,38 @@
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)",
-     "en": "(68—79)% increased Armour, Evasion and Energy Shield (crafted)",
-     "m": "c",
-     "tags": [
-      "enh"
-     ]
     }
    ]
   },
   {
-   "id": "e3",
+   "id": "k1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    2.4
    ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "접두 세번째 옵션(훼손)",
-    "en": "Third prefix (desecrated)"
-   },
+   "act": "essence",
+   "cur": "Greater_Essence_of_Enhancement",
+   "ess": "enh",
    "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
+    "kr": "에센스",
+    "en": "Essence"
    },
+   "goal": {
+    "kr": "레어로 + 접두 두번째 옵션",
+    "en": "Make it rare + second prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield (crafted)"
+    }
+   ],
    "edges": [
     {
-     "to": "e4"
+     "to": "k2"
     }
    ],
    "item": [
@@ -395,10 +309,64 @@
      ]
     },
     {
+     "s": "p",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield (crafted)",
+     "m": "c",
+     "tags": [
+      "enh"
+     ]
+    },
+    {
      "s": "s",
      "kr": "잡옵",
      "en": "Junk",
      "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "k2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3.4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Rib",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "k3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73)",
+     "en": "+(61—73) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
     },
     {
      "s": "p",
@@ -411,61 +379,63 @@
     },
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개)",
+     "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Rib",
-   "showText": [
+     "m": "u"
+    },
     {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {
-   "id": "e4",
+   "id": "k3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    4.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "want": "hyb2",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 에너지 보호막 % 증가 · 생명력 최대치 1~2티어",
+    "en": "T1–2 % energy shield · maximum life prefix"
+   },
+   "show": [
+    "hyb2"
+   ],
    "edges": [
     {
      "if": {
-      "added": "hyb"
+      "added": "hyb2"
      },
-     "to": "e5",
+     "to": "k4",
      "res": "ok"
     },
     {
      "if": {
       "param": {
-       "L": 1
+       "L": 0
       }
      },
-     "to": "e4x",
-     "res": "fail"
+     "to": "k4",
+     "res": "ok",
+     "label": {
+      "kr": "나오는 대로",
+      "en": "Keep what comes"
+     }
     },
     {
-     "to": "e5",
-     "res": "fail",
-     "hide": true
+     "to": "k3x",
+     "res": "fail"
     }
    ],
    "item": [
@@ -479,12 +449,6 @@
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
      "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)",
      "en": "(68—79)% increased Armour, Evasion and Energy Shield (crafted)",
@@ -495,27 +459,81 @@
     },
     {
      "s": "p",
-     "kr": "에너지 보호막 증가 + 생명력·마나 복합",
-     "en": "Hybrid % energy shield + life or mana",
-     "m": "n",
+     "kr": "에너지 보호막 % 증가 · 생명력 최대치 1~2티어 (훼손)",
+     "en": "T1–2 % energy shield · maximum life (desecrated)",
+     "m": "d",
      "tags": [
-      "hyb"
+      "hyb2"
      ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
     }
    ],
-   "want": "hyb",
-   "show": [
-    "hyb"
-   ],
-   "omens": []
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "goal": {
+       "kr": "접두 훼손 옵션 공개 — 나오는 대로",
+       "en": "Reveal the prefix desecration: keep what comes"
+      },
+      "show": [],
+      "showText": [
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option"
+       }
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "에너지 보호막 최대치 +(61—73)",
+        "en": "+(61—73) to maximum Energy Shield",
+        "m": "n",
+        "tags": [
+         "esf"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)",
+        "en": "(68—79)% increased Armour, Evasion and Energy Shield (crafted)",
+        "m": "c",
+        "tags": [
+         "enh"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "d"
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       }
+      ]
+     }
+    }
+   ]
   },
   {
-   "id": "e4x",
+   "id": "k3x",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    3
+    4.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -532,32 +550,54 @@
    },
    "target": {
     "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "en": "Remove the desecrated option"
    },
    "edges": [
     {
-     "to": "e3",
-     "port": "right"
+     "to": "k2",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
     }
    ]
   },
   {
-   "id": "e5",
+   "id": "k4",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    5.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 두번째·세번째 옵션",
-    "en": "Second and third suffixes"
-   },
+   "cur": "Greater_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "curIf": [
+    {
+     "if": {
+      "has": "hyb1"
+     },
+     "cur": "Perfect_Exalted_Orb"
+    }
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 두번째·세번째 옵션 — 복합 옵션이 1티어면 완벽한 엑잘티드 오브",
+    "en": "Second and third suffixes: Perfect Exalted Orb if the hybrid is T1"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
    "edges": [
     {
      "to": "ok"
@@ -574,12 +614,6 @@
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
      "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)",
      "en": "(68—79)% increased Armour, Evasion and Energy Shield (crafted)",
@@ -590,30 +624,84 @@
     },
     {
      "s": "p",
-     "kr": "에너지 보호막 증가 + 생명력·마나 복합",
-     "en": "Hybrid % energy shield + life or mana",
-     "m": "n",
+     "kr": "에너지 보호막 % 증가 · 생명력 최대치 1~2티어 (훼손)",
+     "en": "T1–2 % energy shield · maximum life (desecrated)",
+     "m": "d",
      "tags": [
-      "hyb"
+      "hyb2"
      ]
     },
     {
      "s": "s",
-     "kr": "랜덤 옵션 2개",
-     "en": "2 random lines",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션",
+     "en": "Random option",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션",
+     "en": "Random option",
      "m": "j"
     }
    ],
-   "cur": "Greater_Exalted_Orb",
-   "showText": [
+   "over": [
     {
-     "s": "s",
-     "kr": "랜덤 옵션 2개 — 결과 그대로",
-     "en": "Two random lines — keep whatever comes"
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "에너지 보호막 최대치 +(61—73)",
+        "en": "+(61—73) to maximum Energy Shield",
+        "m": "n",
+        "tags": [
+         "esf"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)",
+        "en": "(68—79)% increased Armour, Evasion and Energy Shield (crafted)",
+        "m": "c",
+        "tags": [
+         "enh"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "d"
+       },
+       {
+        "s": "s",
+        "kr": "잡옵",
+        "en": "Junk",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션",
+        "en": "Random option",
+        "m": "j"
+       }
+      ]
+     }
     }
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
    ]
   },
   {
@@ -622,12 +710,24 @@
    "group": "main",
    "pos": [
     0,
-    5
+    6.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "k2",
+    "k3",
+    "k3x"
+   ],
+   "kr": "접두 세번째 옵션(훼손)",
+   "en": "Third prefix (desecrated)"
   }
  ]
 }
