@@ -24,7 +24,7 @@ RS = L('s', '랜덤 옵션', 'Random option', 'j')
 RX = L('x', '랜덤 옵션', 'Random option', 'j')
 ANN = K('소멸의 오브 사용', 'Use an Orb of Annulment')
 ESS = {'param': {'L': 0}}
-AIM = K('💡 노린 옵션: 치명타', '💡 Aimed for: critical hit chance')
+AIM = K('💡 노린 옵션: 공격 치명타 명중 확률 증가', '💡 Aimed for: increased critical hit chance for attacks')   # R4-2 11-13: DB 옵션 이름(12장)
 
 P = {'bal': {'L': 1}, 'ess': {'L': 0}}
 g = {
