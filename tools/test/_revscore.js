@@ -4,7 +4,7 @@
 //       등록 레시피가 베이스에 붙여 사는 옵션은 '베이스에 포함' → 화면과 같은 후보 계산(bestDraftAsync) → 검산 → 플로우차트 → 시뮬.
 //       완성 조건은 두 쪽 모두 등록 플로우차트의 require(등록 쪽은 항상 100% — 사용자 지적 2026-11-11: 레시피대로 하면 같은 결과가 나옴. 예전의 '카드 일치율로 나눈 환산'은 잘못된 측정이라 없앰)
 //   검산 20: 오류 0            시뮬 완주 20: 막힘 없음 10 + 초안 완성품이 등록 레시피의 완성 조건을 만족(98% 이상) 10
-//   비용 배수 30: 초안 ÷ 등록 레시피(옵션 추가 작업 구간 시뮬 평균). 1.2배 안 30 · 1.5배 25 · 2배 20 · 3배 12 · 5배 5. 1 div 아래는 같은 값
+//   비용 배수 30: 초안 ÷ 등록 레시피(옵션 추가 작업 구간 시뮬 평균). 완성 조건 98% 미만이면 0(덜 만든 초안이 싸 보이는 것 방지, 2026-11-13). 1.2배 안 30 · 1.5배 25 · 2배 20 · 3배 12 · 5배 5. 1 div 아래는 같은 값
 //   비싼 징조 10: 등록 레시피보다 더 쓴 비싼 징조 수      가중치 근거 10: 모르는 단계 하나마다 -5      정책 준수 10: 검산 경고 하나마다 -3
 const {chromium}=require('playwright'); const fs=require('fs'); const {registered, EXP, ROOT}=require('./_regcard.js');
 const R=(x=>x.recipes||x)(JSON.parse(fs.readFileSync(ROOT+'/site/data/recipes.json')));
@@ -41,7 +41,7 @@ const rows=out.map(x=>{ if(x.skip) return {id:x.id, skip:x.skip}; const reg=x.re
   const stuck=!!x.stuck || x.div==null, okM = x.match!=null && x.match>=0.98; pts.sim = (stuck?0:10) + (okM?10:0);
   if(stuck) why.push('시뮬이 끝나지 않음'+(x.stuck?` (${String(x.stuck).slice(0,40)})`:'')); else if(!okM) why.push(`완성 조건 일치 ${Math.round((x.match||0)*100)}%`);
   const k = x.div!=null ? Math.max(x.div,1)/Math.max(o.div,1) : null;
-  pts.cost = k==null ? 0 : k<=1.2 ? 30 : k<=1.5 ? 25 : k<=2 ? 20 : k<=3 ? 12 : k<=5 ? 5 : 0; if(k==null) why.push('비용 비교 불가'); else if(k>1.5) why.push(`비용 ${k.toFixed(1)}배 (${x.div.toFixed(1)} vs ${o.div.toFixed(1)} div)`);
+  pts.cost = k==null || !okM ? 0 : k<=1.2 ? 30 : k<=1.5 ? 25 : k<=2 ? 20 : k<=3 ? 12 : k<=5 ? 5 : 0; if(k==null) why.push('비용 비교 불가'); else if(!okM) why.push('완성 조건 98% 미만이라 비용 점수 0'); else if(k>1.5) why.push(`비용 ${k.toFixed(1)}배 (${x.div.toFixed(1)} vs ${o.div.toFixed(1)} div)`);
   const dOm = x.div!=null ? x.om - o.om : null;
   pts.om = dOm==null ? 0 : dOm<=0.5 ? 10 : x.om<=o.om*2+1 ? 7 : x.om<=o.om*5+3 ? 4 : 0; if(dOm>0.5) why.push(`비싼 징조 ${x.om.toFixed(1)}개 (등록 ${o.om.toFixed(1)})`);
   const u = x.d ? unk[x.d.id]||0 : 0; pts.w = Math.max(0, 10-5*u); if(u) why.push(`가중치 모름 ${u}단계`);

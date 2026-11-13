@@ -169,6 +169,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .pv{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 12px;display:flex;flex-direction:column;gap:8px}
 .pv-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.pv-h span{font-size:12px;color:var(--muted)}
 #pvf.pvfull{position:fixed;inset:0;width:100vw;height:100vh;z-index:2000;border:0;border-radius:0}body.pvfull-on{overflow:hidden}
+#pverr{color:var(--warn);font-size:13px;margin:6px 0 0}
 #pvf{width:100%;height:max(520px, calc(100vh - 32px));border:1px solid var(--line);border-radius:8px;background:var(--bg)}
 #pvact{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .check{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
@@ -276,6 +277,7 @@ async function loadCls(id){ if(!S.cache[id]) S.cache[id] = await fetch(`data/c/$
 /* 합쳐진 옵션 줄 풀기(사용자 2026-11-12): 같은 스탯을 주는 옵션이 여럿이면 게임은 한 줄로 합쳐 보여 줌(예: 회피 % 단일 + 회피·회피 % 하이브리드).
    줄 하나씩 맞추다 범위를 넘거나 남는 줄이 생기면, 모든 옵션 줄을 다시 풀어 '어떤 옵션 묶음이 이 줄들을 정확히 만드는지' 찾음.
    하이브리드 옵션은 두 줄을 같은 티어로 동시에 채우고, 한 줄은 옵션 둘까지 합산. 훼손 표시 줄은 훼손 옵션 하나만. 옵션 수가 가장 적은 답 */
+const FLUXF = f => (f||[]).length>0 && (f||[]).every(x=>/^(Maximum)?(Fire|Cold|Lightning|Chaos)(And(?:Fire|Cold|Lightning|Chaos))?(?:Damage)?Resist(?:ance)?$/.test(x));   /* 유동체로 바뀔 수 있는 저항 계열 */
 function solveLines(D, items, ilvl, cap){
   const MX = matcher(D), G = D.groups;
   const okT = (g,t) => t[0]<=ilvl && (t[1]>0 || g.s!=='n');
@@ -293,7 +295,14 @@ function solveLines(D, items, ilvl, cap){
         opts.push({gi, side:g.g, f:g.f, idx:acc.slice(), des, fr}); return; }
       for(const x of e.lines[k]) if(!acc.includes(x.idx)) rec(k+1, [...acc, x.idx]); };
     rec(0, []); }
-  const best = {n:Infinity, sol:null}; const cover = items.map(()=>[]), side={p:0,s:0}, fams=new Set(); let nDes=0, steps=0;
+  const best = {n:Infinity, sol:null}; const cover = items.map(()=>[]), side={p:0,s:0}, fams=new Map(); let nDes=0, steps=0;
+  /* 같은 계열 두 줄(사용자 확정 2026-11-13 20:16, game-rules 유동체): 훼손 표시 줄이 끼었거나 유동체로 바뀔 수 있는 저항 계열이면 허용. 합산(한 줄에 둘)은 안 됨 */
+  const fluxF = f => FLUXF([f]);
+  const famClash = (o, chosen) => { const sh=o.f.filter(f=>fams.get(f)>0); if(!sh.length) return false;
+    if(o.idx.some(i=>cover[i].length)) return true;
+    const other=chosen.filter(c=>c.f.some(f=>sh.includes(f)));
+    return !(o.des || other.some(c=>c.des) || sh.every(fluxF)); };
+  const famAdd = (o,d) => o.f.forEach(f=>fams.set(f,(fams.get(f)||0)+d));
   const ranges = (gi, ti, k) => tplRe(G[gi].t[ti][5].split('\n')[k] || G[gi].t[ti][5]).ranges;
   function feasible(chosen){ /* tiers: shared items get joint enumeration */
     const tierList = chosen.map(o=>[...byG.get(o.gi).tiers].filter(ti=>okT(G[o.gi], G[o.gi].t[ti])));
@@ -310,12 +319,12 @@ function solveLines(D, items, ilvl, cap){
     const idx = pos;
     if(cover[idx].length) dfs(chosen, pos+1);
     if(cover[idx].length>=2) return;
-    for(const o of opts){ if(!o.idx.includes(idx) || chosen.includes(o) || o.f.some(f=>fams.has(f))) continue;
+    for(const o of opts){ if(!o.idx.includes(idx) || chosen.includes(o) || famClash(o, chosen)) continue;
       if(side[o.side]+1 > cap[o.side]) continue; if(o.des && nDes) continue;
       if(o.idx.some(i=>cover[i].length>=2 || (cover[i].length && (items[i].tag==='fractured' || items[i].tag==='desecrated' || o.fr || o.des)))) continue;
-      chosen.push(o); side[o.side]++; o.f.forEach(f=>fams.add(f)); if(o.des) nDes++; o.idx.forEach((i,k)=>cover[i].push({o,k}));
+      chosen.push(o); side[o.side]++; famAdd(o,1); if(o.des) nDes++; o.idx.forEach((i,k)=>cover[i].push({o,k}));
       dfs(chosen, pos+1);
-      o.idx.forEach(i=>cover[i].pop()); if(o.des) nDes--; o.f.forEach(f=>fams.delete(f)); side[o.side]--; chosen.pop(); } }
+      o.idx.forEach(i=>cover[i].pop()); if(o.des) nDes--; famAdd(o,-1); side[o.side]--; chosen.pop(); } }
   dfs([]);
   return best.sol;
 }
@@ -364,7 +373,7 @@ async function parse(txt){
       if(!ok) continue;
       const g=D.groups[c.gi], t=g.t[c.ti];
       if(hint?.side && g.g!==hint.side) continue;
-      if(used.has(c.gi)) continue;
+      if(used.has(c.gi) && !(tag==='desecrated' || hint?.des || mods.some(m=>m.gi===c.gi && m.desTag) || FLUXF(g.f)) || mods.filter(m=>m.gi===c.gi).length>=2) continue;   /* 같은 옵션 두 줄: 훼손 표시·유동체로 바뀐 저항이면 인정(사용자 확정 11-13 20:16) */
       const ranges = c.lines.flatMap(x=>x.ranges);
       const boost = qTag && qual && g.tg.includes(qTag) ? 1+qual/100 : 1;   // catalyst quality scales these values up
       const bv = vals.map((v,vi)=>ranges[vi] && ranges[vi][0]!==ranges[vi][1] ? +v/boost : +v);
@@ -470,10 +479,14 @@ function analyse(it){
   if(fr.length) tr.push({c:'var(--fr)', t:L(`<b>분열</b> — ${fr.map(r=>esc(short(r))).join(', ')} 고정. 분열의 오브는 속성 4개 이상 희귀 아이템에 쓰이므로, 이 옵션이 먼저 만들어진 뒤 분열된 것.`,`<b>Fractured</b> — ${fr.map(r=>esc(short(r))).join(', ')} locked. Fracturing needs a rare with 4+ modifiers, so this line was made first, then fractured.`)});
   const des = rows.filter(r=>r.how==='d' || r.unrev);
   if(des.length){ const lords=[...new Set(des.map(r=>r.lord).filter(Boolean))].map(k=>LORDS[k][KR()?0:1]);
-    tr.push({c:'var(--des)', t:L(`<b>훼손</b> — 옵션 ${des.length}개. 뼈로 훼손한 뒤 심연의 우물에서 공개된 옵션이에요.${lords.length?` 군주 전용 옵션(${lords.join(', ')})이 보이면 그 군주의 징조를 썼을 가능성이 높음.`:''}${rows.some(r=>r.unrev)?' 아직 공개 안 된 훼손 옵션이 있음':''}`,`<b>Desecrated</b> — ${des.length} line(s), revealed at the Well of Souls after a bone.${lords.length?` Lord-only modifiers (${lords.join(', ')}) suggest that lord's omen was used.`:''}${rows.some(r=>r.unrev)?' One desecrated modifier is still unrevealed.':''}`)}); }
+    tr.push({c:'var(--des)', t:L(`<b>훼손</b> — 옵션 ${des.length}개. 뼈로 훼손한 뒤 심연의 우물에서 공개된 옵션.${lords.length?` 군주 전용 옵션(${lords.join(', ')})이 보이면 그 군주의 징조를 썼을 가능성이 높음.`:''}${rows.some(r=>r.unrev)?' 아직 공개 안 된 훼손 옵션이 있음':''}`,`<b>Desecrated</b> — ${des.length} line(s), revealed at the Well of Souls after a bone.${lords.length?` Lord-only modifiers (${lords.join(', ')}) suggest that lord's omen was used.`:''}${rows.some(r=>r.unrev)?' One desecrated modifier is still unrevealed.':''}`)}); }
   const ess = rows.filter(r=>r.how==='e');
   if(ess.filter(r=>!/^(Lesser |Greater )?Essence/.test(r.t[3]) || /^Perfect/.test(r.t[3])).length>1) tr.push({c:'var(--ess)', t:L(`<b>제작 옵션 ${ess.length}개</b> — 에센스 옵션은 보통 옵션 1개까지라, 두 번째는 아스트리드의 창의성 룬을 끼운 상태에서 붙였을 것`,`<b>${ess.length} crafted lines</b> — essence lines are normally capped at one, so Astrid's Creativity was socketed for the second.`)});
-  if(ess.length) tr.push({c:'var(--ess)', t:L(`<b>에센스</b> — ${ess.map(r=>esc(short(r))).join(', ')}. 일반 옵션 풀에는 없는 에센스 전용 옵션이라, 에센스로 붙인 게 확실해요 (${ess.map(r=>r.g.sub[0]).filter((x,i,a)=>a.indexOf(x)===i).join(', ')}).`,`<b>Essence</b> — ${ess.map(r=>esc(short(r))).join(', ')}. Essence-only modifiers, so an essence put them there (${ess.map(r=>r.g.sub[1]).filter((x,i,a)=>a.indexOf(x)===i).join(', ')}).`)});
+  /* 합금(…Alloy) 옵션은 데이터에서 완벽한 에센스 묶음에 들어 있지만 합금으로 붙임 — 제작 흔적은 합금으로 따로(2026-11-13 RV0) */
+  { const isAl = r => /Alloy/.test(r.t[3]||''), byEn = en => { for(const k in S.craft||{}) for(const x of S.craft[k]) if(x.en===en) return KR()?x.kr:x.en; return en; };
+    const es2 = ess.filter(r=>!isAl(r)), al = ess.filter(isAl), uniq = a => a.filter((x,i,A)=>A.indexOf(x)===i);
+    if(es2.length) tr.push({c:'var(--ess)', t:L(`<b>에센스</b> — ${es2.map(r=>esc(short(r))).join(', ')}. 일반 옵션 풀에는 없는 에센스 전용 옵션이라 에센스로 붙인 옵션 (${uniq(es2.map(r=>r.g.sub[0])).join(', ')}).`,`<b>Essence</b> — ${es2.map(r=>esc(short(r))).join(', ')}. Essence-only modifiers, so an essence put them there (${uniq(es2.map(r=>r.g.sub[1])).join(', ')}).`)});
+    if(al.length) tr.push({c:'var(--ess)', t:L(`<b>합금</b> — ${al.map(r=>esc(short(r))).join(', ')}. 일반 옵션 풀에는 없는 합금 전용 옵션이라 합금으로 붙인 옵션 (${uniq(al.map(r=>esc(byEn(r.t[3])))).join(', ')}).`,`<b>Alloy</b> — ${al.map(r=>esc(short(r))).join(', ')}. Alloy-only modifiers, so an alloy put them there (${uniq(al.map(r=>esc(byEn(r.t[3])))).join(', ')}).`)}); }
   const oth = rows.filter(r=>r.how==='x');
   if(oth.length) tr.push({c:'var(--oth)', t:L(`<b>별세계 속성</b> — 옵션 ${oth.length}개. 훼손 뼈에서 낮은 확률로 붙는 옵션.`,`<b>Otherworldly</b> — ${oth.length} line(s), a rare outcome of a desecration bone.`)});
   const cores = [...new Set(rows.filter(r=>r.how==='sc' || (r.m.fr && r.core)).map(r=>r.core[KR()?0:1]))];
@@ -1101,9 +1114,9 @@ function makeDraft(it, an, opt){
       else { junk[oth]--; cnt[oth]--; why = note(`${sideKr(oth)}의 잡옵이 지워지고 ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음. 이미 만든 ${sideKr(sd)}는 안 건드림.`, `The ${sideEn(oth)} junk goes and ${le(r)} lands on the ${sideEn(sd)}; the ${sideEn(sd)}es already made stay.`); }
       cnt[sd]++; }
     else if(cnt[sd] < cap[sd] && remO===0 && cnt[oth] < cap[oth]){ cs = oth;
-      push({phase:'ess', do:'exalt', cur:'Exalted_Orb', pre:cnt[oth], ...(room(sd)?{omens:[SIDE_OMEN.exalt[oth]]}:{}), target:{junk:oth}, note:note(`${sideKr(oth)}에 버릴 옵션 하나. 에센스는 무작위로 옵션 하나를 지우니, 이미 만든 ${sideKr(sd)} 대신 이 옵션이 지워지게 반대쪽에 만듦.`, `A throwaway ${sideEn(oth)}: the essence removes a random line, so it goes here instead of a ${sideEn(sd)} already made.`)});
+      push({phase:'ess', do:'exalt', cur:'Exalted_Orb', preCnt:cnt[oth], ...(room(sd)?{omens:[SIDE_OMEN.exalt[oth]]}:{}), target:{junk:oth}, note:note(`${sideKr(oth)}에 버릴 옵션 하나. 에센스는 무작위로 옵션 하나를 지우니, 이미 만든 ${sideKr(sd)} 대신 이 옵션이 지워지게 반대쪽에 만듦.`, `A throwaway ${sideEn(oth)}: the essence removes a random line, so it goes here instead of a ${sideEn(sd)} already made.`)});
       cnt[sd]++; why = note(`${sideKr(oth)}엔 분열 옵션과 방금 만든 버릴 옵션뿐이라 그 옵션이 지워지고, ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음.`, `The throwaway ${sideEn(oth)} is the only removable one there, so it goes and ${le(r)} lands on the ${sideEn(sd)}.`); }
-    else { if(!junk[sd]){ push({phase:'ess', do:'exalt', cur:'Exalted_Orb', pre:cnt[sd], ...(room(other(sd))?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${e.kr}${josa(e.kr,'이','가')} 바꿀 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${e.en} to replace.`)}); cnt[sd]++; junk[sd]++; }
+    else { if(!junk[sd]){ push({phase:'ess', do:'exalt', cur:'Exalted_Orb', preCnt:cnt[sd], ...(room(other(sd))?{omens:[SIDE_OMEN.exalt[sd]]}:{}), target:{junk:sd}, note:note(`${e.kr}${josa(e.kr,'이','가')} 바꿀 ${sideKr(sd)} 하나.`, `A ${sideEn(sd)} for ${e.en} to replace.`)}); cnt[sd]++; junk[sd]++; }
       // a full side: the essence line has nowhere else to go, so it always replaces a line on that side (no omen needed), any removable one
       if(cnt[sd] >= cap[sd]){ const remS = cnt[sd] - frs.filter(x=>x.m.side===sd).length, pS = remS ? junk[sd]/remS : 1, back = [...made].reverse().find(x=>x.r.m.side===sd);
         junk[sd]--;
@@ -1277,15 +1290,18 @@ function verifyDraft(it, an, d){
   d.nodes.forEach((n,i)=>{ const st=i+1, t=n.target||{}, om=n.omens||[];
     const sideOm = om.find(o=>/(Sinistral|Dextral)_(Exaltation|Coronation|Necromancy)/.test(o)); const omSide = sideOm ? (/Sinistral/.test(sideOm)?'p':'s') : null;
     const addLine = (spec, how) => { const list = specs(spec); if(!list.length) return null;
-      const F=famsOf(mods); const pick = list.find(x=>!grp(x.gi).f.some(f=>F.has(f)) && count(grp(x.gi).g)<maxA(grp(x.gi).g)) ;
-      if(!pick){ add('err',`${how}: 붙일 수 있는 목표가 없어요 (자리가 찼거나 같은 계열이 이미 있음).`,`${how}: no target can land (side full or family already present).`,st); return null; }
+      const F=famsOf(mods), desStep=['reveal','desecrate'].includes(n.do);
+      /* 같은 계열 두 줄 허용(사용자 확정 11-13 20:16): 훼손 줄이 끼었거나 유동체로 바뀔 수 있는 저항 계열 */
+      const famOk = x => { const f=grp(x.gi).f, sh=f.filter(y=>F.has(y)); if(!sh.length) return true; return desStep || FLUXF(sh) || mods.some(m=>m.des && m.gi!=null && grp(m.gi).f.some(y=>sh.includes(y))); };
+      const fits = x => count(grp(x.gi).g)<maxA(grp(x.gi).g), pick = list.find(x=>!grp(x.gi).f.some(f=>F.has(f)) && fits(x)) || list.find(x=>famOk(x) && fits(x));   /* 같은 계열 없는 목표 먼저 */
+      if(!pick){ add('err',`${how}: 붙일 수 있는 목표 없음 (자리가 찼거나 같은 계열이 이미 있음).`,`${how}: no target can land (side full or family already present).`,st); return null; }
       const g=grp(pick.gi); if(omSide && g.g!==omSide) add('err',`${how}: ${omSide==='p'?'접두':'접미'} 징조인데 목표는 ${g.g==='p'?'접두':'접미'}`,`${how}: side omen and target side disagree.`,st);
       const tier = g.t[Math.max(0,(pick.tmax||1)-1)]; if(g.s==='n' && tier && tier[0]>it.ilvl && !g.t.some((x,xi)=>xi<(pick.tmax||1) && x[0]<=it.ilvl)) add('err',`${nameOf(pick.gi)} T${pick.tmax}는 아이템 레벨 ${it.ilvl}에서 나올 수 없음`,`${nameOf(pick.gi)} tier ${pick.tmax} needs a higher item level.`,st);
-      mods.push({gi:pick.gi, side:g.g}); return pick; };
+      mods.push({gi:pick.gi, side:g.g, ...(desStep?{des:true}:{})}); return pick; };
     if(n.do==='base' || n.fallbackFor || n.onLost || n.branch?.when==='miss') return;   // the checked path: main line, success branches
     if(t.slots) for(const k in t.slots) cap[k]+=t.slots[k];   // e.g. Potent Liquid Contempt allows one more line on a side
     if(n.do==='manual'){
-      if(t.setQuality){ if(n.cost==='vaal' && isJew && quality && t.setQuality>quality+10) add('warn',`주입기로는 기폭제 상한에서 최대 10%까지 더 올라가요 (${quality}% → ${t.setQuality}%).`,`Infusers add at most 10% over the catalyst cap (${quality}% → ${t.setQuality}%).`,st); quality=t.setQuality; }
+      if(t.setQuality){ if(n.cost==='vaal' && isJew && quality && t.setQuality>quality+10) add('warn',`주입기로는 기폭제 상한에서 최대 10%까지만 더 올라감 (${quality}% → ${t.setQuality}%).`,`Infusers add at most 10% over the catalyst cap (${quality}% → ${t.setQuality}%).`,st); quality=t.setQuality; }
       if(t.rune){ runes.push(t.rune.en); if(runes.length>sockets) add('err',`룬 소켓 ${sockets}개인데 룬 ${runes.length}개(${runes.join(', ')})를 끼우려 함`,`${runes.length} runes for ${sockets} socket(s).`,st); }
       if(t.runeSwap){ const k=runes.indexOf(t.runeSwap[0].en); if(k>=0) runes.splice(k,1,t.runeSwap[1].en); }
       return; }
@@ -1310,7 +1326,7 @@ function verifyDraft(it, an, d){
     if(n.do==='remove' && t.dropGi!=null){ const k=mods.findIndex(m=>m.gi===t.dropGi); if(k<0) add('err',`지울 ${nameOf(t.dropGi)} 옵션이 없음`,'The line to remove is not there.',st); else mods.splice(k,1); return; }
     if(n.do==='remove'){ const sd=t.removeJunk, any = sd==='any'; const k=mods.findIndex(m=>m.junk && (any || m.side===sd)); if(k<0) add('err','지울 잡옵이 없음','No junk to remove.',st); else mods.splice(k,1);
       if(any && mods.some(m=>!m.fr && !m.junk)){ add('warn','징조 없는 소멸이 좋은 옵션을 지울 수 있음','Annulment without an omen can hit a good line.',st); return; }
-      if(!any && mods.some(m=>m.side===sd && !m.fr && !m.junk)) add('warn',`소멸이 같은 쪽의 좋은 옵션을 지울 수 있어요 (${sd==='p'?'접두':'접미'}).`,'Annulment can hit a good line on that side.',st); return; }
+      if(!any && mods.some(m=>m.side===sd && !m.fr && !m.junk)) add('warn',`소멸이 같은 쪽의 좋은 옵션을 지울 수 있음 (${sd==='p'?'접두':'접미'}).`,'Annulment can hit a good line on that side.',st); return; }
     if(n.do==='essence'){ const e=S.byId?.[n.cur] || S.craft.essences.find(x=>x.id===n.cur) || (S.craft.liquids||[]).find(x=>x.id===n.cur); const magicE = e && e.mode==='magic';
       if(e?.act!=='liquid'){ const cr0 = mods.filter(m=>m.crafted), lim = runes.includes("Astrid's Creativity") ? 2 : 1;   // the line is added first, then one is removed
         if(cr0.length >= lim) add('err',`이미 제작 옵션(${nameOf(cr0[0].gi)})이 있어서 ${e?.kr||'에센스'}를 사용 불가. 에센스·합금은 붙인 뒤 지우는 방식이라 그 옵션을 먼저 지우거나 아스트리드의 창의성이 필요.`,`A crafted line (${nameOf(cr0[0].gi)}) is already there: remove it first or socket Astrid's Creativity.`,st); }
@@ -1357,7 +1373,7 @@ function verifyDraft(it, an, d){
   const want = an.rows.filter(r=>!r.unrev && r.m.gi!=null && r.how!=='x').map(r=>r.m.gi), have = mods.filter(m=>m.gi!=null).map(m=>m.gi);
   const miss = want.filter(gi=>!have.some(h=>h===gi || fk(h)===fk(gi))), extra = have.filter(gi=>!want.some(w=>w===gi || fk(w)===fk(gi)));
   if(miss.length) add('err',`완성 상태에 빠진 옵션: ${miss.map(nameOf).join(', ')}`,`Missing from the finished item: ${miss.map(nameOf).join(', ')}`);
-  if(extra.length) add('warn',`붙여 넣은 아이템에 없는 옵션이 남아요: ${extra.map(nameOf).join(', ')}`,`Lines not on the pasted item: ${extra.map(nameOf).join(', ')}`);
+  if(extra.length) add('warn',`붙여 넣은 아이템에 없는 옵션이 남음: ${extra.map(nameOf).join(', ')}`,`Lines not on the pasted item: ${extra.map(nameOf).join(', ')}`);
   // every step with odds below 100% says what happens on a miss: fail (goto/via/lost), a fallback step, or a branch
   d.nodes.forEach((n,i)=>{ if(n.do==='base' || n.fallbackFor || n.onLost || n.branch?.when==='miss') return; const t=n.target||{};
     const odds = ['transmute','augment','regal','exalt','chaos','reveal','desecrate'].includes(n.do) ? (t.gi!=null || t.anyOf || t.all || t.reveal) && !(n.do==='chaos' && t.removeGi!=null && t.junk)
@@ -1372,8 +1388,12 @@ function verifyDraft(it, an, d){
   const jl = ['p','s'].reduce((t,sd)=>t+Math.max(0, mods.filter(m=>m.junk && !m.unrev && m.side===sd).length - Math.max(0, (an.cnt?.[sd]??0) - an.rows.filter(r=>r.m.side===sd).length)), 0); if(jl) add('warn',`완성 상태에 잡옵 ${jl}개가 남음`,`${jl} junk line(s) remain at the end.`);
   ['p','s'].forEach(sd=>{ if(count(sd)>cap[sd]) add('err',`${sd==='p'?'접두':'접미'} 옵션 ${count(sd)}개로 최대 옵션 ${cap[sd]}개을 넘음`,'Too many lines on one side.'); });
   if(it.sockets!=null && it.sockets < (d.sockets||0)) add('warn',`붙여 넣은 아이템은 룬 소켓 ${it.sockets}개인데 초안은 ${d.sockets}개가 필요`,`The pasted item has ${it.sockets} socket(s); the draft needs ${d.sockets}.`);
-  const unk = an.rows.filter(r=>r.unknown && !r.m.fr); if(unk.length) add('warn',`가중치를 모르는 옵션 ${unk.length}개(${unk.map(r=>lk(r).slice(0,18)).join(', ')}) — 해당 단계 확률 계산 불가`,`${unk.length} line(s) with unknown weights; those steps have no odds.`);
-  if(!out.some(o=>o.lv==='err')) add('ok','완성 상태 = 붙여 넣은 아이템 · 모든 단계가 규칙에 맞음','The finished state matches the pasted item and every step follows the rules.');
+  const cutW = (x,n) => { x=String(x||'').split('\n')[0]; if(x.length<=n) return x; const c=x.slice(0,n).replace(/[\s,·]+\S*$/,''); return (c||x.slice(0,n))+'…'; };   /* 단어 중간에서 자르지 않음 */
+  const unk = an.rows.filter(r=>r.unknown && !r.m.fr); if(unk.length) add('warn',`가중치를 모르는 옵션 ${unk.length}개(${unk.map(r=>cutW(lk(r),24)).join(', ')}) — 해당 단계 확률 계산 불가`,`${unk.length} line(s) with unknown weights (${unk.map(r=>cutW(lk(r),28)).join(', ')}); those steps have no odds.`);
+  /* 인식 못 한 옵션 줄(2026-11-13 RV0): 초안에 없는 줄이 있을 수 있어 '완성 상태 = 붙여 넣은 아이템'으로 보지 않음 */
+  const unrec = (it.other||[]).filter(o=>o.k==='?');
+  if(unrec.length) add('warn',`인식하지 못한 옵션 ${unrec.length}개(${unrec.map(o=>cutW(o.l,24)).join(', ')}) — 초안에 빠졌을 수 있음`,`${unrec.length} line(s) not recognised (${unrec.map(o=>cutW(o.l,28)).join(', ')}); the draft may be missing them.`);
+  if(!out.some(o=>o.lv==='err') && !unrec.length) add('ok','완성 상태 = 붙여 넣은 아이템 · 모든 단계가 규칙에 맞음','The finished state matches the pasted item and every step follows the rules.');
   return out;
 }
 
@@ -1496,7 +1516,7 @@ function render(){
       m.fr && r.g.s!=='n' ? `<span class="tag ${r.g.s}">${SRC[r.g.s][KR()?0:1]}</span>` : '',
       r.lord ? `<span class="tag d">${L(LORDS[r.lord][0]+' 전용', LORDS[r.lord][1]+' only')}</span>` : '',
       m.out ? `<span class="tag q">${L('범위 초과','Above range')}</span>` : '', m.split ? `<span class="tag q" title="${esc(L(`게임에선 여러 옵션이 한 줄(${m.split})로 합쳐 보임`,`Shown in game as one summed line (${m.split})`))}">${m.merged?L('합쳐진 줄','Summed line'):L('접두+접미 합산','Prefix+suffix sum')}</span>` : '', m.q ? `<span class="tag q">${L('퀄리티 적용','Quality applied')}</span>` : '',
-      `<span class="tag">${esc(r.t[KR()?2:3])}</span>`].join('');
+      (()=>{ const an0=String(r.t[KR()?2:3]||'').replace(/^-\s*/,''); return !an0 || (KR() && an0===r.t[3] && /^[\x00-\x7F]+$/.test(an0)) ? '' : `<span class="tag">${esc(an0)}</span>`; })()].join('');   /* 접미 이름 앞 '- ' 빼고, 한글 이름이 없는(영어 그대로인) 증강물 옵션 이름은 숨김(2026-11-13 RV0) */
     const tierT = r.g.s==='n' ? L(`T${r.tierNo} · Lv ${r.t[0]}`,`T${r.tierNo} · lvl ${r.t[0]}`) : L(`Lv ${r.t[0]}`,`lvl ${r.t[0]}`);
     const ri = an.rows.indexOf(r), soft = !m.fr && S.soft?.has(ri), on = m.fr || S.need.has(ri) || soft;
     const nOrd = [...S.need].indexOf(ri)+1;
@@ -1526,9 +1546,11 @@ function render(){
         const c = f => { try{ const b=bestDraft(it, needAn(an, f, it), {buy:buySet(an), market:1e9, quick:true}); if(!b.d) return null;
           if(f===0 && b.d.start && b.d.start.rar==='magic'){ const ms=(b.d.start.mods||[]).map(x=>x.gi!=null?x.gi:x.anyOf?.[0]?.gi).filter(x=>x!=null).map(gi=>{ const g=it.D.groups[gi], t=g.t[0]; return KR()?t[4]:t[5]; }); bought = ms.map(x=>String(x).replace(/\n/g,' / ')); }
           return draftCost(it, b.an, b.d); }catch(_){ return null; } };
-        const v0=c(0), v2=c(2), v3=c(3);
+        /* 티어가 2개뿐인 옵션만 있으면 'T3 이상'은 뜻이 없어 뺌(2026-11-13 RV0) */
+        const nT = an.rows.reduce((mx,r,i)=>!r.unrev && !r.m.fr && S.need.has(i) && r.g ? Math.max(mx, r.g.t.filter(t=>t[0]<=it.ilvl).length) : mx, 0);
+        const v0=c(0), v2=nT>=2?c(2):null, v3=nT>=3?c(3):null;
         /* 매직 베이스로 시작하면 그 베이스 값이 비용에서 빠져 0에 가깝게 보임 → 무엇을 사야 하는지 같이 보여 줌 (2026-11-12) */
-        return `<div class="cr">${L('예상 비용 (필수 옵션을 모두 맞출 때)','Est. cost (all must-haves hit)')}: <b>${L('지금 선택','As chosen')} ${fd(v0)} div</b> · ${L('모두 T2 이상','All T2+')} ${fd(v2)} div · ${L('모두 T3 이상','All T3+')} ${fd(v3)} div${bought&&bought.length?`<br><span class="hint">${L('+ 매직 베이스 구입비 별도','+ the magic base, bought separately')}: ${esc(bought.join(' · '))}</span>`:''}</div>`; })() : ''}
+        return `<div class="cr">${L('예상 비용 (필수 옵션을 모두 맞출 때)','Est. cost (all must-haves hit)')}: <b>${L('지금 선택','As chosen')} ${fd(v0)} div</b> ${nT>=2?` · ${L('모두 T2 이상','All T2+')} ${fd(v2)} div`:''}${nT>=3?` · ${L('모두 T3 이상','All T3+')} ${fd(v3)} div`:''}${bought&&bought.length?`<br><span class="hint">${L('+ 매직 베이스 구입비 별도','+ the magic base, bought separately')}: ${esc(bought.join(' · '))}</span>`:''}</div>`; })() : ''}
     ${ready?'':`<span class="hint">${L('필수 옵션 1개 이상 선택 + 퀄리티·룬 확인 → 초안 만들기','Mark at least one must-have and confirm quality and runes to make the draft.')}</span>`}</div>` : '';
   $('#mods').innerHTML = `<div class="mods-h"><h3>${L('옵션','MODIFIERS')}</h3>${canDraft?`<span class="needguide">${L('<b>필수</b> 끝까지 맞춤 · <b>유효</b> 한 번만 노리고 빗나가면 그대로 · 고르지 않으면 잡옵','<b>Must</b> hit it · <b>Useful</b> one try, keep a miss · unmarked = junk')}</span>`:''}</div>${rowsHTML}${otherHTML}${canDraft?similarHTML(it, an):''}` + (canDraft ? `${confirmH}<div class="draft"><div><b>${L('레시피 초안 만들기','Make a recipe draft')}</b><p>${L('분석 결과로 제작 순서를 만든 뒤, 처음부터 다시 따라가며 검산하고, 여기서 미리 본 뒤 크래프팅 목록에 올림: 분열 베이스 → 완벽한 진화·확장·제왕 → 에센스 → 어려운 옵션부터 엑잘(징조) → 훼손·공개 → 기폭제. 확률은 레시피 엔진이 가중치로 계산함.','Builds a crafting order from this analysis, previews it here, then adds it to Crafting: fractured base → Perfect transmute/augment/regal → essences → exalts with omens, hardest line first → desecration and reveal → catalysts. The recipes engine computes the odds from weights.')}</p></div><button type="button" class="btn primary ${ready?'':'soft'}" id="mk">${L('초안 만들기','Make draft')}</button></div><div id="mkmsg"></div>` : '');
 }
@@ -1541,7 +1563,7 @@ async function run(){
   S.txt = txt;
   loadBoard().then(()=>{ if(S.last?.it) render(); });
   try{ const it = await parse(txt); S.last = it.err ? {err:it.err} : {it, an:analyse(it)}; }
-  catch(e){ S.last = {err:L('분석 중 오류가 났어요: ','Analysis failed: ')+e.message}; console.error(e); }
+  catch(e){ S.last = {err:L('분석 중 오류: ','Analysis failed: ')+e.message}; console.error(e); }
   render();
 }
 
@@ -1591,7 +1613,7 @@ $('#itabs').addEventListener('click', e=>{ const b=e.target.closest('[data-itab]
 $('#b-go').addEventListener('click', ()=>{ try{ if(parent!==window){ parent.location.hash='builder'; return; } }catch(_){} location.href='builder.html'; });
 // feedback: kept on this device until the server exists (사용자 2026-11-11 기획 — 결과의 아쉬운 점 작성 요청)
 $('#fb-go').addEventListener('click', ()=>{ const t=$('#fb-txt').value.trim(); if(!t) return; try{ const k='poe2r:feedback', a=JSON.parse(localStorage.getItem(k)||'[]'); a.unshift({at:Date.now(), text:t.slice(0,2000), draft:S.draft?.id||null, item:($('#txt').value||'').slice(0,4000)}); localStorage.setItem(k, JSON.stringify(a.slice(0,50))); }catch(_){}
-  $('#fb-txt').value=''; $('#fb-msg').textContent=L('고마워요! 이 기기에 저장했어요 (서버가 열리면 함께 전송돼요).','Thanks! Saved on this device; it will be sent once the server is live.'); });
+  $('#fb-txt').value=''; $('#fb-msg').textContent=L('저장 완료 · 이 기기에 보관, 서버가 열리면 함께 전송','Thanks! Saved on this device; it will be sent once the server is live.'); });
 $('#mods').addEventListener('click', e=>{
   if(e.target.closest('#mk') && S.last?.it && !S.last.an?.putrid){ const an=S.last.an, nNeed=an.rows.filter((r,i)=>!r.unrev && !r.m.fr && S.need.has(i)).length; if(!nNeed || !S.okQR){ const m=$('#mkmsg'); if(m) m.innerHTML=`<div class="mkwarn">${!nNeed?L('먼저 위 옵션에서 \'필수 옵션\'을 1개 이상 선택','Pick at least one must-have line above first.'):L('\'퀄리티와 룬을 확인했어요\'에 체크','Tick “I checked the quality and runes”.')}</div>`;
     const tgt = !nNeed ? document.querySelector('[data-need]') : document.getElementById('qrok'); if(tgt){ tgt.scrollIntoView({block:'center', behavior:'smooth'}); const box=tgt.closest('label,.need')||tgt; box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash'); } return; }
@@ -1607,7 +1629,7 @@ $('#mods').addEventListener('click', e=>{
   const lb=e.target.closest('[data-lv]'); if(lb && S.last?.an){ const [i0,lv]=lb.dataset.lv.split(':'), i=+i0, was = lv==='must' ? S.need.has(i) : lv==='soft' ? S.soft.has(i) : false; S.need.delete(i); S.soft.delete(i); delete S.tsel[i]; if(!was){ if(lv==='must') S.need.add(i); else if(lv==='soft') S.soft.add(i); } S.draft=null; S.sent=false; render(); return; }
   const sg=e.target.closest('[data-goto]'); if(sg){ parent.postMessage({type:'poe2-goto', id:sg.dataset.goto}, '*'); return; }
   const nb=e.target.closest('[data-need]'); if(nb && S.last?.an){ const i=+nb.dataset.need; if(S.need.has(i)) S.need.delete(i); else S.need.add(i); S.draft=null; S.sent=false; render(); return; }
-  if(e.target.closest('#send') && S.draft && !S.sent){ if(!S.flow?.group) return; const r=S.flow.group;
+  if(e.target.closest('#send') && S.draft && !S.sent){ if(!S.flow?.group || S.pvBad) return; const r=S.flow.group;
     try{ const k='poe2r:drafts', a=JSON.parse(localStorage.getItem(k)||'[]').filter(x=>x.id!==r.id); a.unshift(r); localStorage.setItem(k, JSON.stringify(a.slice(0,12))); }catch(_){}
     const inShell = window.parent && window.parent!==window;
     if(inShell){ try{ window.parent.postMessage({type:'poe2-draft', recipe:r, stay:true}, '*'); }catch(_){} }   // stay here; the list picks it up (사용자 확정 2026-11-11)
@@ -1629,9 +1651,14 @@ function runFlow(it, d){ try{
   let t=performance.now(), c = POE2GRAPH.check(g, it.D, S.craft, S.prices, POE2SIM, 150);
   const dt=performance.now()-t; if(!c.issues.length && dt<600) c = POE2GRAPH.check(g, it.D, S.craft, S.prices, POE2SIM, Math.min(3000, Math.max(300, Math.round(150*1500/Math.max(dt,1)))));
   const bad = new Set(c.issues.map(x=>x.v).filter(Boolean));
-  const strategies = c.strategies.filter(x=>x.res && !bad.has(x.id)).map(x=>({id:x.id, params:x.params, hidden:false, res:slimRes(x.res)}));
+  /* 같은 내용 등급 걸러내기(정책 10장 C17-4·D·J, 리버스에도 같음 — 13장 11-13 20:16): 완성 카드가 같거나 비용이 10% 이내면 높은 등급 하나만 */
+  const merged = {}; { const kept=[], fin = id => JSON.stringify((g.finals.find(f=>f.id===id)||{}).lines||[]), meanOf = id => c.strategies.find(x=>x.id===id)?.res?.mean;
+    for(const st of g.strategies){ const r=c.strategies.find(x=>x.id===st.id); if(!r?.res || bad.has(st.id)) continue;
+      const hit = kept.find(k=>fin(k)===fin(st.id) || JSON.stringify(g.strategies.find(x=>x.id===k).params)===JSON.stringify(st.params) || (meanOf(k)>0 && meanOf(st.id)>0 && Math.abs(meanOf(st.id)-meanOf(k)) <= 0.1*Math.max(meanOf(k), meanOf(st.id))));
+      if(hit) merged[st.id]=hit; else kept.push(st.id); } }
+  const strategies = c.strategies.filter(x=>x.res && !bad.has(x.id) && !merged[x.id]).map(x=>({id:x.id, params:x.params, hidden:false, res:slimRes(x.res)}));
   const sim = {id:d.id, recipe:d.id, runs:c.strategies[0]?.res?.N||0, generated:new Date().toISOString().slice(0,10), graph:POE2GRAPH.view(g, it.D), strategies};
-  const out = {g, res:c.strategies, issues:c.issues};
+  const out = {g, res:c.strategies, issues:c.issues, merged};
   /* 2026-11-12(사용자: 균열 반지 — 하이엔드가 사실상 불가능하면 밸런스·에센셜도 안 나오고 올리기 버튼도 없었음): 계산이 된 등급만으로 레시피를 만듦 */
   const okSt = g.strategies.filter(st=>strategies.some(x=>x.id===st.id) && !bad.has(st.id));
   if(okSt.length) { const st0 = okSt[0], lead = st0.id===g.strategies[0].id ? {...d, tierGroup:d.id, tier:st0.id, sim:1} : {...gradeRecipe(d, g, st0), id:d.id}; out.lead = {...lead, simInline: strategies.length===c.strategies.length ? sim : {...sim, graph:{...sim.graph, versions:sim.graph.versions.filter(v=>strategies.some(s=>s.id===v.id)), finals:sim.graph.finals.filter(f=>strategies.some(s=>s.id===f.id))}}}; }
@@ -1643,8 +1670,8 @@ function gradeRecipe(d, g, st){ const p=st.params, w = x => { if(!x || x.gi==nul
   return {...d, id:d.id+st.id, tierGroup:d.id, tier:st.id, sim:1, nodes}; }
 function flowHTML(F){ const VN={high:L('하이엔드','High-end'), bal:L('밸런스','Balance'), ess:L('에센셜','Essential')}, fd = v => v==null ? '—' : v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
   if(F.err) return `<div class="flow bad"><b>${L('플로우차트','Flowchart')}</b><p class="iss">${esc(F.err)}</p></div>`;
-  const rows = F.res.map(x=> x.res ? `<tr><td>${VN[x.id]||x.id}</td><td>${fd(x.res.mean)}</td><td>${fd(x.res.median)}</td><td>${fd(x.res.p90)}</td><td>${x.res.bases.toFixed(1)}</td><td>${x.res.reqOk>=0.98?'✓':Math.round(x.res.reqOk*100)+'%'}</td></tr>` : `<tr><td>${VN[x.id]||x.id}</td><td colspan="5">${L('진행 불가','No way through')}</td></tr>`).join('');
-  return `<div class="flow ${F.issues.length?'bad':''}"><div class="ch-h"><b>${L('플로우차트 검사','Flowchart check')}</b><span>${F.issues.length ? L('통과 실패 · 아래 문제를 고쳐야 레시피 생성 가능','Not passed — these need fixing before a recipe is made') : L(`단계 ${F.g.nodes.filter(n=>n.kind==='act').length}개를 실제 확률로 ${(F.res[0]?.res?.N||0).toLocaleString()}번씩 끝까지 진행해 봤어요. 막힘 없음`,`Ran the ${F.g.nodes.filter(n=>n.kind==='act').length} steps to the end ${(F.res[0]?.res?.N||0).toLocaleString()} times each with real odds. No dead ends`)}</span></div>
+  const rows = F.res.map(x=> x.res ? `<tr><td>${VN[x.id]||x.id}${F.merged?.[x.id] ? ` <small>(${L(`${VN[F.merged[x.id]]}와 같은 결과 · 합침`,`same result as ${VN[F.merged[x.id]]}, merged`)})</small>` : ''}</td><td>${fd(x.res.mean)}</td><td>${fd(x.res.median)}</td><td>${fd(x.res.p90)}</td><td>${x.res.bases.toFixed(1)}</td><td>${x.res.reqOk>=0.98?'✓':Math.round(x.res.reqOk*100)+'%'}</td></tr>` : `<tr><td>${VN[x.id]||x.id}</td><td colspan="5">${L('진행 불가','No way through')}</td></tr>`).join('');
+  return `<div class="flow ${F.issues.length?'bad':''}"><div class="ch-h"><b>${L('플로우차트 검사','Flowchart check')}</b><span>${F.issues.length ? L('통과 실패 · 아래 문제를 고쳐야 레시피 생성 가능','Not passed — these need fixing before a recipe is made') : L(`단계 ${F.g.nodes.filter(n=>n.kind==='act').length}개를 실제 확률로 ${(F.res[0]?.res?.N||0).toLocaleString()}번씩 끝까지 진행 · 막힘 없음`,`Ran the ${F.g.nodes.filter(n=>n.kind==='act').length} steps to the end ${(F.res[0]?.res?.N||0).toLocaleString()} times each with real odds. No dead ends`)}</span></div>
     <table><thead><tr><th>${L('등급','Grade')}</th><th>${L('평균','Mean')}</th><th>${L('중앙값','Median')}</th><th>${L('운 나쁠 때(90%)','Unlucky (90%)')}</th><th>${L('베이스','Bases')}</th><th>${L('필수 옵션','Must-haves')}</th></tr></thead><tbody>${rows}</tbody></table>
     <span class="hint">${L('완성 1개당 div, 베이스 구입비 제외','div per finished item, base purchase not included')}</span>${(()=>{ const a0=S.last; if(!a0?.it) return ''; const same=similarRecipes(a0.it, a0.an).filter(x=>x.same); const mine=F.res?.find(x=>x.res)?.res?.mean;
       const best=same.map(x=>({x, m:S.simC?.[x.b.g+'|'+x.b.tr]})).filter(y=>y.m!=null).sort((p,q)=>p.m-q.m)[0]; if(!best || mine==null) return '';
@@ -1652,6 +1679,7 @@ function flowHTML(F){ const VN={high:L('하이엔드','High-end'), bal:L('밸런
       return r>1.1 ? `<p class="iss">${L(`같은 구조 등록 레시피 「${nm}」가 이 초안보다 ${r.toFixed(1)}배 쌈 → 그 레시피를 따르는 것을 권장`,`The same-structure recipe "${nm}" is ${r.toFixed(1)}× cheaper than this draft; follow it instead.`)}</p>` : `<p class="hint">${L(`같은 구조 등록 레시피 「${nm}」와 비용 비슷하거나 더 쌈`,`About as cheap as or cheaper than "${nm}"`)}</p>`; })()}
     ${F.issues.length?`<ul class="iss">${F.issues.map(x=>`<li>${esc(KR()?x.kr:x.en)}</li>`).join('')}</ul>`:''}</div>`; }
 function showCheck(){
+  S.pvBad=null;
   const c=S.check||[], nE=c.filter(x=>x.lv==='err').length, nW=c.filter(x=>x.lv==='warn').length;
   const ic = {err:'✗', warn:'!', ok:'✓'};
   const dc = S.last?.it ? draftCost(S.last.it, S.last.an, S.draft) : null, mp = S.draft.marketPrice, fd = v => v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v.toFixed(1);
@@ -1662,7 +1690,7 @@ function showCheck(){
     <ul>${c.map(x=>`<li class="${x.lv}"><span class="ic">${ic[x.lv]}</span>${esc(KR()?x.kr:x.en)}</li>`).join('')}</ul>
   </div>
     <div class="pv"><div class="pv-h"><b>${L('레시피 미리보기','Recipe preview')}</b><span>${L('확인 후 올리기 또는 삭제','Check it, then add it or delete it')}</span></div>
-      <iframe id="pvf" title="${esc(L('레시피 미리보기','Recipe preview'))}" src="recipes.html?preview=1&lang=${S.lang}"></iframe>
+      <iframe id="pvf" title="${esc(L('레시피 미리보기','Recipe preview'))}" src="recipes.html?preview=1&lang=${S.lang}"></iframe><p class="iss" id="pverr" hidden></p>
       <div class="row" id="pvact"><button type="button" class="btn ${nE||!okFlow?'':'primary'}" id="send" ${okFlow?'':'disabled'}>${label}</button><button type="button" class="btn" id="discard">${L('삭제','Delete')}</button></div></div>`;
   const f=$('#pvf'), send=()=>{ try{ f.contentWindow.postMessage({type:'poe2-preview', recipe:F.group || F.lead || S.draft}, '*'); }catch(_){} };
   f.addEventListener('load', send, {once:true});
@@ -1736,6 +1764,9 @@ if(REQ_OPEN) loadReqs(); else urlForm();
 window.addEventListener('message', e=>{ const d=e.data; if(d && d.type==='poe2-lang' && (d.lang==='en'||d.lang==='kr') && d.lang!==S.lang){ S.lang=d.lang; try{ localStorage.setItem('poe2lang',d.lang); }catch(_){} /* 분석 글(제작 흔적 등)은 분석할 때 언어로 만들어지니 다시 분석(사용자 2026-11-12) */ if(S.last?.it && !S.last.err){ try{ S.last.an=analyse(S.last.it); }catch(_){} } render(); } });
 window.addEventListener('message', e=>{ const d=e.data||{}, f=document.getElementById('pvf'); /* preview keeps a window-sized frame and scrolls inside it, so its sticky header, progress bar and step tracking work (2026-11-11) */
   /* 미리보기 플로우차트 전체화면(사용자 2026-11-12: 초안 안 창에서 좌우 스크롤·전체화면이 안 됨): 미리보기 창을 화면 전체로 키우고 사이트 껍데기에도 알림 */
+  if(d.type==='poe2-preview-st' && f && e.source===f.contentWindow){ const b=document.getElementById('send'), w=document.getElementById('pverr'); S.pvBad = d.ok ? null : (d.err||[]);
+    if(b && !d.ok){ b.disabled=true; b.classList.remove('primary'); b.textContent=L('미리보기 오류 · 올리기 불가','Preview error, cannot be added'); }
+    if(w){ w.hidden=!!d.ok; w.textContent = d.ok ? '' : L('미리보기 화면 오류 · 이 초안은 올리기 불가, 아쉬운 점 남기기로 제보 가능','The preview failed to draw. This draft cannot be added; please report it with feedback.'); } return; }   /* 2026-11-13 RV0: 미리보기 오류 = 올리기 막음 */
   if(d.type==='poe2-full' && f && e.source===f.contentWindow){ f.classList.toggle('pvfull', !!d.on); document.body.classList.toggle('pvfull-on', !!d.on); try{ parent!==window && parent.postMessage({type:'poe2-full', on:!!d.on}, '*'); }catch(_){} } });
 $('#mods').addEventListener('change', e=>{
   if(e.target.id==='qrok'){ S.okQR=e.target.checked; render(); return; }
