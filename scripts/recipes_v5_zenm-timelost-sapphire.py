@@ -12,7 +12,7 @@ zm_mel=textZ('Upgrades Radius to Very Large','x','p')
 assert 'Spell' not in cd(c)['groups'][zm_cc]['t'][0][5] and 'Minion' not in cd(c)['groups'][zm_cc]['t'][0][5]
 ZM_SUF=[{'gi':zm_scd},{'gi':zm_cd},{'gi':zm_scc},{'gi':zm_cc},{'gi':zm_mcc},{'gi':zm_mcd}]
 R.append({
- 'id':'zenm-timelost-sapphire','cls':c,'base':0,'ilvl':41,'cap':{'p':2,'s':2},'difficulty':2,'budget':'low','unknownW':True,
+ 'id':'zenm-timelost-sapphire','cls':c,'base':0,'ilvl':61,'cap':{'p':2,'s':2},'difficulty':2,'budget':'low','unknownW':True,
  'buildTags':[K('주얼','Jewel'),K('오래된 주얼','Time-Lost jewel'),K('치명타','Crit'),K('수익 제작','Profit craft')],'patch':'0.5','created':'2026-11-09','author':ZM5,
  'source':{'url':'https://www.youtube.com/watch?v=IKC9DquM7GM','title':'[PoE 2] How To Profit Craft Time-Lost Jewels In Path Of Exile 2','channel':'Zen_M'},
  'title':K('치명타 접미 옵션 2개 + 매우 넓은 반경 (수익 제작)','two crit suffixes + Very Large radius (profit craft)'),
@@ -20,7 +20,7 @@ R.append({
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'suf','kr':'치명타 접미 옵션 2개','en':'Two crit suffixes'},{'id':'pre','kr':'접두 · 우울','en':'Prefixes and Melancholy'}],
  'nodes':[
   {'id':'z1','phase':'base','do':'base','cost':'base','ts':'1:57',
-   'note':K('옵션 1개짜리 싼 매직 오래된 사파이어(영상 아이템 레벨 41). 여러 개를 한꺼번에.','Cheap one-mod magic Time-Lost Sapphires (item level 41 in the video), several at once.')},
+   'note':K('옵션 1개짜리 싼 매직 오래된 사파이어(영상 성공 회차 아이템 레벨 61). 여러 개를 한꺼번에.','Cheap one-mod magic Time-Lost Sapphires (item level 61 on the finished jewel in the video), several at once.')},
   {'id':'z2','phase':'base','do':'regal','cur':'Regal_Orb','target':{'junk':'p'},'after':{'keepOnly':['junk1']},'ts':'2:20',
    'note':K('레어로 만든 뒤 소멸의 오브로 옵션 1개만 남김.','Regal, then annul down to one line.')},
   {'id':'z3','phase':'suf','do':'chaos','cur':'Chaos_Orb','target':{'anyOf':ZM_SUF},'fail':{'goto':'self'},'ts':'2:40',

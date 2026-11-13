@@ -116,3 +116,7 @@ graph9('zenm-timelost-sapphire-v2','Time-Lost_Sapphire','Time-Lost Sapphire',41,
   FIN(('bal','ess'),lambda v:[{'side':'p','random':True},{'tag':'rad','tmax':1},{'side':'s','label':K('치명타 계열 핵심 패시브','Crit notable line')},{'side':'s','label':K('치명타 계열 핵심 패시브','Crit notable line')} if v=='bal' else {'side':'s','random':True}]),
   {'quality':0,'sockets':0},{'all':[{'has':'note'},{'has':'rad'}]},('bal','ess'))
 print('wrote 4 graphs (batch 9)')
+
+import os as _os, subprocess as _sp, sys as _sy
+for _g in ('gen_zenm_timelost_sapphire.py', 'gen_diztoh_5mod_sapphire.py', 'gen_diztoh_5mod_emerald.py'):   # 2026-11-13 G8: 새 기준 전용 생성기가 덮어씀
+    if _os.path.exists(f'{H}/{_g}'): _sp.run([_sy.executable, f'{H}/{_g}'], check=True)

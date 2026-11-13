@@ -79,7 +79,7 @@
 | fubgun-es-helmet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 18, ess ? | 3 | 대기 |  |  |
 | farmer-budget-armour-v2 | UWrIgHklsPg | high 17, bal 6, ess ? | 0 | 대기 |  |  |
 | icesly-budget-wand-v2 | gtxAqZfCxxI | bal 15, ess 11 | 0 | 대기 |  |  |
-| zenm-timelost-sapphire-v2 | IKC9DquM7GM | bal 13, ess 9 | 0 | 진행 중 11-13 · G8 | G8(Opus 5.5) |  |
+| zenm-timelost-sapphire-v2 | IKC9DquM7GM | bal 13, ess 9 | bal 13, ess 9 → bal 52, ess 15(베이스 5 카오스 포함) | 검수 대기 11-13 | G8(Opus 5.5) | 새 기준 재작성(G8): 영상 전체 화면 대조(주얼 5개 중 1번 Hypnotic Spark 성공 회차), 전용 생성기 gen_zenm_timelost_sapphire.py. 카오스 목표 = 치명타 피해 보너스(3:02), 공개 목표 = 주문 치명타 명중 확률(5:05) — 영상은 치명타 계열 6종 아무거나(묶음이면 16/12 div), 확정 옵션 규칙대로 하나씩. 중형·대형 반경 소멸 처리 추가(9:35·10:30·14:00), 아이템 레벨 61. 밸런스 = 공개 빗나가면 징조 없는 소멸의 오브(6:17), 에센셜 = 공개 그대로. 13/9 → 52/15 |
 | fubgun-quiver-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 10, ess ? | 3 | 대기 |  |  |
 | lilbotq-budget-boots-v2 | S-7YHuq3-P4 | bal 10, ess 6 | 0 | 대기 |  |  |
 | farmer-starter-staff-v2 | ITBexsgq2NI | high 8, bal 4, ess 2 | 0 | 대기 |  |  |
@@ -172,6 +172,6 @@
 | unstoppable-vile-robe-v2 | bal·high | bal 접두 에너지 보호막·정신력 1티어; bal 저항 1티어 | 재확인 필요 | A(Opus) 밸런스 접두(엑잘·훼손 반복) 1 → 1~2티어(163 → 99), 저항은 싼 반복이라 1티어 유지 |
 | vodnarg-timelost-emerald-v2 | ess·bal | - | 검수 대기 11-13 | G4(Opus 5.5) | 등급 근거는 위 표 메모 |
 | xeno-phys-crossbow-v2 | high | - | 재확인 필요 | A(Opus) 하이엔드만(극한), 바꿀 것 없음 |
-| zenm-timelost-sapphire-v2 | ess·bal | - | 진행 중 11-13 · G8 | G8(Opus 5.5) |  |
+| zenm-timelost-sapphire-v2 | ess·bal | - | 검수 대기 11-13 | G8(Opus 5.5) | 등급 근거는 위 표 메모 |
 
 > 2026-11-12 12:45 A(Opus): 11-12에 '완료'로 표시한 A(Opus) 줄은 자막·단계 이름만 맞추고 완성 화면(플로우차트·완성품 카드)을 보지 않은 채 표시한 것이라 모두 '재확인 필요'로 되돌림(사용자 지적). 다시 할 때는 한 개씩: 영상 자막 + 화면 전체 확인 → 고침 → 플로우차트·완성품 카드 스크린샷을 사용자에게 보인 뒤 완료.
