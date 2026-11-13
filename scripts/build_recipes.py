@@ -654,7 +654,7 @@ FC_TS['saveq-focus-v2']={'base':'6:02','f1':'6:30','f2':'7:00','f2x':'6:55','f3'
 FC_TS['saveq-focus-v2-bal']=FC_TS['saveq-focus-v2']
 FC_TS['unstoppable-vile-robe-v2']={'base':'5:57','ut':'7:20','ua':'8:50','uax':'8:35','ur':'9:20','ud':'10:46','uf':'10:49','ux':'10:49','uc':'11:15','k1':'13:25','k2':'13:40','k2x':'12:50','q0':'14:10','q1':'15:00','q2':'15:55','q3':'42:30','q5':'42:55','r0':'16:18','r1':'16:21','r2':'18:25','w9':'21:51'}   # 2026-11-13 W34
 FC_TS['unstoppable-vile-robe-v2-bal']=FC_TS['unstoppable-vile-robe-v2']
-FC_TS['unstoppable-slipstrike-vest-v2']={'base':'41:08','ud':'41:08','uf':'41:20','ux':'41:20','uc':'41:25','k1':'41:30','k2':'41:35','k3':'41:45','q2':'42:25','q3':'42:30','q5':'42:35','q1':'43:00','q4':'45:32','r0':'45:32','r1':'45:55','r2':'46:05'}   # 2026-11-13 W34
+FC_TS['unstoppable-slipstrike-vest-v2']={'base': '40:58', 'ud': '41:12', 'uf': '41:13', 'ux': '41:20', 'uc': '41:15', 'k1': '41:23', 'k2': '41:29', 'k3': '41:45', 'q2': '42:25', 'q3': '42:32', 'q5': '42:46', 'q1': '43:20', 'q4': '43:36', 'r0': '45:32', 'r1': '45:55', 'r2': '46:05', 'ut': '40:58', 'uax': '40:58', 'ua': '41:00', 'ur': '41:12'}   # 2026-11-13 W34
 FC_TS['unstoppable-slipstrike-vest-v2-bal']=FC_TS['unstoppable-slipstrike-vest-v2']
 FC_TS['vodnarg-timelost-emerald-v2']={'base':'2:55','l1':'4:28','d1':'5:14','r1':'6:02','r1x':'6:58','x1':'10:33','c2':'12:26','l2':'12:58'}   # 2026-11-13 G4
 FC_TS['sl-5mod-jewel-v2']={'base':'6:30','pf':'6:58','pc':'7:00','s2':'8:02','s3x':'8:13','s3':'8:21','s4':'8:22','s5':'8:44','s6':'8:55','s7':'9:07','s8':'9:35','s9':'9:48','s11':'10:22'}   # 2026-11-13 G4
@@ -677,7 +677,7 @@ FC_TS['belton-plus8-wand-v2']={'base':'0:40','z1':'0:44','zr':'0:48','z2':'0:56'
 FC_TS['sihan-chayula-sceptre-v2']={'base':'1:04','qr':'1:14','q1':'4:28','q2':'5:10','q3':'5:13','q4':'5:16','q5':'5:19','q6':'5:27','q7':'5:33','q8':'5:43','q9':'6:06','x1':'3:35','x2':'3:52','x3':'3:52','xc':'4:10'}   # 2026-11-13 G7
 FC_TS['zenm-timelost-sapphire-v2']={'base':'2:00','p1':'2:28','pc':'2:30','c1':'3:02','d1':'4:26','r1':'5:05','r1x':'6:17','x1':'9:20','x2':'9:30','xr':'10:30','xz':'13:30','m1':'9:50'}   # 2026-11-13 G8
 FC_TS['diztoh-5mod-sapphire-v2']={'base':'0:08','pc':'0:14','a1':'0:20','a2':'0:47','a2x':'0:50','a3':'2:50','a4':'2:50','k1':'3:03','k1x':'2:35','d1':'3:16','r1':'3:30','r1x':'3:50','n1':'5:12','g1':'5:16','c1':'6:05','f1':'7:05'}   # 2026-11-13 G8
-FC_TS['diztoh-5mod-emerald-v2']={'base':'0:36','pc':'1:20','a2':'1:28','a3':'2:30','a4':'2:30','k1':'2:48','d1':'3:23','r1':'3:50','r1x':'4:30','n1':'6:02','g1':'6:02','c1':'9:35','f1':'9:48'}   # 2026-11-13 G8
+FC_TS['diztoh-5mod-emerald-v2']={'base': '0:36', 'a2': '1:19', 'a3': '2:49', 'a4': '2:49', 'k1': '2:48', 'd1': '3:23', 'r1': '3:50', 'r1x': '4:30', 'n1': '6:02', 'g1': '6:02', 'c1': '9:35', 'f1': '9:48', 'k1x': '16:05'}   # 2026-11-13 G8
 FC_TS['saveq-alloy-focus-v2']={'base':'5:26','s1':'5:29','s2':'5:38','s3':'6:00','s4':'6:46','s5':'7:16','s6':'7:30','s7':'7:48','s8':'8:05','s9':'8:24','s10':'10:20'}   # 2026-11-13 G9
 FC_TS['lilbotq-emerald-v2']={'base':'15:00','j1':'15:26','j2':'15:34','j3':'16:00','j3x':'17:20','j4':'19:15','j4e':'19:25','j5':'19:35','j6':'20:00','j7':'20:45'}   # 2026-11-13 G9
 FC_TS['lilbotq-armour-shield-v2']={'base':'1:02','k1':'1:28','k2':'1:36','k2x':'2:30','k2a':'2:30','k3':'4:05','k4':'4:32','k5':'4:48','k6':'5:00','k7':'5:14','k8':'5:40','k9':'7:36','k10':'7:40','k11':'7:50','k11x':'8:00','k12':'9:44','k13':'10:05'}   # 2026-11-13 G9
@@ -694,6 +694,34 @@ FC_TS['diztoh-budget-mace-v2']={'base':'0:12','m1':'0:25','m1x':'0:33','m2':'0:4
 FC_TS['diztoh-budget-crossbow-v2']={'base':'0:45','m1':'0:50','m1x':'1:19','m2':'1:05','e1':'1:37','k1':'1:52','k2':'2:00','k3':'2:16','k4':'2:40','k5':'2:53','k6':'3:32'}   # 2026-11-13 G14
 FC_TS['mazbro-bis-chest-v2']={'base':'2:30','p1':'3:35','p2':'3:40','p2x':'3:50','hd':'3:23','p3':'4:15','p4':'4:20','p5':'4:40','xj':'4:40','p6':'5:10','r1':'5:40','c1':'6:00','e1':'6:32','e1x':'6:44','s0':'12:40','mA':'12:55','b2':'13:30','b2n':'31:00','b3':'13:38','s1':'23:47','w1':'24:36','da':'15:00','f1':'26:40','f2':'26:45','f3':'27:30','f3x':'27:05'}   # 2026-11-12 W7 영상 전체 재대조(근거 scratchpad review/W7-bis-chest/timeline.md) — 성공 회차 = 첫 번째 흉갑, 분열 준비(p1~p6)는 3:23 노트·3:36~5:27 시연
 FC_TS['diztoh-crit-helmet-v2']={'base':'0:30','h2':'0:55','h2x':'1:20','h3':'0:58','h3x':'1:10','h3y':'1:27','h4':'1:47','h5':'2:07','h7':'2:51','xs':'2:51','xj':'2:51','h8':'3:01','c1':'7:23','cz':'5:47','p1':'7:29','p2':'9:41','p3':'9:09','p3x':'9:17','d1':'10:03','d2':'10:30','dx':'10:58','f1':'12:00'}   # 2026-11-12 W6 영상 전체 재대조(근거 scratchpad review/W6-crit-helmet/timeline.md) — 성공 회차 7:23~12:03, cz는 데모 회차(5:39~5:47)
+# 성공 회차 옵션(S4, 2026-11-13): 완성 카드의 묶음 태그(anyOf) 줄에 태그 shown·shownBy가 있으면 그 옵션 줄로 바꾸고(of = 원래 태그, alt = 다른 유효 옵션 gi)
+# 화면(recipes.html fcShowLines)과 같은 규칙 — 같은 묶음 줄이 여러 개면 shown 목록 순서대로
+_CLSG = {}
+def _shownlines(F, V, GT, tags, cls):
+    if cls not in _CLSG:
+        try: _CLSG[cls] = json.load(open(f"{D}c/{cls}.json"))['groups']
+        except Exception: _CLSG[cls] = []
+    gs = _CLSG[cls]; out = []; k = {}; vid = (V or {}).get('id') or F.get('id'); P = (V or {}).get('params') or {}
+    allsh = {}
+    for l in F['lines']:
+        t = l.get('tag'); sl = _g2r.shown_leaves(GT, t, vid, P) if t and not l.get('label') and not l.get('random') else None
+        if sl: i = k.get(t, 0); k[t] = i + 1; allsh.setdefault(t, []).append(sl[i]['gi'] if i < len(sl) else None)
+    k = {}
+    for l in F['lines']:
+        t = l.get('tag'); sl = _g2r.shown_leaves(GT, t, vid, P) if t and not l.get('label') and not l.get('random') else None
+        if not sl: out.append(l); continue
+        i = k.get(t, 0); k[t] = i + 1
+        if i >= len(sl): out.append(l); continue
+        x = sl[i]; G0 = gs[x['gi']] if 0 <= x['gi'] < len(gs) else {}
+        pt = f"{t}~{i}"
+        tags[pt] = {'gi': x['gi'], 's': G0.get('g'), 'sec': G0.get('s'), 'tmax': x.get('tmax') or l.get('tmax')}
+        if tags[pt]['tmax'] is None:
+            lt = (GT.get(t) or {}).get('tmax') if isinstance(GT.get(t), dict) else None
+            tags[pt]['tmax'] = lt if isinstance(lt, int) else None
+        out.append({**{a: b for a, b in l.items() if a not in ('tag', 'label', 'any')}, 'tag': pt, 'of': t, 'sh': True,
+                    'alt': [g for g in _g2r.leaf_gis(GT, t) if g not in [y for y in allsh.get(t, []) if y is not None]]})
+    return out
+
 # flowchart + simulation (tools/sim/run.js → site/data/sim/<id>.json): the recipe tab shows its button only when the file exists
 for _r in R:
     _sid=_r.get('tierGroup') or _r['id']
@@ -727,7 +755,7 @@ for _r in R:
                 T=_GT.get(l.get('tag')) if l.get('tag') else next((t for t in _GT.values() if isinstance(t,dict) and t.get('anyOf') and (t.get('label') or {}).get('kr')==l['label'].get('kr')), None)
                 g=_gis(T) if T else []
                 return {**l, 'any':g} if g else l
-            _r['fc']={'lines':[_anyline(l) for l in _F['lines']],'tags':_tags,'ds':(_S or {}).get('res',{}).get('desStat')}
+            _r['fc']={'lines':[_anyline(l) for l in _shownlines(_F, _V, _GT, _tags, _r.get('cls'))],'tags':_tags,'ds':(_S or {}).get('res',{}).get('desStat')}
             if _g.get('finalItem'): _r['fc']['fi']={k:v for k,v in _g['finalItem'].items() if k in ('quality','sockets')}   # 완성 카드 퀄리티·소켓(두 완성 카드가 같은 값을 쓰게, 2026-11-12)
             # 레시피 = 그 등급 플로우차트를 순서대로 읽은 것(사용자 확정 2026-11-11, scripts/graph2recipe.py): 단계·확률·사용량·갈래 모두 플로우차트·시뮬 값
             if _S and _r['id'] not in FCREAD_OFF and os.path.exists(f"/home/claude/poe2data/scripts/graphs/{_sid}.json"):
