@@ -525,3 +525,4 @@ RV10 독립 검수(2026-11-13, G10 3개, 7장 기준, 출처가 mobalytics 글�
 - 2026-11-13 E1 MazBro 시전자 목걸이: 7-2 공개 갈래에 소멸 결과가 섞이던 것 — 별도 소멸 상자 a8y(공개 뒤 접미 꽉 참)로 분리, 비용 같음(1,575/553).
 - 11-13 R3-5 재검수: Diztoh 희귀도 반지 95(카드 접두 희귀도 P3 고정 tmin 3)·부재 목걸이 영상 95·MazBro 주문 +5 목걸이 94 완료
 - 11-13 R3-3 재검수: SL 화염파 지팡이 96·SL 방어도 투구 94·미끄러진 타격 조끼 91점 완료(조끼 완성 카드 S4 shown 미적용은 후속)
+- R3-2 독립 재검수(2026-11-13 저녁, 새 정책 뒤): noble-visceral-quiver-v2 97점·breach-ring-video-v2 97점·sl-flamewave-ring-v2 99점 완료. 점검 c1check·fclabel·essence_tier·style_lint·runerules·fc_noinput·_fclines·_foldlines·_fccardsame·fincheck 0, reqOk 1. 고친 것 없음. 남은 것: 노블 밸런스 막기 교체·투사체 공개 생략(C17-2 vs C17-3 사용자 확인), 균열 반지 엔진·시뮬 차이 설명, 갈래 줄 이름(공용). 근거 scratchpad review/R3-2/
