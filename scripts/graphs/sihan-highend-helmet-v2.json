@@ -145,6 +145,7 @@
     "lres",
     "chaos2"
    ],
+   "shown": "lres",
    "label": {
     "kr": "원소·카오스 저항 1~3티어",
     "en": "T1–3 elemental or chaos resistance"
@@ -355,7 +356,44 @@
       "res"
      ]
     }
-   ]
+   ],
+   "itemBy": {
+    "bal": [
+     {
+      "s": "p",
+      "kr": "생명력 최대치 1티어",
+      "en": "T1 maximum life",
+      "m": "f",
+      "tags": [
+       "life"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "치명타 확률 1~2티어",
+      "en": "T1–2 critical hit chance",
+      "m": "n",
+      "tags": [
+       "crit"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "방어도 원소 피해 적용 1티어",
+      "en": "T1 armour also applies to elemental damage",
+      "m": "n",
+      "tags": [
+       "ele"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "랜덤 옵션 1개",
+      "en": "One random line",
+      "m": "j"
+     }
+    ]
+   }
   },
   {
    "id": "L2",
@@ -465,7 +503,62 @@
       "chaos2"
      ]
     }
-   ]
+   ],
+   "itemBy": {
+    "bal": [
+     {
+      "s": "p",
+      "kr": "생명력 최대치 1티어",
+      "en": "T1 maximum life",
+      "m": "f",
+      "tags": [
+       "life"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "방어도 최대치 1티어",
+      "en": "T1 flat armour",
+      "m": "n",
+      "tags": [
+       "flat"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "심연 군주의 징표",
+      "en": "Mark of the Abyssal Lord",
+      "m": "n",
+      "tags": [
+       "mark"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "치명타 확률 1~2티어",
+      "en": "T1–2 critical hit chance",
+      "m": "n",
+      "tags": [
+       "crit"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "방어도 원소 피해 적용 1티어",
+      "en": "T1 armour also applies to elemental damage",
+      "m": "n",
+      "tags": [
+       "ele"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "랜덤 옵션 1개",
+      "en": "One random line",
+      "m": "j"
+     }
+    ]
+   }
   },
   {
    "id": "L3",
@@ -606,7 +699,7 @@
    ],
    "cur": "Perfect_Orb_of_Transmutation",
    "show": [
-    "life"
+    "pre1"
    ]
   },
   {
@@ -889,8 +982,8 @@
    "cur": "Fracturing_Orb",
    "showText": [
     {
-     "kr": "생명력 최대치가 분열되면 성공",
-     "en": "Success when maximum life fractures"
+     "kr": "생명력 최대치 분열 — 방어도 최대치·방어도 % 증가 1티어도 성공",
+     "en": "Maximum life fractures — T1 flat or % armour also counts"
     }
    ]
   },
@@ -909,7 +1002,7 @@
     "en": "Another line fractured — new base"
    },
    "note": {
-    "kr": "생명력·방어도 최대치·방어도 % 증가가 아닌 옵션이 분열되면 이 투구는 다른 용도로 두고 새 베이스로 처음부터(어려움 이상, 정책 10장 ⑧)",
+    "kr": "생명력·방어도 최대치·방어도 % 증가가 아닌 옵션이 분열되면 이 투구는 다른 용도로 두고 새 베이스로 처음부터",
     "en": "Another line fractured: set this one aside and start on a new base"
    }
   },
@@ -1949,6 +2042,65 @@
      "en": "Desecrated (unrevealed, one tier higher)"
     }
    ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "생명력 최대치 1티어",
+        "en": "T1 maximum life",
+        "m": "f",
+        "tags": [
+         "life"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "방어도 최대치 1티어",
+        "en": "T1 flat armour",
+        "m": "n",
+        "tags": [
+         "flat"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "훼손 옵션(미공개)",
+        "en": "Desecrated (unrevealed)",
+        "m": "n"
+       },
+       {
+        "s": "s",
+        "kr": "치명타 확률 1~2티어",
+        "en": "T1–2 critical hit chance",
+        "m": "n",
+        "tags": [
+         "crit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "방어도 원소 피해 적용 1티어",
+        "en": "T1 armour also applies to elemental damage",
+        "m": "n",
+        "tags": [
+         "ele"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션 1개",
+        "en": "One random line",
+        "m": "j"
+       }
+      ]
+     }
+    }
+   ],
    "fromMark": true,
    "skipIf": {
     "not": {
@@ -2050,6 +2202,68 @@
      "tags": [
       "chaos2"
      ]
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "생명력 최대치 1티어",
+        "en": "T1 maximum life",
+        "m": "f",
+        "tags": [
+         "life"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "방어도 최대치 1티어",
+        "en": "T1 flat armour",
+        "m": "n",
+        "tags": [
+         "flat"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "방어도 % 증가 1티어 (훼손)",
+        "en": "T1 % increased armour (desecrated)",
+        "m": "d",
+        "tags": [
+         "pct"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "치명타 확률 1~2티어",
+        "en": "T1–2 critical hit chance",
+        "m": "n",
+        "tags": [
+         "crit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "방어도 원소 피해 적용 1티어",
+        "en": "T1 armour also applies to elemental damage",
+        "m": "n",
+        "tags": [
+         "ele"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션 1개",
+        "en": "One random line",
+        "m": "j"
+       }
+      ]
+     }
     }
    ],
    "want": "pq",
@@ -2180,6 +2394,65 @@
      "s": "p",
      "kr": "훼손 옵션 (미공개)",
      "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "생명력 최대치 1티어",
+        "en": "T1 maximum life",
+        "m": "f",
+        "tags": [
+         "life"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "방어도 최대치 1티어",
+        "en": "T1 flat armour",
+        "m": "n",
+        "tags": [
+         "flat"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "훼손 옵션(미공개)",
+        "en": "Desecrated (unrevealed)",
+        "m": "n"
+       },
+       {
+        "s": "s",
+        "kr": "치명타 확률 1~2티어",
+        "en": "T1–2 critical hit chance",
+        "m": "n",
+        "tags": [
+         "crit"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "방어도 원소 피해 적용 1티어",
+        "en": "T1 armour also applies to elemental damage",
+        "m": "n",
+        "tags": [
+         "ele"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "랜덤 옵션 1개",
+        "en": "One random line",
+        "m": "j"
+       }
+      ]
+     }
     }
    ]
   },

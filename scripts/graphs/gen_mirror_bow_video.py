@@ -224,7 +224,7 @@ g['loops'] = [
             K('고대 턱뼈로 징표 훼손', 'Ancient Jawbone on the Mark') | {'node': 'k3'},
             K('심연의 메아리 공개', 'Reveal with Abyssal Echoes') | {'node': 'k4'},
             K('빗나가면 레벨이 가장 낮은 옵션을 절사 + 상위 카오스 오브로 바꾸고 징표부터', 'On a miss, Whittling + Greater Chaos replaces the lowest option, then the Mark again') | {'node': 'k4w'},
-            K('빗나간 옵션 레벨이 높으면 빛의 징조 + 소멸의 오브 후 징표부터 (영상에 없음)', 'A high-level miss: Omen of Light + Annulment, then the Mark again (not in the video)') | {'node': 'k4x'}],
+            K('빗나간 옵션 레벨이 높으면 빛의 징조 + 소멸의 오브 후 징표부터', 'A high-level miss: Omen of Light + Annulment, then the Mark again') | {'node': 'k4x'}],
   'worst': K('물리 피해 %가 지워지면 카오스 단계부터', '% physical gone: back to the Chaos step') | {'to': 'k1'},
   'item': [PP, BLK, CR]},
  {'id': 'L2', 'nodes': ['z2', 'z3', 'z3x'], 'kr': '훼손 공개', 'en': 'Reveal'},
