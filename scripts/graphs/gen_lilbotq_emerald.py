@@ -3,6 +3,7 @@
 # 실행: cd scripts/graphs && python3 gen_lilbotq_emerald.py  → lilbotq-emerald-v2.json (gen_batch9.py 끝에서 자동 호출, 그 파일의 이 아이템 구간을 대신함)
 # 상자 id는 옛 단계 레시피(recipes_v5_lilbotq-emerald.py: l1~l9·l5b)와 겹치지 않게 j0~j8.
 # 등급: 밸런스만(사용자 확정 2026-11-10 — 영상의 가성비 방법은 비싼 베이스를 사서 하는 도박이라 에센셜 없음).
+# F2b 2026-11-13: 난이도 표 2(보통) → 밸런스·에센셜(C11, 사용자 확정 15:42 ②③ — 한 등급만 남은 까닭이 D·J가 아님). 에센셜 = 같은 길, 훼손 공개는 빛의 징조 없이 결과 그대로(C17-3).
 import json, os, sys
 H = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/lilbotq-emerald-v2.json'
@@ -32,21 +33,26 @@ g = {
           '공격 치명타 피해 보너스 + 이동 속도 접미, 접두 잡옵 2개(전령 스킬 피해·육척봉 피해) 희귀 에메랄드 구입(15:00, 2~3 div) → 위력적인 액체 경멸(15:26, 전령 피해가 지워지고 +1 접미 허용 — 실패면 버림, 영상 4개 중 1개 성공) → '
           '우측 강령술 + 보존된 두개골(15:34) → 심연의 메아리 공개(16:00 빗나감, 빛의 징조 반복 17:20~18:00, 공격 치명타 명중 확률) → 좌측 소멸의 징조 + 소멸의 오브(19:15, 빗나가 육척봉 피해가 지워짐) → '
           '좌측 말소의 징조 + 카오스(19:25, +1 접미 허용이 지워짐) → 엑잘(19:35) → 카오스 반복(접미가 한도를 넘어 접두만 바뀜, 20:40 공격 피해) → 위력적인 액체 흉포함(20:45 50:50 성공). 신성한 오브(21:10 말만)는 뺌. '
-          '11-13 오후 새 정책 A: 공개 목표 = 공격 치명타 명중 확률·공격 속도 중 하나(18:00 자막: 메아리로 공격 속도도 나왔지만 치명타 확률을 고름 — 둘 다 받는 옵션). 화면·카드는 성공 회차의 공격 치명타 명중 확률.'),
- 'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상', 'Video')}}},
- 'strategies': [{'id': 'bal', 'params': {'v': 1}}],
- 'versions': [{'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
+          '11-13 오후 새 정책 A: 공개 목표 = 공격 치명타 명중 확률·공격 속도 중 하나(18:00 자막: 메아리로 공격 속도도 나왔지만 치명타 확률을 고름 — 둘 다 받는 옵션). 화면·카드는 성공 회차의 공격 치명타 명중 확률. '
+          'F2b 11-13: 난이도 표 2(보통) → 밸런스·에센셜(C11, 사용자 확정 15:42). 에센셜은 공개 결과 그대로(빛의 징조 없음, C17-3) — 완성 카드의 훼손 접미는 랜덤 옵션. 나머지(경멸·좌측 소멸·좌측 말소 카오스·카오스·흉포함)는 싸게 돌리는 단계라 밸런스와 같음(C15).'),
+ 'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('영상: 빛의 징조로 다시 공개', 'Video: reveal again with Omen of Light'), '0': K('공개 결과 그대로', 'Keep the reveal as it lands')}}},
+ 'strategies': [{'id': 'bal', 'params': {'v': 1}}, {'id': 'ess', 'params': {'v': 0}}],
+ 'versions': [{'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'v': 0}, 'tier': 'ess',
+               'desc': K('훼손 공개 결과 그대로, 나머지는 영상과 같음', 'Desecration reveal kept as it lands, the rest as the video')},
+              {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
                'desc': K('영상: 빛의 징조로 다시 공개, 좌측 소멸의 징조로 경멸 옵션 제거, 카오스로 공격 피해 → 액체 흉포함', 'Video: Light retries, Sinistral Annulment for the contempt line, Chaos for attack damage, then Ferocity')}],
  'tags': {'critD': {'gi': 5}, 'ms': {'gi': 45}, 'critA': {'gi': 4}, 'as': {'gi': 7},
           'rev': {'anyOf': ['critA', 'as'], 'shown': 'critA', 'label': K('공격 치명타 명중 확률 증가·공격 속도 증가', 'Attack crit chance or attack speed')}, 'atk': {'gi': 6},
           'contS': {'gi': 119, 'slot': {'s': 1}}, 'contP': {'gi': 120, 'slot': {'p': 1}}, 'fer': {'gi': 117}},
- 'require': {'all': [{'has': 'critD'}, {'has': 'ms'}, {'has': 'rev'}, {'has': 'atk'}, {'has': 'fer'}]},
+ 'require': {'all': [{'has': 'critD'}, {'has': 'ms'}, {'any': [{'param': {'v': 0}}, {'has': 'rev'}]}, {'has': 'atk'}, {'has': 'fer'}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'j0',
  'cap': {'p': 2, 's': 2},
  'finals': [{'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-             'lines': [{'tag': 'atk'}, {'tag': 'fer'}, {'tag': 'critD'}, {'tag': 'ms'}, {'tag': 'rev', 'des': True}]}],
+             'lines': [{'tag': 'atk'}, {'tag': 'fer'}, {'tag': 'critD'}, {'tag': 'ms'}, {'tag': 'rev', 'des': True}]},
+            {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
+             'lines': [{'tag': 'atk'}, {'tag': 'fer'}, {'tag': 'critD'}, {'tag': 'ms'}, {'side': 's', 'random': True, 'des': True}]}],
  'finalItem': {'quality': 0, 'sockets': 0},
 }
 
@@ -74,7 +80,8 @@ A(id='j2', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserv
 A(id='j3', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev',
   label=K('공개', 'Reveal'), goal=K('접미 공격 치명타 명중 확률', 'Attack crit chance suffix'), show=['rev'],
   edges=[{'if': {'added': 'rev'}, 'to': 'j4', 'res': 'ok'}, {'to': 'j3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  item=[QST, CONT, CD, MS, CC])
+  item=[QST, CONT, CD, MS, CC],
+  over=[{'param': {'v': 0}, 'set': {'goal': K('접미 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third suffix (desecrated): keep what the reveal gives'), 'show': ['critA'], 'edges': [{'to': 'j4', 'res': 'ok'}]}}])   # 에센셜: 상자는 영상 결과(K), 결과 그대로라 '대신 성공' 꿀팁 줄 없음
 A(id='j3x', kind='act', group='main', pos=[1, 4.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 지우고 다시 훼손', 'Remove the desecrated option, desecrate again'), edges=[{'to': 'j2', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='j4', kind='act', group='main', pos=[0, 5.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Sinistral_Annulment'],

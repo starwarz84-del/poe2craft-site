@@ -62,7 +62,7 @@ BASEPRICE = {
   'lilbotq-budget-boots': None,
   'lilbotq-boots': None,
   'lilbotq-emerald': None,
-  'lilbotq-emerald-v2-bal': 2.5,   # 2026-11-13 G9: 영상 15:00 '하나에 2~3 div' 좋은 접미 2개 에메랄드
+  'lilbotq-emerald-v2-bal': 2.5, 'lilbotq-emerald-v2-ess': 2.5,   # 2026-11-13 G9: 영상 15:00 '하나에 2~3 div' 좋은 접미 2개 에메랄드
   'mastert-timelost-emerald': None,
   'mastert-timelost-emerald-v2': 94, 'mastert-timelost-emerald-v2-bal': 94,   # 영상 매물 93~95 div(공격 치명타 확률 분열 오래된 에메랄드)
   'mazbro-sceptre': None,

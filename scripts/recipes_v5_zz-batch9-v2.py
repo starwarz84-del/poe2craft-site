@@ -22,7 +22,8 @@ def _lbBudget(r, t):
     l1=_node(r,'l1'); l1['note']=K('좋은 접두 2개 + 공격 속도 + 잡옵 접미 희귀 에메랄드 구입(약 1 카오스).','Buy a rare Emerald with two good prefixes, attack speed and a junk suffix (about 1 Chaos).')
     r['nodes']=[l1,{'id':'b1','phase':'con','do':'essence','cur':'Concentrated_Liquid_Fear','target':{'gi':113,'chance':0.5},'fail':{'goto':'restart'},
         'br':K('접미 2개 중 잡옵이 지워지면 성공, 공격 속도가 지워지면 새 주얼','The junk suffix goes → done; attack speed goes → a new jewel')},_node(r,'l9')]
-for _t in ('bal',): _grade8('lilbotq-emerald','lilbotq-emerald-v2',_t,_then(_jewel('l4',('l5','l5b','l6','l7'),'l8'),lambda r,_t=_t: _lbBudget(r,_t)))
+_lbE=_then(_jewel('l4',('l5','l5b','l6','l7'),'l8'),lambda r: _lbBudget(r,'bal'))
+for _t in ('bal','ess'): _grade8('lilbotq-emerald','lilbotq-emerald-v2',_t,lambda r,t: _lbE(r,'bal'))   # F2b 11-13: 난이도 표 2 → 밸런스·에센셜(15:42), 단계는 플로우차트(graph2recipe) — 옛 에센셜 가성비 길(_lbBudget ess)은 쓰지 않음
 def _contFail(nid, back, first, kr, en):
     # 사용자 확정 2026-11-10: a failed contempt took a suffix — the first one → start again, the second → Dextral Annulment on the +1 prefix line, then that suffix step again
     def f(r):
