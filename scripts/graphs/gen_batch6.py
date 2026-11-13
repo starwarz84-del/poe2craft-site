@@ -191,3 +191,6 @@ graph('diztoh-talisman-v2','Talismans','Maji Talisman',81,
   [{'id':v,'kr':kr,'en':en,'lines':[{'tag':'fire','tmax':a},{'side':'p','label':K('물리·원소 피해 접두','Physical or elemental damage')},{'side':'p','label':K('물리·원소 피해 접두','Physical or elemental damage')},{'tag':'melee','tmax':1},{'tag':'crit','tmax':1},{'tag':'as','tmax':1},{'side':'s','random':True}]} for v,kr,en,a in (('bal','밸런스 옵션','Balance',3),('ess','에센셜 옵션','Essential',5))],
   {'quality':20,'sockets':0},{'all':[{'has':'as'},{'full':'p'},{'full':'s'}]})
 print('wrote 5 graphs (batch 6)')
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_belton_plus8_wand.py'): _sp.run([_sy.executable, f'{H}/gen_belton_plus8_wand.py'], check=True)   # 2026-11-13 G7: 새 기준 전용 생성기가 덮어씀
