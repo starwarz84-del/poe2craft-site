@@ -5,19 +5,74 @@
  "base": "Conjurer Mantle",
  "ilvl": 82,
  "note": "MazBro BiS 갑옷(LUB59xlkNtk, 2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 요술사 외투 → 완벽한 진화·확장·소멸로 정신력 1티어 → 제왕 → 보존된 갈비뼈 → 분열(1/3) → 소멸로 분열 + 옵션 1개 → 메드베드의 보살핌 → 카오스 오브(정신력 %) → 좌측 찬미 + 상위 엑잘(마나 %, 빗나가면 소멸의 오브) → 상위 엑잘(접미 잡옵) → 우측 결정화 + 심연의 에센스 → 보존된 갈비뼈 → 공개(자리 막기) → 상위 찬미 + 완벽한 엑잘·절사 + 완벽한 카오스·우측 소멸 반복(화염·카오스 + 냉기·카오스) → 빛의 징조로 막기 제거 → 고대 갈비뼈 → 정신력 점유 효율 공개. 메드베드 옵션 가중치는 추정. 신성한 오브·축복받은 자의 징조·유동체는 뺌.",
- "params": {},
+ "params": {
+  "pT": {
+   "kr": "원소 저항",
+   "en": "Elemental resistance",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "g": {
+   "kr": "복합 저항",
+   "en": "Hybrid resistances",
+   "values": {
+    "1": {
+     "kr": "2개",
+     "en": "Two"
+    },
+    "0": {
+     "kr": "1개 + 원소 저항",
+     "en": "One + elemental"
+    }
+   }
+  }
+ },
  "strategies": [
   {
    "id": "high",
-   "params": {}
+   "params": {
+    "g": 1,
+    "pT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "g": 0,
+    "pT": 2
+   }
   }
  ],
  "versions": [
   {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "g": 0,
+    "pT": 2
+   },
+   "desc": {
+    "kr": "영상 21:00 '여기서 끝내도 됨': 복합 저항 1개 + 원소 저항 1~2티어 + 정신력 점유 효율",
+    "en": "Video 21:00 “you can stop here”: one hybrid + T1–2 elemental resistance + Spirit reservation efficiency"
+   }
+  },
+  {
    "id": "high",
    "kr": "하이엔드",
    "en": "High-end",
-   "params": {},
+   "params": {
+    "g": 1,
+    "pT": 1
+   },
    "desc": {
     "kr": "영상: 복합 저항 2개 + 정신력 점유 효율",
     "en": "Video: two hybrid resistances + Spirit reservation efficiency"
@@ -69,6 +124,9 @@
     "hc",
     "hl"
    ],
+   "shownBy": {
+    "bal": "hf"
+   },
    "label": {
     "kr": "원소 및 카오스 복합 저항",
     "en": "Elemental and chaos hybrid resistances"
@@ -86,15 +144,119 @@
     "kr": "남길 옵션",
     "en": "Lines to keep"
    }
+  },
+  "rf": {
+   "gi": 2,
+   "tmax": "$pT"
+  },
+  "rc": {
+   "gi": 3,
+   "tmax": "$pT"
+  },
+  "rl": {
+   "gi": 4,
+   "tmax": "$pT"
+  },
+  "eres": {
+   "anyOf": [
+    "rf",
+    "rc",
+    "rl"
+   ],
+   "shownBy": {
+    "bal": "rc"
+   },
+   "label": {
+    "kr": "화염·냉기·번개 저항 1~2티어",
+    "en": "T1–2 fire, cold or lightning resistance"
+   }
+  },
+  "keepB": {
+   "anyOf": [
+    "good",
+    "eres"
+   ],
+   "shownBy": {
+    "bal": "rc"
+   },
+   "label": {
+    "kr": "복합 저항·화염·냉기·번개 저항 1~2티어",
+    "en": "Hybrid resistance or T1–2 fire, cold or lightning resistance"
+   }
+  },
+  "keepBW": {
+   "anyOf": [
+    "isp",
+    "ima",
+    "good",
+    "eres"
+   ],
+   "label": {
+    "kr": "남길 옵션",
+    "en": "Lines to keep"
+   }
   }
  },
  "require": {
   "all": [
    {
-    "count": {
-     "tag": "good",
-     "min": 2
-    }
+    "any": [
+     {
+      "all": [
+       {
+        "param": {
+         "g": 1
+        }
+       },
+       {
+        "count": {
+         "tag": "good",
+         "min": 2
+        }
+       }
+      ]
+     },
+     {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "all": [
+         {
+          "has": "good"
+         },
+         {
+          "count": {
+           "tag": "keepB",
+           "min": 2
+          }
+         },
+         {
+          "not": {
+           "junk": {
+            "side": "s",
+            "tag": "keepB"
+           }
+          }
+         },
+         {
+          "any": [
+           {
+            "full": "s"
+           },
+           {
+            "des": false
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
    },
    {
     "has": "isp"
@@ -142,6 +304,73 @@
    "goal": {
     "kr": "접미 화염·카오스 저항 + 냉기·카오스 저항",
     "en": "Fire and chaos + cold and chaos resistance suffixes"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접미 화염·카오스 저항 + 냉기 저항 1~2티어 — 복합 저항 하나와 원소 저항",
+     "en": "Fire and chaos resistance + T1–2 cold resistance: one hybrid and an elemental resistance"
+    }
+   },
+   "itemBy": {
+    "bal": [
+     {
+      "s": "p",
+      "kr": "정신력 +(57—61) (분열)",
+      "en": "+(57—61) to Spirit (fractured)",
+      "m": "f",
+      "tags": [
+       "spirit"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "정신력 (1—20)% 증가",
+      "en": "(1—20)% increased Spirit",
+      "m": "n",
+      "tags": [
+       "isp"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "마나 최대치 (1—20)% 증가",
+      "en": "(1—20)% increased maximum Mana",
+      "m": "n",
+      "tags": [
+       "ima"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "화염 및 카오스 저항 +(3—31)%",
+      "en": "+(3—31)% to Fire and Chaos Resistances",
+      "m": "n",
+      "tags": [
+       "hf"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "냉기 저항 +(36—45)%",
+      "en": "+(36—45)% to Cold Resistance",
+      "m": "n",
+      "tags": [
+       "rc"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "화염 저항 (훼손, 자리 막기)",
+      "en": "Fire Resistance (desecrated, blocker)",
+      "m": "d"
+     },
+     {
+      "s": "r",
+      "kr": "메드베드의 보살핌",
+      "en": "Medved’s Tending",
+      "m": "r"
+     }
+    ]
    },
    "steps": [
     {
@@ -257,6 +486,33 @@
     },
     {
      "tag": "hc"
+    },
+    {
+     "tag": "sre",
+     "des": true
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "spirit",
+     "fr": true
+    },
+    {
+     "tag": "isp"
+    },
+    {
+     "tag": "ima"
+    },
+    {
+     "tag": "good"
+    },
+    {
+     "tag": "keepB"
     },
     {
      "tag": "sre",
@@ -1284,10 +1540,63 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "good",
-         "min": 2
-        }
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "g": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "good",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "all": [
+             {
+              "has": "good"
+             },
+             {
+              "count": {
+               "tag": "keepB",
+               "min": 2
+              }
+             },
+             {
+              "not": {
+               "junk": {
+                "side": "s",
+                "tag": "keepB"
+               }
+              }
+             },
+             {
+              "any": [
+               {
+                "full": "s"
+               },
+               {
+                "des": false
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
        },
        {
         "des": true
@@ -1301,10 +1610,63 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "good",
-         "min": 2
-        }
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "g": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "good",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "all": [
+             {
+              "has": "good"
+             },
+             {
+              "count": {
+               "tag": "keepB",
+               "min": 2
+              }
+             },
+             {
+              "not": {
+               "junk": {
+                "side": "s",
+                "tag": "keepB"
+               }
+              }
+             },
+             {
+              "any": [
+               {
+                "full": "s"
+               },
+               {
+                "des": false
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
        },
        {
         "sideLt": {
@@ -1319,10 +1681,63 @@
     },
     {
      "if": {
-      "count": {
-       "tag": "good",
-       "min": 2
-      }
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "g": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "good",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "g": 0
+          }
+         },
+         {
+          "all": [
+           {
+            "has": "good"
+           },
+           {
+            "count": {
+             "tag": "keepB",
+             "min": 2
+            }
+           },
+           {
+            "not": {
+             "junk": {
+              "side": "s",
+              "tag": "keepB"
+             }
+            }
+           },
+           {
+            "any": [
+             {
+              "full": "s"
+             },
+             {
+              "des": false
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
      },
      "to": "da",
      "hide": true
@@ -1358,11 +1773,38 @@
      "if": {
       "all": [
        {
+        "param": {
+         "g": 1
+        }
+       },
+       {
         "has": "good"
        },
        {
         "whittleSafe": {
          "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "keepB"
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepBW",
          "keepDes": true
         }
        }
@@ -1452,10 +1894,63 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "good",
-         "min": 2
-        }
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "g": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "good",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "all": [
+             {
+              "has": "good"
+             },
+             {
+              "count": {
+               "tag": "keepB",
+               "min": 2
+              }
+             },
+             {
+              "not": {
+               "junk": {
+                "side": "s",
+                "tag": "keepB"
+               }
+              }
+             },
+             {
+              "any": [
+               {
+                "full": "s"
+               },
+               {
+                "des": false
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
        },
        {
         "des": true
@@ -1469,10 +1964,63 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "good",
-         "min": 2
-        }
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "g": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "good",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "all": [
+             {
+              "has": "good"
+             },
+             {
+              "count": {
+               "tag": "keepB",
+               "min": 2
+              }
+             },
+             {
+              "not": {
+               "junk": {
+                "side": "s",
+                "tag": "keepB"
+               }
+              }
+             },
+             {
+              "any": [
+               {
+                "full": "s"
+               },
+               {
+                "des": false
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
        },
        {
         "sideLt": {
@@ -1487,10 +2035,63 @@
     },
     {
      "if": {
-      "count": {
-       "tag": "good",
-       "min": 2
-      }
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "g": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "good",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "g": 0
+          }
+         },
+         {
+          "all": [
+           {
+            "has": "good"
+           },
+           {
+            "count": {
+             "tag": "keepB",
+             "min": 2
+            }
+           },
+           {
+            "not": {
+             "junk": {
+              "side": "s",
+              "tag": "keepB"
+             }
+            }
+           },
+           {
+            "any": [
+             {
+              "full": "s"
+             },
+             {
+              "des": false
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
      },
      "to": "da",
      "res": "fail"
@@ -1527,6 +2128,11 @@
      "if": {
       "all": [
        {
+        "param": {
+         "g": 1
+        }
+       },
+       {
         "has": "good"
        },
        {
@@ -1539,6 +2145,28 @@
      },
      "to": "w1",
      "res": "fail"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "keepB"
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepBW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
     },
     {
      "to": "da",
@@ -1611,7 +2239,13 @@
    ],
    "omens": [
     "Omen_of_Greater_Exaltation"
-   ]
+   ],
+   "goalBy": {
+    "bal": {
+     "kr": "접미 화염·카오스 저항 + 냉기 저항 1~2티어 — 복합 저항 하나와 원소 저항",
+     "en": "Suffix fire and chaos resistance + T1–2 cold resistance: one hybrid and an elemental resistance"
+    }
+   }
   },
   {
    "id": "w1",
@@ -1635,10 +2269,63 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "good",
-         "min": 2
-        }
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "g": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "good",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "all": [
+             {
+              "has": "good"
+             },
+             {
+              "count": {
+               "tag": "keepB",
+               "min": 2
+              }
+             },
+             {
+              "not": {
+               "junk": {
+                "side": "s",
+                "tag": "keepB"
+               }
+              }
+             },
+             {
+              "any": [
+               {
+                "full": "s"
+               },
+               {
+                "des": false
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
        },
        {
         "des": true
@@ -1652,10 +2339,63 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "good",
-         "min": 2
-        }
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "g": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "good",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "all": [
+             {
+              "has": "good"
+             },
+             {
+              "count": {
+               "tag": "keepB",
+               "min": 2
+              }
+             },
+             {
+              "not": {
+               "junk": {
+                "side": "s",
+                "tag": "keepB"
+               }
+              }
+             },
+             {
+              "any": [
+               {
+                "full": "s"
+               },
+               {
+                "des": false
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
        },
        {
         "sideLt": {
@@ -1670,10 +2410,63 @@
     },
     {
      "if": {
-      "count": {
-       "tag": "good",
-       "min": 2
-      }
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "g": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "good",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "g": 0
+          }
+         },
+         {
+          "all": [
+           {
+            "has": "good"
+           },
+           {
+            "count": {
+             "tag": "keepB",
+             "min": 2
+            }
+           },
+           {
+            "not": {
+             "junk": {
+              "side": "s",
+              "tag": "keepB"
+             }
+            }
+           },
+           {
+            "any": [
+             {
+              "full": "s"
+             },
+             {
+              "des": false
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
      },
      "to": "da",
      "hide": true
@@ -1710,11 +2503,38 @@
      "if": {
       "all": [
        {
+        "param": {
+         "g": 1
+        }
+       },
+       {
         "has": "good"
        },
        {
         "whittleSafe": {
          "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "keepB"
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepBW",
          "keepDes": true
         }
        }
@@ -1826,10 +2646,63 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "good",
-         "min": 2
-        }
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "g": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "good",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "all": [
+             {
+              "has": "good"
+             },
+             {
+              "count": {
+               "tag": "keepB",
+               "min": 2
+              }
+             },
+             {
+              "not": {
+               "junk": {
+                "side": "s",
+                "tag": "keepB"
+               }
+              }
+             },
+             {
+              "any": [
+               {
+                "full": "s"
+               },
+               {
+                "des": false
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
        },
        {
         "des": true
@@ -1843,10 +2716,63 @@
      "if": {
       "all": [
        {
-        "count": {
-         "tag": "good",
-         "min": 2
-        }
+        "any": [
+         {
+          "all": [
+           {
+            "param": {
+             "g": 1
+            }
+           },
+           {
+            "count": {
+             "tag": "good",
+             "min": 2
+            }
+           }
+          ]
+         },
+         {
+          "all": [
+           {
+            "param": {
+             "g": 0
+            }
+           },
+           {
+            "all": [
+             {
+              "has": "good"
+             },
+             {
+              "count": {
+               "tag": "keepB",
+               "min": 2
+              }
+             },
+             {
+              "not": {
+               "junk": {
+                "side": "s",
+                "tag": "keepB"
+               }
+              }
+             },
+             {
+              "any": [
+               {
+                "full": "s"
+               },
+               {
+                "des": false
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
        },
        {
         "sideLt": {
@@ -1861,10 +2787,63 @@
     },
     {
      "if": {
-      "count": {
-       "tag": "good",
-       "min": 2
-      }
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "g": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "good",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "g": 0
+          }
+         },
+         {
+          "all": [
+           {
+            "has": "good"
+           },
+           {
+            "count": {
+             "tag": "keepB",
+             "min": 2
+            }
+           },
+           {
+            "not": {
+             "junk": {
+              "side": "s",
+              "tag": "keepB"
+             }
+            }
+           },
+           {
+            "any": [
+             {
+              "full": "s"
+             },
+             {
+              "des": false
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
      },
      "to": "da",
      "hide": true
@@ -1901,11 +2880,38 @@
      "if": {
       "all": [
        {
+        "param": {
+         "g": 1
+        }
+       },
+       {
         "has": "good"
        },
        {
         "whittleSafe": {
          "tag": "keepW",
+         "keepDes": true
+        }
+       }
+      ]
+     },
+     "to": "w1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "param": {
+         "g": 0
+        }
+       },
+       {
+        "has": "keepB"
+       },
+       {
+        "whittleSafe": {
+         "tag": "keepBW",
          "keepDes": true
         }
        }
@@ -1948,10 +2954,63 @@
    "edges": [
     {
      "if": {
-      "count": {
-       "tag": "good",
-       "min": 2
-      }
+      "any": [
+       {
+        "all": [
+         {
+          "param": {
+           "g": 1
+          }
+         },
+         {
+          "count": {
+           "tag": "good",
+           "min": 2
+          }
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "param": {
+           "g": 0
+          }
+         },
+         {
+          "all": [
+           {
+            "has": "good"
+           },
+           {
+            "count": {
+             "tag": "keepB",
+             "min": 2
+            }
+           },
+           {
+            "not": {
+             "junk": {
+              "side": "s",
+              "tag": "keepB"
+             }
+            }
+           },
+           {
+            "any": [
+             {
+              "full": "s"
+             },
+             {
+              "des": false
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
      },
      "to": "f2"
     },

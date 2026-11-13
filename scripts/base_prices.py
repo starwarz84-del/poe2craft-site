@@ -17,7 +17,7 @@ BASEPRICE = {
   'mazbro-caster-ring-v2-bal': 2, 'mazbro-caster-ring-v2-ess': 2,   # 2026-11-13 G2: 영상 4:00 '보통 2 div 이하' 시전 속도 기억 반지(분열 전 베이스, 분열 실패로 평균 3개)
   'mazbro-caster-amulet': None,
   'mazbro-bis-chest': None,
-  'mazbro-bis-chest-v2': 0.11,   # 영상 2:30·2:50: 노멀 요술사 외투 약 카오스 오브 1개(40.4 ex ÷ 363 ≈ 0.11 div)
+  'mazbro-bis-chest-v2': 0.11, 'mazbro-bis-chest-v2-bal': 0.11,   # 영상 2:30·2:50: 노멀 요술사 외투 약 카오스 오브 1개(40.4 ex ÷ 363 ≈ 0.11 div)
   'mazbro-proj-gloves': None,
   'mazbro-proj-gloves-v2': 12, 'mazbro-proj-gloves-v2-bal': 12,   # 영상 2:50 화면 노트 '24 Gloves x 12 Divs' — 특출난 검은강철 건틀릿 장당 12디바인(플로우차트는 노멀 베이스부터 준비)
   'diztoh-twister-spear': None,

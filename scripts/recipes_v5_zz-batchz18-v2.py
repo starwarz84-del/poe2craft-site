@@ -11,4 +11,4 @@ def _iceshot(r, t):
                     ('l1','desecrate-reroll-no-light'),('l2','desecrate-reroll-no-light'),('l3','desecrate-reroll-no-light'),('x2','whittle-safe-top-level')):
         r['nodes'].append({'id':_id,'do':'note','tips':[_tp]})
 # 2026-11-12 W3 영상 전체 재대조: 극한(난이도 5) → 하이엔드만(정책 10장). 단계는 플로우차트(gen_batch18.py)에서 읽음(fcRead), 영상 시각은 build_recipes.py FC_TS.
-for _t in ('high',): _grade8('diztoh-iceshot-bow','diztoh-iceshot-bow-v2',_t,_iceshot)
+for _t in ('high','bal'): _grade8('diztoh-iceshot-bow','diztoh-iceshot-bow-v2',_t,_iceshot)   # 2026-11-13 D1: 난이도 표 4(전문가) → 하이엔드·밸런스(사용자 확정 15:42)

@@ -13,6 +13,10 @@
     "1": {
      "kr": "1티어",
      "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
     }
    }
   }
@@ -23,9 +27,28 @@
    "params": {
     "pT": 1
    }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "pT": 2
+   }
   }
  ],
  "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "pT": 2
+   },
+   "tier": "bal",
+   "desc": {
+    "kr": "정신력·접미 좋은 옵션 1~2티어, 훼손 공개가 빗나가면 자리 막기로 둠",
+    "en": "T1–2 Spirit and good suffixes, a missed reveal stays as the blocker"
+   }
+  },
   {
    "id": "high",
    "kr": "하이엔드",
@@ -51,31 +74,31 @@
   },
   "sp": {
    "gi": 19,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "hyb": {
    "gi": 20,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "regen": {
    "gi": 13,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "cs": {
    "gi": 15,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "aoe": {
    "gi": 21,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "cr": {
    "gi": 16,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "cd": {
    "gi": 17,
-   "tmax": 1
+   "tmax": "$pT"
   },
   "aug": {
    "gi": 34
@@ -170,6 +193,33 @@
    "id": "high",
    "kr": "하이엔드 옵션",
    "en": "High-end",
+   "lines": [
+    {
+     "tag": "dmg",
+     "fr": true
+    },
+    {
+     "tag": "mana"
+    },
+    {
+     "tag": "spi"
+    },
+    {
+     "tag": "aug",
+     "ess": true
+    },
+    {
+     "tag": "sg"
+    },
+    {
+     "tag": "sg"
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
    "lines": [
     {
      "tag": "dmg",
@@ -860,6 +910,12 @@
     "sp",
     "hyb"
    ],
+   "goalBy": {
+    "bal": {
+     "kr": "접두 정신력 증가 1~2티어 — 정신력과 마나 최대치 1~2티어와 함께 먼저 뜬 것",
+     "en": "T1–2 increased Spirit prefix: or T1–2 Spirit and Mana, whichever lands first"
+    }
+   },
    "edges": [
     {
      "if": {
@@ -1676,6 +1732,117 @@
     "cs",
     "aoe"
    ],
+   "goalBy": {
+    "bal": {
+     "kr": "접미 좋은 옵션 1~2티어 — 빗나가면 자리 막기로 둠",
+     "en": "A good T1–2 suffix: a miss stays as the blocker"
+    }
+   },
+   "over": [
+    {
+     "param": {
+      "pT": 2
+     },
+     "set": {
+      "edges": [
+       {
+        "if": {
+         "unrevSide": "s"
+        },
+        "to": "b3",
+        "hide": true
+       },
+       {
+        "if": {
+         "has": "mkS"
+        },
+        "to": "b2",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "has": "aug"
+          },
+          {
+           "count": {
+            "tag": "sg",
+            "min": 2
+           }
+          }
+         ]
+        },
+        "to": "ok",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "any": [
+            {
+             "junk": {
+              "side": "s",
+              "tag": "keepS"
+             }
+            },
+            {
+             "full": "s"
+            }
+           ]
+          },
+          {
+           "not": {
+            "has": "aug"
+           }
+          }
+         ]
+        },
+        "to": "aL",
+        "hide": true
+       },
+       {
+        "if": {
+         "all": [
+          {
+           "junk": {
+            "side": "s",
+            "tag": "keepS"
+           }
+          },
+          {
+           "des": false
+          }
+         ]
+        },
+        "to": "mA",
+        "hide": true
+       },
+       {
+        "if": {
+         "any": [
+          {
+           "junk": {
+            "side": "s",
+            "tag": "keepS"
+           }
+          },
+          {
+           "full": "s"
+          }
+         ]
+        },
+        "to": "da",
+        "hide": true
+       },
+       {
+        "to": "s1"
+       }
+      ]
+     }
+    }
+   ],
    "edges": [
     {
      "if": {
@@ -2113,6 +2280,12 @@
     "kr": "접미 좋은 옵션 1티어 2개 + 장착 증강 아이템 효과 — 마나 재생 속도·시전 속도·존재 범위·치명타 중 먼저 뜬 것",
     "en": "Two good T1 suffixes + socketed augment effect: whichever of mana regeneration, cast speed, presence area or critical lands first"
    },
+   "goalBy": {
+    "bal": {
+     "kr": "접미 좋은 옵션 1~2티어 2개 + 장착 증강 아이템 효과 — 마나 재생 속도·시전 속도·존재 범위·치명타 중 먼저 뜬 것",
+     "en": "Two good T1–2 suffixes + socketed augment effect: whichever of mana regeneration, cast speed, presence area or critical lands first"
+    }
+   },
    "steps": [
     {
      "kr": "완벽한 엑잘로 접미 하나 — 남은 옵션 중 먼저 뜬 것",
@@ -2135,8 +2308,8 @@
      "node": "b2"
     },
     {
-     "kr": "심연의 메아리 공개 — 좋은 접미 1티어 중 먼저 뜬 것",
-     "en": "Reveal with Abyssal Echoes: whichever good T1 suffix lands first",
+     "kr": "심연의 메아리 공개 — 좋은 접미 중 먼저 뜬 것",
+     "en": "Reveal with Abyssal Echoes: whichever good suffix lands first",
      "node": "b3"
     },
     {

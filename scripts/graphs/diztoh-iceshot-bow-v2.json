@@ -13,6 +13,10 @@
     "1": {
      "kr": "1티어",
      "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
     }
    }
   }
@@ -23,9 +27,27 @@
    "params": {
     "t": 1
    }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "t": 2
+   }
   }
  ],
  "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "t": 2
+   },
+   "desc": {
+    "kr": "원소·치명타 확률 1~2티어, 투사체 +3 이상, 마지막 접미 랜덤",
+    "en": "T1–2 elemental and crit chance, +3 or better projectiles, random last suffix"
+   }
+  },
   {
    "id": "high",
    "kr": "하이엔드",
@@ -53,15 +75,15 @@
   },
   "co": {
    "gi": 4,
-   "tmax": 1
+   "tmax": "$t"
   },
   "li": {
    "gi": 6,
-   "tmax": 1
+   "tmax": "$t"
   },
   "fi": {
    "gi": 3,
-   "tmax": 1
+   "tmax": "$t"
   },
   "ele": {
    "anyOf": [
@@ -76,11 +98,11 @@
   },
   "proj": {
    "gi": 9,
-   "tmax": 1
+   "tmax": "$t"
   },
   "cc": {
    "gi": 17,
-   "tmax": 1
+   "tmax": "$t"
   },
   "ons": {
    "gi": 55
@@ -219,6 +241,12 @@
     "kr": "접두 원소 피해 추가 1티어 (냉기·번개·화염)",
     "en": "T1 added elemental damage prefix (cold, lightning or fire)"
    },
+   "goalBy": {
+    "bal": {
+     "kr": "접두 원소 피해 추가 1~2티어 (냉기·번개·화염)",
+     "en": "T1–2 added elemental damage prefix (cold, lightning or fire)"
+    }
+   },
    "steps": [
     {
      "kr": "좌측 찬미의 징조 + 완벽한 엑잘티드 오브",
@@ -288,6 +316,34 @@
    "id": "high",
    "kr": "하이엔드 옵션",
    "en": "High-end",
+   "lines": [
+    {
+     "tag": "pp",
+     "fr": true
+    },
+    {
+     "tag": "fl"
+    },
+    {
+     "tag": "co"
+    },
+    {
+     "tag": "proj",
+     "des": true
+    },
+    {
+     "tag": "cc"
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
    "lines": [
     {
      "tag": "pp",
@@ -1056,7 +1112,13 @@
    ],
    "omens": [
     "Omen_of_Sinistral_Exaltation"
-   ]
+   ],
+   "goalBy": {
+    "bal": {
+     "kr": "접두 원소 피해 추가 1~2티어",
+     "en": "T1–2 added elemental damage prefix"
+    }
+   }
   },
   {
    "id": "e1w",
@@ -1090,8 +1152,8 @@
      "to": "al",
      "res": "ok",
      "label": {
-      "kr": "원소 피해 추가 1티어",
-      "en": "T1 added elemental"
+      "kr": "원소 피해 추가",
+      "en": "Added elemental"
      }
     },
     {
@@ -1522,7 +1584,13 @@
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
-   ]
+   ],
+   "goalBy": {
+    "bal": {
+     "kr": "접미 모든 투사체 스킬 레벨 +3 이상",
+     "en": "+3 or +4 projectile skills suffix"
+    }
+   }
   },
   {
    "id": "l1",
@@ -2003,7 +2071,13 @@
     ]
    },
    "skipTo": "x3",
-   "skipHide": true
+   "skipHide": true,
+   "goalBy": {
+    "bal": {
+     "kr": "접미 치명타 확률 1~2티어",
+     "en": "T1–2 critical hit chance suffix"
+    }
+   }
   },
   {
    "id": "xz",

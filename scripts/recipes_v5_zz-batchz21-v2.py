@@ -1,7 +1,7 @@
 # ---- 2026-11-10 batch 21 (사용자: 나머지 2개): MazBro BiS 셉터 · XenoARPG 물리 석궁 → 둘 다 극한 = High-end only. Matches scripts/graphs/gen_batch21.py. ----
 def _sceptre(r, t):
     _drop(r,'z15')   # 신성한 오브·룬 교체는 취향(정책 23)
-for _t in ('high',): _grade8('mazbro-sceptre','mazbro-sceptre-v2',_t,_sceptre)
+for _t in ('high','bal'): _grade8('mazbro-sceptre','mazbro-sceptre-v2',_t,_sceptre)
 
 def _xeno(r, t):
     # 상위 철 룬·숫돌·신성한 오브는 취향(정책 23)

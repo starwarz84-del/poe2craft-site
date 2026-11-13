@@ -3,7 +3,8 @@
 # 실행: cd scripts/graphs && python3 gen_mazbro_sceptre.py  → mazbro-sceptre-v2.json (gen_batch21.py의 이 아이템 구간을 대신함)
 # C4 2026-11-13(사용자 확정 15:21 ①): 하이엔드는 영상에 없어도 훼손 공개 빛의 징조 반복 유지 → 공개(b3)가 좋은 접미 1티어가 아니면
 #   빛의 징조 + 소멸의 오브(bx)로 훼손 옵션만 지우고 보존된 턱뼈로 다시 훼손(bd) → 공개. 영상의 '빗나가면 자리 막기'(50:56·56:35)는 꿀팁 후보로 보고.
-#   이 레시피는 하이엔드 하나뿐이라 등급별 처리(over)는 필요 없음.
+# D1 2026-11-13(사용자 확정 15:42 ①): 난이도 표 4(전문가) → 하이엔드·밸런스. 밸런스(C17): 비싼 반복 자리(정신력 상위 엑잘 + 소멸, 접미 완벽한 엑잘·에센스·합금·훼손 공개)는 1~2티어,
+#   싸게 돌리는 자리(아군 피해 매직 단계, 마나 최대치 카오스)는 1티어 그대로. 훼손 공개 빗나감은 영상대로 자리 막기로 둠(빛의 징조는 영상에 없어 하이엔드만, 15:21 ①).
 import json, os, sys
 H = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/mazbro-sceptre-v2.json'
@@ -36,13 +37,15 @@ g = {
           '신성한 오브(8:40·9:30 분열 전 아군 피해 119%, 58:50 마무리)·바알 신비학자의 식각기·완벽한 유동체·완벽한 쥬얼러 오브(59:20~59:40)는 정책 14장대로 뺌. '
           '사용자 결정 11-13: 영상 계획대로 정신력은 정신력 증가·정신력과 마나 최대치 1티어 중 먼저 뜬 것, 접미는 마나 재생 속도·시전 속도·존재 범위·치명타 확률·치명타 피해 1티어 중 둘(3:00·16:00 계획). 상자·왼쪽 칸은 성공 회차 옵션. '
           '훼손 공개가 좋은 접미 1티어가 아니면 하이엔드라 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 다시 훼손(사용자 확정 11-13 15:21, 영상은 빗나간 공개를 자리 막기로 둠).'),
- 'params': {'pT': {'kr': '목표 티어', 'en': 'Target tier', 'values': {'1': K('1티어', 'T1')}}},
- 'strategies': [{'id': 'high', 'params': {'pT': 1}}],
- 'versions': [{'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'pT': 1}, 'tier': 'high',
+ 'params': {'pT': {'kr': '목표 티어', 'en': 'Target tier', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
+ 'strategies': [{'id': 'high', 'params': {'pT': 1}}, {'id': 'bal', 'params': {'pT': 2}}],
+ 'versions': [{'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'pT': 2}, 'tier': 'bal',
+               'desc': K('정신력·접미 좋은 옵션 1~2티어, 훼손 공개가 빗나가면 자리 막기로 둠', 'T1–2 Spirit and good suffixes, a missed reveal stays as the blocker')},
+              {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'pT': 1}, 'tier': 'high',
                'desc': K('영상: 접두 1티어 2개 + 접미 1티어 2개 + 장착 증강 효과', 'Video: two T1 prefixes, two T1 suffixes + socketed augment effect')}],
- 'tags': {'dmg': {'gi': 10, 'tmax': 1}, 'mana': {'gi': 3, 'tmax': 1}, 'sp': {'gi': 19, 'tmax': 1},
-          'hyb': {'gi': 20, 'tmax': 1}, 'regen': {'gi': 13, 'tmax': 1}, 'cs': {'gi': 15, 'tmax': 1}, 'aoe': {'gi': 21, 'tmax': 1},
-          'cr': {'gi': 16, 'tmax': 1}, 'cd': {'gi': 17, 'tmax': 1}, 'aug': {'gi': 34}, 'mkS': {'gi': 28},
+ 'tags': {'dmg': {'gi': 10, 'tmax': 1}, 'mana': {'gi': 3, 'tmax': 1}, 'sp': {'gi': 19, 'tmax': '$pT'},
+          'hyb': {'gi': 20, 'tmax': '$pT'}, 'regen': {'gi': 13, 'tmax': '$pT'}, 'cs': {'gi': 15, 'tmax': '$pT'}, 'aoe': {'gi': 21, 'tmax': '$pT'},
+          'cr': {'gi': 16, 'tmax': '$pT'}, 'cd': {'gi': 17, 'tmax': '$pT'}, 'aug': {'gi': 34}, 'mkS': {'gi': 28},
           'spi': {'anyOf': ['sp', 'hyb'], 'shown': 'sp', 'label': K('정신력 증가·정신력과 마나 최대치 1티어', 'T1 increased Spirit or Spirit and Mana')},
           'sg': {'anyOf': ['regen', 'cs', 'aoe', 'cr', 'cd'], 'shown': ['regen', 'cs'], 'label': K('마나 재생 속도·시전 속도·존재 범위·치명타 확률·치명타 피해 1티어', 'T1 mana regeneration, cast speed, presence area, critical chance or critical damage')},
           'keepS': {'anyOf': ['regen', 'cs', 'aoe', 'cr', 'cd', 'aug']}},   # 사용자 결정 11-13: 영상 계획대로 넓게, 먼저 뜬 것
@@ -51,6 +54,8 @@ g = {
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'h0',
  'finals': [{'id': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
+             'lines': [{'tag': 'dmg', 'fr': True}, {'tag': 'mana'}, {'tag': 'spi'}, {'tag': 'aug', 'ess': True}, {'tag': 'sg'}, {'tag': 'sg'}]},
+            {'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
              'lines': [{'tag': 'dmg', 'fr': True}, {'tag': 'mana'}, {'tag': 'spi'}, {'tag': 'aug', 'ess': True}, {'tag': 'sg'}, {'tag': 'sg'}]}],   # 사용자 결정 11-13: fincheck가 걸리는 줄은 anyOf label로(성공 회차는 정신력 증가·마나 재생 속도(훼손)·시전 속도)
  'finalItem': {'quality': 20, 'sockets': 2},
 }
@@ -117,6 +122,7 @@ A(id='c1', kind='act', group='main', pos=[0, 9.4], act='chaos', cur='Chaos_Orb',
   edges=[{'if': {'has': 'mana'}, 'to': 'e1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}], item=[DM, MA, AS])
 A(id='e1', kind='act', group='main', pos=[0, 10.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'],
   label=K('엑잘', 'Exalt'), goal=K('접두 정신력 증가 1티어 — 정신력과 마나 최대치 1티어와 함께 먼저 뜬 것', 'T1 increased Spirit prefix: or T1 Spirit and Mana, whichever lands first'), show=['sp', 'hyb'],
+  goalBy={'bal': K('접두 정신력 증가 1~2티어 — 정신력과 마나 최대치 1~2티어와 함께 먼저 뜬 것', 'T1–2 increased Spirit prefix: or T1–2 Spirit and Mana, whichever lands first')},
   edges=[{'if': {'has': 'spi'}, 'to': 's1', 'res': 'ok'}, {'to': 'e1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[DM, MA, SP, AS])
 A(id='e1x', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
   target=K('빗나간 접두 지우기 — 마나 최대치가 지워지면 카오스부터', 'Remove the missed prefix: back to Chaos if maximum Mana goes'),
@@ -138,6 +144,8 @@ A(id='b2', kind='act', group='main', pos=[1, 13.4], act='desecrate', cur='Preser
   edges=RS({'b3': {}}), item=[DM, MA, SP, AUG, UN('s'), AS])
 A(id='b3', kind='act', group='main', pos=[1, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='sg', label=K('공개', 'Reveal'),
   goal=K('접미 좋은 옵션 1티어 — 마나 재생 속도·시전 속도·존재 범위·치명타 중 먼저 뜬 것', 'A good T1 suffix: whichever of mana regeneration, cast speed, presence area or critical lands first'), show=['regen', 'cs', 'aoe'],
+  goalBy={'bal': K('접미 좋은 옵션 1~2티어 — 빗나가면 자리 막기로 둠', 'A good T1–2 suffix: a miss stays as the blocker')},
+  over=[{'param': {'pT': 2}, 'set': {'edges': RS({'s1': {}})}}],   # 밸런스: 영상(50:56·56:35)처럼 빗나간 공개는 자리 막기 — 빛의 징조 반복 없음
   edges=[{'if': {'not': {'added': 'sg'}}, 'to': 'bx', 'res': 'fail', 'label': K('빗나감', 'Miss')}] + RS({'s1': {'res': 'ok'}}), item=[DM, MA, SP, AUG, RG, AS])
 A(id='bx', kind='act', group='main', pos=[2, 14.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'bd', 'label': K('다시 훼손', 'Desecrate again')}])
@@ -152,11 +160,12 @@ g['nodes'] = N
 g['loops'] = [
  {'id': 'L1', 'nodes': ['s1', 'aL', 'mA', 'b2', 'b3', 'bx', 'bd', 'da'], 'kr': '접미 세 자리', 'en': 'Three suffixes', 'fold': True,
   'goal': K('접미 좋은 옵션 1티어 2개 + 장착 증강 아이템 효과 — 마나 재생 속도·시전 속도·존재 범위·치명타 중 먼저 뜬 것', 'Two good T1 suffixes + socketed augment effect: whichever of mana regeneration, cast speed, presence area or critical lands first'),
+  'goalBy': {'bal': K('접미 좋은 옵션 1~2티어 2개 + 장착 증강 아이템 효과 — 마나 재생 속도·시전 속도·존재 범위·치명타 중 먼저 뜬 것', 'Two good T1–2 suffixes + socketed augment effect: whichever of mana regeneration, cast speed, presence area or critical lands first')},
   'steps': [K('완벽한 엑잘로 접미 하나 — 남은 옵션 중 먼저 뜬 것', 'Perfect Exalt one suffix: whichever wanted option lands first') | {'node': 's1'},
             K('빗나감에 장착 증강 효과가 없으면 우측 결정화 + 군왕의 합금', 'On a miss without the augment effect: Dextral Crystallisation + Sovereign Alloy') | {'node': 'aL'},
             K('훼손 옵션이 없으면 우측 결정화 + 심연의 에센스로 징표', 'No desecration yet: Dextral Crystallisation + Essence of the Abyss for the Mark') | {'node': 'mA'},
             K('보존된 턱뼈로 징표 훼손', 'Preserved Jawbone on the Mark') | {'node': 'b2'},
-            K('심연의 메아리 공개 — 좋은 접미 1티어 중 먼저 뜬 것', 'Reveal with Abyssal Echoes: whichever good T1 suffix lands first') | {'node': 'b3'},
+            K('심연의 메아리 공개 — 좋은 접미 중 먼저 뜬 것', 'Reveal with Abyssal Echoes: whichever good suffix lands first') | {'node': 'b3'},
             K('빗나가면 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 보존된 턱뼈로 다시 훼손', 'A miss: Omen of Light + Orb of Annulment removes only the desecration, then Preserved Jawbone again') | {'node': 'bx'},
             K('그 밖의 빗나감은 우측 소멸의 징조 + 소멸의 오브', 'Any other miss: Omen of Dextral Annulment + Orb of Annulment') | {'node': 'da'}],
   'item': [DM, MA, SP, AUG, RG, CS, AS]},
