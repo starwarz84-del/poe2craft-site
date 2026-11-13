@@ -43,7 +43,7 @@ BASEPRICE = {
   'diztoh-es-helmet': None,
   'diztoh-onehand-mace': 3,   # 영상: 퀄리티 20% 노멀 베이스 3디바인
   'diztoh-rarity-ring': 1,
-  'diztoh-rarity-ring-v2': None, 'diztoh-rarity-ring-v2-bal': 5, 'diztoh-rarity-ring-v2-ess': 5,   # 2026-11-13 G12: 영상 1:06 거래소 희귀도 3티어 + 냉기 저항 2티어 매직 황금 반지(아이템 레벨 81) 5 div, 1:35에 그 반지
+  'diztoh-rarity-ring-v2-bal': 5,   # 2026-11-13 G12: 영상 1:06 거래소 희귀도 3티어 + 냉기 저항 2티어 매직 황금 반지(아이템 레벨 81) 5 div, 1:35에 그 반지
   'diztoh-socket-gloves': None,
   'diztoh-talisman': None,
   'diztoh-vile-robe': None,
@@ -54,7 +54,7 @@ BASEPRICE = {
   'sane-resist-belt-v2-bal': None, 'sane-resist-belt-v2-ess': 1,   # 2026-11-13 G12: 영상 4:10 자막 '벨트 베이스는 저 같은 경우 1 디바인'
   'diztoh-budget-mace-v2-bal': None, 'diztoh-budget-mace-v2-ess': 0.0083,   # 2026-11-13 G14: 영상 0:12 거래소 특출난 거대한 대망치 노멀 매물 3 엑잘티드 오브(3 ÷ 363 ≈ 0.0083 div, 산 장면은 편집)
   'lilbotq-budget-boots-v2-bal': 1, 'lilbotq-budget-boots-v2-ess': 1,   # 2026-11-13 G13: 영상 0:10 자막 '신성한 오브 1개에 구입'(이동 속도 + 냉기 저항 1티어 매직 샌들)
-  'icesly-budget-wand-v2-bal': 13, 'icesly-budget-wand-v2-ess': 13,   # 2026-11-13 G12: 영상 1:18 거래소 번개 +5 매직 결투 마법봉(아이템 레벨 81) 13 div, 1:42에 그 마법봉
+  'icesly-budget-wand-v2-bal': 13,   # 2026-11-13 G12: 영상 1:18 거래소 번개 +5 매직 결투 마법봉(아이템 레벨 81) 13 div, 1:42에 그 마법봉
   'farmer-starter-staff-v2': 0.11, 'farmer-starter-staff-v2-bal': 0.11, 'farmer-starter-staff-v2-ess': 0.11,   # 사용자 2026-11-10 거래소: 번개 주문 +6 매직 지팡이 카오스 오브 1개(≈0.11 div)
   'icesly-budget-wand': None,
   'lilbotq-armour-shield': None,

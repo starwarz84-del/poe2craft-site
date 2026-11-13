@@ -498,3 +498,4 @@ RV10 독립 검수(2026-11-13, G10 3개, 7장 기준, 출처가 mobalytics 글�
 - 11-13 H2: diztoh-5mod-emerald-v2 화면 대조 — 시작 카오스 반복(1:19), 경멸 실패 = 분열 + 옵션 1개로 카오스부터(16:05), 카오스 접두 anyOf 3개(공격·육척봉·희귀 적 피해), bal 167 → 160 / ess 129 → 122
 - 11-13 H2: unstoppable-slipstrike-vest-v2 화면 대조 40:00~45:02 단계 일치, 상자·완성 카드를 성공 회차 옵션으로(정책 11장 11-13), 시뮬 그대로 high 461 / bal 92
 - 시한 하이엔드 투구·장화·차유라 반지 새 정책(11-13 오후, P4): 투구 진화·분열 성공 = 생명력·방어도 최대치·방어도 % 1티어 중 하나(479/259 → 443/262, 진화 22 → 7.1개, 전용 생성기 gen_sihan_highend_helmet.py), 장화 카드 묶음에 shown(성공 회차 이동 속도·생명력, 192/139 그대로), 반지는 바꿀 것 없음. 두 레시피 모두 등급 차이 커서 두 등급 유지
+- 2026-11-13 P6 새 정책(오후): Diztoh 희귀도 반지 bal 29.1/ess 7.0 → bal 7.0, Icesly 가성비 마법봉 bal 27.8/ess 23.7 → bal 23.7, BigDaddy 번개 마법봉 bal 163.8/ess 117.3 → bal 119.7 — 셋 다 영상·글에 공개 다시 하기가 없어 빛의 징조 반복 삭제(B), 등급 비용이 10% 안이라 밸런스만(D). BigDaddy 마지막 공개 gp 묶음 shown = 추가 번개(A). 점검 c1check·fclabel·essence_tier·style_lint·runerules·fc_noinput·_fclines·_foldlines·_fccardsame·fincheck 0

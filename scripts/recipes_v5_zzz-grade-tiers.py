@@ -29,7 +29,7 @@ _r=_rid32('mazbro-proj-gloves-v2-bal'); _tm32(_r,'g10',2,{73}); _tm32(_r,'g16',2
 # 2026-11-11 사용자 지적(창 밸런스 = 에센셜): 에센셜에서 한 번만 하는 단계는 플로우차트 완성품 카드처럼 '결과 그대로' = 랜덤 옵션
 # (공개 → anyReveal, 결과 그대로 엑잘 → target.rand: 카드엔 노린 옵션 대신 랜덤 옵션)
 for _id,_rv,_ex in [('diztoh-as-spear-v2-ess',[],['a10']),('fubgun-proj-amulet-v2-ess',['a9'],[]),
-                    ('bigdaddy-lightning-wand-v2-ess',['w9'],[]),('lilbotq-boots-v2-ess',['h6'],['h4'])]:
+                    ('lilbotq-boots-v2-ess',['h6'],['h4'])]:
     _r=_rid32(_id)
     for _n in _rv: _any32(_r,_n)
     for _n in _ex: next(x for x in _r['nodes'] if x['id']==_n)['target']['rand']=True

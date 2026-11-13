@@ -79,10 +79,6 @@ def _wand(r, t):
        'br':K('미공개 훼손이 지워지면 → 완성. 좋은 접두가 지워지면 → 남은 훼손 공개.','Takes the unrevealed desecration → done; takes a good prefix → reveal the desecration.')},
       {'id':'i9','phase':'fin','branch':{'of':'i8','when':'miss'},'do':'reveal','omens':['Omen_of_Abyssal_Echoes'],
        'target':{'reveal':{'anyOf':pre},'side':'p','bone':'Preserved_Jawbone'},'ts':'5:40'}]
-    if t=='bal':
-        nodes[-1]['fail']={'goto':'self','via':dict(IC_LIGHT, also=[{'cur':'Preserved_Jawbone'},{'cur':'Omen_of_Abyssal_Echoes'}])}
-        nodes[-1]['br']=K('좋은 옵션 → 완성, 빗나감: 빛의 징조 + 소멸의 오브 → 보존된 턱뼈로 다시 훼손','Hit → done; miss: Light + Annulment, desecrate again with a Preserved Jawbone')
-    else:
-        nodes[-1]['br']=K('결과 그대로 완성, 빛의 징조 안 씀','Keep whatever comes (no Light)')
+    nodes[-1]['br']=K('결과 그대로 완성, 빛의 징조 안 씀','Keep whatever comes (no Light)')   # 2026-11-13 P6 새 정책 B: 영상은 공개 한 번(5:52), 빛의 징조 반복 없음
     r['nodes']=nodes
-for _t in ('bal','ess'): _grade('icesly-budget-wand','icesly-budget-wand-v2',_t,_wand)
+for _t in ('bal',): _grade('icesly-budget-wand','icesly-budget-wand-v2',_t,_wand)   # 2026-11-13 P6 새 정책 D: 밸런스 = 에센셜 비용(10% 이내) → 밸런스만

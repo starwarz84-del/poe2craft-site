@@ -29,4 +29,4 @@ def dz_ring(tier):
   {'id':'g6','phase':'pre','do':'exalt','cur':'Greater_Exalted_Orb','omens':['Omen_of_Catalysing_Exaltation','Omen_of_Greater_Exaltation'],'target':{'anyOf':[{'gi':rr_catk},{'gi':rr_cpct},{'gi':rr_patk}]},'knownP':1,'ts':'4:40',
    'br':K('결과는 그대로 받아들임','Keep whatever comes')},
   {'id':'g7','phase':'pre','do':'note','ts':'5:40','note':K('완성.','Done.')}]})
-for _t in ('high','bal','ess'): dz_ring(_t)
+for _t in ('bal',): dz_ring(_t)   # 2026-11-13 P6 새 정책: 공개 빛의 징조 반복을 빼니 밸런스 = 에센셜 비용(10% 이내) → 밸런스만(정책 D), 하이엔드 없음(사용자 확정 14:33)
