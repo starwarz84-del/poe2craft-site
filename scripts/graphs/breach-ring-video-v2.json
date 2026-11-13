@@ -4,7 +4,7 @@
  "cls": "Rings",
  "base": "Refined Breach Ring",
  "ilvl": 80,
- "note": "SL 원소 3플랫 재련된 균열 반지(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 제련된 균열 반지 → 소멸로 옵션 1개 → 카오스 오브(화염 플랫 1티어) → 좌측 찬미 + 상위 찬미 + 완벽한 엑잘 → 보존된 빗장뼈 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 균열의 에센스 → 강탈자 기폭제 65% → 바알 촉진시키는 주입기 1개 → 카오스 오브(모든 원소 저항) → 우측 찬미 + 완벽한 엑잘(희귀도, 빗나가면 소멸의 오브) → 좌측 찬미 + 엑잘 → 좌측 결정화 + 재빠른 합금 → 완벽한 엑잘(번개 플랫, 빗나가면 좌측 소멸의 징조 + 소멸의 오브) → 고대 빗장뼈 → 공개 + 심연의 메아리(냉기 플랫, 빛의 징조로 다시). 75% 퀄리티·디바인·축성·타락은 뺌.",
+ "note": "SL 원소 3플랫 재련된 균열 반지(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 제련된 균열 반지 → 소멸로 옵션 1개 → 카오스 오브(원소 플랫 1티어, 화염·냉기·번개 중 하나) → 좌측 찬미 + 상위 찬미 + 완벽한 엑잘 → 보존된 빗장뼈 → 분열(1/3, 원소 플랫이 아니면 새 베이스) → 소멸로 분열 + 옵션 1개 → 균열의 에센스 → 강탈자 기폭제 65% → 바알 촉진시키는 주입기 1개 → 카오스 오브(모든 원소 저항) → 우측 찬미 + 완벽한 엑잘(희귀도, 빗나가면 소멸의 오브) → 좌측 찬미 + 엑잘 → 좌측 결정화 + 재빠른 합금 → 완벽한 엑잘(남은 원소 플랫 중 하나, 빗나가면 좌측 소멸의 징조 + 소멸의 오브) → 고대 빗장뼈 → 공개 + 심연의 메아리(마지막 원소 플랫, 빛의 징조로 다시). 새 정책(11-13): 원소 플랫 자리는 셋 중 아무거나(영상 슬라이드 2·29:00 자막), 화면은 성공 회차(분열 화염·엑잘 번개·훼손 냉기). 75% 퀄리티·디바인·축성·타락은 뺌.",
  "params": {
   "pT": {
    "kr": "원소 플랫",
@@ -84,6 +84,18 @@
    "gi": 15,
    "tmax": 1
   },
+  "lf1": {
+   "gi": 19,
+   "tmax": 1
+  },
+  "cf1": {
+   "gi": 17,
+   "tmax": 1
+  },
+  "ffp": {
+   "gi": 15,
+   "tmax": "$pT"
+  },
   "lf": {
    "gi": 19,
    "tmax": "$pT"
@@ -91,6 +103,33 @@
   "cf": {
    "gi": 17,
    "tmax": "$pT"
+  },
+  "efr": {
+   "anyOf": [
+    "ff1",
+    "lf1",
+    "cf1"
+   ],
+   "shown": "ff1",
+   "label": {
+    "kr": "원소 플랫(화염·냉기·번개 공격 피해 추가)",
+    "en": "Elemental flat (added fire, cold or lightning attack damage)"
+   }
+  },
+  "ef": {
+   "anyOf": [
+    "ffp",
+    "lf",
+    "cf"
+   ],
+   "shown": [
+    "lf",
+    "cf"
+   ],
+   "label": {
+    "kr": "원소 플랫(화염·냉기·번개 공격 피해 추가)",
+    "en": "Elemental flat (added fire, cold or lightning attack damage)"
+   }
   },
   "mq": {
    "gi": 71
@@ -110,13 +149,13 @@
  "require": {
   "all": [
    {
-    "has": "ff1"
+    "has": "efr"
    },
    {
-    "has": "lf"
-   },
-   {
-    "has": "cf"
+    "count": {
+     "tag": "ef",
+     "min": 3
+    }
    },
    {
     "has": "ar"
@@ -166,8 +205,8 @@
     "p1",
     "p1x"
    ],
-   "kr": "접두 번개 플랫",
-   "en": "Lightning flat prefix"
+   "kr": "접두 원소 플랫",
+   "en": "Elemental flat prefix"
   },
   {
    "id": "L2",
@@ -187,16 +226,16 @@
    "en": "High-end",
    "lines": [
     {
-     "tag": "ff1",
+     "tag": "efr",
      "tmax": 1,
      "fr": true
     },
     {
-     "tag": "lf",
+     "tag": "ef",
      "tmax": 1
     },
     {
-     "tag": "cf",
+     "tag": "ef",
      "tmax": 1,
      "des": true
     },
@@ -220,16 +259,16 @@
    "en": "Balance",
    "lines": [
     {
-     "tag": "ff1",
+     "tag": "efr",
      "tmax": 1,
      "fr": true
     },
     {
-     "tag": "lf",
+     "tag": "ef",
      "tmax": 2
     },
     {
-     "tag": "cf",
+     "tag": "ef",
      "tmax": 2,
      "des": true
     },
@@ -344,8 +383,8 @@
    ],
    "act": "chaos",
    "goal": {
-    "kr": "접두 화염 플랫 1티어",
-    "en": "T1 fire flat prefix"
+    "kr": "접두 원소 플랫 1티어",
+    "en": "T1 elemental flat prefix"
    },
    "label": {
     "kr": "카오스",
@@ -354,7 +393,7 @@
    "edges": [
     {
      "if": {
-      "has": "ff1"
+      "has": "efr"
      },
      "to": "pe",
      "res": "ok"
@@ -371,13 +410,13 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "n",
      "tags": [
-      "ff1"
+      "efr"
      ]
     }
    ],
    "cur": "Chaos_Orb",
    "show": [
-    "ff1"
+    "efr"
    ]
   },
   {
@@ -409,7 +448,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "n",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -466,7 +505,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "n",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -516,13 +555,13 @@
    "edges": [
     {
      "if": {
-      "fractured": "ff1"
+      "fractured": "efr"
      },
      "to": "p8",
      "res": "ok",
      "label": {
-      "kr": "화염 플랫 분열",
-      "en": "Fire flat fractured"
+      "kr": "원소 플랫 분열",
+      "en": "Elemental flat fractured"
      }
     },
     {
@@ -542,15 +581,15 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     }
    ],
    "cur": "Fracturing_Orb",
    "showText": [
     {
-     "kr": "화염 플랫이 분열되면 성공",
-     "en": "Success when the fire flat fractures"
+     "kr": "원소 플랫이 분열되면 성공",
+     "en": "Success when the elemental flat fractures"
     }
    ]
   },
@@ -569,7 +608,7 @@
     "en": "Another line fractured — new base"
    },
    "note": {
-    "kr": "화염 플랫이 아닌 옵션이 분열되면 이 반지는 따로 두고 새 베이스로 처음부터",
+    "kr": "원소 플랫이 아닌 옵션이 분열되면 이 반지는 따로 두고 새 베이스로 처음부터",
     "en": "Another line fractured: set this ring aside and start on a new base"
    }
   },
@@ -607,7 +646,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -647,7 +686,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -699,7 +738,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -751,7 +790,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -794,7 +833,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -845,7 +884,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -907,7 +946,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -1011,7 +1050,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -1080,7 +1119,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -1134,8 +1173,8 @@
    ],
    "act": "exalt",
    "goal": {
-    "kr": "접두 번개 플랫",
-    "en": "Lightning flat prefix"
+    "kr": "접두 원소 플랫",
+    "en": "Elemental flat prefix"
    },
    "label": {
     "kr": "엑잘",
@@ -1144,7 +1183,10 @@
    "edges": [
     {
      "if": {
-      "has": "lf"
+      "count": {
+       "tag": "ef",
+       "min": 2
+      }
      },
      "to": "d1",
      "res": "ok"
@@ -1161,7 +1203,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -1170,7 +1212,7 @@
      "en": "Adds (1—4) to (60—71) Lightning damage to Attacks",
      "m": "n",
      "tags": [
-      "lf"
+      "ef"
      ]
     },
     {
@@ -1203,7 +1245,7 @@
    ],
    "cur": "Perfect_Exalted_Orb",
    "show": [
-    "lf"
+    "ef"
    ]
   },
   {
@@ -1270,7 +1312,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -1279,7 +1321,7 @@
      "en": "Adds (1—4) to (60—71) Lightning damage to Attacks",
      "m": "n",
      "tags": [
-      "lf"
+      "ef"
      ]
     },
     {
@@ -1335,8 +1377,8 @@
    ],
    "act": "reveal",
    "goal": {
-    "kr": "접두 냉기 플랫",
-    "en": "Cold flat prefix"
+    "kr": "접두 원소 플랫",
+    "en": "Elemental flat prefix"
    },
    "label": {
     "kr": "공개",
@@ -1345,7 +1387,10 @@
    "edges": [
     {
      "if": {
-      "added": "cf"
+      "count": {
+       "tag": "ef",
+       "min": 3
+      }
      },
      "to": "ok",
      "res": "ok"
@@ -1362,7 +1407,7 @@
      "en": "Adds (25—29) to (37—45) Fire damage to Attacks",
      "m": "f",
      "tags": [
-      "ff1"
+      "efr"
      ]
     },
     {
@@ -1371,7 +1416,7 @@
      "en": "Adds (1—4) to (60—71) Lightning damage to Attacks",
      "m": "n",
      "tags": [
-      "lf"
+      "ef"
      ]
     },
     {
@@ -1380,7 +1425,7 @@
      "en": "Adds (21—24) to (32—37) Cold damage to Attacks",
      "m": "d",
      "tags": [
-      "cf"
+      "ef"
      ]
     },
     {
@@ -1411,9 +1456,9 @@
      ]
     }
    ],
-   "want": "cf",
+   "want": "ef",
    "show": [
-    "cf"
+    "ef"
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"

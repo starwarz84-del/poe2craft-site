@@ -1,0 +1,84 @@
+# P5 2026-11-13: SL 원소 3플랫 재련된 균열 반지(RiJixgqBnBY, 31:50) 플로우차트 전용 생성기 — gen_batch17.py 1번 구간을 옮기고 새 정책(11-13 14:17) 반영
+# 근거: scratchpad review/W9-breach-ring/timeline.md(영상 전체 대조), review/A1/plan.md
+# 실행: cd scripts/graphs && python3 gen_breach_ring_video.py → breach-ring-video-v2.json (gen_batch17.py 끝에서 자동 호출, 그 파일의 이 아이템 구간을 대신함)
+import os, json
+H=os.path.dirname(os.path.abspath(__file__))
+_src=open(f'{H}/gen_batch16.py').read(); exec(_src[:_src.index('# ---------- 1. SL 부재')])
+
+# ---------- 1. SL 원소 3플랫 재련된 균열 반지 (RiJixgqBnBY) ----------
+# 2026-11-12 W9 영상 전체 재대조(자막 0:00~31:50 + 화면 캡처, 근거 scratchpad review/W9-breach-ring/timeline.md) + 새 플로우차트 기준(정책 11장 맨 위, 확정 옵션 11-12 20:56).
+#   준비 구역 = 영상 가이드 슬라이드 1~3(1:40~2:55)과 영상이 '원래 이렇게 하라'고 다시 말한 순서(26:30 '분열부터 하고 퀄작, 70%까지만').
+#     성공 회차(두 번째 반지 묶음)의 실제 순서는 퀄리티 75% 먼저 → 분열이었지만 영상이 따라 하지 말라고 해서 가이드 순서로 둠(내부 결정, 보고).
+#     23:40~25:40 성공 회차 화면: 옵션 1개 상태에서 카오스로 원소 플랫 1티어(25:17) → 좌측 찬미 + 상위 찬미 + 완벽한 엑잘(25:05 자막) → 보존된 빗장뼈(25:35 툴팁 미공개 훼손)
+#     → 분열 1/3, 4개 중 1개 성공(26:25 태풍 장악 = 화염 플랫 1티어 분열, 아이템 레벨 80) → 소멸로 분열 + 옵션 1개(26:43 화염 + 민첩).
+#   본 제작 = 성공 회차(27:00~28:25 화면) + 녹화가 끊긴 뒤 자막(28:30~29:40)과 비용 화면(31:00: 좌측 소멸 59, 완벽한 엑잘 70, 소멸 98, 고대 빗장뼈 17, 메아리 17, 빛 16).
+#     카오스 → 모든 원소 저항(27:48) → 우측 찬미 + 완벽한 엑잘 6번째에 희귀도(28:10, 빗나가면 소멸 후 다시 — 슬라이드 5) → 좌측 찬미 + 엑잘티드 오브(28:17 툴팁)로 접두 잡옵
+#     → 좌측 결정화 + 재빠른 합금(28:21·28:24) → 완벽한 엑잘 1번 + 빗나가면 좌측 소멸의 징조 + 소멸의 오브 반복(번개 플랫 1티어, 29:00 자막) → 고대 빗장뼈 + 메아리(냉기 플랫 1티어, 빛의 징조로 다시).
+#   새 정책(11-13 14:17, A·F): 원소 플랫 세 자리는 영상이 '아무거나'인 자리 — 슬라이드 2(2:10) '접두 3플랫 중 아무 플랫 1티어 분열', 25:17·25:30 화면(번개·화염 플랫 반지를 모두 분열 준비로 씀),
+#     29:00 자막 '번플랫이나 냉플랫 1티어를 띄우기 위해' → 성공 조건은 원소 플랫(화염·냉기·번개 공격 피해 추가) 중 하나(분열 준비는 1티어, 엑잘·훼손은 남은 원소 플랫).
+#     왼쪽 칸·상자·완성 카드는 성공 회차(분열 화염, 엑잘 번개, 훼손 냉기 — 29:05 완성품)로 보임(shown). 물리 플랫은 슬라이드 2 '비추'라 뺌.
+#   접미 = 저항 → 희귀도(27:48 → 28:10) 그대로: 27:11 첫 카오스에 희귀도가 떴는데 영상은 다시 카오스를 돌림(받아들이지 않음).
+#   빼는 것: 75% 퀄리티 작업(영상이 따라 하지 말라고 함, 가이드 최소 66%), 디바인·축성·타락(선택).
+# 등급(난이도 4): 하이엔드 = 영상(모두 1티어), 밸런스 = 반복으로 찾는 원소 플랫·접미를 1~2티어(4:00 '2티어로 타협하시는 것도 좋습니다'). 공개 반복은 두 등급 모두 빛의 징조.
+EF_L=K('원소 플랫(화염·냉기·번개 공격 피해 추가)','Elemental flat (added fire, cold or lightning attack damage)')
+tags={'ff1':{'gi':15,'tmax':1},'lf1':{'gi':19,'tmax':1},'cf1':{'gi':17,'tmax':1},'ffp':{'gi':15,'tmax':'$pT'},'lf':{'gi':19,'tmax':'$pT'},'cf':{'gi':17,'tmax':'$pT'},
+      'efr':{'anyOf':['ff1','lf1','cf1'],'shown':'ff1','label':EF_L},   # 분열 자리: 성공 회차 = 화염 플랫(26:25)
+      'ef':{'anyOf':['ffp','lf','cf'],'shown':['lf','cf'],'label':EF_L},   # 엑잘·훼손 자리: 성공 회차 = 번개(엑잘)·냉기(훼손, 29:05)
+      'mq':{'gi':71},'ar':{'gi':7,'tmax':'$sT'},'rs':{'gi':27,'tmax':'$sT'},'as':{'gi':73}}
+FF=it('p','공격 시 화염 피해 (25—29)~(37—45) 추가','Adds (25—29) to (37—45) Fire damage to Attacks',['efr'],'f')
+FFn=it('p','공격 시 화염 피해 (25—29)~(37—45) 추가','Adds (25—29) to (37—45) Fire damage to Attacks',['efr'])
+LF=it('p','공격 시 번개 피해 (1—4)~(60—71) 추가','Adds (1—4) to (60—71) Lightning damage to Attacks',['ef'])
+CF=it('p','공격 시 냉기 피해 (21—24)~(32—37) 추가','Adds (21—24) to (32—37) Cold damage to Attacks',['ef'],'d')
+MQ=it('p','최대 퀄리티 +20% (균열의 에센스)','+20% to Maximum Quality (Essence of the Breach)',['mq'],'c')
+AR=it('s','모든 원소 저항 +(15—16)%','+(15—16)% to all Elemental Resistances',['ar'])
+RS=it('s','발견하는 아이템 희귀도 (15—18)% 증가','(15—18)% increased Rarity of Items found',['rs'])
+AS=it('s','공격 속도 (7—9)% 증가 (재빠른 합금)','(7—9)% increased Attack Speed (Swift Alloy)',['as'],'c')
+UNs=it('s','훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')
+L_=lambda kr,en: {'label':K(kr,en)}
+def PREP(d): d['group']='prep'; return d
+P0=[FFn]; P1=[FFn,J('p'),J('p')]; P2=P1+[UNs]
+B0=[FF,J('s')]; B1=[FF,MQ]; B2=[FF,AR]; B3=[FF,AR,RS]; B4=[FF,J('p'),AR,RS]; B5=[FF,AR,RS,AS]; B6=[FF,LF,AR,RS,AS]; B7=B6+[UN('p')]; B8=[FF,LF,CF,AR,RS,AS]
+nodes=[{'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'pz','start':{'rar':'rare','mods':[{'junk':'p'},{'junk':'s'},{'junk':'p'},{'junk':'s'}]},
+        'label':K('제련된 균열 반지 구입 (레어, 아이템 레벨 80)','Buy a Refined Breach Ring (rare, item level 80)'),'item':[J('p'),J('s')]},   # 5:35 9개 구입, 1:00 '레어로만 떨어짐', 26:25 아이템 레벨 80
+ dict(PREP(cleanup('pz',[0,1],[],[{'to':'pc'}],K('옵션 1개만 남기기','Keep one line'),maxJunk=1)),item=[J('s')]),   # 25:17 화면: 옵션 1개 상태(지우는 장면은 확인 못 함)
+ act('pc','prep',[0,2],'chaos','Chaos_Orb',K('접두 원소 플랫 1티어','T1 elemental flat prefix'),None,K('카오스','Chaos'),
+     [{'if':{'has':'efr'},'to':'pe','res':'ok'},{'to':'pc','res':'fail'}],P0,show=['efr']),   # 2:10 슬라이드 2 '카오스 오브 돌려서 띄우고 분열', 24:55 화면 카오스 1,500개
+ act('pe','prep',[0,3],'exalt','Perfect_Exalted_Orb',K('접두 2개','Two prefixes'),[st(None,'랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),[{'to':'pb'}],P1,
+     omens=['Omen_of_Sinistral_Exaltation','Omen_of_Greater_Exaltation']),   # 25:05 자막 '좌측 찬미, 상위 찬미 켜고 완액', 31:00 비용 화면 좌측 찬미 5·상위 찬미 4
+ act('pb','prep',[0,4],'desecrate','Preserved_Collarbone',K('네 번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth line (desecrated) — fracture needs four'),[st(None,'훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')],K('훼손','Desecrate'),[{'to':'pf'}],P2),   # 25:35 화면 미공개 훼손, 31:00 보존된 빗장뼈 4개
+ act('pf','prep',[0,5],'fracture','Fracturing_Orb',K('분열 (셋 중 하나)','Fracture (one of three)'),[st(None,'원소 플랫이 분열되면 성공','Success when the elemental flat fractures')],K('분열','Fracture'),
+     [{'if':{'fractured':'efr'},'to':'p8','res':'ok',**L_('원소 플랫 분열','Elemental flat fractured')},{'to':'xj','res':'fail','dash':True,**L_('다른 옵션 분열','Another line fractured')}],[FF]),   # 22:45 첫 반지 실패(물리 분열), 26:25 성공
+ {'id':'xj','kind':'exit','group':'prep','pos':[1,5],'simTo':'h1','variant':'fail','label':K('다른 옵션 분열 — 새 베이스','Another line fractured — new base'),
+  'note':K('원소 플랫이 아닌 옵션이 분열되면 이 반지는 따로 두고 새 베이스로 처음부터','Another line fractured: set this ring aside and start on a new base')},   # 23:00 '팔고 새로 만들어야겠네'
+ dict(PREP(cleanup('p8',[0,6],[],[{'to':'q1'}],K('분열 + 옵션 1개만 남기기','Keep only the fracture + one line'),maxJunk=1)),item=B0),   # 26:43 화면 화염 + 민첩
+ act('q1','prep',[0,7],'essence','Essence_of_the_Breach',K('잡옵을 지우고 최대 퀄리티','The junk goes for max quality'),[st('p','최대 퀄리티 +20% (제작 옵션)','+20% to Maximum Quality (crafted)')],K('에센스','Essence'),[{'to':'q2'}],B1,ess='mq'),   # 2:30 슬라이드 3, 7:35 화면
+ act('q2','prep',[0,8],'quality','Reaver_Catalyst',K('공격 퀄리티 65%','Attack quality 65%'),[st(None,'강탈자 기폭제 52개','52 Reaver Catalysts')],K('퀄리티','Quality'),[{'to':'q3'}],B1,count=52,q=65),   # 7:30 자막·31:00 화면 9개에 465~466개
+ act('q3','prep',[0,9],'quality','Vaal_Catalysing_Infuser',K('퀄리티 66% 이상','Quality 66%+'),[st(None,'바알 촉진시키는 주입기 1개, 65%에서 첫 1개는 타락 없음','One Vaal Catalysing Infuser, the first at 65% never corrupts')],K('퀄리티','Quality'),[{'to':'ms'}],B1,count=1,q=66),   # 2:30 슬라이드 3 '최소 66%', 7:50 화면 66%
+ mark([0,10.6],'s1',B1),
+ act('s1','main',[0,11.6],'chaos','Chaos_Orb',K('최대 퀄리티를 지우고 접미 모든 원소 저항','Max quality out, all elemental resistances suffix'),None,K('카오스','Chaos'),
+     [{'if':{'has':'ar'},'to':'s2','res':'ok'},{'to':'s1','res':'fail'}],B2,show=['ar']),   # 3:16 슬라이드 4(저항), 27:48 화면
+ act('s2','main',[0,12.6],'exalt','Perfect_Exalted_Orb',K('접미 희귀도','Rarity suffix'),None,K('엑잘','Exalt'),
+     [{'if':{'all':[{'has':'ar'},{'has':'rs'}]},'to':'p0','res':'ok'},{'to':'s2x','res':'fail'}],B3,show=['rs'],omens=['Omen_of_Dextral_Exaltation']),   # 3:23 슬라이드 5, 28:10 6번째 성공
+ annul('s2x',[1,12.6],[{'if':{'has':'ar'},'to':'s2','res':'ok',**L_('저항이 남음','Resistances stay')},{'to':'s1','res':'fail',**L_('저항이 지워짐 — 카오스부터','Resistances gone: back to Chaos')}],
+     omens=(),target=K('접미 옵션 하나 지우기','Remove one suffix')),   # 슬라이드 5 '실패 시 소멸 바르고 뜰 때까지 4~5 반복', 27:20 자막 '지우고 다시 카오스'
+ act('p0','main',[0,13.6],'exalt','Exalted_Orb',K('접두 잡옵','A junk prefix'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'p0b'}],B4,omens=['Omen_of_Sinistral_Exaltation']),   # 28:17 엑잘티드 오브 툴팁, 28:19 마나 최대치(접두)
+ act('p0b','main',[0,14.6],'essence','Swift_Alloy',K('접두 잡옵을 지우고 공격 속도','The junk prefix goes, attack speed comes'),[st('s','공격 속도 (7—9)% 증가 (제작 옵션)','(7—9)% increased Attack Speed (crafted)')],K('합금','Alloy'),[{'to':'p1'}],B5,ess='as',omens=['Omen_of_Sinistral_Crystallisation']),   # 28:21 좌측 결정화 툴팁, 28:24 공격 속도
+ act('p1','main',[0,15.6],'exalt','Perfect_Exalted_Orb',K('접두 원소 플랫','Elemental flat prefix'),None,K('엑잘','Exalt'),
+     [{'if':{'count':{'tag':'ef','min':2}},'to':'d1','res':'ok'},{'to':'p1x','res':'fail'}],B6,show=['ef']),   # 3:46 슬라이드 7 '완벽한 엑잘 1번만, 상위 찬미 없이', 29:00 자막
+ annul('p1x',[1,15.6],[{'to':'p1',**L_('빗나감','Miss')}],omens=('Omen_of_Sinistral_Annulment',),target=K('접두 잡옵 지우기','Remove the junk prefix')),   # 4:10 슬라이드 8, 31:00 좌측 소멸의 징조 59개
+ act('d1','main',[0,16.6],'desecrate','Ancient_Collarbone',K('접두 세 번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],B7),   # 4:22 슬라이드 10 '고대 빗장뼈', 29:35 고대 빗장뼈 툴팁
+ act('d2','main',[0,17.6],'reveal',None,K('접두 원소 플랫','Elemental flat prefix'),None,K('공개','Reveal'),
+     [{'if':{'count':{'tag':'ef','min':3}},'to':'ok','res':'ok'},{'to':'d2x','res':'fail'}],B8,want='ef',show=['ef'],omens=['Omen_of_Abyssal_Echoes']),   # 29:25 자막 '메아리 켰는데도 17개', 30:05 완성품
+ annul('d2x',[1,17.6],[{'to':'d1',**L_('다시 훼손','Desecrate again')}]),   # 31:00 빛의 징조 16개
+ done([0,18.6])]
+graph11('breach-ring-video-v2','Rings','Refined Breach Ring',80,
+  'SL 원소 3플랫 재련된 균열 반지(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 제련된 균열 반지 → 소멸로 옵션 1개 → 카오스 오브(원소 플랫 1티어, 화염·냉기·번개 중 하나) → 좌측 찬미 + 상위 찬미 + 완벽한 엑잘 → 보존된 빗장뼈 → 분열(1/3, 원소 플랫이 아니면 새 베이스) → 소멸로 분열 + 옵션 1개 → 균열의 에센스 → 강탈자 기폭제 65% → 바알 촉진시키는 주입기 1개 → 카오스 오브(모든 원소 저항) → 우측 찬미 + 완벽한 엑잘(희귀도, 빗나가면 소멸의 오브) → 좌측 찬미 + 엑잘 → 좌측 결정화 + 재빠른 합금 → 완벽한 엑잘(남은 원소 플랫 중 하나, 빗나가면 좌측 소멸의 징조 + 소멸의 오브) → 고대 빗장뼈 → 공개 + 심연의 메아리(마지막 원소 플랫, 빛의 징조로 다시). 새 정책(11-13): 원소 플랫 자리는 셋 중 아무거나(영상 슬라이드 2·29:00 자막), 화면은 성공 회차(분열 화염·엑잘 번개·훼손 냉기). 75% 퀄리티·디바인·축성·타락은 뺌.',
+  {'pT':{'kr':'원소 플랫','en':'Elemental flats','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})},'sT':{'kr':'접미 저항·희귀도','en':'Resistance and rarity suffixes','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},
+  {'high':{'pT':1,'sT':1},'bal':{'pT':2,'sT':2}},
+  {'high':K('영상: 원소 플랫·접미 모두 1티어','Video: every flat and suffix T1'),'bal':K('반복으로 찾는 원소 플랫·접미 1~2티어','T1–2 on the looped flats and suffixes')},tags,nodes,
+  [{'id':'L0','nodes':['s2','s2x'],'kr':'접미 희귀도','en':'Rarity suffix'},{'id':'L1','nodes':['p1','p1x'],'kr':'접두 원소 플랫','en':'Elemental flat prefix'},{'id':'L2','nodes':['d1','d2','d2x'],'kr':'훼손 공개','en':'Reveal'}],
+  FIN(('high','bal'),lambda v:[{'tag':'efr','tmax':1,'fr':True},{'tag':'ef','tmax':1 if v=='high' else 2},{'tag':'ef','tmax':1 if v=='high' else 2,'des':True},
+                               {'tag':'ar','tmax':1 if v=='high' else 2},{'tag':'rs','tmax':1 if v=='high' else 2},{'tag':'as','ess':True}]),
+  {'quality':66,'sockets':0},{'all':[{'has':'efr'},{'count':{'tag':'ef','min':3}},{'has':'ar'},{'has':'rs'},{'has':'as'}]},('high','bal'))
+_gp=f"{H}/breach-ring-video-v2.json"; _g=json.load(open(_gp)); _g['basePrice']={'Divine_Orb':50}; json.dump(_g,open(_gp,'w'),ensure_ascii=False,indent=1)   # 31:00 비용 화면 '제련된 균열 반지 9개 : 450딥'
+

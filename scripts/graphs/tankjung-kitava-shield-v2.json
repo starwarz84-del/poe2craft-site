@@ -4,7 +4,7 @@
  "cls": "Shields_str",
  "base": "Tawhoan Tower Shield",
  "ilvl": 81,
- "note": "탱정 키타바 방패(gQa51XOS98s, 2026-11-12 W5 영상 전체 재대조, 새 플로우차트 기준) — 특출난 타호아의 거대 방패 → 완벽한 진화 → 완벽한 확장 + 소멸의 오브로 받는 물리 피해 감소 → 완벽한 확장·완벽한 제왕 + 보존된 갈비뼈(미공개) → 분열(실패면 새 베이스) → 소멸 2번 + 카오스 오브(화염 저항 최대치) → 우측 강령술 + 고대 갈비뼈 → 공개(냉기·번개 저항 최대치, 심연의 메아리, 빗나가면 빛의 징조 + 소멸) → 맹렬한 유동체(화염 저항 최대치 두 줄, 영상에 없음) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 최대치·%·복합. 하이엔드 = 영상(모두 1티어), 밸런스 = 저항 최대치 공개·방어도 3종 1~2티어. 퀄리티 30%·철 룬은 비용에서 뺌.",
+ "note": "탱정 키타바 방패(gQa51XOS98s, 2026-11-12 W5 영상 전체 재대조, 새 플로우차트 기준) — 특출난 타호아의 거대 방패 → 완벽한 진화 → 완벽한 확장 + 소멸의 오브로 접미 4종(받는 물리 피해 감소·화염·냉기·번개 저항 최대치) 중 하나 → 냉기·번개면 맹렬한 유동체(화염) → 완벽한 확장·완벽한 제왕 + 보존된 갈비뼈(미공개) → 분열(물리 피해 감소·화염 저항 최대치, 실패면 새 베이스) → 소멸 2번 + 카오스 오브(접미 4종 중 남은 것) → 우측 강령술 + 고대 갈비뼈 → 공개(물리 피해 감소가 없으면 물리 피해 감소, 있으면 저항 최대치, 심연의 메아리, 빗나가면 빛의 징조 + 소멸) → 맹렬한 유동체(화염 저항 최대치 두 줄, 슬라이드 완성 문구) → 상위 찬미 + 완벽한 엑잘 → 완벽한 엑잘 → 절사의 징조 + 완벽한 카오스 오브로 방어도 최대치·%·복합. 하이엔드 = 영상(모두 1티어), 밸런스 = 저항 최대치 공개·방어도 3종 1~2티어. 퀄리티 30%·철 룬은 비용에서 뺌.",
  "params": {
   "mT": {
    "kr": "훼손 저항 최대치",
@@ -153,6 +153,78 @@
     "en": "Flat, % or hybrid armour"
    }
   },
+  "g4M": {
+   "anyOf": [
+    "pdr1",
+    "mf1",
+    "mc1",
+    "ml1"
+   ],
+   "shown": "pdr1",
+   "label": {
+    "kr": "받는 물리 피해 감소·화염·냉기·번개 저항 최대치 1티어",
+    "en": "T1 physical damage reduction or maximum fire, cold or lightning resistance"
+   }
+  },
+  "g4": {
+   "anyOf": [
+    "pdr1",
+    "mf1",
+    "mc1",
+    "ml1"
+   ],
+   "shown": "mf1",
+   "label": {
+    "kr": "받는 물리 피해 감소·화염·냉기·번개 저항 최대치 1티어",
+    "en": "T1 physical damage reduction or maximum fire, cold or lightning resistance"
+   }
+  },
+  "g2": {
+   "anyOf": [
+    "pdr1",
+    "mf1"
+   ],
+   "shown": "pdr1",
+   "label": {
+    "kr": "받는 물리 피해 감소·화염 저항 최대치 1티어",
+    "en": "T1 physical damage reduction or maximum fire resistance"
+   }
+  },
+  "g4R": {
+   "anyOf": [
+    "pdr1",
+    "mfT",
+    "mc",
+    "ml"
+   ],
+   "shown": "mc",
+   "label": {
+    "kr": "받는 물리 피해 감소·저항 최대치",
+    "en": "Physical damage reduction or maximum resistance"
+   }
+  },
+  "c2": {
+   "anyOf": [
+    "pdr1",
+    "mf1"
+   ],
+   "shown": "mf1",
+   "label": {
+    "kr": "받는 물리 피해 감소·화염 저항 최대치 1티어",
+    "en": "T1 physical damage reduction or maximum fire resistance"
+   }
+  },
+  "c3": {
+   "anyOf": [
+    "pdr1",
+    "mfT"
+   ],
+   "shown": "mfT",
+   "label": {
+    "kr": "받는 물리 피해 감소·화염 저항 최대치",
+    "en": "Physical damage reduction or maximum fire resistance"
+   }
+  },
   "flat1": {
    "gi": 6,
    "tmax": 1
@@ -188,9 +260,6 @@
      "tag": "mfT",
      "min": 2
     }
-   },
-   {
-    "has": "mf1"
    },
    {
     "has": "flat"
@@ -241,8 +310,8 @@
    "en": "Magic suffix hunt",
    "fold": true,
    "goal": {
-    "kr": "매직 접미 받는 물리 피해 8% 추가 감소 1티어",
-    "en": "T1 8% physical damage reduction suffix on a magic item"
+    "kr": "매직 접미 4종(받는 물리 피해 감소·화염·냉기·번개 저항 최대치) 중 하나 1티어",
+    "en": "One of the four T1 suffixes (physical damage reduction, maximum fire, cold or lightning resistance) on a magic item"
    },
    "steps": [
     {
@@ -269,7 +338,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "pdr1"
+      "g4M"
      ]
     }
    ]
@@ -309,14 +378,15 @@
      "tag": "hyb1"
     },
     {
-     "tag": "pdr1",
+     "tag": "g2",
      "fr": true
     },
     {
-     "tag": "mf1"
+     "tag": "c2"
     },
     {
-     "tag": "mf1",
+     "tag": "c3",
+     "tmax": 1,
      "des": true
     }
    ]
@@ -336,14 +406,15 @@
      "tag": "hyb2"
     },
     {
-     "tag": "pdr1",
+     "tag": "g2",
      "fr": true
     },
     {
-     "tag": "mf1"
+     "tag": "c2"
     },
     {
-     "tag": "mf2",
+     "tag": "c3",
+     "tmax": 2,
      "des": true
     }
    ]
@@ -410,13 +481,13 @@
    "edges": [
     {
      "if": {
-      "has": "pdr1"
+      "has": "g4M"
      },
-     "to": "r1",
+     "to": "fl",
      "res": "ok",
      "label": {
-      "kr": "받는 물리 피해 감소",
-      "en": "Physical damage reduction"
+      "kr": "접미 4종 중 하나",
+      "en": "One of the four suffixes"
      }
     },
     {
@@ -444,13 +515,13 @@
      "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "pdr1"
+      "g4M"
      ]
     }
    ],
    "cur": "Perfect_Orb_of_Transmutation",
    "show": [
-    "pdr1"
+    "g4M"
    ]
   },
   {
@@ -473,13 +544,13 @@
    "edges": [
     {
      "if": {
-      "has": "pdr1"
+      "has": "g4M"
      },
-     "to": "r1",
+     "to": "fl",
      "res": "ok",
      "label": {
-      "kr": "받는 물리 피해 감소",
-      "en": "Physical damage reduction"
+      "kr": "접미 4종 중 하나",
+      "en": "One of the four suffixes"
      }
     },
     {
@@ -517,13 +588,13 @@
      "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "pdr1"
+      "g4M"
      ]
     }
    ],
    "cur": "Perfect_Orb_of_Augmentation",
    "show": [
-    "pdr1"
+    "g4M"
    ]
   },
   {
@@ -569,12 +640,75 @@
    ]
   },
   {
+   "id": "fl",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2.8
+   ],
+   "act": "flux",
+   "goal": {
+    "kr": "냉기·번개 저항 최대치를 화염으로",
+    "en": "Cold or lightning maximum resistance into fire"
+   },
+   "label": {
+    "kr": "유동체",
+    "en": "Flux"
+   },
+   "edges": [
+    {
+     "to": "r1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "받는 물리 피해 8% 추가 감소 1티어",
+     "en": "T1 8% physical damage reduction",
+     "m": "n",
+     "tags": [
+      "g4M"
+     ]
+    }
+   ],
+   "cur": "Blazing_Flux",
+   "showText": [
+    {
+     "s": "s",
+     "kr": "화염 저항 최대치 +3%",
+     "en": "+3% maximum fire resistance"
+    }
+   ],
+   "skipIf": {
+    "any": [
+     {
+      "has": "pdr1"
+     },
+     {
+      "has": "mf1"
+     }
+    ]
+   },
+   "skipTo": "r1",
+   "skipNote": {
+    "kr": "받는 물리 피해 감소·화염이면 건너뜀",
+    "en": "Skip on physical damage reduction or fire"
+   }
+  },
+  {
    "id": "r1",
    "kind": "act",
    "group": "prep",
    "pos": [
     0,
-    3
+    3.8
    ],
    "act": "augment",
    "goal": {
@@ -603,7 +737,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "pdr1"
+      "g4M"
      ]
     }
    ],
@@ -630,7 +764,7 @@
    "group": "prep",
    "pos": [
     0,
-    4
+    4.8
    ],
    "act": "regal",
    "goal": {
@@ -659,7 +793,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "pdr1"
+      "g4M"
      ]
     },
     {
@@ -683,7 +817,7 @@
    "group": "prep",
    "pos": [
     0,
-    5
+    5.8
    ],
    "act": "desecrate",
    "goal": {
@@ -712,7 +846,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "n",
      "tags": [
-      "pdr1"
+      "g4M"
      ]
     },
     {
@@ -742,7 +876,7 @@
    "group": "prep",
    "pos": [
     0,
-    6
+    6.8
    ],
    "act": "fracture",
    "goal": {
@@ -756,7 +890,7 @@
    "edges": [
     {
      "if": {
-      "fractured": "pdr1"
+      "fractured": "g2"
      },
      "to": "f4",
      "res": "ok"
@@ -784,7 +918,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "pdr1"
+      "g2"
      ]
     },
     {
@@ -803,8 +937,8 @@
    "cur": "Fracturing_Orb",
    "showText": [
     {
-     "kr": "받는 물리 피해 감소가 분열되면 성공",
-     "en": "Success when physical damage reduction fractures"
+     "kr": "받는 물리 피해 감소·화염 저항 최대치가 분열되면 성공",
+     "en": "Success when physical damage reduction or maximum fire resistance fractures"
     }
    ],
    "pAll": true
@@ -815,7 +949,7 @@
    "group": "prep",
    "pos": [
     1,
-    6
+    6.8
    ],
    "simTo": "b0",
    "variant": "fail",
@@ -830,7 +964,7 @@
    "group": "prep",
    "pos": [
     0,
-    7
+    7.8
    ],
    "keep": [],
    "maxJunk": 1,
@@ -862,7 +996,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "pdr1"
+      "g2"
      ]
     },
     {
@@ -879,7 +1013,7 @@
    "group": "main",
    "pos": [
     0,
-    7.6
+    8.4
    ],
    "next": "t2",
    "label": {
@@ -893,7 +1027,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "pdr1"
+      "g2"
      ]
     },
     {
@@ -924,7 +1058,10 @@
    "edges": [
     {
      "if": {
-      "has": "mf1"
+      "count": {
+       "tag": "g4",
+       "min": 2
+      }
      },
      "to": "t3",
      "res": "ok"
@@ -941,7 +1078,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "pdr1"
+      "g2"
      ]
     },
     {
@@ -950,16 +1087,19 @@
      "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "mf1"
+      "g4"
      ]
     }
    ],
    "cur": "Chaos_Orb",
    "show": [
-    "mf1"
+    "g4"
    ],
    "skipIf": {
-    "has": "mf1"
+    "count": {
+     "tag": "g4",
+     "min": 2
+    }
    },
    "skipTo": "t3",
    "skipHide": true
@@ -993,7 +1133,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "pdr1"
+      "g2"
      ]
     },
     {
@@ -1002,7 +1142,7 @@
      "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "mf1"
+      "g4"
      ]
     },
     {
@@ -1049,10 +1189,10 @@
         "has": "pdr1"
        },
        {
-        "has": "mf1"
-       },
-       {
-        "has": "mcl"
+        "count": {
+         "tag": "g4R",
+         "min": 3
+        }
        }
       ]
      },
@@ -1071,7 +1211,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "pdr1"
+      "g2"
      ]
     },
     {
@@ -1080,23 +1220,22 @@
      "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "mf1"
+      "g4"
      ]
     },
     {
      "s": "s",
-     "kr": "냉기·번개 저항 최대치 +3% (훼손)",
-     "en": "+3% maximum cold or lightning resistance (desecrated)",
+     "kr": "냉기 저항 최대치 +3% (훼손)",
+     "en": "+3% maximum cold resistance (desecrated)",
      "m": "d",
      "tags": [
-      "mcl"
+      "g4R"
      ]
     }
    ],
-   "want": "mcl",
+   "want": "g4R",
    "show": [
-    "mc",
-    "ml"
+    "g4R"
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
@@ -1166,7 +1305,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "pdr1"
+      "g2"
      ]
     },
     {
@@ -1175,7 +1314,7 @@
      "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "mf1"
+      "g4"
      ]
     },
     {
@@ -1184,7 +1323,7 @@
      "en": "+3% maximum fire resistance (desecrated)",
      "m": "d",
      "tags": [
-      "mfT"
+      "c3"
      ]
     }
    ],
@@ -1238,7 +1377,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "pdr1"
+      "g2"
      ]
     },
     {
@@ -1247,7 +1386,7 @@
      "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "mf1"
+      "g4"
      ]
     },
     {
@@ -1256,7 +1395,7 @@
      "en": "+3% maximum fire resistance (desecrated)",
      "m": "d",
      "tags": [
-      "mfT"
+      "c3"
      ]
     }
    ],
@@ -1319,7 +1458,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "pdr1"
+      "g2"
      ]
     },
     {
@@ -1328,7 +1467,7 @@
      "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "mf1"
+      "g4"
      ]
     },
     {
@@ -1337,7 +1476,7 @@
      "en": "+3% maximum fire resistance (desecrated)",
      "m": "d",
      "tags": [
-      "mfT"
+      "c3"
      ]
     }
    ],
@@ -1417,7 +1556,7 @@
      "en": "T1 8% physical damage reduction",
      "m": "f",
      "tags": [
-      "pdr1"
+      "g2"
      ]
     },
     {
@@ -1426,7 +1565,7 @@
      "en": "T1 +3% maximum fire resistance",
      "m": "n",
      "tags": [
-      "mf1"
+      "g4"
      ]
     },
     {
@@ -1435,7 +1574,7 @@
      "en": "+3% maximum fire resistance (desecrated)",
      "m": "d",
      "tags": [
-      "mfT"
+      "c3"
      ]
     }
    ],

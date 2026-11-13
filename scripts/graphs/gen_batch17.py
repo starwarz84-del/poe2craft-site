@@ -118,3 +118,4 @@ graph11('saveq-focus-v2','Foci','Tasalian Focus',80,
 
 import os as _os, subprocess as _sp, sys as _sy
 if _os.path.exists(f'{H}/gen_saveq_focus.py'): _sp.run([_sy.executable, f'{H}/gen_saveq_focus.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_breach_ring_video.py'): _sp.run([_sy.executable, f'{H}/gen_breach_ring_video.py'], check=True)   # 2026-11-13 P5: 새 정책 전용 생성기가 덮어씀

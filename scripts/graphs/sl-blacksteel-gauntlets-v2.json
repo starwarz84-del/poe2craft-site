@@ -4,10 +4,7 @@
  "cls": "Gloves_str_dex",
  "base": "Blacksteel Gauntlets",
  "ilvl": 82,
- "basePrice": {
-  "Divine_Orb": 12
- },
- "note": "SL 딜용 장갑(J7J8Jo7ibvE 6:08~6:22 슬라이드, 2026-11-13 W13 영상 전체 화면 대조) — 검은강철 건틀릿(82+, 홈 2개) → 바알 방어구 장인의 주입기 25%+ → 카틀라의 순흑 → 완벽한 진화·확장 + 소멸(매직 저주 강도 1티어 + 카틀라 접두 1티어) → 완벽한 제왕 → 보존된 갈비뼈 + 분열(저주 강도) → 분열 + 옵션 1개 → 카오스 오브(카틀라 접두 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸) → 좌측 강령술 + 고대 갈비뼈 → 공개(남은 카틀라 접두, 빗나가면 빛의 징조) → 상위 찬미 + 완벽한 엑잘(접미, 빗나가면 우측 소멸의 징조 2개) → 절사 + 우측 말소 + 완벽한 카오스(남은 접미 1티어). 하이엔드만(극한). 카틀라 옵션 가중치는 추정.",
+ "note": "SL 딜용 장갑(J7J8Jo7ibvE 6:08~6:22 슬라이드, 2026-11-13 W13 영상 전체 화면 대조) — 검은강철 건틀릿(82+, 홈 2개) → 바알 방어구 장인의 주입기 25%+ → 카틀라의 순흑 → 완벽한 진화·확장 + 소멸(매직 저주 강도 1티어 + 카틀라 접두 1티어) → 완벽한 제왕 → 보존된 갈비뼈 + 분열(저주 강도) → 분열 + 옵션 1개 → 카오스 오브(카틀라 접두 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸) → 좌측 강령술 + 고대 갈비뼈 → 공개(나오는 대로) → 상위 찬미 + 완벽한 엑잘(접미, 빗나가면 우측 소멸의 징조 2개) → 절사 + 우측 말소 + 완벽한 카오스(남은 접미 1티어). 하이엔드만(극한). 카틀라 옵션 가중치는 추정.",
  "params": {
   "t": {
    "kr": "반복 목표",
@@ -61,6 +58,10 @@
     "ig1",
     "fa1"
    ],
+   "shown": [
+    "fa1",
+    "ig1"
+   ],
    "label": {
     "kr": "상태 이상의 강도·점화 강도·피해 가속 1티어",
     "en": "T1 ailment magnitude, ignite magnitude or faster ailments"
@@ -82,6 +83,10 @@
    "anyOf": [
     "wi1",
     "fr1"
+   ],
+   "shown": [
+    "fr1",
+    "wi1"
    ],
    "label": {
     "kr": "위축 강도·화염 저항 1티어",
@@ -119,8 +124,11 @@
    {
     "count": {
      "tag": "mp",
-     "min": 3
+     "min": 2
     }
+   },
+   {
+    "full": "p"
    },
    {
     "count": {
@@ -853,13 +861,7 @@
     "en": "First prefix"
    },
    "show": [
-    "fa1"
-   ],
-   "showText": [
-    {
-     "kr": "피해 가속·점화 강도·상태 이상의 강도 1티어 중 먼저 뜬 것",
-     "en": "Whichever of T1 faster ailments, ignite or ailment magnitude lands first"
-    }
+    "mp"
    ],
    "skipIf": {
     "has": "mp"
@@ -895,7 +897,7 @@
      "en": "Damaging Ailments deal damage (14—20)% faster",
      "m": "n",
      "tags": [
-      "fa1"
+      "mp"
      ]
     },
     {
@@ -931,13 +933,7 @@
     "en": "Second prefix"
    },
    "show": [
-    "ig1"
-   ],
-   "showText": [
-    {
-     "kr": "남은 옵션 중 먼저 뜬 것",
-     "en": "Whichever of the rest lands first"
-    }
+    "mp"
    ],
    "edges": [
     {
@@ -972,7 +968,7 @@
      "en": "Damaging Ailments deal damage (14—20)% faster",
      "m": "n",
      "tags": [
-      "fa1"
+      "mp"
      ]
     },
     {
@@ -981,7 +977,7 @@
      "en": "(35—50)% increased Ignite Magnitude",
      "m": "n",
      "tags": [
-      "ig1"
+      "mp"
      ]
     },
     {
@@ -1085,7 +1081,7 @@
      "en": "Damaging Ailments deal damage (14—20)% faster",
      "m": "n",
      "tags": [
-      "fa1"
+      "mp"
      ]
     },
     {
@@ -1094,7 +1090,7 @@
      "en": "(35—50)% increased Ignite Magnitude",
      "m": "n",
      "tags": [
-      "ig1"
+      "mp"
      ]
     },
     {
@@ -1128,30 +1124,18 @@
     "en": "Reveal"
    },
    "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
+    "kr": "훼손 옵션 공개 — 나오는 대로",
+    "en": "Reveal the desecration: keep what comes"
    },
-   "want": "mp",
-   "show": [
-    "am1"
-   ],
    "showText": [
     {
-     "kr": "남은 옵션 중 먼저 뜬 것",
-     "en": "Whichever of the rest lands first"
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
     }
    ],
    "edges": [
     {
-     "if": {
-      "added": "mp"
-     },
-     "to": "k3",
-     "res": "ok"
-    },
-    {
-     "to": "k6x",
-     "res": "fail"
+     "to": "k3"
     }
    ],
    "item": [
@@ -1167,7 +1151,7 @@
      "en": "Damaging Ailments deal damage (14—20)% faster",
      "m": "n",
      "tags": [
-      "fa1"
+      "mp"
      ]
     },
     {
@@ -1176,17 +1160,14 @@
      "en": "(35—50)% increased Ignite Magnitude",
      "m": "n",
      "tags": [
-      "ig1"
+      "mp"
      ]
     },
     {
      "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "d",
-     "tags": [
-      "am1"
-     ]
+     "kr": "랜덤 옵션 1개 (훼손)",
+     "en": "One random option (desecrated)",
+     "m": "j"
     },
     {
      "s": "s",
@@ -1196,41 +1177,6 @@
      "tags": [
       "cu1"
      ]
-    }
-   ]
-  },
-  {
-   "id": "k6x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    13
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
-   },
-   "edges": [
-    {
-     "to": "k5",
-     "label": {
-      "kr": "다시 훼손",
-      "en": "Desecrate again"
-     }
     }
    ]
   },
@@ -1256,13 +1202,7 @@
     "en": "Second and third suffixes"
    },
    "show": [
-    "fr1"
-   ],
-   "showText": [
-    {
-     "kr": "위축 강도·화염 저항 1티어 중 먼저 뜬 것",
-     "en": "Whichever of T1 withered or fire resistance lands first"
-    }
+    "s2"
    ],
    "edges": [
     {
@@ -1294,7 +1234,7 @@
      "en": "Damaging Ailments deal damage (14—20)% faster",
      "m": "n",
      "tags": [
-      "fa1"
+      "mp"
      ]
     },
     {
@@ -1303,17 +1243,14 @@
      "en": "(35—50)% increased Ignite Magnitude",
      "m": "n",
      "tags": [
-      "ig1"
+      "mp"
      ]
     },
     {
      "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "d",
-     "tags": [
-      "am1"
-     ]
+     "kr": "랜덤 옵션 1개 (훼손)",
+     "en": "One random option (desecrated)",
+     "m": "j"
     },
     {
      "s": "s",
@@ -1330,7 +1267,7 @@
      "en": "+(41—45)% to Fire Resistance",
      "m": "n",
      "tags": [
-      "fr1"
+      "s2"
      ]
     },
     {
@@ -1407,13 +1344,7 @@
     "en": "Third suffix"
    },
    "show": [
-    "wi1"
-   ],
-   "showText": [
-    {
-     "kr": "남은 옵션",
-     "en": "The one left"
-    }
+    "s2"
    ],
    "trim": {
     "side": "s",
@@ -1459,7 +1390,7 @@
      "en": "Damaging Ailments deal damage (14—20)% faster",
      "m": "n",
      "tags": [
-      "fa1"
+      "mp"
      ]
     },
     {
@@ -1468,17 +1399,14 @@
      "en": "(35—50)% increased Ignite Magnitude",
      "m": "n",
      "tags": [
-      "ig1"
+      "mp"
      ]
     },
     {
      "s": "p",
-     "kr": "플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가",
-     "en": "(26—32)% increased Magnitude of Ailments you inflict",
-     "m": "d",
-     "tags": [
-      "am1"
-     ]
+     "kr": "랜덤 옵션 1개 (훼손)",
+     "en": "One random option (desecrated)",
+     "m": "j"
     },
     {
      "s": "s",
@@ -1495,7 +1423,7 @@
      "en": "+(41—45)% to Fire Resistance",
      "m": "n",
      "tags": [
-      "fr1"
+      "s2"
      ]
     },
     {
@@ -1504,7 +1432,7 @@
      "en": "(25—35)% increased Withered Magnitude",
      "m": "n",
      "tags": [
-      "wi1"
+      "s2"
      ]
     }
    ]
@@ -1535,16 +1463,6 @@
    ],
    "kr": "매직 옵션 맞추기",
    "en": "Magic options"
-  },
-  {
-   "id": "L1",
-   "nodes": [
-    "k5",
-    "k6",
-    "k6x"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
   }
  ],
  "finals": [
@@ -1555,23 +1473,25 @@
    "en": "High-end",
    "lines": [
     {
-     "tag": "fa1"
+     "tag": "mp"
     },
     {
-     "tag": "ig1"
+     "tag": "mp"
     },
     {
-     "tag": "am1"
+     "side": "p",
+     "random": true,
+     "des": true
     },
     {
      "tag": "cu1",
      "fr": true
     },
     {
-     "tag": "fr1"
+     "tag": "s2"
     },
     {
-     "tag": "wi1"
+     "tag": "s2"
     }
    ]
   }
