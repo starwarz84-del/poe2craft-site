@@ -9,7 +9,7 @@
 #   → 12:26 고대 갈비뼈 미공개 훼손(뼈 이름은 자막) → 12:34 공개 빗나감(방어도 %·질주 이동 속도·마나) → 빛의 징조 4개(자막, 반복 장면은 편집) → 12:40 회피 구르기 거리 +0.4(2티어)
 #   → 13:05 아스트리드를 다른 룬으로 교체(이동 속도 5%, 선택이라 뺌).
 # 내부 결정(보고서에 적음):
-#   1 매직 단계는 영상 말대로 '좋은 옵션 둘이 나올 때까지' 진화·확장 + 소멸 — 이동 속도·둔화 감소 1티어와 번개 저항 1티어 중 먼저 뜬 것부터(정책 11장 붙는 순서 예외).
+#   1 매직 단계는 영상 말대로(7:05 'a tier one resistance' — 화염·냉기·번개 저항 1티어 아무거나, 성공 회차 = 번개, 11-13 오후 정책 A) '좋은 옵션 둘이 나올 때까지' 진화·확장 + 소멸 — 이동 속도·둔화 감소 1티어와 번개 저항 1티어 중 먼저 뜬 것부터(정책 11장 붙는 순서 예외).
 #   2 접두 두 번째 옵션은 영상(12:05 '대부분 완벽한 엑잘 결과 그대로')대로 모든 등급 랜덤 옵션. 좌측 말소 + 카오스 반복은 꿀팁 후보.
 #   3 신성한 오브(9:40 '필요하면')와 마지막 룬 교체(13:05)는 넣지 않음. 바알 방어구 장인의 주입기 4개는 영상대로 단계(오염 위험은 시뮬에 없음).
 # 등급(난이도 3 → 밸런스·에센셜): 밸런스 = 영상(빛의 징조로 회피 구르기 거리까지 다시 공개, 1~2티어) / 에센셜 = 공개 결과 그대로(빛의 징조 없음, 정책 10장 C17-3).
@@ -33,7 +33,7 @@ def DB(s, gi, tags, m='n', ti=0, tail=None):   # DB 옵션 문구(티어 ti)
 
 MS = DB('p', 55, ['ms'])
 MSf = DB('p', 55, ['ms'], 'f')
-LT = DB('s', 3, ['lt'])
+LT = DB('s', 3, ['res'])                  # 영상 7:58 성공 회차 = 번개 저항 1티어(성공 조건은 원소 저항 1티어 아무거나, 11-13 오후 정책 A)
 RA = DB('s', 44, ['ra'], 'c')
 SP = DB('s', 51, ['sp'], 'c')
 AR = DB('p', 7, [])                       # 영상 12:00 완벽한 엑잘 결과(방어도 +162, 1티어) — 카드에는 랜덤 옵션
@@ -61,10 +61,11 @@ g = {
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
     'desc': K('영상: 빛의 징조로 회피 구르기 거리까지 다시 공개', 'Video: Omen of Light until dodge roll distance')}],
  'tags': {
-   'ms': {'gi': 55, 'tmax': 1}, 'lt': {'gi': 3, 'tmax': 1}, 'ra': {'gi': 44}, 'sp': {'gi': 51}, 'dg': {'gi': 57},
-   'good': {'anyOf': ['ms', 'lt'], 'label': K('이동 속도·둔화 감소 1티어, 번개 저항 1티어', 'T1 movement speed with slow reduction, T1 lightning resistance')},
+   'ms': {'gi': 55, 'tmax': 1}, 'fr': {'gi': 1, 'tmax': 1}, 'cr': {'gi': 2, 'tmax': 1}, 'lt': {'gi': 3, 'tmax': 1},
+   'res': {'anyOf': ['fr', 'cr', 'lt'], 'shown': 'lt', 'label': K('화염·냉기·번개 저항 1티어', 'T1 fire, cold or lightning resistance')}, 'ra': {'gi': 44}, 'sp': {'gi': 51}, 'dg': {'gi': 57},
+   'good': {'anyOf': ['ms', 'res'], 'label': K('이동 속도·둔화 감소 1티어, 원소 저항 1티어', 'T1 movement speed with slow reduction, T1 elemental resistance')},
  },
- 'require': {'all': [{'has': 'ms'}, {'has': 'lt'}, {'has': 'ra'}, {'has': 'sp'}, {'full': 'p'}, {'any': [V2, {'has': 'dg'}]}]},
+ 'require': {'all': [{'has': 'ms'}, {'has': 'res'}, {'has': 'ra'}, {'has': 'sp'}, {'full': 'p'}, {'any': [V2, {'has': 'dg'}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
  'start': 'b0',
@@ -86,13 +87,13 @@ A(id='u1', kind='act', group='prep', pos=[0, 3], act='rune', label=K('룬', 'Run
   edges=[{'to': 'm1'}], item=[UH])
 # 매직 반복(영상 6:52~7:58): 완벽한 진화 → 완벽한 확장, 빗나간 옵션은 소멸의 오브 — 좋은 옵션 둘 중 먼저 뜬 것부터
 A(id='m1', kind='act', group='prep', pos=[0, 4], act='transmute', cur='Perfect_Orb_of_Transmutation', label=K('진화', 'Transmute'),
-  goal=K('이동 속도·둔화 감소 1티어, 번개 저항 1티어 중 먼저 뜬 것', 'T1 movement speed with slow reduction or T1 lightning resistance, whichever lands first'), show=['ms', 'lt'],
+  goal=K('이동 속도·둔화 감소 1티어, 원소 저항 1티어 중 먼저 뜬 것', 'T1 movement speed with slow reduction or T1 elemental resistance, whichever lands first'), show=['ms', 'res'],
   edges=[{'if': {'has': 'good'}, 'to': 'm2', 'res': 'ok'}, {'to': 'm1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[MS, UH])
 A(id='m1x', kind='cleanup', group='prep', pos=[1, 4], keep=[], maxJunk=0, label=ANN, goal=ANN,
   target=K('옵션을 모두 지우고 다시 진화', 'Clear the options and transmute again'), edges=[{'to': 'm1'}])
 A(id='m2', kind='act', group='prep', pos=[0, 5], act='augment', cur='Perfect_Orb_of_Augmentation', label=K('확장', 'Augment'),
-  goal=K('남은 옵션 — 이동 속도·둔화 감소 1티어 또는 번개 저항 1티어', 'The other one: T1 movement speed with slow reduction or T1 lightning resistance'), show=['ms', 'lt'],
-  edges=[{'if': {'all': [{'has': 'ms'}, {'has': 'lt'}]}, 'to': 'e1', 'res': 'ok'}, {'to': 'm2x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[MS, LT, UH])
+  goal=K('남은 옵션 — 이동 속도·둔화 감소 1티어 또는 원소 저항 1티어', 'The other one: T1 movement speed with slow reduction or T1 elemental resistance'), show=['ms', 'res'],
+  edges=[{'if': {'all': [{'has': 'ms'}, {'has': 'res'}]}, 'to': 'e1', 'res': 'ok'}, {'to': 'm2x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[MS, LT, UH])
 A(id='m2x', kind='cleanup', group='prep', pos=[1, 5], keep=['good'], maxJunk=0, label=ANN, goal=ANN,
   target=K('빗나간 옵션 지우기', 'Remove the missed option'),
   edges=[{'lost': 'good', 'to': 'm1x', 'label': K('좋은 옵션이 지워짐', 'The good option went')}, {'to': 'm2', 'label': K('다시 확장', 'Augment again')}])
@@ -137,7 +138,7 @@ g['nodes'] = N
 
 g['loops'] = [
  {'id': 'L0', 'nodes': ['m1', 'm1x', 'm2', 'm2x'], 'kr': '매직 옵션 두 개', 'en': 'Two magic options', 'fold': True,
-  'goal': K('접두 이동 속도·둔화 감소 1티어 + 접미 번개 저항 1티어 — 먼저 뜬 것부터', 'T1 movement speed with slow reduction prefix + T1 lightning resistance suffix: whichever lands first'),
+  'goal': K('접두 이동 속도·둔화 감소 1티어 + 접미 원소 저항 1티어 — 먼저 뜬 것부터', 'T1 movement speed with slow reduction prefix + T1 elemental resistance suffix: whichever lands first'),
   'steps': [K('완벽한 진화의 오브', 'Perfect Orb of Transmutation') | {'node': 'm1'},
             K('완벽한 확장의 오브로 남은 옵션', 'Perfect Orb of Augmentation for the other one') | {'node': 'm2'},
             K('빗나가면 소멸의 오브', 'A miss: Orb of Annulment') | {'node': 'm2x'},
@@ -155,9 +156,9 @@ g['loops'] = [
 
 g['finals'] = [
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'ms', 'fr': True}, {'side': 'p', 'random': True}, {'tag': 'dg', 'des': True, 'tmax': 2}, {'tag': 'lt'}, {'tag': 'ra', 'ess': True}, {'tag': 'sp', 'ess': True}]},
+  'lines': [{'tag': 'ms', 'fr': True}, {'side': 'p', 'random': True}, {'tag': 'dg', 'des': True, 'tmax': 2}, {'tag': 'res'}, {'tag': 'ra', 'ess': True}, {'tag': 'sp', 'ess': True}]},
  {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
-  'lines': [{'tag': 'ms', 'fr': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'lt'}, {'tag': 'ra', 'ess': True}, {'tag': 'sp', 'ess': True}]},
+  'lines': [{'tag': 'ms', 'fr': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'res'}, {'tag': 'ra', 'ess': True}, {'tag': 'sp', 'ess': True}]},
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

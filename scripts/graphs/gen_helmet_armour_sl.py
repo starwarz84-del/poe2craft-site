@@ -12,6 +12,8 @@
 #   1 분열: 영상 말대로 세 옵션 모두 유효 — 다른 옵션이 분열되면 같은 흐름(비용 같다고 가정, 옛 그래프 그대로).
 #   2 접두 세 자리는 생명력·방어도·방어도 % 중 남은 것 먼저 뜬 것부터(영상 7:20 '셋 중 아무거나').
 #   3 난이도 3 → 밸런스·에센셜(정책 10장). 영상 마지막 희귀도 절사(전문가급 비싼 징조 반복)는 C17-2(마지막 옵션 도박은 하이엔드만)라 선택 상자로.
+#   5 (11-13 오후 정책 B) 접두 훼손 공개(9:04)는 한 번에 방어도 %가 떠서 빗나감 장면이 없음 → 빛의 징조 반복 없음, 모든 등급 공개 결과 그대로(카드 '랜덤 옵션').
+#     접두 엑잘(8:04 정확도 빗나감 → 소멸)과 저항 엑잘(9:44 우측 소멸)은 영상에서 다시 하니 밸런스 반복 유지. 카드 P3는 성공 회차 방어도(8:41, shown).
 #   4 유동체 상자: 저항이 하나뿐일 때만(영상 5:30 저항 두 줄이면 합쳐짐 주의). 영상은 치직대는 유동체로 번개 — 유동체 이름은 화면으로 못 봄(결과로 판단).
 import json, os, sys
 H = os.path.dirname(os.path.abspath(__file__))
@@ -49,23 +51,23 @@ g = {
  'id': 'helmet-armour-sl-v2', 'recipe': 'helmet-armour-sl-v2', 'cls': CLS, 'base': 'Imperial Greathelm', 'ilvl': 82, 'basePrice': {},
  'note': ('SL #2 종결급 투구(p0fChSu91uI) — 2026-11-13 G6 영상 0:00~11:12 화면 대조. 노멀 제국의 대헬름(82, 홈 2개) → 완벽한 진화·확장 + 소멸(방어도 % 1티어 + 방어도의 원소 피해 적용 1티어) '
           '→ 상위 풍요의 에센스 → 보존된 갈비뼈 → 분열(세 옵션 모두 유효) → 소멸로 분열 + 옵션 1개 → 카오스 오브(접두 1티어) → 좌측 찬미 + 완벽한 엑잘(접두, 빗나가면 소멸) '
-          '→ 좌측 강령술 + 고대 갈비뼈 → 심연의 메아리 공개(밸런스는 빛의 징조로 다시) → 상위 찬미 + 완벽한 엑잘(저항, 밸런스는 빗나가면 우측 소멸) → 유동체(저항 하나일 때) '
+          '→ 좌측 강령술 + 고대 갈비뼈 → 심연의 메아리 공개(결과 그대로) → 상위 찬미 + 완벽한 엑잘(저항, 밸런스는 빗나가면 우측 소멸) → 유동체(저항 하나일 때) '
           '→ 선택: 절사 + 우측 말소 + 완벽한 카오스(희귀도 접미, 영상). 바알 주입기·신성한 오브·첫 도박 엑잘은 선택.'),
  'params': {'v': {'kr': '반복', 'en': 'Loops',
-                  'values': {'1': K('유효 옵션 1~2티어까지 (영상)', 'Until T1–2 wanted lines (video)'), '2': K('결과 그대로', 'As it comes')}}},
+                  'values': {'1': K('접두 엑잘·저항 1~2티어까지 (영상)', 'Prefix exalt and resistance until T1–2 (video)'), '2': K('결과 그대로', 'As it comes')}}},
  'strategies': [{'id': 'bal', 'params': {'v': 1}}, {'id': 'ess', 'params': {'v': 2}}],
  'versions': [
    {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'v': 2}, 'tier': 'ess',
     'desc': K('카오스 오브 접두 하나 뒤로는 엑잘·공개 결과 그대로', 'After the Chaos prefix, every exalt and reveal as it comes')},
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 1}, 'tier': 'bal',
-    'desc': K('접두 셋·저항 1~2티어(빛의 징조·우측 소멸로 다시), 마지막 접미는 나오는 대로', 'Three prefixes and a resistance at T1–2 (Light, Dextral Annulment), last suffix as it comes')}],
+    'desc': K('접두 둘·저항 1~2티어(소멸·우측 소멸로 다시), 훼손 공개와 마지막 접미는 나오는 대로', 'Two prefixes and a resistance at T1–2 (Annulment, Dextral Annulment), reveal and last suffix as they come')}],
  'tags': {
    'armP': {'gi': 9, 'tmax': 1}, 'armEle': {'gi': 20, 'tmax': 1}, 'magicGood': {'anyOf': ['armP', 'armEle']},
    'rarE': {'gi': 45}, 'rarS': {'gi': 17, 'tmax': 1},
    'life1': {'gi': 6, 'tmax': 1}, 'flat1': {'gi': 8, 'tmax': 1}, 'armP1': {'gi': 9, 'tmax': 1},
    'life': {'gi': 6, 'tmax': 2}, 'flat': {'gi': 8, 'tmax': 2}, 'armP2': {'gi': 9, 'tmax': 2},
    'P3c': {'anyOf': ['life1', 'flat1', 'armP1'], 'shown': 'life1', 'label': K('생명력 최대치·방어도·방어도 % 증가 1티어', 'T1 maximum life, flat armour or % armour')},
-   'P3': {'anyOf': ['life', 'flat', 'armP2'], 'label': K('생명력 최대치·방어도·방어도 % 증가 1~2티어', 'T1–2 maximum life, flat armour or % armour')},
+   'P3': {'anyOf': ['life', 'flat', 'armP2'], 'shown': 'flat', 'label': K('생명력 최대치·방어도·방어도 % 증가 1~2티어', 'T1–2 maximum life, flat armour or % armour')},
    'fire': {'gi': 2, 'tmax': 2}, 'cold': {'gi': 3, 'tmax': 2}, 'light': {'gi': 4, 'tmax': 2},
    'RES': {'anyOf': ['fire', 'cold', 'light'], 'shown': 'light', 'label': K('화염·냉기·번개 저항 1~2티어', 'T1–2 fire, cold or lightning resistance')},
    'fireA': {'gi': 2}, 'coldA': {'gi': 3}, 'lightA': {'gi': 4}, 'ELE': {'anyOf': ['fireA', 'coldA', 'lightA']},
@@ -73,7 +75,7 @@ g = {
    'sKeep': {'anyOf': ['armEle', 'RES']},
  },
  'require': {'all': [{'has': 'armEle'}, {'full': 'p'}, {'full': 's'}, {'has': 'P3c'},
-                     {'any': [V2, {'all': [{'sideAll': {'side': 'p', 'tag': 'P3'}}, {'has': 'RES'}]}]}]},
+                     {'any': [V2, {'all': [{'count': {'tag': 'P3', 'min': 2}}, {'has': 'RES'}]}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 2]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 2]}],
  'start': 'h1',
@@ -134,11 +136,9 @@ A(id='b3', kind='act', group='main', pos=[0, 11], act='desecrate', cur='Ancient_
   goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'b4'}], item=[LF, FA, UN('p'), AEf])
 A(id='b4', kind='act', group='main', pos=[0, 12], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='P3', label=K('공개', 'Reveal'),
-  goal=K('접두 세 번째 옵션(훼손) — 남은 한 옵션', 'Third prefix (desecrated): the last of the three'), show=['life', 'flat', 'armP2'],
-  edges=[{'if': {'added': 'P3'}, 'to': 's1', 'res': 'ok'}, {'if': V2, 'to': 's1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')},
-         {'to': 'b4x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[LF, FA, APd, AEf])
-A(id='b4x', kind='act', group='main', pos=[1, 12], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('빗나간 훼손 옵션 지우기', 'Remove the missed desecration'), edges=[{'to': 'b3'}])
+  goal=K('접두 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep the reveal'),
+  showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}],
+  edges=[{'to': 's1'}], item=[LF, FA, APd, AEf])
 A(id='s1', kind='act', group='main', pos=[0, 13], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접미 두 번째·세 번째 옵션 — 저항 하나', 'Second and third suffix: one resistance'), show=['fire', 'cold', 'light'],
   edges=[{'if': {'has': 'RES'}, 'to': 'sf', 'res': 'ok'}, {'if': V2, 'to': 'sf', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')},
@@ -170,14 +170,6 @@ g['loops'] = [
             K('좌측 찬미의 징조 + 완벽한 엑잘티드 오브', 'Omen of Sinistral Exaltation + Perfect Exalted Orb') | {'node': 'b2'},
             K('빗나가면 소멸의 오브 — 첫 번째 접두가 지워지면 카오스부터', 'A miss: Orb of Annulment; the first prefix gone means Chaos again') | {'node': 'b2x'}],
   'item': [LF, FA, AEf]},
- {'id': 'L3', 'nodes': ['b3', 'b4', 'b4x'], 'kr': '접두 세 번째 옵션(훼손)', 'en': 'Third prefix (desecrated)', 'fold': True,
-  'goal': K('접두 방어도 % 증가 1~2티어(훼손)', 'T1–2 % armour prefix (desecrated)'),
-  'goalBy': {'bal': K('접두 방어도 % 증가 1~2티어(훼손) — 빛의 징조로 다시', 'T1–2 % armour prefix (desecrated): Omen of Light retries'),
-             'ess': K('접두 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep the reveal')},
-  'steps': [K('좌측 강령술의 징조 + 고대 갈비뼈', 'Omen of Sinistral Necromancy + Ancient Rib') | {'node': 'b3'},
-            K('심연의 메아리의 징조로 공개', 'Reveal with the Omen of Abyssal Echoes') | {'node': 'b4'},
-            K('빗나가면 빛의 징조 + 소멸의 오브', 'A miss: Omen of Light + Orb of Annulment') | {'node': 'b4x'}],
-  'item': [LF, FA, APd, AEf]},
  {'id': 'L4', 'nodes': ['s1', 's1x'], 'kr': '접미 두 자리', 'en': 'Two suffixes', 'fold': True,
   'goal': K('접미 저항 1~2티어 + 랜덤 옵션', 'T1–2 resistance suffix + a random option'),
   'goalBy': {'bal': K('접미 저항 1~2티어 + 랜덤 옵션', 'T1–2 resistance suffix + a random option'),
@@ -189,7 +181,7 @@ g['loops'] = [
 
 g['finals'] = [
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'life'}, {'tag': 'flat'}, {'tag': 'armP2'}, {'tag': 'armEle', 'fr': True}, {'tag': 'RES'}, {'side': 's', 'random': True}]},
+  'lines': [{'tag': 'P3c'}, {'tag': 'P3'}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'armEle', 'fr': True}, {'tag': 'RES'}, {'side': 's', 'random': True}]},
  {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
   'lines': [{'tag': 'P3c'}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'armEle', 'fr': True}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]},
 ]
