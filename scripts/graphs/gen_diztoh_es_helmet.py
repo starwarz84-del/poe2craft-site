@@ -121,7 +121,7 @@ A(id='x2d', kind='act', group='main', pos=[2, 9], act='desecrate', cur='Ancient_
   goal=K('접두 훼손 옵션 다시', 'Desecrate the prefix again'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'x2', 'label': K('다시 엑잘', 'exalt again')}])
 A(id='r1', kind='act', group='main', pos=[0, 10], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pre2', label=K('공개', 'Reveal'),
-  goal=K('접두 남은 옵션 — 선택지에 있으면 아이템 희귀도·에너지 보호막 % 중 남은 것(영상: 아이템 희귀도), 없으면 결과 그대로', 'The remaining prefix: the other of rarity or % energy shield if offered (the video: item rarity), otherwise keep what comes'), show=['rarP'],
+  goal=K('접두 남은 옵션 — 희귀도·에너지 보호막 % 중 남은 것, 없으면 그대로', 'The remaining prefix: the other of rarity or % energy shield if offered (the video: item rarity), otherwise keep what comes'), show=['rarP'],
   edges=[{'to': 'q1'}], item=[ESF, ESP, RARP, RARS, INT, REC],
   over=[{'param': {'L': 0}, 'set': {'goal': K('접두 훼손 옵션 공개 — 나오는 대로', 'Reveal the prefix desecration: keep what comes'), 'show': [],
                                     'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}], 'item': [ESF, RP, RPD, RARS, INT, REC]}}])
@@ -141,9 +141,9 @@ g['loops'] = [
 ]
 g['finals'] = [
   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-   'lines': [{'tag': 'esf', 'fr': True}, {'tag': 'pre2'}, {'side': 'p', 'random': True}, {'tag': 'rarS'}, {'tag': 'int'}, {'side': 's', 'random': True}]},
+   'lines': [{'tag': 'esf', 'fr': True}, {'tag': 'pre2'}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'rarS'}, {'tag': 'int'}, {'side': 's', 'random': True}]},
   {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
-   'lines': [{'tag': 'esf', 'fr': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True}, {'tag': 'rarS'}, {'tag': 'int'}, {'side': 's', 'random': True}]},
+   'lines': [{'tag': 'esf', 'fr': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'rarS'}, {'tag': 'int'}, {'side': 's', 'random': True}]},
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')
