@@ -110,9 +110,10 @@ A(id='ok', kind='done', group='main', pos=[0, 11.4], label=K('완성', 'Finished
 g['nodes'] = N
 
 g['loops'] = []
+# S5 2026-11-13: 난이도 표 보통(2) → 분열 빗나가도 계속(G). 에너지 보호막 최대치가 분열되지 않은 회차(약 15%)엔 합금이 지울 수 있어 카드 첫 줄은 랜덤 옵션(fincheck esf 85%)
 g['finals'] = [
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'esf', 'fr': True}, {'side': 'p', 'random': True, 'des': True}, {'side': 'p', 'random': True}, {'tag': 'lvl'}, {'tag': 'critE', 'ess': True}, {'tag': 'cs', 'ess': True}]},
+  'lines': [{'side': 'p', 'random': True}, {'side': 'p', 'random': True, 'des': True}, {'side': 'p', 'random': True}, {'tag': 'lvl'}, {'tag': 'critE', 'ess': True}, {'tag': 'cs', 'ess': True}]},
 ]
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')
