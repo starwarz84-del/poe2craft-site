@@ -3,35 +3,28 @@
  "recipe": "diztoh-budget-mace-v2",
  "cls": "Two_Hand_Maces",
  "base": "Massive Greathammer",
- "ilvl": 82,
- "note": "Diztoh 가성비 양손 둔기(영상 방식) — 특출난 노멀 → 완벽한 진화의 오브(물리 복합, 실패 시 소멸의 오브) → 완벽한 확장의 오브 → 상위 마모의 에센스 → 좌측 강령술 + 검은 피의 징조(쿠르갈) + 보존된 턱뼈 → 아스트리드의 창의성 + 우측 결정화 + 완벽한 전투의 에센스 → 공개(쿠르갈 물리 %) → 상위 찬미 + 완벽한 엑잘(접미 옵션 2개 결과 그대로). 영상은 공개 실패 처리가 없어 빛의 징조 + 소멸의 오브로 다시 훼손하는 걸로 넣음. 철 룬은 취향(정책 23). 밸런스 = 영상(복합 1~2티어), 에센셜 = 복합 1~4티어 매직 베이스 구입(정책 18) + 마지막은 상위 엑잘티드 오브.",
+ "ilvl": 84,
+ "basePrice": {
+  "Exalted_Orb": 3
+ },
+ "note": "Diztoh 가성비 양손 둔기(ITbefGq6V18, 2026-11-13 G14 영상 전체 화면 대조) — 노멀 특출난 거대한 대망치(소켓 3, 아이템 레벨 84) → 완벽한 진화·확장 + 소멸로 접두 물리 복합(2티어) → 상위 마모의 에센스(레어 + 물리 피해 추가) → 좌측 강령술 + 검은 피의 징조 + 보존된 턱뼈 → 아스트리드의 창의성 → 우측 결정화 + 완벽한 전투의 에센스(접미 잡옵을 지우고 공격 스킬 +3) → 공개(쿠르갈 물리 피해) → 상위 찬미 + 완벽한 엑잘(접미 2개 결과 그대로). 난이도 쉬움이라 에센셜 하나. 우측 소멸 시연·철 룬은 뺌.",
  "params": {
-  "hT": {
-   "kr": "물리 복합",
-   "en": "Hybrid physical",
+  "v": {
+   "kr": "흐름",
+   "en": "Flow",
    "values": {
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    },
-    "4": {
-     "kr": "1~4티어",
-     "en": "T1–4"
+    "1": {
+     "kr": "영상",
+     "en": "Video"
     }
    }
   }
  },
  "strategies": [
   {
-   "id": "bal",
-   "params": {
-    "hT": 2
-   }
-  },
-  {
    "id": "ess",
    "params": {
-    "hT": 4
+    "v": 1
    }
   }
  ],
@@ -41,30 +34,19 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "hT": 4
+    "v": 1
    },
+   "tier": "ess",
    "desc": {
-    "kr": "물리 복합 1~4티어 매직 구입, 마지막 엑잘은 상위",
-    "en": "Buy a T1–4 hybrid magic base, greater exalt to finish"
-   }
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "hT": 2
-   },
-   "desc": {
-    "kr": "노멀에서 완벽한 진화의 오브로 물리 복합 1~2티어 (영상)",
-    "en": "Transmute hybrid physical T1–2 from normal (as the video)"
+    "kr": "영상 그대로: 마지막 엑잘은 결과 그대로",
+    "en": "As the video: the last exalt is kept as it comes"
    }
   }
  ],
  "tags": {
   "hyb": {
    "gi": 8,
-   "tmax": "$hT"
+   "tmax": 2
   },
   "flat": {
    "gi": 39
@@ -74,24 +56,30 @@
   },
   "battle": {
    "gi": 53
-  },
-  "as": {
-   "gi": 15
-  },
-  "attr": {
-   "gi": 1
   }
  },
  "require": {
   "all": [
    {
+    "has": "hyb"
+   },
+   {
+    "has": "flat"
+   },
+   {
     "has": "kp"
+   },
+   {
+    "has": "battle"
    },
    {
     "full": "p"
    },
    {
     "full": "s"
+   },
+   {
+    "desSide": "p"
    }
   ]
  },
@@ -115,148 +103,32 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L0",
-   "nodes": [
-    "d2",
-    "d2x"
-   ],
-   "kr": "접두 첫번째 옵션",
-   "en": "First prefix"
-  },
-  {
-   "id": "L1",
-   "nodes": [
-    "d5",
-    "d8",
-    "d8x"
-   ],
-   "kr": "접두 세번째 옵션(훼손)",
-   "en": "Third prefix (desecrated)"
-  }
- ],
- "finals": [
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "hyb",
-     "tmax": 2
-    },
-    {
-     "tag": "flat",
-     "tmax": 1
-    },
-    {
-     "tag": "kp",
-     "tmax": 1
-    },
-    {
-     "tag": "battle",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "tag": "hyb",
-     "tmax": 4
-    },
-    {
-     "tag": "flat",
-     "tmax": 1
-    },
-    {
-     "tag": "kp",
-     "tmax": 1
-    },
-    {
-     "tag": "battle",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  }
- ],
+ "start": "b0",
  "finalItem": {
-  "quality": 20,
   "sockets": 3
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "d2",
+   "next": "m1",
    "start": {
-    "rar": "normal"
+    "rar": "normal",
+    "mods": []
    },
    "label": {
-    "kr": "특출난 거대한 대망치 (소켓 3) 노멀 구입",
-    "en": "Buy a normal exceptional Massive Greathammer (3 sockets)"
+    "kr": "노멀 특출난 거대한 대망치 구입 (소켓 3, 아이템 레벨 84)",
+    "en": "Buy a normal exceptional Massive Greathammer (3 sockets, item level 84)"
    },
-   "item": [],
-   "over": [
-    {
-     "param": {
-      "hT": 4
-     },
-     "set": {
-      "start": {
-       "rar": "magic",
-       "mods": [
-        "hyb"
-       ]
-      },
-      "next": "d3",
-      "label": {
-       "kr": "물리 복합 매직 특출난 거대한 대망치 구입",
-       "en": "Buy a magic exceptional Massive Greathammer with hybrid physical"
-      },
-      "item": [
-       {
-        "s": "p",
-        "kr": "물리 % + 정확도 복합",
-        "en": "Hybrid % physical + accuracy",
-        "m": "n",
-        "tags": [
-         "hyb"
-        ]
-       }
-      ]
-     }
-    }
-   ]
+   "item": []
   },
   {
-   "id": "d2",
+   "id": "m1",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -264,54 +136,75 @@
     1
    ],
    "act": "transmute",
-   "goal": {
-    "kr": "매직으로 업그레이드 + 접두 물리 복합",
-    "en": "Upgrade to magic + hybrid physical prefix"
-   },
+   "cur": "Perfect_Orb_of_Transmutation",
    "label": {
     "kr": "진화",
     "en": "Transmute"
    },
+   "goal": {
+    "kr": "매직 첫번째 옵션 — 접미가 붙으면 확장으로",
+    "en": "First magic option: a suffix goes on to the Augmentation"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
      "if": {
-      "added": "hyb"
+      "any": [
+       {
+        "has": "hyb"
+       },
+       {
+        "not": {
+         "full": "p"
+        }
+       }
+      ]
      },
-     "to": "d3",
-     "res": "ok"
+     "to": "m2",
+     "res": "ok",
+     "label": {
+      "kr": "접두 복합 또는 접미",
+      "en": "Hybrid prefix or a suffix"
+     }
     },
     {
-     "to": "d2x",
-     "res": "fail"
+     "to": "m1x",
+     "res": "fail",
+     "label": {
+      "kr": "다른 접두",
+      "en": "Another prefix"
+     }
     }
    ],
+   "ask": {
+    "kr": "접두 자리가 비었거나 복합?",
+    "en": "Prefix free or hybrid?"
+   },
    "item": [
     {
-     "s": "p",
-     "kr": "물리 % + 정확도 복합",
-     "en": "Hybrid % physical + accuracy",
-     "m": "n",
-     "tags": [
-      "hyb"
-     ]
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
+     "m": "j"
     }
-   ],
-   "cur": "Perfect_Orb_of_Transmutation",
-   "show": [
-    "hyb"
    ]
   },
   {
-   "id": "d2x",
-   "kind": "act",
-   "group": "main",
+   "id": "m1x",
+   "kind": "cleanup",
+   "group": "prep",
    "pos": [
     1,
     1
    ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [],
+   "keep": [],
+   "maxJunk": 0,
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -321,18 +214,17 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 옵션 제거",
-    "en": "Remove the missed line"
+    "kr": "옵션을 지워 노멀로",
+    "en": "Annul back to normal"
    },
    "edges": [
     {
-     "to": "d2",
-     "port": "right"
+     "to": "m1"
     }
    ]
   },
   {
-   "id": "d3",
+   "id": "m2",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -340,24 +232,48 @@
     2
    ],
    "act": "augment",
-   "goal": {
-    "kr": "접미 옵션 1개 추가",
-    "en": "Add a suffix"
-   },
+   "cur": "Perfect_Orb_of_Augmentation",
    "label": {
     "kr": "확장",
     "en": "Augment"
    },
+   "goal": {
+    "kr": "접두 물리 % + 정확도 복합",
+    "en": "Hybrid % physical + accuracy prefix"
+   },
+   "show": [
+    "hyb"
+   ],
    "edges": [
     {
-     "to": "d4"
+     "if": {
+      "has": "hyb"
+     },
+     "to": "e1",
+     "res": "ok",
+     "label": {
+      "kr": "성공",
+      "en": "hit"
+     }
+    },
+    {
+     "to": "m1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "miss"
+     }
     }
    ],
+   "ask": {
+    "kr": "복합?",
+    "en": "Hybrid?"
+   },
    "item": [
     {
      "s": "p",
-     "kr": "물리 % + 정확도 복합",
-     "en": "Hybrid % physical + accuracy",
+     "kr": "물리 피해 (65—74)% 증가 / 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage / +(150—174) to Accuracy Rating",
      "m": "n",
      "tags": [
       "hyb"
@@ -365,22 +281,14 @@
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
      "m": "j"
-    }
-   ],
-   "cur": "Perfect_Orb_of_Augmentation",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "잡옵 (아무 옵션)",
-     "en": "Junk (any line)"
     }
    ]
   },
   {
-   "id": "d4",
+   "id": "e1",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -388,14 +296,23 @@
     3
    ],
    "act": "essence",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접두 물리 피해 추가",
-    "en": "Upgrade to rare + flat physical prefix"
-   },
+   "cur": "Greater_Essence_of_Abrasion",
+   "ess": "flat",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "레어 + 접두 물리 피해 추가",
+    "en": "Rare + added physical damage prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (23—35)~(39—59) 추가 (제작 옵션)",
+     "en": "Adds (23—35) to (39—59) Physical Damage (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "ms"
@@ -404,38 +321,29 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 % + 정확도 복합",
-     "en": "Hybrid % physical + accuracy",
+     "kr": "물리 피해 (65—74)% 증가 / 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage / +(150—174) to Accuracy Rating",
      "m": "n",
      "tags": [
       "hyb"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
-    }
-   ],
-   "cur": "Greater_Essence_of_Abrasion",
-   "showText": [
+    },
     {
-     "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)"
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
+     "m": "j"
     }
-   ],
-   "ess": "flat"
+   ]
   },
   {
    "id": "ms",
@@ -443,9 +351,9 @@
    "group": "main",
    "pos": [
     0,
-    3.5
+    3.4
    ],
-   "next": "d5",
+   "next": "k1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -453,130 +361,207 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 % + 정확도 복합",
-     "en": "Hybrid % physical + accuracy",
+     "kr": "물리 피해 (65—74)% 증가 / 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage / +(150—174) to Accuracy Rating",
      "m": "n",
      "tags": [
       "hyb"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
+    },
+    {
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
+     "m": "j"
     }
    ]
   },
   {
-   "id": "d5",
+   "id": "k1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    4.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접두 세번째 옵션(훼손)",
-    "en": "Third prefix option (desecrated)"
-   },
+   "cur": "Preserved_Jawbone",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy",
+    "Omen_of_the_Blackblooded"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손, 쿠르갈)",
+    "en": "Third prefix option (desecrated, Kurgal)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "접두 훼손 옵션 (미공개, 공개 3개 모두 쿠르갈)",
+     "en": "Prefix desecration (unrevealed, all three options Kurgal)"
+    }
+   ],
    "edges": [
     {
-     "if": {
-      "has": "battle"
-     },
-     "to": "d8"
-    },
-    {
-     "to": "d7"
+     "to": "k2"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 % + 정확도 복합",
-     "en": "Hybrid % physical + accuracy",
+     "kr": "물리 피해 (65—74)% 증가 / 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage / +(150—174) to Accuracy Rating",
      "m": "n",
      "tags": [
       "hyb"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
     },
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
+     "kr": "접두 훼손 옵션 (미공개, 쿠르갈)",
+     "en": "Prefix desecration (unrevealed, Kurgal)",
+     "m": "u"
+    },
     {
-     "s": "p",
-     "kr": "쿠르갈 훼손 옵션(미공개)",
-     "en": "Kurgal desecration (unrevealed)"
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
+     "m": "j"
     }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy",
-    "Omen_of_the_Blackblooded"
    ]
   },
   {
-   "id": "d7",
+   "id": "k2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    5.4
+   ],
+   "act": "rune",
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
+   },
+   "edges": [
+    {
+     "to": "k3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (65—74)% 증가 / 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage / +(150—174) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
+     "tags": [
+      "flat"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "접두 훼손 옵션 (미공개, 쿠르갈)",
+     "en": "Prefix desecration (unrevealed, Kurgal)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "정확도 +(41—60) / 시야 반경 15% 증가",
+     "en": "+(41—60) to Accuracy Rating / 15% increased Light Radius",
+     "m": "j"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "k3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "아스트리드의 창의성 장착 후 접미 공격 스킬 +3",
-    "en": "Socket Astrid’s Creativity, then +3 attack skills suffix"
-   },
+   "cur": "Perfect_Essence_of_Battle",
+   "ess": "battle",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ],
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "접미 잡옵을 지우고 공격 스킬 +3",
+    "en": "Clear the junk suffix for +3 attack skills"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 to Level of all Attack Skills (crafted)"
+    }
+   ],
    "edges": [
     {
-     "to": "d8"
+     "to": "k4"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 % + 정확도 복합",
-     "en": "Hybrid % physical + accuracy",
+     "kr": "물리 피해 (65—74)% 증가 / 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage / +(150—174) to Accuracy Rating",
      "m": "n",
      "tags": [
       "hyb"
@@ -584,77 +569,68 @@
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
     },
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
+     "kr": "접두 훼손 옵션 (미공개, 쿠르갈)",
+     "en": "Prefix desecration (unrevealed, Kurgal)",
+     "m": "u"
     },
     {
      "s": "s",
-     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 attack skills (crafted)",
-     "m": "n",
+     "kr": "모든 공격 스킬 레벨 +3",
+     "en": "+3 to Level of all Attack Skills",
+     "m": "c",
      "tags": [
       "battle"
      ]
-    }
-   ],
-   "cur": "Perfect_Essence_of_Battle",
-   "showText": [
+    },
     {
-     "s": "s",
-     "kr": "잡옵 → 모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "Junk → +3 attack skills (crafted)"
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "ess": "battle",
-   "omens": [
-    "Omen_of_Dextral_Crystallisation"
    ]
   },
   {
-   "id": "d8",
+   "id": "k4",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    6
+    7.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "want": "kp",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 물리 피해 증가, 공격 속도 감소 (훼손)",
+    "en": "% physical with reduced attack speed prefix (desecrated)"
+   },
+   "show": [
+    "kp"
+   ],
    "edges": [
     {
-     "if": {
-      "added": "kp"
-     },
-     "to": "d9",
+     "to": "k5",
      "res": "ok"
-    },
-    {
-     "to": "d8x",
-     "res": "fail"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 % + 정확도 복합",
-     "en": "Hybrid % physical + accuracy",
+     "kr": "물리 피해 (65—74)% 증가 / 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage / +(150—174) to Accuracy Rating",
      "m": "n",
      "tags": [
       "hyb"
@@ -662,86 +638,67 @@
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
     },
     {
+     "s": "p",
+     "kr": "물리 피해 (110—154)% 증가 / 공격 속도 15% 감소",
+     "en": "(110—154)% increased Physical Damage / 15% reduced Attack Speed",
+     "m": "d",
+     "tags": [
+      "kp"
+     ]
+    },
+    {
      "s": "s",
-     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 attack skills (crafted)",
-     "m": "n",
+     "kr": "모든 공격 스킬 레벨 +3",
+     "en": "+3 to Level of all Attack Skills",
+     "m": "c",
      "tags": [
       "battle"
      ]
     },
     {
-     "s": "p",
-     "kr": "물리 피해 % (쿠르갈, 공격 속도 감소)",
-     "en": "% physical (Kurgal, reduced attack speed)",
-     "m": "n",
-     "tags": [
-      "kp"
-     ]
-    }
-   ],
-   "want": "kp",
-   "show": [
-    "kp"
-   ]
-  },
-  {
-   "id": "d8x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    6
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
-   },
-   "edges": [
-    {
-     "to": "d5",
-     "port": "right"
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "d9",
+   "id": "k5",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7
+    8.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접미 두번째·세번째 옵션",
-    "en": "Second and third suffix options"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 두번째·세번째 옵션 — 나오는 대로",
+    "en": "Second and third suffix options: keep what lands"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
    "edges": [
     {
      "to": "ok"
@@ -750,8 +707,8 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 % + 정확도 복합",
-     "en": "Hybrid % physical + accuracy",
+     "kr": "물리 피해 (65—74)% 증가 / 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage / +(150—174) to Accuracy Rating",
      "m": "n",
      "tags": [
       "hyb"
@@ -759,57 +716,48 @@
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flat"
      ]
     },
     {
-     "s": "s",
-     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 attack skills (crafted)",
-     "m": "n",
-     "tags": [
-      "battle"
-     ]
-    },
-    {
      "s": "p",
-     "kr": "물리 피해 % (쿠르갈, 공격 속도 감소)",
-     "en": "% physical (Kurgal, reduced attack speed)",
-     "m": "n",
+     "kr": "물리 피해 (110—154)% 증가 / 공격 속도 15% 감소",
+     "en": "(110—154)% increased Physical Damage / 15% reduced Attack Speed",
+     "m": "d",
      "tags": [
       "kp"
      ]
     },
     {
      "s": "s",
-     "kr": "랜덤 옵션 2개 (공격 속도·능력치 요구 감소면 최선)",
-     "en": "Two random lines (attack speed or attribute requirements is best)",
-     "m": "j"
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
+     "kr": "모든 공격 스킬 레벨 +3",
+     "en": "+3 to Level of all Attack Skills",
+     "m": "c",
+     "tags": [
+      "battle"
+     ]
+    },
     {
      "s": "s",
-     "kr": "랜덤 옵션 2개 (공격 속도·능력치 요구 감소면 최선) — 결과 그대로",
-     "en": "Two random lines (attack speed or attribute requirements is best) — keep whatever comes"
-    }
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
-   ],
-   "over": [
+     "kr": "기절 지속시간 (23—26)% 증가",
+     "en": "(23—26)% increased Stun Duration",
+     "m": "n"
+    },
     {
-     "param": {
-      "hT": 4
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
-     }
+     "s": "s",
+     "kr": "처치한 적 하나당 마나 (28—35) 획득",
+     "en": "Gain (28—35) Mana per enemy killed",
+     "m": "n"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
    ]
   },
@@ -819,12 +767,57 @@
    "group": "main",
    "pos": [
     0,
-    8
+    9.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "m1",
+    "m1x",
+    "m2"
+   ],
+   "kr": "매직 옵션 맞추기",
+   "en": "Magic options"
+  }
+ ],
+ "finals": [
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "hyb"
+    },
+    {
+     "tag": "flat",
+     "ess": true
+    },
+    {
+     "tag": "kp",
+     "des": true
+    },
+    {
+     "tag": "battle",
+     "ess": true
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
   }
  ]
 }

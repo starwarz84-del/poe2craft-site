@@ -30,18 +30,23 @@ def _belt(r, t):
       {'id':'b6','phase':'fin','do':'note','note':K('완성.','Done.')}]
 for _t in ('bal','ess'): _grade('sane-resist-belt','sane-resist-belt-v2',_t,_belt)
 
-# 3. Diztoh 가성비 양손 둔기 — Balance = video (Perfect Transmutation for T1–2 hybrid), Essential = buy a T1–4 hybrid magic base (정책 18) + Greater Exalt
+# 3. Diztoh 가성비 양손 둔기 — 2026-11-13 G14: 영상 전체 화면 대조(근거 scratchpad review/G14/diztoh-budget-mace-v2/timeline.md), 난이도 쉬움 → 에센셜만.
+#    단계·확률은 플로우차트(scripts/graphs/gen_diztoh_budget_mace.py). 상자 id(b0·m1·m1x·m2·e1·k1~k5)는 옛 단계 id(h1·d1~d10)와 겹치지 않게 새로 붙임.
 def _mace(r, t):
-    hyb=_node(r,'d2')['target']['gi']
-    if t=='ess':
-        r['start']={'rar':'magic','mods':[{'gi':hyb,'tmax':4}]}; r['nodes']=[n for n in r['nodes'] if n['id']!='d2']
-        _node(r,'d1')['note']=K('물리 % + 정확도 복합(1~4티어)이 붙은 매직 특출난 거대한 대망치(소켓 3), 아이템 레벨 82.','A magic exceptional Massive Greathammer (3 sockets) with T1–4 hybrid physical + accuracy, item level 82.')
-        _node(r,'d9')['cur']='Greater_Exalted_Orb'
-    else: _node(r,'d2')['target']['tmax']=2
-    _node(r,'d8')['fail']={'goto':'d5','via':LIGHT}
-    _node(r,'d8')['br']=K('쿠르갈 물리 % → 다음, 실패: 빛의 징조 + 소멸의 오브로 다시 훼손','Kurgal % physical → next; miss: Light + Annulment and desecrate again')
-    r['nodes']=[n for n in r['nodes'] if n['id']!='d10']+[{'id':'d10','phase':'fin','do':'note','ts':'4:32','note':K('완성. 소켓의 아스트리드의 창의성은 빼고 원하는 룬으로.','Done. Swap Astrid’s Creativity for the runes you like.')}]
-for _t in ('bal','ess'): _grade('diztoh-budget-mace','diztoh-budget-mace-v2',_t,_mace)
+    r['ilvl']=84; r['start']={'rar':'normal','mods':[]}
+    hyb=mc_hyb; flat=mc_flatE; kp=mc_kpct; bat=mc_battle
+    r['nodes']=[
+      {'id':'b0','phase':'base','do':'base','cost':'base','ts':'0:12','note':K('특출난 거대한 대망치(소켓 3), 노멀, 아이템 레벨 84.','Exceptional Massive Greathammer (3 sockets), normal, item level 84.')},
+      {'id':'m1','phase':'base','do':'transmute','cur':'Perfect_Orb_of_Transmutation','target':{'gi':hyb},'ts':'0:25'},
+      {'id':'m2','phase':'base','do':'augment','cur':'Perfect_Orb_of_Augmentation','target':{'gi':hyb},'ts':'0:45'},
+      {'id':'e1','phase':'base','do':'essence','cur':'Greater_Essence_of_Abrasion','target':{'gi':flat},'ts':'0:57'},
+      {'id':'k1','phase':'pre','do':'desecrate','cur':'Preserved_Jawbone','omens':['Omen_of_Sinistral_Necromancy','Omen_of_the_Blackblooded'],'target':{'unrev':'p'},'ts':'1:04'},
+      {'id':'k2','phase':'pre','do':'manual','target':{'rune':{'kr':'아스트리드의 창의성','en':'Astrid’s Creativity'}},'ts':'1:41'},
+      {'id':'k3','phase':'pre','do':'essence','cur':'Perfect_Essence_of_Battle','omens':['Omen_of_Dextral_Crystallisation'],'target':{'gi':bat},'ts':'1:54'},
+      {'id':'k4','phase':'pre','do':'reveal','target':{'reveal':{'gi':kp},'side':'p','bone':'Preserved_Jawbone'},'ts':'2:33'},
+      {'id':'k5','phase':'pre','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],'target':{'junk':['s','s']},'ts':'2:52'},
+    ]
+_grade('diztoh-budget-mace','diztoh-budget-mace-v2','ess',_mace)
 
 # 4. LilBotQ 가성비 장화 — Balance = video, Essential = T1–2 movement speed + T1–3 cold res bought, lightning res T1–4
 def _boots(r, t):
