@@ -4,47 +4,33 @@
  "cls": "Sceptres",
  "base": "Stoic Sceptre",
  "ilvl": 82,
- "note": "시한 차율라 셉터(원본 레시피 기록) — 정신력 % 분열 + 잡옵 → 아스트리드의 창의성 → 카오스 오브(접근 효과 범위 1티어) → 좌측 찬미 + 상위 엑잘 → 좌측 결정화 + 수호의 합금 → 좌측 찬미 + 상위 엑잘 → 좌측 결정화 + 완벽한 명령의 에센스 → 엑잘 2번 → 좌측 강령술 + 보존된 턱뼈 → 공개(정신력 % + 마나). 밸런스 = 영상(1~4티어, 빛의 징조로 다시), 에센셜 = 정신력 1~4티어 분열·접근 효과 1~2티어, 공개는 결과 그대로.",
+ "note": "2026-11-13 G7 영상 전체(0:00~6:18) 화면 대조. 시작 = 정신력 % 2티어 분열 + 미공개 훼손이 남은 레어 엄숙한 셉터 구입(1:04, 아이템 레벨 82) → 아스트리드의 창의성(1:14) → 카오스 오브로 접근 효과 범위 1티어(1:32·5:10) → 좌측 찬미 + 상위 엑잘 접두 잡옵 → 좌측 결정화 + 보호의 합금(룬 수호, 잡옵을 지움) → 좌측 찬미 + 상위 엑잘 두 번(마나 최대치·동료 물리 피해) → 좌측 결정화 + 완벽한 지휘의 에센스(오라 강도, 접두 하나를 1/2로 지움 — 성공 회차는 마나가 지워짐, 5:27) → 상위 엑잘 접두(5:47) → 좌측 강령술 + 보존된 턱뼈(접두가 꽉 차 잡옵 하나를 지움) → 심연의 메아리 공개 = 정신력 + 마나 복합 4티어(6:06~6:17). 첫 회차(1:00~4:20)는 3:34 공개가 7티어라 징조 없는 소멸의 오브로 지우다(4:00 \"빛의 징조는 돈이 아까워서\") 접근 효과까지 지워져 카오스부터 다시 — 이 되돌림을 밸런스 접힌 상자의 순서로 넣음(영상대로 징조 없는 소멸의 오브). 퀄리티 20%(3:05~3:34)는 쓴 커런시를 확인 못 해 비용에서 뺌. 등급(정책 10장): 난이도 3 → 밸런스·에센셜. 카오스 접근 효과는 카오스 오브 반복이라 두 등급 모두 1티어(C15). 밸런스 = 복합 1~2티어까지 다시(정책 10장 C17 — 영상 2:50은 \"3티어 이상이면 된다\", 완성 4티어. 영상 기준 1~4티어면 시뮬 54 div, 의문으로 보고), 에센셜 = 공개 결과 그대로.",
  "params": {
-  "sT": {
-   "kr": "정신력 % (분열)",
-   "en": "% Spirit (fractured)",
-   "values": {
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    },
-    "4": {
-     "kr": "1~4티어",
-     "en": "T1–4"
-    }
-   }
-  },
-  "aT": {
-   "kr": "접근 효과 범위",
-   "en": "Presence area",
+  "L": {
+   "kr": "공개",
+   "en": "Reveal",
    "values": {
     "1": {
-     "kr": "1티어",
-     "en": "T1"
+     "kr": "소멸의 오브로 다시",
+     "en": "Retry with Orbs of Annulment"
     },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
+    "0": {
+     "kr": "결과 그대로",
+     "en": "Keep whatever comes"
     }
    }
   },
   "hT": {
-   "kr": "정신력 % + 마나",
-   "en": "% Spirit + mana",
+   "kr": "정신력 + 마나 복합",
+   "en": "Spirit + mana hybrid",
    "values": {
-    "4": {
-     "kr": "1~4티어",
-     "en": "T1–4"
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
     },
-    "6": {
-     "kr": "1~6티어",
-     "en": "T1–6"
+    "7": {
+     "kr": "나오는 대로",
+     "en": "As it comes"
     }
    }
   }
@@ -53,17 +39,15 @@
   {
    "id": "bal",
    "params": {
-    "sT": 2,
-    "aT": 1,
-    "hT": 4
+    "L": 1,
+    "hT": 2
    }
   },
   {
    "id": "ess",
    "params": {
-    "sT": 4,
-    "aT": 2,
-    "hT": 6
+    "L": 0,
+    "hT": 7
    }
   }
  ],
@@ -73,13 +57,13 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "sT": 4,
-    "aT": 2,
-    "hT": 6
+    "L": 0,
+    "hT": 7
    },
+   "tier": "ess",
    "desc": {
-    "kr": "더 싼 분열 베이스, 공개 결과 그대로",
-    "en": "Cheaper fractured base, keep the reveal"
+    "kr": "공개 결과 그대로",
+    "en": "Keep the reveal"
    }
   },
   {
@@ -87,43 +71,55 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "sT": 2,
-    "aT": 1,
-    "hT": 4
+    "L": 1,
+    "hT": 2
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상 목표, 공개가 빗나가면 빛의 징조로 다시",
-    "en": "Video targets; Light on a missed reveal"
+    "kr": "정신력 + 마나 복합 1~2티어까지 징조 없는 소멸의 오브로 다시",
+    "en": "Plain Orbs of Annulment until a T1–2 spirit + mana hybrid"
    }
   }
  ],
  "tags": {
-  "spirit": {
+  "sp": {
    "gi": 19,
-   "tmax": "$sT"
-  },
-  "hyb": {
-   "gi": 20,
-   "tmax": "$hT"
-  },
-  "hybAny": {
-   "gi": 20
+   "tmax": 2
   },
   "aoe": {
    "gi": 21,
-   "tmax": "$aT"
+   "tmax": 1
   },
   "ward": {
    "gi": 31
   },
   "aura": {
    "gi": 29
+  },
+  "hyb": {
+   "gi": 20,
+   "tmax": "$hT"
+  },
+  "hyv": {
+   "gi": 20,
+   "tmax": 4
+  },
+  "hy2": {
+   "gi": 20,
+   "tmax": 2
+  },
+  "keepS": {
+   "anyOf": [
+    "aoe",
+    "ward",
+    "aura"
+   ]
   }
  },
  "require": {
   "all": [
    {
-    "has": "spirit"
+    "has": "sp"
    },
    {
     "has": "aoe"
@@ -136,6 +132,18 @@
    },
    {
     "full": "p"
+   },
+   {
+    "any": [
+     {
+      "param": {
+       "L": 0
+      }
+     },
+     {
+      "has": "hyb"
+     }
+    ]
    }
   ]
  },
@@ -159,102 +167,26 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "p4",
-    "p4x",
-    "p4d"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  }
- ],
- "finals": [
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "spirit",
-     "tmax": 2
-    },
-    {
-     "tag": "hyb",
-     "tmax": 4
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "tag": "aoe",
-     "tmax": 1
-    },
-    {
-     "tag": "ward",
-     "tmax": 1
-    },
-    {
-     "tag": "aura",
-     "tmax": 1
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "tag": "spirit",
-     "tmax": 4
-    },
-    {
-     "tag": "hyb",
-     "tmax": 6
-    },
-    {
-     "side": "p",
-     "random": true
-    },
-    {
-     "tag": "aoe",
-     "tmax": 2
-    },
-    {
-     "tag": "ward",
-     "tmax": 1
-    },
-    {
-     "tag": "aura",
-     "tmax": 1
-    }
-   ]
-  }
- ],
+ "start": "q0",
  "finalItem": {
   "quality": 20,
   "sockets": 1
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "q0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "s2",
+   "next": "qr",
    "start": {
     "rar": "rare",
     "mods": [
      {
-      "tag": "spirit",
+      "tag": "sp",
       "fr": true
      },
      {
@@ -263,29 +195,29 @@
     ]
    },
    "label": {
-    "kr": "정신력 % 분열 + 잡옵 1개 (퀄리티 20%)",
-    "en": "Fractured % Spirit + one junk line (20% quality)"
+    "kr": "정신력 % 2티어 분열 엄숙한 셉터 구입 (아이템 레벨 82, 미공개 훼손 1개)",
+    "en": "Buy a Stoic Sceptre with fractured T2 % Spirit (item level 82, one unrevealed desecration)"
    },
    "item": [
     {
      "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
      "tags": [
-      "spirit"
+      "sp"
      ]
     },
     {
      "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
     }
    ]
   },
   {
-   "id": "s2",
+   "id": "qr",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -293,13 +225,23 @@
     1
    ],
    "act": "rune",
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
    "goal": {
     "kr": "아스트리드의 창의성 장착",
     "en": "Socket Astrid’s Creativity"
    },
-   "label": {
-    "kr": "룬",
-    "en": "Rune"
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
    },
    "edges": [
     {
@@ -309,30 +251,26 @@
    "item": [
     {
      "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
      "tags": [
-      "spirit"
+      "sp"
      ]
     },
     {
      "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "showText": [
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
     {
-     "kr": "제작 옵션 하나 더",
-     "en": "One more crafted modifier"
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "rune": {
-    "kr": "아스트리드의 창의성",
-    "en": "Astrid's Creativity"
-   }
+   ]
   },
   {
    "id": "ms",
@@ -340,9 +278,9 @@
    "group": "main",
    "pos": [
     0,
-    1.5
+    2.4
    ],
-   "next": "s3",
+   "next": "q1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -350,172 +288,203 @@
    "item": [
     {
      "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
      "tags": [
-      "spirit"
+      "sp"
      ]
     },
     {
      "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "s3",
+   "id": "q1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    3.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "접미 첫번째 옵션",
-    "en": "First suffix option"
-   },
+   "cur": "Chaos_Orb",
    "label": {
     "kr": "카오스",
     "en": "Chaos"
    },
+   "goal": {
+    "kr": "접미 접근 효과 범위",
+    "en": "Presence area of effect suffix"
+   },
+   "show": [
+    "aoe"
+   ],
    "edges": [
     {
      "if": {
       "has": "aoe"
      },
-     "to": "s4",
+     "to": "q2",
      "res": "ok"
     },
     {
-     "to": "s3",
-     "res": "fail"
+     "to": "q1",
+     "res": "fail",
+     "hide": true
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
      "tags": [
-      "spirit"
+      "sp"
      ]
     },
     {
      "s": "s",
-     "kr": "접근 효과 범위",
-     "en": "Presence area of effect",
+     "kr": "접근 효과 범위 (66—80)% 증가",
+     "en": "(66—80)% increased Presence Area of Effect",
      "m": "n",
      "tags": [
       "aoe"
      ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "cur": "Chaos_Orb",
-   "show": [
-    "aoe"
    ]
   },
   {
-   "id": "s4",
+   "id": "q2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    4.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "합금이 지울 접두",
-    "en": "The prefix for the alloy to remove"
-   },
+   "cur": "Greater_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 잡옵 1개 — 합금이 지울 자리",
+    "en": "One junk prefix for the alloy to remove"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
-     "to": "s5"
+     "to": "q3"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
      "tags": [
-      "spirit"
+      "sp"
      ]
     },
     {
+     "s": "p",
+     "kr": "접근해 있는 동료들이 주는 공격 물리 피해 추가",
+     "en": "Allies in your Presence deal added Physical Attack Damage",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "접근 효과 범위",
-     "en": "Presence area of effect",
+     "kr": "접근 효과 범위 (66—80)% 증가",
+     "en": "(66—80)% increased Presence Area of Effect",
      "m": "n",
      "tags": [
       "aoe"
      ]
     },
     {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "cur": "Greater_Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
    ]
   },
   {
-   "id": "s5",
+   "id": "q3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    5.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "접두 잡옵을 지우고 접미 수호의 합금",
-    "en": "Swap the junk prefix for the Protective Alloy suffix"
-   },
+   "cur": "Protective_Alloy",
+   "ess": "ward",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
    "label": {
     "kr": "합금",
     "en": "Alloy"
    },
+   "goal": {
+    "kr": "접두 잡옵을 지우고 접미 룬 수호",
+    "en": "The junk prefix goes for the runic ward suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "최대 룬 수호 (제작 옵션)",
+     "en": "Maximum runic ward (crafted)"
+    }
+   ],
    "edges": [
     {
-     "to": "s6"
+     "to": "q4"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
      "tags": [
-      "spirit"
+      "sp"
      ]
     },
     {
      "s": "s",
-     "kr": "접근 효과 범위",
-     "en": "Presence area of effect",
+     "kr": "접근 효과 범위 (66—80)% 증가",
+     "en": "(66—80)% increased Presence Area of Effect",
      "m": "n",
      "tags": [
       "aoe"
@@ -523,205 +492,74 @@
     },
     {
      "s": "s",
-     "kr": "룬 수호 (제작 옵션)",
-     "en": "Runic Ward (crafted)",
-     "m": "n",
+     "kr": "최대 룬 수호 +(51—74) (보호의 합금)",
+     "en": "+(51—74) to maximum Runic Ward (Protective Alloy)",
+     "m": "c",
      "tags": [
       "ward"
      ]
-    }
-   ],
-   "cur": "Protective_Alloy",
-   "showText": [
+    },
     {
-     "s": "s",
-     "kr": "룬 수호 (제작 옵션)",
-     "en": "Runic Ward (crafted)"
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "ess": "ward",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
    ]
   },
   {
-   "id": "s6",
+   "id": "q4",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    6.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "에센스가 지울 접두",
-    "en": "The prefix for the essence to remove"
-   },
+   "cur": "Greater_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
-   "edges": [
-    {
-     "to": "s7"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
-     "tags": [
-      "spirit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "접근 효과 범위",
-     "en": "Presence area of effect",
-     "m": "n",
-     "tags": [
-      "aoe"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "룬 수호 (제작 옵션)",
-     "en": "Runic Ward (crafted)",
-     "m": "n",
-     "tags": [
-      "ward"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Greater_Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
-   ]
-  },
-  {
-   "id": "s7",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    6
-   ],
-   "act": "essence",
-   "goal": {
-    "kr": "접두 잡옵을 지우고 접미 오라 크기",
-    "en": "Swap the junk prefix for the aura suffix"
-   },
-   "label": {
-    "kr": "에센스",
-    "en": "Essence"
-   },
-   "edges": [
-    {
-     "to": "p1"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
-     "tags": [
-      "spirit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "접근 효과 범위",
-     "en": "Presence area of effect",
-     "m": "n",
-     "tags": [
-      "aoe"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "룬 수호 (제작 옵션)",
-     "en": "Runic Ward (crafted)",
-     "m": "n",
-     "tags": [
-      "ward"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "오라 크기 (제작 옵션)",
-     "en": "Aura magnitudes (crafted)",
-     "m": "n",
-     "tags": [
-      "aura"
-     ]
-    }
-   ],
-   "cur": "Perfect_Essence_of_Command",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "오라 크기 (제작 옵션)",
-     "en": "Aura magnitudes (crafted)"
-    }
-   ],
-   "ess": "aura",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
-   ]
-  },
-  {
-   "id": "p1",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    7
-   ],
-   "act": "exalt",
    "goal": {
     "kr": "접두 두번째 옵션",
     "en": "Second prefix"
    },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
-     "to": "p2"
+     "to": "q5"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
      "tags": [
-      "spirit"
+      "sp"
      ]
     },
     {
+     "s": "p",
+     "kr": "마나 최대치 +(105—124)",
+     "en": "+(105—124) to maximum Mana",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "접근 효과 범위",
-     "en": "Presence area of effect",
+     "kr": "접근 효과 범위 (66—80)% 증가",
+     "en": "(66—80)% increased Presence Area of Effect",
      "m": "n",
      "tags": [
       "aoe"
@@ -729,155 +567,243 @@
     },
     {
      "s": "s",
-     "kr": "룬 수호 (제작 옵션)",
-     "en": "Runic Ward (crafted)",
+     "kr": "최대 룬 수호 +(51—74) (보호의 합금)",
+     "en": "+(51—74) to maximum Runic Ward (Protective Alloy)",
+     "m": "c",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "q5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
+   ],
+   "act": "exalt",
+   "cur": "Greater_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 세번째 옵션 — 에센스가 지울 자리",
+    "en": "Third prefix for the essence to remove"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "q6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(105—124)",
+     "en": "+(105—124) to maximum Mana",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "접근해 있는 동료들이 주는 공격 물리 피해 추가",
+     "en": "Allies in your Presence deal added Physical Attack Damage",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "접근 효과 범위 (66—80)% 증가",
+     "en": "(66—80)% increased Presence Area of Effect",
      "m": "n",
+     "tags": [
+      "aoe"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "최대 룬 수호 +(51—74) (보호의 합금)",
+     "en": "+(51—74) to maximum Runic Ward (Protective Alloy)",
+     "m": "c",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "q6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8.4
+   ],
+   "act": "essence",
+   "cur": "Perfect_Essence_of_Command",
+   "ess": "aura",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "접두 하나를 지우고 접미 오라 스킬의 강도",
+    "en": "A prefix goes for the aura magnitude suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "오라 스킬의 강도 (15—20)% 증가 (제작 옵션)",
+     "en": "Aura Skills have (15—20)% increased Magnitudes (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "q7"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "접근해 있는 동료들이 주는 공격 물리 피해 추가",
+     "en": "Allies in your Presence deal added Physical Attack Damage",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "접근 효과 범위 (66—80)% 증가",
+     "en": "(66—80)% increased Presence Area of Effect",
+     "m": "n",
+     "tags": [
+      "aoe"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "최대 룬 수호 +(51—74) (보호의 합금)",
+     "en": "+(51—74) to maximum Runic Ward (Protective Alloy)",
+     "m": "c",
      "tags": [
       "ward"
      ]
     },
     {
      "s": "s",
-     "kr": "오라 크기 (제작 옵션)",
-     "en": "Aura magnitudes (crafted)",
-     "m": "n",
+     "kr": "오라 스킬의 강도 (15—20)% 증가 (완벽한 지휘의 에센스)",
+     "en": "Aura Skills have (15—20)% increased Magnitudes (Perfect Essence of Command)",
+     "m": "c",
      "tags": [
       "aura"
      ]
     },
     {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "p2",
+   "id": "q7",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7.5
+    9.4
    ],
    "act": "exalt",
+   "cur": "Greater_Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
    "goal": {
     "kr": "접두 세번째 옵션",
     "en": "Third prefix"
    },
-   "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
-   },
-   "edges": [
-    {
-     "to": "p3"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
-     "tags": [
-      "spirit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "접근 효과 범위",
-     "en": "Presence area of effect",
-     "m": "n",
-     "tags": [
-      "aoe"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "룬 수호 (제작 옵션)",
-     "en": "Runic Ward (crafted)",
-     "m": "n",
-     "tags": [
-      "ward"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "오라 크기 (제작 옵션)",
-     "en": "Aura magnitudes (crafted)",
-     "m": "n",
-     "tags": [
-      "aura"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Exalted_Orb",
    "showText": [
     {
      "s": "p",
      "kr": "랜덤 옵션 1개",
-     "en": "One random line"
+     "en": "One random option"
     }
-   ]
-  },
-  {
-   "id": "p3",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    8
    ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "접두 세번째 옵션(훼손)",
-    "en": "Third prefix (desecrated)"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
    "edges": [
     {
-     "to": "p4"
+     "to": "q8"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
      "tags": [
-      "spirit"
+      "sp"
      ]
     },
     {
+     "s": "p",
+     "kr": "접근해 있는 동료들이 주는 공격 물리 피해 추가",
+     "en": "Allies in your Presence deal added Physical Attack Damage",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "접근해 있는 동료가 주는 피해 (75—89)% 증가",
+     "en": "Allies in your Presence deal (75—89)% increased Damage",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "접근 효과 범위",
-     "en": "Presence area of effect",
+     "kr": "접근 효과 범위 (66—80)% 증가",
+     "en": "(66—80)% increased Presence Area of Effect",
      "m": "n",
      "tags": [
       "aoe"
@@ -885,109 +811,220 @@
     },
     {
      "s": "s",
-     "kr": "룬 수호 (제작 옵션)",
-     "en": "Runic Ward (crafted)",
-     "m": "n",
+     "kr": "최대 룬 수호 +(51—74) (보호의 합금)",
+     "en": "+(51—74) to maximum Runic Ward (Protective Alloy)",
+     "m": "c",
      "tags": [
       "ward"
      ]
     },
     {
      "s": "s",
-     "kr": "오라 크기 (제작 옵션)",
-     "en": "Aura magnitudes (crafted)",
-     "m": "n",
+     "kr": "오라 스킬의 강도 (15—20)% 증가 (완벽한 지휘의 에센스)",
+     "en": "Aura Skills have (15—20)% increased Magnitudes (Perfect Essence of Command)",
+     "m": "c",
      "tags": [
       "aura"
      ]
     },
     {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개) — 접두가 꽉 차 잡옵 하나가 지워짐",
-     "en": "Desecrated (unrevealed) — a junk prefix makes way"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {
-   "id": "p4",
+   "id": "q8",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    9
+    10.4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Jawbone",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접두 마지막 옵션(훼손) — 접두가 꽉 차 잡옵 하나가 지워짐",
+    "en": "Last prefix (desecrated): the prefixes are full, so a junk prefix makes way"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "q9"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "접근해 있는 동료가 주는 피해 (75—89)% 증가",
+     "en": "Allies in your Presence deal (75—89)% increased Damage",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "접근 효과 범위 (66—80)% 증가",
+     "en": "(66—80)% increased Presence Area of Effect",
+     "m": "n",
+     "tags": [
+      "aoe"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "최대 룬 수호 +(51—74) (보호의 합금)",
+     "en": "+(51—74) to maximum Runic Ward (Protective Alloy)",
+     "m": "c",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "오라 스킬의 강도 (15—20)% 증가 (완벽한 지휘의 에센스)",
+     "en": "Aura Skills have (15—20)% increased Magnitudes (Perfect Essence of Command)",
+     "m": "c",
+     "tags": [
+      "aura"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "q9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11.4
    ],
    "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "hyb",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 정신력 + 마나 복합(훼손)",
+    "en": "Spirit + mana hybrid prefix (desecrated)"
+   },
+   "show": [
+    "hyb"
+   ],
+   "over": [
+    {
+     "param": {
+      "L": 0
+     },
+     "set": {
+      "goal": {
+       "kr": "접두 마지막 옵션 공개 — 나오는 대로",
+       "en": "Reveal the last prefix: keep what comes"
+      },
+      "showText": [
+       {
+        "s": "p",
+        "kr": "랜덤 옵션 1개 (훼손)",
+        "en": "One random option (desecrated)"
+       }
+      ],
+      "show": []
+     }
+    }
+   ],
    "edges": [
     {
      "if": {
-      "has": "hyb"
+      "any": [
+       {
+        "added": "hyb"
+       },
+       {
+        "param": {
+         "L": 0
+        }
+       }
+      ]
      },
      "to": "ok",
      "res": "ok"
     },
     {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "sT": 2
-        }
-       },
-       {
-        "not": {
-         "has": "hybAny"
-        }
-       }
-      ]
-     },
-     "to": "p4x",
-     "res": "fail"
-    },
-    {
-     "to": "ok",
-     "res": "fail"
+     "to": "x1",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
      "tags": [
-      "spirit"
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "접근해 있는 동료가 주는 피해 (75—89)% 증가",
+     "en": "Allies in your Presence deal (75—89)% increased Damage",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (23—26)% 증가 · 마나 최대치 +(29—33) (훼손)",
+     "en": "(23—26)% increased Spirit · +(29—33) to maximum Mana (desecrated)",
+     "m": "d",
+     "tags": [
+      "hyv"
      ]
     },
     {
      "s": "s",
-     "kr": "접근 효과 범위",
-     "en": "Presence area of effect",
+     "kr": "접근 효과 범위 (66—80)% 증가",
+     "en": "(66—80)% increased Presence Area of Effect",
      "m": "n",
      "tags": [
       "aoe"
@@ -995,59 +1032,40 @@
     },
     {
      "s": "s",
-     "kr": "룬 수호 (제작 옵션)",
-     "en": "Runic Ward (crafted)",
-     "m": "n",
+     "kr": "최대 룬 수호 +(51—74) (보호의 합금)",
+     "en": "+(51—74) to maximum Runic Ward (Protective Alloy)",
+     "m": "c",
      "tags": [
       "ward"
      ]
     },
     {
      "s": "s",
-     "kr": "오라 크기 (제작 옵션)",
-     "en": "Aura magnitudes (crafted)",
-     "m": "n",
+     "kr": "오라 스킬의 강도 (15—20)% 증가 (완벽한 지휘의 에센스)",
+     "en": "Aura Skills have (15—20)% increased Magnitudes (Perfect Essence of Command)",
+     "m": "c",
      "tags": [
       "aura"
      ]
     },
     {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "정신력 % + 마나",
-     "en": "% Spirit + mana",
-     "m": "n",
-     "tags": [
-      "hyb"
-     ]
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "want": "hyb",
-   "show": [
-    "hyb"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
-   "id": "p4x",
+   "id": "x1",
    "kind": "act",
    "group": "main",
    "pos": [
     1,
-    9
+    11.4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -1057,99 +1075,235 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "빗나간 훼손 옵션 지우기 (징조 없음)",
+    "en": "Remove the missed desecration (no omen)"
    },
    "edges": [
     {
-     "to": "p4d",
-     "port": "right"
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "q7",
+     "res": "ok",
+     "label": {
+      "kr": "훼손 옵션·잡옵이 모두 지워짐",
+      "en": "Desecration and junk both gone"
+     }
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "q8",
+     "res": "ok",
+     "label": {
+      "kr": "훼손 옵션이 지워짐",
+      "en": "Desecration gone"
+     }
+    },
+    {
+     "if": {
+      "removed": "aura"
+     },
+     "to": "x2",
+     "res": "fail",
+     "label": {
+      "kr": "오라 강도가 지워짐",
+      "en": "Aura magnitude gone"
+     }
+    },
+    {
+     "if": {
+      "removed": "ward"
+     },
+     "to": "x3",
+     "res": "fail",
+     "label": {
+      "kr": "룬 수호가 지워짐",
+      "en": "Runic ward gone"
+     }
+    },
+    {
+     "if": {
+      "removed": "aoe"
+     },
+     "to": "xc",
+     "res": "fail",
+     "label": {
+      "kr": "접근 효과가 지워짐",
+      "en": "Presence area gone"
+     }
+    },
+    {
+     "to": "x1",
+     "res": "fail",
+     "label": {
+      "kr": "잡옵이 지워짐",
+      "en": "Junk gone"
+     }
     }
    ]
   },
   {
-   "id": "p4d",
+   "id": "x2",
    "kind": "act",
    "group": "main",
    "pos": [
-    1,
-    9.6
+    2,
+    11.4
    ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "다시 훼손",
-    "en": "Desecrate again"
-   },
+   "act": "essence",
+   "cur": "Perfect_Essence_of_Command",
+   "ess": "aura",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
    "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "오라 강도 다시 — 접두 하나가 지워짐",
+    "en": "Aura magnitude again: a prefix goes"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "오라 스킬의 강도 (제작 옵션)",
+     "en": "Aura magnitude (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "q7",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "q8",
+     "res": "ok"
+    },
+    {
+     "to": "x1",
+     "res": "fail"
+    }
+   ]
+  },
+  {
+   "id": "x3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    2,
+    12.4
+   ],
+   "act": "essence",
+   "cur": "Protective_Alloy",
+   "ess": "ward",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "goal": {
+    "kr": "룬 수호 다시 — 접두 하나가 지워짐",
+    "en": "Runic ward again: a prefix goes"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "최대 룬 수호 (제작 옵션)",
+     "en": "Maximum runic ward (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "p",
+         "n": 2
+        }
+       }
+      ]
+     },
+     "to": "q7",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "des": false
+     },
+     "to": "q8",
+     "res": "ok"
+    },
+    {
+     "to": "x1",
+     "res": "fail"
+    }
+   ]
+  },
+  {
+   "id": "xc",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    3.4
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep only the fracture + one option"
    },
    "edges": [
     {
-     "to": "p4",
-     "port": "right"
+     "to": "q1",
+     "label": {
+      "kr": "카오스부터 다시",
+      "en": "Back to Chaos"
+     }
     }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "정신력 % (분열)",
-     "en": "% Spirit (fractured)",
-     "m": "n",
-     "tags": [
-      "spirit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "접근 효과 범위",
-     "en": "Presence area of effect",
-     "m": "n",
-     "tags": [
-      "aoe"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "룬 수호 (제작 옵션)",
-     "en": "Runic Ward (crafted)",
-     "m": "n",
-     "tags": [
-      "ward"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "오라 크기 (제작 옵션)",
-     "en": "Aura magnitudes (crafted)",
-     "m": "n",
-     "tags": [
-      "aura"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {
@@ -1158,12 +1312,319 @@
    "group": "main",
    "pos": [
     0,
-    10
+    12.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "q7",
+    "q8",
+    "q9",
+    "x1",
+    "x2",
+    "x3"
+   ],
+   "kr": "접두 세번째 옵션·마지막 옵션(훼손)",
+   "en": "Third and last prefix (desecrated)",
+   "fold": true,
+   "goal": {
+    "kr": "접두 정신력 + 마나 복합(훼손) 1~2티어",
+    "en": "T1–2 spirit + mana hybrid prefix (desecrated)"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접두 정신력 + 마나 복합(훼손) 1~2티어",
+     "en": "T1–2 spirit + mana hybrid prefix (desecrated)"
+    },
+    "ess": {
+     "kr": "접두 마지막 옵션 공개 — 나오는 대로",
+     "en": "Reveal the last prefix: keep what comes"
+    }
+   },
+   "steps": [
+    {
+     "kr": "상위 엑잘티드 오브로 접두 세번째 옵션",
+     "en": "Greater Exalted Orb for a third prefix",
+     "node": "q7"
+    },
+    {
+     "kr": "좌측 강령술의 징조 + 보존된 턱뼈",
+     "en": "Omen of Sinistral Necromancy + Preserved Jawbone",
+     "node": "q8"
+    },
+    {
+     "kr": "심연의 메아리의 징조 + 공개",
+     "en": "Omen of Abyssal Echoes + reveal",
+     "node": "q9"
+    },
+    {
+     "kr": "빗나가면 소멸의 오브(징조 없음)",
+     "en": "Miss: Orb of Annulment (no omen)",
+     "node": "x1"
+    },
+    {
+     "kr": "오라 강도가 지워지면 좌측 결정화의 징조 + 완벽한 지휘의 에센스",
+     "en": "Aura magnitude gone: Omen of Sinistral Crystallisation + Perfect Essence of Command",
+     "node": "x2"
+    },
+    {
+     "kr": "룬 수호가 지워지면 좌측 결정화의 징조 + 보호의 합금",
+     "en": "Runic ward gone: Omen of Sinistral Crystallisation + Protective Alloy",
+     "node": "x3"
+    }
+   ],
+   "worst": {
+    "kr": "접근 효과 범위가 지워지면 분열 + 옵션 1개까지 지우고 카오스부터",
+    "en": "Presence area gone: annul down to the fracture + one option, then Chaos again",
+    "to": "xc"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "정신력 (56—60)% 증가 (분열)",
+     "en": "(56—60)% increased Spirit (fractured)",
+     "m": "f",
+     "tags": [
+      "sp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "접근해 있는 동료가 주는 피해 (75—89)% 증가",
+     "en": "Allies in your Presence deal (75—89)% increased Damage",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "정신력 (23—26)% 증가 · 마나 최대치 +(29—33) (훼손)",
+     "en": "(23—26)% increased Spirit · +(29—33) to maximum Mana (desecrated)",
+     "m": "d",
+     "tags": [
+      "hyv"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "접근 효과 범위 (66—80)% 증가",
+     "en": "(66—80)% increased Presence Area of Effect",
+     "m": "n",
+     "tags": [
+      "aoe"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "최대 룬 수호 +(51—74) (보호의 합금)",
+     "en": "+(51—74) to maximum Runic Ward (Protective Alloy)",
+     "m": "c",
+     "tags": [
+      "ward"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "오라 스킬의 강도 (15—20)% 증가 (완벽한 지휘의 에센스)",
+     "en": "Aura Skills have (15—20)% increased Magnitudes (Perfect Essence of Command)",
+     "m": "c",
+     "tags": [
+      "aura"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ],
+   "itemBy": {
+    "bal": [
+     {
+      "s": "p",
+      "kr": "정신력 (56—60)% 증가 (분열)",
+      "en": "(56—60)% increased Spirit (fractured)",
+      "m": "f",
+      "tags": [
+       "sp"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "접근해 있는 동료가 주는 피해 (75—89)% 증가",
+      "en": "Allies in your Presence deal (75—89)% increased Damage",
+      "m": "j"
+     },
+     {
+      "s": "p",
+      "kr": "정신력 (31—38)% 증가 · 마나 최대치 +(38—45) (훼손)",
+      "en": "(31—38)% increased Spirit · +(38—45) to maximum Mana (desecrated)",
+      "m": "d",
+      "tags": [
+       "hy2"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "접근 효과 범위 (66—80)% 증가",
+      "en": "(66—80)% increased Presence Area of Effect",
+      "m": "n",
+      "tags": [
+       "aoe"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "최대 룬 수호 +(51—74) (보호의 합금)",
+      "en": "+(51—74) to maximum Runic Ward (Protective Alloy)",
+      "m": "c",
+      "tags": [
+       "ward"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "오라 스킬의 강도 (15—20)% 증가 (완벽한 지휘의 에센스)",
+      "en": "Aura Skills have (15—20)% increased Magnitudes (Perfect Essence of Command)",
+      "m": "c",
+      "tags": [
+       "aura"
+      ]
+     },
+     {
+      "s": "r",
+      "kr": "아스트리드의 창의성",
+      "en": "Astrid’s Creativity",
+      "m": "r"
+     }
+    ],
+    "ess": [
+     {
+      "s": "p",
+      "kr": "정신력 (56—60)% 증가 (분열)",
+      "en": "(56—60)% increased Spirit (fractured)",
+      "m": "f",
+      "tags": [
+       "sp"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "접근해 있는 동료가 주는 피해 (75—89)% 증가",
+      "en": "Allies in your Presence deal (75—89)% increased Damage",
+      "m": "j"
+     },
+     {
+      "s": "p",
+      "kr": "랜덤 옵션 1개 (훼손)",
+      "en": "One random option (desecrated)",
+      "m": "d"
+     },
+     {
+      "s": "s",
+      "kr": "접근 효과 범위 (66—80)% 증가",
+      "en": "(66—80)% increased Presence Area of Effect",
+      "m": "n",
+      "tags": [
+       "aoe"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "최대 룬 수호 +(51—74) (보호의 합금)",
+      "en": "+(51—74) to maximum Runic Ward (Protective Alloy)",
+      "m": "c",
+      "tags": [
+       "ward"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "오라 스킬의 강도 (15—20)% 증가 (완벽한 지휘의 에센스)",
+      "en": "Aura Skills have (15—20)% increased Magnitudes (Perfect Essence of Command)",
+      "m": "c",
+      "tags": [
+       "aura"
+      ]
+     },
+     {
+      "s": "r",
+      "kr": "아스트리드의 창의성",
+      "en": "Astrid’s Creativity",
+      "m": "r"
+     }
+    ]
+   }
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "sp",
+     "fr": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "hy2",
+     "des": true
+    },
+    {
+     "tag": "aoe"
+    },
+    {
+     "tag": "ward",
+     "ess": true
+    },
+    {
+     "tag": "aura",
+     "ess": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "sp",
+     "fr": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "aoe"
+    },
+    {
+     "tag": "ward",
+     "ess": true
+    },
+    {
+     "tag": "aura",
+     "ess": true
+    }
+   ]
   }
  ]
 }

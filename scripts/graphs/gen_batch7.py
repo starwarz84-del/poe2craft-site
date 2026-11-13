@@ -234,3 +234,4 @@ print('wrote 5 graphs (batch 7)')
 
 import os as _os, subprocess as _sp, sys as _sy
 if _os.path.exists(f'{H}/gen_diztoh_onehand_mace.py'): _sp.run([_sy.executable, f'{H}/gen_diztoh_onehand_mace.py'], check=True)   # 2026-11-13 G3: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_sihan_chayula_sceptre.py'): _sp.run([_sy.executable, f'{H}/gen_sihan_chayula_sceptre.py'], check=True)   # 2026-11-13 G7: 새 기준 전용 생성기가 덮어씀
