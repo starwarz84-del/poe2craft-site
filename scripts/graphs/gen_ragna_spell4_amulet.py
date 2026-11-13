@@ -70,7 +70,7 @@ A(id='g4', kind='act', group='main', pos=[0, 4.2], act='quality', cur='Skitterin
   goal=K('속도 퀄리티 40%', 'Speed quality 40%'), showText=[K('달리는 기폭제 40개', '40 Skittering Catalysts')], edges=[{'to': 'g5'}], item=[SP, MQ, SL])
 A(id='g5', kind='act', group='main', pos=[0, 5.2], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'], cat='cast',
   label=K('엑잘', 'Exalt'), goal=K('접미 두번째 옵션 — 시전 속도 첫 도전', 'Second suffix: first try at cast speed'),
-  showText=[{'s': 's', 'kr': '잡옵 (영상은 지능)', 'en': 'Junk (Intelligence in the video)'}], edges=[{'to': 'g5b'}], item=[SP, MQ, SL, J('s')])
+  showText=[{'s': 's', 'kr': '잡옵', 'en': 'Junk'}], edges=[{'to': 'g5b'}], item=[SP, MQ, SL, J('s')])
 A(id='g5b', kind='act', group='main', pos=[0, 6.2], act='quality', cur='Skittering_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('속도 퀄리티 다시 40%', 'Speed quality back to 40%'), showText=[K('달리는 기폭제 40개', '40 Skittering Catalysts')], edges=[{'to': 'g6'}], item=[SP, MQ, SL, J('s')])
 A(id='g6', kind='act', group='main', pos=[0, 7.2], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'], cat='cast',
@@ -103,7 +103,7 @@ A(id='g7r', kind='act', group='main', pos=[1, 9.2], act='desecrate', cur='Preser
   goal=K('다시 훼손 — 퀄리티는 그대로', 'Desecrate again: the quality stays'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'g9', 'label': K('다시 공개', 'Reveal again')}])
 A(id='g10', kind='act', group='main', pos=[0, 11.2], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
-  goal=K('최대 퀄리티를 지우고 접두 랜덤 옵션', 'Maximum Quality out, a random prefix in'), showText=[{'s': 'p', 'kr': '랜덤 옵션 (영상은 에너지 보호막 최대치 %)', 'en': 'Random option (maximum Energy Shield % in the video)'}],
+  goal=K('최대 퀄리티를 지우고 접두 랜덤 옵션', 'Maximum Quality out, a random prefix in'), showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
   edges=[{'to': 'ok'}], item=[SP, SD, RP, SL, J('s'), CS],
   over=[{'param': {'dT': 9}, 'set': {'item': [SP, L('p', '랜덤 옵션', 'Random option', 'd'), RP, SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])
 A(id='ok', kind='done', group='main', pos=[0, 12.2], label=K('완성', 'Finished'))
