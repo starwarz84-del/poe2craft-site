@@ -1422,7 +1422,7 @@ function routeHTML(r, o, i, via){
       const back = !['self','done','restart','state'].includes(x.to) && stepNo(r,x.to)<i+1, lostS = x.lost || (x.vo && back && x.alt);
       const lab2 = x.vo && back && x.alt && (!x.lab || x.plab) ? L('원하는 옵션이 지워지면','Wanted mod removed') : lab;
       if(lostS) out.push(chip('no', lab2+sh, L(/(번|완성)$/.test(dst(x.to,x)) ? `${dst(x.to,x)}으로` : dst(x.to,x), dst(x.to,x)),   /* '버리고 처음부터으로' 조사 오류(2026-11-13 S2, G6 보고) */ (x.n?` <small>(${L('평균','avg')} ${fmt(x.n)}${L('회','×')})</small>`:'')));
-      else if(x.to==='self' && x.via && /(^|—\s*)(다시|again|retry)/i.test(tx(x.lab||{kr:'',en:''}))) out.push(chip(x.cls, (lab.replace(/\s*—\s*(다시|again|retry).*$/i,'').replace(/^(다시|again|retry)\b.*$/i,'') || (x.cls==='ok'?L('성공','Success'):L('빗나감','Miss')))+sh, L('다시','again'), ` <small>(${L('먼저','first')}: ${viaT(x.via)})</small>`));   /* '다시 엑잘 → 다시' 겹침(2026-11-13 S3 5번) */
+      else if(x.to==='self' && x.via && /(^|—\s*)(다시|again|retry)/i.test(tx(x.lab||{kr:'',en:''}))) out.push(chip(x.cls, (lab.replace(/\s*—\s*(다시|again|retry).*$/i,'').replace(/^(다시|again|retry)(\s.*)?$/i,'') || (x.cls==='ok'?L('성공','Success'):L('빗나감','Miss')))+sh, L('다시','again'), ` <small>(${L('먼저','first')}: ${viaT(x.via)})</small>`));   /* '다시 엑잘 → 다시' 겹침(2026-11-13 S3 5번) */
       else out.push(chip(x.cls, lab+sh, dst(x.to,x), x.via?` <small>(${L('먼저','first')}: ${viaT(x.via)})</small>`:'')); });
     return out.length ? `<div class="routes">${out.join('')}</div>` : ''; }
   const nx = nextOnSuccess(r, n), plainNext = nx && stepNo(r,nx)===i+2;

@@ -699,6 +699,8 @@ def _routes(W, n, valid, G_=None, CD=None):
             sl = _label(CD.atoms(sc) or []) if isinstance(sc, dict) else None
         rs.append({'cls': 'ok', 'lab': sl or {'kr': '건너뜀', 'en': 'Skip'}, 'to': dest(n['skipTo']),
                    'share': t['skips'] / max(1e-9, t.get('visits') or 1), 'skip': True})
+    for r in rs:   # 성공 표시 선이라도 새 베이스로 처음부터(simTo 베이스)면 성공 갈래가 아님 — '희귀도 분열 (성공의 51%) → 버리고 처음부터'(2026-11-13 S3 58번)
+        if r['to'] == 'restart' and r['cls'] == 'ok' and not r.get('skip'): r['cls'] = 'no'
     # 성공·빗나감이 모두 같은 단계로 가면(에센셜 '빗나감 — 그대로') 한 줄 '→ n번' — '성공 → 8번'과 '빗나감 — 그대로 → 8번'이 같이 나오던 것(2026-11-13 S3 40번)
     rn = [r for r in rs if not r.get('skip')]
     hasf = any(r['cls'] != 'ok' for r in rn)
@@ -846,7 +848,9 @@ def _sig(W, n, G_, cls=None):
     """등급 비교용: 이 상자를 이 등급은 어떻게 지나가나"""
     if not n or not W.seen(n['id']): return None
     tiers = []; tops = []
-    for t in (n.get('show') or []):
+    wt = n.get('want') or (G_.srcn.get(n['id']) or {}).get('want')   # 공개 상자는 고르는 옵션(want)이 레시피 목표 — show(1티어)만 보고 '1티어'로 적던 것(2026-11-13 S3 56번)
+    shown_empty = isinstance(n.get('show'), list) and not n['show']   # 등급이 show를 비움 = 결과 그대로(티어 없음)
+    for t in [] if shown_empty else (([wt] if isinstance(wt, str) else wt if isinstance(wt, list) and wt else None) or (n.get('show') or [])):
         for gi, tm in G_.leaves(G_.name(t)):
             nt = _ntiers(cls, gi) if cls else None
             try: tm = int(tm) if tm is not None else None
