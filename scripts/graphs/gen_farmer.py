@@ -104,3 +104,9 @@ g=graph('farmer-starter-staff-v2','Staves','Sanctified Staff',80,
 g['basePrice']={'Chaos_Orb':1}   # 사용자 2026-11-10 거래소: +6 매직 지팡이 카오스 오브 1개
 json.dump(g,open(f'{H}/farmer-starter-staff-v2.json','w'),ensure_ascii=False,indent=1)
 print('wrote 2 graphs')
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_farmer_budget_armour.py'): _sp.run([_sy.executable, f'{H}/gen_farmer_budget_armour.py'], check=True)   # 2026-11-13 G14: 새 기준 전용 생성기가 갑옷을 덮어씀
+
+import subprocess as _sp, sys as _sy
+if os.path.exists(f'{H}/gen_farmer_starter_staff.py'): _sp.run([_sy.executable, f'{H}/gen_farmer_starter_staff.py'], check=True)   # 2026-11-13 G13: 새 기준 전용 생성기가 덮어씀

@@ -4,82 +4,27 @@
  "cls": "Body_Armours_int",
  "base": "Flowing Raiment",
  "ilvl": 79,
- "note": "XTheFarmerX 리그 초반 에너지 보호막 갑옷(영상 방식) — 에너지 보호막 최대치 매직 구입 → 상위 확장의 오브(접미 잡옵) → 상위 강화의 에센스(접두 방어 %) → 좌측 강령술 + 갈비뼈 → 공개(혼합·생명력·정신력) → 상위 찬미 + 상위 엑잘(접미 옵션 2개 결과 그대로). 상위 철 룬은 취향(정책 23)이라 뺌. 에센셜 = 영상(보존된 갈비뼈, 아무 티어), 밸런스·하이엔드는 고대 갈비뼈(레벨 40+ 티어만)로 1~2티어 / 1티어.",
+ "basePrice": {
+  "Exalted_Orb": 1
+ },
+ "note": "XTheFarmerX 리그 초반 에너지 보호막 갑옷(UWrIgHklsPg, 2026-11-13 G14 영상 전체 화면 대조) — 에너지 보호막 최대치 3티어 매직 흐르는 의복(아이템 레벨 79, 1 엑잘티드 오브) → 상위 확장의 오브(접미 잡옵) → 상위 강화의 에센스(레어 + 에너지 보호막 %) → 좌측 강령술의 징조 + 보존된 갈비뼈 → 공개(에너지 보호막 혼합 1티어) → 상위 찬미의 징조 + 상위 엑잘티드 오브(접미 2개 결과 그대로). 난이도 쉬움이라 에센셜 하나, 공개는 반복 없이 결과 그대로. 상위 철 룬은 뺌.",
  "params": {
-  "esT": {
-   "kr": "에너지 보호막 최대치",
-   "en": "Max energy shield",
+  "v": {
+   "kr": "흐름",
+   "en": "Flow",
    "values": {
     "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
-    }
-   }
-  },
-  "rvT": {
-   "kr": "훼손 공개 목표",
-   "en": "Reveal target",
-   "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    },
-    "9": {
-     "kr": "아무 티어",
-     "en": "Any tier"
-    }
-   }
-  },
-  "bone": {
-   "kr": "갈비뼈",
-   "en": "Rib",
-   "values": {
-    "a": {
-     "kr": "고대 갈비뼈",
-     "en": "Ancient Rib"
-    },
-    "p": {
-     "kr": "보존된 갈비뼈",
-     "en": "Preserved Rib"
+     "kr": "영상",
+     "en": "Video"
     }
    }
   }
  },
  "strategies": [
   {
-   "id": "high",
-   "params": {
-    "esT": 1,
-    "rvT": 1,
-    "bone": "a"
-   }
-  },
-  {
-   "id": "bal",
-   "params": {
-    "esT": 2,
-    "rvT": 2,
-    "bone": "a"
-   }
-  },
-  {
    "id": "ess",
    "params": {
-    "esT": 3,
-    "rvT": 9,
-    "bone": "p"
+    "v": 1
    }
   }
  ],
@@ -89,79 +34,43 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "esT": 3,
-    "rvT": 9,
-    "bone": "p"
+    "v": 1
    },
+   "tier": "ess",
    "desc": {
-    "kr": "에너지 보호막 최대치 1~3티어, 훼손 아무 티어 (영상)",
-    "en": "Max ES T1–3, any desecrated tier (as the video)"
-   }
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "esT": 2,
-    "rvT": 2,
-    "bone": "a"
-   },
-   "desc": {
-    "kr": "에너지 보호막 최대치 1~2티어, 훼손 1~2티어 (고대 갈비뼈)",
-    "en": "Max ES T1–2, desecrated T1–2 (Ancient Rib)"
-   }
-  },
-  {
-   "id": "high",
-   "kr": "하이엔드",
-   "en": "High-end",
-   "params": {
-    "esT": 1,
-    "rvT": 1,
-    "bone": "a"
-   },
-   "desc": {
-    "kr": "에너지 보호막 최대치 1티어, 훼손 1티어 (고대 갈비뼈)",
-    "en": "Max ES T1, desecrated T1 (Ancient Rib)"
+    "kr": "영상 그대로: 공개와 엑잘은 결과 그대로",
+    "en": "As the video: the reveal and the exalt are kept as they come"
    }
   }
  ],
  "tags": {
   "flat": {
    "gi": 6,
-   "tmax": "$esT"
+   "tmax": 3
   },
   "ess": {
    "gi": 31
   },
   "hyb": {
-   "gi": 9,
-   "tmax": "$rvT"
-  },
-  "eslife": {
-   "gi": 8,
-   "tmax": "$rvT"
-  },
-  "spirit": {
-   "gi": 14,
-   "tmax": "$rvT"
-  },
-  "want": {
-   "anyOf": [
-    "hyb",
-    "eslife",
-    "spirit"
-   ]
+   "gi": 9
   }
  },
  "require": {
   "all": [
    {
+    "has": "flat"
+   },
+   {
+    "has": "ess"
+   },
+   {
     "full": "p"
    },
    {
     "full": "s"
+   },
+   {
+    "desSide": "p"
    }
   ]
  },
@@ -185,143 +94,37 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "a4",
-    "a5",
-    "a5x"
-   ],
-   "kr": "접두 세번째 옵션(훼손)",
-   "en": "Third prefix (desecrated)"
-  }
- ],
- "finals": [
-  {
-   "id": "high",
-   "kr": "하이엔드 옵션",
-   "en": "High-end",
-   "lines": [
-    {
-     "tag": "flat",
-     "tmax": 1
-    },
-    {
-     "tag": "ess",
-     "tmax": 1
-    },
-    {
-     "tag": "hyb",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "flat",
-     "tmax": 2
-    },
-    {
-     "tag": "ess",
-     "tmax": 1
-    },
-    {
-     "tag": "hyb",
-     "tmax": 2
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "tag": "flat",
-     "tmax": 3
-    },
-    {
-     "tag": "ess",
-     "tmax": 1
-    },
-    {
-     "tag": "hyb",
-     "tmax": 6
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  }
- ],
+ "start": "b0",
  "finalItem": {
-  "quality": 20,
   "sockets": 2
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "a2",
+   "next": "g1",
    "start": {
     "rar": "magic",
     "mods": [
-     "flat"
+     {
+      "tag": "flat"
+     }
     ]
    },
    "label": {
-    "kr": "에너지 보호막 최대치 매직 흐르는 의복 구입",
-    "en": "Buy a magic Flowing Raiment with max energy shield"
+    "kr": "에너지 보호막 최대치 3티어 매직 흐르는 의복 구입 (아이템 레벨 79)",
+    "en": "Buy a magic Flowing Raiment with T3 maximum energy shield (item level 79)"
    },
    "item": [
     {
      "s": "p",
-     "kr": "에너지 보호막 최대치",
-     "en": "Max energy shield",
+     "kr": "에너지 보호막 최대치 +(74—80)",
+     "en": "+(74—80) to maximum Energy Shield",
      "m": "n",
      "tags": [
       "flat"
@@ -330,7 +133,7 @@
    ]
   },
   {
-   "id": "a2",
+   "id": "g1",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -338,32 +141,32 @@
     1
    ],
    "act": "augment",
-   "cur": "Perfect_Orb_of_Augmentation",
-   "goal": {
-    "kr": "접미 옵션 1개 추가",
-    "en": "Add a suffix"
-   },
-   "showText": [
-    {
-     "kr": "잡옵 (아무 옵션)",
-     "en": "Junk (any line)",
-     "s": "s"
-    }
-   ],
+   "cur": "Greater_Orb_of_Augmentation",
    "label": {
     "kr": "확장",
     "en": "Augment"
    },
+   "goal": {
+    "kr": "접미 잡옵 1개",
+    "en": "One junk suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
-     "to": "a3"
+     "to": "g2"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "에너지 보호막 최대치",
-     "en": "Max energy shield",
+     "kr": "에너지 보호막 최대치 +(74—80)",
+     "en": "+(74—80) to maximum Energy Shield",
      "m": "n",
      "tags": [
       "flat"
@@ -371,14 +174,14 @@
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
+     "kr": "플레이어에게 적용되는 출혈 지속시간 (56—60)% 감소",
+     "en": "(56—60)% reduced Duration of Bleeding on You",
      "m": "j"
     }
    ]
   },
   {
-   "id": "a3",
+   "id": "g2",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -386,23 +189,23 @@
     2
    ],
    "act": "essence",
-   "ess": "ess",
    "cur": "Greater_Essence_of_Enhancement",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접두 방어 %",
-    "en": "Upgrade to rare + defences % prefix"
-   },
-   "showText": [
-    {
-     "kr": "방어 % (제작 옵션)",
-     "en": "Defences % (crafted)",
-     "s": "p"
-    }
-   ],
+   "ess": "ess",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "레어 + 접두 에너지 보호막 % 증가",
+    "en": "Rare + % energy shield prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "ms"
@@ -411,27 +214,27 @@
    "item": [
     {
      "s": "p",
-     "kr": "에너지 보호막 최대치",
-     "en": "Max energy shield",
+     "kr": "에너지 보호막 최대치 +(74—80)",
+     "en": "+(74—80) to maximum Energy Shield",
      "m": "n",
      "tags": [
       "flat"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
-     "kr": "방어 % (제작 옵션)",
-     "en": "Defences % (crafted)",
-     "m": "n",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield",
+     "m": "c",
      "tags": [
       "ess"
      ]
+    },
+    {
+     "s": "s",
+     "kr": "플레이어에게 적용되는 출혈 지속시간 (56—60)% 감소",
+     "en": "(56—60)% reduced Duration of Bleeding on You",
+     "m": "j"
     }
    ]
   },
@@ -441,9 +244,9 @@
    "group": "main",
    "pos": [
     0,
-    2.5
+    2.4
    ],
-   "next": "a4",
+   "next": "g3",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -451,236 +254,186 @@
    "item": [
     {
      "s": "p",
-     "kr": "에너지 보호막 최대치",
-     "en": "Max energy shield",
+     "kr": "에너지 보호막 최대치 +(74—80)",
+     "en": "+(74—80) to maximum Energy Shield",
      "m": "n",
      "tags": [
       "flat"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
-     "kr": "방어 % (제작 옵션)",
-     "en": "Defences % (crafted)",
-     "m": "n",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield",
+     "m": "c",
      "tags": [
       "ess"
      ]
+    },
+    {
+     "s": "s",
+     "kr": "플레이어에게 적용되는 출혈 지속시간 (56—60)% 감소",
+     "en": "(56—60)% reduced Duration of Bleeding on You",
+     "m": "j"
     }
    ]
   },
   {
-   "id": "a4",
+   "id": "g3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    3.4
    ],
    "act": "desecrate",
-   "cur": "Ancient_Rib",
+   "cur": "Preserved_Rib",
    "omens": [
     "Omen_of_Sinistral_Necromancy"
    ],
-   "over": [
-    {
-     "param": {
-      "bone": "p"
-     },
-     "set": {
-      "cur": "Preserved_Rib"
-     }
-    }
-   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
    "goal": {
     "kr": "접두 세번째 옵션(훼손)",
     "en": "Third prefix option (desecrated)"
    },
    "showText": [
     {
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)",
-     "s": "p"
+     "s": "p",
+     "kr": "접두 훼손 옵션 (미공개)",
+     "en": "Prefix desecration (unrevealed)"
     }
    ],
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
    "edges": [
     {
-     "to": "a5"
+     "to": "g4"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "에너지 보호막 최대치",
-     "en": "Max energy shield",
+     "kr": "에너지 보호막 최대치 +(74—80)",
+     "en": "+(74—80) to maximum Energy Shield",
      "m": "n",
      "tags": [
       "flat"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
-     "kr": "방어 % (제작 옵션)",
-     "en": "Defences % (crafted)",
-     "m": "n",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield",
+     "m": "c",
      "tags": [
       "ess"
      ]
     },
     {
      "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
+     "kr": "접두 훼손 옵션 (미공개)",
+     "en": "Prefix desecration (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "플레이어에게 적용되는 출혈 지속시간 (56—60)% 감소",
+     "en": "(56—60)% reduced Duration of Bleeding on You",
+     "m": "j"
     }
    ]
   },
   {
-   "id": "a5",
+   "id": "g4",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    4.4
    ],
    "act": "reveal",
-   "want": "want",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
-   "show": [
-    "want"
-   ],
+   "want": "hyb",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 에너지 보호막 혼합 (훼손) — 선택지에 없으면 나오는 대로",
+    "en": "Hybrid energy shield prefix (desecrated): if it is not offered, keep what comes"
+   },
+   "show": [
+    "hyb"
+   ],
    "edges": [
     {
-     "if": {
-      "added": "want"
-     },
-     "to": "a6",
-     "res": "ok"
-    },
-    {
-     "to": "a5x",
-     "res": "fail"
+     "to": "g5"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "에너지 보호막 최대치",
-     "en": "Max energy shield",
+     "kr": "에너지 보호막 최대치 +(74—80)",
+     "en": "+(74—80) to maximum Energy Shield",
      "m": "n",
      "tags": [
       "flat"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
-     "kr": "방어 % (제작 옵션)",
-     "en": "Defences % (crafted)",
-     "m": "n",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield",
+     "m": "c",
      "tags": [
       "ess"
      ]
     },
     {
      "s": "p",
-     "kr": "에너지 보호막 혼합 · 생명력 · 정신력 중 하나",
-     "en": "Hybrid ES, ES + life or Spirit",
-     "m": "n",
+     "kr": "에너지 보호막 최대치 +(26—30) / 에너지 보호막 (39—42)% 증가",
+     "en": "+(26—30) to maximum Energy Shield / (39—42)% increased Energy Shield",
+     "m": "d",
      "tags": [
-      "want"
+      "hyb"
      ]
-    }
-   ]
-  },
-  {
-   "id": "a5x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    4
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
-   },
-   "edges": [
+    },
     {
-     "to": "a4",
-     "port": "right"
+     "s": "s",
+     "kr": "플레이어에게 적용되는 출혈 지속시간 (56—60)% 감소",
+     "en": "(56—60)% reduced Duration of Bleeding on You",
+     "m": "j"
     }
    ]
   },
   {
-   "id": "a6",
+   "id": "g5",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    5
+    5.4
    ],
    "act": "exalt",
    "cur": "Greater_Exalted_Orb",
    "omens": [
     "Omen_of_Greater_Exaltation"
    ],
-   "goal": {
-    "kr": "접미 두번째·세번째 옵션",
-    "en": "Second and third suffix options"
-   },
-   "showText": [
-    {
-     "kr": "랜덤 옵션 2개 (저항이 뜨면 대박) — 결과 그대로",
-     "en": "Two random lines (resistances are the jackpot) — keep whatever comes",
-     "s": "s"
-    }
-   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 두번째·세번째 옵션 — 나오는 대로",
+    "en": "Second and third suffix options: keep what lands"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
    "edges": [
     {
      "to": "ok"
@@ -689,42 +442,48 @@
    "item": [
     {
      "s": "p",
-     "kr": "에너지 보호막 최대치",
-     "en": "Max energy shield",
+     "kr": "에너지 보호막 최대치 +(74—80)",
+     "en": "+(74—80) to maximum Energy Shield",
      "m": "n",
      "tags": [
       "flat"
      ]
     },
     {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
      "s": "p",
-     "kr": "방어 % (제작 옵션)",
-     "en": "Defences % (crafted)",
-     "m": "n",
+     "kr": "방어도, 회피, 에너지 보호막 (68—79)% 증가",
+     "en": "(68—79)% increased Armour, Evasion and Energy Shield",
+     "m": "c",
      "tags": [
       "ess"
      ]
     },
     {
      "s": "p",
-     "kr": "에너지 보호막 혼합 · 생명력 · 정신력 중 하나",
-     "en": "Hybrid ES, ES + life or Spirit",
-     "m": "n",
+     "kr": "에너지 보호막 최대치 +(26—30) / 에너지 보호막 (39—42)% 증가",
+     "en": "+(26—30) to maximum Energy Shield / (39—42)% increased Energy Shield",
+     "m": "d",
      "tags": [
-      "want"
+      "hyb"
      ]
     },
     {
      "s": "s",
-     "kr": "랜덤 옵션 2개",
-     "en": "Two random lines",
+     "kr": "플레이어에게 적용되는 출혈 지속시간 (56—60)% 감소",
+     "en": "(56—60)% reduced Duration of Bleeding on You",
      "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "에너지 보호막 재충전 속도 (16—19)% 증가",
+     "en": "(16—19)% increased Energy Shield Recharge Rate",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "1초마다 생명력 (18.1—23) 재생",
+     "en": "(18.1—23) Life Regeneration per second",
+     "m": "n"
     }
    ]
   },
@@ -734,12 +493,46 @@
    "group": "main",
    "pos": [
     0,
-    6
+    6.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [],
+ "finals": [
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "flat"
+    },
+    {
+     "tag": "ess",
+     "ess": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
   }
  ]
 }

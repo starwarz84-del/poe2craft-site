@@ -49,7 +49,7 @@ BASEPRICE = {
   'diztoh-vile-robe': None,
   'farmer-budget-armour': None,
   'farmer-starter-staff': None,
-  'farmer-budget-armour-v2': None,
+  'farmer-budget-armour-v2': 0.0028, 'farmer-budget-armour-v2-ess': 0.0028,   # 2026-11-13 G14: 영상 3:16 거래소 매물 1 엑잘티드 오브(1 ÷ 363 ≈ 0.0028 div) — 에너지 보호막 최대치 3티어 매직 흐르는 의복, 아이템 레벨 79
   'ragna-ashot-bow-v2-bal': None, 'ragna-ashot-bow-v2-ess': 10,   # 2026-11-13 G13: 영상 1:30 자막 '8딥, 10딥, 15딥 정도'(물리 % 매직 활 거래소 가격, 화면 1:40 매물은 5티어 절멸자 활 8 div) — 가운데 10 div
   'sane-resist-belt-v2-bal': None, 'sane-resist-belt-v2-ess': None,
   'diztoh-budget-mace-v2-bal': None, 'diztoh-budget-mace-v2-ess': None,
