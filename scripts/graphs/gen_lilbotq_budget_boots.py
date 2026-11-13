@@ -66,15 +66,15 @@ A(id='k1', kind='act', group='prep', pos=[0, 1], act='essence', cur='Greater_Ess
 # ---------------- 옵션 추가 작업 (영상 2:10~4:08) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 1.4], next='k2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[MS, COLD, FIRE])
 A(id='k2', kind='act', group='main', pos=[0, 2.4], act='desecrate', cur='Preserved_Rib', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'),
+  goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecration (unrevealed)'}],
   edges=[{'to': 'k3'}], item=[MS, COLD, FIRE, UN])
 A(id='k3', kind='act', group='main', pos=[0, 3.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째·세번째 옵션 — 나오는 대로', 'Second and third prefixes: keep what lands'),
+  goal=K('접두 두 번째·세 번째 옵션 — 나오는 대로', 'Second and third prefixes: keep what lands'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   edges=[{'to': 'k4'}], item=[MS, LIFE, ESP, COLD, FIRE, UN])
 A(id='k4', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='lres', label=K('공개', 'Reveal'),
-  goal=K('접미 세번째 옵션(훼손) — 공개 결과 그대로', 'Third suffix (desecrated): keep the reveal'), show=['lres'],
+  goal=K('접미 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third suffix (desecrated): keep the reveal'), show=['lres'],
   edges=[{'to': 'q1'}],
   item=[MS, LIFE, ESP, COLD, LRES, FIRE])
 A(id='q1', kind='act', group='main', pos=[0, 6.4], act='quality', cur='Armourers_Scrap', count=20, q=20, label=K('퀄리티', 'Quality'),

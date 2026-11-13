@@ -86,7 +86,7 @@ A(id='k2', kind='act', group='prep', pos=[0, 2], act='quality', cur='Reaver_Cata
 A(id='km', kind='mark', group='main', pos=[0, 3.4], next='k3', label=K('아이템 제작 시작', 'Item crafting starts'), item=[PH, MQ])
 # 14:30~14:58 카오스 반복(최대 퀄리티 자리 → 냉기 1티어). 영상 설명 0:30·2:30: 물리·냉기·번개·화염 아무거나 1티어
 A(id='k3', kind='act', group='main', pos=[0, 4.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접두 두번째 옵션 — 공격 시 냉기 피해 추가 1티어', 'Second prefix: T1 cold flat to attacks'),
+  goal=K('접두 두 번째 옵션 — 공격 시 냉기 피해 추가 1티어', 'Second prefix: T1 cold flat to attacks'),
   showText=[K('남은 원소 공격 피해 추가 1티어 중 먼저 뜬 것', 'Whichever T1 elemental flat lands first')],
   edges=[{'if': {'has': 'flat1'}, 'to': 'k4', 'res': 'ok'}, {'to': 'k3', 'res': 'fail'}],
   item=[PH, CO])
@@ -94,19 +94,19 @@ A(id='k4', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Perfect_Exa
   goal=K('합금이 지울 접미', 'The suffix for the alloy to remove'), showText=[K('잡옵 1개', 'One junk option')],
   edges=[{'to': 'k5'}], item=[PH, CO, MR])
 A(id='k5', kind='act', group='main', pos=[0, 6.4], act='essence', cur='Swift_Alloy', ess='as', omens=['Omen_of_Dextral_Crystallisation'], label=K('합금', 'Alloy'),
-  goal=K('접미 첫번째 옵션 — 공격 속도', 'First suffix: attack speed'),
+  goal=K('접미 첫 번째 옵션 — 공격 속도', 'First suffix: attack speed'),
   showText=[{'s': 's', 'kr': '공격 속도 (7—9)% 증가 (제작 옵션)', 'en': '(7—9)% increased Attack Speed (crafted)'}],
   edges=[{'to': 'k6'}], item=[PH, CO, AS])
 A(id='k6', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Perfect_Exalted_Orb',
   omens=['Omen_of_Greater_Exaltation', 'Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째·세번째 옵션', 'Second and third suffixes'), showText=[K('랜덤 옵션 2개', 'Two random options')],
+  goal=K('접미 두 번째·세 번째 옵션', 'Second and third suffixes'), showText=[K('랜덤 옵션 2개', 'Two random options')],
   edges=[{'to': 'k7'}], item=[PH, CO, AS, INT, RES])
 A(id='k7', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Ancient_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'k8'}], item=[PH, CO, UN('p'), AS, INT, RES])
 A(id='k8', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='flatR', label=K('공개', 'Reveal'),
-  goal=K('접두 세번째 옵션(훼손) — 공격 시 번개 피해 추가', 'Third prefix (desecrated): lightning flat to attacks'),
+  goal=K('접두 세 번째 옵션(훼손) — 공격 시 번개 피해 추가', 'Third prefix (desecrated): lightning flat to attacks'),
   showText=[K('남은 원소 공격 피해 추가 중 먼저 뜬 것', 'Whichever remaining elemental flat lands first')],
   edges=[{'if': {'added': 'flatR'}, 'to': 'ok', 'res': 'ok'},
          {'if': {'param': {'v': 1}}, 'to': 'k8x', 'res': 'fail'},

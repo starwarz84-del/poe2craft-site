@@ -32,23 +32,23 @@ g = {
  'note': ('2026-11-13 W22 영상 전체 화면 대조(근거 scratchpad review/W22-endgame-staff/timeline.md). 성공 회차(Kraken Bane) 한 줄: '
           '근접 스킬 +5 분열 험악한 육척봉(아이템 레벨 82, 28 div, 1:58) → 소멸의 오브로 분열 + 잡옵 1개, 퀄리티 20%·소켓 2개(2:10~2:36) → '
           '상위 카오스 오브로 물리 접두(3:24 툴팁, 성공 회차 7:31 물리 피해 추가 3티어) → 상위 엑잘 + 좌측 찬미, 빗나가면 소멸의 오브(7:36 정확도 → 7:38·7:39 소멸 2번 → 7:40 상위 엑잘 = 물리 피해 증가 2티어 158%) → '
-          '완벽한 엑잘 + 좌측 찬미로 세번째 접두(8:32 화염 5티어) → 절사 + 완벽한 카오스(8:38, 새 옵션이 접미로) → 다시 엑잘(8:50 화염 4티어) → 절사 + 좌측 말소 미리보기에서 물리 피해 추가와 같은 레벨이라 그대로(9:22) → '
+          '완벽한 엑잘 + 좌측 찬미로 세 번째 접두(8:32 화염 5티어) → 절사 + 완벽한 카오스(8:38, 새 옵션이 접미로) → 다시 엑잘(8:50 화염 4티어) → 절사 + 좌측 말소 미리보기에서 물리 피해 추가와 같은 레벨이라 그대로(9:22) → '
           '우측 말소 + 상위 카오스 반복(9:50 구입, 9:59 툴팁) → 공격 속도 4티어(10:06) → 고대 턱뼈 + 우측 강령술(11:28) → '
           '공개 빗나감(11:58 생명력 흡수) → 빛의 징조 + 소멸 → 다시 훼손(12:10) → 심연의 메아리 공개 → 치명타 피해 보너스 1티어(13:42). 사용자 결정 11-13: 영상 10:20의 엑잘(접미 채우기)을 빼고 빈 접미 자리에 훼손, 공개 빗나감은 항상 빛의 징조 + 소멸의 오브(영상 13:00 우측 소멸의 징조 50:50은 빼고 꿀팁으로). '
           '영상은 치명타 확률을 노렸지만 치명타 피해 보너스를 받아들임(13:35). 룬(완벽한 철 룬)·신성한 오브·바알 대장장이의 주입기 퀄리티 30%(14:00~17:20)는 정책 9·14장대로 뺌. '
-          '등급 C17: 하이엔드 = 물리 % 1티어·공격 속도/치명타 확률 1티어·훼손 1티어, 세번째 접두는 가장 낮은 레벨일 때만 절사 + 완벽한 카오스(영상 8:38), '
-          '밸런스 = 1~2티어, 세번째 접두는 결과 그대로. 세번째 접두는 두 등급 모두 랜덤 옵션(절사가 물리 접두와 같은 레벨이면 영상처럼 멈춤 — 정책 10장 2번 예외).'),
+          '등급 C17: 하이엔드 = 물리 % 1티어·공격 속도/치명타 확률 1티어·훼손 1티어, 세 번째 접두는 가장 낮은 레벨일 때만 절사 + 완벽한 카오스(영상 8:38), '
+          '밸런스 = 1~2티어, 세 번째 접두는 결과 그대로. 세 번째 접두는 두 등급 모두 랜덤 옵션(절사가 물리 접두와 같은 레벨이면 영상처럼 멈춤 — 정책 10장 2번 예외).'),
  'params': {
    'xT': {'kr': '물리 피해 증가·복합', 'en': '% physical / hybrid', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
    'sT': {'kr': '공격 속도·치명타 확률', 'en': 'Attack speed / crit chance', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
    'dT': {'kr': '훼손 치명타', 'en': 'Desecrated crit', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
-   'g': {'kr': '세번째 접두', 'en': 'Third prefix', 'values': {'1': K('가장 낮은 레벨이면 절사로 다시', 'Whittle while it is the lowest'), '0': K('랜덤 옵션', 'Random option')}}},
+   'g': {'kr': '세 번째 접두', 'en': 'Third prefix', 'values': {'1': K('가장 낮은 레벨이면 절사로 다시', 'Whittle while it is the lowest'), '0': K('랜덤 옵션', 'Random option')}}},
  'strategies': [{'id': 'high', 'params': {'xT': 1, 'sT': 1, 'dT': 1, 'g': 1}}, {'id': 'bal', 'params': {'xT': 2, 'sT': 2, 'dT': 2, 'g': 0}}],
  'versions': [
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'xT': 2, 'sT': 2, 'dT': 2, 'g': 0}, 'tier': 'bal',
-    'desc': K('물리 피해 증가·공격 속도·훼손 치명타 1~2티어, 세번째 접두는 나오는 대로', 'T1–2 % physical, attack speed and desecrated crit; third prefix as it comes')},
+    'desc': K('물리 피해 증가·공격 속도·훼손 치명타 1~2티어, 세 번째 접두는 나오는 대로', 'T1–2 % physical, attack speed and desecrated crit; third prefix as it comes')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'xT': 1, 'sT': 1, 'dT': 1, 'g': 1}, 'tier': 'high',
-    'desc': K('물리 피해 증가·공격 속도·훼손 치명타 1티어, 세번째 접두는 가장 낮은 레벨일 때 절사로 다시', 'T1 % physical, attack speed and desecrated crit; whittle the third prefix while it is the lowest')}],
+    'desc': K('물리 피해 증가·공격 속도·훼손 치명타 1티어, 세 번째 접두는 가장 낮은 레벨일 때 절사로 다시', 'T1 % physical, attack speed and desecrated crit; whittle the third prefix while it is the lowest')}],
  'tags': {
    'melee': {'gi': 10, 'tmax': 1},
    'pflat': {'gi': 3, 'tmax': 3}, 'ppct': {'gi': 8, 'tmax': '$xT'}, 'hyb': {'gi': 9, 'tmax': '$xT'},
@@ -101,12 +101,12 @@ A(id='e1x', kind='cleanup', group='main', pos=[1, 4.4], keep=['p1'], maxJunk=0, 
   edges=[{'lost': 'p1', 'to': 'c1', 'res': 'fail', 'label': K('물리 피해 접두 지워짐 — 카오스부터', 'Physical prefix gone: back to Chaos')},
          {'to': 'e1', 'res': 'ok', 'label': K('다시 엑잘', 'Exalt again')}])
 A(id='e2', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션', 'Third prefix option'), show=['hyb'],
+  goal=K('접두 세 번째 옵션', 'Third prefix option'), show=['hyb'],
   edges=[{'if': {'all': [{'param': {'g': 1}}, {'not': {'count': {'tag': 'p1', 'min': 3}}}, {'whittleSafe': {'tag': 'keepW'}}]}, 'to': 'e2b', 'res': 'fail',
           'label': K('가장 낮은 레벨이면 절사', 'Lowest level: Whittling')},
          {'to': 'sz', 'res': 'ok'}],
   item=[FLAT, PCT, FIRE, ML],
-  over=[{'param': {'g': 0}, 'set': {'goal': K('접두 세번째 옵션 (나오는 대로)', 'Third prefix option (keep what comes)'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}]}}])
+  over=[{'param': {'g': 0}, 'set': {'goal': K('접두 세 번째 옵션 (나오는 대로)', 'Third prefix option (keep what comes)'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}]}}])
 A(id='e2b', kind='act', group='main', pos=[1, 5.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
   goal=K('가장 낮은 레벨 옵션 다시 (물리 피해 접두와 같은 레벨이면 멈춤)', 'Reroll the lowest-level option (stop if it ties with a physical prefix)'), show=['hyb'],
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 3}}, 'to': 'e2', 'res': 'fail', 'label': K('새 옵션이 접미로 — 다시 엑잘', 'New option on the suffix: exalt again')},
@@ -120,7 +120,7 @@ A(id='sz', kind='act', group='main', pos=[0, 6.4], act='annul', cur='Orb_of_Annu
   skipNote=K('접미가 꽉 차지 않으면 건너뜀', 'Skipped unless the suffixes are full'),
   edges=[{'to': 's0'}])
 A(id='s0', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째 옵션', 'Second suffix option'), show=['as', 'crit'],
+  goal=K('접미 두 번째 옵션', 'Second suffix option'), show=['as', 'crit'],
   skipIf={'not': {'sideLt': {'side': 's', 'n': 2}}}, skipTo='s1', skipHide=True,
   skipNote=K('접미 잡옵이 이미 있으면 건너뜀', 'Skipped when a junk suffix is already there'),
   edges=[{'if': {'all': [{'has': 'sg'}, {'sideLt': {'side': 's', 'n': 3}}]}, 'to': 'd1', 'res': 'ok', 'hide': True}, {'to': 's1', 'res': 'fail', 'label': K('잡옵', 'Junk')}],
@@ -131,7 +131,7 @@ A(id='s1', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Greater_Cha
   item=[FLAT, PCT, FIRE, ML, AS])
 # 사용자 결정 11-13: 영상 10:20의 엑잘(접미 채우기)을 빼고 빈 접미 자리에 훼손 — 꽉 찬 접미를 밀어내지 않음
 A(id='d1', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Ancient_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접미 세번째 옵션(훼손) — 빈 접미 자리에', 'Third suffix (desecrated): into the empty suffix slot'),
+  goal=K('접미 세 번째 옵션(훼손) — 빈 접미 자리에', 'Third suffix (desecrated): into the empty suffix slot'),
   showText=[{'s': 's', 'kr': '접미 훼손 옵션 (미공개)', 'en': 'Suffix desecration (unrevealed)'}],
   skipIf={'des': True}, skipTo='lx', skipHide=True,
   edges=[{'to': 'r1'}], item=[UN, FLAT, PCT, FIRE, ML, AS])

@@ -43,6 +43,6 @@ def sl_helmet(tier):
  'title':K('방어도·생명력 + 원소 저항 (화염파용)','armour/life + elemental resistance (Fireball)'),
  'start':{'rar':'normal','mods':[],'quality':20},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'magic','kr':'매직 만들기','en':'Make it magic'},{'id':'rare','kr':'레어 전환','en':'To rare'},
-           {'id':'fracture','kr':'분열','en':'Fracture'},{'id':'prefix','kr':'접두 첫번째~세번째 옵션','en':'Prefix options 1–3'},{'id':'suffix','kr':'접미 두번째·세번째 옵션','en':'Suffix options 2–3'}],
+           {'id':'fracture','kr':'분열','en':'Fracture'},{'id':'prefix','kr':'접두 첫 번째~세 번째 옵션','en':'Prefix options 1–3'},{'id':'suffix','kr':'접미 두 번째·세 번째 옵션','en':'Suffix options 2–3'}],
  'nodes':nodes})
 for _t in ('high','bal','ess'): sl_helmet(_t)

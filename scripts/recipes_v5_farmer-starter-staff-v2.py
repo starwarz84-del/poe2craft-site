@@ -19,7 +19,7 @@ def fm_staff(tier):
  'source':{'url':'https://www.youtube.com/watch?v=ITBexsgq2NI','title':'How To Craft Your League Starter Weapon For CHEAP In POE2 0.5.5!','channel':'XTheFarmerX'},
  'title':K('번개 주문 +5 + 추가 피해 획득 옵션 2개 + 주문 피해 (리그 초반 가성비)','+5 lightning spells + two extra-damage gains + spell damage (league-start budget)'),
  'start':{'rar':'magic','mods':[{'gi':fw2_xF,'tmax':ft},{'gi':fw2_l5,'tmax':1}]},
- 'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'pre','kr':'접두 세번째 옵션(훼손)','en':'Third prefix (desecrated)'},{'id':'suf','kr':'접미 두번째·세번째 옵션','en':'Suffix options 2–3'}],
+ 'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'pre','kr':'접두 세 번째 옵션(훼손)','en':'Third prefix (desecrated)'},{'id':'suf','kr':'접미 두 번째·세 번째 옵션','en':'Suffix options 2–3'}],
  'nodes':[
   {'id':'w1','phase':'base','do':'base','cost':'base','ts':'11:03','target':{'vals':{fw2_l5:K('모든 번개 주문 스킬 레벨 +6','+6 to Level of all Lightning Spell Skills')}},'note':K('모든 번개 주문 스킬 레벨 +(5—6) + 추가 화염 피해 획득 2티어 매직 지팡이(영상은 +5, 아이템 레벨 73). 베이스 종류는 상관없음.','A magic staff with +(5—6) to all lightning spell skills and T2 extra fire damage (the video bought +5, item level 73). Any staff base works.')},
   {'id':'w2','phase':'base','do':'essence','cur':'Greater_Essence_of_Sorcery','target':{'gi':fw2_spellE},'ts':'12:20'},

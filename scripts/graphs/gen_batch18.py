@@ -36,22 +36,22 @@ GM=G3[:3]+[PR,J('s'),MS,KO,SE]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'proj','fr':True},{'junk':'p'}]},K('콜르의 사냥 장착 · 모든 투사체 스킬 레벨 +2 분열 + 잡옵 1개 (퀄리티 25%)','Kolr’s Hunt socketed · fractured +2 projectile skills + one junk line (25% quality)'),G0),
  mark([0,0.6],'r1',G0),
  act('r1','main',[0,1],'rune',None,K('세를의 승리 장착 (접미 +1)','Socket Serle’s Triumph (+1 suffix)'),[st(None,'접미 옵션 4개','Four suffixes')],K('룬','Rune'),[{'to':'c1'}],G1,slots={'s':1},rune=K('세를의 승리','Serle’s Triumph')),
- act('c1','main',[0,2],'chaos','Chaos_Orb',K('접두 첫번째 옵션','First prefix'),None,K('카오스','Chaos'),[{'if':{'has':'pp'},'to':'e1','res':'ok'},{'to':'c1','res':'fail'}],G2,show=SHP),
- act('e1','main',[0,3],'exalt','Perfect_Exalted_Orb',K('접두 두번째·세번째 옵션','Second and third prefixes'),None,K('엑잘','Exalt'),RG({'s1':'ok','e1x':F}),G3,show=SHP+SHT,omens=['Omen_of_Greater_Exaltation','Omen_of_Sinistral_Exaltation']),
+ act('c1','main',[0,2],'chaos','Chaos_Orb',K('접두 첫 번째 옵션','First prefix'),None,K('카오스','Chaos'),[{'if':{'has':'pp'},'to':'e1','res':'ok'},{'to':'c1','res':'fail'}],G2,show=SHP),
+ act('e1','main',[0,3],'exalt','Perfect_Exalted_Orb',K('접두 두 번째·세 번째 옵션','Second and third prefixes'),None,K('엑잘','Exalt'),RG({'s1':'ok','e1x':F}),G3,show=SHP+SHT,omens=['Omen_of_Greater_Exaltation','Omen_of_Sinistral_Exaltation']),
  annul('e1x',[1,3],RG({'e1':{'res':'ok','port':'right'},'c1':{'res':'fail'}}),omens=(),target=K('접두 잡옵 지우기','Remove a junk prefix')),
- act('s1','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접미 두번째·세번째 옵션','Second and third suffixes'),None,K('엑잘','Exalt'),RG({'a1':'ok','mA':F}),G4,show=['cr'],omens=['Omen_of_Greater_Exaltation']),
+ act('s1','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접미 두 번째·세 번째 옵션','Second and third suffixes'),None,K('엑잘','Exalt'),RG({'a1':'ok','mA':F}),G4,show=['cr'],omens=['Omen_of_Greater_Exaltation']),
  act('mA','main',[1,4],'essence','Essence_of_the_Abyss',K('잡옵을 지우고 심연의 군주의 징표','The junk goes for the Mark of the Abyssal Lord'),[st('s','심연의 군주의 징표','Mark of the Abyssal Lord')],K('심연','Abyss'),RG({'mB':{}}),GM,ess='mkS',mark=True,omens=['Omen_of_Dextral_Crystallisation']),
  act('mB','main',[2,4],'desecrate','Ancient_Rib',K('접미 징표 훼손','Desecrate the suffix Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RG({'mL':{}}),GM,fromMark=True),
  annul('mL',[2,5],RG({'s1':{},'mA':{}})),
  act('a1','main',[0,6],'essence','Expansive_Alloy',K('잡옵을 지우고 잔류물을 (35—50)% 더 먼 곳에서 획득 가능','The junk goes for Remnants collected (35—50)% further away'),[st('s','잔류물을 (35—50)% 더 먼 곳에서 획득 가능 (제작 옵션)','Remnants can be collected from (35—50)% further away (crafted)')],K('합금','Alloy'),RG({'d1':'ok','sR':F}),G5,ess='rem',omens=['Omen_of_Dextral_Crystallisation']),
  annul('sR',[1,6],RG({'s1':{},'mA':{},'d1':{}}),omens=('Omen_of_Dextral_Annulment',),target=K('접미 옵션 지우기','Remove a suffix')),
- act('d1','main',[0,7],'desecrate','Ancient_Rib',K('접미 네번째 옵션(훼손)','Fourth suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],G6),
+ act('d1','main',[0,7],'desecrate','Ancient_Rib',K('접미 네 번째 옵션(훼손)','Fourth suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],G6),
  act('d2','main',[0,8],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'added':'pie'},'to':'ok','res':'ok'},{'if':V1,'to':'d2x',**F},{'to':'ok','res':'fail'}],G7,want='pie',show=['pie']),
  LIGHTX('d2x',[1,8],'d1'),
  done([0,9])]
 graph11('sl-proj7-gloves-v2','Gloves_int','Sirenscale Gloves',80,
   'SL 투사체 7옵션 장갑(XMYJh3CnXuY) — 콜르의 사냥 · 투사체 +2 분열 + 잡옵 → 세를의 승리 → 카오스 오브(투사체 피해·속도) → 상위 찬미 + 좌측 찬미 + 완벽한 엑잘(빗나가면 소멸의 오브) → 상위 찬미 + 완벽한 엑잘(치명타 확률, 잡옵 2개면 우측 결정화 + 심연의 에센스 → 고대 갈비뼈 → 빛의 징조) → 우측 결정화 + 팽창하는 합금(1/2) → 고대 갈비뼈 → 관통 공개. 하이엔드 = 영상, 밸런스 = 세 번째 접두 1~2티어 · 관통 공개 결과 그대로.',
-  {**ROUTE,'pT':{'kr':'접두 세번째 옵션','en':'Third prefix','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},PT,
+  {**ROUTE,'pT':{'kr':'접두 세 번째 옵션','en':'Third prefix','values':TV({'1':('1티어','T1'),'2':('1~2티어','T1–2')})}},PT,
   {'high':K('영상: 세 번째 접두 1티어, 관통은 빛의 징조로 다시','Video: T1 third prefix, Light retries pierce'),'bal':K('세 번째 접두 1~2티어, 관통 공개 결과 그대로','T1–2 third prefix, keep the reveal')},tags,nodes,
   [{'id':'L1','nodes':['d1','d2','d2x'],'kr':'훼손 공개','en':'Reveal'},{'id':'L2','nodes':['mA','mB','mL'],'kr':'잡옵 정리','en':'Clear junk'}],
   FIN(('high','bal'),lambda v:[{'tag':'ps','tmax':1},{'tag':'pd','tmax':1},{'tag':'mf','tmax':1 if v=='high' else 2},{'tag':'proj','fr':True},{'tag':'cr'},{'tag':'rem','ess':True},{'tag':'pie','des':True} if v=='high' else {'side':'s','random':True}]),
@@ -102,7 +102,7 @@ nodes=[b0,
   'target':K('빗나간 접두 지우기','Remove the missed prefix'),'edges':[{'if':{'all':[{'full':'p'},{'not':{'has':'pp'}}]},'to':'m1x'},{'to':'m2'}]},
  act('m3','prep',[0,2],'augment','Perfect_Orb_of_Augmentation',K('매직 접미 옵션','Magic suffix option'),[st('s','잡옵 1개','One junk line')],K('확장','Augment'),[{'to':'e0'}],M1),   # 0:46 처치 시 생명력
  act('e0','prep',[0,3],'essence','Greater_Essence_of_Abrasion',K('레어로 업그레이드 + 물리 피해 추가','Upgrade to rare + flat physical damage'),[st('p','물리 피해 추가 (제작 옵션)','Flat physical damage (crafted)')],K('에센스','Essence'),[{'to':'f1'}],M2,ess='fle'),   # 0:50 툴팁, 0:54 레어
- act('f1','prep',[0,4],'desecrate','Preserved_Jawbone',K('네번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth line (desecrated) — fracture needs four'),[st(None,'훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')],K('훼손','Desecrate'),[{'to':'f2'}],M3),   # 1:05 툴팁, 1:08 옵션 4개
+ act('f1','prep',[0,4],'desecrate','Preserved_Jawbone',K('네 번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth line (desecrated) — fracture needs four'),[st(None,'훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')],K('훼손','Desecrate'),[{'to':'f2'}],M3),   # 1:05 툴팁, 1:08 옵션 4개
  {'id':'fd','kind':'side','group':'prep','pos':[1,4.5],'attach':['f1','f2'],'cur':'Divine_Orb','goal':K('물리 피해 % 165 이상, 선택·비용 미포함','Physical damage % 165+, optional, not costed'),'label':K('신성','Divine')},   # 1:14 158 → 1:17 165
  act('f2','prep',[0,5],'fracture','Fracturing_Orb',K('분열 (셋 중 하나)','Fracture (one of three)'),[st(None,'물리 피해 % 증가가 분열되면 성공','Success when % physical damage fractures')],K('분열','Fracture'),
      [{'if':{'fractured':'pp'},'to':'f4','res':'ok',**L_('물리 피해 % 분열','% physical fractured')},{'to':'xj','res':'fail','dash':True,**L_('다른 옵션 분열','Another line fractured')}],[PPM('f'),FLE,J('s'),UN('s')],pAll=True),   # 1:21 툴팁, 1:22 분열 색
@@ -127,7 +127,7 @@ nodes=[b0,
  annul('e1s',[1,8.5],[{'if':{'not':{'sideLt':{'side':'s','n':1}}},'to':'e1s'},{'to':'e1',**L_('다시 엑잘','Exalt again')}],omens=('Omen_of_Dextral_Annulment',),target=K('접미 잡옵 지우기','Remove the junk suffix')),   # 4:46 상위 카오스(II) 2 → 1개, 4:48 절사의 징조 소모 → 번개 1티어
  act('al','main',[0,9],'rune',None,K('알두르의 숨결 장착','Socket Breath of Aldur'),[st(None,'화염·번개 옵션 → 같은 티어 냉기','Fire and lightning mods → same-tier cold')],K('룬','Rune'),[{'to':'r2'}],W3,rune=K('알두르의 숨결','Breath of Aldur')),   # 5:14 툴팁, 5:26 장착, 5:33 냉기 1티어
  act('r2','main',[0,10],'rune',None,K('아스트리드의 창의성 장착','Socket Astrid’s Creativity'),[st(None,'제작 옵션 하나 더','One more crafted modifier')],K('룬','Rune'),[{'to':'d1'}],W4,rune=K('아스트리드의 창의성','Astrid’s Creativity')),   # 6:02 툴팁, 6:10 '제작 옵션 1개 추가'
- act('d1','main',[0,11],'desecrate','Ancient_Jawbone',K('접미 첫번째 옵션(훼손)','First suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],W5),   # 7:00 미공개 접미(접두가 꽉 차 강령술 없음)
+ act('d1','main',[0,11],'desecrate','Ancient_Jawbone',K('접미 첫 번째 옵션(훼손)','First suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],W5),   # 7:00 미공개 접미(접두가 꽉 차 강령술 없음)
  act('d2','main',[0,12],'reveal',None,K('접미 모든 투사체 스킬 레벨 +4','+4 projectile skills suffix'),None,K('공개','Reveal'),
      [{'if':{'has':'proj'},'to':'x1','res':'ok'},{'to':'l1',**F,**L_('빗나감 — 빛 없이 다시','Miss: lightless reroll')}],W6,want='proj',show=['proj'],omens=['Omen_of_Abyssal_Echoes']),   # 8:20 빗나감, 12:43 +3 넘김, 14:50 +4
  act('l1','main',[1,12],'essence','Perfect_Essence_of_Haste',K('공개된 접미를 지우고 맹공','The revealed suffix goes, Onslaught comes'),[st('s','맹공 획득 (제작 옵션)','Onslaught (crafted)')],K('에센스','Essence'),[{'to':'l2'}],W7,ess='ons',omens=['Omen_of_Dextral_Crystallisation']),   # 9:12
@@ -139,7 +139,7 @@ nodes=[b0,
      [{'if':{'all':[{'has':'proj'},{'has':'cc'}]},'to':'x3','res':'ok'},{'if':{'not':{'has':'proj'}},'to':'xz',**F,**L_('투사체 +4가 지워짐','+4 projectiles gone')},{'to':'x2',**F}],
      W10,show=['cc'],trim={'side':'s','keep':'keepS'},skipIf={'all':[{'has':'proj'},{'has':'cc'}]},skipTo='x3',skipHide=True),   # 15:43 상위 카오스(II) 10·20개, 16:40 우측 말소 + 절사 소모, 18:15 치명타 확률
  cleanup('xz',[1,16],[],[{'to':'d1',**L_('접미를 비우고 훼손부터','Suffixes cleared: desecrate again')}],K('우측 소멸의 징조로 접미 옵션 모두 지우기','Clear every suffix with Omen of Dextral Annulment'),side='s'),
- act('x3','main',[0,17],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'ok'}],W11,skipIf={'full':'s'},skipTo='ok',skipHide=True),   # 18:28 툴팁, 18:38 민첩(영상은 그대로 둠)
+ act('x3','main',[0,17],'exalt','Perfect_Exalted_Orb',K('접미 세 번째 옵션','Third suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'ok'}],W11,skipIf={'full':'s'},skipTo='ok',skipHide=True),   # 18:28 툴팁, 18:38 민첩(영상은 그대로 둠)
  done([0,18])]
 graph11('diztoh-iceshot-bow-v2','Bows','Obliterator Bow',82,
   'Diztoh 얼음 사격 활(29vO0mMUoME, 2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 특출난 절멸자 활 → 완벽한 진화·확장·소멸로 매직 물리 피해 % → 상위 마모의 에센스 → 보존된 턱뼈 훼손 → 분열(1/3, 빗나가면 새 베이스) → 소멸로 분열 + 옵션 1개 → 카오스 오브(물리 피해 추가 1티어) → 좌측 찬미 + 완벽한 엑잘(빗나가면 절사의 징조 + 상위 카오스 오브) → 알두르의 숨결 → 아스트리드의 창의성 → 고대 턱뼈 → 공개(투사체 +4, 빗나가면 우측 결정화 + 완벽한 가속의 에센스 → 심연의 에센스 → 보존된 턱뼈로 징표 훼손) → 완벽한 엑잘(접미 잡옵) → 절사(+ 우측 말소) + 상위 카오스 오브(치명타 확률) → 완벽한 엑잘. 극한 → 하이엔드만: 반복 목표 1티어, 마지막 접미는 영상처럼 랜덤. 신성한 오브·룬 교체·타락은 뺌.',

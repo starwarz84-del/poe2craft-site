@@ -58,16 +58,16 @@ A(id='b0', kind='base', group='prep', pos=[0, 0], next='ms', start={'rar': 'magi
 # ---------------- 옵션 추가 작업 (1:04~5:16) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 1.4], next='e1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[FIRE, MEL])
 A(id='e1', kind='act', group='main', pos=[0, 2.4], act='essence', cur='Greater_Essence_of_Seeking', ess='crit', label=K('에센스', 'Essence'),
-  goal=K('레어로 + 접미 두번째 옵션', 'Make it rare + second suffix'),
+  goal=K('레어로 + 접미 두 번째 옵션', 'Make it rare + second suffix'),
   showText=[{'s': 's', 'kr': T(51)[0] + ' (제작 옵션)', 'en': T(51)[1] + ' (crafted)'}], edges=[{'to': 'd1'}], item=[FIRE, MEL, CRIT])
 A(id='d1', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Dextral_Necromancy', 'Omen_of_the_Liege'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손, 아마나무)', 'Third suffix (desecrated, Amanamu)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 세 번째 옵션(훼손, 아마나무)', 'Third suffix (desecrated, Amanamu)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개, 아마나무)', 'en': 'Desecrated (unrevealed, Amanamu)'}], edges=[{'to': 'r1'}], item=[FIRE, MEL, CRIT, UN])
 A(id='r1', kind='act', group='main', pos=[0, 4.4], act='reveal', want='as', label=K('공개', 'Reveal'),
   goal=K('접미 공격 속도 (아마나무 옵션 3개가 모두 나옴)', 'Attack speed suffix (all three Amanamu options show)'), show=['as'],
   edges=[{'to': 'x1'}], item=[FIRE, MEL, CRIT, AS])
 A(id='x1', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째·세번째 옵션', 'Second and third prefixes'), showText=[{'s': 'p', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
+  goal=K('접두 두 번째·세 번째 옵션', 'Second and third prefixes'), showText=[{'s': 'p', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   edges=[{'to': 'q1'}], item=[FIRE, RPJ, RPJ, MEL, CRIT, AS])
 A(id='q1', kind='act', group='main', pos=[0, 6.4], act='quality', cur='Blacksmiths_Whetstone', count=20, q=20, label=K('퀄리티', 'Quality'),
   goal=K('퀄리티 20%', 'Quality 20%'), showText=[K('대장장이의 숫돌 20개', '20 Blacksmith’s Whetstones')], edges=[{'to': 'a1'}],
@@ -81,26 +81,26 @@ A(id='a1', kind='act', group='main', pos=[0, 7.4], act='annul', cur='Orb_of_Annu
   showText=[{'s': 'p', 'kr': '접두 3개 제거 (3번)', 'en': 'Remove all three prefixes (three times)'}],
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 1}}, 'to': 'x2'}, {'to': 'a1', 'hide': True}], item=[MEL, CRIT, AS])
 A(id='x2', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 첫번째 옵션 — 번개 피해 추가 1~2티어', 'First prefix: T1–2 added lightning'), show=['light2'],
+  goal=K('접두 첫 번째 옵션 — 번개 피해 추가 1~2티어', 'First prefix: T1–2 added lightning'), show=['light2'],
   edges=[{'if': {'added': 'light2'}, 'to': 'x3', 'res': 'ok'}, {'if': {'param': {'L': 0}}, 'to': 'x3', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'x2c', 'res': 'fail'}], item=[LT, MEL, CRIT, AS],
-  over=[{'param': {'L': 0}, 'set': {'goal': K('접두 첫번째 옵션 — 나오는 대로', 'First prefix: keep what comes'), 'show': [],
+  over=[{'param': {'L': 0}, 'set': {'goal': K('접두 첫 번째 옵션 — 나오는 대로', 'First prefix: keep what comes'), 'show': [],
                                     'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}], 'item': [RP, MEL, CRIT, AS]}}])
 A(id='x2c', kind='act', group='main', pos=[1, 8.4], act='chaos', cur='Chaos_Orb', omens=['Omen_of_Sinistral_Erasure'], label=K('좌측 말소 + 카오스', 'Sinistral Erasure + Chaos'),
   goal=K('접두 다시 굴리기', 'Reroll the prefix'), show=['light2'],
   edges=[{'if': {'has': 'light2'}, 'to': 'x3', 'res': 'ok'}, {'to': 'x2c', 'res': 'fail', 'hide': True}])
 A(id='x3', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째·세번째 옵션', 'Second and third prefixes'), showText=[{'s': 'p', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
+  goal=K('접두 두 번째·세 번째 옵션', 'Second and third prefixes'), showText=[{'s': 'p', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   edges=[{'to': 'rn'}], item=[LT, RPJ, RPJ, MEL, CRIT, AS], over=[{'param': {'L': 0}, 'set': {'item': [RP, RPJ, RPJ, MEL, CRIT, AS]}}])
 A(id='rn', kind='act', group='main', pos=[0, 10.4], act='rune', label=K('룬', 'Rune'), goal=K('세를의 승리 장착 (접미 +1)', 'Socket Serle’s Triumph (+1 suffix)'),
   showText=[K('접미 옵션 4개', 'Four suffixes')], rune=K('세를의 승리', 'Serle’s Triumph'), slots={'s': 1}, edges=[{'to': 'x4'}],
   item=[LT, RP, RP, MEL, CRIT, AS], over=[{'param': {'L': 0}, 'set': {'item': [FIRE, RP, RP, MEL, CRIT, AS]}}])
 A(id='x4', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접미 네번째 옵션', 'Fourth suffix'), showText=[{'s': 's', 'kr': '랜덤 옵션', 'en': 'Random option'}],
+  goal=K('접미 네 번째 옵션', 'Fourth suffix'), showText=[{'s': 's', 'kr': '랜덤 옵션', 'en': 'Random option'}],
   edges=[{'to': 'ok'}], item=[LT, RP, RP, MEL, CRIT, AS, RSJ], over=[{'param': {'L': 0}, 'set': {'item': [FIRE, RP, RP, MEL, CRIT, AS, RSJ]}}])
 A(id='ok', kind='done', group='main', pos=[0, 12.4], label=K('완성', 'Finished'))
 g['nodes'] = N
-g['loops'] = [{'id': 'L1', 'nodes': ['x2', 'x2c'], 'kr': '접두 첫번째 옵션', 'en': 'First prefix'}]
+g['loops'] = [{'id': 'L1', 'nodes': ['x2', 'x2c'], 'kr': '접두 첫 번째 옵션', 'en': 'First prefix'}]
 g['finals'] = [
   {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
    'lines': [{'tag': 'light2'}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},

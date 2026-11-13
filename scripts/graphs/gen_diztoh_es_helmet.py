@@ -64,13 +64,13 @@ A = lambda **kw: N.append(kw)
 # ---------------- 베이스템 완성 (0:20~1:52) ----------------
 A(id='b0', kind='base', group='prep', pos=[0, 0], next='m1', start={'rar': 'normal', 'mods': []},
   label=K('특출난 카마사의 티아라 구입 (아이템 레벨 81)', 'Buy an exceptional Kamasan Tiara (item level 81)'), item=[])
-A(id='m1', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation', label=K('매직 첫번째 옵션', 'First magic option'),
+A(id='m1', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation', label=K('매직 첫 번째 옵션', 'First magic option'),
   goal=K('접두 에너지 보호막 최대치 1티어', 'T1 flat energy shield prefix'), show=['esf'],
   edges=[{'if': {'added': 'magicGood'}, 'to': 'm2', 'res': 'ok', 'label': K('성공', 'hit')},
          {'to': 'm1x', 'res': 'fail', 'label': K('빗나감', 'miss')}], item=[ESFn])
 A(id='m1x', kind='cleanup', group='prep', pos=[1, 1], keep=[], maxJunk=0, label=ANN, goal=ANN,
   target=K('빗나간 옵션 지우기', 'Remove the missed option'), edges=[{'to': 'm2'}])
-A(id='m2', kind='act', group='prep', pos=[0, 2], act='augment', cur='Perfect_Orb_of_Augmentation', label=K('매직 두번째 옵션', 'Second magic option'),
+A(id='m2', kind='act', group='prep', pos=[0, 2], act='augment', cur='Perfect_Orb_of_Augmentation', label=K('매직 두 번째 옵션', 'Second magic option'),
   goal=K('접미 아이템 희귀도 1티어', 'T1 item rarity suffix'), show=['rarS'],
   edges=[{'if': {'ref': 'magicDone'}, 'to': 's1', 'res': 'ok', 'label': K('성공', 'hit')},
          {'to': 'm2x', 'res': 'fail', 'label': K('빗나감', 'miss')}], item=[ESFn, RARS])
@@ -81,10 +81,10 @@ A(id='m2x', kind='cleanup', group='prep', pos=[1, 2], keep=['magicGood'], maxJun
 A(id='m2y', kind='cleanup', group='prep', pos=[2, 2], keep=[], maxJunk=0, label=ANN, goal=ANN,
   target=K('남은 옵션 지우기', 'Remove the remaining option'), edges=[{'to': 'm2'}])
 A(id='s1', kind='act', group='prep', pos=[0, 3], act='essence', cur='Greater_Essence_of_the_Infinite', ess='int', label=K('에센스', 'Essence'),
-  goal=K('레어로 + 접미 두번째 옵션', 'Make it rare + second suffix'),
+  goal=K('레어로 + 접미 두 번째 옵션', 'Make it rare + second suffix'),
   showText=[{'s': 's', 'kr': T(38)[0] + ' (제작 옵션)', 'en': T(38)[1] + ' (crafted)'}], edges=[{'to': 'd0'}], item=[ESFn, RARS, INT])
 A(id='d0', kind='act', group='prep', pos=[0, 4], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접두 두번째 옵션(훼손) — 분열 조건 옵션 4개', 'Second prefix (desecrated): the fracture needs four'),
+  goal=K('접두 두 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Second prefix (desecrated): the fracture needs four'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개, 분열되지 않음)', 'en': 'Desecrated (unrevealed, cannot fracture)'}], edges=[{'to': 'f1'}],
   item=[ESFn, UN, RARS, INT])
 A(id='dv', kind='side', group='prep', pos=[1, 4.5], act='divine', cur='Divine_Orb', attach=['d0', 'f1'],
@@ -104,13 +104,13 @@ A(id='xj', kind='exit', group='prep', pos=[1, 6], simTo='b0', variant='fail', la
 # ---------------- 옵션 추가 작업 (2:42~4:16) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 7], next='x1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[ESF, UN, RARS, INT])
 A(id='x1', kind='act', group='main', pos=[0, 8], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 세번째 옵션', 'Third suffix'),
+  goal=K('접미 세 번째 옵션', 'Third suffix'),
   showText=[{'s': 's', 'kr': '랜덤 옵션', 'en': 'Random option'}], edges=[{'to': 'x2'}], item=[ESF, UN, RARS, INT, REC])
 A(id='x2', kind='act', group='main', pos=[0, 9], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션 — 에너지 보호막 % 증가 1~3티어·접두 아이템 희귀도 중 먼저 뜬 것(영상: 에너지 보호막 %)', 'Third prefix: T1–3 % energy shield or prefix rarity, whichever comes first (the video: % energy shield)'), show=['esp3', 'rarP'],
+  goal=K('접두 세 번째 옵션 — 에너지 보호막 % 증가 1~3티어·접두 아이템 희귀도 중 먼저 뜬 것(영상: 에너지 보호막 %)', 'Third prefix: T1–3 % energy shield or prefix rarity, whichever comes first (the video: % energy shield)'), show=['esp3', 'rarP'],
   edges=[{'if': {'added': 'pre2'}, 'to': 'r1', 'res': 'ok'}, {'if': {'param': {'L': 0}}, 'to': 'r1', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'x2x', 'res': 'fail'}], item=[ESF, ESP, UN, RARS, INT, REC],
-  over=[{'param': {'L': 0}, 'set': {'goal': K('접두 세번째 옵션 — 에너지 보호막 % 노림, 나오는 대로', 'Third prefix: aiming for % energy shield, keep what comes'), 'show': [],
+  over=[{'param': {'L': 0}, 'set': {'goal': K('접두 세 번째 옵션 — 에너지 보호막 % 노림, 나오는 대로', 'Third prefix: aiming for % energy shield, keep what comes'), 'show': [],
                                     'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}], 'item': [ESF, RP, UN, RARS, INT, REC]}}])
 A(id='x2x', kind='act', group='main', pos=[1, 9], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Sinistral_Annulment'], label=ANN, goal=ANN,
   target=K('좌측 소멸의 징조로 빗나간 접두 지우기 — 훼손 옵션이 지워질 수 있음', 'Sinistral Annulment removes the missed prefix (it can take the desecration)'),
@@ -138,7 +138,7 @@ A(id='ok', kind='done', group='main', pos=[0, 12.4], label=K('완성', 'Finished
 g['nodes'] = N
 g['loops'] = [
   {'id': 'L1', 'nodes': ['m1', 'm1x', 'm2', 'm2x', 'm2y'], 'kr': '매직 옵션 맞추기', 'en': 'Magic options'},
-  {'id': 'L2', 'nodes': ['x2', 'x2x', 'x2d'], 'kr': '접두 세번째 옵션', 'en': 'Third prefix', 'fold': True,
+  {'id': 'L2', 'nodes': ['x2', 'x2x', 'x2d'], 'kr': '접두 세 번째 옵션', 'en': 'Third prefix', 'fold': True,
    'goal': K('접두 에너지 보호막 % 증가 1~3티어·접두 아이템 희귀도 중 먼저 뜬 것', 'T1–3 % energy shield or prefix rarity, whichever comes first'),
    'steps': [{'kr': '상위 엑잘티드 오브로 접두 에너지 보호막 % 증가·아이템 희귀도', 'en': 'Greater Exalted Orb for % energy shield or rarity', 'node': 'x2'},
              {'kr': '빗나가면 좌측 소멸의 징조 + 소멸의 오브', 'en': 'On a miss: Sinistral Annulment + Orb of Annulment', 'node': 'x2x'},

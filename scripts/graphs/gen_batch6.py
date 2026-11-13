@@ -22,8 +22,8 @@ I0=[ESF,UN('p'),RS,IN]; I1=I0+[J('s')]; I2=I1+[PRE()]; I3=[ESF,RS,IN,J('s'),PRE(
 GOOD2={'count':{'tag':'pre','min':2}}
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'esf','fr':True},{'unrev':'p','bone':'Ancient_Rib'},'rarS',{'tag':'int','ess':True}]},K('에너지 보호막 최대치 분열 티아라 준비','Fractured flat energy shield tiara'),I0),
  mark([0,0.6],'e2',I0),
- act('e2','main',[0,1],'exalt','Greater_Exalted_Orb',K('접미 세번째 옵션','Third suffix option'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'e3'}],I1,omens=['Omen_of_Dextral_Exaltation']),
- act('e3','main',[0,2],'exalt','Greater_Exalted_Orb',K('접두 두번째 옵션','Second prefix option'),[st('p','에너지 보호막 % 또는 희귀도 (안 나와도 그대로)','% energy shield or rarity (keep whatever comes)')],K('엑잘','Exalt'),[{'to':'e4'}],I2),
+ act('e2','main',[0,1],'exalt','Greater_Exalted_Orb',K('접미 세 번째 옵션','Third suffix option'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'e3'}],I1,omens=['Omen_of_Dextral_Exaltation']),
+ act('e3','main',[0,2],'exalt','Greater_Exalted_Orb',K('접두 두 번째 옵션','Second prefix option'),[st('p','에너지 보호막 % 또는 희귀도 (안 나와도 그대로)','% energy shield or rarity (keep whatever comes)')],K('엑잘','Exalt'),[{'to':'e4'}],I2),
  act('e4','main',[0,3],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),
      [{'if':GOOD2,'to':'ok','res':'ok'},{'if':{'all':[{'param':{'rT':1}},{'not':{'added':'pre'}},{'count':{'tag':'pre','min':1}}]},'to':'e4x','res':'fail'},{'to':'ok','res':'fail'}],I3,want='pre',show=['pre'],omens=['Omen_of_Abyssal_Echoes']),
  annul('e4x',[1,3],[{'to':'e4d','port':'right'}]),
@@ -54,12 +54,12 @@ BAL={'param':{'sT':1}}
 nodes=[base('ms',{'rar':'rare','mods':['l4',{'tag':'trans','fr':True,'ess':True},{'tag':'cel','ess':True},{'unrev':'p','bone':'Preserved_Jawbone','lord':'amanamu'}]},K('모든 주문 +4 · 초월의 합금 분열 완드 준비','+4 all spells wand with fractured Transcendent Alloy'),I0),
  mark([0,0.6],'b2',I0),
  act('b2','main',[0,1],'reveal',None,K('훼손 옵션 확인 (아마나무 3개 전부 나옴)','Reveal (all three Amanamu lines show)'),[st('p','원소 피해 증가 — 화염·냉기·번개 %를 막음','Elemental damage — blocks fire, cold and lightning %')],K('공개','Reveal'),[{'to':'b3'}],I1,want='ele',omens=['Omen_of_Abyssal_Echoes']),
- act('b3','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix option'),None,K('엑잘','Exalt'),
+ act('b3','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접두 세 번째 옵션','Third prefix option'),None,K('엑잘','Exalt'),
      [{'if':{'count':{'tag':'pre','min':1}},'to':'b4','res':'ok'},{'if':BAL,'to':'b3x','res':'fail'},{'to':'b4','res':'fail'}],I2,show=['pre'],omens=['Omen_of_Sinistral_Exaltation']),
  cleanup('b3x',[1,2],['cel','ele','pre'],[{'lost':'cel','to':'b3c','port':'right'},{'lost':'ele','to':'b3','port':'right'},{'to':'b3','port':'right'}],K('빗나간 접두 제거 (천공의 합금이 지워지면 다시)','Remove the missed prefix (Celestial Alloy gone: craft it again)'),side='p'),
  act('b3c','main',[2,2],'essence','Celestial_Alloy',K('천공의 합금 다시','Celestial Alloy again'),[st('p','천공의 합금 (제작 옵션)','Celestial Alloy (crafted)')],K('합금','Alloy'),[{'to':'b3','port':'right'}],I1,ess='cel',omens=['Omen_of_Sinistral_Crystallisation']),
  annul('b4',[0,3],[{'to':'b5'}],target=K('원소 피해(막기 옵션) 제거','Remove the elemental damage blocker')),
- act('b5','main',[0,4],'desecrate','Ancient_Jawbone',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'b6'}],I4,omens=['Omen_of_Dextral_Necromancy']),
+ act('b5','main',[0,4],'desecrate','Ancient_Jawbone',K('접미 세 번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'b6'}],I4,omens=['Omen_of_Dextral_Necromancy']),
  act('b6','main',[0,5],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),
      [{'if':{'added':'suf'},'to':'b7','res':'ok'},{'if':BAL,'to':'b6x','res':'fail'},{'to':'b7','res':'fail'}],I5,want='suf',show=['suf'],omens=['Omen_of_Abyssal_Echoes']),
  annul('b6x',[1,5],[{'to':'b6d','port':'right'}]),
@@ -86,15 +86,15 @@ FL=it('p','방어도 (분열)','Flat armour (fractured)',['flat']); PC=it('p','�
 I0=[FL,J('s')]; I1=[FL,PC]; I2=I1+[UN('p')]; I3=I1+[HY]; I4=I3+[J('s'),J('s')]; I5=I4+[J('s')]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'flat','fr':True},{'junk':'s'}]},K('방어도 1티어 분열 + 잡옵 1개 (퀄리티 28%)','Fractured T1 flat armour + one junk line (28% quality)'),I0),
  mark([0,0.6],'l2',I0),
- act('l2','main',[0,1],'chaos','Chaos_Orb',K('접두 두번째 옵션','Second prefix option'),None,K('카오스','Chaos'),[{'if':{'has':'pct'},'to':'l3','res':'ok'},{'to':'l2','res':'fail'}],I1,show=['pct']),
- act('l3','main',[0,2],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'l4'}],I2,omens=['Omen_of_Sinistral_Necromancy']),
+ act('l2','main',[0,1],'chaos','Chaos_Orb',K('접두 두 번째 옵션','Second prefix option'),None,K('카오스','Chaos'),[{'if':{'has':'pct'},'to':'l3','res':'ok'},{'to':'l2','res':'fail'}],I1,show=['pct']),
+ act('l3','main',[0,2],'desecrate','Ancient_Rib',K('접두 세 번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'l4'}],I2,omens=['Omen_of_Sinistral_Necromancy']),
  act('l4','main',[0,3],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),
      [{'if':{'added':'hyb'},'to':'l7','res':'ok'},{'if':{'param':{'hT':1}},'to':'l4x','res':'fail'},{'to':'l7','res':'fail'}],I3,want='hyb',show=['hyb'],omens=['Omen_of_Abyssal_Echoes']),
  annul('l4x',[1,3],[{'to':'l4d','port':'right'}]),
  act('l4d','main',[1,3.6],'desecrate','Ancient_Rib',K('다시 훼손','Desecrate again'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'l4','port':'right'}],I2,omens=['Omen_of_Sinistral_Necromancy']),
  act('l7','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접미 옵션 2개','Two suffixes'),[st('s','랜덤 옵션 2개 — 결과 그대로','Two random lines — keep whatever comes')],K('엑잘','Exalt'),[{'to':'l8'}],I4,omens=['Omen_of_Greater_Exaltation'],
      over=[{'param':{'hT':3},'set':{'cur':'Greater_Exalted_Orb'}}]),
- act('l8','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),[st('s','랜덤 옵션 1개 — 결과 그대로','One random line — keep whatever comes')],K('엑잘','Exalt'),[{'to':'ok'}],I5,
+ act('l8','main',[0,5],'exalt','Perfect_Exalted_Orb',K('접미 세 번째 옵션','Third suffix'),[st('s','랜덤 옵션 1개 — 결과 그대로','One random line — keep whatever comes')],K('엑잘','Exalt'),[{'to':'ok'}],I5,
      over=[{'param':{'hT':3},'set':{'cur':'Greater_Exalted_Orb'}}]),
  done([0,6])]
 nodes[0]['group']='prep'
@@ -116,7 +116,7 @@ graph('lilbotq-armour-shield-v2','Shields_str','Tawhoan Tower Shield',81,
 #   → 8:56 공개(심연의 메아리로 한 번 다시) 빗나감(에너지 보호막 재충전) → 9:34 우측 결정화 + 완벽한 추구의 에센스 → 9:58 우측 결정화 + 심연의 에센스(징표)
 #   → 10:27 보존된 갈비뼈로 징표 훼손(쓰는 장면은 화면에 없음, 결과만) → 10:31 공개: 정신력 점유 효율 8% → 11:30 상위 찬미 + 완벽한 엑잘(접미 2개, 저항 없음)
 #   → 12:29 우측 소멸의 징조 + 소멸의 오브(30% 능력치 요구 제거) → 13:20·13:52 절사의 징조 + 상위 카오스 오브 2번(중독 → 능력치 요구 25% → 냉기 저항 35% 3티어)
-#   → 14:24 완벽한 엑잘 1개 구입 → 14:36 접미 세번째(능력치 요구 35% 감소 1티어) → 15:30~16:50 신성한 오브, 17:00 룬·여우 우상, 19:40 치직대는 유동체(마무리, 비용 제외).
+#   → 14:24 완벽한 엑잘 1개 구입 → 14:36 접미 세 번째(능력치 요구 35% 감소 1티어) → 15:30~16:50 신성한 오브, 17:00 룬·여우 우상, 19:40 치직대는 유동체(마무리, 비용 제외).
 P={'bal':{'sT':4,'fT':2,'eT':2,'g':1},'ess':{'sT':4,'fT':4,'eT':4,'g':0}}
 # 밸런스 원소 저항 '2~3티어' = 아이템 레벨 81이라 1티어(레벨 82)가 붙지 않아, 붙을 수 있는 위 두 티어를 C17의 1~2티어로 봄(마스터 확정 2026-11-12, 영상 결과 냉기 3티어)
 tags={'spirit':{'gi':14,'tmax':'$sT'},'esf':{'gi':6,'tmax':'$fT'},'esp':{'gi':7,'tmax':'$eT'},'res':{'gi':21},'seek':{'gi':43},'mark':{'gi':45},
@@ -131,7 +131,7 @@ nodes=[base('p1',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'p'},{
  act('v2','main',[0,2],'chaos','Greater_Chaos_Orb',K('접두 에너지 보호막 최대치','Flat energy shield prefix'),None,K('카오스','Chaos'),[{'if':{'added':'esf'},'to':'v3','res':'ok'},{'to':'v2','res':'fail'}],I1,show=['esf']),   # 3:19~3:28
  act('v3','main',[0,3],'exalt','Greater_Exalted_Orb',K('접두 에너지 보호막 % 증가','% energy shield prefix'),None,K('엑잘','Exalt'),[{'if':{'added':'esp'},'to':'v5','res':'ok'},{'to':'v3x','res':'fail','label':K('빗나감 — 소멸','Miss: annul')}],I2,show=['esp'],omens=['Omen_of_Sinistral_Exaltation']),   # 3:35~4:22
  cleanup('v3x',[1,3],['spirit','esf'],[{'lost':'esf','to':'v2','label':K('최대치가 지워짐 — 카오스부터','Flat ES gone: back to Chaos')},{'to':'v3','label':K('다시 엑잘','Exalt again')}],K('빗나간 접두 제거, 접미가 비어 있어 접두만 지워짐','Remove the missed prefix; no suffixes yet, so a prefix goes')),   # 4:20
- act('v5','main',[0,4],'desecrate','Preserved_Rib',K('접미 첫번째 옵션(훼손)','First suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated (unrevealed)')],K('훼손','Desecrate'),[{'to':'v4'}],I3),   # 4:55 보존된 갈비뼈 툴팁, 5:09 미공개
+ act('v5','main',[0,4],'desecrate','Preserved_Rib',K('접미 첫 번째 옵션(훼손)','First suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated (unrevealed)')],K('훼손','Desecrate'),[{'to':'v4'}],I3),   # 4:55 보존된 갈비뼈 툴팁, 5:09 미공개
  act('v4','main',[0,5],'rune',None,K('아스트리드의 창의성 장착','Socket Astrid’s Creativity'),[st(None,'제작 옵션 하나 더','One more crafted modifier')],K('룬','Rune'),[{'to':'v6'}],I3,rune=K('아스트리드의 창의성','Astrid’s Creativity'),skipIf={'rune':'Astrid'},skipTo='v6',skipHide=True,skipNote=K('이미 장착돼 있으면 건너뜀','Skipped when already socketed')),   # 6:04 툴팁, 6:10 '제작 옵션 1개 추가' — 영상대로 갈비뼈 뒤(마스터 검수 2026-11-12)
  act('v6','main',[0,6],'reveal',None,K('접미 스킬의 정신력 점유 효율','Spirit reservation efficiency suffix'),None,K('공개','Reveal'),[{'if':{'added':'res'},'to':'v7','res':'ok'},{'to':'v6a','res':'fail','label':K('빗나감 — 빛의 징조 없이 다시','Miss: reroll without Omen of Light')}],I4,want='res',show=['res'],omens=['Omen_of_Abyssal_Echoes']),   # 8:56 빗나감, 10:31 성공
  act('v6a','main',[1,6],'essence','Perfect_Essence_of_Seeking',K('빗나간 훼손 옵션을 추구의 에센스 옵션으로','Swap the missed desecration for the Seeking line'),[st('s','추구의 에센스 옵션 (유일한 접미가 지워짐)','Essence of Seeking line (the only suffix goes)')],K('에센스','Essence'),[{'to':'v6b'}],IA,ess='seek',omens=['Omen_of_Dextral_Crystallisation']),   # 9:34
@@ -145,10 +145,10 @@ nodes=[base('p1',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'p'},{
      skipIf={'not':{'whittleSafe':'keepR'}},skipTo='v8c',skipNote=K('가장 낮은 옵션이 남길 옵션이면 건너뜀','Skipped when the lowest line is one to keep'),skipLabel=K('가장 낮은 옵션이 남길 옵션','The lowest line is one to keep')),   # 13:20·13:52 채팅 '절사의 징조 소모'
  act('v8c','main',[1,10.5],'exalt','Perfect_Exalted_Orb',K('빈 접미에 원소 저항','An elemental resistance in the open suffix'),None,K('엑잘','Exalt'),[{'if':{'has':'anyres'},'to':'ok','res':'ok'},{'to':'v8a','res':'fail'}],I6,show=['anyres']),   # 영상에 없음(내부 결정)
  {**cleanup('v8x',[1,10],[],[{'to':'v5','label':K('훼손부터 다시','Desecrate again')}],K('남은 접미 잡옵 제거','Remove the remaining junk suffixes'),side='s'),'omens':['Omen_of_Dextral_Annulment']},   # 영상에 없음(최악의 경우)
- act('v8b','main',[0,11],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),[st('s','랜덤 옵션','Random modifier')],K('엑잘','Exalt'),[{'to':'ok'}],I8),   # 14:24 구입, 14:36
+ act('v8b','main',[0,11],'exalt','Perfect_Exalted_Orb',K('접미 세 번째 옵션','Third suffix'),[st('s','랜덤 옵션','Random modifier')],K('엑잘','Exalt'),[{'to':'ok'}],I8),   # 14:24 구입, 14:36
  done([0,12])]
 graph('diztoh-vile-robe-v2','Body_Armours_int','Vile Robe',81,
-  'Diztoh 정신력 로브(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 정신력 분열 베이스를 소멸의 오브로 분열 + 옵션 1개 → 상위 카오스 오브로 에너지 보호막 최대치 → 좌측 찬미의 징조 + 상위 엑잘티드 오브로 단일 에너지 보호막 %, 빗나가면 소멸의 오브 → 아스트리드의 창의성 → 보존된 갈비뼈 → 공개(스킬의 정신력 점유 효율), 빗나가면 우측 결정화 + 완벽한 추구의 에센스 → 우측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈 → 상위 찬미 + 완벽한 엑잘(접미 2개) → 우측 소멸의 징조 + 소멸의 오브 → 절사의 징조 + 상위 카오스 오브로 원소 저항 → 완벽한 엑잘(접미 세번째). 신성한 오브·룬·여우 우상·유동체는 비용에서 뺌.',
+  'Diztoh 정신력 로브(2026-11-12 영상 전체 재대조, 새 플로우차트 기준) — 정신력 분열 베이스를 소멸의 오브로 분열 + 옵션 1개 → 상위 카오스 오브로 에너지 보호막 최대치 → 좌측 찬미의 징조 + 상위 엑잘티드 오브로 단일 에너지 보호막 %, 빗나가면 소멸의 오브 → 아스트리드의 창의성 → 보존된 갈비뼈 → 공개(스킬의 정신력 점유 효율), 빗나가면 우측 결정화 + 완벽한 추구의 에센스 → 우측 결정화 + 심연의 에센스(징표) → 보존된 갈비뼈 → 상위 찬미 + 완벽한 엑잘(접미 2개) → 우측 소멸의 징조 + 소멸의 오브 → 절사의 징조 + 상위 카오스 오브로 원소 저항 → 완벽한 엑잘(접미 세 번째). 신성한 오브·룬·여우 우상·유동체는 비용에서 뺌.',
   {'sT':{'kr':'정신력 (분열)','en':'Spirit (fractured)','values':TV({'4':('1~4티어','T1–4')})},'fT':{'kr':'에너지 보호막 최대치','en':'Flat energy shield','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})},'eT':{'kr':'에너지 보호막 %','en':'% energy shield','values':TV({'2':('1~2티어','T1–2'),'4':('1~4티어','T1–4')})},'g':{'kr':'원소 저항','en':'Resistance','values':TV({'1':('절사의 징조로 맞춤','Whittling'),'0':('결과 그대로','As it comes')})}},P,
   {'bal':K('에너지 보호막 옵션 2개 1~2티어 + 원소 저항(우측 소멸·절사의 징조, 영상)','Two T1–2 energy shield lines + a resistance (Dextral Annulment and Whittling, as the video)'),'ess':K('에너지 보호막 1~4티어, 상위 엑잘, 저항은 결과 그대로','T1–4 energy shield, Greater Exalts, resistances as they come')},
   tags,nodes,[{'id':'L0','nodes':['v3','v3x'],'kr':'접두 에너지 보호막 % 옵션','en':'% energy shield prefix'},{'id':'L1','nodes':['v6','v6a','v6b','v6c'],'kr':'정신력 점유 효율 공개','en':'Reservation efficiency reveal'},
@@ -177,11 +177,11 @@ EXO=[{'param':{'fT':5},'set':{'cur':'Greater_Exalted_Orb'}}]
 nodes=[base('t2',{'rar':'magic','mods':['melee','fire']},K('근접 +5 + 화염 피해 추가 매직 부적 구입','Buy a magic talisman with +5 melee + flat fire'),I0),
  act('t2','prep',[0,1],'essence','Greater_Essence_of_Seeking',K('레어로 업그레이드 + 접미 치명타 확률','Upgrade to rare + crit chance suffix'),[st('s','치명타 확률 (제작 옵션)','Critical hit chance (crafted)')],K('에센스','Essence'),[{'to':'ms'}],I1,ess='crit'),
  mark([0,1.5],'t3',I1),
- act('t3','main',[0,2],'desecrate','Preserved_Jawbone',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','아마나무 훼손 옵션(미공개)','Amanamu desecration (unrevealed)')],K('훼손','Desecrate'),[{'to':'t4'}],I2,omens=['Omen_of_Dextral_Necromancy','Omen_of_the_Liege']),
+ act('t3','main',[0,2],'desecrate','Preserved_Jawbone',K('접미 세 번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','아마나무 훼손 옵션(미공개)','Amanamu desecration (unrevealed)')],K('훼손','Desecrate'),[{'to':'t4'}],I2,omens=['Omen_of_Dextral_Necromancy','Omen_of_the_Liege']),
  act('t4','main',[0,3],'reveal',None,K('훼손 옵션 확인 (아마나무 3개 전부 나옴)','Reveal (all three Amanamu lines show)'),[st('s','공격 속도 + 반려수 공격 속도','Attack speed + companion attack speed')],K('공개','Reveal'),[{'to':'t5'}],I3,want='as'),
  act('t5','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','물리·원소 피해 접두 (안 나와도 그대로)','Physical or elemental damage (keep whatever comes)')],K('엑잘','Exalt'),[{'to':'t8'}],I4,omens=['Omen_of_Greater_Exaltation'],over=EXO),
  act('t8','main',[0,5],'rune',None,K('세를의 승리 장착 (접미 +1)','Socket Serle’s Triumph (one more suffix)'),[st('s','접미 자리 +1','One more suffix slot')],K('룬','Rune'),[{'to':'t9'}],I4,slots={'s':1},rune=K('세를의 승리',"Serle's Triumph")),
- act('t9','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접미 네번째 옵션','Fourth suffix'),[st('s','치명타 피해 보너스 1~2티어 (안 나와도 그대로 — 영상: 정확도 + 빛 반경)','Crit damage bonus T1–2 (keep whatever comes — accuracy + light radius in the video)')],K('엑잘','Exalt'),[{'to':'ok'}],I5,over=EXO),
+ act('t9','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접미 네 번째 옵션','Fourth suffix'),[st('s','치명타 피해 보너스 1~2티어 (안 나와도 그대로 — 영상: 정확도 + 빛 반경)','Crit damage bonus T1–2 (keep whatever comes — accuracy + light radius in the video)')],K('엑잘','Exalt'),[{'to':'ok'}],I5,over=EXO),
  done([0,7])]
 graph('diztoh-talisman-v2','Talismans','Maji Talisman',81,
   'Diztoh +5 부적(원본 레시피 기록) — 근접 +5 + 화염 피해 추가 매직 구입 → 상위 추구의 에센스(치명타) → 우측 강령술 + 군왕의 징조 + 보존된 턱뼈 → 공개(아마나무 접미 3개 전부 → 공격 속도 확정) → 상위 찬미 + 완벽한 엑잘(접두 옵션 2개, 결과 그대로) → 세를의 승리 → 완벽한 엑잘(접미 4번째, 결과 그대로). 소멸의 징조 재도전은 뺌(영상도 타협). 에센셜 = 화염 피해 1~5티어 베이스, 엑잘은 상위 엑잘티드 오브.',

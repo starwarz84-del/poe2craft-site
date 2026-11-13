@@ -88,7 +88,7 @@ A(id='m2', kind='act', group='prep', pos=[0, 2], act='augment', cur='Perfect_Orb
 A(id='r1', kind='act', group='prep', pos=[0, 3], act='regal', cur='Perfect_Regal_Orb', label=K('제왕', 'Regal'),
   goal=K('레어', 'Rare'), showText=[K('랜덤 옵션 1개', 'One random option')], edges=[{'to': 'f1'}], item=[ARMn, J('s'), J('x')])
 A(id='f1', kind='act', group='prep', pos=[0, 4], act='desecrate', cur='Preserved_Rib', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 확률 1/3', 'Fourth option (desecrated): fracture odds 1/3'),
+  goal=K('네 번째 옵션(훼손) — 분열 확률 1/3', 'Fourth option (desecrated): fracture odds 1/3'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecration (unrevealed, cannot fracture)')], edges=[{'to': 'f2'}], item=[ARMn, J('s'), J('x'), UN('x')])
 A(id='rd', kind='side', group='prep', pos=[1, 4.5], attach=['f1', 'f2'], cur='Divine_Orb', label=K('신성', 'Divine'),
   goal=K('방어도 % 증가 수치 올리기 (선택)', 'Raise the % Armour roll (optional)'))
@@ -131,7 +131,7 @@ A(id='s0', kind='cleanup', group='main', pos=[2, 10.4], keep=[], maxJunk=1, labe
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 's1'}])
 # 접두 엑잘(영상 13:10~13:50): 빗나가면 좌측 결정화 + 심연의 에센스로 징표, 징표를 둔 채 다시 엑잘(14:00~14:45 설명: 또 빗나가면 징표 훼손 → 빛의 징조 + 소멸 → 다시 징표)
 A(id='p1', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션 — 이동 속도·생명력 최대치 중 먼저 뜬 것', 'Second prefix: movement speed or maximum Life, whichever lands first'), show=['ms', 'life'],
+  goal=K('접두 두 번째 옵션 — 이동 속도·생명력 최대치 중 먼저 뜬 것', 'Second prefix: movement speed or maximum Life, whichever lands first'), show=['ms', 'life'],
   edges=[{'if': {'added': 'PRE'}, 'to': 'p2', 'res': 'ok', 'hide': True}, {'to': 'q1', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[ARM, MS, ELE, STR, CHR])
 A(id='q1', kind='act', group='main', pos=[1, 11.4], act='essence', cur='Essence_of_the_Abyss', ess='mark', mark=True,
@@ -155,7 +155,7 @@ A(id='p2', kind='act', group='main', pos=[1, 14.4], act='desecrate', cur='Ancien
   goal=K('빈 접두에 고대 갈비뼈', 'Ancient Rib on the empty prefix'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'p3'}])
 A(id='p3', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='PRED', label=K('공개', 'Reveal'),
-  goal=K('접두 세번째 옵션(훼손) — 남은 이동 속도·생명력 최대치', 'Third prefix (desecrated): the remaining movement speed or maximum Life'), show=['life', 'ms'],
+  goal=K('접두 세 번째 옵션(훼손) — 남은 이동 속도·생명력 최대치', 'Third prefix (desecrated): the remaining movement speed or maximum Life'), show=['life', 'ms'],
   edges=[{'if': {'added': 'PRED'}, 'to': 'ok', 'res': 'ok'}, {'to': 'p3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[ARM, MS, LIFE, ELE, STR, CHR])
 A(id='p3x', kind='act', group='main', pos=[1, 15.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
@@ -174,7 +174,7 @@ g['loops'] = [
             K('방어도의 원소 피해 적용이 지워지면 분열 + 옵션 1개까지 소멸의 오브', 'Armour to elemental gone: annul down to the fracture + one option') | {'node': 's0'}],
   'worst': {'kr': '방어도의 원소 피해 적용이 지워지면 카오스 단계부터', 'en': 'Armour to elemental gone: back to the Chaos step', 'to': 's1'},
   'item': [ARM, ELE, STR, CHR]},
- {'id': 'L4', 'nodes': ['p1', 'q1', 'q4', 'q4b', 'q4l'], 'kr': '접두 두번째 옵션', 'en': 'Second prefix', 'fold': True,
+ {'id': 'L4', 'nodes': ['p1', 'q1', 'q4', 'q4b', 'q4l'], 'kr': '접두 두 번째 옵션', 'en': 'Second prefix', 'fold': True,
   'goal': K('접두 이동 속도·생명력 최대치 — 먼저 뜬 것', 'Movement speed or maximum Life prefix: whichever lands first'),
   'steps': [K('완벽한 엑잘티드 오브로 접두 하나', 'Perfect Exalted Orb for one prefix') | {'node': 'p1'},
             K('빗나가면 좌측 결정화의 징조 + 심연의 에센스로 징표', 'A miss: Omen of Sinistral Crystallisation + Essence of the Abyss for the Mark') | {'node': 'q1'},
@@ -182,7 +182,7 @@ g['loops'] = [
             K('또 빗나가면 보존된 갈비뼈로 징표 훼손', 'Another miss: Preserved Rib on the Mark') | {'node': 'q4b'},
             K('빛의 징조 + 소멸의 오브로 훼손 옵션을 지우고 다시 징표', 'Omen of Light + Orb of Annulment removes it, then the Mark again') | {'node': 'q4l'}],
   'item': [ARM, MS, MARK, ELE, STR, CHR]},
- {'id': 'L5', 'nodes': ['p8m', 'p2', 'p3', 'p3x'], 'kr': '접두 세번째 옵션(훼손)', 'en': 'Third prefix (desecrated)', 'fold': True,
+ {'id': 'L5', 'nodes': ['p8m', 'p2', 'p3', 'p3x'], 'kr': '접두 세 번째 옵션(훼손)', 'en': 'Third prefix (desecrated)', 'fold': True,
   'goal': K('접두 생명력 최대치 1티어(훼손) — 남은 이동 속도·생명력 최대치', 'T1 maximum Life prefix (desecrated): the remaining movement speed or maximum Life'),
   'goalBy': {'high': K('접두 생명력 최대치 1티어(훼손) — 남은 이동 속도·생명력 최대치', 'T1 maximum Life prefix (desecrated): the remaining movement speed or maximum Life'),
              'bal': K('접두 생명력 최대치 1~2티어(훼손) — 남은 이동 속도·생명력 최대치', 'T1–2 maximum Life prefix (desecrated): the remaining movement speed or maximum Life')},

@@ -19,7 +19,7 @@ def dz_ring(tier):
  'source':{'url':'https://www.youtube.com/watch?v=GDLDxn6yxEs','title':'I Crafted Gold Rings to Increase my Item Rarity | Path of Exile 2 0.5.5','channel':'Diztoh'},
  'title':K('희귀도 옵션 2개 + 냉기 저항 + 모든 원소 저항','double rarity + cold res + all resistances'),
  'start':{'rar':'magic','mods':[{'gi':rr_rarP,'tmax':rp},{'gi':rr_cres,'tmax':cr}]},
- 'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'suf','kr':'접미 세번째 옵션(훼손)','en':'Third suffix (desecrated)'},{'id':'pre','kr':'접두 두번째·세번째 옵션','en':'Prefix options 2–3'}],
+ 'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'suf','kr':'접미 세 번째 옵션(훼손)','en':'Third suffix (desecrated)'},{'id':'pre','kr':'접두 두 번째·세 번째 옵션','en':'Prefix options 2–3'}],
  'nodes':[
   {'id':'g1','phase':'base','do':'base','cost':'base','ts':'1:00','note':K('접두 희귀도 + 접미 냉기 저항 매직 황금 반지.','A magic Gold Ring with prefix rarity and suffix cold resistance.')},
   {'id':'g2','phase':'base','do':'essence','cur':'Greater_Essence_of_Opulence','target':{'gi':rr_rarE},'ts':'1:20'},

@@ -104,7 +104,7 @@ A(id='r1', kind='act', group='prep', pos=[0, 3], act='essence', cur='Greater_Ess
 A(id='rd', kind='side', group='prep', pos=[1, 3.5], attach=['r1', 'f1'], cur='Divine_Orb', label=K('신성', 'Divine'),
   goal=K('분열 전 수치 올리기 (선택)', 'Raise the rolls before the fracture (optional)'))
 A(id='f1', kind='act', group='prep', pos=[0, 4], act='desecrate', cur='Preserved_Rib', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecration (unrevealed, cannot fracture)')], edges=[{'to': 'f2'}], item=[AP, AE, RAe, UN('s')])
 A(id='f2', kind='act', group='prep', pos=[0, 5], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
   goal=K('분열 (공개된 옵션 3개 모두 유효 옵션)', 'Fracture (all three revealed options are wanted)'),
@@ -121,26 +121,26 @@ A(id='f4', kind='cleanup', group='prep', pos=[0, 7], keep=[], maxJunk=1, label=A
 # ---------------- 옵션 추가 작업 (영상 7:05~10:52) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 8], next='b1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[J('p'), AEf])
 A(id='b1', kind='act', group='main', pos=[0, 9], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접두 첫번째 옵션 — 생명력 최대치·방어도·방어도 % 증가 1티어 중 먼저 뜬 것', 'First prefix: T1 life, flat armour or % armour, whichever lands first'), show=['life1', 'flat1', 'armP1'],
+  goal=K('접두 첫 번째 옵션 — 생명력 최대치·방어도·방어도 % 증가 1티어 중 먼저 뜬 것', 'First prefix: T1 life, flat armour or % armour, whichever lands first'), show=['life1', 'flat1', 'armP1'],
   edges=[{'if': {'added': 'P3c'}, 'to': 'b2', 'res': 'ok'}, {'to': 'b1', 'res': 'fail', 'hide': True}], item=[LF, AEf])
 A(id='b2', kind='act', group='main', pos=[0, 10], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션 — 남은 두 옵션 중 먼저 뜬 것', 'Second prefix: one of the remaining two'), show=['life', 'flat', 'armP2'],
+  goal=K('접두 두 번째 옵션 — 남은 두 옵션 중 먼저 뜬 것', 'Second prefix: one of the remaining two'), show=['life', 'flat', 'armP2'],
   edges=[{'if': {'added': 'P3'}, 'to': 'b3', 'res': 'ok'}, {'if': V2, 'to': 'b3', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')},
          {'to': 'b2x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[LF, FA, AEf])
 A(id='b2x', kind='cleanup', group='main', pos=[1, 10], keep=['P3c'], maxJunk=0, label=ANN, goal=ANN,
   target=K('빗나간 접두 지우기', 'Remove the missed prefix'),
-  edges=[{'lost': 'P3c', 'to': 'b1', 'label': K('첫번째 접두가 지워짐', 'The first prefix went')}, {'to': 'b2', 'label': K('다시 엑잘', 'Exalt again')}])
+  edges=[{'lost': 'P3c', 'to': 'b1', 'label': K('첫 번째 접두가 지워짐', 'The first prefix went')}, {'to': 'b2', 'label': K('다시 엑잘', 'Exalt again')}])
 A(id='b3', kind='act', group='main', pos=[0, 11], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'b4'}], item=[LF, FA, UN('p'), AEf])
 A(id='b4', kind='act', group='main', pos=[0, 12], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='P3', label=K('공개', 'Reveal'),
-  goal=K('접두 세번째 옵션(훼손) — 남은 한 옵션', 'Third prefix (desecrated): the last of the three'), show=['life', 'flat', 'armP2'],
+  goal=K('접두 세 번째 옵션(훼손) — 남은 한 옵션', 'Third prefix (desecrated): the last of the three'), show=['life', 'flat', 'armP2'],
   edges=[{'if': {'added': 'P3'}, 'to': 's1', 'res': 'ok'}, {'if': V2, 'to': 's1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')},
          {'to': 'b4x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[LF, FA, APd, AEf])
 A(id='b4x', kind='act', group='main', pos=[1, 12], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('빗나간 훼손 옵션 지우기', 'Remove the missed desecration'), edges=[{'to': 'b3'}])
 A(id='s1', kind='act', group='main', pos=[0, 13], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째·세번째 옵션 — 저항 하나', 'Second and third suffix: one resistance'), show=['fire', 'cold', 'light'],
+  goal=K('접미 두 번째·세 번째 옵션 — 저항 하나', 'Second and third suffix: one resistance'), show=['fire', 'cold', 'light'],
   edges=[{'if': {'has': 'RES'}, 'to': 'sf', 'res': 'ok'}, {'if': V2, 'to': 'sf', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')},
          {'to': 's1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[LF, FA, APd, AEf, CO, J('s')])
 A(id='s1x', kind='act', group='main', pos=[1, 13], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=ANN, goal=ANN,
@@ -162,18 +162,18 @@ g['loops'] = [
             K('빗나가면 소멸의 오브', 'A miss: Orb of Annulment') | {'node': 'm2x'},
             K('좋은 옵션이 지워지면 모두 지우고 다시 진화', 'The good option gone: clear it and transmute again') | {'node': 'm1x'}],
   'item': [AP, AE]},
- {'id': 'L2', 'nodes': ['b1', 'b2', 'b2x'], 'kr': '접두 첫번째·두번째 옵션', 'en': 'First and second prefix', 'fold': True,
+ {'id': 'L2', 'nodes': ['b1', 'b2', 'b2x'], 'kr': '접두 첫 번째·두 번째 옵션', 'en': 'First and second prefix', 'fold': True,
   'goal': K('접두 생명력 최대치 1티어 + 방어도 1~2티어 — 먼저 뜬 것부터', 'T1 life + T1–2 flat armour prefixes: whichever lands first'),
   'goalBy': {'bal': K('접두 생명력 최대치 1티어 + 방어도 1~2티어 — 먼저 뜬 것부터', 'T1 life + T1–2 flat armour prefixes: whichever lands first'),
              'ess': K('접두 생명력 최대치 1티어 + 엑잘 결과 그대로', 'T1 life prefix + whatever the exalt adds')},
   'steps': [K('카오스 오브로 접두 하나 1티어', 'Chaos Orb for one T1 prefix') | {'node': 'b1'},
             K('좌측 찬미의 징조 + 완벽한 엑잘티드 오브', 'Omen of Sinistral Exaltation + Perfect Exalted Orb') | {'node': 'b2'},
-            K('빗나가면 소멸의 오브 — 첫번째 접두가 지워지면 카오스부터', 'A miss: Orb of Annulment; the first prefix gone means Chaos again') | {'node': 'b2x'}],
+            K('빗나가면 소멸의 오브 — 첫 번째 접두가 지워지면 카오스부터', 'A miss: Orb of Annulment; the first prefix gone means Chaos again') | {'node': 'b2x'}],
   'item': [LF, FA, AEf]},
- {'id': 'L3', 'nodes': ['b3', 'b4', 'b4x'], 'kr': '접두 세번째 옵션(훼손)', 'en': 'Third prefix (desecrated)', 'fold': True,
+ {'id': 'L3', 'nodes': ['b3', 'b4', 'b4x'], 'kr': '접두 세 번째 옵션(훼손)', 'en': 'Third prefix (desecrated)', 'fold': True,
   'goal': K('접두 방어도 % 증가 1~2티어(훼손)', 'T1–2 % armour prefix (desecrated)'),
   'goalBy': {'bal': K('접두 방어도 % 증가 1~2티어(훼손) — 빛의 징조로 다시', 'T1–2 % armour prefix (desecrated): Omen of Light retries'),
-             'ess': K('접두 세번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep the reveal')},
+             'ess': K('접두 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep the reveal')},
   'steps': [K('좌측 강령술의 징조 + 고대 갈비뼈', 'Omen of Sinistral Necromancy + Ancient Rib') | {'node': 'b3'},
             K('심연의 메아리의 징조로 공개', 'Reveal with the Omen of Abyssal Echoes') | {'node': 'b4'},
             K('빗나가면 빛의 징조 + 소멸의 오브', 'A miss: Omen of Light + Orb of Annulment') | {'node': 'b4x'}],

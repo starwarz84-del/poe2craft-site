@@ -82,17 +82,17 @@ A(id='b0', kind='base', group='prep', pos=[0, 0], next='ms',
 A(id='ms', kind='mark', group='main', pos=[0, 1.4], next='h2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[PC, J('s')])
 # 1:00 카오스로 접미 튕겨내기 평점(성공 회차 결과 5:22 튕겨내기 22% 1티어)
 A(id='h2', kind='act', group='main', pos=[0, 2.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 첫번째 옵션 — 튕겨내기 평점', 'First suffix: deflection rating'), show=['defl'],
+  goal=K('접미 첫 번째 옵션 — 튕겨내기 평점', 'First suffix: deflection rating'), show=['defl'],
   edges=[{'if': {'has': 'defl'}, 'to': 'h7', 'res': 'ok'}, {'to': 'h2', 'res': 'fail', 'hide': True}], item=[PC, DF])
 # 5:16 상위 찬미의 징조(10/10) + 5:13 완벽한 엑잘(12/20) → 5:22 접미 2개(번개 저항·튕겨내기). 영상 2:20 "나머지 두 줄은 랜덤"
 A(id='h7', kind='act', group='main', pos=[0, 3.4], act='exalt', cur='Perfect_Exalted_Orb',
   omens=['Omen_of_Greater_Exaltation', 'Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째·세번째 옵션', 'Second and third suffixes'),
+  goal=K('접미 두 번째·세 번째 옵션', 'Second and third suffixes'),
   showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}], edges=[{'to': 'h4'}], item=[PC, DF, RS, RS])
 # 7:32 완벽한 엑잘(접두, 마나 최대치 빗나감) → 9:00 소멸의 오브(마나 지워짐) → 9:26 완벽한 엑잘 = 회피 및 에너지 보호막 % + 생명력 1티어
 A(id='h4', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션 — 회피 및 에너지 보호막 % + 생명력', 'Second prefix: evasion/ES % + life'), show=['hyb'],
-  over=[{'param': {'v': 2}, 'set': {'goal': K('접두 두번째 옵션', 'Second prefix'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}]}}],
+  goal=K('접두 두 번째 옵션 — 회피 및 에너지 보호막 % + 생명력', 'Second prefix: evasion/ES % + life'), show=['hyb'],
+  over=[{'param': {'v': 2}, 'set': {'goal': K('접두 두 번째 옵션', 'Second prefix'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}]}}],
   edges=[{'if': V2, 'to': 'h5', 'res': 'ok', 'hide': True}, {'if': {'has': 'hyb'}, 'to': 'h5', 'res': 'ok'},
          {'to': 'h4x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[PC, HY, DF, RS, RS])
@@ -109,12 +109,12 @@ A(id='h4c', kind='cleanup', group='main', pos=[1, 6.4], keep=[], maxJunk=1, labe
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'h2', 'res': 'fail', 'label': K('카오스부터', 'Back to Chaos')}])
 # 8:06·10:12 고대 갈비뼈(접미가 꽉 차 접두로)
 A(id='h5', kind='act', group='main', pos=[0, 7.4], act='desecrate', cur='Ancient_Rib', label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'h6'}], item=[PC, HY, UN('p'), DF, RS, RS])
 # 8:16→8:22·10:30→10:48 메아리로 선택지 다시(빗나감 8:32, 성공 10:48 회피 +82 / 에너지 보호막 +27)
 A(id='h6', kind='act', group='main', pos=[0, 8.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='flat', label=K('공개', 'Reveal'),
-  goal=K('접두 세번째 옵션(훼손) — 회피·에너지 보호막 최대치', 'Third prefix (desecrated): flat evasion and energy shield'), show=['flat'],
-  over=[{'param': {'v': 2}, 'set': {'goal': K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), 'show': [], 'showText': [{'s': 'p', 'kr': '공개 결과 그대로', 'en': 'Keep the reveal'}]}}],
+  goal=K('접두 세 번째 옵션(훼손) — 회피·에너지 보호막 최대치', 'Third prefix (desecrated): flat evasion and energy shield'), show=['flat'],
+  over=[{'param': {'v': 2}, 'set': {'goal': K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), 'show': [], 'showText': [{'s': 'p', 'kr': '공개 결과 그대로', 'en': 'Keep the reveal'}]}}],
   edges=[{'if': V2, 'to': 'ok', 'res': 'ok', 'hide': True}, {'if': {'added': 'flat'}, 'to': 'ok', 'res': 'ok'},
          {'to': 'h6x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[PC, HY, FL, DF, RS, RS])
@@ -124,10 +124,10 @@ A(id='ok', kind='done', group='main', pos=[0, 9.4], label=K('완성', 'Finished'
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L1', 'nodes': ['h4', 'h4x', 'h4s', 'h4c'], 'kr': '접두 두번째 옵션', 'en': 'Second prefix', 'fold': True,
-  'goal': K('접두 두번째 옵션 — 회피 및 에너지 보호막 % + 생명력', 'Second prefix: evasion/ES % + life'),
-  'goalBy': {'bal': K('접두 두번째 옵션 — 회피 및 에너지 보호막 % + 생명력 1~2티어', 'Second prefix: T1–2 evasion/ES % + life'),
-             'ess': K('접두 두번째 옵션 — 랜덤 옵션', 'Second prefix: random option')},
+ {'id': 'L1', 'nodes': ['h4', 'h4x', 'h4s', 'h4c'], 'kr': '접두 두 번째 옵션', 'en': 'Second prefix', 'fold': True,
+  'goal': K('접두 두 번째 옵션 — 회피 및 에너지 보호막 % + 생명력', 'Second prefix: evasion/ES % + life'),
+  'goalBy': {'bal': K('접두 두 번째 옵션 — 회피 및 에너지 보호막 % + 생명력 1~2티어', 'Second prefix: T1–2 evasion/ES % + life'),
+             'ess': K('접두 두 번째 옵션 — 랜덤 옵션', 'Second prefix: random option')},
   'steps': [K('완벽한 엑잘티드 오브로 접두 하나', 'Perfect Exalted Orb for one prefix') | {'node': 'h4'},
             K('빗나가면 소멸의 오브, 빗나간 접두가 남으면 한 번 더', 'A miss: Orb of Annulment, again while the missed prefix stays') | {'node': 'h4x'},
             K('접미 랜덤 옵션이 지워지면 우측 찬미의 징조 + 엑잘티드 오브로 접미 3개까지 채움', 'Random suffixes gone: Omen of Dextral Exaltation + Exalted Orb until three suffixes') | {'node': 'h4s'},

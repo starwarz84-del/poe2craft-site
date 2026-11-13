@@ -19,7 +19,7 @@ MK = L('s', '적 처치 시 마나 33 획득', 'Gain 33 Mana per enemy killed', 
 TR = L('s', '시전 속도 (26—31)% 증가 · 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)',
        '(26—31)% increased Cast Speed · Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)', 'c', ['trans'])   # 3:06
 LD = L('p', '번개 피해 (75—89)% 증가', '(75—89)% increased Lightning Damage', 'n', ['lin'])                          # 3:18 첫 엑잘(3티어 87%)
-XL = L('p', '피해의 (22—24)%를 추가 번개 피해로 획득', 'Gain (22—24)% of Damage as Extra Lightning Damage', 'n', ['xL'])   # 3:32 두번째 엑잘(3티어 24%)
+XL = L('p', '피해의 (22—24)%를 추가 번개 피해로 획득', 'Gain (22—24)% of Damage as Extra Lightning Damage', 'n', ['xL'])   # 3:32 두 번째 엑잘(3티어 24%)
 UN = L('p', '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')                                                    # 3:54 보존된 턱뼈
 RN = L('r', '아스트리드의 창의성', 'Astrid’s Creativity', 'r')                                                       # 4:59
 CE = L('p', '마나 최대치 +(142—188) · 모든 주문 스킬 레벨 +1 (천공의 합금)', '+(142—188) to maximum Mana · +1 to Level of all Spell Skills (Celestial Alloy)', 'c', ['cel'])   # 5:15
@@ -79,13 +79,13 @@ A(id='c2', kind='act', group='prep', pos=[0, 2], act='essence', cur='Transcenden
 # ---------------- 옵션 추가 작업 (영상 3:12~5:56) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 3.4], next='c3', label=K('아이템 제작 시작', 'Item crafting starts'), item=[L5, MK, TR])
 A(id='c3', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 첫번째 옵션 — 번개 피해 증가', 'First prefix: increased lightning damage'),
+  goal=K('접두 첫 번째 옵션 — 번개 피해 증가', 'First prefix: increased lightning damage'),
   showText=[K('결과 그대로', 'Keep whatever comes')], edges=[{'if': V_ANY, 'to': 'c4', 'res': 'ok'}], item=[LD, L5, MK, TR])
 A(id='c4', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션 — 추가 번개 피해', 'Second prefix: extra lightning damage'),
+  goal=K('접두 두 번째 옵션 — 추가 번개 피해', 'Second prefix: extra lightning damage'),
   showText=[K('결과 그대로', 'Keep whatever comes')], edges=[{'if': V_ANY, 'to': 'c5', 'res': 'ok'}], item=[LD, XL, L5, MK, TR])
 A(id='c5', kind='act', group='main', pos=[0, 6.4], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'c6'}], item=[LD, XL, UN, L5, MK, TR])
 A(id='c6', kind='act', group='main', pos=[0, 7.4], act='rune', label=K('룬', 'Rune'), goal=K('아스트리드의 창의성 장착', 'Socket Astrid’s Creativity'),
   showText=[K('제작 옵션 하나 더', 'One more crafted modifier')], rune=K('아스트리드의 창의성', 'Astrid’s Creativity'),
@@ -97,8 +97,8 @@ A(id='c7', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Celestial
          {'to': 'ok', 'res': 'ok', 'label': K('미공개 훼손이 지워짐', 'The unrevealed desecration went')}],
   item=[LD, UN, CE, L5, MK, TR, RN])
 A(id='c8', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='val', label=K('공개', 'Reveal'),
-  goal=K('접두 세번째 옵션(훼손) — 추가 냉기 피해', 'Third prefix (desecrated): extra cold damage'), show=['val'],
-  over=[{'param': {'L': 0}, 'set': {'goal': K('접두 세번째 옵션 공개 — 나오는 대로', 'Reveal the third prefix: keep what comes'),
+  goal=K('접두 세 번째 옵션(훼손) — 추가 냉기 피해', 'Third prefix (desecrated): extra cold damage'), show=['val'],
+  over=[{'param': {'L': 0}, 'set': {'goal': K('접두 세 번째 옵션 공개 — 나오는 대로', 'Reveal the third prefix: keep what comes'),
                                      'showText': [{'s': 'p', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}], 'show': []}}],
   edges=[{'if': {'any': [{'added': 'val'}, {'desSide': 's'}, V_ESS]}, 'to': 'ok', 'res': 'ok'},
          {'to': 'c8x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],

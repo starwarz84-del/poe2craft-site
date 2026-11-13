@@ -134,7 +134,7 @@ A(id='k5c', kind='cleanup', group='main', pos=[2, 6.4], keep=[], maxJunk=1, labe
 # 마무리(영상 3:37~4:34): 좌측 강령술 + 군왕의 징조 + 보존된 빗장뼈 → 완벽한 엑잘 → 심연의 메아리 공개
 A(id='k6', kind='act', group='main', pos=[0, 7.4], act='desecrate', cur='Preserved_Collarbone',
   omens=['Omen_of_Sinistral_Necromancy', 'Omen_of_the_Liege'], label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션 — 아마나무 훼손', 'Third prefix: Amanamu desecration'),
+  goal=K('접두 세 번째 옵션 — 아마나무 훼손', 'Third prefix: Amanamu desecration'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'k7'}],
   item=[CHD, LIFE, UN('p'), FR, RS])
 A(id='k7', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
@@ -142,7 +142,7 @@ A(id='k7', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Perfect_Exa
   skipIf={'all': [{'full': 'p'}, {'full': 's'}]}, skipTo='k8', skipHide=True,
   edges=[{'to': 'k8'}], item=[CHD, LIFE, UN('p'), FR, RS, MK])
 A(id='k8', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='eff', label=K('공개', 'Reveal'),
-  goal=K('접두 세번째 옵션(훼손) — 플레이어가 생성하는 잔류물의 효과', 'Third prefix (desecrated): remnant effect'), show=['eff'],
+  goal=K('접두 세 번째 옵션(훼손) — 플레이어가 생성하는 잔류물의 효과', 'Third prefix (desecrated): remnant effect'), show=['eff'],
   edges=[{'if': {'added': 'eff'}, 'to': 'ok', 'res': 'ok'}, {'to': 'ok', 'res': 'fail', 'hide': True}],
   item=[CHD, LIFE, EF, FR, RS, MK])
 A(id='ok', kind='done', group='main', pos=[0, 10.4], label=K('완성', 'Finished'))

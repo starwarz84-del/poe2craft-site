@@ -35,7 +35,7 @@ def sh_boots(tier):
   {'id':'s2','phase':'suffix','do':'exalt',**DEX,'target':{'gi':sb_str,'tmax':1},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s1'},'ts':'11:57'},
     ]
     if ess:
-        nodes.append({'id':'s3','phase':'suffix','do':'exalt',**DEX,'target':{'junk':'s'},'label':K('접미 세번째 옵션, 나오는 대로','Third suffix (whatever comes)'),'ts':'10:17'})
+        nodes.append({'id':'s3','phase':'suffix','do':'exalt',**DEX,'target':{'junk':'s'},'label':K('접미 세 번째 옵션, 나오는 대로','Third suffix (whatever comes)'),'ts':'10:17'})
     else:
         nodes.append({'id':'s3','phase':'suffix','do':'exalt',**DEX,'target':{'anyOf':RES},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment'},'lost':'s2'},'ts':'10:17'})
     nodes+=[
@@ -57,6 +57,6 @@ def sh_boots(tier):
  'title':K('방어도 % 분열 + 이동 속도·생명력 + 방어도 원소 적용','fractured % armour + movement speed, life, armour applies to elemental'),
  'start':{'rar':'normal','mods':[],'quality':20},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'magic','kr':'매직 만들기','en':'Make it magic'},{'id':'rare','kr':'레어 전환','en':'To rare'},
-           {'id':'fracture','kr':'분열','en':'Fracture'},{'id':'suffix','kr':'접미 첫번째~세번째 옵션','en':'Suffix options 1–3'},{'id':'prefix','kr':'접두 두번째·세번째 옵션','en':'Prefix options 2–3'}],
+           {'id':'fracture','kr':'분열','en':'Fracture'},{'id':'suffix','kr':'접미 첫 번째~세 번째 옵션','en':'Suffix options 1–3'},{'id':'prefix','kr':'접두 두 번째·세 번째 옵션','en':'Prefix options 2–3'}],
  'nodes':nodes})
 for _t in ('high','bal'): sh_boots(_t)   # 난이도 4 = 하이엔드 + 밸런스(사용자 확정 2026-11-12), 에센셜은 밸런스와 같은 결과라 뺌(정책 10장 C17)

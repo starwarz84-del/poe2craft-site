@@ -707,6 +707,10 @@ for _r in R:
             _V=next((v for v in (_g.get('versions') or []) if v['id']==_F['id']), None)
             _S=_V and next((x for x in _sd.get('strategies',[]) if not x.get('hidden') and all(str(x['params'].get(k))==str(v) for k,v in _V['params'].items())), None)
             _tags={l['tag']:{k:_g['tags'][l['tag']].get(k) for k in ('gi','s','sec','tmax')} for l in _F['lines'] if l.get('tag') in (_g.get('tags') or {})}
+            for _T in _tags.values():   # 등급 파라미터 티어('$gT')를 그 등급 값으로 — 완성 카드가 1티어 범위만 보이던 것(2026-11-13 S3 8번)
+                if isinstance(_T.get('tmax'), str) and _T['tmax'].startswith('$') and _V:
+                    try: _T['tmax'] = int(_V['params'].get(_T['tmax'][1:]))
+                    except Exception: _T['tmax'] = None
             # 고르는 줄(label)은 같은 이름의 anyOf 태그로 게임 데이터 옵션(gi)을 붙임 — 글자만 있는 줄은 정책 12장 위반(사용자 확정 2026-11-12)
             _GT=_g.get('tags') or {}
             def _gis(t, seen=()):

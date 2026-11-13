@@ -68,7 +68,7 @@ A(id='b0', kind='base', group='prep', pos=[0, 0], next='p1', start={'rar': 'rare
   label=K('방어도의 원소 피해 적용 + 옵션 2개 레어 충실한 레깅스 구입 (특출난 베이스, 홈 2개)', 'Buy a rare Faithful Leggings: armour applies to elemental + two options (exceptional, two sockets)'),
   item=[J('p'), ELEn, J('s')])
 A(id='p1', kind='act', group='prep', pos=[0, 1], act='desecrate', cur='Preserved_Rib', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecrated (unrevealed, cannot fracture)')], edges=[{'to': 'pf'}],
   item=[J('p'), ELEn, J('s'), UN('s')])
 A(id='pf', kind='act', group='prep', pos=[0, 2], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
@@ -113,7 +113,7 @@ A(id='r1', kind='act', group='main', pos=[0, 12.4], act='rune', rune=K('세를�
   goal=K('세를의 승리 장착 (접미 +1)', 'Socket Serle’s Triumph (+1 suffix)'), showText=[K('접미 옵션 4개', 'Four suffixes')],
   skipIf={'any': [V2, {'rune': 'Serle'}]}, skipTo='ok', edges=[{'to': 'd1'}], item=[J('p'), ELE, CHG, SPI])
 A(id='d1', kind='act', group='main', pos=[0, 13.4], act='desecrate', cur='Preserved_Rib', omens=['Omen_of_Dextral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 네번째 옵션(훼손)', 'Fourth suffix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 네 번째 옵션(훼손)', 'Fourth suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'd2'}],
   item=[J('p'), ELE, CHG, SPI, UN('s')])
 A(id='d2', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),

@@ -62,10 +62,10 @@ A(id='k0', kind='base', group='prep', pos=[0, 0], next='ms', start={'rar': 'magi
 # ---------------- 옵션 추가 작업 (글 2~5단계) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 1.4], next='k1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[ESF, J('s')])
 A(id='k1', kind='act', group='main', pos=[0, 2.4], act='essence', cur='Greater_Essence_of_Enhancement', ess='enh', label=K('에센스', 'Essence'),
-  goal=K('레어로 + 접두 두번째 옵션', 'Make it rare + second prefix'),
+  goal=K('레어로 + 접두 두 번째 옵션', 'Make it rare + second prefix'),
   showText=[{'s': 'p', 'kr': T(34)[0] + ' (제작 옵션)', 'en': T(34)[1] + ' (crafted)'}], edges=[{'to': 'k2'}], item=[ESF, ENH, J('s')])
 A(id='k2', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Rib', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'k3'}], item=[ESF, ENH, UN, J('s')])
 A(id='k3', kind='act', group='main', pos=[0, 4.4], act='reveal', want='hyb2', label=K('공개', 'Reveal'),
   goal=K('접두 에너지 보호막 % 증가 · 생명력 최대치 1~2티어', 'T1–2 % energy shield · maximum life prefix'), show=['hyb2'],
@@ -77,12 +77,12 @@ A(id='k3x', kind='act', group='main', pos=[1, 4.4], act='annul', cur='Orb_of_Ann
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'k2', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='k4', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'],
   curIf=[{'if': {'has': 'hyb1'}, 'cur': 'Perfect_Exalted_Orb'}], label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째·세번째 옵션 — 복합 옵션이 1티어면 완벽한 엑잘티드 오브', 'Second and third suffixes: Perfect Exalted Orb if the hybrid is T1'),
+  goal=K('접미 두 번째·세 번째 옵션 — 복합 옵션이 1티어면 완벽한 엑잘티드 오브', 'Second and third suffixes: Perfect Exalted Orb if the hybrid is T1'),
   showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}], edges=[{'to': 'ok'}], item=[ESF, ENH, HYB, J('s'), RJ, RJ],
   over=[{'param': {'L': 0}, 'set': {'item': [ESF, ENH, RP, J('s'), RJ, RJ]}}])
 A(id='ok', kind='done', group='main', pos=[0, 6.4], label=K('완성', 'Finished'))
 g['nodes'] = N
-g['loops'] = [{'id': 'L1', 'nodes': ['k2', 'k3', 'k3x'], 'kr': '접두 세번째 옵션(훼손)', 'en': 'Third prefix (desecrated)'}]
+g['loops'] = [{'id': 'L1', 'nodes': ['k2', 'k3', 'k3x'], 'kr': '접두 세 번째 옵션(훼손)', 'en': 'Third prefix (desecrated)'}]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

@@ -69,14 +69,14 @@ A(id='g2', kind='act', group='prep', pos=[0, 2], act='essence', cur='Greater_Ess
 # ---------------- 옵션 추가 작업 (영상 4:00~5:09) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 2.4], next='g3', label=K('아이템 제작 시작', 'Item crafting starts'), item=[FLAT, ESS, BLEED])
 A(id='g3', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Rib', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix option (desecrated)'),
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix option (desecrated)'),
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=[{'to': 'g4'}], item=[FLAT, ESS, UN, BLEED])
 A(id='g4', kind='act', group='main', pos=[0, 4.4], act='reveal', want='hyb', label=K('공개', 'Reveal'),
   goal=K('접두 에너지 보호막 혼합 (훼손) — 선택지에 없으면 나오는 대로', 'Hybrid energy shield prefix (desecrated): if it is not offered, keep what comes'),
   show=['hyb'], edges=[{'to': 'g5'}], item=[FLAT, ESS, HYB, BLEED])
 A(id='g5', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째·세번째 옵션 — 나오는 대로', 'Second and third suffix options: keep what lands'),
+  goal=K('접미 두 번째·세 번째 옵션 — 나오는 대로', 'Second and third suffix options: keep what lands'),
   showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   edges=[{'to': 'ok'}], item=[FLAT, ESS, HYB, BLEED, RECH, REGEN])
 A(id='ok', kind='done', group='main', pos=[0, 6.4], label=K('완성', 'Finished'))

@@ -72,7 +72,7 @@ A(id='b7', kind='act', group='prep', pos=[0, 7], act='essence', cur='Essence_of_
 A(id='b8', kind='act', group='prep', pos=[0, 8], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접미 잡옵', 'A junk suffix'), showText=[{'s': 's', 'kr': '잡옵', 'en': 'Junk'}], edges=[{'to': 'b9'}], item=[SPn, MQ, J('s')])
 A(id='b9', kind='act', group='prep', pos=[0, 9], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('접미 훼손 옵션 (미공개, 분열되지 않음)', 'Suffix desecration (unrevealed, cannot fracture)')], edges=[{'to': 'pf'}],
   item=[SPn, MQ, J('s'), UN('s')])
 # 사용자 결정 11-13: 히네코라의 머리카락 없이 분열(1/3), 정신력이 아닌 옵션이 분열되면 새 베이스로 처음부터 (영상은 머리카락으로 미리 보기, 10:30~19:00)
@@ -90,7 +90,7 @@ A(id='b11', kind='cleanup', group='prep', pos=[0, 11], keep=[], maxJunk=1, label
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 12.4], next='k1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[SP, J('s')])
 A(id='k1', kind='act', group='main', pos=[0, 13.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 첫번째 옵션', 'First suffix'), show=['spell'],
+  goal=K('접미 첫 번째 옵션', 'First suffix'), show=['spell'],
   edges=[{'if': {'has': 'spell'}, 'to': 'q1', 'res': 'ok'}, {'to': 'k1', 'res': 'fail', 'hide': True}], item=[SP, SL])
 A(id='q1', kind='act', group='main', pos=[0, 14.4], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 잡옵', 'A junk prefix'), showText=[{'s': 'p', 'kr': '잡옵', 'en': 'Junk'}], edges=[{'to': 'q2'}], item=[SP, J('p'), SL])
@@ -112,7 +112,7 @@ A(id='c1', kind='act', group='main', pos=[0, 20.4], act='reveal', omens=['Omen_o
   goal=K('접미 훼손 옵션 확인 — 빗나가면 자리 막기', 'Reveal the suffix desecration: a miss stays as the blocker'), show=['cs'],
   edges=[{'to': 'm2'}], item=[SP, SL, DEX])
 A(id='m2', kind='act', group='main', pos=[0, 21.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션', 'Second prefix'), show=['mana'],
+  goal=K('접두 두 번째 옵션', 'Second prefix'), show=['mana'],
   edges=[{'if': {'added': 'mana'}, 'to': 'm3', 'res': 'ok', 'label': K('마나 최대치 1티어', 'T1 maximum Mana')},
          {'to': 'm2l', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[SP, MANA, SL, DEX])
@@ -132,7 +132,7 @@ A(id='m3', kind='act', group='main', pos=[0, 25.4], act='annul', cur='Orb_of_Ann
   target=K('접미 자리 막기 훼손 옵션 제거', 'Remove the suffix blocker'), skipIf={'has': 'cs'}, skipTo='ok',
   skipNote=K('시전 속도 1티어가 이미 공개됐으면 건너뜀', 'Skipped if T1 cast speed was already revealed'), edges=[{'to': 'm3d'}])
 A(id='m3d', kind='act', group='main', pos=[0, 26.4], act='desecrate', cur='Ancient_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('접미 두번째 옵션(훼손)', 'Second suffix (desecrated)'),
+  goal=K('접미 두 번째 옵션(훼손)', 'Second suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'm3r'}], item=[SP, MANA, SL, UN('s')])
 A(id='m3r', kind='act', group='main', pos=[0, 27.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cs', label=K('공개', 'Reveal'),
   goal=K('접미 시전 속도 1티어', 'T1 cast speed suffix'), show=['cs'],

@@ -75,10 +75,10 @@ A(id='a2x', kind='cleanup', group='main', pos=[1, 4.4], keep=['scc'], maxJunk=0,
   edges=[{'lost': 'scc', 'to': 'a1', 'label': K('주문 치명타 명중 확률이 지워짐 — 다시 카오스', 'Spell crit chance gone: Chaos again')},
          {'to': 'a2', 'label': K('다시 엑잘', 'Exalt again')}])
 A(id='a3', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 첫번째 옵션', 'First prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
+  goal=K('접두 첫 번째 옵션', 'First prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
   edges=[{'to': 'a4'}], item=[J('p'), SCC, CC])
 A(id='a4', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
+  goal=K('접두 두 번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'a4', 'hide': True}, {'to': 'k1'}], item=[J('p'), J('p'), SCC, CC])
 A(id='k1', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Potent_Liquid_Contempt', ess='contS', alt='contP', liquid=True,
   label=K('액체', 'Liquid'), goal=K('접미어 속성 부여의 최대 개수 +1개', '+1 Suffix Modifier allowed'),
@@ -89,13 +89,13 @@ A(id='k1', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Potent_Li
 A(id='k1x', kind='cleanup', group='main', pos=[1, 7.4], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('옵션 1개만 남기고 카오스부터', 'Keep one option, Chaos again'), edges=[{'to': 'a1', 'label': K('다시 카오스', 'Chaos again')}])
 A(id='d1', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Preserved_Cranium', label=K('훼손', 'Desecrate'),
-  goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'),
+  goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개) — 접두가 꽉 차 접미로', 'en': 'Desecrated (unrevealed): prefixes are full, so a suffix'}],
   edges=[{'to': 'r1'}], item=[J('p'), CONT, SCC, CC, UN('s')])
 A(id='r1', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cast', label=K('공개', 'Reveal'),
   goal=K('접미 시전 속도', 'Cast Speed suffix'), show=['cast'],
   edges=[{'if': {'added': 'cast'}, 'to': 'n1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  over=[{'param': {'v': 2}, 'set': {'goal': K('접미 세번째 옵션 — 공개 결과 그대로', 'Third suffix: keep the reveal'), 'show': [],
+  over=[{'param': {'v': 2}, 'set': {'goal': K('접미 세 번째 옵션 — 공개 결과 그대로', 'Third suffix: keep the reveal'), 'show': [],
          'item': [J('p'), CONT, SCC, CC, RS('s')],
          'edges': [{'if': {'added': 'cast'}, 'to': 'n1', 'res': 'ok'}, {'to': 'n1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
   item=[J('p'), CONT, SCC, CC, CAST])
@@ -106,7 +106,7 @@ A(id='n1', kind='act', group='main', pos=[0, 10.4], act='annul', cur='Orb_of_Ann
   edges=[{'if': {'has': 'contS'}, 'to': 'n1', 'res': 'fail', 'label': K('다른 접두가 지워짐 — 다시', 'The other prefix went: again')}, {'to': 'g1', 'res': 'ok'}],
   item=[J('p'), SCC, CC, CAST], over=[{'param': {'v': 2}, 'set': {'item': [J('p'), SCC, CC, RS('s')]}}])
 A(id='g1', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 한도를 넘어 접두로)', 'en': 'One random option (suffixes over the limit)'}],
+  goal=K('접두 두 번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 한도를 넘어 접두로)', 'en': 'One random option (suffixes over the limit)'}],
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'g1', 'hide': True}, {'to': 'c1'}],
   item=[J('p'), J('p'), SCC, CC, CAST], over=[{'param': {'v': 2}, 'set': {'item': [J('p'), J('p'), SCC, CC, RS('s')]}}])
 A(id='c1', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),

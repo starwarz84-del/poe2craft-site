@@ -24,7 +24,7 @@ def sv_amulet(tier):
  'source':{'url':'https://www.youtube.com/watch?v=S4sflKbsA8A','title':'I made over 2 mirrors with that Craft poe2 0.5.5','channel':'SaVeQ'},
  'title':K('치명타 피해 보너스 분열 + 근접 스킬 +4(공격 퀄리티) + 정신력','fractured crit damage bonus + melee skills +4 (attack quality) + Spirit'),
  'start':{'rar':'normal','mods':[]},
- 'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'fracture','kr':'분열 준비','en':'Fracture prep'},{'id':'suf','kr':'접미 두번째 옵션','en':'Second suffix'},
+ 'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'fracture','kr':'분열 준비','en':'Fracture prep'},{'id':'suf','kr':'접미 두 번째 옵션','en':'Second suffix'},
            {'id':'quality','kr':'퀄리티 작업','en':'Quality'},{'id':'pre','kr':'접두','en':'Prefixes'},{'id':'fin','kr':'마무리','en':'Finish'}],
  'nodes':[
   {'id':'h0','phase':'base','do':'base','cost':'base','ts':'6:10'},

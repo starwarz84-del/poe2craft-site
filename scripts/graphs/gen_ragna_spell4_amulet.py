@@ -69,15 +69,15 @@ A(id='g3', kind='act', group='main', pos=[0, 3.2], act='essence', cur='Essence_o
 A(id='g4', kind='act', group='main', pos=[0, 4.2], act='quality', cur='Skittering_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('속도 퀄리티 40%', 'Speed quality 40%'), showText=[K('달리는 기폭제 40개', '40 Skittering Catalysts')], edges=[{'to': 'g5'}], item=[SP, MQ, SL])
 A(id='g5', kind='act', group='main', pos=[0, 5.2], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'], cat='cast',
-  label=K('엑잘', 'Exalt'), goal=K('접미 두번째 옵션 — 시전 속도 첫 도전', 'Second suffix: first try at cast speed'),
+  label=K('엑잘', 'Exalt'), goal=K('접미 두 번째 옵션 — 시전 속도 첫 도전', 'Second suffix: first try at cast speed'),
   showText=[{'s': 's', 'kr': '잡옵', 'en': 'Junk'}], edges=[{'to': 'g5b'}], item=[SP, MQ, SL, J('s')])
 A(id='g5b', kind='act', group='main', pos=[0, 6.2], act='quality', cur='Skittering_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('속도 퀄리티 다시 40%', 'Speed quality back to 40%'), showText=[K('달리는 기폭제 40개', '40 Skittering Catalysts')], edges=[{'to': 'g6'}], item=[SP, MQ, SL, J('s')])
 A(id='g6', kind='act', group='main', pos=[0, 7.2], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'], cat='cast',
-  label=K('엑잘', 'Exalt'), goal=K('접미 세번째 옵션 — 시전 속도', 'Third suffix: cast speed'), show=['cast'],
+  label=K('엑잘', 'Exalt'), goal=K('접미 세 번째 옵션 — 시전 속도', 'Third suffix: cast speed'), show=['cast'],
   edges=[{'if': {'added': 'cast'}, 'to': 'g7', 'res': 'ok'}, {'if': {'param': {'cT': 9}}, 'to': 'g7', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'g6x', 'res': 'fail'}], item=[SP, MQ, SL, J('s'), CS],
-  over=[{'param': {'cT': 9}, 'set': {'goal': K('접미 세번째 옵션 — 시전 속도 노림, 나오는 대로', 'Third suffix: aiming for cast speed, keep what comes'),
+  over=[{'param': {'cT': 9}, 'set': {'goal': K('접미 세 번째 옵션 — 시전 속도 노림, 나오는 대로', 'Third suffix: aiming for cast speed, keep what comes'),
                                      'show': [], 'showText': [{'s': 's', 'kr': '랜덤 옵션', 'en': 'Random option'}],
                                      'item': [SP, MQ, SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])
 A(id='g6x', kind='cleanup', group='main', pos=[1, 7.2], keep=['spell'], maxJunk=1, side='s', label=LIGHT, goal=LIGHT,
@@ -85,7 +85,7 @@ A(id='g6x', kind='cleanup', group='main', pos=[1, 7.2], keep=['spell'], maxJunk=
   edges=[{'lost': 'spell', 'to': 'h0', 'label': K('모든 주문 +3 지워짐 — 새 베이스', 'All Spell Skills +3 lost: new base')},
          {'to': 'g5b', 'label': K('기폭제 다시', 'Catalysts again')}])
 A(id='g7', kind='act', group='main', pos=[0, 8.2], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'g8'}], item=[SP, MQ, UN('p'), SL, J('s'), CS], over=ESS([SP, MQ, UN('p'), SL, J('s'), CS]))
 A(id='g8', kind='act', group='main', pos=[0, 9.2], act='quality', cur='Sibilant_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('시전 퀄리티 40% — 모든 주문 스킬 +4', 'Caster quality 40%: all Spell Skills +4'), showText=[K('쇳소리 기폭제 40개', '40 Sibilant Catalysts')],

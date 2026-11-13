@@ -97,7 +97,7 @@ A(id='a2', kind='act', group='prep', pos=[0, 3], act='augment', cur='Perfect_Orb
 A(id='rg', kind='act', group='prep', pos=[0, 4], act='regal', cur='Perfect_Regal_Orb', label=K('제왕', 'Regal'),
   goal=K('레어', 'Rare'), showText=[K('랜덤 옵션 1개', 'One random option')], edges=[{'to': 'ds'}], item=[J('p'), F7n, J('s')])
 A(id='ds', kind='act', group='prep', pos=[0, 5], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecration (unrevealed, cannot fracture)')], edges=[{'to': 'fr'}],
   item=[J('p'), F7n, J('s'), UN('x')])
 A(id='fr', kind='act', group='prep', pos=[0, 6], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
@@ -126,7 +126,7 @@ A(id='e1x', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_An
   edges=[{'if': {'has': 'pre'}, 'to': 'e1', 'res': 'ok', 'label': K('다시 엑잘', 'Exalt again')},
          {'to': 'c1', 'res': 'fail', 'label': K('피해 증가가 지워짐', 'Damage prefix gone')}])
 A(id='d1', kind='act', group='main', pos=[0, 11.4], act='desecrate', cur='Ancient_Jawbone', omens=['Omen_of_Sinistral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'd2'}], item=[UN('p'), F7, PF, XC])
 A(id='d2', kind='act', group='main', pos=[0, 12.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pre', label=K('공개', 'Reveal'),
   goal=K('접두 추가 화염 피해(훼손) — 피해 증가·추가 피해 중 먼저 뜬 것', 'Extra fire prefix (desecrated): whichever increased or extra damage lands first'), showText=PRE_T(T1), over=OVR(PRE_T),
@@ -152,10 +152,10 @@ A(id='hs3', kind='side', group='main', pos=[1, 16.9], attach=['ok', 'ok'], tiers
   label=K('합금', 'Alloy'))
 # 밸런스 (영상 9:13 가성비 마무리)
 A(id='b1', kind='act', group='main', pos=[0, 13.9], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째 옵션(잡옵)', 'Second suffix (junk)'), showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  goal=K('접미 두 번째 옵션(잡옵)', 'Second suffix (junk)'), showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'b1b'}], item=[F7, PF, XC, XF, J('s')])
 A(id='b1b', kind='act', group='main', pos=[0, 14.9], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접미 세번째 옵션(잡옵)', 'Third suffix (junk)'), showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  goal=K('접미 세 번째 옵션(잡옵)', 'Third suffix (junk)'), showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'b2'}], item=[F7, PF, XC, XF, J('s'), J('s')])
 A(id='b2', kind='act', group='main', pos=[0, 15.9], act='essence', cur='Transcendent_Alloy', ess='alloy', label=K('합금', 'Alloy'),
   goal=K('접미 잡옵 하나를 지우고 초월의 합금', 'A junk suffix goes for the Transcendent Alloy'), showText=ALT,
@@ -165,7 +165,7 @@ g['nodes'] = N
 
 g['loops'] = [
  {'id': 'L1', 'nodes': ['a1', 'x1'], 'kr': '매직 화염 주문 +7', 'en': 'Magic +7 fire spells'},
- {'id': 'L2', 'nodes': ['e1', 'e1x'], 'kr': '접두 두번째 옵션', 'en': 'Second prefix'},
+ {'id': 'L2', 'nodes': ['e1', 'e1x'], 'kr': '접두 두 번째 옵션', 'en': 'Second prefix'},
  {'id': 'L3', 'nodes': ['d1', 'd2', 'dx'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal'},
 ]
 g['finals'] = [

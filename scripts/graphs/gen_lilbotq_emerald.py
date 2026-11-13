@@ -66,7 +66,7 @@ A(id='j1', kind='act', group='main', pos=[0, 2.4], act='essence', cur='Potent_Li
 A(id='j1x', kind='exit', group='main', pos=[1, 2.4], simTo='j0', variant='fail', label=K('새 에메랄드', 'New Emerald'),
   note=K('접미어 +1개가 붙지 않으면 그 주얼은 버리고 새 주얼로', 'No +1 suffix: set the jewel aside and buy a new one'))
 A(id='j2', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Cranium', omens=['Omen_of_Dextral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'j3'}],
   item=[QST, CONT, CD, MS, UN('s')])
 A(id='j3', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='critA',
@@ -86,7 +86,7 @@ A(id='j4e', kind='act', group='main', pos=[0, 6.4], act='chaos', cur='Chaos_Orb'
   label=K('카오스', 'Chaos'), goal=K('남은 접미어 속성 부여의 최대 개수 +1개 바꾸기 — 접두가 그 옵션뿐이라 확정', 'Reroll the remaining +1 Suffix Modifier allowed: it is the only prefix'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}], edges=[{'to': 'j5'}], item=[J('p'), CD, MS, CC])
 A(id='j5', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Exalted_Orb',
-  label=K('엑잘', 'Exalt'), goal=K('접두 두번째 옵션 — 접미가 한도를 넘어 접두로', 'Second prefix: suffixes are over the limit'),
+  label=K('엑잘', 'Exalt'), goal=K('접두 두 번째 옵션 — 접미가 한도를 넘어 접두로', 'Second prefix: suffixes are over the limit'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   skipIf={'full': 'p'}, skipTo='j6', skipNote=K('접두가 꽉 차 있으면 건너뜀', 'Skip when the prefixes are full'),
   edges=[{'to': 'j6'}], item=[J('p'), J('p'), CD, MS, CC])

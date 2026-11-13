@@ -22,14 +22,14 @@ I0=[SPI,J('p')]; I1=[SPI,AO]; I2=I1+[J('p')]; I3=I1+[WA]; I4=I3+[J('p')]; I5=I3+
 nodes=[base('s2',{'rar':'rare','mods':[{'tag':'spirit','fr':True},{'junk':'p'}]},K('정신력 % 분열 + 잡옵 1개 (퀄리티 20%)','Fractured % Spirit + one junk line (20% quality)'),I0),
  RUNE('s2',[0,1],'ms',I0,grp='prep'),
  mark([0,1.5],'s3',I0),
- act('s3','main',[0,2],'chaos','Chaos_Orb',K('접미 첫번째 옵션','First suffix option'),None,K('카오스','Chaos'),[{'if':{'has':'aoe'},'to':'s4','res':'ok'},{'to':'s3','res':'fail'}],I1,show=['aoe']),
+ act('s3','main',[0,2],'chaos','Chaos_Orb',K('접미 첫 번째 옵션','First suffix option'),None,K('카오스','Chaos'),[{'if':{'has':'aoe'},'to':'s4','res':'ok'},{'to':'s3','res':'fail'}],I1,show=['aoe']),
  act('s4','main',[0,3],'exalt','Greater_Exalted_Orb',K('합금이 지울 접두','The prefix for the alloy to remove'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'s5'}],I2,omens=['Omen_of_Sinistral_Exaltation']),
  act('s5','main',[0,4],'essence','Protective_Alloy',K('접두 잡옵을 지우고 접미 수호의 합금','Swap the junk prefix for the Protective Alloy suffix'),[st('s','룬 수호 (제작 옵션)','Runic Ward (crafted)')],K('합금','Alloy'),[{'to':'s6'}],I3,ess='ward',omens=['Omen_of_Sinistral_Crystallisation']),
  act('s6','main',[0,5],'exalt','Greater_Exalted_Orb',K('에센스가 지울 접두','The prefix for the essence to remove'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'s7'}],I4,omens=['Omen_of_Sinistral_Exaltation']),
  act('s7','main',[0,6],'essence','Perfect_Essence_of_Command',K('접두 잡옵을 지우고 접미 오라 크기','Swap the junk prefix for the aura suffix'),[st('s','오라 크기 (제작 옵션)','Aura magnitudes (crafted)')],K('에센스','Essence'),[{'to':'p1'}],I5,ess='aura',omens=['Omen_of_Sinistral_Crystallisation']),
- act('p1','main',[0,7],'exalt','Exalted_Orb',K('접두 두번째 옵션','Second prefix'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'p2'}],I5+[J('p')]),
- act('p2','main',[0,7.5],'exalt','Exalted_Orb',K('접두 세번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'p3'}],I6),
- act('p3','main',[0,8],'desecrate','Preserved_Jawbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개) — 접두가 꽉 차 잡옵 하나가 지워짐','Desecrated (unrevealed) — a junk prefix makes way')],K('훼손','Desecrate'),[{'to':'p4'}],I7,omens=['Omen_of_Sinistral_Necromancy']),
+ act('p1','main',[0,7],'exalt','Exalted_Orb',K('접두 두 번째 옵션','Second prefix'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'p2'}],I5+[J('p')]),
+ act('p2','main',[0,7.5],'exalt','Exalted_Orb',K('접두 세 번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'p3'}],I6),
+ act('p3','main',[0,8],'desecrate','Preserved_Jawbone',K('접두 세 번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개) — 접두가 꽉 차 잡옵 하나가 지워짐','Desecrated (unrevealed) — a junk prefix makes way')],K('훼손','Desecrate'),[{'to':'p4'}],I7,omens=['Omen_of_Sinistral_Necromancy']),
  act('p4','main',[0,9],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),[{'if':{'has':'hyb'},'to':'ok','res':'ok'},{'if':{'all':[{'param':{'sT':2}},{'not':{'has':'hybAny'}}]},'to':'p4x','res':'fail'},{'to':'ok','res':'fail'}],I8,want='hyb',show=['hyb'],omens=['Omen_of_Abyssal_Echoes']),
  annul('p4x',[1,9],[{'to':'p4d','port':'right'}]),
  act('p4d','main',[1,9.6],'desecrate','Preserved_Jawbone',K('다시 훼손','Desecrate again'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'p4','port':'right'}],I7,omens=['Omen_of_Sinistral_Necromancy']),
@@ -59,7 +59,7 @@ nodes=[base('c3',{'rar':'magic','mods':['ppct']},K('물리 피해 % 매직 석�
  RUNE('c5',[0,4],'c6',I3,grp='prep'),
  act('c6','prep',[0,5],'essence','Perfect_Essence_of_Battle',K('접미 잡옵을 지우고 공격 스킬 +3','Swap the junk suffix for +3 attack skills'),[st('s','모든 공격 스킬 레벨 +3 (제작 옵션)','+3 attack skills (crafted)')],K('에센스','Essence'),[{'to':'ms'}],I4,ess='battle',omens=['Omen_of_Dextral_Crystallisation']),
  mark([0,5.5],'c7',I4),
- act('c7','main',[0,6],'desecrate','Preserved_Jawbone',K('접미 두번째 옵션(훼손)','Second suffix (desecrated)'),[st('s','아마나무 훼손 옵션(미공개)','Amanamu desecration (unrevealed)')],K('훼손','Desecrate'),[{'to':'c8'}],I5,omens=['Omen_of_Dextral_Necromancy','Omen_of_the_Liege']),
+ act('c7','main',[0,6],'desecrate','Preserved_Jawbone',K('접미 두 번째 옵션(훼손)','Second suffix (desecrated)'),[st('s','아마나무 훼손 옵션(미공개)','Amanamu desecration (unrevealed)')],K('훼손','Desecrate'),[{'to':'c8'}],I5,omens=['Omen_of_Dextral_Necromancy','Omen_of_the_Liege']),
  act('c8','main',[0,7],'reveal',None,K('훼손 옵션 확인 (아마나무 2개 전부 나옴)','Reveal (both Amanamu lines show)'),[st('s','수류탄 2회 발동','Grenade double activation')],K('공개','Reveal'),[{'to':'c9'}],I6,want='gren',omens=['Omen_of_Abyssal_Echoes']),
  act('c9','main',[0,8],'exalt','Perfect_Exalted_Orb',K('접두·접미 옵션 1개씩','One prefix and one suffix'),[st(None,'랜덤 옵션 2개 — 복합 물리·원소 피해 추가면 좋음','Two random lines — hybrid physical or flat elemental is good')],K('엑잘','Exalt'),
      [{'if':{'has':'pre'},'to':'ok'},{'if':{'all':[{'param':{'pT':2}},{'whittleSafe':'keep'}]},'to':'c11'},{'to':'ok'}],I7,omens=['Omen_of_Greater_Exaltation'],over=[{'param':{'pT':3},'set':{'cur':'Greater_Exalted_Orb'}}]),
@@ -91,10 +91,10 @@ nodes=[base('m3',{'rar':'magic','mods':['crit']},K('치명타 확률 매직 둔�
  RUNE('m5',[0,4],'m6',I3,grp='prep'),
  act('m6','prep',[0,5],'essence','Perfect_Essence_of_Battle',K('접두 잡옵을 지우고 공격 스킬 +2','Swap the junk prefix for +2 attack skills'),[st('s','모든 공격 스킬 레벨 +2 (제작 옵션)','+2 attack skills (crafted)')],K('에센스','Essence'),[{'to':'ms'}],I4,ess='atk',omens=['Omen_of_Sinistral_Crystallisation']),
  mark([0,5.5],'m7',I4),
- act('m7','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접두 첫번째 옵션','First prefix option'),[st('p','물리 피해 접두 (안 나와도 그대로 — 공개 뒤 절사로)','Physical prefix (a miss stays — Whittling after the reveal)')],K('엑잘','Exalt'),[{'to':'m8'}],I5,
+ act('m7','main',[0,6],'exalt','Perfect_Exalted_Orb',K('접두 첫 번째 옵션','First prefix option'),[st('p','물리 피해 접두 (안 나와도 그대로 — 공개 뒤 절사로)','Physical prefix (a miss stays — Whittling after the reveal)')],K('엑잘','Exalt'),[{'to':'m8'}],I5,
      over=[{'param':{'cT':3},'set':{'cur':'Greater_Exalted_Orb'}}]),
- act('m8','main',[0,7],'desecrate','Preserved_Jawbone',K('접두 두번째 옵션(훼손)','Second prefix (desecrated)'),[st('p','쿠르갈 훼손 옵션(미공개)','Kurgal desecration (unrevealed)')],K('훼손','Desecrate'),[{'to':'m9'}],I6,omens=['Omen_of_the_Blackblooded']),
- act('m9','main',[0,8],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix option'),[st('p','물리·원소 피해 추가 (안 나오면 공개 뒤 절사)','Flat physical or elemental (a miss: Whittling after the reveal)')],K('엑잘','Exalt'),[{'to':'m10'}],I7,
+ act('m8','main',[0,7],'desecrate','Preserved_Jawbone',K('접두 두 번째 옵션(훼손)','Second prefix (desecrated)'),[st('p','쿠르갈 훼손 옵션(미공개)','Kurgal desecration (unrevealed)')],K('훼손','Desecrate'),[{'to':'m9'}],I6,omens=['Omen_of_the_Blackblooded']),
+ act('m9','main',[0,8],'exalt','Perfect_Exalted_Orb',K('접두 세 번째 옵션','Third prefix option'),[st('p','물리·원소 피해 추가 (안 나오면 공개 뒤 절사)','Flat physical or elemental (a miss: Whittling after the reveal)')],K('엑잘','Exalt'),[{'to':'m10'}],I7,
      over=[{'param':{'cT':3},'set':{'cur':'Greater_Exalted_Orb'}}]),
  act('m10','main',[0,9],'reveal',None,K('훼손 옵션 확인 (쿠르갈 3개 전부 나옴)','Reveal (all three Kurgal lines show)'),[st('p','물리 % (공격 속도 감소)','% physical (reduced attack speed)')],K('공개','Reveal'),
      [{'if':{'any':[{'count':{'tag':'good','min':2}},{'param':{'cT':3}}]},'to':'ok'},{'if':{'whittleSafe':'keep'},'to':'m11'},{'to':'ok'}],I8,want='kpct'),
@@ -193,15 +193,15 @@ nodes=[b0,
  {'id':'xj','kind':'exit','group':'prep','pos':[1,6],'simTo':'b0','variant':'fail','label':K('다른 옵션 분열 — 새 베이스','Another option fractured — new base')},
  dict(cleanup('f4',[0,7],[],[{'to':'ms','label':K('분열 + 옵션 1개','Fracture + one option')}],K('분열 + 옵션 1개만 남기기','Keep only the fracture + one option')),group='prep',maxJunk=1,item=[PD,X()]),   # 17:26 STEP 10 '소멸의 오브 ×2'
  mark([0,7.6],'t2',[PD,X()]),
- act('t2','main',[0,9],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix option'),None,K('카오스','Chaos'),   # 17:26 STEP 10
+ act('t2','main',[0,9],'chaos','Chaos_Orb',K('접미 두 번째 옵션','Second suffix option'),None,K('카오스','Chaos'),   # 17:26 STEP 10
      [{'if':{'has':'mf1'},'to':'t3','res':'ok'},{'to':'t2','res':'fail'}],I1,show=['mf1'],skipIf={'has':'mf1'},skipTo='t3',skipHide=True),
- act('t3','main',[0,10],'desecrate','Ancient_Rib',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'t4'}],I2,omens=['Omen_of_Dextral_Necromancy']),   # 17:56 STEP 11 ①②
- act('t4','main',[0,11],'reveal',None,K('접미 세번째 옵션 공개','Reveal the third suffix'),None,K('공개','Reveal'),   # 17:56 STEP 11 ③④
+ act('t3','main',[0,10],'desecrate','Ancient_Rib',K('접미 세 번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'t4'}],I2,omens=['Omen_of_Dextral_Necromancy']),   # 17:56 STEP 11 ①②
+ act('t4','main',[0,11],'reveal',None,K('접미 세 번째 옵션 공개','Reveal the third suffix'),None,K('공개','Reveal'),   # 17:56 STEP 11 ③④
      [{'if':SUFDONE,'to':'tf','res':'ok'},{'to':'t4x','res':'fail'}],I3,want='mcl',show=['mc','ml'],omens=['Omen_of_Abyssal_Echoes']),
  annul('t4x',[1,11],[{'to':'t3','label':K('다시 훼손','Desecrate again')}]),   # 17:56 STEP 11 NO: 빛의 징조 → 소멸의 오브 → ①부터
  act('tf','main',[0,12],'flux','Blazing_Flux',K('냉기·번개 저항 최대치를 화염으로','Cold or lightning maximum resistance into fire'),[st('s','화염 저항 최대치 +3% 두 줄 (하나 훼손)','Two +3% maximum fire resistance lines (one desecrated)')],K('유동체','Flux'),[{'to':'t5'}],I3F),   # 영상에 없음(내부 결정, 사용자 결정 2026-11-12)
  act('t5','main',[0,13],'exalt','Perfect_Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 2개','Two random options')],K('엑잘','Exalt'),[{'to':'t6'}],I4,omens=['Omen_of_Greater_Exaltation']),   # 19:06 STEP 12 ①②
- act('t6','main',[0,14],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random option')],K('엑잘','Exalt'),   # 19:06 STEP 12 ③
+ act('t6','main',[0,14],'exalt','Perfect_Exalted_Orb',K('접두 세 번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random option')],K('엑잘','Exalt'),   # 19:06 STEP 12 ③
      [{'to':'t7'}],I5),
  act('t7','main',[0,15.6],'chaos','Perfect_Chaos_Orb',K('가장 낮은 옵션을 방어도로','The lowest option into armour'),[st('p','방어도 최대치·%·복합 1티어','T1 flat, % and hybrid armour')],K('카오스','Chaos'),   # 19:10~21:26 STEP 13
      [{'if':ARMDONE,'to':'ok','res':'ok'},{'to':'t7','res':'fail'}],I6,omens=['Omen_of_Whittling'],skipIf=ARMDONE,skipTo='ok',skipHide=True,

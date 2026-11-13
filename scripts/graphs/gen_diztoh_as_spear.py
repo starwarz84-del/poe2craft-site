@@ -32,8 +32,8 @@ g = {
  'note': ('2026-11-13 G3 영상 전체 화면 대조(근거 scratchpad review/G3/diztoh-as-spear-v2/timeline.md). 성공 회차 한 줄(영상은 창 하나): '
           '투사체 +4 분열 + 처치당 생명력 아코야의 창(아이템 레벨 82, 아스트리드의 창의성 장착, 0:02) → 카오스 오브 반복 → 공격 속도 3티어 20%(0:16 툴팁, 1:28) → '
           '좌측 찬미 + 상위 엑잘로 접두 잡옵(1:34~1:36) → 좌측 결정화 + 군주의 합금, 접두 잡옵이 지워지고 장착 증강 효과 28%(2:16~2:22) → 상위 엑잘(징조 없음) 접두 잡옵(2:46) → '
-          '좌측 결정화 + 천상의 합금, 정확도 + 공격 속도(2:36·2:54) → 아스트리드를 스루드의 완력으로 교체(3:12~3:20) → 고대 턱뼈 접두 훼손(3:30) → 상위 엑잘 세번째 접두(물리 피해 추가 5티어, 3:52) → '
-          '심연의 메아리 공개, 다시 뽑기로 명시된 속도 옵션 효과 29%(4:06~4:12). 신성한 오브(5:26~5:40), 절사 + 좌측 말소 + 상위 카오스로 세번째 접두 다시(5:52~6:17, 번개 6티어로 나빠짐 — 마지막 옵션 도박이라 뺌, 꿀팁 후보), 바알·타락(6:20~9:18)은 뺌. '
+          '좌측 결정화 + 천상의 합금, 정확도 + 공격 속도(2:36·2:54) → 아스트리드를 스루드의 완력으로 교체(3:12~3:20) → 고대 턱뼈 접두 훼손(3:30) → 상위 엑잘 세 번째 접두(물리 피해 추가 5티어, 3:52) → '
+          '심연의 메아리 공개, 다시 뽑기로 명시된 속도 옵션 효과 29%(4:06~4:12). 신성한 오브(5:26~5:40), 절사 + 좌측 말소 + 상위 카오스로 세 번째 접두 다시(5:52~6:17, 번개 6티어로 나빠짐 — 마지막 옵션 도박이라 뺌, 꿀팁 후보), 바알·타락(6:20~9:18)은 뺌. '
           '내부 결정: 공격 속도는 영상대로 1~3티어(\'최소 16%\'), 마지막 접두 다시 굴리기는 등급 기준(10장 2번)대로 랜덤 옵션 — 영상도 한 번 굴리고 나빠진 결과를 받음. 공개 빗나감은 밸런스만 빛의 징조 + 소멸 → 다시 훼손(영상은 한 번에 성공). '
           '등급(난이도 2): 밸런스 = 스루드 공개까지 빛의 징조로 다시 / 에센셜 = 공개 한 번 결과 그대로.'),
  'params': {
@@ -85,11 +85,11 @@ A(id='r1', kind='act', group='main', pos=[0, 7.4], act='rune', label=K('룬', 'R
   rune=K('스루드의 완력', 'Thrud’s Might'), swapAstrid=True,
   edges=[{'to': 'd1'}], item=[CEL, PJ, AS, SOV, THR])
 A(id='d1', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Ancient_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('접두 두번째 옵션(훼손)', 'Second prefix option (desecrated)'),
+  goal=K('접두 두 번째 옵션(훼손)', 'Second prefix option (desecrated)'),
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=[{'to': 'e3'}], item=[CEL, UN, PJ, AS, SOV, THR])
 A(id='e3', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션', 'Third prefix option'), showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
+  goal=K('접두 세 번째 옵션', 'Third prefix option'), showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
   edges=[{'to': 'v1'}], item=[CEL, UN, PH5, PJ, AS, SOV, THR])
 A(id='v1', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='thrud', label=K('공개', 'Reveal'),
   goal=K('접두 명시된 속도 옵션 효과 (스루드, 훼손)', 'Explicit speed magnitudes prefix (Thrud, desecrated)'), show=['thrud'],
@@ -102,7 +102,7 @@ A(id='vd', kind='act', group='main', pos=[1, 11.4], act='desecrate', cur='Ancien
   goal=K('빈 접두에 다시 훼손', 'Desecrate the empty prefix again'),
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=[{'to': 'v1', 'label': K('다시 공개', 'Reveal again')}])
-# 영상 5:52~6:17 절사 + 좌측 말소 + 상위 카오스(세번째 접두 다시, 번개 6티어로 나빠짐)는 마지막 옵션 도박이라 등급 기준(10장 2번)대로 뺌 — 꿀팁 후보
+# 영상 5:52~6:17 절사 + 좌측 말소 + 상위 카오스(세 번째 접두 다시, 번개 6티어로 나빠짐)는 마지막 옵션 도박이라 등급 기준(10장 2번)대로 뺌 — 꿀팁 후보
 A(id='ok', kind='done', group='main', pos=[0, 12.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 

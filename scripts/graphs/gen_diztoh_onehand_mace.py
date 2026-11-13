@@ -38,17 +38,17 @@ g = {
           '상위 엑잘(4:41 번개 낮은 티어) → 공개, 쿠르갈 물리 피해 113%(4:50) → 절사의 징조 + 상위 카오스 2번 → 화염 피해 추가 1티어(5:00~5:09). '
           '신성한 오브·완벽한 철 룬·타락(5:12~8:00)은 정책 9·14장대로 뺌. '
           '내부 결정: 접두 물리 옵션은 물리 피해 증가와 정확도·물리 피해 추가만 셈(물리 피해 증가는 쿠르갈 물리 피해와 같은 계열이라 공개를 막음). 검은 피의 징조 공개는 접두 쿠르갈 옵션이 3개뿐이라 늘 물리 피해 증가가 나옴(같은 계열이 있을 때만 빗나감, 그대로 진행). '
-          '완성 카드의 훼손 줄은 쿠르갈 접두 셋 묶음(세번째 접두 엑잘이 물리 피해 증가를 붙이면 같은 계열이라 공개에 물리 피해가 안 나옴 — 시뮬 밸런스 97%·에센셜 96%가 물리 피해). '
-          '등급(난이도 3): 밸런스 = 첫 물리 접두 1~2티어까지 좌측 말소 + 상위 카오스, 세번째 접두는 가장 낮은 레벨일 때만 절사 + 상위 카오스 / 에센셜 = 상위 엑잘 결과 그대로.'),
+          '완성 카드의 훼손 줄은 쿠르갈 접두 셋 묶음(세 번째 접두 엑잘이 물리 피해 증가를 붙이면 같은 계열이라 공개에 물리 피해가 안 나옴 — 시뮬 밸런스 97%·에센셜 96%가 물리 피해). '
+          '등급(난이도 3): 밸런스 = 첫 물리 접두 1~2티어까지 좌측 말소 + 상위 카오스, 세 번째 접두는 가장 낮은 레벨일 때만 절사 + 상위 카오스 / 에센셜 = 상위 엑잘 결과 그대로.'),
  'params': {
    'pT': {'kr': '첫 물리 접두', 'en': 'First physical prefix', 'values': {'2': K('1~2티어까지 좌측 말소로 다시', 'Sinistral Erasure until T1–2'), '0': K('나오는 대로', 'As it comes')}},
-   'g': {'kr': '세번째 접두', 'en': 'Third prefix', 'values': {'1': K('가장 낮은 레벨이면 절사로 다시', 'Whittle while it is the lowest'), '0': K('나오는 대로', 'As it comes')}}},
+   'g': {'kr': '세 번째 접두', 'en': 'Third prefix', 'values': {'1': K('가장 낮은 레벨이면 절사로 다시', 'Whittle while it is the lowest'), '0': K('나오는 대로', 'As it comes')}}},
  'strategies': [{'id': 'bal', 'params': {'pT': 2, 'g': 1}}, {'id': 'ess', 'params': {'pT': 0, 'g': 0}}],
  'versions': [
    {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'pT': 0, 'g': 0}, 'tier': 'ess',
     'desc': K('상위 엑잘 결과 그대로', 'Greater Exalts kept as they come')},
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'pT': 2, 'g': 1}, 'tier': 'bal',
-    'desc': K('첫 물리 접두 1~2티어까지 좌측 말소, 세번째 접두는 가장 낮은 레벨일 때 절사로 다시', 'Sinistral Erasure until a T1–2 physical prefix; whittle the third prefix while it is the lowest')}],
+    'desc': K('첫 물리 접두 1~2티어까지 좌측 말소, 세 번째 접두는 가장 낮은 레벨일 때 절사로 다시', 'Sinistral Erasure until a T1–2 physical prefix; whittle the third prefix while it is the lowest')}],
  'tags': {
    'crit': {'gi': 17, 'tmax': 1}, 'as': {'gi': 44}, 'atk': {'gi': 54}, 'kp': {'gi': 25},
    'hyb': {'gi': 8, 'tmax': 2}, 'pflat': {'gi': 2, 'tmax': 2},
@@ -73,7 +73,7 @@ WS = {'whittleSafe': {'tag': 'keepW', 'keepDes': True}}
 A(id='h1', kind='base', group='prep', pos=[0, 0], next='h2', start={'rar': 'normal', 'mods': [], 'quality': 26},
   label=K('노멀 특출난 약탈하는 철퇴 구입 (아이템 레벨 82, 퀄리티 26%)', 'Buy a normal exceptional Marauding Mace (item level 82, quality 26%)'), item=[])
 A(id='h2', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation',
-  label=K('매직 첫번째 옵션', 'First magic option'), goal=K('접미 치명타 확률 1티어', 'T1 crit chance suffix'), show=['crit'],
+  label=K('매직 첫 번째 옵션', 'First magic option'), goal=K('접미 치명타 확률 1티어', 'T1 crit chance suffix'), show=['crit'],
   edges=[{'if': {'has': 'crit'}, 'to': 'h3', 'res': 'ok', 'label': K('성공', 'hit')},
          {'to': 'h2x', 'res': 'fail', 'label': K('빗나감', 'miss')}],
   ask=K('원하는 옵션?', 'Wanted option?'), item=[CRIT])
@@ -84,7 +84,7 @@ A(id='h2b', kind='act', group='prep', pos=[1, 2], act='augment', cur='Perfect_Or
   edges=[{'if': {'has': 'crit'}, 'to': 'h3', 'res': 'ok', 'label': K('성공', 'hit')},
          {'to': 'h2x', 'res': 'fail', 'label': K('빗나감', 'miss')}])
 A(id='h3', kind='act', group='prep', pos=[0, 3], act='augment', cur='Perfect_Orb_of_Augmentation',
-  label=K('매직 두번째 옵션', 'Second magic option'), goal=K('접두 잡옵 (에센스가 지울 자리)', 'Junk prefix (the slot an essence clears later)'),
+  label=K('매직 두 번째 옵션', 'Second magic option'), goal=K('접두 잡옵 (에센스가 지울 자리)', 'Junk prefix (the slot an essence clears later)'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}], edges=[{'to': 'h4'}], item=[ELE, CRIT])
 A(id='h4', kind='act', group='prep', pos=[0, 4], act='essence', cur='Greater_Essence_of_Haste', ess='as',
   label=K('에센스', 'Essence'), goal=K('레어 + 접미 공격 속도', 'Rare + attack speed suffix'),
@@ -105,26 +105,26 @@ A(id='k3', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Greater_Exa
   edges=[{'if': {'any': [{'has': 'phys'}, {'param': {'pT': 0}}]}, 'to': 'k5', 'res': 'ok'},
          {'to': 'k4', 'res': 'fail', 'label': K('빗나감 — 좌측 말소', 'Miss: Sinistral Erasure')}],
   item=[FIREj, CRIT, AS, ATK, AST],
-  over=[{'param': {'pT': 0}, 'set': {'goal': K('접두 첫번째 옵션 (나오는 대로)', 'First prefix option (keep what comes)'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}]}}])
+  over=[{'param': {'pT': 0}, 'set': {'goal': K('접두 첫 번째 옵션 (나오는 대로)', 'First prefix option (keep what comes)'), 'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}]}}])
 A(id='k4', kind='act', group='main', pos=[1, 8.4], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Sinistral_Erasure'], label=K('좌측 말소 + 카오스', 'Sinistral Erasure + Chaos'),
   goal=K('접두 다시 — 물리 피해 증가와 정확도·물리 피해 추가 1~2티어', 'Reroll the prefix: T1–2 % physical with accuracy or flat physical'), show=['hyb', 'pflat'],
   edges=[{'if': {'has': 'phys'}, 'to': 'k5', 'res': 'ok'}, {'to': 'k4', 'res': 'fail', 'hide': True}],
   item=[HYB, CRIT, AS, ATK, AST])
 A(id='k5', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_the_Blackblooded'], label=K('훼손', 'Desecrate'),
-  goal=K('접두 두번째 옵션(훼손, 쿠르갈)', 'Second prefix option (desecrated, Kurgal)'),
+  goal=K('접두 두 번째 옵션(훼손, 쿠르갈)', 'Second prefix option (desecrated, Kurgal)'),
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개, 공개 3개 모두 쿠르갈)', 'en': 'Prefix desecration (unrevealed, all three options Kurgal)'}],
   edges=[{'to': 'k6'}], item=[HYB, UN, CRIT, AS, ATK, AST])
 A(id='k6', kind='act', group='main', pos=[0, 10.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션', 'Third prefix option'), showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
+  goal=K('접두 세 번째 옵션', 'Third prefix option'), showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
   edges=[{'to': 'k7'}], item=[HYB, UN, LIGHTj, CRIT, AS, ATK, AST])
 A(id='k7', kind='act', group='main', pos=[0, 11.4], act='reveal', want='kp', label=K('공개', 'Reveal'),
   goal=K('접두 물리 피해 증가, 공격 속도 감소 (훼손)', '% physical with reduced attack speed prefix (desecrated)'), show=['kp'],
   edges=[{'to': 'k8', 'res': 'ok'}], item=[HYB, KP, LIGHTj, CRIT, AS, ATK, AST])
 A(id='k8', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('절사 + 카오스', 'Whittling + Chaos'),
-  goal=K('세번째 접두를 화염 피해 추가 1티어로 — 피해 추가 1~2티어 중 먼저 뜬 것', 'Third prefix into T1 added fire: any T1–2 added damage, whichever lands first'),
+  goal=K('세 번째 접두를 화염 피해 추가 1티어로 — 피해 추가 1~2티어 중 먼저 뜬 것', 'Third prefix into T1 added fire: any T1–2 added damage, whichever lands first'),
   show=['fl2', 'fire2', 'cold2', 'light2'],
   skipIf={'any': [{'param': {'g': 0}}, {'has': 'flat'}, {'not': WS}]}, skipTo='ok', skipHide=True,
-  skipNote=K('피해 추가가 이미 있거나 세번째 접두가 가장 낮은 레벨이 아니면 건너뜀', 'Skipped when added damage is there or the third prefix is not the lowest level'),
+  skipNote=K('피해 추가가 이미 있거나 세 번째 접두가 가장 낮은 레벨이 아니면 건너뜀', 'Skipped when added damage is there or the third prefix is not the lowest level'),
   edges=[{'if': {'has': 'flat'}, 'to': 'ok', 'res': 'ok'}, {'if': WS, 'to': 'k8', 'res': 'fail', 'hide': True}, {'to': 'ok', 'res': 'ok', 'hide': True}],
   item=[HYB, KP, FIRE, CRIT, AS, ATK, AST])
 A(id='ok', kind='done', group='main', pos=[0, 13.4], label=K('완성', 'Finished'))

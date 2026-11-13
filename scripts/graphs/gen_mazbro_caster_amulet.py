@@ -102,7 +102,7 @@ A(id='a1', kind='base', group='prep', pos=[0, 0], next='a2', start={'rar': 'rare
   label=K('태양 목걸이 구입 (아이템 레벨 82, 정신력 +50, 옵션 3개)', 'Buy a Solar Amulet (item level 82, +50 Spirit, three options)'),
   item=[SPn, J('p'), J('s')])
 A(id='a2', kind='act', group='prep', pos=[0, 1], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecrated (unrevealed, cannot fracture)')],
   edges=[{'to': 'a3'}], item=[SPn, J('p'), J('s'), UN('x')])
 A(id='a3', kind='act', group='prep', pos=[0, 2], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
@@ -134,7 +134,7 @@ A(id='c4', kind='act', group='main', pos=[1, 7.4], act='annul', cur='Orb_of_Annu
   target=K('접두 1티어가 지워지면 옵션 1개 남기기', 'T1 prefix gone: back to one option'), edges=[{'to': 'a4'}])
 # 3·4단계
 A(id='a5', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션', 'Third prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  goal=K('접두 세 번째 옵션', 'Third prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   skipIf={'full': 'p'}, skipTo='a6', edges=[{'to': 'a6'}], item=[SP, RAR, SD2, SL])
 A(id='a6', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Essence_of_the_Breach', ess='mq', omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('에센스', 'Essence'), goal=K('접두 하나를 지우고 최대 퀄리티', 'A prefix goes for max quality'),
@@ -142,7 +142,7 @@ A(id='a6', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Essence_o
   edges=[{'to': 'a7'}], item=[SP, SD2, MQ, SL])
 # 5·6·6B단계: 자리 막기 + 촉진 엑잘(접힌 상자 L1)
 A(id='a7', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접미 두번째 옵션(훼손)', 'Second suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접미 두 번째 옵션(훼손)', 'Second suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=R1({'a8': {}}), item=[SP, SD2, MQ, SL, UN('s')])
 A(id='a8', kind='act', group='main', pos=[1, 8.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='blk', label=K('공개', 'Reveal'),
   goal=K('자리 막기 옵션 — 생명력 재생·능력치·저항', 'Blocker: life regeneration, attribute or resistance'), show=['blk'],
@@ -152,7 +152,7 @@ A(id='a8x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Ann
 A(id='a9', kind='act', group='main', pos=[1, 10.4], act='quality', cur='Skittering_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('속도 퀄리티 40%', 'Speed quality 40%'), edges=[{'to': 'a10'}])
 A(id='a10', kind='act', group='main', pos=[1, 11.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'],
-  cat='csCat', label=K('엑잘', 'Exalt'), goal=K('접미 세번째 옵션', 'Third suffix'), show=['cs', 'cr', 'cd'],
+  cat='csCat', label=K('엑잘', 'Exalt'), goal=K('접미 세 번째 옵션', 'Third suffix'), show=['cs', 'cr', 'cd'],
   edges=[{'if': {'added': 'gs'}, 'to': 'a11', 'res': 'ok'}, {'to': 'a10x', 'res': 'fail', 'label': K('빗나감', 'Miss')}])
 A(id='a10x', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
   target=K('빗나간 접미 지우기', 'Remove the missed suffix'),
@@ -170,13 +170,13 @@ A(id='a11e', kind='act', group='main', pos=[2, 10.4], act='essence', cur='Essenc
   label=K('에센스', 'Essence'), goal=K('접두 하나를 지우고 최대 퀄리티', 'A prefix goes for max quality'),
   showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'a12'}])
 A(id='a12', kind='act', group='main', pos=[2, 11.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation'], cat='manaCat',
-  label=K('엑잘', 'Exalt'), goal=K('접두 두번째 옵션', 'Second prefix'), show=['mp', 'mf', 'sd'],
+  label=K('엑잘', 'Exalt'), goal=K('접두 두 번째 옵션', 'Second prefix'), show=['mp', 'mf', 'sd'],
   edges=[{'if': {'added': 'gp'}, 'to': 'a13', 'res': 'ok'}, {'to': 'a11', 'res': 'fail', 'label': K('빗나감', 'Miss')}])
 # 8·10단계
 A(id='a13', kind='act', group='main', pos=[0, 10.4], act='quality', cur='Sibilant_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('시전 퀄리티 40%', 'Caster quality 40%'), edges=[{'to': 'a14'}], item=[SP, MF, MQ, SL, DEX, CS])
 A(id='a14', kind='act', group='main', pos=[0, 11.4], act='chaos', cur='Perfect_Chaos_Orb', trim={'side': 'p', 'keep': 'keep'}, label=K('카오스', 'Chaos'),
-  goal=K('최대 퀄리티를 지우고 접두 세번째 옵션', 'Max quality out, third prefix'), show=['mp', 'mf', 'sd'],
+  goal=K('최대 퀄리티를 지우고 접두 세 번째 옵션', 'Max quality out, third prefix'), show=['mp', 'mf', 'sd'],
   edges=[{'if': {'count': {'tag': 'gp', 'min': 2}}, 'to': 'a15', 'res': 'ok'},
          {'if': V1, 'to': 'a14', 'res': 'fail', 'label': K('다시 절사 카오스', 'Whittle again')},
          {'if': {'param': {'v': 2}}, 'to': 'a15', 'res': 'fail', 'hide': True}], item=[SP, MF, SD, SL, DEX, CS])
@@ -184,7 +184,7 @@ A(id='a14', kind='act', group='main', pos=[0, 11.4], act='chaos', cur='Perfect_C
 A(id='a15', kind='act', group='main', pos=[0, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('자리 막기 훼손 옵션 제거', 'Remove the blocking desecration'), edges=[{'to': 'a16'}], item=[SP, MF, SD, SL, CS])
 A(id='a16', kind='act', group='main', pos=[0, 13.4], act='desecrate', cur='Ancient_Collarbone', omens=['Omen_of_the_Blackblooded'], label=K('훼손', 'Desecrate'),
-  goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'a17'}], item=[SP, MF, SD, SL, CS, UN('s')])
 A(id='a17', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='kq', label=K('공개', 'Reveal'),
   goal=K('접미 모든 스킬의 퀄리티', 'Quality of all Skills suffix'), show=['kq'],

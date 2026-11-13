@@ -29,7 +29,7 @@ def jewel5(gid, cls, bse, ilvl, note, start, startLbl, I0, pre_nodes, sufTags, r
      # Diztoh sapphire video: annul everything down and chaos for the suffix again
      *([annul('c1x',[1,3],[{'if':{'not':{'has':failRoute[1]}},'to':failRoute[2],'port':'right'},{'if':{'has':'contP'},'to':'c1x'},{'to':failRoute[3],'port':'right'}],omens=(),target=K('+1 접두 허용 옵션 지우기 (접두는 잡옵뿐 — 공격 치명타 피해가 지워지면 새 베이스)','Remove +1 prefix allowed (prefixes are junk — losing crit damage means a new base)'))] if failRoute and failRoute[0]=='keep' else
        [cleanup('c1x',[1,3],[],[{'to':failRoute[2],'port':'right'}],K('소멸의 오브로 모두 지우고 접미부터 다시 (영상)','Annul everything and chaos for the suffix again (video)'))] if failRoute else []),
-     act('c2','main',[0,4],'desecrate','Preserved_Cranium',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'c3'}],I5,**({'omens':['Omen_of_Dextral_Necromancy']} if necro else {})),
+     act('c2','main',[0,4],'desecrate','Preserved_Cranium',K('접미 세 번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'c3'}],I5,**({'omens':['Omen_of_Dextral_Necromancy']} if necro else {})),
      act('c3','main',[0,5],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),
          [{'if':{'added':revTag},'to':'c4','res':'ok'},{'if':{'param':{'v':1}},'to':'c3x','res':'fail'},{'to':'c4','res':'fail'}],I6,want=revTag,show=revShow,omens=['Omen_of_Abyssal_Echoes'],
          over=[{'param':{'v':2},'set':{'edges':[{'if':{'added':revTag},'to':'f1','res':'ok'},{'to':'f1','res':'fail'}]}}]),
@@ -38,7 +38,7 @@ def jewel5(gid, cls, bse, ilvl, note, start, startLbl, I0, pre_nodes, sufTags, r
          [{'if':{'has':'contS'},'to':'c4e','res':'fail'},{'to':'c5','res':'ok'}],I7,omens=['Omen_of_Sinistral_Annulment']),
      # LilBotQ: a missed Sinistral Annulment leaves +1 suffix allowed as the only prefix → Sinistral Erasure + Chaos Orb takes it
      act('c4e','main',[1,6],'chaos','Chaos_Orb',K('남은 +1 접미 허용 옵션 바꾸기','Reroll the remaining +1 suffix line'),[st('p','랜덤 옵션 1개 (접두가 그 옵션뿐이라 확정)','One random line (it is the only prefix, so it is sure)')],K('카오스','Chaos'),[{'to':'c5','port':'right'}],I8,omens=['Omen_of_Sinistral_Erasure']),
-     act('c5','main',[0,7],'exalt','Exalted_Orb',K('접두 두번째 옵션','Second prefix'),[st('p','랜덤 옵션 1개 (접미가 한도를 넘어 접두로만)','One random line (suffixes are over the limit)')],K('엑잘','Exalt'),[{'to':'c6'}],I8),
+     act('c5','main',[0,7],'exalt','Exalted_Orb',K('접두 두 번째 옵션','Second prefix'),[st('p','랜덤 옵션 1개 (접미가 한도를 넘어 접두로만)','One random line (suffixes are over the limit)')],K('엑잘','Exalt'),[{'to':'c6'}],I8),
      act('c6','main',[0,8],'chaos','Chaos_Orb',K('좋은 접두 (접미가 한도를 넘어 접두만 바뀜)','A good prefix (only prefixes change)'),None,K('카오스','Chaos'),
          [{'if':{'has':preTag},'to':'f1','res':'ok'},{'to':'c6','res':'fail'}],I9,show=preShow),
      LIQ('f1',[0,9],'Potent_Liquid_Ferocity','fer',K('위력적인 액체 흉포함 (접두 하나가 지워짐)','Potent Liquid Ferocity (one prefix goes)'),[st('p','접미 효과 증가','Increased effect of suffixes')],
@@ -61,9 +61,9 @@ graph9('lilbotq-emerald-v2','Emerald','Emerald',82,
 # ---------- 2. Diztoh 5옵션 에메랄드 (s70CV_nvjXg) ----------
 tg={'critD':{'gi':5},'qas':{'gi':55},'as':{'gi':7},'asAny':{'anyOf':['qas','as'],'label':K('공격 속도 (육척봉 포함)','Attack speed (or with quarterstaves)')},'atk':{'gi':6},'qd':{'gi':53},'pre':{'anyOf':['atk','qd'],'label':K('공격 피해·육척봉 피해','Attack or quarterstaff damage')}}
 I0=[it('s','공격 치명타 피해 보너스','Attack crit damage bonus',['critD']),J('p')]
-pre=[act('e2','main',[0,1],'exalt','Exalted_Orb',K('접미 두번째 옵션','Second suffix'),None,K('엑잘','Exalt'),[{'if':{'has':'asAny'},'to':'e3','res':'ok'},{'to':'e2x','res':'fail'}],I0+[it('s','공격 속도','Attack speed',['asAny'])],show=['qas','as'],omens=['Omen_of_Dextral_Exaltation']),
+pre=[act('e2','main',[0,1],'exalt','Exalted_Orb',K('접미 두 번째 옵션','Second suffix'),None,K('엑잘','Exalt'),[{'if':{'has':'asAny'},'to':'e3','res':'ok'},{'to':'e2x','res':'fail'}],I0+[it('s','공격 속도','Attack speed',['asAny'])],show=['qas','as'],omens=['Omen_of_Dextral_Exaltation']),
      cleanup('e2x',[1,1],['critD','asAny'],[{'lost':'critD','to':'h1','port':'right'},{'to':'e2','port':'bottom'}],K('빗나간 접미 지우기','Remove the missed suffix')),
-     act('e3','main',[0,2],'exalt','Exalted_Orb',K('접두 두번째 옵션','Second prefix'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'if':{'full':'p'},'to':'c1'},{'to':'e3','hide':True}],I0+[it('s','공격 속도','Attack speed',['asAny']),J('p')])]
+     act('e3','main',[0,2],'exalt','Exalted_Orb',K('접두 두 번째 옵션','Second prefix'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'if':{'full':'p'},'to':'c1'},{'to':'e3','hide':True}],I0+[it('s','공격 속도','Attack speed',['asAny']),J('p')])]
 P,tags,nodes,loops=jewel5('diztoh-5mod-emerald-v2','Emerald','Emerald',80,'',{'rar':'rare','mods':['critD',{'junk':'p'}]},K('공격 치명타 피해 접미 + 잡옵 1개 희귀 에메랄드','Rare Emerald: attack crit damage suffix + one junk line'),I0,
    pre,None,'asAny',['qas','as'],'pre',['atk','qd'],tg,[('critD','공격 치명타 피해 보너스','Attack crit damage bonus'),('asAny','공격 속도','Attack speed')],None,(119,120),117,failRoute=('keep','critD','h1','e2'))
 graph9('diztoh-5mod-emerald-v2','Emerald','Emerald',80,
@@ -76,8 +76,8 @@ graph9('diztoh-5mod-emerald-v2','Emerald','Emerald',80,
 tg={'scrit':{'gi':48},'crit':{'gi':10},'cdmg':{'gi':11},'critAny':{'anyOf':['scrit','crit','cdmg'],'label':K('치명타 접미','Crit suffix')},'cast':{'gi':3},'rev':{'anyOf':['cast','cdmg','scrit'],'label':K('시전 속도·치명타','Cast speed or crit')},
     'cold':{'gi':6},'spell':{'gi':49},'ele':{'gi':20},'pre':{'anyOf':['cold','spell','ele'],'label':K('냉기·주문·원소 피해','Cold, spell or elemental damage')}}
 I0=[J('s')]; C1=it('s','치명타 접미','Crit suffix',['critAny'])
-pre=[act('j1','main',[0,1],'chaos','Chaos_Orb',K('접미 첫번째 옵션','First suffix'),None,K('카오스','Chaos'),[{'if':{'has':'critAny'},'to':'j2','res':'ok'},{'to':'j1','res':'fail'}],[C1],show=['scrit','crit','cdmg']),
-     act('j2','main',[0,1.5],'exalt','Exalted_Orb',K('접미 두번째 옵션','Second suffix'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'critAny','min':2}},'to':'j3','res':'ok'},{'to':'j2x','res':'fail'}],[C1,C1],show=['scrit','crit','cdmg'],omens=['Omen_of_Dextral_Exaltation']),
+pre=[act('j1','main',[0,1],'chaos','Chaos_Orb',K('접미 첫 번째 옵션','First suffix'),None,K('카오스','Chaos'),[{'if':{'has':'critAny'},'to':'j2','res':'ok'},{'to':'j1','res':'fail'}],[C1],show=['scrit','crit','cdmg']),
+     act('j2','main',[0,1.5],'exalt','Exalted_Orb',K('접미 두 번째 옵션','Second suffix'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'critAny','min':2}},'to':'j3','res':'ok'},{'to':'j2x','res':'fail'}],[C1,C1],show=['scrit','crit','cdmg'],omens=['Omen_of_Dextral_Exaltation']),
      cleanup('j2x',[1,1.5],['critAny'],[{'lost':'critAny','to':'j1','port':'right'},{'to':'j2','port':'bottom'}],K('빗나간 접미 지우기','Remove the missed suffix')),
      act('j3','main',[0,2],'exalt','Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 2개 (엑잘티드 오브 2개)','Two random lines (two Exalted Orbs)')],K('엑잘','Exalt'),[{'to':'c1'}],[C1,C1,J('p'),J('p')],omens=['Omen_of_Greater_Exaltation'])]
 P,tags,nodes,loops=jewel5('diztoh-5mod-sapphire-v2','Sapphire','Sapphire',82,'',{'rar':'rare','mods':[{'junk':'s'}]},K('희귀 사파이어 (소멸의 오브로 옵션 1개만 남김)','Rare Sapphire (annulled down to one line)'),I0,
@@ -101,8 +101,8 @@ nodes=[base('z2',{'rar':'magic','mods':[{'junk':'s'}]},K('옵션 1개 매직 오
  act('z2','prep',[0,1],'regal','Regal_Orb',K('레어로','To rare'),[st(None,'랜덤 옵션 1개','One random line')],K('제왕','Regal'),[{'to':'z2x'}],I1),
  dict(cleanup('z2x',[0,2],[],[{'to':'ms'}],K('옵션 1개만 남기기','Keep one line'),maxJunk=1),group='prep'),
  mark([0,2.6],'z3',I2),
- act('z3','main',[0,3],'chaos','Chaos_Orb',K('접미 첫번째 옵션','First suffix'),None,K('카오스','Chaos'),[{'if':{'has':'note'},'to':'z4','res':'ok'},{'to':'z3','res':'fail'}],I3,show=[f'n{g}' for g in NOT]),
- act('z4','main',[0,4],'desecrate','Preserved_Cranium',K('접미 두번째 옵션(훼손)','Second suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'z5'}],I4,omens=['Omen_of_Dextral_Necromancy']),
+ act('z3','main',[0,3],'chaos','Chaos_Orb',K('접미 첫 번째 옵션','First suffix'),None,K('카오스','Chaos'),[{'if':{'has':'note'},'to':'z4','res':'ok'},{'to':'z3','res':'fail'}],I3,show=[f'n{g}' for g in NOT]),
+ act('z4','main',[0,4],'desecrate','Preserved_Cranium',K('접미 두 번째 옵션(훼손)','Second suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'z5'}],I4,omens=['Omen_of_Dextral_Necromancy']),
  act('z5','main',[0,5],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),
      [{'if':{'added':'note'},'to':'z6','res':'ok'},{'if':{'param':{'v':1}},'to':'z5x','res':'fail'},{'to':'z6','res':'fail'}],I5,want='note',show=[f'n{g}' for g in NOT],omens=['Omen_of_Abyssal_Echoes']),
  annul('z5x',[1,5],[{'if':{'has':'note'},'to':'z4','port':'right'},{'to':'z3','port':'right'}],omens=(),target=K('징조 없는 소멸의 오브 (1/2로 훼손 옵션, 좋은 접미가 지워지면 카오스 오브부터)','Plain Orb of Annulment (1/2 the desecrated line; the good suffix gone: Chaos again)')),   # Zen_M 영상 6:17: 빛의 징조 없이 그냥 소멸의 오브

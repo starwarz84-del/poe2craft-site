@@ -70,7 +70,7 @@ A(id='b0', kind='base', group='prep', pos=[0, 0], next='p1', start={'rar': 'magi
 A(id='p1', kind='act', group='prep', pos=[0, 1], act='regal', cur='Regal_Orb', label=K('제왕', 'Regal'),
   goal=K('레어', 'Rare'), showText=[K('랜덤 옵션 1개', 'One random option')], edges=[{'to': 'p2'}], item=[RADL, J('x'), CCn])
 A(id='p2', kind='act', group='prep', pos=[0, 2], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('네번째 옵션 — 분열 조건 옵션 4개', 'Fourth option: the fracture needs four'), showText=[K('랜덤 옵션 1개', 'One random option')],
+  goal=K('네 번째 옵션 — 분열 조건 옵션 4개', 'Fourth option: the fracture needs four'), showText=[K('랜덤 옵션 1개', 'One random option')],
   edges=[{'to': 'pf'}], item=[RADL, J('x'), CCn, J('x')])
 A(id='pf', kind='act', group='prep', pos=[0, 3], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
   goal=K('분열 (옵션 4개 중 하나)', 'Fracture (one of the four options)'),
@@ -118,7 +118,7 @@ A(id='k6', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Chaos_Orb'
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 한도를 넘어 접두로)', 'en': 'One random option (suffixes over the limit)'}],
   edges=[{'to': 'k7'}], item=[J('p'), CC, SCD, CD])
 A(id='k7', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션', 'Second prefix'),
+  goal=K('접두 두 번째 옵션', 'Second prefix'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 한도를 넘어 접두로)', 'en': 'One random option (suffixes over the limit)'}],
   edges=[{'to': 'm1'}], item=[J('p'), J('p'), CC, SCD, CD])
 # 최대 마나 반복: 반경·훼손 옵션 정리 카오스 → 액체 우울 → 두개골 → 공개
@@ -156,7 +156,7 @@ A(id='ok', kind='done', group='main', pos=[0, 16.6], label=K('완성', 'Finished
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L1', 'nodes': ['k4', 'k5', 'k5x', 'k5c'], 'kr': '경멸 + 접미 세번째 옵션', 'en': 'Contempt + third suffix', 'fold': True,
+ {'id': 'L1', 'nodes': ['k4', 'k5', 'k5x', 'k5c'], 'kr': '경멸 + 접미 세 번째 옵션', 'en': 'Contempt + third suffix', 'fold': True,
   'goal': K('접미어 속성 부여의 최대 개수 +1개 + 접미 치명타 피해 보너스', '+1 Suffix Modifier allowed + crit damage suffix'),
   'steps': [K('고대 위력적인 액체 경멸 — 접두 잡옵이 지워지면 성공(1/2)', 'Ancient Potent Liquid Contempt: success when the junk prefix goes (1 in 2)') | {'node': 'k4'},
             K('우측 찬미의 징조 + 엑잘티드 오브로 치명타 피해 보너스', 'Dextral Exaltation + Exalted Orb for crit damage') | {'node': 'k5'},

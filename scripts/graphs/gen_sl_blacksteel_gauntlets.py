@@ -35,7 +35,7 @@ def DB(s, gi, tags, m='n', ti=0, suffix=None):   # DB 옵션 문구(1티어)
 KAT = L('r', '카틀라의 순흑', 'Katla’s Gloom', 'r')
 FA = DB('p', 86, ['fa1'])            # 피해를 주는 상태 이상의 피해 (14—20)%만큼 가속
 IG = DB('p', 82, ['ig1'])            # 점화 강도 (35—50)% 증가
-AM = DB('p', 85, ['am1'], 'd')       # 플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가 — 세번째 접두(훼손)
+AM = DB('p', 85, ['am1'], 'd')       # 플레이어가 유발하는 상태 이상의 강도 (26—32)% 증가 — 세 번째 접두(훼손)
 CUm = DB('s', 92, ['cu1'])           # 저주 강도 (22—29)% 증가
 CU = DB('s', 92, ['cu1'], 'f')
 FR = DB('s', 2, ['fr1'])             # 화염 저항 +(41—45)%
@@ -84,12 +84,12 @@ A(id='pk', kind='act', group='prep', pos=[0, 1], act='rune', rune=K('카틀라�
   goal=K('카틀라의 순흑 장착', 'Socket Katla’s Gloom'), showText=[K('카틀라 옵션이 붙을 수 있음', 'Katla lines can roll')], label=K('룬', 'Rune'),
   edges=[{'to': 'm1'}], item=[KAT])
 A(id='m1', kind='act', group='prep', pos=[0, 2], act='transmute', cur='Perfect_Orb_of_Transmutation',
-  label=K('매직 첫번째 옵션', 'First magic option'), goal=K('접미 저주 강도 1티어', 'T1 curse magnitude suffix'), show=['cu1'],
+  label=K('매직 첫 번째 옵션', 'First magic option'), goal=K('접미 저주 강도 1티어', 'T1 curse magnitude suffix'), show=['cu1'],
   edges=[{'if': {'added': 'magicGood'}, 'to': 'm2', 'res': 'ok', 'label': K('성공', 'hit')}, {'to': 'm1x', 'res': 'fail', 'label': K('빗나감', 'miss')}], item=I_M1)
 A(id='m1x', kind='cleanup', group='prep', pos=[1, 2], keep=[], maxJunk=0, label=K('소멸의 오브 사용', 'Use an Orb of Annulment'), goal=K('소멸의 오브 사용', 'Use an Orb of Annulment'),
   target=K('빗나간 옵션 지우기', 'Remove the missed option'), edges=[{'to': 'm2'}])
 A(id='m2', kind='act', group='prep', pos=[0, 3], act='augment', cur='Perfect_Orb_of_Augmentation',
-  label=K('매직 두번째 옵션', 'Second magic option'), goal=K('접두 카틀라의 순흑 옵션 1티어', 'T1 Katla’s Gloom prefix'), showText=FIRST,
+  label=K('매직 두 번째 옵션', 'Second magic option'), goal=K('접두 카틀라의 순흑 옵션 1티어', 'T1 Katla’s Gloom prefix'), showText=FIRST,
   edges=[{'if': {'ref': 'magicDone'}, 'to': 'm3', 'res': 'ok', 'label': K('성공', 'hit')}, {'to': 'm2x', 'res': 'fail', 'label': K('빗나감', 'miss')}], item=I_M2)
 A(id='m2x', kind='cleanup', group='prep', pos=[1, 3], keep=['magicGood'], maxJunk=0, label=K('소멸의 오브 사용', 'Use an Orb of Annulment'), goal=K('소멸의 오브 사용', 'Use an Orb of Annulment'),
   target=K('빗나간 옵션 지우기', 'Remove the missed option'),
@@ -99,7 +99,7 @@ A(id='m2y', kind='cleanup', group='prep', pos=[2, 3], keep=[], maxJunk=0, label=
 A(id='m3', kind='act', group='prep', pos=[0, 4], act='regal', cur='Perfect_Regal_Orb', label=K('레어', 'Rare'), goal=K('분열하기 위해 레어로', 'Make it rare for the fracture'),
   showText=[K('랜덤 옵션 1개', 'One random option')], edges=[{'to': 'm4'}], item=I_R)
 A(id='m4', kind='act', group='prep', pos=[0, 5], act='desecrate', cur='Preserved_Rib', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecration (unrevealed, cannot fracture)')], edges=[{'to': 'm5'}], item=I_D)
 A(id='m5', kind='act', group='prep', pos=[0, 6], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
   goal=K('분열 (공개된 옵션 3개 중 하나)', 'Fracture (one of the three revealed options)'), showText=[K('저주 강도가 분열되면 성공', 'Success when the curse magnitude fractures')],
@@ -114,18 +114,18 @@ A(id='xj', kind='exit', group='prep', pos=[1, 7], simTo='h1', variant='fail', la
 A(id='m6', kind='cleanup', group='prep', pos=[0, 8], keep=[], maxJunk=1, label=K('소멸의 오브 사용', 'Use an Orb of Annulment'), goal=K('소멸의 오브 사용', 'Use an Orb of Annulment'),
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'ms'}], item=I0)
 A(id='ms', kind='mark', group='main', pos=[0, 9], next='k1', label=K('아이템 제작 시작', 'Item crafting starts'), item=I0)
-A(id='k1', kind='act', group='main', pos=[0, 10], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'), goal=K('접두 첫번째 옵션', 'First prefix'),
+A(id='k1', kind='act', group='main', pos=[0, 10], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'), goal=K('접두 첫 번째 옵션', 'First prefix'),
   show=['fa1'], showText=FIRST, skipIf={'has': 'mp'}, skipTo='k2', skipNote=K('남은 옵션이 카틀라 접두 1티어면 건너뜀', 'Skip if the option left is a T1 Katla prefix'),
   edges=[{'if': {'has': 'mp'}, 'to': 'k2', 'res': 'ok'}, {'to': 'k1', 'res': 'fail'}], item=[KAT, FA, CU])
 A(id='k2', kind='act', group='main', pos=[0, 11], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션', 'Second prefix'), show=['ig1'], showText=REST,
+  goal=K('접두 두 번째 옵션', 'Second prefix'), show=['ig1'], showText=REST,
   edges=[{'if': {'count': {'tag': 'mp', 'min': 2}}, 'to': 'k5', 'res': 'ok'}, {'to': 'k2x', 'res': 'fail', 'label': K('빗나감 — 소멸의 오브', 'Miss: Orb of Annulment')}], item=[KAT, FA, IG, CU])
 A(id='k2x', kind='act', group='main', pos=[1, 11], act='annul', cur='Orb_of_Annulment', omens=[], label=K('소멸의 오브 사용', 'Use an Orb of Annulment'),
   goal=K('소멸의 오브 사용', 'Use an Orb of Annulment'), target=K('빗나간 접두 지우기', 'Remove the missed prefix'),
   edges=[{'if': {'has': 'mp'}, 'to': 'k2', 'res': 'ok', 'label': K('빗나간 접두 지워짐 — 다시 엑잘', 'Missed prefix gone: exalt again')},
          {'to': 'k1', 'res': 'fail', 'label': K('카틀라 접두가 지워짐 — 카오스부터', 'Katla prefix gone: back to Chaos')}])
 A(id='k5', kind='act', group='main', pos=[0, 12], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[K('훼손 옵션 (미공개)', 'Desecrated (unrevealed)')], edges=[{'to': 'k6'}], item=[KAT, FA, IG, UN('p'), CU])
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[K('훼손 옵션 (미공개)', 'Desecrated (unrevealed)')], edges=[{'to': 'k6'}], item=[KAT, FA, IG, UN('p'), CU])
 A(id='k6', kind='act', group='main', pos=[0, 13], act='reveal', label=K('공개', 'Reveal'), goal=K('훼손 옵션 확인', 'Reveal the desecrated modifier'),
   want='mp', show=['am1'], showText=REST,
   edges=[{'if': {'added': 'mp'}, 'to': 'k3', 'res': 'ok'}, {'to': 'k6x', 'res': 'fail'}], item=[KAT, FA, IG, AM, CU])
@@ -133,14 +133,14 @@ A(id='k6x', kind='act', group='main', pos=[1, 13], act='annul', cur='Orb_of_Annu
   goal=K('소멸의 오브 사용', 'Use an Orb of Annulment'), target=K('훼손 옵션 제거', 'Remove the desecrated modifier'),
   edges=[{'to': 'k5', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='k3', kind='act', group='main', pos=[0, 14], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째·세번째 옵션', 'Second and third suffixes'), show=['fr1'], showText=RESTS,
+  goal=K('접미 두 번째·세 번째 옵션', 'Second and third suffixes'), show=['fr1'], showText=RESTS,
   edges=[{'if': {'has': 's2'}, 'to': 'k4', 'res': 'ok'}, {'to': 'k3x', 'res': 'fail', 'label': K('빗나감 — 우측 소멸의 징조', 'Miss: Omen of Dextral Annulment')}],
   item=[KAT, FA, IG, AM, CU, FR, L('s', '랜덤 옵션 1개', 'One random option', 'j')])
 A(id='k3x', kind='act', group='main', pos=[1, 14], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=K('소멸의 오브 사용', 'Use an Orb of Annulment'),
   goal=K('소멸의 오브 사용', 'Use an Orb of Annulment'), target=K('빗나간 접미 2개 지우기', 'Remove both missed suffixes'),
   edges=[{'if': {'sideLt': {'side': 's', 'n': 2}}, 'to': 'k3', 'res': 'ok', 'label': K('다시 엑잘', 'Exalt again')}, {'to': 'k3x', 'res': 'fail', 'hide': True}])
 A(id='k4', kind='act', group='main', pos=[0, 15], act='chaos', cur='Perfect_Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 세번째 옵션', 'Third suffix'), show=['wi1'], showText=[K('남은 옵션', 'The one left')],
+  goal=K('접미 세 번째 옵션', 'Third suffix'), show=['wi1'], showText=[K('남은 옵션', 'The one left')],
   trim={'side': 's', 'keep': 's2'}, skipIf={'count': {'tag': 's2', 'min': 2}}, skipTo='ok', skipNote=K('위축 강도·화염 저항이 모두 있으면 건너뜀', 'Skip if both withered and fire resistance are on'),
   edges=[{'if': {'count': {'tag': 's2', 'min': 2}}, 'to': 'ok', 'res': 'ok'}, {'to': 'k4', 'res': 'fail'}], item=[KAT, FA, IG, AM, CU, FR, WI])
 A(id='ok', kind='done', group='main', pos=[0, 16], label=K('완성', 'Finished'))

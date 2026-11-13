@@ -54,16 +54,16 @@ A(dict(id='k0', kind='base', group='prep', pos=[0, 0], next='km',
   item=I0))
 A(dict(id='km', kind='mark', group='main', pos=[0, 1.4], next='a2', label=K('아이템 제작 시작', 'Item crafting starts'), item=I0))
 A(dict(id='a2', kind='act', group='main', pos=[0, 2.4], act='essence', cur='Perfect_Essence_of_the_Infinite', ess='strp', label=K('에센스', 'Essence'),
-  goal=K('접미 두번째 옵션 — 훼손 옵션을 제작 옵션으로', 'Second suffix: the desecrated modifier becomes a crafted one'),
+  goal=K('접미 두 번째 옵션 — 훼손 옵션을 제작 옵션으로', 'Second suffix: the desecrated modifier becomes a crafted one'),
   showText=[{'s': 's', 'kr': '힘 (7—10)% 증가 (제작 옵션)', 'en': '(7—10)% increased Strength (crafted)'}],
   edges=[{'to': 'a3'}], item=[ES, SP, DX, STP]))
 A(dict(id='a3', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Collarbone',
   omens=['Omen_of_Dextral_Necromancy', 'Omen_of_the_Sovereign'], label=K('훼손', 'Desecrate'),
-  goal=K('접미 두번째 옵션 — 울라만 훼손', 'Second suffix: Ulaman desecration'),
+  goal=K('접미 두 번째 옵션 — 울라만 훼손', 'Second suffix: Ulaman desecration'),
   showText=[{'s': 's', 'kr': '울라만 훼손 옵션 (미공개)', 'en': 'Ulaman desecration (unrevealed)'}],
   edges=[{'to': 'a4'}], item=[ES, SP, DX, UN('s')]))
 A(dict(id='a4', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='skill', label=K('공개', 'Reveal'),
-  goal=K('접미 두번째 옵션(훼손) — 모든 스킬 레벨 +1', 'Second suffix (desecrated): +1 to Level of all Skills'), show=['skill'],
+  goal=K('접미 두 번째 옵션(훼손) — 모든 스킬 레벨 +1', 'Second suffix (desecrated): +1 to Level of all Skills'), show=['skill'],
   edges=[{'if': {'added': 'skill'}, 'to': 'ok', 'res': 'ok'},
          {'to': 'a2', 'res': 'fail', 'label': K('빗나감 — 다시 에센스', 'Miss: essence again')}],
   item=[ES, SP, DX, SK]))

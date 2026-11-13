@@ -67,12 +67,12 @@ A(id='c1', kind='act', group='main', pos=[0, 4.4], act='chaos', cur='Chaos_Orb',
   goal=K('접미 치명타 피해 보너스', 'Critical Damage Bonus suffix'), show=['cd'],
   edges=[{'if': {'has': 'cd'}, 'to': 'd1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}], item=[CD])
 A(id='d1', kind='act', group='main', pos=[0, 5.4], act='desecrate', cur='Preserved_Cranium', omens=['Omen_of_Dextral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 두번째 옵션(훼손)', 'Second suffix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 두 번째 옵션(훼손)', 'Second suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'r1'}], item=[CD, UN('s')])
 A(id='r1', kind='act', group='main', pos=[0, 6.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='scc', label=K('공개', 'Reveal'),
   goal=K('접미 주문 치명타 명중 확률', 'Spell Critical Hit Chance suffix'), show=['scc'],
   edges=[{'if': {'added': 'scc'}, 'to': 'x1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  over=[{'param': {'v': 2}, 'set': {'goal': K('접미 두번째 옵션 — 공개 결과 그대로', 'Second suffix: keep the reveal'), 'show': [],
+  over=[{'param': {'v': 2}, 'set': {'goal': K('접미 두 번째 옵션 — 공개 결과 그대로', 'Second suffix: keep the reveal'), 'show': [],
          'edges': [{'if': {'added': 'scc'}, 'to': 'x1', 'res': 'ok'}, {'to': 'x1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
   item=[CD, SCC])
 A(id='r1x', kind='act', group='main', pos=[1, 6.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
@@ -80,10 +80,10 @@ A(id='r1x', kind='act', group='main', pos=[1, 6.4], act='annul', cur='Orb_of_Ann
   edges=[{'if': {'has': 'cd'}, 'to': 'd1', 'res': 'ok', 'label': K('훼손 옵션이 지워짐 — 다시 훼손', 'Desecrated option gone: desecrate again')},
          {'to': 'c1', 'res': 'fail', 'label': K('치명타 피해 보너스가 지워짐 — 다시 카오스', 'Critical Damage Bonus gone: Chaos again')}])
 A(id='x1', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 첫번째 옵션', 'First prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
+  goal=K('접두 첫 번째 옵션', 'First prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
   edges=[{'to': 'x2'}], item=[J('p'), CD, SCC])
 A(id='x2', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션 — 우울이 지울 자리', 'Second prefix: the slot Melancholy takes'),
+  goal=K('접두 두 번째 옵션 — 우울이 지울 자리', 'Second prefix: the slot Melancholy takes'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (접미가 꽉 차 접두로)', 'en': 'One random option (suffixes are full)'}],
   edges=[{'if': {'has': 'radLo'}, 'to': 'xr', 'res': 'fail', 'label': K('반경 중형·대형 업그레이드', 'Radius to Medium or Large')},
          {'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'x2', 'hide': True}, {'to': 'm1', 'res': 'ok'}],

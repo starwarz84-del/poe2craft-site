@@ -33,7 +33,7 @@ g = {
           '상위 풍요의 에센스(1:35 거래소 1:3 카오스) = 레어 + 접미 희귀도 16%(1:46, 접두에 희귀도가 있어서 접미로 감 — 6:10 자막) → 우측 강령술의 징조(2:32 툴팁, 10 → 9) + 보존된 빗장뼈(2:37 툴팁) = 접미 미공개 훼손(2:40) → '
           '심연의 메아리의 징조 + 공개(3:35 선택지: 마나 회복 2% / 생명력 17 / 모든 원소 저항 +8%, 채팅 메아리 소모, 다시 굴리지 않음) = 모든 원소 저항 +8%(4티어, 그대로 받음 — 3:55 자막) → '
           '툴의 기폭제로 냉기 퀄리티 20%(4:32 툴팁, 5:22 툴팁) → 촉진하는 찬미의 징조 + 상위 찬미의 징조(5:10 툴팁) + 상위 엑잘티드 오브(자막 5:00) = 접두 공격 시 냉기 피해 추가 10~17(5티어) · 회피 122(4티어), 그대로(5:30). '
-          '6:20~8:50 두번째 반지(판매용, 좌측 강령술 + 빗장뼈, 상위 엑잘 2개, 오싹한 유동체로 번개 → 냉기)와 9:00~10:00 우상은 꿀팁 후보. '
+          '6:20~8:50 두 번째 반지(판매용, 좌측 강령술 + 빗장뼈, 상위 엑잘 2개, 오싹한 유동체로 번개 → 냉기)와 9:00~10:00 우상은 꿀팁 후보. '
           '등급(정책 10장): 난이도 2 → 밸런스·에센셜(옛 하이엔드는 뺌). 반복 구간은 공개 하나: 밸런스 = 빗나가면 빛의 징조 + 소멸의 오브 → 우측 강령술 + 보존된 빗장뼈 다시(모든 원소 저항 1~2티어 또는 카오스 듀얼 저항 — 사용자 확정 11-10), '
           '에센셜 = 영상 그대로 결과 그대로. 마지막 접두 2개는 두 등급 모두 결과 그대로(C17-2). 촉진하는 찬미의 징조 효과(냉기 옵션 쪽으로 기울임)는 시뮬에 없음 — 결과를 그대로 받아 비용엔 영향 없음.'),
  'params': {
@@ -69,11 +69,11 @@ A(id='q1', kind='act', group='prep', pos=[0, 1], act='essence', cur='Greater_Ess
 # ---------------- 옵션 추가 작업 (영상 2:20~5:30) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 2.4], next='q2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[RP, CR, RE])
 A(id='q2', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'),
+  goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'q3'}], item=[RP, CR, RE, UN])
 A(id='q3', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='bw', label=K('공개', 'Reveal'),
-  goal=K('접미 세번째 옵션(훼손) — 모든 원소 저항', 'Third suffix (desecrated): all elemental resistances'), show=['bw'],
-  over=[{'param': {'L': 0}, 'set': {'goal': K('접미 세번째 옵션 공개 — 나오는 대로', 'Reveal the third suffix: keep what comes'),
+  goal=K('접미 세 번째 옵션(훼손) — 모든 원소 저항', 'Third suffix (desecrated): all elemental resistances'), show=['bw'],
+  over=[{'param': {'L': 0}, 'set': {'goal': K('접미 세 번째 옵션 공개 — 나오는 대로', 'Reveal the third suffix: keep what comes'),
                                      'showText': [{'s': 's', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}], 'show': []}}],
   edges=[{'if': {'any': [{'added': 'bw'}, V_ESS]}, 'to': 'q4', 'res': 'ok'},
          {'to': 'q3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
@@ -83,7 +83,7 @@ A(id='q3x', kind='act', group='main', pos=[1, 4.4], act='annul', cur='Orb_of_Ann
 A(id='q4', kind='act', group='main', pos=[0, 5.4], act='quality', cur='Tuls_Catalyst', count=20, q=20, label=K('퀄리티', 'Quality'),
   goal=K('냉기 퀄리티 20%', '20% cold quality'), edges=[{'to': 'q5'}], item=[RP, CR, RE, AR])
 A(id='q5', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Greater_Exaltation'],
-  label=K('엑잘', 'Exalt'), goal=K('접두 두번째·세번째 옵션 — 공격 시 냉기 피해 추가·회피', 'Second and third prefixes: cold damage to attacks, evasion'),
+  label=K('엑잘', 'Exalt'), goal=K('접두 두 번째·세 번째 옵션 — 공격 시 냉기 피해 추가·회피', 'Second and third prefixes: cold damage to attacks, evasion'),
   showText=[K('랜덤 옵션 2개', 'Two random options')], edges=[{'to': 'ok'}], item=[RP, CA, EV, CR, RE, AR])
 A(id='ok', kind='done', group='main', pos=[0, 7.4], label=K('완성', 'Finished'))
 g['nodes'] = N

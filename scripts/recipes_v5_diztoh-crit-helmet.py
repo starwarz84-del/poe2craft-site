@@ -75,7 +75,7 @@ def crit_helmet(tier):
  'tierLabel':T,
  'start':{'rar':'normal','mods':[],'quality':20},
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'mag','kr':'매직 만들기','en':'Make it magic'},{'id':'fr','kr':'분열','en':'Fracture'},
-           {'id':'crit','kr':'접미 첫번째 옵션','en':'First suffix option'},{'id':'pre','kr':'접두 두번째·세번째 옵션','en':'Second and third prefix options'},
-           {'id':'des','kr':'접미 두번째 옵션(훼손)','en':'Second suffix option (desecrated)'},{'id':'fin','kr':'접미 세번째 옵션','en':'Third suffix option'}],
+           {'id':'crit','kr':'접미 첫 번째 옵션','en':'First suffix option'},{'id':'pre','kr':'접두 두 번째·세 번째 옵션','en':'Second and third prefix options'},
+           {'id':'des','kr':'접미 두 번째 옵션(훼손)','en':'Second suffix option (desecrated)'},{'id':'fin','kr':'접미 세 번째 옵션','en':'Third suffix option'}],
  'nodes':nodes})
 for _t in ('high','bal','ess'): crit_helmet(_t)

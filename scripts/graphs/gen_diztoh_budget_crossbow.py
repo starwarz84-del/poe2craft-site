@@ -69,7 +69,7 @@ WS = {'whittleSafe': {'tag': 'keep', 'keepDes': True}}
 A(id='b0', kind='base', group='prep', pos=[0, 0], next='m1', start={'rar': 'normal', 'mods': []},
   label=K('노멀 특출난 공성 쇠뇌 구입 (소켓 3, 아이템 레벨 82)', 'Buy a normal exceptional Siege Crossbow (3 sockets, item level 82)'), item=[])
 A(id='m1', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation', label=K('진화', 'Transmute'),
-  goal=K('매직 첫번째 옵션 — 접미가 붙으면 확장으로', 'First magic option: a suffix goes on to the Augmentation'),
+  goal=K('매직 첫 번째 옵션 — 접미가 붙으면 확장으로', 'First magic option: a suffix goes on to the Augmentation'),
   showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'if': {'any': [{'has': 'ppct'}, {'not': {'full': 'p'}}]}, 'to': 'm2', 'res': 'ok', 'label': K('물리 피해 % 또는 접미', '% physical or a suffix')},
          {'to': 'm1x', 'res': 'fail', 'label': K('다른 접두', 'Another prefix')}],
@@ -95,7 +95,7 @@ A(id='k2', kind='act', group='main', pos=[0, 5.4], act='essence', cur='Perfect_E
   showText=[{'s': 's', 'kr': '모든 공격 스킬 레벨 +3 (제작 옵션)', 'en': '+3 to Level of all Attack Skills (crafted)'}],
   edges=[{'to': 'k3'}], item=[PCT, FLAT, ATK, AST])
 A(id='k3', kind='act', group='main', pos=[0, 6.4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Dextral_Necromancy', 'Omen_of_the_Liege'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 두번째 옵션(훼손, 아마나무)', 'Second suffix option (desecrated, Amanamu)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 두 번째 옵션(훼손, 아마나무)', 'Second suffix option (desecrated, Amanamu)'),
   showText=[{'s': 's', 'kr': '접미 훼손 옵션 (미공개, 아마나무)', 'en': 'Suffix desecration (unrevealed, Amanamu)'}],
   edges=[{'to': 'k4'}], item=[PCT, FLAT, ATK, UN, AST])
 A(id='k4', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),

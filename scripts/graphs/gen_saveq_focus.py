@@ -47,7 +47,7 @@ g = {
    'esf': {'gi': 6, 'tmax': '$pT'}, 'esf1': {'gi': 6, 'tmax': 1}, 'esf2': {'gi': 6, 'tmax': 2},
    'magicES': {'anyOf': ['esp1', 'esf1'], 'label': K('에너지 보호막 % 증가 1티어·에너지 보호막 최대치 1티어', 'T1 % Energy Shield or T1 flat Energy Shield')},
    'cr': {'gi': 19, 'tmax': '$pT'}, 'cr1': {'gi': 19, 'tmax': 1}, 'cr2': {'gi': 19, 'tmax': 2},
-   'keepP': {'anyOf': ['esp', 'esf']}},   # 사용자 경향 11-13: 매직 접두는 영상 계획대로 에너지 보호막 % 증가·최대치 1티어 중 먼저 뜬 것(영상은 둘 다 베이스로 씀), 나머지는 접두 세번째 옵션 반복에서
+   'keepP': {'anyOf': ['esp', 'esf']}},   # 사용자 경향 11-13: 매직 접두는 영상 계획대로 에너지 보호막 % 증가·최대치 1티어 중 먼저 뜬 것(영상은 둘 다 베이스로 씀), 나머지는 접두 세 번째 옵션 반복에서
  'conds': {'magicDone': {'all': [{'has': 'magicES'}, {'has': 'lvl'}]},
            'pDone': {'all': [{'has': 'esp'}, {'has': 'esf'}]}},
  'require': {'all': [{'has': 'spE'}, {'has': 'esp'}, {'has': 'esf'}, {'has': 'lvl'}, {'has': 'cs'}, {'has': 'cr'}]},
@@ -67,10 +67,10 @@ PDONE = {'ref': 'pDone'}
 A(id='f0', kind='base', group='prep', pos=[0, 0], next='f1', start={'rar': 'normal', 'mods': [], 'quality': 20},
   label=K('특출난 타살리안 집중구 구입 (아이템 레벨 80, 소켓 2개, 퀄리티 20%)', 'Buy an exceptional Tasalian Focus (item level 80, two sockets, 20% quality)'), item=[])
 A(id='f1', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation',
-  label=K('매직 첫번째 옵션', 'First magic option'), goal=K('접두 에너지 보호막 1티어', 'T1 Energy Shield prefix'), show=['magicES'],
+  label=K('매직 첫 번째 옵션', 'First magic option'), goal=K('접두 에너지 보호막 1티어', 'T1 Energy Shield prefix'), show=['magicES'],
   edges=[{'to': 'f2'}], item=[ESP])
 A(id='f2', kind='act', group='prep', pos=[0, 2], act='augment', cur='Perfect_Orb_of_Augmentation',
-  label=K('매직 두번째 옵션', 'Second magic option'), goal=K('접미 모든 주문 스킬 +2 — 접두 에너지 보호막 1티어와 함께', 'All spell skills +2 suffix, with the T1 Energy Shield prefix'),
+  label=K('매직 두 번째 옵션', 'Second magic option'), goal=K('접미 모든 주문 스킬 +2 — 접두 에너지 보호막 1티어와 함께', 'All spell skills +2 suffix, with the T1 Energy Shield prefix'),
   show=['lvl'], ask=K('둘 다 맞음?', 'Both options?'),
   edges=[{'if': MAGIC_DONE, 'to': 'f3', 'res': 'ok', 'label': K('성공', 'hit')},
          {'if': BOTH_FULL, 'to': 'f2x', 'res': 'fail', 'label': K('빗나감', 'miss')},
@@ -87,7 +87,7 @@ A(id='f3d', kind='side', group='prep', pos=[1, 3.5], act='divine', cur='Divine_O
   label=K('수치 올리기', 'Divine the values'), goal=K('옵션 수치 다시 굴리기 (선택)', 'Reroll option values (optional)'),
   showText=[K('모든 옵션 수치 다시 굴림', 'Rerolls every value')])
 A(id='f4', kind='act', group='prep', pos=[0, 4], act='desecrate', cur='Preserved_Rib', omens=['Omen_of_Sinistral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  label=K('훼손', 'Desecrate'), goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('접두 훼손 옵션 (미공개, 분열되지 않음)', 'Prefix desecration (unrevealed, cannot fracture)')],
   edges=[{'to': 'f5'}], item=[SDc, ESP, UN('p'), LVL])
 A(id='f5', kind='act', group='prep', pos=[0, 5], act='fracture', cur='Fracturing_Orb',
@@ -116,7 +116,7 @@ A(id='a1x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Ann
   label=ANN, goal=ANN, target=K('남은 훼손 옵션 제거 — 훼손 옵션은 아이템당 하나', 'Remove the remaining desecrated option: one per item'),
   edges=[{'to': 'd1'}])
 A(id='d1', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Dextral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손) — 다음 엑잘을 접두로 보냄', 'Third suffix (desecrated): sends the next Exalt to the prefix'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 세 번째 옵션(훼손) — 다음 엑잘을 접두로 보냄', 'Third suffix (desecrated): sends the next Exalt to the prefix'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'v1'}], item=[UN('s'), SDF, ESP, LVL, CS, AS])
 A(id='v1', kind='act', group='main', pos=[0, 11.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cr',
@@ -140,7 +140,7 @@ A(id='vx', kind='act', group='main', pos=[0, 13.4], act='annul', cur='Orb_of_Ann
   label=ANN, goal=ANN, target=K('훼손 옵션 제거', 'Remove the desecrated option'),
   edges=[{'to': 'd2'}], item=[SDF, ESP, ESF, LVL, CS, AS])
 A(id='d2', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancient_Rib',
-  label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손) — 접두가 꽉 차 접미로', 'Third suffix (desecrated): prefixes are full'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 세 번째 옵션(훼손) — 접두가 꽉 차 접미로', 'Third suffix (desecrated): prefixes are full'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'v2'}], item=[UN('s'), SDF, ESP, ESF, LVL, CS, AS])
 A(id='v2', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cr',
@@ -157,11 +157,11 @@ g['nodes'] = N
 
 g['loops'] = [
  {'id': 'L0', 'nodes': ['f2', 'f2x'], 'kr': '매직 옵션 맞추기', 'en': 'Magic options'},
- {'id': 'L1', 'nodes': ['e1', 'w1'], 'kr': '접두 세번째 옵션', 'en': 'Third prefix', 'fold': True,
+ {'id': 'L1', 'nodes': ['e1', 'w1'], 'kr': '접두 세 번째 옵션', 'en': 'Third prefix', 'fold': True,
   'goal': K('접두 에너지 보호막 최대치 + 에너지 보호막 % 증가', 'Flat Energy Shield + % Energy Shield prefixes'),
   'goalBy': {'high': K('접두 에너지 보호막 최대치 1티어 + 에너지 보호막 % 증가 1티어', 'T1 flat Energy Shield + T1 % Energy Shield prefixes'),
              'bal': K('접두 에너지 보호막 최대치 1~2티어 + 에너지 보호막 % 증가 1~2티어', 'T1–2 flat Energy Shield + T1–2 % Energy Shield prefixes')},
-  'steps': [K('완벽한 엑잘티드 오브로 접두 세번째 옵션 — 접미가 꽉 차 있어 접두로, 8번에서 에너지 보호막이 지워졌으면 두 번', 'Perfect Exalt for the third prefix: the suffixes are full; twice if step 8 removed the Energy Shield') | {'node': 'e1'},
+  'steps': [K('완벽한 엑잘티드 오브로 접두 세 번째 옵션 — 접미가 꽉 차 있어 접두로, 8번에서 에너지 보호막이 지워졌으면 두 번', 'Perfect Exalt for the third prefix: the suffixes are full; twice if step 8 removed the Energy Shield') | {'node': 'e1'},
             K('빗나가면 상위 카오스 오브로 가장 낮은 레벨 접두를 다시 — 잡옵이 가장 낮으면 절사의 징조 + 좌측 말소의 징조, 원하는 접두가 더 낮으면 좌측 말소의 징조만(1/2)',
               'A miss: Greater Chaos on the lowest-level prefix — Whittling + Sinistral Erasure while the junk is lowest, Sinistral Erasure alone (1 in 2) if a wanted prefix is lower') | {'node': 'w1'}],
   'item': [SDF, ESP, ESF, LVL, CS, J('s'), AS]},

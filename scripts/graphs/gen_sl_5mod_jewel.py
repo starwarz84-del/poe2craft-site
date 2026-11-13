@@ -98,12 +98,12 @@ A(id='s5', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Potent_Li
 A(id='s5x', kind='cleanup', group='main', pos=[1, 7.4], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('분열 + 옵션 1개만 남기고 카오스부터', 'Keep the fracture + one option, Chaos again'), edges=[{'to': 's2', 'label': K('다시 카오스', 'Chaos again')}])
 A(id='s6', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Preserved_Cranium', label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 's7'}], item=[MAG, CHA, UN('p'), AIL, CP])
 A(id='s7', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='preD', label=K('공개', 'Reveal'),
   goal=K('접두 주문 피해 — 남은 옵션 중 먼저 뜬 것', 'Spell damage prefix: whichever remaining option lands first'), show=PRE,
   edges=[{'if': {'added': 'preD'}, 'to': 's8', 'res': 'ok'}, {'to': 's7x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  over=[{'param': {'v': 2}, 'set': {'goal': K('접두 세번째 옵션 — 공개 결과 그대로', 'Third prefix: keep the reveal'),
+  over=[{'param': {'v': 2}, 'set': {'goal': K('접두 세 번째 옵션 — 공개 결과 그대로', 'Third prefix: keep the reveal'),
          'edges': [{'if': {'added': 'preD'}, 'to': 's8', 'res': 'ok'}, {'to': 's8', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
   item=[MAG, CHA, SPL, AIL, CP])
 A(id='s7x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,

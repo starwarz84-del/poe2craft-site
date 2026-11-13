@@ -830,7 +830,8 @@ function analyse(r){
   const resGi = f => D.groups.findIndex(g=>g.s==='n' && g.f.length===1 && g.f[0]===f);
   const FLUXRE=/^(Blazing|Chilling|Crackling|Void)_Flux$/; let curNi=-1;
   function liquidSpec(spec){
-    const list=specList(spec); if(!list.length) return spec;
+    if(spec?.all) return {...spec, all:spec.all.map(liquidSpec)};   /* 'all' 목표(2026-11-13 S3 35번: 시한 투구 'reading s') */
+    const list=specList(spec); if(!list.length || list.some(x=>x.gi==null)) return spec;
     if(!(r.nodes||[]).slice(curNi+1).some(x=>x.do==='flux' || FLUXRE.test(x.cur||''))) return spec;   /* 뒤에 유동체 단계가 있을 때만 다른 원소 저항도 성공(2026-11-13 S2, G6 보고: 유동체 없는 장화·균열 반지) */
     if(mods.some(m=>m.gi!=null && grp(r,m.gi).f.length===1 && RESF.includes(grp(r,m.gi).f[0]))) return spec;
     const extra=[]; list.forEach(x=>{ const g=grp(r,x.gi); if(g.s==='n' && g.f.length===1 && RESF.includes(g.f[0])) RESF.forEach(f=>{ const gi=resGi(f); if(gi>=0 && !list.some(y=>y.gi===gi) && !extra.some(y=>y.gi===gi)) extra.push({gi, tmax:x.tmax}); }); });
@@ -851,7 +852,7 @@ function analyse(r){
     return W? T/W : 0;
   }
   // which listed modifier ends up on the item (first one that can still roll)
-  const pushSpec = (spec, R) => { const F=fams(); for(const x of specList(spec)){ const g=grp(r,x.gi); if(g.f.some(f=>F.has(f))) continue; if(count(g.g)>=maxA(g.g,R)) continue; mods.push({gi:x.gi, ti:0, side:g.g, tmax:x.tmax}); return true; } return false; };
+  const pushSpec = (spec, R) => { if(spec?.all) return spec.all.map(x=>pushSpec(x, R)).every(Boolean);   /* 'all' 목표 = 옵션마다(2026-11-13 S3 35번) */ const F=fams(); for(const x of specList(spec)){ const g=grp(r,x.gi); if(g.f.some(f=>F.has(f))) continue; if(count(g.g)>=maxA(g.g,R)) continue; mods.push({gi:x.gi, ti:0, side:g.g, tmax:x.tmax}); return true; } return false; };
   // desecrated reveal: 3 options drawn without replacement by group (desecrated-only groups weigh 1000), like the emulator's Well of Souls
   let revealEst=false;
   // desecrated-only groups weigh 1000; in a flat-weight class (jewels: every modifier weighs the same) the average normal group's weight (site/sim.js dW)
@@ -903,7 +904,7 @@ function analyse(r){
       if(t.junk){ if(Array.isArray(t.junk)) t.junk.forEach(sd=>mods.push({junk:true, side:sd})); else for(let k=0;k<(t.count||1);k++) mods.push({junk:true, side:t.junk}); }
       else if(t.asIs){ if(t.rand){ const sp=specList(t)[0]; mods.push({junk:true, side:t.side||sides||(sp?grp(r,sp.gi).g:'p')}); } else pushSpec(t, R); o.p=1; if(n.do==='exalt' && (n.omens||[]).includes('Omen_of_Greater_Exaltation')) mods.push({junk:true, side:t.side||sides||'p'}); }   // aims at these lines but keeps whatever comes (a miss is handled later, e.g. an alloy eats it)
       else { if(t.replace) removeJunk(t.replace);
-        o.p=addChance(t, sides?[sides]:null, R, minOf(n.cur)); o.missState=[...clone(), {junk:true, side:sides||grp(r,specList(t)[0].gi).g}]; pushSpec(t, R);
+        o.p=addChance(t, sides?[sides]:null, R, minOf(n.cur)); o.missState=[...clone(), {junk:true, side:sides||(()=>{ const sp=(t.all?specList(t.all[0]):specList(t))[0]; return sp?.gi!=null ? grp(r,sp.gi).g : 'p'; })()}];   /* 'all' 목표(상위 찬미 2개)에서 멈추던 것(2026-11-13 S3 35번: MazBro 최상급 갑옷 'reading g') */ pushSpec(t, R);
         // Greater Exaltation adds two modifiers: two chances at the target, and the other one is junk
         if(n.do==='exalt' && (n.omens||[]).includes('Omen_of_Greater_Exaltation')){ o.p=1-(1-o.p)*(1-o.p); const js=(sides&&[sides].flat()[0]) || (count('s')<maxA('s',R)?'s':'p'); mods.push({junk:true, side:js}); } }
       rar=R;
@@ -1310,7 +1311,7 @@ function nodeHTML(r, o, i, idx){
   else if(t.all) tgt=`${L('목표 모두','All of')}: `+t.all.map(s=>specText(r,s)).join(' <b>+</b> ');
   else if(t.gi!=null || t.anyOf) tgt=`${L('목표','Target')}: ${specText(r,t)}`;
   else if(t.reveal && t.keepReveal && !(t.reveal.gi!=null || t.reveal.anyOf?.length)) tgt=L(`${t.side==='p'?'접두':'접미'} 공개: 결과 그대로`,`${t.side==='p'?'Prefix':'Suffix'} reveal: keep the result`);   /* 2026-11-13 S3 23·29·32번 */
-  else if(t.reveal) tgt=`${t.side==='p'?L('접두','Prefix'):L('접미','Suffix')} ${L('공개 선택지 3개 중','reveal, among 3 options')}: ${(t.reveal.gi!=null || t.reveal.anyOf?.length) ? specText(r,t.reveal) : t.revealTx ? esc(tx(t.revealTx)) : L('아무 옵션','any option')}${o.q!=null && o.q!==o.p && !o.pUnknown && !(r.fcRead && !(o.q>0))?` <small>(${L('한 번 볼 때','one look')} ${pct(o.q)})</small>`:''}`;
+  else if(t.reveal) tgt=`${t.side==='p'?L('접두','Prefix'):L('접미','Suffix')} ${L('공개 선택지 3개 중','reveal, among 3 options')}: ${(t.reveal.gi!=null || t.reveal.anyOf?.length) ? specText(r,t.reveal) : t.revealTx ? esc(tx(t.revealTx)) : L('아무 옵션','any option')}${o.q!=null && o.q!==o.p && !o.pUnknown && !r.fcRead /* 플로우차트 읽기: 단계 확률은 시뮬, '한 번 볼 때'는 엔진 값이라 서로 맞지 않음 — 뺌(2026-11-13 S3 47번) */?` <small>(${L('한 번 볼 때','one look')} ${pct(o.q)})</small>`:''}`;
   else if(t.unrev){ const sl=sideLbl(n,o,t.unrev); tgt=sl.any ? L('공개하지 않은 훼손 옵션 추가 (접두·접미 무관)','Adds an unrevealed desecrated modifier (prefix or suffix)') : L(`${sl.kr} 자리에 공개하지 않은 훼손 옵션 추가${sl.left?' (남은 자리)':''}`,`Adds an unrevealed desecrated ${sl.en}${sl.left?' (the free slot)':''}`); }
   else if(Array.isArray(t.junk) && t.anySide) tgt=L(`아무 옵션 ${t.junk.length}개 추가 (접두·접미 무관)`,`Adds ${t.junk.length} random modifiers (prefix or suffix)`);
   else if(Array.isArray(t.junk)){ const np=t.junk.filter(x=>x==='p').length, ns=t.junk.length-np; tgt=L(`아무 옵션 ${t.junk.length}개 추가 (${[np?`접두 ${np}`:'',ns?`접미 ${ns}`:''].filter(Boolean).join(' · ')})`,`Adds ${t.junk.length} random modifiers (${[np?`${np} prefix`:'',ns?`${ns} suffix`:''].filter(Boolean).join(', ')})`); }
@@ -1323,6 +1324,7 @@ function nodeHTML(r, o, i, idx){
   else if(t.slots) tgt=L(`${t.slots.s?'접미':'접두'} 자리 +1`,`+1 ${t.slots.s?'suffix':'prefix'} slot`);
   else if(t.mark){ const l=modLine(r,t.mark.gi); const ms=grp(r,t.mark.gi).g; tgt=`${L('목표','Target')}: <span class="mod">${esc(l.txt)}</span> ${ms==='p'?L('접두에','on a prefix'):L('접미에','on a suffix')} <small>(${L('접두·접미 반반','50/50 prefix or suffix')})</small>`; }
   else if(t.roll){ const l=modLine(r,t.roll.gi,1); tgt=`${L('최댓값까지','To the max roll')}: <span class="mod">${esc(l.txt)}</span>`; }
+  if(t.keep && tgt) tgt += ` · ${L('남길 옵션','Must keep')}: ${specText(r,t.keep)}`;   /* 성공 = 이 옵션이 지워지지 않음(2026-11-13 S3 36번) */
   if(t.removeDes) tgt=L('훼손 옵션 제거','Removes the desecrated modifier');
   if(t.removeJunk) tgt = t.removeJunk==='any' ? L('잡옵 제거','Removes a junk modifier') : L(`${t.removeJunk==='p'?'접두':'접미'} 잡옵 제거`,`Removes the junk ${t.removeJunk==='p'?'prefix':'suffix'}`);
   if(t.removeMark) tgt=L('징표를 훼손한 뒤 제거','Desecrate the Mark, then remove it');
@@ -1922,7 +1924,8 @@ function fcFinalsHTML(r, d, sel){ const g=d.graph; if(!g.finals?.length) return 
   const cards=g.finals.map(F=>{
     const V=(g.versions||[]).find(v=>v.id===F.id), S2=V && d.strategies.find(x=>!x.hidden && Object.entries(V.params).every(([k,v])=>String(x.params[k])===String(v))), on=V && Object.entries(V.params).every(([k,v])=>String(sel[k])===String(v));
     // 훼손 여부 = 제작 과정에서 훼손으로 얻었는지(사용자 확정 2026-11-11): 시뮬 완성품 통계 desStat — 태그별 훼손 비율, 면별 훼손 옵션 수(잡옵도 훼손일 수 있음). 통계가 없을 때만 옵션 종류로 추정
-    const state=fcCardState(g.tags, F.lines, S2?.res?.desStat, revOnly, r);
+    const tgV=Object.fromEntries(Object.entries(g.tags||{}).map(([k,T])=>[k, T && typeof T.tmax==='string' && T.tmax[0]==='$' ? {...T, tmax:+(V?.params?.[T.tmax.slice(1)])||null} : T]));   /* 등급 파라미터 티어('$gT')를 그 카드 등급 값으로(2026-11-13 S3 8번) */
+    const state=fcCardState(tgV, F.lines, S2?.res?.desStat, revOnly, r);
     const go=r.tierGroup && tierSibs(r).find(x=>x.tier===(F.tier||F.id));   // 완성품 카드 → 그 등급 레시피 탭 (사용자 확정 2026-11-11)
     return `<div class="fcfin ${on?'on':''} ${go?'go':''}" ${go?`data-rtab="${esc(go.id)}" role="button" tabindex="0" title="${esc(L('이 완성품의 제작 과정 보기','Open the crafting steps for this item'))}"`:''}><p class="fcfh"><b>${esc(tx(F))}</b>${S2?`<span>${L('완성 1개당 약','≈')} <b>${fmtDiv(S2.res.mean)} div</b></span>`:''}</p>${(()=>{ let O=null; if(go){ try{ O=finCardO(go, state); }catch(e){ O=null; } }   /* 그 등급 레시피가 있으면 레시피 탭 완성 카드와 같은 값 */
       return O ? itemTipHTML(go, O, {showQual:!!O.qual?.v, final:true}) : itemTipHTML(r, {state, pre:state, cap:(()=>{ const b=baseOf(r); return r.cap ? {...r.cap} : {p:3+(b.pd||0), s:3+(b.sd||0)}; })(), qual:{v:fi.quality||0}, sockets:fi.sockets||0, runes:fcRunes(r, g, S2, state, fi)}, {final:true}); })()}${go?`<p class="fcgo">${L('레시피 보기 →','View recipe →')}</p>`:''}</div>`; }).join('');

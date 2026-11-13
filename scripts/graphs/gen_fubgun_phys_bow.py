@@ -64,7 +64,7 @@ A(id='pe', kind='act', group='prep', pos=[0, 1], act='essence', cur='Greater_Ess
 # ---------------- 옵션 추가 작업 (글 2·3단계) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 2.4], next='pd', label=K('아이템 제작 시작', 'Item crafting starts'), item=[PP, FA, J('s')])
 A(id='pd', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'pv'}], item=[PP, FA, UN('p'), J('s')])
 A(id='pv', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='cold', label=K('공개', 'Reveal'),
   goal=K('접두 냉기 피해 추가 2~3티어', 'T2–3 flat cold prefix'), show=['cold'],
@@ -75,12 +75,12 @@ A(id='pv', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of
 A(id='pl', kind='act', group='main', pos=[1, 4.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'pd', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='px', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째·세번째 옵션 — 나오는 대로', 'Second and third suffixes: keep what comes'), showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
+  goal=K('접미 두 번째·세 번째 옵션 — 나오는 대로', 'Second and third suffixes: keep what comes'), showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   edges=[{'to': 'ok'}], item=[PP, FA, CO, J('s'), RS, RS],
   over=[{'param': {'L': 0}, 'set': {'cur': 'Greater_Exalted_Orb', 'item': [PP, FA, RP, J('s'), RS, RS]}}])
 A(id='ok', kind='done', group='main', pos=[0, 6.4], label=K('완성', 'Finished'))
 g['nodes'] = N
-g['loops'] = [{'id': 'L1', 'nodes': ['pd', 'pv', 'pl'], 'kr': '접두 세번째 옵션(훼손)', 'en': 'Third prefix (desecrated)'}]
+g['loops'] = [{'id': 'L1', 'nodes': ['pd', 'pv', 'pl'], 'kr': '접두 세 번째 옵션(훼손)', 'en': 'Third prefix (desecrated)'}]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

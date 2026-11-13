@@ -107,7 +107,7 @@ A(id='km', kind='mark', group='main', pos=[0, 7.4], next='m1', label=K('아이�
 A(id='m1', kind='cleanup', group='main', pos=[0, 8.4], keep=[], maxJunk=1, label=ANN, goal=ANN,
   target=K('분열 + 옵션 1개만 남기기', 'Keep only the fracture + one option'), edges=[{'to': 'm2'}], item=[CS, JS])
 A(id='m2', kind='act', group='main', pos=[0, 9.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 두번째 옵션 — 마나 재생 속도 1티어', 'Second suffix: T1 mana regeneration'),
+  goal=K('접미 두 번째 옵션 — 마나 재생 속도 1티어', 'Second suffix: T1 mana regeneration'),
   showText=[K('마나 재생 속도·아이템 희귀도·모든 원소 저항 1티어 중 먼저 뜬 것', 'Whichever T1 mana regeneration, item rarity or all resistances lands first')],
   edges=[{'if': {'has': 'good'}, 'to': 'm3', 'res': 'ok'}, {'to': 'm2', 'res': 'fail'}], item=[CS, RG])
 A(id='m3', kind='act', group='main', pos=[0, 10.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
@@ -117,7 +117,7 @@ A(id='m4', kind='act', group='main', pos=[0, 11.4], act='essence', cur='Perfect_
   label=K('에센스', 'Essence'), goal=K('접두 잡옵을 최대 마나 %로', 'The junk prefix becomes % maximum mana'),
   showText=[{'s': 'p', 'kr': '최대 마나 (4—6)% 증가 (제작 옵션)', 'en': '(4—6)% increased maximum Mana (crafted)'}], edges=[{'to': 'm5'}])
 A(id='m5', kind='act', group='main', pos=[0, 12.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션 — 아이템 희귀도', 'Second prefix: item rarity'), show=['rarP'],
+  goal=K('접두 두 번째 옵션 — 아이템 희귀도', 'Second prefix: item rarity'), show=['rarP'],
   edges=[{'if': {'has': 'rarP'}, 'to': 'm6', 'res': 'ok'}, {'if': V1, 'to': 'm5x', 'res': 'fail'}, {'to': 'm6', 'res': 'ok', 'label': K('에센셜: 결과 그대로', 'Essential: keep it')}])
 A(id='m5x', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
   target=K('빗나간 접두 지우기 (셋 중 하나)', 'Remove the missed prefix (one of three)'),
@@ -126,14 +126,14 @@ A(id='m5x', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_An
          {'to': 'm5', 'res': 'fail'}])
 A(id='m6', kind='act', group='main', pos=[0, 13.4], act='exalt', cur='Perfect_Exalted_Orb',
   omens=['Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 세번째 옵션', 'Third suffix'), showText=[K('랜덤 옵션', 'Random option')],
+  goal=K('접미 세 번째 옵션', 'Third suffix'), showText=[K('랜덤 옵션', 'Random option')],
   edges=[{'to': 'm7'}], item=[PMu, RPu, CS, RG, CR])
 A(id='m7', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancient_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'm8'}],
   item=[PMu, RPu, UN('p'), CS, RG, CR])
 A(id='m8', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='mana', label=K('공개', 'Reveal'),
-  goal=K('접두 세번째 옵션(훼손) — 마나 최대치', 'Third prefix (desecrated): maximum mana'), show=['mana'],
+  goal=K('접두 세 번째 옵션(훼손) — 마나 최대치', 'Third prefix (desecrated): maximum mana'), show=['mana'],
   edges=[{'if': {'added': 'mana'}, 'to': 'ok', 'res': 'ok'},
          {'if': V1, 'to': 'm8x', 'res': 'fail'},
          {'to': 'ok', 'res': 'fail', 'hide': True}],

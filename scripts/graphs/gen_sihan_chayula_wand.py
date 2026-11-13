@@ -27,13 +27,13 @@ V1 = {'param': {'v': 1}}
 g = {
  'id': 'sihan-chayula-wand-v2', 'recipe': 'sihan-chayula-wand-v2', 'cls': 'Wands', 'base': 'Attuned Wand', 'ilvl': 82, 'basePrice': {},
  'note': ('2026-11-13 G1 영상 전체 화면 대조. 성공 회차 한 줄: 특출난 조율된 마법봉(아이템 레벨 82, 룬 소켓 2, 카오스 피해 1티어 분열 + 지능 잡옵, 2:45) → '
-          '카오스 오브로 주문 치명타 명중 확률 64% 1티어(3:24) → 우측 찬미 + 완벽한 엑잘로 접미 두번째 옵션, 빗나가면 소멸의 오브(3:20·3:37, 성공 5:01~5:26 지능 +28 2티어) → '
+          '카오스 오브로 주문 치명타 명중 확률 64% 1티어(3:24) → 우측 찬미 + 완벽한 엑잘로 접미 두 번째 옵션, 빗나가면 소멸의 오브(3:20·3:37, 성공 5:01~5:26 지능 +28 2티어) → '
           '좌측 찬미 + 엑잘로 접두 잡옵(설명 1:00·5:52·8:20 — 영상 성공 회차는 절사 카오스 데모에서 마나 최대치가 접두로 떠서 그대로 씀, 4:50) → '
           '좌측 결정화 + 완벽한 마술의 에센스로 접두 잡옵을 지우고 접미 주문 +3(6:10~6:28) → 아스트리드의 창의성(6:35) → 보존된 턱뼈로 접두 미공개 훼손(6:44~6:52) → '
           '좌측 결정화 + 천공의 합금으로 미공개 훼손을 지우고 마나 최대치·주문 +1(7:00~7:14) → 군주의 징조 + 보존된 턱뼈(7:32~7:40) → 심연의 메아리 공개, 추가 물리 23%(7:44~7:57). '
           '3:44~4:50 절사의 징조 + 카오스 데모는 영상에서 "절삭한 건 잊어 주세요"(5:30)라 넣지 않음. '
-          '등급(난이도 3 = 밸런스·에센셜, 정책 10장 C17): 밸런스 = 주문 치명타 1~2티어(영상 3:00 "1티어 혹은 2티어"), 접미 두번째 옵션 = 지능 1~2티어 반복(영상 성공 회차) '
-          '에센셜 = 주문 치명타 1~4티어(영상 8:00 "2티어 3티어도 괜찮습니다"), 접미 두번째 옵션은 결과 그대로. 공개는 군주의 징조로 울라만 접두 3개 중 추가 물리 피해가 확정이라 두 등급 같음.'),
+          '등급(난이도 3 = 밸런스·에센셜, 정책 10장 C17): 밸런스 = 주문 치명타 1~2티어(영상 3:00 "1티어 혹은 2티어"), 접미 두 번째 옵션 = 지능 1~2티어 반복(영상 성공 회차) '
+          '에센셜 = 주문 치명타 1~4티어(영상 8:00 "2티어 3티어도 괜찮습니다"), 접미 두 번째 옵션은 결과 그대로. 공개는 군주의 징조로 울라만 접두 3개 중 추가 물리 피해가 확정이라 두 등급 같음.'),
  'params': {
   'cT': {'kr': '주문 치명타 명중 확률', 'en': 'Spell crit chance', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('1~4티어', 'T1–4')}},
   'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('반복', 'Repeat'), '2': K('결과 그대로', 'As it comes')}},
@@ -41,7 +41,7 @@ g = {
  'strategies': [{'id': 'bal', 'params': {'cT': 2, 'v': 1}}, {'id': 'ess', 'params': {'cT': 4, 'v': 2}}],
  'versions': [
   {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'cT': 4, 'v': 2}, 'tier': 'ess',
-   'desc': K('주문 치명타 1~4티어, 접미 두번째 옵션 결과 그대로', 'T1–4 spell crit; second suffix kept as it comes')},
+   'desc': K('주문 치명타 1~4티어, 접미 두 번째 옵션 결과 그대로', 'T1–4 spell crit; second suffix kept as it comes')},
   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'cT': 2, 'v': 1}, 'tier': 'bal',
    'desc': K('영상: 주문 치명타 1~2티어, 지능 1~2티어, 추가 물리 피해', 'Video: T1–2 spell crit, T1–2 intelligence, extra physical damage')}],
  'tags': {
@@ -65,7 +65,7 @@ g = {
 N = []
 RND = L('s', '랜덤 옵션', 'Random option', 'j')
 def A(**kw):
-    # 에센셜은 접미 두번째 옵션을 결과 그대로 — 왼쪽 아이템 칸의 지능을 랜덤 옵션으로
+    # 에센셜은 접미 두 번째 옵션을 결과 그대로 — 왼쪽 아이템 칸의 지능을 랜덤 옵션으로
     if IN in kw.get('item', []):
         o = next((x for x in kw.setdefault('over', []) if x['param'] == {'v': 2}), None)
         if not o: o = {'param': {'v': 2}, 'set': {}}; kw['over'].append(o)
@@ -83,12 +83,12 @@ A(id='b0', kind='base', group='prep', pos=[0, 0], next='ms',
 A(id='ms', kind='mark', group='main', pos=[0, 1.4], next='w2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[CH, J('s')])
 # 2:58~3:24 카오스 오브 반복: 지능 +13 → 주문 피해·마나 → 주문 치명타 64%(1티어)
 A(id='w2', kind='act', group='main', pos=[0, 2.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 첫번째 옵션 — 주문 치명타 명중 확률', 'First suffix: spell critical hit chance'), show=['scrit'],
+  goal=K('접미 첫 번째 옵션 — 주문 치명타 명중 확률', 'First suffix: spell critical hit chance'), show=['scrit'],
   edges=[{'if': {'has': 'scrit'}, 'to': 'w3', 'res': 'ok'}, {'to': 'w2', 'res': 'fail', 'hide': True}], item=[CH, SC])
 # 3:20 우측 찬미 + 3:36 완벽한 엑잘(처치 시 마나 = 빗나감) → 3:37 소멸 → … 5:01 우측 찬미 + 완벽한 엑잘 → 5:26 지능 +28
 A(id='w3', kind='act', group='main', pos=[0, 3.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'],
-  label=K('엑잘', 'Exalt'), goal=K('접미 두번째 옵션 — 지능', 'Second suffix: intelligence'), show=['int'],
-  over=[{'param': {'v': 2}, 'set': {'goal': K('접미 두번째 옵션', 'Second suffix'), 'show': [], 'showText': [{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}]}}],
+  label=K('엑잘', 'Exalt'), goal=K('접미 두 번째 옵션 — 지능', 'Second suffix: intelligence'), show=['int'],
+  over=[{'param': {'v': 2}, 'set': {'goal': K('접미 두 번째 옵션', 'Second suffix'), 'show': [], 'showText': [{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}]}}],
   edges=[{'if': {'param': {'v': 2}}, 'to': 'w4', 'res': 'ok', 'hide': True}, {'if': {'has': 'int'}, 'to': 'w4', 'res': 'ok'},
          {'to': 'w3x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[CH, SC, IN])
@@ -112,7 +112,7 @@ A(id='w6', kind='act', group='main', pos=[0, 6.4], act='rune', label=K('룬', 'R
   edges=[{'to': 'w7'}], item=[CH, SC, IN, S3, AST])
 # 6:44 보존된 턱뼈 → 6:52 접두 미공개 훼손(공개하지 않음)
 A(id='w7', kind='act', group='main', pos=[0, 7.4], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('접두 두번째 옵션(훼손) — 합금이 지울 자리', 'Second prefix (desecrated) for the alloy to remove'),
+  goal=K('접두 두 번째 옵션(훼손) — 합금이 지울 자리', 'Second prefix (desecrated) for the alloy to remove'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'w8'}], item=[CH, UN('p'), SC, IN, S3, AST])
 # 7:00 좌측 결정화 + 천공의 합금 → 7:14 마나 최대치 +145 / 주문 +1
 A(id='w8', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Celestial_Alloy', ess='cel',
@@ -122,17 +122,17 @@ A(id='w8', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Celestial
   edges=[{'to': 'w9'}], item=[CH, CE, SC, IN, S3, AST])
 # 7:32 군주의 징조 + 7:40 보존된 턱뼈
 A(id='w9', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_the_Sovereign'],
-  label=K('훼손', 'Desecrate'), goal=K('접두 세번째 옵션 — 울라만 훼손', 'Third prefix: Ulaman desecration'),
+  label=K('훼손', 'Desecrate'), goal=K('접두 세 번째 옵션 — 울라만 훼손', 'Third prefix: Ulaman desecration'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'w10'}], item=[CH, CE, UN('p'), SC, IN, S3, AST])
 # 7:44 심연의 메아리 → 7:57 공개 3개 중 추가 물리 피해 23%
 A(id='w10', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='ula', label=K('공개', 'Reveal'),
-  goal=K('접두 세번째 옵션(훼손) — 피해의 %를 추가 물리 피해로 획득', 'Third prefix (desecrated): damage gained as extra physical'), show=['ula'],
+  goal=K('접두 세 번째 옵션(훼손) — 피해의 %를 추가 물리 피해로 획득', 'Third prefix (desecrated): damage gained as extra physical'), show=['ula'],
   edges=[{'to': 'ok', 'res': 'ok'}], item=[CH, CE, UL, SC, IN, S3, AST])   # 군주의 징조 = 공개 3개가 모두 울라만 옵션, 마법봉 울라만 접두는 3개라 확정(영상 2:10 "확정으로 뜹니다", 7:57 선택지 3개)
 A(id='ok', kind='done', group='main', pos=[0, 11.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L1', 'nodes': ['w3', 'w3x'], 'kr': '접미 두번째 옵션', 'en': 'Second suffix'},
+ {'id': 'L1', 'nodes': ['w3', 'w3x'], 'kr': '접미 두 번째 옵션', 'en': 'Second suffix'},
 ]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)

@@ -80,14 +80,14 @@ A(id='qr', kind='act', group='main', pos=[0, 4.4], act='regal', cur='Perfect_Reg
   goal=K('레어 + 접미 공격 속도 1~2티어', 'Rare + T1–2 attack speed suffix'), show=['as'],
   edges=[{'if': {'has': 'as'}, 'to': 'qd', 'res': 'ok'}, {'if': ESS, 'to': 'qd', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'qc', 'res': 'fail', 'label': K('빗나감', 'Miss')}], item=[FL, PJ, AS],
-  over=[{'param': {'L': 0}, 'set': {'goal': K('레어 + 세번째 옵션 — 나오는 대로', 'Rare + a third option: keep what comes'), 'show': [],
+  over=[{'param': {'L': 0}, 'set': {'goal': K('레어 + 세 번째 옵션 — 나오는 대로', 'Rare + a third option: keep what comes'), 'show': [],
                                     'showText': [K('랜덤 옵션 1개', 'One random option')], 'item': [FL, PJ, RX]}}])
 A(id='qc', kind='act', group='main', pos=[1, 4.4], act='chaos', cur='Greater_Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('빗나간 옵션 교체 시도 — 공격 속도가 뜰 때까지, 좋은 옵션이 지워지면 새 베이스', 'Try to replace the miss: until attack speed, a lost good option means a new base'), show=['as'],
   edges=[{'if': {'not': MAG}, 'to': 'qx', 'res': 'fail', 'label': K('좋은 옵션 지워짐', 'Good option lost')},
          {'if': {'has': 'as'}, 'to': 'qd', 'res': 'ok'}, {'to': 'qc', 'res': 'fail', 'hide': True}])
 A(id='qd', kind='act', group='main', pos=[0, 5.4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'qv'}], item=[FL, PJ, AS, UN('s')], over=[{'param': {'L': 0}, 'set': {'item': [FL, PJ, RX, UN('x')]}}])
 A(id='qv', kind='act', group='main', pos=[0, 6.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='crit', label=K('공개', 'Reveal'),
   goal=K('접미 공격 치명타 명중 확률 1~2티어', 'T1–2 attack crit chance suffix'), show=['crit'],
@@ -103,7 +103,7 @@ A(id='qe', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Perfect_Exa
   over=[{'param': {'L': 0}, 'set': {'cur': 'Greater_Exalted_Orb', 'item': [FL, RX, RX, PJ, RX, RX]}}])
 A(id='ok', kind='done', group='main', pos=[0, 8.4], label=K('완성', 'Finished'))
 g['nodes'] = N
-g['loops'] = [{'id': 'L1', 'nodes': ['qd', 'qv', 'ql'], 'kr': '접미 세번째 옵션(훼손)', 'en': 'Third suffix (desecrated)'}]
+g['loops'] = [{'id': 'L1', 'nodes': ['qd', 'qv', 'ql'], 'kr': '접미 세 번째 옵션(훼손)', 'en': 'Third suffix (desecrated)'}]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

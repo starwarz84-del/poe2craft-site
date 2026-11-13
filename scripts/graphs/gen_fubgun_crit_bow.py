@@ -62,7 +62,7 @@ A(id='ce', kind='act', group='prep', pos=[0, 1], act='essence', cur='Greater_Ess
 # ---------------- 옵션 추가 작업 (글 2·3단계) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 2.4], next='cd', label=K('아이템 제작 시작', 'Item crafting starts'), item=[PP, J('s'), CR])
 A(id='cd', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접두 두번째 옵션(훼손)', 'Second prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접두 두 번째 옵션(훼손)', 'Second prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'cv'}], item=[PP, UN('p'), J('s'), CR])
 A(id='cv', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='fp', label=K('공개', 'Reveal'),
   goal=K('접두 물리 피해 추가 1~2티어', 'T1–2 flat physical prefix'), show=['fp'],
@@ -78,7 +78,7 @@ A(id='cx', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Perfect_Exa
   over=[{'param': {'L': 0}, 'set': {'cur': 'Greater_Exalted_Orb', 'item': [PP, RP, RP, J('s'), CR, RS]}}])
 A(id='ok', kind='done', group='main', pos=[0, 6.4], label=K('완성', 'Finished'))
 g['nodes'] = N
-g['loops'] = [{'id': 'L1', 'nodes': ['cd', 'cv', 'cl'], 'kr': '접두 두번째 옵션(훼손)', 'en': 'Second prefix (desecrated)'}]
+g['loops'] = [{'id': 'L1', 'nodes': ['cd', 'cv', 'cl'], 'kr': '접두 두 번째 옵션(훼손)', 'en': 'Second prefix (desecrated)'}]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

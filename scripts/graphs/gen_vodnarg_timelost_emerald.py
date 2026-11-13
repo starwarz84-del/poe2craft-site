@@ -81,13 +81,13 @@ A(id='l1', kind='act', group='main', pos=[0, 2.4], act='essence', cur='Ancient_P
 A(id='l1x', kind='exit', group='main', pos=[1, 2.4], simTo='b0', variant='fail', label=K('새 주얼', 'New jewel'),
   note=K('접미어 +1개가 붙지 않으면 그 주얼은 버리고 새 주얼로', 'No +1 suffix: set the jewel aside and buy a new one'))
 A(id='d1', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Cranium', omens=['Omen_of_Dextral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'r1'}],
   item=[J('p'), CONT, AS, CDS, UN('s')])
 A(id='r1', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),
   goal=K('접미 공격 치명타 확률 — 아래 옵션 중 먼저 뜬 것', 'Attack crit chance suffix: whichever listed option lands first'), show=REV,
   edges=[{'if': {'added': 'rev'}, 'to': 'x1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
-  over=[{'param': {'v': 2}, 'set': {'goal': K('접미 세번째 옵션 — 공개 결과 그대로', 'Third suffix: keep the reveal'),
+  over=[{'param': {'v': 2}, 'set': {'goal': K('접미 세 번째 옵션 — 공개 결과 그대로', 'Third suffix: keep the reveal'),
          'edges': [{'if': {'added': 'rev'}, 'to': 'x1', 'res': 'ok'}, {'to': 'x1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
   item=[J('p'), CONT, AS, CDS, CC])
 A(id='r1x', kind='act', group='main', pos=[1, 4.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,

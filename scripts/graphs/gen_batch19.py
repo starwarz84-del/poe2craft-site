@@ -35,9 +35,9 @@ M0=[J('p'),SPL]; M1=[SPL,CSD]; M2=[SPL,CSD,CS]; M3=[J('p'),SPL,CSD,CS]; M4=[NT,S
 M7=[NT,RW,SPL,CSD,CS,AS]; M8=[NT,RW,UN('p'),SPL,CSD,CS,AS]; M9=[NT,RW,SD,SPL,CSD,CS,AS]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spell','fr':True},{'junk':'p'}]},K('모든 주문 스킬 레벨 +1 분열 + 잡옵 1개 (퀄리티 30% · 기폭제 퀄리티 30%)','Fractured +1 to all spell skills + one junk line (30% quality, 30% catalyst quality)'),M0),
  mark([0,0.6],'c1',M0),
- act('c1','main',[0,1],'chaos','Chaos_Orb',K('접미 두번째 옵션','Second suffix'),None,K('카오스','Chaos'),[{'if':{'has':'suf'},'to':'s1','res':'ok'},{'to':'c1','res':'fail'}],M1,show=['csd','cs']),
- act('s1','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접미 세번째 옵션','Third suffix'),None,K('엑잘','Exalt'),RGM({'p0':'ok','w1':F}),M2,show=['csd','cs'],omens=['Omen_of_Dextral_Exaltation']),
- act('w1','main',[1,2],'chaos','Perfect_Chaos_Orb',K('접미 세번째 옵션','Third suffix'),None,K('카오스','Chaos'),RGM({'p0':'ok','s1':{'res':'fail'}}),M2,show=['csd','cs'],trim={'side':'s','keep':'keepS'}),
+ act('c1','main',[0,1],'chaos','Chaos_Orb',K('접미 두 번째 옵션','Second suffix'),None,K('카오스','Chaos'),[{'if':{'has':'suf'},'to':'s1','res':'ok'},{'to':'c1','res':'fail'}],M1,show=['csd','cs']),
+ act('s1','main',[0,2],'exalt','Perfect_Exalted_Orb',K('접미 세 번째 옵션','Third suffix'),None,K('엑잘','Exalt'),RGM({'p0':'ok','w1':F}),M2,show=['csd','cs'],omens=['Omen_of_Dextral_Exaltation']),
+ act('w1','main',[1,2],'chaos','Perfect_Chaos_Orb',K('접미 세 번째 옵션','Third suffix'),None,K('카오스','Chaos'),RGM({'p0':'ok','s1':{'res':'fail'}}),M2,show=['csd','cs'],trim={'side':'s','keep':'keepS'}),
  act('p0','main',[0,3],'exalt','Exalted_Orb',K('접두 잡옵','A junk prefix'),[st('p','잡옵','Junk')],K('엑잘','Exalt'),RGM({'p1':{}}),M3,omens=['Omen_of_Sinistral_Exaltation']),
  act('p1','main',[0,4],'essence','Essence_of_Delirium',K('잡옵을 지우고 무작위 주요 패시브 스킬 할당','The junk goes for Allocates a random Notable Passive Skill'),[st('p','무작위 주요 패시브 스킬 할당 (제작 옵션)','Allocates a random Notable Passive Skill (crafted)')],K('에센스','Essence'),
      ROUTE_([{'if':{'not':{'has':'rw'}},'to':'p2'}],{'p2':{}})+RGM({}),M4,ess='nt',omens=['Omen_of_Sinistral_Crystallisation']),
@@ -45,7 +45,7 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'spell','fr':True},{'junk':'p'}]},
      ROUTE_([{'if':{'not':{'has':'rw'}},'to':'r1'}],{'r1':{}})+RGM({}),M5,omens=['Omen_of_Sinistral_Exaltation']),
  act('r1','main',[0,6],'rune',None,K('아스트리드의 창의성 장착','Socket Astrid’s Creativity'),[st(None,'제작 옵션 하나 더','One more crafted modifier')],K('룬','Rune'),[{'to':'p3'}],M6,rune=K('아스트리드의 창의성','Astrid’s Creativity')),
  act('p3','main',[0,7],'essence','Runic_Alloy',K('잡옵을 지우고 룬 수호 (24—30)% 증가','The junk goes for (24—30)% increased Runic Ward'),[st('p','룬 수호 (24—30)% 증가 (제작 옵션)','(24—30)% increased Runic Ward (crafted)')],K('합금','Alloy'),RGM({'d1':'ok','p1':F}),M7,ess='rw',omens=['Omen_of_Sinistral_Crystallisation']),
- act('d1','main',[0,8],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RGM({'rv':{}}),M8,omens=['Omen_of_Sinistral_Necromancy']),
+ act('d1','main',[0,8],'desecrate','Ancient_Rib',K('접두 세 번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RGM({'rv':{}}),M8,omens=['Omen_of_Sinistral_Necromancy']),
  act('rv','main',[0,9],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),RGM({'ok':'ok','rvx':F}),M9,want='sd',show=['sd'],omens=['Omen_of_Abyssal_Echoes']),
  annul('rvx',[1,9],RGM({'d1':{'port':'right'}})),
  done([0,10])]
@@ -111,7 +111,7 @@ nodes=[
      [{'if':{'count':{'tag':'pre','min':2}},'to':'s0','res':'ok'},{'to':'e1x',**F,**L_('빗나감 — 소멸','Miss: annul')}],B3,show=['ima'],omens=['Omen_of_Sinistral_Exaltation']),   # 6:38 상위 엑잘(47 → 46), 7:00 자막
  annul('e1x',[1,3],[{'if':{'not':{'has':'pre'}},'to':'c1',**F,**L_('정신력 %가 지워짐 — 카오스부터','% Spirit gone: back to Chaos')},{'to':'e1','res':'ok',**L_('다시 엑잘','Exalt again')}],
        omens=(),target=K('빗나간 접두 지우기 — 확률 반반','Remove the missed prefix — a 50/50')),   # 6:44 '50/50'
- act('s0','main',[0,4],'exalt','Greater_Exalted_Orb',K('접미 첫번째 옵션','First suffix'),[st('s','잡옵 (초당 생명력 재생)','Junk (life regeneration per second)')],K('엑잘','Exalt'),[{'to':'mA'}],B4),   # 12:46 화면 생명력 재생 2티어
+ act('s0','main',[0,4],'exalt','Greater_Exalted_Orb',K('접미 첫 번째 옵션','First suffix'),[st('s','잡옵 (초당 생명력 재생)','Junk (life regeneration per second)')],K('엑잘','Exalt'),[{'to':'mA'}],B4),   # 12:46 화면 생명력 재생 2티어
  act('mA','main',[0,5],'essence','Essence_of_the_Abyss',K('접미 잡옵을 지우고 심연의 군주의 징표','The junk suffix goes for the Mark of the Abyssal Lord'),[st('s','심연의 군주의 징표','Mark of the Abyssal Lord')],K('에센스','Essence'),[{'to':'b2'}],B5,
      ess='mkS',mark=True,omens=['Omen_of_Dextral_Crystallisation'],skipIf={'not':{'junk':{'side':'s','tag':'good'}}},skipTo='b2',skipHide=True),   # 13:04 화면 징표, 12:58 우측 결정화 툴팁
  act('b2','main',[0,6],'desecrate','Preserved_Rib',K('접미 징표 훼손','Desecrate the suffix Mark'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),
@@ -123,7 +123,7 @@ nodes=[
  act('w1','main',[1,8],'chaos','Perfect_Chaos_Orb',K('가장 낮은 잡옵을 다시','Reroll the lowest junk line'),None,K('카오스','Chaos'),RM({'f1':'ok','s1':F}),BL,show=['hf','hc'],omens=['Omen_of_Whittling']),   # 18:10·24:36~24:42 절사
  annul('da',[2,8],RM({'s1':{'res':'ok'},'mA':F}),omens=('Omen_of_Dextral_Annulment',),target=K('접미 잡옵 지우기','Remove a junk suffix')),   # 15:00 빛의 징조를 끄고 우측 소멸
  annul('f1',[0,9],[{'if':DONE,'to':'f2'},{'to':'mA','hide':True}],target=K('자리 막기 훼손 옵션 제거','Remove the blocking desecration')),   # 막기 자리에 복합 저항이 붙어 있었으면(시뮬 드묾) 막기부터 다시   # 26:40 빛의 징조로 화염 저항 제거
- act('f2','main',[0,10],'desecrate','Ancient_Rib',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'f3'}],B10),   # 26:30 자막 '고대 갈비뼈 14개'
+ act('f2','main',[0,10],'desecrate','Ancient_Rib',K('접미 세 번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'f3'}],B10),   # 26:30 자막 '고대 갈비뼈 14개'
  act('f3','main',[0,11],'reveal',None,K('접미 정신력 점유 효율','Suffix Spirit Reservation Efficiency'),None,K('공개','Reveal'),[{'if':{'added':'sre'},'to':'ok','res':'ok'},{'to':'f3x',**F}],B11,want='sre',show=['sre'],omens=['Omen_of_Abyssal_Echoes']),   # 27:30 화면 6% 선택
  annul('f3x',[1,11],[{'to':'f2',**L_('다시 훼손','Desecrate again')}]),   # 27:05~27:28 빛의 징조 + 소멸 반복
  done([0,12])]
@@ -154,7 +154,7 @@ _prep=[
  {'id':'p2x','kind':'act','group':'prep','pos':[1,2],'act':'annul','cur':'Orb_of_Annulment','label':K('소멸의 오브 사용','Use an Orb of Annulment'),'goal':K('소멸의 오브 사용','Use an Orb of Annulment'),'target':K('옵션 1개 지우기','Remove one line'),'edges':[{'to':'p2','label':K('다시 확장','Augment again')}]},
  {'id':'hd','kind':'side','group':'prep','pos':[1,3],'attach':['p2','p3'],'cur':'Divine_Orb','goal':K('정신력 최대 수치, 선택·비용 미포함','Max-roll Spirit, optional, not costed'),'label':K('신성','Divine')},   # 3:23 노트 'Divine Orb it to max roll'
  {'id':'p3','kind':'act','group':'prep','pos':[0,3],'act':'regal','cur':'Perfect_Regal_Orb','goal':K('레어','Rare'),'label':K('제왕','Regal'),'edges':[{'to':'p4'}],'item':[_SP(),_JK('s'),_JK('x')]},   # 3:23 노트 'Regal orb', 4:30 화면 옵션 3개
- {'id':'p4','kind':'act','group':'prep','pos':[0,4],'act':'desecrate','cur':'Preserved_Rib','goal':K('네번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth line (desecrated) — fracture needs four'),'showText':[K('훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')],'label':K('훼손','Desecrate'),'edges':[{'to':'p5'}],
+ {'id':'p4','kind':'act','group':'prep','pos':[0,4],'act':'desecrate','cur':'Preserved_Rib','goal':K('네 번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth line (desecrated) — fracture needs four'),'showText':[K('훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')],'label':K('훼손','Desecrate'),'edges':[{'to':'p5'}],
   'item':[_SP(),_JK('s'),_JK('x'),{'s':'s','kr':'훼손 옵션 (미공개)','en':'Desecrated (unrevealed)','m':'n'}]},   # 4:20 자막 '보존된 갈비뼈', 4:30 화면 미공개 훼손
  {'id':'p5','kind':'act','group':'prep','pos':[0,5],'act':'fracture','cur':'Fracturing_Orb','goal':K('분열 (셋 중 하나)','Fracture (one of three)'),'showText':[K('정신력이 분열되면 성공','Success when Spirit fractures')],'label':K('분열','Fracture'),
   'edges':[{'if':{'fractured':'spirit'},'to':'p6','res':'ok','label':K('정신력 분열','Spirit fractured')},{'to':'xj','res':'fail','dash':True,'label':K('다른 옵션 분열','Another line fractured')}],'item':[_SP('f')]},   # 3:23 노트, 4:40 반지 시연(흉갑 분열 장면은 없음)

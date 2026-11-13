@@ -19,7 +19,7 @@ def fm_armour(tier):
  'source':{'url':'https://www.youtube.com/watch?v=UWrIgHklsPg','title':'INSANELY Cheap Way To Craft Your League Start ALL Of Your Armor For POE2 0.5.5','channel':'XTheFarmerX'},
  'title':K('에너지 보호막 접두 옵션 3개 (리그 초반 가성비)','three energy shield prefixes (league-start budget)'),
  'start':{'rar':'magic','mods':[{'gi':fa2_flat,'tmax':3}]},
- 'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'pre','kr':'접두 세번째 옵션(훼손)','en':'Third prefix (desecrated)'},{'id':'suf','kr':'접미 두번째·세번째 옵션','en':'Suffix options 2–3'}],
+ 'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'pre','kr':'접두 세 번째 옵션(훼손)','en':'Third prefix (desecrated)'},{'id':'suf','kr':'접미 두 번째·세 번째 옵션','en':'Suffix options 2–3'}],
  'nodes':[
   {'id':'b0','phase':'base','do':'base','cost':'base','ts':'3:16','note':K('에너지 보호막 최대치 3티어 매직 흐르는 의복(아이템 레벨 79), 1 엑잘티드 오브.','A magic Flowing Raiment with T3 maximum energy shield (item level 79), 1 Exalted Orb.')},
   {'id':'g1','phase':'base','do':'augment','cur':'Greater_Orb_of_Augmentation','target':{'junk':'s'},'ts':'3:26'},

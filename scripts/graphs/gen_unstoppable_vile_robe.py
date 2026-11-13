@@ -113,7 +113,7 @@ A(id='uax', kind='act', group='prep', pos=[1, 2], act='annul', cur='Orb_of_Annul
 A(id='ur', kind='act', group='prep', pos=[0, 3], act='regal', cur='Perfect_Regal_Orb', label=K('제왕', 'Regal'),
   goal=K('레어', 'Rare'), showText=[K('랜덤 옵션 1개', 'One random option')], edges=[{'to': 'ud'}], item=[HYn, J('p'), J('s')])
 A(id='ud', kind='act', group='prep', pos=[0, 4], act='desecrate', cur='Preserved_Rib',
-  label=K('훼손', 'Desecrate'), goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  label=K('훼손', 'Desecrate'), goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecration (unrevealed, cannot fracture)')],
   edges=[{'if': {'has': 'hyb'}, 'to': 'uf'}, {'to': 'ux', 'hide': True}], item=[HYn, J('p'), UN('p'), J('s')])
 A(id='uf', kind='act', group='prep', pos=[0, 5], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
@@ -159,7 +159,7 @@ A(id='q4', kind='act', group='main', pos=[2, 11.4], act='annul', cur='Orb_of_Ann
 A(id='q5', kind='act', group='main', pos=[1, 12.4], act='desecrate', cur='Preserved_Rib', fromMark=True, label=K('훼손', 'Desecrate'),
   goal=K('접두 징표 훼손', 'Desecrate the prefix Mark'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=PR({'q1': {}}))
-# 접두 두번째 옵션: 막기 제거 → 고대 갈비뼈 → 공개 (영상 16:18~18:25)
+# 접두 두 번째 옵션: 막기 제거 → 고대 갈비뼈 → 공개 (영상 16:18~18:25)
 A(id='r0', kind='act', group='main', pos=[0, 13.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=PR({'r1': {}}), item=[HY, EP, FR, CR, J('s')])
 A(id='r1', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancient_Rib', label=K('훼손', 'Desecrate'),
@@ -181,7 +181,7 @@ g['nodes'] = N
 
 g['loops'] = [
  {'id': 'L0', 'nodes': ['k1', 'k2', 'k2x'], 'kr': '접미 저항 2개', 'en': 'Two resistances'},
- {'id': 'L1', 'nodes': ['q0', 'q1', 'q2', 'q3', 'q4', 'q5'], 'kr': '접두 첫번째 옵션', 'en': 'First prefix', 'fold': True,
+ {'id': 'L1', 'nodes': ['q0', 'q1', 'q2', 'q3', 'q4', 'q5'], 'kr': '접두 첫 번째 옵션', 'en': 'First prefix', 'fold': True,
   'goal': K('접두 에너지 보호막 증가 1티어 — 에너지 보호막 증가·최대치 중 먼저 뜬 것', 'T1 increased energy shield prefix: increased or maximum energy shield, whichever lands first'),
   'goalBy': {'high': K('접두 에너지 보호막 증가 1티어 — 에너지 보호막 증가·최대치 1티어 중 먼저 뜬 것', 'T1 increased energy shield: T1 increased or maximum energy shield, whichever lands first'),
              'bal': K('접두 에너지 보호막 증가 1~2티어 — 에너지 보호막 증가·최대치 1~2티어 중 먼저 뜬 것', 'T1–2 increased energy shield: T1–2 increased or maximum energy shield, whichever lands first')},
@@ -192,7 +192,7 @@ g['loops'] = [
             K('막기가 남아 있으면 빛의 징조 + 소멸의 오브로 제거', 'Blocker still there: Omen of Light + Orb of Annulment') | {'node': 'q4'},
             K('보존된 갈비뼈로 징표 훼손 → 다시 자리 막기', 'Preserved Rib on the Mark, then block again') | {'node': 'q5'}],
   'item': [HY, LB, EP, FR, CR, J('s')]},
- {'id': 'L2', 'nodes': ['r0', 'r1', 'r2'], 'kr': '접두 두번째 옵션(훼손)', 'en': 'Second prefix (desecrated)', 'fold': True,
+ {'id': 'L2', 'nodes': ['r0', 'r1', 'r2'], 'kr': '접두 두 번째 옵션(훼손)', 'en': 'Second prefix (desecrated)', 'fold': True,
   'goal': K('접두 에너지 보호막 최대치 1티어 (훼손)', 'T1 maximum energy shield (desecrated)'),
   'goalBy': {'high': K('접두 에너지 보호막 최대치 1티어 (훼손) — 남은 에너지 보호막 접두', 'T1 maximum energy shield (desecrated): the remaining energy shield prefix'),
              'bal': K('접두 에너지 보호막 최대치 1~2티어 (훼손) — 남은 에너지 보호막 접두', 'T1–2 maximum energy shield (desecrated): the remaining energy shield prefix')},

@@ -69,7 +69,7 @@ A(id='e1', kind='act', group='prep', pos=[0, 3], act='exalt', cur='Exalted_Orb',
   goal=K('잡옵 2개', 'Two junk modifiers'), showText=[{'kr': '잡옵 2개', 'en': 'Two junk'}],
   edges=[{'to': 'f1'}], item=[J('p'), CRn, J('s')])
 A(id='f1', kind='act', group='prep', pos=[0, 4], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개, 분열되지 않음)', 'en': 'Desecrated (unrevealed, cannot fracture)'}],
   edges=[{'to': 'f2'}], item=[J('p'), UN('p'), CRn, J('s')])
 A(id='f2', kind='act', group='prep', pos=[0, 5], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
@@ -86,7 +86,7 @@ A(id='f4', kind='cleanup', group='prep', pos=[0, 6], keep=[], maxJunk=1, label=L
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 7.4], next='v2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[J('p'), CR])
 A(id='v2', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 두번째 옵션 — 모든 근접·투사체 스킬 레벨 +3 중 먼저 뜬 것', 'Second suffix: +3 Melee or Projectile Skills, whichever comes first'), show=['SK'],
+  goal=K('접미 두 번째 옵션 — 모든 근접·투사체 스킬 레벨 +3 중 먼저 뜬 것', 'Second suffix: +3 Melee or Projectile Skills, whichever comes first'), show=['SK'],
   edges=[{'if': {'has': 'SK'}, 'to': 'v3', 'res': 'ok'}, {'to': 'v2', 'res': 'fail', 'hide': True}], item=[CR, ML])
 A(id='v3', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 잡옵', 'A junk prefix'), showText=[{'s': 'p', 'kr': '잡옵', 'en': 'Junk'}], edges=[{'to': 'v4'}], item=[J('p'), CR, ML])
@@ -104,7 +104,7 @@ A(id='v7', kind='act', group='main', pos=[0, 13.4], act='essence', cur='Perfect_
   showText=[{'s': 'p', 'kr': '전역 방어도, 회피, 에너지 보호막 % (제작 옵션)', 'en': 'Global Armour, Evasion and Energy Shield % (crafted)'}],
   edges=[{'to': 'v8'}], item=[DEF, CR, ML])
 A(id='v8', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancient_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('접두 두번째 옵션(훼손)', 'Second prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접두 두 번째 옵션(훼손)', 'Second prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'v9'}], item=[DEF, UN('p'), CR, ML])
 A(id='v9', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='spirit2', label=K('공개', 'Reveal'),
   goal=K('접두 정신력', 'Spirit prefix'), show=['spirit2'],

@@ -70,17 +70,17 @@ A(id='ms', kind='mark', group='main', pos=[0, 0.6], next='s1', label=K('아이�
   item=[SPD, J('p'), J('p'), J('s'), J('s'), J('s')])
 # 5:50 '카오스 오브로 번개 주문 +7', 6:05 '자리를 모두 채운 채로 돌리면 이미 있는 옵션은 다시 안 나옴'
 A(id='s1', kind='act', group='main', pos=[0, 1], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 첫번째 옵션', 'First suffix'), show=['l7'],
+  goal=K('접미 첫 번째 옵션', 'First suffix'), show=['l7'],
   edges=[{'if': {'has': 'l7'}, 'to': 's2', 'res': 'ok'}, {'to': 's1', 'res': 'fail', 'hide': True}],
   item=[SPD, J('p'), J('p'), L7, J('s'), J('s')])
 # 6:20 절사로 시전 속도 → 6:25 주문 치명타(번개 주문 +7 레벨 81, 시전 속도 80이라 절사에 안 지워짐)
 A(id='s2', kind='act', group='main', pos=[0, 2], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
-  goal=K('접미 두번째 옵션', 'Second suffix'), show=['cast'], skipIf={'has': 'cast'}, skipTo='s3',
+  goal=K('접미 두 번째 옵션', 'Second suffix'), show=['cast'], skipIf={'has': 'cast'}, skipTo='s3',
   edges=[LOST('l7', 's1'), {'if': {'has': 'cast'}, 'to': 's3', 'res': 'ok'}, {'to': 's2', 'res': 'fail', 'hide': True}],
   item=[SPD, J('p'), J('p'), L7, CAST, J('s')])
 # 6:50~7:05 절사 중 새 옵션이 접두로 가서 추가 번개 1티어(레벨 80)가 붙으면 그대로 둠 → 7:16 접두 추가 번개·추가 화염
 A(id='s3', kind='act', group='main', pos=[0, 3], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
-  goal=K('접미 세번째 옵션', 'Third suffix'), show=['crit'],
+  goal=K('접미 세 번째 옵션', 'Third suffix'), show=['crit'],
   edges=[LOST('l7', 's1'), LOST('cast', 's2'),
          {'if': {'all': [{'has': 'crit'}, BOTH]}, 'to': 'ok', 'res': 'ok', 'hide': True},
          {'if': {'all': [{'has': 'crit'}, {'has': 'light'}]}, 'to': 'pT', 'res': 'ok', 'hide': True},
@@ -127,7 +127,7 @@ A(id='pT', kind='act', group='main', pos=[2, 6], act='chaos', cur='Perfect_Chaos
   item=[SPD, LPs, XL, L7, CAST, CRIT])
 # ---- 9:20~9:39 빈 접두에 훼손 → 추가 번개 ----
 A(id='d1', kind='act', group='main', pos=[0, 7], act='desecrate', cur='Ancient_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'd2'}], item=[SPD, LP, UN('p'), L7, CAST, CRIT])
 A(id='d2', kind='act', group='main', pos=[0, 8], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pg', label=K('공개', 'Reveal'),
   goal=K('접두 추가 번개 1티어', 'T1 extra lightning prefix'), show=['xl'],

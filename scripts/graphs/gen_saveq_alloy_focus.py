@@ -65,7 +65,7 @@ A(id='s1', kind='act', group='prep', pos=[0, 1], act='essence', cur='Greater_Ess
   showText=[{'s': 's', 'kr': '주문 치명타 명중 확률 (47—53)% 증가 (제작 옵션)', 'en': '(47—53)% increased Critical Hit Chance for Spells (crafted)'}],
   edges=[{'to': 's2'}], item=[ESF, LVL, CR])
 A(id='s2', kind='act', group='prep', pos=[0, 2], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Sinistral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접두 두번째 옵션(훼손) — 분열 조건 옵션 4개', 'Second prefix (desecrated): the fracture needs four options'),
+  label=K('훼손', 'Desecrate'), goal=K('접두 두 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Second prefix (desecrated): the fracture needs four options'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개, 분열되지 않음)', 'en': 'Desecrated (unrevealed, cannot fracture)'}],
   edges=[{'to': 's3'}], item=[ESF, UN('p'), LVL, CR])
 A(id='s3', kind='act', group='prep', pos=[0, 3], act='fracture', cur='Fracturing_Orb',
@@ -97,7 +97,7 @@ A(id='s5', kind='act', group='main', pos=[0, 6.4], act='rune', cur='Artificers_O
   showText=[K('제작 옵션 하나 더', 'One more crafted modifier')], rune=K('아스트리드의 창의성', 'Astrid’s Creativity'),
   edges=[{'to': 's6'}], item=[ESFr, ESP, LVL, CR, AS])
 A(id='s6', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'],
-  label=K('엑잘', 'Exalt'), goal=K('접두 세번째 옵션 — 합금이 1/2로 지울 옵션, 결과 그대로', 'Third prefix: the one the Alloy removes 1 in 2, keep whatever comes'),
+  label=K('엑잘', 'Exalt'), goal=K('접두 세 번째 옵션 — 합금이 1/2로 지울 옵션, 결과 그대로', 'Third prefix: the one the Alloy removes 1 in 2, keep whatever comes'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 's7'}], item=[ESFr, ESP, MANA, LVL, CR, AS])
 A(id='s7', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Transcendent_Alloy', ess='cs', omens=['Omen_of_Sinistral_Crystallisation'],
@@ -108,7 +108,7 @@ A(id='s7', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Transcend
          {'to': 's8', 'res': 'fail', 'label': K('훼손 옵션이 지워짐', 'The desecrated option went')}],
   item=[ESFr, MANA, LVL, CR, CS, AS])
 A(id='s8', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Ancient_Rib',
-  label=K('훼손', 'Desecrate'), goal=K('접두 세번째 옵션(훼손) — 접미가 꽉 차 접두로', 'Third prefix (desecrated): the suffixes are full'),
+  label=K('훼손', 'Desecrate'), goal=K('접두 세 번째 옵션(훼손) — 접미가 꽉 차 접두로', 'Third prefix (desecrated): the suffixes are full'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 's9'}], item=[ESFr, MANA, UN('p'), LVL, CR, CS, AS])
 A(id='s9', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev',

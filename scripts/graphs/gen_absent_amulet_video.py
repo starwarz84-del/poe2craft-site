@@ -35,12 +35,12 @@ g = {
           '검은 피의 징조 + 보존된 빗장뼈로 접미 징표 훼손(18:26) → 메아리 공개 반복(빗나가면 빛의 징조, 18:44) → 모든 스킬의 퀄리티(19:05). 완벽한 유동체·쥬얼러·할당·축성(19:15~20:30)은 정책 14장대로 뺌. '
           '내부 결정: 접두 목표는 영상이 멈추겠다고 말한 옵션(에너지 보호막 %·방어도 %·생명력 1티어, 14:50 주문 피해 1티어) 중 먼저 뜬 것. '
           '접미 징표 + 접두 빗나감(16:45)은 영상 화면대로 검은 피 없이 빗장뼈 + 빛의 징조(영상은 검은 피를 켜려다 실수했다고 말함). 첫 공개에서 모든 스킬의 퀄리티가 뜨는 경우는 플로우차트에 넣지 않음(시뮬은 같은 줄로 진행).'),
- 'params': {'pT': {'kr': '접두 두번째 옵션', 'en': 'Second prefix', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
+ 'params': {'pT': {'kr': '접두 두 번째 옵션', 'en': 'Second prefix', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
  'strategies': [{'id': 'high', 'params': {'pT': 1}}, {'id': 'bal', 'params': {'pT': 2}}],
  'versions': [{'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'pT': 2}, 'tier': 'bal',
-               'desc': K('접두 두번째 옵션 1~2티어', 'Second prefix T1–2')},
+               'desc': K('접두 두 번째 옵션 1~2티어', 'Second prefix T1–2')},
               {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'pT': 1}, 'tier': 'high',
-               'desc': K('영상: 접두 두번째 옵션 1티어', 'Video: T1 second prefix')}],
+               'desc': K('영상: 접두 두 번째 옵션 1티어', 'Video: T1 second prefix')}],
  'tags': {'spirit': {'gi': 28, 'tmax': 1}, 'spell': {'gi': 17, 'tmax': 1}, 'mq': {'gi': 81}, 'kq': {'gi': 46},
           'mkp': {'gi': 79}, 'mks': {'gi': 80}, 'mark': {'anyOf': ['mkp', 'mks']},
           'esp': {'gi': 16, 'tmax': '$pT'}, 'arp': {'gi': 14, 'tmax': '$pT'}, 'lf': {'gi': 9, 'tmax': '$pT'}, 'sd': {'gi': 31, 'tmax': '$pT'},
@@ -70,7 +70,7 @@ A(id='b1', kind='act', group='prep', pos=[0, 1], act='exalt', cur='Perfect_Exalt
   goal=K('접미 잡옵 2개', 'Two junk suffixes'), showText=[{'s': 's', 'kr': '잡옵 2개', 'en': 'Two junk'}],
   edges=[{'to': 'b2'}], item=[SPn, J('s'), J('s')])
 A(id='b2', kind='act', group='prep', pos=[0, 2], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('접두 훼손 옵션 (미공개, 분열되지 않음)', 'Prefix desecration (unrevealed, cannot fracture)')], edges=[{'to': 'pf'}],
   item=[SPn, UN('p'), J('s'), J('s')])
 A(id='pf', kind='act', group='prep', pos=[0, 3], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
@@ -87,7 +87,7 @@ A(id='b11', kind='cleanup', group='prep', pos=[0, 4], keep=[], maxJunk=1, label=
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 5.4], next='k1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[SP, J('s')])
 A(id='k1', kind='act', group='main', pos=[0, 6.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 첫번째 옵션', 'First suffix'), show=['spell'],
+  goal=K('접미 첫 번째 옵션', 'First suffix'), show=['spell'],
   edges=[{'if': {'has': 'spell'}, 'to': 'q1', 'res': 'ok'}, {'to': 'k1', 'res': 'fail', 'hide': True}], item=[SP, SL])
 A(id='q1', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 잡옵', 'A junk prefix'), showText=[{'s': 'p', 'kr': '잡옵', 'en': 'Junk'}], edges=[{'to': 'q2'}], item=[SP, J('p'), SL])
@@ -97,18 +97,18 @@ A(id='q2', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Essence_o
 A(id='q3', kind='act', group='main', pos=[0, 9.4], act='quality', cur='Sibilant_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
   goal=K('시전 퀄리티 40%', 'Caster quality 40%'), showText=[K('쇳소리 기폭제 40개', '40 Sibilant Catalysts')], edges=[{'to': 'd1'}], item=[SP, MQ, SL])
 A(id='d1', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_the_Blackblooded'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 두번째 옵션(훼손)', 'Second suffix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 두 번째 옵션(훼손)', 'Second suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'r1'}], item=[SP, MQ, SL, UN('s')])
 A(id='r1', kind='act', group='main', pos=[0, 11.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='kq', label=K('공개', 'Reveal'),
   goal=K('접미 훼손 옵션 확인 — 한 번만, 빗나가도 그대로', 'Reveal the suffix desecration: once, a miss stays'), show=['kq'],
   edges=[{'to': 'w1'}], item=[SP, MQ, SL, DJ])
 A(id='w1', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
-  goal=K('최대 퀄리티를 지우고 접두 두번째 옵션', 'Maximum Quality out, second prefix'), show=['gp'],
+  goal=K('최대 퀄리티를 지우고 접두 두 번째 옵션', 'Maximum Quality out, second prefix'), show=['gp'],
   edges=[{'if': {'all': [{'has': 'gp'}, {'has': 'kq'}]}, 'to': 'ok', 'res': 'ok', 'hide': True},
          {'if': {'has': 'gp'}, 'to': 's2x', 'res': 'ok', 'hide': True},
          {'to': 'm0', 'res': 'fail', 'label': K('접두 잡옵', 'Junk prefix')}],
   item=[SP, J('p'), SL, DJ])
-# 접두 두번째 옵션 루프(접힘): 빛의 징조 → 좌측 결정화 + 심연의 에센스(징표 50:50) → 접두 징표: 빗장뼈 + 빛의 징조 → 좌측 찬미 + 완벽한 엑잘 / 접미 징표: 완벽한 엑잘
+# 접두 두 번째 옵션 루프(접힘): 빛의 징조 → 좌측 결정화 + 심연의 에센스(징표 50:50) → 접두 징표: 빗장뼈 + 빛의 징조 → 좌측 찬미 + 완벽한 엑잘 / 접미 징표: 완벽한 엑잘
 A(id='m0', kind='act', group='main', pos=[0, 13.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
   target=K('접미 훼손 옵션 제거', 'Remove the suffix desecration'), edges=[{'to': 'm1'}], item=[SP, J('p'), SL])
 A(id='m1', kind='act', group='main', pos=[0, 14.4], act='essence', cur='Essence_of_the_Abyss', ess='mkp', alt='mks', mark=True,
@@ -123,11 +123,11 @@ A(id='m2', kind='act', group='main', pos=[2, 15.4], act='desecrate', cur='Preser
 A(id='m3', kind='act', group='main', pos=[2, 16.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
   target=K('접두 훼손 옵션 제거', 'Remove the prefix desecration'), edges=[{'to': 'm3e'}], item=[SP, SL])
 A(id='m3e', kind='act', group='main', pos=[2, 17.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션', 'Second prefix'), show=['gp'],
+  goal=K('접두 두 번째 옵션', 'Second prefix'), show=['gp'],
   edges=[{'if': {'added': 'gp'}, 'to': 's1m', 'res': 'ok'}, {'to': 'm1', 'res': 'fail', 'label': K('빗나감 — 다시 심연의 에센스', 'Miss: Essence of the Abyss again')}],
   item=[SP, ESP, SL])
 A(id='m4', kind='act', group='main', pos=[0, 15.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션 — 접미가 차서 접두로', 'Second prefix: the suffixes are full'), show=['gp'],
+  goal=K('접두 두 번째 옵션 — 접미가 차서 접두로', 'Second prefix: the suffixes are full'), show=['gp'],
   edges=[{'if': {'added': 'gp'}, 'to': 's1m', 'res': 'ok'}, {'to': 'm5', 'res': 'fail'}],
   item=[SP, ESP, SL, MK('s')])
 A(id='m5', kind='act', group='main', pos=[1, 16.4], act='desecrate', cur='Preserved_Collarbone', fromMark=True, label=K('훼손', 'Desecrate'),
@@ -141,7 +141,7 @@ A(id='s1m', kind='act', group='main', pos=[0, 18.4], act='desecrate', cur='Prese
   skipIf={'not': {'has': 'mks'}}, skipTo='s1', skipNote=K('접미 징표가 없으면 건너뜀', 'Skipped without a suffix Mark'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 's1'}], item=[SP, ESP, SL, UN('s')])
 A(id='s1', kind='act', group='main', pos=[0, 19.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_the_Blackblooded'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 두번째 옵션(훼손)', 'Second suffix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 두 번째 옵션(훼손)', 'Second suffix (desecrated)'),
   skipIf={'unrevSide': 's'}, skipTo='s2', skipNote=K('미공개 훼손 옵션이 있으면 건너뜀', 'Skipped with an unrevealed desecration on'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 's2'}], item=[SP, ESP, SL, UNu('s')])
 A(id='s2', kind='act', group='main', pos=[0, 20.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='kq', label=K('공개', 'Reveal'),
@@ -153,10 +153,10 @@ A(id='ok', kind='done', group='main', pos=[0, 21.4], label=K('완성', 'Finished
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L1', 'nodes': ['m0', 'm1', 'm2', 'm3', 'm3e', 'm4', 'm5', 'm6'], 'kr': '접두 두번째 옵션', 'en': 'Second prefix', 'fold': True,
-  'goal': K('접두 두번째 옵션 1티어 — 에너지 보호막 %·방어도 %·생명력·주문 피해 중 먼저 뜬 것', 'T1 second prefix: Energy Shield %, Armour %, Life or Spell Damage, whichever comes first'),
-  'goalBy': {'high': K('접두 두번째 옵션 1티어 — 에너지 보호막 %·방어도 %·생명력·주문 피해 중 먼저 뜬 것', 'T1 second prefix: Energy Shield %, Armour %, Life or Spell Damage, whichever comes first'),
-             'bal': K('접두 두번째 옵션 1~2티어 — 에너지 보호막 %·방어도 %·생명력·주문 피해 중 먼저 뜬 것', 'T1–2 second prefix: Energy Shield %, Armour %, Life or Spell Damage, whichever comes first')},
+ {'id': 'L1', 'nodes': ['m0', 'm1', 'm2', 'm3', 'm3e', 'm4', 'm5', 'm6'], 'kr': '접두 두 번째 옵션', 'en': 'Second prefix', 'fold': True,
+  'goal': K('접두 두 번째 옵션 1티어 — 에너지 보호막 %·방어도 %·생명력·주문 피해 중 먼저 뜬 것', 'T1 second prefix: Energy Shield %, Armour %, Life or Spell Damage, whichever comes first'),
+  'goalBy': {'high': K('접두 두 번째 옵션 1티어 — 에너지 보호막 %·방어도 %·생명력·주문 피해 중 먼저 뜬 것', 'T1 second prefix: Energy Shield %, Armour %, Life or Spell Damage, whichever comes first'),
+             'bal': K('접두 두 번째 옵션 1~2티어 — 에너지 보호막 %·방어도 %·생명력·주문 피해 중 먼저 뜬 것', 'T1–2 second prefix: Energy Shield %, Armour %, Life or Spell Damage, whichever comes first')},
   'steps': [K('빛의 징조로 접미 훼손 옵션 제거 (처음 한 번)', 'Omen of Light removes the suffix desecration (first pass only)') | {'node': 'm0'},
             K('좌측 결정화 + 심연의 에센스로 접두 잡옵을 징표로', 'Sinistral Crystallisation + Essence of the Abyss turns the junk prefix into the Mark') | {'node': 'm1'},
             K('접두 징표 — 보존된 빗장뼈로 훼손', 'Prefix Mark: Preserved Collarbone desecrates it') | {'node': 'm2'},

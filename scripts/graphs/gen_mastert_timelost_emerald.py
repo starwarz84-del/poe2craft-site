@@ -69,7 +69,7 @@ A(id='pc', kind='cleanup', group='prep', pos=[0, 1], keep=[], maxJunk=1, label=A
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 2.4], next='c1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[FRC, J('x')])
 A(id='c1', kind='act', group='main', pos=[0, 3.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 두번째 옵션', 'Second suffix'), show=['cd'],
+  goal=K('접미 두 번째 옵션', 'Second suffix'), show=['cd'],
   edges=[{'if': {'has': 'cd'}, 'to': 'e1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}], item=[FRC, CD])
 A(id='e1', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 잡옵 1개', 'One junk prefix'), showText=[K('접미가 꽉 차 접두로 랜덤 옵션 1개', 'Suffixes are full: one random prefix')],
@@ -83,7 +83,7 @@ A(id='l1x', kind='cleanup', group='main', pos=[1, 5.4], keep=[], maxJunk=1, labe
   target=K('분열 + 옵션 1개만 남기고 카오스부터', 'Keep the fracture + one option, back to Chaos'),
   edges=[{'to': 'c1', 'label': K('다시 카오스', 'Chaos again')}])
 A(id='d1', kind='act', group='main', pos=[0, 6.4], act='desecrate', cur='Preserved_Cranium', omens=['Omen_of_Dextral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'r1'}], item=[CS, FRC, CD, UN('s')])
 RV_OK = {'res': 'ok'}
 A(id='r1', kind='act', group='main', pos=[0, 7.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='ms', label=K('공개', 'Reveal'),
@@ -100,7 +100,7 @@ A(id='x1', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb',
   showText=[K('접미가 한도를 넘어 새 옵션은 접두로', 'Suffixes are over the limit: the new option is a prefix')],
   edges=[{'if': {'has': 'contS'}, 'to': 'x1', 'res': 'fail', 'hide': True}, {'to': 'e2', 'res': 'ok'}], item=[J('p'), FRC, CD, MS])
 A(id='e2', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션', 'Second prefix'), showText=[K('랜덤 옵션 1개', 'One random option')],
+  goal=K('접두 두 번째 옵션', 'Second prefix'), showText=[K('랜덤 옵션 1개', 'One random option')],
   edges=[{'if': {'has': 'pre'}, 'to': 'l2', 'hide': True, 'label': K('좋은 접두가 붙음 — 카오스 건너뜀', 'A good prefix landed: skip Chaos')},
          {'to': 'c2', 'label': K('좋은 접두 없음', 'No good prefix')}], item=[J('p'), J('p'), FRC, CD, MS])
 A(id='c2', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),

@@ -124,7 +124,7 @@ A(id='hd', kind='side', group='prep', pos=[1, 3], attach=['p2', 'p3'], cur='Divi
 A(id='p3', kind='act', group='prep', pos=[0, 3], act='regal', cur='Perfect_Regal_Orb', label=K('제왕', 'Regal'),
   goal=K('레어', 'Rare'), showText=[K('랜덤 옵션 1개', 'One random option')], edges=[{'to': 'p4'}], item=[LFn, J('s'), J('x')])   # 2:55 '완벽한 제왕의 오브 던져주고'
 A(id='p4', kind='act', group='prep', pos=[0, 4], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecrated (unrevealed, cannot fracture)')],
   edges=[{'to': 'pf'}], item=[LFn, J('s'), J('x'), UN('x')])   # 2:55 '보존된 턱뼈 발라주고', 3:15 툴팁 물리·번개·민첩 + 미공개 훼손
 A(id='pf', kind='act', group='prep', pos=[0, 5], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
@@ -149,7 +149,7 @@ A(id='s2x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Ann
   target=K('빗나간 옵션 지우기 — 좋은 접미가 모두 지워지면 카오스부터', 'Remove the miss: back to Chaos if no good suffix is left'),
   edges=R({'s2': {'label': K('다시 엑잘', 'Exalt again')}, 's1': {'res': 'fail', 'label': K('좋은 접미가 모두 지워짐', 'No good suffix left')}}))   # 7:40~7:46 소멸로 물리·투사체 속도·마나 획득 제거
 A(id='d1', kind='act', group='main', pos=[0, 11], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=R({'e1': {}}), item=[LF, CA, CD, UN('s')])   # 8:02 '우측 강령술+ 보존된 턱뼈로 접미에 훼손을 미리 입히자'
 A(id='e1', kind='act', group='main', pos=[0, 12], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접두 두 개 — 투사체 속도·활 스킬 피해 중 먼저 뜬 것', 'Two prefixes: projectile speed or bow damage, whichever lands first'), show=['pspd', 'bow'],
@@ -172,7 +172,7 @@ A(id='f1', kind='act', group='main', pos=[0, 18.6], act='annul', cur='Orb_of_Ann
   target=K('막기 옵션 지우기', 'Remove the blocker'), edges=[{'to': 'f2'}], item=[LF, BW, PS, CA, CD],
   skipIf=G0, skipTo='ok', skipHide=True, skipNote=K('밸런스는 막기 옵션을 랜덤 옵션으로 두고 건너뜀', 'Balance keeps the blocker as the random option'))   # 10:56~10:58 빛의 징조 3 → 2, 소멸의 오브 17 → 16
 A(id='f2', kind='act', group='main', pos=[0, 19.6], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'f3'}], item=[LF, BW, PS, CA, CD, UN('s')])   # 10:59 보존된 턱뼈 14/20, 11:14 13/20
 A(id='f3', kind='act', group='main', pos=[0, 20.6], act='reveal', want='proj', label=K('공개', 'Reveal'),
   goal=K('접미 모든 투사체 스킬 레벨', 'Projectile skill levels suffix'), show=['proj'],

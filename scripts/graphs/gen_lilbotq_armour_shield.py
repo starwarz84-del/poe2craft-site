@@ -79,7 +79,7 @@ A(id='k4', kind='act', group='prep', pos=[0, 4], act='essence', cur='Greater_Ess
   showText=[{'s': 'p', 'kr': '방어도, 회피, 에너지 보호막 (68—79)% 증가 (제작 옵션)', 'en': '(68—79)% increased Armour, Evasion and Energy Shield (crafted)'}],
   edges=[{'to': 'k5'}], item=[FL, ESS, FIR])
 A(id='k5', kind='act', group='prep', pos=[0, 5], act='desecrate', cur='Preserved_Rib', omens=['Omen_of_Sinistral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  label=K('훼손', 'Desecrate'), goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개, 분열되지 않음)', 'en': 'Desecrated (unrevealed, cannot fracture)'}],
   edges=[{'to': 'k6'}], item=[FL, ESS, UN('p'), FIR])
 A(id='k6', kind='act', group='prep', pos=[0, 6], act='divine', cur='Divine_Orb', count=2, label=K('수치 올리기', 'Divine the values'),
@@ -101,7 +101,7 @@ A(id='k9', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Chaos_Orb'
   goal=K('접두 방어도 % 증가 1티어', 'T1 % armour prefix'), show=['pct'],
   edges=[{'if': {'has': 'pct'}, 'to': 'k10', 'res': 'ok'}, {'to': 'k9', 'res': 'fail', 'hide': True}], item=[FLr, PC])
 A(id='k10', kind='act', group='main', pos=[0, 11.4], act='desecrate', cur='Ancient_Rib', omens=['Omen_of_Sinistral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'k11'}], item=[FLr, PC, UN('p')])
 A(id='k11', kind='act', group='main', pos=[0, 12.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='hyb',
   label=K('공개', 'Reveal'), goal=K('접두 방어도 % 증가 + 기절 한계치', '% armour + stun threshold prefix'), show=['hyb'],
@@ -115,7 +115,7 @@ A(id='k12', kind='act', group='main', pos=[0, 13.4], act='exalt', cur='Perfect_E
   label=K('엑잘', 'Exalt'), goal=K('접미 옵션 2개 — 결과 그대로', 'Two suffixes: keep whatever comes'),
   showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}], edges=[{'to': 'k13'}], item=[FLr, PC, HY, CHR, CLR])
 A(id='k13', kind='act', group='main', pos=[0, 14.4], act='exalt', cur='Perfect_Exalted_Orb',
-  label=K('엑잘', 'Exalt'), goal=K('접미 세번째 옵션 — 결과 그대로', 'Third suffix: keep whatever comes'),
+  label=K('엑잘', 'Exalt'), goal=K('접미 세 번째 옵션 — 결과 그대로', 'Third suffix: keep whatever comes'),
   showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}], edges=[{'to': 'ok'}], item=[FLr, PC, HY, CHR, CLR, PDR])
 A(id='ok', kind='done', group='main', pos=[0, 15.4], label=K('완성', 'Finished'))
 g['nodes'] = N

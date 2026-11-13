@@ -45,17 +45,17 @@ g = {
           '공개 = 마나 재생 64% 1티어(5:45~5:49) → 완벽한 엑잘 마지막 접두 = 카오스 피해 84% 3티어, 그대로 둠(6:25~6:55). '
           '7:30~33:42는 설명(+4가 분열됐을 때 카오스로 주문 피해, Craft of Exile 시뮬, 룬 +1·알두르 +2로 +8, 노멀 마법봉에 진화·확장으로 +4 만들기 비용, 분열 기대값)이라 꿀팁 후보. '
           '분열 결과가 +4나 천공의 합금이면 같은 비용으로 이어 간다고 가정(영상 25:30 "셋 다 가치 있음", 분열 실패 = 없음). '
-          '등급(정책 10장): 난이도 3 → 밸런스·에센셜. 밸런스 = 막기·접미 공개를 빛의 징조로 다시, 세번째 접두 1~2티어(좌측 소멸의 징조로 다시), 마지막 접두는 나오는 대로(C17 2번, 영상도 3티어 그대로). '
+          '등급(정책 10장): 난이도 3 → 밸런스·에센셜. 밸런스 = 막기·접미 공개를 빛의 징조로 다시, 세 번째 접두 1~2티어(좌측 소멸의 징조로 다시), 마지막 접두는 나오는 대로(C17 2번, 영상도 3티어 그대로). '
           '에센셜 = 반복 없음, 공개·엑잘 결과 그대로, 엑잘은 상위 엑잘티드 오브.'),
  'params': {
   'L': {'kr': '반복', 'en': 'Repeats', 'values': {'1': K('빛의 징조·소멸의 징조로 다시', 'Retry with Light / Annulment omens'), '0': K('결과 그대로', 'Keep whatever comes')}},
-  'xT': {'kr': '세번째 접두·접미 공개', 'en': 'Third prefix / suffix reveal', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('나오는 대로', 'As it comes')}}},
+  'xT': {'kr': '세 번째 접두·접미 공개', 'en': 'Third prefix / suffix reveal', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('나오는 대로', 'As it comes')}}},
  'strategies': [{'id': 'bal', 'params': {'L': 1, 'xT': 2}}, {'id': 'ess', 'params': {'L': 0, 'xT': 4}}],
  'versions': [
   {'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'L': 0, 'xT': 4}, 'tier': 'ess',
    'desc': K('반복 없이 공개·엑잘 결과 그대로, 상위 엑잘티드 오브', 'No repeats, keep each reveal and exalt; Greater Exalted Orbs')},
   {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'L': 1, 'xT': 2}, 'tier': 'bal',
-   'desc': K('영상: 막기·접미 공개는 빛의 징조로 다시, 세번째 접두 1~2티어, 마지막 접두는 나오는 대로', 'Video: Light retries the blocker and suffix reveals, T1–2 third prefix, last prefix as it comes')}],
+   'desc': K('영상: 막기·접미 공개는 빛의 징조로 다시, 세 번째 접두 1~2티어, 마지막 접두는 나오는 대로', 'Video: Light retries the blocker and suffix reveals, T1–2 third prefix, last prefix as it comes')}],
  'tags': {
   'l4': {'gi': 10, 'tmax': 1}, 'trans': {'gi': 60}, 'cel': {'gi': 59}, 'sorc': {'gi': 44}, 'blk': {'gi': 30},
   'xF': {'gi': 26, 'tmax': '$xT'}, 'xC': {'gi': 27, 'tmax': '$xT'}, 'xL': {'gi': 28, 'tmax': '$xT'}, 'sd': {'gi': 3, 'tmax': '$xT'}, 'hy': {'gi': 4, 'tmax': '$xT'},
@@ -101,7 +101,7 @@ A(id='z4', kind='act', group='prep', pos=[0, 5], act='essence', cur='Celestial_A
   showText=[{'s': 'p', 'kr': '마나 최대치 · 모든 주문 스킬 레벨 +1 (제작 옵션)', 'en': 'Maximum mana · +1 all spell skills (crafted)'}],
   edges=[{'to': 'z5'}], item=[CE, L4, ALn, RN])
 A(id='z5', kind='act', group='prep', pos=[0, 6], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Sinistral_Necromancy', 'Omen_of_the_Liege'],
-  label=K('훼손', 'Desecrate'), goal=K('접두 네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated prefix): the fracture needs four'),
+  label=K('훼손', 'Desecrate'), goal=K('접두 네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated prefix): the fracture needs four'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개, 아마나무)', 'en': 'Desecrated (unrevealed, Amanamu)'}], edges=[{'to': 'z6'}], item=[CE, UN('p'), L4, ALn, RN])
 A(id='z6', kind='act', group='prep', pos=[0, 7], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
   goal=K('분열 (공개된 옵션 3개 중 하나)', 'Fracture (one of the three revealed options)'),
@@ -121,7 +121,7 @@ A(id='n1d', kind='act', group='main', pos=[1, 9.4], act='desecrate', cur='Preser
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개, 아마나무)', 'en': 'Desecrated (unrevealed, Amanamu)'}], edges=[{'to': 'n1', 'label': K('다시 공개', 'Reveal again')}])
 A(id='n2', kind='act', group='main', pos=[0, 10.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접두 추가 냉기 피해 — 추가 피해·주문 피해·주문 피해와 마나 중 먼저 뜬 것', 'Extra cold prefix: or any extra damage, spell damage or spell + mana, whichever lands first'), show=['pre'],
-  over=[{'param': {'L': 0}, 'set': {'cur': 'Greater_Exalted_Orb', 'goal': K('접두 세번째 옵션 — 나오는 대로', 'Third prefix: keep what comes'), 'showText': [{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}], 'show': []}}],
+  over=[{'param': {'L': 0}, 'set': {'cur': 'Greater_Exalted_Orb', 'goal': K('접두 세 번째 옵션 — 나오는 대로', 'Third prefix: keep what comes'), 'showText': [{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}], 'show': []}}],
   edges=[{'if': {'any': [{'added': 'pre'}, V_ESS]}, 'to': 'n3', 'res': 'ok'}, {'to': 'n2x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[CE, ED, XC, L4, AL, RN])
 A(id='n2x', kind='act', group='main', pos=[1, 10.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Sinistral_Annulment'], label=ANN, goal=ANN,
@@ -137,11 +137,11 @@ A(id='n3', kind='act', group='main', pos=[0, 11.4], act='annul', cur='Orb_of_Ann
   goal=K('자리 막기 훼손 옵션 제거', 'Remove the blocking desecrated option'), target=K('자리 막기 훼손 옵션 제거', 'Remove the blocking desecrated option'),
   edges=[{'to': 'n4'}], item=[CE, XC, L4, AL, RN])
 A(id='n4', kind='act', group='main', pos=[0, 12.4], act='desecrate', cur='Ancient_Jawbone', omens=['Omen_of_Dextral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'),
+  goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'n5'}], item=[CE, XC, L4, AL, UN('s'), RN])
 A(id='n5', kind='act', group='main', pos=[0, 13.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='suf', label=K('공개', 'Reveal'),
   goal=K('접미 마나 재생 속도(훼손) — 주문 치명타 확률·피해와 함께 먼저 뜬 것', 'Mana regeneration suffix (desecrated): or spell crit chance or damage, whichever shows first'), show=['suf'],
-  over=[{'param': {'L': 0}, 'set': {'goal': K('접미 세번째 옵션 공개 — 나오는 대로', 'Reveal the third suffix: keep what comes'), 'showText': [{'s': 's', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}], 'show': []}}],
+  over=[{'param': {'L': 0}, 'set': {'goal': K('접미 세 번째 옵션 공개 — 나오는 대로', 'Reveal the third suffix: keep what comes'), 'showText': [{'s': 's', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}], 'show': []}}],
   edges=[{'if': {'any': [{'added': 'suf'}, V_ESS]}, 'to': 'n6', 'res': 'ok'}, {'to': 'n5x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[CE, XC, L4, AL, MR, RN])
 A(id='n5x', kind='act', group='main', pos=[1, 13.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
@@ -154,7 +154,7 @@ A(id='ok', kind='done', group='main', pos=[0, 15.4], label=K('완성', 'Finished
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L2', 'nodes': ['n2', 'n2x', 'n2c'], 'kr': '접두 세번째 옵션', 'en': 'Third prefix', 'fold': True,
+ {'id': 'L2', 'nodes': ['n2', 'n2x', 'n2c'], 'kr': '접두 세 번째 옵션', 'en': 'Third prefix', 'fold': True,
   'goal': K('접두 추가 냉기 피해 — 추가 피해·주문 피해·주문 피해와 마나 1~2티어 중 먼저 뜬 것', 'Extra cold prefix: or any T1–2 extra damage, spell damage or spell + mana, whichever lands first'),
   'steps': [K('좌측 찬미의 징조 + 완벽한 엑잘티드 오브', 'Omen of Sinistral Exaltation + Perfect Exalted Orb') | {'node': 'n2'},
             K('빗나가면 좌측 소멸의 징조 + 소멸의 오브', 'Miss: Omen of Sinistral Annulment + Orb of Annulment') | {'node': 'n2x'},

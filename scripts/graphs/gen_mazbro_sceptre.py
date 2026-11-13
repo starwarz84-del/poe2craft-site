@@ -90,7 +90,7 @@ A(id='p2x', kind='act', group='prep', pos=[1, 2], act='annul', cur='Orb_of_Annul
 A(id='p3', kind='act', group='prep', pos=[0, 3], act='regal', cur='Perfect_Regal_Orb', label=K('제왕', 'Regal'),
   goal=K('레어', 'Rare'), showText=[K('랜덤 옵션 1개', 'One random option')], edges=[{'to': 'p4'}], item=[DMn, J('s'), J('x')])
 A(id='p4', kind='act', group='prep', pos=[0, 4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Sinistral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  label=K('훼손', 'Desecrate'), goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('접두 훼손 옵션 (미공개, 분열되지 않음)', 'Prefix desecration (unrevealed, cannot fracture)')],
   edges=[{'if': {'has': 'dmg'}, 'to': 'pf'}, {'to': 'xj', 'hide': True}], item=[DMn, UN('p'), J('s'), J('x')])
 A(id='pf', kind='act', group='prep', pos=[0, 5], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),

@@ -38,7 +38,7 @@ g = {
           '완벽한 엑잘로 투사체 속도 28%(5:45~5:49) → 빛의 징조 + 소멸 → 고대 갈비뼈 → 공개 ES 68%(3티어) → 빛의 징조 + 소멸 → 고대 갈비뼈 → 공개 투사체 피해 27%(2티어, 6:20). '
           '룬 교체(페누무스 회전의 룬)·바알 방어구 장인의 주입기·타락(6:32~8:50)은 정책 9·14장대로 뺌. '
           '내부 결정: 분열은 세 옵션 중 무엇이 분열돼도 같은 흐름(영상 = 희귀도, 의도 = 투사체 +2)이라 카드에 분열 표시를 하지 않음. '
-          '경악의 에센스가 에너지 보호막 최대치를 지우면(영상은 지우지 않음) 새 베이스. 두번째 훼손부터 강령술 징조는 접미가 꽉 차 뺌. '
+          '경악의 에센스가 에너지 보호막 최대치를 지우면(영상은 지우지 않음) 새 베이스. 두 번째 훼손부터 강령술 징조는 접미가 꽉 차 뺌. '
           '등급(난이도 3): 밸런스 = 훼손 공개 투사체 피해·ES % 1~2티어까지 빛의 징조로 다시(영상: 3티어 ES를 버리고 2티어 투사체 피해), 엑잘 접두는 랜덤 옵션 / 에센셜 = 공개 한 번, 결과 그대로.'),
  'params': {
    'dT': {'kr': '훼손 접두', 'en': 'Desecrated prefix', 'values': {'2': K('1~2티어', 'T1–2'), '4': K('1~4티어, 한 번', 'T1–4, once')}},
@@ -72,7 +72,7 @@ A(id='h1', kind='base', group='prep', pos=[0, 0], next='h2',
   label=K('특출난 사이렌비늘 장갑 구입 (아이템 레벨 81), 콜르의 사냥 장착, 퀄리티 20%', 'Buy exceptional Sirenscale Gloves (item level 81), socket Kolr’s Hunt, quality 20%'),
   item=[KOLR])
 A(id='h2', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation',
-  label=K('매직 첫번째 옵션', 'First magic option'), goal=K('접두 에너지 보호막 최대치 1티어', 'T1 flat energy shield prefix'), show=['esf'],
+  label=K('매직 첫 번째 옵션', 'First magic option'), goal=K('접두 에너지 보호막 최대치 1티어', 'T1 flat energy shield prefix'), show=['esf'],
   edges=[{'if': {'added': 'magicGood'}, 'to': 'h3', 'res': 'ok', 'label': K('성공', 'hit')},
          {'to': 'h2x', 'res': 'fail', 'label': K('빗나감', 'miss')}],
   ask=K('원하는 옵션?', 'Wanted option?'), item=[ES, KOLR])
@@ -81,7 +81,7 @@ A(id='h2x', kind='cleanup', group='prep', pos=[1, 1], keep=[], maxJunk=0, label=
   note=K('옵션이 없는 매직 아이템이 되어 다음은 확장의 오브', 'The item stays magic with no options, so augment next'),
   edges=[{'to': 'h3'}])
 A(id='h3', kind='act', group='prep', pos=[0, 2], act='augment', cur='Perfect_Orb_of_Augmentation',
-  label=K('매직 두번째 옵션', 'Second magic option'), goal=K('접미 모든 투사체 스킬 레벨 +2', '+2 projectile skills suffix'), show=['proj2'],
+  label=K('매직 두 번째 옵션', 'Second magic option'), goal=K('접미 모든 투사체 스킬 레벨 +2', '+2 projectile skills suffix'), show=['proj2'],
   edges=[{'if': {'ref': 'magicDone'}, 'to': 'h4', 'res': 'ok', 'label': K('성공', 'hit')},
          {'to': 'h3x', 'res': 'fail', 'label': K('빗나감', 'miss')}],
   ask=K('둘 다 맞음?', 'Both options?'), item=[ES, PROJ, KOLR])
@@ -96,7 +96,7 @@ A(id='h4', kind='act', group='prep', pos=[0, 3], act='essence', cur='Greater_Ess
   showText=[{'s': 's', 'kr': '아이템 희귀도 (15—18)% 증가 (제작 옵션)', 'en': '(15—18)% increased Rarity of Items found (crafted)'}],
   edges=[{'to': 'h5'}], item=[ES, PROJ, RARm, KOLR])
 A(id='h5', kind='act', group='prep', pos=[0, 4], act='desecrate', cur='Preserved_Rib', omens=['Omen_of_Sinistral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  label=K('훼손', 'Desecrate'), goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('접두 훼손 옵션 (미공개, 분열되지 않음)', 'Prefix desecration (unrevealed, cannot fracture)')],
   edges=[{'to': 'h7'}], item=[UN, ES, PROJ, RARm, KOLR])
 A(id='h6', kind='side', group='prep', pos=[1, 4.5], act='divine', cur='Divine_Orb', attach=['h5', 'h7'],
@@ -121,7 +121,7 @@ A(id='m2', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Essence_o
 A(id='xe', kind='exit', group='main', pos=[1, 8.4], simTo='h1', variant='fail', label=K('에너지 보호막 지워짐', 'Flat ES gone'),
   note=K('새 베이스로 처음부터', 'Start over on a new base'))
 A(id='m3', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Ancient_Rib', label=K('훼손', 'Desecrate'),
-  goal=K('접두 두번째 옵션(훼손)', 'Second prefix option (desecrated)'),
+  goal=K('접두 두 번째 옵션(훼손)', 'Second prefix option (desecrated)'),
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=[{'to': 'm4'}], item=[UN, ES, PROJ, RARf, SOCK, KOLR, AST])
 A(id='m4', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),
@@ -131,10 +131,10 @@ A(id='m4', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_o
          {'to': 'm5', 'res': 'fail', 'label': K('빗나감 — 자리 막기', 'Miss: keep as a blocker')}],
   item=[ES, BLK, PROJ, RARf, SOCK, KOLR, AST])
 A(id='m5h', kind='act', group='main', pos=[1, 10.9], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션 — 완성', 'Third prefix option: finished'),
+  goal=K('접두 세 번째 옵션 — 완성', 'Third prefix option: finished'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}], edges=[{'to': 'ok', 'res': 'ok'}])
 A(id='m5', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션', 'Third prefix option'),
+  goal=K('접두 세 번째 옵션', 'Third prefix option'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
   edges=[{'if': {'param': {'g': 0}}, 'to': 'ok', 'res': 'ok'}, {'to': 'm6', 'res': 'ok'}],
   item=[ES, BLK, PSPD, PROJ, RARf, SOCK, KOLR, AST])
@@ -142,7 +142,7 @@ A(id='m6', kind='act', group='main', pos=[0, 12.4], act='annul', cur='Orb_of_Ann
   target=K('자리 막기 훼손 옵션 제거', 'Remove the blocker desecration'), edges=[{'to': 'm7'}],
   item=[ES, PSPD, PROJ, RARf, SOCK, KOLR, AST])
 A(id='m7', kind='act', group='main', pos=[0, 13.4], act='desecrate', cur='Ancient_Rib', label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix option (desecrated)'),
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix option (desecrated)'),
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=[{'to': 'm8'}], item=[ES, UN, PSPD, PROJ, RARf, SOCK, KOLR, AST])
 A(id='m8', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),

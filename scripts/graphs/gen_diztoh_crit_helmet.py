@@ -68,7 +68,7 @@ N = []
 N.append({'id': 'h1', 'kind': 'base', 'group': 'prep', 'pos': [0, 0], 'next': 'h2', 'start': {'rar': 'normal', 'mods': [], 'quality': 20},
           'label': K('특출난 웃는 가면 구입, 퀄리티 20%', 'Buy an exceptional Grinning Mask, quality 20%'), 'item': []})
 N.append({'id': 'h2', 'kind': 'act', 'group': 'prep', 'pos': [0, 1], 'act': 'transmute', 'cur': 'Perfect_Orb_of_Transmutation',
-          'label': K('매직 첫번째 옵션', 'First magic option'), 'goal': K('접두 회피·에너지 보호막 최대치 1티어', 'T1 flat evasion/ES prefix'),
+          'label': K('매직 첫 번째 옵션', 'First magic option'), 'goal': K('접두 회피·에너지 보호막 최대치 1티어', 'T1 flat evasion/ES prefix'),
           'show': ['flatT1'],
           'edges': [{'if': {'added': 'magicGood'}, 'to': 'h3', 'res': 'ok', 'label': K('성공', 'hit')},
                     {'to': 'h2x', 'res': 'fail', 'label': K('빗나감', 'miss')}],
@@ -79,7 +79,7 @@ N.append({'id': 'h2x', 'kind': 'cleanup', 'group': 'prep', 'pos': [1, 1], 'keep'
           'note': K('옵션이 없는 매직 아이템이 되어 다음은 확장의 오브', 'The item stays magic with no options, so augment next'),
           'edges': [{'to': 'h3'}]})
 N.append({'id': 'h3', 'kind': 'act', 'group': 'prep', 'pos': [0, 2], 'act': 'augment', 'cur': 'Perfect_Orb_of_Augmentation',
-          'label': K('매직 두번째 옵션', 'Second magic option'), 'goal': K('접미 아이템 희귀도 1티어', 'T1 item rarity suffix'),
+          'label': K('매직 두 번째 옵션', 'Second magic option'), 'goal': K('접미 아이템 희귀도 1티어', 'T1 item rarity suffix'),
           'show': ['rarS1'],
           'edges': [{'if': {'ref': 'magicDone'}, 'to': 'h4', 'res': 'ok', 'label': K('성공', 'hit')},
                     {'to': 'h3x', 'res': 'fail', 'label': K('빗나감', 'miss')}],
@@ -96,7 +96,7 @@ N.append({'id': 'h4', 'kind': 'act', 'group': 'prep', 'pos': [0, 3], 'act': 'reg
           'label': K('레어', 'Rare'), 'goal': K('분열하기 위해 레어로', 'Make it rare for the fracture'),
           'showText': [K('랜덤 옵션 1개', 'One random option')], 'edges': [{'to': 'h5'}], 'item': [FLATn, JUNK('p'), RAR]})
 N.append({'id': 'h5', 'kind': 'act', 'group': 'prep', 'pos': [0, 4], 'act': 'desecrate', 'cur': 'Preserved_Rib', 'omens': ['Omen_of_Dextral_Necromancy'],
-          'label': K('훼손', 'Desecrate'), 'goal': K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+          'label': K('훼손', 'Desecrate'), 'goal': K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
           'showText': [K('접미 훼손 옵션 (미공개, 분열되지 않음)', 'Suffix desecration (unrevealed, cannot fracture)')], 'edges': [{'to': 'h7'}],
           'item': [FLATn, JUNK('p'), RAR, UNREV]})
 N.append({'id': 'h6', 'kind': 'side', 'group': 'prep', 'pos': [1, 5], 'act': 'divine', 'cur': 'Divine_Orb', 'attach': ['h5', 'h7'],
@@ -165,7 +165,7 @@ N.append({'id': 'p3x', 'kind': 'cleanup', 'group': 'main', 'pos': [1, 12.9], 'ke
                     {'lost': 'pct', 'to': 'p3x', 'res': 'fail', 'hide': True}, {'lost': 'hybM', 'to': 'p3x', 'res': 'fail', 'hide': True}, {'lost': 'lastKeep', 'to': 'p3x', 'res': 'fail', 'hide': True},
                     {'to': 'p1', 'res': 'ok', 'label': K('잡옵 지워짐 — 다시 엑잘', 'Junk gone: exalt again')}]})
 N.append({'id': 'd1', 'kind': 'act', 'group': 'main', 'pos': [0, 13.6], 'act': 'desecrate', 'cur': 'Ancient_Rib',
-          'label': K('훼손', 'Desecrate'), 'goal': K('접미 두번째 옵션(훼손)', 'Second suffix option (desecrated)'),
+          'label': K('훼손', 'Desecrate'), 'goal': K('접미 두 번째 옵션(훼손)', 'Second suffix option (desecrated)'),
           'showText': [K('접미 훼손 옵션 (미공개)', 'Suffix desecration (unrevealed)')], 'edges': [{'to': 'd2'}],
           'item': [UNREV, FLAT, PCT, HYB, CRIT]})   # 미공개 줄을 앞에: graph2recipe가 첫 새 줄로 훼손 자리(접미)를 읽음, 화면은 접두·접미 순으로 정렬
 N.append({'id': 'd2', 'kind': 'act', 'group': 'main', 'pos': [0, 14.6], 'act': 'reveal', 'omens': ['Omen_of_Abyssal_Echoes'], 'want': 'cdmg',
@@ -176,7 +176,7 @@ N.append({'id': 'dx', 'kind': 'act', 'group': 'main', 'pos': [1, 14.6], 'act': '
           'label': K('소멸의 오브 사용', 'Use an Orb of Annulment'), 'goal': K('소멸의 오브 사용', 'Use an Orb of Annulment'),
           'target': K('훼손 옵션 제거', 'Remove the desecrated option'), 'edges': [{'to': 'd1', 'label': K('다시 훼손', 'Desecrate again')}]})
 N.append({'id': 'f1', 'kind': 'act', 'group': 'main', 'pos': [0, 15.6], 'act': 'exalt', 'cur': 'Perfect_Exalted_Orb',
-          'label': K('엑잘', 'Exalt'), 'goal': K('접미 세번째 옵션', 'Third suffix option'), 'show': ['rarS1', 'fire1', 'chaos1'],
+          'label': K('엑잘', 'Exalt'), 'goal': K('접미 세 번째 옵션', 'Third suffix option'), 'show': ['rarS1', 'fire1', 'chaos1'],
           'skipIf': {'full': 's'}, 'skipTo': 'ok',
           'skipNote': K('8번에서 남긴 접미가 있으면(접미가 꽉 차면) 건너뜀', 'Skipped if a suffix was kept at step 8 (suffixes full)'),
           'edges': [{'if': {'all': [{'param': {'g': 1}}, {'not': {'has': 'lastS'}}, {'whittleSafe': {'tag': 'keepS3', 'side': 's'}}]}, 'to': 'f2', 'res': 'fail',
@@ -195,7 +195,7 @@ g['nodes'] = N
 
 g['loops'] = [
   {'id': 'L1', 'nodes': ['h2', 'h2x', 'h3', 'h3x', 'h3y'], 'kr': '매직 옵션 맞추기', 'en': 'Magic options'},
-  {'id': 'L2', 'nodes': ['p1', 'p2', 'p3', 'fx', 'p3z', 'p3x'], 'kr': '접두 두번째·세번째 옵션', 'en': 'Second and third prefixes', 'fold': True,
+  {'id': 'L2', 'nodes': ['p1', 'p2', 'p3', 'fx', 'p3z', 'p3x'], 'kr': '접두 두 번째·세 번째 옵션', 'en': 'Second and third prefixes', 'fold': True,
    'goal': K('접두 회피·에너지 보호막 % 증가 + % + 마나', '% evasion/ES and %+mana prefixes'),
    'goalBy': {'high': K('접두 회피·에너지 보호막 % 증가 1티어 + % + 마나 1티어', 'T1 % evasion/ES and T1 %+mana prefixes'),
               'bal': K('접두 회피·에너지 보호막 % 증가 1~2티어 + % + 마나 1~2티어', 'T1–2 % evasion/ES and T1–2 %+mana prefixes')},

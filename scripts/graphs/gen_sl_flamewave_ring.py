@@ -97,7 +97,7 @@ A(id='rg', kind='act', group='prep', pos=[0, 1], act='regal', cur='Perfect_Regal
   goal=K('분열하기 위해 레어로', 'Make it rare for the fracture'), showText=[K('랜덤 옵션 1개', 'One random option')],
   edges=[{'to': 'bn'}], item=[J('p'), J('p'), AR])
 A(id='bn', kind='act', group='prep', pos=[0, 2], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecration (unrevealed, cannot fracture)')], edges=[{'to': 'fr'}],
   item=[J('p'), J('p'), AR, UN('s')])
 A(id='fr', kind='act', group='prep', pos=[0, 3], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
@@ -122,10 +122,10 @@ A(id='cl', kind='cleanup', group='prep', pos=[0, 6], keep=[], maxJunk=1, label=A
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 7.4], next='ca', label=K('아이템 제작 시작', 'Item crafting starts'), item=[ARf, UN('s')])
 A(id='ca', kind='act', group='main', pos=[0, 8.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접두 첫번째 옵션 — 카오스 피해·희귀도 1티어 중 먼저 뜬 것', 'First prefix: T1 chaos damage or rarity, whichever lands first'), show=['cd'],
+  goal=K('접두 첫 번째 옵션 — 카오스 피해·희귀도 1티어 중 먼저 뜬 것', 'First prefix: T1 chaos damage or rarity, whichever lands first'), show=['cd'],
   edges=[{'if': {'has': 'gpre'}, 'to': 'ex', 'res': 'ok'}, {'to': 'ca', 'res': 'fail', 'hide': True}], item=[CD, ARf])
 A(id='ex', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'],
-  label=K('엑잘', 'Exalt'), goal=K('접두 두번째 옵션 — 남은 옵션', 'Second prefix: the other one'), show=['rp'],
+  label=K('엑잘', 'Exalt'), goal=K('접두 두 번째 옵션 — 남은 옵션', 'Second prefix: the other one'), show=['rp'],
   edges=[{'if': {'count': {'tag': 'gpre', 'min': 2}}, 'to': 'dn', 'res': 'ok'},
          {'if': {'all': [V2, {'has': 'gpre'}, {'has': 'lf'}]}, 'to': 'dn', 'res': 'ok', 'hide': True},
          {'to': 'ea', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
@@ -135,7 +135,7 @@ A(id='ea', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annu
   edges=[{'if': {'has': 'gpre'}, 'to': 'ex', 'res': 'ok', 'label': K('좋은 접두 남음', 'Good prefix kept')},
          {'to': 'ca', 'res': 'fail', 'label': K('좋은 접두가 지워짐', 'Good prefix gone')}])
 A(id='dn', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Altered_Collarbone', omens=['Omen_of_Sinistral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'rv'}], item=[CD, RP, UN('p'), ARf])
 A(id='rv', kind='act', group='main', pos=[0, 11.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='oc', label=K('공개', 'Reveal'),
   goal=K('훼손 옵션 확인', 'Reveal the desecrated modifier'), show=['oc'],
@@ -144,7 +144,7 @@ A(id='rv', kind='act', group='main', pos=[0, 11.4], act='reveal', omens=['Omen_o
 A(id='rx', kind='act', group='main', pos=[1, 11.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'dn', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='sx', kind='act', group='main', pos=[0, 12.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'],
-  label=K('엑잘', 'Exalt'), goal=K('접미 두번째·세번째 옵션 — 저항 하나', 'Second and third suffixes: one resistance'), show=['li'],
+  label=K('엑잘', 'Exalt'), goal=K('접미 두 번째·세 번째 옵션 — 저항 하나', 'Second and third suffixes: one resistance'), show=['li'],
   showText=[K('랜덤 옵션 1개가 함께 붙음', 'One random option comes with it')],
   edges=[{'if': {'has': 'res'}, 'to': 'wc', 'res': 'ok'}, {'to': 'sR', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[CD, RP, OC, ARf, LR, CS])
@@ -153,14 +153,14 @@ A(id='sR', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_Ann
   edges=[{'if': {'ref': 'sClean'}, 'to': 'sx', 'res': 'ok', 'label': K('접미 정리 끝 — 다시 엑잘', 'Suffixes clear: exalt again')},
          {'to': 'sR', 'res': 'fail', 'hide': True}])
 A(id='wc', kind='act', group='main', pos=[0, 13.4], act='chaos', cur='Perfect_Chaos_Orb', omens=['Omen_of_Whittling', 'Omen_of_Dextral_Erasure'],
-  label=K('절사 + 카오스', 'Whittling + Chaos'), goal=K('접미 세번째 옵션', 'Third suffix'), show=['rs'],
+  label=K('절사 + 카오스', 'Whittling + Chaos'), goal=K('접미 세 번째 옵션', 'Third suffix'), show=['rs'],
   skipIf={'any': [V2, {'has': 'rs'}]}, skipTo='ok', skipNote=K('희귀도 접미가 이미 있으면 건너뜀', 'Skip if the rarity suffix is already there'),
   edges=[{'if': {'has': 'rs'}, 'to': 'ok', 'res': 'ok'}, {'to': 'wc', 'res': 'fail', 'hide': True}],
   item=[CD, RP, OC, ARf, LR, RS])
 A(id='ok', kind='done', group='main', pos=[0, 14.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 g['loops'] = [
- {'id': 'L1', 'nodes': ['ex', 'ea'], 'kr': '접두 두번째 옵션', 'en': 'Second prefix'},
+ {'id': 'L1', 'nodes': ['ex', 'ea'], 'kr': '접두 두 번째 옵션', 'en': 'Second prefix'},
  {'id': 'L2', 'nodes': ['dn', 'rv', 'rx'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal'},
  {'id': 'L3', 'nodes': ['sx', 'sR'], 'kr': '접미 저항', 'en': 'Suffix resistance'},
 ]

@@ -77,17 +77,17 @@ A(id='q3', kind='act', group='main', pos=[0, 5.4], act='essence', cur='Protectiv
   goal=K('접두 잡옵을 지우고 접미 룬 수호', 'The junk prefix goes for the runic ward suffix'),
   showText=[{'s': 's', 'kr': '최대 룬 수호 (제작 옵션)', 'en': 'Maximum runic ward (crafted)'}], edges=[{'to': 'q4'}], item=[SP, AOE, WD, RN])
 A(id='q4', kind='act', group='main', pos=[0, 6.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  goal=K('접두 두 번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'q5'}], item=[SP, MA, AOE, WD, RN])
 A(id='q5', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션 — 에센스가 지울 자리', 'Third prefix for the essence to remove'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  goal=K('접두 세 번째 옵션 — 에센스가 지울 자리', 'Third prefix for the essence to remove'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'q6'}], item=[SP, MA, ALJ, AOE, WD, RN])
 A(id='q6', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Perfect_Essence_of_Command', ess='aura', omens=['Omen_of_Sinistral_Crystallisation'], label=K('에센스', 'Essence'),
   goal=K('접두 하나를 지우고 접미 오라 스킬의 강도', 'A prefix goes for the aura magnitude suffix'),
   showText=[{'s': 's', 'kr': '오라 스킬의 강도 (15—20)% 증가 (제작 옵션)', 'en': 'Aura Skills have (15—20)% increased Magnitudes (crafted)'}],
   edges=[{'to': 'q7'}], item=[SP, ALJ, AOE, WD, AU, RN])
 A(id='q7', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션', 'Third prefix'),
+  goal=K('접두 세 번째 옵션', 'Third prefix'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'q8'}],
   item=[SP, ALJ, ALD, AOE, WD, AU, RN])
@@ -122,11 +122,11 @@ A(id='ok', kind='done', group='main', pos=[0, 12.4], label=K('완성', 'Finished
 g['nodes'] = N
 
 g['loops'] = [
- {'id': 'L1', 'nodes': ['q7', 'q8', 'q9', 'x1', 'x2', 'x3'], 'kr': '접두 세번째 옵션·마지막 옵션(훼손)', 'en': 'Third and last prefix (desecrated)', 'fold': True,
+ {'id': 'L1', 'nodes': ['q7', 'q8', 'q9', 'x1', 'x2', 'x3'], 'kr': '접두 세 번째 옵션·마지막 옵션(훼손)', 'en': 'Third and last prefix (desecrated)', 'fold': True,
   'goal': K('접두 정신력 + 마나 복합(훼손) 1~2티어', 'T1–2 spirit + mana hybrid prefix (desecrated)'),
   'goalBy': {'bal': K('접두 정신력 + 마나 복합(훼손) 1~2티어', 'T1–2 spirit + mana hybrid prefix (desecrated)'),
              'ess': K('접두 마지막 옵션 공개 — 나오는 대로', 'Reveal the last prefix: keep what comes')},
-  'steps': [K('상위 엑잘티드 오브로 접두 세번째 옵션', 'Greater Exalted Orb for a third prefix') | {'node': 'q7'},
+  'steps': [K('상위 엑잘티드 오브로 접두 세 번째 옵션', 'Greater Exalted Orb for a third prefix') | {'node': 'q7'},
             K('좌측 강령술의 징조 + 보존된 턱뼈', 'Omen of Sinistral Necromancy + Preserved Jawbone') | {'node': 'q8'},
             K('심연의 메아리의 징조 + 공개', 'Omen of Abyssal Echoes + reveal') | {'node': 'q9'},
             K('빗나가면 소멸의 오브(징조 없음)', 'Miss: Orb of Annulment (no omen)') | {'node': 'x1'},

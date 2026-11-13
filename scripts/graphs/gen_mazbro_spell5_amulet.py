@@ -79,7 +79,7 @@ A(id='z4', kind='act', group='prep', pos=[0, 4], act='exalt', cur='Greater_Exalt
   goal=K('옵션 두 개 더 — 분열 조건 옵션 4개', 'Two more options: the fracture needs four'), showText=[K('랜덤 옵션 2개', 'Two random options')],
   edges=[{'to': 'z5'}], item=[SPn, J('p'), J('s')])
 A(id='z5', kind='act', group='prep', pos=[0, 5], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손)', 'Fourth option (desecrated)'), showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecrated (unrevealed, cannot fracture)')],
+  goal=K('네 번째 옵션(훼손)', 'Fourth option (desecrated)'), showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecrated (unrevealed, cannot fracture)')],
   edges=[{'to': 'z6'}], item=[SPn, J('p'), J('s'), UN('s')])
 A(id='z6', kind='act', group='prep', pos=[0, 6], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
   goal=K('분열 (공개된 옵션 3개 중 하나)', 'Fracture (one of the three revealed options)'),
@@ -111,7 +111,7 @@ A(id='c3', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_Ann
   edges=[{'if': {'has': 'anc'}, 'to': 'c2'}, {'to': 'z9'}])
 # 3단계 2·3: 접두
 A(id='z10', kind='act', group='main', pos=[0, 12.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  goal=K('접두 두 번째 옵션', 'Second prefix'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'z11'}], item=[SP, ES, SL])
 A(id='z11', kind='act', group='main', pos=[0, 13.4], act='essence', cur='Runic_Alloy', ess='rw', omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('합금', 'Alloy'), goal=K('잡옵 접두를 지우고 룬 수호 최대치 증가', 'The junk prefix goes for increased maximum Runic Ward'),
@@ -119,7 +119,7 @@ A(id='z11', kind='act', group='main', pos=[0, 13.4], act='essence', cur='Runic_A
   edges=[{'to': 'z12'}], item=[SP, RW, SL])
 # 4단계: 마지막 접미 훼손
 A(id='z12', kind='act', group='main', pos=[0, 14.4], act='desecrate', cur='Ancient_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('접미 두번째 옵션(훼손)', 'Second suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접미 두 번째 옵션(훼손)', 'Second suffix (desecrated)'), showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   skipIf={'full': 's'}, skipTo='ok', edges=[{'to': 'z13'}], item=[SP, RW, SL, UN('s')])
 A(id='z13', kind='act', group='main', pos=[0, 15.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='fin', label=K('공개', 'Reveal'),
   goal=K('접미 시전 속도 1티어 — 좋은 접미 여섯 중 먼저 뜬 것', 'T1 cast speed suffix: whichever of the six good suffixes lands first'),

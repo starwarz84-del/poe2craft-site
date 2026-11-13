@@ -66,7 +66,7 @@ A = lambda **kw: N.append(kw)
 A(id='b0', kind='base', group='prep', pos=[0, 0], next='m1', start={'rar': 'normal', 'mods': []},
   label=K('노멀 특출난 거대한 대망치 구입 (소켓 3, 아이템 레벨 84)', 'Buy a normal exceptional Massive Greathammer (3 sockets, item level 84)'), item=[])
 A(id='m1', kind='act', group='prep', pos=[0, 1], act='transmute', cur='Perfect_Orb_of_Transmutation', label=K('진화', 'Transmute'),
-  goal=K('매직 첫번째 옵션 — 접미가 붙으면 확장으로', 'First magic option: a suffix goes on to the Augmentation'),
+  goal=K('매직 첫 번째 옵션 — 접미가 붙으면 확장으로', 'First magic option: a suffix goes on to the Augmentation'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'if': {'any': [{'has': 'hyb'}, {'not': {'full': 'p'}}]}, 'to': 'm2', 'res': 'ok', 'label': K('접두 복합 또는 접미', 'Hybrid prefix or a suffix')},
          {'to': 'm1x', 'res': 'fail', 'label': K('다른 접두', 'Another prefix')}],
@@ -85,7 +85,7 @@ A(id='e1', kind='act', group='prep', pos=[0, 3], act='essence', cur='Greater_Ess
 # ---------------- 옵션 추가 작업 (영상 1:04~3:19) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 3.4], next='k1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[HYB, FLAT, ACC])
 A(id='k1', kind='act', group='main', pos=[0, 4.4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Sinistral_Necromancy', 'Omen_of_the_Blackblooded'],
-  label=K('훼손', 'Desecrate'), goal=K('접두 세번째 옵션(훼손, 쿠르갈)', 'Third prefix option (desecrated, Kurgal)'),
+  label=K('훼손', 'Desecrate'), goal=K('접두 세 번째 옵션(훼손, 쿠르갈)', 'Third prefix option (desecrated, Kurgal)'),
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개, 공개 3개 모두 쿠르갈)', 'en': 'Prefix desecration (unrevealed, all three options Kurgal)'}],
   edges=[{'to': 'k2'}], item=[HYB, FLAT, UN, ACC])
 A(id='k2', kind='act', group='main', pos=[0, 5.4], act='rune', label=K('룬', 'Rune'), goal=K('아스트리드의 창의성 장착', 'Socket Astrid’s Creativity'),
@@ -99,7 +99,7 @@ A(id='k4', kind='act', group='main', pos=[0, 7.4], act='reveal', want='kp', labe
   goal=K('접두 물리 피해 증가, 공격 속도 감소 (훼손)', '% physical with reduced attack speed prefix (desecrated)'), show=['kp'],
   edges=[{'to': 'k5', 'res': 'ok'}], item=[HYB, FLAT, KP, ATK, AST])
 A(id='k5', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째·세번째 옵션 — 나오는 대로', 'Second and third suffix options: keep what lands'),
+  goal=K('접미 두 번째·세 번째 옵션 — 나오는 대로', 'Second and third suffix options: keep what lands'),
   showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   edges=[{'to': 'ok'}], item=[HYB, FLAT, KP, ATK, STUN, MANA, AST])
 A(id='ok', kind='done', group='main', pos=[0, 9.4], label=K('완성', 'Finished'))

@@ -66,14 +66,14 @@ A(id='e1', kind='act', group='prep', pos=[0, 1], act='essence', cur='Greater_Ess
 # ---------------- 옵션 추가 작업 (영상 2:30~5:10) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 1.4], next='x1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[PCT, FLAT, ACL])
 A(id='x1', kind='act', group='main', pos=[0, 2.4], act='exalt', cur='Greater_Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션 — 나오는 대로', 'Third prefix: keep what lands'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  goal=K('접두 세 번째 옵션 — 나오는 대로', 'Third prefix: keep what lands'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'd1'}], item=[PCT, HYB, FLAT, ACL])
 A(id='d1', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_the_Liege'], label=K('훼손', 'Desecrate'),
-  goal=K('접미 두번째 옵션(아마나무 훼손)', 'Second suffix (Amanamu desecration)'),
+  goal=K('접미 두 번째 옵션(아마나무 훼손)', 'Second suffix (Amanamu desecration)'),
   showText=[{'s': 's', 'kr': '아마나무 훼손 옵션 (미공개)', 'en': 'Amanamu desecration (unrevealed)'}],
   edges=[{'to': 'x2'}], item=[PCT, HYB, FLAT, ACL, UN])
 A(id='x2', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Greater_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접미 세번째 옵션 — 나오는 대로', 'Third suffix: keep what lands'), showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  goal=K('접미 세 번째 옵션 — 나오는 대로', 'Third suffix: keep what lands'), showText=[{'s': 's', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'v1'}], item=[PCT, HYB, FLAT, ACL, UN, LEECH])
 A(id='v1', kind='act', group='main', pos=[0, 5.4], act='reveal', want='as', label=K('공개', 'Reveal'),
   goal=K('접미 공격 속도 + 반려수 공격 속도 (아마나무, 훼손)', 'Attack speed + companion attack speed suffix (Amanamu, desecrated)'), show=['as'],

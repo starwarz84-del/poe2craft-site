@@ -37,7 +37,7 @@ nodes=[{'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'pz','start':{
      [{'if':{'has':'ff1'},'to':'pe','res':'ok'},{'to':'pc','res':'fail'}],P0,show=['ff1']),   # 2:10 슬라이드 2 '카오스 오브 돌려서 띄우고 분열', 24:55 화면 카오스 1,500개
  act('pe','prep',[0,3],'exalt','Perfect_Exalted_Orb',K('접두 2개','Two prefixes'),[st(None,'랜덤 옵션 2개','Two random lines')],K('엑잘','Exalt'),[{'to':'pb'}],P1,
      omens=['Omen_of_Sinistral_Exaltation','Omen_of_Greater_Exaltation']),   # 25:05 자막 '좌측 찬미, 상위 찬미 켜고 완액', 31:00 비용 화면 좌측 찬미 5·상위 찬미 4
- act('pb','prep',[0,4],'desecrate','Preserved_Collarbone',K('네번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth line (desecrated) — fracture needs four'),[st(None,'훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')],K('훼손','Desecrate'),[{'to':'pf'}],P2),   # 25:35 화면 미공개 훼손, 31:00 보존된 빗장뼈 4개
+ act('pb','prep',[0,4],'desecrate','Preserved_Collarbone',K('네 번째 옵션(훼손) — 분열 조건 옵션 4개','Fourth line (desecrated) — fracture needs four'),[st(None,'훼손 옵션 (미공개, 분열되지 않음)','Desecrated (unrevealed, cannot fracture)')],K('훼손','Desecrate'),[{'to':'pf'}],P2),   # 25:35 화면 미공개 훼손, 31:00 보존된 빗장뼈 4개
  act('pf','prep',[0,5],'fracture','Fracturing_Orb',K('분열 (셋 중 하나)','Fracture (one of three)'),[st(None,'화염 플랫이 분열되면 성공','Success when the fire flat fractures')],K('분열','Fracture'),
      [{'if':{'fractured':'ff1'},'to':'p8','res':'ok',**L_('화염 플랫 분열','Fire flat fractured')},{'to':'xj','res':'fail','dash':True,**L_('다른 옵션 분열','Another line fractured')}],[FF]),   # 22:45 첫 반지 실패(물리 분열), 26:25 성공
  {'id':'xj','kind':'exit','group':'prep','pos':[1,5],'simTo':'h1','variant':'fail','label':K('다른 옵션 분열 — 새 베이스','Another line fractured — new base'),
@@ -58,7 +58,7 @@ nodes=[{'id':'h1','kind':'base','group':'prep','pos':[0,0],'next':'pz','start':{
  act('p1','main',[0,15.6],'exalt','Perfect_Exalted_Orb',K('접두 번개 플랫','Lightning flat prefix'),None,K('엑잘','Exalt'),
      [{'if':{'has':'lf'},'to':'d1','res':'ok'},{'to':'p1x','res':'fail'}],B6,show=['lf']),   # 3:46 슬라이드 7 '완벽한 엑잘 1번만, 상위 찬미 없이', 29:00 자막
  annul('p1x',[1,15.6],[{'to':'p1',**L_('빗나감','Miss')}],omens=('Omen_of_Sinistral_Annulment',),target=K('접두 잡옵 지우기','Remove the junk prefix')),   # 4:10 슬라이드 8, 31:00 좌측 소멸의 징조 59개
- act('d1','main',[0,16.6],'desecrate','Ancient_Collarbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],B7),   # 4:22 슬라이드 10 '고대 빗장뼈', 29:35 고대 빗장뼈 툴팁
+ act('d1','main',[0,16.6],'desecrate','Ancient_Collarbone',K('접두 세 번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'d2'}],B7),   # 4:22 슬라이드 10 '고대 빗장뼈', 29:35 고대 빗장뼈 툴팁
  act('d2','main',[0,17.6],'reveal',None,K('접두 냉기 플랫','Cold flat prefix'),None,K('공개','Reveal'),
      [{'if':{'added':'cf'},'to':'ok','res':'ok'},{'to':'d2x','res':'fail'}],B8,want='cf',show=['cf'],omens=['Omen_of_Abyssal_Echoes']),   # 29:25 자막 '메아리 켰는데도 17개', 30:05 완성품
  annul('d2x',[1,17.6],[{'to':'d1',**L_('다시 훼손','Desecrate again')}]),   # 31:00 빛의 징조 16개
@@ -101,9 +101,9 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'sp','fr':True,'ess':True},{'tag':
  mark([0,0.6],'r1',F0),
  RUNE('r1',[0,1],'a1',F1),
  act('a1','main',[0,2],'essence','Transcendent_Alloy',K('잡옵을 지우고 시전 속도 (26—31)% 증가','The junk goes for (26—31)% increased Cast Speed'),[st('s','시전 속도 (26—31)% 증가 (제작 옵션)','(26—31)% increased Cast Speed (crafted)')],K('합금','Alloy'),RF({'d1':'ok','e1':F}),F2,ess='cs',omens=['Omen_of_Sinistral_Crystallisation']),
- act('d1','main',[0,3],'desecrate','Ancient_Rib',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RF({'e1':{}}),F3,omens=['Omen_of_Dextral_Necromancy']),
- act('e1','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 세번째 옵션','Third prefix'),None,K('엑잘','Exalt'),RF({'rv':'ok','w1':F}),F4,show=GES),
- act('w1','main',[1,4],'chaos','Perfect_Chaos_Orb',K('접두 세번째 옵션','Third prefix'),None,K('카오스','Chaos'),RF({'rv':'ok'}),F4,show=GES,trim={'side':'p','keep':'keepF'}),
+ act('d1','main',[0,3],'desecrate','Ancient_Rib',K('접미 세 번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),RF({'e1':{}}),F3,omens=['Omen_of_Dextral_Necromancy']),
+ act('e1','main',[0,4],'exalt','Perfect_Exalted_Orb',K('접두 세 번째 옵션','Third prefix'),None,K('엑잘','Exalt'),RF({'rv':'ok','w1':F}),F4,show=GES),
+ act('w1','main',[1,4],'chaos','Perfect_Chaos_Orb',K('접두 세 번째 옵션','Third prefix'),None,K('카오스','Chaos'),RF({'rv':'ok'}),F4,show=GES,trim={'side':'p','keep':'keepF'}),
  act('rv','main',[0,5],'reveal',None,K('훼손 옵션 확인','Reveal the desecrated modifier'),None,K('공개','Reveal'),RV({'ok':'ok','rvx':F}),F5,want='cr',show=['cr'],omens=['Omen_of_Abyssal_Echoes']),
  annul('rvx',[1,5],[{'to':'d1','port':'right'}]),
  done([0,6])]

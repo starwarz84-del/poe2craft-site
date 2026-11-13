@@ -10,7 +10,7 @@
 #   → 13:05 아스트리드를 다른 룬으로 교체(이동 속도 5%, 선택이라 뺌).
 # 내부 결정(보고서에 적음):
 #   1 매직 단계는 영상 말대로 '좋은 옵션 둘이 나올 때까지' 진화·확장 + 소멸 — 이동 속도·둔화 감소 1티어와 번개 저항 1티어 중 먼저 뜬 것부터(정책 11장 붙는 순서 예외).
-#   2 접두 두번째 옵션은 영상(12:05 '대부분 완벽한 엑잘 결과 그대로')대로 모든 등급 랜덤 옵션. 좌측 말소 + 카오스 반복은 꿀팁 후보.
+#   2 접두 두 번째 옵션은 영상(12:05 '대부분 완벽한 엑잘 결과 그대로')대로 모든 등급 랜덤 옵션. 좌측 말소 + 카오스 반복은 꿀팁 후보.
 #   3 신성한 오브(9:40 '필요하면')와 마지막 룬 교체(13:05)는 넣지 않음. 바알 방어구 장인의 주입기 4개는 영상대로 단계(오염 위험은 시뮬에 없음).
 # 등급(난이도 3 → 밸런스·에센셜): 밸런스 = 영상(빛의 징조로 회피 구르기 거리까지 다시 공개, 1~2티어) / 에센셜 = 공개 결과 그대로(빛의 징조 없음, 정책 10장 C17-3).
 import json, os, sys
@@ -100,7 +100,7 @@ A(id='e1', kind='act', group='prep', pos=[0, 6], act='essence', cur='Greater_Ess
   goal=K('레어 + 접미 희귀도 1티어', 'Rare + T1 rarity suffix'), showText=[{'s': 's', 'kr': '발견하는 아이템 희귀도 (15—18)% 증가 (제작 옵션)', 'en': '(15—18)% increased Rarity of Items found (crafted)'}],
   edges=[{'to': 'd1'}], item=[MS, LT, RA, UH])
 A(id='d1', kind='act', group='prep', pos=[0, 7], act='desecrate', cur='Preserved_Rib', omens=['Omen_of_Sinistral_Necromancy'], label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 확률 1/3', 'Fourth option (desecrated): fracture odds 1/3'),
+  goal=K('네 번째 옵션(훼손) — 분열 확률 1/3', 'Fourth option (desecrated): fracture odds 1/3'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개, 분열되지 않음)', 'en': 'Desecration (unrevealed, cannot fracture)'}], edges=[{'to': 'f1'}], item=[MS, UN('p'), LT, RA, UH])
 A(id='f1', kind='act', group='prep', pos=[0, 8], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
   goal=K('분열 (공개된 옵션 3개 중 하나)', 'Fracture (one of the three revealed options)'),
@@ -119,14 +119,14 @@ A(id='a2', kind='act', group='main', pos=[0, 11.4], act='essence', cur='Mystic_A
   goal=K('미공개 훼손 접두를 지우고 접미 정신력', 'The unrevealed desecrated prefix goes for a Spirit suffix'),
   showText=[{'s': 's', 'kr': '정신력 +(10—15) (제작 옵션)', 'en': '+(10—15) to Spirit (crafted)'}], edges=[{'to': 'p1'}], item=[MSf, LT, RA, SP, UH, AST])
 A(id='p1', kind='act', group='main', pos=[0, 12.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째 옵션 — 나오는 대로', 'Second prefix: keep what lands'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
+  goal=K('접두 두 번째 옵션 — 나오는 대로', 'Second prefix: keep what lands'), showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}],
   edges=[{'to': 'p2'}], item=[MSf, AR, LT, RA, SP, UH, AST])
 # 마지막 접두 훼손(영상 12:15~12:40): 고대 갈비뼈 → 심연의 메아리 공개 → 밸런스는 빗나가면 빛의 징조 + 소멸의 오브로 지우고 다시
 A(id='p2', kind='act', group='main', pos=[0, 13.4], act='desecrate', cur='Ancient_Rib', label=K('훼손', 'Desecrate'),
   goal=K('빈 접두에 고대 갈비뼈', 'Ancient Rib on the empty prefix'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'p3'}], item=[MSf, AR, UN('p'), LT, RA, SP, UH, AST])
 A(id='p3', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='dg', label=K('공개', 'Reveal'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), show=['dg'],
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), show=['dg'],
   edges=[{'if': {'has': 'dg'}, 'to': 'ok', 'res': 'ok'}, {'if': V1, 'to': 'p3x', 'res': 'fail', 'label': K('빗나감', 'Miss')},
          {'to': 'ok', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}],
   item=[MSf, AR, DG, LT, RA, SP, UH, AST])
@@ -143,10 +143,10 @@ g['loops'] = [
             K('빗나가면 소멸의 오브', 'A miss: Orb of Annulment') | {'node': 'm2x'},
             K('좋은 옵션이 지워지면 모두 지우고 다시 진화', 'The good option gone: clear it and transmute again') | {'node': 'm1x'}],
   'item': [MS, LT, UH]},
- {'id': 'L1', 'nodes': ['p2', 'p3', 'p3x'], 'kr': '접두 세번째 옵션(훼손)', 'en': 'Third prefix (desecrated)', 'fold': True,
+ {'id': 'L1', 'nodes': ['p2', 'p3', 'p3x'], 'kr': '접두 세 번째 옵션(훼손)', 'en': 'Third prefix (desecrated)', 'fold': True,
   'goal': K('접두 회피 구르기 거리(훼손)', 'Dodge roll distance prefix (desecrated)'),
   'goalBy': {'bal': K('접두 회피 구르기 거리(훼손) — 빛의 징조로 다시', 'Dodge roll distance prefix (desecrated): Omen of Light retries'),
-             'ess': K('접두 세번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep the reveal')},
+             'ess': K('접두 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep the reveal')},
   'steps': [K('빈 접두에 고대 갈비뼈', 'Ancient Rib on the empty prefix') | {'node': 'p2'},
             K('심연의 메아리의 징조로 공개', 'Reveal with the Omen of Abyssal Echoes') | {'node': 'p3'},
             K('빗나가면 빛의 징조 + 소멸의 오브', 'A miss: Omen of Light + Orb of Annulment') | {'node': 'p3x'}],

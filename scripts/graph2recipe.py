@@ -183,6 +183,10 @@ def _target(G_, n, prev, cur, last_bone):
         nl = next((l for l in new if l.get('tags')), None)
         if nl: t = dict(G_.spec(nl['tags']) or {})
         elif okc: t = dict(G_.spec(okc) or {})
+        if nl and okc:   # 성공 조건이 에센스·합금 줄이 아니라 남겨야 할 옵션(예: 원소 피해가 지워지지 않음)이면 그 옵션도 글에 — '1회 시도 9.5%'가 목표와 다른 사건으로 보이던 것(2026-11-13 S3 36번)
+            ks = G_.spec(okc)
+            kg = {x.get('gi') for x in ((ks or {}).get('anyOf') or [ks or {}])}
+            if ks and t.get('gi') not in kg and not ({x.get('gi') for x in (t.get('anyOf') or [])} & kg): t['keep'] = ks
         mk = next((l for l in new if '징표' in (l.get('kr') or '')), None)
         if mk and not t:   # 징표 줄에 태그가 없으면 gi 0(엉뚱한 '힘 +…')이 되던 것 — 태그로 옵션을 알 때만 징표 목표, 아니면 줄 글을 목표 글로(2026-11-13 S2, G2 보고)
             mg = (G_.spec(mk.get('tags') or []) or {}).get('gi')
@@ -207,6 +211,10 @@ def _target(G_, n, prev, cur, last_bone):
         # 공개 쪽: 새로 공개된 줄 → 바로 앞 훼손 상자의 쪽 → 고르는 옵션의 쪽 → 지워진 줄 — 접힌 상자(아이템 칸 없음)가 늘 접두로 나오던 것(2026-11-13 S1: MazBro 시전자 목걸이 a8)
         ws = next((T.get('s') for w in wl if isinstance(w, str) for gi, _ in G_.leaves(w) for T in G_.tags.values() if isinstance(T, dict) and T.get('gi') == gi and T.get('s') in ('p', 's')), None)
         sd = (nl or {}).get('s') or getattr(G_, '_lus', None) or ws or next((l.get('s') for l in gone), None) or 'p'
+        if sp and sp.get('anyOf'):   # 이미 아이템에 있는 옵션 그룹은 공개 후보에서 뺌(같은 그룹 두 번 안 붙음, 2026-11-13 S3 10번)
+            have = {gi for l in (prev or []) if l.get('m') not in ('j', 'u') for tg in (l.get('tags') or []) for gi, _ in G_.leaves(G_.name(tg)) if len(G_.leaves(G_.name(tg))) == 1}
+            xs = [x for x in sp['anyOf'] if x.get('gi') not in have]
+            if xs and len(xs) < len(sp['anyOf']): sp = dict(xs[0]) if len(xs) == 1 else {**sp, 'anyOf': xs}
         t = {'reveal': sp or {'anyOf': []}, 'side': sd}
         if last_bone: t['bone'] = last_bone
         if getattr(G_, '_lord', None): t['lord'] = G_._lord

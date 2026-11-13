@@ -67,20 +67,20 @@ A(id='a0', kind='cleanup', group='prep', pos=[0, 1], keep=[], maxJunk=1, label=L
 # ---------------- 옵션 추가 작업 ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 2.4], next='a1', label=K('아이템 제작 시작', 'Item crafting starts'), item=[J('p'), PJ])
 A(id='a1', kind='act', group='main', pos=[0, 3.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접두 첫번째 옵션 — 정신력 1~2티어', 'First prefix: T1–2 Spirit'), show=['sp'],
+  goal=K('접두 첫 번째 옵션 — 정신력 1~2티어', 'First prefix: T1–2 Spirit'), show=['sp'],
   edges=[{'if': {'has': 'sp'}, 'to': 'a2', 'res': 'ok'}, {'to': 'a1', 'res': 'fail', 'hide': True}], item=[SPI, PJ])
 A(id='a2', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
   goal=K('접미 잡옵', 'A junk suffix'), showText=[{'s': 's', 'kr': '잡옵', 'en': 'Junk'}], edges=[{'to': 'a3'}], item=[SPI, PJ, J('s')])
 A(id='a3', kind='act', group='main', pos=[0, 5.4], act='essence', cur='Perfect_Essence_of_Enhancement', ess='enh', omens=['Omen_of_Dextral_Crystallisation'],
-  label=K('에센스', 'Essence'), goal=K('접미 잡옵을 지우고 접두 두번째 옵션', 'The junk suffix goes, second prefix in'),
+  label=K('에센스', 'Essence'), goal=K('접미 잡옵을 지우고 접두 두 번째 옵션', 'The junk suffix goes, second prefix in'),
   showText=[{'s': 'p', 'kr': '전역 방어도, 회피, 에너지 보호막 % (제작 옵션)', 'en': 'Global Armour, Evasion and Energy Shield % (crafted)'}], edges=[{'to': 'a4'}], item=[SPI, EN, PJ])
 A(id='a4', kind='act', group='main', pos=[0, 6.4], act='quality', cur='Xophs_Catalyst', count=20, q=20, label=K('퀄리티', 'Quality'),
   goal=K('화염 퀄리티 20%', 'Fire quality 20%'), showText=[K('조프의 기폭제 20개', '20 Xoph\'s Catalysts')], edges=[{'to': 'a5'}], item=[SPI, EN, PJ])
 A(id='a5', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'], cat='catR',
-  label=K('엑잘', 'Exalt'), goal=K('접미 두번째 옵션 — 저항·치명타 확률·희귀도 중 먼저 뜬 것', 'Second suffix: resistance, crit chance or rarity, whichever comes first'), show=['gs'],
+  label=K('엑잘', 'Exalt'), goal=K('접미 두 번째 옵션 — 저항·치명타 확률·희귀도 중 먼저 뜬 것', 'Second suffix: resistance, crit chance or rarity, whichever comes first'), show=['gs'],
   edges=[{'if': {'added': 'gs'}, 'to': 'a6', 'res': 'ok'}, {'if': {'param': {'L': 0}}, 'to': 'a6', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'a5x', 'res': 'fail'}], item=[SPI, EN, PJ, GS],
-  over=[{'param': {'L': 0}, 'set': {'goal': K('접미 두번째 옵션 — 저항 노림, 나오는 대로', 'Second suffix: aiming for a resistance, keep what comes'), 'show': [],
+  over=[{'param': {'L': 0}, 'set': {'goal': K('접미 두 번째 옵션 — 저항 노림, 나오는 대로', 'Second suffix: aiming for a resistance, keep what comes'), 'show': [],
                                     'showText': [{'s': 's', 'kr': '랜덤 옵션', 'en': 'Random option'}], 'item': [SPI, EN, PJ, RS]}}])
 A(id='a5x', kind='act', group='main', pos=[1, 7.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=LIGHT, goal=LIGHT,
   target=K('우측 소멸의 징조로 빗나간 접미 지우기', 'Dextral Annulment removes the missed suffix'), edges=[{'to': 'a4', 'label': K('기폭제 다시', 'Catalysts again')}])
@@ -88,17 +88,17 @@ A(id='a6', kind='act', group='main', pos=[0, 8.4], act='quality', cur='Xophs_Cat
   goal=K('화염 퀄리티 다시 20%', 'Fire quality back to 20%'), showText=[K('조프의 기폭제 20개', '20 Xoph\'s Catalysts')], edges=[{'to': 'a7'}], item=[SPI, EN, PJ, GS],
   over=ESS([SPI, EN, PJ, RS]))
 A(id='a7', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'], cat='catR',
-  label=K('엑잘', 'Exalt'), goal=K('접미 세번째 옵션 — 저항·치명타 확률·희귀도 중 먼저 뜬 것', 'Third suffix: resistance, crit chance or rarity, whichever comes first'), show=['gs'],
+  label=K('엑잘', 'Exalt'), goal=K('접미 세 번째 옵션 — 저항·치명타 확률·희귀도 중 먼저 뜬 것', 'Third suffix: resistance, crit chance or rarity, whichever comes first'), show=['gs'],
   edges=[{'if': {'added': 'gs'}, 'to': 'a8', 'res': 'ok'}, {'if': {'param': {'L': 0}}, 'to': 'a8', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
          {'to': 'a7x', 'res': 'fail'}], item=[SPI, EN, PJ, GS, GS],
-  over=[{'param': {'L': 0}, 'set': {'goal': K('접미 세번째 옵션 — 저항 노림, 나오는 대로', 'Third suffix: aiming for a resistance, keep what comes'), 'show': [],
+  over=[{'param': {'L': 0}, 'set': {'goal': K('접미 세 번째 옵션 — 저항 노림, 나오는 대로', 'Third suffix: aiming for a resistance, keep what comes'), 'show': [],
                                     'showText': [{'s': 's', 'kr': '랜덤 옵션', 'en': 'Random option'}], 'item': [SPI, EN, PJ, RS, RS]}}])
 A(id='a7x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Dextral_Annulment'], label=LIGHT, goal=LIGHT,
-  target=K('우측 소멸의 징조로 빗나간 접미 지우기 — 앞 접미가 지워지면 두번째부터', 'Dextral Annulment removes the missed suffix: losing the earlier one sends you back'),
+  target=K('우측 소멸의 징조로 빗나간 접미 지우기 — 앞 접미가 지워지면 두 번째부터', 'Dextral Annulment removes the missed suffix: losing the earlier one sends you back'),
   edges=[{'if': {'count': {'tag': 'gs', 'min': 1}}, 'to': 'a6', 'label': K('기폭제 다시', 'Catalysts again')},
          {'to': 'a4'}])
 A(id='a8', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
   edges=[{'to': 'a9'}], item=[SPI, EN, UN('p'), PJ, GS, GS], over=ESS([SPI, EN, UN('p'), PJ, RS, RS]))
 A(id='a9', kind='act', group='main', pos=[0, 11.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='gp', label=K('공개', 'Reveal'),
   goal=K('접두 생명력·에너지 보호막 1~2티어', 'T1–2 life or energy shield prefix'), show=['gp'],
@@ -110,7 +110,7 @@ A(id='a9x', kind='act', group='main', pos=[1, 11.4], act='annul', cur='Orb_of_An
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'a8', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='ok', kind='done', group='main', pos=[0, 12.4], label=K('완성', 'Finished'))
 g['nodes'] = N
-g['loops'] = [{'id': 'L1', 'nodes': ['a4', 'a5', 'a5x'], 'kr': '접미 두번째 옵션', 'en': 'Second suffix'},
+g['loops'] = [{'id': 'L1', 'nodes': ['a4', 'a5', 'a5x'], 'kr': '접미 두 번째 옵션', 'en': 'Second suffix'},
               {'id': 'L2', 'nodes': ['a8', 'a9', 'a9x'], 'kr': '훼손 공개', 'en': 'Reveal'}]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)

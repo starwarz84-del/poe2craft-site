@@ -84,17 +84,17 @@ A(id='pk', kind='act', group='prep', pos=[0, 1], act='rune', rune=K('카틀라�
 A(id='ms', kind='mark', group='main', pos=[0, 2.4], next='g2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[PO, J('s'), KAT])
 # 4:00~4:06 카오스 오브 → 저주 활성화 속도 25%
 A(id='g2', kind='act', group='main', pos=[0, 3.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접미 첫번째 옵션 — 저주 활성화 속도', 'First suffix: curse activation speed'), show=['curse'],
+  goal=K('접미 첫 번째 옵션 — 저주 활성화 속도', 'First suffix: curse activation speed'), show=['curse'],
   edges=[{'if': {'has': 'curse'}, 'to': 'g4', 'res': 'ok'}, {'to': 'g2', 'res': 'fail', 'hide': True}], item=[PO, CU, KAT])
 # 3:30 자막 "전미어 두 줄 랜덤", 5:00 상위 찬미(2/10) → 성공 회차 접미 지능 29 · 카오스 저항 26(5:46)
 A(id='g4', kind='act', group='main', pos=[0, 4.4], act='exalt', cur='Perfect_Exalted_Orb',
   omens=['Omen_of_Greater_Exaltation', 'Omen_of_Dextral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접미 두번째·세번째 옵션', 'Second and third suffixes'), showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
+  goal=K('접미 두 번째·세 번째 옵션', 'Second and third suffixes'), showText=[{'s': 's', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   edges=[{'to': 'g3'}], item=[PO, CU, RS, RS, KAT])
 # 3:10~3:20·4:20 상위 찬미 + 완벽한 엑잘 접두 2개(성공 회차는 출혈·점화 강도, 회피·에너지 보호막 — 모두 합금으로 덮임)
 A(id='g3', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Perfect_Exalted_Orb',
   omens=['Omen_of_Greater_Exaltation', 'Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째·세번째 옵션 — 합금이 지울 자리', 'Second and third prefixes for the alloys to replace'),
+  goal=K('접두 두 번째·세 번째 옵션 — 합금이 지울 자리', 'Second and third prefixes for the alloys to replace'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}], edges=[{'to': 'r1'}], item=[PO, J('p'), J('p'), CU, RS, RS, KAT])
 # 6:22 아스트리드의 창의성
 A(id='r1', kind='act', group='main', pos=[0, 6.4], act='rune', label=K('룬', 'Rune'), goal=K('아스트리드의 창의성 장착', 'Socket Astrid’s Creativity'),
@@ -114,12 +114,12 @@ A(id='a2', kind='act', group='main', pos=[0, 8.4], act='essence', cur='Prismatic
   item=[PO, RW, PE, CU, RS, RS, KAT, AST])
 # 7:10 좌측 강령술(8/10) + 보존된 갈비뼈 — 접두가 꽉 차 제작 옵션 하나가 지워짐(영상은 원소 저항 관통), 메아리 없음(자막 7:05)
 A(id='d1', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Preserved_Rib', omens=['Omen_of_Sinistral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접두 세번째 옵션(훼손) — 제작 옵션 하나를 지우고 들어감', 'Third prefix (desecrated): replaces one crafted line'),
+  label=K('훼손', 'Desecrate'), goal=K('접두 세 번째 옵션(훼손) — 제작 옵션 하나를 지우고 들어감', 'Third prefix (desecrated): replaces one crafted line'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'rv'}], item=[PO, RW, UN('p'), CU, RS, RS, KAT, AST])
 # 7:30 빗나감 → 7:44~7:50 피해를 주는 상태 이상의 피해 18% 가속
 A(id='rv', kind='act', group='main', pos=[0, 10.4], act='reveal', want='fast', label=K('공개', 'Reveal'),
-  goal=K('접두 세번째 옵션(훼손) — 피해를 주는 상태 이상의 피해 가속', 'Third prefix (desecrated): faster damaging ailments'), show=['fast'],
-  over=[{'param': {'v': 2}, 'set': {'goal': K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), 'show': [], 'showText': [{'s': 'p', 'kr': '공개 결과 그대로', 'en': 'Keep the reveal'}]}}],
+  goal=K('접두 세 번째 옵션(훼손) — 피해를 주는 상태 이상의 피해 가속', 'Third prefix (desecrated): faster damaging ailments'), show=['fast'],
+  over=[{'param': {'v': 2}, 'set': {'goal': K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'), 'show': [], 'showText': [{'s': 'p', 'kr': '공개 결과 그대로', 'en': 'Keep the reveal'}]}}],
   edges=[{'if': V2, 'to': 'ok', 'res': 'ok', 'hide': True}, {'if': {'added': 'fast'}, 'to': 'ok', 'res': 'ok'},
          {'if': {'has': 'pen'}, 'to': 'rx2', 'res': 'fail', 'label': K('빗나감', 'Miss')},
          {'to': 'rx', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
@@ -139,9 +139,9 @@ g['nodes'] = N
 g['loops'] = [
  {'id': 'L1', 'nodes': ['a1', 'a2'], 'kr': '합금으로 접두 덮기', 'en': 'Cover prefixes with alloys'},
  {'id': 'L2', 'nodes': ['d1', 'rv', 'rx', 'rx2'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal', 'fold': True,
-  'goal': K('접두 세번째 옵션(훼손) — 피해를 주는 상태 이상의 피해 가속', 'Third prefix (desecrated): faster damaging ailments'),
-  'goalBy': {'bal': K('접두 세번째 옵션(훼손) — 피해를 주는 상태 이상의 피해 가속', 'Third prefix (desecrated): faster damaging ailments'),
-             'ess': K('접두 세번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep the reveal')},
+  'goal': K('접두 세 번째 옵션(훼손) — 피해를 주는 상태 이상의 피해 가속', 'Third prefix (desecrated): faster damaging ailments'),
+  'goalBy': {'bal': K('접두 세 번째 옵션(훼손) — 피해를 주는 상태 이상의 피해 가속', 'Third prefix (desecrated): faster damaging ailments'),
+             'ess': K('접두 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep the reveal')},
   'steps': [K('좌측 강령술의 징조 + 보존된 갈비뼈로 제작 옵션 하나를 지우고 훼손', 'Omen of Sinistral Necromancy + Preserved Rib replaces one crafted line') | {'node': 'd1'},
             K('영혼의 우물에서 공개', 'Reveal at the Well of Souls') | {'node': 'rv'},
             K('빗나가면 좌측 결정화의 징조 + 분광 합금으로 덮기', 'A miss: Omen of Sinistral Crystallisation + Prismatic Alloy to cover it') | {'node': 'rx'},

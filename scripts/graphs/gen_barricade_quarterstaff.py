@@ -36,7 +36,7 @@ g = {
           '바알 대장장이의 주입기로 30%(6:28 21% → 6:52 30%, 주입기 10 → 2개)는 사용자 결정(2026-11-13 06:40)대로 뺌, 퀄리티 20% 베이스. '
           '접두 목표는 영상 계획(3:00·15:50 공격 원소 피해·화염·냉기·번개 피해 추가 1티어 중 셋)대로 먼저 뜬 것, 접미 훼손은 공격 속도·치명타 피해 1티어 중 먼저 뜬 것(12:00).'),
  'params': {'rT': {'kr': '공격 속도·치명타 피해', 'en': 'Attack speed or crit damage', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}},
-            'eT': {'kr': '원소 피해 접두', 'en': 'Elemental prefixes', 'values': {'1': K('1티어 옵션 3개', 'Three T1 options'), '2': K('1~2티어 옵션 2개, 세번째는 랜덤 옵션', 'Two T1–2 options, the third random')}}},
+            'eT': {'kr': '원소 피해 접두', 'en': 'Elemental prefixes', 'values': {'1': K('1티어 옵션 3개', 'Three T1 options'), '2': K('1~2티어 옵션 2개, 세 번째는 랜덤 옵션', 'Two T1–2 options, the third random')}}},
  'strategies': [{'id': 'high', 'params': P['high']}, {'id': 'bal', 'params': P['bal']}],
  'versions': [{'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': P['bal'], 'tier': 'bal',
                'desc': K('원소 피해 접두 1~2티어 2개 + 랜덤 옵션, 훼손 공격 속도·치명타 피해 1~2티어', 'Two T1–2 elemental prefixes + a random one, T1–2 desecrated attack speed or crit damage')},
@@ -84,13 +84,13 @@ A(id='c0', kind='act', group='prep', pos=[0, 6], act='chaos', cur='Chaos_Orb', l
   goal=K('접미 치명타 확률 1티어', 'T1 critical hit chance suffix'), show=['crit'],
   edges=[{'if': {'has': 'crit'}, 'to': 'e0', 'res': 'ok'}, {'to': 'c0', 'res': 'fail', 'hide': True}], item=[CRn])
 A(id='e0', kind='act', group='prep', pos=[0, 7], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('두번째 옵션 — 분열 조건 옵션 4개', 'Second option: the fracture needs four'), showText=[K('랜덤 옵션 1개', 'One random option')],
+  goal=K('두 번째 옵션 — 분열 조건 옵션 4개', 'Second option: the fracture needs four'), showText=[K('랜덤 옵션 1개', 'One random option')],
   edges=[{'to': 'e0b'}], item=[CRn, J('s')])
 A(id='e0b', kind='act', group='prep', pos=[0, 8], act='exalt', cur='Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('세번째 옵션 — 분열 조건 옵션 4개', 'Third option: the fracture needs four'), showText=[K('랜덤 옵션 1개', 'One random option')],
+  goal=K('세 번째 옵션 — 분열 조건 옵션 4개', 'Third option: the fracture needs four'), showText=[K('랜덤 옵션 1개', 'One random option')],
   edges=[{'to': 'd0'}], item=[CRn, J('s'), J('s')])
 A(id='d0', kind='act', group='prep', pos=[0, 9], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 확률 1/3', 'Fourth option (desecrated): fracture odds 1 in 3'),
+  goal=K('네 번째 옵션(훼손) — 분열 확률 1/3', 'Fourth option (desecrated): fracture odds 1 in 3'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecration (unrevealed, cannot fracture)')], edges=[{'to': 'f0'}],
   item=[UN('p'), CRn, J('s'), J('s')])
 A(id='f0', kind='act', group='prep', pos=[0, 10], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
@@ -109,7 +109,7 @@ A(id='c1', kind='act', group='main', pos=[0, 14], act='chaos', cur='Chaos_Orb', 
   goal=K('접미 근접 스킬 +5', '+5 melee skills suffix'), show=['melee'],
   edges=[{'if': {'has': 'melee'}, 'to': 'b1', 'res': 'ok'}, {'to': 'c1', 'res': 'fail', 'hide': True}], item=[CR, ME])
 A(id='b1', kind='act', group='main', pos=[0, 15], act='desecrate', cur='Preserved_Jawbone', omens=['Omen_of_Dextral_Necromancy'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손)', 'Third suffix (desecrated)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 세 번째 옵션(훼손)', 'Third suffix (desecrated)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'rv'}], item=[CR, ME, UN('s')])
 A(id='rv', kind='act', group='main', pos=[0, 16], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),
   goal=K('접미 공격 속도 1티어 — 치명타 피해 보너스 1티어와 함께 먼저 뜬 것', 'T1 attack speed suffix: or T1 critical damage bonus, whichever lands first'),
@@ -125,7 +125,7 @@ A(id='p2', kind='act', group='main', pos=[0, 18], act='chaos', cur='Perfect_Chao
   show=['fire', 'cold', 'lflat', 'eatk'],
   edges=[{'if': {'count': {'tag': 'ele', 'min': 2}}, 'to': 'p4', 'res': 'ok'}, {'to': 'p2', 'res': 'fail', 'hide': True}], item=[EA, FI, CR, ME, AS])
 A(id='p4', kind='act', group='main', pos=[0, 19], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
-  goal=K('접두 세번째 옵션', 'Third prefix'), show=['cold', 'lflat', 'fire', 'eatk'],
+  goal=K('접두 세 번째 옵션', 'Third prefix'), show=['cold', 'lflat', 'fire', 'eatk'],
   edges=[{'if': {'count': {'tag': 'ele', 'min': 3}}, 'to': 'ok', 'res': 'ok'},
          {'if': {'all': [{'param': {'eT': 1}}, {'whittleSafe': {'tag': 'keep'}}]}, 'to': 'p5', 'res': 'fail'},
          {'if': {'param': {'eT': 1}}, 'to': 'p5x', 'res': 'fail'},
@@ -143,11 +143,11 @@ g['nodes'] = N
 
 g['loops'] = [
  {'id': 'L1', 'nodes': ['b1', 'rv', 'rvx'], 'kr': '훼손 공개', 'en': 'Reveal'},
- {'id': 'L2', 'nodes': ['p4', 'p5', 'p5x'], 'kr': '접두 세번째 옵션', 'en': 'Third prefix', 'fold': True,
-  'goal': K('접두 원소 피해 1티어 세번째 — 냉기·번개·화염 피해 추가·공격 스킬의 원소 피해 중 먼저 뜬 것', 'A third T1 elemental prefix: whichever of added cold, lightning, fire or elemental damage with attacks lands first'),
-  'goalBy': {'high': K('접두 원소 피해 1티어 세번째 — 냉기·번개·화염 피해 추가·공격 스킬의 원소 피해 중 먼저 뜬 것', 'A third T1 elemental prefix: whichever of added cold, lightning, fire or elemental damage with attacks lands first'),
-             'bal': K('접두 세번째 옵션 — 완벽한 엑잘 한 번, 랜덤 옵션', 'Third prefix: one Perfect Exalt, a random option')},
-  'steps': [K('완벽한 엑잘로 접두 세번째 옵션', 'Perfect Exalt for the third prefix') | {'node': 'p4'},
+ {'id': 'L2', 'nodes': ['p4', 'p5', 'p5x'], 'kr': '접두 세 번째 옵션', 'en': 'Third prefix', 'fold': True,
+  'goal': K('접두 원소 피해 1티어 세 번째 — 냉기·번개·화염 피해 추가·공격 스킬의 원소 피해 중 먼저 뜬 것', 'A third T1 elemental prefix: whichever of added cold, lightning, fire or elemental damage with attacks lands first'),
+  'goalBy': {'high': K('접두 원소 피해 1티어 세 번째 — 냉기·번개·화염 피해 추가·공격 스킬의 원소 피해 중 먼저 뜬 것', 'A third T1 elemental prefix: whichever of added cold, lightning, fire or elemental damage with attacks lands first'),
+             'bal': K('접두 세 번째 옵션 — 완벽한 엑잘 한 번, 랜덤 옵션', 'Third prefix: one Perfect Exalt, a random option')},
+  'steps': [K('완벽한 엑잘로 접두 세 번째 옵션', 'Perfect Exalt for the third prefix') | {'node': 'p4'},
             K('빗나간 접두가 가장 낮은 옵션이면 절사 + 완벽한 카오스 반복', 'Missed prefix is the lowest option: Whittling + Perfect Chaos, again and again') | {'node': 'p5'},
             K('잡옵이 가장 낮은 옵션이 아니면 좌측 소멸의 징조 + 소멸의 오브 → 1번부터', 'Junk is not the lowest: Omen of Sinistral Annulment + Annulment, then from step 1') | {'node': 'p5x'}],
   'item': [EA, FI, CO, CR, ME, AS],

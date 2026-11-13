@@ -96,12 +96,12 @@ A(id='bv1', kind='act', group='main', pos=[0, 6.4], act='reveal', omens=['Omen_o
 A(id='bl1', kind='act', group='main', pos=[1, 6.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'bd1', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='ex1', kind='act', group='main', pos=[0, 7.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째·세번째 옵션', 'Second and third prefixes'),
+  goal=K('접두 두 번째·세 번째 옵션', 'Second and third prefixes'),
   showText=[{'s': 'p', 'kr': '옵션 2개 (나오는 대로)', 'en': 'Two options (as they come)'}], edges=[{'to': 'bl2'}], item=[ACC, EATK, FIRE, CRIT, AS, BAT, RUNE])
 A(id='bl2', kind='act', group='main', pos=[0, 8.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('정확도(훼손 옵션) 제거', 'Remove the accuracy (desecrated option)'), edges=[{'to': 'bd2'}], item=[EATK, FIRE, CRIT, AS, BAT, RUNE])
 A(id='bd2', kind='act', group='main', pos=[0, 9.4], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('접두 세번째 옵션 (훼손)', 'Third prefix (desecrated)'),
+  goal=K('접두 세 번째 옵션 (훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '접두 훼손 옵션 (미공개)', 'en': 'Prefix desecration (unrevealed)'}],
   edges=[{'to': 'bv2'}], item=[EATK, FIRE, UN, CRIT, AS, BAT, RUNE])
 A(id='bv2', kind='act', group='main', pos=[0, 10.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pg', label=K('공개', 'Reveal'),

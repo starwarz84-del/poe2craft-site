@@ -18,7 +18,7 @@ def REVEAL(id,pos,want,show,ok,retry,item,omens=('Omen_of_Abyssal_Echoes',)):
 
 # ---------- 1. SL 5옵션 사파이어 (VKMT7tuSIYk) ----------
 # 원본: 상태 이상 가속 분열 + 잡옵 → 카오스 오브(접두) → 좌측 찬미 + 엑잘(다른 접두, 빗나가면 소멸의 오브) → 엑잘(접미 잡옵) → 위력적인 액체 경멸(+1 접두 허용)
-# → 보존된 두개골(세번째 접두) → 공개 → 우측 소멸의 징조(경멸 옵션 제거) → 엑잘(접미 잡옵) → 위력적인 액체 흉포함(접두 효과).
+# → 보존된 두개골(세 번째 접두) → 공개 → 우측 소멸의 징조(경멸 옵션 제거) → 엑잘(접미 잡옵) → 위력적인 액체 흉포함(접두 효과).
 PRE=[29,1,49,4,53]
 tags={'ail':{'gi':24},**{f'p{g}':{'gi':g} for g in PRE},'pre':{'anyOf':[f'p{g}' for g in PRE],'label':K('점화·상태 이상·주문·카오스·위축','Ignite, ailment, spell, chaos or wither')},
       'contP':{'gi':104,'slot':{'p':1}},'contS':{'gi':103,'slot':{'s':1}},'fer':{'gi':102}}
@@ -26,14 +26,14 @@ AI=it('s','상태 이상 가속 (분열)','Faster ailments (fractured)',['ail'])
 I0=[AI,J('p')]; I1=[AI,PR()]; I2=I1+[PR()]; I3=I2+[J('s')]; I4=[AI,PR(),PR(),CP]; I5=I4+[UN('p')]; I6=[AI,PR(),PR(),PR(),CP]; I7=I6[:4]; I8=I7+[J('s')]; I9=I7+[FP]
 nodes=[base('ms',{'rar':'rare','mods':[{'tag':'ail','fr':True},{'junk':'p'}]},K('상태 이상 가속 분열 + 잡옵 1개 사파이어','Sapphire: fractured faster ailments + one junk line'),I0),
  mark([0,0.6],'s2',I0),
- act('s2','main',[0,1],'chaos','Chaos_Orb',K('접두 첫번째 옵션','First prefix'),None,K('카오스','Chaos'),[{'if':{'has':'pre'},'to':'s3','res':'ok'},{'to':'s2','res':'fail'}],I1,show=[f'p{g}' for g in PRE]),
- act('s3','main',[0,2],'exalt','Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'pre','min':2}},'to':'s4','res':'ok'},{'to':'s3x','res':'fail'}],I2,show=[f'p{g}' for g in PRE],omens=['Omen_of_Sinistral_Exaltation']),
+ act('s2','main',[0,1],'chaos','Chaos_Orb',K('접두 첫 번째 옵션','First prefix'),None,K('카오스','Chaos'),[{'if':{'has':'pre'},'to':'s3','res':'ok'},{'to':'s2','res':'fail'}],I1,show=[f'p{g}' for g in PRE]),
+ act('s3','main',[0,2],'exalt','Exalted_Orb',K('접두 두 번째 옵션','Second prefix'),None,K('엑잘','Exalt'),[{'if':{'count':{'tag':'pre','min':2}},'to':'s4','res':'ok'},{'to':'s3x','res':'fail'}],I2,show=[f'p{g}' for g in PRE],omens=['Omen_of_Sinistral_Exaltation']),
  cleanup('s3x',[1,2],['pre'],[{'lost':'pre','to':'s2','port':'right'},{'to':'s3','port':'bottom'}],K('빗나간 접두 지우기','Remove the missed prefix')),
- act('s4','main',[0,3],'exalt','Exalted_Orb',K('접미 두번째 옵션','Second suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'s5'}],I3),
+ act('s4','main',[0,3],'exalt','Exalted_Orb',K('접미 두 번째 옵션','Second suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'s5'}],I3),
  LIQ('s5',[0,4],'Potent_Liquid_Contempt','contP',K('위력적인 액체 경멸 (+1 접두 허용, 접미 잡옵이 지워지면 성공 1/3)','Potent Liquid Contempt (+1 prefix allowed; the junk suffix must go, 1/3)'),[st('s','+1 접두 허용 (좋은 접두가 지워지면 분열 + 1개로 되돌림)','+1 prefix allowed (a good prefix gone: back to the fracture + one line)')],
      [{'if':{'count':{'tag':'pre','min':2}},'to':'s6','res':'ok'},{'to':'s5x','res':'fail'}],I4,anyRemove=True),   # SL 영상: 분열 빼고 세 옵션 중 하나가 지워짐 — 접미 잡옵이 지워져야 성공 (1/3)
  cleanup('s5x',[1,4],[],[{'to':'s2','port':'right'}],K('분열 + 옵션 1개로 되돌리기','Back to the fracture + one line'),maxJunk=1),
- act('s6','main',[0,5],'desecrate','Preserved_Cranium',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'s7'}],I5),
+ act('s6','main',[0,5],'desecrate','Preserved_Cranium',K('접두 세 번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'s7'}],I5),
  REVEAL('s7',[0,6],'pre',[f'p{g}' for g in PRE],'s8','s7x',I6),
  LIGHTX('s7x',[1,6],'s6'),
  act('s8','main',[0,7],'annul','Orb_of_Annulment',K('+1 접두 허용 옵션 제거','Remove the +1 prefix line'),None,K('소멸','Annul'),[{'to':'s9'}],I7,omens=['Omen_of_Dextral_Annulment']),
@@ -60,7 +60,7 @@ nodes=[base('ms',{'rar':'rare','mods':['s11','s65',{'junk':'p'},{'junk':'p'}]},K
  mark([0,0.6],'v2',I0),
  LIQ('v2',[0,1],'Ancient_Potent_Liquid_Contempt','contS',K('고대 위력적인 액체 경멸 (50%로 +1 접미 허용)','Ancient Potent Liquid Contempt (50%: +1 suffix allowed)'),[st('p','+1 접미 허용 (아니면 접미가 지워져 새 주얼)','+1 suffix allowed (else a suffix goes: new jewel)')],
      [{'if':{'has':'contS'},'to':'v3','res':'ok'},{'to':'h1','res':'fail','port':'right'}],I1,alt='contP'),
- act('v3','main',[0,2],'desecrate','Preserved_Cranium',K('접미 세번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'v4'}],I2,omens=['Omen_of_Dextral_Necromancy']),
+ act('v3','main',[0,2],'desecrate','Preserved_Cranium',K('접미 세 번째 옵션(훼손)','Third suffix (desecrated)'),[st('s','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'v4'}],I2,omens=['Omen_of_Dextral_Necromancy']),
  REVEAL('v4',[0,3],'rev',[f's{g}' for g in REV],'v5','v4x',I3),
  LIGHTX('v4x',[1,3],'v3'),
  act('v5','main',[0,4],'chaos','Chaos_Orb',K('+1 접미 허용 옵션 지우기 (접두만 바뀜)','Reroll the +1 suffix line away (prefixes only)'),None,K('카오스','Chaos'),[{'if':{'has':'contS'},'to':'v5','res':'fail'},{'to':'v6','res':'ok'}],I4,omens=['Omen_of_Sinistral_Erasure']),
@@ -89,10 +89,10 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'ms','fr':True},'lres',{'tag':'rar
  mark([0,0.6],'h2',I0),
  RUNE('h2',[0,1],'h3',I0),
  act('h3','main',[0,2],'essence','Mystic_Alloy',K('미공개 훼손 접두를 지우고 접미 정신력','Swap the unrevealed prefix for Spirit'),[st('s','정신력 (제작 옵션)','Spirit (crafted)')],K('합금','Alloy'),[{'to':'h4'}],I1,ess='spirit',omens=['Omen_of_Sinistral_Crystallisation']),
- act('h4','main',[0,3],'exalt','Perfect_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),
+ act('h4','main',[0,3],'exalt','Perfect_Exalted_Orb',K('접두 두 번째 옵션','Second prefix'),None,K('엑잘','Exalt'),
      [{'if':{'has':'pre'},'to':'h5','res':'ok'},{'if':{'param':{'v':1}},'to':'h4b','res':'fail'},{'to':'h5','res':'fail'}],I2,show=['flat','pct','life']),
  act('h4b','main',[1,3],'chaos','Chaos_Orb',K('접두 다시','Reroll the prefix'),None,K('카오스','Chaos'),[{'if':{'has':'pre'},'to':'h5','res':'ok'},{'to':'h4b','res':'fail'}],I2,show=['flat','pct','life'],omens=['Omen_of_Sinistral_Erasure']),
- act('h5','main',[0,4],'desecrate','Ancient_Rib',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'h6'}],I3),
+ act('h5','main',[0,4],'desecrate','Ancient_Rib',K('접두 세 번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'h6'}],I3),
  REVEAL('h6',[0,5],'dodge',['dodge'],'ok','h6x',I4),
  LIGHTX('h6x',[1,5],'h5'),
  done([0,6])]
@@ -120,12 +120,12 @@ nodes=[base('ms',{'rar':'rare','mods':[{'tag':'cast','fr':True},{'junk':'p'}]},K
  act('r8','main',[0,3],'chaos','Chaos_Orb',K('최대 퀄리티 옵션을 좋은 접미로','Replace maximum quality with a good suffix'),None,K('카오스','Chaos'),[{'if':{'has':'good'},'to':'r10','res':'ok'},{'to':'r8','res':'fail'}],I2,show=['regen','rar','res']),
  act('r10','main',[0,4],'exalt','Exalted_Orb',K('에센스가 지울 접두','The prefix for the essence to remove'),[st('p','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'r10b'}],I3,omens=['Omen_of_Sinistral_Exaltation']),
  act('r10b','main',[0,5],'essence','Perfect_Essence_of_the_Mind',K('접두 잡옵을 마나 %로','Swap the junk prefix for % mana'),[st('p','마나 최대치 % (제작 옵션)','% maximum mana (crafted)')],K('에센스','Essence'),[{'to':'r9'}],I4,ess='pmana',omens=['Omen_of_Sinistral_Crystallisation']),
- act('r9','main',[0,6],'exalt','Greater_Exalted_Orb',K('접두 두번째 옵션','Second prefix'),None,K('엑잘','Exalt'),[{'if':{'has':'mana'},'to':'r11','res':'ok'},{'to':'r11','res':'fail'}],I5,show=['mana'],omens=['Omen_of_Sinistral_Exaltation']),
+ act('r9','main',[0,6],'exalt','Greater_Exalted_Orb',K('접두 두 번째 옵션','Second prefix'),None,K('엑잘','Exalt'),[{'if':{'has':'mana'},'to':'r11','res':'ok'},{'to':'r11','res':'fail'}],I5,show=['mana'],omens=['Omen_of_Sinistral_Exaltation']),
  act('r11','main',[0,7],'exalt','Exalted_Orb',K('남은 접미','The last suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'if':{'has':'manaAny'},'to':'r12','res':'ok'},{'to':'r12b','res':'fail'}],I6,omens=['Omen_of_Dextral_Exaltation']),
- act('r12','main',[0,8],'desecrate','Altered_Collarbone',K('접두 세번째 옵션(훼손, 이계)','Third prefix (desecrated, Otherworldly)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'r13'}],I7),
+ act('r12','main',[0,8],'desecrate','Altered_Collarbone',K('접두 세 번째 옵션(훼손, 이계)','Third prefix (desecrated, Otherworldly)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'r13'}],I7),
  REVEAL('r13',[0,9],'mom',['mom'],'ok','r13x',I8),
  LIGHTX('r13x',[1,9],'r12'),
- act('r12b','main',[2,8],'desecrate','Ancient_Collarbone',K('접두 세번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'r13b'}],I7),
+ act('r12b','main',[2,8],'desecrate','Ancient_Collarbone',K('접두 세 번째 옵션(훼손)','Third prefix (desecrated)'),[st('p','훼손 옵션(미공개)','Desecrated modifier (unrevealed)')],K('훼손','Desecrate'),[{'to':'r13b'}],I7),
  REVEAL('r13b',[2,9],'mana',['mana'],'ok','r13bx',I8),
  LIGHTX('r13bx',[3,9],'r12b'),
  done([0,10])]

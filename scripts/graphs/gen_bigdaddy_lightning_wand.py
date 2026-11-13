@@ -76,7 +76,7 @@ A(id='a1', kind='act', group='prep', pos=[0, 1], act='augment', cur='Perfect_Orb
 A(id='rg', kind='act', group='prep', pos=[0, 2], act='regal', cur='Perfect_Regal_Orb', label=K('제왕', 'Regal'),
   goal=K('레어', 'Rare'), showText=[K('랜덤 옵션 1개', 'One random option')], edges=[{'to': 'ds'}], item=[J('p'), L5n, J('s')])
 A(id='ds', kind='act', group='prep', pos=[0, 3], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
-  goal=K('네번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
+  goal=K('네 번째 옵션(훼손) — 분열 조건 옵션 4개', 'Fourth option (desecrated): the fracture needs four'),
   showText=[K('훼손 옵션 (미공개, 분열되지 않음)', 'Desecration (unrevealed, cannot fracture)')], edges=[{'to': 'fr'}],
   item=[J('p'), L5n, J('s'), UN('x')])
 A(id='fr', kind='act', group='prep', pos=[0, 4], act='fracture', cur='Fracturing_Orb', label=K('분열', 'Fracture'),
@@ -99,7 +99,7 @@ A(id='e1', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Exalted_Orb
   label=K('엑잘', 'Exalt'), goal=K('접두 잡옵 1개 — 합금이 지울 자리', 'One junk prefix for the alloy to remove'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 1개', 'en': 'One random option'}], edges=[{'to': 'al'}], item=[SPD, L5, CR])
 A(id='al', kind='act', group='main', pos=[0, 9.4], act='essence', cur='Transcendent_Alloy', ess='trans', omens=['Omen_of_Sinistral_Crystallisation'],
-  label=K('합금', 'Alloy'), goal=K('접두 잡옵을 지우고 접미 세번째 옵션', 'The junk prefix goes, third suffix'),
+  label=K('합금', 'Alloy'), goal=K('접두 잡옵을 지우고 접미 세 번째 옵션', 'The junk prefix goes, third suffix'),
   showText=[{'s': 's', 'kr': '시전 속도 · 원소 피해의 %를 추가 냉기 피해로 획득 (제작 옵션)', 'en': 'Cast speed · elemental damage as extra cold (crafted)'}],
   edges=[{'to': 'd1'}], item=[L5, CR, AL])
 A(id='d1', kind='act', group='main', pos=[0, 10.4], act='desecrate', cur='Preserved_Jawbone', label=K('훼손', 'Desecrate'),
@@ -114,7 +114,7 @@ A(id='d2', kind='act', group='main', pos=[0, 11.4], act='reveal', omens=['Omen_o
 A(id='d2x', kind='act', group='main', pos=[1, 11.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'd1', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='e2', kind='act', group='main', pos=[0, 12.4], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Greater_Exaltation'],
-  label=K('엑잘', 'Exalt'), goal=K('접두 두번째·세번째 옵션 — 마나가 막혀 피해 옵션이 잘 뜸', 'Second and third prefixes: mana is blocked'),
+  label=K('엑잘', 'Exalt'), goal=K('접두 두 번째·세 번째 옵션 — 마나가 막혀 피해 옵션이 잘 뜸', 'Second and third prefixes: mana is blocked'),
   showText=[{'s': 'p', 'kr': '랜덤 옵션 2개', 'en': 'Two random options'}],
   over=[{'param': {'L': 0}, 'set': {'cur': 'Greater_Exalted_Orb'}}],
   edges=[{'to': 'lx'}], item=[MA, J('p'), J('p'), L5, CR, AL])

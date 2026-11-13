@@ -57,13 +57,13 @@ A(id='t1', kind='act', group='prep', pos=[0, 1], act='essence', cur='Greater_Ess
 # ---------------- 옵션 추가 작업 (영상 1:35~4:15) ----------------
 A(id='ms', kind='mark', group='main', pos=[0, 2.4], next='t2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[LF, LR, CH])
 A(id='t2', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserved_Collarbone', omens=['Omen_of_Dextral_Necromancy', 'Omen_of_the_Sovereign'],
-  label=K('훼손', 'Desecrate'), goal=K('접미 세번째 옵션(훼손, 울라만)', 'Third suffix (desecrated, Ulaman)'),
+  label=K('훼손', 'Desecrate'), goal=K('접미 세 번째 옵션(훼손, 울라만)', 'Third suffix (desecrated, Ulaman)'),
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개, 울라만)', 'en': 'Desecrated (unrevealed, Ulaman)'}], edges=[{'to': 't3'}], item=[LF, LR, CH, UN])
 A(id='t3', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='ul', label=K('공개', 'Reveal'),
-  goal=K('접미 세번째 옵션(훼손) — 번개 및 카오스 저항', 'Third suffix (desecrated): lightning and chaos resistance'), show=['ul'],
+  goal=K('접미 세 번째 옵션(훼손) — 번개 및 카오스 저항', 'Third suffix (desecrated): lightning and chaos resistance'), show=['ul'],
   edges=[{'if': {'param': {'L': 0}}, 'to': 't4', 'res': 'ok'}], item=[LF, LR, UL, CH])
 A(id='t4', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Greater_Exaltation'], label=K('엑잘', 'Exalt'),
-  goal=K('접두 두번째·세번째 옵션 — 마나 최대치·플라스크 생명력 회복', 'Second and third prefixes: maximum mana, flask life recovery'),
+  goal=K('접두 두 번째·세 번째 옵션 — 마나 최대치·플라스크 생명력 회복', 'Second and third prefixes: maximum mana, flask life recovery'),
   showText=[K('랜덤 옵션 2개', 'Two random options')], edges=[{'to': 'ok'}], item=[LF, MN, FL, LR, UL, CH])
 A(id='ok', kind='done', group='main', pos=[0, 6.4], label=K('완성', 'Finished'))
 g['nodes'] = N
