@@ -299,3 +299,4 @@ import os as _os, subprocess as _sp, sys as _sy
 if _os.path.exists(f'{H}/gen_noble_visceral_quiver.py'): _sp.run([_sy.executable, f'{H}/gen_noble_visceral_quiver.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
 if _os.path.exists(f'{H}/gen_barricade_quarterstaff.py'): _sp.run([_sy.executable, f'{H}/gen_barricade_quarterstaff.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
 if _os.path.exists(f'{H}/gen_diztoh_endgame_quarterstaff.py'): _sp.run([_sy.executable, f'{H}/gen_diztoh_endgame_quarterstaff.py'], check=True)   # 2026-11-13: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_ragna_spell4_amulet.py'): _sp.run([_sy.executable, f'{H}/gen_ragna_spell4_amulet.py'], check=True)   # 2026-11-13 G5: 새 기준 전용 생성기가 덮어씀

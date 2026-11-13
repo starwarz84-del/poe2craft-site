@@ -184,3 +184,4 @@ g22('fubgun-es-helmet-v2',c,'Kamasan Tiara',78,
 
 import os as _os, subprocess as _sp, sys as _sy
 if _os.path.exists(f'{H}/gen_bigdaddy_lightning_wand.py'): _sp.run([_sy.executable, f'{H}/gen_bigdaddy_lightning_wand.py'], check=True)   # 2026-11-13 G7: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_fubgun_proj_amulet.py'): _sp.run([_sy.executable, f'{H}/gen_fubgun_proj_amulet.py'], check=True)   # 2026-11-13 G5: 새 기준 전용 생성기가 덮어씀

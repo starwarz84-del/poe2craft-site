@@ -14,7 +14,7 @@ def _asIs(n, spec, side):
 
 # 1. 라그나 주문 +4 목걸이 — Balance = video (Dextral Annulment retry for cast speed, Light on the reveal), Essential = T1–3 Spirit base, results kept
 def _ragna(r, t):
-    r['start']['mods'][0]['tmax']=1 if t=='bal' else 3
+    r['start']['mods'][0]['tmax']=1   # G5 11-13: 베이스에 있는 옵션은 모든 등급 1티어(C15)
     g9=_node(r,'g9'); g9['target']['reveal']['tmax']=2 if t=='bal' else 4
     if t=='ess':
         g6=_node(r,'g6'); _asIs(g6, {'gi':g6['target']['gi'],'tmax':3}, 's'); _drop(r,'g6b')

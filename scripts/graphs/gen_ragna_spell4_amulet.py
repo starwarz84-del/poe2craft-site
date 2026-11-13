@@ -1,0 +1,115 @@
+# G5 2026-11-13: 라그나 주문 +4 목걸이(Tzpdm8M-Pkk, 3:34) 플로우차트 생성기 — 영상 한 줄(목걸이 하나)
+# 근거: scratchpad review/G5/ragna-spell4-amulet-v2/timeline.md, frames/ (영상 0:00~3:34 화면 대조)
+# 실행: cd scripts/graphs && python3 gen_ragna_spell4_amulet.py  → ragna-spell4-amulet-v2.json (gen_batch8.py 끝에서 자동 호출)
+# 등급: 난이도 3(scripts/difficulty.py) → 밸런스·에센셜(정책 10장 C11).
+import json, os, sys
+H = os.path.dirname(os.path.abspath(__file__))
+OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/ragna-spell4-amulet-v2.json'
+K = lambda kr, en: {'kr': kr, 'en': en}
+
+def L(s, kr, en, m='n', tags=None):
+    d = {'s': s, 'kr': kr, 'en': en, 'm': m}
+    if tags: d['tags'] = tags
+    return d
+
+SP = L('p', '정신력 +(47—50)', '+(47—50) to Spirit', 'f', ['spirit'])                         # 0:16 툴팁 +50 1티어 분열
+SL = L('s', '모든 주문 스킬 레벨 +3', '+3 to Level of all Spell Skills', 'n', ['spell'])
+MQ = L('p', '최대 퀄리티 +20%', '+20% to Maximum Quality', 'c', ['maxQ'])
+CS = L('s', '시전 속도 (22—24)% 증가', '(22—24)% increased Cast Speed', 'n', ['cast'])          # 2:01 영상 결과 23% 2티어
+SD = L('p', '주문 피해 (18—22)% 증가', '(18—22)% increased Spell Damage', 'd', ['sdmg'])        # 3:18 공개 결과 19% 3티어
+J = lambda s: L(s, '잡옵', 'Junk', 'j')
+UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'u')
+RP = L('p', '랜덤 옵션', 'Random option', 'n')
+RS = L('s', '랜덤 옵션', 'Random option', 'n')
+ESS = lambda item: [{'param': {'cT': 9}, 'set': {'item': [RS if x is CS else x for x in item]}}]
+LIGHT = K('소멸의 오브 사용', 'Use an Orb of Annulment')
+
+g = {
+ 'id': 'ragna-spell4-amulet-v2', 'recipe': 'ragna-spell4-amulet-v2', 'cls': 'Amulets', 'base': 'Solar Amulet', 'ilvl': 81,
+ 'note': ('2026-11-13 G5 영상 전체 화면 대조(0:00~3:34, 목걸이 하나). 시작 = 정신력 +50 1티어 분열 + 모든 주문 스킬 레벨 +3 태양의 목걸이(아이템 레벨 81, 0:16 툴팁 — 영상 전에 카오스로 만든 상태, 화면 자막 0:06). '
+          '좌측 찬미 + 엑잘(0:12, 오브 등급은 화면에 없음) → 접두 회피 44% → 좌측 결정화(0:19 툴팁) + 균열의 에센스(0:26 툴팁)로 최대 퀄리티(0:42) → 달리는 기폭제 구입(1:06)·속도 퀄리티 40%(0:58) → '
+          '촉진하는 찬미 + 우측 찬미(1:46 툴팁) + 완벽한 엑잘 → 지능 3티어(1:30) → 달리는 기폭제 다시 40%(1:54) → 같은 방법 두 번째(1:54 인벤토리 III 표시 완벽한 엑잘) → 시전 속도 23% 2티어(2:01) → '
+          '접두 훼손(2:16, 뼈 등급 툴팁은 못 봄 — 2:18 화폐 교환 목록의 보존된 빗장뼈) → 쇳소리 기폭제 시전 퀄리티(2:32 15%, 3:18 40%) → 심연의 메아리 공개 한 번에 주문 피해 19% 3티어(3:18, 빛의 징조 없음) → '
+          '절사의 징조(2:18 구입) + 상위 카오스 오브(3:15 툴팁)로 최대 퀄리티를 에너지 보호막 최대치 34% 3티어로(3:27). '
+          '내부 결정: 밸런스는 정책 C17대로 시전 속도·주문 피해 1~2티어까지 다시(시전 속도는 영상에 다시 하는 장면이 없어 우측 소멸의 징조 + 소멸의 오브 → 기폭제 다시 — 모든 주문 +3이 지워지면 새 베이스, 주문 피해는 빛의 징조), '
+          '에센셜은 영상처럼 결과 그대로. 정신력은 베이스에 있는 옵션이라 두 등급 모두 1티어(C15). 마지막 접두(절사 카오스)는 두 등급 모두 랜덤 옵션.'),
+ 'params': {'cT': {'kr': '시전 속도', 'en': 'Cast speed', 'values': {'2': K('1~2티어까지 다시', 'Retry to T1–2'), '9': K('결과 그대로', 'Keep what comes')}},
+            'dT': {'kr': '주문 피해', 'en': 'Spell damage', 'values': {'2': K('1~2티어까지 다시', 'Retry to T1–2'), '9': K('공개 한 번, 결과 그대로', 'One reveal, keep what comes')}}},
+ 'strategies': [{'id': 'bal', 'params': {'cT': 2, 'dT': 2}}, {'id': 'ess', 'params': {'cT': 9, 'dT': 9}}],
+ 'versions': [{'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'cT': 9, 'dT': 9}, 'tier': 'ess',
+               'desc': K('영상처럼 시전 속도·주문 피해 결과 그대로', 'As the video: cast speed and spell damage kept as they come')},
+              {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'cT': 2, 'dT': 2}, 'tier': 'bal',
+               'desc': K('시전 속도·주문 피해 1~2티어까지 다시', 'Cast speed and spell damage retried to T1–2')}],
+ 'tags': {'spirit': {'gi': 28, 'tmax': 1}, 'spell': {'gi': 17, 'tmax': 1}, 'maxQ': {'gi': 81},
+          'cast': {'gi': 32, 'tmax': '$cT'}, 'sdmg': {'gi': 31, 'tmax': '$dT'}, 'cast2': {'gi': 32, 'tmax': 2}, 'sdmg2': {'gi': 31, 'tmax': 2}},
+ 'require': {'all': [{'has': 'spirit'}, {'has': 'spell'}, {'full': 'p'}, {'full': 's'},
+                     {'any': [{'param': {'cT': 9}}, {'has': 'cast'}]}, {'any': [{'param': {'dT': 9}}, {'has': 'sdmg'}]}]},
+ 'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
+            {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 1]}],
+ 'start': 'h0',
+ 'finals': [{'id': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
+             'lines': [{'tag': 'spirit', 'fr': True}, {'tag': 'sdmg2', 'des': True}, {'side': 'p', 'random': True},
+                       {'tag': 'spell'}, {'tag': 'cast2'}, {'side': 's', 'random': True}]},
+            {'id': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
+             'lines': [{'tag': 'spirit', 'fr': True}, {'side': 'p', 'random': True}, {'side': 'p', 'random': True},
+                       {'tag': 'spell'}, {'side': 's', 'random': True}, {'side': 's', 'random': True}]}],
+ 'finalItem': {'quality': 40, 'sockets': 0},
+}
+
+N = []
+A = lambda **kw: N.append(kw)
+A(id='h0', kind='base', group='prep', pos=[0, 0], next='ms', start={'rar': 'rare', 'mods': [{'tag': 'spirit', 'fr': True}, 'spell']},
+  label=K('정신력 분열 + 모든 주문 스킬 레벨 +3 태양의 목걸이 (아이템 레벨 81)', 'Solar Amulet with fractured Spirit + all Spell Skills +3 (item level 81)'), item=[SP, SL])
+A(id='ms', kind='mark', group='main', pos=[0, 1.2], next='g2', label=K('아이템 제작 시작', 'Item crafting starts'), item=[SP, SL])
+A(id='g2', kind='act', group='main', pos=[0, 2.2], act='exalt', cur='Exalted_Orb', omens=['Omen_of_Sinistral_Exaltation'], label=K('엑잘', 'Exalt'),
+  goal=K('접두 잡옵', 'A junk prefix'), showText=[{'s': 'p', 'kr': '잡옵', 'en': 'Junk'}], edges=[{'to': 'g3'}], item=[SP, J('p'), SL])
+A(id='g3', kind='act', group='main', pos=[0, 3.2], act='essence', cur='Essence_of_the_Breach', ess='maxQ', omens=['Omen_of_Sinistral_Crystallisation'],
+  label=K('에센스', 'Essence'), goal=K('접두 잡옵을 지우고 최대 퀄리티 +20%', 'The junk prefix goes for +20% Maximum Quality'),
+  showText=[{'s': 'p', 'kr': '최대 퀄리티 +20% (제작 옵션)', 'en': '+20% to Maximum Quality (crafted)'}], edges=[{'to': 'g4'}], item=[SP, MQ, SL])
+A(id='g4', kind='act', group='main', pos=[0, 4.2], act='quality', cur='Skittering_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
+  goal=K('속도 퀄리티 40%', 'Speed quality 40%'), showText=[K('달리는 기폭제 40개', '40 Skittering Catalysts')], edges=[{'to': 'g5'}], item=[SP, MQ, SL])
+A(id='g5', kind='act', group='main', pos=[0, 5.2], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'], cat='cast',
+  label=K('엑잘', 'Exalt'), goal=K('접미 두번째 옵션 — 시전 속도 첫 도전', 'Second suffix: first try at cast speed'),
+  showText=[{'s': 's', 'kr': '잡옵 (영상은 지능)', 'en': 'Junk (Intelligence in the video)'}], edges=[{'to': 'g5b'}], item=[SP, MQ, SL, J('s')])
+A(id='g5b', kind='act', group='main', pos=[0, 6.2], act='quality', cur='Skittering_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
+  goal=K('속도 퀄리티 다시 40%', 'Speed quality back to 40%'), showText=[K('달리는 기폭제 40개', '40 Skittering Catalysts')], edges=[{'to': 'g6'}], item=[SP, MQ, SL, J('s')])
+A(id='g6', kind='act', group='main', pos=[0, 7.2], act='exalt', cur='Perfect_Exalted_Orb', omens=['Omen_of_Catalysing_Exaltation', 'Omen_of_Dextral_Exaltation'], cat='cast',
+  label=K('엑잘', 'Exalt'), goal=K('접미 세번째 옵션 — 시전 속도', 'Third suffix: cast speed'), show=['cast'],
+  edges=[{'if': {'added': 'cast'}, 'to': 'g7', 'res': 'ok'}, {'if': {'param': {'cT': 9}}, 'to': 'g7', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
+         {'to': 'g6x', 'res': 'fail'}], item=[SP, MQ, SL, J('s'), CS],
+  over=[{'param': {'cT': 9}, 'set': {'goal': K('접미 세번째 옵션 — 시전 속도 노림, 나오는 대로', 'Third suffix: aiming for cast speed, keep what comes'),
+                                     'show': [], 'showText': [{'s': 's', 'kr': '랜덤 옵션', 'en': 'Random option'}],
+                                     'item': [SP, MQ, SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])
+A(id='g6x', kind='cleanup', group='main', pos=[1, 7.2], keep=['spell'], maxJunk=1, side='s', label=LIGHT, goal=LIGHT,
+  target=K('우측 소멸의 징조로 접미 하나 지우기 — 모든 주문 +3이 지워지면 새 베이스', 'Dextral Annulment removes one suffix: losing all Spell Skills +3 means a new base'),
+  edges=[{'lost': 'spell', 'to': 'h0', 'label': K('모든 주문 +3 지워짐 — 새 베이스', 'All Spell Skills +3 lost: new base')},
+         {'to': 'g5b', 'label': K('기폭제 다시', 'Catalysts again')}])
+A(id='g7', kind='act', group='main', pos=[0, 8.2], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
+  goal=K('접두 세번째 옵션(훼손)', 'Third prefix (desecrated)'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  edges=[{'to': 'g8'}], item=[SP, MQ, UN('p'), SL, J('s'), CS], over=ESS([SP, MQ, UN('p'), SL, J('s'), CS]))
+A(id='g8', kind='act', group='main', pos=[0, 9.2], act='quality', cur='Sibilant_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
+  goal=K('시전 퀄리티 40% — 모든 주문 스킬 +4', 'Caster quality 40%: all Spell Skills +4'), showText=[K('쇳소리 기폭제 40개', '40 Sibilant Catalysts')],
+  edges=[{'to': 'g9'}], item=[SP, MQ, UN('p'), SL, J('s'), CS], over=ESS([SP, MQ, UN('p'), SL, J('s'), CS]))
+A(id='g9', kind='act', group='main', pos=[0, 10.2], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='sdmg2', label=K('공개', 'Reveal'),
+  goal=K('접두 주문 피해', 'Spell damage prefix'), show=['sdmg2'],
+  edges=[{'if': {'added': 'sdmg'}, 'to': 'g10', 'res': 'ok'}, {'if': {'param': {'dT': 9}}, 'to': 'g10', 'res': 'ok', 'label': K('나오는 대로', 'Keep what comes')},
+         {'to': 'g9x', 'res': 'fail'}], item=[SP, MQ, SD, SL, J('s'), CS],
+  over=[{'param': {'dT': 9}, 'set': {'goal': K('접두 훼손 옵션 공개 — 주문 피해 노림, 나오는 대로', 'Reveal the prefix desecration: aiming for spell damage, keep what comes'),
+                                     'show': [], 'showText': [{'s': 'p', 'kr': '랜덤 옵션', 'en': 'Random option'}],
+                                     'item': [SP, MQ, L('p', '랜덤 옵션', 'Random option', 'd'), SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])
+A(id='g9x', kind='act', group='main', pos=[1, 10.2], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=LIGHT, goal=LIGHT,
+  target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'g7r'}])
+A(id='g7r', kind='act', group='main', pos=[1, 9.2], act='desecrate', cur='Preserved_Collarbone', label=K('훼손', 'Desecrate'),
+  goal=K('다시 훼손 — 퀄리티는 그대로', 'Desecrate again: the quality stays'), showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}],
+  edges=[{'to': 'g9', 'label': K('다시 공개', 'Reveal again')}])
+A(id='g10', kind='act', group='main', pos=[0, 11.2], act='chaos', cur='Greater_Chaos_Orb', omens=['Omen_of_Whittling'], label=K('카오스', 'Chaos'),
+  goal=K('최대 퀄리티를 지우고 접두 랜덤 옵션', 'Maximum Quality out, a random prefix in'), showText=[{'s': 'p', 'kr': '랜덤 옵션 (영상은 에너지 보호막 최대치 %)', 'en': 'Random option (maximum Energy Shield % in the video)'}],
+  edges=[{'to': 'ok'}], item=[SP, SD, RP, SL, J('s'), CS],
+  over=[{'param': {'dT': 9}, 'set': {'item': [SP, L('p', '랜덤 옵션', 'Random option', 'd'), RP, SL, J('s'), L('s', '랜덤 옵션', 'Random option', 'n')]}}])
+A(id='ok', kind='done', group='main', pos=[0, 12.2], label=K('완성', 'Finished'))
+g['nodes'] = N
+g['loops'] = [{'id': 'L1', 'nodes': ['g5b', 'g6', 'g6x'], 'kr': '시전 속도', 'en': 'Cast speed'},
+              {'id': 'L2', 'nodes': ['g9', 'g9x', 'g7r'], 'kr': '훼손 공개', 'en': 'Reveal'}]
+
+json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
+print('wrote', OUT, len(N), 'nodes')
