@@ -4,50 +4,24 @@
  "cls": "Crossbows",
  "base": "Siege Crossbow",
  "ilvl": 82,
- "note": "Diztoh 가성비 석궁(원본 레시피 기록) — 물리 % 매직 베이스 구입(정책 18 — 영상의 완벽한 진화의 오브 반복은 시뮬상 약 86 div) → 완벽한 확장의 오브(접미) → 상위 마모의 에센스 → 아스트리드 → 우측 결정화 + 완벽한 전투의 에센스 → 우측 강령술 + 군왕의 징조 + 보존된 턱뼈 → 공개(아마나무 접미 2개라 수류탄 2회 발동 확정) → 상위 찬미 + 완벽한 엑잘. 밸런스는 접두가 빗나가면 절사의 징조 + 완벽한 카오스 오브(가장 낮은 옵션이 버릴 옵션일 때만, 영상 선택 단계), 에센셜 = 물리 % 1~3티어 베이스, 상위 엑잘, 결과 그대로.",
+ "note": "Diztoh 가성비 석궁(vk3pLFUov8U, 2026-11-13 G14 영상 전체 화면 대조) — 노멀 특출난 공성 쇠뇌(소켓 3, 아이템 레벨 82) → 완벽한 진화·확장 + 소멸로 접두 물리 피해 %(2티어) → 상위 마모의 에센스(레어 + 물리 피해 추가) → 아스트리드의 창의성 → 우측 결정화 + 완벽한 전투의 에센스(접미 잡옵을 지우고 공격 스킬 +3) → 우측 강령술 + 군왕의 징조 + 보존된 턱뼈 → 상위 찬미 + 완벽한 엑잘(접두·접미 1개씩) → 심연의 메아리 + 공개(수류탄 두 번 발동) → 절사 + 완벽한 카오스(가장 낮은 잡옵 한 번). 난이도 쉬움이라 에센셜 하나. 룬 교체·퀄리티·타락은 뺌.",
  "params": {
-  "pT": {
-   "kr": "물리 피해 %",
-   "en": "% physical",
+  "v": {
+   "kr": "흐름",
+   "en": "Flow",
    "values": {
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
-    }
-   }
-  },
-  "eT": {
-   "kr": "원소 피해 추가",
-   "en": "Flat elemental",
-   "values": {
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
-    },
-    "5": {
-     "kr": "1~5티어",
-     "en": "T1–5"
+    "1": {
+     "kr": "영상",
+     "en": "Video"
     }
    }
   }
  },
  "strategies": [
   {
-   "id": "bal",
-   "params": {
-    "pT": 2,
-    "eT": 3
-   }
-  },
-  {
    "id": "ess",
    "params": {
-    "pT": 3,
-    "eT": 5
+    "v": 1
    }
   }
  ],
@@ -57,32 +31,19 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "pT": 3,
-    "eT": 5
+    "v": 1
    },
+   "tier": "ess",
    "desc": {
-    "kr": "더 넓은 목표, 결과 그대로",
-    "en": "Looser targets, keep whatever comes"
-   }
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "pT": 2,
-    "eT": 3
-   },
-   "desc": {
-    "kr": "영상 + 절사로 접두 맞추기",
-    "en": "Video + Whittling for the prefix"
+    "kr": "영상 그대로: 엑잘과 절사 카오스는 결과 그대로",
+    "en": "As the video: the exalt and the Whittling Chaos are kept as they come"
    }
   }
  ],
  "tags": {
   "ppct": {
    "gi": 8,
-   "tmax": "$pT"
+   "tmax": 2
   },
   "flatE": {
    "gi": 39
@@ -93,46 +54,12 @@
   "gren": {
    "gi": 30
   },
-  "hyb": {
-   "gi": 9,
-   "tmax": 3
-  },
-  "fire": {
-   "gi": 4,
-   "tmax": 4
-  },
-  "cold": {
-   "gi": 5,
-   "tmax": 4
-  },
-  "light": {
-   "gi": 7,
-   "tmax": 4
-  },
-  "eatk": {
-   "gi": 23,
-   "tmax": 2
-  },
-  "pre": {
-   "anyOf": [
-    "hyb",
-    "fire",
-    "cold",
-    "light",
-    "eatk"
-   ],
-   "label": {
-    "kr": "복합 물리·원소 피해 추가",
-    "en": "Hybrid physical or flat elemental"
-   }
-  },
   "keep": {
    "anyOf": [
     "ppct",
     "flatE",
     "battle",
-    "gren",
-    "pre"
+    "gren"
    ]
   }
  },
@@ -142,6 +69,12 @@
     "has": "ppct"
    },
    {
+    "has": "flatE"
+   },
+   {
+    "has": "battle"
+   },
+   {
     "has": "gren"
    },
    {
@@ -149,6 +82,9 @@
    },
    {
     "full": "s"
+   },
+   {
+    "desSide": "s"
    }
   ]
  },
@@ -172,116 +108,128 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [],
- "finals": [
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "ppct",
-     "tmax": 2
-    },
-    {
-     "tag": "flatE",
-     "tmax": 1
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "복합 물리·원소 피해 추가",
-      "en": "Hybrid physical or flat elemental"
-     }
-    },
-    {
-     "tag": "battle",
-     "tmax": 1
-    },
-    {
-     "tag": "gren",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "tag": "ppct",
-     "tmax": 3
-    },
-    {
-     "tag": "flatE",
-     "tmax": 1
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "복합 물리·원소 피해 추가",
-      "en": "Hybrid physical or flat elemental"
-     }
-    },
-    {
-     "tag": "battle",
-     "tmax": 1
-    },
-    {
-     "tag": "gren",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  }
- ],
+ "start": "b0",
  "finalItem": {
-  "quality": 20,
   "sockets": 3
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "b0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "c3",
+   "next": "m1",
    "start": {
-    "rar": "magic",
-    "mods": [
-     "ppct"
-    ]
+    "rar": "normal",
+    "mods": []
    },
    "label": {
-    "kr": "물리 피해 % 매직 석궁 구입 (특출난 베이스, 룬 소켓 3)",
-    "en": "Buy a magic exceptional crossbow with % physical (3 rune sockets)"
+    "kr": "노멀 특출난 공성 쇠뇌 구입 (소켓 3, 아이템 레벨 82)",
+    "en": "Buy a normal exceptional Siege Crossbow (3 sockets, item level 82)"
+   },
+   "item": []
+  },
+  {
+   "id": "m1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "transmute",
+   "cur": "Perfect_Orb_of_Transmutation",
+   "label": {
+    "kr": "진화",
+    "en": "Transmute"
+   },
+   "goal": {
+    "kr": "매직 첫번째 옵션 — 접미가 붙으면 확장으로",
+    "en": "First magic option: a suffix goes on to the Augmentation"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "any": [
+       {
+        "has": "ppct"
+       },
+       {
+        "not": {
+         "full": "p"
+        }
+       }
+      ]
+     },
+     "to": "m2",
+     "res": "ok",
+     "label": {
+      "kr": "물리 피해 % 또는 접미",
+      "en": "% physical or a suffix"
+     }
+    },
+    {
+     "to": "m1x",
+     "res": "fail",
+     "label": {
+      "kr": "다른 접두",
+      "en": "Another prefix"
+     }
+    }
+   ],
+   "ask": {
+    "kr": "접두 자리가 비었거나 물리 피해 %?",
+    "en": "Prefix free or % physical?"
    },
    "item": [
     {
-     "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
-     "m": "n",
-     "tags": [
-      "ppct"
-     ]
+     "s": "s",
+     "kr": "물리 공격 피해의 (8—8.9)%를 마나로 흡수",
+     "en": "Leeches (8—8.9)% of Physical Damage as Mana",
+     "m": "j"
     }
    ]
   },
   {
-   "id": "c3",
+   "id": "m1x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    1,
+    1
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "옵션을 지워 노멀로",
+    "en": "Annul back to normal"
+   },
+   "edges": [
+    {
+     "to": "m1"
+    }
+   ]
+  },
+  {
+   "id": "m2",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -289,24 +237,48 @@
     2
    ],
    "act": "augment",
-   "goal": {
-    "kr": "접미 옵션 1개",
-    "en": "One suffix"
-   },
+   "cur": "Perfect_Orb_of_Augmentation",
    "label": {
     "kr": "확장",
     "en": "Augment"
    },
+   "goal": {
+    "kr": "접두 물리 피해 %",
+    "en": "% physical damage prefix"
+   },
+   "show": [
+    "ppct"
+   ],
    "edges": [
     {
-     "to": "c4"
+     "if": {
+      "has": "ppct"
+     },
+     "to": "e1",
+     "res": "ok",
+     "label": {
+      "kr": "성공",
+      "en": "hit"
+     }
+    },
+    {
+     "to": "m1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "miss"
+     }
     }
    ],
+   "ask": {
+    "kr": "물리 피해 %?",
+    "en": "% physical?"
+   },
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "ppct"
@@ -314,22 +286,14 @@
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
+     "kr": "물리 공격 피해의 (8—8.9)%를 마나로 흡수",
+     "en": "Leeches (8—8.9)% of Physical Damage as Mana",
      "m": "j"
-    }
-   ],
-   "cur": "Perfect_Orb_of_Augmentation",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
     }
    ]
   },
   {
-   "id": "c4",
+   "id": "e1",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -337,131 +301,23 @@
     3
    ],
    "act": "essence",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접두 물리 피해 추가",
-    "en": "Upgrade to rare + flat physical prefix"
-   },
-   "label": {
-    "kr": "에센스",
-    "en": "Essence"
-   },
-   "edges": [
-    {
-     "to": "c5"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
-     "m": "n",
-     "tags": [
-      "ppct"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
-     "tags": [
-      "flatE"
-     ]
-    }
-   ],
    "cur": "Greater_Essence_of_Abrasion",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)"
-    }
-   ],
-   "ess": "flatE"
-  },
-  {
-   "id": "c5",
-   "kind": "act",
-   "group": "prep",
-   "pos": [
-    0,
-    4
-   ],
-   "act": "rune",
-   "goal": {
-    "kr": "아스트리드의 창의성 장착",
-    "en": "Socket Astrid’s Creativity"
-   },
-   "label": {
-    "kr": "룬",
-    "en": "Rune"
-   },
-   "edges": [
-    {
-     "to": "c6"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
-     "m": "n",
-     "tags": [
-      "ppct"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
-     "tags": [
-      "flatE"
-     ]
-    }
-   ],
-   "showText": [
-    {
-     "kr": "제작 옵션 하나 더",
-     "en": "One more crafted modifier"
-    }
-   ],
-   "rune": {
-    "kr": "아스트리드의 창의성",
-    "en": "Astrid's Creativity"
-   }
-  },
-  {
-   "id": "c6",
-   "kind": "act",
-   "group": "prep",
-   "pos": [
-    0,
-    5
-   ],
-   "act": "essence",
-   "goal": {
-    "kr": "접미 잡옵을 지우고 공격 스킬 +3",
-    "en": "Swap the junk suffix for +3 attack skills"
-   },
+   "ess": "flatE",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "레어 + 접두 물리 피해 추가",
+    "en": "Rare + added physical damage prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (23—35)~(39—59) 추가 (제작 옵션)",
+     "en": "Adds (23—35) to (39—59) Physical Damage (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "ms"
@@ -470,8 +326,8 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "ppct"
@@ -479,34 +335,19 @@
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flatE"
      ]
     },
     {
      "s": "s",
-     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 attack skills (crafted)",
-     "m": "n",
-     "tags": [
-      "battle"
-     ]
+     "kr": "물리 공격 피해의 (8—8.9)%를 마나로 흡수",
+     "en": "Leeches (8—8.9)% of Physical Damage as Mana",
+     "m": "j"
     }
-   ],
-   "cur": "Perfect_Essence_of_Battle",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 attack skills (crafted)"
-    }
-   ],
-   "ess": "battle",
-   "omens": [
-    "Omen_of_Dextral_Crystallisation"
    ]
   },
   {
@@ -515,9 +356,9 @@
    "group": "main",
    "pos": [
     0,
-    5.5
+    3.4
    ],
-   "next": "c7",
+   "next": "k1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -525,8 +366,8 @@
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "ppct"
@@ -534,121 +375,195 @@
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flatE"
      ]
     },
     {
      "s": "s",
-     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 attack skills (crafted)",
-     "m": "n",
-     "tags": [
-      "battle"
-     ]
+     "kr": "물리 공격 피해의 (8—8.9)%를 마나로 흡수",
+     "en": "Leeches (8—8.9)% of Physical Damage as Mana",
+     "m": "j"
     }
    ]
   },
   {
-   "id": "c7",
+   "id": "k1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    6
+    4.4
+   ],
+   "act": "rune",
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
+   },
+   "edges": [
+    {
+     "to": "k2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
+     "tags": [
+      "flatE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "물리 공격 피해의 (8—8.9)%를 마나로 흡수",
+     "en": "Leeches (8—8.9)% of Physical Damage as Mana",
+     "m": "j"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "k2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5.4
+   ],
+   "act": "essence",
+   "cur": "Perfect_Essence_of_Battle",
+   "ess": "battle",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ],
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "접미 잡옵을 지우고 공격 스킬 +3",
+    "en": "Clear the junk suffix for +3 attack skills"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
+     "en": "+3 to Level of all Attack Skills (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "k3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
+     "m": "n",
+     "tags": [
+      "ppct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
+     "tags": [
+      "flatE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3",
+     "en": "+3 to Level of all Attack Skills",
+     "m": "c",
+     "tags": [
+      "battle"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "k3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6.4
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "접미 두번째 옵션(훼손)",
-    "en": "Second suffix (desecrated)"
-   },
+   "cur": "Preserved_Jawbone",
+   "omens": [
+    "Omen_of_Dextral_Necromancy",
+    "Omen_of_the_Liege"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
-   "edges": [
-    {
-     "to": "c8"
-    }
-   ],
-   "item": [
-    {
-     "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
-     "m": "n",
-     "tags": [
-      "ppct"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
-     "tags": [
-      "flatE"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 attack skills (crafted)",
-     "m": "n",
-     "tags": [
-      "battle"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "아마나무 훼손 옵션(미공개)",
-     "en": "Amanamu desecration (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Dextral_Necromancy",
-    "Omen_of_the_Liege"
-   ]
-  },
-  {
-   "id": "c8",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    7
-   ],
-   "act": "reveal",
    "goal": {
-    "kr": "훼손 옵션 확인 (아마나무 2개 전부 나옴)",
-    "en": "Reveal (both Amanamu lines show)"
+    "kr": "접미 두번째 옵션(훼손, 아마나무)",
+    "en": "Second suffix option (desecrated, Amanamu)"
    },
-   "label": {
-    "kr": "공개",
-    "en": "Reveal"
-   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "접미 훼손 옵션 (미공개, 아마나무)",
+     "en": "Suffix desecration (unrevealed, Amanamu)"
+    }
+   ],
    "edges": [
     {
-     "to": "c9"
+     "to": "k4"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "ppct"
@@ -656,92 +571,79 @@
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flatE"
      ]
     },
     {
      "s": "s",
-     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 attack skills (crafted)",
-     "m": "n",
+     "kr": "모든 공격 스킬 레벨 +3",
+     "en": "+3 to Level of all Attack Skills",
+     "m": "c",
      "tags": [
       "battle"
      ]
     },
     {
      "s": "s",
-     "kr": "수류탄 2회 발동 (아마나무)",
-     "en": "Grenade double activation (Amanamu)",
-     "m": "n",
-     "tags": [
-      "gren"
-     ]
-    }
-   ],
-   "showText": [
+     "kr": "접미 훼손 옵션 (미공개, 아마나무)",
+     "en": "Suffix desecration (unrevealed, Amanamu)",
+     "m": "u"
+    },
     {
-     "s": "s",
-     "kr": "수류탄 2회 발동",
-     "en": "Grenade double activation"
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "want": "gren",
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
-   "id": "c9",
+   "id": "k4",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    8
+    7.4
    ],
    "act": "exalt",
-   "goal": {
-    "kr": "접두·접미 옵션 1개씩",
-    "en": "One prefix and one suffix"
-   },
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두·접미 옵션 1개씩 — 나오는 대로",
+    "en": "One prefix and one suffix: keep what lands"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    },
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
-     "if": {
-      "has": "pre"
-     },
-     "to": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "pT": 2
-        }
-       },
-       {
-        "whittleSafe": "keep"
-       }
-      ]
-     },
-     "to": "c11"
-    },
-    {
-     "to": "ok"
+     "to": "k5"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "ppct"
@@ -749,107 +651,83 @@
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flatE"
      ]
     },
     {
+     "s": "p",
+     "kr": "정확도 +(237—346)",
+     "en": "+(237—346) to Accuracy Rating",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 attack skills (crafted)",
-     "m": "n",
+     "kr": "모든 공격 스킬 레벨 +3",
+     "en": "+3 to Level of all Attack Skills",
+     "m": "c",
      "tags": [
       "battle"
      ]
     },
     {
      "s": "s",
-     "kr": "수류탄 2회 발동 (아마나무)",
-     "en": "Grenade double activation (Amanamu)",
-     "m": "n",
-     "tags": [
-      "gren"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line",
-     "m": "j"
+     "kr": "접미 훼손 옵션 (미공개, 아마나무)",
+     "en": "Suffix desecration (unrevealed, Amanamu)",
+     "m": "u"
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
+     "kr": "힘 +(28—30)",
+     "en": "+(28—30) to Strength",
+     "m": "n"
+    },
     {
-     "kr": "랜덤 옵션 2개 — 복합 물리·원소 피해 추가면 좋음",
-     "en": "Two random lines — hybrid physical or flat elemental is good"
-    }
-   ],
-   "omens": [
-    "Omen_of_Greater_Exaltation"
-   ],
-   "over": [
-    {
-     "param": {
-      "pT": 3
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
-     }
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "c11",
+   "id": "k5",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    9
+    8.4
    ],
-   "act": "chaos",
-   "goal": {
-    "kr": "가장 낮은 옵션을 접두로 (버릴 옵션일 때만)",
-    "en": "Replace the lowest line (only while it is junk)"
-   },
+   "act": "reveal",
+   "want": "gren",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
    "label": {
-    "kr": "카오스",
-    "en": "Chaos"
+    "kr": "공개",
+    "en": "Reveal"
    },
+   "goal": {
+    "kr": "접미 수류탄 두 번 발동 (아마나무, 훼손)",
+    "en": "Grenade double activation suffix (Amanamu, desecrated)"
+   },
+   "show": [
+    "gren"
+   ],
    "edges": [
     {
-     "if": {
-      "has": "pre"
-     },
-     "to": "ok",
+     "to": "k6",
      "res": "ok"
-    },
-    {
-     "if": {
-      "whittleSafe": "keep"
-     },
-     "to": "c11",
-     "res": "fail"
-    },
-    {
-     "to": "ok",
-     "res": "fail"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "물리 피해 % 증가",
-     "en": "% physical damage",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
       "ppct"
@@ -857,53 +735,154 @@
     },
     {
      "s": "p",
-     "kr": "물리 피해 추가 (제작 옵션)",
-     "en": "Flat physical (crafted)",
-     "m": "n",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
      "tags": [
       "flatE"
      ]
     },
     {
+     "s": "p",
+     "kr": "정확도 +(237—346)",
+     "en": "+(237—346) to Accuracy Rating",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "모든 공격 스킬 레벨 +3 (제작 옵션)",
-     "en": "+3 attack skills (crafted)",
-     "m": "n",
+     "kr": "모든 공격 스킬 레벨 +3",
+     "en": "+3 to Level of all Attack Skills",
+     "m": "c",
      "tags": [
       "battle"
      ]
     },
     {
      "s": "s",
-     "kr": "수류탄 2회 발동 (아마나무)",
-     "en": "Grenade double activation (Amanamu)",
-     "m": "n",
+     "kr": "유탄이 (15—25)%의 확률로 한 번 더 작동",
+     "en": "Grenades have (15—25)% chance to activate a second time",
+     "m": "d",
      "tags": [
       "gren"
      ]
     },
     {
+     "s": "s",
+     "kr": "힘 +(28—30)",
+     "en": "+(28—30) to Strength",
+     "m": "n"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "k6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9.4
+   ],
+   "act": "chaos",
+   "cur": "Perfect_Chaos_Orb",
+   "omens": [
+    "Omen_of_Whittling"
+   ],
+   "label": {
+    "kr": "절사 + 카오스",
+    "en": "Whittling + Chaos"
+   },
+   "goal": {
+    "kr": "가장 낮은 잡옵 다시 — 나오는 대로",
+    "en": "Reroll the lowest junk option: keep what lands"
+   },
+   "showText": [
+    {
      "s": "p",
-     "kr": "복합 물리·원소 피해 추가",
-     "en": "Hybrid physical or flat elemental",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "skipIf": {
+    "not": {
+     "whittleSafe": {
+      "tag": "keep",
+      "keepDes": true
+     }
+    }
+   },
+   "skipTo": "ok",
+   "skipHide": true,
+   "skipNote": {
+    "kr": "가장 낮은 레벨 옵션이 잡옵이 아니면 건너뜀",
+    "en": "Skipped when the lowest-level option is not junk"
+   },
+   "edges": [
+    {
+     "to": "ok",
+     "res": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (155—169)% 증가",
+     "en": "(155—169)% increased Physical Damage",
      "m": "n",
      "tags": [
-      "pre"
+      "ppct"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (23—35)~(39—59) 추가",
+     "en": "Adds (23—35) to (39—59) Physical Damage",
+     "m": "c",
+     "tags": [
+      "flatE"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "화염 피해 (56—70)~(84—107) 추가",
+     "en": "Adds (56—70) to (84—107) Fire Damage",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +3",
+     "en": "+3 to Level of all Attack Skills",
+     "m": "c",
+     "tags": [
+      "battle"
      ]
     },
     {
      "s": "s",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
+     "kr": "유탄이 (15—25)%의 확률로 한 번 더 작동",
+     "en": "Grenades have (15—25)% chance to activate a second time",
+     "m": "d",
+     "tags": [
+      "gren"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "힘 +(28—30)",
+     "en": "+(28—30) to Strength",
+     "m": "n"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "cur": "Perfect_Chaos_Orb",
-   "show": [
-    "pre"
-   ],
-   "omens": [
-    "Omen_of_Whittling"
    ]
   },
   {
@@ -912,12 +891,57 @@
    "group": "main",
    "pos": [
     0,
-    10
+    10.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "m1",
+    "m1x",
+    "m2"
+   ],
+   "kr": "매직 옵션 맞추기",
+   "en": "Magic options"
+  }
+ ],
+ "finals": [
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "ppct"
+    },
+    {
+     "tag": "flatE",
+     "ess": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "battle",
+     "ess": true
+    },
+    {
+     "tag": "gren",
+     "des": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
   }
  ]
 }

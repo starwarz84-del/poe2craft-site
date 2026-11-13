@@ -10,14 +10,24 @@ def _scep(r, t):
     if t=='ess': p4.pop('fail',None); p4['br']=KEEP
 for _t in ('bal','ess'): _grade('sihan-chayula-sceptre','sihan-chayula-sceptre-v2',_t,_scep)
 
-# 2. Diztoh 가성비 석궁 — both start from a bought magic % physical base (정책 18; the video's Perfect Transmutation loop is ~86 div in the sim)
+# 2. Diztoh 가성비 석궁 — 2026-11-13 G14: 영상 전체 화면 대조(근거 scratchpad review/G14/diztoh-budget-crossbow-v2/timeline.md), 난이도 쉬움 → 에센셜만.
+#    단계·확률은 플로우차트(scripts/graphs/gen_diztoh_budget_crossbow.py). 상자 id(b0·m1·m1x·m2·e1·k1~k6)는 옛 단계 id(c1~c16)와 겹치지 않게 새로 붙임.
 def _xbow(r, t):
-    r['start']={'rar':'magic','mods':[{'gi':xd_ppct,'tmax':2 if t=='bal' else 3}]}
-    _node(r,'c1')['note']=K('물리 피해 % 매직 석궁 구입(특출난 베이스, 룬 소켓 3).','Buy a magic exceptional crossbow with % physical (3 rune sockets).')
-    _drop(r,'c2','c10','c13','c14','c15')
-    if t=='ess':
-        _drop(r,'c11'); c9=_node(r,'c9'); c9['cur']='Greater_Exalted_Orb'; c9['br']=KEEP
-for _t in ('bal','ess'): _grade('diztoh-budget-crossbow','diztoh-budget-crossbow-v2',_t,_xbow)
+    r['start']={'rar':'normal','mods':[]}
+    r['phases']=[{'id':'base','kr':'매직 · 에센스','en':'Magic and essences'},{'id':'des','kr':'훼손 · 엑잘','en':'Desecration and slam'}]
+    r['nodes']=[
+      {'id':'b0','phase':'base','do':'base','cost':'base','ts':'0:45','note':K('노멀 특출난 공성 쇠뇌(소켓 3), 아이템 레벨 82.','A normal exceptional Siege Crossbow (3 sockets), item level 82.')},
+      {'id':'m1','phase':'base','do':'transmute','cur':'Perfect_Orb_of_Transmutation','target':{'gi':xd_ppct},'ts':'0:50'},
+      {'id':'m2','phase':'base','do':'augment','cur':'Perfect_Orb_of_Augmentation','target':{'gi':xd_ppct},'ts':'1:05'},
+      {'id':'e1','phase':'base','do':'essence','cur':'Greater_Essence_of_Abrasion','target':{'gi':xd_flatE},'ts':'1:37'},
+      {'id':'k1','phase':'des','do':'manual','target':{'rune':XD_ASTRID},'ts':'1:52'},
+      {'id':'k2','phase':'des','do':'essence','cur':'Perfect_Essence_of_Battle','omens':['Omen_of_Dextral_Crystallisation'],'target':{'gi':xd_battle},'ts':'2:00'},
+      {'id':'k3','phase':'des','do':'desecrate','cur':'Preserved_Jawbone','omens':['Omen_of_Dextral_Necromancy','Omen_of_the_Liege'],'target':{'unrev':'s'},'ts':'2:16'},
+      {'id':'k4','phase':'des','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Greater_Exaltation'],'target':{'junk':['p','s']},'ts':'2:40'},
+      {'id':'k5','phase':'des','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':xd_gren},'side':'s','lord':'amanamu','bone':'Preserved_Jawbone'},'ts':'2:53'},
+      {'id':'k6','phase':'des','do':'chaos','cur':'Perfect_Chaos_Orb','omens':['Omen_of_Whittling'],'target':{'junk':'p'},'ts':'3:32'},
+    ]
+_grade('diztoh-budget-crossbow','diztoh-budget-crossbow-v2','ess',_xbow)
 
 # 3. Diztoh 한손 둔기 — bought magic crit base (정책 18), no Sinistral Erasure loop (about 470 div in the sim); Balance keeps the Whittling fix
 def _mace1(r, t):
