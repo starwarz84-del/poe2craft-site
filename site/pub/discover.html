@@ -167,6 +167,7 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 #mkmsg{font-size:13px}
 .mp{display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-size:12px;color:var(--muted)}.mp input{width:84px;padding:3px 6px;font:inherit;background:transparent;color:inherit;border:1px solid currentColor;border-radius:4px;opacity:.85}
 .costl{margin:4px 0 0;font-size:12px;color:var(--muted)}.costl.over{color:#e0a060}
+.tplline{margin:6px 0 0;font-size:12px;color:var(--muted)}
 #mkmsg .ok{color:var(--ok)}
 .pv{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 12px;display:flex;flex-direction:column;gap:8px}
 .pv-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.pv-h span{font-size:12px;color:var(--muted)}
@@ -723,8 +724,11 @@ async function bestDraftAsync(it, an, opt, tick, minMs){ const t0=performance.no
   const say = ph => tick && tick({phase:ph, n:C.length, runs, ms:el()});
   for(const K of kn) for(const v of RV) for(const x of EX){ try{ const o={...v.o, ...x.o}, d=makeDraft(it, K.a, {...(opt||{}), ...o, market:1e9}); if(!d) continue; if(o.desLoop && !d.nodes.some(n=>n.do==='reveal' && (n.fail?.via?.omens||[]).includes('Omen_of_Light'))) continue; if(o.noFlux && !POE2GRAPH.fluxPlan(d, it.D)) continue; if(o.rareBuy && d.start.rar!=='rare') continue;   /* W7: 징표 반복은 필수 훼손 공개가 있을 때만, 유동체 빼기는 유동체 경로가 있을 때만 */ const sg=sig(d); if(seen.has(sg)) continue; seen.add(sg);
       if(verifyDraft(it, K.a, d).some(z=>z.lv==='err')) continue; C.push({K, o, k:[v.k, x.k].filter(Boolean).join('+'), g:POE2GRAPH.fromDraft(d, it.D, {craft:S.craft, grades:['high']}), mag:0, sum:0, n:0, bad:false}); }catch(_){ } }
+  /* 등록 레시피 틀 후보(W9): 생성 후보와 같이 시뮬로 비교하고, 고를 때는 틀 우선(아래) */
+  try{ const base0=makeDraft(it, an, {...(opt||{}), market:1e9}); for(const x of await tplDrafts(it, an, base0)){ const ve=verifyDraft(it, an, x.d).filter(z=>z.lv==='err'); if(ve.length){ S.tplWhy[x.m.t.g]='검산 오류: '+ve[0].kr; continue; }
+      C.push({K:{k:[], a:an}, o:{}, k:'tpl:'+x.m.t.g, tpl:x, d:x.d, g:POE2GRAPH.fromDraft(x.d, it.D, {}), mag:0, sum:0, n:0, bad:false}); } }catch(e){ (S.tplWhy=S.tplWhy||{})._err=String(e.message||e); }
   say('make'); await nap(30);
-  const roll = (c, N, seed) => { try{ const st=c.g.strategies[0], r=POE2SIM.simulate({...c.g, maxSteps:1e5}, it.D, S.craft, S.prices, st.params, N, seed); if(r.reqOk<0.98 || (c.o.desLoop && Object.keys(r.c1||{}).length)){ c.bad=true; return; }   /* 징표 후보: 제작 옵션 한도(5장 C1) 위반이면 뺌 */ c.sum+=(r.useDiv+c.mag)*N; c.n+=N; runs+=N;   /* 비용 기준 = revCost(W2) */ }catch(_){ c.bad=true; } };
+  const roll = (c, N, seed) => { try{ const st=c.g.strategies[0], r=POE2SIM.simulate({...c.g, maxSteps:1e5}, it.D, S.craft, S.prices, st.params, N, seed); if(r.reqOk<0.98 || ((c.o.desLoop || c.tpl) && Object.keys(r.c1||{}).length)){ c.bad=true; return; }   /* 징표 후보: 제작 옵션 한도(5장 C1) 위반이면 뺌 */ c.sum+=(r.useDiv+c.mag)*N; c.n+=N; runs+=N;   /* 비용 기준 = revCost(W2) */ }catch(_){ c.bad=true; } };
   const mean = c => c.bad || !c.n ? Infinity : c.sum/c.n;
   for(const c of C){ const t=performance.now(); roll(c, 30, 7); c.ms=performance.now()-t; say('sim'); await nap(); }
   // 다듬기: 상위 후보 3개를 번갈아 더 돌림(한 번에 0.4초 안쪽). 1차가 이미 오래 걸린 후보는 한 번만 더
@@ -732,13 +736,73 @@ async function bestDraftAsync(it, an, opt, tick, minMs){ const t0=performance.no
     for(const c of top){ const N = Math.max(10, Math.min(120, Math.round(30*400/Math.max(c.ms,1)))); roll(c, N, seed++); say('refine'); await nap(); if(el() > Math.max(minMs||0, 10000)*3) break; } }
   /* 고르기 전 확인(2026-11-12, MazBro 셉터: 짧게 돌릴 땐 괜찮던 후보가 길게 돌리면 끝나지 않음) — 가장 싼 후보부터 300회 더 돌려 끝나지 않거나 조건을 못 맞추면 뺌 */
   for(let k=0;k<6;k++){ const c=C.filter(c=>!c.bad && !c.ok).sort((a,b)=>mean(a)-mean(b))[0]; if(!c) break; try{ const st=c.g.strategies[0], r=POE2SIM.simulate({...c.g, maxSteps:1e5}, it.D, S.craft, S.prices, st.params, 300, 99); if(r.reqOk<0.98) c.bad=true; else c.ok=true; }catch(_){ c.bad=true; } await nap(); if(c.ok) break; }
-  S.lastC=C; const d0=C[0] && !C[0].K.k.length && !C[0].k && !C[0].bad ? C[0] : null; let best = C.filter(c=>!c.bad).sort((a,b)=>mean(a)-mean(b))[0] || C[0];
+  S.lastC=C; const d0=C[0] && !C[0].K.k.length && !C[0].k && !C[0].bad ? C[0] : null; let best = C.filter(c=>!c.bad && !c.tpl).sort((a,b)=>mean(a)-mean(b))[0] || C.find(c=>!c.tpl);
   if(d0 && best!==d0 && !(mean(best) < mean(d0)*0.9)) best=d0;   // 기본 초안보다 10% 넘게 싸야 바꿈
+  /* 틀 우선(13장 11-13 20:28): 가장 싼 틀 후보를 고르고, 생성 후보가 같은 등급에서 10% 넘게 쌀 때만 생성 후보 — 틀은 등록 등급(밸런스 등)으로 돌기 때문에 생성 후보도 그 등급 그래프로 300회씩 다시 잼 */
+  const tb=C.filter(c=>c.tpl && !c.bad).sort((a,b)=>mean(a)-mean(b))[0];
+  if(tb){ let useT=true; const tg=tb.g.strategies[0].id;
+    try{ const rT=POE2SIM.simulate({...tb.g, maxSteps:1e5}, it.D, S.craft, S.prices, tb.g.strategies[0].params, 300, 5); tb.cmp={grade:tg, tpl:+rT.useDiv.toFixed(1)}; if(rT.reqOk<0.98){ useT=false; tb.bad=true; }
+      else if(best){ const gd=makeDraft(it, best.K.a, {...(opt||{}), ...best.o, market:1e9}), g2=POE2GRAPH.fromDraft(gd, it.D, {craft:S.craft, grades:[tg]}), st2=g2.strategies.find(x=>x.id===tg) || g2.strategies[0];
+        const rG=POE2SIM.simulate({...g2, maxSteps:1e5}, it.D, S.craft, S.prices, st2.params, 300, 5); tb.cmp.gen=+rG.useDiv.toFixed(1); tb.cmp.genGrade=st2.id; if(rG.reqOk>=0.98 && st2.id===tg && rG.useDiv < rT.useDiv*0.9) useT=false; } }catch(_){ useT=false; }
+    if(useT) best=tb; S.tplCmp=tb.cmp; } else S.tplCmp=null;
   while(el() < (minMs||0)){ say('wait'); await nap(200); }
   if(!best) return {...bestDraft(it, an, {...(opt||{}), quick:true}), tried:0, runs};
+  if(best.tpl){ const d=best.d; d.tpl={...d.tpl, cmp:best.cmp||null}; if(opt?.market>0 && opt.market<1e9) d.marketPrice=opt.market; d.tried={n:C.length, runs}; return {d, an, tried:C.length, runs}; }
   const d = makeDraft(it, best.K.a, {...(opt||{}), ...best.o}); if(d){ if(best.K.k.length){ d.knowhow=best.K.k; d.knowhowWhy={...(best.K.a.swap?{K5:best.K.a.swap}:{}), ...(best.K.a.dswap?{K6:best.K.a.dswap}:{})}; }
     if(best.k) d.pick={k:best.k, from:d0 && isFinite(mean(d0)) ? +mean(d0).toFixed(1) : null, to:+mean(best).toFixed(1)}; d.tried={n:C.length, runs}; }
   return {d, an:best.K.a, tried:C.length, runs}; }
+/* 등록 레시피 틀(W9, 리버스 13장 사용자 확정 11-13 20:28 '비슷한 등록 레시피를 틀로 쓴 후보를 먼저 고르고, 새로 계산한 후보가 10% 넘게 쌀 때만 바꿈', docs/reverse-pipeline.md 2-1).
+   data/revtpl.json(scripts/build_revtpl.py) = 등록 플로우차트마다 완성 조건의 꼭 있어야 하는 옵션 자리(core). 같은 클래스에서 그 자리를 붙여 넣은 필수 옵션과 하나씩 짝지음:
+   같은 옵션(잎 gi)이면 그대로, 아니면 같은 쪽·같은 분류(일반·훼손 전용)·같은 분열·훼손 표시의 옵션 하나로 바꿈(묶음 자리는 바꾸지 않음). 남는 자리·남는 필수 옵션이 있으면 틀이 아님.
+   틀 그래프는 data/graphs/<id>.json을 그때 받아 POE2GRAPH.tplRewrite로 옵션만 바꿈(규칙을 어기면 뺌) */
+async function loadTpl(){ if(S.tplIdx!==undefined) return S.tplIdx; try{ S.tplIdx = await fetch('data/revtpl.json').then(r=>r.ok?r.json():null); }catch(_){ S.tplIdx=null; } return S.tplIdx; }
+async function loadTplGraph(id){ S.tplG=S.tplG||{}; if(!(id in S.tplG)) S.tplG[id] = fetch(`data/graphs/${encodeURIComponent(id)}.json`).then(r=>r.ok?r.json():null).catch(()=>null); return S.tplG[id]; }
+const tplName = (it, gi) => { const t=it.D.groups[gi]?.t?.[0], c = s => String(s||'').split('\n').join(' / ').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\s*~\s*/g,' ').replace(/\s+/g,' ').replace(/^(의|를|을)\s/,'').replace(/\bAdds\s+to\b/g,'Adds').trim(); return {kr:c(t?.[4]), en:c(t?.[5])}; };
+function tplMatch(it, an){ const T=S.tplIdx?.g; if(!T || S.noTpl) return [];
+  const G=it.D.groups, rows=an.rows.filter(r=>!r.soft && r.g && !r.unrev && r.m?.gi!=null), out=[];
+  let FRG=new Set(); const frOk = (c, r) => r.m.fr ? (!!c.fr || FRG.has(r.m.gi)) : (!c.fr || c.n>1), flagOk = (c, r) => frOk(c, r) && !!c.des===(r.how==='d');   /* 같은 옵션이면 분열 표시만 맞으면 됨(훼손으로 얻었든 아니든 틀 흐름이 그 옵션을 만듦), 바꿀 때는 훼손 표시까지 */
+  for(const t of Object.values(T)){ if(t.cls!==it.cls || S.tplSkip?.has(t.g)) continue; FRG=new Set(t.frg||[]);   /* 틀이 분열하는 옵션(묶음 잎 포함) */
+   /* 등급마다 완성 조건 자리가 다를 수 있음(밸런스만 훼손 옵션 필수 등) — 같은 자리 모양의 등급끼리 묶어 짝짓기.
+      extra = 완성 조건 밖이지만 완성 카드에 늘 나오는 옵션 줄: 붙여 넣은 필수 옵션이 남으면 같은 옵션일 때만 짝지음 */
+   const sigs={}; for(const [gr,core] of Object.entries(t.cores||{})){ const ex=t.extra?.[gr]||[], k=JSON.stringify([core, ex]); (sigs[k] = sigs[k] || {core, ex, grades:[]}).grades.push(gr); }
+   for(const {core, ex, grades} of Object.values(sigs)){
+    const slots=core.flatMap(c=>Array.from({length:c.n},()=>c)); if(slots.length>rows.length+1 || slots.length+ex.length<rows.length) continue;
+    const pair=new Array(slots.length).fill(null), used=new Set();
+    slots.forEach((c,k)=>{ const j=rows.findIndex((r,q)=>!used.has(q) && frOk(c,r) && c.gis.includes(r.m.gi)); if(j>=0){ pair[k]=j; used.add(j); } });
+    /* 묶음 자리 하나는 붙여 넣은 필수 옵션이 없어도 됨(틀이 그 자리를 더 만들어 줌 — 비용은 시뮬이 그대로 셈) */
+    const map={}; let ok=true, freeAny=1;
+    slots.forEach((c,k)=>{ if(!ok || pair[k]!=null) return; if(c.gis.length!==1){ if(freeAny-- > 0){ pair[k]=-1; return; } ok=false; return; }
+      const a=c.gis[0], j=rows.findIndex((r,q)=>!used.has(q) && flagOk(c,r) && r.g.g===G[a]?.g && r.g.s===G[a]?.s && ['n','d'].includes(r.g.s));
+      if(j<0 || (map[a]!=null && map[a]!==rows[j].m.gi)){ ok=false; return; } pair[k]=j; used.add(j); map[a]=rows[j].m.gi; });
+    if(!ok) continue;
+    const exU=new Set(), exT={}; rows.forEach((r,q)=>{ if(!ok || used.has(q)) return; const e=ex.findIndex((c,i)=>!exU.has(i) && frOk(c,r) && c.gis.includes(r.m.gi) && !Object.values(map).includes(r.m.gi)); if(e<0){ ok=false; return; } exU.add(e); used.add(q); exT[ex[e].t]=(exT[ex[e].t]||0)+1; });
+    if(!ok || used.size!==rows.length) continue;
+    out.push({t, core, grades, map, exT, pair:pair.map(j=>j>=0 ? rows[j] : null), changed:Object.keys(map).length}); } }
+  out.sort((a,b)=>a.changed-b.changed || (Math.min(...Object.values(a.t.use))-Math.min(...Object.values(b.t.use))));
+  return out.slice(0,3); }
+/* 틀 후보 초안: 메타(이름·소켓·출처)는 기본 초안, 단계·시작은 등록 레시피(같은 등급)를 옵션만 바꿔서, 플로우차트는 tplGraph(fromDraft가 그대로 씀) */
+async function tplDrafts(it, an, base0){ const out=[]; if(!base0) return out; await loadTpl(); if(!S.tplIdx) return out;
+  if(!S.recAll){ if(!S.recLoad) S.recLoad = fetch('data/recipes.json').then(r=>r.ok?r.json():null).then(j=>{ S.recAll = (j && (j.recipes||j)) || []; }).catch(()=>{ S.recAll=[]; }); await S.recLoad; }
+  const why=S.tplWhy={};
+  for(const m of tplMatch(it, an)){ const g0=await loadTplGraph(m.t.g); if(!g0){ why[m.t.g]='그래프 없음'; continue; }
+    const keep=new Set(m.grades), graph={...g0, strategies:g0.strategies.filter(x=>keep.has(x.id)), versions:(g0.versions||[]).filter(v=>keep.has(v.id)), finals:(g0.finals||[]).filter(f=>keep.has(f.id))};
+    /* 티어: 틀의 맨 위 등급이 붙여 넣은 필수 옵션(고른 티어)보다 낮은 티어까지 받으면 틀이 아님 */
+    /* 하이엔드 등급만 비교(밸런스·에센셜은 등록 레시피도 C17로 넓힌 등급) */
+    const top=graph.strategies[0], hi=graph.strategies.find(x=>x.id==='high'), P=x=>typeof x==='string' && x[0]==='$' ? +hi.params[x.slice(1)] : x;
+    const loose = !!hi && m.core.flatMap(c=>Array.from({length:c.n},()=>c)).some((c,k)=>{ const r=m.pair[k]; if(!r || r.m.fr) return false; const gi=m.map[c.gis[0]]!=null ? c.gis[0] : r.m.gi;
+      const tm=Object.values(graph.tags).filter(x=>x.gi===gi && x.tmax!=null).map(x=>P(x.tmax)).filter(x=>typeof x==='number'); return tm.length && Math.min(...tm) > r.tierNo; });
+    if(loose){ why[m.t.g]='틀이 더 낮은 티어까지 받음'; continue; }
+    const names={}; Object.values(m.map).forEach(gi=>{ names[gi]=tplName(it, gi); });
+    const rw=POE2GRAPH.tplRewrite(graph, it.D, m.map, {base:it.D.bases[it.bi]?.en, ilvl:it.ilvl, names}); if(rw.bad){ why[m.t.g]=rw.bad; continue; }
+    /* 완성 조건 밖 줄(extra)로 짝지은 필수 옵션은 완성 조건에 더해 시뮬이 실제로 만드는지 확인 */
+    const exC=Object.entries(m.exT||{}).map(([t,n])=>n>1 ? {count:{tag:t, min:n}} : {has:t}); if(exC.length) rw.g.require={all:[rw.g.require, ...exC]};
+    const rid=m.t.recs[top.id] || m.t.rid, rec=(S.recAll||[]).find(x=>x.id===rid); if(!rec){ why[m.t.g]='레시피 없음'; continue; }
+    const remap = x => JSON.parse(JSON.stringify(x||null), (k,v)=> (k==='gi'||k==='removeGi'||k==='dropGi') && typeof v==='number' && m.map[v]!=null ? m.map[v] : v);
+    const nodes=(remap(rec.nodes)||[]).map(n=>{ const o={...n}; delete o.ts; if(m.changed){ delete o.tips; delete o.note; } return o; });
+    const d={...base0, nodes, start:remap(rec.start)||base0.start, phases:rec.phases||base0.phases, difficulty:m.t.diff, tplGraph:rw.g, tpl:{g:m.t.g, rid, ti:m.t.ti, changed:m.changed}};
+    ['fracPrep','prep','desLoop','noFlux','dupGi','compromises','priceTier','marketPrice'].forEach(k=>delete d[k]); ['cap','sockets','exceptional','prep'].forEach(k=>{ if(rec[k]!=null) d[k]=remap(rec[k]); });
+    out.push({m, d}); }
+  return out; }
 function desSwap(it, an){ const rows = an.rows; if(rows.some(r=>r.how==='d' || r.unrev) || it.mods.some(m=>m.unrev || m.desTag)) return an;
   const c = rows.map((r,ri)=>({r,ri})).filter(({r})=>r.how==='n' && !r.m.fr && !r.unknown && r.pOmen>0 && r.pOmen<0.08);
   if(!c.length) return an; const best = c.sort((a,b)=>(a.r.soft?1:0)-(b.r.soft?1:0) || a.r.pOmen-b.r.pOmen)[0];
@@ -1370,7 +1434,7 @@ function makeDraft(it, an, opt){
 
 
 /* ---------- verification: replay the draft step by step and check it against the pasted item ---------- */
-function verifyDraft(it, an, d){
+function verifyDraft(it, an, d){ if(d?.tplGraph) return [{lv:'ok', kr:`등록 레시피 「${d.tpl?.ti?.kr||d.tpl?.g||''}」 흐름 그대로 · 단계 검사는 아래 플로우차트 시뮬로`, en:`Follows the registered recipe "${d.tpl?.ti?.en||d.tpl?.g||''}" · its steps are checked by the flowchart simulation below`}];   /* 틀 후보(W9): 등록 흐름은 영상·시뮬로 검증됨 — 초안 규칙 재생(아래)은 등록 단계 구조를 모름 */
   const out=[], D=it.D, cap= d.cap ? {p:d.cap.p, s:d.cap.s} : {...an.cap}, grp=gi=>D.groups[gi];   // the recipe's own slots (a jewel starts at 2/2)
   const add=(lv,kr,en,step)=>out.push({lv, kr:(step!=null?`${step}단계 · `:'')+kr, en:(step!=null?`Step ${step} · `:'')+en});
   const nameOf = gi => (grp(gi)?.t[0][KR()?4:5]||'').split('\n')[0];
@@ -1848,7 +1912,7 @@ function flowHTML(F){ const VN={high:L('하이엔드','High-end'), bal:L('밸런
   const rows = F.res.map(x=> x.res ? `<tr><td>${VN[x.id]||x.id}${F.off?.[x.id] ? ` <small>(${L('난이도 표에 없는 등급','not a grade at this difficulty')})</small>` : F.merged?.[x.id] ? ` <small>(${L(`${VN[F.merged[x.id]]}와 같은 결과 · 합침`,`same result as ${VN[F.merged[x.id]]}, merged`)})</small>` : ''}</td><td>${fd(x.cost ?? x.res.mean)}</td><td>${fd(x.res.useMedian!=null ? x.res.useMedian : x.res.median)}</td><td>${fd(x.res.useP90!=null ? x.res.useP90 : x.res.p90)}</td><td>${x.res.bases.toFixed(1)}</td><td>${x.res.reqOk>=0.98?'✓':Math.round(x.res.reqOk*100)+'%'}</td></tr>` : `<tr><td>${VN[x.id]||x.id}</td><td colspan="5">${L('진행 불가','No way through')}</td></tr>`).join('');
   return `<div class="flow ${F.issues.length?'bad':''}"><div class="ch-h"><b>${L('플로우차트 검사','Flowchart check')}</b><span>${F.issues.length ? L('통과 실패 · 아래 문제를 고쳐야 레시피 생성 가능','Not passed — these need fixing before a recipe is made') : L(`단계 ${F.g.nodes.filter(n=>n.kind==='act').length}개를 실제 확률로 ${(F.res[0]?.res?.N||0).toLocaleString()}번씩 끝까지 진행 · 막힘 없음`,`Ran the ${F.g.nodes.filter(n=>n.kind==='act').length} steps to the end ${(F.res[0]?.res?.N||0).toLocaleString()} times each with real odds. No dead ends`)}</span></div>
     <table><thead><tr><th>${L('등급','Grade')}</th><th>${L('평균','Mean')}</th><th>${L('중앙값','Median')}</th><th>${L('운 나쁠 때(90%)','Unlucky (90%)')}</th><th>${L('베이스','Bases')}</th><th>${L('필수 옵션','Must-haves')}</th></tr></thead><tbody>${rows}</tbody></table>
-    <span class="hint">${L('완성 1개당 제작 비용(div) · 베이스 값 제외','Crafting cost per finished item (div), base value not included')}${(()=>{ const m=F.res.find(x=>x.res?.magDiv)?.res.magDiv; return m ? ' · '+L(`매직 베이스를 직접 굴리면 약 ${m>=10?Math.round(m):m.toFixed(1)} div 추가`, `rolling the magic base yourself adds about ${m>=10?Math.round(m):m.toFixed(1)} div`) : ''; })()}${F.diff ? ' · '+L('난이도 ','Difficulty ')+DIFF_N()[F.diff.d]+' → '+POE2GRAPH.gradesFor(F.diff.d).map(v=>VN[v]).join(KR()?'·':', ') : ''}</span>${(()=>{ const a0=S.last; if(!a0?.it) return ''; const same=similarRecipes(a0.it, a0.an).filter(x=>x.same); const mine=F.res?.find(x=>x.res && !F.off?.[x.id] && !F.merged?.[x.id])?.cost;
+    <span class="hint">${L('완성 1개당 제작 비용(div) · 베이스 값 제외','Crafting cost per finished item (div), base value not included')}${(()=>{ const m=F.res.find(x=>x.res?.magDiv)?.res.magDiv; return m ? ' · '+L(`매직 베이스를 직접 굴리면 약 ${m>=10?Math.round(m):m.toFixed(1)} div 추가`, `rolling the magic base yourself adds about ${m>=10?Math.round(m):m.toFixed(1)} div`) : ''; })()}${F.diff ? ' · '+L('난이도 ','Difficulty ')+DIFF_N()[F.diff.d]+' → '+POE2GRAPH.gradesFor(F.diff.d).map(v=>VN[v]).join(KR()?'·':', ') : ''}</span>${(()=>{ const a0=S.last; if(!a0?.it) return ''; const same=similarRecipes(a0.it, a0.an).filter(x=>x.same && x.b.g!==S.draft?.tpl?.g); const mine=F.res?.find(x=>x.res && !F.off?.[x.id] && !F.merged?.[x.id])?.cost;
       const best=same.map(x=>({x, m:S.simC?.[x.b.g+'|'+x.b.tr]})).filter(y=>y.m!=null).sort((p,q)=>p.m-q.m)[0]; if(!best || mine==null) return '';
       const r=mine/best.m, nm=esc(best.x.b.ti?.[KR()?'kr':'en']||best.x.id);
       return r>1.1 ? `<p class="iss">${L(`같은 구조 등록 레시피 「${nm}」가 이 초안보다 ${r.toFixed(1)}배 쌈 → 그 레시피를 따르는 것을 권장`,`The same-structure recipe "${nm}" is ${r.toFixed(1)}× cheaper than this draft; follow it instead.`)}</p>` : `<p class="hint">${L(`같은 구조 등록 레시피 「${nm}」와 비용 비슷하거나 더 쌈`,`About as cheap as or cheaper than "${nm}"`)}</p>`; })()}
@@ -1862,7 +1926,10 @@ function showCheck(){
   const costL = !mp || dc==null ? '' : `<p class="costl ${dc>mp ? 'over' : ''}">${L('시세','Market')} ${fd(mp)} div${dc>mp?` — ${L('제작 비용이 시세보다 큼, 구입 권장','crafting costs more than buying it')}`:''}${S.draft.compromises?` · ${L(`타협 갈림길 ${S.draft.compromises}곳`,`${S.draft.compromises} settle fork(s)`)}`:''}</p>`;
   const fl = F.wait ? `<div class="flow"><b>${L('플로우차트','Flowchart')}</b><span class="wait">${L('초안으로 플로우차트를 만들고 시뮬레이션으로 끝까지 진행해 보는 중…','Building the flowchart from the draft and running it to the end…')}</span></div>` : (F.res || F.err) ? flowHTML(F) : '';
   const okFlow = !!F.group, label = F.wait ? L('플로우차트 확인 중…','Checking the flowchart…') : !okFlow ? L('플로우차트 검사 통과 실패 · 올리기 불가','The flowchart did not pass, so it cannot be added') : nE ? L('오류가 있어도 만족 — 크래프팅 목록에 올리기','Add to Crafting anyway') : L('만족 — 크래프팅 목록에 올리기','Looks good — add to Crafting');
-  $('#mkmsg').innerHTML = `${fl}${costL}<div class="check"><div class="ch-h"><b>${L('검산','Verification')}</b><span>${L(`초안 ${S.draft.nodes.length}단계를 처음부터 다시 따라가며 확인함`,`Replayed the ${S.draft.nodes.length}-step draft from the start`)} · <span class="bad">${L('오류','errors')} ${nE}</span> · <span class="wn">${L('주의','warnings')} ${nW}</span></span></div>
+  /* 틀로 뽑힌 초안이면 검산 위에 한 줄(W9, reverse-pipeline 2-1) */
+  const tp=S.draft.tpl, tpN = x => x>=100 ? Math.round(x).toLocaleString() : x>=10 ? x.toFixed(0) : x.toFixed(1);
+  const tplL = !tp ? '' : `<p class="hint tplline">${L(`등록 레시피 「${esc(tp.ti?.kr||tp.g)}」를 틀로 씀 · ${tp.changed ? `옵션 ${tp.changed}개 바꿈` : '옵션 그대로'}`, `Built on the registered recipe "${esc(tp.ti?.en||tp.g)}" · ${tp.changed ? `${tp.changed} modifier(s) swapped` : 'same modifiers'}`)}${tp.cmp?.gen!=null && tp.cmp.genGrade===tp.cmp.grade ? ' · '+L(`새로 계산한 방법 ${tpN(tp.cmp.gen)} div`, `newly worked-out route ${tpN(tp.cmp.gen)} div`) : ''}</p>`;
+  $('#mkmsg').innerHTML = `${fl}${costL}${tplL}<div class="check"><div class="ch-h"><b>${L('검산','Verification')}</b><span>${tp ? L('등록 레시피 흐름 · 단계 검사는 플로우차트 시뮬','Registered flow · steps checked by the flowchart simulation') : L(`초안 ${S.draft.nodes.length}단계를 처음부터 다시 따라가며 확인함`,`Replayed the ${S.draft.nodes.length}-step draft from the start`)} · <span class="bad">${L('오류','errors')} ${nE}</span> · <span class="wn">${L('주의','warnings')} ${nW}</span></span></div>
     <ul>${c.map(x=>`<li class="${x.lv}"><span class="ic">${ic[x.lv]}</span>${esc(KR()?x.kr:x.en)}</li>`).join('')}</ul>
   </div>
     <div class="pv"><div class="pv-h"><b>${L('레시피 미리보기','Recipe preview')}</b><span>${L('확인 후 올리기 또는 삭제','Check it, then add it or delete it')}</span></div>
@@ -1952,6 +2019,6 @@ $('#mods').addEventListener('change', e=>{
   if(e.target.dataset?.tier!=null){ S.tsel[+e.target.dataset.tier]=+e.target.value; if(!S.soft.has(+e.target.dataset.tier)) S.need.add(+e.target.dataset.tier); S.draft=null; S.sent=false; render(); return; }
   if(e.target.id==='qin' && S.last?.it){ const v=Math.max(0, Math.min(75, Math.round(+e.target.value||0))); S.last.it.qual=v; S.last.an=analyse(S.last.it); S.draft=null; S.okQR=true; render(); }   // quality changes the tier read
 });
-window.__rev = Object.assign(S, {altRecs, altOf, solveLines, matcher, tplRe, cleanLine, tagOf, parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost, magicDiv, revCost, runFlow, fcCardOf, needAn, essSwap, desSwap, bestDraft, bestDraftAsync});
+window.__rev = Object.assign(S, {tplMatch, tplDrafts, loadTpl, altRecs, altOf, solveLines, matcher, tplRe, cleanLine, tagOf, parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost, magicDiv, revCost, runFlow, fcCardOf, needAn, essSwap, desSwap, bestDraft, bestDraftAsync});
 render();
 </script>

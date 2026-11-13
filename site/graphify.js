@@ -38,7 +38,57 @@ function fluxPlan(d, G, opt){ if(d.noFlux || opt.noFlux) return null; const N=d.
     return n; });
   return k ? {nodes, el, cur, Es} : null; }
 
-function fromDraft(d, D, opt={}){
+/* 등록 레시피 틀(W9, 리버스 13장 사용자 확정 11-13 20:28 '비슷한 등록 레시피를 틀로 쓴 후보를 먼저'): 초안이 틀 그래프(tplRewrite 결과)를 갖고 있으면
+   새로 만들지 않고 그 그래프를 그대로 씀 — 등급은 opt.grades와 겹치는 것만(겹치는 게 없으면 틀의 등급 그대로) */
+function fromTemplate(d, opt){ const g=JSON.parse(JSON.stringify(d.tplGraph)); g.id=d.id; g.recipe=d.id;
+  const want=new Set(opt.grades||[]), keep=g.strategies.filter(s=>want.has(s.id)); if(keep.length && keep.length<g.strategies.length){ const ids=new Set(keep.map(s=>s.id));
+    g.strategies=keep; g.versions=(g.versions||[]).filter(v=>ids.has(v.id)); g.finals=(g.finals||[]).filter(f=>ids.has(f.id)); }
+  return g; }
+/* 틀 다시 쓰기: map = {옛 gi: 새 gi}(같은 클래스 파일). 태그의 gi만 바꾸고 흐름·티어·등급은 그대로, 상자 글의 옵션 이름은 새 옵션 이름으로.
+   게임 규칙을 어기는 틀은 {bad}: 쪽·분류(일반·훼손 전용)가 다른 옵션, 에센스·합금·룬 옵션(제작 옵션은 그 커런시만 붙임), 에센스 상자가 만드는 자리,
+   군주 징조가 있는 훼손 자리, 아이템 레벨로 붙지 않는 옵션, 같은 계열 두 옵션. 뼈 최소 레벨·제작 옵션 한도·훼손 하나는 시뮬(sim.js 공개 풀·c1 집계)이 그대로 검사 */
+function tplRewrite(graph, D, map, o={}){ const G=D.groups, g=JSON.parse(JSON.stringify(graph)), ch=Object.keys(map).map(Number).filter(k=>map[k]!==k);
+  const LORD=/Omen_of_the_(Liege|Sovereign|Blackblooded)/, ilvl=o.ilvl||g.ilvl;
+  for(const a of ch){ const A=G[a], B=G[map[a]]; if(!A || !B) return {bad:'옵션 없음'};
+    if(A.g!==B.g) return {bad:'쪽이 다른 옵션'}; if(A.s!==B.s || !['n','d'].includes(A.s)) return {bad:'제작·증강물 옵션은 바꿀 수 없음'};
+    if(!B.t.some(t=>t[0]<=ilvl && (t[1]>0 || B.s==='d'))) return {bad:'아이템 레벨로 붙지 않는 옵션'}; }
+  const chTags=new Set(Object.entries(g.tags||{}).filter(([k,t])=>t.gi!=null && ch.includes(t.gi)).map(([k])=>k));
+  for(const n of g.nodes||[]){ const js=JSON.stringify({...n, item:undefined, label:undefined, goal:undefined, goalBy:undefined});   /* 아이템 칸(지금 있는 줄 전부)은 그 상자가 만드는 자리가 아님 */ const hit=[...chTags].some(t=>js.includes('"'+t+'"'));
+    if(!hit) continue; if(n.act==='essence') return {bad:'에센스·합금 상자가 만드는 자리'}; if(n.act==='reveal' && LORD.test(JSON.stringify(g.nodes.filter(x=>x.act==='desecrate').map(x=>x.omens||[])))) return {bad:'군주 징조 훼손 자리'}; }
+  for(const t of Object.values(g.tags||{})) if(t.gi!=null && map[t.gi]!=null) t.gi=map[t.gi];
+  /* 같은 계열 두 옵션(바꾼 뒤): 완성 조건의 잎 옵션끼리 */
+  const leaf=(k,s=[])=>{ const t=g.tags[k]; if(!t || s.includes(k)) return []; if(t.anyOf) return t.anyOf.flatMap(x=>typeof x==='string'?leaf(x,[...s,k]):x?.gi!=null?[x.gi]:[]); return t.gi!=null?[t.gi]:[]; };
+  const req=[]; (function w(c){ if(!c||typeof c!=='object') return; if(c.all) c.all.forEach(w); if(c.any) c.any.forEach(w); if(c.ref) w((g.conds||{})[c.ref]); if(c.has) req.push(c.has); if(c.count) req.push(c.count.tag); })(g.require);
+  const one=req.map(k=>leaf(k)).filter(L=>L.length===1).map(L=>L[0]), fam=new Map();
+  if(ch.length) for(const gi of new Set(one)){ for(const f of G[gi].f||[]){ if(fam.has(f) && fam.get(f)!==gi) return {bad:'같은 계열 두 옵션'}; fam.set(f, gi); } }
+  /* 바꿔 넣은 옵션(또는 같은 계열)이 다른 자리의 묶음 잎에 이미 있으면 그 묶음이 그 옵션으로 채워져 자리 수가 줄어듦(균열 반지: 분열 물리 → 화염 피해 추가인데 '원소 피해 추가 2개' 묶음에 화염이 있음) */
+  const newG=new Set(ch.map(a=>map[a])), newF=new Set([...newG].flatMap(gi=>G[gi].f||[]));
+  for(const k of req){ const t=g.tags[k]; if(!t?.anyOf) continue; if(leaf(k).some(gi=>newG.has(gi) || (G[gi].f||[]).some(f=>newF.has(f)))) return {bad:'바꾼 옵션이 다른 자리 묶음에 들어 있음'}; }
+  /* 상자 글: 옛 옵션 이름 → 새 이름(아이템 칸 줄은 태그로 다시 그려지지만 목표·이름표 글은 글자 그대로라) */
+  const names=o.names||{}, rep=[];
+  const strip={kr:s=>String(s||'').replace(/\s*\((분열|훼손|에센스|합금)[^)]*\)\s*$/,'').replace(/\s*\d+(~\d+)?티어$/,'').replace(/^(접두|접미)\s+/,'').trim(),
+    en:s=>String(s||'').replace(/\s*\((fractured|desecrated|essence|alloy)[^)]*\)\s*$/i,'').replace(/^T\d+([–-]\d+)?\s+/,'').replace(/\s+(prefix|suffix)$/i,'').trim()};
+  const seenOld=new Set();
+  for(const n of graph.nodes||[]) for(const l of n.item||[]){ if(!l.tags || l.tags.length!==1) continue; const t=graph.tags?.[l.tags[0]]; if(t?.gi==null || !ch.includes(t.gi) || !names[map[t.gi]]) continue;
+    const kr=strip.kr(l.kr), en=strip.en(l.en), key=kr+'|'+en; if(seenOld.has(key) || kr.length<2) continue; seenOld.add(key); rep.push({kr, en, to:names[map[t.gi]]}); }
+  /* 옵션 이름(수치 뺀 것)과 끝 동사(추가·증가·감소)를 뺀 짧은 이름도(이름표가 '공격 시 물리 피해 1티어'처럼 줄여 쓰는 경우) */
+  const clean=t=>String(t||'').split('\n').join(' / ').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\s*~\s*/g,' ').replace(/\s+/g,' ').trim();
+  const tail=t=>t.replace(/\s+(추가|증가|감소)$/,'').trim();
+  for(const a of ch){ const A=G[a], B=G[map[a]]; if(!A || !B) continue; const ok=clean(A.t[0][4]), nk=clean(B.t[0][4]), oe=clean(A.t[0][5]), ne=clean(B.t[0][5]);
+    if(ok.length>=4) rep.push({kr:ok, en:oe, to:{kr:nk, en:ne}}); if(tail(ok)!==ok && tail(ok).length>=4) rep.push({kr:tail(ok), en:'', to:{kr:tail(nk), en:ne}}); }
+  rep.sort((a,b)=>b.kr.length-a.kr.length);
+  /* 아이템 칸 줄의 글(태그로 다시 그리지만 티어 찾기에 씀)은 같은 티어의 새 옵션 글로 */
+  for(const n of g.nodes||[]) for(const l of n.item||[]){ if(!l.tags || l.tags.length!==1) continue; const t0=graph.tags?.[l.tags[0]]; if(t0?.gi==null || !ch.includes(t0.gi)) continue;
+    const A=G[t0.gi], B=G[map[t0.gi]], base=String(l.kr||'').replace(/\s*\([^)]*\)\s*$/,''), suf=String(l.kr||'').slice(base.length), sufE=(String(l.en||'').match(/\s*\([^)]*\)\s*$/)||[''])[0];
+    const i=A.t.findIndex(x=>(x[4]||'').replace(/\n/g,' / ')===base); if(i<0) continue; const x=B.t[Math.min(i, B.t.length-1)]; l.kr=(x[4]||'').replace(/\n/g,' / ')+suf; l.en=(x[5]||'').replace(/\n/g,' / ')+sufE; l._tpl=1; }
+  const fix=x=>{ if(Array.isArray(x)) return x.forEach(fix); if(!x || typeof x!=='object') return; if(typeof x.kr==='string' && typeof x.en==='string'){ for(const r of rep){ if(x.kr.includes(r.kr)) x.kr=x.kr.split(r.kr).join(r.to.kr); if(r.en.length>=3 && x.en.includes(r.en)) x.en=x.en.split(r.en).join(r.to.en); } }
+    for(const [k,v] of Object.entries(x)) if(k!=='tags' && v && typeof v==='object') fix(v); };
+  const fixN=n=>{ for(const [k,v] of Object.entries(n)) if(k!=='item' && v && typeof v==='object') fix(v); };
+  if(rep.length){ (g.nodes||[]).forEach(fixN); for(const t of Object.values(g.tags||{})) if(t.label) fix(t.label); fix(g.versions); }
+  if(o.base) g.base=o.base; if(o.ilvl) g.ilvl=o.ilvl; g.tplOf=graph.id; g.note='등록 레시피 '+graph.id+' 틀로 만든 리버스 초안 플로우차트';
+  return {g, changed:ch.length}; }
+
+function fromDraft(d, D, opt={}){ if(d.tplGraph) return fromTemplate(d, opt);
   const G=D.groups, FX=fluxPlan(d, G, opt), N=FX ? FX.nodes : d.nodes, byId={}; N.forEach(n=>byId[n.id]=n);
   const base=D.bases[d.base]||{};
   // ---------- tags: one per modifier group (gi); lines made by a loop get a per-grade tier parameter
@@ -447,6 +497,6 @@ function magicCost(D, craft, prices, SIM, r, ms, mode='annul'){ ms=(ms||[]).filt
   if(B) for(const b of MAGIC_ORB.augment.slice(1)){ const x=sim(a0, b); if(x && (!v || x.div<v.div)) v=x; }
   return v; }
 
-const api={fromDraft, view, check, gradesFor, diffOf, magicCost, fluxPlan:(d,D)=>!!fluxPlan(d, D.groups, {})};
+const api={fromDraft, tplRewrite, view, check, gradesFor, diffOf, magicCost, fluxPlan:(d,D)=>!!fluxPlan(d, D.groups, {})};
 if(typeof module!=='undefined' && module.exports) module.exports=api; else root.POE2GRAPH=api;
 })(typeof window!=='undefined' ? window : globalThis);

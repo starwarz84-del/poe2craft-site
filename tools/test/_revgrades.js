@@ -32,7 +32,7 @@ const {chromium}=require('playwright');
   for(const id of IDS){ const r=R.find(x=>x.id===id); let reg; try{ reg=registered(r, 200); }catch(e){ console.log(`B ${id}: 등록 그래프 ${e.message}`); continue; }
     const buy=((r.start||{}).mods||[]).filter(m=>m.gi!=null && !m.crafted).map(m=>m.gi);
     const x=await p.evaluate(async([id,card,per,buy])=>{ const S=__rev, sm=S.recSamples.find(s=>s.id===id); if(!sm) return {skip:'샘플 없음'};
-      const it=await S.parse(sm.text); if(it.err) return {skip:'분석 실패'}; const an=S.analyse(it); S.need=new Set(); S.soft=new Set(); S.tsel={}; S.buy=new Set();
+      const it=await S.parse(sm.text); if(it.err) return {skip:'분석 실패'}; const an=S.analyse(it); S.need=new Set(); S.soft=new Set(); S.tsel={}; S.buy=new Set(); S.noTpl=true;   /* 등록 틀(W9)은 등록 그래프 그대로라 이 점검(생성 후보의 등급 규칙) 대상이 아님 */
       const took=new Set(); card.forEach((l,ci)=>{ if(per[ci]<0.98) return; const i=an.rows.findIndex((r,k)=>!r.unrev && !took.has(k) && l.opts.some(o=>o.gi===r.m.gi)); if(i<0) return; const r=an.rows[i], o=l.opts.find(o=>o.gi===r.m.gi); took.add(i); if(r.m.fr) return;
         S.need.add(i); if(o.tmax) S.tsel[i]=Math.max(r.tierNo, Math.min(o.tmax, r.tierCnt)); if(buy.includes(r.m.gi) && r.how==='n') S.buy.add(i); });
       const bs=new Set([...S.buy].map(i=>an.rows[i]?.m).filter(Boolean));

@@ -1,5 +1,5 @@
 // 리버스 크래프팅 점수(100점, docs/policies.md 15장) — 2026-11-11 기준 고침: 목표를 등록 레시피의 완성품 카드로
-// node _revscore.js [id…]   (테스트 서버 필요)  → revscore.json + 요약.  NOSAVE=1: 저장 안 함(빠른 점검)  REGN=<횟수>: 등록 레시피 시뮬 횟수(기본 400)
+// node _revscore.js [id…]   (테스트 서버 필요, 등록 틀(W9)은 자기 그래프를 빼고 — SELFTPL=1이면 자기 그래프도)  → revscore.json + 요약.  NOSAVE=1: 저장 안 함(빠른 점검)  REGN=<횟수>: 등록 레시피 시뮬 횟수(기본 400)
 // 방법: 등록 레시피 완성품(samples.json)을 붙여 넣은 것처럼 분석 → 레시피 단계가 노리는 옵션(티어 범위·'A 또는 B' 포함) 중 등록 시뮬이 항상(98% 이상) 만드는 줄을 '필수', 나머지는 잡옵,
 //       등록 레시피가 베이스에 붙여 사는 옵션은 '베이스에 포함' → 화면과 같은 후보 계산(bestDraftAsync) → 검산 → 플로우차트 → 시뮬.
 //       완성 조건은 두 쪽 모두 등록 플로우차트의 require(등록 쪽은 항상 100% — 사용자 지적 2026-11-11: 레시피대로 하면 같은 결과가 나옴. 예전의 '카드 일치율로 나눈 환산'은 잘못된 측정이라 없앰)
@@ -20,8 +20,8 @@ for(const id of IDS){ const r=R.find(x=>x.id===id); if(!r || !SAMP.has(id)) cont
   const buy=((r.start||{}).mods||[]).filter(m=>m.gi!=null && !m.crafted).map(m=>m.gi);
   /* 등록 레시피가 목표 옵션이 다 붙은 분열 희귀 베이스를 사서 시작(시한 차유라 목걸이: 0.2 div) — 리버스는 그 옵션을 만들어야 해서 비용·완성 조건(등록 산 줄은 티어 고정, 리버스 밸런스는 C17로 넓힘) 모두 비교 기준이 아님(W8) */
   { const s0=r.start||{}, ms=s0.mods||[]; if(s0.rar==='rare' && ms.some(m=>m.fr) && ms.filter(m=>m.gi!=null && !m.fr && !m.crafted).length>=2){ out.push({id, skip:'등록 레시피가 목표 옵션이 붙은 분열 베이스 구입으로 시작 — 비교 기준 아님'}); continue; } }
-  const tier=r.tier||'high'; const x=await Promise.race([p.evaluate(async([id,card,qt,buy,EXP,OLD,per,rtags,rreq,NOK42,tier,NOALT])=>{ const S=__rev; const x=S.recSamples.find(s=>s.id===id); if(!x) return {skip:'no sample'}; const it=await S.parse(x.text); if(it.err) return {skip:'parse'}; const an=S.analyse(it); if(an.putrid) return {skip:'putrid'};
-    S.need=new Set(); S.soft=new Set(); S.tsel={}; S.alt={}; S.altK={}; S.buy=new Set(); S.noVariants=!!OLD; S.noK42=NOK42; const miss=[];
+  const tier=r.tier||'high'; const x=await Promise.race([p.evaluate(async([id,card,qt,buy,EXP,OLD,per,rtags,rreq,NOK42,tier,NOALT,SKIP,NOTPL])=>{ const S=__rev; const x=S.recSamples.find(s=>s.id===id); if(!x) return {skip:'no sample'}; const it=await S.parse(x.text); if(it.err) return {skip:'parse'}; const an=S.analyse(it); if(an.putrid) return {skip:'putrid'};
+    S.need=new Set(); S.soft=new Set(); S.tsel={}; S.alt={}; S.altK={}; S.buy=new Set(); S.noVariants=!!OLD; S.noK42=NOK42; S.tplSkip=SKIP?new Set([SKIP]):null; S.noTpl=NOTPL;   /* W9: 자기 그래프는 틀에서 뺌(SELFTPL=1이면 씀) */ const miss=[];
     const took=new Set(); card.forEach((l,ci)=>{ if(per[ci]<0.98) return; const i=an.rows.findIndex((r,k)=>!r.unrev && !took.has(k) && l.opts.some(o=>o.gi===r.m.gi)); if(i<0){ miss.push(ci); return; } const r=an.rows[i], o=l.opts.find(o=>o.gi===r.m.gi); took.add(i); if(r.m.fr) return;
       S.need.add(i); if(o.tmax) S.tsel[i]=Math.max(r.tierNo, Math.min(o.tmax, r.tierCnt)); if(buy.includes(r.m.gi) && r.how==='n') S.buy.add(i);
       /* 유효 옵션군(W8): 등록 완성 조건이 그 자리를 '이 중 아무거나'로 받으면 화면에서 같은 묶음 칩을 고른 것처럼(다른 줄에 있는 옵션·계열은 altOf가 뺌) */ if(l.opts.length>1 && !NOALT){ (S.alt=S.alt||{})[i]=l.opts.filter(x=>x.gi!==r.m.gi).map(x=>({gi:x.gi, tmax:x.tmax||null})); } });
@@ -41,8 +41,8 @@ for(const id of IDS){ const r=R.find(x=>x.id===id); if(!r || !SAMP.has(id)) cont
       if(n) for(const sd of ['p','s']) short+=Math.max(0, Math.round(want[sd]-got[sd]/n)); }catch(_){ } }
     const cost = res ? S.revCost(it, d, res) : null, mag = res ? S.magicDiv(it, d) : 0;
     const top=Object.entries(use).map(([k,v])=>[k, v*(k==='Exalted_Orb'?1:(S.prices.p[k]||0))/S.prices.divine]).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+' '+v.toFixed(1));
-    return {err, warn, unk, short, mag, tier:g.strategies[0].id, stuck:st.runaway||st.error||null, div:cost, match:res?res.reqOk:null, om, top, miss:miss.length, pick:d.pick||null, knowhow:d.knowhow||null, steps:d.nodes.length, ms:Math.round(performance.now()-t0), d};
-  },[id,reg.card,reg.qt,buy,EXP,process.env.V==='old',reg.per,reg.rtags,reg.rreq,!!process.env.NOK42,tier,!!process.env.NOALT]), new Promise(z=>setTimeout(()=>z({err:['시간 초과']}),180000))]);
+    return {err, warn, unk, short, mag, tier:g.strategies[0].id, stuck:st.runaway||st.error||null, div:cost, match:res?res.reqOk:null, om, top, miss:miss.length, pick:d.pick||(d.tpl?{tpl:d.tpl.g, changed:d.tpl.changed, cmp:d.tpl.cmp}:null), knowhow:d.knowhow||null, steps:d.nodes.length, ms:Math.round(performance.now()-t0), d};
+  },[id,reg.card,reg.qt,buy,EXP,process.env.V==='old',reg.per,reg.rtags,reg.rreq,!!process.env.NOK42,tier,!!process.env.NOALT,process.env.SELFTPL?null:(r.simId||r.tierGroup||r.id),!!process.env.NOTPL]), new Promise(z=>setTimeout(()=>z({err:['시간 초과']}),180000))]);
   out.push({id, reg, ...x}); }
 await p.goto('http://localhost:'+(process.env.PORT||8779)+'/recipes.html?lang=kr&debug=1'); await p.waitForFunction(()=>window.__rec&&__rec.booted);
 const unk=await p.evaluate(ds=>{ const R=__rec, o={}; for(const d of ds){ try{ d.likes=0; d.success=0; const a=R.analyse(d); o[d.id]=a.nodes.filter(n=>n.pUnknown).length; }catch(e){ o[d.id]=0; } } return o; }, out.filter(x=>x.d).map(x=>x.d));

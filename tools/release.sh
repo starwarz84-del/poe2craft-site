@@ -10,7 +10,7 @@ step(){ echo; echo "== $1"; }
 fail(){ echo "!! $1"; BAD=$((BAD+1)); }
 
 step "1. 데이터·레시피 빌드"
-( cd scripts && python3 build_prices.py >/dev/null && python3 build_tips.py >/dev/null && python3 graphs/patch_runes.py >/dev/null && python3 build_recipes.py | tail -1 && python3 build_special.py >/dev/null && python3 graphs/patch_astrid.py ) || fail "빌드 실패"
+( cd scripts && python3 build_prices.py >/dev/null && python3 build_tips.py >/dev/null && python3 graphs/patch_runes.py >/dev/null && python3 build_recipes.py | tail -1 && python3 build_special.py >/dev/null && python3 graphs/patch_astrid.py && python3 build_revtpl.py | head -1 ) || fail "빌드 실패"
 python3 i18n/build.py | tail -1 || fail "i18n 빌드 실패"
 
 step "2. 검사 (테스트 서버)"
@@ -26,6 +26,8 @@ bash tools/test/serve.sh stop >/dev/null 2>&1; bash tools/test/serve.sh start >/
   # 리버스 빠른 점검: 분열·매직 구입·주얼·장신구 6개로 초안 → 검산 → 시뮬 (2026-11-11: 분열 아이템 초안이 통째로 깨진 것을 ver.js가 못 잡았음)
   r=$(NOSAVE=1 node _revscore.js diztoh-vile-robe-v2-bal farmer-budget-armour-v2-ess sihan-chayula-amulet-v2-bal mazbro-sceptre-v2 zenm-timelost-sapphire-v2-ess breach-ring-video-v2-bal 2>&1 | tail -1); echo "리버스 6개: $r"
   echo "$r" | grep -q "검산 오류 0" || echo "!! 리버스 빠른 점검 실패(검산 오류)"
+  # 리버스 등록 틀(W9 2026-11-14): 등록 완성품 → 자기 그래프가 틀로 잡히고 비용이 등록 시뮬 ±5%
+  r=$(N=500 node _revtpl.js icesly-budget-wand-v2-bal diztoh-rarity-ring-v2-bal lilbotq-emerald-v2-bal seek-cyclone-boots-v2-ess 2>&1 | tail -1); echo "$r"; echo "$r" | grep -q "문제 0" || echo "!! 리버스 틀 점검 실패 — node tools/test/_revtpl.js"
   node _score.js >/dev/null && node skipcheck.js > skipcheck.txt; tail -1 skipcheck.txt
 ) | tee /tmp/poe2-release.log; BAD=$((BAD + $(grep -c '^!!' /tmp/poe2-release.log)))
 node tools/test/_fcparity.js | tail -1 | tee /tmp/poe2-fcparity.log; grep -q "차이 0" /tmp/poe2-fcparity.log || fail "graph2recipe.py ≠ site/fcread.js — node tools/test/_fcparity.js (파이썬을 고쳤으면 fcread.js도 같이)"
