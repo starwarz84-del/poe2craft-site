@@ -20,7 +20,7 @@ RW = L('p', '룬 수호 (24—30)% 증가 (군왕의 합금)', '(24—30)% incre
 PE = L('p', '피해가 (9—15)%의 원소 저항 관통 (분광 합금)', 'Damage Penetrates (9—15)% Elemental Resistances (Prismatic Alloy)', 'c', ['pen'])
 FA = L('p', '피해를 주는 상태 이상의 피해 (14—20)%만큼 가속 (훼손)', 'Damaging Ailments deal damage (14—20)% faster (desecrated)', 'd', ['fast'])
 RS = L('s', '랜덤 옵션', 'Random option', 'j')
-RD = L('p', '랜덤 옵션 (공개된 훼손 옵션)', 'Random option (revealed desecration)', 'j')
+RD = L('p', FA['kr'].replace(' (훼손)', ''), FA['en'].replace(' (desecrated)', ''), 'd')   # 11-13 R3-11: 에센셜 공개 결과 그대로 자리의 왼쪽 칸 = 영상 결과 옵션(마스터 기준 K, 태그 없이), 완성 카드만 랜덤 옵션
 J = lambda s: L(s, '잡옵', 'Junk', 'j')
 UN = lambda s: L(s, '훼손 옵션 (미공개)', 'Desecrated (unrevealed)', 'n')
 V1 = {'param': {'v': 1}}; V2 = {'param': {'v': 2}}
@@ -64,7 +64,7 @@ g = {
 
 N = []
 def A(**kw):
-    # 에센셜은 마지막 공개 결과 그대로 — 왼쪽 아이템 칸의 상태 이상 피해 가속을 랜덤 옵션으로
+    # 에센셜은 마지막 공개 결과 그대로 — 왼쪽 아이템 칸은 태그 없는 영상 결과 옵션으로
     it = kw.get('item', [])
     if FA in it:
         o = next((x for x in kw.setdefault('over', []) if x['param'] == {'v': 2}), None)

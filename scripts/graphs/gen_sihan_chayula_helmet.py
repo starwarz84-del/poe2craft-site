@@ -63,10 +63,12 @@ g = {
 }
 
 N = []
-RP = L('p', '랜덤 옵션', 'Random option', 'j')
-RPD = L('p', '랜덤 옵션 (공개된 훼손 옵션)', 'Random option (revealed desecration)', 'j')
+# 11-13 R3-11: 에센셜 결과 그대로 자리의 왼쪽 칸 = 영상 결과 옵션(마스터 기준 K, 태그 없이 — 달면 1~2티어 범위로 보임), 완성 카드만 랜덤 옵션
+TX = lambda x: (x['kr'].replace(' / ', ' · ').replace(' (훼손)', ''), x['en'].replace(' / ', ' · ').replace(' (desecrated)', ''))
+RP = L('p', *TX(HY), 'n')
+RPD = L('p', *TX(FL), 'd')
 def A(**kw):
-    # 에센셜은 접두 엑잘·공개 결과 그대로 — 왼쪽 아이템 칸을 랜덤 옵션으로
+    # 에센셜은 접두 엑잘·공개 결과 그대로 — 왼쪽 아이템 칸은 태그 없는 영상 결과 옵션으로
     it = kw.get('item', [])
     if HY in it or FL in it:
         o = next((x for x in kw.setdefault('over', []) if x['param'] == {'v': 2}), None)
