@@ -3,79 +3,28 @@
  "recipe": "farmer-starter-staff-v2",
  "cls": "Staves",
  "base": "Sanctified Staff",
- "ilvl": 80,
- "note": "XTheFarmerX 리그 초반 번개 지팡이(영상 방식) — 번개 주문 +5 + 추가 화염 피해 매직 구입 → 상위 마법의 에센스(접두 주문 피해) → 좌측 강령술 + 턱뼈 → 공개(추가 냉기·번개·카오스) → 상위 찬미 + 엑잘(접미 옵션 2개 결과 그대로). 영상 베이스는 아이템 레벨 73(추가 피해 1티어는 레벨 80) — 그래프는 80으로 두고 에센셜·밸런스는 2티어까지로 맞춤. 에센셜 = 영상(보존된 턱뼈, 아무 티어), 밸런스·하이엔드는 고대 턱뼈(레벨 40+)로 1~2티어 / 1티어.",
+ "ilvl": 73,
+ "basePrice": {
+  "Chaos_Orb": 1
+ },
+ "note": "XTheFarmerX 리그 초반 번개 지팡이(ITBexsgq2NI 10:00~15:40, 2026-11-13 G13 영상 화면 대조) — 추가 화염 피해 2티어 + 번개 주문 +5 매직 신성한 지팡이(아이템 레벨 73) → 상위 마법의 에센스(레어 + 주문 피해) → 좌측 강령술의 징조 + 보존된 턱뼈 → 심연의 메아리의 징조로 공개(영상은 추가 카오스 피해) → 엑잘티드 오브로 접미 두 개 나오는 대로. 쉬움이라 에센셜 하나: 공개·엑잘 모두 결과 그대로.",
  "params": {
-  "fT": {
-   "kr": "추가 화염 피해",
-   "en": "Extra fire damage",
+  "v": {
+   "kr": "흐름",
+   "en": "Flow",
    "values": {
     "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    }
-   }
-  },
-  "rvT": {
-   "kr": "훼손 공개 목표",
-   "en": "Reveal target",
-   "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
-    },
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
-    },
-    "9": {
-     "kr": "아무 티어",
-     "en": "Any tier"
-    }
-   }
-  },
-  "bone": {
-   "kr": "턱뼈",
-   "en": "Jawbone",
-   "values": {
-    "a": {
-     "kr": "고대 턱뼈",
-     "en": "Ancient Jawbone"
-    },
-    "p": {
-     "kr": "보존된 턱뼈",
-     "en": "Preserved Jawbone"
+     "kr": "영상",
+     "en": "Video"
     }
    }
   }
  },
  "strategies": [
   {
-   "id": "high",
-   "params": {
-    "fT": 1,
-    "rvT": 1,
-    "bone": "a"
-   }
-  },
-  {
-   "id": "bal",
-   "params": {
-    "fT": 2,
-    "rvT": 2,
-    "bone": "a"
-   }
-  },
-  {
    "id": "ess",
    "params": {
-    "fT": 2,
-    "rvT": 9,
-    "bone": "p"
+    "v": 1
    }
   }
  ],
@@ -85,82 +34,50 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "fT": 2,
-    "rvT": 9,
-    "bone": "p"
+    "v": 1
    },
+   "tier": "ess",
    "desc": {
-    "kr": "추가 화염 피해 1~2티어, 훼손 아무 티어 (영상)",
-    "en": "Extra fire T1–2, any desecrated tier (as the video)"
-   }
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스",
-   "en": "Balance",
-   "params": {
-    "fT": 2,
-    "rvT": 2,
-    "bone": "a"
-   },
-   "desc": {
-    "kr": "추가 화염 피해 1~2티어, 훼손 1~2티어 (고대 턱뼈)",
-    "en": "Extra fire T1–2, desecrated T1–2 (Ancient Jawbone)"
-   }
-  },
-  {
-   "id": "high",
-   "kr": "하이엔드",
-   "en": "High-end",
-   "params": {
-    "fT": 1,
-    "rvT": 1,
-    "bone": "a"
-   },
-   "desc": {
-    "kr": "추가 화염 피해 1티어, 훼손 1티어 (고대 턱뼈, 아이템 레벨 80+)",
-    "en": "Extra fire T1, desecrated T1 (Ancient Jawbone, item level 80+)"
+    "kr": "영상 그대로: 훼손 공개 한 번, 접미 엑잘 두 번 나오는 대로",
+    "en": "As the video: one reveal, two suffix exalts kept"
    }
   }
  ],
  "tags": {
+  "fire": {
+   "gi": 32,
+   "tmax": 2
+  },
   "l5": {
    "gi": 17,
    "tmax": 1
   },
-  "fire": {
-   "gi": 32,
-   "tmax": "$fT"
-  },
-  "ess": {
+  "spell": {
    "gi": 49
-  },
-  "cold": {
-   "gi": 33,
-   "tmax": "$rvT"
-  },
-  "lit": {
-   "gi": 34,
-   "tmax": "$rvT"
   },
   "chaos": {
    "gi": 35
-  },
-  "want": {
-   "anyOf": [
-    "cold",
-    "lit",
-    "chaos"
-   ]
   }
  },
  "require": {
   "all": [
    {
+    "has": "fire"
+   },
+   {
+    "has": "l5"
+   },
+   {
+    "has": "spell"
+   },
+   {
     "full": "p"
    },
    {
     "full": "s"
+   },
+   {
+    "desSide": "p"
    }
   ]
  },
@@ -184,144 +101,42 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "w3",
-    "w4",
-    "w4x"
-   ],
-   "kr": "접두 세번째 옵션(훼손)",
-   "en": "Third prefix (desecrated)"
-  }
- ],
- "finals": [
-  {
-   "id": "high",
-   "kr": "하이엔드 옵션",
-   "en": "High-end",
-   "lines": [
-    {
-     "tag": "fire",
-     "tmax": 1
-    },
-    {
-     "tag": "ess",
-     "tmax": 1
-    },
-    {
-     "tag": "lit",
-     "tmax": 1
-    },
-    {
-     "tag": "l5",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  },
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "tag": "fire",
-     "tmax": 2
-    },
-    {
-     "tag": "ess",
-     "tmax": 1
-    },
-    {
-     "tag": "lit",
-     "tmax": 2
-    },
-    {
-     "tag": "l5",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "tag": "fire",
-     "tmax": 2
-    },
-    {
-     "tag": "ess",
-     "tmax": 1
-    },
-    {
-     "tag": "lit",
-     "tmax": 5
-    },
-    {
-     "tag": "l5",
-     "tmax": 1
-    },
-    {
-     "side": "s",
-     "random": true
-    },
-    {
-     "side": "s",
-     "random": true
-    }
-   ]
-  }
- ],
+ "start": "f0",
  "finalItem": {
-  "quality": 20,
-  "sockets": 0
+  "quality": 0,
+  "sockets": 2
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "f0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "w2",
+   "next": "f1",
    "start": {
     "rar": "magic",
     "mods": [
-     "fire",
-     "l5"
-    ]
+     {
+      "tag": "fire"
+     },
+     {
+      "tag": "l5"
+     }
+    ],
+    "quality": 0
    },
    "label": {
-    "kr": "번개 주문 +6 + 추가 화염 피해 매직 지팡이 구입",
-    "en": "Buy a magic staff with +6 lightning spells + extra fire"
+    "kr": "추가 화염 피해 + 번개 주문 레벨 매직 신성한 지팡이 구입 (아이템 레벨 73)",
+    "en": "Buy a magic Sanctified Staff with extra fire damage + lightning spell levels (item level 73)"
    },
    "item": [
     {
      "s": "p",
-     "kr": "추가 화염 피해 획득",
-     "en": "Extra fire damage",
+     "kr": "피해의 (49—54)%를 추가 화염 피해로 획득",
+     "en": "Gain (49—54)% of Damage as Extra Fire Damage",
      "m": "n",
      "tags": [
       "fire"
@@ -329,8 +144,8 @@
     },
     {
      "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +6",
-     "en": "+6 to all lightning spell skills",
+     "kr": "모든 번개 주문 스킬 레벨 +(5—6)",
+     "en": "+(5—6) to Level of all Lightning Spell Skills",
      "m": "n",
      "tags": [
       "l5"
@@ -339,7 +154,7 @@
    ]
   },
   {
-   "id": "w2",
+   "id": "f1",
    "kind": "act",
    "group": "prep",
    "pos": [
@@ -347,23 +162,23 @@
     1
    ],
    "act": "essence",
-   "ess": "ess",
    "cur": "Greater_Essence_of_Sorcery",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접두 주문 피해",
-    "en": "Upgrade to rare + spell damage prefix"
-   },
-   "showText": [
-    {
-     "kr": "주문 피해 % (제작 옵션)",
-     "en": "Spell damage % (crafted)",
-     "s": "p"
-    }
-   ],
+   "ess": "spell",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "레어 + 접두 주문 피해",
+    "en": "Rare + spell damage prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "주문 피해 (149—188)% 증가 (제작 옵션)",
+     "en": "(149—188)% increased Spell Damage (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "ms"
@@ -372,29 +187,29 @@
    "item": [
     {
      "s": "p",
-     "kr": "추가 화염 피해 획득",
-     "en": "Extra fire damage",
+     "kr": "피해의 (49—54)%를 추가 화염 피해로 획득",
+     "en": "Gain (49—54)% of Damage as Extra Fire Damage",
      "m": "n",
      "tags": [
       "fire"
      ]
     },
     {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +6",
-     "en": "+6 to all lightning spell skills",
-     "m": "n",
+     "s": "p",
+     "kr": "주문 피해 (149—188)% 증가",
+     "en": "(149—188)% increased Spell Damage",
+     "m": "c",
      "tags": [
-      "l5"
+      "spell"
      ]
     },
     {
-     "s": "p",
-     "kr": "주문 피해 % (제작 옵션)",
-     "en": "Spell damage % (crafted)",
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +(5—6)",
+     "en": "+(5—6) to Level of all Lightning Spell Skills",
      "m": "n",
      "tags": [
-      "ess"
+      "l5"
      ]
     }
    ]
@@ -405,9 +220,9 @@
    "group": "main",
    "pos": [
     0,
-    1.5
+    1.4
    ],
-   "next": "w3",
+   "next": "f2",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
@@ -415,248 +230,264 @@
    "item": [
     {
      "s": "p",
-     "kr": "추가 화염 피해 획득",
-     "en": "Extra fire damage",
+     "kr": "피해의 (49—54)%를 추가 화염 피해로 획득",
+     "en": "Gain (49—54)% of Damage as Extra Fire Damage",
      "m": "n",
      "tags": [
       "fire"
      ]
     },
     {
-     "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +6",
-     "en": "+6 to all lightning spell skills",
-     "m": "n",
+     "s": "p",
+     "kr": "주문 피해 (149—188)% 증가",
+     "en": "(149—188)% increased Spell Damage",
+     "m": "c",
      "tags": [
-      "l5"
+      "spell"
      ]
     },
     {
-     "s": "p",
-     "kr": "주문 피해 % (제작 옵션)",
-     "en": "Spell damage % (crafted)",
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +(5—6)",
+     "en": "+(5—6) to Level of all Lightning Spell Skills",
      "m": "n",
      "tags": [
-      "ess"
+      "l5"
      ]
     }
    ]
   },
   {
-   "id": "w3",
+   "id": "f2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    2.4
    ],
    "act": "desecrate",
-   "cur": "Ancient_Jawbone",
+   "cur": "Preserved_Jawbone",
    "omens": [
     "Omen_of_Sinistral_Necromancy"
-   ],
-   "over": [
-    {
-     "param": {
-      "bone": "p"
-     },
-     "set": {
-      "cur": "Preserved_Jawbone"
-     }
-    }
-   ],
-   "goal": {
-    "kr": "접두 세번째 옵션(훼손)",
-    "en": "Third prefix option (desecrated)"
-   },
-   "showText": [
-    {
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)",
-     "s": "p"
-    }
    ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecration (unrevealed)"
+    }
+   ],
    "edges": [
     {
-     "to": "w4"
+     "to": "f3"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "추가 화염 피해 획득",
-     "en": "Extra fire damage",
+     "kr": "피해의 (49—54)%를 추가 화염 피해로 획득",
+     "en": "Gain (49—54)% of Damage as Extra Fire Damage",
      "m": "n",
      "tags": [
       "fire"
      ]
     },
     {
+     "s": "p",
+     "kr": "주문 피해 (149—188)% 증가",
+     "en": "(149—188)% increased Spell Damage",
+     "m": "c",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "접두 훼손 옵션 (미공개)",
+     "en": "Prefix desecration (unrevealed)",
+     "m": "u"
+    },
+    {
      "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +6",
-     "en": "+6 to all lightning spell skills",
+     "kr": "모든 번개 주문 스킬 레벨 +(5—6)",
+     "en": "+(5—6) to Level of all Lightning Spell Skills",
      "m": "n",
      "tags": [
       "l5"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "주문 피해 % (제작 옵션)",
-     "en": "Spell damage % (crafted)",
-     "m": "n",
-     "tags": [
-      "ess"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
     }
    ]
   },
   {
-   "id": "w4",
+   "id": "f3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    3.4
    ],
    "act": "reveal",
    "omens": [
     "Omen_of_Abyssal_Echoes"
    ],
-   "want": "want",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
-   },
-   "show": [
-    "want"
-   ],
+   "want": "chaos",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손) — 공개 결과 그대로",
+    "en": "Third prefix (desecrated): keep the reveal"
+   },
+   "show": [
+    "chaos"
+   ],
    "edges": [
     {
-     "if": {
-      "added": "want"
-     },
-     "to": "w5",
-     "res": "ok"
-    },
-    {
-     "to": "w4x",
-     "res": "fail"
+     "to": "f4"
     }
    ],
    "item": [
     {
      "s": "p",
-     "kr": "추가 화염 피해 획득",
-     "en": "Extra fire damage",
+     "kr": "피해의 (49—54)%를 추가 화염 피해로 획득",
+     "en": "Gain (49—54)% of Damage as Extra Fire Damage",
      "m": "n",
      "tags": [
       "fire"
      ]
     },
     {
+     "s": "p",
+     "kr": "피해의 (40—50)%를 추가 카오스 피해로 획득",
+     "en": "Gain (40—50)% of Damage as Extra Chaos Damage",
+     "m": "d"
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 (149—188)% 증가",
+     "en": "(149—188)% increased Spell Damage",
+     "m": "c",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
      "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +6",
-     "en": "+6 to all lightning spell skills",
+     "kr": "모든 번개 주문 스킬 레벨 +(5—6)",
+     "en": "+(5—6) to Level of all Lightning Spell Skills",
+     "m": "n",
+     "tags": [
+      "l5"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "f4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4.4
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접미 두번째 옵션 — 나오는 대로",
+    "en": "Second suffix: keep what lands"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "f5"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "피해의 (49—54)%를 추가 화염 피해로 획득",
+     "en": "Gain (49—54)% of Damage as Extra Fire Damage",
+     "m": "n",
+     "tags": [
+      "fire"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "피해의 (40—50)%를 추가 카오스 피해로 획득",
+     "en": "Gain (40—50)% of Damage as Extra Chaos Damage",
+     "m": "d"
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 (149—188)% 증가",
+     "en": "(149—188)% increased Spell Damage",
+     "m": "c",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 번개 주문 스킬 레벨 +(5—6)",
+     "en": "+(5—6) to Level of all Lightning Spell Skills",
      "m": "n",
      "tags": [
       "l5"
      ]
     },
     {
-     "s": "p",
-     "kr": "주문 피해 % (제작 옵션)",
-     "en": "Spell damage % (crafted)",
-     "m": "n",
-     "tags": [
-      "ess"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "추가 냉기·번개·카오스 피해 획득 중 하나",
-     "en": "Extra cold, lightning or chaos damage",
-     "m": "n",
-     "tags": [
-      "want"
-     ]
+     "s": "s",
+     "kr": "능력치 요구사항 30% 감소",
+     "en": "30% reduced Attribute Requirements",
+     "m": "j"
     }
    ]
   },
   {
-   "id": "w4x",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    1,
-    3
-   ],
-   "act": "annul",
-   "cur": "Orb_of_Annulment",
-   "omens": [
-    "Omen_of_Light"
-   ],
-   "label": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "goal": {
-    "kr": "소멸의 오브 사용",
-    "en": "Use an Orb of Annulment"
-   },
-   "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
-   },
-   "edges": [
-    {
-     "to": "w3",
-     "port": "right"
-    }
-   ]
-  },
-  {
-   "id": "w5",
+   "id": "f5",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    5.4
    ],
    "act": "exalt",
    "cur": "Exalted_Orb",
-   "omens": [
-    "Omen_of_Greater_Exaltation"
-   ],
-   "goal": {
-    "kr": "접미 두번째·세번째 옵션",
-    "en": "Second and third suffix options"
-   },
-   "showText": [
-    {
-     "kr": "랜덤 옵션 2개 (시전 속도·치명타가 뜨면 대박) — 결과 그대로",
-     "en": "Two random lines (cast speed or crit is the jackpot) — keep whatever comes",
-     "s": "s"
-    }
-   ],
    "label": {
     "kr": "엑잘",
     "en": "Exalt"
    },
+   "goal": {
+    "kr": "접미 세번째 옵션 — 나오는 대로",
+    "en": "Third suffix: keep what lands"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
      "to": "ok"
@@ -665,44 +496,47 @@
    "item": [
     {
      "s": "p",
-     "kr": "추가 화염 피해 획득",
-     "en": "Extra fire damage",
+     "kr": "피해의 (49—54)%를 추가 화염 피해로 획득",
+     "en": "Gain (49—54)% of Damage as Extra Fire Damage",
      "m": "n",
      "tags": [
       "fire"
      ]
     },
     {
+     "s": "p",
+     "kr": "피해의 (40—50)%를 추가 카오스 피해로 획득",
+     "en": "Gain (40—50)% of Damage as Extra Chaos Damage",
+     "m": "d"
+    },
+    {
+     "s": "p",
+     "kr": "주문 피해 (149—188)% 증가",
+     "en": "(149—188)% increased Spell Damage",
+     "m": "c",
+     "tags": [
+      "spell"
+     ]
+    },
+    {
      "s": "s",
-     "kr": "모든 번개 주문 스킬 레벨 +6",
-     "en": "+6 to all lightning spell skills",
+     "kr": "모든 번개 주문 스킬 레벨 +(5—6)",
+     "en": "+(5—6) to Level of all Lightning Spell Skills",
      "m": "n",
      "tags": [
       "l5"
      ]
     },
     {
-     "s": "p",
-     "kr": "주문 피해 % (제작 옵션)",
-     "en": "Spell damage % (crafted)",
-     "m": "n",
-     "tags": [
-      "ess"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "추가 냉기·번개·카오스 피해 획득 중 하나",
-     "en": "Extra cold, lightning or chaos damage",
-     "m": "n",
-     "tags": [
-      "want"
-     ]
+     "s": "s",
+     "kr": "능력치 요구사항 30% 감소",
+     "en": "30% reduced Attribute Requirements",
+     "m": "j"
     },
     {
      "s": "s",
-     "kr": "랜덤 옵션 2개",
-     "en": "Two random lines",
+     "kr": "지능 +(25—27)",
+     "en": "+(25—27) to Intelligence",
      "m": "j"
     }
    ]
@@ -713,7 +547,7 @@
    "group": "main",
    "pos": [
     0,
-    5
+    6.4
    ],
    "label": {
     "kr": "완성",
@@ -721,7 +555,38 @@
    }
   }
  ],
- "basePrice": {
-  "Chaos_Orb": 1
- }
+ "loops": [],
+ "finals": [
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "fire"
+    },
+    {
+     "side": "p",
+     "random": true,
+     "des": true
+    },
+    {
+     "tag": "spell",
+     "ess": true
+    },
+    {
+     "tag": "l5"
+    },
+    {
+     "side": "s",
+     "random": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ]
 }
