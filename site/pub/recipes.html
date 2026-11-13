@@ -1246,7 +1246,7 @@ function cardHTML(r){
   // explicit-magnitude lines (Thrud's Might) raise matching lines, as on the detail card
   const MT={fire:'fire',cold:'cold',lightning:'lightning',chaos:'chaos',physical:'physical','elemental damage':'elemental',mana:'mana',speed:'speed',critical:'critical'}, mg={};
   a.final.forEach(m=>{ const k=(m.g.t[0][5]||'').match(/Explicit (.+?) Modifier magnitudes/i); const v=(m.txt.match(/(\d+)(?:—(\d+))?\)?%/)||[]); if(k && MT[k[1].toLowerCase()] && (v[2]||v[1])) mg[MT[k[1].toLowerCase()]]={v:+(v[2]||v[1]), gi:m.gi}; });
-  const boosted = m => { const t=Object.keys(mg).find(t=>m.g.tg.includes(t) && mg[t].gi!==m.gi && m.g.s!=='x'); return t ? qualBoost(m.txt, mg[t].v) : m.txt; };
+  const boosted = m => m.txt;   /* 규모 증가(스루드 등)는 게임 툴팁처럼 원래 수치로 표시(2026-11-13 C2, Diztoh 공격 속도 창 영상 4:18 툴팁 '20(20—22)% 공격 속도 증가'·'+407(327—427) 정확도') */
   const row = m => `<div class="tt-mod ${m.fr?'fr':''} ${m.des?'desm':''} ${m.ess?'essm':''}"><span class="tier ${m.g.g}">${esc(m.tag)}</span>${esc(boosted(m))}</div>`;
   const rowX = m => `<div class="tt-mod xline ${m.rnd?'rndm':''} ${m.des?'desm':''} ${m.fr?'fr':''}"><span class="tier ${m.side}">${m.side==='s'?'S':'P'}${m.tmax===1?'1':m.tmax?'1–'+m.tmax:''}</span>${esc(m.txt)}</div>`;
   const X=a.finalX||[], ml = a.final.filter(m=>m.g.g==='p').map(row).join('') + X.filter(m=>m.side==='p').map(rowX).join('') + a.final.filter(m=>m.g.g!=='p').map(row).join('') + X.filter(m=>m.side!=='p').map(rowX).join('');
@@ -1600,7 +1600,7 @@ function itemTipHTML(r, o, opt={}){
     if(m.hybrid) txt=txt.replace(/생명력 최대치 \+\([^)]*\)|생명력 최대치 \+\d+/,'생명력/마나 최대치').replace(/\+\([^)]*\) to maximum Life|\+\d+ to maximum Life/,'maximum Life / Mana');
     if(shown){ txt=tx(shown); sub=L('영상 결과값','value in the video'); }
     else if(qv && qt && l.g.tg.includes(qt)){ txt=qualBoost(l.txt, qv); sub=L(`퀄리티 ${qv}% 반영 · 원래 ${l.txt}`,`with ${qv}% quality · base ${l.txt}`); }
-    else { const mg = Object.keys(mag).find(t=>l.g.tg.includes(t) && mag[t].gi!==m.gi && l.g.s!=='x'); if(mg){ txt=qualBoost(l.txt, mag[mg].v); sub=L(`속성 부여 규모 ${mag[mg].v}% 반영 · 원래 ${l.txt}`,`with ${mag[mg].v}% modifier magnitude · base ${l.txt}`); } }
+    else { const mg = Object.keys(mag).find(t=>l.g.tg.includes(t) && mag[t].gi!==m.gi && l.g.s!=='x'); if(mg){ sub=L(`속성 부여 규모 ${mag[mg].v}% 증가 대상 · 게임 툴팁도 원래 수치`,`Affected by ${mag[mg].v}% increased modifier magnitudes · the game tooltip also shows the base value`); } }   /* 수치는 그대로(2026-11-13 C2: 영상 툴팁이 원래 수치 — Diztoh 공격 속도 창 4:18) */
     return `<div class="tt-mod ${m.fr?'fr':m.des?'desm':m.ess?'essm':''} ${cls}" ${sub?`title="${esc(sub)}"`:''}><span class="tier ${l.g.g}">${esc(l.tag)}</span>${esc(txt)}</div>`; };
   const side = sd => {
     const ms=o.state.filter(m=>m.side===sd);
