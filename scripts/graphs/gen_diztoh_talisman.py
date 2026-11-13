@@ -26,6 +26,7 @@ LT = L('p', '번개 피해 추가 1~2티어', 'T1–2 added lightning damage', '
 RPJ = L('p', '랜덤 옵션', 'Random option', 'j')    # m 'j': graph2recipe가 엑잘 자리(접두)를 이 줄에서 읽음
 RSJ = L('s', '랜덤 옵션', 'Random option', 'j')
 RP = L('p', '랜덤 옵션', 'Random option', 'n')
+SER = L('r', '세를의 승리', 'Serle’s Triumph', 'r')   # C3 11-13: 룬 줄(사용자 확정 15:21 ④ 마지막 확정 단계는 그 옵션까지)
 
 g = {
  'id': 'diztoh-talisman-v2', 'recipe': 'diztoh-talisman-v2', 'cls': 'Talismans', 'base': 'Maji Talisman', 'ilvl': 81,
@@ -35,7 +36,7 @@ g = {
           '여유가 있으면: 좌측 소멸의 징조 + 소멸의 오브 3번으로 접두 3개 모두 지움(3:28~3:44, 징조 4→1) → 완벽한 엑잘 = 번개 피해 2티어(3:56, 별로면 좌측 말소의 징조 + 카오스 오브) → 상위 찬미 + 완벽한 엑잘 = 물리·냉기 피해 3티어(4:18~4:28) → '
           '세를의 승리(4:44) → 완벽한 엑잘 = 정확도·시야 반경(5:05~5:16, 치명타 피해 노림, 그대로 둠). 5:20 이후 사원 타락·건축가의 오브(가시 부적이 됨)는 레시피 밖. '
           '내부 결정: 턱뼈 등급 = 보존된 턱뼈(화면 이름 확인 못 함), 숫돌 개수 20개(희귀 1%씩 가정), 철 룬·신성한 오브는 마무리라 뺌(정책 9장, 신성한 오브는 선택 상자), 말소 카오스 = 카오스 오브(자막 그대로, 등급 확인 못 함). '
-          '등급(밸런스·에센셜): 밸런스 = 영상 완성품 길, 첫 접두를 피해 접두 7개 중 하나 1~2티어까지 좌측 말소 + 카오스로 다시(11-13 오후 새 정책 A: 영상 3:56 "별로면" = 좋은 피해 옵션이면 받아들임, 카드는 영상 결과 번개 피해 2티어), 에센셜 = 영상 3:20의 가성비 길(첫 상위 찬미 엑잘 결과 그대로, 접두 지우기 건너뜀).'),
+          '등급(밸런스·에센셜): 밸런스 = 영상 완성품 길, 첫 접두를 피해 접두 7개 중 하나 1~2티어까지 좌측 말소 + 카오스로 다시(11-13 오후 새 정책 A: 영상 3:56 "별로면" = 좋은 피해 옵션이면 받아들임, 카드는 영상 결과 번개 피해 2티어), 에센셜 = 영상 3:20의 가성비 길(첫 상위 찬미 엑잘 결과 그대로, 접두 지우기 건너뜀). 사용자 확정 11-13 15:21 ④: 3:20 뒤의 세를의 승리(룬, 확정)까지 넣고 마지막 엑잘(5:05~5:16, 치명타 피해를 노렸으나 정확도)은 루프가 없어 카드 랜덤 옵션(⑬, 노린 옵션은 꿀팁 후보).'),
  'params': {'L': {'kr': '첫 접두', 'en': 'First prefix', 'values': {'1': K('피해 접두 1~2티어까지 다시', 'Reroll to a T1–2 damage prefix'), '0': K('나오는 대로', 'Keep what comes')}}},
  'strategies': [{'id': 'bal', 'params': {'L': 1}}, {'id': 'ess', 'params': {'L': 0}}],
  'versions': [{'id': 'ess', 'kr': '에센셜', 'en': 'Essential', 'params': {'L': 0}, 'tier': 'ess',
@@ -99,10 +100,10 @@ A(id='x3', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Perfect_Exa
   edges=[{'to': 'rn'}], item=[LT, RPJ, RPJ, MEL, CRIT, AS], over=[{'param': {'L': 0}, 'set': {'item': [RP, RPJ, RPJ, MEL, CRIT, AS]}}])
 A(id='rn', kind='act', group='main', pos=[0, 10.4], act='rune', label=K('룬', 'Rune'), goal=K('세를의 승리 장착 (접미 +1)', 'Socket Serle’s Triumph (+1 suffix)'),
   showText=[K('접미 옵션 4개', 'Four suffixes')], rune=K('세를의 승리', 'Serle’s Triumph'), slots={'s': 1}, edges=[{'to': 'x4'}],
-  item=[LT, RP, RP, MEL, CRIT, AS], over=[{'param': {'L': 0}, 'set': {'item': [FIRE, RP, RP, MEL, CRIT, AS]}}])
+  item=[LT, RP, RP, MEL, CRIT, AS, SER], over=[{'param': {'L': 0}, 'set': {'item': [FIRE, RP, RP, MEL, CRIT, AS, SER]}}])
 A(id='x4', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('접미 네 번째 옵션', 'Fourth suffix'), showText=[{'s': 's', 'kr': '랜덤 옵션', 'en': 'Random option'}],
-  edges=[{'to': 'ok'}], item=[LT, RP, RP, MEL, CRIT, AS, RSJ], over=[{'param': {'L': 0}, 'set': {'item': [FIRE, RP, RP, MEL, CRIT, AS, RSJ]}}])
+  edges=[{'to': 'ok'}], item=[LT, RP, RP, MEL, CRIT, AS, RSJ, SER], over=[{'param': {'L': 0}, 'set': {'item': [FIRE, RP, RP, MEL, CRIT, AS, RSJ, SER]}}])
 A(id='ok', kind='done', group='main', pos=[0, 12.4], label=K('완성', 'Finished'))
 g['nodes'] = N
 g['loops'] = [{'id': 'L1', 'nodes': ['x2', 'x2c'], 'kr': '접두 첫 번째 옵션', 'en': 'First prefix'}]
