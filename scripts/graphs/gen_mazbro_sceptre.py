@@ -166,7 +166,7 @@ g['loops'] = [
             K('빗나감에 장착 증강 효과가 없으면 우측 결정화 + 군왕의 합금', 'On a miss without the augment effect: Dextral Crystallisation + Sovereign Alloy') | {'node': 'aL'},
             K('훼손 옵션이 없으면 우측 결정화 + 심연의 에센스로 징표', 'No desecration yet: Dextral Crystallisation + Essence of the Abyss for the Mark') | {'node': 'mA'},
             K('보존된 턱뼈로 징표 훼손', 'Preserved Jawbone on the Mark') | {'node': 'b2'},
-            K('심연의 메아리 공개 — 좋은 접미 중 먼저 뜬 것', 'Reveal with Abyssal Echoes: whichever good suffix lands first') | {'node': 'b3'},
+            K('심연의 메아리 공개 — 선택지에 좋은 접미가 있으면 그 옵션', 'Reveal with Abyssal Echoes: take a good suffix when one is offered') | {'node': 'b3'},
             K('빗나가면 빛의 징조 + 소멸의 오브로 훼손 옵션만 지우고 보존된 턱뼈로 다시 훼손', 'A miss: Omen of Light + Orb of Annulment removes only the desecration, then Preserved Jawbone again') | {'node': 'bx'},
             K('그 밖의 빗나감은 우측 소멸의 징조 + 소멸의 오브', 'Any other miss: Omen of Dextral Annulment + Orb of Annulment') | {'node': 'da'}],
   'item': [DM, MA, SP, AUG, RG, CS, AS]},

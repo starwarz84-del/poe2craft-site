@@ -60,10 +60,11 @@ HL=it('s','번개 및 카오스 저항 +(3—31)%','+(3—31)% to Lightning and 
 MKS=it('s','심연의 군주의 징표','Mark of the Abyssal Lord',['mkS'],'c')
 LRB=it('s','초당 생명력 재생 (훼손, 자리 막기)','Life Regeneration per second (desecrated, blocker)',None,'d')
 FRB=it('s','화염 저항 (훼손, 자리 막기)','Fire Resistance (desecrated, blocker)',None,'d')
+DIB=it('s','민첩 및 지능 (훼손, 자리 막기)','Dexterity and Intelligence (desecrated, blocker)',None,'d')   # 밸런스 성공 회차 막기(영상 21:06~21:10, +12) — R2
 RCB=it('s','냉기 저항 +(36—45)%','+(36—45)% to Cold Resistance',['rc'])   # 밸런스 접힌 상자 왼쪽 칸: 영상 21:00 냉기 저항 1티어(1~2티어 범위)
 SRE=it('s','스킬의 정신력 점유 효율 (6—12)% 증가','(6—12)% increased Spirit Reservation Efficiency of Skills',['sre'],'d')
 B0=[SPR,J('s')]; B1=B0+[MD]; B2=[SPR,ISP,MD]; B3=[SPR,ISP,IMA,MD]; B4=B3[:3]+[J('s'),MD]; B5=B3[:3]+[MKS,MD]; B6=B3[:3]+[UN('s'),MD]; B7=B3[:3]+[LRB,MD]
-BL=B3[:3]+[HF,HC,FRB,MD]; BLb=B3[:3]+[HL,RCB,FRB,MD]; B10b=B3[:3]+[HL,RCB,UN('s'),MD]; B11b=B3[:3]+[HL,RCB,SRE,MD]; B9=B3[:3]+[HF,HC,MD]; B10=B3[:3]+[HF,HC,UN('s'),MD]; B11=B3[:3]+[HF,HC,SRE,MD]
+BL=B3[:3]+[HF,HC,FRB,MD]; BLb=B3[:3]+[HL,RCB,DIB,MD]; B10b=B3[:3]+[HL,RCB,UN('s'),MD]; B11b=B3[:3]+[HL,RCB,SRE,MD]; B9=B3[:3]+[HF,HC,MD]; B10=B3[:3]+[HF,HC,UN('s'),MD]; B11=B3[:3]+[HF,HC,SRE,MD]
 nodes=[
  mark([0,0.6],'r1',B0),
  act('r1','main',[0,1],'rune',None,K('메드베드의 보살핌 장착','Socket Medved’s Tending'),[st(None,'영혼 핵 옵션이 붙을 수 있음','Soul core lines can roll')],K('룬','Rune'),[{'to':'c1'}],B1,rune=K('메드베드의 보살핌','Medved’s Tending')),   # 5:40 화면 '제거·교체 불가' 확인 창
