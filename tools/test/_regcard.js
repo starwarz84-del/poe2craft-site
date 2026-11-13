@@ -35,8 +35,10 @@ function registered(r, N=1500, card){ const gid=r.simId||r.tierGroup||r.id, g=JS
     const frs=new Set(((r.start||{}).mods||[]).filter(m=>m.fr&&m.gi!=null).map(m=>m.gi)), PT=x=>typeof x==='string'&&x[0]==='$'?st.params[x.slice(1)]:x;
     const line=tag=>{ const opts=leaf(PT(tag)); return opts.length ? [{fr:opts.length===1&&frs.has(opts[0].gi), des:opts.every(o=>G[o.gi].s==='d'), opts}] : []; };
     const lines=c=>{ if(!c||typeof c!=='object') return []; if(c.ref) return lines((g.conds||{})[c.ref]); if(c.all) return c.all.flatMap(lines); if(c.any) return lines([...c.any].sort((x,y)=>rate.get(y)-rate.get(x))[0]);
-      if(c.has) return line(c.has); if(c.count) return Array.from({length:c.count.min},()=>line(c.count.tag)[0]).filter(Boolean); return []; };
-    card=lines(g.require); fromReq=card.length>0; if(!card.length) card=goals(r); }
+      if(c.has) return line(c.has); if(c.count) return Array.from({length:c.count.min},()=>({...line(c.count.tag)[0], cnt:true})).filter(l=>l.opts); return []; };
+    /* 같은 옵션을 다른 태그로 두 번 요구하면(SL 장갑: pdT 와 pd1 — 등급 티어 줄과 1티어 줄) 한 줄로, 더 좁은 티어를 씀(W8). count 줄은 그대로 여러 개 */
+    card=[]; for(const l of lines(g.require)){ if(l.cnt){ card.push(l); continue; } const k=l.opts.map(o=>o.gi).sort((a,b)=>a-b).join(','), j=card.findIndex(x=>!x.cnt && x.opts.map(o=>o.gi).sort((a,b)=>a-b).join(',')===k);
+      if(j<0){ card.push(l); continue; } card[j]={...card[j], opts:card[j].opts.map((o,q)=>{ const t2=l.opts.find(y=>y.gi===o.gi)?.tmax; return {...o, tmax: o.tmax==null ? t2??null : t2==null ? o.tmax : Math.min(o.tmax, t2)}; })}; } fromReq=card.length>0; if(!card.length) card=goals(r); }
   const rnd=fin ? fin.lines.filter(l=>!l.tag).length : 0;
   const qt={}; card.forEach((l,i)=>{ qt['q'+i]={anyOf:l.opts.map(o=>({gi:o.gi, ...(o.tmax?{tmax:o.tmax}:{})}))}; });
   /* 완성 조건은 등록 플로우차트의 것 그대로(레시피가 스스로 정한 완성). q 태그는 옵션별 비율을 재는 데만 씀 */

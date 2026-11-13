@@ -100,6 +100,8 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .rns{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.rchip{position:relative;display:inline-block;padding:2px 9px;border:1px solid var(--line);border-radius:999px;color:var(--rune,#9fb4ff);cursor:help}.rchip .rtip{display:none;position:absolute;left:0;top:calc(100% + 6px);z-index:20;min-width:220px;max-width:320px;padding:8px 10px;background:var(--bg,#111);border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.5);color:var(--text);font-size:12.5px;line-height:1.5;white-space:normal}.rchip:hover .rtip,.rchip:focus .rtip{display:flex;flex-direction:column;gap:2px}.rtip b{color:var(--rune,#9fb4ff);margin-bottom:2px}.rtip em{font-style:normal;color:var(--muted);margin-top:4px}
 .simrec{margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel,transparent)}.simrec .ch-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}.simrec .ch-h span{font-size:12px;color:var(--muted)}
 .simr{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 0;border-top:1px solid var(--line);font-size:13px}.simr .sk{flex:none;font-size:11.5px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}.simr.same .sk{color:var(--ok);border-color:var(--ok)}.simr .st{flex:1 1 220px;color:var(--text)}.simr .sm{color:var(--muted);font-size:12px}.simr .sgo{padding:3px 10px;font-size:12px}
+.altb{border:1px dashed var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:6px 10px;font:inherit;font-size:13px;cursor:pointer}.altb[aria-pressed="true"]{border-style:solid;border-color:var(--ok);color:var(--text)}
+.gtier{font-size:12px;color:var(--muted)}.altl{grid-column:1/-1;font-size:12px;color:var(--muted);line-height:1.5}
 .anytip{margin-top:6px;padding:7px 10px;border-radius:8px;border:1px dashed var(--line);font-size:12px;color:var(--muted);line-height:1.5}.anytip b{color:var(--text);font-weight:600}
 .lvhelp{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px 14px;margin:0 0 10px;font-size:12.5px;color:var(--muted)}.lvhelp div{display:flex;gap:8px}.lvhelp dt{flex:none;min-width:34px;font-weight:700;color:var(--gold,#e2c27a)}.lvhelp dd{margin:0;line-height:1.5}
 .tshare{display:inline-flex;flex-direction:column;align-items:flex-end;margin-left:8px;font-weight:700;font-size:14px;color:var(--text);line-height:1.1}.tshare small{font-weight:400;font-size:11px;color:var(--muted)}
@@ -657,9 +659,17 @@ const diff3 = an => !an.rows.some(r=>r.m.fr) && !an.putrid;   // a bought magic 
 function buySet(an){ const b=new Set([...S.buy].filter(i=>S.need.has(i)).map(i=>an.rows[i]?.m).filter(Boolean)); return b.size ? b : null; }
 // 사용자 확정 2026-11-11: 옵션마다 필수 / 유효 / 잡옵 — 유효 옵션은 노리되 한 번만 시도하고 빗나가면 그대로(반복·비싼 징조 없음)
 function needAn(an, floor, it){ const a = {...an, rows: an.rows.flatMap((r,i)=>{ if(r.m.fr) return [r]; if(r.unrev || !(S.need.has(i) || S.soft?.has(i))) return [];
-  const t = Math.max(S.tsel[i] || r.tierNo, floor ? Math.min(floor, r.tierCnt) : 0), soft = !S.need.has(i);
-  return [t===r.tierNo && !soft ? r : {...r, tierNo:t, ...(soft?{soft:true}:{})}]; })};
+  const t = Math.max(S.tsel[i] || r.tierNo, floor ? Math.min(floor, r.tierCnt) : 0), soft = !S.need.has(i), alt = altOf(an, i, it);
+  return [t===r.tierNo && !soft && !alt ? r : {...r, tierNo:t, ...(soft?{soft:true}:{}), ...(alt?altRow(it, r, alt):{})}]; })};
   return a; }
+/* 유효 옵션군(W8, 로드맵 2-④ 사용자 2026-11-12 18:38): 그 자리에 고른 다른 옵션 [{gi,tmax}] — 일반 옵션 자리만, 다른 줄에 이미 있는 계열은 뺌 */
+function altOf(an, i, it){ const L=S.alt?.[i], r=an.rows[i]; if(!L?.length || !r || r.m.fr || r.unrev || !r.g || (r.how!=='n' && r.how!=='d')) return null;
+  const used=new Set(an.rows.flatMap((x,k)=>k!==i && x.g ? x.g.f||[] : [])), G=it?.D?.groups;
+  const out=L.filter(x=>x.gi!==r.m.gi && (!G || (G[x.gi] && !(G[x.gi].f||[]).some(f=>used.has(f))))); return out.length ? out : null; }
+/* 고른 묶음만큼 한 번에 뜰 확률이 커짐(같은 쪽 가중치 합 기준 근사) — 어려운 옵션부터 고르는 순서에만 씀. 판정은 시뮬이 anyOf로 */
+function altRow(it, r, alt){ const G=it.D.groups, il=it.ilvl||82, hit=(gi,tm)=>(G[gi]?.t||[]).reduce((s,t,j)=>s+((tm==null || j<tm) && t[0]<=il ? t[1]||0 : 0),0);
+  const own=hit(r.m.gi, r.tierNo), add=alt.reduce((s,x)=>s+hit(x.gi, x.tmax),0), k = own>0 ? (own+add)/own : 1;
+  return {alt, ...(k>1 && r.pOmen!=null ? {pOmen:Math.min(1,r.pOmen*k), pAny:Math.min(1,(r.pAny||0)*k), pPerfect:Math.min(1,(r.pPerfect||0)*k)} : {})}; }
 // 상황에 맞는 노하우 고르기: 기본 초안과 노하우를 적용한 초안(K5 완벽한 에센스·K6 훼손 공개)을 모두 만들어 검산을 통과한 것 중
 // 끝까지 맞출 때 비용(타협 없이)이 가장 싼 것. 기본보다 5% 넘게 싸야 바꿈
 function bestDraft(it, an, opt){ const vs=[{k:[], a:an}];
@@ -756,10 +766,12 @@ function makeDraft(it, an, opt){
   const alts = r => { const t = Math.max(1, r.tierNo), f = r.g.f||[];
     if(r.g.s==='n' && f.length===1 && ELEM.includes(f[0])){ const gs = it.D.groups.map((g,gi)=>({g,gi})).filter(x=>x.gi!==r.m.gi && x.g.s==='n' && x.g.g===r.g.g && x.g.f.length===1 && ELEM.includes(x.g.f[0]));
       if(gs.length) return [{gi:r.m.gi, tmax:t}, ...gs.map(x=>({gi:x.gi, tmax:t}))]; }
+    /* 유효 옵션군(W8): 붙여 넣은 옵션이 맨 앞(성공 회차 옵션 = shown), 고른 다른 옵션은 그 티어로 */
+    if(r.alt?.length && !r.m.fr) return [{gi:r.m.gi, tmax:t}, ...r.alt.filter(x=>x.gi!==r.m.gi).map(x=>({gi:x.gi, ...(x.tmax?{tmax:x.tmax}:{})}))];
     return [{gi:r.m.gi, tmax:t}]; };
   const tm = r => { const a = alts(r); return a.length>1 ? {anyOf:a} : a[0]; };
-  const anyOf = list => { const a = list.flatMap(alts).filter((x,i,all)=>all.findIndex(y=>y.gi===x.gi)===i); return a.length===1 ? a[0] : {anyOf:a}; };
-  const lkA = r => lk(r) + (alts(r).length>1 ? ' (원소 무관)' : ''), leA = r => le(r) + (alts(r).length>1 ? ' (any element)' : '');
+  const anyOf = list => { const a = [...list.map(r=>alts(r)[0]), ...list.flatMap(r=>alts(r).slice(1))] /* 붙여 넣은 옵션이 먼저(W8: 유효 옵션군 묶음에서 성공 회차 옵션 = 붙여 넣은 옵션) */.filter((x,i,all)=>all.findIndex(y=>y.gi===x.gi)===i); return a.length===1 ? a[0] : {anyOf:a}; };
+  const lkA = r => lk(r) + (r.alt?.length ? ` 외 ${r.alt.length}개` : alts(r).length>1 ? ' (원소 무관)' : ''), leA = r => le(r) + (r.alt?.length ? ` or ${r.alt.length} more` : alts(r).length>1 ? ' (any element)' : '');
   // 정책 3장(C4·23②): 오브 등급은 완성품 가치로 — opt.ex가 있으면 엑잘은 그 등급(촉진 엑잘은 그대로). bestDraft가 시뮬 비용으로 고름
   const exSwap = n => { if(!opt?.ex || n.do!=='exalt' || n.cur!=='Perfect_Exalted_Orb' || it.cat==='jewel' || (n.omens||[]).includes('Omen_of_Catalysing_Exaltation')) return n;
     const kr=nk(opt.ex), en=ne(opt.ex), f = o => o && {kr:(o.kr||'').split('완벽한 엑잘티드 오브').join(kr), en:(o.en||'').split('Perfect Exalted Orb').join(en)};
@@ -1332,7 +1344,7 @@ function makeDraft(it, an, opt){
     return it.D.groups.map((g,gi)=>({g,gi})).filter(({g,gi})=>g.s==='n' && g.g===sd && !P.some(r=>r.m.gi===gi) && ATK.test((g.t[0]?.[5]||'').split('\n')[0]) && !(g.f||[]).some(f=>used.has(f)) && g.t.some(t=>t[0]<=it.ilvl && t[1]>0))
       .filter(({g},_,A)=>!A.some(o=>o.g!==g && (o.g.f||[]).some(f=>(g.f||[]).includes(f)) && (o.g.t[0]?.[0]||0)>(g.t[0]?.[0]||0)))   /* 같은 계열의 낮은 레벨 그룹(Adds (1—2) to 3 …)은 빼고 본 그룹만 */
       .map(({g,gi})=>{ const lo=Math.max(0, g.t.findIndex(t=>t[0]<=it.ilvl)); return {gi, tmax:Math.min(g.t.length, lo+tm)}; }); };
-  for(const sd of ['p','s']){ const P=POOL[sd]; if(!P) continue; const ext=atkExtra(P, sd), gis=new Set(P.map(r=>r.m.gi)), all0=anyOf(P), mem=(all0.anyOf||[all0]).filter(x=>gis.has(x.gi)) /* 묶음 밖 대체 옵션(아무 저항 등)은 빼야 '묶음 3개'가 정확함 — 2026-11-12 등록 Slipstrike Vest: 번개 저항이 튕겨내기 자리를 차지했음 */, all = {anyOf:[...mem, ...ext]};
+  for(const sd of ['p','s']){ const P=POOL[sd]; if(!P) continue; const ext=atkExtra(P, sd), gis=new Set(P.map(r=>r.m.gi)), altG=new Set(P.flatMap(r=>(r.alt||[]).map(x=>x.gi))) /* W8: 고른 유효 옵션군은 묶음에 남김 */, all0=anyOf(P), mem=(all0.anyOf||[all0]).filter(x=>gis.has(x.gi) || altG.has(x.gi)) /* 묶음 밖 대체 옵션(아무 저항 등)은 빼야 '묶음 3개'가 정확함 — 2026-11-12 등록 Slipstrike Vest: 번개 저항이 튕겨내기 자리를 차지했음 */, all = {anyOf:[...mem, ...ext]};
     const hit = t => t && ((t.gi!=null && gis.has(t.gi)) || (t.anyOf||[]).some(x=>gis.has(x.gi)));
     for(const n of nodes){ const t=n.target; if(!t) continue;
       if(hit(t)){ const {gi, tmax, anyOf:_a, ...rest} = t; n.target = {...rest, ...all}; n.pool=P.length; }
@@ -1541,7 +1553,7 @@ const GRADE_N = () => ({high:L('하이엔드','High-end'), bal:L('밸런스','Ba
 const DIFF_N = () => [L('입문','Starter'),L('쉬움','Easy'),L('보통','Normal'),L('어려움','Hard'),L('전문가','Expert'),L('극한','Extreme')];
 async function loadBoard(){ if(S.boardR!==undefined) return S.boardR; try{ const b=await fetch('data/board.json').then(r=>r.ok?r.json():null); S.boardR=b?.r||null; }catch(_){ S.boardR=null; } return S.boardR; }
 async function simMean(g, tr, rid){ S.simC=S.simC||{}; const k=g+'|'+tr; if(k in S.simC) return S.simC[k]; S.simC[k]=null;
-  try{ const d=await fetch(`data/sim/${encodeURIComponent(g)}.json`).then(r=>r.ok?r.json():null); const st=d && (d.strategies.find(x=>x.id===tr && !x.hidden) || d.strategies.find(x=>!x.hidden)); S.simC[k]=st?.res ? (st.res.useDiv ?? st.res.mean) : null;   /* 매직 굴림은 비용에 넣지 않음(13장 22:37) */ }catch(_){} return S.simC[k]; }
+  try{ const d=await fetch(`data/sim/${encodeURIComponent(g)}.json`).then(r=>r.ok?r.json():null); if(d?.graph?.tags) (S.simTags=S.simTags||{})[g]={tags:d.graph.tags, rid}; /* 유효 옵션군 추천용(W8) */ const st=d && (d.strategies.find(x=>x.id===tr && !x.hidden) || d.strategies.find(x=>!x.hidden)); S.simC[k]=st?.res ? (st.res.useDiv ?? st.res.mean) : null;   /* 매직 굴림은 비용에 넣지 않음(13장 22:37) */ }catch(_){} return S.simC[k]; }
 /* 등록 레시피가 매직 베이스를 사서 시작하면 초안과 같은 기준으로 그 매직 옵션 굴림 비용을 더함(W2, 같은 클래스라 it.D를 씀) */
 async function regMagic(rid){ try{ const it=S.last?.it; if(!it) return 0;
   if(!S.recAll){ if(!S.recLoad) S.recLoad = fetch('data/recipes.json').then(r=>r.ok?r.json():null).then(j=>{ S.recAll = (j && (j.recipes||j)) || []; }).catch(()=>{ S.recAll=[]; }); await S.recLoad; }
@@ -1580,8 +1592,34 @@ function anyTipHTML(it, an, list){
     for(const n of rc.nodes||[]){ const t=n.target||{}, A = n.do==='reveal' ? t.reveal?.anyOf : t.anyOf; if(!A || A.length<2 || t.junk || n.optional) continue;
       if(new Set(A.map(o=>fam(o.gi))).size<2) continue; const m = mine.find(r=>A.some(o=>o.gi===r.m.gi)); if(!m || seen.has(m)) continue;
       seen.add(m); hits.push({x, m, k:A.length}); } }
-  if(!hits.length) return ''; hits.sort((a,c)=>c.k-a.k);
-  return `<div class="anytip">${L('팁: 초안은 유효 옵션군 중 하나만 노리기 때문에 비용이 더 커질 수 있음.','Tip: the draft aims at just one modifier of the valid group, so its cost can come out higher.')}</div>`; }
+  const open = hits.filter(h=>!S.alt?.[an.rows.indexOf(h.m)]?.length); if(!open.length) return '';   /* W8: 그 자리에 유효 옵션군을 고르면 팁 없음 */
+  return `<div class="anytip">${L("팁: 등록 레시피는 이 자리를 여러 옵션 중 하나로 받음. 옵션 오른쪽 '다른 옵션도 성공'을 고르면 같은 기준으로 초안을 만듦.","Tip: the registered recipe takes any of several modifiers here. Pick 'Others count' on that line to draft on the same terms.")}</div>`; }
+/* 유효 옵션군 추천(W8, 로드맵 2-④ 사용자 2026-11-12 18:38): 그 자리를 '이 중 아무거나'로 받을 수 있는 묶음.
+   ① 비슷한 등록 레시피 플로우차트의 같은 자리 묶음 태그(anyOf, 다른 필요 옵션을 품은 묶음 = K39 '먼저 뜨는 것'은 뺌) ② K41 공격 피해 추가(물리·화염·냉기·번개).
+   단일 원소 저항(정책 6)은 고르지 않아도 늘 원소 무관이라 칩 없음 */
+const ATK_RE = /^Adds .* (Physical|Fire|Cold|Lightning) [Dd]amage to Attacks$/;
+const optShort = (it, gi) => { const t=it.D.groups[gi]?.t?.[0]; return String((KR()?t?.[4]:t?.[5])||'').split('\n').join(' / ').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\s*~\s*/g,' ').replace(/\s+/g,' ').replace(/^(의|를|을)\s/,'').replace(/\bAdds\s+to\b/g,'Adds').trim().replace(/(^|\/ )to /gi,'$1').trim(); };
+function altRecs(it, an, ri){ const r=an.rows[ri]; if(!r || r.m.fr || r.unrev || !r.g || r.g.s!=='n' || r.how!=='n') return [];
+  const G=it.D.groups, other=new Set(an.rows.flatMap((x,k)=>k!==ri && x.g ? [x.m.gi] : [])) /* 다른 줄의 옵션 */, usedF=new Set(an.rows.flatMap((x,k)=>k!==ri && x.g ? x.g.f||[] : [])), out=[], seen=new Set();
+  const ok = gi => G[gi] && G[gi].g===r.g.g && !(G[gi].f||[]).some(f=>usedF.has(f)) && G[gi].t.some(t=>t[0]<=it.ilvl && t[1]>0);
+  const put = (k, list, src) => { list=list.filter((x,i,A)=>x.gi!==r.m.gi && ok(x.gi) && A.findIndex(y=>y.gi===x.gi)===i); if(!list.length) return; const key=list.map(x=>x.gi).sort((a,b)=>a-b).join(','); if(seen.has(key)) return; seen.add(key); out.push({k:k+out.length, list, src}); };
+  const famN = L => new Set(L.map(x=>(G[x.gi]?.f||[]).join('+'))).size;
+  /* ① 등록 플로우차트(같은 클래스, simMean이 받아 둔 태그) */
+  for(const [g, v] of Object.entries(S.simTags||{})){ const B=S.boardR?.[v.rid]; if(B && B.c!==it.cls) continue; const T=v.tags;
+    const leaf = (x, seen0=[]) => { if(typeof x==='string'){ if(seen0.includes(x)) return []; const t=T[x]; if(!t) return []; if(t.anyOf) return t.anyOf.flatMap(y=>leaf(y,[...seen0,x])); return t.gi!=null ? [{gi:t.gi, tmax:typeof t.tmax==='number'?t.tmax:null}] : []; } return x && x.gi!=null ? [{gi:x.gi, tmax:typeof x.tmax==='number'?x.tmax:null}] : []; };
+    for(const [k,t] of Object.entries(T)){ if(!t.anyOf) continue; const L=leaf(k); if(!L.some(x=>x.gi===r.m.gi) || famN(L)<2) continue;   /* 다른 필요 옵션을 품은 묶음(K39 '먼저 뜨는 것')은 그 옵션을 빼고 나머지만 */
+      put('t', L.filter(x=>!other.has(x.gi)).map(x=>({gi:x.gi, tmax:x.tmax ?? Math.max(1, r.tierNo)})), B?.ti || null); } }
+  /* ② K41 */
+  if(ATK_RE.test((r.t[5]||'').split('\n')[0])){ const lo0=Math.max(0, r.g.t.findIndex(t=>t[0]<=it.ilvl)), rank=Math.max(1, r.tierNo-lo0);
+    put('a', G.map((g,gi)=>({g,gi})).filter(({g})=>g.s==='n' && g.g===r.g.g && ATK_RE.test((g.t[0]?.[5]||'').split('\n')[0]))
+      .filter(({g},_,A)=>!A.some(o=>o.g!==g && (o.g.f||[]).some(f=>(g.f||[]).includes(f)) && (o.g.t[0]?.[0]||0)>(g.t[0]?.[0]||0)))
+      .map(({g,gi})=>{ const lo=Math.max(0, g.t.findIndex(t=>t[0]<=it.ilvl)); return {gi, tmax:Math.min(g.t.length, lo+rank)}; }), null); }
+  return out.slice(0,3); }
+function altHTML(it, an, ri){ const recs=altRecs(it, an, ri); if(!recs.length) return ''; const cur=S.altK?.[ri];
+  return recs.map(x=>{ const nm=x.list.map(y=>optShort(it, y.gi)+(y.tmax?` T${y.tmax}`:'')).join(' · '), on=cur===x.k;
+    return `<button type="button" class="altb" data-alt="${ri}:${esc(x.k)}" aria-pressed="${on}" title="${esc((x.src?L(`등록 레시피 「${x.src.kr||''}」 같은 자리`,`Same slot in “${x.src.en||''}”`)+' — ':'')+nm)}">${on?'✓ ':''}${L(`다른 옵션도 성공 · ${x.list.length}개`,`Others count · ${x.list.length}`)}</button>`; }).join(''); }
+function altLine(it, an, ri){ const L0=S.alt?.[ri]; if(!L0?.length || !S.need.has(ri) && !S.soft?.has(ri)) return '';
+  return `<div class="altl">${L('이 자리 성공','Also counts here')}: ${esc([optShort(it, an.rows[ri].m.gi), ...L0.map(y=>optShort(it, y.gi)+(y.tmax?` T${y.tmax}`:''))].join(' · '))}</div>`; }
 function render(){
   renderStatic();
   const a=S.last;
@@ -1619,8 +1657,11 @@ function render(){
           const tl = k => k===lo ? `T${k}` : L(`T${k} 이상`,`T${k}+`);
           const sh = on && isN ? tierShareR(it, r, cur) : null;
           const sel = on && opts.length>1 ? /* 2026-11-12(사용자: 필수·유효를 눌러도 티어가 안 나옴): 증강물(콜르 등)·훼손 전용처럼 티어가 여럿인 옵션도 티어 선택 — 확률 숫자는 일반 옵션만 */ `<select class="tsel" title="${esc(L('이 티어나 더 좋은 티어면 성공','This tier or better counts'))}" data-tier="${ri}">${opts.map(k=>`<option value="${k}" ${k===cur?'selected':''}>${tl(k)}</option>`).join('')}</select>${sh!=null?`<span class="tshare" title="${esc(L('새 옵션 하나가 이 옵션의 이 티어 이상일 확률','Chance one new line is this modifier at this tier or better'))}">${sh}</span>`:''}` : '';
-          return `<div class="need"><span class="lvg" role="group" aria-label="${esc(L('옵션 구분','Modifier level'))}"><button type="button" class="needb lv" data-lv="${ri}:must" aria-pressed="${S.need.has(ri)}">${S.need.has(ri)?L(`✓ 필수 ${nOrd}`,`✓ Must ${nOrd}`):L('필수','Must')}</button><button type="button" class="needb lv" data-lv="${ri}:soft" aria-pressed="${soft}">${soft?L('✓ 유효','✓ Useful'):L('유효','Useful')}</button></span>${sel}</div>`; })();
-    return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml" ${KR()&&locLine(m.l,r.t)!==m.l?`title="${esc(m.l)}"`:''}>${esc(locLine(m.l,r.t))}</div><div class="tags">${tags}<span class="tag">${tierT}</span>${desRep}</div></div>${needH}</div>`;
+          /* 등급별 티어(W8, 정책 10장 C17-1 · 13장 11-13 20:28): 고른 티어 = 하이엔드, 반복으로 찾는 필수 자리만 밸런스 1~2·에센셜 1~4티어 중 넓은 쪽 — 회색으로 옆에 */
+          const gB = Math.min(r.tierCnt, Math.max(cur, lo+1)), gE = Math.min(r.tierCnt, Math.max(cur, lo+3));
+          const gT = S.need.has(ri) && (gB>cur || gE>cur) ? `<span class="gtier" title="${esc(L('고른 티어 = 하이엔드. 반복으로 찾는 자리만 등급마다 넓힘','The picked tier is High-end; only slots found by a loop widen per grade'))}">${L(`밸런스 T${gB} 이상 · 에센셜 T${gE} 이상`,`Balance T${gB}+ · Essential T${gE}+`)}</span>` : '';
+          return `<div class="need"><span class="lvg" role="group" aria-label="${esc(L('옵션 구분','Modifier level'))}"><button type="button" class="needb lv" data-lv="${ri}:must" aria-pressed="${S.need.has(ri)}">${S.need.has(ri)?L(`✓ 필수 ${nOrd}`,`✓ Must ${nOrd}`):L('필수','Must')}</button><button type="button" class="needb lv" data-lv="${ri}:soft" aria-pressed="${soft}">${soft?L('✓ 유효','✓ Useful'):L('유효','Useful')}</button></span>${sel}${gT}${on?altHTML(it, an, ri):''}</div>`; })();
+    return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml" ${KR()&&locLine(m.l,r.t)!==m.l?`title="${esc(m.l)}"`:''}>${esc(locLine(m.l,r.t))}</div><div class="tags">${tags}<span class="tag">${tierT}</span>${desRep}</div></div>${needH}${altLine(it, an, ri)}</div>`;
   }).join('');
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
   const otherHTML = it.other.length ? `<div class="other">${it.other.map(o=>`<div class="${o.k==='?'?'bad':''}"><span class="k">${kName[o.k]}</span>${esc(locOther(it, o.l))}</div>`).join('')}</div>` : '';
@@ -1638,7 +1679,7 @@ function render(){
 }
 
 async function run(){
-  await S.ready; S.draft=null; S.sent=false; S.need=new Set(); S.soft=new Set(); S.okQR=false; S.unkOk=false; S.tsel={}; S.buy=new Set(); $('#fb').hidden=true;
+  await S.ready; S.draft=null; S.sent=false; S.need=new Set(); S.soft=new Set(); S.okQR=false; S.unkOk=false; S.tsel={}; S.alt={}; S.altK={}; S.buy=new Set(); $('#fb').hidden=true;
   const txt = $('#txt').value; if(!txt.trim()){ S.last=null; render(); return; }
   if(!S.index) [S.index, S.craft] = await Promise.all([fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json())]);
   if(!S.priority) S.priority = await fetch('data/priority.json').then(r=>r.json()).catch(()=>null);
@@ -1708,7 +1749,9 @@ $('#mods').addEventListener('click', e=>{
       S.busy=false; if(btn) btn.disabled=false; if(S.last?.it!==it) return;
       const r=bd.d; S.draft=r; S.check = r ? verifyDraft(it, bd.an, r) : []; S.flow={wait:true}; showCheck();
       setTimeout(()=>{ if(S.draft!==r) return; S.flow = runFlow(it, r); showCheck(); }, 40); })(); return; }
-  const lb=e.target.closest('[data-lv]'); if(lb && S.last?.an){ const [i0,lv]=lb.dataset.lv.split(':'), i=+i0, was = lv==='must' ? S.need.has(i) : lv==='soft' ? S.soft.has(i) : false; S.need.delete(i); S.soft.delete(i); delete S.tsel[i]; if(!was){ if(lv==='must') S.need.add(i); else if(lv==='soft') S.soft.add(i); } S.draft=null; S.sent=false; render(); return; }
+  const lb=e.target.closest('[data-lv]'); if(lb && S.last?.an){ const [i0,lv]=lb.dataset.lv.split(':'), i=+i0, was = lv==='must' ? S.need.has(i) : lv==='soft' ? S.soft.has(i) : false; S.need.delete(i); S.soft.delete(i); delete S.tsel[i]; if(was && S.alt){ delete S.alt[i]; delete S.altK?.[i]; } if(!was){ if(lv==='must') S.need.add(i); else if(lv==='soft') S.soft.add(i); } S.draft=null; S.sent=false; render(); return; }
+  const ab=e.target.closest('[data-alt]'); if(ab && S.last?.an){ const [i0,k]=ab.dataset.alt.split(':'), i=+i0; S.alt=S.alt||{}; S.altK=S.altK||{};
+    if(S.altK[i]===k){ delete S.alt[i]; delete S.altK[i]; } else { const x=altRecs(S.last.it, S.last.an, i).find(y=>y.k===k); if(x){ S.alt[i]=x.list; S.altK[i]=k; } } S.draft=null; S.sent=false; render(); return; }
   const sg=e.target.closest('[data-goto]'); if(sg){ parent.postMessage({type:'poe2-goto', id:sg.dataset.goto}, '*'); return; }
   const nb=e.target.closest('[data-need]'); if(nb && S.last?.an){ const i=+nb.dataset.need; if(S.need.has(i)) S.need.delete(i); else S.need.add(i); S.draft=null; S.sent=false; render(); return; }
   if(e.target.closest('#send') && S.draft && !S.sent){ if(!S.flow?.group || S.pvBad) return; const r=S.flow.group;
@@ -1717,7 +1760,7 @@ $('#mods').addEventListener('click', e=>{
     if(inShell){ try{ window.parent.postMessage({type:'poe2-draft', recipe:r, stay:true}, '*'); }catch(_){} }   // stay here; the list picks it up (사용자 확정 2026-11-11)
     S.sent=true; $('#fb').hidden=false; renderStatic();
     $('#pvact').innerHTML = `<span class="ok">${L('크래프팅 목록에 등록됨','Added to the Crafting list.')}</span>${inShell?`<button type="button" class="btn" id="pvgo">${L('크래프팅에서 보기 →','Open in Crafting →')}</button>`:''}<button type="button" class="btn" id="pvdone">${L('완료','Done')}</button>`; return; }
-  if(e.target.closest('#pvdone')){ /* 완료(사용자 2026-11-12): 전송 뒤 처음 상태로 */ S.draft=null; S.check=null; S.flow=null; S.sent=false; S.need=new Set(); S.soft=new Set(); S.okQR=false; S.unkOk=false; S.tsel={}; S.buy=new Set(); S.last=null; $('#txt').value=''; $('#fb').hidden=true; const m=$('#mkmsg'); if(m) m.innerHTML=''; render(); window.scrollTo({top:0, behavior:'smooth'}); $('#txt').focus({preventScroll:true}); return; }
+  if(e.target.closest('#pvdone')){ /* 완료(사용자 2026-11-12): 전송 뒤 처음 상태로 */ S.draft=null; S.check=null; S.flow=null; S.sent=false; S.need=new Set(); S.soft=new Set(); S.okQR=false; S.unkOk=false; S.tsel={}; S.alt={}; S.altK={}; S.buy=new Set(); S.last=null; $('#txt').value=''; $('#fb').hidden=true; const m=$('#mkmsg'); if(m) m.innerHTML=''; render(); window.scrollTo({top:0, behavior:'smooth'}); $('#txt').focus({preventScroll:true}); return; }
   if(e.target.closest('#pvgo') && S.draft){ try{ window.parent.postMessage({type:'poe2-goto', id:S.draft.id}, '*'); }catch(_){} return; }
   if(e.target.closest('#discard') && S.draft){ S.draft=null; S.check=null; S.flow=null; S.sent=false; renderStatic();
     $('#mkmsg').innerHTML = `<span class="ok">${L('초안 삭제됨 · 아쉬운 점을 아래에 남기면 다음 초안에 반영','Draft deleted. Tell us what was off below so the next one is better.')}</span>`; $('#fb').hidden=false; return; }
@@ -1903,6 +1946,6 @@ $('#mods').addEventListener('change', e=>{
   if(e.target.dataset?.tier!=null){ S.tsel[+e.target.dataset.tier]=+e.target.value; if(!S.soft.has(+e.target.dataset.tier)) S.need.add(+e.target.dataset.tier); S.draft=null; S.sent=false; render(); return; }
   if(e.target.id==='qin' && S.last?.it){ const v=Math.max(0, Math.min(75, Math.round(+e.target.value||0))); S.last.it.qual=v; S.last.an=analyse(S.last.it); S.draft=null; S.okQR=true; render(); }   // quality changes the tier read
 });
-window.__rev = Object.assign(S, {solveLines, matcher, tplRe, cleanLine, tagOf, parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost, magicDiv, revCost, runFlow, fcCardOf, needAn, essSwap, desSwap, bestDraft, bestDraftAsync});
+window.__rev = Object.assign(S, {altRecs, altOf, solveLines, matcher, tplRe, cleanLine, tagOf, parse, analyse, makeDraft, verifyDraft, estDiff, tryDiff, estChance, draftCost, magicDiv, revCost, runFlow, fcCardOf, needAn, essSwap, desSwap, bestDraft, bestDraftAsync});
 render();
 </script>

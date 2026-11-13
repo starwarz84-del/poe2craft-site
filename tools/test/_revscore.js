@@ -18,10 +18,13 @@ const out=[];
 for(const id of IDS){ const r=R.find(x=>x.id===id); if(!r || !SAMP.has(id)) continue; let reg; try{ reg=registered(r, +(process.env.REGN||400)); }catch(e){ out.push({id, skip:'등록 그래프: '+e.message}); continue; }
   if(!reg.fromReq){ out.push({id, skip:'완성 조건에 옵션 지정이 없음(아무 옵션이나 채우면 완성)'}); continue; }
   const buy=((r.start||{}).mods||[]).filter(m=>m.gi!=null && !m.crafted).map(m=>m.gi);
-  const tier=r.tier||'high'; const x=await Promise.race([p.evaluate(async([id,card,qt,buy,EXP,OLD,per,rtags,rreq,NOK42,tier])=>{ const S=__rev; const x=S.recSamples.find(s=>s.id===id); if(!x) return {skip:'no sample'}; const it=await S.parse(x.text); if(it.err) return {skip:'parse'}; const an=S.analyse(it); if(an.putrid) return {skip:'putrid'};
-    S.need=new Set(); S.soft=new Set(); S.tsel={}; S.buy=new Set(); S.noVariants=!!OLD; S.noK42=NOK42; const miss=[];
+  /* 등록 레시피가 목표 옵션이 다 붙은 분열 희귀 베이스를 사서 시작(시한 차유라 목걸이: 0.2 div) — 리버스는 그 옵션을 만들어야 해서 비용·완성 조건(등록 산 줄은 티어 고정, 리버스 밸런스는 C17로 넓힘) 모두 비교 기준이 아님(W8) */
+  { const s0=r.start||{}, ms=s0.mods||[]; if(s0.rar==='rare' && ms.some(m=>m.fr) && ms.filter(m=>m.gi!=null && !m.fr && !m.crafted).length>=2){ out.push({id, skip:'등록 레시피가 목표 옵션이 붙은 분열 베이스 구입으로 시작 — 비교 기준 아님'}); continue; } }
+  const tier=r.tier||'high'; const x=await Promise.race([p.evaluate(async([id,card,qt,buy,EXP,OLD,per,rtags,rreq,NOK42,tier,NOALT])=>{ const S=__rev; const x=S.recSamples.find(s=>s.id===id); if(!x) return {skip:'no sample'}; const it=await S.parse(x.text); if(it.err) return {skip:'parse'}; const an=S.analyse(it); if(an.putrid) return {skip:'putrid'};
+    S.need=new Set(); S.soft=new Set(); S.tsel={}; S.alt={}; S.altK={}; S.buy=new Set(); S.noVariants=!!OLD; S.noK42=NOK42; const miss=[];
     const took=new Set(); card.forEach((l,ci)=>{ if(per[ci]<0.98) return; const i=an.rows.findIndex((r,k)=>!r.unrev && !took.has(k) && l.opts.some(o=>o.gi===r.m.gi)); if(i<0){ miss.push(ci); return; } const r=an.rows[i], o=l.opts.find(o=>o.gi===r.m.gi); took.add(i); if(r.m.fr) return;
-      S.need.add(i); if(o.tmax) S.tsel[i]=Math.max(r.tierNo, Math.min(o.tmax, r.tierCnt)); if(buy.includes(r.m.gi) && r.how==='n') S.buy.add(i); });
+      S.need.add(i); if(o.tmax) S.tsel[i]=Math.max(r.tierNo, Math.min(o.tmax, r.tierCnt)); if(buy.includes(r.m.gi) && r.how==='n') S.buy.add(i);
+      /* 유효 옵션군(W8): 등록 완성 조건이 그 자리를 '이 중 아무거나'로 받으면 화면에서 같은 묶음 칩을 고른 것처럼(다른 줄에 있는 옵션·계열은 altOf가 뺌) */ if(l.opts.length>1 && !NOALT){ (S.alt=S.alt||{})[i]=l.opts.filter(x=>x.gi!==r.m.gi).map(x=>({gi:x.gi, tmax:x.tmax||null})); } });
     if(!S.need.size) return {skip:'목표 옵션이 완성품에 없음'};
     let a2=S.needAn(an,0,it), d=null; const t0=performance.now(), bs=new Set([...S.buy].map(i=>an.rows[i]?.m).filter(Boolean)), o={market:1e9, ...(bs.size?{buy:bs}:{})};
     try{ const bd = OLD ? S.bestDraft(it,a2,o) : await S.bestDraftAsync(it,a2,o,null,0); d=bd.d; a2=bd.an; }catch(e){ return {err:['초안 실패: '+e.message]}; }
@@ -39,7 +42,7 @@ for(const id of IDS){ const r=R.find(x=>x.id===id); if(!r || !SAMP.has(id)) cont
     const cost = res ? S.revCost(it, d, res) : null, mag = res ? S.magicDiv(it, d) : 0;
     const top=Object.entries(use).map(([k,v])=>[k, v*(k==='Exalted_Orb'?1:(S.prices.p[k]||0))/S.prices.divine]).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+' '+v.toFixed(1));
     return {err, warn, unk, short, mag, tier:g.strategies[0].id, stuck:st.runaway||st.error||null, div:cost, match:res?res.reqOk:null, om, top, miss:miss.length, pick:d.pick||null, knowhow:d.knowhow||null, steps:d.nodes.length, ms:Math.round(performance.now()-t0), d};
-  },[id,reg.card,reg.qt,buy,EXP,process.env.V==='old',reg.per,reg.rtags,reg.rreq,!!process.env.NOK42,tier]), new Promise(z=>setTimeout(()=>z({err:['시간 초과']}),180000))]);
+  },[id,reg.card,reg.qt,buy,EXP,process.env.V==='old',reg.per,reg.rtags,reg.rreq,!!process.env.NOK42,tier,!!process.env.NOALT]), new Promise(z=>setTimeout(()=>z({err:['시간 초과']}),180000))]);
   out.push({id, reg, ...x}); }
 await p.goto('http://localhost:'+(process.env.PORT||8779)+'/recipes.html?lang=kr&debug=1'); await p.waitForFunction(()=>window.__rec&&__rec.booted);
 const unk=await p.evaluate(ds=>{ const R=__rec, o={}; for(const d of ds){ try{ d.likes=0; d.success=0; const a=R.analyse(d); o[d.id]=a.nodes.filter(n=>n.pUnknown).length; }catch(e){ o[d.id]=0; } } return o; }, out.filter(x=>x.d).map(x=>x.d));

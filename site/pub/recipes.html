@@ -1985,6 +1985,7 @@ function fcItem(g, lines, prev, params, dsd){ const ord_={}; const fx_=a=>dsd &&
     /* 줄 글이 그 태그의 어느 티어 문구와 똑같으면 그 티어로(태그 범위로 다시 그리면 2티어 줄이 1티어 수치로 보임, 2026-11-13 S2 G6 보고) */
     if(l.tags.length===1){ const T=g.tags?.[l.tags[0]], kr=noFr(l.kr||'').trim(), en=noFr(l.en||'').trim(), i=T?.tiers && T.tmax==null ? T.tiers.findIndex(x=>x[0]===kr || x[1]===en) : -1; if(i>=0) return {t:esc(tx({kr:T.tiers[i][0], en:T.tiers[i][1]})).replace(/\n/g,' · '), tier:`T${T.gt?.[i]||i+1}`}; }
     const v=l.tags.map(t=>fcTagText(g,t,params,(ord_[t]=(ord_[t]??-1)+1))).filter(Boolean);   /* 같은 묶음 태그 줄의 순번(성공 회차 옵션 목록, S4) */
+    if(l.fxPre) return {t:esc(tx(l)).replace(/ \/ /g,' · '), tier:v[0]?.tier||''};   /* 유동체 전 줄(리버스 W8, graphify fluxPlan): 실제 상태대로 다른 원소 이름('냉기·번개 저항 최대치'), 티어만 태그에서 */
     return {t: v.map(x=>esc(x.txt)).join(` <u>${L('또는','or')}</u> `), tier: v[0]?.tier||''}; };
   // 사용자 확정 2026-11-10: 제작(에센스·합금·징표)·훼손 옵션도 색으로 — m 값이 없으면 이름·태그로 판단
   const isDes=l=>l.m==='d' || l.m==='u' || /훼손|desecrat/i.test((l.kr||'')+' '+(l.en||''));

@@ -135,8 +135,11 @@ function fromDraft(d, D, opt={}){
   const showOf = n => { const t=n.target||{}; const list = t.anyOf || t.reveal?.anyOf || (t.gi!=null ? [t] : t.reveal ? [t.reveal] : t.mark ? [t.mark] : []); return list.length ? [...new Set(list.map(x=>tagOf(x.gi)))] : null; };
   /* 2026-11-12(균열 반지 하이엔드가 끝나지 않던 원인): 분열 베이스의 첫 카오스가 만든 옵션을 잃으면, 잡옵이 여럿 쌓인 채 카오스로 돌아가지 않고
      소멸의 오브로 분열 옵션 + 잡옵 1개만 남긴 뒤 다시(정책 3장: 잡옵이 여러 개인 채로 카오스를 돌리지 않음) */
-  const firstChaos = (()=>{ if(!(d.start.mods||[]).some(m=>m.fr)) return null; const m=N.find(x=>x.do!=='base' && x.do!=='note' && !x.fallbackFor && !x.branch); return m && m.do==='chaos' && m.fail?.goto==='self' ? m.id : null; })();
-  const cleanTo = maker => { if(maker!==firstChaos) return maker; const id='cl'+maker;
+  const firstChaos = (()=>{ if(!(d.start.mods||[]).some(m=>m.fr)) return null; const m=N.find(x=>!['base','note','manual','socket','quality'].includes(x.do) && !x.fallbackFor && !x.branch);   /* 룬 장착·퀄리티 단계는 건너뛰고 봄(W8: SL 장갑은 세를의 승리 룬 단계가 먼저라 첫 카오스를 못 찾아, 잃으면 잡옵이 쌓인 채 카오스로 돌아가 끝나지 않았음) */ return m && m.do==='chaos' && m.fail?.goto==='self' ? m.id : null; })();
+  /* 첫 카오스 옵션을 뒤에서 잃으면(W8, MazBro 셉터 frside 후보): 그사이에 같은 묶음을 노리는 엑잘 단계가 있으면 처음부터(정리 → 카오스) 대신 그 엑잘로 다시 붙임 — 다른 옵션은 그대로 */
+  const reEx = (maker, pos) => { if(maker!==firstChaos || pos==null) return null; const i0=N.findIndex(x=>x.id===maker), tg=targetTag(byId[maker]?.target); if(!tg) return null;
+    const X=N.slice(i0+1, pos).find(x=>x.do==='exalt' && !x.fallbackFor && !x.branch && targetTag(x.target)===tg); return X ? X.id : null; };
+  const cleanTo = (maker, pos) => { if(maker!==firstChaos) return maker; const rx=reEx(maker, pos); if(rx) return rx; const id='cl'+maker;
     if(!extra.some(x=>x.id===id)) extra.push({id, kind:'cleanup', group:'main', keep:[], maxJunk:1, label:K('소멸의 오브 사용','Use an Orb of Annulment'), goal:K('잡옵 정리','Clear the junk'), target:K('분열 옵션 + 잡옵 1개만 남기고 다시 카오스','Keep the fracture and one junk line, then Chaos again'), edges:[{to:maker}], _row:2, _col:3});
     return id; };
   /* 자리를 늘리는 옵션(경멸: +1 접미 허용)을 일부러 지운 뒤(dropGi)에 그쪽 옵션을 잃으면 그쪽 자리가 모자라 만든 단계로 돌아가도 다시 못 붙임 → 새 베이스(W7, LilBotQ 에메랄드가 끝나지 않던 원인) */
@@ -145,7 +148,7 @@ function fromDraft(d, D, opt={}){
   const sideOfTag = tg => { const t=tags[tg]; if(!t) return null; const gi = t.gi ?? tags[t.anyOf?.[0]]?.gi; return gi!=null ? G[gi].g : null; };
   function lostEdges(n, keep, pos){ // a kept line removed by this step → back to the step that made it
     const at = pos ?? N.indexOf(n), late = slotSide && slotDrop>=0 && at>slotDrop;
-    return keep.filter(k=>k.maker!==n.id).map(k=>({if:{removed:k.tag}, to: late && sideOfTag(k.tag)===slotSide && N.findIndex(x=>x.id===k.maker)<slotDrop ? 'h1' : cleanTo(k.maker), res:'fail', lost:k.tag, hide:true})); }
+    return keep.filter(k=>k.maker!==n.id).map(k=>({if:{removed:k.tag}, to: late && sideOfTag(k.tag)===slotSide && N.findIndex(x=>x.id===k.maker)<slotDrop ? 'h1' : cleanTo(k.maker, at), res:'fail', lost:k.tag, hide:true})); }
   let vN=0;
   /* 필수 훼손 반복 — 징표 방법(W7, 리버스 13장 사용자 확정 11-13 20:22: 빛의 징조로 다시 공개하거나 아스트리드의 창의성 룬으로 제작 옵션 2개):
      공개가 빗나가면 빛의 징조 + 소멸 대신 그쪽 결정화의 징조 + 심연의 에센스(그쪽 옵션 하나를 지우고 심연 군주의 징표) → 같은 뼈로 징표 자리 훼손 → 다시 공개(징표 자리는 한 티어 높게).
@@ -172,7 +175,7 @@ function fromDraft(d, D, opt={}){
     if(!F.via) return go;
     const mk = markLoop(n, F, keep, r); if(mk) return mk;
     const id='v'+(++vN)+n.id, v=F.via, a = v.cur==='Orb_of_Annulment' ? 'annul' : /Bone|Jawbone|Rib|Collarbone|Cranium/.test(v.cur||'') ? 'desecrate' : 'annul';
-    const lostTo = F.lost ? (byId[F.lost]?.do==='base' ? 'h1' : cleanTo(F.lost)) : null, lostTag = F.lost ? (keep.find(k=>k.maker===F.lost)?.tag || targetTag(byId[F.lost]?.target)) : null;
+    const lostTo = F.lost ? (byId[F.lost]?.do==='base' ? 'h1' : cleanTo(F.lost, N.indexOf(n))) : null, lostTag = F.lost ? (keep.find(k=>k.maker===F.lost)?.tag || targetTag(byId[F.lost]?.target)) : null;
     /* 지운 옵션 확인 순서(W5): 낱개 옵션(산 베이스 옵션 등) 먼저, 그 단계가 노린 옵션은 뒤 — 묶음 태그(anyOf)가 산 옵션을 품으면(K39 희귀도 반지: 산 희귀도 접두가 묶음에 들어감)
        그 옵션이 지워져도 '노린 옵션이 지워짐'으로 읽혀 새 베이스 대신 엑잘로 돌아가고 완성품에 산 옵션이 없었음(33%) */
     const le=lostEdges({id}, keep, N.indexOf(n)).filter(e=>e.if.removed!==lostTag), lt = lostTo && lostTag ? [{if:{removed:lostTag}, to:lostTo, res:'fail', lost:lostTag}] : [];
@@ -332,7 +335,11 @@ function fromDraft(d, D, opt={}){
     nodes.splice(nodes.length-1, 0, {id:'fx', kind:'act', group:'main', pos:[0,row+PRE], act:'flux', cur:FX.cur, label:K('유동체','Flux'), goal:K(`다른 원소 저항 → ${el.kr} 저항`, `Other elements → ${el.en}`),
       showText:[K(`${fc.kr}: 다른 원소 저항 옵션을 같은 티어의 ${el.kr} 저항으로`, `${fc.en}: other elemental resistances become ${el.en} at the same tier`)],
       skipIf: need.length===1 ? {count:{tag:tagOf(need[0].gi), min:need[0].n}} : {all:need.map(x=>({count:{tag:tagOf(x.gi), min:x.n}}))}, skipTo:'ok', skipNote:K(`이미 ${el.kr} 저항`, `Already ${el.en}`),
-      edges:[{to:'ok', res:'ok'}], item:cur.map(x=>({...x}))}); }
+      edges:[{to:'ok', res:'ok'}], item:cur.map(x=>({...x}))});
+    /* 유동체 전 아이템 칸(W8, W7 넘김: 탱정 방패): 넓힌 묶음으로 만든 줄은 실제 상태대로 다른 원소 이름('냉기·번개 저항 최대치'), 유동체 상자부터 목표 원소. 성공 회차 옵션(rep)은 그대로 */
+    { const EK={Fire:'화염',Cold:'냉기',Lightning:'번개'}, ek=Object.keys(EK).filter(e=>e!==FX.el);
+      nodes.forEach(n=>{ if(n.id==='fx' || n.id==='ok') return; (n.item||[]).forEach(l=>{ if(!l.tags || !isW(l.tags[0]) || !FX.Es.has(tags[l.rep]?.gi) || l.fxPre) return;
+        l.kr=String(l.kr||'').split(EK[FX.el]).join(ek.map(e=>EK[e]).join('·')); l.en=String(l.en||'').split(FX.el).join(ek.join('/')); l.fxPre=true; }); }); } }
   /* 묶음(anyOf) 태그의 성공 회차 옵션 = 붙여 넣은 옵션(2026-11-13 W4, 규칙 K·S4): 아이템 칸·완성 카드에 그 줄이 실제로 들어간 옵션(rep) 순서대로.
      화면은 'A 또는 B'(목표처럼 읽힘) 대신 붙여 넣은 옵션을 보여 주고, 레시피 글은 '대신 …도 성공으로 침' 꿀팁을 붙임. 시뮬은 shown을 읽지 않음 */
   { const sh={}; const take = l => { const k=l?.tags?.[0]; if(!k || !tags[k]?.anyOf || !l.rep || l.rep===k) return; (sh[k]=sh[k]||[]); if(!sh[k].includes(l.rep)) sh[k].push(l.rep); };
