@@ -1,7 +1,7 @@
 // engine (recipes.html analyse) numbers for one recipe: main path, prep, costs in div — for comparing with the graph simulation
 // usage: node tools/sim/engine.js <recipe id> > tools/sim/engine/<recipe id>.json   (test server running; tools/sim/run.js adds it to the sim data)
 const {chromium}=require('playwright');
-(async()=>{const b=await chromium.launch();const p=await b.newPage();
+(async()=>{const b=await chromium.launch();const p=await b.newPage(); p.setDefaultTimeout(180000);   /* 클래스 파일을 다 받는 테스트 서버라 30초를 넘길 때가 있음(2026-11-13 S2, G7 보고) */
 await p.goto('http://localhost:8779/recipes.html?lang=kr'); await p.waitForFunction(()=>window.__rec && __rec.booted);
 const out=await p.evaluate((id)=>{ const S=__rec, r0=S.recipes.find(x=>x.id===id);
   /* 플로우차트에서 읽은 레시피(fcRead)는 analyse가 확률·사용량을 시뮬 값으로 덮어써서, 그대로 계산하면 '엔진 값' = 지난번 시뮬 값이 됨(2026-11-13 S1: 시한 차유라 반지 엔진 197 = 옛 시뮬).

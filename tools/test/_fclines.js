@@ -1,8 +1,9 @@
 // every flowchart × version: line crossings, overlapping parallel lines and lines through boxes → fclines.txt
 const {chromium}=require('playwright'), fs=require('fs');
-const ids=process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync('../../site/data/sim').filter(f=>f.endsWith('.json')).map(f=>f.slice(0,-5));
-(async()=>{ const b=await chromium.launch(), p=await b.newPage({viewport:{width:1700,height:1000}}); const out=[]; let tot=0;
-  for(const id of ids){ await p.goto(`http://localhost:8779/recipes.html?lang=kr&_=${encodeURIComponent(id)}#r-${id}`); await p.waitForFunction(()=>window.__rec && __rec.booted);
+const ids=process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync(require('path').join(__dirname,'../../site/data/sim')).filter(f=>f.endsWith('.json')).map(f=>f.slice(0,-5));
+(async()=>{ const b=await chromium.launch(); let p=await b.newPage({viewport:{width:1700,height:1000}}); p.setDefaultTimeout(60000); const out=[]; let tot=0;
+  /* 인자 없이 전체를 돌 때 한 그래프에서 시간 초과·페이지 오류가 나도 멈추지 않고 그 줄만 '오류'로 적고 다음으로(2026-11-13 S2) */
+  for(const id of ids){ try{ await p.goto(`http://localhost:8779/recipes.html?lang=kr&_=${encodeURIComponent(id)}#r-${id}`); await p.waitForFunction(()=>window.__rec && __rec.booted);
     if(!await p.$('[data-rtab="fc"]')){ out.push(`${id}: no flowchart`); continue; }
     await p.click('[data-rtab="fc"]'); await p.waitForSelector('.fcpane .fcn');
     const vers=await p.$$eval('[data-simver]', xs=>xs.map(x=>x.dataset.simver));
@@ -17,5 +18,6 @@ const ids=process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync(
         for(const s of segs){ if(s.i===0 || s.i===s.n-1) continue; const x0=Math.min(s.a[0],s.b[0]), x1=Math.max(s.a[0],s.b[0]), y0=Math.min(s.a[1],s.b[1]), y1=Math.max(s.a[1],s.b[1]);
           for(const r of rects) if(x1>r.x+2 && x0<r.x+r.w-2 && y1>r.y+2 && y0<r.y+r.h-2) iss.push(`상자 통과 ${nm(s.e)} / ${r.id}`); }
         return [...new Set(iss)]; });
-      tot+=r.length; if(r.length) out.push(`${id} [${v}] ${r.length}\n  `+r.join('\n  ')); } }
-  out.push(`TOTAL ${tot}`); fs.writeFileSync('fclines.txt', out.join('\n')); console.log(out.slice(-1)[0]); await b.close(); })();
+      tot+=r.length; if(r.length) out.push(`${id} [${v}] ${r.length}\n  `+r.join('\n  ')); }
+    }catch(e){ out.push(`${id}: 오류 ${String(e).split('\n')[0].slice(0,120)}`); try{ await p.close(); }catch(_){} p=await b.newPage({viewport:{width:1700,height:1000}}); p.setDefaultTimeout(60000); } }
+  out.push(`TOTAL ${tot}`); fs.writeFileSync(require('path').join(__dirname,'fclines.txt'), out.join('\n')); console.log(out.slice(-1)[0]); await b.close(); })();

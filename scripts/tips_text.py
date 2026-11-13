@@ -551,13 +551,13 @@ tip('cheap-resist-essence','trade','armour',['절연의 에센스','풍요의 �
 #  save: True면 '더 저렴한 방법' 알림(💰)
 AUTO = {
  'after-fracture-chaos':[{'do':['chaos'],'pre':'frJunk1','noUse':['Omen_of_Whittling']}],
- 'fracture-four-mods':[{'do':['fracture']}],
+ 'fracture-four-mods':[{'do':['fracture'],'pre':'unrevPre'},{'do':['fracture'],'prevDo':['desecrate']}],   # 분열 직전에 미공개 훼손이 있을 때만(2026-11-13 S2: 훼손 없이 분열하는 SL 5옵션 주얼)
  'hinekora-before-big':[{'use':['Hinekoras_Lock']}],   # 분열 단계 전부에 붙던 것 → 히네코라의 머리카락을 실제로 쓰는 단계만(2026-11-12, 방패 7번)
  'whittle-side-first':[{'use':['Omen_of_Whittling']}],
  'whittle-chaos-by-price':[{'do':['chaos'],'use':['Omen_of_Whittling']}],
  'whittle-needs-erasure':[{'use':['Omen_of_Whittling'],'noUse':['Omen_of_Sinistral_Erasure','Omen_of_Dextral_Erasure'],'pre':'otherRoom'}],
  'erasure-chaos-cheaper':[{'do':['exalt'],'failVia':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'save':True}],
- 'cheap-junk-removal':[{'use':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'pre':'noCrafted','save':True},{'failVia':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'pre':'noCrafted','save':True}],
+ 'cheap-junk-removal':[{'use':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'pre':'noCrafted','save':True,'noCls':'Emerald|Sapphire|Ruby|Diamond'},{'failVia':['Omen_of_Sinistral_Annulment','Omen_of_Dextral_Annulment'],'pre':'noCrafted','save':True,'noCls':'Emerald|Sapphire|Ruby|Diamond'}],   # 주얼은 에센스를 못 씀(2026-11-13 S2, G8 보고)
  'side-omen-save':[{'sideOmenWaste':True,'save':True}],
  'reveal-miss-exalt-first':[{'do':['reveal'],'failVia':['Omen_of_Light']}],
  'abyss-before-crafted':[{'use':['Essence_of_the_Abyss']}],

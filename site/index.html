@@ -675,7 +675,7 @@ function itemProps(){
   let phys=null, aps=null; const ele = {};
   en.forEach((e,i)=>{
     const [lab, rawv] = [e.split(':')[0], (e.split(':')[1]||'').trim()], label = (loc[i]||e).split(':')[0].replace('Base Movement Speed', KR()?'기본 이동 속도':'Base Movement Speed');
-    let val = rawv, changed = false, m;
+    let val = lab==='Base Movement Speed' ? rawv.replace(/-?\d*\.?\d+/g, y=>`${Math.round(+y*100)}%`) : rawv, changed = false, m;   /* -0.03 → -3% (2026-11-13 S2) */
     if(lab==='Physical Damage' && (m=rawv.match(/^([\d.]+)-([\d.]+)$/))){
       const k = 1+st.incPhys/100, lo=(+m[1]+st.flat.Physical[0])*k, hi=(+m[2]+st.flat.Physical[1])*k;
       phys=[lo,hi]; val=`${fmt(lo)}-${fmt(hi)}`; changed = st.incPhys>0 || st.flat.Physical[1]>0;

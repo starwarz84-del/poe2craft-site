@@ -953,7 +953,7 @@ function localProps(){
   const out=[]; let phys=null, aps=null;
   if((isW||isA) && it.quality) out.push({l:L('퀄리티','Quality'), v:`+${it.quality}%`, c:true});
   else if(it.quality) out.push({l: it.catalyst ? L(`퀄리티 (${catName(it.catalyst)} 속성)`,`Quality (${it.catalyst} modifiers)`) : L('퀄리티','Quality'), v:`+${it.quality}%`, c:true});
-  en.forEach((e,i)=>{ const lab=e.split(':')[0], raw=(e.split(':')[1]||'').trim(), label=((loc[i]||e).split(':')[0]).replace('Base Movement Speed', KR()?'기본 이동 속도':'Base Movement Speed'); let v=raw, c=false, x;
+  en.forEach((e,i)=>{ const lab=e.split(':')[0], raw=(e.split(':')[1]||'').trim(), label=((loc[i]||e).split(':')[0]).replace('Base Movement Speed', KR()?'기본 이동 속도':'Base Movement Speed'); let v=lab==='Base Movement Speed' ? raw.replace(/-?\d*\.?\d+/g, y=>`${Math.round(+y*100)}%`) : raw, c=false, x;
     if(lab==='Physical Damage'&&(x=raw.match(/^([\d.]+)-([\d.]+)$/))){ const k=1+st.incPhys/100; phys=[(+x[1]+st.flat.Physical[0])*k,(+x[2]+st.flat.Physical[1])*k]; v=`${Math.round(phys[0])}-${Math.round(phys[1])}`; c=k!==1||st.flat.Physical[1]>0; }
     else if(lab==='Critical Hit Chance'&&(x=raw.match(/^([\d.]+)%$/))){ v=`${+(+x[1]+st.crit).toFixed(2)}%`; c=st.crit>0; }
     else if(lab==='Attacks per Second'&&(x=raw.match(/^([\d.]+)$/))){ aps=+x[1]*(1+st.incAS/100); v=(+aps.toFixed(2)).toString(); c=st.incAS>0; }
