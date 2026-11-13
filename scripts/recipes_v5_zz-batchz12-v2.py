@@ -9,5 +9,5 @@ def _chiba(r, t):
     _drop(r,'c11')   # finishing catalyst quality is left out (정책 23)
     _node(r,'c4')['target']['chance']=2/3   # 2 junk prefixes + 1 removable suffix: a prefix goes 2/3 → +1 suffix allowed
     # W24 2026-11-13: 밸런스도 빛의 징조로 다시 공개(정책 10장 C17-3) — 플로우차트 그대로 읽음
-for _t in ('bal','ess'): _grade8('chiba-timelost-emerald','chiba-timelost-emerald-v2',_t,_chiba)   # D4 2026-11-13: 난이도 표 3(어려움) → 밸런스·에센셜(C11, 15:42 ④) — 옛 하이엔드는 밸런스로 이름만, 에센셜 새로
+_grade8('chiba-timelost-emerald','chiba-timelost-emerald-v2','bal',_chiba)   # D4 2026-11-13: 옛 하이엔드는 밸런스로 이름만. E1 11-13: 에센셜은 밸런스와 9.2% 차이(159.5/144.9)라 정책 D로 지움 — 밸런스 하나
 #   # 2026-11-13 사용자 결정: 밸런스는 하이엔드와 2% 차이라 뺌

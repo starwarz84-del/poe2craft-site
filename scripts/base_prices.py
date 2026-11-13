@@ -34,7 +34,7 @@ BASEPRICE = {
   'belton-plus8-wand': None,
   'belton-plus8-wand-v2-bal': 61,   # 2026-11-13 G7: 영상 0:30 '61 디바인에 샀다' — 모든 주문 +4 매직 결투 마법봉(아이템 레벨 82, 퀄리티 21%)
   'chiba-timelost-emerald': None,
-  'chiba-timelost-emerald-v2-bal': 14, 'chiba-timelost-emerald-v2-ess': 14,   # 영상 4:05: 공격 치명타 확률 + 옵션 2개 레어 14 div (D4 11-13: 하이엔드 → 밸런스·에센셜)
+  'chiba-timelost-emerald-v2-bal': 14,   # 영상 4:05: 공격 치명타 확률 + 옵션 2개 레어 14 div (D4 11-13: 하이엔드 → 밸런스, E1: 에센셜은 정책 D로 지움)
   'diztoh-5mod-emerald': None,
   'diztoh-as-spear': None,
   'diztoh-budget-2h-mace': None,
