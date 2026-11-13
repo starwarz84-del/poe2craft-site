@@ -108,3 +108,6 @@ graph11('seek-cyclone-boots-v2','Boots_str_int','Faithful Leggings',81,
   FIN(('bal','ess'),lambda v:[{'side':'p','random':True},{'side':'p','label':K('방어도·생명력 접두','Armour or life prefix')},{'side':'p','random':True},{'tag':'ele','tmax':1,'fr':True},{'tag':'chg','tmax':2},{'tag':'spirit','tmax':1}]+([{'side':'s','label':K('지속시간·저항','Duration or resistance')}] if v=='bal' else [])),
   {'quality':20,'sockets':3},{'all':[{'has':'ele'},{'has':'chg'},{'has':'spirit'},{'full':'p'}]},('bal','ess'),xsub=["Uhtred's Sidereus"],xroll=True)
 print('wrote 3 graphs (batch 11)')
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_seek_cyclone_boots.py'): _sp.run([_sy.executable, f'{H}/gen_seek_cyclone_boots.py'], check=True)   # 2026-11-13 G4: 새 기준 전용 생성기가 덮어씀

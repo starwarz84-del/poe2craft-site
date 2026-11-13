@@ -53,12 +53,12 @@
 | fubgun-proj-amulet-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 110, ess 97 | 3 | 재확인 필요 | A(Opus) | 글 목걸이 부분 다시 대조, 일치(기록 tools/notes/web-fubgun-iceshot.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | diztoh-5mod-emerald-v2 | s70CV_nvjXg | bal 108, ess 30 | 0 | 재확인 필요 | A(Opus) | 자막 전체(31:47) 대조, 단계 일치(기록 tools/notes/diztoh-s70CV_nvjXg.md). 완성품 줄을 DB 태그로. 값 그대로 |
 | diztoh-vile-robe-v2 | n97yEuKSWyM | bal 152, ess 49 | 0 | 완료 11-12(새 기준) · 검수 94점 | W4-로브(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W4): 영상 전체 캡처 82장·단계표. 로브 한 개를 처음부터 완성까지 진행한 회차 그대로. 준비 구역에 소멸(2:23·3:18), 아스트리드는 영상대로 갈비뼈(4:55) 뒤 6:10, 8번 접미 원소 저항 다중 루프 접음(우측 소멸 → 절사 + 상위 카오스 → 빈 접미 엑잘), 7 → 8 확정 선. 원소 저항 2~3티어(아이템 레벨 81이라 1티어 불가). 확인 못 함: 베이스 가격, 3:19~3:28 상위 카오스 II 아이콘(구입·툴팁·자막으로 판단), 10:04~10:27 갈비뼈 순간(편집). 152/49 → 152/49 |
-| sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 | 0 | 진행 중 11-13 · G4 | G4(Opus 5.5) | 자막 전체(13:10) 대조, 단계 일치(기록 tools/notes/sl-VKMT7tuSIYk.md). 완성품 줄을 DB 태그로. 값 그대로 |
+| sl-5mod-jewel-v2 | VKMT7tuSIYk | bal 104, ess 57 → bal 168, ess 105(베이스 5 div·분열 준비 포함) | 0 | 검수 대기 11-13 | G4(Opus 5.5) | 새 기준 재작성(G4): 화면 재대조(옛 확인은 자막만). 분열 준비 구역 추가(상태 이상 가속 7% 사파이어 옵션 4개 → 분열 1/4 → 소멸, 6:30~7:00), 전용 생성기 gen_sl_5mod_jewel.py. 카오스 목표 = 영상 4종(카오스·주문·상태 이상 강도·점화 강도, 위축 뺌), 세 번째 접두는 공개 태그 따로(preD, 카드 훼손 색), 아이템 레벨 81 → 82(8:02 화면, recipes_v5_sl-5mod-jewel.py도). 공개 빗나감·경멸 실패 처리는 영상에 없음(내부 결정). 104/57 → 168/105 |
 | sihan-chayula-wand-v2 | rSs4fumlHo4 | bal 195, ess 19 | 0 | 검수 대기 11-13 | G1(Opus 5.5) | 새 기준 재작성(G1): 영상 전체 화면 대조(근거 scratchpad review/G1/sihan-chayula-wand-v2), 전용 생성기 gen_sihan_chayula_wand.py. 베이스 = 특출난 조율된 마법봉(영상 2:45, 옛 태고의 마법봉), 접미 두번째 옵션 = 영상 성공 회차의 지능 1~2티어(옛 지능·마나 재생·시전 속도 묶음 — 확정 옵션 규칙), 에센셜 주문 치명타 1~4티어(C17, 옛 1~3), 공개는 군주의 징조로 확정이라 빛의 징조 갈래 없음, 3:44~4:50 절사 카오스 데모는 영상이 '잊어 주세요'라 넣지 않음. 99/26 → 195/19(밸런스 상승 = 지능만 받음, 묶음이면 약 95) |
 | sihan-attack-flat-ring-v2 | bpXgZGw4WQo | bal 195, ess 128 | 1 | 검수 대기 11-13 | G2(Opus 5.5) | 새 기준 재작성(G2): 영상 전체(19:04) 화면 대조, 전용 생성기 gen_sihan_attack_flat_ring.py. 성공 회차 = 구입 매물(물리 1티어 분열, 75 div) → 균열의 에센스 → 강탈자 기폭제 40개 → 카오스 원소 공격 피해 1티어 먼저 뜬 것 → 우측 찬미 엑잘 + 우측 결정화 재빠른 합금 → 상위·우측 찬미 완벽한 엑잘(랜덤 2개) → 고대 빗장뼈 → 메아리 공개(밸런스 빛의 징조로 다시 1~2티어, 에센셜 그대로). 카오스 1티어 모든 등급(C15), 베이스 75 div 시뮬 반영, 아이템 레벨 80. 97/23 → 195/128 |
 | diztoh-5mod-sapphire-v2 | -YZm55-QuoQ | bal 95, ess 43 | 0 | 대기 |  |  |
 | easybabi-spiny-talisman-v2 | fabBIuR6yhw | high 155, bal 82 | 1 | 완료 11-13(새 기준) · 검수 95점(영상 28·플로우차트 25·카드 15·글 13·점검 14) | W33(Opus 5.5) · 검수 마스터 · R1 독립 검수 | 새 기준 재작성(W33): 영상 전체 화면 대조(6분 설명 영상, 성공작 성스러운 장악), 전용 생성기 gen_easybabi_spiny_talisman.py. 보존된 턱뼈·완벽한 카오스 오브로 고침, 정확도 막기·훼손 공개 접힌 상자 2개, 절사는 성공 회차대로 공개 뒤. 엑잘 접두 2개는 랜덤 옵션(10장 예외, 좌측 말소 추가 대안은 1,851/341). 94/13 → 155/82 **R1 검수 11-13(95점)**: 영상 -1 성공작 과정 화면은 일부만, -1 첫 공개 빗나감 처리 내부 결정 / 글 -1 번호 어긋남(공용), -1 상위 찬미 엑잘을 '아무 옵션 1개 추가'로 적음(실제 2개) / 점검 -1 단계별 기대값 12 vs 시뮬 155 div 설명 없음(공용) |
-| vodnarg-timelost-emerald-v2 | 3tFs16SXkD8 | bal 94, ess 70 | 0 | 진행 중 11-13 · G4 | G4(Opus 5.5) |  |
+| vodnarg-timelost-emerald-v2 | 3tFs16SXkD8 | bal 94, ess 70 → bal 99, ess 76(베이스 3 div 포함) | 0 | 검수 대기 11-13 | G4(Opus 5.5) | 새 기준 재작성(G4): 영상 전체 화면 대조(주얼 3개 중 1번 Blight Desire 성공 회차), 전용 생성기 gen_vodnarg_timelost_emerald.py. 베이스 3 div(4:50 자막), 공개 목표 = 공격 치명타 확률·창 공격 속도·공격 치명타 피해 보너스 중 먼저 뜬 것(5:40·6:02·9:28), 접두 = 투사체 피해·창 사용 시 피해(영상이 받은 것, 옛 4종에서 줄임), 에센셜 = 공개 그대로·접두 카오스 없이 우울 한 번. 아이템 레벨 80(10:28 화면). 94/70 → 99/76 |
 | lilbotq-boots-v2 | S-7YHuq3-P4 | bal 92, ess 5 | 2 | 대기 |  |  |
 | mazbro-caster-ring-v2 | o3Fh1DJmxBA | bal 86, ess 16 | 1 | 진행 중 11-13 · G2 | G2(Opus 5.5) |  |
 | lilbotq-emerald-v2 | Hcb_HcWDUOA | bal 84 | 0 | 대기 |  |  |
@@ -66,7 +66,7 @@
 | saveq-alloy-focus-v2 | uCbyTF-LJ5I | bal 80, ess 1 | 0 | 대기 |  |  |
 | chiba-timelost-emerald-v2 | O6Rp7JIxhrs | high 160 | 0 | 완료 11-13(새 기준) · 검수 90점 | W24(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W24): 영상 전체 화면 대조, 전용 생성기 gen_chiba_timelost_emerald.py, 노트 tools/notes/chiba-O6Rp7JIxhrs.md. 준비 구역(공격 치명타 + 옵션 2개 레어 14 div → 보존된 두개골 → 분열 1/3, 실패 새 베이스 → 소멸) 추가. 밸런스 = 마지막 접두 랜덤 + 공개는 빛의 징조로 다시(C17-3). 77.9/64.8(베이스·준비 없음) → 160/157. 11-13 F1: 사용자 결정대로 밸런스 뺌(하이엔드만, -bal 레시피·base_prices·priority 정리) |
 | fubgun-crit-bow-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 62, ess ? | 3 | 대기 |  |  |
-| seek-cyclone-boots-v2 | cj9o8_LuFQs | bal 53, ess 14 | 2 | 진행 중 11-13 · G4 | G4(Opus 5.5) |  |
+| seek-cyclone-boots-v2 | cj9o8_LuFQs | bal 53, ess 14 → bal 57, ess 33(분열 준비 포함, 베이스 가격 모름) | 0 | 검수 대기 11-13 | G4(Opus 5.5) | 새 기준 재작성(G4): 영상 전체 화면 대조, 전용 생성기 gen_seek_cyclone_boots.py. 분열 준비 구역 추가(옵션 3개 + 보존된 갈비뼈 훼손 → 분열 1/3 → 소멸, 2:30~4:15), 우트레드의 성좌 상자. 영상의 마무리 두 방법을 등급으로: 밸런스 = 충실한 레깅스(세를의 승리 + 우측 강령술 갈비뼈, 지속시간·원소 저항 1~2티어 먼저 뜬 것, 빛의 징조로 다시 → 접두 엑잘 결과 그대로), 에센셜 = 사도 레깅스(접두 엑잘 → 좌측 강령술 갈비뼈 → 공개 그대로). 옛 밸런스의 접두 방어도·생명력 다시 굴리기는 영상이 타협 추천이라 뺌, 소켓 3 → 2(홈 2개). 53/14 → 57/33 |
 | belton-plus8-wand-v2 | j0FeuX0NZQI | bal 38, ess 12 | 0 | 대기 |  |  |
 | sihan-chayula-sceptre-v2 | -F7pV0Y7BMA | bal 36, ess 13 | 0 | 대기 |  |  |
 | diztoh-onehand-mace-v2 | WDEkEIQFgT4 | bal 33, ess ? | 0 | 진행 중 11-13 · G3 | G3(Opus 5.5) |  |
@@ -151,7 +151,7 @@
 | saveq-absent-amulet-v2 | ess·bal·high | - | 재확인 필요 | A(Opus) | 에센셜 빛의 징조 없이 공개 한 번(랜덤 옵션) — 729 → 688 |
 | saveq-alloy-focus-v2 | ess·bal | ess 공개 목표 1~3티어; bal 공개 목표 1티어 | 대기 |  |  |
 | saveq-focus-v2 | bal·high | 에너지 보호막·주문 치명타 high 1티어, bal 1~2티어 | 재확인 필요 | A(Opus) | 504/208 |
-| seek-cyclone-boots-v2 | ess·bal | - | 대기 |  |  |
+| seek-cyclone-boots-v2 | ess·bal | - | 검수 대기 11-13 | G4(Opus 5.5) | 등급 근거는 위 표 메모 |
 | sihan-attack-flat-ring-v2 | ess·bal | ess 원소 공격 추가 피해 1~3티어 | 대기 |  |  |
 | sihan-chayula-amulet-v2 | ess·bal | ess 정신력 1~2티어; bal 정신력 1티어 | 대기 |  |  |
 | sihan-chayula-gloves-v2 | ess·bal | - | 대기 |  |  |
@@ -162,7 +162,7 @@
 | sihan-highend-boots-v2 | ess·bal·high | ess 저항 목표 1~2티어; ess 훼손 접두 목표 1~3티어 | 재확인 필요 | A(Opus) | 밸런스 접두 1~2티어, 마지막 접두·접미 랜덤. 에센셜은 밸런스와 같아(265/266) 뺌 — 난이도 4로 올려 하이엔드·밸런스 레시피 둘 다(사용자 확정 11-12) |
 | sihan-highend-helmet-v2 | bal·high | high 저항 1~3티어 (상위 카오스) | 재확인 필요 | A(Opus) | 밸런스 방어도 1~2티어, 마지막 접미(저항) 랜덤 — 181 → 202 |
 | sihan-proj-gloves-v2 | bal·high | - | 재확인 필요 | A(Opus) | 밸런스 1~2티어, 마지막 훼손 접두 랜덤 — 327 → 282 |
-| sl-5mod-jewel-v2 | ess·bal | - | 재확인 필요 | A(Opus) | 주얼 티어 하나라 맞음 |
+| sl-5mod-jewel-v2 | ess·bal | - | 검수 대기 11-13 | G4(Opus 5.5) | 등급 근거는 위 표 메모 |
 | sl-blacksteel-gauntlets-v2 | bal·high | - | 재확인 필요 | 진행 중(새 기준 재작성) | W13-검은강철(Opus 5.5) · 검수 마스터
 | sl-flamewave-ring-v2 | bal·high | - | 재확인 필요 | A(Opus) | 이미 기준대로(저항 1~2티어, 마지막 접미 랜덤, 훼손 핵심 옵션은 반복) — 371 그대로 |
 | sl-flamewave-staff-v2 | bal·high | - | 재확인 필요 | A(Opus) | 밸런스 접두 반복 1~2티어, 마지막 접두·접미 랜덤 — 178 → 40 |
@@ -170,7 +170,7 @@
 | tankjung-kitava-shield-v2 | ess·bal·high | high 1티어(영상), bal 1~2티어, ess 최대 저항 1~3티어·방어도 1~4티어 | 완료 11-12 · 검수 94점 | A(Opus) | 358/125/58, 난이도 4로 올림(사용자 11-12) → high·bal 표시 |
 | unstoppable-slipstrike-vest-v2 | bal·high | bal 굴절 1~4티어; high 굴절 1~3티어 | 재확인 필요 | A(Opus) 하이엔드 굴절 1~3 → 1티어(651 → 1,368), 밸런스 1~2티어 + 마지막 접미 랜덤(176 → 74) |
 | unstoppable-vile-robe-v2 | bal·high | bal 접두 에너지 보호막·정신력 1티어; bal 저항 1티어 | 재확인 필요 | A(Opus) 밸런스 접두(엑잘·훼손 반복) 1 → 1~2티어(163 → 99), 저항은 싼 반복이라 1티어 유지 |
-| vodnarg-timelost-emerald-v2 | ess·bal | - | 대기 |  |  |
+| vodnarg-timelost-emerald-v2 | ess·bal | - | 검수 대기 11-13 | G4(Opus 5.5) | 등급 근거는 위 표 메모 |
 | xeno-phys-crossbow-v2 | high | - | 재확인 필요 | A(Opus) 하이엔드만(극한), 바꿀 것 없음 |
 | zenm-timelost-sapphire-v2 | ess·bal | - | 대기 |  |  |
 
