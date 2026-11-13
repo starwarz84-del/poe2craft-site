@@ -62,14 +62,14 @@
 | lilbotq-boots-v2 | S-7YHuq3-P4 | bal 92, ess 5 | 2 | 진행 중 11-13 · G6 | G6(Opus 5.5) |  |
 | mazbro-caster-ring-v2 | o3Fh1DJmxBA | bal 189, ess 49 | 1 | 검수 대기 11-13 | G2(Opus 5.5) | 새 기준 재작성(G2): 자막 전체 + 단계별 화면 대조, 전용 생성기 gen_mazbro_caster_ring.py. 가이드 화면 + 성공 회차 Storm Knot 한 줄. 준비 구역(징표·빗장뼈·분열 1/3·균열의 에센스·기폭제·주입기) 추가, 접두 두 자리 접힌 상자, 고대 빗장뼈 공개(밸런스 빛의 징조 1~2티어, 에센셜 그대로), 마지막 접미 랜덤. 뒤바뀐 빗장뼈 갈래는 꿀팁 후보. 79.8/15.5 → 189/49(준비·베이스 포함) |
 | lilbotq-emerald-v2 | Hcb_HcWDUOA | bal 84 | 0 | 대기 |  |  |
-| diztoh-as-spear-v2 | cTjgn7NnHR8 | bal 81, ess 60 | 2 | 진행 중 11-13 · G3 | G3(Opus 5.5) |  |
+| diztoh-as-spear-v2 | cTjgn7NnHR8 | bal 56, ess 28 | 0 | 검수 대기 11-13 | G3(Opus 5.5) | 새 기준 재작성(G3): 영상 전체(0:00~9:18) 화면 대조, 전용 생성기 gen_diztoh_as_spear.py. 투사체 +4 분열 + 처치당 생명력(아스트리드 장착, 소켓 1개) → 카오스 오브 공격 속도 3티어 → 좌측 찬미 + 상위 엑잘 → 좌측 결정화 + 군주의 합금 → 상위 엑잘(징조 없음) → 좌측 결정화 + 천상의 합금 → 아스트리드를 스루드의 완력으로 교체(swapAstrid) → 고대 턱뼈 → 상위 엑잘 세번째 접두(옛 그래프는 공개 뒤 완벽한 엑잘 — 영상은 공개 앞 상위 엑잘) → 메아리 공개 스루드 속도 효과(밸런스는 빛의 징조로 다시). 영상 5:52 절사 + 좌측 말소 + 상위 카오스(번개 6티어로 나빠짐)는 마지막 옵션 도박이라 뺌. 81/60 → 56/28 |
 | saveq-alloy-focus-v2 | uCbyTF-LJ5I | bal 80, ess 1 | 0 | 대기 |  |  |
 | chiba-timelost-emerald-v2 | O6Rp7JIxhrs | high 160 | 0 | 완료 11-13(새 기준) · 검수 90점 | W24(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W24): 영상 전체 화면 대조, 전용 생성기 gen_chiba_timelost_emerald.py, 노트 tools/notes/chiba-O6Rp7JIxhrs.md. 준비 구역(공격 치명타 + 옵션 2개 레어 14 div → 보존된 두개골 → 분열 1/3, 실패 새 베이스 → 소멸) 추가. 밸런스 = 마지막 접두 랜덤 + 공개는 빛의 징조로 다시(C17-3). 77.9/64.8(베이스·준비 없음) → 160/157. 11-13 F1: 사용자 결정대로 밸런스 뺌(하이엔드만, -bal 레시피·base_prices·priority 정리) |
 | fubgun-crit-bow-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 62, ess ? | 3 | 대기 |  |  |
 | seek-cyclone-boots-v2 | cj9o8_LuFQs | bal 53, ess 14 → bal 57, ess 33(분열 준비 포함, 베이스 가격 모름) | 0 | 검수 대기 11-13 | G4(Opus 5.5) | 새 기준 재작성(G4): 영상 전체 화면 대조, 전용 생성기 gen_seek_cyclone_boots.py. 분열 준비 구역 추가(옵션 3개 + 보존된 갈비뼈 훼손 → 분열 1/3 → 소멸, 2:30~4:15), 우트레드의 성좌 상자. 영상의 마무리 두 방법을 등급으로: 밸런스 = 충실한 레깅스(세를의 승리 + 우측 강령술 갈비뼈, 지속시간·원소 저항 1~2티어 먼저 뜬 것, 빛의 징조로 다시 → 접두 엑잘 결과 그대로), 에센셜 = 사도 레깅스(접두 엑잘 → 좌측 강령술 갈비뼈 → 공개 그대로). 옛 밸런스의 접두 방어도·생명력 다시 굴리기는 영상이 타협 추천이라 뺌, 소켓 3 → 2(홈 2개). 53/14 → 57/33 |
 | belton-plus8-wand-v2 | j0FeuX0NZQI | bal 38, ess 12 | 0 | 대기 |  |  |
 | sihan-chayula-sceptre-v2 | -F7pV0Y7BMA | bal 36, ess 13 | 0 | 대기 |  |  |
-| diztoh-onehand-mace-v2 | WDEkEIQFgT4 | bal 33, ess ? | 0 | 진행 중 11-13 · G3 | G3(Opus 5.5) |  |
+| diztoh-onehand-mace-v2 | WDEkEIQFgT4 | bal 693, ess 60 | 0 | 검수 대기 11-13 | G3(Opus 5.5) | 새 기준 재작성(G3): 영상 전체(0:00~8:00) 화면 대조, 전용 생성기 gen_diztoh_onehand_mace.py. 준비 구역(노멀 특출난 철퇴 3 div·퀄리티 26% → 완벽한 진화·확장 + 소멸로 치명타 확률 1티어 + 접두 잡옵 → 상위 가속의 에센스) 펼침, 아스트리드 → 좌측 결정화 + 완벽한 전투의 에센스 → 상위 엑잘(옛 그래프의 완벽한 엑잘은 틀림, 창고 II 개수로 확인) → 밸런스는 좌측 말소 + 상위 카오스로 물리 접두 1~2티어(영상 3~4번, 시뮬 31번 × 말소 20 div가 비용 대부분) → 검은 피의 징조 + 보존된 턱뼈 → 상위 엑잘 → 공개(쿠르갈 3개 모두라 물리 피해 증가가 거의 확정) → 절사 + 상위 카오스(가장 낮은 레벨일 때만). 33 → 693/60 |
 | sihan-chayula-helmet-v2 | z_r1uAYIusk | bal 31, ess 15 | 0 | 진행 중 11-13 · G1 | G1(Opus 5.5) |  |
 | fubgun-phys-bow-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 28, ess ? | 3 | 대기 |  |  |
 | lilbotq-armour-shield-v2 | 4YOSSAa53UU | bal 27, ess 7 | 0 | 대기 |  |  |
@@ -83,7 +83,7 @@
 | fubgun-quiver-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 10, ess ? | 3 | 대기 |  |  |
 | lilbotq-budget-boots-v2 | S-7YHuq3-P4 | bal 10, ess 6 | 0 | 대기 |  |  |
 | farmer-starter-staff-v2 | ITBexsgq2NI | high 8, bal 4, ess 2 | 0 | 대기 |  |  |
-| diztoh-socket-gloves-v2 | CI7zQO_Ml_s | bal 5, ess 1 | 1 | 진행 중 11-13 · G3 | G3(Opus 5.5) |  |
+| diztoh-socket-gloves-v2 | CI7zQO_Ml_s | bal 255, ess 241 | 0 | 검수 대기 11-13 | G3(Opus 5.5) | 새 기준 재작성(G3): 영상 전체(0:00~8:50) 화면 대조, 전용 생성기 gen_diztoh_socket_gloves.py. 준비 구역 펼침(특출난 장갑·콜르의 사냥·퀄리티 20% → 완벽한 진화·확장 + 소멸 반복으로 ES 최대치 1티어 + 투사체 +2 → 상위 풍요의 에센스 → 좌측 강령술 + 보존된 갈비뼈 → 신성한 오브(선택) → 분열, 영상은 희귀도가 분열). 아스트리드 → 좌측 결정화 + 경악의 에센스(ES가 지워지면 새 베이스) → 고대 갈비뼈 → 메아리 공개(빗나감은 자리 막기로 받음) → 완벽한 엑잘 세번째 접두 → 빛의 징조로 훼손 다시(접힌 상자, 밸런스만). 옛 그래프는 분열 베이스부터라 매직 반복(완벽한 확장 425개·소멸 425개, 콜르 +2 가중치 추정)이 빠져 있었음. 5/1 → 255/241. 카드에 분열 표시 없음(세 옵션 중 무엇이 분열돼도 같은 흐름) |
 | diztoh-talisman-v2 | p6HIFmJ9mRU | bal 5, ess ? | 0 | 대기 |  |  |
 | diztoh-es-helmet-v2 | yegMdBTuEtY | bal 2, ess ? | 0 | 대기 |  |  |
 | sane-resist-belt-v2 | Zop328DR50Q | bal 1, ess 1 | 0 | 대기 |  |  |

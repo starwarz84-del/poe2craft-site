@@ -41,6 +41,5 @@ R.append({
   {'id':'dm1','phase':'pre','branch':{'of':'d8','when':'miss'},'do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':[{'gi':dz_esf,'tmax':2},{'gi':dz_esp},{'gi':dz_pdmg},{'gi':dz_pspd}]},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment','omens':['Omen_of_Sinistral_Annulment']}}},
   {'id':'dm2','phase':'pre','branch':{'of':'d8','when':'miss'},'do':'exalt','cur':'Perfect_Exalted_Orb','target':{'anyOf':[{'gi':dz_esf,'tmax':2},{'gi':dz_esp},{'gi':dz_pdmg},{'gi':dz_pspd}]},'fail':{'goto':'self','via':{'cur':'Orb_of_Annulment','omens':['Omen_of_Sinistral_Annulment']},'lost':'dm1'}},
   {'id':'dm3','phase':'pre','branch':{'of':'d8','when':'miss'},'do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'anyOf':[{'gi':dz_esp},{'gi':dz_pdmg},{'gi':dz_pspd}]},'side':'p','bone':'Ancient_Rib'},'fail':{'goto':'self','via':LIGHT}},
-  {'id':'d12','phase':'fin','do':'note','target':{'runeSwap':[K('아스트리드의 창의성',"Astrid's Creativity"),K('페누무스의 회전의 룬',"Fenumus' Rune of Spinning")]},'ts':'6:25',
-   'note':K('아스트리드의 창의성을 페누무스의 회전의 룬으로 교체(제작 옵션은 그대로, 시전 속도 8% → 장착 증강 효과로 12%). 영상은 바알 방어구 장인의 주입기로 퀄리티 22% 후 바알 오브 타락으로 소켓 3개를 노림(선택, 망가질 수 있음).','Swap Astrid\'s Creativity for Fenumus\' Rune of Spinning (crafted lines stay; 8% cast speed becomes 12% with the augment effect). The video then pushed quality to 22% with a Vaal Armourer\'s Infuser and corrupted for a third socket (optional, can brick).')},
+  # d12(아스트리드 → 페누무스의 회전의 룬 교체, 6:25)는 정책 9장대로 뺌(G3 2026-11-13)
  ]})

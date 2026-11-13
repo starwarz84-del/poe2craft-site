@@ -4,33 +4,36 @@
  "cls": "One_Hand_Maces",
  "base": "Marauding Mace",
  "ilvl": 82,
- "note": "Diztoh 한손 둔기(원본 레시피 기록) — 치명타 확률 매직 베이스 구입(정책 18 — 영상의 완벽한 진화 반복은 시뮬상 약 55 div) → 완벽한 확장 → 상위 가속의 에센스 → 아스트리드 → 좌측 결정화 + 완벽한 전투의 에센스 → 완벽한 엑잘(물리 접두, 결과 그대로 — 영상의 좌측 말소의 징조(약 20 div) 반복은 시뮬상 평균 470 div라 뺌) → 검은 피의 징조 + 보존된 턱뼈 → 완벽한 엑잘(피해 추가) → 공개(쿠르갈 접두 3개 — 물리 %가 이미 있으면 같은 계열이라 다른 쿠르갈 옵션) → 밸런스는 물리·원소 피해 접두가 옵션 2개가 될 때까지 절사의 징조 + 상위 카오스(가장 낮은 옵션이 버릴 옵션일 때만). 에센셜 = 치명타 1~3티어 베이스, 상위 엑잘, 결과 그대로.",
+ "basePrice": {
+  "Divine_Orb": 3
+ },
+ "note": "2026-11-13 G3 영상 전체 화면 대조(근거 scratchpad review/G3/diztoh-onehand-mace-v2/timeline.md). 성공 회차 한 줄: 노멀 특출난 약탈의 철퇴 구입(3 div, 아이템 레벨 82, 퀄리티 26%) → 완벽한 진화·확장 + 소멸 반복(0:13~1:43) → 치명타 확률 1티어(1:43) + 접두 잡옵(1:52) → 상위 가속의 에센스로 레어 + 공격 속도(2:08) → 아스트리드의 창의성(2:35) → 좌측 결정화 + 완벽한 전투의 에센스로 접두 지우고 공격 스킬 +2(2:45~3:10) → 상위 엑잘 빗나감(3:17 화염 낮은 티어) → 좌측 말소 + 상위 카오스 반복 → 물리 피해 증가와 정확도 2티어(3:42~3:51) → 검은 피의 징조 + 보존된 턱뼈(4:26~4:30) → 상위 엑잘(4:41 번개 낮은 티어) → 공개, 쿠르갈 물리 피해 113%(4:50) → 절사의 징조 + 상위 카오스 2번 → 화염 피해 추가 1티어(5:00~5:09). 신성한 오브·완벽한 철 룬·타락(5:12~8:00)은 정책 9·14장대로 뺌. 내부 결정: 접두 물리 옵션은 물리 피해 증가와 정확도·물리 피해 추가만 셈(물리 피해 증가는 쿠르갈 물리 피해와 같은 계열이라 공개를 막음). 검은 피의 징조 공개는 접두 쿠르갈 옵션이 3개뿐이라 늘 물리 피해 증가가 나옴(같은 계열이 있을 때만 빗나감, 그대로 진행). 완성 카드의 훼손 줄은 쿠르갈 접두 셋 묶음(세번째 접두 엑잘이 물리 피해 증가를 붙이면 같은 계열이라 공개에 물리 피해가 안 나옴 — 시뮬 밸런스 97%·에센셜 96%가 물리 피해). 등급(난이도 3): 밸런스 = 첫 물리 접두 1~2티어까지 좌측 말소 + 상위 카오스, 세번째 접두는 가장 낮은 레벨일 때만 절사 + 상위 카오스 / 에센셜 = 상위 엑잘 결과 그대로.",
  "params": {
-  "cT": {
-   "kr": "치명타 확률",
-   "en": "Crit chance",
+  "pT": {
+   "kr": "첫 물리 접두",
+   "en": "First physical prefix",
    "values": {
     "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
+     "kr": "1~2티어까지 좌측 말소로 다시",
+     "en": "Sinistral Erasure until T1–2"
     },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
+    "0": {
+     "kr": "나오는 대로",
+     "en": "As it comes"
     }
    }
   },
-  "xT": {
-   "kr": "피해 추가",
-   "en": "Flat damage",
+  "g": {
+   "kr": "세번째 접두",
+   "en": "Third prefix",
    "values": {
-    "2": {
-     "kr": "1~2티어",
-     "en": "T1–2"
+    "1": {
+     "kr": "가장 낮은 레벨이면 절사로 다시",
+     "en": "Whittle while it is the lowest"
     },
-    "4": {
-     "kr": "1~4티어",
-     "en": "T1–4"
+    "0": {
+     "kr": "나오는 대로",
+     "en": "As it comes"
     }
    }
   }
@@ -39,15 +42,15 @@
   {
    "id": "bal",
    "params": {
-    "cT": 2,
-    "xT": 2
+    "pT": 2,
+    "g": 1
    }
   },
   {
    "id": "ess",
    "params": {
-    "cT": 3,
-    "xT": 4
+    "pT": 0,
+    "g": 0
    }
   }
  ],
@@ -57,12 +60,13 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "cT": 3,
-    "xT": 4
+    "pT": 0,
+    "g": 0
    },
+   "tier": "ess",
    "desc": {
-    "kr": "목표 넓힘, 결과 그대로",
-    "en": "Looser targets, keep whatever comes"
+    "kr": "상위 엑잘 결과 그대로",
+    "en": "Greater Exalts kept as they come"
    }
   },
   {
@@ -70,19 +74,20 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "cT": 2,
-    "xT": 2
+    "pT": 2,
+    "g": 1
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상: 빗나가면 말소·절사로 다시",
-    "en": "Video: Erasure/Whittling on misses"
+    "kr": "첫 물리 접두 1~2티어까지 좌측 말소, 세번째 접두는 가장 낮은 레벨일 때 절사로 다시",
+    "en": "Sinistral Erasure until a T1–2 physical prefix; whittle the third prefix while it is the lowest"
    }
   }
  ],
  "tags": {
   "crit": {
    "gi": 17,
-   "tmax": "$cT"
+   "tmax": 1
   },
   "as": {
    "gi": 44
@@ -90,91 +95,90 @@
   "atk": {
    "gi": 54
   },
-  "kpct": {
+  "kp": {
    "gi": 25
   },
   "hyb": {
    "gi": 8,
    "tmax": 2
   },
-  "ppct": {
-   "gi": 7,
-   "tmax": 3
-  },
   "pflat": {
    "gi": 2,
-   "tmax": "$xT"
-  },
-  "fire": {
-   "gi": 3,
-   "tmax": "$xT"
-  },
-  "cold": {
-   "gi": 4,
-   "tmax": "$xT"
-  },
-  "light": {
-   "gi": 6,
-   "tmax": "$xT"
+   "tmax": 2
   },
   "phys": {
    "anyOf": [
     "hyb",
-    "ppct",
     "pflat"
    ],
    "label": {
-    "kr": "물리 피해 접두",
-    "en": "Physical damage prefix"
+    "kr": "물리 피해 증가와 정확도·물리 피해 추가 1~2티어",
+    "en": "T1–2 % physical with accuracy or flat physical"
    }
   },
-  "good": {
-   "anyOf": [
-    "hyb",
-    "ppct",
-    "pflat",
-    "fire",
-    "cold",
-    "light"
-   ],
-   "label": {
-    "kr": "물리·원소 피해 접두",
-    "en": "Physical or elemental prefix"
-   }
+  "fl2": {
+   "gi": 2,
+   "tmax": 2
   },
-  "kAny": {
-   "anyOf": [
-    {
-     "gi": 25
-    },
-    {
-     "gi": 26
-    },
-    {
-     "gi": 27
-    }
-   ]
+  "fire1": {
+   "gi": 3,
+   "tmax": 1
+  },
+  "fire2": {
+   "gi": 3,
+   "tmax": 2
+  },
+  "cold2": {
+   "gi": 4,
+   "tmax": 2
+  },
+  "light2": {
+   "gi": 6,
+   "tmax": 2
   },
   "flat": {
    "anyOf": [
-    "pflat",
-    "fire",
-    "cold",
-    "light"
+    "fl2",
+    "fire2",
+    "cold2",
+    "light2"
    ],
    "label": {
-    "kr": "물리·원소 피해 추가",
-    "en": "Flat physical or elemental"
+    "kr": "물리·화염·냉기·번개 피해 추가 1~2티어",
+    "en": "T1–2 added physical, fire, cold or lightning damage"
    }
   },
-  "keep": {
+  "ke": {
+   "gi": 26
+  },
+  "kc": {
+   "gi": 27
+  },
+  "kAny": {
+   "anyOf": [
+    "kp",
+    "ke",
+    "kc"
+   ],
+   "label": {
+    "kr": "쿠르갈 접두 — 물리 피해 증가와 공격 속도 감소·강화 공격 피해·냉기 관통",
+    "en": "Kurgal prefix: % physical with reduced attack speed, Empowered Attack damage or cold penetration"
+   }
+  },
+  "keepW": {
    "anyOf": [
     "crit",
     "as",
     "atk",
-    "kAny",
-    "good"
+    "kp",
+    "phys",
+    "flat"
    ]
+  }
+ },
+ "conds": {
+  "magicOk": {
+   "has": "crit"
   }
  },
  "require": {
@@ -183,10 +187,16 @@
     "has": "crit"
    },
    {
+    "has": "as"
+   },
+   {
+    "has": "atk"
+   },
+   {
     "full": "p"
    },
    {
-    "full": "s"
+    "desSide": "p"
    }
   ]
  },
@@ -211,91 +221,8 @@
   }
  ],
  "start": "h1",
- "loops": [],
- "finals": [
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "side": "p",
-     "label": {
-      "kr": "물리·원소 피해 접두",
-      "en": "Physical or elemental prefix"
-     }
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "쿠르갈 접두 (물리 %가 없으면 물리 % + 공격 속도 감소)",
-      "en": "Kurgal prefix (% physical with reduced AS when free)"
-     }
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "물리·원소 피해 접두",
-      "en": "Physical or elemental prefix"
-     }
-    },
-    {
-     "tag": "crit",
-     "tmax": 2
-    },
-    {
-     "tag": "as",
-     "tmax": 1
-    },
-    {
-     "tag": "atk",
-     "tmax": 1
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "side": "p",
-     "label": {
-      "kr": "물리·원소 피해 접두",
-      "en": "Physical or elemental prefix"
-     }
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "쿠르갈 접두 (물리 %가 없으면 물리 % + 공격 속도 감소)",
-      "en": "Kurgal prefix (% physical with reduced AS when free)"
-     }
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "물리·원소 피해 접두",
-      "en": "Physical or elemental prefix"
-     }
-    },
-    {
-     "tag": "crit",
-     "tmax": 3
-    },
-    {
-     "tag": "as",
-     "tmax": 1
-    },
-    {
-     "tag": "atk",
-     "tmax": 1
-    }
-   ]
-  }
- ],
  "finalItem": {
-  "quality": 20,
+  "quality": 26,
   "sockets": 2
  },
  "nodes": [
@@ -307,211 +234,221 @@
     0,
     0
    ],
-   "next": "m3",
+   "next": "h2",
    "start": {
-    "rar": "magic",
-    "mods": [
-     "crit"
-    ]
+    "rar": "normal",
+    "mods": [],
+    "quality": 26
    },
    "label": {
-    "kr": "치명타 확률 매직 둔기 구입 (특출난 베이스, 퀄리티 20%)",
-    "en": "Buy a magic exceptional mace with crit chance (20% quality)"
+    "kr": "노멀 특출난 약탈의 철퇴 구입 (아이템 레벨 82, 퀄리티 26%)",
+    "en": "Buy a normal exceptional Marauding Mace (item level 82, quality 26%)"
    },
-   "item": [
-    {
-     "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    }
-   ]
+   "item": []
   },
   {
-   "id": "m3",
+   "id": "h2",
    "kind": "act",
    "group": "prep",
    "pos": [
     0,
-    2
+    1
    ],
-   "act": "augment",
-   "goal": {
-    "kr": "접두 옵션 1개",
-    "en": "One prefix"
-   },
+   "act": "transmute",
+   "cur": "Perfect_Orb_of_Transmutation",
    "label": {
-    "kr": "확장",
-    "en": "Augment"
+    "kr": "매직 첫번째 옵션",
+    "en": "First magic option"
    },
+   "goal": {
+    "kr": "접미 치명타 확률 1티어",
+    "en": "T1 crit chance suffix"
+   },
+   "show": [
+    "crit"
+   ],
    "edges": [
     {
-     "to": "m4"
+     "if": {
+      "has": "crit"
+     },
+     "to": "h3",
+     "res": "ok",
+     "label": {
+      "kr": "성공",
+      "en": "hit"
+     }
+    },
+    {
+     "to": "h2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "miss"
+     }
     }
    ],
+   "ask": {
+    "kr": "원하는 옵션?",
+    "en": "Wanted option?"
+   },
    "item": [
     {
      "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
       "crit"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    }
-   ],
-   "cur": "Perfect_Orb_of_Augmentation",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "랜덤 옵션 1개",
-     "en": "One random line"
     }
    ]
   },
   {
-   "id": "m4",
+   "id": "h2x",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    1,
+    1
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 옵션 지우기",
+    "en": "Remove the missed option"
+   },
+   "edges": [
+    {
+     "to": "h2b"
+    }
+   ]
+  },
+  {
+   "id": "h2b",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    1,
+    2
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "goal": {
+    "kr": "접미 치명타 확률 1티어",
+    "en": "T1 crit chance suffix"
+   },
+   "show": [
+    "crit"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "crit"
+     },
+     "to": "h3",
+     "res": "ok",
+     "label": {
+      "kr": "성공",
+      "en": "hit"
+     }
+    },
+    {
+     "to": "h2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "miss"
+     }
+    }
+   ]
+  },
+  {
+   "id": "h3",
    "kind": "act",
    "group": "prep",
    "pos": [
     0,
     3
    ],
-   "act": "essence",
-   "goal": {
-    "kr": "레어로 업그레이드 + 접미 공격 속도",
-    "en": "Upgrade to rare + attack speed suffix"
-   },
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
    "label": {
-    "kr": "에센스",
-    "en": "Essence"
+    "kr": "매직 두번째 옵션",
+    "en": "Second magic option"
    },
+   "goal": {
+    "kr": "접두 잡옵 (에센스가 지울 자리)",
+    "en": "Junk prefix (the slot an essence clears later)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
    "edges": [
     {
-     "to": "m5"
+     "to": "h4"
     }
    ],
    "item": [
     {
-     "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
      "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
+     "kr": "공격 스킬의 원소 피해 (87—100)% 증가",
+     "en": "(87—100)% increased Elemental Damage with Attacks",
      "m": "j"
     },
     {
      "s": "s",
-     "kr": "공격 속도 (제작 옵션)",
-     "en": "Attack speed (crafted)",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
-      "as"
+      "crit"
      ]
     }
-   ],
-   "cur": "Greater_Essence_of_Haste",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "공격 속도 (제작 옵션)",
-     "en": "Attack speed (crafted)"
-    }
-   ],
-   "ess": "as"
+   ]
   },
   {
-   "id": "m5",
+   "id": "h4",
    "kind": "act",
    "group": "prep",
    "pos": [
     0,
     4
    ],
-   "act": "rune",
-   "goal": {
-    "kr": "아스트리드의 창의성 장착",
-    "en": "Socket Astrid’s Creativity"
-   },
-   "label": {
-    "kr": "룬",
-    "en": "Rune"
-   },
-   "edges": [
-    {
-     "to": "m6"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
-    },
-    {
-     "s": "s",
-     "kr": "공격 속도 (제작 옵션)",
-     "en": "Attack speed (crafted)",
-     "m": "n",
-     "tags": [
-      "as"
-     ]
-    }
-   ],
-   "showText": [
-    {
-     "kr": "제작 옵션 하나 더",
-     "en": "One more crafted modifier"
-    }
-   ],
-   "rune": {
-    "kr": "아스트리드의 창의성",
-    "en": "Astrid's Creativity"
-   }
-  },
-  {
-   "id": "m6",
-   "kind": "act",
-   "group": "prep",
-   "pos": [
-    0,
-    5
-   ],
    "act": "essence",
-   "goal": {
-    "kr": "접두 잡옵을 지우고 공격 스킬 +2",
-    "en": "Swap the junk prefix for +2 attack skills"
-   },
+   "cur": "Greater_Essence_of_Haste",
+   "ess": "as",
    "label": {
     "kr": "에센스",
     "en": "Essence"
    },
+   "goal": {
+    "kr": "레어 + 접미 공격 속도",
+    "en": "Rare + attack speed suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (제작 옵션)",
+     "en": "(23—25)% increased Attack Speed (crafted)"
+    }
+   ],
    "edges": [
     {
      "to": "ms"
@@ -519,9 +456,15 @@
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "공격 스킬의 원소 피해 (87—100)% 증가",
+     "en": "(87—100)% increased Elemental Damage with Attacks",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
       "crit"
@@ -529,34 +472,13 @@
     },
     {
      "s": "s",
-     "kr": "공격 속도 (제작 옵션)",
-     "en": "Attack speed (crafted)",
-     "m": "n",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
      "tags": [
       "as"
      ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
-     "en": "+2 attack skills (crafted)",
-     "m": "n",
-     "tags": [
-      "atk"
-     ]
     }
-   ],
-   "cur": "Perfect_Essence_of_Battle",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
-     "en": "+2 attack skills (crafted)"
-    }
-   ],
-   "ess": "atk",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
    ]
   },
   {
@@ -565,18 +487,24 @@
    "group": "main",
    "pos": [
     0,
-    5.5
+    5.4
    ],
-   "next": "m7",
+   "next": "k1",
    "label": {
     "kr": "아이템 제작 시작",
     "en": "Item crafting starts"
    },
    "item": [
     {
+     "s": "p",
+     "kr": "공격 스킬의 원소 피해 (87—100)% 증가",
+     "en": "(87—100)% increased Elemental Damage with Attacks",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
       "crit"
@@ -584,51 +512,58 @@
     },
     {
      "s": "s",
-     "kr": "공격 속도 (제작 옵션)",
-     "en": "Attack speed (crafted)",
-     "m": "n",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
      "tags": [
       "as"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
-     "en": "+2 attack skills (crafted)",
-     "m": "n",
-     "tags": [
-      "atk"
      ]
     }
    ]
   },
   {
-   "id": "m7",
+   "id": "k1",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    6
+    6.4
    ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접두 첫번째 옵션",
-    "en": "First prefix option"
-   },
+   "act": "rune",
    "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid’s Creativity"
+   },
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
    },
    "edges": [
     {
-     "to": "m8"
+     "to": "k2"
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "공격 스킬의 원소 피해 (87—100)% 증가",
+     "en": "(87—100)% increased Elemental Damage with Attacks",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
       "crit"
@@ -636,156 +571,60 @@
     },
     {
      "s": "s",
-     "kr": "공격 속도 (제작 옵션)",
-     "en": "Attack speed (crafted)",
-     "m": "n",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
      "tags": [
       "as"
      ]
     },
     {
-     "s": "s",
-     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
-     "en": "+2 attack skills (crafted)",
-     "m": "n",
-     "tags": [
-      "atk"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "물리 피해 접두",
-     "en": "Physical damage prefix",
-     "m": "n",
-     "tags": [
-      "phys"
-     ]
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "물리 피해 접두 (안 나와도 그대로 — 공개 뒤 절사로)",
-     "en": "Physical prefix (a miss stays — Whittling after the reveal)"
-    }
-   ],
-   "over": [
-    {
-     "param": {
-      "cT": 3
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
-     }
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "m8",
+   "id": "k2",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    7
+    7.4
    ],
-   "act": "desecrate",
-   "goal": {
-    "kr": "접두 두번째 옵션(훼손)",
-    "en": "Second prefix (desecrated)"
-   },
-   "label": {
-    "kr": "훼손",
-    "en": "Desecrate"
-   },
-   "edges": [
-    {
-     "to": "m9"
-    }
-   ],
-   "item": [
-    {
-     "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
-     "m": "n",
-     "tags": [
-      "crit"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "공격 속도 (제작 옵션)",
-     "en": "Attack speed (crafted)",
-     "m": "n",
-     "tags": [
-      "as"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
-     "en": "+2 attack skills (crafted)",
-     "m": "n",
-     "tags": [
-      "atk"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "물리 피해 접두",
-     "en": "Physical damage prefix",
-     "m": "n",
-     "tags": [
-      "phys"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ],
-   "cur": "Preserved_Jawbone",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "쿠르갈 훼손 옵션(미공개)",
-     "en": "Kurgal desecration (unrevealed)"
-    }
-   ],
+   "act": "essence",
+   "cur": "Perfect_Essence_of_Battle",
+   "ess": "atk",
    "omens": [
-    "Omen_of_the_Blackblooded"
-   ]
-  },
-  {
-   "id": "m9",
-   "kind": "act",
-   "group": "main",
-   "pos": [
-    0,
-    8
+    "Omen_of_Sinistral_Crystallisation"
    ],
-   "act": "exalt",
-   "goal": {
-    "kr": "접두 세번째 옵션",
-    "en": "Third prefix option"
-   },
    "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
+    "kr": "에센스",
+    "en": "Essence"
    },
+   "goal": {
+    "kr": "접두 잡옵을 지우고 접미 공격 스킬 +2",
+    "en": "Clear the junk prefix for +2 attack skills suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
+     "en": "+2 to Level of all Attack Skills (crafted)"
+    }
+   ],
    "edges": [
     {
-     "to": "m10"
+     "to": "k3"
     }
    ],
    "item": [
     {
      "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
       "crit"
@@ -793,117 +632,89 @@
     },
     {
      "s": "s",
-     "kr": "공격 속도 (제작 옵션)",
-     "en": "Attack speed (crafted)",
-     "m": "n",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
      "tags": [
       "as"
      ]
     },
     {
      "s": "s",
-     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
-     "en": "+2 attack skills (crafted)",
-     "m": "n",
+     "kr": "모든 공격 스킬 레벨 +2 (완벽한 전투의 에센스)",
+     "en": "+2 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
      "tags": [
       "atk"
      ]
     },
     {
-     "s": "p",
-     "kr": "물리 피해 접두",
-     "en": "Physical damage prefix",
-     "m": "n",
-     "tags": [
-      "phys"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    },
-    {
-     "s": "p",
-     "kr": "물리·원소 피해 추가",
-     "en": "Flat physical or elemental",
-     "m": "n",
-     "tags": [
-      "flat"
-     ]
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "물리·원소 피해 추가 (안 나오면 공개 뒤 절사)",
-     "en": "Flat physical or elemental (a miss: Whittling after the reveal)"
-    }
-   ],
-   "over": [
-    {
-     "param": {
-      "cT": 3
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
-     }
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "m10",
+   "id": "k3",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    9
+    8.4
    ],
-   "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인 (쿠르갈 3개 전부 나옴)",
-    "en": "Reveal (all three Kurgal lines show)"
-   },
+   "act": "exalt",
+   "cur": "Greater_Exalted_Orb",
    "label": {
-    "kr": "공개",
-    "en": "Reveal"
+    "kr": "엑잘",
+    "en": "Exalt"
    },
+   "goal": {
+    "kr": "접두 물리 피해 증가와 정확도 2티어 — 물리 피해 추가와 둘 중 먼저 뜬 것",
+    "en": "T2 % physical with accuracy prefix: or flat physical, whichever lands first"
+   },
+   "show": [
+    "hyb",
+    "pflat"
+   ],
    "edges": [
     {
      "if": {
       "any": [
        {
-        "count": {
-         "tag": "good",
-         "min": 2
-        }
+        "has": "phys"
        },
        {
         "param": {
-         "cT": 3
+         "pT": 0
         }
        }
       ]
      },
-     "to": "ok"
+     "to": "k5",
+     "res": "ok"
     },
     {
-     "if": {
-      "whittleSafe": "keep"
-     },
-     "to": "m11"
-    },
-    {
-     "to": "ok"
+     "to": "k4",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 좌측 말소",
+      "en": "Miss: Sinistral Erasure"
+     }
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "화염 피해 추가 (낮은 티어)",
+     "en": "Adds Fire Damage (low tier)",
+     "m": "j"
+    },
+    {
      "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
       "crit"
@@ -911,104 +722,503 @@
     },
     {
      "s": "s",
-     "kr": "공격 속도 (제작 옵션)",
-     "en": "Attack speed (crafted)",
-     "m": "n",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
      "tags": [
       "as"
      ]
     },
     {
      "s": "s",
-     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
-     "en": "+2 attack skills (crafted)",
-     "m": "n",
+     "kr": "모든 공격 스킬 레벨 +2 (완벽한 전투의 에센스)",
+     "en": "+2 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
      "tags": [
       "atk"
      ]
     },
     {
-     "s": "p",
-     "kr": "물리 피해 접두",
-     "en": "Physical damage prefix",
-     "m": "n",
-     "tags": [
-      "phys"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "물리·원소 피해 추가",
-     "en": "Flat physical or elemental",
-     "m": "n",
-     "tags": [
-      "flat"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "쿠르갈 물리 % (공격 속도 감소)",
-     "en": "Kurgal % physical (reduced attack speed)",
-     "m": "n",
-     "tags": [
-      "kpct"
-     ]
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
    ],
-   "showText": [
+   "over": [
     {
-     "s": "p",
-     "kr": "물리 % (공격 속도 감소)",
-     "en": "% physical (reduced attack speed)"
+     "param": {
+      "pT": 0
+     },
+     "set": {
+      "goal": {
+       "kr": "접두 첫번째 옵션 (나오는 대로)",
+       "en": "First prefix option (keep what comes)"
+      },
+      "show": [],
+      "showText": [
+       {
+        "s": "p",
+        "kr": "랜덤 옵션",
+        "en": "Random option"
+       }
+      ]
+     }
     }
-   ],
-   "want": "kpct"
+   ]
   },
   {
-   "id": "m11",
+   "id": "k4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8.4
+   ],
+   "act": "chaos",
+   "cur": "Greater_Chaos_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Erasure"
+   ],
+   "label": {
+    "kr": "좌측 말소 + 카오스",
+    "en": "Sinistral Erasure + Chaos"
+   },
+   "goal": {
+    "kr": "접두 다시 — 물리 피해 증가와 정확도·물리 피해 추가 1~2티어",
+    "en": "Reroll the prefix: T1–2 % physical with accuracy or flat physical"
+   },
+   "show": [
+    "hyb",
+    "pflat"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "phys"
+     },
+     "to": "k5",
+     "res": "ok"
+    },
+    {
+     "to": "k4",
+     "res": "fail",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (65—74)% 증가 + 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage, +(150—174) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (완벽한 전투의 에센스)",
+     "en": "+2 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "atk"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "k5",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    10
+    9.4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Jawbone",
+   "omens": [
+    "Omen_of_the_Blackblooded"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접두 두번째 옵션(훼손, 쿠르갈)",
+    "en": "Second prefix option (desecrated, Kurgal)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "접두 훼손 옵션 (미공개, 공개 3개 모두 쿠르갈)",
+     "en": "Prefix desecration (unrevealed, all three options Kurgal)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "k6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (65—74)% 증가 + 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage, +(150—174) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "접두 훼손 옵션 (미공개, 쿠르갈)",
+     "en": "Prefix desecration (unrevealed, Kurgal)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (완벽한 전투의 에센스)",
+     "en": "+2 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "atk"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "k6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10.4
+   ],
+   "act": "exalt",
+   "cur": "Greater_Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 세번째 옵션",
+    "en": "Third prefix option"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "랜덤 옵션",
+     "en": "Random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "k7"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (65—74)% 증가 + 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage, +(150—174) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "접두 훼손 옵션 (미공개, 쿠르갈)",
+     "en": "Prefix desecration (unrevealed, Kurgal)",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해 추가 (낮은 티어)",
+     "en": "Adds Lightning Damage (low tier)",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (완벽한 전투의 에센스)",
+     "en": "+2 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "atk"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "k7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11.4
+   ],
+   "act": "reveal",
+   "want": "kp",
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "goal": {
+    "kr": "접두 물리 피해 증가, 공격 속도 감소 (훼손)",
+    "en": "% physical with reduced attack speed prefix (desecrated)"
+   },
+   "show": [
+    "kp"
+   ],
+   "edges": [
+    {
+     "to": "k8",
+     "res": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "물리 피해 (65—74)% 증가 + 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage, +(150—174) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (110—154)% 증가, 공격 속도 15% 감소 (훼손)",
+     "en": "(110—154)% increased Physical Damage, 15% reduced Attack Speed (desecrated)",
+     "m": "d",
+     "tags": [
+      "kp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "번개 피해 추가 (낮은 티어)",
+     "en": "Adds Lightning Damage (low tier)",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
+     "tags": [
+      "as"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 공격 스킬 레벨 +2 (완벽한 전투의 에센스)",
+     "en": "+2 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
+     "tags": [
+      "atk"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "k8",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    12.4
    ],
    "act": "chaos",
-   "goal": {
-    "kr": "가장 낮은 옵션을 피해 추가로 (버릴 옵션일 때만)",
-    "en": "Replace the lowest line (only while it is junk)"
-   },
+   "cur": "Greater_Chaos_Orb",
+   "omens": [
+    "Omen_of_Whittling"
+   ],
    "label": {
-    "kr": "카오스",
-    "en": "Chaos"
+    "kr": "절사 + 카오스",
+    "en": "Whittling + Chaos"
+   },
+   "goal": {
+    "kr": "세번째 접두를 화염 피해 추가 1티어로 — 피해 추가 1~2티어 중 먼저 뜬 것",
+    "en": "Third prefix into T1 added fire: any T1–2 added damage, whichever lands first"
+   },
+   "show": [
+    "fl2",
+    "fire2",
+    "cold2",
+    "light2"
+   ],
+   "skipIf": {
+    "any": [
+     {
+      "param": {
+       "g": 0
+      }
+     },
+     {
+      "has": "flat"
+     },
+     {
+      "not": {
+       "whittleSafe": {
+        "tag": "keepW",
+        "keepDes": true
+       }
+      }
+     }
+    ]
+   },
+   "skipTo": "ok",
+   "skipHide": true,
+   "skipNote": {
+    "kr": "피해 추가가 이미 있거나 세번째 접두가 가장 낮은 레벨이 아니면 건너뜀",
+    "en": "Skipped when added damage is there or the third prefix is not the lowest level"
    },
    "edges": [
     {
      "if": {
-      "count": {
-       "tag": "good",
-       "min": 2
-      }
+      "has": "flat"
      },
      "to": "ok",
      "res": "ok"
     },
     {
      "if": {
-      "whittleSafe": "keep"
+      "whittleSafe": {
+       "tag": "keepW",
+       "keepDes": true
+      }
      },
-     "to": "m11",
-     "res": "fail"
+     "to": "k8",
+     "res": "fail",
+     "hide": true
     },
     {
      "to": "ok",
-     "res": "fail"
+     "res": "ok",
+     "hide": true
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "물리 피해 (65—74)% 증가 + 정확도 +(150—174)",
+     "en": "(65—74)% increased Physical Damage, +(150—174) to Accuracy Rating",
+     "m": "n",
+     "tags": [
+      "hyb"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "물리 피해 (110—154)% 증가, 공격 속도 15% 감소 (훼손)",
+     "en": "(110—154)% increased Physical Damage, 15% reduced Attack Speed (desecrated)",
+     "m": "d",
+     "tags": [
+      "kp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "화염 피해 (88—101)~(133—154) 추가",
+     "en": "Adds (88—101) to (133—154) Fire Damage",
+     "m": "n",
+     "tags": [
+      "fire1"
+     ]
+    },
+    {
      "s": "s",
-     "kr": "치명타 확률",
-     "en": "Critical hit chance",
+     "kr": "치명타 확률 +(4.41—5)%",
+     "en": "+(4.41—5)% to Critical Hit Chance",
      "m": "n",
      "tags": [
       "crit"
@@ -1016,56 +1226,28 @@
     },
     {
      "s": "s",
-     "kr": "공격 속도 (제작 옵션)",
-     "en": "Attack speed (crafted)",
-     "m": "n",
+     "kr": "공격 속도 (23—25)% 증가 (상위 가속의 에센스)",
+     "en": "(23—25)% increased Attack Speed (Greater Essence of Haste)",
+     "m": "c",
      "tags": [
       "as"
      ]
     },
     {
      "s": "s",
-     "kr": "모든 공격 스킬 레벨 +2 (제작 옵션)",
-     "en": "+2 attack skills (crafted)",
-     "m": "n",
+     "kr": "모든 공격 스킬 레벨 +2 (완벽한 전투의 에센스)",
+     "en": "+2 to Level of all Attack Skills (Perfect Essence of Battle)",
+     "m": "c",
      "tags": [
       "atk"
      ]
     },
     {
-     "s": "p",
-     "kr": "물리 피해 접두",
-     "en": "Physical damage prefix",
-     "m": "n",
-     "tags": [
-      "phys"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "물리·원소 피해 추가",
-     "en": "Flat physical or elemental",
-     "m": "n",
-     "tags": [
-      "flat"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "쿠르갈 물리 % (공격 속도 감소)",
-     "en": "Kurgal % physical (reduced attack speed)",
-     "m": "n",
-     "tags": [
-      "kpct"
-     ]
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "cur": "Greater_Chaos_Orb",
-   "show": [
-    "good"
-   ],
-   "omens": [
-    "Omen_of_Whittling"
    ]
   },
   {
@@ -1074,12 +1256,87 @@
    "group": "main",
    "pos": [
     0,
-    11
+    13.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "h2",
+    "h2x",
+    "h2b"
+   ],
+   "kr": "매직 옵션 맞추기",
+   "en": "Magic options"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "phys"
+    },
+    {
+     "tag": "kAny",
+     "des": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "crit"
+    },
+    {
+     "tag": "as",
+     "ess": true
+    },
+    {
+     "tag": "atk",
+     "ess": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "kAny",
+     "des": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "crit"
+    },
+    {
+     "tag": "as",
+     "ess": true
+    },
+    {
+     "tag": "atk",
+     "ess": true
+    }
+   ]
   }
  ]
 }

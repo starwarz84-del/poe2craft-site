@@ -111,3 +111,7 @@ print('wrote 3 graphs (batch 11)')
 
 import os as _os, subprocess as _sp, sys as _sy
 if _os.path.exists(f'{H}/gen_seek_cyclone_boots.py'): _sp.run([_sy.executable, f'{H}/gen_seek_cyclone_boots.py'], check=True)   # 2026-11-13 G4: 새 기준 전용 생성기가 덮어씀
+
+import os as _os, subprocess as _sp, sys as _sy
+if _os.path.exists(f'{H}/gen_diztoh_socket_gloves.py'): _sp.run([_sy.executable, f'{H}/gen_diztoh_socket_gloves.py'], check=True)   # 2026-11-13 G3: 새 기준 전용 생성기가 덮어씀
+if _os.path.exists(f'{H}/gen_diztoh_as_spear.py'): _sp.run([_sy.executable, f'{H}/gen_diztoh_as_spear.py'], check=True)   # 2026-11-13 G3: 새 기준 전용 생성기가 덮어씀
