@@ -86,6 +86,7 @@ git log --oneline -15
 - 꿀팁의 `recipes`에 적힌 레시피 id는 옛 이름(-v2 없음)이에요. 화면에서는 `tipRecipes()`가 -v2·등급판으로 찾아요.
 - 징조 없이 붙인 잡옵(전환·확장·제왕)은 시뮬에서 아무 쪽에나 붙어요. 초안이 '접두에 잡옵 2개'라고 셈해도 실제로는 접미가 찰 수 있어서, 그 뒤 훼손은 강령술 징조로 쪽을 정해야 해요(2026-11-12 오래된 사파이어가 끝나지 않던 원인).
 - 리버스 초안이 시뮬에서 끝나지 않으면 `node tools/test/_revtrace.js <레시피id> [후보키]`로 끝나지 않는 회차의 마지막 단계와 아이템 상태를 봐요. 후보별 비용·탈락은 `_revprobe.js <레시피id> [후보키]`.
+- 푸시해도 Cloudflare Workers Builds가 시작되지 않을 때가 있음(2026-11-14 00:33~01:06 두 커밋이 배포 안 됨). 푸시 뒤 `gh api repos/starwarz84-del/poe2craft-site/commits/<커밋>/check-runs`에 'Workers Builds: poe2craft'가 없으면 빈 커밋(`git commit --allow-empty`)을 푸시하면 다시 시작됨. 배포 확인은 내장 브라우저에서 `fetch('/파일?x='+Date.now(),{cache:'no-store'})`로 새 코드가 있는지 봄.
 - `site/*.html`엔 줄 끝 `//` 주석 금지(한 줄에 문장이 여러 개라 뒤 코드가 가려짐). `/* */`를 써요.
 - 게시된 사이트는 샌드박스 iframe이라 `confirm()`·`alert()`가 막혀요. 확인은 '한 번 더 누르기'로.
 - Playwright에서 같은 페이지에 `#해시`만 바꿔 `goto`하면 다시 읽지 않아요. 주소에 `&x=<id>` 같은 값을 붙여요.
