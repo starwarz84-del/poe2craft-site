@@ -42,7 +42,7 @@ g = {
  'tags': {'critD': {'gi': 5}, 'qas': {'gi': 55}, 'as': {'gi': 7}, 'atk': {'gi': 6}, 'fer': {'gi': 117},
           'qsd': {'gi': 53}, 'rare': {'gi': 10},
           # H2 11-13: 영상이 받아들인 피해 접두 셋(7:24 희귀 및 고유 적 피해 '보스용', 7:55·14:16 육척봉 피해, 9:35 공격 피해) — 성공 조건은 그중 하나(정책 11장 2026-11-13 14:17)
-          'pd': {'anyOf': ['atk', 'qsd', 'rare'], 'label': K('공격 피해·육척봉 사용 시 피해·희귀 및 고유 적 명중 시 피해', 'Attack damage, quarterstaff damage or damage against rare and unique enemies')},
+          'pd': {'anyOf': ['atk', 'qsd', 'rare'], 'shown': 'atk', 'label': K('공격 피해·육척봉 사용 시 피해·희귀 및 고유 적 명중 시 피해', 'Attack damage, quarterstaff damage or damage against rare and unique enemies')},
           'contS': {'gi': 119, 'slot': {'s': 1}}, 'contP': {'gi': 120, 'slot': {'p': 1}}},
  'require': {'all': [{'has': 'critD'}, {'has': 'qas'}, {'has': 'fer'}, {'not': {'has': 'contS'}},
                      {'any': [{'all': [{'has': 'as'}, {'has': 'pd'}]}, {'param': {'v': 2}}]}]},
@@ -52,7 +52,7 @@ g = {
  'cap': {'p': 2, 's': 2},   # 주얼: 접두 2 · 접미 2(정책 8장)
  'finals': [
    {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-    'lines': [{'tag': 'atk'}, {'tag': 'fer'}, {'tag': 'critD', 'fr': True}, {'tag': 'qas'}, {'tag': 'as', 'des': True}]},
+    'lines': [{'tag': 'pd'}, {'tag': 'fer'}, {'tag': 'critD', 'fr': True}, {'tag': 'qas'}, {'tag': 'as', 'des': True}]},
    {'id': 'ess', 'tier': 'ess', 'kr': '에센셜 옵션', 'en': 'Essential',
     'lines': [{'side': 'p', 'random': True}, {'tag': 'fer'}, {'tag': 'critD', 'fr': True}, {'tag': 'qas'}, {'side': 's', 'random': True, 'des': True}]}],
  'finalItem': {'quality': 0, 'sockets': 0},
@@ -109,7 +109,7 @@ A(id='g1', kind='act', group='main', pos=[0, 9.4], act='exalt', cur='Exalted_Orb
   edges=[{'if': {'sideLt': {'side': 'p', 'n': 2}}, 'to': 'g1', 'hide': True}, {'to': 'c1'}],
   item=[J('p'), J('p'), CD, QAS, AS], over=[{'param': {'v': 2}, 'set': {'item': [J('p'), J('p'), CD, QAS, RS('s')]}}])
 A(id='c1', kind='act', group='main', pos=[0, 10.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접두 공격 피해', 'Attack Damage prefix'), show=['atk'],
+  goal=K('접두 공격 피해', 'Attack Damage prefix'), show=['pd'],
   showText=[K('접미가 한도를 넘어 접두만 바뀜', 'Suffixes are over the limit: only prefixes change')],
   skipIf={'param': {'v': 2}}, skipTo='f1',
   edges=[{'if': {'all': [{'has': 'pd'}, {'has': 'fer'}]}, 'to': 'ok', 'res': 'ok', 'hide': True},
