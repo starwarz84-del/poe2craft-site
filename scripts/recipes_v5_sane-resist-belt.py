@@ -16,7 +16,7 @@ R.append({
  'phases':[{'id':'base','kr':'베이스','en':'Base'},{'id':'suf','kr':'접미 훼손','en':'Suffix desecration'}],
  'nodes':[
   {'id':'b1','phase':'base','do':'base','cost':'base','ts':'0:12',
-   'note':K('생명력 + 저항이 붙은 매직 허리띠(부적 칸 2개 이상).','A magic belt with life and a resistance (two or more charm slots).')},
+   'note':K('생명력 + 저항이 붙은 매직 허리띠(호신부 슬롯 2개 이상).','A magic belt with life and a resistance (two or more charm slots).')},
   {'id':'b2','phase':'base','do':'essence','cur':'Greater_Essence_of_Ruin','target':{'gi':sb_cresE},'ts':'1:18'},
   {'id':'b3','phase':'suf','do':'desecrate','cur':'Preserved_Collarbone','omens':['Omen_of_Dextral_Necromancy','Omen_of_the_Sovereign'],'target':{'unrev':'s'},'ts':'1:37'},
   {'id':'b4','phase':'suf','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],'target':{'reveal':{'gi':sb_ulaman},'side':'s','lord':'ulaman','bone':'Preserved_Collarbone'},'fail':{'goto':'b3','via':LIGHT},'ts':'2:25',

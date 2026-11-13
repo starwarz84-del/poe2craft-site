@@ -50,7 +50,7 @@ N = []
 A = lambda **kw: N.append(kw)
 # ---------------- 베이스템 완성 (영상 0:14~1:30) ----------------
 A(id='t0', kind='base', group='prep', pos=[0, 0], next='t1', start={'rar': 'magic', 'mods': ['life', 'lres']},
-  label=K('생명력 + 번개 저항 매직 섬세한 허리띠 구입 (부적 칸 2개)', 'Buy a magic Fine Belt with life + lightning resistance (two charm slots)'), item=[LF, LR])
+  label=K('생명력 + 번개 저항 매직 섬세한 허리띠 구입 (호신부 슬롯 2개)', 'Buy a magic Fine Belt with life + lightning resistance (two charm slots)'), item=[LF, LR])
 A(id='t1', kind='act', group='prep', pos=[0, 1], act='essence', cur='Greater_Essence_of_Ruin', ess='cres', label=K('에센스', 'Essence'),
   goal=K('레어 + 접미 카오스 저항', 'Rare + chaos resistance suffix'),
   showText=[{'s': 's', 'kr': '카오스 저항 (제작 옵션)', 'en': 'Chaos resistance (crafted)'}], edges=[{'to': 'ms'}], item=[LF, LR, CH])
