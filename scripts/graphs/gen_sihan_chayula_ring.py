@@ -139,7 +139,7 @@ A(id='k6', kind='act', group='main', pos=[0, 7.4], act='desecrate', cur='Preserv
   item=[CHD, LIFE, UN('p'), FR, RS])
 A(id='k7', kind='act', group='main', pos=[0, 8.4], act='exalt', cur='Perfect_Exalted_Orb', label=K('엑잘', 'Exalt'),
   goal=K('마지막 옵션', 'Last option'), showText=[K('랜덤 옵션 1개', 'One random option')],
-  skipIf={'all': [{'full': 'p'}, {'full': 's'}]}, skipTo='k8', skipHide=True,
+  skipIf={'all': [{'full': 'p'}, {'full': 's'}]}, skipTo='k8', skipHide=True, skipNote=K('옵션 6개면 건너뜀', 'Skip with six options'),
   edges=[{'to': 'k8'}], item=[CHD, LIFE, UN('p'), FR, RS, MK])
 A(id='k8', kind='act', group='main', pos=[0, 9.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='eff', label=K('공개', 'Reveal'),
   goal=K('접두 세 번째 옵션(훼손) — 플레이어가 생성하는 잔류물의 효과', 'Third prefix (desecrated): remnant effect'), show=['eff'],

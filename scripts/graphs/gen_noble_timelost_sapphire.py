@@ -122,7 +122,7 @@ A(id='k7', kind='act', group='main', pos=[0, 11.4], act='exalt', cur='Exalted_Or
 A(id='m1', kind='act', group='main', pos=[0, 12.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
   goal=K('접두 반경·훼손 옵션 지우기', 'Clear the radius and desecrated prefixes'),
   target=K('반경 중형·대형과 훼손 옵션이 없어질 때까지', 'Until no Medium/Large radius and no desecrated line is left'),
-  skipIf={'not': {'any': [{'has': 'radLo'}, {'desSide': 'p'}]}}, skipTo='m2', skipHide=True,
+  skipIf={'not': {'any': [{'has': 'radLo'}, {'desSide': 'p'}]}}, skipTo='m2', skipHide=True, skipNote=K('지울 옵션이 없으면 건너뜀', 'Skip when nothing needs clearing'),
   edges=[{'if': {'any': [{'has': 'radLo'}, {'desSide': 'p'}]}, 'to': 'm1', 'res': 'fail', 'hide': True},
          {'if': {'has': 'rad'}, 'to': 'm3', 'label': K('매우 넓은 반경이 남음', 'Very Large radius kept')},
          {'to': 'm2', 'res': 'ok'}],

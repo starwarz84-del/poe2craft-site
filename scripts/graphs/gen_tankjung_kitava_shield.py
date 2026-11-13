@@ -78,7 +78,7 @@ nodes=[b0,
  act('t4','main',[0,11],'reveal',None,K('접미 세 번째 옵션 공개','Reveal the third suffix'),None,K('공개','Reveal'),   # 17:56 STEP 11 ③④
      [{'if':SUFDONE,'to':'tf','res':'ok'},{'to':'t4x','res':'fail'}],I3,want='g4R',show=['g4R'],omens=['Omen_of_Abyssal_Echoes']),
  annul('t4x',[1,11],[{'to':'t3','label':K('다시 훼손','Desecrate again')}]),   # 17:56 STEP 11 NO: 빛의 징조 → 소멸의 오브 → ①부터
- act('tf','main',[0,12],'flux','Blazing_Flux',K('냉기·번개 저항 최대치를 화염으로','Cold or lightning maximum resistance into fire'),[st('s','화염 저항 최대치 +3% 두 줄 (하나 훼손)','Two +3% maximum fire resistance lines (one desecrated)')],K('유동체','Flux'),[{'to':'t5'}],I3F),   # 영상에 없음(내부 결정, 사용자 결정 2026-11-12)
+ act('tf','main',[0,12],'flux','Blazing_Flux',K('냉기·번개 저항 최대치를 화염으로','Cold or lightning maximum resistance into fire'),[st('s','화염 저항 최대치 두 줄 (하나 훼손)','Two maximum fire resistance lines (one desecrated)')],K('유동체','Flux'),[{'to':'t5'}],I3F),   # 영상에 없음(내부 결정, 사용자 결정 2026-11-12)
  act('t5','main',[0,13],'exalt','Perfect_Exalted_Orb',K('접두 옵션 2개','Two prefixes'),[st('p','랜덤 옵션 2개','Two random options')],K('엑잘','Exalt'),[{'to':'t6'}],I4,omens=['Omen_of_Greater_Exaltation']),   # 19:06 STEP 12 ①②
  act('t6','main',[0,14],'exalt','Perfect_Exalted_Orb',K('접두 세 번째 옵션','Third prefix'),[st('p','랜덤 옵션 1개','One random option')],K('엑잘','Exalt'),   # 19:06 STEP 12 ③
      [{'to':'t7'}],I5),
