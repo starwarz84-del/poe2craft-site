@@ -87,7 +87,7 @@
 | diztoh-talisman-v2 | p6HIFmJ9mRU | bal 5, ess ? | 0 | 대기 |  |  |
 | diztoh-es-helmet-v2 | yegMdBTuEtY | bal 2, ess ? | 0 | 진행 중 11-13 · G11 |  |  |
 | sane-resist-belt-v2 | Zop328DR50Q | bal 1, ess 1 | 0 | 대기 |  |  |
-| ragna-ashot-bow-v2 | m0eHw6nq24Q | bal ?, ess ? | 0 | 대기 |  |  |
+| ragna-ashot-bow-v2 | m0eHw6nq24Q | bal ?, ess ? | 0 | 진행 중 11-13 · G13 |  |  |
 | sihan-chayula-amulet-v2 | 2vyq26ZFgOk | bal 15.2 | 0 | 검수 대기 11-13 | G2(Opus 5.5) | 새 기준 재작성(G2): 영상 전체(6:18) 화면 대조, 전용 생성기 gen_sihan_chayula_amulet.py. 매물(에너지 보호막 2티어·정신력 1티어 / 민첩 분열 + 미공개 훼손, 15 div) → 완벽한 무한의 에센스 → 우측 강령술 + 군주 + 보존된 빗장뼈 → 메아리 공개, 빗나가면 에센스부터(빛의 징조 없음). 에센셜도 같은 반복이라(C17-3·4) 밸런스만. 베이스 15 div가 시뮬에 빠져 있던 것 고침, 퀄리티 0. 0.2/0.2 → 15.2 |
 
 ## 등급 기준 C17 점검 (사용자 확정 2026-11-12 00:09)
