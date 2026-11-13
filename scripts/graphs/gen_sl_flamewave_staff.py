@@ -1,6 +1,8 @@
 # W26 2026-11-13: SL 화염파 지팡이(6EzSVUItzsg) 플로우차트 생성기 — 영상 성공 회차 한 줄
 # 근거: scratchpad review/W26-sl-staff/timeline.md, frames/ (영상 0:00~15:13 화면 대조)
 # 실행: cd scripts/graphs && python3 gen_sl_flamewave_staff.py  → sl-flamewave-staff-v2.json (gen_batch14.py 끝에서 자동 호출, 이 아이템 구간을 대신함)
+# P15 2026-11-13 오후(정책 B): 훼손 공개(8:20~8:32)는 한 번에 추가 화염이 떠서 빗나감 장면이 없음(빛의 징조는 챙기기만) → 빛의 징조 반복(dx) 삭제, 두 등급 모두 공개 결과 그대로.
+#   왼쪽 칸·상자는 영상 결과(추가 화염, 훼손), 완성 카드의 훼손 줄은 랜덤 옵션. 접두 카오스·엑잘은 영상에서 소멸로 다시 하니 반복 유지(성공 회차 shown).
 import json, os, sys
 H = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else f'{H}/sl-flamewave-staff-v2.json'
@@ -39,19 +41,19 @@ g = {
  'note': ('2026-11-13 W26 영상 전체 화면 대조(0:00~15:13). 성공 회차 한 줄: 특출난 차임벨 지팡이(아이템 레벨 81, 홈 3개, 2:22) → 매직, 완벽한 확장의 오브 + 소멸의 오브 반복으로 '
           '모든 화염 주문 +7(3:26) → 완벽한 확장으로 접두 아무거나(마나 최대치) → 완벽한 제왕(지능) → 보존된 턱뼈(3:53~3:56) → 분열(5:00, 영상은 실패 뒤 분열된 매물 구입 5:22) → '
           '소멸 2번(분열 + 능력치 요구사항 잡옵, 6:35) → 카오스 오브로 주문 피해 1티어(6:50) → 좌측 찬미 + 완벽한 엑잘 = 마나 최대치(7:10) → 소멸이 주문 피해를 지움(7:14) → '
-          '카오스 오브로 화염 피해 1티어(7:32) → 좌측 찬미 + 완벽한 엑잘 = 추가 냉기 1티어(7:50) → 좌측 강령술 + 고대 턱뼈 + 심연의 메아리 공개 = 추가 화염 1티어(8:20~8:32, 빛의 징조 준비) → '
+          '카오스 오브로 화염 피해 1티어(7:32) → 좌측 찬미 + 완벽한 엑잘 = 추가 냉기 1티어(7:50) → 좌측 강령술 + 고대 턱뼈 + 심연의 메아리 공개 = 추가 화염 1티어(8:20~8:32, 한 번에 성공 — 결과 그대로) → '
           '알두르의 배신(9:05) → 스루드의 완력(11:20) → 상위 찬미 + 완벽한 엑잘 접미 2개(11:20) → 절사의 징조 + 완벽한 카오스 오브 = 비고정 화염 속성 부여 규모 17%(12:20) → 초월의 합금(13:18). '
           '초월의 합금(13:18)은 사용자 결정(2026-11-13 06:40)대로 하이엔드 선택 단계(점선 상자, 비용 미포함) — 접미 하나를 1/2로 지워 화염 속성 부여 규모를 잃으면 절사 카오스를 다시 해야 해서 이 구간만 약 550 div. '
           '알두르의 배신(옵션을 카오스로 바꿈)·완벽한 유동체(스킬 20레벨)·퀄리티 20%·바알 오브(14:45)는 제작 확률과 무관해 뺌(정책 9·14장). '
-          '밸런스 = 영상 9:13 가성비 마무리(스루드의 완력 없이 엑잘 접미 2개 + 초월의 합금) + 접두 반복 1~2티어, 공개 빗나감은 빛의 징조로 다시(10장 C17 3번).'),
+          '밸런스 = 영상 9:13 가성비 마무리(스루드의 완력 없이 엑잘 접미 2개 + 초월의 합금) + 접두 반복 1~2티어. 훼손 공개는 영상에서 한 번에 성공해 두 등급 모두 결과 그대로(정책 B, 11-13 오후).'),
  'params': {'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('스루드의 완력', 'Thrud’s Might'), '2': K('가성비 마무리', 'Budget finish')}},
             'pT': {'kr': '접두 (카오스·엑잘·공개)', 'en': 'Prefixes (chaos, exalt, reveal)', 'values': {'1': K('1티어', 'T1'), '2': K('1~2티어', 'T1–2')}}},
  'strategies': [{'id': 'high', 'params': {'v': 1, 'pT': 1}}, {'id': 'bal', 'params': {'v': 2, 'pT': 2}}],
  'versions': [
    {'id': 'bal', 'kr': '밸런스', 'en': 'Balance', 'params': {'v': 2, 'pT': 2}, 'tier': 'bal',
-    'desc': K('영상의 가성비 마무리: 접두 1~2티어, 엑잘 접미 2개 + 초월의 합금', 'Video budget finish: T1–2 prefixes, two exalted suffixes + Transcendent Alloy')},
+    'desc': K('영상의 가성비 마무리: 접두 2개 1~2티어, 훼손 공개는 나오는 대로, 엑잘 접미 2개 + 초월의 합금', 'Video budget finish: two T1–2 prefixes, the reveal as it comes, two exalted suffixes + Transcendent Alloy')},
    {'id': 'high', 'kr': '하이엔드', 'en': 'High-end', 'params': {'v': 1, 'pT': 1}, 'tier': 'high',
-    'desc': K('영상: 접두 1티어 3개, 스루드의 완력으로 비고정 화염 속성 부여 규모, 초월의 합금은 선택', 'Video: three T1 prefixes, Thrud’s Might fire magnitudes, Transcendent Alloy optional')}],
+    'desc': K('영상: 접두 1티어 2개, 훼손 공개는 나오는 대로, 스루드의 완력으로 비고정 화염 속성 부여 규모, 초월의 합금은 선택', 'Video: two T1 prefixes, the reveal as it comes, Thrud’s Might fire magnitudes, Transcendent Alloy optional')}],
  'tags': {
    'fire7': {'gi': 12, 'tmax': 1},
    'dsp': {'gi': 3, 'tmax': '$pT'}, 'dfi': {'gi': 5, 'tmax': '$pT'}, 'dco': {'gi': 6, 'tmax': '$pT'}, 'dli': {'gi': 7, 'tmax': '$pT'}, 'dch': {'gi': 8, 'tmax': '$pT'},
@@ -65,11 +67,11 @@ g = {
    'dsp2': {'gi': 3, 'tmax': 2}, 'dfi2': {'gi': 5, 'tmax': 2}, 'dco2': {'gi': 6, 'tmax': 2}, 'dli2': {'gi': 7, 'tmax': 2}, 'dch2': {'gi': 8, 'tmax': 2},
    'xfi2': {'gi': 32, 'tmax': 2}, 'xco2': {'gi': 33, 'tmax': 2}, 'xli2': {'gi': 34, 'tmax': 2},
    'pd1': {'anyOf': ['dsp1', 'dfi1', 'dco1', 'dli1', 'dch1'], 'shown': 'dfi1', 'label': K('주문·화염·냉기·번개·카오스 피해 증가 1티어', 'T1 increased spell, fire, cold, lightning or chaos damage')},
-   'pre1': {'anyOf': ['dsp1', 'dfi1', 'dco1', 'dli1', 'dch1', 'xfi1', 'xco1', 'xli1'], 'shown': ['xco1', 'xfi1'], 'label': K('피해 증가·피해의 %를 추가 피해로 획득 1티어', 'T1 increased damage or damage gained as extra')},
+   'pre1': {'anyOf': ['dsp1', 'dfi1', 'dco1', 'dli1', 'dch1', 'xfi1', 'xco1', 'xli1'], 'shown': 'xco1', 'label': K('피해 증가·피해의 %를 추가 피해로 획득 1티어', 'T1 increased damage or damage gained as extra')},
    'pd2': {'anyOf': ['dsp2', 'dfi2', 'dco2', 'dli2', 'dch2'], 'shown': 'dfi2', 'label': K('주문·화염·냉기·번개·카오스 피해 증가 1~2티어', 'T1–2 increased spell, fire, cold, lightning or chaos damage')},
-   'pre2': {'anyOf': ['dsp2', 'dfi2', 'dco2', 'dli2', 'dch2', 'xfi2', 'xco2', 'xli2'], 'shown': ['xco2', 'xfi2'], 'label': K('피해 증가·피해의 %를 추가 피해로 획득 1~2티어', 'T1–2 increased damage or damage gained as extra')},
+   'pre2': {'anyOf': ['dsp2', 'dfi2', 'dco2', 'dli2', 'dch2', 'xfi2', 'xco2', 'xli2'], 'shown': 'xco2', 'label': K('피해 증가·피해의 %를 추가 피해로 획득 1~2티어', 'T1–2 increased damage or damage gained as extra')},
    'fm': {'gi': 68}, 'alloy': {'gi': 65}, 'keep': {'anyOf': ['fm', 'alloy']}},
- 'require': {'all': [{'has': 'fire7'}, {'has': 'pd'}, {'count': {'tag': 'pre', 'min': 3}}, {'any': [{'all': [V1, {'has': 'fm'}]}, {'all': [V2, {'has': 'alloy'}]}]}]},
+ 'require': {'all': [{'has': 'fire7'}, {'has': 'pd'}, {'count': {'tag': 'pre', 'min': 2}}, {'any': [{'all': [V1, {'has': 'fm'}]}, {'all': [V2, {'has': 'alloy'}]}]}]},
  'groups': [{'id': 'prep', 'kr': '베이스템 완성', 'en': 'Finished base', 'cols': [0, 1]},
             {'id': 'main', 'kr': '옵션 추가 작업', 'en': 'Adding modifiers', 'cols': [0, 2]}],
  'start': 'b0',
@@ -129,13 +131,10 @@ A(id='d1', kind='act', group='main', pos=[0, 11.4], act='desecrate', cur='Ancien
   label=K('훼손', 'Desecrate'), goal=K('접두 세 번째 옵션(훼손)', 'Third prefix (desecrated)'),
   showText=[{'s': 'p', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'd2'}], item=[UN('p'), F7, PF, XC])
 A(id='d2', kind='act', group='main', pos=[0, 12.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='pre', label=K('공개', 'Reveal'),
-  goal=K('접두 추가 화염 피해(훼손) — 피해 증가·추가 피해 중 먼저 뜬 것', 'Extra fire prefix (desecrated): whichever increased or extra damage lands first'), showText=PRE_T(T1), over=OVR(PRE_T),
-  edges=[{'if': {'all': [{'added': 'pre'}, V1]}, 'to': 'r1', 'res': 'ok'},
-         {'if': {'added': 'pre'}, 'to': 'b1', 'res': 'ok'},
-         {'to': 'dx', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
+  goal=K('접두 세 번째 옵션(훼손) — 공개 결과 그대로', 'Third prefix (desecrated): keep the reveal'),
+  showText=[{'s': 'p', 'kr': '랜덤 옵션 1개 (훼손)', 'en': 'One random option (desecrated)'}],
+  edges=[{'if': V1, 'to': 'r1'}, {'to': 'b1'}],
   item=[F7, PF, XC, XF])
-A(id='dx', kind='act', group='main', pos=[1, 12.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
-  target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'd1', 'label': K('다시 훼손', 'Desecrate again')}])
 # 하이엔드 (영상)
 A(id='r1', kind='act', group='main', pos=[0, 13.4], act='rune', label=K('룬', 'Rune'), goal=K('스루드의 완력 장착', 'Socket Thrud’s Might'),
   showText=[K('파괴 속성 부여 가능', 'Can roll Destruction modifiers')], rune=K('스루드의 완력', 'Thrud’s Might'),
@@ -166,13 +165,12 @@ g['nodes'] = N
 g['loops'] = [
  {'id': 'L1', 'nodes': ['a1', 'x1'], 'kr': '매직 화염 주문 +7', 'en': 'Magic +7 fire spells'},
  {'id': 'L2', 'nodes': ['e1', 'e1x'], 'kr': '접두 두 번째 옵션', 'en': 'Second prefix'},
- {'id': 'L3', 'nodes': ['d1', 'd2', 'dx'], 'kr': '훼손 공개', 'en': 'Desecrate and reveal'},
 ]
 g['finals'] = [
  {'id': 'high', 'tier': 'high', 'kr': '하이엔드 옵션', 'en': 'High-end',
-  'lines': [{'tag': 'pd1'}, {'tag': 'pre1'}, {'tag': 'pre1', 'des': True}, {'tag': 'fire7', 'fr': True}, {'tag': 'fm'}, {'side': 's', 'random': True}]},
+  'lines': [{'tag': 'pd1'}, {'tag': 'pre1'}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'fire7', 'fr': True}, {'tag': 'fm'}, {'side': 's', 'random': True}]},
  {'id': 'bal', 'tier': 'bal', 'kr': '밸런스 옵션', 'en': 'Balance',
-  'lines': [{'tag': 'pd2'}, {'tag': 'pre2'}, {'tag': 'pre2', 'des': True}, {'tag': 'fire7', 'fr': True}, {'side': 's', 'random': True}, {'tag': 'alloy', 'ess': True}]},
+  'lines': [{'tag': 'pd2'}, {'tag': 'pre2'}, {'side': 'p', 'random': True, 'des': True}, {'tag': 'fire7', 'fr': True}, {'side': 's', 'random': True}, {'tag': 'alloy', 'ess': True}]},
 ]
 
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
