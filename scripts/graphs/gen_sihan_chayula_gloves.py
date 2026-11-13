@@ -74,7 +74,7 @@ def A(**kw):
 # ---------------- 베이스템 완성 (영상 0:10~0:40 방법, 2:35~3:58 성공 회차 베이스) ----------------
 A(id='b0', kind='base', group='prep', pos=[0, 0], next='pk',
   start={'rar': 'rare', 'mods': [{'tag': 'pois', 'fr': True}, {'junk': 's'}]},
-  label=K('고정된 싸개 구입 (아이템 레벨 83, 중독의 강도 1티어 분열 + 잡옵 1개)', 'Buy Secured Wraps (item level 83, fractured T1 poison magnitude + one junk option)'),
+  label=K('특출난 고정된 싸개 구입 (아이템 레벨 83, 룬 소켓 2, 중독의 강도 1티어 분열 + 잡옵 1개)', 'Buy exceptional Secured Wraps (item level 83, two rune sockets, fractured T1 poison magnitude + one junk option)'),
   item=[PO, J('s')])
 A(id='pk', kind='act', group='prep', pos=[0, 1], act='rune', rune=K('카틀라의 순흑', 'Katla’s Gloom'), label=K('룬', 'Rune'),
   goal=K('카틀라의 순흑 장착', 'Socket Katla’s Gloom'), showText=[K('카틀라 옵션이 붙을 수 있음', 'Katla lines can roll')],
