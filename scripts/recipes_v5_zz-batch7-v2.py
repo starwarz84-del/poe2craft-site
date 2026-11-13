@@ -32,6 +32,7 @@ for _t in ('bal','ess'): _grade('diztoh-onehand-mace','diztoh-onehand-mace-v2',_
 
 # 4. SaVeQ 합금 집중구 — Balance = video (Light until T1, Sinistral Annulment on a missed exalt), Essential = looser, results kept, Greater Exalts
 def _focus(r, t):
+    r['ilvl']=84   # 2026-11-13 G9: 영상 1번 집중구 아이템 레벨 84(0702 캡처) — 단계·확률은 플로우차트(gen_saveq_alloy_focus.py)에서 읽음
     rT=1 if t=='bal' else 3
     rev=[{'gi':sa_esp,'tmax':rT},{'gi':sa_hyb,'tmax':rT},{'gi':sa_mana,'tmax':rT}]
     _node(r,'v2')['target']['reveal']={'anyOf':rev}

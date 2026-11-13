@@ -3,34 +3,23 @@
  "recipe": "saveq-alloy-focus-v2",
  "cls": "Foci",
  "base": "Tasalian Focus",
- "ilvl": 81,
- "note": "SaVeQ 합금 집중구(원본 레시피 기록) — 모든 주문 +2 분열 + 주문 피해 1티어 + 주문 치명타(상위 추구의 에센스) + 미공개 훼손 접두 준비 → 공개(에너지 보호막 %·복합·마나 1티어, 밸런스는 빛의 징조 + 고대 갈비뼈로 다시) → 좌측 찬미 + 완벽한 엑잘 → 아스트리드 + 좌측 결정화 + 초월의 합금(접두 3개 중 하나 삭제) → 완벽한 엑잘로 빈 접두(밸런스는 빗나가면 좌측 소멸의 징조). 에센셜 = 목표 넓힘, 상위 엑잘, 결과 그대로.",
+ "ilvl": 84,
+ "basePrice": {
+  "Divine_Orb": 3.5
+ },
+ "note": "2026-11-13 G9 영상 전체 대조(근거 scratchpad review/G9/saveq-alloy-focus-v2/timeline.md). 집중구 3개 중 1번(5:00~8:36) 한 줄: 에너지 보호막 최대치 3티어 + 모든 주문 스킬 +2 매직 타살리안 집중구 구입(아이템 레벨 84, 약 3.5 div) → 상위 추구의 에센스(5:29) → 좌측 강령술 + 고대 갈비뼈(5:38) → 분열의 오브 = 에너지 보호막 최대치(6:00) → 심연의 메아리 공개 = 에너지 보호막 95%(6:46) → 소켓 + 아스트리드의 창의성(7:00) → 좌측 찬미 + 완벽한 엑잘 = 마나 2티어(7:25) → 좌측 결정화 + 초월의 합금(7:45, 1/2에서 공개 옵션이 지워짐) → 고대 갈비뼈 다시 + 메아리 공개 = 에너지 보호막 95%(8:24). 분열이 다른 옵션에 걸리면 새 베이스(내부 결정 — 영상 2·3번은 그대로 진행했지만 그 뒤 합금이 주문 피해를 지움). 합금이 엑잘 옵션을 지우면 완벽한 엑잘로 빈 접두(영상 2번 10:20과 같은 처리). 에센셜 = 영상(공개·엑잘 결과 그대로), 밸런스 = 공개를 빛의 징조로 다시(C17-3).",
  "params": {
   "rT": {
    "kr": "공개 목표",
    "en": "Reveal target",
    "values": {
-    "1": {
-     "kr": "1티어",
-     "en": "T1"
+    "0": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
     },
-    "3": {
-     "kr": "1~3티어",
-     "en": "T1–3"
-    }
-   }
-  },
-  "gT": {
-   "kr": "마지막 접두",
-   "en": "Last prefix",
-   "values": {
     "2": {
      "kr": "1~2티어",
      "en": "T1–2"
-    },
-    "4": {
-     "kr": "1~4티어",
-     "en": "T1–4"
     }
    }
   }
@@ -39,15 +28,13 @@
   {
    "id": "bal",
    "params": {
-    "rT": 1,
-    "gT": 2
+    "rT": 2
    }
   },
   {
    "id": "ess",
    "params": {
-    "rT": 3,
-    "gT": 4
+    "rT": 0
    }
   }
  ],
@@ -57,12 +44,12 @@
    "kr": "에센셜",
    "en": "Essential",
    "params": {
-    "rT": 3,
-    "gT": 4
+    "rT": 0
    },
+   "tier": "ess",
    "desc": {
-    "kr": "목표 넓힘, 결과 그대로",
-    "en": "Looser targets, keep whatever comes"
+    "kr": "영상: 공개·엑잘 결과 그대로",
+    "en": "Video: keep the reveal and Exalt results"
    }
   },
   {
@@ -70,93 +57,70 @@
    "kr": "밸런스",
    "en": "Balance",
    "params": {
-    "rT": 1,
-    "gT": 2
+    "rT": 2
    },
+   "tier": "bal",
    "desc": {
-    "kr": "영상: 1티어까지 빛의 징조, 빗나간 엑잘은 좌측 소멸의 징조",
-    "en": "Video: Light until T1, Sinistral Annulment on a miss"
+    "kr": "공개는 에너지 보호막 %·주문 피해 1~2티어까지 빛의 징조로 다시",
+    "en": "Reveal again with Omen of Light until T1–2 % Energy Shield or spell damage"
    }
   }
  ],
  "tags": {
-  "lvl": {
-   "gi": 16
+  "esf": {
+   "gi": 6,
+   "tmax": 3
   },
-  "spell": {
-   "gi": 10,
+  "lvl": {
+   "gi": 16,
    "tmax": 1
   },
   "critE": {
    "gi": 47
   },
-  "alloy": {
+  "cs": {
    "gi": 59
   },
-  "esp": {
+  "esp1": {
    "gi": 7,
-   "tmax": "$rT"
-  },
-  "hyb": {
-   "gi": 8,
-   "tmax": "$rT"
-  },
-  "mana": {
-   "gi": 5,
-   "tmax": "$rT"
-  },
-  "rev": {
-   "anyOf": [
-    "esp",
-    "hyb",
-    "mana"
-   ],
-   "label": {
-    "kr": "에너지 보호막 %·복합·마나",
-    "en": "% ES, hybrid or mana"
-   }
-  },
-  "esp2": {
-   "gi": 7,
-   "tmax": "$gT"
-  },
-  "hyb2": {
-   "gi": 8,
-   "tmax": "$gT"
-  },
-  "esf2": {
-   "gi": 6,
-   "tmax": 3
+   "tmax": 1
   },
   "mana2": {
    "gi": 5,
-   "tmax": "$gT"
+   "tmax": 2
+  },
+  "esp2": {
+   "gi": 7,
+   "tmax": 2
   },
   "spell2": {
    "gi": 10,
    "tmax": 2
   },
-  "gp": {
+  "rev": {
    "anyOf": [
     "esp2",
-    "hyb2",
-    "esf2",
-    "mana2",
     "spell2"
    ],
    "label": {
-    "kr": "주문 피해·에너지 보호막·마나",
-    "en": "Spell damage, ES or mana"
+    "kr": "에너지 보호막 % 증가·주문 피해 증가 1~2티어",
+    "en": "T1–2 % Energy Shield or spell damage"
    }
   }
  },
  "require": {
   "all": [
    {
+    "has": "esf"
+   },
+   {
     "has": "lvl"
    },
    {
-    "has": "alloy"
+    "has": "critE"
+   },
+   {
+    "has": "cs"
    },
    {
     "full": "p"
@@ -186,323 +150,381 @@
    ]
   }
  ],
- "start": "h1",
- "loops": [
-  {
-   "id": "L1",
-   "nodes": [
-    "v2",
-    "v2x",
-    "v2d"
-   ],
-   "kr": "훼손 공개",
-   "en": "Reveal"
-  },
-  {
-   "id": "L2",
-   "nodes": [
-    "v6",
-    "v6x"
-   ],
-   "kr": "빈 접두",
-   "en": "Free prefix"
-  }
- ],
- "finals": [
-  {
-   "id": "bal",
-   "kr": "밸런스 옵션",
-   "en": "Balance",
-   "lines": [
-    {
-     "side": "p",
-     "label": {
-      "kr": "주문 피해·에너지 보호막·마나 1~2티어",
-      "en": "Spell damage, ES or mana T1–2"
-     }
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "주문 피해·에너지 보호막·마나 1~2티어",
-      "en": "Spell damage, ES or mana T1–2"
-     }
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "주문 피해·에너지 보호막·마나 1~2티어",
-      "en": "Spell damage, ES or mana T1–2"
-     }
-    },
-    {
-     "tag": "lvl",
-     "tmax": 1
-    },
-    {
-     "tag": "critE",
-     "tmax": 1
-    },
-    {
-     "tag": "alloy",
-     "tmax": 1
-    }
-   ]
-  },
-  {
-   "id": "ess",
-   "kr": "에센셜 옵션",
-   "en": "Essential",
-   "lines": [
-    {
-     "side": "p",
-     "label": {
-      "kr": "주문 피해·에너지 보호막·마나 1~4티어",
-      "en": "Spell damage, ES or mana T1–4"
-     }
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "주문 피해·에너지 보호막·마나 1~4티어",
-      "en": "Spell damage, ES or mana T1–4"
-     }
-    },
-    {
-     "side": "p",
-     "label": {
-      "kr": "주문 피해·에너지 보호막·마나 1~4티어",
-      "en": "Spell damage, ES or mana T1–4"
-     }
-    },
-    {
-     "tag": "lvl",
-     "tmax": 1
-    },
-    {
-     "tag": "critE",
-     "tmax": 1
-    },
-    {
-     "tag": "alloy",
-     "tmax": 1
-    }
-   ]
-  }
- ],
+ "start": "s0",
  "finalItem": {
-  "quality": 20,
+  "quality": 0,
   "sockets": 1
  },
  "nodes": [
   {
-   "id": "h1",
+   "id": "s0",
    "kind": "base",
    "group": "prep",
    "pos": [
     0,
     0
    ],
-   "next": "ms",
+   "next": "s1",
    "start": {
-    "rar": "rare",
+    "rar": "magic",
     "mods": [
-     {
-      "tag": "lvl",
-      "fr": true
-     },
-     "spell",
-     {
-      "tag": "critE",
-      "ess": true
-     },
-     {
-      "unrev": "p",
-      "bone": "Ancient_Rib"
-     }
+     "esf",
+     "lvl"
     ]
    },
    "label": {
-    "kr": "모든 주문 +2 분열 집중구 준비",
-    "en": "Focus with fractured +2 spells"
+    "kr": "에너지 보호막 최대치 3티어 + 모든 주문 스킬 +2 매직 타살리안 집중구 구입 (아이템 레벨 84)",
+    "en": "Buy a magic Tasalian Focus: T3 flat Energy Shield + all spell skills +2 (item level 84)"
    },
    "item": [
     {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73)",
+     "en": "+(61—73) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
      "s": "s",
-     "kr": "모든 주문 스킬 레벨 +2 (분열)",
-     "en": "+2 all spell skills (fractured)",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "lvl"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "주문 피해 1티어",
-     "en": "T1 spell damage",
-     "m": "n",
-     "tags": [
-      "spell"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 (제작 옵션)",
-     "en": "Spell crit (crafted)",
-     "m": "n",
-     "tags": [
-      "critE"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
     }
    ]
   },
   {
-   "id": "ms",
-   "kind": "mark",
-   "group": "main",
-   "pos": [
-    0,
-    0.6
-   ],
-   "next": "v2",
-   "label": {
-    "kr": "아이템 제작 시작",
-    "en": "Item crafting starts"
-   },
-   "item": [
-    {
-     "s": "s",
-     "kr": "모든 주문 스킬 레벨 +2 (분열)",
-     "en": "+2 all spell skills (fractured)",
-     "m": "n",
-     "tags": [
-      "lvl"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "주문 피해 1티어",
-     "en": "T1 spell damage",
-     "m": "n",
-     "tags": [
-      "spell"
-     ]
-    },
-    {
-     "s": "s",
-     "kr": "주문 치명타 (제작 옵션)",
-     "en": "Spell crit (crafted)",
-     "m": "n",
-     "tags": [
-      "critE"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
-    }
-   ]
-  },
-  {
-   "id": "v2",
+   "id": "s1",
    "kind": "act",
-   "group": "main",
+   "group": "prep",
    "pos": [
     0,
     1
    ],
-   "act": "reveal",
-   "goal": {
-    "kr": "훼손 옵션 확인",
-    "en": "Reveal the desecrated modifier"
+   "act": "essence",
+   "cur": "Greater_Essence_of_Seeking",
+   "ess": "critE",
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
    },
+   "goal": {
+    "kr": "레어 + 접미 주문 치명타 명중 확률 (제작 옵션)",
+    "en": "Rare + spell crit chance suffix (crafted)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (제작 옵션)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "s2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73)",
+     "en": "+(61—73) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (상위 추구의 에센스)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (Greater Essence of Seeking)",
+     "m": "c",
+     "tags": [
+      "critE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "desecrate",
+   "cur": "Ancient_Rib",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접두 두번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Second prefix (desecrated): the fracture needs four options"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecrated (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "s3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73)",
+     "en": "+(61—73) to maximum Energy Shield",
+     "m": "n",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (상위 추구의 에센스)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (Greater Essence of Seeking)",
+     "m": "c",
+     "tags": [
+      "critE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 — 공개된 옵션 3개 중 접두 에너지 보호막 최대치",
+    "en": "Fracture: the flat Energy Shield prefix, one of three revealed options"
+   },
+   "ask": {
+    "kr": "어느 옵션이 분열?",
+    "en": "Which option fractured?"
+   },
+   "edges": [
+    {
+     "if": {
+      "fractured": "esf"
+     },
+     "to": "s4",
+     "res": "ok",
+     "label": {
+      "kr": "에너지 보호막 최대치 분열",
+      "en": "Flat Energy Shield fractured"
+     }
+    },
+    {
+     "to": "sx",
+     "res": "fail",
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73) (분열)",
+     "en": "+(61—73) to maximum Energy Shield (fractured)",
+     "m": "f",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (상위 추구의 에센스)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (Greater Essence of Seeking)",
+     "m": "c",
+     "tags": [
+      "critE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sx",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    3
+   ],
+   "simTo": "s0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured: new base"
+   },
+   "note": {
+    "kr": "합금이 에너지 보호막 최대치를 지울 수 있어 새 베이스로 처음부터, 이 아이템은 판매",
+    "en": "The Alloy could remove the flat Energy Shield: sell this one and start over"
+   }
+  },
+  {
+   "id": "s4",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "rev",
    "label": {
     "kr": "공개",
     "en": "Reveal"
    },
+   "goal": {
+    "kr": "접두 에너지 보호막 % 증가 — 주문 피해와 함께 먼저 뜬 것",
+    "en": "% Energy Shield prefix: or spell damage, whichever lands"
+   },
+   "show": [
+    "rev"
+   ],
    "edges": [
     {
      "if": {
       "added": "rev"
      },
-     "to": "v4",
+     "to": "ms",
      "res": "ok"
     },
     {
      "if": {
       "param": {
-       "rT": 1
+       "rT": 2
       }
      },
-     "to": "v2x",
-     "res": "fail"
+     "to": "s4x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 빛의 징조로 다시",
+      "en": "Miss: again with Omen of Light"
+     }
     },
     {
-     "to": "v4",
-     "res": "fail"
+     "to": "ms",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 그대로",
+      "en": "Miss: keep it"
+     }
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73) (분열)",
+     "en": "+(61—73) to maximum Energy Shield (fractured)",
+     "m": "f",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가 (훼손)",
+     "en": "(92—100)% increased Energy Shield (desecrated)",
+     "m": "d",
+     "tags": [
+      "esp1"
+     ]
+    },
+    {
      "s": "s",
-     "kr": "모든 주문 스킬 레벨 +2 (분열)",
-     "en": "+2 all spell skills (fractured)",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "lvl"
      ]
     },
     {
-     "s": "p",
-     "kr": "주문 피해 1티어",
-     "en": "T1 spell damage",
-     "m": "n",
-     "tags": [
-      "spell"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "주문 치명타 (제작 옵션)",
-     "en": "Spell crit (crafted)",
-     "m": "n",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (상위 추구의 에센스)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (Greater Essence of Seeking)",
+     "m": "c",
      "tags": [
       "critE"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "에너지 보호막 %·복합·마나",
-     "en": "% ES, hybrid or mana",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
     }
-   ],
-   "want": "rev",
-   "show": [
-    "rev"
-   ],
-   "omens": [
-    "Omen_of_Abyssal_Echoes"
    ]
   },
   {
-   "id": "v2x",
+   "id": "s4x",
    "kind": "act",
-   "group": "main",
+   "group": "prep",
    "pos": [
     1,
-    1
+    4
    ],
    "act": "annul",
    "cur": "Orb_of_Annulment",
@@ -518,398 +540,586 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "훼손 옵션 제거",
-    "en": "Remove the desecrated modifier"
+    "kr": "훼손 옵션 지우고 다시 훼손",
+    "en": "Remove the desecrated option, desecrate again"
    },
    "edges": [
     {
-     "to": "v2d",
-     "port": "right"
+     "to": "s4d"
     }
    ]
   },
   {
-   "id": "v2d",
+   "id": "s4d",
    "kind": "act",
-   "group": "main",
+   "group": "prep",
    "pos": [
     1,
-    1.6
+    4.6
    ],
    "act": "desecrate",
-   "goal": {
-    "kr": "다시 훼손",
-    "en": "Desecrate again"
-   },
+   "cur": "Ancient_Rib",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
    "label": {
     "kr": "훼손",
     "en": "Desecrate"
    },
-   "edges": [
+   "goal": {
+    "kr": "다시 접두 훼손",
+    "en": "Desecrate the prefix again"
+   },
+   "showText": [
     {
-     "to": "v2",
-     "port": "right"
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
     }
    ],
+   "edges": [
+    {
+     "to": "s4",
+     "label": {
+      "kr": "다시 공개",
+      "en": "Reveal again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    5.4
+   ],
+   "next": "s5",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
    "item": [
     {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73) (분열)",
+     "en": "+(61—73) to maximum Energy Shield (fractured)",
+     "m": "f",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가 (훼손)",
+     "en": "(92—100)% increased Energy Shield (desecrated)",
+     "m": "d",
+     "tags": [
+      "esp1"
+     ]
+    },
+    {
      "s": "s",
-     "kr": "모든 주문 스킬 레벨 +2 (분열)",
-     "en": "+2 all spell skills (fractured)",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "lvl"
      ]
     },
     {
-     "s": "p",
-     "kr": "주문 피해 1티어",
-     "en": "T1 spell damage",
-     "m": "n",
-     "tags": [
-      "spell"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "주문 치명타 (제작 옵션)",
-     "en": "Spell crit (crafted)",
-     "m": "n",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (상위 추구의 에센스)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (Greater Essence of Seeking)",
+     "m": "c",
      "tags": [
       "critE"
      ]
-    },
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated (unrevealed)",
-     "m": "n"
     }
-   ],
-   "cur": "Ancient_Rib",
-   "showText": [
-    {
-     "s": "p",
-     "kr": "훼손 옵션(미공개)",
-     "en": "Desecrated modifier (unrevealed)"
-    }
-   ],
-   "omens": [
-    "Omen_of_Sinistral_Necromancy"
    ]
   },
   {
-   "id": "v4",
+   "id": "s5",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    2
+    6.4
    ],
-   "act": "exalt",
-   "goal": {
-    "kr": "합금이 지울 접두",
-    "en": "The prefix for the alloy to remove"
-   },
+   "act": "rune",
+   "cur": "Artificers_Orb",
    "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "goal": {
+    "kr": "숙련공의 오브로 소켓 추가, 아스트리드의 창의성 장착",
+    "en": "Add a socket with an Artificer’s Orb, socket Astrid’s Creativity"
+   },
+   "showText": [
+    {
+     "kr": "제작 옵션 하나 더",
+     "en": "One more crafted modifier"
+    }
+   ],
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid’s Creativity"
    },
    "edges": [
     {
-     "to": "v5"
+     "to": "s6"
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73) (분열)",
+     "en": "+(61—73) to maximum Energy Shield (fractured)",
+     "m": "f",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가 (훼손)",
+     "en": "(92—100)% increased Energy Shield (desecrated)",
+     "m": "d",
+     "tags": [
+      "esp1"
+     ]
+    },
+    {
      "s": "s",
-     "kr": "모든 주문 스킬 레벨 +2 (분열)",
-     "en": "+2 all spell skills (fractured)",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "lvl"
      ]
     },
     {
-     "s": "p",
-     "kr": "주문 피해 1티어",
-     "en": "T1 spell damage",
-     "m": "n",
-     "tags": [
-      "spell"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "주문 치명타 (제작 옵션)",
-     "en": "Spell crit (crafted)",
-     "m": "n",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (상위 추구의 에센스)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (Greater Essence of Seeking)",
+     "m": "c",
      "tags": [
       "critE"
      ]
     },
     {
-     "s": "p",
-     "kr": "에너지 보호막 %·복합·마나",
-     "en": "% ES, hybrid or mana",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
-    },
-    {
-     "s": "p",
-     "kr": "잡옵",
-     "en": "Junk",
-     "m": "j"
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
+   ]
+  },
+  {
+   "id": "s6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
    ],
+   "act": "exalt",
    "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 세번째 옵션 — 합금이 1/2로 지울 옵션, 결과 그대로",
+    "en": "Third prefix: the one the Alloy removes 1 in 2, keep whatever comes"
+   },
    "showText": [
     {
      "s": "p",
      "kr": "랜덤 옵션 1개",
-     "en": "One random line"
+     "en": "One random option"
     }
    ],
-   "omens": [
-    "Omen_of_Sinistral_Exaltation"
-   ],
-   "over": [
+   "edges": [
     {
-     "param": {
-      "rT": 3
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
-     }
+     "to": "s7"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73) (분열)",
+     "en": "+(61—73) to maximum Energy Shield (fractured)",
+     "m": "f",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가 (훼손)",
+     "en": "(92—100)% increased Energy Shield (desecrated)",
+     "m": "d",
+     "tags": [
+      "esp1"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 +(125—149)",
+     "en": "+(125—149) to maximum Mana",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (상위 추구의 에센스)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (Greater Essence of Seeking)",
+     "m": "c",
+     "tags": [
+      "critE"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "v5",
+   "id": "s7",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    3
+    8.4
    ],
    "act": "essence",
-   "goal": {
-    "kr": "아스트리드의 창의성 장착 후 초월의 합금",
-    "en": "Socket Astrid’s Creativity, then the Transcendent Alloy"
-   },
+   "cur": "Transcendent_Alloy",
+   "ess": "cs",
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
    "label": {
     "kr": "합금",
     "en": "Alloy"
    },
+   "goal": {
+    "kr": "접두 하나를 지우고 시전 속도 (제작 옵션) — 분열 옵션은 남음",
+    "en": "A prefix goes for Cast Speed (crafted): the fractured one stays"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가, 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (제작 옵션)",
+     "en": "(26—31)% increased Cast Speed, Gain (7—11)% of Elemental Damage as Extra Cold Damage (crafted)"
+    }
+   ],
+   "ask": {
+    "kr": "어느 접두가 지워짐?",
+    "en": "Which prefix went?"
+   },
    "edges": [
     {
-     "to": "v6"
+     "if": {
+      "des": true
+     },
+     "to": "s10",
+     "res": "ok",
+     "label": {
+      "kr": "엑잘 옵션이 지워짐",
+      "en": "The Exalted option went"
+     }
+    },
+    {
+     "to": "s8",
+     "res": "fail",
+     "label": {
+      "kr": "훼손 옵션이 지워짐",
+      "en": "The desecrated option went"
+     }
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73) (분열)",
+     "en": "+(61—73) to maximum Energy Shield (fractured)",
+     "m": "f",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 +(125—149)",
+     "en": "+(125—149) to maximum Mana",
+     "m": "n"
+    },
+    {
      "s": "s",
-     "kr": "모든 주문 스킬 레벨 +2 (분열)",
-     "en": "+2 all spell skills (fractured)",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "lvl"
      ]
     },
     {
-     "s": "p",
-     "kr": "주문 피해 1티어",
-     "en": "T1 spell damage",
-     "m": "n",
-     "tags": [
-      "spell"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "주문 치명타 (제작 옵션)",
-     "en": "Spell crit (crafted)",
-     "m": "n",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (상위 추구의 에센스)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (Greater Essence of Seeking)",
+     "m": "c",
      "tags": [
       "critE"
      ]
     },
     {
-     "s": "p",
-     "kr": "에너지 보호막 %·복합·마나",
-     "en": "% ES, hybrid or mana",
-     "m": "n",
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가, 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed, Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)",
+     "m": "c",
      "tags": [
-      "rev"
+      "cs"
      ]
     },
     {
-     "s": "s",
-     "kr": "초월의 합금 (제작 옵션)",
-     "en": "Transcendent Alloy (crafted)",
-     "m": "n",
-     "tags": [
-      "alloy"
-     ]
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
-   ],
-   "cur": "Transcendent_Alloy",
-   "showText": [
-    {
-     "s": "s",
-     "kr": "초월의 합금 (접두 3개 중 하나가 지워짐)",
-     "en": "Transcendent Alloy (one of the three prefixes goes)"
-    }
-   ],
-   "ess": "alloy",
-   "omens": [
-    "Omen_of_Sinistral_Crystallisation"
    ]
   },
   {
-   "id": "v6",
+   "id": "s8",
    "kind": "act",
    "group": "main",
    "pos": [
     0,
-    4
+    9.4
    ],
-   "act": "exalt",
-   "goal": {
-    "kr": "빈 접두 채우기",
-    "en": "Fill the free prefix"
-   },
+   "act": "desecrate",
+   "cur": "Ancient_Rib",
    "label": {
-    "kr": "엑잘",
-    "en": "Exalt"
+    "kr": "훼손",
+    "en": "Desecrate"
    },
+   "goal": {
+    "kr": "접두 세번째 옵션(훼손) — 접미가 꽉 차 접두로",
+    "en": "Third prefix (desecrated): the suffixes are full"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
    "edges": [
     {
-     "if": {
-      "count": {
-       "tag": "gp",
-       "min": 3
-      }
-     },
-     "to": "ok",
-     "res": "ok"
-    },
-    {
-     "if": {
-      "all": [
-       {
-        "param": {
-         "rT": 1
-        }
-       },
-       {
-        "full": "p"
-       }
-      ]
-     },
-     "to": "v6x",
-     "res": "fail"
-    },
-    {
-     "if": {
-      "not": {
-       "full": "p"
-      }
-     },
-     "to": "v6",
-     "res": "ok"
-    },
-    {
-     "to": "ok",
-     "res": "fail"
+     "to": "s9"
     }
    ],
    "item": [
     {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73) (분열)",
+     "en": "+(61—73) to maximum Energy Shield (fractured)",
+     "m": "f",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 +(125—149)",
+     "en": "+(125—149) to maximum Mana",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
      "s": "s",
-     "kr": "모든 주문 스킬 레벨 +2 (분열)",
-     "en": "+2 all spell skills (fractured)",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
      "m": "n",
      "tags": [
       "lvl"
      ]
     },
     {
-     "s": "p",
-     "kr": "주문 피해 1티어",
-     "en": "T1 spell damage",
-     "m": "n",
-     "tags": [
-      "spell"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "주문 치명타 (제작 옵션)",
-     "en": "Spell crit (crafted)",
-     "m": "n",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (상위 추구의 에센스)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (Greater Essence of Seeking)",
+     "m": "c",
      "tags": [
       "critE"
      ]
     },
     {
-     "s": "p",
-     "kr": "에너지 보호막 %·복합·마나",
-     "en": "% ES, hybrid or mana",
-     "m": "n",
-     "tags": [
-      "rev"
-     ]
-    },
-    {
      "s": "s",
-     "kr": "초월의 합금 (제작 옵션)",
-     "en": "Transcendent Alloy (crafted)",
-     "m": "n",
+     "kr": "시전 속도 (26—31)% 증가, 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed, Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)",
+     "m": "c",
      "tags": [
-      "alloy"
+      "cs"
      ]
     },
     {
-     "s": "p",
-     "kr": "주문 피해·에너지 보호막·마나",
-     "en": "Spell damage, ES or mana",
-     "m": "n",
-     "tags": [
-      "gp"
-     ]
-    }
-   ],
-   "cur": "Perfect_Exalted_Orb",
-   "show": [
-    "gp"
-   ],
-   "over": [
-    {
-     "param": {
-      "rT": 3
-     },
-     "set": {
-      "cur": "Greater_Exalted_Orb"
-     }
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
     }
    ]
   },
   {
-   "id": "v6x",
-   "kind": "cleanup",
+   "id": "s9",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10.4
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "rev",
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "goal": {
+    "kr": "접두 에너지 보호막 % 증가 — 주문 피해와 함께 먼저 뜬 것",
+    "en": "% Energy Shield prefix: or spell damage, whichever lands"
+   },
+   "show": [
+    "rev"
+   ],
+   "edges": [
+    {
+     "if": {
+      "added": "rev"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "rT": 2
+      }
+     },
+     "to": "s9x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 빛의 징조로 다시",
+      "en": "Miss: again with Omen of Light"
+     }
+    },
+    {
+     "to": "ok",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감 — 그대로",
+      "en": "Miss: keep it"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "에너지 보호막 최대치 +(61—73) (분열)",
+     "en": "+(61—73) to maximum Energy Shield (fractured)",
+     "m": "f",
+     "tags": [
+      "esf"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 +(125—149)",
+     "en": "+(125—149) to maximum Mana",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가 (훼손)",
+     "en": "(92—100)% increased Energy Shield (desecrated)",
+     "m": "d",
+     "tags": [
+      "esp1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 주문 스킬 레벨 +2",
+     "en": "+2 to Level of all Spell Skills",
+     "m": "n",
+     "tags": [
+      "lvl"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "주문 치명타 명중 확률 (47—53)% 증가 (상위 추구의 에센스)",
+     "en": "(47—53)% increased Critical Hit Chance for Spells (Greater Essence of Seeking)",
+     "m": "c",
+     "tags": [
+      "critE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (26—31)% 증가, 원소 피해의 (7—11)%를 추가 냉기 피해로 획득 (초월의 합금)",
+     "en": "(26—31)% increased Cast Speed, Gain (7—11)% of Elemental Damage as Extra Cold Damage (Transcendent Alloy)",
+     "m": "c",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid’s Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "s9x",
+   "kind": "act",
    "group": "main",
    "pos": [
     1,
-    4
+    10.0
    ],
-   "keep": [
-    "gp",
-    "rev"
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
    ],
-   "maxJunk": 0,
    "label": {
     "kr": "소멸의 오브 사용",
     "en": "Use an Orb of Annulment"
@@ -919,24 +1129,49 @@
     "en": "Use an Orb of Annulment"
    },
    "target": {
-    "kr": "빗나간 접두 제거",
-    "en": "Remove the missed prefix"
+    "kr": "훼손 옵션 지우고 다시 훼손",
+    "en": "Remove the desecrated option, desecrate again"
    },
    "edges": [
     {
-     "lost": "gp",
-     "to": "v6x"
-    },
+     "to": "s8",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8.8
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "빈 접두 채우기 — 결과 그대로",
+    "en": "Fill the free prefix: keep whatever comes"
+   },
+   "showText": [
     {
-     "lost": "rev",
-     "to": "v6x"
-    },
-    {
-     "to": "v6",
-     "port": "right"
+     "s": "p",
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
     }
    ],
-   "side": "p"
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ]
   },
   {
    "id": "ok",
@@ -944,12 +1179,99 @@
    "group": "main",
    "pos": [
     0,
-    5
+    11.4
    ],
    "label": {
     "kr": "완성",
     "en": "Finished"
    }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "s4",
+    "s4x",
+    "s4d"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "s8",
+    "s9",
+    "s9x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "esf",
+     "fr": true
+    },
+    {
+     "tag": "rev",
+     "des": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "lvl"
+    },
+    {
+     "tag": "critE",
+     "ess": true
+    },
+    {
+     "tag": "cs",
+     "ess": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "esf",
+     "fr": true
+    },
+    {
+     "side": "p",
+     "random": true,
+     "des": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "lvl"
+    },
+    {
+     "tag": "critE",
+     "ess": true
+    },
+    {
+     "tag": "cs",
+     "ess": true
+    }
+   ]
   }
  ]
 }

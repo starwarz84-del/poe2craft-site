@@ -63,7 +63,7 @@
 | mazbro-caster-ring-v2 | o3Fh1DJmxBA | bal 189, ess 49 | 1 | 검수 대기 11-13 | G2(Opus 5.5) | 새 기준 재작성(G2): 자막 전체 + 단계별 화면 대조, 전용 생성기 gen_mazbro_caster_ring.py. 가이드 화면 + 성공 회차 Storm Knot 한 줄. 준비 구역(징표·빗장뼈·분열 1/3·균열의 에센스·기폭제·주입기) 추가, 접두 두 자리 접힌 상자, 고대 빗장뼈 공개(밸런스 빛의 징조 1~2티어, 에센셜 그대로), 마지막 접미 랜덤. 뒤바뀐 빗장뼈 갈래는 꿀팁 후보. 79.8/15.5 → 189/49(준비·베이스 포함) |
 | lilbotq-emerald-v2 | Hcb_HcWDUOA | bal 84 | 0 | 진행 중 11-13 · G9 | G9(Opus 5.5) |  |
 | diztoh-as-spear-v2 | cTjgn7NnHR8 | bal 56, ess 28 | 0 | 검수 대기 11-13 | G3(Opus 5.5) | 새 기준 재작성(G3): 영상 전체(0:00~9:18) 화면 대조, 전용 생성기 gen_diztoh_as_spear.py. 투사체 +4 분열 + 처치당 생명력(아스트리드 장착, 소켓 1개) → 카오스 오브 공격 속도 3티어 → 좌측 찬미 + 상위 엑잘 → 좌측 결정화 + 군주의 합금 → 상위 엑잘(징조 없음) → 좌측 결정화 + 천상의 합금 → 아스트리드를 스루드의 완력으로 교체(swapAstrid) → 고대 턱뼈 → 상위 엑잘 세번째 접두(옛 그래프는 공개 뒤 완벽한 엑잘 — 영상은 공개 앞 상위 엑잘) → 메아리 공개 스루드 속도 효과(밸런스는 빛의 징조로 다시). 영상 5:52 절사 + 좌측 말소 + 상위 카오스(번개 6티어로 나빠짐)는 마지막 옵션 도박이라 뺌. 81/60 → 56/28 |
-| saveq-alloy-focus-v2 | uCbyTF-LJ5I | bal 80, ess 1 | 0 | 진행 중 11-13 · G9 | G9(Opus 5.5) |  |
+| saveq-alloy-focus-v2 | uCbyTF-LJ5I | bal 51.9, ess 42.7 | 0 | 검수 대기 11-13 | G9(Opus 5.5) | 새 기준 재작성(G9): 영상 자막 전체 + 화면 대조(캡처 17장, 근거 scratchpad review/G9/saveq-alloy-focus-v2/), 전용 생성기 gen_saveq_alloy_focus.py. 영상 1번 집중구 한 줄(에너지 보호막 최대치 3티어 + 모든 주문 +2 매직 → 상위 추구 → 좌측 강령술 + 고대 갈비뼈 → 분열 = 최대치(다른 옵션이면 새 베이스) → 메아리 공개 → 아스트리드 → 좌측 찬미 + 완벽한 엑잘 → 좌측 결정화 + 초월의 합금 1/2 → 갈비뼈 다시 공개 또는 완벽한 엑잘). 밸런스 = 공개 빛의 징조 1~2티어, 에센셜 = 영상 그대로. c1check 0. 80/1 → 51.9/42.7 |
 | chiba-timelost-emerald-v2 | O6Rp7JIxhrs | high 160 | 0 | 완료 11-13(새 기준) · 검수 90점 | W24(Opus 5.5) · 검수 마스터 | 새 기준 재작성(W24): 영상 전체 화면 대조, 전용 생성기 gen_chiba_timelost_emerald.py, 노트 tools/notes/chiba-O6Rp7JIxhrs.md. 준비 구역(공격 치명타 + 옵션 2개 레어 14 div → 보존된 두개골 → 분열 1/3, 실패 새 베이스 → 소멸) 추가. 밸런스 = 마지막 접두 랜덤 + 공개는 빛의 징조로 다시(C17-3). 77.9/64.8(베이스·준비 없음) → 160/157. 11-13 F1: 사용자 결정대로 밸런스 뺌(하이엔드만, -bal 레시피·base_prices·priority 정리) |
 | fubgun-crit-bow-v2 | 글: mobalytics.gg/poe-2/builds/ice-shot-dead | bal 62, ess ? | 3 | 진행 중 11-13 · G10 | G10(Opus 5.5) |  |
 | seek-cyclone-boots-v2 | cj9o8_LuFQs | bal 53, ess 14 → bal 57, ess 33(분열 준비 포함, 베이스 가격 모름) | 0 | 검수 대기 11-13 | G4(Opus 5.5) | 새 기준 재작성(G4): 영상 전체 화면 대조, 전용 생성기 gen_seek_cyclone_boots.py. 분열 준비 구역 추가(옵션 3개 + 보존된 갈비뼈 훼손 → 분열 1/3 → 소멸, 2:30~4:15), 우트레드의 성좌 상자. 영상의 마무리 두 방법을 등급으로: 밸런스 = 충실한 레깅스(세를의 승리 + 우측 강령술 갈비뼈, 지속시간·원소 저항 1~2티어 먼저 뜬 것, 빛의 징조로 다시 → 접두 엑잘 결과 그대로), 에센셜 = 사도 레깅스(접두 엑잘 → 좌측 강령술 갈비뼈 → 공개 그대로). 옛 밸런스의 접두 방어도·생명력 다시 굴리기는 영상이 타협 추천이라 뺌, 소켓 3 → 2(홈 2개). 53/14 → 57/33 |
@@ -149,7 +149,7 @@
 | ragna-spell4-amulet-v2 | ess·bal | bal 1~2티어(영상), ess 결과 그대로·빛 없음 | 검수 대기 11-13 | G5(Opus 5.5) | 등급 근거는 위 표 메모 |
 | sane-resist-belt-v2 | ess·bal | ess 생명력 1~3티어; ess 번개 저항 1~3티어; bal 생명력 1티어 | 대기 |  |  |
 | saveq-absent-amulet-v2 | ess·bal | - | 검수 대기 11-13 | G5(Opus 5.5) | 등급 근거는 위 표 메모 |
-| saveq-alloy-focus-v2 | ess·bal | ess 공개 목표 1~3티어; bal 공개 목표 1티어 | 대기 |  |  |
+| saveq-alloy-focus-v2 | ess·bal | ess 공개·엑잘 결과 그대로(영상); bal 공개 에너지 보호막 %·주문 피해 1~2티어(빛의 징조) | 검수 대기 11-13 | G9 | 51.9/42.7 |
 | saveq-focus-v2 | bal·high | 에너지 보호막·주문 치명타 high 1티어, bal 1~2티어 | 재확인 필요 | A(Opus) | 504/208 |
 | seek-cyclone-boots-v2 | ess·bal | - | 검수 대기 11-13 | G4(Opus 5.5) | 등급 근거는 위 표 메모 |
 | sihan-attack-flat-ring-v2 | ess·bal | ess 원소 공격 추가 피해 1~3티어 | 대기 |  |  |
