@@ -79,5 +79,8 @@ A(id='ok', kind='done', group='main', pos=[0, 6.4], label=K('완성', 'Finished'
 g['nodes'] = N
 g['loops'] = []
 
+# 규칙 J(사용자 확정 2026-11-13 14:43, S5): 밸런스·에센셜 완성품 카드가 같아 밸런스 하나로 합침 — 에센셜(메아리 없이 공개, 상위 엑잘)은 뺌
+g['strategies'] = [x for x in g['strategies'] if x['id'] != 'ess']; g['versions'] = [x for x in g['versions'] if x['id'] != 'ess']; g['finals'] = [x for x in g['finals'] if x['id'] != 'ess']
+g['params']['L']['values'] = {'1': g['params']['L']['values']['1']}
 json.dump(g, open(OUT, 'w'), ensure_ascii=False, indent=1)
 print('wrote', OUT, len(N), 'nodes')

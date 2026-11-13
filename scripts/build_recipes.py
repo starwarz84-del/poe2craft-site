@@ -588,18 +588,32 @@ for _r in R:
             _n['omens']=[o for o in _n['omens'] if not _re.search(r'(Sinistral|Dextral)_(Exaltation|Necromancy)',o)]
             if not _n['omens']: del _n['omens']
 # A v5 file that rewrites an older recipe of the same video replaces it (REPLACES = {new id: old id}).
-exec(open('/home/claude/poe2data/scripts/difficulty.py').read())   # 난이도 재산정 표(시도량 기준)
+exec(open('/home/claude/poe2data/scripts/difficulty.py').read())   # 난이도 표(사용자 확정 2026-11-13 14:43: 표 하나로 통일, 레시피 값과 다르면 표를 따름)
+_dm=[]
 for _r in R:
-    if _r['id'] in DIFFSET: _r['difficulty']=DIFFSET[_r['id']]
-# DIFFSET 키는 옛 id라 새 등급 레시피(-v2·-v2-bal·-v2-ess)에는 붙지 않음 — 값은 생성기(작업자)가 정한 그대로 두고 다른 것만 알림(2026-11-13 S3 3·15번: 사용자 결정 대기)
-_dm = [(_r['id'], _r.get('difficulty'), DIFFSET[_k]) for _r in R for _k in [_re.sub(r'-v2(-bal|-ess)?$', '', _r['id'])] if _k != _r['id'] and _k in DIFFSET and DIFFSET[_k] != _r.get('difficulty')]
-if _dm: print('difficulty differs from DIFFSET (kept):', ', '.join(f'{a} {b}≠{c}' for a, b, c in _dm))
-# grades by difficulty (사용자 확정 2026-11-10): 극한(5) = High-end only, 전문가(4) = High-end + Balance, 보통·어려움(2~3) = Balance + Essential, 쉬움 이하(≤1) = Essential only
-_gd={}
-for x in R:   # the group's difficulty: its High-end recipe's, else its other grades'
-    if x.get('tierGroup'): _gd[x['tierGroup']] = x.get('difficulty',0) if x.get('tier')=='high' else max(_gd.get(x['tierGroup'],0), x.get('difficulty',0)) if x['tierGroup'] not in _gd or not any(y.get('tier')=='high' and y.get('tierGroup')==x['tierGroup'] for y in R) else _gd[x['tierGroup']]
+    _k=_r.get('tierGroup') or _r['id']
+    if _k in DIFFSET:
+        if _r.get('difficulty')!=DIFFSET[_k]: _dm.append(f"{_r['id']} {_r.get('difficulty')}→{DIFFSET[_k]}")
+        _r['difficulty']=DIFFSET[_k]
+    elif not _r.get('draft') and (_r.get('tierGroup') or _r['id'].endswith('-v2')): print('difficulty: not in DIFFSET (레시피 값 그대로):', _r['id'])
+if _dm: print('difficulty from DIFFSET (레시피 값과 다름):', len(_dm))
+# grades by difficulty (10장 C11): 극한(5) = High-end only, 전문가(4) = High-end + Balance, 보통·어려움(2~3) = Balance + Essential, 쉬움 이하(≤1) = Essential only
+# GRADEKEEP(difficulty.py)이 있으면 그 등급만. 규칙으로 남는 등급이 하나도 없으면 있는 등급 중 가장 높은 것 하나를 남김(2026-11-13 S5 — 지울 등급만 있고 새 등급이 아직 없을 때 레시피가 사라지지 않게)
 def _gkeep(d): return ('high',) if d>=5 else ('high','bal') if d==4 else ('bal','ess') if d>=2 else ('ess',)
-R[:]=[x for x in R if not (x.get('tierGroup') and x.get('tier') not in _gkeep(_gd.get(x['tierGroup'],0)))]
+_ORD=('high','bal','ess'); _gk={}
+for _g in {x['tierGroup'] for x in R if x.get('tierGroup')}:
+    _have=[t for t in _ORD if any(x.get('tierGroup')==_g and x.get('tier')==t for x in R)]
+    _k=GRADEKEEP.get(_g) or _gkeep(DIFFSET.get(_g, max([x.get('difficulty',0) for x in R if x.get('tierGroup')==_g] or [0])))
+    _gf=f'/home/claude/poe2data/scripts/graphs/{_g}.json'
+    if os.path.exists(_gf):   # 플로우차트에 그 등급 버전이 없으면 옛 단계 레시피라 남기지 않음(등급을 새로 만들 땐 생성기에 버전부터)
+        _gv={v.get('tier') or v['id'] for v in json.load(open(_gf)).get('versions',[])}
+        if _gv: _k=tuple(t for t in _k if t in _gv)
+    if not any(t in _k for t in _have):
+        print('grades: 규칙 등급이 없어 가장 높은 등급만 남김', _g, _have[:1], '(규칙', _k, ')'); _k=_have[:1]
+    _gk[_g]=_k
+_gdrop=[x['id'] for x in R if x.get('tierGroup') and x.get('tier') not in _gk[x['tierGroup']]]
+if _gdrop: print('grades dropped by difficulty:', ', '.join(_gdrop))
+R[:]=[x for x in R if not (x.get('tierGroup') and x.get('tier') not in _gk[x['tierGroup']])]
 REPLACES={'sihan-chayula-amulet-v2-bal':'sihan-chayula-amulet','sihan-chayula-gloves-v2-bal':'sihan-chayula-gloves','sihan-chayula-helmet-v2-bal':'sihan-chayula-helmet','sihan-chayula-wand-v2-bal':'sihan-chayula-wand','sihan-attack-flat-ring-v2-bal':'sihan-attack-flat-ring','sihan-chayula-ring-v2':'sihan-chayula-ring','sihan-proj-gloves-v2':'sihan-proj-gloves','diztoh-budget-crossbow':'diztoh-grenade-crossbow','diztoh-crit-helmet-v2':'diztoh-crit-helmet','helmet-armour-sl-v2':'helmet-armour-sl','sihan-highend-boots-v2':'sihan-highend-boots','diztoh-rarity-ring-v2':'diztoh-rarity-ring','saveq-absent-amulet-v2':'saveq-absent-amulet','farmer-budget-armour-v2':'farmer-budget-armour','farmer-starter-staff-v2':'farmer-starter-staff','ragna-ashot-bow-v2-bal':'ragna-ashot-bow','sane-resist-belt-v2-bal':'sane-resist-belt','diztoh-budget-mace-v2-bal':'diztoh-budget-mace','lilbotq-budget-boots-v2-bal':'lilbotq-budget-boots','icesly-budget-wand-v2-bal':'icesly-budget-wand','diztoh-budget-mace-v2-ess':'diztoh-budget-2h-mace','diztoh-es-helmet-v2-bal':'diztoh-es-helmet','belton-plus8-wand-v2-bal':'belton-plus8-wand','lilbotq-armour-shield-v2-bal':'lilbotq-armour-shield','diztoh-vile-robe-v2-bal':'diztoh-vile-robe','diztoh-talisman-v2-bal':'diztoh-talisman','sihan-chayula-sceptre-v2-bal':'sihan-chayula-sceptre','diztoh-budget-crossbow-v2-bal':'diztoh-budget-crossbow','diztoh-onehand-mace-v2-bal':'diztoh-onehand-mace','saveq-alloy-focus-v2-bal':'saveq-alloy-focus','tankjung-kitava-shield-v2-bal':'tankjung-kitava-shield','ragna-spell4-amulet-v2-bal':'ragna-spell4-amulet','noble-visceral-quiver-v2':'noble-visceral-quiver','sihan-highend-helmet-v2':'sihan-highend-helmet','barricade-quarterstaff-v2':'barricade-quarterstaff','diztoh-endgame-quarterstaff-v2':'diztoh-endgame-quarterstaff','lilbotq-emerald-v2-bal':'lilbotq-emerald','zenm-timelost-sapphire-v2-bal':'zenm-timelost-sapphire','diztoh-5mod-emerald-v2-bal':'diztoh-5mod-emerald','diztoh-5mod-sapphire-v2-bal':'diztoh-5mod-sapphire','sl-5mod-jewel-v2-bal':'sl-5mod-jewel','vodnarg-timelost-emerald-v2-bal':'vodnarg-timelost-emerald','lilbotq-boots-v2-bal':'lilbotq-boots','mazbro-caster-ring-v2-bal':'mazbro-caster-ring','diztoh-as-spear-v2-bal':'diztoh-as-spear','diztoh-socket-gloves-v2-bal':'diztoh-socket-gloves','seek-cyclone-boots-v2-bal':'seek-cyclone-boots','diztoh-as-spear-v2-ess':'diztoh-twister-spear','mastert-timelost-emerald-v2':'mastert-timelost-emerald','chiba-timelost-emerald-v2':'chiba-timelost-emerald','noble-timelost-sapphire-v2':'noble-timelost-sapphire','mazbro-proj-gloves-v2':'mazbro-proj-gloves','sl-flamewave-staff-v2':'sl-flamewave-staff','mazbro-caster-amulet-v2':'mazbro-caster-amulet','mazbro-spell5-amulet-v2':'mazbro-spell5-amulet','gold-amulet-6line-v2':'gold-amulet-6line','absent-amulet-video-v2':'absent-amulet-video','sl-flamewave-ring-v2':'sl-flamewave-ring','breach-ring-video-v2':'breach-ring-video','saveq-focus-v2':'saveq-focus','sl-proj7-gloves-v2':'sl-proj7-gloves','diztoh-iceshot-bow-v2':'diztoh-iceshot-bow','grasping-mail-spell1-v2':'grasping-mail-spell1','mazbro-bis-chest-v2':'mazbro-bis-chest','mirror-bow-video-v2':'mirror-bow-video','absent-amulet-spell6-v2':'absent-amulet-spell6','mazbro-sceptre-v2':'mazbro-sceptre','xeno-phys-crossbow-v2':'xeno-phys-crossbow','easybabi-spiny-talisman-v2':'easybabi-spiny-talisman','sl-blacksteel-gauntlets-v2':'sl-blacksteel-gauntlets','breach-ring-phys-v2-bal':'breach-ring-phys','banzino-mirror-staff-v2':'banzino-mirror-staff','fubgun-quiver-v2-bal':'fubgun-quiver','fubgun-phys-bow-v2-bal':'fubgun-phys-bow','fubgun-crit-bow-v2-bal':'fubgun-crit-bow','fubgun-proj-amulet-v2-bal':'fubgun-proj-amulet','fubgun-es-helmet-v2-bal':'fubgun-es-helmet','bigdaddy-lightning-wand-v2-bal':'bigdaddy-lightning-wand','unstoppable-vile-robe-v2':'unstoppable-vile-robe','unstoppable-slipstrike-vest-v2':'unstoppable-slipstrike-vest'}
 _ids={x['id'] for x in R}|{x['tierGroup'] for x in R if x.get('tierGroup')}   # a group whose High-end was dropped still replaces its old recipe
 R[:]=[x for x in R if not any(o==x['id'] and (n in _ids or _re.sub(r'-(bal|ess)$','',n) in _ids) for n,o in REPLACES.items())]   # 2026-11-11: a grade dropped by policy 30 (e.g. -bal of an easy item) still replaces the old recipe
