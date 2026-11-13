@@ -85,7 +85,7 @@ A(id='d1', kind='act', group='main', pos=[0, 3.4], act='desecrate', cur='Preserv
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'r1'}],
   item=[J('p'), CONT, AS, CDS, UN('s')])
 A(id='r1', kind='act', group='main', pos=[0, 4.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),
-  goal=K('접미 공격 치명타 확률 — 아래 옵션 중 먼저 뜬 것', 'Attack crit chance suffix: whichever listed option lands first'), show=REV,
+  goal=K('접미 공격 치명타 확률', 'Attack crit chance suffix'), show=['rev'],   # R3-8: 상자는 성공 회차 옵션(shown), 다른 유효 옵션은 자동 꿀팁(정책 A)
   edges=[{'if': {'added': 'rev'}, 'to': 'x1', 'res': 'ok'}, {'to': 'r1x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   over=[{'param': {'v': 2}, 'set': {'goal': K('접미 세 번째 옵션 — 공개 결과 그대로', 'Third suffix: keep the reveal'),
          'edges': [{'if': {'added': 'rev'}, 'to': 'x1', 'res': 'ok'}, {'to': 'x1', 'res': 'fail', 'label': K('빗나감 — 그대로', 'Miss: keep it')}]}}],
@@ -97,8 +97,8 @@ A(id='x1', kind='act', group='main', pos=[0, 5.4], act='chaos', cur='Chaos_Orb',
   showText=[K('접미가 한도를 넘어 새 옵션은 접두로', 'Suffixes are over the limit: the new option is a prefix')],
   edges=[{'if': {'has': 'contS'}, 'to': 'x1', 'res': 'fail', 'hide': True}, {'to': 'c2', 'res': 'ok'}], item=[J('p'), J('p'), AS, CDS, CC])
 A(id='c2', kind='act', group='main', pos=[0, 6.4], act='chaos', cur='Chaos_Orb', label=K('카오스', 'Chaos'),
-  goal=K('접두 투사체 피해 — 창 사용 시 피해와 함께 먼저 뜬 것', 'Projectile damage prefix: or damage with spears, whichever lands first'),
-  showText=[K('접미가 한도를 넘어 접두만 바뀜', 'Suffixes are over the limit: only prefixes change')], show=PRE,
+  goal=K('접두 투사체 피해', 'Projectile damage prefix'),
+  showText=[K('접미가 한도를 넘어 접두만 바뀜', 'Suffixes are over the limit: only prefixes change')], show=['pre'],
   skipIf={'any': [{'has': 'pre'}, {'param': {'v': 2}}]}, skipTo='l2',
   edges=[{'if': {'has': 'pre'}, 'to': 'l2', 'res': 'ok'}, {'to': 'c2', 'res': 'fail', 'hide': True}], item=[PD, J('p'), AS, CDS, CC])
 A(id='l2', kind='act', group='main', pos=[0, 7.4], act='essence', cur='Ancient_Potent_Liquid_Melancholy', ess='rad', liquid=True,
