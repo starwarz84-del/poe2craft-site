@@ -452,6 +452,7 @@ footer{margin-top:24px;font-size:11.5px;color:var(--faint);line-height:1.6}
 <div class="toast" id="toast" role="status"></div>
 <div class="warn-bg" id="warn" hidden><div class="warn-box" role="alertdialog" aria-labelledby="warn-t" aria-describedby="warn-m"><b id="warn-t"></b><p id="warn-m"></p><button type="button" class="btn primary" id="warn-ok">확인</button></div></div>
 
+<script src="sim.js"></script>
 <script>
 (() => {
 const $ = s => document.querySelector(s);
@@ -477,6 +478,8 @@ async function boot(){
   [S.index, S.craft] = await Promise.all([fetch('data/index.json').then(r=>r.json()), fetch('data/crafting.json').then(r=>r.json())]);
   /* 덫(Traps)은 새로 나온 스킬이라 아직 숨김 (사용자 확정 2026-11-11 23:03) */ const HIDE_CLS=new Set(['Traps']); S.index.groups.forEach(g=>g.classes=g.classes.filter(c=>!HIDE_CLS.has(c.id))); S.index.groups=S.index.groups.filter(g=>g.classes.length);
   S.byId = {}; for(const k of ['special','cats','liquids','qual','sac','orbs','bones','essences','omens']) for(const x of S.craft[k]){ S.byId[x.id] = x; if(x.min!=null) x.min=+x.min; if(x.maxilvl!=null) x.maxilvl=+x.maxilvl; }
+  /* 유동체 4종(2026-11-13, 사용자: 에뮬레이터에 유동체 추가): 원소 저항 옵션 종류를 바꿈. 규칙은 sim.js fluxTarget(레시피 엔진·시뮬과 같음, game-rules.md). 완벽한 유동체(스킬 20레벨)·마석학 유동체(젬)는 장비 제작과 무관해 뺌 */
+  S.flux = (S.craft.extra||[]).filter(x=>x.act==='flux' && window.POE2SIM?.FLUX?.[x.id]); S.flux.forEach(x=>{ S.byId[x.id]=x; });
   await loadClass('Body_Armours_str');
   openDrawer(true);
 }
@@ -632,6 +635,7 @@ function check(c){
     case 'vaal': return '';
     case 'artificer': return !maxSockets() ? '소켓 추가 불가' : it.sockets>=maxSockets() ? `소켓 최대 ${maxSockets()}개` : it.corrupted ? '타락한 아이템' : '';
     case 'essence': case 'liquid': return essCheck(c);
+    case 'flux': return r==='normal' ? '마법·희귀 아이템 전용' : !it.mods.some(m=>POE2SIM.fluxTarget(S.data.groups, c.id, m)) ? '바꿀 원소 저항 옵션 없음' : '';
     case 'hinekora': return it.hinekora ? '결과 미리 보기 중' : '';
     case 'catalyst': { const qk=qualityKind(); if(c.on==='jewellery' ? qk!=='jewellery' : qk!=='jewel') return c.on==='jewellery' ? '반지·목걸이 전용' : '주얼 전용';
       return (it.catalyst===c.tag && it.quality>=qmax()) ? L(`퀄리티 최대(${qmax()}%)`,`Quality is at max (${qmax()}%)`) : ''; }
@@ -787,6 +791,8 @@ function apply(c){
       if(omen('sanctify')){ take('sanctify'); it.sanctified=true; it.mods.forEach(m=>{ if(!m.unrev) m.m = +(0.78 + rnd()*0.44).toFixed(3); }); note=L('축성: 옵션마다 수치 ×78~122% (각각 무작위)','Sanctified: each modifier ×78–122%'); }
       else if(omen('blessed')){ take('blessed'); it.impRoll=rolls(); note=L('고정 옵션 수치 재설정','Rerolled implicit values'); }
       else { it.mods.forEach(m=>{ if(m.fr || m.unrev) return; const o=modText(m); m.roll=rolls(); const n=modText(m); if(o!==n){ removed.push({...m, _t:o}); added.push(m); } }); it.impRoll=rolls(); if(it.corrImp) it.corrImp.roll=rolls(); note=L('옵션 수치 재설정','Rerolled values'); } break; }
+    case 'flux': { const ch=[]; it.mods.forEach(m=>{ const t=POE2SIM.fluxTarget(S.data.groups, c.id, m); if(!t) return; const o=modText(m); removed.push({...m, _t:o}); m.gi=t.gi; m.ti=t.ti; added.push(m); ch.push(o+' → '+modText(m)); });
+      note=L(`유동체: 옵션 ${ch.length}개 변경`,`Flux: ${ch.length} modifier(s) changed`); break; }
     case 'fracture': { const c2=it.mods.filter(m=>!m.unrev); const m=c2[Math.floor(rnd()*c2.length)]; m.fr=true; note=L('분열: ','Fractured: ')+modText(m); break; }
     case 'artificer': it.sockets++; note=L(`소켓 ${it.sockets}/${maxSockets()}`,`Socket ${it.sockets}/${maxSockets()}`); break;
     case 'vaal': {
@@ -1140,7 +1146,7 @@ function renderShelves(){
   const omenRow = ids => { const o=OM(ids); return o.length?`<div class="shelf"><h3><span>${L('관련 징조 (켜 두면 다음 사용에 적용)','RELATED OMENS')}</span><span>${S.omens.size?L(`${S.omens.size}개 켜짐`,`${S.omens.size} active`):''}</span></h3><div class="cur">${o.map(x=>cbtn(x)).join('')}</div></div>`:''; };
   const shelf = (title, right, items, empty) => `<div class="shelf"><h3><span>${title}</span><span>${right||''}</span></h3><div class="cur">${items.length?items.map(x=>cbtn(x)).join(''):`<span class="empty">${empty}</span>`}</div></div>`;
   const TABS = [
-    ['orb', L('오브','Orbs'), orbs.length+quals.length+2],
+    ['orb', L('오브','Orbs'), orbs.length+quals.length+2+S.flux.length],
     ['ess', L('에센스','Essence'), essAll.length],
     ['breach', L('균열(기폭제)','Breach'), cats.length],
     ['delir', L('환영(액체)','Delirium'), liqs.length],
@@ -1157,6 +1163,7 @@ function renderShelves(){
   if(T==='orb') body = shelf(L('오브','ORBS'), L('끌어서 아이템에 놓기 · 우클릭 바로 사용','drag onto item · right-click to use'), orbs)
     + shelf(L('퀄리티','QUALITY'), L(`${S.item.quality}% / 최대 ${qmax()}% · 일반 +5 · 마법 +2 · 희귀 +1`,`${S.item.quality}% / max ${qmax()}% · normal +5 · magic +2 · rare +1`), quals, L('퀄리티 커런시 없음 · 반지·목걸이·주얼은 균열 탭의 기폭제','No quality currency'))
     + shelf(L('특수','SPECIAL'), L('히네코라: 다음 결과 미리 보기 · 거울: 복제(이후 변경 불가)',''), C.special)
+    + (S.flux.length ? shelf(L('유동체','FLUX'), L('원소 저항 옵션 종류 변경 · 같은 수치 범위 · 분열된 옵션은 그대로','Changes elemental resistance modifiers · same value range · fractured lines stay'), S.flux) : '')
     + omenRow(['whittling','sin_erasure','dex_erasure','sin_alchemy','dex_alchemy','sin_coronation','dex_coronation','homo_coronation','greater_exaltation','sin_exaltation','dex_exaltation','homo_exaltation','catalysing','greater_annulment','sin_annulment','dex_annulment','light','blessed','sanctify']);
   else if(T==='omen') body = `<div class="shelf"><h3><span>${L('징조 (켜 두면 다음 사용에 적용)','OMENS')}</span><span>${S.omens.size?L(`${S.omens.size}개 켜짐`,`${S.omens.size} active`):''}</span></h3><div class="cur">${C.omens.map(o=>cbtn(o)).join('')}</div></div>`;
   else if(T==='ess') body = `<div class="shelf"><h3><span>${L('에센스','ESSENCES')}</span><span>${L('일반·하위·상위: 마법→희귀 · 완벽·특수: 희귀에서 1개 빼고 확정 옵션',' ')} · ${L('제작 옵션','crafted')} ${craftedCount()}/${craftedLimit()}</span></h3>
