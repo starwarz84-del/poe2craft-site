@@ -71,7 +71,7 @@ A(id='c0', kind='base', group='prep', pos=[0, 0], next='c1', start={'rar': 'magi
   item=[JP, L5])
 A(id='c1', kind='act', group='prep', pos=[0, 1], act='regal', cur='Perfect_Regal_Orb', label=K('제왕', 'Regal'),
   goal=K('레어 + 잡옵 1개 — 접미 적 처치 시 마나', 'Rare + one junk option: mana per kill suffix'),
-  showText=[K('랜덤 옵션 1개', 'One random option')], edges=[{'to': 'c2'}], item=[JP, L5, MK])
+  showText=[K('잡옵 1개', 'One junk option')], edges=[{'to': 'c2'}], item=[JP, L5, MK])
 A(id='c2', kind='act', group='prep', pos=[0, 2], act='essence', cur='Transcendent_Alloy', ess='trans', omens=['Omen_of_Sinistral_Crystallisation'],
   label=K('합금', 'Alloy'), goal=K('접두 잡옵을 지우고 접미 초월의 합금', 'The junk prefix goes for the Transcendent Alloy suffix'),
   showText=[{'s': 's', 'kr': '시전 속도 · 원소 피해의 %를 추가 냉기 피해로 획득 (제작 옵션)', 'en': 'Cast speed · elemental damage as extra cold (crafted)'}],
