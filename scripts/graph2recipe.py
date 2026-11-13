@@ -151,7 +151,9 @@ def _target(G_, n, prev, cur, last_bone):
         junk = [l for l in new if l.get('m') in ('j', 'n', None) and not l.get('tags')]   # 태그 없는 일반 줄(m 'n')도 아무 옵션 — 상위 찬미로 붙은 접미 줄을 빼고 '1개 (접두)'로 쓰던 것(2026-11-13 S3 63번)
         if tagged:
             show = [x for x in (n.get('show') or []) if isinstance(x, str)]
-            if len(tagged) > 1:
+            if len(tagged) > 1 and act == 'chaos' and show and G_.spec(show):   # 카오스는 옵션 하나만 바뀜 — 아이템 칸에서 바뀐 줄이 둘이어도 '목표 모두'가 아니라 고르는 옵션 중 하나(2026-11-13 S3 66번)
+                t = dict(G_.spec(show))
+            elif len(tagged) > 1:
                 parts = [G_.spec(l['tags']) for l in tagged]; t = {'all': [p for p in parts if p]}
             else:
                 sp = (G_.spec(show) if show else None) or G_.spec(tagged[0]['tags'])
@@ -165,9 +167,16 @@ def _target(G_, n, prev, cur, last_bone):
         elif junk:
             sides = [l['s'] for l in junk]
             t = {'junk': sides if len(sides) > 1 else sides[0]}
+            if act == 'chaos': t['asIs'] = True   # 카오스로 잡옵을 다시 굴림(결과 그대로) — 예전 표시 유지
             if len(sides) > 1 and not (_side_of_omens(om, 'Exaltation') or _side_of_omens(om, 'Coronation')) and len(_room(G_, prev)) > 1: t['anySide'] = True   # 징조 없이 여러 개: 앞 결과에 따라 쪽이 달라짐 — '(접두 2)'로 단정하지 않음(2026-11-13 S2, G10 보고)
+        elif act == 'chaos' and [x for x in (n.get('show') or []) if isinstance(x, str)] and G_.spec([x for x in n['show'] if isinstance(x, str)]):
+            # 접힌 상자(아이템 칸 없음)도 고르는 옵션(show)이 목표, 말소 징조 쪽을 바꿈 — '아무 옵션 1개 추가 (접두)'로 나오던 것(2026-11-13 S3 66번)
+            t = dict(G_.spec([x for x in n['show'] if isinstance(x, str)]))
+            er = 's' if 'Omen_of_Dextral_Erasure' in om else 'p' if 'Omen_of_Sinistral_Erasure' in om else None
+            if er: t['replace'] = er
         elif act == 'chaos':
-            t = {'asIs': True, 'junk': next((l.get('s') for l in gone if l.get('s') in ('p', 's')), 'p')}
+            er = 's' if 'Omen_of_Dextral_Erasure' in om else 'p' if 'Omen_of_Sinistral_Erasure' in om else None
+            t = {'asIs': True, 'junk': er or next((l.get('s') for l in gone if l.get('s') in ('p', 's')), 'p')}
         else:
             rm = _room(G_, prev)
             # 쪽: 징조 → 새로 붙은 줄의 쪽(태그 없는 일반 줄 m='n'도) → 남은 쪽이 하나면 그쪽 → 접두 — 접미 엑잘이 '(접두)'로 나오던 것(2026-11-13 S3 12번)
