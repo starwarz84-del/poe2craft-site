@@ -120,7 +120,7 @@ A(id='d1', kind='act', group='main', pos=[0, 13.4], act='desecrate', cur='Preser
   showText=[{'s': 's', 'kr': '훼손 옵션 (미공개)', 'en': 'Desecrated (unrevealed)'}], edges=[{'to': 'd2'}],
   item=[J('p'), ELE, CHG, SPI, UN('s')])
 A(id='d2', kind='act', group='main', pos=[0, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='rev', label=K('공개', 'Reveal'),
-  goal=K('접미 스킬 효과 지속시간 — 원소 저항과 함께 먼저 뜬 것 (1~2티어)', 'Skill Effect Duration suffix: or an elemental resistance, whichever lands first (tier 1–2)'), show=['dur', 'r2', 'r3', 'r4'],
+  goal=K('접미 스킬 효과 지속시간 — 원소 저항과 함께 먼저 뜬 것 (1~2티어)', 'Skill Effect Duration suffix: or an elemental resistance, whichever lands first (tier 1–2)'), show=['rev'],   # R3-10 11-13: 정책 A — 상자는 성공 회차 옵션(shown 지속시간), 저항은 자동 꿀팁 줄
   edges=[{'if': {'added': 'rev'}, 'to': 'e2', 'res': 'ok'}, {'to': 'd2x', 'res': 'fail', 'label': K('빗나감', 'Miss')}],
   item=[J('p'), ELE, CHG, SPI, DUR])
 A(id='d2x', kind='act', group='main', pos=[1, 14.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
