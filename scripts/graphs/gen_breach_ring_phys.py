@@ -6,6 +6,7 @@
 #   → [접힘] 절사 + 카오스 오브로 최대 퀄리티 지우기, 새 옵션이 접미면 절사·말소 + 상위 카오스로 접미 자리 비우기
 #   → 좌측 찬미 + 완벽한 엑잘(접두 채우기) → 좌측 결정화 + 재빠른 합금(공격 속도)
 #   → [접힘] 접두 원소 피해 두 개: 완벽한 엑잘 → 절사·말소 + 완벽한 카오스 → 좌측 강령술 + 고대 빗장뼈 → 심연의 메아리 공개 → 빗나가면 빛의 징조 + 소멸.
+# RV6 검수 11-13: 합금 상자(b9) 아이템 칸을 원소 피해 확정(I7)에서 남은 접두 랜덤(I8)으로 — 레시피 글 합금 목표가 화염 피해로 나오던 것.
 # 바뀐 곳(옛 그래프 대비): 반복 세 곳을 상자 하나로 접음(옛 9.A·9.A.a 라우터 선과 5.A → 시작 긴 선이 교차하던 것), 완성 카드의 '또는' 줄을 묶음 태그로, 에센셜 훼손 색.
 import os, json, sys
 H = os.path.dirname(os.path.abspath(__file__))
@@ -27,7 +28,7 @@ V1 = {'param': {'v': 1}}
 PH = itg('p', c, 13, ['phys'], 'f'); AR = itg('s', c, 7, ['allres']); FR = itg('s', c, 4, ['fres'], ti=1)
 MQ = itg('p', c, 71, ['maxq'], 'c', suffix=('균열의 에센스', 'Essence of the Breach')); AL = itg('s', c, 73, ['alloy'], 'c', suffix=('재빠른 합금', 'Swift Alloy'))
 FI = itg('p', c, 15, ['fire'], ti=2); CO = itg('p', c, 17, ['cold'], ti=2)
-I0 = [PH, J('s')]; I1 = [PH, AR]; I2 = [PH, J('p'), AR]; I3 = [PH, MQ, AR]; I4 = I3 + [FR]; I5 = [PH, R1('p'), AR, FR]; I6 = [PH, R1('p'), R1('p'), AR, FR]; I7 = [PH, FI, AR, FR, AL]; I9 = [PH, FI, CO, AR, FR, AL]
+I0 = [PH, J('s')]; I1 = [PH, AR]; I2 = [PH, J('p'), AR]; I3 = [PH, MQ, AR]; I4 = I3 + [FR]; I5 = [PH, R1('p'), AR, FR]; I6 = [PH, R1('p'), R1('p'), AR, FR]; I7 = [PH, FI, AR, FR, AL]; I8 = [PH, R1('p'), AR, FR, AL]; I9 = [PH, FI, CO, AR, FR, AL]
 nodes = [base('ms', {'rar': 'rare', 'mods': [{'tag': 'phys', 'fr': True}, {'junk': 's'}]}, K('공격 시 물리 피해 1티어 분열 + 잡옵 1개 균열 반지 구입', 'Buy a Breach Ring with fractured T1 physical attack damage + one junk line'), I0),
  mark([0, 0.6], 'b2', I0),
  act('b2', 'main', [0, 1], 'chaos', 'Chaos_Orb', K('접미 첫번째 옵션', 'First suffix'), None, K('카오스', 'Chaos'), [{'if': {'has': 'allres'}, 'to': 'b3', 'res': 'ok'}, {'to': 'b2', 'res': 'fail'}], I1, show=['allres']),
@@ -46,7 +47,7 @@ nodes = [base('ms', {'rar': 'rare', 'mods': [{'tag': 'phys', 'fr': True}, {'junk
      [{'if': {'removed': 'allres'}, 'to': 'h1', 'res': 'fail', 'lost': 'allres', 'hide': True}, {'if': {'all': [V1, {'removed': 'fres'}]}, 'to': 'h1', 'res': 'fail', 'lost': 'fres', 'hide': True}, {'if': {'sideLt': {'side': 's', 'n': 3}}, 'to': 'b9a', 'res': 'ok'}, {'to': 'b8s', 'res': 'fail'}], None, trim={'side': 's', 'keep': 'keepS'}),
  act('b9a', 'main', [0, 8], 'exalt', 'Perfect_Exalted_Orb', K('접두 두번째·세번째 옵션 채우기', 'Fill the second and third prefixes'), [st('p', '랜덤 옵션 1개', 'One random line')], K('엑잘', 'Exalt'), [{'to': 'b9'}], I6, omens=['Omen_of_Sinistral_Exaltation'], skipIf={'full': 'p'}, skipTo='b9'),
  act('b9', 'main', [0, 9], 'essence', 'Swift_Alloy', K('접미 세번째 옵션 — 접두 둘 중 하나가 지워짐', 'Third suffix: one of the two prefixes goes'), [st('s', '공격 속도 (7—9)% 증가 (제작 옵션)', '(7—9)% increased Attack Speed (crafted)')], K('합금', 'Alloy'),
-     [{'if': {'has': 'ele'}, 'to': 'd1', 'res': 'ok'}, {'if': V1, 'to': 'e1', 'res': 'fail'}, {'to': 'd1', 'res': 'fail'}], I7, ess='alloy', omens=['Omen_of_Sinistral_Crystallisation']),
+     [{'if': {'has': 'ele'}, 'to': 'd1', 'res': 'ok'}, {'if': V1, 'to': 'e1', 'res': 'fail'}, {'to': 'd1', 'res': 'fail'}], I8, ess='alloy', omens=['Omen_of_Sinistral_Crystallisation']),
  act('e1', 'main', [0, 10], 'exalt', 'Perfect_Exalted_Orb', K('접두 세번째 옵션', 'Third prefix'), None, K('엑잘', 'Exalt'),
      [{'if': {'all': [V1, {'has': 'ele'}]}, 'to': 'd1', 'res': 'ok'}, {'if': V1, 'to': 'e2', 'res': 'fail'}, {'to': 'ok', 'res': 'fail'}], None, show=['fire', 'cold', 'light'], omens=['Omen_of_Sinistral_Exaltation']),
  act('e2', 'main', [1, 10], 'chaos', 'Perfect_Chaos_Orb', K('접두 원소 피해 찾기', 'Find an elemental attack prefix'), None, K('카오스', 'Chaos'),
