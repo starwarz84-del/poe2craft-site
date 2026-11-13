@@ -2077,7 +2077,49 @@
      "kr": "접미 치명타 확률 1~2티어",
      "en": "T1–2 critical hit chance suffix"
     }
-   }
+   },
+   "over": [
+    {
+     "param": {
+      "t": 2
+     },
+     "set": {
+      "edges": [
+       {
+        "if": {
+         "all": [
+          {
+           "has": "proj"
+          },
+          {
+           "has": "cc"
+          }
+         ]
+        },
+        "to": "x3",
+        "res": "ok"
+       },
+       {
+        "if": {
+         "not": {
+          "has": "proj"
+         }
+        },
+        "to": "xz",
+        "res": "fail",
+        "label": {
+         "kr": "투사체 +3 이상이 지워짐",
+         "en": "+3 or better projectiles gone"
+        }
+       },
+       {
+        "to": "x2",
+        "res": "fail"
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "id": "xz",

@@ -125,7 +125,7 @@
     "hl"
    ],
    "shownBy": {
-    "bal": "hf"
+    "bal": "hl"
    },
    "label": {
     "kr": "원소 및 카오스 복합 저항",
@@ -177,7 +177,10 @@
     "eres"
    ],
    "shownBy": {
-    "bal": "rc"
+    "bal": [
+     "hl",
+     "rc"
+    ]
    },
    "label": {
     "kr": "복합 저항·화염·냉기·번개 저항 1~2티어",
@@ -307,8 +310,8 @@
    },
    "goalBy": {
     "bal": {
-     "kr": "접미 화염·카오스 저항 + 냉기 저항 1~2티어 — 복합 저항 하나와 원소 저항",
-     "en": "Fire and chaos resistance + T1–2 cold resistance: one hybrid and an elemental resistance"
+     "kr": "접미 번개·카오스 저항 + 냉기 저항 1~2티어 — 복합 저항 하나와 원소 저항",
+     "en": "Lightning and chaos resistance + T1–2 cold resistance: one hybrid and an elemental resistance"
     }
    },
    "itemBy": {
@@ -342,11 +345,11 @@
      },
      {
       "s": "s",
-      "kr": "화염 및 카오스 저항 +(3—31)%",
-      "en": "+(3—31)% to Fire and Chaos Resistances",
+      "kr": "번개 및 카오스 저항 +(3—31)%",
+      "en": "+(3—31)% to Lightning and Chaos Resistances",
       "m": "n",
       "tags": [
-       "hf"
+       "hl"
       ]
      },
      {
@@ -509,7 +512,7 @@
      "tag": "ima"
     },
     {
-     "tag": "good"
+     "tag": "keepB"
     },
     {
      "tag": "keepB"
@@ -1348,8 +1351,12 @@
      }
     }
    },
-   "skipTo": "b2",
-   "skipHide": true
+   "skipTo": "b2n",
+   "skipHide": true,
+   "skipNote": {
+    "kr": "첫 접미가 복합 저항이면 징표 없이 빈자리 훼손",
+    "en": "First suffix is a hybrid: no Mark, desecrate the open slot"
+   }
   },
   {
    "id": "b2",
@@ -1754,6 +1761,32 @@
         "not": {
          "unrevSide": "s"
         }
+       },
+       {
+        "not": {
+         "junk": {
+          "side": "s",
+          "tag": "good"
+         }
+        }
+       }
+      ]
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrevSide": "s"
+        }
        }
       ]
      },
@@ -2108,6 +2141,32 @@
         "not": {
          "unrevSide": "s"
         }
+       },
+       {
+        "not": {
+         "junk": {
+          "side": "s",
+          "tag": "good"
+         }
+        }
+       }
+      ]
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrevSide": "s"
+        }
        }
       ]
      },
@@ -2166,11 +2225,13 @@
       ]
      },
      "to": "w1",
-     "hide": true
+     "hide": true,
+     "res": "fail"
     },
     {
      "to": "da",
-     "hide": true
+     "hide": true,
+     "res": "fail"
     }
    ],
    "item": [
@@ -2240,10 +2301,82 @@
    "omens": [
     "Omen_of_Greater_Exaltation"
    ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "show": [
+       "hl",
+       "rc"
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "정신력 +(57—61) (분열)",
+        "en": "+(57—61) to Spirit (fractured)",
+        "m": "f",
+        "tags": [
+         "spirit"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "정신력 (1—20)% 증가",
+        "en": "(1—20)% increased Spirit",
+        "m": "n",
+        "tags": [
+         "isp"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "마나 최대치 (1—20)% 증가",
+        "en": "(1—20)% increased maximum Mana",
+        "m": "n",
+        "tags": [
+         "ima"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "번개 및 카오스 저항 +(3—31)%",
+        "en": "+(3—31)% to Lightning and Chaos Resistances",
+        "m": "n",
+        "tags": [
+         "hl"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "냉기 저항 +(36—45)%",
+        "en": "+(36—45)% to Cold Resistance",
+        "m": "n",
+        "tags": [
+         "rc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "화염 저항 (훼손, 자리 막기)",
+        "en": "Fire Resistance (desecrated, blocker)",
+        "m": "d"
+       },
+       {
+        "s": "r",
+        "kr": "메드베드의 보살핌",
+        "en": "Medved’s Tending",
+        "m": "r"
+       }
+      ]
+     }
+    }
+   ],
    "goalBy": {
     "bal": {
-     "kr": "접미 화염·카오스 저항 + 냉기 저항 1~2티어 — 복합 저항 하나와 원소 저항",
-     "en": "Suffix fire and chaos resistance + T1–2 cold resistance: one hybrid and an elemental resistance"
+     "kr": "접미 번개·카오스 저항 + 냉기 저항 1~2티어 — 복합 저항 하나와 원소 저항",
+     "en": "Suffix lightning and chaos resistance + T1–2 cold resistance: one hybrid and an elemental resistance"
     }
    }
   },
@@ -2483,6 +2616,32 @@
         "not": {
          "unrevSide": "s"
         }
+       },
+       {
+        "not": {
+         "junk": {
+          "side": "s",
+          "tag": "good"
+         }
+        }
+       }
+      ]
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrevSide": "s"
+        }
        }
       ]
      },
@@ -2614,6 +2773,77 @@
    ],
    "omens": [
     "Omen_of_Whittling"
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "show": [
+       "rc"
+      ],
+      "item": [
+       {
+        "s": "p",
+        "kr": "정신력 +(57—61) (분열)",
+        "en": "+(57—61) to Spirit (fractured)",
+        "m": "f",
+        "tags": [
+         "spirit"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "정신력 (1—20)% 증가",
+        "en": "(1—20)% increased Spirit",
+        "m": "n",
+        "tags": [
+         "isp"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "마나 최대치 (1—20)% 증가",
+        "en": "(1—20)% increased maximum Mana",
+        "m": "n",
+        "tags": [
+         "ima"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "번개 및 카오스 저항 +(3—31)%",
+        "en": "+(3—31)% to Lightning and Chaos Resistances",
+        "m": "n",
+        "tags": [
+         "hl"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "냉기 저항 +(36—45)%",
+        "en": "+(36—45)% to Cold Resistance",
+        "m": "n",
+        "tags": [
+         "rc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "화염 저항 (훼손, 자리 막기)",
+        "en": "Fire Resistance (desecrated, blocker)",
+        "m": "d"
+       },
+       {
+        "s": "r",
+        "kr": "메드베드의 보살핌",
+        "en": "Medved’s Tending",
+        "m": "r"
+       }
+      ]
+     }
+    }
    ]
   },
   {
@@ -2860,6 +3090,32 @@
         "not": {
          "unrevSide": "s"
         }
+       },
+       {
+        "not": {
+         "junk": {
+          "side": "s",
+          "tag": "good"
+         }
+        }
+       }
+      ]
+     },
+     "to": "b2n",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "not": {
+         "des": true
+        }
+       },
+       {
+        "not": {
+         "unrevSide": "s"
+        }
        }
       ]
      },
@@ -3015,7 +3271,17 @@
      "to": "f2"
     },
     {
+     "if": {
+      "junk": {
+       "side": "s",
+       "tag": "good"
+      }
+     },
      "to": "mA",
+     "hide": true
+    },
+    {
+     "to": "b2n",
      "hide": true
     }
    ]
@@ -3107,6 +3373,74 @@
      "s": "s",
      "kr": "훼손 옵션(미공개)",
      "en": "Desecrated modifier (unrevealed)"
+    }
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "정신력 +(57—61) (분열)",
+        "en": "+(57—61) to Spirit (fractured)",
+        "m": "f",
+        "tags": [
+         "spirit"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "정신력 (1—20)% 증가",
+        "en": "(1—20)% increased Spirit",
+        "m": "n",
+        "tags": [
+         "isp"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "마나 최대치 (1—20)% 증가",
+        "en": "(1—20)% increased maximum Mana",
+        "m": "n",
+        "tags": [
+         "ima"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "번개 및 카오스 저항 +(3—31)%",
+        "en": "+(3—31)% to Lightning and Chaos Resistances",
+        "m": "n",
+        "tags": [
+         "hl"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "냉기 저항 +(36—45)%",
+        "en": "+(36—45)% to Cold Resistance",
+        "m": "n",
+        "tags": [
+         "rc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "훼손 옵션(미공개)",
+        "en": "Desecrated (unrevealed)",
+        "m": "n"
+       },
+       {
+        "s": "r",
+        "kr": "메드베드의 보살핌",
+        "en": "Medved’s Tending",
+        "m": "r"
+       }
+      ]
+     }
     }
    ]
   },
@@ -3208,6 +3542,77 @@
    ],
    "omens": [
     "Omen_of_Abyssal_Echoes"
+   ],
+   "over": [
+    {
+     "param": {
+      "g": 0
+     },
+     "set": {
+      "item": [
+       {
+        "s": "p",
+        "kr": "정신력 +(57—61) (분열)",
+        "en": "+(57—61) to Spirit (fractured)",
+        "m": "f",
+        "tags": [
+         "spirit"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "정신력 (1—20)% 증가",
+        "en": "(1—20)% increased Spirit",
+        "m": "n",
+        "tags": [
+         "isp"
+        ]
+       },
+       {
+        "s": "p",
+        "kr": "마나 최대치 (1—20)% 증가",
+        "en": "(1—20)% increased maximum Mana",
+        "m": "n",
+        "tags": [
+         "ima"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "번개 및 카오스 저항 +(3—31)%",
+        "en": "+(3—31)% to Lightning and Chaos Resistances",
+        "m": "n",
+        "tags": [
+         "hl"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "냉기 저항 +(36—45)%",
+        "en": "+(36—45)% to Cold Resistance",
+        "m": "n",
+        "tags": [
+         "rc"
+        ]
+       },
+       {
+        "s": "s",
+        "kr": "스킬의 정신력 점유 효율 (6—12)% 증가",
+        "en": "(6—12)% increased Spirit Reservation Efficiency of Skills",
+        "m": "d",
+        "tags": [
+         "sre"
+        ]
+       },
+       {
+        "s": "r",
+        "kr": "메드베드의 보살핌",
+        "en": "Medved’s Tending",
+        "m": "r"
+       }
+      ]
+     }
+    }
    ]
   },
   {

@@ -42,6 +42,7 @@ M0=[PPM()]; M1=[PPM(),J('s')]; M2=[PPM(),FLE,J('s')]; M3=M2+[UN('s')]; M4=[PP,J(
 W1=[PP,FL]; W1j=[PP,FL,J('p')]; W2=[PP,FL,LI]; W3=[PP,FL,CO,AL]; W4=W3+[AS]; W5=W4+[UN('s')]; W6=W4+[PJ]; W7=W4+[ON]; W8=W4+[MKB]; W9=W4+[PJ,J('s')]; W10=W4+[PJ,CC]; W11=W10+[R1('s')]
 L_=lambda kr,en: {'label':K(kr,en)}
 F={'res':'fail'}
+X2E=lambda kr,en: [{'if':{'all':[{'has':'proj'},{'has':'cc'}]},'to':'x3','res':'ok'},{'if':{'not':{'has':'proj'}},'to':'xz',**F,**L_(kr,en)},{'to':'x2',**F}]
 b0=base('m1',None,K('특출난 절멸자 활 구입 (아이템 레벨 82, 룬 소켓 3)','Buy an exceptional Obliterator Bow (item level 82, three rune sockets)'),[]); b0['id']='b0'; b0.pop('start',None)
 nodes=[b0,
  # 매직 굴리기(0:00~0:38): 완벽한 진화 → 접두가 물리 피해 %가 아니면 소멸 → 완벽한 확장 … (L0으로 접음)
@@ -88,8 +89,9 @@ nodes=[b0,
  act('x1','main',[0,15],'exalt','Perfect_Exalted_Orb',K('접미 잡옵','A junk suffix'),[st('s','랜덤 옵션 1개 (접두가 꽉 차 접미로)','One random line (prefixes are full)')],K('엑잘','Exalt'),
      [{'to':'x2'}],W9,skipIf={'not':{'sideLt':{'side':'s','n':2}}},skipTo='x2',skipHide=True),   # 15:12 툴팁, 15:18 능력치 요구 감소
  act('x2','main',[0,16],'chaos','Greater_Chaos_Orb',K('접미 치명타 확률 1티어','T1 critical hit chance suffix'),None,K('카오스','Chaos'),
-     [{'if':{'all':[{'has':'proj'},{'has':'cc'}]},'to':'x3','res':'ok'},{'if':{'not':{'has':'proj'}},'to':'xz',**F,**L_('투사체 +4가 지워짐','+4 projectiles gone')},{'to':'x2',**F}],
-     W10,show=['cc'],trim={'side':'s','keep':'keepS'},skipIf={'all':[{'has':'proj'},{'has':'cc'}]},skipTo='x3',skipHide=True,goalBy={'bal':K('접미 치명타 확률 1~2티어','T1–2 critical hit chance suffix')}),   # 15:43 상위 카오스(II) 10·20개, 16:40 우측 말소 + 절사 소모, 18:15 치명타 확률
+     X2E('투사체 +4가 지워짐','+4 projectiles gone'),
+     W10,show=['cc'],trim={'side':'s','keep':'keepS'},skipIf={'all':[{'has':'proj'},{'has':'cc'}]},skipTo='x3',skipHide=True,goalBy={'bal':K('접미 치명타 확률 1~2티어','T1–2 critical hit chance suffix')},
+     over=[{'param':{'t':2},'set':{'edges':X2E('투사체 +3 이상이 지워짐','+3 or better projectiles gone')}}]),   # R-D1: 밸런스는 +3도 성공   # 15:43 상위 카오스(II) 10·20개, 16:40 우측 말소 + 절사 소모, 18:15 치명타 확률
  cleanup('xz',[1,16],[],[{'to':'d1',**L_('접미를 비우고 훼손부터','Suffixes cleared: desecrate again')}],K('우측 소멸의 징조로 접미 옵션 모두 지우기','Clear every suffix with Omen of Dextral Annulment'),side='s'),
  act('x3','main',[0,17],'exalt','Perfect_Exalted_Orb',K('접미 세 번째 옵션','Third suffix'),[st('s','랜덤 옵션 1개','One random line')],K('엑잘','Exalt'),[{'to':'ok'}],W11,skipIf={'full':'s'},skipTo='ok',skipHide=True),   # 18:28 툴팁, 18:38 민첩(영상은 그대로 둠)
  done([0,18])]

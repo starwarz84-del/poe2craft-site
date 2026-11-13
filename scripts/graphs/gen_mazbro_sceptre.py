@@ -145,7 +145,8 @@ A(id='b2', kind='act', group='main', pos=[1, 13.4], act='desecrate', cur='Preser
 A(id='b3', kind='act', group='main', pos=[1, 14.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='sg', label=K('공개', 'Reveal'),
   goal=K('접미 좋은 옵션 1티어 — 마나 재생 속도·시전 속도·존재 범위·치명타 중 먼저 뜬 것', 'A good T1 suffix: whichever of mana regeneration, cast speed, presence area or critical lands first'), show=['regen', 'cs', 'aoe'],
   goalBy={'bal': K('접미 좋은 옵션 1~2티어 — 빗나가면 자리 막기로 둠', 'A good T1–2 suffix: a miss stays as the blocker')},
-  over=[{'param': {'pT': 2}, 'set': {'edges': RS({'s1': {}})}}],   # 밸런스: 영상(50:56·56:35)처럼 빗나간 공개는 자리 막기 — 빛의 징조 반복 없음
+  over=[{'param': {'pT': 2}, 'set': {'edges': RS({'s1': {}}), 'show': [],
+                                     'showText': [{'s': 's', 'kr': '공개 결과 그대로 — 좋은 접미가 없으면 그 옵션이 자리 막기', 'en': 'Keep the reveal: without a good suffix the line stays as the blocker'}]}}],   # R-D1: 밸런스 공개는 목표가 아니라 결과 그대로   # 밸런스: 영상(50:56·56:35)처럼 빗나간 공개는 자리 막기 — 빛의 징조 반복 없음
   edges=[{'if': {'not': {'added': 'sg'}}, 'to': 'bx', 'res': 'fail', 'label': K('빗나감', 'Miss')}] + RS({'s1': {'res': 'ok'}}), item=[DM, MA, SP, AUG, RG, AS])
 A(id='bx', kind='act', group='main', pos=[2, 14.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated option'), edges=[{'to': 'bd', 'label': K('다시 훼손', 'Desecrate again')}])
