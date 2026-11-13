@@ -156,7 +156,13 @@ A(id='a7', kind='act', group='main', pos=[0, 8.4], act='desecrate', cur='Preserv
   edges=R1({'a8': {}}), item=[SP, SD2, MQ, SL, UN('s')])
 A(id='a8', kind='act', group='main', pos=[1, 8.4], act='reveal', omens=['Omen_of_Abyssal_Echoes'], want='blk', label=K('공개', 'Reveal'),
   goal=K('자리 막기 옵션 — 생명력 재생·능력치·저항', 'Blocker: life regeneration, attribute or resistance'), show=['blk'],
-  edges=[{'if': {'not': {'added': 'blk'}}, 'to': 'a8x', 'res': 'fail', 'label': K('빗나감', 'Miss')}] + R1({'a9': {'res': 'ok'}}))
+  edges=[{'if': {'not': {'added': 'blk'}}, 'to': 'a8x', 'res': 'fail', 'label': K('빗나감', 'Miss')}]
+        + [{**{k: v for k, v in e.items() if k != 'hide'}, 'to': 'a8y', 'res': 'fail', 'label': K('접미 꽉 참', 'Suffixes full')} if e['to'] == 'a10x' else e for e in R1({'a9': {'res': 'ok'}})])
+# E1 11-13: 공개 뒤 접미가 꽉 차면(소멸이 자리 막기를 지워 다시 훼손한 회차 — 빗나간 접미가 남아 있음) 따로 소멸 상자로.
+#   a10x와 같은 동작(시뮬 같음)이지만 레시피 단계로 따로 둬서 7-2 공개 줄에는 공개 결과만 보이게(a10x는 '먼저: 소멸' 상자라 그 갈래가 공개 줄에 섞였음)
+A(id='a8y', kind='act', group='main', pos=[0, 8.9], act='annul', cur='Orb_of_Annulment', omens=[], label=ANN, goal=ANN,
+  target=K('빗나간 접미 지우기', 'Remove the missed suffix'),
+  edges=R1({'a9': {'res': 'ok'}, 'cz': {'res': 'fail'}, 'a10e': {'res': 'fail'}, 'a7': {'res': 'fail'}}))
 A(id='a8x', kind='act', group='main', pos=[1, 9.4], act='annul', cur='Orb_of_Annulment', omens=['Omen_of_Light'], label=ANN, goal=ANN,
   target=K('훼손 옵션 제거', 'Remove the desecrated modifier'), edges=[{'to': 'a7', 'label': K('다시 훼손', 'Desecrate again')}])
 A(id='a9', kind='act', group='main', pos=[1, 10.4], act='quality', cur='Skittering_Catalyst', count=40, q=40, label=K('퀄리티', 'Quality'),
@@ -213,12 +219,13 @@ g['loops'] = [
             K('빗나가면 상위 카오스 오브, 접두 1티어가 남아 있으면 다시', 'A miss: Greater Chaos Orb, again while the T1 prefix stays') | {'node': 'c3'},
             K('접두 1티어가 지워지면 소멸의 오브로 옵션 1개 남기고 카오스부터', 'T1 prefix gone: Orb of Annulment down to one option, then Chaos again') | {'node': 'c4'}],
   'item': [SP, RAR, SL]},
- {'id': 'L1', 'nodes': ['a7', 'a8', 'a8x', 'a9', 'a10', 'a10x', 'a10e'], 'kr': '접미 두 자리', 'en': 'Two suffixes', 'fold': True,
+ {'id': 'L1', 'nodes': ['a7', 'a8', 'a8x', 'a8y', 'a9', 'a10', 'a10x', 'a10e'], 'kr': '접미 두 자리', 'en': 'Two suffixes', 'fold': True,
   'goal': K('자리 막기 훼손 + 접미 시전 속도·치명타 확률·치명타 피해 1티어, 안 뜨면 마나 재생·희귀도로 타협', 'Desecrated blocker + a T1 cast speed, crit chance or crit damage suffix, or settle for mana regeneration or rarity'),
   'goalBy': {'high': K('자리 막기 훼손 + 접미 시전 속도·치명타 확률·치명타 피해 1티어, 안 뜨면 마나 재생·희귀도로 타협', 'Desecrated blocker + a T1 cast speed, crit chance or crit damage suffix, or settle for mana regeneration or rarity'),
              'bal': K('자리 막기 훼손 + 접미 시전 속도·치명타 확률·치명타 피해 1~2티어, 안 뜨면 마나 재생·희귀도로 타협', 'Desecrated blocker + a T1–2 cast speed, crit chance or crit damage suffix, or settle for mana regeneration or rarity')},
   'steps': [K('우측 강령술의 징조 + 보존된 빗장뼈로 접미 훼손', 'Omen of Dextral Necromancy + Preserved Collarbone on a suffix') | {'node': 'a7'},
             K('심연의 메아리 공개 — 생명력 재생·능력치·저항으로 자리 막기, 하나도 없으면 빛의 징조 + 소멸의 오브로 다시', 'Reveal with Abyssal Echoes: life regen, attribute or resistance blocks; none of them, Omen of Light + Annulment and again') | {'node': 'a8'},
+            K('공개 뒤 접미가 꽉 차면 소멸의 오브로 빗나간 접미 지우기', 'Suffixes full after the reveal: Orb of Annulment on the missed suffix') | {'node': 'a8y'},
             K('달리는 기폭제로 속도 퀄리티 40%', 'Skittering Catalyst to 40% speed quality') | {'node': 'a9'},
             K('촉진하는 찬미 + 우측 찬미 + 완벽한 엑잘티드 오브', 'Catalysing + Dextral Exaltation + Perfect Exalted Orb') | {'node': 'a10'},
             K('빗나가면 소멸의 오브, 자리 막기가 지워지면 훼손부터', 'A miss: Orb of Annulment; blocker gone, desecrate again') | {'node': 'a10x'},

@@ -1205,6 +1205,103 @@
      "if": {
       "full": "s"
      },
+     "to": "a8y",
+     "res": "fail",
+     "label": {
+      "kr": "접미 꽉 참",
+      "en": "Suffixes full"
+     }
+    },
+    {
+     "to": "a9",
+     "res": "ok"
+    }
+   ]
+  },
+  {
+   "id": "a8y",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8.9
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [],
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "빗나간 접미 지우기",
+    "en": "Remove the missed suffix"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "spell"
+      }
+     },
+     "to": "cz",
+     "res": "fail"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "mq"
+      }
+     },
+     "to": "a10e",
+     "res": "fail"
+    },
+    {
+     "if": {
+      "unrevSide": "s"
+     },
+     "to": "a8",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "des": false
+       },
+       {
+        "sideLt": {
+         "side": "s",
+         "n": 3
+        }
+       }
+      ]
+     },
+     "to": "a7",
+     "res": "fail"
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "has": "gs"
+       },
+       {
+        "des": true
+       }
+      ]
+     },
+     "to": "a11",
+     "hide": true
+    },
+    {
+     "if": {
+      "full": "s"
+     },
      "to": "a10x",
      "hide": true
     },
@@ -2302,6 +2399,7 @@
     "a7",
     "a8",
     "a8x",
+    "a8y",
     "a9",
     "a10",
     "a10x",
@@ -2334,6 +2432,11 @@
      "kr": "심연의 메아리 공개 — 생명력 재생·능력치·저항으로 자리 막기, 하나도 없으면 빛의 징조 + 소멸의 오브로 다시",
      "en": "Reveal with Abyssal Echoes: life regen, attribute or resistance blocks; none of them, Omen of Light + Annulment and again",
      "node": "a8"
+    },
+    {
+     "kr": "공개 뒤 접미가 꽉 차면 소멸의 오브로 빗나간 접미 지우기",
+     "en": "Suffixes full after the reveal: Orb of Annulment on the missed suffix",
+     "node": "a8y"
     },
     {
      "kr": "달리는 기폭제로 속도 퀄리티 40%",
