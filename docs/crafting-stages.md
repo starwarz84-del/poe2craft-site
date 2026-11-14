@@ -65,7 +65,7 @@
 | 셋 다 팔리는 옵션 | 세 옵션이 모두 팔 수 있는 옵션이면 분열이 어디 걸려도 손해가 없음 | belton-plus8-wand (fracture-sellable-lines) |
 | 좋은 옵션 2개 | 옵션 4개 중 좋은 옵션이 2개면 원하는 분열 확률이 1/3에서 2/3 | chiba·mastert-timelost-emerald (fracture-two-good-lines) |
 | 한쪽 1티어 필수 3개 | 가장 어려운 하나를 분열하고 나머지는 '둘 중 아무거나'로 받음. 셋 다 고정하면 미러급(K53) | mazbro-sceptre, mirror-bow-video |
-| 분열하면 안 되는 것 | 스킬 레벨 +3(목걸이) — 축성을 못 함. 정신력 같은 다른 옵션을 분열하고 스킬은 그 뒤 카오스로 | gold-amulet-6line, absent-amulet-video (no-fracture-skill) |
+| 목걸이 스킬 레벨 +3 | 정신력과 스킬 레벨이 같이 붙는 목걸이는 보통 정신력을 분열하고 스킬은 그 뒤 카오스로(분열하면 축성을 못 함). 정신력이 필요 없는 목걸이이거나, 타협해서 제작비를 낮출 때 등은 스킬 +3을 분열하기도 함(K59, 사용자 확정 2026-11-14 19:50) | gold-amulet-6line, absent-amulet-video (no-fracture-skill), 제작 글 g61 경로 B |
 
 ### 2-3. 순서 주의
 
