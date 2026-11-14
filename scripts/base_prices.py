@@ -45,6 +45,7 @@ BASEPRICE = {
   'diztoh-onehand-mace-v2': 3, 'diztoh-onehand-mace-v2-bal': 3,   # D3 2026-11-13: 하이엔드 새로 + 밸런스(영상 0:03 노멀 특출난 약탈하는 철퇴 3 div)
   'diztoh-rarity-ring': 1,
   'diztoh-rarity-ring-v2-bal': 5,   # 2026-11-13 G12: 영상 1:06 거래소 희귀도 3티어 + 냉기 저항 2티어 매직 황금 반지(아이템 레벨 81) 5 div, 1:35에 그 반지
+  'atom-mana-rarity-ring-v2-bal': None, 'atom-mana-rarity-ring-v2-ess': None,   # 2026-11-14 RING: 사용자 레시피 — 매직 황금 반지(마나 최대치 1티어 + 시전 속도) 값은 사용자 글에 없음(정책 10장 ③ 미정)
   'diztoh-socket-gloves': None,
   'diztoh-talisman': None,
   'diztoh-vile-robe': None,

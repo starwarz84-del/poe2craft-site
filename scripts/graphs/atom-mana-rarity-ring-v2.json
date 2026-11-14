@@ -1,0 +1,1058 @@
+{
+ "id": "atom-mana-rarity-ring-v2",
+ "recipe": "atom-mana-rarity-ring-v2",
+ "cls": "Rings",
+ "base": "Gold Ring",
+ "ilvl": 82,
+ "note": "2026-11-14 RING: 사용자 Atom1q84가 직접 만든 순서(영상 없음). 매직 황금 반지(마나 최대치 + 시전 속도) 구입 → 상위 풍요의 에센스(레어 + 접미 희귀도) → 좌측 강령술의 징조 + 보존된 빗장뼈(접두 미공개 훼손) → 완벽한 엑잘티드 오브 + 상위 찬미의 징조(접두 잡옵 1개 + 접미 랜덤 옵션 1개) → 완벽한 정신의 에센스(접두가 꽉 차서 접두 3개 중 하나가 지워짐: 잡옵이면 그대로, 훼손 옵션이면 다시 훼손, 마나 최대치면 새 베이스) → 심연의 메아리의 징조 + 공개(희귀도가 아니면 소멸의 오브 + 빛의 징조로 다시) → 신경 기폭제 퀄리티 20%. 상위 풍요의 에센스 줄은 사용자 아이템에 완벽한 정신의 에센스 줄과 함께 있어 제작 옵션 한도(C1)에 세지 않음(notCrafted, 정책 5장과 충돌 — 보고). 등급: 난이도 표 2(보통) → 밸런스·에센셜(C11). 하이엔드(공개 희귀도 1티어·시전 속도 1티어 베이스)는 시뮬 78.3 div로 만들어 봤지만 표에 없는 등급이라 뺌. 사용자 꿀팁(퀄리티 + 촉진하는 찬미의 징조로 접미 저항)은 접미 셋째가 모든 등급 랜덤 옵션이라 시뮬 이득 없음 → 꿀팁 줄.",
+ "params": {
+  "v": {
+   "kr": "진행",
+   "en": "Route",
+   "values": {
+    "1": {
+     "kr": "빛의 징조로 다시",
+     "en": "Retry with Light"
+    },
+    "2": {
+     "kr": "결과 그대로",
+     "en": "As it comes"
+    }
+   }
+  },
+  "rT": {
+   "kr": "공개 희귀도",
+   "en": "Revealed rarity",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "3": {
+     "kr": "아무 티어",
+     "en": "Any tier"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "v": 1,
+    "rT": 2
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "v": 2,
+    "rT": 3
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "v": 1,
+    "rT": 2
+   },
+   "tier": "bal",
+   "desc": {
+    "kr": "공개 희귀도 1~2티어까지 빛의 징조로 다시",
+    "en": "Reveal retried with Light until T1–2 rarity"
+   }
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "v": 2,
+    "rT": 3
+   },
+   "tier": "ess",
+   "desc": {
+    "kr": "공개 한 번, 결과 그대로",
+    "en": "One reveal, kept as it comes"
+   }
+  }
+ ],
+ "tags": {
+  "mana": {
+   "gi": 10,
+   "tmax": 1
+  },
+  "cast": {
+   "gi": 34,
+   "tmax": 2
+  },
+  "rarE": {
+   "gi": 66
+  },
+  "pmana": {
+   "gi": 67
+  },
+  "rarD": {
+   "gi": 28,
+   "tmax": "$rT"
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "mana"
+   },
+   {
+    "has": "pmana"
+   },
+   {
+    "has": "cast"
+   },
+   {
+    "has": "rarE"
+   },
+   {
+    "unrev": false
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "a0",
+ "finalItem": {
+  "quality": 20,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "a0",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "a1",
+   "start": {
+    "rar": "magic",
+    "mods": [
+     "mana",
+     "cast"
+    ]
+   },
+   "label": {
+    "kr": "접두 마나 최대치 + 접미 시전 속도 매직 황금 반지 구입 (아이템 레벨 82)",
+    "en": "Buy a magic Gold Ring with prefix maximum mana + suffix cast speed (item level 82)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mana"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (19—21)% 증가",
+     "en": "(19—21)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "a1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "essence",
+   "cur": "Greater_Essence_of_Opulence",
+   "ess": "rarE",
+   "notCrafted": true,
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "레어 + 접미 희귀도",
+    "en": "Rare + rarity suffix"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (제작 옵션)",
+     "en": "Item rarity (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "a2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mana"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (19—21)% 증가",
+     "en": "(19—21)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가 (상위 풍요의 에센스)",
+     "en": "(15—18)% increased Rarity of Items found (Greater Essence of Opulence)",
+     "m": "c",
+     "tags": [
+      "rarE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "a2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Collarbone",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접두 두 번째 옵션(훼손)",
+    "en": "Second prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mana"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (19—21)% 증가",
+     "en": "(19—21)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가 (상위 풍요의 에센스)",
+     "en": "(15—18)% increased Rarity of Items found (Greater Essence of Opulence)",
+     "m": "c",
+     "tags": [
+      "rarE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    3.4
+   ],
+   "next": "a3",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mana"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (19—21)% 증가",
+     "en": "(19—21)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가 (상위 풍요의 에센스)",
+     "en": "(15—18)% increased Rarity of Items found (Greater Essence of Opulence)",
+     "m": "c",
+     "tags": [
+      "rarE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "a3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4.4
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 세 번째·접미 세 번째 옵션 — 나오는 대로 (사용자: 번개 저항)",
+    "en": "Third prefix and third suffix: keep what comes (user: lightning resistance)"
+   },
+   "showText": [
+    {
+     "kr": "잡옵 1개 + 랜덤 옵션 1개",
+     "en": "One junk option + one random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "a4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mana"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "n"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (19—21)% 증가",
+     "en": "(19—21)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가 (상위 풍요의 에센스)",
+     "en": "(15—18)% increased Rarity of Items found (Greater Essence of Opulence)",
+     "m": "c",
+     "tags": [
+      "rarE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(36—40)%",
+     "en": "+(36—40)% to Lightning Resistance",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "a4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5.4
+   ],
+   "act": "essence",
+   "cur": "Perfect_Essence_of_the_Mind",
+   "ess": "pmana",
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "접두 최대 마나 % — 접두 3개 중 하나가 지워짐",
+    "en": "Prefix % maximum mana: one of the three prefixes goes"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가 (제작 옵션)",
+     "en": "(4—6)% increased maximum Mana (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "mana"
+      }
+     },
+     "to": "xb",
+     "res": "fail",
+     "label": {
+      "kr": "마나 최대치가 지워짐",
+      "en": "Maximum mana gone"
+     }
+    },
+    {
+     "if": {
+      "unrev": false
+     },
+     "to": "a5",
+     "res": "fail",
+     "label": {
+      "kr": "훼손 옵션이 지워짐",
+      "en": "Desecrated option gone"
+     }
+    },
+    {
+     "to": "a6",
+     "res": "ok",
+     "label": {
+      "kr": "잡옵이 지워짐",
+      "en": "Junk gone"
+     }
+    }
+   ]
+  },
+  {
+   "id": "xb",
+   "kind": "exit",
+   "group": "main",
+   "pos": [
+    1,
+    5.4
+   ],
+   "simTo": "a0",
+   "variant": "fail",
+   "label": {
+    "kr": "마나 최대치가 지워짐 — 새 베이스",
+    "en": "Maximum mana gone: new base"
+   },
+   "note": {
+    "kr": "마나 최대치가 지워지면 새 매직 베이스 구입부터",
+    "en": "Maximum mana gone: buy a new magic base and start over"
+   }
+  },
+  {
+   "id": "a5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    6.4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Collarbone",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "다시 훼손 — 접두가 꽉 차 있으면 하나를 지우고 들어감",
+    "en": "Desecrate again: a full prefix side gives up one option"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "mana"
+      }
+     },
+     "to": "xb",
+     "res": "fail",
+     "label": {
+      "kr": "마나 최대치가 지워짐",
+      "en": "Maximum mana gone"
+     }
+    },
+    {
+     "if": {
+      "not": {
+       "has": "pmana"
+      }
+     },
+     "to": "a4",
+     "res": "fail",
+     "label": {
+      "kr": "최대 마나 %가 지워짐",
+      "en": "% maximum mana gone"
+     }
+    },
+    {
+     "to": "a6",
+     "res": "ok"
+    }
+   ]
+  },
+  {
+   "id": "a6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6.4
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "rarD",
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "goal": {
+    "kr": "접두 세 번째 옵션(훼손) — 아이템 희귀도",
+    "en": "Third prefix (desecrated): item rarity"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접두 세 번째 옵션(훼손) — 아이템 희귀도 1~2티어",
+     "en": "Third prefix (desecrated): T1–2 item rarity"
+    },
+    "ess": {
+     "kr": "접두 세 번째 옵션(훼손) — 나오는 대로 (사용자: 아이템 희귀도)",
+     "en": "Third prefix (desecrated): keep what comes (user: item rarity)"
+    }
+   },
+   "show": [
+    "rarD"
+   ],
+   "edges": [
+    {
+     "if": {
+      "added": "rarD"
+     },
+     "to": "a7",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 1
+      }
+     },
+     "to": "a6x",
+     "res": "fail"
+    },
+    {
+     "to": "a7",
+     "res": "fail",
+     "hide": true
+    }
+   ]
+  },
+  {
+   "id": "a6x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 + 빛의 징조",
+    "en": "Orb of Annulment + Omen of Light"
+   },
+   "goal": {
+    "kr": "소멸의 오브 + 빛의 징조",
+    "en": "Orb of Annulment + Omen of Light"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "a6d"
+    }
+   ]
+  },
+  {
+   "id": "a6d",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8.4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Collarbone",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "다시 훼손 — 접두 빈자리",
+    "en": "Desecrate again: the open prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "a6"
+    }
+   ]
+  },
+  {
+   "id": "a7",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
+   ],
+   "act": "quality",
+   "cur": "Neural_Catalyst",
+   "count": 20,
+   "q": 20,
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "goal": {
+    "kr": "마나 퀄리티 20%",
+    "en": "20% mana quality"
+   },
+   "edges": [
+    {
+     "to": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mana"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가 (완벽한 정신의 에센스)",
+     "en": "(4—6)% increased maximum Mana (Perfect Essence of the Mind)",
+     "m": "c",
+     "tags": [
+      "pmana"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "발견하는 아이템 희귀도 (16—19)% 증가",
+     "en": "(16—19)% increased Rarity of Items found",
+     "m": "d",
+     "tags": [
+      "rarD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (19—21)% 증가",
+     "en": "(19—21)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가 (상위 풍요의 에센스)",
+     "en": "(15—18)% increased Rarity of Items found (Greater Essence of Opulence)",
+     "m": "c",
+     "tags": [
+      "rarE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(36—40)%",
+     "en": "+(36—40)% to Lightning Resistance",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    8.4
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "a4",
+    "a5",
+    "a6",
+    "a6x",
+    "a6d"
+   ],
+   "kr": "최대 마나 % + 훼손 공개",
+   "en": "% maximum mana + reveal",
+   "fold": true,
+   "goal": {
+    "kr": "접두 최대 마나 % + 훼손 아이템 희귀도",
+    "en": "Prefixes: % maximum mana + desecrated item rarity"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접두 최대 마나 % + 훼손 아이템 희귀도 1~2티어",
+     "en": "Prefixes: % maximum mana + T1–2 desecrated item rarity"
+    },
+    "ess": {
+     "kr": "접두 최대 마나 % + 훼손 옵션 나오는 대로",
+     "en": "Prefixes: % maximum mana + the desecrated option as it comes"
+    }
+   },
+   "steps": [
+    {
+     "kr": "완벽한 정신의 에센스로 최대 마나 % — 접두 3개 중 하나가 지워짐",
+     "en": "Perfect Essence of the Mind for % maximum mana: one of the three prefixes goes",
+     "node": "a4"
+    },
+    {
+     "kr": "훼손 옵션이 지워지면 좌측 강령술의 징조 + 보존된 빗장뼈로 다시 훼손, 최대 마나 %가 지워지면 에센스부터",
+     "en": "Desecrated option gone: Omen of Sinistral Necromancy + Preserved Collarbone again; % maximum mana gone: essence again",
+     "node": "a5"
+    },
+    {
+     "kr": "심연의 메아리의 징조 + 공개로 아이템 희귀도 1~2티어",
+     "en": "Omen of Abyssal Echoes + reveal for T1–2 item rarity",
+     "node": "a6"
+    },
+    {
+     "kr": "빗나가면 소멸의 오브 + 빛의 징조로 훼손 옵션 제거",
+     "en": "A miss: Orb of Annulment + Omen of Light removes the desecrated option",
+     "node": "a6x"
+    },
+    {
+     "kr": "보존된 빗장뼈로 접두 빈자리에 다시 훼손",
+     "en": "Preserved Collarbone desecrates the open prefix again",
+     "node": "a6d"
+    }
+   ],
+   "stepsBy": {
+    "ess": [
+     {
+      "kr": "완벽한 정신의 에센스로 최대 마나 % — 접두 3개 중 하나가 지워짐",
+      "en": "Perfect Essence of the Mind for % maximum mana: one of the three prefixes goes",
+      "node": "a4"
+     },
+     {
+      "kr": "훼손 옵션이 지워지면 좌측 강령술의 징조 + 보존된 빗장뼈로 다시 훼손, 최대 마나 %가 지워지면 에센스부터",
+      "en": "Desecrated option gone: Omen of Sinistral Necromancy + Preserved Collarbone again; % maximum mana gone: essence again",
+      "node": "a5"
+     },
+     {
+      "kr": "심연의 메아리의 징조 + 공개, 결과 그대로",
+      "en": "Omen of Abyssal Echoes + reveal, kept as it comes",
+      "node": "a6"
+     }
+    ]
+   },
+   "worst": {
+    "kr": "마나 최대치가 지워지면 새 매직 베이스부터",
+    "en": "Maximum mana gone: a new magic base",
+    "to": "xb"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mana"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가 (완벽한 정신의 에센스)",
+     "en": "(4—6)% increased maximum Mana (Perfect Essence of the Mind)",
+     "m": "c",
+     "tags": [
+      "pmana"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "발견하는 아이템 희귀도 (16—19)% 증가",
+     "en": "(16—19)% increased Rarity of Items found",
+     "m": "d",
+     "tags": [
+      "rarD"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (19—21)% 증가",
+     "en": "(19—21)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cast"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "발견하는 아이템 희귀도 (15—18)% 증가 (상위 풍요의 에센스)",
+     "en": "(15—18)% increased Rarity of Items found (Greater Essence of Opulence)",
+     "m": "c",
+     "tags": [
+      "rarE"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(36—40)%",
+     "en": "+(36—40)% to Lightning Resistance",
+     "m": "n"
+    }
+   ],
+   "itemBy": {
+    "ess": [
+     {
+      "s": "p",
+      "kr": "마나 최대치 +(165—179)",
+      "en": "+(165—179) to maximum Mana",
+      "m": "n",
+      "tags": [
+       "mana"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "최대 마나 (4—6)% 증가 (완벽한 정신의 에센스)",
+      "en": "(4—6)% increased maximum Mana (Perfect Essence of the Mind)",
+      "m": "c",
+      "tags": [
+       "pmana"
+      ]
+     },
+     {
+      "s": "p",
+      "kr": "발견하는 아이템 희귀도 (16—19)% 증가",
+      "en": "(16—19)% increased Rarity of Items found",
+      "m": "d"
+     },
+     {
+      "s": "s",
+      "kr": "시전 속도 (19—21)% 증가",
+      "en": "(19—21)% increased Cast Speed",
+      "m": "n",
+      "tags": [
+       "cast"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "발견하는 아이템 희귀도 (15—18)% 증가 (상위 풍요의 에센스)",
+      "en": "(15—18)% increased Rarity of Items found (Greater Essence of Opulence)",
+      "m": "c",
+      "tags": [
+       "rarE"
+      ]
+     },
+     {
+      "s": "s",
+      "kr": "번개 저항 +(36—40)%",
+      "en": "+(36—40)% to Lightning Resistance",
+      "m": "n"
+     }
+    ]
+   }
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "mana"
+    },
+    {
+     "tag": "pmana",
+     "ess": true
+    },
+    {
+     "tag": "rarD",
+     "des": true
+    },
+    {
+     "tag": "cast"
+    },
+    {
+     "tag": "rarE",
+     "ess": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "mana"
+    },
+    {
+     "tag": "pmana",
+     "ess": true
+    },
+    {
+     "side": "p",
+     "random": true,
+     "des": true
+    },
+    {
+     "tag": "cast"
+    },
+    {
+     "tag": "rarE",
+     "ess": true
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ]
+}
