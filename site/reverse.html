@@ -1090,7 +1090,11 @@ function makeDraft(it, an, opt){
     else {
       const C = take(r=>cnt[r.m.side] < cap[r.m.side]-resv[r.m.side] && (!X || r.m.side!==X) && (r.how==='n'));
       rar='rare';
-      if(C){ const sd=C.m.side, om = room(other(sd)) ? [SIDE_OMEN.regal[sd]] : []; roll('regal', C, om.length?{omens:om}:null); }
+      /* 산 매직 베이스(옵션 2개)에 제왕으로 한 옵션을 노리면 빗나갈 때마다 소멸이 산 옵션을 2/3로 지워 새 베이스 — 확률이 낮으면(30% 미만) 사실상 끝나지 않음(제작 글 g24·g50·g53 2026-11-14).
+         그럴 땐 제왕은 아무 옵션(그 옵션이 덜 필요한 쪽으로)으로 희귀만 만들고 그 옵션은 엑잘 단계에서 노림 */
+      if(C && buy && !rb && (C.pOmen ?? 1) < 0.3){ rnd.unshift(C); const need = x => rnd.filter(r=>r.m.side===x).length, oth = other(C.m.side), sd = room(oth) && cap[oth]-cnt[oth]-need(oth) > 0 ? oth : C.m.side;
+        push({phase:'magic', do:'regal', cur:'Regal_Orb', ...(room(other(sd)) && sd!==C.m.side ? {omens:[SIDE_OMEN.regal[sd]]} : {}), target:{junk:sd}, note:note(`희귀로 전환 (${sideKr(sd)}에 아무 옵션). ${lk(C)}${josa(lk(C),'은','는')} 확률이 낮아 제왕으로 노리지 않음 — 빗나간 소멸이 산 옵션을 지울 수 있어서.`, `Regal to rare (any ${sideEn(sd)}). ${le(C)} is too rare to aim for with the Regal: the Annulment after a miss could take a bought line.`)}); cnt[sd]++; junk[sd]++; }
+      else if(C){ const sd=C.m.side, om = room(other(sd)) ? [SIDE_OMEN.regal[sd]] : []; roll('regal', C, om.length?{omens:om}:null); }
       else { const sd = ['p','s'].find(x=>room(x)) || 'p'; push({phase:'magic', do:'regal', cur:'Regal_Orb', target:{junk:sd}, note:note('희귀로 전환 (아무 옵션).','Regal to rare (any modifier).')}); cnt[sd]++; junk[sd]++; looseJunk=true; }
     }
   }
