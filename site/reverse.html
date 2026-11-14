@@ -865,7 +865,7 @@ async function tplDrafts(it, an, base0, TOP){ const out=[]; if(!base0) return ou
         rw.narrow=(rw.narrow||0)+1; } }
     /* 완성 조건 밖 줄(extra)로 짝지은 필수 옵션은 완성 조건에 더해 시뮬이 실제로 만드는지 확인 */
     const exC=Object.entries(m.exT||{}).map(([t,n])=>n>1 ? {count:{tag:t, min:n}} : {has:t}); if(exC.length) rw.g.require={all:[rw.g.require, ...exC]};
-    const rid=m.t.recs[top.id] || m.t.rid, rec=(S.recAll||[]).find(x=>x.id===rid); if(!rec){ why[m.t.g]='레시피 없음'; continue; }
+    const rid=m.t.recs[top.id] || m.t.rid, rec=(S.recAll||[]).find(x=>x.id===rid) || (S.tplIdx?.extra||[]).find(x=>x.id===rid); /* 레시피 탭엔 없는 테스트 레시피(build_recipes.py TPLONLY) */ if(!rec){ why[m.t.g]='레시피 없음'; continue; }
     const remap = x => JSON.parse(JSON.stringify(x||null), (k,v)=> (k==='gi'||k==='removeGi'||k==='dropGi') && typeof v==='number' && m.map[v]!=null ? m.map[v] : v);
     const nodes=(remap(rec.nodes)||[]).map(n=>{ const o={...n}; delete o.ts; if(m.changed){ delete o.tips; delete o.note; } return o; });
     const d={...base0, nodes, start:remap(rec.start)||base0.start, phases:rec.phases||base0.phases, difficulty:m.t.diff, tplGraph:rw.g, tpl:{g:m.t.g, rid, ti:m.t.ti, changed:m.changed}};

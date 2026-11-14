@@ -131,6 +131,9 @@ h1{margin:0;font-family:var(--f-display);font-size:22px;text-wrap:balance}
 .tag.e{color:var(--ess);border-color:color-mix(in srgb,var(--ess) 45%,var(--line))}
 .tag.x{color:var(--oth);border-color:color-mix(in srgb,var(--oth) 45%,var(--line))}
 .tag.q{color:var(--rare);border-color:color-mix(in srgb,var(--rare) 45%,var(--line))}
+.sdup{color:var(--muted);font-size:.92em}
+.tag.sflip{cursor:pointer;background:none;font:inherit;font-size:11px;color:var(--rare);border-color:color-mix(in srgb,var(--rare) 45%,var(--line))}
+.tag.sflip:hover{background:color-mix(in srgb,var(--rare) 12%,transparent)}
 .nums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px 12px}
 @media (max-width:1000px){.nums{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:480px){.nums{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -423,7 +426,7 @@ async function parse(txt){
     }
     used.add(c.gi);
     const oSd = D.groups[c.gi].g==='p'?'s':'p', alt = !hint?.side && bySide[oSd] && bySide[oSd].c.lines.length===c.lines.length && fitScore(bySide[oSd].ranges, bySide[oSd].vals)===0 ? bySide[oSd] : null;
-    mods.push({gi:c.gi, ti:c.ti, side:D.groups[c.gi].g, q:boost>1, fr: tag==='fractured' || !!hint?.fr, desTag: tag==='desecrated' || !!hint?.des, crafted: tag==='crafted', roll, out, l:text, hintTier:hint?.tier||null, ...(alt?{_alt:alt}:{})});
+    mods.push({gi:c.gi, ti:c.ti, side:D.groups[c.gi].g, q:boost>1, fr: tag==='fractured' || !!hint?.fr, desTag: tag==='desecrated' || !!hint?.des, crafted: tag==='crafted', roll, out, l:text, hintTier:hint?.tier||null, ...(hint?.side?{sideFix:true}:{}), ...(alt?{_alt:alt}:{})});
     i += c.lines.length-1; hint=null;
   }
   /* 쪽 맞추기(2026-11-13 W1): 일반 복사엔 접두·접미 표시가 없어 양쪽에 다 있는 옵션(아이템 희귀도 등)이 한쪽으로 몰림.
@@ -674,7 +677,7 @@ function buySet(an){ const b=new Set([...S.buy].filter(i=>S.need.has(i)).map(i=>
 function needAn(an, floor, it){ const a = {...an, rows: an.rows.flatMap((r,i)=>{ if(r.m.fr) return [r]; if(r.unrev || !(S.need.has(i) || S.soft?.has(i))) return [];
   const t = Math.max(S.tsel[i] || r.tierNo, floor ? Math.min(floor, r.tierCnt) : 0), soft = !S.need.has(i), alt = altOf(an, i, it);
   const pick = !!S.alt?.[i]?.length;   /* 칩으로 묶음을 직접 고름(다른 줄과 겹쳐 altOf가 비어도) — K41 자동 추가를 막는 데 씀(W10) */
-  return [t===r.tierNo && !soft && !alt && !pick ? r : {...r, tierNo:t, ...(soft?{soft:true}:{}), ...(alt?altRow(it, r, alt):{}), ...(pick?{altPick:true}:{})}]; })};
+  return [t===r.tierNo && !soft && !alt && !pick ? r : {...r, tierNo:t, ...(soft?{soft:true}:{}), ...(alt?altRow(it, r, alt):{}), ...(pick?{altPick:true}:{})}]; }), rows0: an.rows0||an.rows};
   return a; }
 /* 유효 옵션군(W8, 로드맵 2-④ 사용자 2026-11-12 18:38): 그 자리에 고른 다른 옵션 [{gi,tmax}] — 일반 옵션 자리만, 다른 줄에 이미 있는 계열은 뺌 */
 function altOf(an, i, it){ const L=S.alt?.[i], r=an.rows[i]; if(!L?.length || !r || r.m.fr || r.unrev || !r.g || (r.how!=='n' && r.how!=='d')) return null;
@@ -747,7 +750,9 @@ async function bestDraftAsync(it, an, opt, tick, minMs){ const TOP=userGrade(it,
   for(let seed=11, round=0; round<60; round++){ const top=C.filter(c=>!c.bad).sort((a,b)=>mean(a)-mean(b)).slice(0,3); if(!top.length || (el()>=(minMs||0) && round>0)) break;
     for(const c of top){ const N = Math.max(10, Math.min(120, Math.round(30*400/Math.max(c.ms,1)))); roll(c, N, seed++); say('refine'); await nap(); if(el() > Math.max(minMs||0, 10000)*3) break; } }
   /* 고르기 전 확인(2026-11-12, MazBro 셉터: 짧게 돌릴 땐 괜찮던 후보가 길게 돌리면 끝나지 않음) — 가장 싼 후보부터 300회 더 돌려 끝나지 않거나 조건을 못 맞추면 뺌 */
-  for(let k=0;k<6;k++){ const c=C.filter(c=>!c.bad && !c.ok).sort((a,b)=>mean(a)-mean(b))[0]; if(!c) break; try{ const st=c.g.strategies[0], r=POE2SIM.simulate({...c.g, maxSteps:1e5}, it.D, S.craft, S.prices, st.params, 300, 99); if(r.reqOk<0.98) c.bad=true; else c.ok=true; }catch(_){ c.bad=true; } await nap(); if(c.ok) break; }
+  for(let k=0;k<6;k++){ const c=C.filter(c=>!c.bad && !c.ok).sort((a,b)=>mean(a)-mean(b))[0]; if(!c) break; try{ const st=c.g.strategies[0], r=POE2SIM.simulate({...c.g, maxSteps:1e5}, it.D, S.craft, S.prices, st.params, 300, 99); if(r.reqOk<0.98) c.bad=true; else c.ok=true;
+      /* 아래 등급도 끝까지 가는지(RV12 2026-11-14, 마나·희귀도 반지: 밸런스로 고른 초안이 에센셜에서 끝나지 않아 플로우차트 검사가 '반복이 너무 많음') — runFlow와 같은 등급 그래프로 짧게 */
+      if(c.ok && !c.tpl && TOP!=='ess'){ const dd=makeDraft(it, c.K.a, {...(opt||{}), ...c.o, market:1e9}), gA=dd && POE2GRAPH.fromDraft(dd, it.D, {craft:S.craft, grades:['high','bal','ess'], top:TOP}); if(gA){ const ck=POE2GRAPH.check(gA, it.D, S.craft, S.prices, POE2SIM, 150, 1e5); const OG=['high','bal','ess']; if(ck.strategies.some(x=>x.runaway && (!TOP || OG.indexOf(x.id)>=OG.indexOf(TOP)))){ c.ok=false; c.bad=true; } } } }catch(_){ c.bad=true; } await nap(); if(c.ok) break; }
   S.lastC=C; const d0=C[0] && !C[0].K.k.length && !C[0].k && !C[0].bad ? C[0] : null; let best = C.filter(c=>!c.bad && !c.tpl).sort((a,b)=>mean(a)-mean(b))[0] || C.find(c=>!c.tpl);
   if(d0 && best!==d0 && !(mean(best) < mean(d0)*0.9)) best=d0;   // 기본 초안보다 10% 넘게 싸야 바꿈
   /* 틀 우선(13장 11-13 20:28): 가장 싼 틀 후보를 고르고, 생성 후보가 같은 등급에서 10% 넘게 쌀 때만 생성 후보 — 틀은 등록 등급(밸런스 등)으로 돌기 때문에 생성 후보도 그 등급 그래프로 300회씩 다시 잼 */
@@ -770,26 +775,72 @@ async function bestDraftAsync(it, an, opt, tick, minMs){ const TOP=userGrade(it,
 async function loadTpl(){ if(S.tplIdx!==undefined) return S.tplIdx; try{ S.tplIdx = await fetch('data/revtpl.json').then(r=>r.ok?r.json():null); }catch(_){ S.tplIdx=null; } return S.tplIdx; }
 async function loadTplGraph(id){ S.tplG=S.tplG||{}; if(!(id in S.tplG)) S.tplG[id] = fetch(`data/graphs/${encodeURIComponent(id)}.json`).then(r=>r.ok?r.json():null).catch(()=>null); return S.tplG[id]; }
 const tplName = (it, gi) => { const t=it.D.groups[gi]?.t?.[0], c = s => String(s||'').split('\n').join(' / ').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\s*~\s*/g,' ').replace(/\s+/g,' ').replace(/^(의|를|을)\s/,'').replace(/\bAdds\s+to\b/g,'Adds').trim(); return {kr:c(t?.[4]), en:c(t?.[5])}; };
+/* 수치를 뺀 옵션 글(영문) — 접두·접미 같은 글 찾기(계열 이름은 쪽마다 다름: ItemFoundRarityIncreasePrefix·ItemFoundRarityIncrease) */
+const modKey = g => String(g?.t?.[0]?.[5]||'').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)/g,'#').replace(/[+\-]?\d[\d.]*/g,'#').replace(/\s+/g,' ').trim();
+const sameTxt = (a, b) => !!a && !!b && modKey(a)!=='' && modKey(a)===modKey(b);
+/* 쪽이 애매한 옵션(RV13, 사용자 반지): 일반 복사엔 접두·접미 표시가 없어, 반대쪽 같은 계열 일반 옵션의 티어 범위에도 수치가 맞으면 그쪽 옵션으로 본 줄을 만듦.
+   예: 희귀도 18%·훼손 17% — 분석은 18% 접두·17% 접미로 잡지만 둘 다 반대쪽 1티어 범위 안이라, 등록 틀(18% 접미·훼손 17% 접두)과 맞춰 볼 수 있음 */
+function tplFlip(it, r){ const G=it.D.groups; if(!r?.g || r.m?.fr || r.m?.q || r.m?.out || !['n','d'].includes(r.how)) return null;
+  const nums=(String(r.m.l||'').match(/\d+(\.\d+)?/g)||[]).map(Number);
+  for(let x=0;x<G.length;x++){ const g=G[x]; if(x===r.m.gi || g.s!=='n' || !['p','s'].includes(g.g) || g.g===r.g.g || !sameTxt(g, r.g)) continue;
+    for(let k=0;k<g.t.length;k++){ const y=g.t[k]; if(!(y[0]<=it.ilvl) || !(y[1]>0)) continue; const rg=[...String(y[5]||'').matchAll(/\(\s*([\d.]+)\s*[—–-]\s*([\d.]+)\s*\)/g)].map(z=>[+z[1],+z[2]]);
+      if(!rg.length || rg.length!==nums.length || rg.some(([a,b],i)=>nums[i]<a || nums[i]>b)) continue;
+      const top=g.t.findIndex(z=>z[0]<=it.ilvl && z[1]>0);
+      return {...r, m:{...r.m, gi:x, side:g.g, ti:k}, g, t:y, tierNo:k-top+1, tierCnt:g.t.length-top, flip:true}; } }
+  return null; }
+/* 접두·접미에 같은 글로 붙는 옵션(RV13, 사용자 11-14 16:43: 희귀도 등은 쪽을 따로 인식) — 클래스 파일에서 수치를 뺀 글이 p·s 둘 다 있는 그룹. 이름 앞에 쪽을 붙임 */
+function sideDup(it, gi){ const D=it?.D; if(!D) return ''; if(!D._dup){ const by={}, nm=modKey;
+    D.groups.forEach((g,i)=>{ if(!g?.t?.length || !['p','s'].includes(g.g)) return; const k=nm(g); (by[k]=by[k]||[]).push(i); });
+    D._dup=new Set(Object.values(by).filter(L=>new Set(L.map(i=>D.groups[i].g)).size>1).flat()); }
+  const g=D.groups[gi]; return D._dup.has(gi) ? (g.g==='p' ? L('접두','Prefix') : L('접미','Suffix')) : ''; }
+const sideTag = (it, gi) => { const s=sideDup(it, gi); return s ? s+' · ' : ''; };
+/* 쪽 바꾸기: 그 줄(과 반대쪽에 있는 같은 계열 줄)을 접두↔접미로 바꾸고 다시 분석. 고급 복사 머리줄로 쪽이 정해진 줄은 그대로 */
+function flipPair(it, an, ri){ const r=an.rows[ri], f=r && !r.m.sideFix && tplFlip(it, r); if(!f) return [];
+  const fam=(a,b)=>sameTxt(a.g, b.g), q=an.rows.findIndex((x,k)=>k!==ri && !x.unrev && x.g && x.g.g!==r.g.g && fam(x,r) && !x.m.sideFix && tplFlip(it, x));
+  return q>=0 ? [[ri,f],[q,tplFlip(it, an.rows[q])]] : an.rows.some((x,k)=>k!==ri && x.g && fam(x,r)) ? [] : [[ri,f]]; }
+function applyFlip(it, an, pairs){ for(const [ri,f] of pairs){ const m=an.rows[ri].m, mm=it.mods.find(x=>x===m) || it.mods.find(x=>x.l===m.l && x.gi===m.gi); if(!mm) continue; mm.gi=f.m.gi; mm.side=f.m.side; mm.ti=f.m.ti; mm.flipped=!mm.flipped; } }
+/* 기본 배정: 같은 클래스 등록 틀의 자리(옵션·훼손 표시)와 더 많이 맞는 쪽 */
+function tplSideScore(it, rows){ const T=S.tplIdx?.g; if(!T) return 0; let best=0;
+  for(const t of Object.values(T)){ if(t.cls!==it.cls) continue; for(const gr of Object.keys(t.cores||{})){ const slots=[...(t.cores[gr]||[]), ...(t.extra?.[gr]||[])]; let n=0;
+    rows.forEach(r=>{ if(slots.some(c=>c.gis.length===1 && c.gis[0]===r.m.gi && !!c.des===!!(r.how==='d'))) n++; }); best=Math.max(best,n); } }
+  return best; }
+async function autoSide(it){ await loadTpl(); if(!S.tplIdx) return analyse(it); let an=analyse(it);
+  for(let ri=0; ri<an.rows.length; ri++){ const pr=flipPair(it, an, ri); if(!pr.length || an.rows[ri].m.flipped) continue;
+    const now=tplSideScore(it, pr.map(([i])=>an.rows[i])), alt=tplSideScore(it, pr.map(([i,f])=>f));
+    if(alt>now){ applyFlip(it, an, pr); an=analyse(it); } }
+  return an; }
 function tplMatch(it, an){ const T=S.tplIdx?.g; if(!T || S.noTpl) return [];
-  const G=it.D.groups, rows=an.rows.filter(r=>!r.soft && r.g && !r.unrev && r.m?.gi!=null), out=[];
+  const G=it.D.groups, rows0=an.rows.filter(r=>!r.soft && r.g && !r.unrev && r.m?.gi!=null), out=[];
+  /* 줄 배정 후보: 그대로 + 쪽이 애매한 같은 계열 옵션을 반대쪽으로(둘이면 서로 바꿈, 하나면 그 줄만) */
+  const VAR=[rows0]; { const fl=rows0.map(r=>tplFlip(it, r)), fam=(a,b)=>sameTxt(a.g, b.g);
+    rows0.forEach((r,i)=>{ if(!fl[i]) return; const j=rows0.findIndex((q,k)=>k>i && fl[k] && q.g.g!==r.g.g && fam(q,r));
+      if(j>=0) VAR.push(rows0.map((q,k)=>k===i||k===j ? fl[k] : q)); else if(!rows0.some((q,k)=>k!==i && fam(q,r))) VAR.push(rows0.map((q,k)=>k===i ? fl[k] : q)); }); }
+  /* 필수로 고르지 않았지만 아이템에 있는 옵션(유효·표시 안 함)은 틀 자리 하나를 채울 수 있음 — 틀이 그 옵션까지 만들어 주는 흐름(RV13: 마나·최대 마나 %·시전 속도만 고른 반지) */
+  const spare=(an.rows0||an.rows).filter(r=>r.g && !r.unrev && !r.m?.fr && r.m?.gi!=null && !rows0.some(q=>q.m.l===r.m.l)); spare.slice().forEach(r=>{ const f=tplFlip(it, r); if(f) spare.push(f); });
+  const done=new Set();
   let FRG=new Set(); const frOk = (c, r) => r.m.fr ? (!!c.fr || FRG.has(r.m.gi)) : (!c.fr || c.n>1), flagOk = (c, r) => frOk(c, r) && !!c.des===(r.how==='d');   /* 같은 옵션이면 분열 표시만 맞으면 됨(훼손으로 얻었든 아니든 틀 흐름이 그 옵션을 만듦), 바꿀 때는 훼손 표시까지 */
+  for(const rows of VAR){
   for(const t of Object.values(T)){ if(t.cls!==it.cls || S.tplSkip?.has(t.g)) continue; FRG=new Set(t.frg||[]);   /* 틀이 분열하는 옵션(묶음 잎 포함) */
    /* 등급마다 완성 조건 자리가 다를 수 있음(밸런스만 훼손 옵션 필수 등) — 같은 자리 모양의 등급끼리 묶어 짝짓기.
       extra = 완성 조건 밖이지만 완성 카드에 늘 나오는 옵션 줄: 붙여 넣은 필수 옵션이 남으면 같은 옵션일 때만 짝지음 */
    const sigs={}; for(const [gr,core] of Object.entries(t.cores||{})){ const ex=t.extra?.[gr]||[], k=JSON.stringify([core, ex]); (sigs[k] = sigs[k] || {core, ex, grades:[]}).grades.push(gr); }
    for(const {core, ex, grades} of Object.values(sigs)){
+    const dk=t.g+'|'+grades.join(','); if(done.has(dk)) continue;
     const slots=core.flatMap(c=>Array.from({length:c.n},()=>c)); if(slots.length>rows.length+1 || slots.length+ex.length<rows.length) continue;
     const pair=new Array(slots.length).fill(null), used=new Set();
     slots.forEach((c,k)=>{ const j=rows.findIndex((r,q)=>!used.has(q) && frOk(c,r) && c.gis.includes(r.m.gi)); if(j>=0){ pair[k]=j; used.add(j); } });
     /* 묶음 자리 하나는 붙여 넣은 필수 옵션이 없어도 됨(틀이 그 자리를 더 만들어 줌 — 비용은 시뮬이 그대로 셈) */
-    const map={}; let ok=true, freeAny=1;
+    const map={}; let ok=true, freeAny=1, freeHave=1;
     slots.forEach((c,k)=>{ if(!ok || pair[k]!=null) return; if(c.gis.length!==1){ if(freeAny-- > 0){ pair[k]=-1; return; } ok=false; return; }
+      if(freeHave>0 && spare.some(r=>r.m.gi===c.gis[0] && frOk(c,r) && !rows.some(q=>q.g.f?.some(f=>r.g.f?.includes(f))))){ freeHave--; pair[k]=-1; return; }
       const a=c.gis[0], j=rows.findIndex((r,q)=>!used.has(q) && flagOk(c,r) && r.g.g===G[a]?.g && r.g.s===G[a]?.s && ['n','d'].includes(r.g.s));
       if(j<0 || (map[a]!=null && map[a]!==rows[j].m.gi)){ ok=false; return; } pair[k]=j; used.add(j); map[a]=rows[j].m.gi; });
     if(!ok) continue;
     const exU=new Set(), exT={}; rows.forEach((r,q)=>{ if(!ok || used.has(q)) return; const e=ex.findIndex((c,i)=>!exU.has(i) && frOk(c,r) && c.gis.includes(r.m.gi) && !Object.values(map).includes(r.m.gi)); if(e<0){ ok=false; return; } exU.add(e); used.add(q); exT[ex[e].t]=(exT[ex[e].t]||0)+1; });
     if(!ok || used.size!==rows.length) continue;
-    out.push({t, core, grades, map, exT, pair:pair.map(j=>j>=0 ? rows[j] : null), changed:Object.keys(map).length}); } }
+    if(pair.filter(j=>j<0).length>1) continue;   /* 빈 자리(묶음·아이템에 있는 옵션)는 둘 합쳐 하나까지 */
+    done.add(dk); out.push({t, core, grades, map, exT, pair:pair.map(j=>j>=0 ? rows[j] : null), changed:Object.keys(map).length, flip:rows!==rows0}); } }
+  }
   out.sort((a,b)=>a.changed-b.changed || (Math.min(...Object.values(a.t.use))-Math.min(...Object.values(b.t.use))));
   return out.slice(0,3); }
 /* 틀 후보 초안: 메타(이름·소켓·출처)는 기본 초안, 단계·시작은 등록 레시피(같은 등급)를 옵션만 바꿔서, 플로우차트는 tplGraph(fromDraft가 그대로 씀) */
@@ -801,6 +852,8 @@ async function tplDrafts(it, an, base0, TOP){ const out=[]; if(!base0) return ou
     if(TOP && !m.grades.includes(TOP)){ why[m.t.g]=why[m.t.g]||'그 등급 틀 없음'; continue; }
     /* 아래 등급은 자리 모양이 달라도(밸런스만 훼손 옵션을 빗나가면 그대로 등) 틀 그래프에 있으면 같이 — C17로 넓힌 등급이라 결과 등급만 짝짓기 검사(W11: 탱정 방패 하이엔드만 남던 것) */
     const keep=new Set((g0.strategies||[]).map(x=>x.id).filter(v=>TOP ? ORD.indexOf(v)>=ORD.indexOf(TOP) : m.grades.includes(v)));
+    /* 완성 조건 밖 줄(extra)로 짝지은 필수 옵션이 있으면 그 줄을 늘 만드는 등급만(RV13: 반지 훼손 희귀도는 밸런스만 — 에센셜은 완성 조건 75% 미달로 검사 실패) */
+    const exTags=Object.keys(m.exT||{}); if(exTags.length) [...keep].forEach(v=>{ const has=new Set([...(m.t.cores?.[v]||[]), ...(m.t.extra?.[v]||[])].map(c=>c.t)); if(!exTags.every(t=>has.has(t))) keep.delete(v); });
     const graph={...g0, strategies:g0.strategies.filter(x=>keep.has(x.id)), versions:(g0.versions||[]).filter(v=>keep.has(v.id)), finals:(g0.finals||[]).filter(f=>keep.has(f.id))};
     /* 티어: 틀의 맨 위 등급이 붙여 넣은 필수 옵션(고른 티어)보다 낮은 티어까지 받으면 틀이 아님 */
     /* 하이엔드 등급만 비교(밸런스·에센셜은 등록 레시피도 C17로 넓힌 등급) */
@@ -821,7 +874,7 @@ async function tplDrafts(it, an, base0, TOP){ const out=[]; if(!base0) return ou
         rw.narrow=(rw.narrow||0)+1; } }
     /* 완성 조건 밖 줄(extra)로 짝지은 필수 옵션은 완성 조건에 더해 시뮬이 실제로 만드는지 확인 */
     const exC=Object.entries(m.exT||{}).map(([t,n])=>n>1 ? {count:{tag:t, min:n}} : {has:t}); if(exC.length) rw.g.require={all:[rw.g.require, ...exC]};
-    const rid=m.t.recs[top.id] || m.t.rid, rec=(S.recAll||[]).find(x=>x.id===rid); if(!rec){ why[m.t.g]='레시피 없음'; continue; }
+    const rid=m.t.recs[top.id] || m.t.rid, rec=(S.recAll||[]).find(x=>x.id===rid) || (S.tplIdx?.extra||[]).find(x=>x.id===rid); /* 레시피 탭엔 없는 테스트 레시피(build_recipes.py TPLONLY) */ if(!rec){ why[m.t.g]='레시피 없음'; continue; }
     const remap = x => JSON.parse(JSON.stringify(x||null), (k,v)=> (k==='gi'||k==='removeGi'||k==='dropGi') && typeof v==='number' && m.map[v]!=null ? m.map[v] : v);
     const nodes=(remap(rec.nodes)||[]).map(n=>{ const o={...n}; delete o.ts; if(m.changed){ delete o.tips; delete o.note; } return o; });
     const d={...base0, nodes, start:remap(rec.start)||base0.start, phases:rec.phases||base0.phases, difficulty:m.t.diff, tplGraph:rw.g, tpl:{g:m.t.g, rid, ti:m.t.ti, changed:m.changed}};
@@ -1694,7 +1747,7 @@ function anyTipHTML(it, an, list){
    ① 비슷한 등록 레시피 플로우차트의 같은 자리 묶음 태그(anyOf, 다른 필요 옵션을 품은 묶음 = K39 '먼저 뜨는 것'은 뺌) ② K41 공격 피해 추가(물리·화염·냉기·번개).
    단일 원소 저항(정책 6)은 고르지 않아도 늘 원소 무관이라 칩 없음 */
 const ATK_RE = /^Adds .* (Physical|Fire|Cold|Lightning) [Dd]amage to Attacks$/;
-const optShort = (it, gi) => { const t=it.D.groups[gi]?.t?.[0]; return String((KR()?t?.[4]:t?.[5])||'').split('\n').join(' / ').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\s*~\s*/g,' ').replace(/\s+/g,' ').replace(/^(의|를|을)\s/,'').replace(/\bAdds\s+to\b/g,'Adds').trim().replace(/(^|\/ )to /gi,'$1').trim(); };
+const optShort = (it, gi) => { const t=it.D.groups[gi]?.t?.[0]; return sideTag(it, gi)+String((KR()?t?.[4]:t?.[5])||'').split('\n').join(' / ').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\s*~\s*/g,' ').replace(/\s+/g,' ').replace(/^(의|를|을)\s/,'').replace(/\bAdds\s+to\b/g,'Adds').trim().replace(/(^|\/ )to /gi,'$1').trim(); };
 function altRecs(it, an, ri){ const r=an.rows[ri]; if(!r || r.m.fr || r.unrev || !r.g || r.g.s!=='n' || r.how!=='n') return [];
   const G=it.D.groups, other=new Set(an.rows.flatMap((x,k)=>k!==ri && x.g ? [x.m.gi] : [])) /* 다른 줄의 옵션 */, usedF=new Set(an.rows.flatMap((x,k)=>k!==ri && x.g ? x.g.f||[] : [])), out=[], seen=new Set();
   const ok = gi => G[gi] && G[gi].g===r.g.g && !(G[gi].f||[]).some(f=>usedF.has(f)) && G[gi].t.some(t=>t[0]<=it.ilvl && t[1]>0);
@@ -1757,7 +1810,7 @@ function render(){
           const gB = Math.min(r.tierCnt, Math.max(cur, lo+1)), gE = Math.min(r.tierCnt, Math.max(cur, lo+3));
           const gT = S.need.has(ri) && (gB>cur || gE>cur) ? `<span class="gtier" title="${esc(L('고른 티어 = 하이엔드. 반복으로 찾는 자리만 등급마다 넓힘','The picked tier is High-end; only slots found by a loop widen per grade'))}">${L(`밸런스 T${gB} 이상 · 에센셜 T${gE} 이상`,`Balance T${gB}+ · Essential T${gE}+`)}</span>` : '';
           return `<div class="need"><span class="lvg" role="group" aria-label="${esc(L('옵션 구분','Modifier level'))}"><button type="button" class="needb lv" data-lv="${ri}:must" aria-pressed="${S.need.has(ri)}">${S.need.has(ri)?L(`✓ 필수 ${nOrd}`,`✓ Must ${nOrd}`):L('필수','Must')}</button><button type="button" class="needb lv" data-lv="${ri}:soft" aria-pressed="${soft}">${soft?L('✓ 유효','✓ Useful'):L('유효','Useful')}</button></span>${sel}${gT}${on?altHTML(it, an, ri):''}</div>`; })();
-    return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml" ${KR()&&locLine(m.l,r.t)!==m.l?`title="${esc(m.l)}"`:''}>${esc(locLine(m.l,r.t))}</div><div class="tags">${tags}<span class="tag">${tierT}</span>${desRep}</div></div>${needH}${altLine(it, an, ri)}</div>`;
+    return `<div class="mod ${side} ${m.fr?'fr':''} ${on?'':'junkr'}"><div class="mt"><div class="ml" ${KR()&&locLine(m.l,r.t)!==m.l?`title="${esc(m.l)}"`:''}>${sideDup(it, m.gi)?`<span class="sdup">${esc(sideTag(it, m.gi))}</span>`:''}${esc(locLine(m.l,r.t))}</div><div class="tags">${tags}<span class="tag">${tierT}</span>${desRep}${flipPair(it, an, ri).length?`<button type="button" class="tag sflip" data-flip="${ri}" title="${esc(L('일반 복사엔 접두·접미 표시가 없어 수치로 쪽을 못 정함 — 누르면 반대쪽으로(같은 계열 다른 옵션과 서로 바뀜)','A plain copy has no prefix/suffix marks and the value fits both — click to switch sides (swaps with the other line of this family)'))}">${L('쪽 애매 · 접두↔접미','Side unclear · swap')}</button>`:''}</div></div>${needH}${altLine(it, an, ri)}</div>`;
   }).join('');
   const kName = {imp:L('고정','Implicit'), rune:L('룬','Rune'), ench:L('타락 인챈트','Corruption enchant'), '?':L('인식 못 함','Not recognised')};
   const otherHTML = it.other.length ? `<div class="other">${it.other.map(o=>`<div class="${o.k==='?'?'bad':''}"><span class="k">${kName[o.k]}</span>${esc(locOther(it, o.l))}</div>`).join('')}</div>` : '';
@@ -1781,7 +1834,7 @@ async function run(){
   if(!S.priority) S.priority = await fetch('data/priority.json').then(r=>r.json()).catch(()=>null);
   S.txt = txt;
   loadBoard().then(()=>{ if(S.last?.it) render(); });
-  try{ const it = await parse(txt); S.last = it.err ? {err:it.err} : {it, an:analyse(it)}; }
+  try{ const it = await parse(txt); S.last = it.err ? {err:it.err} : {it, an:await autoSide(it)}; }
   catch(e){ S.last = {err:L('분석 중 오류: ','Analysis failed: ')+e.message}; console.error(e); }
   render();
 }
@@ -1845,6 +1898,7 @@ $('#mods').addEventListener('click', e=>{
       S.busy=false; if(btn) btn.disabled=false; if(S.last?.it!==it) return;
       const r=bd.d; S.draft=r; S.check = r ? verifyDraft(it, bd.an, r) : []; S.flow={wait:true}; showCheck();
       setTimeout(()=>{ if(S.draft!==r) return; S.flow = runFlow(it, r); showCheck(); }, 40); })(); return; }
+  const fb=e.target.closest('[data-flip]'); if(fb && S.last?.it){ const it=S.last.it, an=S.last.an, pr=flipPair(it, an, +fb.dataset.flip); if(pr.length){ applyFlip(it, an, pr); S.last.an=analyse(it); S.draft=null; S.sent=false; render(); } return; }
   const lb=e.target.closest('[data-lv]'); if(lb && S.last?.an){ const [i0,lv]=lb.dataset.lv.split(':'), i=+i0, was = lv==='must' ? S.need.has(i) : lv==='soft' ? S.soft.has(i) : false; S.need.delete(i); S.soft.delete(i); delete S.tsel[i]; if(was && S.alt){ delete S.alt[i]; delete S.altK?.[i]; } if(!was){ if(lv==='must') S.need.add(i); else if(lv==='soft') S.soft.add(i); } S.draft=null; S.sent=false; render(); return; }
   const ab=e.target.closest('[data-alt]'); if(ab && S.last?.an){ const [i0,k]=ab.dataset.alt.split(':'), i=+i0; S.alt=S.alt||{}; S.altK=S.altK||{};
     if(S.altK[i]===k){ delete S.alt[i]; delete S.altK[i]; } else { const x=altRecs(S.last.it, S.last.an, i).find(y=>y.k===k); if(x){ S.alt[i]=x.list; S.altK[i]=k; } } S.draft=null; S.sent=false; render(); return; }

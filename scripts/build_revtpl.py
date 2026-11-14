@@ -14,6 +14,9 @@ ROOT = '/home/claude/poe2data'
 SITE = os.path.join(ROOT, 'site')
 R = json.load(open(os.path.join(SITE, 'data', 'recipes.json'), encoding='utf-8'))
 R = R.get('recipes', R) if isinstance(R, dict) else R
+_T = os.path.join(ROOT, 'scripts', 'graphs_tplonly.json')   # 레시피 탭엔 안 올린 테스트 레시피(build_recipes.py TPLONLY)도 틀로
+EXTRA = json.load(open(_T, encoding='utf-8')) if os.path.exists(_T) else []
+R = R + EXTRA
 CLS = {}
 
 
@@ -184,7 +187,7 @@ def main():
             **({'astrid': 1} if g.get('astrid') is not None else {}), 'frg': sorted(set(i for t in fr for i in leaves(g, G, t))),
         }
         json.dump(g, open(os.path.join(out_dir, gid + '.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-    json.dump({'v': 1, 'g': idx}, open(os.path.join(SITE, 'data', 'revtpl.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+    json.dump({'v': 1, 'g': idx, 'extra': EXTRA}, open(os.path.join(SITE, 'data', 'revtpl.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     print('revtpl: 틀', len(idx), '개 · 뺀 것', len(skipped))
     for s in skipped:
         print('  -', s)

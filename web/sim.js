@@ -97,7 +97,9 @@ function make(graph, D, craft, params){
       if(c.whittleSafe){ const ws=c.whittleSafe.tag!=null ? c.whittleSafe : {tag:c.whittleSafe}, cs=it.mods.filter(m=>!m.fr && !m.unrev && (!ws.side || m.side===ws.side)); if(!cs.length) return false; const lo=Math.min(...cs.map(lvl)); return cs.filter(m=>lvl(m)===lo).every(m=>!match(m,P(ws.tag)) && !(ws.keepDes && m.des)); }   // keepDes: a revealed desecrated line counts as kept (MazBro BiS 갑옷: the blocker)
       if(c.junk){ const j=c.junk; return it.mods.some(m=>m.side===j.side && !m.fr && !m.unrev && !m.des && !match(m,P(j.tag))); }   // a plain junk line on that side (not fractured, not desecrated, outside the tag)   // Whittling would hit only lines outside this tag ({tag, side}: with a side Erasure omen, that side only)
       if(c.famBlock){ const t=tags[P(c.famBlock)], gis=(t.anyOf ? t.anyOf.map(x=>typeof x==='string'?tags[x]:x) : [t]).filter(x=>x.gi!=null);   // every wanted group's family is taken by another line: the step can never hit (리버스 초안 2026-11-11)
-        return gis.length>0 && gis.every(x=>it.mods.some(m=>!m.unrev && !match(m,x) && G[m.gi].f.some(f=>G[x.gi].f.includes(f)))); }
+        const fam = (x, oth) => it.mods.some(m=>!m.unrev && (!oth || !match(m,x)) && G[m.gi].f.some(f=>G[x.gi].f.includes(f)));
+        /* left = 모을 개수(여러 개를 모으는 공개 — 리버스 초안, RV12 2026-11-14): 아직 덜 모였는데 이미 붙은 목표 옵션의 계열도 더 붙을 수 없으니 막힘으로 셈 — 남은 목표가 모두 다른 줄(낮은 티어 같은 계열 등)에 막히면 끝없이 돌던 것 */
+        return gis.length>0 && (c.left ? it.mods.filter(m=>gis.some(x=>match(m,x))).length < c.left && gis.every(x=>fam(x)) && gis.some(x=>fam(x,1)) : gis.every(x=>fam(x,1))); }
       if(c.param) return Object.entries(c.param).every(([k,v])=>params[k]===v);
       if(c.rune!=null){ const k=String(c.rune).toLowerCase().replace(/[’']/g,"'"); return runes.some(x=>x.toLowerCase().replace(/[’']/g,"'").includes(k)) || (graph.astrid && /astrid|아스트리드/.test(k)); }   /* 그 룬이 이미 장착됨(영문·한글 이름 일부) — 룬 상자의 skipIf로 되돌아올 때 다시 지나지 않게(2026-11-12) */
       throw new Error('bad condition '+JSON.stringify(c)); }
@@ -142,7 +144,7 @@ function make(graph, D, craft, params){
         const rf = n.liquid && n.alt && it.rar==='rare' && !n.anyRemove;
         if(rf){ takeRandom(null); const room=[n.ess,n.alt].filter(x=>count(G[tags[x].gi].g)<maxA(G[tags[x].gi].g)); tn = room.length ? room[Math.floor(rnd()*room.length)] : n.ess; }
         const t=tags[tn], sd=G[t.gi].g, cr=sideOm(oms,/Sinistral_Crystallisation/,/Dextral_Crystallisation/);   // magic → rare + the essence line (top tier); on a rare one line goes first (Crystallisation picks its side)
-        if(it.rar==='rare' && !rf) takeRandom(n.anyRemove ? null : count(sd)>=maxA(sd) ? (m=>m.side===sd) : cr ? (m=>m.side===cr) : null);   // its own side full: a line of that side makes way even with a Crystallisation omen on the other side (발굴 규칙 6, 2026-11-11)   // anyRemove: a liquid that takes any line (SL 5-mod jewel: 1/3); its own side full: a line of that side makes way (발굴 규칙 6)
+        if(it.rar==='rare' && !rf) takeRandom(n.anyRemove ? null : count(sd)>=maxA(sd) ? (m=>m.side===sd) : cr ? (m=>m.side===cr) : null);   /* 완벽한 에센스: 붙이는 쪽이 꽉 찼으면 그쪽, 빈자리가 있으면 아무 옵션, 결정화의 징조가 있으면 징조 쪽(사용자 정정 2026-11-14 16:41, docs/game-rules.md) */   // its own side full: a line of that side makes way even with a Crystallisation omen on the other side (발굴 규칙 6, 2026-11-11)   // anyRemove: a liquid that takes any line (SL 5-mod jewel: 1/3); its own side full: a line of that side makes way (발굴 규칙 6)
         it.rar='rare';   // magic → rare (2026-11-11 고침: 이 줄이 주석 안에 들어가 매직 베이스 에센스 뒤에도 매직으로 남아 있었음)
         const m={gi:t.gi, ti:0, side:sd, ess:!n.liquid, mark:!!n.mark}; if(t.slot) m.slot=t.slot; it.mods.push(m); last.added.push(m); }
       else if(a==='annul'){ const sd=sideOm(oms,/Sinistral_Annulment/,/Dextral_Annulment/);

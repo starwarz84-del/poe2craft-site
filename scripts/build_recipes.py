@@ -809,7 +809,10 @@ for _r in R:
     if not _st: continue
     _put={_rn(n['target']['rune']) for n in _r['nodes'] if (n.get('target') or {}).get('rune')}
     _r['start']['runes']=[x for x in _st if _rn(x) not in _put]
-EXCLUDED={'banzino-mirror-staff'}   # 사용자 결정 2026-11-13: 미러 지팡이는 가중치 문제(전도성 지팡이 베이스별 옵션 제한이 데이터에 없음)로 사이트에서 뺌
+EXCLUDED={'banzino-mirror-staff','atom-mana-rarity-ring'}   # atom: 사용자 결정 2026-11-14 17:06 — 테스트로 만든 제작 방법은 레시피 탭에 올리지 않음(리버스 틀 revtpl에는 남김)
+   # 사용자 결정 2026-11-13: 미러 지팡이는 가중치 문제(전도성 지팡이 베이스별 옵션 제한이 데이터에 없음)로 사이트에서 뺌
+TPLONLY={'atom-mana-rarity-ring'}   # 레시피 탭엔 없고 리버스 틀(build_revtpl.py)에만 쓰는 테스트 레시피
+json.dump([x for x in R if _re.sub(r'-v2(-(bal|ess))?$','',x['id']) in TPLONLY],open('/home/claude/poe2data/scripts/graphs_tplonly.json','w'),ensure_ascii=False)
 R[:]=[x for x in R if _re.sub(r'-v2(-(bal|ess))?$','',x['id']) not in EXCLUDED]
 json.dump({'v':2,'recipes':R},open(D+'recipes.json','w'),ensure_ascii=False)
 print(len(R),'recipes')
