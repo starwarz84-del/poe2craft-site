@@ -1,0 +1,1147 @@
+{
+ "id": "sihan-gemling-greathelm-v2",
+ "recipe": "sihan-gemling-greathelm-v2",
+ "cls": "Helmets_str",
+ "base": "Imperial Greathelm",
+ "ilvl": 80,
+ "note": "2026-11-14 RECIPE-C: 시한 젬링 저격용 힘 투구(youtu.be/iXL71H94AdM, 조사 g101 — docs/craft-guides.md 6차). 투구 제작은 6:33부터. 7:24 접미 분열·접두 분열을 모두 해 본 뒤 접두 분열로 결론 → 영상은 방어도 % 접두가 분열된 제국의 대헬름(아이템 레벨 80)에서 시작 → 10:03 카오스 오브 반복(1,000개 준비)으로 접미 치명타 확률 또는 방어도 원소 적용 2티어 이상, 접두는 보지 않음 → 10:52 우측 소멸의 징조 + 소멸의 오브로 빗나간 접미를 지우고 엑잘티드 오브 한 개씩, 치명타가 지워지면 카오스로 돌아감, 세 번째 접미는 나오는 대로 → 20:43 접미 완성(지능 T3·치명 T1·방원소 T2) → 22:54 좌측 결정화의 징조 + 심연의 에센스로 접두 잡옵 하나를 지우고 군주의 징표 → 23:10 완벽한 엑잘티드 오브로 접두(영상: 한 번에 생명력 T2) → 24:07 고대 갈비뼈로 징표 훼손 + 심연의 메아리 → 방어도 플랫, 빗나가면 빛의 징조 + 소멸의 오브 후 고대 갈비뼈 다시 → 32:47 방어도 +203. 분열 이후 약 220 div(시한 예상 300~400). 내부 결정: 분열 옵션은 영상이 분열된 베이스에서 시작해 화면 표시로 확인하지 않음 — 완성 접두 셋 중 방어도 플랫은 훼손, 생명력은 23:10 완벽한 엑잘로 붙어 남는 방어도 %가 분열 옵션. 시작 상태(분열 + 잡옵 3개)와 분열 베이스 가격은 영상에서 확인 못 해 정하지 않음(베이스 가격 미정). 23:10 완벽한 엑잘은 영상에서 한 번에 성공해 다시 하는 방법이 나오지 않음 → 결과 그대로(완성 카드 랜덤 옵션), 접두가 이미 꽉 차 있으면 건너뜀. 완벽한 엑잘로 방어도 플랫이 먼저 붙으면 마지막 훼손 공개는 생명력으로 받음(같은 묶음 태그 fa2).",
+ "params": {
+  "sT": {
+   "kr": "치명타 확률·방어도 원소 적용·방어도 플랫",
+   "en": "Crit chance, armour to elemental and flat armour",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "sT": 1
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "sT": 2
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "sT": 1
+   },
+   "tier": "high",
+   "desc": {
+    "kr": "치명타 확률·방어도 원소 적용 1티어, 방어도 플랫 훼손을 빛의 징조로 다시",
+    "en": "T1 crit chance and armour to elemental, flat armour reveal retried with Light"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "sT": 2
+   },
+   "tier": "bal",
+   "desc": {
+    "kr": "영상 흐름: 치명타 확률·방어도 원소 적용·방어도 플랫 1~2티어, 훼손 공개를 빛의 징조로 다시",
+    "en": "Video flow: T1–2 crit chance, armour to elemental and flat armour, reveal retried with Light"
+   }
+  }
+ ],
+ "tags": {
+  "ar9": {
+   "gi": 9,
+   "tmax": 1
+  },
+  "crit": {
+   "gi": 16,
+   "tmax": "$sT"
+  },
+  "ae": {
+   "gi": 20,
+   "tmax": "$sT"
+  },
+  "cs": {
+   "anyOf": [
+    "crit",
+    "ae"
+   ],
+   "shown": "crit",
+   "label": {
+    "kr": "치명타 확률·방어도 원소 적용",
+    "en": "Crit chance or armour applying to elemental damage"
+   }
+  },
+  "life": {
+   "gi": 6,
+   "tmax": 2
+  },
+  "fa": {
+   "gi": 8,
+   "tmax": "$sT"
+  },
+  "fa2": {
+   "anyOf": [
+    "fa",
+    "life"
+   ],
+   "shown": "fa",
+   "label": {
+    "kr": "방어도 플랫·생명력",
+    "en": "Flat armour or life"
+   }
+  },
+  "mkp": {
+   "gi": 47
+  }
+ },
+ "conds": {
+  "sufOk": {
+   "all": [
+    {
+     "has": "crit"
+    },
+    {
+     "has": "ae"
+    }
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "ar9"
+   },
+   {
+    "ref": "sufOk"
+   },
+   {
+    "has": "fa2"
+   },
+   {
+    "des": true
+   },
+   {
+    "unrev": false
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "b0",
+ "finalItem": {
+  "quality": 20,
+  "sockets": 1
+ },
+ "nodes": [
+  {
+   "id": "b0",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "ms",
+   "start": {
+    "rar": "rare",
+    "quality": 20,
+    "mods": [
+     {
+      "tag": "ar9",
+      "fr": true
+     },
+     {
+      "junk": "p"
+     },
+     {
+      "junk": "s"
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "방어도 % 분열 제국의 대헬름 (아이템 레벨 80)",
+    "en": "Imperial Greathelm with fractured % armour (item level 80)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 (92—100)% 증가 (분열)",
+     "en": "(92—100)% increased Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "ar9"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    1.4
+   ],
+   "next": "c1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 (92—100)% 증가 (분열)",
+     "en": "(92—100)% increased Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "ar9"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "c1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    2.4
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "goal": {
+    "kr": "접미 첫 번째 옵션 — 치명타 확률 (방어도 원소 적용도 성공)",
+    "en": "First suffix: crit chance (armour to elemental also counts)"
+   },
+   "goalBy": {
+    "high": {
+     "kr": "접미 첫 번째 옵션 — 치명타 확률·방어도 원소 적용 1티어",
+     "en": "First suffix: T1 crit chance or armour to elemental"
+    },
+    "bal": {
+     "kr": "접미 첫 번째 옵션 — 치명타 확률·방어도 원소 적용 1~2티어",
+     "en": "First suffix: T1–2 crit chance or armour to elemental"
+    }
+   },
+   "show": [
+    "cs"
+   ],
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "cs"
+      }
+     },
+     "to": "c1",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "ref": "sufOk"
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "ref": "sufOk"
+     },
+     "to": "s2",
+     "hide": true
+    },
+    {
+     "if": {
+      "full": "s"
+     },
+     "to": "s1",
+     "res": "ok"
+    },
+    {
+     "to": "s2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 (92—100)% 증가 (분열)",
+     "en": "(92—100)% increased Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "ar9"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (30—34)% 증가",
+     "en": "(30—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "s1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    3.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Dextral_Annulment"
+   ],
+   "label": {
+    "kr": "소멸의 오브 + 우측 소멸의 징조",
+    "en": "Orb of Annulment + Omen of Dextral Annulment"
+   },
+   "goal": {
+    "kr": "접미 잡옵 지우기",
+    "en": "Remove a junk suffix"
+   },
+   "target": {
+    "kr": "접미 옵션 1개 제거",
+    "en": "Remove one suffix"
+   },
+   "skipIf": {
+    "not": {
+     "full": "s"
+    }
+   },
+   "skipTo": "s2",
+   "skipNote": {
+    "kr": "접미 자리가 남아 있으면 건너뜀",
+    "en": "Skipped while a suffix slot is open"
+   },
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "cs"
+      }
+     },
+     "to": "c1",
+     "res": "fail",
+     "label": {
+      "kr": "치명타 확률이 지워짐 — 카오스부터",
+      "en": "Crit chance gone: back to Chaos"
+     }
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "ref": "sufOk"
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "e1",
+     "hide": true
+    },
+    {
+     "if": {
+      "ref": "sufOk"
+     },
+     "to": "s2",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "full": "s"
+     },
+     "to": "s1",
+     "hide": true
+    },
+    {
+     "to": "s2",
+     "res": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 (92—100)% 증가 (분열)",
+     "en": "(92—100)% increased Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "ar9"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (30—34)% 증가",
+     "en": "(30—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    4.4
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접미 두 번째·세 번째 옵션 — 방어도 원소 적용, 마지막은 나오는 대로",
+    "en": "Second and third suffix: armour to elemental, the last as it comes"
+   },
+   "goalBy": {
+    "high": {
+     "kr": "접미 두 번째·세 번째 옵션 — 방어도 원소 적용 1티어, 마지막은 나오는 대로",
+     "en": "Second and third suffix: T1 armour to elemental, the last as it comes"
+    },
+    "bal": {
+     "kr": "접미 두 번째·세 번째 옵션 — 방어도 원소 적용 1~2티어, 마지막은 나오는 대로",
+     "en": "Second and third suffix: T1–2 armour to elemental, the last as it comes"
+    }
+   },
+   "show": [
+    "ae"
+   ],
+   "edges": [
+    {
+     "if": {
+      "not": {
+       "has": "cs"
+      }
+     },
+     "to": "c1",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "ref": "sufOk"
+       },
+       {
+        "full": "s"
+       }
+      ]
+     },
+     "to": "e1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "ref": "sufOk"
+     },
+     "to": "s2",
+     "hide": true
+    },
+    {
+     "if": {
+      "full": "s"
+     },
+     "to": "s1",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    },
+    {
+     "to": "s2",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 (92—100)% 증가 (분열)",
+     "en": "(92—100)% increased Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "ar9"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (30—34)% 증가",
+     "en": "(30—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 +(32—37)%가 원소 피해에도 적용",
+     "en": "+(32—37)% of Armour also applies to Elemental Damage",
+     "m": "n",
+     "tags": [
+      "ae"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "e1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    5.4
+   ],
+   "act": "essence",
+   "cur": "Essence_of_the_Abyss",
+   "ess": "mkp",
+   "mark": true,
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "접두 잡옵을 지우고 징표",
+    "en": "The junk prefix goes for the Mark"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
+    }
+   ],
+   "edges": [
+    {
+     "to": "x1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 (92—100)% 증가 (분열)",
+     "en": "(92—100)% increased Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "ar9"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "mkp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (30—34)% 증가",
+     "en": "(30—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 +(32—37)%가 원소 피해에도 적용",
+     "en": "+(32—37)% of Armour also applies to Elemental Damage",
+     "m": "n",
+     "tags": [
+      "ae"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "x1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    6.4
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 세 번째 옵션 — 나오는 대로 (영상: 생명력)",
+    "en": "Third prefix: keep what comes (video: life)"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "skipIf": {
+    "full": "p"
+   },
+   "skipTo": "d1",
+   "skipNote": {
+    "kr": "접두가 이미 꽉 차 있으면 건너뜀",
+    "en": "Skipped when the prefixes are already full"
+   },
+   "edges": [
+    {
+     "to": "d1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 (92—100)% 증가 (분열)",
+     "en": "(92—100)% increased Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "ar9"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(120—149)",
+     "en": "+(120—149) to maximum Life",
+     "m": "n",
+     "tags": [
+      "life"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "mkp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (30—34)% 증가",
+     "en": "(30—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 +(32—37)%가 원소 피해에도 적용",
+     "en": "+(32—37)% of Armour also applies to Elemental Damage",
+     "m": "n",
+     "tags": [
+      "ae"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "d1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
+   ],
+   "act": "desecrate",
+   "cur": "Ancient_Rib",
+   "fromMark": true,
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "징표 훼손 — 접두로",
+    "en": "Desecrate the Mark: to the prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "d2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 (92—100)% 증가 (분열)",
+     "en": "(92—100)% increased Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "ar9"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(120—149)",
+     "en": "+(120—149) to maximum Life",
+     "m": "n",
+     "tags": [
+      "life"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (30—34)% 증가",
+     "en": "(30—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 +(32—37)%가 원소 피해에도 적용",
+     "en": "+(32—37)% of Armour also applies to Elemental Damage",
+     "m": "n",
+     "tags": [
+      "ae"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8.4
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "fa2",
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "goal": {
+    "kr": "접두 훼손 옵션 — 방어도 플랫 1티어",
+    "en": "Desecrated prefix: T1 flat armour"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접두 훼손 옵션 — 방어도 플랫 1~2티어 (영상: 1티어)",
+     "en": "Desecrated prefix: T1–2 flat armour (video: T1)"
+    }
+   },
+   "show": [
+    "fa2"
+   ],
+   "edges": [
+    {
+     "if": {
+      "added": "fa2"
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "to": "d2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "방어도 (92—100)% 증가 (분열)",
+     "en": "(92—100)% increased Armour (fractured)",
+     "m": "f",
+     "tags": [
+      "ar9"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "생명력 최대치 +(120—149)",
+     "en": "+(120—149) to maximum Life",
+     "m": "n",
+     "tags": [
+      "life"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "방어도 +(191—221)",
+     "en": "+(191—221) to Armour",
+     "m": "d",
+     "tags": [
+      "fa"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "치명타 확률 (30—34)% 증가",
+     "en": "(30—34)% increased Critical Hit Chance",
+     "m": "n",
+     "tags": [
+      "crit"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "방어도의 +(32—37)%가 원소 피해에도 적용",
+     "en": "+(32—37)% of Armour also applies to Elemental Damage",
+     "m": "n",
+     "tags": [
+      "ae"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "지능 +(28—30)",
+     "en": "+(28—30) to Intelligence",
+     "m": "n"
+    }
+   ]
+  },
+  {
+   "id": "d2x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    8.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 + 빛의 징조",
+    "en": "Orb of Annulment + Omen of Light"
+   },
+   "goal": {
+    "kr": "소멸의 오브 + 빛의 징조",
+    "en": "Orb of Annulment + Omen of Light"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "d3",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    7.4
+   ],
+   "act": "desecrate",
+   "cur": "Ancient_Rib",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접두 세 번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "d2"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    9.4
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "s1",
+    "s2"
+   ],
+   "kr": "접미 채우기",
+   "en": "Filling the suffixes"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "d2",
+    "d2x",
+    "d3"
+   ],
+   "kr": "방어도 플랫 공개",
+   "en": "Flat armour reveal"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "tier": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "ar9",
+     "fr": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "fa2",
+     "des": true
+    },
+    {
+     "tag": "crit"
+    },
+    {
+     "tag": "ae"
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "ar9",
+     "fr": true
+    },
+    {
+     "side": "p",
+     "random": true
+    },
+    {
+     "tag": "fa2",
+     "des": true
+    },
+    {
+     "tag": "crit"
+    },
+    {
+     "tag": "ae"
+    },
+    {
+     "side": "s",
+     "random": true
+    }
+   ]
+  }
+ ]
+}
