@@ -1545,7 +1545,7 @@
       }
     }
     const res = S.res;
-    const fr = {}; for (const k of ['mean', 'median', 'p90', 'bases', 'baseDiv', 'use', 'useDiv']) fr[k] = g(res, k);
+    const fr = {}; for (const k of ['mean', 'median', 'p90', 'bases', 'baseDiv', 'use', 'useDiv', 'est']) fr[k] = g(res, k);
     fr.version = V.id;
     return { nodes: out, phases, start: start_of(r, sim, src, V.params), fcRead: fr };
   }

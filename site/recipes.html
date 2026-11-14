@@ -492,6 +492,7 @@ dialog textarea{width:100%;min-height:180px;background:var(--bg);border:1px soli
 .simbox .simtop .simgrp{display:inline-flex;gap:4px;align-items:center;font-size:12px;color:var(--muted)}
 .simbox .simsum{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;margin:2px 0 8px}
 .simbox .simsum b{color:var(--rare);font-weight:600}
+.esta{color:var(--warn,#d9a441);font-weight:600;cursor:help;border-bottom:1px dotted currentColor}
 .simbox .simsum small,.simbox .simnote{color:var(--faint);font-size:11.5px}
 .fc.panning{cursor:grabbing;user-select:none}.fc{cursor:grab;overflow-x:auto;overflow-y:hidden;border:1px solid var(--line);border-radius:8px;background:var(--bg)}   /* 2026-11-14 사용자: 안쪽 영역만 세로로 스크롤돼 보기 어려움 → 세로는 플로우차트 전체 높이로 펼치고 페이지와 같이 스크롤, 가로만 안쪽 스크롤 */
 .fcin{position:relative}
@@ -1041,7 +1042,7 @@ function analyse(r){
   // an optional step's redo of an earlier step only counts in the "with optional steps" total
   out.forEach((o,i)=>{ if(o.lose>0 && isFinite(o.tries)){ const j=out.findIndex(x=>x.n.id===o.n.fail.lost); if(j>=0){ o.lostRedo=(o.tries-1)*o.lose; const k=o.n.optional && !out[j].n.optional ? 'extraOpt' : 'extraPasses'; out[j][k]=(out[j][k]||0)+o.lostRedo*passes[i]; } } });
   out.forEach((o,i)=>{ if(o.extraPasses) passes[i]+=o.extraPasses; });
-  const tot={}, totAll={}, manual={}, uc=userCost(r);
+  const tot={}, totAll={}, manual={}, uc=userCost(r), totEst={}, estN=new Set();   /* 가중치 추정 옵션 단계(사용자 확정 2026-11-14 21:06): 최종 금액에서 빼고 '+α' */
   out.forEach((o,i)=>{ const n=o.n, u={}, add=(id,k)=>{ if(!id||!isFinite(k)||k<=0) return; u[id]=(u[id]||0)+k; };
     const self = n.fail?.goto==='self';
     const tries = o.done ? 0 : o.fixedTries!=null ? o.fixedTries : o.R!=null ? 1+o.R : (n.expect || (self ? o.tries : 1));
@@ -1058,6 +1059,7 @@ function analyse(r){
       o.settleK=k; for(const q in ux) ux[q]*=passes[i]; o.settleUse=ux; }
     for(const q in ux) totAll[q]=(totAll[q]||0)+ux[q];
     const u1={...u}; for(const k in u) u[k]*=passes[i];   // u1: one pass
+    if((o.pGuess || o.pUnknown) && !n.optional){ for(const k in u) totEst[k]=(totEst[k]||0)+u[k]; estN.add(o.pGuess ? ((specList(n.target||{}).map(x=>x?.gi!=null ? grp(r,x.gi) : null).find(g=>g?.s==='x')?.sub||[])[KR()?0:1]||'') : (o.pWhy||'')); }
     for(const k in u){ if(!n.optional) tot[k]=(tot[k]||0)+u[k]; totAll[k]=(totAll[k]||0)+u[k]+(o.extraOpt?u1[k]*o.extraOpt:0); }
     if(n.cost){ const c=uc[n.cost]; if(c && +c.v>0){ const unit=c.u||'Divine_Orb'; manual[unit]=(manual[unit]||0)+ (+c.v)*passes[i]; }
       else if(n.cost==='base' && +r.basePrice>0 && !(c && c.v!=null && c.v!=='')) manual.Divine_Orb=(manual.Divine_Orb||0)+ (+r.basePrice)*passes[i]; }   // policy 22: the recipe's base price unless the viewer typed one
@@ -1090,7 +1092,8 @@ function analyse(r){
       else if(o.lose>0) reach *= o.p/(o.p+(1-o.p)*o.lose); });
     phaseSum[ph.id]={reach, bases: keep>0 ? 1/keep : Infinity}; });
   if(r.fcRead) for(const k in phaseSum) delete phaseSum[k];
-  return r._an = {nodes:out, tot, totAll, optMore, manual, bases:r.fcRead?bases:passes[0], final, finalX, keys:Object.keys(tot), qual, runes, sockets, sanct, phaseSum, basesAll, finalState:fcState};
+  const est = r.fcRead ? (r.fcRead.est?.div>0 ? {div:r.fcRead.est.div, names:(r.fcRead.est.names||[]).map(x=>KR()?x.kr:x.en)} : null) : (Object.keys(totEst).length ? {use:totEst, names:[...estN].filter(Boolean)} : null);   /* 가중치 추정 옵션 단계 비용(+α) */
+  return r._an = {nodes:out, tot, totAll, optMore, manual, est, bases:r.fcRead?bases:passes[0], final, finalX, keys:Object.keys(tot), qual, runes, sockets, sanct, phaseSum, basesAll, finalState:fcState};
 }
 // modifier search (사용자 2026-11-11): up to 3 dropdowns, a recipe must have every chosen modifier on its finished item
 const statKey = g => (g.t[0][5]||'').replace(/\(?[+-]?\d+(?:\.\d+)?(?:—[+-]?\d+(?:\.\d+)?)?\)?/g,'#').replace(/\s+/g,' ').trim();
@@ -1161,7 +1164,9 @@ const manualDiv = man => { let v=0; for(const [u,x] of Object.entries(man||{})){
 const addDiv = (a,b) => !a ? b : !b ? a : {v:a.v+b.v, miss:[...new Set([...a.miss,...b.miss])]};
 // whole recipe: main path + entered costs (base price), and with the optional steps
 function recipeCost(r){ if(!S.prices) return null; const a=A(r), m=manualDiv(a.manual), d=divOf(a.tot), all=divOf(a.totAll);
-  return {v:d.v+m, miss:d.miss, all:all.v+m, missAll:all.miss}; }
+  const ed = a.est ? (a.est.div!=null ? a.est.div : divOf(a.est.use).v) : 0;   /* 가중치 추정 옵션 단계: 최종 금액에서 빼고 '+α'(사용자 확정 2026-11-14 21:06) */
+  return {v:Math.max(0, d.v-ed)+m, miss:d.miss, all:Math.max(0, all.v-ed)+m, missAll:all.miss, est:ed>0.005 ? {div:ed, full:d.v+m, names:a.est.names||[]} : null}; }
+const estTag = c => c?.est ? ` <span class="esta" title="${esc(L(`가중치를 몰라 추정하는 옵션 단계는 뺀 금액. 추정 포함 약 ${fmtDiv(c.est.full)} div`,`Excludes the steps for modifiers whose weights are unknown. With the estimate: about ${fmtDiv(c.est.full)} div`)+(c.est.names.length ? ' · '+L('가중치 모르는 옵션: ','Unknown weights: ')+c.est.names.join(', ') : ''))}">+ α</span>` : '';
 const fmtDiv = v => v>=100 ? Math.round(v).toLocaleString() : v>=10 ? v.toFixed(0) : v>=1 ? v.toFixed(1) : v>=0.01 ? v.toFixed(2) : '0.01';
 const noPrice = miss => miss?.length ? `<small class="nopr" title="${esc(L('시세 없음: ','No price: ')+miss.map(k=>nm(cur(k))).join(', '))}">${L('시세 없음','no price')} ${miss.length}</small>` : '';
 const divHTML = (d, pre) => !d || (!(d.v>0) && !d.miss.length) ? '' : `<span class="ci dv">${pre||''}${d.v>=0.005?`${v0(d.v)}`:d.v>0?L('<b>0.01</b> div 미만','under <b>0.01</b> div'):''}${noPrice(d.miss)}</span>`;   /* 0.01 div 아래도 빈칸 대신 '0.01 div 미만'(W11, V2-에센셜 엑잘 0.34개) */
@@ -1177,7 +1182,7 @@ function budgetLine(r){ const c=recipeCost(r); if(!c) return ''; const a=analyse
   const lv = !lv0 || pt?.id==='mirror' ? null : {kr:lv0.kr, en:lv0.en, omens:lv0.omens, div: r.priceTier && pt ? tierMax(pt) : null, tier:pt};
   const om = EXPENSIVE().reduce((s,k)=>s+(a.tot[k]||0),0);
   if(r.marketPrice>0){ const over = c.v > r.marketPrice;
-    return `<p class="budw ${over?'over':''}">${L('예상 비용','Est. cost')} ${v0(c.v)} / ${L('시세','market')} <b>${fmtDiv(+r.marketPrice)}</b> div${over?` — ${L('시세보다 비쌈, 구입 권장','dearer than buying it')}`:''}</p>`; }
+    return `<p class="budw ${over?'over':''}">${L('예상 비용','Est. cost')} ${v0(c.v)}${estTag(c)} / ${L('시세','market')} <b>${fmtDiv(+r.marketPrice)}</b> div${over?` — ${L('시세보다 비쌈, 구입 권장','dearer than buying it')}`:''}</p>`; }
   if(!lv) return '';
   const overC = lv.div!=null && c.v > lv.div, overO = lv.omens!=null && om > lv.omens + 0.05;
   if(!overC && !overO) return '';
@@ -1681,7 +1686,7 @@ function detailHTML(r){
         <p class="legend">${L('시도당 성공 = 한 번 시도했을 때 목표가 붙을 확률(실제 가중치 기준). 반복 단계의 숫자는 평균 사용량이고, ↺ 처음부터·↩ 되돌아가기가 있으면 그 구간 사용량에 평균 반복 횟수를 곱함. 디바인(div) 값은 시세로 환산한 예상치.','Per try = chance one attempt lands the target, from real weights. Loop numbers are averages; a restart or jump back multiplies that span by the expected passes. Divine (div) values are estimates from market prices.')}</p>
         ${S.tips.some(t=>(t.recipes||[]).includes(r.id))?`<section class="rtips"><p class="sec">${L('이 레시피에 쓰인 제작 꿀팁','Tips used in this recipe')}</p><div class="tips">${S.tips.filter(t=>(t.recipes||[]).includes(r.id)).map(t=>tipCard(t,true)).join('')}</div></section>`:''}
         <details class="totbox" data-totbox ${store.get('totOpen',false)?'open':''}><summary>${L('총 소모품 (평균, 분석값)','Total cost (average, analytic)')}</summary>
-        <div class="tot">${(()=>{ const c=recipeCost(r); return c ? `<p class="optsum">${a.optMore?L('확정까지','Guaranteed part'):L('예상 비용','Est. cost')}: <span class="ci dv">${v0(c.v)}${noPrice(c.miss)}</span>${a.manual && Object.keys(a.manual).length?` <small>${L('(베이스 가격 포함)','(base price included)')}</small>`:` <small>${L('(베이스 가격 제외)','(base price not included)')}</small>`}</p>${a.optMore?`<p class="optsum">${L('추가 포함','With extras')}: <span class="ci dv">${v0(c.all)}${noPrice(c.missAll)}</span></p>`:''}` : ''; })()}${a.optMore?`<p class="optsum">${L('선택 단계 포함 시','With optional steps')}: ${sortKeys(Object.keys(a.totAll)).filter(k=>a.totAll[k]>=0.05).map(k=>`<span class="ci">${icon(k,r)}${fmt(a.totAll[k])}</span>`).join('')}${a.basesAll>a.bases+0.05?`<span class="ci dim">${L('베이스','base')} ×${fmt(a.basesAll)}</span>`:''}</p>`:''}<table><thead><tr><th>${L('커런시','Item')}</th><th>${L('평균','Avg')}</th></tr></thead><tbody>${rows}
+        <div class="tot">${(()=>{ const c=recipeCost(r); return c ? `<p class="optsum">${a.optMore?L('확정까지','Guaranteed part'):L('예상 비용','Est. cost')}: <span class="ci dv">${v0(c.v)}${estTag(c)}${noPrice(c.miss)}</span>${a.manual && Object.keys(a.manual).length?` <small>${L('(베이스 가격 포함)','(base price included)')}</small>`:` <small>${L('(베이스 가격 제외)','(base price not included)')}</small>`}</p>${a.optMore?`<p class="optsum">${L('추가 포함','With extras')}: <span class="ci dv">${v0(c.all)}${noPrice(c.missAll)}</span></p>`:''}` : ''; })()}${a.optMore?`<p class="optsum">${L('선택 단계 포함 시','With optional steps')}: ${sortKeys(Object.keys(a.totAll)).filter(k=>a.totAll[k]>=0.05).map(k=>`<span class="ci">${icon(k,r)}${fmt(a.totAll[k])}</span>`).join('')}${a.basesAll>a.bases+0.05?`<span class="ci dim">${L('베이스','base')} ×${fmt(a.basesAll)}</span>`:''}</p>`:''}<table><thead><tr><th>${L('커런시','Item')}</th><th>${L('평균','Avg')}</th></tr></thead><tbody>${rows}
           <tr><td>${L('베이스 아이템','Base items')}</td><td class="num">${fmt(a.bases)}</td></tr>
           ${Object.entries(a.manual).map(([u,v])=>`<tr><td>${icon(u,r)}${esc(nm(cur(u)))} <small>${L('(직접 입력)','(entered)')}</small></td><td class="num">${fmt(v)}</td></tr>`).join('')}</tbody></table>
 </div>
@@ -2196,7 +2201,7 @@ function flowchartHTML(r, d){ const {s, keys, sel}=simStrategy(d), g0=fcOver(d.g
   return `<section class="simbox${S.simFull?' full':''}" data-simbox>
     <div class="simtop">${vers?`<span class="simgrp">${L('버전','Version')}${vers}</span>`:''}<button type="button" class="chip" data-act="fcitems" aria-pressed="${S.fcItems!==false}">${L('아이템 옵션','Item modifiers')}</button><span class="fczoom" role="group" aria-label="${L('확대·축소','Zoom')}"><button type="button" class="btn" data-zoom="-1" title="${L('축소','Zoom out')}">−</button><button type="button" class="btn zv" data-zoom="0" title="${L('기본 크기(80%)','Default size (80%)')}">${Math.round((S.fcZoom||0.8)*100)}%</button><button type="button" class="btn" data-zoom="1" title="${L('확대','Zoom in')}">+</button></span><button type="button" class="btn simfs" data-act="simfull" aria-pressed="${!!S.simFull}">${S.simFull?L('✕ 닫기','✕ Close'):L('전체화면','Full screen')}</button></div>
     <details class="simopts" ${S.simOpts?'open':''}><summary class="simnote">${L('세부 조건','Detailed options')}</summary><div class="simtop">${toggles}</div></details>
-    <div class="simsum"><span>${L('완성 1개당','Per finished item')} ${v0(res.mean)} <small>${L('(베이스 가격 제외)','(base price not included)')}</small></span><span>${L('중앙값','Median')} ${fmtDiv(res.median)} · ${L('운 나쁠 때(90%)','Unlucky (90%)')} ${fmtDiv(res.p90)} div</span><span>${L('베이스','Bases')} ${fmt(res.bases)}${L('개','')}</span></div>
+    <div class="simsum"><span>${L('완성 1개당','Per finished item')} ${v0(Math.max(0,res.mean-(res.est?.div||0)))}${res.est ? estTag({est:{full:res.mean, names:(res.est.names||[]).map(x=>KR()?x.kr:x.en)}}) : ''} <small>${L('(베이스 가격 제외)','(base price not included)')}</small></span><span>${L('중앙값','Median')} ${fmtDiv(res.median)} · ${L('운 나쁠 때(90%)','Unlucky (90%)')} ${fmtDiv(res.p90)} div</span><span>${L('베이스','Bases')} ${fmt(res.bases)}${L('개','')}</span></div>
     ${estNote(r)}
     ${legend}
     <div class="fc"><div class="fcin" style="width:${Lay.Wt}px;height:${fcH}px;zoom:${S.fcZoom||0.8}">${regions}<svg class="fcsvg" width="${Lay.Wt}" height="${fcH}" aria-hidden="true"><defs><pattern id="fchatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="9" class="fchl"/></pattern><pattern id="fchatch1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="9" class="fchl1"/></pattern></defs>${loopsSvg.join('')}${sideLines}</svg>${lane}${loopTags.join('')}<svg class="fcsvg" width="${Lay.Wt}" height="${Lay.Ht}" aria-hidden="true"><defs>${['fwd','ok','fail','off','side'].map(k2=>`<marker id="fcm-${k2}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto"><path class="mk-${k2}" d="M0,0L8,4L0,8z"/></marker>`).join('')}</defs>${svgE}</svg>${diamonds}${nodes}${labels}</div>${fcFinalsHTML(r, d, {...s.params, ...sel})}</div>

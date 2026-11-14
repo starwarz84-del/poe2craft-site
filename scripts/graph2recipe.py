@@ -1379,7 +1379,7 @@ def read_recipe(r, sim, src, tiers, inherit=True):
                     if fno.get(k): v['no'] = fno[k]
     res = S['res']
     return {'nodes': out, 'phases': phases, 'start': start_of(r, sim, src, V['params']),
-            'fcRead': {k: res.get(k) for k in ('mean', 'median', 'p90', 'bases', 'baseDiv', 'use', 'useDiv')} | {'version': V['id']}}
+            'fcRead': {k: res.get(k) for k in ('mean', 'median', 'p90', 'bases', 'baseDiv', 'use', 'useDiv', 'est')} | {'version': V['id']}}
 
 
 def fc_numbers(W, sim, src, vid):

@@ -234,6 +234,23 @@ function simulate(graph, D, craft, prices, params, N=5000, seed=1){
   const e2={}; for(const k in edges) e2[k]=edges[k]/N; const eI={}; for(const k in edgesI) eI[k]=edgesI[k]/N;   /* per-edge counts (a#index): two edges to the same box (success and failure both to 완성) stay apart — 2026-11-11 */
   return {N, seed, mean:costs.reduce((s,x)=>s+x,0)/N, median:q(0.5), p90:q(0.9), p10:q(0.1), bases:bases/N, baseDiv, use:avg(tot), useDiv:div(avg(tot)), useMedian:uCosts[Math.min(N-1, Math.floor(0.5*N))], useP90:uCosts[Math.min(N-1, Math.floor(0.9*N))], nodes, edges:e2, edgesI:eI, reqOk:okReq/Math.max(1,ok), c1:Object.fromEntries(Object.entries(c1).map(([k,v])=>[k,v/N])), missing:[...missing], desStat:{tag:Object.fromEntries(Object.entries(dsT).map(([k,x])=>[k,x.d/x.n])), side:{p:dsSide.p/Math.max(1,ok), s:dsSide.s/Math.max(1,ok)}}};
 }
-const api={rng, make, simulate, fluxTarget, FLUX};
+/* 가중치를 몰라 추정하는 옵션(사용자 확정 2026-11-14 21:06): 룬·영혼 핵 증강물 옵션(SL 실측 없음)·가중치 1로 비어 있는 옵션.
+   그 옵션을 노리는 상자와 그 상자가 빗나갔을 때 가는 정리 상자의 비용은 최종 금액에서 빼고 '+α'로 보여 줌(훼손 전용 1000 가정은 포함). */
+function estGi(D, gi){ const g=D?.groups?.[gi]; if(!g) return false;
+  if(g.s==='x') return !/Otherworldly|Liquid/.test((g.sub||[])[1]||'') && g.wsrc!=='sl';
+  if(g.s==='n' && g.t.every(t=>!(t[1]>1))){ const flat=(D.groups||[]).filter(x=>x.s==='n').every(x=>x.t.every(t=>!(t[1]>1))); return !flat; }
+  return false; }
+function estInfo(graph, D){ const T=graph.tags||{}, ids=new Set(), names=new Map();
+  const gisOf=(tag, seen=new Set())=>{ if(seen.has(tag)) return []; seen.add(tag); const t=T[tag]; if(!t) return []; if(t.gi!=null) return [t.gi]; return (t.anyOf||t.all||[]).flatMap(x=>typeof x==='string' ? gisOf(x, seen) : (x?.gi!=null ? [x.gi] : [])); };
+  const condTags=c=>{ if(!c) return []; const o=[]; if(c.has) o.push(c.has); if(c.count?.tag) o.push(c.count.tag); ['all','any'].forEach(k=>(c[k]||[]).forEach(x=>o.push(...condTags(x)))); return o; };
+  const byId={}; (graph.nodes||[]).forEach(n=>byId[n.id]=n);
+  for(const n of graph.nodes||[]){ if(n.kind!=='act') continue; const tags=(n.edges||[]).filter(e=>e.res==='ok' || (!e.res && e.if)).flatMap(e=>condTags(e.if));
+    const est=[...new Set(tags.flatMap(t=>gisOf(t)))].filter(gi=>estGi(D, gi)); if(!est.length) continue;
+    ids.add(n.id); est.forEach(gi=>{ const g=D.groups[gi], t=g.t?.[0]; if(g.s==='x') names.set('x'+g.sub?.[1], {kr:`${g.sub?.[0]||''} 옵션`, en:`${g.sub?.[1]||''} modifiers`}); else names.set(gi, {kr:((t?.[4]||t?.[2]||'').split('\n')[0]).replace(/\(\d+—\d+\)/g,'#'), en:((t?.[5]||t?.[3]||'').split('\n')[0]).replace(/\(\d+—\d+\)/g,'#')}); });
+    (n.edges||[]).filter(e=>e.res==='fail' && e.to!==n.id).forEach(e=>{ const m=byId[e.to]; if(m && m.kind!=='act' || (m && /^v\d/.test(m.id))) ids.add(m.id); }); }
+  for(const id of [...ids]) for(const m of graph.nodes||[]) if(/^v\d/.test(m.id) && m.id.endsWith(id)) ids.add(m.id);
+  return {ids, names:[...names.values()]}; }
+function estSplit(graph, D, res){ if(!res?.nodes) return {div:0, names:[]}; const I=estInfo(graph, D); let d=0; I.ids.forEach(id=>{ d+=res.nodes[id]?.div||0; }); return {div:d, names:I.names}; }
+const api={rng, make, simulate, fluxTarget, FLUX, estGi, estInfo, estSplit};
 if(typeof module!=='undefined' && module.exports) module.exports=api; else root.POE2SIM=api;
 })(typeof window!=='undefined' ? window : globalThis);
