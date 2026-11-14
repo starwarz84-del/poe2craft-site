@@ -34,7 +34,7 @@ const up=()=>new Promise(r=>{ const q=http.get(`http://localhost:${PORT}/discove
       const rows=an.rows.map((r,i)=>({i, gi:r.m.gi, side:r.m.side, how:r.unrev?'미공개':(HOWK[r.how]||r.how), tier:r.tierNo, cnt:r.tierCnt, tsel:S.tsel[i]||null, need:S.need.has(i), txt:(r.t?.[4]||r.t?.[2]||'').replace(/\n/g,' / ')}));
       return {rows, chips, putrid:!!an.putrid, unrec:an.unrec||0, other:(it.other||[]).filter(o=>o.k==='?').map(o=>o.l||o.line||o.t||''), cls:it.cls, base:it.b?.kr, ilvl:it.ilvl, name:it.name}; }, [process.env.NEED||'', process.env.TIER||'', !!+(process.env.CHIP||0), process.env.FAST!=='0']).catch(e=>({err:e.message}));
     let res;
-    if(pre.err || pre.putrid || !pre.rows.some(r=>r.need)) res={...pre, probs:[pre.err||(pre.putrid?'훼손 옵션 2개(진행 불가 아이템)':'필수로 고를 옵션 없음')]};
+    if(pre.err || pre.putrid) res={...pre, probs:[pre.err||'훼손 옵션 2개(진행 불가 아이템)']};   /* 필수 없음(분열 옵션만 고름 등)도 화면처럼 그대로 초안 — 분열 옵션은 이미 붙어 있음 */
     else { /* render는 __rev에 없어서 다시 그리지 않고 #mk를 바로 누름 — 클릭 핸들러가 S.need·S.tsel·S.alt·S.okQR를 그대로 읽음 */
       await p.waitForSelector('#mk', {timeout:10000}); await p.evaluate(()=>{ const S=__rev; S.flow=null; S.draft=null; S.check=null; S.lastC=null; S.tplCmp=null; S.tplWhy={}; const m=document.querySelector('#mkmsg'); if(m) m.innerHTML=''; document.querySelector('#mk').click(); });
       const done = await p.waitForFunction(()=>{ const S=__rev; return S.flow && !S.flow.wait && S.draft && document.querySelector('#mkmsg .flow, #mkmsg .check') ? true : (document.querySelector('#mkmsg .mkwarn') ? 'warn' : false); }, null, {timeout:170000, polling:250}).then(h=>h.jsonValue()).catch(()=>'timeout');
