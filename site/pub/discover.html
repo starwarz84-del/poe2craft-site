@@ -936,7 +936,11 @@ function makeDraft(it, an, opt){
   const EXS = ['Perfect_Exalted_Orb','Greater_Exalted_Orb','Exalted_Orb'];
   const note = (kr,en) => ({kr,en});
   const names = (list, f) => list.map(f).join(' · ');
-  const rows = an.rows.filter(r=>!r.unrev);
+  /* 기원의 나무(Genesis Tree) 옵션은 제작으로 못 붙임 — 붙어 나온 레어를 사서 분열해 시작(사용자 확정 2026-11-15 00:46, 예: 기억 반지 주문의 마나 소모 효율).
+     다른 분열 옵션이 없으면 그 옵션을 분열로, 이미 다른 분열이 있으면 산 베이스에 붙어 있는 것으로 */
+  const isGen = r => r.g?.s==='x' && /^Genesis Tree/.test(r.g.sub?.[1]||'');
+  const frOther = an.rows.some(r=>!r.unrev && r.m.fr);
+  const rows = an.rows.filter(r=>!r.unrev).map(r=>!frOther && isGen(r) && !r.m.fr ? {...r, m:{...r.m, fr:true}, how:'fr', genFr:true} : r);
   const frs = rows.filter(r=>r.m.fr);
   const essRows = rows.filter(r=>r.how==='e' && !r.m.fr).map(r=>{ const e=craft.essences.find(x=>x.en===r.t[3]) || craft.essences.find(x=>x.en===r.g.t[0][3]); return {r, e}; }).filter(x=>x.e);
   const magicEss = essRows.filter(x=>x.e.mode==='magic'), rareEss = essRows.filter(x=>x.e.mode!=='magic');
@@ -987,7 +991,7 @@ function makeDraft(it, an, opt){
       : {kr:`퀄리티 ${it.qual}% (${nk(sc)})`, en:`quality ${it.qual}% (${ne(sc)})`}; }
   const start = {rar:'normal', mods:[], ...(baseQ?{quality:it.qual}:{})}; const junk = {p:0, s:0}; let looseJunk = false;   /* 징조 없이 붙인 잡옵(전환·확장·제왕): 실제로는 어느 쪽에 붙을지 모름 */
   /* 분열 베이스의 '베이스에 포함'(11-11)은 없앰 — 분열 과정을 플로우차트 준비 구역에 넣음(리버스 13장 사용자 확정 11-13 20:16, W6: graphify fracPrep) */
-  const boughtFr = [];
+  const boughtFr = frOther ? rnd.filter(isGen) : [];   /* 다른 분열이 있으면 기원의 나무 옵션은 산 베이스에 붙어 있음 */
   if(frs.length){ start.rar='rare'; start.mods = frs.map(r=>({...(t=>t.anyOf ? {gi:r.m.gi, tmax:Math.max(1, r.tierNo)} : t)(tm(r)), fr:true, ...(r.g?.s==='e'?{crafted:true}:{})})); /* 분열된 제작 옵션도 제작 옵션(사용자 확정 2026-11-11): 한도 1개에 포함 */ frs.forEach(r=>cnt[r.m.side]++); rar='rare';
     boughtFr.forEach(r=>{ start.mods.push(one(tm(r))); cnt[r.m.side]++; rnd.splice(rnd.indexOf(r),1); });
     const need = {p:rows.filter(r=>!r.m.fr && r.m.side==='p').length, s:rows.filter(r=>!r.m.fr && r.m.side==='s').length};
