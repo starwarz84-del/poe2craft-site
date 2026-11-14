@@ -49,6 +49,7 @@ fi
 
 step "1. 데이터·레시피 빌드"
 ( cd scripts && python3 build_prices.py >/dev/null && python3 build_tips.py >/dev/null && python3 graphs/patch_runes.py >/dev/null && python3 build_recipes.py | tail -1 && python3 build_special.py >/dev/null && python3 graphs/patch_astrid.py && python3 build_revtpl.py | head -1 ) || fail "빌드 실패"
+python3 tools/knowhow_index.py >/dev/null || fail "노하우 분류 빠짐 (tools/knowhow_index.py CLS에 추가)"
 python3 i18n/build.py | tail -1 || fail "i18n 빌드 실패"
 
 step "2. 검사 (테스트 서버)"
