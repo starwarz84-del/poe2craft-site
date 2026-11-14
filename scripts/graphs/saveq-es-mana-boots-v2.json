@@ -1,0 +1,1635 @@
+{
+ "id": "saveq-es-mana-boots-v2",
+ "recipe": "saveq-es-mana-boots-v2",
+ "cls": "Boots_int",
+ "base": "Luxurious Slippers",
+ "ilvl": 82,
+ "note": "2026-11-14 RECIPE-B: SaVeQ ES·마나 장화(youtu.be/5ngxdC6xY6Q, 조사 g89 — docs/craft-guides.md 5차). 영상은 켤레 5개를 같은 방법으로 만들고 켤레마다 분열 옵션이 다름. 플로우차트는 완성품 화면의 켤레(접미 번개 저항 분열) 한 줄: 2:03 호화로운 슬리퍼(약 1 div, 세케마 샌들은 15~35 div라 비추천) → 완벽한 진화 + 완벽한 확장 + 소멸 반복으로 저항 1티어 매직 → 4:40 완벽한 제왕(에센스는 안 씀) → 5:11 좌측 강령술의 징조 + 보존된 갈비뼈(미공개 접두, 분열되지 않음) → 분열의 오브 → 저항 분열 → 소멸로 분열만 남김 → 6:15 좌측 찬미 + 상위 찬미의 징조 + 완벽한 엑잘티드 오브(카오스 대신)로 접두 2개, 빗나가면 소멸로 분열만 남기고 다시 → 마나 최대치 2티어 + 에너지 보호막 증가 1티어 → 8:18 좌측 강령술 + 고대 갈비뼈 + 심연의 메아리 → 이동 속도 35%, 빗나가면 빛의 징조로 다시(15:29 30%·25%를 넘기고 다섯 번째) → 8:48 아스트리드의 창의성 → 상위 찬미 + 엑잘티드 오브로 접미 잡옵 2개(접두가 꽉 차서 결정화 필요 없음) → 경악의 에센스·신비한 합금으로 둘을 바꿈(접미가 꽉 차 있어 그쪽 옵션이 지워짐, 경악 옵션이 지워지면 다시) → 22:15 축성(선택). 내부 결정: 분열이 저항이 아니면 새 베이스(영상은 다른 분열 켤레도 다른 완성품으로 이어 감 — 이 플로우차트는 저항 분열 켤레만 따름), 분열 준비의 미공개 훼손은 공개하지 않고 소멸로 분열만 남김(영상 \"공개에서 마나·에너지 보호막이 안 나오면 소멸로 분열만 남기고\"의 빗나간 경우), 매직 단계는 저항 1티어만 맞추고 접두는 나오는 대로. 축성은 시뮬에 규칙이 없어 선택 단계(비용 미포함). 신성한 오브·완벽한 철 룬·퀄리티는 정책 9·14장대로 뺌.",
+ "params": {
+  "mT": {
+   "kr": "접두 마나 최대치",
+   "en": "Maximum mana prefix",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  },
+  "eT": {
+   "kr": "접두 에너지 보호막",
+   "en": "Energy shield prefix",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  },
+  "sT": {
+   "kr": "이동 속도(훼손)",
+   "en": "Movement speed (desecrated)",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "나오는 대로",
+     "en": "As it comes"
+    }
+   }
+  },
+  "v": {
+   "kr": "공개가 빗나가면",
+   "en": "Reveal miss",
+   "values": {
+    "1": {
+     "kr": "빛의 징조로 다시",
+     "en": "Retry with Light"
+    },
+    "0": {
+     "kr": "결과 그대로",
+     "en": "Keep it"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "bal",
+   "params": {
+    "mT": 2,
+    "eT": 2,
+    "sT": 2,
+    "v": 1
+   }
+  },
+  {
+   "id": "ess",
+   "params": {
+    "mT": 4,
+    "eT": 4,
+    "sT": 4,
+    "v": 0
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "mT": 2,
+    "eT": 2,
+    "sT": 2,
+    "v": 1
+   },
+   "tier": "bal",
+   "desc": {
+    "kr": "영상 흐름: 마나 최대치·에너지 보호막·이동 속도 1~2티어, 빛의 징조로 다시 공개",
+    "en": "Video flow: T1–2 maximum mana, energy shield and movement speed, reveal retried with Light"
+   }
+  },
+  {
+   "id": "ess",
+   "kr": "에센셜",
+   "en": "Essential",
+   "params": {
+    "mT": 4,
+    "eT": 4,
+    "sT": 4,
+    "v": 0
+   },
+   "tier": "ess",
+   "desc": {
+    "kr": "마나 최대치·에너지 보호막 1~4티어, 훼손 공개 결과 그대로",
+    "en": "T1–4 maximum mana and energy shield, reveal kept as it comes"
+   }
+  }
+ ],
+ "tags": {
+  "fr1": {
+   "gi": 1,
+   "tmax": 1
+  },
+  "cr1": {
+   "gi": 2,
+   "tmax": 1
+  },
+  "lr1": {
+   "gi": 3,
+   "tmax": 1
+  },
+  "res1": {
+   "anyOf": [
+    "fr1",
+    "cr1",
+    "lr1"
+   ],
+   "shown": "lr1",
+   "label": {
+    "kr": "화염·냉기·번개 저항 1티어",
+    "en": "T1 fire, cold or lightning resistance"
+   }
+  },
+  "mnT": {
+   "gi": 6,
+   "tmax": "$mT"
+  },
+  "es8": {
+   "gi": 8,
+   "tmax": "$eT"
+  },
+  "es7": {
+   "gi": 7,
+   "tmax": "$eT"
+  },
+  "es9": {
+   "gi": 9,
+   "tmax": "$eT"
+  },
+  "esT": {
+   "anyOf": [
+    "es8",
+    "es7",
+    "es9"
+   ],
+   "shown": "es8",
+   "label": {
+    "kr": "에너지 보호막 증가·최대치·복합",
+    "en": "Increased, maximum or hybrid energy shield"
+   }
+  },
+  "msT": {
+   "gi": 12,
+   "tmax": "$sT"
+  },
+  "hor": {
+   "gi": 46
+  },
+  "mys": {
+   "gi": 51
+  }
+ },
+ "conds": {
+  "preOk": {
+   "all": [
+    {
+     "has": "mnT"
+    },
+    {
+     "has": "esT"
+    }
+   ]
+  },
+  "magOk": {
+   "all": [
+    {
+     "has": "res1"
+    },
+    {
+     "full": "p"
+    }
+   ]
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "res1"
+   },
+   {
+    "ref": "preOk"
+   },
+   {
+    "any": [
+     {
+      "param": {
+       "v": 0
+      }
+     },
+     {
+      "has": "msT"
+     }
+    ]
+   },
+   {
+    "has": "hor"
+   },
+   {
+    "has": "mys"
+   },
+   {
+    "unrev": false
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "b0",
+ "basePrice": {
+  "Divine_Orb": 1
+ },
+ "finalItem": {
+  "quality": 20,
+  "sockets": 1
+ },
+ "nodes": [
+  {
+   "id": "b0",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "t1",
+   "start": {
+    "rar": "normal",
+    "mods": []
+   },
+   "label": {
+    "kr": "호화로운 슬리퍼 구입 (노멀, 아이템 레벨 82)",
+    "en": "Buy Luxurious Slippers (normal, item level 82)"
+   },
+   "item": []
+  },
+  {
+   "id": "t1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "transmute",
+   "cur": "Perfect_Orb_of_Transmutation",
+   "label": {
+    "kr": "진화",
+    "en": "Transmute"
+   },
+   "goal": {
+    "kr": "매직 — 접미 저항 1티어 노림",
+    "en": "Magic: aiming for a T1 resistance suffix"
+   },
+   "show": [
+    "fr1",
+    "cr1",
+    "lr1"
+   ],
+   "edges": [
+    {
+     "if": {
+      "ref": "magOk"
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "res1"
+     },
+     "to": "a1"
+    },
+    {
+     "if": {
+      "full": "s"
+     },
+     "to": "ax",
+     "hide": true
+    },
+    {
+     "to": "a1"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "res1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "a1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "augment",
+   "cur": "Perfect_Orb_of_Augmentation",
+   "label": {
+    "kr": "확장",
+    "en": "Augment"
+   },
+   "goal": {
+    "kr": "접미 번개 저항 1티어 — 화염·냉기·번개 저항 1티어 중 먼저 뜬 것",
+    "en": "T1 lightning resistance suffix: whichever T1 resistance lands first"
+   },
+   "show": [
+    "fr1",
+    "cr1",
+    "lr1"
+   ],
+   "edges": [
+    {
+     "if": {
+      "ref": "magOk"
+     },
+     "to": "r1",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "res1"
+     },
+     "to": "a1",
+     "hide": true
+    },
+    {
+     "if": {
+      "full": "s"
+     },
+     "to": "ax",
+     "res": "fail",
+     "label": {
+      "kr": "저항이 아닌 접미",
+      "en": "A non-resistance suffix"
+     }
+    },
+    {
+     "to": "a1",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "res1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ax",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    1,
+    2
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "옵션 1개 제거",
+    "en": "Remove one option"
+   },
+   "edges": [
+    {
+     "if": {
+      "ref": "magOk"
+     },
+     "to": "r1",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "res1"
+     },
+     "to": "a1",
+     "label": {
+      "kr": "다시 확장",
+      "en": "Augment again"
+     }
+    },
+    {
+     "if": {
+      "full": "s"
+     },
+     "to": "ax",
+     "hide": true
+    },
+    {
+     "to": "a1",
+     "label": {
+      "kr": "다시 확장",
+      "en": "Augment again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "r1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "regal",
+   "cur": "Perfect_Regal_Orb",
+   "label": {
+    "kr": "제왕",
+    "en": "Regal"
+   },
+   "goal": {
+    "kr": "레어",
+    "en": "Rare"
+   },
+   "showText": [
+    {
+     "kr": "랜덤 옵션 1개",
+     "en": "One random option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "d0"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "res1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "d0",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Rib",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "네 번째 옵션(훼손) — 분열 조건 옵션 4개",
+    "en": "Fourth option (desecrated): the fracture needs four"
+   },
+   "showText": [
+    {
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecration (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "f0"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)%",
+     "en": "+(41—45)% to Lightning Resistance",
+     "m": "n",
+     "tags": [
+      "res1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "f0",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "분열 (공개된 옵션 3개 중 하나)",
+    "en": "Fracture (one of the three revealed options)"
+   },
+   "showText": [
+    {
+     "kr": "저항 1티어가 분열되면 성공",
+     "en": "Success when the T1 resistance fractures"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "fractured": "res1"
+     },
+     "to": "ms",
+     "res": "ok",
+     "label": {
+      "kr": "저항 분열",
+      "en": "Resistance fractured"
+     }
+    },
+    {
+     "to": "xf",
+     "res": "fail",
+     "dash": true,
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)% (분열)",
+     "en": "+(41—45)% to Lightning Resistance (fractured)",
+     "m": "f",
+     "tags": [
+      "res1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "xf",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    5
+   ],
+   "simTo": "b0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured: new base"
+   },
+   "note": {
+    "kr": "저항이 아닌 옵션이 분열되면 이 플로우차트에서는 새 베이스로 처음부터(영상은 다른 완성품으로 이어 감)",
+    "en": "Another option fractured: this chart starts over on a new base (the video carries it on as a different item)"
+   }
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    6.4
+   ],
+   "next": "cl",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)% (분열)",
+     "en": "+(41—45)% to Lightning Resistance (fractured)",
+     "m": "f",
+     "tags": [
+      "res1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "cl",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열만 남기기",
+    "en": "Keep only the fracture"
+   },
+   "edges": [
+    {
+     "to": "p1"
+    }
+   ],
+   "item": [
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)% (분열)",
+     "en": "+(41—45)% to Lightning Resistance (fractured)",
+     "m": "f",
+     "tags": [
+      "res1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8.4
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Sinistral_Exaltation",
+    "Omen_of_Greater_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접두 옵션 2개 — 마나 최대치 2티어 + 에너지 보호막 증가 1티어",
+    "en": "Two prefixes: T2 maximum mana + T1 increased energy shield"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접두 옵션 2개 — 마나 최대치 1~2티어 + 에너지 보호막 1~2티어",
+     "en": "Two prefixes: T1–2 maximum mana + T1–2 energy shield"
+    },
+    "ess": {
+     "kr": "접두 옵션 2개 — 마나 최대치 1~4티어 + 에너지 보호막 1~4티어",
+     "en": "Two prefixes: T1–4 maximum mana + T1–4 energy shield"
+    }
+   },
+   "show": [
+    "mnT",
+    "esT"
+   ],
+   "edges": [
+    {
+     "if": {
+      "ref": "preOk"
+     },
+     "to": "d1",
+     "res": "ok"
+    },
+    {
+     "to": "p1x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(90—104)",
+     "en": "+(90—104) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mnT"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "es8"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)% (분열)",
+     "en": "+(41—45)% to Lightning Resistance (fractured)",
+     "m": "f",
+     "tags": [
+      "res1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p1x",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    1,
+    8.4
+   ],
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "target": {
+    "kr": "분열만 남기기",
+    "en": "Keep only the fracture"
+   },
+   "edges": [
+    {
+     "to": "p1",
+     "label": {
+      "kr": "다시 엑잘",
+      "en": "Exalt again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "d1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9.4
+   ],
+   "act": "desecrate",
+   "cur": "Ancient_Rib",
+   "omens": [
+    "Omen_of_Sinistral_Necromancy"
+   ],
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "접두 세 번째 옵션(훼손)",
+    "en": "Third prefix (desecrated)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "d2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(90—104)",
+     "en": "+(90—104) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mnT"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "es8"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)% (분열)",
+     "en": "+(41—45)% to Lightning Resistance (fractured)",
+     "m": "f",
+     "tags": [
+      "res1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10.4
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "msT",
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "goal": {
+    "kr": "접두 세 번째 옵션(훼손) — 이동 속도 35%",
+    "en": "Third prefix (desecrated): 35% movement speed"
+   },
+   "goalBy": {
+    "bal": {
+     "kr": "접두 세 번째 옵션(훼손) — 이동 속도 1~2티어 (영상: 35%)",
+     "en": "Third prefix (desecrated): T1–2 movement speed (video: 35%)"
+    },
+    "ess": {
+     "kr": "접두 세 번째 옵션(훼손) — 나오는 대로 (영상: 이동 속도 35%)",
+     "en": "Third prefix (desecrated): keep what comes (video: 35% movement speed)"
+    }
+   },
+   "show": [
+    "msT"
+   ],
+   "edges": [
+    {
+     "if": {
+      "added": "msT"
+     },
+     "to": "rn",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "param": {
+       "v": 0
+      }
+     },
+     "to": "rn",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "to": "d2x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(90—104)",
+     "en": "+(90—104) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mnT"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "es8"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도 35% 증가",
+     "en": "35% increased Movement Speed",
+     "m": "d",
+     "tags": [
+      "msT"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)% (분열)",
+     "en": "+(41—45)% to Lightning Resistance (fractured)",
+     "m": "f",
+     "tags": [
+      "res1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    10.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 + 빛의 징조",
+    "en": "Orb of Annulment + Omen of Light"
+   },
+   "goal": {
+    "kr": "소멸의 오브 + 빛의 징조",
+    "en": "Orb of Annulment + Omen of Light"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "d1",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "rn",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11.4
+   ],
+   "act": "rune",
+   "rune": {
+    "kr": "아스트리드의 창의성",
+    "en": "Astrid's Creativity"
+   },
+   "label": {
+    "kr": "룬",
+    "en": "Rune"
+   },
+   "goal": {
+    "kr": "아스트리드의 창의성 장착",
+    "en": "Socket Astrid's Creativity"
+   },
+   "showText": [
+    {
+     "kr": "제작 옵션 2개까지",
+     "en": "Up to two crafted options"
+    }
+   ],
+   "edges": [
+    {
+     "to": "s1"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(90—104)",
+     "en": "+(90—104) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mnT"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "es8"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도 35% 증가",
+     "en": "35% increased Movement Speed",
+     "m": "d",
+     "tags": [
+      "msT"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)% (분열)",
+     "en": "+(41—45)% to Lightning Resistance (fractured)",
+     "m": "f",
+     "tags": [
+      "res1"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid's Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "s1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    12.4
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "omens": [
+    "Omen_of_Greater_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접미 잡옵 2개 — 에센스·합금이 바꿀 자리",
+    "en": "Two junk suffixes for the essence and alloy to replace"
+   },
+   "showText": [
+    {
+     "kr": "잡옵 2개",
+     "en": "Two junk options"
+    }
+   ],
+   "edges": [
+    {
+     "to": "s2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(90—104)",
+     "en": "+(90—104) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mnT"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "es8"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도 35% 증가",
+     "en": "35% increased Movement Speed",
+     "m": "d",
+     "tags": [
+      "msT"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)% (분열)",
+     "en": "+(41—45)% to Lightning Resistance (fractured)",
+     "m": "f",
+     "tags": [
+      "res1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid's Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    13.4
+   ],
+   "act": "essence",
+   "cur": "Essence_of_Horror",
+   "ess": "hor",
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "접미 장착된 증강물 아이템의 효과 60% — 잡옵 하나가 지워짐",
+    "en": "Suffix 60% socketed augment effect: a junk suffix goes"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "장착된 증강물 아이템의 효과 60% 증가 (제작 옵션)",
+     "en": "60% increased effect of Socketed Augment Items (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "hor"
+       },
+       {
+        "has": "mys"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "hor"
+      }
+     },
+     "to": "s2",
+     "hide": true
+    },
+    {
+     "to": "s3",
+     "res": "ok"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(90—104)",
+     "en": "+(90—104) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mnT"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "es8"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도 35% 증가",
+     "en": "35% increased Movement Speed",
+     "m": "d",
+     "tags": [
+      "msT"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)% (분열)",
+     "en": "+(41—45)% to Lightning Resistance (fractured)",
+     "m": "f",
+     "tags": [
+      "res1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "장착된 아이템의 효과 60% 증가 (경악의 에센스)",
+     "en": "60% increased effect of Socketed Augment Items (Essence of Horror)",
+     "m": "c",
+     "tags": [
+      "hor"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk",
+     "m": "j"
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid's Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    14.4
+   ],
+   "act": "essence",
+   "cur": "Mystic_Alloy",
+   "ess": "mys",
+   "label": {
+    "kr": "합금",
+    "en": "Alloy"
+   },
+   "goal": {
+    "kr": "접미 정신력 — 남은 잡옵을 바꿈",
+    "en": "Suffix Spirit: replace the last junk"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "정신력 +(10—15) (제작 옵션)",
+     "en": "+(10—15) to Spirit (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "has": "hor"
+       },
+       {
+        "has": "mys"
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "not": {
+       "has": "hor"
+      }
+     },
+     "to": "s2",
+     "res": "fail",
+     "label": {
+      "kr": "경악 옵션이 지워짐",
+      "en": "Horror line removed"
+     }
+    },
+    {
+     "to": "s3",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(90—104)",
+     "en": "+(90—104) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mnT"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "에너지 보호막 (92—100)% 증가",
+     "en": "(92—100)% increased Energy Shield",
+     "m": "n",
+     "tags": [
+      "es8"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "이동 속도 35% 증가",
+     "en": "35% increased Movement Speed",
+     "m": "d",
+     "tags": [
+      "msT"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "번개 저항 +(41—45)% (분열)",
+     "en": "+(41—45)% to Lightning Resistance (fractured)",
+     "m": "f",
+     "tags": [
+      "res1"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "장착된 아이템의 효과 60% 증가 (경악의 에센스)",
+     "en": "60% increased effect of Socketed Augment Items (Essence of Horror)",
+     "m": "c",
+     "tags": [
+      "hor"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "정신력 +(10—15) (신비한 합금)",
+     "en": "+(10—15) to Spirit (Mystic Alloy)",
+     "m": "c",
+     "tags": [
+      "mys"
+     ]
+    },
+    {
+     "s": "r",
+     "kr": "아스트리드의 창의성",
+     "en": "Astrid's Creativity",
+     "m": "r"
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    15.4
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  },
+  {
+   "id": "sx",
+   "kind": "side",
+   "group": "main",
+   "pos": [
+    1,
+    15.4
+   ],
+   "attach": [
+    "ok",
+    "ok"
+   ],
+   "cur": "Divine_Orb",
+   "omens": [
+    "Omen_of_Sanctification"
+   ],
+   "goal": {
+    "kr": "축성으로 수치 올리기, 선택·비용 미포함",
+    "en": "Sanctify for higher values, optional, not costed"
+   },
+   "label": {
+    "kr": "축성",
+    "en": "Sanctify"
+   }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L0",
+   "nodes": [
+    "t1",
+    "a1",
+    "ax"
+   ],
+   "kr": "매직 저항",
+   "en": "Magic resistance"
+  },
+  {
+   "id": "L1",
+   "nodes": [
+    "p1",
+    "p1x"
+   ],
+   "kr": "접두 2개",
+   "en": "Two prefixes"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "d1",
+    "d2",
+    "d2x"
+   ],
+   "kr": "이동 속도 공개",
+   "en": "Movement speed reveal"
+  },
+  {
+   "id": "L3",
+   "nodes": [
+    "s2",
+    "s3"
+   ],
+   "kr": "제작 옵션 2개",
+   "en": "Two crafted options"
+  }
+ ],
+ "finals": [
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "mnT"
+    },
+    {
+     "tag": "esT"
+    },
+    {
+     "tag": "msT",
+     "des": true
+    },
+    {
+     "tag": "res1",
+     "fr": true
+    },
+    {
+     "tag": "hor",
+     "ess": true
+    },
+    {
+     "tag": "mys",
+     "ess": true
+    }
+   ]
+  },
+  {
+   "id": "ess",
+   "tier": "ess",
+   "kr": "에센셜 옵션",
+   "en": "Essential",
+   "lines": [
+    {
+     "tag": "mnT"
+    },
+    {
+     "tag": "esT"
+    },
+    {
+     "side": "p",
+     "random": true,
+     "des": true
+    },
+    {
+     "tag": "res1",
+     "fr": true
+    },
+    {
+     "tag": "hor",
+     "ess": true
+    },
+    {
+     "tag": "mys",
+     "ess": true
+    }
+   ]
+  }
+ ]
+}
