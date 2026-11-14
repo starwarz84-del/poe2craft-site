@@ -36,7 +36,7 @@ Path of Exile 2 아이템 제작 사이트. 탭 5개짜리 한 화면이에요.
   레시피 탭: 초안 상세의 "공유 레시피로 등록"(id `draft-x` → `s-x`), 내 공유 레시피는 "공유 취소". 남의 새 레시피는 탭 배지 + 오른쪽 아래 알림 + NEW 표시(본 시점은 localStorage `poe2seen`).
   공유 데이터는 남이 쓴 것이라 레시피 탭 `cleanShared`가 `<>"`` 제거·필드 검사·엔진 시험 계산 후에만 표시해요.
   링크로 보는 사람(보기 권한)은 읽기만 가능해서 등록 버튼이 안 보여요. 테스트: `tools/test/share.js`(가짜 db).
-- **플로우차트 + 전체 공정 시뮬레이션**(`docs/graph-model.md`): 그래프 레시피 `scripts/graphs/<id>.json`(`gen_batch<n>.py`가 만듦) → `site/sim.js` → `node tools/sim/run.js <id> [20000]` → `site/data/sim/<id>.json` → 레시피 탭 '플로우 차트'. 엔진 비교값 `node tools/sim/engine.js <레시피 id> > tools/sim/engine/<그래프 id>.json`(테스트 서버 필요, run.js 전에). 디버그 `tools/sim/dbg.js`·`reveal_odds.js`·`fincheck.js`·`desstat.js`·`c1check.js`. 그래프를 다시 만들면 `python3 scripts/graphs/patch_astrid.py`. 배치별 작업 기록(1차~27차, 레시피마다 영상과 다르게 정한 점·시뮬 값)은 `docs/recipe-notes.md` "배치 기록".
+- **플로우차트 + 전체 공정 시뮬레이션**(`docs/graph-model.md`): 그래프 레시피 `scripts/graphs/<id>.json`(`gen_batch<n>.py`가 만듦) → `site/sim.js` → `node tools/sim/run.js <id> [--final]` → `site/data/sim/<id>.json` → 레시피 탭 '플로우 차트'. 엔진 비교값 `node tools/sim/engine.js <레시피 id> > tools/sim/engine/<그래프 id>.json`(테스트 서버 필요, run.js 전에). 디버그 `tools/sim/dbg.js`·`reveal_odds.js`·`fincheck.js`·`desstat.js`·`c1check.js`. 그래프를 다시 만들면 `python3 scripts/graphs/patch_astrid.py`. 배치별 작업 기록(1차~27차, 레시피마다 영상과 다르게 정한 점·시뮬 값)은 `docs/recipe-notes.md` "배치 기록".
 - **게시 주소(Claude 아티팩트)**: https://claude.ai/artifact/Me2XFis1VHa9dchhbv66x1
 - **도메인: https://poe2craft.xyz 운영 중**(2026-11-10 연결 완료: 가비아 구입 → 네임서버 Cloudflare(april·sevki) → Workers `poe2craft`(GitHub main 푸시마다 자동 배포) + 사용자 지정 도메인 poe2craft.xyz·www). 임시 주소 poe2craft.starwarz84.workers.dev.
 
@@ -74,7 +74,9 @@ Playwright는 세션에 이미 설치돼 있어요(`require('playwright')`, 재�
 
 ## 빌드 · 테스트 · 게시
 
-**한 번에**(2026-11-11): `bash tools/release.sh` — 빌드 → 검사(리버스 검산·공유·등급 비교·리버스 6개 빠른 점검·건너뛴 과정·에센스 등급) → 크래프팅 점수 → 배포 폴더 → 배포 폴더 검수. 끝의 '문제 0'을 확인하고 커밋. `--full`은 제작 옵션 한도 점검과 리버스 전체 점수(약 15분)까지. 아래는 단계별로 따로 돌릴 때.
+**한 번에**(2026-11-11, 모드 나눔 2026-11-14 RT — 사용자: 기본은 됐으니 테스팅 구간을 줄이자): `bash tools/release.sh` = 빠른 모드(작업 중·커밋 전). 빌드 → 검사(공유·등급 비교·건너뛴 과정·에센스 등급·룬) → 크래프팅 점수 → 배포 폴더 → 배포 폴더 검수. 리버스 점검은 리버스 파일(`site/reverse.html`·`graphify.js`·`fcread.js`·`sim.js`·`tools/test/_rev*.js`·`_regcard.js`)이 origin/main 대비 또는 마지막 통과 이후 바뀌었을 때만 가볍게(ver·_revparse = 부위마다 대표 하나 33개, _revscore = 분열 방패 하이엔드·셉터 밸런스·장화 에센셜 3개, _revtpl 4개), 안 바뀌었으면 '건너뜀(리버스 변경 없음)'. `REV=1`이면 강제로 가벼운 점검. 걸린 시간: 리버스 변경 없음 약 1분 40초, 있음 약 2~3분(전에는 18~23분). 끝의 '문제 0'을 확인하고 커밋. 두 개가 동시에 돌면 뒤 것이 앞 것을 기다림(`/tmp/poe2-release.lock`).
+**배포 전에는 `bash tools/release.sh --full`**: 빠른 시뮬(`quick:true`) 결과를 `--final`로 다시 돌림 + 리버스 점검 전부(_revparse 244회·ver 전부·_revtpl) + 제작 옵션 한도(c1check, 약 3분) + 리버스 전체 점수(_revscore 전부, revscore.json, 20분 넘게 걸림). 백그라운드로 돌림.
+시뮬 `node tools/sim/run.js <id>`는 고치는 중 빠른 횟수(난이도 값의 1/4, 최소 200, 파일에 `quick:true`), 커밋할 땐 `--final`(난이도대로 500~5000회). quick 파일이 남으면 release.sh가 문제로 셈 — `node tools/sim/quickcheck.js [--rerun]`. 플로우차트 점검 `_fclines`·`_foldlines`·`_fccardsame`은 인자 없이 돌리면 git으로 바뀐 그래프만, 전체는 `ALL=1`. 점검 스크립트는 `FAST=1`이면 초안 '최소 계산 시간'을 뺌(화면 동작은 그대로, release.sh가 켬). 아래는 단계별로 따로 돌릴 때.
 
 `site/*.html`은 한 줄에 문장이 여러 개라 **줄 끝 `//` 주석을 코드 중간에 넣지 않아요**(뒤 코드가 가려짐 — 2026-11-11 사고). `/* */`를 써요.
 

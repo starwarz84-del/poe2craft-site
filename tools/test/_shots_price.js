@@ -11,7 +11,7 @@ console.log('mirror total:', (await tb.evaluate(e=>e.innerText.replace(/\n/g,' |
 console.log('mirror budget:', await p.$eval('#detail', e=>e.querySelector('.budw')?.innerText||'-'));
 const txt=fs.readFileSync('items/sandsworn-rune.txt','utf8');
 await p.goto('http://localhost:8779/discover.html?lang=kr'); await p.waitForFunction(()=>window.__rev);
-await p.fill('#txt', txt); await p.fill('#mp', '3'); await p.click('#go'); await p.waitForSelector('#mk'); await p.click('#mk'); await p.waitForSelector('#mkmsg .check');
+await p.fill('#txt', txt); await p.fill('#mp', '3'); await p.click('#go'); await p.waitForSelector('#mk'); if(process.env.FAST) await p.evaluate(()=>{ __rev.minDraftMs=0; });   /* FAST=1: 초안 최소 10초 기다림 빼기(점검 실행만) */ await p.click('#mk'); await p.waitForSelector('#mkmsg .check');
 console.log('discover:', await p.$eval('#mkmsg .costl', e=>e.innerText)); await p.screenshot({path:'shots/price-discover.png', clip:await (await p.$('#mkmsg')).boundingBox()});
 const d=await p.evaluate(()=>__rev.draft);
 await p.goto('http://localhost:8779/recipes.html?lang=kr'); await p.waitForFunction(()=>window.__rec&&__rec.booted);

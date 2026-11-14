@@ -1,8 +1,8 @@
 // 접힌 루프 상자(그래프 loops fold:true)마다 밖으로 나가는 선이 그려졌는지 전수 점검(2026-11-12): 성공 선 1개 이상 + worst.to 선(있을 때)
-// 테스트 서버 :8779 필요. node _foldlines.js [그래프 id…] → 콘솔 + foldlines.txt (문제 0이어야 함)
+// 테스트 서버 :8779 필요. node _foldlines.js [그래프 id…] (인자 없으면 git으로 바뀐 그래프만, ALL=1이면 전체) → 콘솔 + foldlines.txt (문제 0이어야 함)
 const {chromium}=require('playwright'), fs=require('fs');
 const SIM=require('path').join(__dirname,'../../site/data/sim');   /* 어느 폴더에서 돌려도(2026-11-13 S2) */
-const ids=process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync(SIM).filter(f=>f.endsWith('.json')).map(f=>f.slice(0,-5));
+/* 인자 없으면 git으로 바뀐 그래프만, ALL=1이면 전체(RT 2026-11-14) */ const ids=process.argv.slice(2).length ? process.argv.slice(2) : (require('./_changed.js').changedGraphs() || fs.readdirSync(SIM).filter(f=>f.endsWith('.json')).map(f=>f.slice(0,-5)));
 (async()=>{ const b=await chromium.launch(), p=await b.newPage({viewport:{width:1600,height:1000}}); const out=[]; let bad=0, boxes=0;
   for(const id of ids){ const g=JSON.parse(fs.readFileSync(`${SIM}/${id}.json`,'utf8')).graph; const folds=(g.loops||[]).filter(L=>L.fold && L.nodes?.length>=2); if(!folds.length) continue;
     await p.goto('about:blank'); await p.goto(`http://localhost:8779/recipes.html?lang=kr#r-${id}`); await p.waitForFunction(()=>window.__rec && __rec.booted);

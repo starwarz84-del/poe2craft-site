@@ -1,13 +1,13 @@
 // 플로우차트 완성품 카드(.fcfin)와 그 등급 레시피 탭 완성 카드가 똑같이 보이는지 전수 점검(2026-11-12, 사용자: 두 카드가 같아야 함)
-// 테스트 서버 :8779 필요. node _fccardsame.js [레시피 id…] → 콘솔 + fccardsame.txt (차이 0이어야 함)
+// 테스트 서버 :8779 필요. node _fccardsame.js [레시피 id…] (인자 없으면 git으로 바뀐 그래프만, ALL=1이면 전체) → 콘솔 + fccardsame.txt (차이 0이어야 함)
 // 비교: 이름, 베이스 정보 줄(방어도·퀄리티·아이템 레벨·룬 소켓 등), 줄 순서·개수, P/S/R 표시와 티어 태그, 문구, 계산된 색·기울임, 소켓·룬 줄, P/S/R 개수 줄, 스킬 부여·성유 줄
 const {chromium}=require('playwright'), fs=require('fs');
-const want=process.argv.slice(2);
+/* 인자 없으면 git으로 바뀐 그래프만, ALL=1이면 전체(RT 2026-11-14) */ const want=process.argv.slice(2).length ? process.argv.slice(2) : (require('./_changed.js').changedGraphs() || []), NONE=!process.argv.slice(2).length && !process.env.ALL && !want.length;
 (async()=>{ const b=await chromium.launch(), p=await b.newPage({viewport:{width:1500,height:1100}}); const out=[]; let tot=0, cards=0;
   const errs=[]; p.on('pageerror',e=>errs.push(String(e).slice(0,200)));
   await p.goto('http://localhost:8779/recipes.html?lang=kr'); await p.waitForFunction(()=>window.__rec && __rec.booted);
-  const all=await p.evaluate(()=>__rec.recipes.filter(r=>r.sim).map(r=>({id:r.id, grp:r.tierGroup||r.id})));
-  const groups=[...new Set(all.map(r=>r.grp))].filter(g=>!want.length || want.includes(g) || all.some(r=>r.grp===g && want.includes(r.id)));
+  const all=await p.evaluate(()=>__rec.recipes.filter(r=>r.sim).map(r=>({id:r.id, grp:r.tierGroup||r.id, sid:r.simId||r.tierGroup||r.id})));
+  const groups=[...new Set(all.map(r=>r.grp))].filter(g=>!NONE && (!want.length || want.includes(g) || all.some(r=>r.grp===g && (want.includes(r.id) || want.includes(r.sid)))));
   const read = sel => p.$eval(sel, tt=>{ const rows=[]; const cs=e=>{ const c=getComputedStyle(e); return c.color+(c.fontStyle==='italic'?' italic':''); };
     rows.push('이름 | '+(tt.querySelector('.tt-name')?.innerText||'').trim());
     tt.querySelectorAll('.tt-body > *').forEach(e=>{

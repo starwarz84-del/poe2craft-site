@@ -1,6 +1,6 @@
-// every flowchart × version: line crossings, overlapping parallel lines and lines through boxes → fclines.txt
+// every flowchart × version: line crossings, overlapping parallel lines and lines through boxes → fclines.txt   (인자 없으면 git으로 바뀐 그래프만, ALL=1이면 전체)
 const {chromium}=require('playwright'), fs=require('fs');
-const ids=process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync(require('path').join(__dirname,'../../site/data/sim')).filter(f=>f.endsWith('.json')).map(f=>f.slice(0,-5));
+/* 인자 없으면 git으로 바뀐 그래프만, ALL=1이면 전체(RT 2026-11-14) */ const ids=process.argv.slice(2).length ? process.argv.slice(2) : (require('./_changed.js').changedGraphs() || fs.readdirSync(require('path').join(__dirname,'../../site/data/sim')).filter(f=>f.endsWith('.json')).map(f=>f.slice(0,-5)));
 (async()=>{ const b=await chromium.launch(); let p=await b.newPage({viewport:{width:1700,height:1000}}); p.setDefaultTimeout(60000); const out=[]; let tot=0;
   /* 인자 없이 전체를 돌 때 한 그래프에서 시간 초과·페이지 오류가 나도 멈추지 않고 그 줄만 '오류'로 적고 다음으로(2026-11-13 S2) */
   for(const id of ids){ try{ await p.goto(`http://localhost:8779/recipes.html?lang=kr&_=${encodeURIComponent(id)}#r-${id}`); await p.waitForFunction(()=>window.__rec && __rec.booted);

@@ -73,7 +73,8 @@ git log --oneline -15
 
 ## 6. 검사 방법
 
-- 전체: `bash tools/release.sh` → 끝이 `문제 0`이어야 해요(약 15분, 백그라운드로 돌리고 끝나길 기다려요).
+- 전체: `bash tools/release.sh` → 끝이 `문제 0`이어야 해요. 기본은 빠른 모드(리버스 변경 없으면 약 2분, 있으면 약 3분), **배포 전에는 `--full`**(백그라운드로 돌리고 끝나길 기다려요). 모드별 내용과 시간은 `CLAUDE.md` '빌드 · 테스트 · 게시'(2026-11-14 RT).
+- 시뮬: 고치는 중 `node tools/sim/run.js <id>`(빠른 횟수, 파일에 `quick:true`), 커밋할 땐 `--final`. 플로우차트 점검 `_fclines`·`_foldlines`·`_fccardsame`은 인자 없이 돌리면 바뀐 그래프만(전체는 `ALL=1`).
 - 테스트 서버 `bash tools/test/serve.sh start|stop`(8779). 이 서버는 파일을 `/tmp/poe2test`로 **복사**해서 띄워요. 원본을 고치면 빌드(`python3 i18n/build.py`) 후 서버를 껐다 켜야 바뀐 게 보여요.
 - 배포 폴더 그대로: `cd web && python3 -m http.server 8790` → `node tools/test/_web.js`, 화면은 Playwright로 PC(1300px)·휴대폰(390px) 캡처를 직접 열어 봐요.
 - 단계 꿀팁 점검(2026-11-12): 레시피마다 단계 꿀팁 수(단계당 3개 넘지 않음)와 꿀팁 카드 → 단계 이동 성공 수. 스크립트가 저장소에 없으니 필요하면 `tools/test/`에 새로 만들어요(셀렉터 `.node .tipin[data-tipkey]`).

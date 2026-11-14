@@ -15,7 +15,7 @@ let IDS=process.argv.slice(2); if(!IDS.length) IDS=R.filter(r=>SAMP.has(r.id)).m
 (async()=>{const b=await chromium.launch();const p=await b.newPage(); p.on('pageerror',e=>console.error('E',e.message));
 await p.goto('http://localhost:'+(process.env.PORT||8779)+'/discover.html?lang=kr'); await p.waitForFunction(()=>window.__rev && __rev.recSamples && __rev.recSamples.length);
 await p.evaluate(async()=>{ const S=__rev; [S.index,S.craft]=await Promise.all([fetch('data/index.json').then(r=>r.json()),fetch('data/crafting.json').then(r=>r.json())]); S.priority=await fetch('data/priority.json').then(r=>r.json()); await S.ready; });
-const out=[];
+const out=[]; let to;
 for(const id of IDS){ const r=R.find(x=>x.id===id); if(!r || !SAMP.has(id)) continue; let reg; try{ reg=registered(r, +(process.env.REGN||400)); }catch(e){ out.push({id, skip:'등록 그래프: '+e.message}); continue; }
   if(!reg.fromReq){ out.push({id, skip:'완성 조건에 옵션 지정이 없음(아무 옵션이나 채우면 완성)'}); continue; }
   const buy=((r.start||{}).mods||[]).filter(m=>m.gi!=null && !m.crafted).map(m=>m.gi);
@@ -45,7 +45,7 @@ for(const id of IDS){ const r=R.find(x=>x.id===id); if(!r || !SAMP.has(id)) cont
     const cost = res ? S.revCost(it, d, res) : null, mag = res ? S.magicDiv(it, d) : 0;
     const top=Object.entries(use).map(([k,v])=>[k, v*(k==='Exalted_Orb'?1:(S.prices.p[k]||0))/S.prices.divine]).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+' '+v.toFixed(1));
     return {err, warn, unk, short, mag, tier:g.strategies[0].id, ref, stuck:st.runaway||st.error||null, div:cost, match:res?res.reqOk:null, om, top, miss:miss.length, pick:d.pick||(d.tpl?{tpl:d.tpl.g, changed:d.tpl.changed, cmp:d.tpl.cmp}:null), knowhow:d.knowhow||null, steps:d.nodes.length, ms:Math.round(performance.now()-t0), d};
-  },[id,reg.card,reg.qt,buy,EXP,process.env.V==='old',reg.per,reg.rtags,reg.rreq,!!process.env.NOK42,tier,!!process.env.NOALT,process.env.SELFTPL?null:(r.simId||r.tierGroup||r.id),!!process.env.NOTPL]), new Promise(z=>setTimeout(()=>z({err:['시간 초과']}),180000))]);
+  },[id,reg.card,reg.qt,buy,EXP,process.env.V==='old',reg.per,reg.rtags,reg.rreq,!!process.env.NOK42,tier,!!process.env.NOALT,process.env.SELFTPL?null:(r.simId||r.tierGroup||r.id),!!process.env.NOTPL]), new Promise(z=>{ to=setTimeout(()=>z({err:['시간 초과']}),180000); })]); clearTimeout(to);   /* RT 11-14: 남은 시간 초과 타이머가 레시피마다 180초씩 프로세스를 붙잡았음 */
   out.push({id, reg, regTier:tier, ...x}); }
 await p.goto('http://localhost:'+(process.env.PORT||8779)+'/recipes.html?lang=kr&debug=1'); await p.waitForFunction(()=>window.__rec&&__rec.booted);
 const unk=await p.evaluate(ds=>{ const R=__rec, o={}; for(const d of ds){ try{ d.likes=0; d.success=0; const a=R.analyse(d); o[d.id]=a.nodes.filter(n=>n.pUnknown).length; }catch(e){ o[d.id]=0; } } return o; }, out.filter(x=>x.d).map(x=>x.d));
