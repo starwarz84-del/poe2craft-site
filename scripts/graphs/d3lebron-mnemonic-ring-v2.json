@@ -1,0 +1,1618 @@
+{
+ "id": "d3lebron-mnemonic-ring-v2",
+ "recipe": "d3lebron-mnemonic-ring-v2",
+ "cls": "Rings",
+ "base": "Mnemonic Ring",
+ "ilvl": 79,
+ "basePrice": {
+  "Divine_Orb": 1.5
+ },
+ "note": "2026-11-14 RECIPE-E: D3lebronjames 아크 토템 마나 기억 반지(youtube JeA3cg79qZY, 조사 g126 — docs/craft-guides.md 7차 단계 노트·18:08 화면 단계표·완성 툴팁). 분열 전에 좌측 결정화 + 심연의 에센스로 접두 하나를 징표로 바꾸고 빗장뼈로 훼손(미공개)해 분열 확률을 1/3로 올림, 균열의 에센스 + 신경 기폭제 40, 우측 결정화 + 완벽한 정신의 에센스로 빗나간 접미 자리를 접두 최대 마나 %로 옮김, 뒤바뀐 빗장뼈 별세계 카오스 획득. 내부 결정: ① 구입 베이스는 시전 속도 + 접두 잡옵 2개 + 접미 잡옵 1개(옵션 4개, 노트에 자리 배분 없음), 값 1~2 div의 가운데 1.5 div, 신성 오브로 24 맞추기는 뺌 ② 징표를 훼손한 뼈는 아이템 레벨 79에 쓸 수 있는 가장 싼 보존된 빗장뼈 ③ 15:41 \"우측 말소 2번 → 완벽한 엑잘 접미 2개\"는 접미 두 자리가 비어야 하므로 우측 소멸의 징조 + 소멸로 봄(마지막 절사는 우측 말소의 징조 그대로) ④ 접미 정리는 영상 순서대로: 유효 옵션이 없으면 우측 소멸로 비우고 다시 완벽한 엑잘, 하나면 절사 + 우측 말소 + 카오스 반복. 등급: 하이엔드 = 최대 마나 1티어 + 유효 접미 2개 1~2티어(영상 결과 카오스 저항 +20%·모든 원소 저항 +14% 모두 2티어), 밸런스 = 최대 마나 1~2티어 + 유효 접미 2개 1~4티어. 분열 대상 시전 속도는 두 등급 모두 1티어(구입 베이스).",
+ "params": {
+  "cT": {
+   "kr": "카오스 최대 마나",
+   "en": "Chaos maximum mana",
+   "values": {
+    "1": {
+     "kr": "1티어",
+     "en": "T1"
+    },
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    }
+   }
+  },
+  "sT": {
+   "kr": "유효 접미",
+   "en": "Useful suffixes",
+   "values": {
+    "2": {
+     "kr": "1~2티어",
+     "en": "T1–2"
+    },
+    "4": {
+     "kr": "1~4티어",
+     "en": "T1–4"
+    }
+   }
+  }
+ },
+ "strategies": [
+  {
+   "id": "high",
+   "params": {
+    "cT": 1,
+    "sT": 2
+   }
+  },
+  {
+   "id": "bal",
+   "params": {
+    "cT": 2,
+    "sT": 4
+   }
+  }
+ ],
+ "versions": [
+  {
+   "id": "high",
+   "kr": "하이엔드",
+   "en": "High-end",
+   "params": {
+    "cT": 1,
+    "sT": 2
+   },
+   "tier": "high",
+   "desc": {
+    "kr": "최대 마나 1티어, 유효 접미 2개 1~2티어(영상 결과)",
+    "en": "T1 maximum mana, two useful suffixes at T1–2 (the video result)"
+   }
+  },
+  {
+   "id": "bal",
+   "kr": "밸런스",
+   "en": "Balance",
+   "params": {
+    "cT": 2,
+    "sT": 4
+   },
+   "tier": "bal",
+   "desc": {
+    "kr": "최대 마나 1~2티어, 유효 접미 2개 1~4티어",
+    "en": "T1–2 maximum mana, two useful suffixes at T1–4"
+   }
+  }
+ ],
+ "tags": {
+  "cs": {
+   "gi": 34,
+   "tmax": 1
+  },
+  "mkp": {
+   "gi": 69
+  },
+  "mq": {
+   "gi": 71
+  },
+  "mp": {
+   "gi": 67
+  },
+  "cg": {
+   "gi": 86
+  },
+  "mn": {
+   "gi": 10,
+   "tmax": "$cT"
+  },
+  "mn1": {
+   "gi": 10,
+   "tmax": 1
+  },
+  "mn2": {
+   "gi": 10,
+   "tmax": 2
+  },
+  "cr": {
+   "gi": 8,
+   "tmax": "$sT"
+  },
+  "ar": {
+   "gi": 7,
+   "tmax": "$sT"
+  },
+  "mr": {
+   "gi": 21,
+   "tmax": "$sT"
+  },
+  "in": {
+   "gi": 2,
+   "tmax": "$sT"
+  },
+  "vs": {
+   "anyOf": [
+    "cr",
+    "ar",
+    "mr",
+    "in"
+   ],
+   "shown": "cr",
+   "label": {
+    "kr": "카오스 저항·모든 원소 저항·마나 재생·지능",
+    "en": "Chaos resistance, all elemental resistances, mana regeneration or intelligence"
+   }
+  },
+  "cr2": {
+   "gi": 8,
+   "tmax": 2
+  },
+  "ar2": {
+   "gi": 7,
+   "tmax": 2
+  },
+  "mr2": {
+   "gi": 21,
+   "tmax": 2
+  },
+  "in2": {
+   "gi": 2,
+   "tmax": 2
+  },
+  "cr4": {
+   "gi": 8,
+   "tmax": 4
+  },
+  "ar4": {
+   "gi": 7,
+   "tmax": 4
+  },
+  "mr4": {
+   "gi": 21,
+   "tmax": 4
+  },
+  "in4": {
+   "gi": 2,
+   "tmax": 4
+  },
+  "vs2": {
+   "anyOf": [
+    "cr2",
+    "ar2",
+    "mr2",
+    "in2"
+   ],
+   "shown": "cr2",
+   "label": {
+    "kr": "카오스 저항·모든 원소 저항·마나 재생·지능 1~2티어",
+    "en": "T1–2 chaos resistance, all elemental resistances, mana regeneration or intelligence"
+   }
+  },
+  "vs4": {
+   "anyOf": [
+    "cr4",
+    "ar4",
+    "mr4",
+    "in4"
+   ],
+   "shown": "cr4",
+   "label": {
+    "kr": "카오스 저항·모든 원소 저항·마나 재생·지능 1~4티어",
+    "en": "T1–4 chaos resistance, all elemental resistances, mana regeneration or intelligence"
+   }
+  }
+ },
+ "require": {
+  "all": [
+   {
+    "has": "cs"
+   },
+   {
+    "has": "mn"
+   },
+   {
+    "has": "mp"
+   },
+   {
+    "has": "cg"
+   },
+   {
+    "count": {
+     "tag": "vs",
+     "min": 2
+    }
+   },
+   {
+    "full": "p"
+   },
+   {
+    "full": "s"
+   },
+   {
+    "unrev": false
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "prep",
+   "kr": "베이스템 완성",
+   "en": "Finished base",
+   "cols": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "main",
+   "kr": "옵션 추가 작업",
+   "en": "Adding modifiers",
+   "cols": [
+    0,
+    1
+   ]
+  }
+ ],
+ "start": "b0",
+ "finalItem": {
+  "quality": 40,
+  "sockets": 0
+ },
+ "nodes": [
+  {
+   "id": "b0",
+   "kind": "base",
+   "group": "prep",
+   "pos": [
+    0,
+    0
+   ],
+   "next": "p1",
+   "start": {
+    "rar": "rare",
+    "mods": [
+     {
+      "tag": "cs"
+     },
+     {
+      "junk": "p"
+     },
+     {
+      "junk": "p"
+     },
+     {
+      "junk": "s"
+     }
+    ]
+   },
+   "label": {
+    "kr": "시전 속도 1티어 레어 기억 반지 구입 (옵션 4개, 아이템 레벨 79)",
+    "en": "Buy a rare Mnemonic Ring with T1 cast speed (four options, item level 79)"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    1
+   ],
+   "act": "essence",
+   "cur": "Essence_of_the_Abyss",
+   "ess": "mkp",
+   "mark": true,
+   "omens": [
+    "Omen_of_Sinistral_Crystallisation"
+   ],
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "접두 잡옵 하나를 지우고 심연의 군주의 징표",
+    "en": "A junk prefix goes for the Mark of the Abyssal Lord"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord"
+    }
+   ],
+   "edges": [
+    {
+     "to": "p2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "심연의 군주의 징표",
+     "en": "Mark of the Abyssal Lord",
+     "m": "c",
+     "tags": [
+      "mkp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    2
+   ],
+   "act": "desecrate",
+   "cur": "Preserved_Collarbone",
+   "fromMark": true,
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "징표 훼손 — 공개하지 않음(분열 확률 1/3)",
+    "en": "Desecrate the Mark, left unrevealed (fracture odds 1/3)"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개, 분열되지 않음)",
+     "en": "Desecrated (unrevealed, cannot fracture)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "p3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "n",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    3
+   ],
+   "act": "fracture",
+   "cur": "Fracturing_Orb",
+   "label": {
+    "kr": "분열",
+    "en": "Fracture"
+   },
+   "goal": {
+    "kr": "시전 속도 분열 (공개된 옵션 3개 중 하나)",
+    "en": "Fracture cast speed (one of the three revealed options)"
+   },
+   "show": [
+    "cs"
+   ],
+   "edges": [
+    {
+     "if": {
+      "fractured": "cs"
+     },
+     "to": "p4",
+     "res": "ok",
+     "label": {
+      "kr": "시전 속도 분열",
+      "en": "Cast speed fractured"
+     }
+    },
+    {
+     "to": "xj",
+     "res": "fail",
+     "label": {
+      "kr": "다른 옵션 분열",
+      "en": "Another option fractured"
+     }
+    }
+   ],
+   "ask": {
+    "kr": "시전 속도가 분열됐나?",
+    "en": "Cast speed fractured?"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "xj",
+   "kind": "exit",
+   "group": "prep",
+   "pos": [
+    1,
+    3
+   ],
+   "simTo": "b0",
+   "variant": "fail",
+   "label": {
+    "kr": "다른 옵션 분열 — 새 베이스",
+    "en": "Another option fractured: new base"
+   },
+   "note": {
+    "kr": "시전 속도가 아닌 옵션이 분열되면 새 베이스로 처음부터(영상: 4개 중 1개 성공)",
+    "en": "Another option fractured: start over on a new base (video: one of four worked)"
+   }
+  },
+  {
+   "id": "p4",
+   "kind": "cleanup",
+   "group": "prep",
+   "pos": [
+    0,
+    4
+   ],
+   "keep": [],
+   "maxJunk": 1,
+   "label": {
+    "kr": "소멸의 오브 사용",
+    "en": "Use an Orb of Annulment"
+   },
+   "goal": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep the fracture + one option"
+   },
+   "target": {
+    "kr": "분열 + 옵션 1개만 남기기",
+    "en": "Keep the fracture + one option"
+   },
+   "edges": [
+    {
+     "to": "p5"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p5",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    5
+   ],
+   "act": "essence",
+   "cur": "Essence_of_the_Breach",
+   "ess": "mq",
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "남은 옵션을 지우고 최대 퀄리티 +20%",
+    "en": "The remaining option goes for +20% maximum quality"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20% (제작 옵션)",
+     "en": "+20% to Maximum Quality (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "p6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20%",
+     "en": "+20% to Maximum Quality",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "p6",
+   "kind": "act",
+   "group": "prep",
+   "pos": [
+    0,
+    6
+   ],
+   "act": "quality",
+   "cur": "Neural_Catalyst",
+   "count": 40,
+   "q": 40,
+   "label": {
+    "kr": "퀄리티",
+    "en": "Quality"
+   },
+   "goal": {
+    "kr": "마나 퀄리티 40%",
+    "en": "40% mana quality"
+   },
+   "showText": [
+    {
+     "kr": "신경 기폭제 40개",
+     "en": "40 Neural Catalysts"
+    }
+   ],
+   "edges": [
+    {
+     "to": "ms"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20%",
+     "en": "+20% to Maximum Quality",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ms",
+   "kind": "mark",
+   "group": "main",
+   "pos": [
+    0,
+    7.4
+   ],
+   "next": "m1",
+   "label": {
+    "kr": "아이템 제작 시작",
+    "en": "Item crafting starts"
+   },
+   "item": [
+    {
+     "s": "p",
+     "kr": "최대 퀄리티 +20%",
+     "en": "+20% to Maximum Quality",
+     "m": "c",
+     "tags": [
+      "mq"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m1",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    8.4
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "label": {
+    "kr": "카오스",
+    "en": "Chaos"
+   },
+   "goal": {
+    "kr": "접두 첫 번째 옵션 — 최대 마나",
+    "en": "First prefix: maximum mana"
+   },
+   "goalBy": {
+    "high": {
+     "kr": "접두 첫 번째 옵션 — 최대 마나 1티어",
+     "en": "First prefix: T1 maximum mana"
+    },
+    "bal": {
+     "kr": "접두 첫 번째 옵션 — 최대 마나 1~2티어",
+     "en": "First prefix: T1–2 maximum mana"
+    }
+   },
+   "show": [
+    "mn"
+   ],
+   "edges": [
+    {
+     "if": {
+      "has": "mn"
+     },
+     "to": "m2",
+     "res": "ok"
+    },
+    {
+     "to": "m1",
+     "res": "fail",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mn"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    9.4
+   ],
+   "act": "exalt",
+   "cur": "Exalted_Orb",
+   "omens": [
+    "Omen_of_Dextral_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "결정화가 지울 접미 잡옵 (영상: 생명력 재생)",
+    "en": "A junk suffix for the Crystallisation (video: life regeneration)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "잡옵 1개",
+     "en": "One junk option"
+    }
+   ],
+   "edges": [
+    {
+     "to": "m3"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mn"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "m3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    10.4
+   ],
+   "act": "essence",
+   "cur": "Perfect_Essence_of_the_Mind",
+   "ess": "mp",
+   "omens": [
+    "Omen_of_Dextral_Crystallisation"
+   ],
+   "label": {
+    "kr": "에센스",
+    "en": "Essence"
+   },
+   "goal": {
+    "kr": "접미 잡옵을 지우고 접두 최대 마나 %",
+    "en": "Clear the junk suffix for a maximum mana % prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가 (제작 옵션)",
+     "en": "(4—6)% increased maximum Mana (crafted)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "m4"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mn"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가",
+     "en": "(4—6)% increased maximum Mana",
+     "m": "c",
+     "tags": [
+      "mp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "m4",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    11.4
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Dextral_Exaltation",
+    "Omen_of_Greater_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접미 두 번째·세 번째 옵션 — 나오는 대로 (영상: 둘 다 잡옵)",
+    "en": "Second and third suffixes: keep what comes (video: both junk)"
+   },
+   "showText": [
+    {
+     "s": "s",
+     "kr": "랜덤 옵션 2개",
+     "en": "Two random options"
+    }
+   ],
+   "edges": [
+    {
+     "to": "m5"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mn"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가",
+     "en": "(4—6)% increased maximum Mana",
+     "m": "c",
+     "tags": [
+      "mp"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "m5",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    12.4
+   ],
+   "act": "desecrate",
+   "cur": "Altered_Collarbone",
+   "label": {
+    "kr": "훼손",
+    "en": "Desecrate"
+   },
+   "goal": {
+    "kr": "빈 접두 훼손",
+    "en": "Desecrate the empty prefix"
+   },
+   "showText": [
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)"
+    }
+   ],
+   "edges": [
+    {
+     "to": "m6"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mn"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가",
+     "en": "(4—6)% increased maximum Mana",
+     "m": "c",
+     "tags": [
+      "mp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "훼손 옵션 (미공개)",
+     "en": "Desecrated (unrevealed)",
+     "m": "u"
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "m6",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    13.4
+   ],
+   "act": "reveal",
+   "omens": [
+    "Omen_of_Abyssal_Echoes"
+   ],
+   "want": "cg",
+   "label": {
+    "kr": "공개",
+    "en": "Reveal"
+   },
+   "goal": {
+    "kr": "접두 세 번째 옵션(훼손) — 주문 카오스 획득",
+    "en": "Third prefix (desecrated): spell damage gained as chaos"
+   },
+   "show": [
+    "cg"
+   ],
+   "edges": [
+    {
+     "if": {
+      "all": [
+       {
+        "added": "cg"
+       },
+       {
+        "count": {
+         "tag": "vs",
+         "min": 2
+        }
+       }
+      ]
+     },
+     "to": "ok",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "all": [
+       {
+        "added": "cg"
+       },
+       {
+        "has": "vs"
+       }
+      ]
+     },
+     "to": "s3",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "added": "cg"
+     },
+     "to": "s1",
+     "res": "ok"
+    },
+    {
+     "to": "m6x",
+     "res": "fail",
+     "label": {
+      "kr": "빗나감",
+      "en": "Miss"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mn"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가",
+     "en": "(4—6)% increased maximum Mana",
+     "m": "c",
+     "tags": [
+      "mp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득",
+     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage",
+     "m": "d",
+     "tags": [
+      "cg"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "m6x",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    1,
+    13.4
+   ],
+   "act": "annul",
+   "cur": "Orb_of_Annulment",
+   "omens": [
+    "Omen_of_Light"
+   ],
+   "label": {
+    "kr": "소멸의 오브 + 빛의 징조",
+    "en": "Orb of Annulment + Omen of Light"
+   },
+   "goal": {
+    "kr": "소멸의 오브 + 빛의 징조",
+    "en": "Orb of Annulment + Omen of Light"
+   },
+   "target": {
+    "kr": "훼손 옵션 제거",
+    "en": "Remove the desecrated modifier"
+   },
+   "edges": [
+    {
+     "to": "m5",
+     "label": {
+      "kr": "다시 훼손",
+      "en": "Desecrate again"
+     }
+    }
+   ]
+  },
+  {
+   "id": "s1",
+   "kind": "cleanup",
+   "group": "main",
+   "pos": [
+    0,
+    14.4
+   ],
+   "side": "s",
+   "keep": [],
+   "maxJunk": 0,
+   "label": {
+    "kr": "소멸의 오브 + 우측 소멸의 징조",
+    "en": "Orb of Annulment + Omen of Dextral Annulment"
+   },
+   "goal": {
+    "kr": "접미 잡옵 2개 지우기",
+    "en": "Remove both junk suffixes"
+   },
+   "target": {
+    "kr": "접미를 분열 옵션만 남기기",
+    "en": "Clear the suffixes down to the fracture"
+   },
+   "edges": [
+    {
+     "to": "s2"
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mn"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가",
+     "en": "(4—6)% increased maximum Mana",
+     "m": "c",
+     "tags": [
+      "mp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득",
+     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage",
+     "m": "d",
+     "tags": [
+      "cg"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    15.4
+   ],
+   "act": "exalt",
+   "cur": "Perfect_Exalted_Orb",
+   "omens": [
+    "Omen_of_Dextral_Exaltation",
+    "Omen_of_Greater_Exaltation"
+   ],
+   "label": {
+    "kr": "엑잘",
+    "en": "Exalt"
+   },
+   "goal": {
+    "kr": "접미 두 번째·세 번째 옵션 — 유효 옵션 (영상: 세 번째에 카오스 저항 + 민첩)",
+    "en": "Second and third suffixes: useful options (video: chaos resistance + dexterity on the third try)"
+   },
+   "goalBy": {
+    "high": {
+     "kr": "접미 두 번째·세 번째 옵션 — 유효 옵션 1~2티어 (영상: 세 번째에 카오스 저항 + 민첩)",
+     "en": "Second and third suffixes: T1–2 useful options (video: chaos resistance + dexterity on the third try)"
+    },
+    "bal": {
+     "kr": "접미 두 번째·세 번째 옵션 — 유효 옵션 1~4티어",
+     "en": "Second and third suffixes: T1–4 useful options"
+    }
+   },
+   "show": [
+    "vs"
+   ],
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "vs",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "res": "ok",
+     "hide": true
+    },
+    {
+     "if": {
+      "has": "vs"
+     },
+     "to": "s3",
+     "res": "ok"
+    },
+    {
+     "to": "s1",
+     "res": "fail",
+     "label": {
+      "kr": "둘 다 잡옵",
+      "en": "Both junk"
+     }
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mn"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가",
+     "en": "(4—6)% increased maximum Mana",
+     "m": "c",
+     "tags": [
+      "mp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득",
+     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage",
+     "m": "d",
+     "tags": [
+      "cg"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "카오스 저항 +(20—23)%",
+     "en": "+(20—23)% to Chaos Resistance",
+     "m": "n",
+     "tags": [
+      "vs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "잡옵",
+     "en": "Junk option",
+     "m": "j"
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "kind": "act",
+   "group": "main",
+   "pos": [
+    0,
+    16.4
+   ],
+   "act": "chaos",
+   "cur": "Chaos_Orb",
+   "omens": [
+    "Omen_of_Whittling",
+    "Omen_of_Dextral_Erasure"
+   ],
+   "label": {
+    "kr": "절사 + 카오스",
+    "en": "Whittling + Chaos"
+   },
+   "goal": {
+    "kr": "접미 잡옵을 유효 옵션으로 (영상: 민첩 → 모든 원소 저항)",
+    "en": "Turn the junk suffix into a useful option (video: dexterity into all elemental resistances)"
+   },
+   "show": [
+    "vs"
+   ],
+   "edges": [
+    {
+     "if": {
+      "count": {
+       "tag": "vs",
+       "min": 2
+      }
+     },
+     "to": "ok",
+     "res": "ok"
+    },
+    {
+     "if": {
+      "has": "vs"
+     },
+     "to": "s3",
+     "res": "fail",
+     "hide": true
+    },
+    {
+     "to": "s1",
+     "res": "fail",
+     "hide": true
+    }
+   ],
+   "item": [
+    {
+     "s": "p",
+     "kr": "마나 최대치 +(165—179)",
+     "en": "+(165—179) to maximum Mana",
+     "m": "n",
+     "tags": [
+      "mn"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "최대 마나 (4—6)% 증가",
+     "en": "(4—6)% increased maximum Mana",
+     "m": "c",
+     "tags": [
+      "mp"
+     ]
+    },
+    {
+     "s": "p",
+     "kr": "주문이 피해의 (8—12)%를 카오스 피해로 획득",
+     "en": "Spells Gain (8—12)% of Damage as extra Chaos Damage",
+     "m": "d",
+     "tags": [
+      "cg"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "시전 속도 (22—24)% 증가",
+     "en": "(22—24)% increased Cast Speed",
+     "m": "f",
+     "tags": [
+      "cs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "카오스 저항 +(20—23)%",
+     "en": "+(20—23)% to Chaos Resistance",
+     "m": "n",
+     "tags": [
+      "vs"
+     ]
+    },
+    {
+     "s": "s",
+     "kr": "모든 원소 저항 +(12—14)%",
+     "en": "+(12—14)% to all Elemental Resistances",
+     "m": "n",
+     "tags": [
+      "vs"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ok",
+   "kind": "done",
+   "group": "main",
+   "pos": [
+    0,
+    17.4
+   ],
+   "label": {
+    "kr": "완성",
+    "en": "Finished"
+   }
+  }
+ ],
+ "loops": [
+  {
+   "id": "L1",
+   "nodes": [
+    "m5",
+    "m6",
+    "m6x"
+   ],
+   "kr": "훼손 공개",
+   "en": "Desecrate and reveal"
+  },
+  {
+   "id": "L2",
+   "nodes": [
+    "s1",
+    "s2"
+   ],
+   "kr": "접미 유효 옵션",
+   "en": "Useful suffixes"
+  }
+ ],
+ "finals": [
+  {
+   "id": "high",
+   "tier": "high",
+   "kr": "하이엔드 옵션",
+   "en": "High-end",
+   "lines": [
+    {
+     "tag": "mn1"
+    },
+    {
+     "tag": "mp",
+     "ess": true
+    },
+    {
+     "tag": "cg",
+     "des": true
+    },
+    {
+     "tag": "cs",
+     "fr": true
+    },
+    {
+     "tag": "vs2"
+    },
+    {
+     "tag": "vs2"
+    }
+   ]
+  },
+  {
+   "id": "bal",
+   "tier": "bal",
+   "kr": "밸런스 옵션",
+   "en": "Balance",
+   "lines": [
+    {
+     "tag": "mn2"
+    },
+    {
+     "tag": "mp",
+     "ess": true
+    },
+    {
+     "tag": "cg",
+     "des": true
+    },
+    {
+     "tag": "cs",
+     "fr": true
+    },
+    {
+     "tag": "vs4"
+    },
+    {
+     "tag": "vs4"
+    }
+   ]
+  }
+ ]
+}
