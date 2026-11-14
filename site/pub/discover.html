@@ -1102,7 +1102,7 @@ function makeDraft(it, an, opt){
       if(C && buy && !rb && (C.pOmen ?? 1) < 0.3){ rnd.unshift(C); const need = x => rnd.filter(r=>r.m.side===x).length, oth = other(C.m.side), sd = room(oth) && cap[oth]-cnt[oth]-need(oth) > 0 ? oth : C.m.side;
         push({phase:'magic', do:'regal', cur:'Regal_Orb', ...(room(other(sd)) && sd!==C.m.side ? {omens:[SIDE_OMEN.regal[sd]]} : {}), target:{junk:sd}, note:note(`희귀로 전환 (${sideKr(sd)}에 아무 옵션). ${lk(C)}${josa(lk(C),'은','는')} 확률이 낮아 제왕으로 노리지 않음 — 빗나간 소멸이 산 옵션을 지울 수 있어서.`, `Regal to rare (any ${sideEn(sd)}). ${le(C)} is too rare to aim for with the Regal: the Annulment after a miss could take a bought line.`)}); cnt[sd]++; junk[sd]++; }
       else if(C){ const sd=C.m.side, om = room(other(sd)) ? [SIDE_OMEN.regal[sd]] : []; roll('regal', C, om.length?{omens:om}:null); }
-      else { const sd = ['p','s'].find(x=>room(x)) || 'p'; push({phase:'magic', do:'regal', cur:'Regal_Orb', target:{junk:sd}, note:note('희귀로 전환 (아무 옵션).','Regal to rare (any modifier).')}); cnt[sd]++; junk[sd]++; looseJunk=true; }
+      else { const slack = x => cap[x]-cnt[x]-resv[x]-rnd.filter(r=>r.m.side===x).length-(desNeed[x]||0), sd = ['p','s'].filter(x=>room(x)).sort((a,b)=>slack(b)-slack(a))[0] || 'p';   /* 잡옵은 남은 필수 옵션 자리가 넉넉한 쪽으로(2026-11-14 WesDesu 마나 반지: 접두 필수 3개인데 잡옵이 접두로 가 자리가 모자람) */ push({phase:'magic', do:'regal', cur:'Regal_Orb', target:{junk:sd}, note:note('희귀로 전환 (아무 옵션).','Regal to rare (any modifier).')}); cnt[sd]++; junk[sd]++; looseJunk=true; }
     }
   }
   for(const {r,e} of magicEss) push({phase:'ess', do:'manual', label:{kr:'에센스 옵션',en:'Essence line'}, note:note(`${lk(r)}: ${e.kr}(매직 단계).`, `${le(r)}: ${e.en} (magic stage).`)});
@@ -1325,7 +1325,8 @@ function makeDraft(it, an, opt){
     // (junk, or the maximum quality line once quality is done), or a side holding only the fractured line, after adding a junk line there
     const oth = other(sd), remO = cnt[oth] - frs.filter(x=>x.m.side===oth).length, mqHere = mqLive() && it.D.groups[mqGi].g===oth && !qPend;
     let cs = sd, why;
-    if(cnt[sd] < cap[sd] && remO>0 && junk[oth] + (mqHere?1:0) === remO){ cs = oth;
+    const ownJunk = junk[sd]>0 && cnt[sd]+1+rnd.filter(x=>x.m.side===sd).length > cap[sd];   /* 그쪽 잡옵을 지워야 남은 필수 옵션이 들어감(2026-11-14 WesDesu 마나 반지) */
+    if(!ownJunk && cnt[sd] < cap[sd] && remO>0 && junk[oth] + (mqHere?1:0) === remO){ cs = oth;
       if(mqHere && !junk[oth]){ mqGone = true; cnt[oth]--; if(R0){ rnd.push(R0); R0=null; } why = note(`${sideKr(oth)}엔 분열 옵션과 최대 퀄리티(퀄리티 작업이 끝나 필요 없음)뿐이라 그 옵션이 지워지고, ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음. 이미 만든 ${sideKr(sd)}는 안 건드림.`, `The only removable ${sideEn(oth)} is the maximum quality line (no longer needed), so it goes and ${le(r)} lands on the ${sideEn(sd)}; the ${sideEn(sd)}es already made stay.`); }
       else { junk[oth]--; cnt[oth]--; why = note(`${sideKr(oth)}의 잡옵이 지워지고 ${lk(r)}${josa(lk(r),'은','는')} ${sideKr(sd)}에 붙음. 이미 만든 ${sideKr(sd)}는 안 건드림.`, `The ${sideEn(oth)} junk goes and ${le(r)} lands on the ${sideEn(sd)}; the ${sideEn(sd)}es already made stay.`); }
       cnt[sd]++; }
