@@ -16,7 +16,7 @@ def _amr(tier):
   {'id':'b1','phase':'base','do':'regal','cur':'Regal_Orb','target':{'junk':'p'},'br':K('붙는 옵션은 나오는 대로','The new option stays as it comes')},
   {'id':'c1','phase':'main','do':'quality','cur':'Skittering_Catalyst','target':{'quality':20}},
   {'id':'c2','phase':'main','do':'exalt','cur':'Perfect_Exalted_Orb','omens':['Omen_of_Catalysing_Exaltation','Omen_of_Dextral_Exaltation'],'target':{'gi':34,'tmax':2},'fail':{'goto':'c1'}},
-  {'id':'e2','phase':'main','do':'essence','cur':'Perfect_Essence_of_the_Mind','target':{'gi':67}},
+  {'id':'e2','phase':'main','do':'essence','cur':'Perfect_Essence_of_the_Mind','omens':['Omen_of_Sinistral_Crystallisation'],'target':{'gi':67}},
   {'id':'d1','phase':'main','do':'desecrate','cur':'Preserved_Collarbone','omens':['Omen_of_Sinistral_Necromancy'],'target':{'unrev':'p'}},
   {'id':'d2','phase':'main','do':'reveal','omens':['Omen_of_Abyssal_Echoes'],
    'target':{'reveal':{'gi':28,'tmax':2},'side':'p','bone':'Preserved_Collarbone'} if bal else {'reveal':{'gi':28,'tmax':3},'side':'p','bone':'Preserved_Collarbone','anyReveal':True},

@@ -24,11 +24,11 @@ LR = L('s', '번개 저항 +(36—40)%', '+(36—40)% to Lightning Resistance', 
 g = {
  'id': 'atom-mana-rarity-ring-v2', 'recipe': 'atom-mana-rarity-ring-v2', 'cls': 'Rings', 'base': 'Gold Ring', 'ilvl': 82,
  'note': ('2026-11-14 RING: 사용자 Atom1q84가 직접 만든 순서(영상 없음, 15:37 정정). 매직 황금 반지(접두 마나 최대치 + 접미 아이템 희귀도) 구입 → 제왕의 오브 → '
-          '달리는 기폭제 퀄리티 20% + 촉진하는 찬미의 징조 + 우측 찬미의 징조 + 완벽한 엑잘티드 오브로 시전 속도 → 접두 잡옵이 있으면 완벽한 정신의 에센스(접두 2개 중 하나가 지워짐, 마나 최대치면 새 베이스) → '
+          '달리는 기폭제 퀄리티 20% + 촉진하는 찬미의 징조 + 우측 찬미의 징조 + 완벽한 엑잘티드 오브로 시전 속도 → 접두 잡옵이 있으면 좌측 결정화의 징조 + 완벽한 정신의 에센스(접두 2개 중 하나가 지워짐, 마나 최대치면 새 베이스) → '
           '접두 훼손 + 심연의 메아리 공개(빗나가면 소멸의 오브 + 빛의 징조) → 접미 셋째(툴의 기폭제 + 촉진하는 찬미의 징조로 저항 노림, 랜덤 옵션) → 신경 기폭제 퀄리티 20%. '
           '상위 풍요의 에센스는 완벽한 정신의 에센스와 제작 옵션 한도(C1)가 겹쳐 뺌(사용자 정정). '
           '내부 결정(빈칸, 시뮬): 시전 속도 엑잘이 빗나가면 접미에 빈자리가 있으면 다시 엑잘, 꽉 차면 소멸의 오브(우측 소멸의 징조는 3,708 ex라 뺌) / 제왕의 오브가 접두를 안 붙였으면 좌측 찬미의 징조 + 엑잘티드 오브로 접두 잡옵 / '
-          '접미 셋째는 훼손 뒤(사용자 순서, 접두가 꽉 차서 우측 찬미의 징조 필요 없음) / 기폭제는 데이터 태그 중 가장 싼 것(시전 속도 = 달리는, 저항 = 툴의).'),
+          '접미 셋째는 훼손 뒤(사용자 순서, 접두가 꽉 차서 우측 찬미의 징조 필요 없음) / 정신의 에센스에 좌측 결정화의 징조(16:41 정정: 접두에 빈자리가 있으면 아무 옵션이나 지워짐 — 징조 없이는 접미 시전 속도·희귀도도 지워져 끝나지 않음, 접두를 3개로 채우는 길은 밸런스 83.3 div vs 징조 62.6 div) / 기폭제는 데이터 태그 중 가장 싼 것(시전 속도 = 달리는, 저항 = 툴의).'),
  'params': {
   'v': {'kr': '진행', 'en': 'Route', 'values': {'1': K('빛의 징조로 다시', 'Retry with Light'), '2': K('결과 그대로', 'As it comes')}},
   'rT': {'kr': '공개 희귀도', 'en': 'Revealed rarity', 'values': {'2': K('1~2티어', 'T1–2'), '3': K('아무 티어', 'Any tier')}},
@@ -79,7 +79,7 @@ A(id='e1', kind='act', group='main', pos=[0, 5.4], act='exalt', cur='Exalted_Orb
   goal=K('에센스가 지울 접두 잡옵', 'A junk prefix for the essence to remove'), showText=[K('잡옵 1개', 'One junk option')],
   skipIf={'not': {'sideLt': {'side': 'p', 'n': 2}}}, skipTo='e2', skipNote=K('접두 잡옵이 이미 있으면 건너뜀', 'Skipped when a junk prefix is already there'),
   edges=[{'to': 'e2'}], item=[MA, JK, RS, CS])
-A(id='e2', kind='act', group='main', pos=[0, 6.4], act='essence', cur='Perfect_Essence_of_the_Mind', ess='pmana', label=K('에센스', 'Essence'),
+A(id='e2', kind='act', group='main', pos=[0, 6.4], act='essence', cur='Perfect_Essence_of_the_Mind', ess='pmana', omens=['Omen_of_Sinistral_Crystallisation'], label=K('에센스', 'Essence'),
   goal=K('접두 최대 마나 % — 접두 2개 중 하나가 지워짐', 'Prefix % maximum mana: one of the two prefixes goes'),
   showText=[{'s': 'p', 'kr': '최대 마나 (4—6)% 증가 (제작 옵션)', 'en': '(4—6)% increased maximum Mana (crafted)'}],
   edges=[{'if': {'not': {'has': 'mana'}}, 'to': 'xb', 'res': 'fail', 'label': K('마나 최대치가 지워짐', 'Maximum mana gone')},
