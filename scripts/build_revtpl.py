@@ -168,7 +168,7 @@ def main():
                         continue
                     L = sorted(set(leaves(g, G, t)))
                     if L:
-                        ex.append({'t': t, 'gis': L, **({'fr': 1} if l.get('fr') or t in fr else {})})
+                        ex.append({'t': t, 'gis': L, **({'fr': 1} if l.get('fr') or t in fr else {}), **({'des': 1} if t in des or l.get('des') else {})})
                 if ex:
                     extra[st['id']] = ex
         if bad or not cores:
