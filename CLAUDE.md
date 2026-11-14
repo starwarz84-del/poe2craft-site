@@ -107,6 +107,7 @@ cd /home/claude/poe2data && bash tools/test/serve.sh stop
 - `_cost.js` 레시피·초안 비용(div, 확정/추가 포함, 비싼 징조, 타협 수) · `_cheap.js` 시세로 바뀐 초안 오브 선택 · `_shots_price.js` 시세 화면 스크린샷 → shots/price-*.png
 - `_revprobe.js <레시피id> [후보키]` 리버스 초안 후보마다 시뮬 비용·탈락 여부, 후보키(예: `-|frside+noloop+k42`)를 주면 그 초안 단계 · `_revtrace.js <레시피id> [후보키]` 시뮬이 끝나지 않는 회차의 마지막 25단계와 아이템 상태 · `_revscore.js`에 `DUMP=<파일>`(항목별 결과 저장)·`NOK42=1`(K42 후보 빼고 비교) (2026-11-12 도과장)
 - `_revtpl.js [id…]` 리버스 등록 틀 점검(W9 2026-11-14): 등록 완성품을 붙여 넣으면 자기 그래프가 틀로 잡히고 틀 시뮬 비용이 등록 시뮬 ±5%, `PICK=1`이면 초안 고르기까지. `_revscore.js`는 자기 그래프를 틀에서 뺀 비교(`SELFTPL=1`이면 포함)
+- `revtry.js <아이템.txt | 폴더 | ->` 리버스 빠른 시험(2026-11-14 TOOL1, 아이템 하나 약 6~50초): 발굴 탭 화면 그대로 붙여 넣기 → 분석 → 초안 → 플로우차트 → 등급 레시피, 한국어 요약 블록(옵션·고른 방법·등급별 비용·비슷한 등록 레시피와 배수·문제) + `tools/test/revtry_out/<이름>.json`, 폴더면 끝에 표. `NEED=모두|gi,gi`(기본 모두 — 화면은 기본 필수가 없음) · `TIER=1|2|4` · `CHIP=1`(칩 첫 번째) · `FAST=0`(최소 10초) · `SHOT=1`(분석·플로우차트·레시피 png). 서버가 꺼져 있으면 켜고 끄지 않음
 - `cmp2.js` 초안 vs 원본 단계 비교 → cmp2.txt · `one.js <레시피id>` 초안 하나 자세히 · `pair.js <레시피id>` 원본·초안 단계별 확률 나란히
 
 게시(아티팩트판은 리버스 화면이 `sim.js`·`graphify.js`·`fcread.js`를 읽으니 `files`에 `"sim.js":"sim.js","graphify.js":"graphify.js","fcread.js":"fcread.js"`도): Artifact 도구 publish, `file_path=/home/claude/poe2craft-site/site/app.html`, `root=/home/claude/poe2craft-site/site`(**링크 경로 poe2data는 게시가 거부돼요**), `url=`위 주소,
