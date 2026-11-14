@@ -671,7 +671,7 @@ function buySet(an){ const b=new Set([...S.buy].filter(i=>S.need.has(i)).map(i=>
 function needAn(an, floor, it){ const a = {...an, rows: an.rows.flatMap((r,i)=>{ if(r.m.fr) return [r]; if(r.unrev || !(S.need.has(i) || S.soft?.has(i))) return [];
   const t = Math.max(S.tsel[i] || r.tierNo, floor ? Math.min(floor, r.tierCnt) : 0), soft = !S.need.has(i), alt = altOf(an, i, it);
   const pick = !!S.alt?.[i]?.length;   /* 칩으로 묶음을 직접 고름(다른 줄과 겹쳐 altOf가 비어도) — K41 자동 추가를 막는 데 씀(W10) */
-  return [t===r.tierNo && !soft && !alt && !pick ? r : {...r, tierNo:t, ...(soft?{soft:true}:{}), ...(alt?altRow(it, r, alt):{}), ...(pick?{altPick:true}:{})}]; })};
+  return [t===r.tierNo && !soft && !alt && !pick ? r : {...r, tierNo:t, ...(soft?{soft:true}:{}), ...(alt?altRow(it, r, alt):{}), ...(pick?{altPick:true}:{})}]; }), rows0: an.rows0||an.rows};
   return a; }
 /* 유효 옵션군(W8, 로드맵 2-④ 사용자 2026-11-12 18:38): 그 자리에 고른 다른 옵션 [{gi,tmax}] — 일반 옵션 자리만, 다른 줄에 이미 있는 계열은 뺌 */
 function altOf(an, i, it){ const L=S.alt?.[i], r=an.rows[i]; if(!L?.length || !r || r.m.fr || r.unrev || !r.g || (r.how!=='n' && r.how!=='d')) return null;
@@ -769,26 +769,48 @@ async function bestDraftAsync(it, an, opt, tick, minMs){ const TOP=userGrade(it,
 async function loadTpl(){ if(S.tplIdx!==undefined) return S.tplIdx; try{ S.tplIdx = await fetch('data/revtpl.json').then(r=>r.ok?r.json():null); }catch(_){ S.tplIdx=null; } return S.tplIdx; }
 async function loadTplGraph(id){ S.tplG=S.tplG||{}; if(!(id in S.tplG)) S.tplG[id] = fetch(`data/graphs/${encodeURIComponent(id)}.json`).then(r=>r.ok?r.json():null).catch(()=>null); return S.tplG[id]; }
 const tplName = (it, gi) => { const t=it.D.groups[gi]?.t?.[0], c = s => String(s||'').split('\n').join(' / ').replace(/[+\-]?\(\s*[\d.]+\s*[—–-]\s*[\d.]+\s*\)%?/g,'').replace(/[+\-]?\d[\d.]*%?/g,'').replace(/\s*~\s*/g,' ').replace(/\s+/g,' ').replace(/^(의|를|을)\s/,'').replace(/\bAdds\s+to\b/g,'Adds').trim(); return {kr:c(t?.[4]), en:c(t?.[5])}; };
+/* 쪽이 애매한 옵션(RV13, 사용자 반지): 일반 복사엔 접두·접미 표시가 없어, 반대쪽 같은 계열 일반 옵션의 티어 범위에도 수치가 맞으면 그쪽 옵션으로 본 줄을 만듦.
+   예: 희귀도 18%·훼손 17% — 분석은 18% 접두·17% 접미로 잡지만 둘 다 반대쪽 1티어 범위 안이라, 등록 틀(18% 접미·훼손 17% 접두)과 맞춰 볼 수 있음 */
+function tplFlip(it, r){ const G=it.D.groups; if(!r?.g || r.m?.fr || r.m?.q || r.m?.out || !['n','d'].includes(r.how) || !r.g.f?.length) return null;
+  const nums=(String(r.m.l||'').match(/\d+(\.\d+)?/g)||[]).map(Number);
+  for(let x=0;x<G.length;x++){ const g=G[x]; if(x===r.m.gi || g.s!=='n' || g.g===r.g.g || !g.f?.some(f=>r.g.f.includes(f))) continue;
+    for(let k=0;k<g.t.length;k++){ const y=g.t[k]; if(!(y[0]<=it.ilvl) || !(y[1]>0)) continue; const rg=[...String(y[5]||'').matchAll(/\(\s*([\d.]+)\s*[—–-]\s*([\d.]+)\s*\)/g)].map(z=>[+z[1],+z[2]]);
+      if(!rg.length || rg.length!==nums.length || rg.some(([a,b],i)=>nums[i]<a || nums[i]>b)) continue;
+      const top=g.t.findIndex(z=>z[0]<=it.ilvl && z[1]>0);
+      return {...r, m:{...r.m, gi:x, side:g.g}, g, t:y, tierNo:k-top+1, tierCnt:g.t.length-top, flip:true}; } }
+  return null; }
 function tplMatch(it, an){ const T=S.tplIdx?.g; if(!T || S.noTpl) return [];
-  const G=it.D.groups, rows=an.rows.filter(r=>!r.soft && r.g && !r.unrev && r.m?.gi!=null), out=[];
+  const G=it.D.groups, rows0=an.rows.filter(r=>!r.soft && r.g && !r.unrev && r.m?.gi!=null), out=[];
+  /* 줄 배정 후보: 그대로 + 쪽이 애매한 같은 계열 옵션을 반대쪽으로(둘이면 서로 바꿈, 하나면 그 줄만) */
+  const VAR=[rows0]; { const fl=rows0.map(r=>tplFlip(it, r)), fam=(a,b)=>a.g.f.some(f=>b.g.f.includes(f));
+    rows0.forEach((r,i)=>{ if(!fl[i]) return; const j=rows0.findIndex((q,k)=>k>i && fl[k] && q.g.g!==r.g.g && fam(q,r));
+      if(j>=0) VAR.push(rows0.map((q,k)=>k===i||k===j ? fl[k] : q)); else if(!rows0.some((q,k)=>k!==i && fam(q,r))) VAR.push(rows0.map((q,k)=>k===i ? fl[k] : q)); }); }
+  /* 필수로 고르지 않았지만 아이템에 있는 옵션(유효·표시 안 함)은 틀 자리 하나를 채울 수 있음 — 틀이 그 옵션까지 만들어 주는 흐름(RV13: 마나·최대 마나 %·시전 속도만 고른 반지) */
+  const spare=(an.rows0||an.rows).filter(r=>r.g && !r.unrev && !r.m?.fr && r.m?.gi!=null && !rows0.some(q=>q.m.l===r.m.l)); spare.slice().forEach(r=>{ const f=tplFlip(it, r); if(f) spare.push(f); });
+  const done=new Set();
   let FRG=new Set(); const frOk = (c, r) => r.m.fr ? (!!c.fr || FRG.has(r.m.gi)) : (!c.fr || c.n>1), flagOk = (c, r) => frOk(c, r) && !!c.des===(r.how==='d');   /* 같은 옵션이면 분열 표시만 맞으면 됨(훼손으로 얻었든 아니든 틀 흐름이 그 옵션을 만듦), 바꿀 때는 훼손 표시까지 */
+  for(const rows of VAR){
   for(const t of Object.values(T)){ if(t.cls!==it.cls || S.tplSkip?.has(t.g)) continue; FRG=new Set(t.frg||[]);   /* 틀이 분열하는 옵션(묶음 잎 포함) */
    /* 등급마다 완성 조건 자리가 다를 수 있음(밸런스만 훼손 옵션 필수 등) — 같은 자리 모양의 등급끼리 묶어 짝짓기.
       extra = 완성 조건 밖이지만 완성 카드에 늘 나오는 옵션 줄: 붙여 넣은 필수 옵션이 남으면 같은 옵션일 때만 짝지음 */
    const sigs={}; for(const [gr,core] of Object.entries(t.cores||{})){ const ex=t.extra?.[gr]||[], k=JSON.stringify([core, ex]); (sigs[k] = sigs[k] || {core, ex, grades:[]}).grades.push(gr); }
    for(const {core, ex, grades} of Object.values(sigs)){
+    const dk=t.g+'|'+grades.join(','); if(done.has(dk)) continue;
     const slots=core.flatMap(c=>Array.from({length:c.n},()=>c)); if(slots.length>rows.length+1 || slots.length+ex.length<rows.length) continue;
     const pair=new Array(slots.length).fill(null), used=new Set();
     slots.forEach((c,k)=>{ const j=rows.findIndex((r,q)=>!used.has(q) && frOk(c,r) && c.gis.includes(r.m.gi)); if(j>=0){ pair[k]=j; used.add(j); } });
     /* 묶음 자리 하나는 붙여 넣은 필수 옵션이 없어도 됨(틀이 그 자리를 더 만들어 줌 — 비용은 시뮬이 그대로 셈) */
-    const map={}; let ok=true, freeAny=1;
+    const map={}; let ok=true, freeAny=1, freeHave=1;
     slots.forEach((c,k)=>{ if(!ok || pair[k]!=null) return; if(c.gis.length!==1){ if(freeAny-- > 0){ pair[k]=-1; return; } ok=false; return; }
+      if(freeHave>0 && spare.some(r=>r.m.gi===c.gis[0] && frOk(c,r) && !rows.some(q=>q.g.f?.some(f=>r.g.f?.includes(f))))){ freeHave--; pair[k]=-1; return; }
       const a=c.gis[0], j=rows.findIndex((r,q)=>!used.has(q) && flagOk(c,r) && r.g.g===G[a]?.g && r.g.s===G[a]?.s && ['n','d'].includes(r.g.s));
       if(j<0 || (map[a]!=null && map[a]!==rows[j].m.gi)){ ok=false; return; } pair[k]=j; used.add(j); map[a]=rows[j].m.gi; });
     if(!ok) continue;
     const exU=new Set(), exT={}; rows.forEach((r,q)=>{ if(!ok || used.has(q)) return; const e=ex.findIndex((c,i)=>!exU.has(i) && frOk(c,r) && c.gis.includes(r.m.gi) && !Object.values(map).includes(r.m.gi)); if(e<0){ ok=false; return; } exU.add(e); used.add(q); exT[ex[e].t]=(exT[ex[e].t]||0)+1; });
     if(!ok || used.size!==rows.length) continue;
-    out.push({t, core, grades, map, exT, pair:pair.map(j=>j>=0 ? rows[j] : null), changed:Object.keys(map).length}); } }
+    if(pair.filter(j=>j<0).length>1) continue;   /* 빈 자리(묶음·아이템에 있는 옵션)는 둘 합쳐 하나까지 */
+    done.add(dk); out.push({t, core, grades, map, exT, pair:pair.map(j=>j>=0 ? rows[j] : null), changed:Object.keys(map).length, flip:rows!==rows0}); } }
+  }
   out.sort((a,b)=>a.changed-b.changed || (Math.min(...Object.values(a.t.use))-Math.min(...Object.values(b.t.use))));
   return out.slice(0,3); }
 /* 틀 후보 초안: 메타(이름·소켓·출처)는 기본 초안, 단계·시작은 등록 레시피(같은 등급)를 옵션만 바꿔서, 플로우차트는 tplGraph(fromDraft가 그대로 씀) */
