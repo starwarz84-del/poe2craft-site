@@ -63,6 +63,7 @@
 | 망가져도 다시 쌓기 쉬운 쪽을 남김 | 장갑은 가장 안 나오는 투사체 +2를 분열해 두면 접두가 망가져도 소멸 후 다시 쌓는 비용이 작음 | sihan-proj-gloves (fracture-cheap-rebuild) |
 | 셋 다 팔리는 옵션 | 세 옵션이 모두 팔 수 있는 옵션이면 분열이 어디 걸려도 손해가 없음 | belton-plus8-wand (fracture-sellable-lines) |
 | 좋은 옵션 2개 | 옵션 4개 중 좋은 옵션이 2개면 원하는 분열 확률이 1/3에서 2/3 | chiba·mastert-timelost-emerald (fracture-two-good-lines) |
+| 한쪽 1티어 필수 3개 | 가장 어려운 하나를 분열하고 나머지는 '둘 중 아무거나'로 받음. 셋 다 고정하면 미러급(K53) | mazbro-sceptre, mirror-bow-video |
 | 분열하면 안 되는 것 | 스킬 레벨 +3(목걸이) — 축성을 못 함. 정신력 같은 다른 옵션을 분열하고 스킬은 그 뒤 카오스로 | gold-amulet-6line, absent-amulet-video (no-fracture-skill) |
 
 ### 2-3. 순서 주의
@@ -83,7 +84,7 @@
 | 기본 | 분열 + 잡옵 1개 → 징조 없는 카오스 오브로 그 옵션을 목표로 | 52개 (after-fracture-chaos) |
 | 가중치가 아주 낮은 옵션(스킬 +3 등) | 자리가 비어 있는 초반에 카오스로 먼저. 다른 자리를 채운 뒤엔 사실상 안 뜸 | gold-amulet-6line (low-weight-first) |
 | 아주 귀한 옵션 하나 | 반대로 옵션 6개를 모두 채운 채 카오스. 이미 붙은 계열은 다시 안 나와 목표 몫이 커짐 | banzino-mirror-staff (fill-slots-before-chaos) |
-| 카오스 중 반대쪽에 1티어가 뜸 | 버리지 말고 그 옵션을 살려 계획을 바꿈 | mazbro-caster-amulet (chaos-side-swap) |
+| 카오스 중 반대쪽에 1티어가 뜸 | 버리지 말고 그 옵션을 살려 계획을 바꿈. 다른 필수 옵션이 먼저 떠도 받고, 어려운 옵션은 그쪽 찬미 엑잘 → 상위 카오스로(K51, 리버스엔 아직 없음) | mazbro-caster-amulet (chaos-side-swap) |
 | 목표 밖 고가 옵션이 뜸 | 그대로 팔고 다시 시작하는 편이 나을 때가 많음 | (sell-offtarget, base-flipping) |
 | 분열 직후 한 번의 도박 | 상위 찬미의 징조 + 완벽한 엑잘 한 번. 1티어 두 개면 팔 만한 장비, 꽝이면 소멸 | helmet-armour-sl (greater-exalt-gamble) |
 

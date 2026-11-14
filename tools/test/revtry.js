@@ -56,14 +56,14 @@ const up=()=>new Promise(r=>{ const q=http.get(`http://localhost:${PORT}/discove
         /* 비슷한 등록 레시피(화면 '비슷한 등록 레시피' 칸과 같은 목록) — 그 레시피 플로우차트 시뮬 비용, 같은 등급 초안 비용과 나란히 */
         const sim=[]; for(const x of simRec(S, it, an)){ let c=null; try{ const j=await fetch(`data/sim/${encodeURIComponent(x.b.g)}.json`).then(r=>r.ok?r.json():null); const st=j && (j.strategies.find(s=>s.id===x.b.tr && !s.hidden) || j.strategies.find(s=>!s.hidden)); c=st?.res ? (st.res.useDiv ?? st.res.mean) : null; }catch(_){}
           const mine=gr.find(g=>g.id===x.b.tr && g.cost!=null) || null; sim.push({id:x.id, g:x.b.g, ti:x.b.ti?.kr||x.id, tr:x.b.tr, same:!!x.same, sc:+x.sc.toFixed(2), reg:c, draft:mine?mine.cost:null, k:(c && mine?.cost!=null) ? +(Math.max(mine.cost,1)/Math.max(c,1)).toFixed(2) : null}); }
-        const tp=d?.tpl, cand=(S.lastC||[]).length, okC=(S.lastC||[]).filter(c=>!c.bad && c.n).length;
+        const tp=d?.tpl, cand=(S.lastC||[]).length, okC=(S.lastC||[]).filter(c=>!c.bad && c.n).length; const cands=(S.lastC||[]).map(c=>({k:((c.K?.k||c.K?.a?.k||'')+'|'+(c.k||'-')), bad:!!c.bad, n:c.n, cost:c.n ? +(c.sum/c.n).toFixed(1) : null})).sort((a,b)=>(a.cost??1e12)-(b.cost??1e12));
         const how = tp ? {kind:'tpl', g:tp.g, ti:tp.ti?.kr||tp.g, changed:tp.changed||0, gen:tp.cmp?.gen??null} : {kind:'gen', key:((d?.knowhow||[]).join(',')||'-')+'|'+(d?.pick ? (typeof d.pick==='string'?d.pick:(d.pick.k||'-')) : '-'), pick:d?.pick||null, tplCmp:S.tplCmp||null};
         const probs=[]; ck.filter(z=>z.lv==='err').forEach(z=>probs.push('검산 오류: '+z.kr)); (F.issues||[]).forEach(z=>probs.push('플로우차트: '+z.kr)); if(F.err) probs.push('플로우차트 실패: '+F.err);
         gr.forEach(g=>{ if(g.none) probs.push(`${g.id}: 진행 불가`); else if(!g.merged && g.reqOk!=null && g.reqOk<0.98) probs.push(`${g.id}: 필수 옵션 충족 ${Math.round(g.reqOk*100)}%`); });
         if(pre.unrec) probs.push(`인식 못 한 옵션 ${pre.unrec}개(잡옵으로 봄)`); if(!F.group) probs.push('올리기 불가(플로우차트 통과 실패)');
         const top=sim.find(s=>s.same) || sim[0]; if(top && top.k!=null && top.k>1.5) probs.push(`비슷한 등록 「${top.ti}」보다 ${top.k}배 비쌈`);
         const warns=ck.filter(z=>z.lv==='warn').map(z=>z.kr);
-        return {...pre, top:d?.topGrade||null, diff:F.diff?.d??null, how, cand, okC, steps:F.lead?.nodes ? F.lead.nodes.filter(n=>n.do!=='note').length : (d?.nodes||[]).length, grades:gr, sim, warns, nErr:ck.filter(z=>z.lv==='err').length, probs,
+        return {...pre, top:d?.topGrade||null, diff:F.diff?.d??null, how, cand, okC, cands, steps:F.lead?.nodes ? F.lead.nodes.filter(n=>n.do!=='note').length : (d?.nodes||[]).length, grades:gr, sim, warns, nErr:ck.filter(z=>z.lv==='err').length, probs,
           tplWhy:S.tplWhy||null, start:d?.start ? {rar:d.start.rar, mods:(d.start.mods||[]).length} : null, nodes:(F.lead?.nodes||d?.nodes||[]).map(n=>[n.id, n.do, n.cur||'', (n.omens||[]).join('+'), (n.note?.kr||'').slice(0,80)].join(' | '))}; }, pre);
       if(process.env.SHOT==='1' && res.grades){ try{ await p.locator('#mods').screenshot({path:`${OUT}/${name}-an.png`}); }catch(_){}
         try{ await p.locator('#mkmsg .flow').first().screenshot({path:`${OUT}/${name}-fc.png`, timeout:8000}); }catch(e){ (res.probs=res.probs||[]).push('스크린샷(플로우차트) 실패: '+e.message.split('\n')[0]); }
