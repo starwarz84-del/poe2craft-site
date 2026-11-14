@@ -1,25 +1,6 @@
 // 사용자 반지(마나·희귀도 2개·시전 속도, RV13) 틀 짝짓기 점검: NEED=<gi,…|all> [PICK=1] node _rv13probe.js — ms = 잡힌 등록 틀, pick = 고른 초안·비용
-const {chromium}=require('/home/claude/poe2craft-site/node_modules/playwright'.replace('/home/claude/poe2craft-site/node_modules/','')); const fs=require('fs');
-const TXT=process.env.ITEM ? fs.readFileSync(process.env.ITEM,'utf8') : "Item Class: Ring
-Rarity: Rare
-Kraken Grasp
-Gold Ring
---------
-Quality (Mana Modifiers): +20% (augmented)
---------
-Requires: Level 60
---------
-Item Level: 82
---------
-12% increased Rarity of Items found (implicit)
---------
-+211 to maximum Mana
-18% increased Rarity of Items found
-20% increased Cast Speed
-+39% to Lightning Resistance
-7% increased maximum Mana (crafted)
-17% increased Rarity of Items found (desecrated)
-"; const NEED=process.env.NEED||'all';
+const {chromium}=require('playwright'); const fs=require('fs');
+const TXT=process.env.ITEM ? fs.readFileSync(process.env.ITEM,'utf8') : "Item Class: Ring\nRarity: Rare\nKraken Grasp\nGold Ring\n--------\nQuality (Mana Modifiers): +20% (augmented)\n--------\nRequires: Level 60\n--------\nItem Level: 82\n--------\n12% increased Rarity of Items found (implicit)\n--------\n+211 to maximum Mana\n18% increased Rarity of Items found\n20% increased Cast Speed\n+39% to Lightning Resistance\n7% increased maximum Mana (crafted)\n17% increased Rarity of Items found (desecrated)\n"; const NEED=process.env.NEED||'all';
 (async()=>{ const b=await chromium.launch(); const p=await b.newPage(); p.on('pageerror',e=>console.error('E',e.message));
 await p.goto('http://localhost:8779/discover.html?lang=kr'); await p.waitForFunction(()=>window.__rev && __rev.recSamples);
 await p.evaluate(async()=>{ const S=__rev; [S.index,S.craft]=await Promise.all([fetch('data/index.json').then(r=>r.json()),fetch('data/crafting.json').then(r=>r.json())]); S.priority=await fetch('data/priority.json').then(r=>r.json()); await S.ready; });
