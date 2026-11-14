@@ -302,7 +302,7 @@ function fromDraft(d, D, opt={}){ if(d.tplGraph) return fromTemplate(d, opt);
     const nxt = dj ? dj.next : n.branch==null && N.some(x=>x.branch?.of===n.id) ? (branchFirst(n.id,'ok')||nextMain(n)) : nextMain(n);
     const missTo = dj ? dj.next : N.some(x=>x.branch?.of===n.id) ? branchFirst(n.id,'miss') : null;
     o.edges.push(...lostEdges(n, keep));
-    const Fx = n.fail || n.compromise?.fail; if(okIf && retry0(n) && (a==='reveal' || (a!=='chaos' && !(fb[n.id]||[]).some(x=>x.do!=='note') && !Fx?.via))) o.edges.push({if:{famBlock:tg}, to:'h1', res:'fail', hide:true});   // nothing on the way back can clear the blocking line   // another line already holds the wanted family: a new base
+    const Fx = n.fail || n.compromise?.fail; if(okIf && retry0(n) && (a==='reveal' || (a!=='chaos' && !(fb[n.id]||[]).some(x=>x.do!=='note') && !Fx?.via))) o.edges.push({if:{famBlock:tg, ...(a==='reveal' && n.pool ? {left:n.pool} : {})}, to:'h1', res:'fail', hide:true});   // nothing on the way back can clear the blocking line   // another line already holds the wanted family: a new base
     if(okIf) o.edges.push({if:okIf, to:nxt, res:'ok'});
     else if(!missTo) o.edges.push({to:nxt, res:'ok'});   // no line to look for: a removed kept line (above) is the only way back
     // failure
@@ -328,6 +328,8 @@ function fromDraft(d, D, opt={}){ if(d.tplGraph) return fromTemplate(d, opt);
         if(n.junkFill){ const os = s==='p' ? 's' : 'p', tw={id:n.id+'o', kind:'act', group:'main', act:'exalt', cur:o.cur, label:o.label, goal:K(`${sideWord(os).kr} 랜덤 옵션`, `Random ${sideWord(os).en.toLowerCase()}`), skipIf:{full:os}, skipTo:nxt, edges:[{to:nxt, res:'ok'}], _row:r, _col:1};
           if(o.over) tw.over=o.over; extra.push(tw); o.skipTo=tw.id; } } }
     else if(a==='desecrate' && !t.fromMark){ const rv=N.slice(N.indexOf(n)+1).find(x=>x.do==='reveal'); const rt=rv && targetTag(rv.target); o.skipIf = rt ? {any:[{unrev:true}, rv.pool ? {count:{tag:rt, min:rv.pool}} : {has:rt}]} : {unrev:true}; o.skipTo=nxt; }
+    /* 공개할 훼손 옵션이 없는데 공개 목표가 이미 채워짐(앞 단계 카오스·엑잘이 그 쪽 목표 옵션을 다 붙임) → 공개도 건너뜀. 훼손 상자가 목표 충족으로 공개 상자로 넘기면 공개가 빗나감 → 빛의 소멸 → 훼손 건너뜀으로 끝없이 돌았음(RV12 2026-11-14, 마나·희귀도 반지 에센셜 'd6 반복') */
+    else if(a==='reveal' && !t.fromMark){ const rt=targetTag(t); if(rt){ o.skipIf={all:[{unrev:false}, n.pool ? {count:{tag:rt, min:n.pool}} : {has:rt}]}; o.skipTo=nxt; o.skipNote=K('이미 목표 옵션 있음','Target modifier already there'); } }
     o._row=r; o._col=col;
     return o; };
 
